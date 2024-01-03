@@ -1,0 +1,42 @@
+<!--
+Overrides content of preview IFRAME HTML page's <head> tag,
+affecting rendered component(s) below Canvas and Docs tabs.
+-->
+<!-- Fonts overriding -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" crossorigin="anonymous" href="https://fonts.googleapis.com">
+<link rel="preconnect" crossorigin="anonymous" href="https://fonts.gstatic.com">
+<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+
+<!-- Styles overriding -->
+<style>
+  body {
+    font-family: Roboto, sans-serif;
+  }
+
+  .docblock-argstable-body {
+    filter: none !important;
+    border-radius: 0.5rem !important;
+  }
+
+  .docblock-argstable-body tr:not([title]) > td {
+    background-color: white !important;
+  }
+
+  .docblock-argstable-body tr td {
+    border-radius: 0 !important;
+  }
+
+  .sbdocs-preview {
+    box-shadow: none !important;
+  }
+
+  [type='checkbox']:checked, [type='radio']:checked {
+    background-color: rgb(17 24 39) !important;
+  }
+
+  [type='checkbox']:focus, [type='radio']:focus {
+    @apply !ring-gray-300;
+  }
+</style>
