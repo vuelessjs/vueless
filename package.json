@@ -1,11 +1,7 @@
 {
-  "name": "ifine.app",
-  "version": "0.26.323",
-  "private": true,
+  "name": "vueless",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "vite --host",
-    "build": "node src/ui.image-icon/cli.mjs --src && vite build",
-    "preview": "vite preview --host",
     "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:fix": "eslint --ext .vue,.js,.ts --fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:ci": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore --max-warnings=0",
@@ -16,9 +12,6 @@
     "sb:dev": "storybook dev -p 6006 --docs",
     "sb:build": "node src/ui.image-icon/cli.mjs --storybook && VITE_NO_PWA=1 storybook build --docs",
     "sb:preview": "vite preview --host --outDir=storybook-static",
-    "test:unit": "vitest",
-    "test:e2e": "start-server-and-test 'vite dev --port 4173' 4173 'cypress open --e2e --config baseUrl=http://localhost:4173'",
-    "test:e2e-ci": "start-server-and-test 'vite dev --port 4173' 4173 'cypress run --e2e --config baseUrl=http://localhost:4173'",
     "postinstall": "node src/library.web-types-gen"
   },
   "dependencies": {

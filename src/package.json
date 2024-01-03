@@ -1,0 +1,20 @@
+{
+  "name": "vueless",
+  "version": "0.0.2",
+  "description": "Vue Styleless Component Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuelessjs/vueless.git"
+  },
+  "author": "Johnny Grid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vuelessjs/vueless/issues"
+  },
+  "homepage": "https://github.com/vuelessjs/vueless#readme",
+  "web-types": "./web-types.json"
+}
