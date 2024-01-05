@@ -41,16 +41,6 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/*.cy.spec.{js,jsx,ts,tsx}"],
-      extends: ["plugin:cypress/recommended"],
-      rules: {
-        "cypress/unsafe-to-chain-command": "off",
-        "cypress/no-unnecessary-waiting": "off",
-        "vue/max-len": ["error", { code: 180, ignoreComments: true, ignoreUrls: true }],
-        "prettier/prettier": ["warn", { printWidth: 180, tabWidth: 2 }],
-      },
-    },
-    {
       files: [".storybook/preview.{js,ts}"],
       rules: {
         "vue/max-len": ["error", { code: 280 }],

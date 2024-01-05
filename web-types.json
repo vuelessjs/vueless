@@ -1,0 +1,6104 @@
+{
+  "framework": "vue",
+  "name": "vueless",
+  "version": "0.0.1",
+  "contributions": {
+    "html": {
+      "description-markup": "markdown",
+      "types-syntax": "typescript",
+      "tags": [
+        {
+          "name": "ArrowLink",
+          "description": "",
+          "attributes": [
+            {
+              "name": "backRoute",
+              "required": true,
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  name: \"\",\n  title: \"\",\n  params: {}\n}"
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-modal/components/ArrowLink.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ArrowLink",
+          "description": "",
+          "attributes": [
+            {
+              "name": "backRoute",
+              "required": true,
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  name: \"\",\n  title: \"\",\n  params: {}\n}"
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-page/components/ArrowLink.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ConvertibleInput",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "cleaveSettings",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "id",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "hideLabel",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "baseCurrencySymbol",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "error",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "withMinus",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "numeralDecimalScale",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  initialCurrency: 2,\n  convertibleCurrency: 2,\n  firstRate: 4\n}"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  initialCurrency: false,\n  convertibleCurrency: false,\n  firstRate: false\n}"
+            },
+            {
+              "name": "i18n",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-money/_components/ConvertibleInput.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "DateSeparator",
+          "description": "",
+          "attributes": [
+            {
+              "name": "date",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "colsCount",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "i18n",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.data-table/components/DateSeparator.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "EmptyTableMsg",
+          "description": "",
+          "attributes": [
+            {
+              "name": "colspan",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "filters",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "i18n",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.data-table/components/EmptyTableMsg.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "RangeInput",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "cleaveSettings",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "hideLabel",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "id",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "error",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "numeralDecimalScale",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  startRange: 2,\n  endRange: 2\n}"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  startRange: false,\n  endRange: false\n}"
+            },
+            {
+              "name": "i18n",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-money/_components/RangeInput.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "SingleInput",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "cleaveSettings",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "hideLabel",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "id",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "error",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "numeralDecimalScale",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "2"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "withMinus",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "i18n",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "placeholder",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "keyup"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "input"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-money/_components/SingleInput.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "TableCheckbox",
+          "description": "",
+          "attributes": [
+            {
+              "name": "values",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "value",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "null"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "update:values"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.data-table/components/TableCheckbox.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UAccordion",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "required": true,
+              "description": "Set component title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "description",
+              "required": true,
+              "description": "Set component description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "name",
+              "required": true,
+              "description": "Set unique block name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "size",
+              "description": "The size of component.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "itemClicked"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-accordion/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UAlert",
+          "description": "",
+          "attributes": [
+            {
+              "name": "html",
+              "description": "Set html to render inside of UAlert.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "color",
+              "description": "Set text hint color.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"gray\""
+            },
+            {
+              "name": "timeout",
+              "description": "Set text hint timeout.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "closeButton",
+              "description": "Show / hide close button.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "hidden"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add something inside."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-alert/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UAvatar",
+          "description": "",
+          "attributes": [
+            {
+              "name": "path",
+              "description": "Set avatar's image. It may be a URL or path from the \"public\" folder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the avatar.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the avatar.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"gray\""
+            },
+            {
+              "name": "userName",
+              "description": "Set user's name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "rounded",
+              "description": "The rounded of the avatar.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg' | 'full'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "bordered",
+              "description": "Active / disabled avatar border.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.image-avatar/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UButton",
+          "description": "",
+          "attributes": [
+            {
+              "name": "variant",
+              "description": "The variant of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'primary' | 'secondary' | 'thirdary'"
+              },
+              "default": "\"primary\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'white'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "text",
+              "description": "Set button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make button inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "pill",
+              "description": "Make button's corners rounded.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "filled",
+              "description": "Fill the background for thirdary variant.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "loading",
+              "description": "Enables loader.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Use it to add something before text."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add something instead of text."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add something after text."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UButtonExpand",
+          "description": "",
+          "attributes": [
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add button expand item."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button-expand/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UButtonExpandItem",
+          "description": "",
+          "attributes": [
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "text",
+              "description": "Set button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make button inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "iconName",
+              "description": "Icon SVG data source path.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button-expand-item/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UButtonGroup",
+          "description": "",
+          "attributes": [
+            {
+              "name": "name",
+              "required": true,
+              "description": "Set buttons name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set data for buttons.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set current value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the buttons.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "wide",
+              "description": "Fit buttons to the parent block.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button-group/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UButtonGroupItem",
+          "description": "",
+          "attributes": [
+            {
+              "name": "variant",
+              "description": "The variant of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'primary' | 'secondary' | 'thirdary' | 'raw'"
+              },
+              "default": "\"primary\""
+            },
+            {
+              "name": "value",
+              "description": "Set data for button.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:value"
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Use it to add some content before label."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add some content instead of label."
+            },
+            {
+              "name": "right",
+              "description": "Use it to some content after label."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button-group-item/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UCard",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "description": "Sets card title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Sets card description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the padding.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "mobileFooterReverse",
+              "description": "Reverse left and right footer blocks (in mobile version only).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "borderRadius",
+              "description": "Sets border radius size (makes card more or less rounded).",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "header-left-before",
+              "description": "Use it to add something before left side of the header."
+            },
+            {
+              "name": "header-left",
+              "description": "Use it to customise left side of the header."
+            },
+            {
+              "name": "header-left-after",
+              "description": "Use it to add something after left side of the header."
+            },
+            {
+              "name": "header-right",
+              "description": "Use it to customise right side of the header."
+            },
+            {
+              "name": "default"
+            },
+            {
+              "name": "footer-left",
+              "description": "Use it to add something to the left side of the footer."
+            },
+            {
+              "name": "footer-right",
+              "description": "Use it to add something to the right side of the footer."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-card/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UCheckbox",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set checkbox value.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean|string|number"
+              },
+              "default": "false"
+            },
+            {
+              "name": "values",
+              "description": "Set own values for checkbox states (selected | unselected).",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  select: true,\n  unselect: false\n}"
+            },
+            {
+              "name": "label",
+              "description": "Set checkbox label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "Set checkbox size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "description",
+              "description": "Set description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make checkbox inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "partial",
+              "description": "Make checkbox partially selected (change the selected tick to a minus).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "name",
+              "description": "Set the name for checkbox.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "input"
+            }
+          ],
+          "slots": [
+            {
+              "name": "description"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-checkbox/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UCheckboxGroup",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set checkbox group label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set checkbox group value.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "options",
+              "description": "Set options for checkbox group.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "disabled",
+              "description": "Make checkbox group inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "name",
+              "description": "Set the name for checkbox group for each checkbox.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Set test dataCy for a checkbox group.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"checkbox\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-checkbox-group/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UCheckboxMultiState",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set checkbox multi state value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|boolean|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "optionsData",
+              "description": "Set options data for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[\n  { code: false, label: \"\" },\n  { code: true, label: \"\" },\n  { code: null, label: \"\" },\n]"
+            },
+            {
+              "name": "size",
+              "description": "Set component size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-checkbox-multi-state/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UColorPicker",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "title",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "colorOptions",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[\n  \"red\",\n  \"orange\",\n  \"yellow\",\n  \"green\",\n  \"blue\",\n  \"fuchsia\",\n  \"violet\",\n  \"gray\",\n  \"black\",\n  \"white\",\n]"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-color-picker/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDataList",
+          "description": "",
+          "attributes": [
+            {
+              "name": "list",
+              "description": "Set data list for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "group",
+              "description": "Set group name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "nesting",
+              "description": "Enable or disable nesting.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "emptyTitle",
+              "description": "Sets empty state title when no data in a table.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "emptyDescription",
+              "description": "Sets empty state description when no data in a table.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "upperlined",
+              "description": "Add line divider above the list.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "hideEmptyStateForNesting",
+              "description": "Disable empty state for nested elements if empty (internal prorps).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "dragSort"
+            },
+            {
+              "name": "clickEdit"
+            },
+            {
+              "name": "clickDelete"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "icons",
+              "description": "Use it to add icons."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.data-list/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDatePicker",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set date picker label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set date picker placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set date picker value (timestamp).",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "minDate",
+              "description": "Set picker min date in format yyyy-MM-dd.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "maxDate",
+              "description": "Set picker max date in format yyyy-MM-dd.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make component inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "timepicker",
+              "description": "Make timepicker input active.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "description",
+              "description": "Set description text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the component.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "customDateFormat",
+              "description": "Set custom date format.\n[See all formats here.](https://www.vue-tailwind.com/docs/datepicker/)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "customUserFormat",
+              "description": "Set custom user date format.\n[See all formats here.](https://www.vue-tailwind.com/docs/datepicker/)",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "Use it to add icon."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add something right."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-date-picker/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDatePickerRange",
+          "description": "",
+          "attributes": [
+            {
+              "name": "variant",
+              "description": "The variant of the date picker.",
+              "value": {
+                "kind": "expression",
+                "type": "'button' | 'input'"
+              },
+              "default": "\"button\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set date picker value (timestamp).",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "() => {}"
+            },
+            {
+              "name": "minDate",
+              "description": "Set picker min date in format d.m.Y.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "maxDate",
+              "description": "Set picker max date in format d.m.Y.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set label text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set input placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right",
+              "description": "Use it to add something right."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-date-picker-range/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDivider",
+          "description": "",
+          "attributes": [
+            {
+              "name": "size",
+              "description": "Set padding size.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "variant",
+              "description": "Set divider color.",
+              "value": {
+                "kind": "expression",
+                "type": "'light' | 'default' | 'dark'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "dashed",
+              "description": "Make line dashed.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dotted",
+              "description": "Make line dotted.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "noBorder",
+              "description": "Remove border (keeps only spacings).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "noTopPadding",
+              "description": "Remove top padding.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "noBottomPadding",
+              "description": "Remove bottom padding.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "vertical",
+              "description": "Set divider orientation to vertical.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-divider/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDot",
+          "description": "",
+          "attributes": [
+            {
+              "name": "color",
+              "description": "The dot color.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'black' | 'white'"
+              },
+              "default": "\"gray\""
+            },
+            {
+              "name": "size",
+              "description": "The dot size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.other-dot/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDropdownButton",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "description": "Set button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "variant",
+              "description": "The variant of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'primary' | 'secondary' | 'thirdary'"
+              },
+              "default": "\"primary\""
+            },
+            {
+              "name": "filled",
+              "description": "Fill the background for thirdary variant.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "color",
+              "description": "The color of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dropdownIcon",
+              "description": "Make the dropdown icon visible.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set select value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            },
+            {
+              "name": "listYPosition",
+              "description": "The position of dropdown list on the y-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'top' | 'bottom'"
+              },
+              "default": "\"bottom\""
+            },
+            {
+              "name": "listXPosition",
+              "description": "The position of dropdown list on the x-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'left' | 'right'"
+              },
+              "default": "\"left\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add dropdown list."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.dropdown-button/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDropdownItem",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "required": true,
+              "description": "Set dropdown item text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.dropdown-item/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDropdownLink",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "description": "Set button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the link.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'black' | 'white'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "variant",
+              "description": "The variant of the link and icon.",
+              "value": {
+                "kind": "expression",
+                "type": "'light' | 'default' | 'dark'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dashed",
+              "description": "Make a button border dashed.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "noFocusRing",
+              "description": "Makes outline ring during focus inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dropdownIcon",
+              "description": "Make the dropdown icon visible.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set select value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            },
+            {
+              "name": "listYPosition",
+              "description": "The position of dropdown list on the y-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'top' | 'bottom'"
+              },
+              "default": "\"bottom\""
+            },
+            {
+              "name": "listXPosition",
+              "description": "The position of dropdown list on the x-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'left' | 'right'"
+              },
+              "default": "\"left\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add dropdown list."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.dropdown-link/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDropdownList",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set input select value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.dropdown-list/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UDropdownTag",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "description": "Set tag text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the tag.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"blue\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the tag.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dropdownIcon",
+              "description": "Make the dropdown icon visible.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set select value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            },
+            {
+              "name": "listYPosition",
+              "description": "The position of dropdown list on the y-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'top' | 'bottom'"
+              },
+              "default": "\"bottom\""
+            },
+            {
+              "name": "listXPosition",
+              "description": "The position of dropdown list on the x-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'left' | 'right'"
+              },
+              "default": "\"left\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add dropdown list."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.dropdown-tag/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UEmpty",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "description": "Sets title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Sets description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "Sets component size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "md"
+            },
+            {
+              "name": "config",
+              "description": "Sets component ui config object.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "header",
+              "description": "Use it to add something to the header."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add something inside."
+            },
+            {
+              "name": "footer",
+              "description": "Use it to add something to the footer."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-empty/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UField",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "value",
+              "description": "Set value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"–\""
+            },
+            {
+              "name": "size",
+              "description": "Set size",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to change structure."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-field/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UFile",
+          "description": "",
+          "attributes": [
+            {
+              "name": "url",
+              "description": "Set url link for the file.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "text",
+              "description": "Set text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-file/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UFiles",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set files label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for files.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-files/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UGroup",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "description": "Set header title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size between nested components.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "upperlined",
+              "description": "Show line above the header.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "underlined",
+              "description": "Show line under the header.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Use it to add something left side of the header."
+            },
+            {
+              "name": "beforeTitle",
+              "description": "Use it to add something before title."
+            },
+            {
+              "name": "afterTitle",
+              "description": "Use it to add something after title."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add something right side of the header."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add something instead form."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-group/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UGroups",
+          "description": "",
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add something inside."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-groups/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UHeader",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "description": "Set text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "Set size.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "weight",
+              "description": "Set weight.",
+              "value": {
+                "kind": "expression",
+                "type": "'regular' | 'medium' | 'bold'"
+              },
+              "default": "\"medium\""
+            },
+            {
+              "name": "underlined",
+              "description": "Show bottom line.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "color",
+              "description": "Text color.",
+              "value": {
+                "kind": "expression",
+                "type": "'brand' | 'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'black' | 'white'"
+              },
+              "default": "\"gray\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-header/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UIcon",
+          "description": "",
+          "attributes": [
+            {
+              "name": "src",
+              "description": "Icon SVG data source path.",
+              "value": {
+                "kind": "expression",
+                "type": "string|object"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "name",
+              "description": "Icon SVG name which imported in global config file (deprecated).",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the icon.",
+              "value": {
+                "kind": "expression",
+                "type": "'brand' | 'gray' | 'red' | 'yellow' | 'green' | 'blue' | 'violet' | 'black' | 'white'"
+              },
+              "default": "\"black\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the icon.",
+              "value": {
+                "kind": "expression",
+                "type": "'3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "pill",
+              "description": "Set pill mild semi-transparent background and solid colour icon.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "pillFilled",
+              "description": "Set pill solid background and white icon.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "variant",
+              "description": "The variant of the icon.",
+              "value": {
+                "kind": "expression",
+                "type": "'light' | 'default' | 'dark'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "interactive",
+              "description": "Add interactive states to the icon (hover, clicked).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "tooltip",
+              "description": "Set tooltip text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "tooltipSettings",
+              "description": "Set tooltip settings.\n[See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "() => {}"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            },
+            {
+              "name": "focus"
+            },
+            {
+              "name": "blur"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.image-icon/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInput",
+          "description": "",
+          "attributes": [
+            {
+              "name": "size",
+              "description": "Set input size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set input value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set input placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set input label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Set description for input.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "maxLength",
+              "description": "Set the maximum length of the input value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "description": "Make input read only.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Make input inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "type",
+              "description": "Set input type.",
+              "value": {
+                "kind": "expression",
+                "type": "'text' | 'number' | 'email' | 'tel' | 'password' | 'url'"
+              },
+              "default": "\"text\""
+            },
+            {
+              "name": "inputMode",
+              "description": "Set input mode.",
+              "value": {
+                "kind": "expression",
+                "type": "'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'email' | 'url'"
+              },
+              "default": "\"text\""
+            },
+            {
+              "name": "noAutocomplete",
+              "description": "Disable browsers autocomplete.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "validationRule",
+              "description": "Prevents inputting some characters (for ex. input numbers only).\nYou can use predefined values or your own RegExp.",
+              "value": {
+                "kind": "expression",
+                "type": "'symbol' | 'string' | 'stringAndNumber' | 'number' | 'integer'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "change"
+            },
+            {
+              "name": "click"
+            },
+            {
+              "name": "focus"
+            },
+            {
+              "name": "mousedown"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "input"
+            }
+          ],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "Use it to add icon after text."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add some component after text."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInputFile",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "files",
+              "description": "Set files data.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "local",
+              "description": "Selected files will be imported when a form will be submitted",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "maxFileSizeInMegabytes",
+              "description": "Set max file size in megabytes.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "multiple",
+              "description": "Allow to select multiple files.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "maxFiles",
+              "description": "Set max number files for upload",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "3"
+            },
+            {
+              "name": "allowedFileTypes",
+              "description": "Set allowed file types.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[\".png\", \".jpg\", \".jpeg\", \".pdf\", \".txt\", \".doc\", \".docx\", \"xls\", \".xlsx\"]"
+            },
+            {
+              "name": "error",
+              "description": "Set error text for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "Set size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "changeFiles"
+            },
+            {
+              "name": "deleteFile"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-file/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInputMoney",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set input money value.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "type",
+              "description": "Set component type.",
+              "value": {
+                "kind": "expression",
+                "type": "'single' | 'range' | 'convertible'"
+              },
+              "default": "SINGLE"
+            },
+            {
+              "name": "baseCurrencySymbol",
+              "description": "Set base currency symbol for CONVERTIBLE type (For example, \"₴\". It's possible to use the symbol of any currency).",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "hideLabel",
+              "description": "Hide / show label.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "positiveOnly",
+              "description": "Allows only positive values.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "withMinus",
+              "description": "Show / hide minus sign.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "numeralDecimalScale",
+              "description": "Set the numeral decimal scale after the comma.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  initialCurrency: 2,\n  convertibleCurrency: 2,\n  firstRate: 4,\n  secondRate: 4,\n  startRange: 2,\n  endRange: 2\n}"
+            },
+            {
+              "name": "disabled",
+              "description": "Set disabled options for component types.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{\n  initialCurrency: false,\n  convertibleCurrency: false,\n  firstRate: false,\n  secondRate: false,\n  startRange: false,\n  endRange: false\n}"
+            },
+            {
+              "name": "placeholder",
+              "description": "Set placeholder text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "keyup"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "input"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right",
+              "description": "Use it to add right slot."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-money/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInputNumber",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "required": true,
+              "description": "Set value.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              }
+            },
+            {
+              "name": "step",
+              "description": "Set step size.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "min",
+              "description": "Set min value.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "max",
+              "description": "Set max value.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "999"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-number/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInputRating",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set input rating  label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set input rating value.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "starsNumber",
+              "description": "Set the number of stars.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "5"
+            },
+            {
+              "name": "size",
+              "description": "Set component size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "selectable",
+              "description": "Make stars selectable.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "noCounter",
+              "description": "Hide / show counter.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "counter",
+              "description": "Use it to add counter."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add something right."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-rating/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UInputSearch",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "Set input size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "clear"
+            },
+            {
+              "name": "search"
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Use it to add something before text."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-input-search/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ULink",
+          "description": "",
+          "attributes": [
+            {
+              "name": "text",
+              "description": "Set button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "url",
+              "description": "Set url link for the button.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "route",
+              "description": "Set the router link for the button.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "color",
+              "description": "The color of the link.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'black' | 'white'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "variant",
+              "description": "The variant of the link.",
+              "value": {
+                "kind": "expression",
+                "type": "'light' | 'default' | 'dark'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dashed",
+              "description": "Make a button border dashed.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "targetBlank",
+              "description": "Open url link in new window.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Makes a link inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "noFocusRing",
+              "description": "Makes outline ring during focus inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "inline",
+              "description": "Makes link inline.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "type",
+              "description": "Sets a button type.",
+              "value": {
+                "kind": "expression",
+                "type": "'phone' | 'email' | 'link'"
+              },
+              "default": "\"link\""
+            },
+            {
+              "name": "noHover",
+              "description": "Disable hover styles.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            },
+            {
+              "name": "mouseover"
+            },
+            {
+              "name": "focus"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "keydown"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.button-link/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ULoader",
+          "description": "",
+          "source": {
+            "module": "/src/core/layout-ui.loader/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ULoader",
+          "description": "",
+          "attributes": [
+            {
+              "name": "size",
+              "description": "The size of the button.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.other-loader/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ULoaderTop",
+          "description": "",
+          "attributes": [
+            {
+              "name": "resourceNames",
+              "description": "The name of API resource (endpoint URI).",
+              "value": {
+                "kind": "expression",
+                "type": "string|array"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "zIndex",
+              "description": "The z-list of the loader stripe.",
+              "value": {
+                "kind": "expression",
+                "type": "'auto' | '50' | '100'"
+              },
+              "default": "\"auto\""
+            },
+            {
+              "name": "position",
+              "description": "Loader position.",
+              "value": {
+                "kind": "expression",
+                "type": "'fixed' | 'absolute' | 'relative'"
+              },
+              "default": "\"fixed\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the loader stripe.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "globalComponentConfig.UTopLoader?.color || \"blue\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/layout-ui.loader-top/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ULogo",
+          "description": "",
+          "attributes": [
+            {
+              "name": "path",
+              "description": "Set the path for img.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set label for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "title",
+              "description": "Set title for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "sizeTitle",
+              "description": "The size of title.",
+              "value": {
+                "kind": "expression",
+                "type": "'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the logo.",
+              "value": {
+                "kind": "expression",
+                "type": "'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "click"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.image-logo/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UModal",
+          "description": "",
+          "attributes": [
+            {
+              "name": "width",
+              "description": "Set width for modal.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'"
+              },
+              "default": "\"sm\""
+            },
+            {
+              "name": "title",
+              "description": "Set modal's title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Sets page description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "backRoute",
+              "description": "Set back route params (name, title, params).",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "clickToClose",
+              "description": "Make active click for close.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "showCloseIcon",
+              "description": "Make close icon active.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "escToClose",
+              "description": "Make active ESC for close.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "modelValue",
+              "description": "Change modal state (hidden / shown).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "color",
+              "description": "The color of the title.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "inner",
+              "description": "Add extra top margin for modal inside modal.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "noDivider",
+              "description": "Removes divider between end of content end footer.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "mobileFooterReverse",
+              "description": "Reverse left and right footer blocks (in a mobile version only).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "mobileBottomAlign",
+              "description": "Attach small modal to the bottom of the screen (nice for confirm modal).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "clickBack"
+            },
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "header-left-before",
+              "description": "Use it to add something to the header left before."
+            },
+            {
+              "name": "header-left",
+              "description": "Use it to add something to the header left."
+            },
+            {
+              "name": "header-left-after",
+              "description": "Use it to add something to the header left after."
+            },
+            {
+              "name": "header-right",
+              "description": "Use it to add something to the header right."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add something to the modal body."
+            },
+            {
+              "name": "footer-left",
+              "description": "Use it to add something to the footer left."
+            },
+            {
+              "name": "footer-right",
+              "description": "Use it to add something to the footer right."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-modal/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UModalConfirm",
+          "description": "",
+          "attributes": [
+            {
+              "name": "shownCancelButton",
+              "description": "Show cancel button.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "disableAcceptButton",
+              "description": "Set the disabled accept-button.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actionButtonText",
+              "description": "Set action button text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "width",
+              "description": "Set width for modal.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'"
+              },
+              "default": "\"sm\""
+            },
+            {
+              "name": "title",
+              "description": "Set modal's title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Change modal state (hidden / shown).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "color",
+              "description": "The color of the button and modal title.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "actionConfirmed"
+            },
+            {
+              "name": "close"
+            }
+          ],
+          "slots": [
+            {
+              "name": "header-left-before"
+            },
+            {
+              "name": "header-left"
+            },
+            {
+              "name": "header-left-after"
+            },
+            {
+              "name": "header-right"
+            },
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-modal-confirm/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UMoney",
+          "description": "",
+          "attributes": [
+            {
+              "name": "sum",
+              "description": "Set sum.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "currencySymbol",
+              "description": "Set currency symbol.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "planned",
+              "description": "Make sum planned (add brackets).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "integer",
+              "description": "Make sum integer.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "sign",
+              "description": "Set sign for sum.",
+              "value": {
+                "kind": "expression",
+                "type": "'default' | 'positive' | 'negative'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "currencySymbolAlign",
+              "description": "Set align for currency symbol.",
+              "value": {
+                "kind": "expression",
+                "type": "'right' | 'left'"
+              },
+              "default": "\"right\""
+            },
+            {
+              "name": "size",
+              "description": "Set text size of sum.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "weight",
+              "description": "Set weight.",
+              "value": {
+                "kind": "expression",
+                "type": "'regular' | 'medium' | 'bold'"
+              },
+              "default": "\"regular\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the icon.",
+              "value": {
+                "kind": "expression",
+                "type": "'brand' | 'gray' | 'red' | 'yellow' | 'orange' | 'green' | 'blue' | 'violet' | 'fuchsia' | 'black' | 'white'"
+              },
+              "default": "\"black\""
+            },
+            {
+              "name": "variant",
+              "description": "The variant of the link.",
+              "value": {
+                "kind": "expression",
+                "type": "'light' | 'default' | 'dark'"
+              },
+              "default": "\"default\""
+            },
+            {
+              "name": "numeralDecimalScale",
+              "description": "Set the numeral decimal scale after the comma.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "2"
+            },
+            {
+              "name": "align",
+              "description": "Set align for money block.",
+              "value": {
+                "kind": "expression",
+                "type": "'right' | 'left'"
+              },
+              "default": "\"right\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Use it to add something before money amount."
+            },
+            {
+              "name": "right",
+              "description": "Use it to add something after money amount."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-money/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UMultiselect",
+          "description": "",
+          "attributes": [
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set component select value.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "label",
+              "description": "Set component label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set input placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "error",
+              "description": "Set error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make component inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "allowEmpty",
+              "description": "Allows removing all selected values. Otherwise, one must be left selected.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "withInternalSearch",
+              "description": "Allow internal search.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "optionsLimit",
+              "description": "Set limits the options displayed in the dropdown to the first X options.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "OPTIONS_LIMIT"
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            },
+            {
+              "name": "openDirection",
+              "description": "Fixed opening direction (instead of auto). Options are \"above\"/\"top\" or \"below\"/\"bottom\".",
+              "value": {
+                "kind": "expression",
+                "type": "'auto' | 'top' | 'bottom'"
+              },
+              "default": "\"auto\""
+            },
+            {
+              "name": "description",
+              "description": "Set description for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "tagPosition",
+              "description": "By default new tags will appear above the search results. Changing to 'bottom' will revert this behaviour and will proritize the search results.",
+              "value": {
+                "kind": "expression",
+                "type": "'top' | 'bottom'"
+              },
+              "default": "\"top\""
+            },
+            {
+              "name": "returnFullValue",
+              "description": "Allow return full value properties.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "groupLabel",
+              "description": "Set the name of the property containing the group label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "groupValues",
+              "description": "Set the name of the property containing the group values.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "addOption",
+              "description": "Show add new option button to the list.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "searchable",
+              "description": "Allow search value in a list.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "config",
+              "description": "Sets component ui config object.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "addOption"
+            },
+            {
+              "name": "searchChange"
+            }
+          ],
+          "slots": [
+            {
+              "name": "tag-title",
+              "description": "Use it to add tag title."
+            },
+            {
+              "name": "option",
+              "description": "Use it to add option."
+            },
+            {
+              "name": "beforeOption",
+              "description": "Use it to add something before option."
+            },
+            {
+              "name": "after-caret",
+              "description": "Use it to add something after caret."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-select-multi/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UNotify",
+          "description": "",
+          "attributes": [
+            {
+              "name": "xPosition",
+              "description": "A position on the x-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'left' | 'center' | 'right'"
+              },
+              "default": "\"center\""
+            },
+            {
+              "name": "yPosition",
+              "description": "A position on the y-axis.",
+              "value": {
+                "kind": "expression",
+                "type": "'top' | 'bottom'"
+              },
+              "default": "\"top\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/layout-ui.notify/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UPage",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "description": "Sets page title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "titleSize",
+              "description": "Set size.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'"
+              },
+              "default": "\"lg\""
+            },
+            {
+              "name": "description",
+              "description": "Sets page description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "backRoute",
+              "description": "Sets Vue router route params for back arrow",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "width",
+              "description": "The width of the container page.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'wide'"
+              },
+              "default": "\"wide\""
+            },
+            {
+              "name": "mobileFooterReverse",
+              "description": "Reverse left and right footer blocks (in mobile version only).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "widePage",
+              "description": "Sets full width for wrapper block, and fixed with for content (from size prop). Content will be aligned center.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "headerPadding",
+              "description": "Active side padding for header.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "footerPadding",
+              "description": "Active side padding for footer.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "gray",
+              "description": "Sets background color gray.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "header-left-before",
+              "description": "Use it to add something before left side of the header."
+            },
+            {
+              "name": "header-left",
+              "description": "Use it to customise left side of the header."
+            },
+            {
+              "name": "header-left-after",
+              "description": "Use it to add something after left side of the header."
+            },
+            {
+              "name": "header-right",
+              "description": "Use it to customise right side of the header."
+            },
+            {
+              "name": "default",
+              "description": "Use it to add main content."
+            },
+            {
+              "name": "footer-left",
+              "description": "Use it to add something to the left side of the footer."
+            },
+            {
+              "name": "footer-right",
+              "description": "Use it to add something to the right side of the footer."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-page/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UPagination",
+          "description": "",
+          "attributes": [
+            {
+              "name": "currentPage",
+              "description": "Сurrent page number.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "perPage",
+              "description": "Set number of items per page..",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "20"
+            },
+            {
+              "name": "total",
+              "description": "Set total number of items.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "pageChange"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.navigation-pagination/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "URadio",
+          "description": "",
+          "attributes": [
+            {
+              "name": "value",
+              "description": "Set radio value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Set description.",
+              "value": {
+                "kind": "expression",
+                "type": "string|object"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "name",
+              "description": "Set name for radio.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make radio group inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "checked",
+              "description": "Make a radio group item checked.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:value"
+            }
+          ],
+          "slots": [
+            {
+              "name": "description"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-radio/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "URadioCard",
+          "description": "",
+          "attributes": [
+            {
+              "name": "name",
+              "required": true,
+              "description": "Set radio card name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "modelValue",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number|boolean"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "gridCols",
+              "description": "Set grid cols number.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "2"
+            },
+            {
+              "name": "withIcon",
+              "description": "Show / hide component icon.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "Use it to add icon."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-radio-card/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "URadioGroup",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Set radio group label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "name",
+              "description": "Set the name for radio group for each radio.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Set test dataCy for a radio group.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"radio\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-radio-group/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "URow",
+          "description": "",
+          "attributes": [
+            {
+              "name": "noMobile",
+              "description": "Disables mobile adaptivity.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add something inside."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.container-row/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "USelect",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set input select value.",
+              "value": {
+                "kind": "expression",
+                "type": "string|number"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for component.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "label",
+              "description": "Set component label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "itemLabel",
+              "description": "Label from option Object, that will be visible in the dropdown.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set input placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "error",
+              "description": "Set error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make input inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "allowEmpty",
+              "description": "Allows clear selected value.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "groupLabel",
+              "description": "Set a name of the property containing the group label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"label\""
+            },
+            {
+              "name": "groupValues",
+              "description": "Set a name of the property containing the group values.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "optionsLimit",
+              "description": "Set limits the options displayed in the dropdown to the first X options.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "100"
+            },
+            {
+              "name": "valueKey",
+              "description": "Set track value key.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"id\""
+            },
+            {
+              "name": "openDirection",
+              "description": "Fixed opening direction (instead of auto). Options are \"above\"/\"top\" or \"below\"/\"bottom\".",
+              "value": {
+                "kind": "expression",
+                "type": "'auto' | 'top' | 'bottom'"
+              },
+              "default": "\"auto\""
+            },
+            {
+              "name": "description",
+              "description": "Set description for input.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "addOption",
+              "description": "Show add new option button to the list.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "size",
+              "description": "Set input size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "searchable",
+              "description": "Allow search value in list.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "config",
+              "description": "Sets component ui config object.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "addOption"
+            },
+            {
+              "name": "close"
+            },
+            {
+              "name": "change"
+            },
+            {
+              "name": "remove"
+            },
+            {
+              "name": "searchChange"
+            }
+          ],
+          "slots": [
+            {
+              "name": "singleLabel",
+              "description": "Use it to add single label."
+            },
+            {
+              "name": "singleLabelAfter",
+              "description": "Use it to add after single label."
+            },
+            {
+              "name": "option",
+              "description": "Use it to add option."
+            },
+            {
+              "name": "beforeOption",
+              "description": "Use it to add something before option."
+            },
+            {
+              "name": "after-caret",
+              "description": "Use it to add something after caret."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-select/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UStepper",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "description": "Set component title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "step",
+              "description": "Set step number.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "null"
+            },
+            {
+              "name": "totalSteps",
+              "description": "Set total number of steps.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "null"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.navigation-stepper/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "USwitch",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set switch value.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "label",
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "labelVariant",
+              "description": "The label variant of the switch.",
+              "value": {
+                "kind": "expression",
+                "type": "'hidden' | 'inside' | 'left' | 'right'"
+              },
+              "default": "\"hidden\""
+            },
+            {
+              "name": "description",
+              "description": "Set description.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the switch.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "color",
+              "description": "The color of the switch.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "withIcon",
+              "description": "Show on / off icon inside circle.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Show on / off icon inside circle.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "label"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-switch/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UTab",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "required": true,
+              "description": "Set label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "value",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "disabled",
+              "description": "Make tab inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add something instead of label."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.navigation-tab/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UTable",
+          "description": "",
+          "attributes": [
+            {
+              "name": "items",
+              "required": true,
+              "description": "Set items (rows) for table.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "headers",
+              "required": true,
+              "description": "Set headers for table.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "filters",
+              "description": "Set filters for table.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
+            },
+            {
+              "name": "selectable",
+              "description": "It allows selecting table rows.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "compact",
+              "description": "Makes the table more narrow.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "fixedFooter",
+              "description": "Make footer fixed.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "stickyHeader",
+              "description": "Make header sticky.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "loaderResourceName",
+              "description": "Set loader resource name to activate table top loader exact for that request.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "nesting",
+              "description": "Enable or disable nesting.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "nestingFromLevel",
+              "description": "Sets the nesting level from which folding button need to be shown.",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "clickRow"
+            },
+            {
+              "name": "update:items"
+            }
+          ],
+          "slots": [
+            {
+              "name": "thead-actions",
+              "description": "Use it to add actions instead table head (it appears when you select items in table)."
+            },
+            {
+              "name": "`thead-${item.value}`",
+              "description": "Use it to customise table header item."
+            },
+            {
+              "name": "before-first-row",
+              "description": "Use it to add something before first row."
+            },
+            {
+              "name": "`cell-${key}`",
+              "description": "Use it to customise table cell item (in whole column)."
+            },
+            {
+              "name": "cell-other"
+            },
+            {
+              "name": "after-last-row",
+              "description": "Use it to add something after last row."
+            },
+            {
+              "name": "tfoot",
+              "description": "Use it to add something in table footer."
+            },
+            {
+              "name": "empty-table-msg"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.data-table/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UTabs",
+          "description": "",
+          "attributes": [
+            {
+              "name": "modelValue",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "options",
+              "description": "Set options for tabs.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[\n  {\n    label: \"\",\n    value: \"\",\n    disabled: false,\n  },\n]"
+            },
+            {
+              "name": "bottomLine",
+              "description": "Add a line in bottom along the entire length.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "size",
+              "description": "The size of the tabs.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "update:modelValue"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.navigation-tabs/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UTag",
+          "description": "",
+          "attributes": [
+            {
+              "name": "color",
+              "description": "The color of the tag.",
+              "value": {
+                "kind": "expression",
+                "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
+              },
+              "default": "\"blue\""
+            },
+            {
+              "name": "size",
+              "description": "The size of the tag.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "text",
+              "required": true,
+              "description": "Set tag text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            },
+            {
+              "name": "tooltipText",
+              "description": "Set tooltip text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "focus"
+            },
+            {
+              "name": "keydown"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "mousedown"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-tag/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UText",
+          "description": "",
+          "attributes": [
+            {
+              "name": "html",
+              "description": "Set html to render inside the component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "name": "size",
+              "description": "Set text block size.",
+              "value": {
+                "kind": "expression",
+                "type": "'xs' | 'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "align",
+              "description": "Set component align.",
+              "value": {
+                "kind": "expression",
+                "type": "'left' | 'center' | 'right'"
+              },
+              "default": "\"left\""
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Use it to add something."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.text-block/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UTextarea",
+          "description": "",
+          "attributes": [
+            {
+              "name": "size",
+              "description": "Set input size.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "\"md\""
+            },
+            {
+              "name": "modelValue",
+              "description": "Set component value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "description": "Set component placeholder.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "label",
+              "description": "Set input label.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "description",
+              "description": "Set description for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "readonly",
+              "description": "Make textarea read only.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Make input inactive.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "type",
+              "description": "Set input type.",
+              "value": {
+                "kind": "expression",
+                "type": "'text' | 'number' | 'email' | 'tel' | 'password' | 'url'"
+              },
+              "default": "\"text\""
+            },
+            {
+              "name": "inputMode",
+              "description": "Set proper keyboard on mobile devices.",
+              "value": {
+                "kind": "expression",
+                "type": "'text' | 'none' | 'decimal' | 'tel' | 'numeric' | 'search' | 'email' | 'url' | ''"
+              },
+              "default": "\"text\""
+            },
+            {
+              "name": "noAutocomplete",
+              "description": "Disable browsers autocomplete.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "error",
+              "description": "Set error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "rows",
+              "description": "Set number of visible rows.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"2\""
+            },
+            {
+              "name": "id",
+              "description": "Generates unique element id.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "() => getRandomId()"
+            },
+            {
+              "name": "dataCy",
+              "description": "Sets data-cy attribute for automated testing.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "change"
+            },
+            {
+              "name": "click"
+            },
+            {
+              "name": "focus"
+            },
+            {
+              "name": "blur"
+            },
+            {
+              "name": "update:modelValue"
+            },
+            {
+              "name": "mousedown"
+            }
+          ],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "Use it to add icon after text."
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-textarea/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UViewport",
+          "description": "",
+          "slots": [
+            {
+              "name": "default"
+            }
+          ],
+          "source": {
+            "module": "/src/core/layout-ui.viewport/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "VariantButton",
+          "description": "",
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "id",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "clickShiftRange"
+            },
+            {
+              "name": "clickRangeSet"
+            },
+            {
+              "name": "blur"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-date-picker-range/components/VariantButton.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "VariantInput",
+          "description": "",
+          "attributes": [
+            {
+              "name": "label",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "modelValue",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "placeholder",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "id",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "dataCy",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            }
+          ],
+          "events": [
+            {
+              "name": "clickRangeSet"
+            },
+            {
+              "name": "blur"
+            }
+          ],
+          "slots": [
+            {
+              "name": "right"
+            }
+          ],
+          "source": {
+            "module": "/src/core/ui.form-date-picker-range/components/VariantInput.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "VueTopprogress",
+          "description": "",
+          "attributes": [
+            {
+              "name": "speed",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "350"
+            },
+            {
+              "name": "color",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"#29d\""
+            },
+            {
+              "name": "colorShadow",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "errorColor",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"#f44336\""
+            },
+            {
+              "name": "trickle",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "trickleSpeed",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "250"
+            },
+            {
+              "name": "easing",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"linear\""
+            },
+            {
+              "name": "height",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "3"
+            },
+            {
+              "name": "minimum",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0.8"
+            },
+            {
+              "name": "maximum",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "97.5"
+            },
+            {
+              "name": "zIndex",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "9999"
+            }
+          ],
+          "source": {
+            "module": "/src/core/layout-ui.loader-top/components/TopProgress.vue",
+            "symbol": "default"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -3,6 +3,11 @@ export default {
   backgroundsPath: "static/backgrounds/",
   strategyOverwrite: false,
   component: /*ui*/ {
+    // USelect: {
+    //   i18n: {
+    //     add: i18n.t("label.add"),
+    //   },
+    // },
     UNotify: {
       positionClasses: {
         page: ".mono-page-wrapper",

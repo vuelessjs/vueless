@@ -1,11 +1,12 @@
 import { setup } from "@storybook/vue3";
-import { decorators, docs, backgrounds, layout } from "./configs";
+import { backgrounds, docs, layout } from "./configs/main.config";
+import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 
 // Vue plugins
 import { createStore } from "vuex";
 import { createRouter, createWebHistory } from "vue-router";
-import i18nInstanceDefault from "vueless/service.i18n";
 import NotifyServiceDefault from "vueless/service.notify";
+import i18nInstanceDefault from "vueless/service.i18n";
 
 // Tailwind styles
 import "../index.pcss";
@@ -23,7 +24,7 @@ const store = createStore({
 // Create router instance
 const router = createRouter({
   history: createWebHistory("/"),
-  routes: [{ path: "/:pathMatch(.*)*", component: () => import("vueless/layout.auth") }],
+  routes: [{ path: "/:pathMatch(.*)*", component: () => import("vueless/ui.container-page") }],
 });
 
 // Create storybook app instance
@@ -39,7 +40,7 @@ setup(storybookApp);
 
 // Set storybook config
 export default {
-  decorators,
+  decorators: [vue3SourceDecorator],
   parameters: {
     layout,
     docs,

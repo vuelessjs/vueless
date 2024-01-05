@@ -12,19 +12,6 @@ We recommend storing all configuration files in the `/src/configs` folder.
 
 ***
 
-**fallbackLocale** – application's default language (i18n).
-- type: String
-- default: `en`
-- values: `uk`, `ru`, `en`
-
-Example:
-
-``` javascript
-fallbackLocale: "uk"
-```
-
-***
-
 **backgroundsPath** – path to layout backgrounds from `/public` folder (user customisable backgrounds).
 - type: String
 - default: ""
