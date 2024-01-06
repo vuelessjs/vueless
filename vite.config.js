@@ -60,6 +60,7 @@ export default defineConfig({
       "prettier2/parser-html",
       "vue-tippy",
       "lodash.get",
+      "date-fns/locale",
     ],
   },
 });

@@ -13,11 +13,7 @@ export const vue3SourceDecorator = makeDecorator({
     // and emits an events that is handled by addons-docs
     // watch args and re-emit on change
     return {
-      components: {
-        story,
-      },
-      //template: `<div style="padding: 2rem 1.5rem 3rem 1.5rem;"><story/></div>`,
-
+      components: { story },
       setup() {
         onMounted(() => {
           setSourceCode();
@@ -37,7 +33,7 @@ export const vue3SourceDecorator = makeDecorator({
               const prettier = await import("prettier2");
               const prettierHtml = await import("prettier2/parser-html");
 
-              const formattedCode = prettier.format(`${code}`, {
+              const formattedCode = prettier.format(code, {
                 parser: "html",
                 plugins: [prettierHtml],
                 htmlWhitespaceSensitivity: "ignore",
@@ -83,11 +79,13 @@ function templateSourceCode(templateSource, args, argTypes) {
   const slotTemplateCode =
     // eslint-disable-next-line vue/max-len
     '<template v-for="(slot, index) of slots" :key="index" v-slot:[slot]><template v-if="args[slot]">{{ args[slot] }}</template></template>';
+  const templateDefaultRegEx = /<template #default>([\s\S]*?)<\/template>/g;
 
   return templateSource
     .replace(/>[\s]+</g, "><")
     .trim()
     .replace(slotTemplateCode, "")
+    .replace(templateDefaultRegEx, "$1")
     .replace(
       'v-bind="args"',
       Object.keys(componentArgs)
