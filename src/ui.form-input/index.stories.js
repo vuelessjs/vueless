@@ -1,0 +1,166 @@
+import { getArgTypes, getSlotNames } from "../service.storybook";
+
+import UInput from "../ui.form-input";
+import UIcon from "../ui.image-icon";
+import UGroup from "../ui.container-group";
+import URow from "../ui.container-row";
+
+export default {
+  id: "3010",
+  title: "Form Inputs & Controls / Input",
+  component: UInput,
+  args: {
+    label: "Label",
+  },
+  argTypes: {
+    ...getArgTypes(UInput.name),
+    modelValue: { control: { type: "text" } },
+  },
+};
+
+const DefaultTemplate = (args) => ({
+  components: { UInput },
+  setup() {
+    const slots = getSlotNames(UInput.name);
+
+    return { args, slots };
+  },
+  template: `
+    <UInput
+        v-bind="args"
+    >
+      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
+        <template v-if="args[slot]">{{ args[slot] }}</template>
+      </template>
+    </UInput>
+  `,
+});
+
+const SlotTemplate = (args) => ({
+  components: { UInput, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UInput v-bind="args"
+    >
+      ${args.slotTemplate}
+    </UInput>
+  `,
+});
+
+const SizesTemplate = (args, { argTypes } = {}) => ({
+  components: { UInput, URow },
+  setup() {
+    return {
+      args,
+      sizes: argTypes.size.options,
+    };
+  },
+  template: `
+    <URow>
+      <UInput
+        v-for="(size, index) in sizes"
+        v-bind="args"
+        :size="size"
+        :key="index"
+      />
+    </URow>
+  `,
+});
+
+const ValidationRuleTemplate = (args, { argTypes } = {}) => ({
+  components: { UInput, URow },
+  setup() {
+    return {
+      args,
+      rules: argTypes.validationRule.options,
+    };
+  },
+  template: `
+    <URow>
+      <UInput
+        v-for="(rule, index) in rules"
+        v-bind="args"
+        :validationRule="rule"
+        :key="index"
+        :description="rule"
+      />
+    </URow>
+  `,
+});
+
+const LabelPlacementTemplate = (args) => ({
+  components: { UInput, UGroup },
+  setup() {
+    return {
+      args,
+    };
+  },
+  template: `
+    <UGroup size="lg">
+      <UInput
+        v-bind="args"
+        label="top"
+        :label-outside="true"
+      />
+
+      <UInput
+        v-bind="args"
+        label="topInside"
+        :label-outside="false"
+      />
+    </UGroup>
+  `,
+});
+
+export const Default = DefaultTemplate.bind({});
+Default.args = {};
+
+export const disabled = DefaultTemplate.bind({});
+disabled.args = { disabled: true };
+
+export const description = DefaultTemplate.bind({});
+description.args = { description: "some description text" };
+
+export const error = DefaultTemplate.bind({});
+error.args = { error: "some error text" };
+
+export const placeholder = DefaultTemplate.bind({});
+placeholder.args = { placeholder: "some placeholder text" };
+
+export const readonly = DefaultTemplate.bind({});
+readonly.args = { readonly: true, value: "some value for read" };
+
+export const noAutocomplete = DefaultTemplate.bind({});
+noAutocomplete.args = { noAutocomplete: true };
+
+export const typePassword = DefaultTemplate.bind({});
+typePassword.args = { type: "password" };
+
+export const labelPlacement = LabelPlacementTemplate.bind({});
+labelPlacement.args = {};
+
+export const sizes = SizesTemplate.bind({});
+sizes.args = {};
+
+export const validationRules = ValidationRuleTemplate.bind({});
+validationRules.args = {};
+
+export const slotLeft = SlotTemplate.bind({});
+slotLeft.args = {
+  slotTemplate: `
+    <template #left>
+      🥸
+    </template>
+  `,
+};
+
+export const slotRight = SlotTemplate.bind({});
+slotRight.args = {
+  slotTemplate: `
+    <template #right>
+      🥸
+    </template>
+  `,
+};

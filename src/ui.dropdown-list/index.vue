@@ -1,0 +1,284 @@
+<template>
+  <div
+    ref="wrapperRef"
+    tabindex="1"
+    :style="{ maxHeight: wrapperHeight }"
+    v-bind="wrapperAttrs"
+    @keydown.self.down.prevent="pointerForward"
+    @keydown.self.up.prevent="pointerBackward"
+    @keydown.enter.tab.stop.self="addPointerElement"
+  >
+    <ul :id="`listbox-${id}`" v-bind="listAttrs" role="listbox">
+      <li
+        v-for="(option, index) of options"
+        :id="`${id}-${index}`"
+        :key="index"
+        :role="!(option && (option.$isLabel || option.$isDisabled)) ? 'option' : null"
+        v-bind="optionItemAttrs"
+      >
+        <!-- option title -->
+        <span
+          v-if="
+            !(option && (option.$isLabel || option.$isDisabled || option.isSubGroup)) &&
+            !option.isHidden
+          "
+          v-bind="optionAttrs(optionHighlight(index, option))"
+          @click.stop="select(option)"
+          @mouseenter.self="pointerSet(index)"
+        >
+          <!-- @slot Use it to add something before option. -->
+          <slot :option="option" name="before-option" />
+
+          <slot name="option" :option="option" :index="index">
+            <span
+              :style="getMarginForSubCategory(option.level)"
+              v-bind="optionContentAttrs"
+              v-text="option[labelKey]"
+            />
+          </slot>
+
+          <!-- @slot Use it to add something after option. -->
+          <slot :option="option" name="after-option" />
+        </span>
+
+        <!-- group title -->
+        <div
+          v-if="
+            option &&
+            (option.$isLabel || option.$isDisabled || option.isSubGroup) &&
+            !option.isHidden
+          "
+        >
+          <div v-if="option.$groupLabel" v-bind="groupLabelAttrs" v-text="option.$groupLabel" />
+
+          <div
+            v-else-if="option.isSubGroup"
+            :style="getMarginForSubCategory(option.level)"
+            v-bind="subGroupLabelAttrs"
+            v-text="option[labelKey]"
+          />
+        </div>
+      </li>
+      <slot
+        v-if="hasSlotContent($slots['empty']) || options.length === 0"
+        name="empty"
+        :empty-styles="optionClasses"
+      >
+        <span v-bind="optionAttrs()">
+          <span v-text="config.i18n.noDataToShow" />
+        </span>
+      </slot>
+
+      <!-- Add button -->
+      <template v-if="addOption">
+        <div v-bind="addTitleWrapperAttrs" @click="onClickAddOption">
+          <div v-bind="addTitleAttrs">
+            {{ config.i18n.add }}
+            <span v-bind="addTitleHotkeyAttrs" v-text="addOptionKeyCombination" />
+          </div>
+        </div>
+        <UButton pill square v-bind="buttonAddAttrs" @click="onClickAddOption">
+          <UIcon color="white" size="xs" :name="config.iconAddName" v-bind="iconAddAttrs" />
+        </UButton>
+      </template>
+    </ul>
+  </div>
+</template>
+
+<script setup>
+import { computed, ref } from "vue";
+
+import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
+
+import UIService, { getRandomId, isMac } from "../service.ui";
+
+import usePointer from "./composables/usePointer";
+import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./configs/default.config.js";
+import { UDropdownList } from "./constants";
+
+/* Should be a string for correct web-types gen */
+defineOptions({ name: "UDropdownList", inheritAttrs: false });
+
+// TODO: Use props and regular modal value
+const modelValue = defineModel({ type: [String, Number, Object], default: "" });
+
+const props = defineProps({
+  /**
+   * Set options list.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Label key in the item object of options.
+   */
+  labelKey: {
+    type: String,
+    default: "label",
+  },
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey: {
+    type: String,
+    default: "id",
+  },
+
+  /**
+   * Set a name of the property containing the group label.
+   */
+  groupLabel: {
+    type: String,
+    default: "label",
+  },
+
+  /**
+   * Set a name of the property containing the group values.
+   */
+  groupValues: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Show add new option button to the list.
+   */
+  addOption: {
+    type: Boolean,
+    default: false,
+  },
+
+  /**
+   * Disables the select.
+   */
+  disabled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UDropdownList).default.disabled,
+  },
+
+  /**
+   * Set size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UDropdownList).default.size,
+  },
+
+  /**
+   * List max height in pixels.
+   */
+  maxHeight: {
+    type: [Number, String],
+    default: UIService.get(defaultConfig, UDropdownList).default.maxHeight,
+  },
+
+  /**
+   * List option height in pixels.
+   */
+  optionHeight: {
+    type: Number,
+    default: UIService.get(defaultConfig, UDropdownList).default.optionHeight,
+  },
+
+  /**
+   * Generates unique element id.
+   * @ignore
+   */
+  id: {
+    type: String,
+    default: () => getRandomId(),
+  },
+
+  /**
+   * Sets component ui config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+const emit = defineEmits(["update:modelValue", "addOption"]);
+
+const wrapperRef = ref(null);
+
+const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
+  usePointer(props.options, props.optionHeight, wrapperRef);
+
+const {
+  config,
+  hasSlotContent,
+  wrapperAttrs,
+  listAttrs,
+  optionItemAttrs,
+  addTitleWrapperAttrs,
+  addTitleAttrs,
+  addTitleHotkeyAttrs,
+  buttonAddAttrs,
+  iconAddAttrs,
+  optionAttrs,
+  subGroupLabelAttrs,
+  groupLabelAttrs,
+  optionClasses,
+  optionContentAttrs,
+} = useAttrs(props);
+
+defineExpose({ pointerSet, pointerBackward, pointerForward, pointerReset, addPointerElement });
+
+const addOptionKeyCombination = computed(() => {
+  return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
+});
+
+const wrapperHeight = computed(() =>
+  props.maxHeight === undefined ? "auto" : `${props.maxHeight}px`,
+);
+
+function onClickAddOption() {
+  emit("addOption");
+}
+
+function select(option, key) {
+  if (props.disabled || option.$isDisabled || option.$isLabel) {
+    return;
+  }
+
+  if (key === "Tab" && !pointerDirty.value) return;
+
+  modelValue.value = option[props.valueKey];
+}
+
+function isSelectedOption(option) {
+  return modelValue.value === option[props.valueKey];
+}
+
+function getMarginForSubCategory(level) {
+  const baseMargin = 1;
+
+  if (level > 1) {
+    return `margin-left: ${baseMargin * (level - 1)}rem`;
+  }
+}
+
+function optionHighlight(index, option) {
+  const classes = [];
+
+  if (index === pointer.value) classes.push(config.value.optionHighlight);
+  if (isSelectedOption(option)) classes.push(config.value.optionSelected);
+
+  return classes;
+}
+
+function addPointerElement({ key } = "Enter") {
+  if (props.options.length > 0) {
+    select(props.options[pointer.value], key);
+  }
+
+  pointerReset();
+}
+</script>

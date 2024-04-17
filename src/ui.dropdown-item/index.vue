@@ -1,0 +1,53 @@
+<template>
+  <div :data-cy="dataCy" v-bind="wrapperAttrs" @click="onClick">
+    <template v-if="label">{{ label }}</template>
+    <slot />
+  </div>
+</template>
+
+<script setup>
+import { inject } from "vue";
+import { useAttrs } from "./composables/attrs.composable";
+
+/* Should be a string for correct web-types gen */
+defineOptions({ name: "UDropdownItem", inheritAttrs: false });
+
+const hideDropdownOptions = inject("hideDropdownOptions", null);
+
+const props = defineProps({
+  /**
+   * Set dropdown item label.
+   */
+  label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Sets component ui config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
+  },
+
+  /**
+   * Sets data-cy attribute for automated testing.
+   */
+  dataCy: {
+    type: String,
+    default: "",
+  },
+});
+
+const emit = defineEmits(["click"]);
+
+function onClick() {
+  // invokes click event on current item
+  emit("click");
+
+  if (hideDropdownOptions) hideDropdownOptions();
+}
+
+const { wrapperAttrs } = useAttrs(props);
+</script>

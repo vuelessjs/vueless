@@ -1,8 +1,6 @@
-import { addons, makeDecorator } from "@storybook/addons";
+import { addons, makeDecorator } from "@storybook/preview-api";
 import { h, onMounted, watch } from "vue";
-
-import { convertHexInRgb } from "vueless/service.ui/index.js";
-import twConfig from "/tailwind.config.js";
+import { setBrandColor } from "../../src/service.ui";
 
 export const vue3SourceDecorator = makeDecorator({
   name: "vue3SourceDecorator",
@@ -23,6 +21,8 @@ export const vue3SourceDecorator = makeDecorator({
           setSourceCode();
         });
 
+        setBrandColor();
+
         function setSourceCode() {
           try {
             const src = context.originalStoryFn(context.args).template;
@@ -40,21 +40,21 @@ export const vue3SourceDecorator = makeDecorator({
               });
 
               // emits an event when the transformation is completed
-              channel.emit("storybook/docs/snippet-rendered", (context || {}).id, formattedCode);
+              channel.emit("storybook/docs/snippet-rendered", {
+                id: context.id,
+                args: context.args,
+                source: formattedCode,
+              });
             };
 
-            setTimeout(emitFormattedTemplate, 0);
+            emitFormattedTemplate();
           } catch (e) {
             // eslint-disable-next-line no-console
             console.warn("Failed to render code", e);
           }
         }
 
-        const brandColor = twConfig.theme.colors.gray[900] || "#181C32";
-        const cssVariables = `--brand-color: ${convertHexInRgb(brandColor)}`;
-
-        return () =>
-          h("div", { style: `padding: 2rem 1.5rem 3rem 1.5rem; ${cssVariables}` }, [h(story)]);
+        return () => h("div", { style: `padding: 2rem 1.5rem 3rem 1.5rem;` }, [h(story)]);
       },
     };
   },

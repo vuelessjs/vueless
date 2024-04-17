@@ -41,6 +41,13 @@ module.exports = {
   },
   overrides: [
     {
+      files: ["src/**/default.config.{js,ts}"],
+      rules: {
+        "vue/max-len": ["error", { code: 140 }],
+        "prettier/prettier": ["warn", { printWidth: 120, tabWidth: 2 }],
+      },
+    },
+    {
       files: [".storybook/preview.{js,ts}"],
       rules: {
         "vue/max-len": ["error", { code: 280 }],
@@ -55,9 +62,5 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     module: "esnext",
-  },
-  globals: {
-    cy: true,
-    Cypress: true,
   },
 };

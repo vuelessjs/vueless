@@ -15,6 +15,13 @@ affecting rendered component(s) below Canvas and Docs tabs.
     font-family: Roboto, sans-serif;
   }
 
+  #storybook-docs h2 {
+    margin-top: 32px !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 8px !important;
+    font-weight: bold !important;
+  }
+
   .docblock-argstable-body {
     filter: none !important;
     border-radius: 0.5rem !important;
@@ -32,11 +39,34 @@ affecting rendered component(s) below Canvas and Docs tabs.
     box-shadow: none !important;
   }
 
-  [type='checkbox']:checked, [type='radio']:checked {
+  .docblock-argstable [type='checkbox']:checked,
+  .docblock-argstable [type='radio']:checked {
     background-color: rgb(17 24 39) !important;
   }
 
-  [type='checkbox']:focus, [type='radio']:focus {
+  .docblock-argstable [type='checkbox']:focus,
+  .docblock-argstable [type='radio']:focus {
     @apply !ring-gray-300;
+  }
+
+  .markdown {
+    .docblock-source {
+      margin: 0px 0 24px !important;
+    }
+
+    code {
+      background-color: #f3f4f6 !important;
+      border-color: #d1d5db !important;
+    }
+
+    .sbdocs-a {
+      border-bottom: dashed 1px #4b5563;
+      color: #4b5563;
+    }
+
+    .sbdocs-a:hover {
+      border-bottom: none;
+      color: #4b5563;
+    }
   }
 </style>
