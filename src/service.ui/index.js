@@ -3,7 +3,7 @@ import { defineConfig } from "cva";
 import { twMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
 import { brandColors, grayColors } from "../service.tailwind";
-import vuelessConfig from "/vueless.config.js";
+import vuelessConfig from "../../../../vueless.config.js";
 
 /*
   Export cva (class variance authority) methods extended with tailwind-merge.

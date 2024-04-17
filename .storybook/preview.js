@@ -4,32 +4,24 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 
 // Vue plugins
 import { createStore } from "vuex";
-import { createRouter, createWebHistory } from "vue-router";
-import NotifyServiceDefault from "../src/ui.notify/services";
+import NotifyServiceDefault from "vueless/src/ui.notify/services";
 
 // Tailwind styles
 import "../index.pcss";
 
 // Common stores
-import loader from "../src/ui.loader-rendering/store";
-import loaderTop from "../src/ui.loader-top/store";
-import breakpoint from "../src/ui.viewport/store";
+import loader from "vueless/src/ui.loader-rendering/store";
+import loaderTop from "vueless/src/ui.loader-top/store";
+import breakpoint from "vueless/src/ui.viewport/store";
 
 // Create store instance
 const store = createStore({
   modules: { loader, loaderTop, breakpoint },
 });
 
-// Create router instance
-const router = createRouter({
-  history: createWebHistory("/"),
-  routes: [{ path: "/:pathMatch(.*)*", component: () => import("../src/ui.container-page") }],
-});
-
 // Create storybook app instance
 const storybookApp = (app) => {
   app.use(store);
-  app.use(router);
   app.use(new NotifyServiceDefault().notifyInstance);
 };
 

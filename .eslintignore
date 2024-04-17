@@ -4,4 +4,3 @@
 
 # allow to format hidden folders
 !/.storybook
-!/.mono

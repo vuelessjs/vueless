@@ -82,9 +82,6 @@ export default class TailwindServiceDefault {
         "./src/**/*.{js,ts,jsx,tsx,vue}",
         "./vueless.config.{js,ts}",
         "./node_modules/vueless/**/*.{js,ts,vue}",
-        // TODO: remove it after creating the package
-        "./.vueless-layouts/**/*.{js,ts,vue}",
-        "./.vueless-services/**/*.{js,ts,vue}",
       ],
       safelist: isProd ? prodSafelist : devSafelist,
       theme: {
