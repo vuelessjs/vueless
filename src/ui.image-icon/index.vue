@@ -147,12 +147,22 @@ const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
 let generatedIcons = [];
 
 if (import.meta.env.PROD) {
-  generatedIcons = Object.entries(
-    import.meta.glob(`../../../../src/assets/images/.generated/**/*.svg`, {
-      eager: true,
-      query: "?component",
-    }),
-  );
+  // when building storybook inside the package (only for Vueless contributors).
+  if (import.meta.env.STORYBOOK_VUELESS_ENV) {
+    generatedIcons = Object.entries(
+      import.meta.glob(`../assets/images/.generated/**/*.svg`, {
+        eager: true,
+        query: "?component",
+      }),
+    );
+  } else {
+    generatedIcons = Object.entries(
+      import.meta.glob(`../../../../src/assets/images/.generated/**/*.svg`, {
+        eager: true,
+        query: "?component",
+      }),
+    );
+  }
 }
 
 const dynamicComponent = computed(() => {

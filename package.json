@@ -14,9 +14,9 @@
     "release": "release-it patch --ci",
     "release:production": "release-it minor --ci",
     "release:production-major": "release-it major --ci",
-    "sb:dev-full": "STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
+    "sb:dev-full": "STORYBOOK_VUELESS_ENV=1 STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
-    "sb:build": "storybook build",
+    "sb:build": "STORYBOOK_VUELESS_ENV=1 storybook build",
     "sb:preview": "vite preview --host --outDir=storybook-static",
     "vueless:update": "yarn add -D file:../vite-plugin-vueless file:../vueless-storybook",
     "postinstall": "node .web-types-gen"
