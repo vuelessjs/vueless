@@ -1,5 +1,5 @@
 import { create } from "@storybook/theming/create";
-import colors from "tailwindcss/colors";
+import colors from "tailwindcss/colors.js";
 
 export default create({
   base: "light",

@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     Vue(),
     Eslint(),
-    Vueless(),
+    Vueless({ mode: "storybook", env: "vueless" }),
     VuelessUnpluginComponents(),
   ],
   resolve: {

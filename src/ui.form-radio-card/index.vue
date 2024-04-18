@@ -112,33 +112,33 @@ const props = defineProps({
   },
 });
 
-const labelConfig = {
-  wrapper: {
-    base: `
-    rounded-lg border border-solid border-gray-300 cursor-pointer relative w-full
-    hover:border-gray-400 focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15]
-    px-6 py-4`,
-  },
-  label: {
-    base: "h-full w-full cursor-pointer",
-    variants: {
-      placement: {
-        topInside: "left-0 !top-0",
-      },
-    },
-  },
-  description: {
-    variants: {
-      placement: {
-        topInside: "pl-0",
-      },
-    },
-  },
-};
+// const labelConfig = {
+//   wrapper: {
+//     base: `
+//     rounded-lg border border-solid border-gray-300 cursor-pointer relative w-full
+//     hover:border-gray-400 focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15]
+//     px-6 py-4`,
+//   },
+//   label: {
+//     base: "h-full w-full cursor-pointer",
+//     variants: {
+//       placement: {
+//         topInside: "left-0 !top-0",
+//       },
+//     },
+//   },
+//   description: {
+//     variants: {
+//       placement: {
+//         topInside: "pl-0",
+//       },
+//     },
+//   },
+// };
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { radioAttrs, iconAttrs, wrapperAttrs, labelAttrs } = useAttrs(props);
+const { radioAttrs, iconAttrs, wrapperAttrs /* labelAttrs */ } = useAttrs(props);
 
 const isMobileDevice = computed(() => {
   return store.getters["breakpoint/isMobileDevice"];

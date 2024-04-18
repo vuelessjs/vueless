@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
@@ -16,7 +16,7 @@
     "release:production-major": "release-it major --ci",
     "sb:dev-full": "STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
-    "sb:build": "NO_PWA=1 storybook build --docs",
+    "sb:build": "storybook build",
     "sb:preview": "vite preview --host --outDir=storybook-static",
     "vueless:update": "yarn add -D file:../vite-plugin-vueless file:../vueless-storybook",
     "postinstall": "node .web-types-gen"
@@ -43,6 +43,7 @@
     "@vueless/storybook": "file:../vueless-storybook",
     "@vueless/vite-plugin": "file:../vite-plugin-vueless",
     "autoprefixer": "^10.4.19",
+    "cssnano": "^6.1.2",
     "eslint": "^8.55.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -57,6 +58,9 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.4.19"
+  },
+  "resolutions": {
+    "string-width": "4.2.3"
   },
   "repository": {
     "type": "git",
