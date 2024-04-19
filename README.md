@@ -1,8 +1,6 @@
-# Vueless – Vue Styleless UI Component Framework
+![logo.png](public/images/vueless-logo-git.png)
 
-![logo.png](public/images/logo.png)
-
-## About the project
+## Vueless UI
 
 * [Documentation](https://docs.vueless.com/)
 * [UI Components](https://ui.vueless.com/)
