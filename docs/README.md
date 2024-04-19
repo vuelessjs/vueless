@@ -1,6 +1,6 @@
 # Quick Start
 
-1\. Install `vueless` package.
+1\. Install `vueless` UI library packages.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -45,7 +45,7 @@ export default {
 
 4\. Add Vite plugins.
 
-{% code title="vite.config.mjs" overflow="wrap" %}
+{% code title="vite.config.js" overflow="wrap" %}
 ```javascript
 import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
 
