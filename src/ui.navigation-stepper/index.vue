@@ -46,7 +46,7 @@ import colors from "tailwindcss/colors";
 
 import UHeader from "../ui.text-header";
 import UIService from "../service.ui";
-import { grayColors } from "../service.tailwind";
+import { grayColors } from "../preset.tailwind";
 
 import { UStepper } from "./constants/index";
 import defaultConfig from "./configs/default.config";

@@ -4,15 +4,15 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 
 // Vue plugins
 import { createStore } from "vuex";
-import NotifyServiceDefault from "vueless/src/ui.notify/services";
+import NotifyServiceDefault from "vueless/ui.notify/services";
 
 // Tailwind styles
 import "./index.pcss";
 
 // Common stores
-import loader from "vueless/src/ui.loader-rendering/store";
-import loaderTop from "vueless/src/ui.loader-top/store";
-import breakpoint from "vueless/src/ui.viewport/store";
+import loader from "vueless/ui.loader-rendering/store";
+import loaderTop from "vueless/ui.loader-top/store";
+import breakpoint from "vueless/ui.viewport/store";
 
 // Create store instance
 const store = createStore({

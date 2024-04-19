@@ -147,7 +147,7 @@ const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
 let generatedIcons = [];
 
 if (import.meta.env.PROD) {
-  // when building storybook inside the package (only for Vueless contributors).
+  // when building storybook from inside the package (only for Vueless contributors).
   if (import.meta.env.STORYBOOK_VUELESS_ENV) {
     generatedIcons = Object.entries(
       import.meta.glob(`../assets/images/.generated/**/*.svg`, {
@@ -157,7 +157,7 @@ if (import.meta.env.PROD) {
     );
   } else {
     generatedIcons = Object.entries(
-      import.meta.glob(`../../../../src/assets/images/.generated/**/*.svg`, {
+      import.meta.glob(`../../../src/assets/images/.generated/**/*.svg`, {
         eager: true,
         query: "?component",
       }),
