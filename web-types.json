@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -966,7 +966,7 @@
               "description": "Label placement.",
               "value": {
                 "kind": "expression",
-                "type": "'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
               "default": "left"
             },
@@ -3225,13 +3225,13 @@
               "default": "\"\""
             },
             {
-              "name": "labelOutside",
-              "description": "Show label outside the input block.",
+              "name": "labelAlign",
+              "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "placeholder",
@@ -3425,13 +3425,13 @@
               "default": "\"\""
             },
             {
-              "name": "labelOutside",
+              "name": "labelAlign",
               "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "'topInside' | 'top' | 'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "files",
@@ -3888,13 +3888,13 @@
               "default": "false"
             },
             {
-              "name": "labelOutside",
+              "name": "labelAlign",
               "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "'topInside' | 'top' | 'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "error",
@@ -4137,7 +4137,7 @@
               "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "'topInside' | 'top' | 'topWithDesc' | 'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
               "default": "top"
             },
@@ -4444,22 +4444,13 @@
               "default": "\"\""
             },
             {
-              "name": "zIndex",
-              "description": "The z-list of the loader stripe.",
-              "value": {
-                "kind": "expression",
-                "type": "'auto' | '50' | '100'"
-              },
-              "default": "\"auto\""
-            },
-            {
               "name": "position",
               "description": "Loader position.",
               "value": {
                 "kind": "expression",
                 "type": "'fixed' | 'absolute' | 'relative'"
               },
-              "default": "\"fixed\""
+              "default": "fixed"
             },
             {
               "name": "color",
@@ -4468,11 +4459,11 @@
                 "kind": "expression",
                 "type": "'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'fuchsia'"
               },
-              "default": "globalComponentConfig.ULoaderTop?.color"
+              "default": "blue"
             }
           ],
           "source": {
-            "module": "/src/ui.loader-top/index.vue",
+            "module": "/src/ui.other-loader-top/index.vue",
             "symbol": "default"
           }
         },
@@ -5401,7 +5392,7 @@
               "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
               "default": "UIService.get(defaultConfig, URadio).default.labelAlign"
             },
@@ -5453,10 +5444,13 @@
           ],
           "events": [
             {
-              "name": "update:value"
+              "name": "update:modelValue"
             }
           ],
           "slots": [
+            {
+              "name": "default"
+            },
             {
               "name": "footer"
             }
@@ -5533,6 +5527,14 @@
                 "type": "string"
               },
               "default": "() => getRandomId()"
+            },
+            {
+              "name": "labelAlign",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "top"
             },
             {
               "name": "config",
@@ -5754,13 +5756,13 @@
               "default": "\"\""
             },
             {
-              "name": "labelOutside",
-              "description": "Show label outside the select block.",
+              "name": "labelAlign",
+              "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "placeholder",
@@ -6097,7 +6099,7 @@
               "description": "Label alignment.",
               "value": {
                 "kind": "expression",
-                "type": "'left' | 'right'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
               "default": "left"
             },
@@ -6665,10 +6667,10 @@
             },
             {
               "name": "labelAlign",
-              "description": "Input label place (above the input box or inside of it).",
+              "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "'topInside' | 'top'"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
               "default": "topInside"
             },
@@ -7001,104 +7003,6 @@
           ],
           "source": {
             "module": "/src/ui.viewport/index.vue",
-            "symbol": "default"
-          }
-        },
-        {
-          "name": "VueTopprogress",
-          "description": "",
-          "attributes": [
-            {
-              "name": "speed",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "150"
-            },
-            {
-              "name": "color",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"#29d\""
-            },
-            {
-              "name": "colorShadow",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"\""
-            },
-            {
-              "name": "errorColor",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"#f44336\""
-            },
-            {
-              "name": "trickle",
-              "value": {
-                "kind": "expression",
-                "type": "boolean"
-              },
-              "default": "true"
-            },
-            {
-              "name": "trickleSpeed",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "100"
-            },
-            {
-              "name": "easing",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"linear\""
-            },
-            {
-              "name": "height",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "3"
-            },
-            {
-              "name": "minimum",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "0.8"
-            },
-            {
-              "name": "maximum",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "97.5"
-            },
-            {
-              "name": "zIndex",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "9999"
-            }
-          ],
-          "source": {
-            "module": "/src/ui.loader-top/components/TopProgress.vue",
             "symbol": "default"
           }
         },
