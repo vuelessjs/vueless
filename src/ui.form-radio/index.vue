@@ -21,6 +21,8 @@
       @focus="onFocus"
     />
 
+    <slot />
+
     <template #footer>
       <slot name="footer" />
     </template>
@@ -142,7 +144,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:value"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const setRadioGroupSelectedItem = inject("setRadioGroupSelectedItem", null);
 const getRadioGroupName = inject("getRadioGroupName", null);
@@ -165,6 +167,6 @@ watchEffect(() => (radioSize.value = getRadioGroupSize ? getRadioGroupSize() : p
 function onFocus(event) {
   setRadioGroupSelectedItem && setRadioGroupSelectedItem(props.value);
 
-  emit("update:value", event.target.value);
+  emit("update:modelValue", event.target.value);
 }
 </script>

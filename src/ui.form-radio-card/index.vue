@@ -1,20 +1,25 @@
 <template>
   <div v-bind="wrapperAttrs(gridColsClass)">
-    <template v-for="(item, index) in options" :key="id + index">
-      <URadio
-        :id="id + index"
-        v-model="selectedItem"
-        :value="item.value"
-        :name="name"
-        v-bind="radioAttrs"
-        :label="item.label"
-        :description="item.description"
-      />
-      <!-- @slot Use it to add icon. -->
-      <slot v-if="withIcon" name="icon" :item="item">
-        <UIcon :name="item.iconName" size="xl" :color="color" v-bind="iconAttrs" />
-      </slot>
-    </template>
+    <div v-for="(item, index) in options" :key="id + index" v-bind="itemsAttrs">
+      <label :for="id + index" v-bind="labelAttrs">
+        <URadio
+          :id="id + index"
+          v-model="selectedItem"
+          :value="item.value"
+          :name="name"
+          :label="item.label"
+          :checked="item.value === selectedItem"
+          :description="item.description"
+          :label-align="labelAlign"
+          v-bind="radioAttrs"
+        >
+          <!-- @slot Use it to add icon. -->
+          <slot v-if="withIcon" name="icon" :item="item">
+            <UIcon :name="item.iconName" size="xl" :color="color" v-bind="iconAttrs" />
+          </slot>
+        </URadio>
+      </label>
+    </div>
   </div>
 </template>
 
@@ -95,6 +100,11 @@ const props = defineProps({
     default: () => getRandomId(),
   },
 
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, URadioCard).default.labelAlign,
+  },
+
   /**
    * Sets component ui config object.
    */
@@ -114,7 +124,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { radioAttrs, iconAttrs, wrapperAttrs } = useAttrs(props);
+const { radioAttrs, iconAttrs, wrapperAttrs, labelAttrs, itemsAttrs } = useAttrs(props);
 
 const isMobileDevice = computed(() => {
   return store.getters["breakpoint/isMobileDevice"];

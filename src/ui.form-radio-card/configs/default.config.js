@@ -3,12 +3,18 @@ export default /*tw*/ {
   title: "text-base font-normal text-gray-900 mb-1 mt-3",
   description: "text-xs font-normal text-gray-500/[85]",
   radio: {
-    base: "absolute right-4 top-2 !gap-0",
-    label: "mr-1",
+    base: "w-full right-4 top-2 !gap-0",
+    radio: "absolute right-6 top-4",
   },
+  label: "size-full cursor-pointer",
+  items: `
+    relative mr-1 w-full cursor-pointer rounded-lg border border-solid border-gray-300 px-6 py-4
+    focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15] hover:border-gray-400
+  `,
   icon: "mb-3 flex justify-center",
   defaultVariants: {
     color: "brand",
+    labelAlign: "top",
     gridCols: 2,
     withIcon: true,
   },

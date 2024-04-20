@@ -17,8 +17,9 @@ export function useAttrs(props) {
   const radioClasses = computed(() => setColor(cvaRadio({ color: props.color }), props.color));
 
   const wrapperAttrsRaw = getAttrs("wrapper");
+  const itemsAttrs = getAttrs("items");
+  const labelAttrs = getAttrs("label");
   const radioAttrs = getAttrs("radio", { isComponent: true, classes: radioClasses });
-  const labelAttrs = getAttrs("label", { isComponent: true });
   const iconAttrs = getAttrs("icon", { isComponent: true });
 
   const wrapperAttrs = computed(() => (classes) => ({
@@ -31,5 +32,6 @@ export function useAttrs(props) {
     iconAttrs,
     wrapperAttrs,
     labelAttrs,
+    itemsAttrs,
   };
 }
