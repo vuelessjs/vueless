@@ -97,11 +97,11 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values topInside, top, left, right
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
+  labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInputRating).default.placement,
+    default: UIService.get(defaultConfig, UInputRating).default.labelAlign,
   },
 
   /**
@@ -151,10 +151,6 @@ const hovered = ref(null);
 
 const { counterAttrs, ratingAttrs, wrapperAttrs, iconsAttrs, iconsContainerAttrs, labelAttrs } =
   useAttrs(props);
-
-const labelAlign = computed(() => {
-  return props.labelOutside ? "top" : "topInside";
-});
 
 const iconSize = computed(() => {
   const sizes = {

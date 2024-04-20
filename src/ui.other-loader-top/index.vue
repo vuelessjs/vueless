@@ -1,0 +1,230 @@
+<template>
+  <Transition :css="false" @beforeEnter="beforeEnter" @enter="enter" @afterEnter="afterEnter">
+    <div v-if="show" v-bind="progressAttrs" :style="barStyle" />
+  </Transition>
+</template>
+
+<script setup>
+import { computed, onBeforeUnmount, watch, ref } from "vue";
+
+import { useStore } from "vuex";
+
+import UIService, { isMobileApp } from "../service.ui";
+import { clamp, queue } from "./services/loaderTop.service";
+
+import { ULoaderTop, MAXIMUM, SPEED } from "./constants";
+import defaultConfig from "./configs/default.config";
+import { useAttrs } from "./composables/attrs.composable";
+
+defineOptions({ name: "ULoaderTop" });
+
+const props = defineProps({
+  /**
+   * The name of API resource (endpoint URI).
+   */
+  resourceNames: {
+    type: [String, Array],
+    default: "",
+  },
+
+  /**
+   * Loader position.
+   * @values fixed, absolute, relative
+   */
+  position: {
+    type: String,
+    default: UIService.get(defaultConfig, ULoaderTop).default.position,
+  },
+
+  /**
+   * The color of the loader stripe.
+   * @values gray, red, orange, yellow, green, blue, violet, fuchsia
+   */
+  color: {
+    type: String,
+    default: UIService.get(defaultConfig, ULoaderTop).default.color,
+  },
+});
+
+const store = useStore();
+
+const error = ref(false);
+const show = ref(false);
+const progress = ref(0);
+const opacity = ref(1);
+const status = ref(null);
+
+const { progressAttrs } = useAttrs(props, { error, isMobileApp });
+
+const loaderRequestQueue = computed(() => store.state.loaderTop.loaderRequestQueue);
+const isLoading = computed(() => store.state.loaderTop.isLoading);
+const componentLoaderRequestQueue = computed(
+  () => store.state.loaderTop.componentLoaderRequestQueue,
+);
+
+const isStarted = computed(() => {
+  return typeof status.value === "number";
+});
+
+const barStyle = computed(() => {
+  return {
+    width: `${progress.value}%`,
+    opacity: `${opacity.value}`,
+  };
+});
+
+const resourceNamesArray = computed(() => {
+  return Array.isArray(props.resourceNames) ? [...props.resourceNames] : [props.resourceNames];
+});
+
+watch(loaderRequestQueue, onChangeRequestsQueue, { deep: true });
+watch(isLoading, onChangeLoadingState, { deep: true });
+
+if (props.resourceNames) {
+  store.commit("loaderTop/SET_COMPONENT_REQUEST_QUEUE", resourceNamesArray.value);
+}
+
+onBeforeUnmount(() => {
+  if (props.resourceNames) {
+    store.commit("loaderTop/REMOVE_COMPONENT_REQUEST_QUEUE");
+  }
+});
+
+function requestWithoutQuery(request) {
+  const [requestWithoutQuery] = request.split("?");
+
+  return requestWithoutQuery;
+}
+
+function onChangeLoadingState() {
+  if (!props.resourceNames && isStarted.value && show.value && !isLoading.value) {
+    done();
+  }
+}
+
+function onChangeRequestsQueue() {
+  let isActiveRequests = false;
+
+  if (props.resourceNames) {
+    resourceNamesArray.value.forEach((item) => {
+      if (!isActiveRequests) {
+        const activeRequest = loaderRequestQueue.value.find(
+          (request) => requestWithoutQuery(request) === item,
+        );
+
+        isActiveRequests = !!activeRequest;
+      }
+    });
+
+    if (isActiveRequests && !isStarted.value) {
+      start();
+    } else if (!isActiveRequests && isStarted.value && show.value) {
+      done();
+    }
+  } else {
+    loaderRequestQueue.value.forEach((item) => {
+      const activeRequest = componentLoaderRequestQueue.value.find(
+        (request) => request === requestWithoutQuery(item),
+      );
+
+      isActiveRequests = !activeRequest;
+    });
+
+    if (isLoading.value && isActiveRequests && !isStarted.value) {
+      start();
+    }
+  }
+}
+
+function beforeEnter() {
+  opacity.value = 0;
+  progress.value = 0;
+}
+
+function enter(el, done) {
+  opacity.value = 1;
+  done();
+}
+
+function afterEnter() {
+  runStart();
+}
+
+function work() {
+  setTimeout(() => {
+    if (!isStarted.value) {
+      return;
+    }
+
+    increase();
+    work();
+  }, 100);
+}
+
+function runStart() {
+  status.value = progress.value === 100 ? null : progress.value;
+
+  work();
+}
+
+function start() {
+  if (show.value) {
+    runStart();
+  } else {
+    show.value = true;
+  }
+}
+
+function set(amount) {
+  let currentProgress;
+
+  if (isStarted.value) {
+    currentProgress = amount < progress.value ? clamp(amount, 0, 100) : clamp(amount, 0.8, 100);
+  } else {
+    currentProgress = 0;
+  }
+
+  status.value = currentProgress === 100 ? null : currentProgress;
+
+  queue((next) => {
+    progress.value = currentProgress;
+
+    if (currentProgress === 100) {
+      setTimeout(() => {
+        opacity.value = 0;
+        setTimeout(() => {
+          show.value = false;
+          error.value = false;
+          next();
+        }, SPEED);
+      }, SPEED);
+    } else {
+      setTimeout(next, SPEED);
+    }
+  });
+}
+
+function increase(amount) {
+  const currentProgress = progress.value;
+
+  if (currentProgress < 100 && typeof amount !== "number") {
+    if (currentProgress >= 0 && currentProgress < 25) {
+      amount = Math.random() * 3 + 3;
+    } else if (currentProgress >= 25 && currentProgress < 50) {
+      amount = Math.random() * 3;
+    } else if (currentProgress >= 50 && currentProgress < 85) {
+      amount = Math.random() * 2;
+    } else if (currentProgress >= 85 && currentProgress < 99) {
+      amount = 0.5;
+    } else {
+      amount = 0;
+    }
+  }
+
+  set(clamp(currentProgress + amount, 0, MAXIMUM));
+}
+
+function done() {
+  set(100);
+}
+</script>

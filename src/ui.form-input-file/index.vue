@@ -100,11 +100,11 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values topInside, top, left, right
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputFile).default.labelOutside,
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UInputFile).default.labelAlign,
   },
 
   /**
@@ -224,10 +224,6 @@ const filesList = computed(() => {
       id: file.id,
     };
   });
-});
-
-const labelAlign = computed(() => {
-  return props.labelOutside ? "top" : "topInside";
 });
 
 const fileId = computed(() => {

@@ -1,8 +1,8 @@
 export default /*tw*/ {
-  label: "relative w-full",
+  label: "w-full relative",
   wrapper: {
     base: `
-      pb-2 flex flex-row-reverse justify-between w-full min-h-full static box-border
+      pb-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-lg border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:duration-100 hover:ease-in-out hover:focus-within:border-gray-500
       focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15] focus-within:outline-none
@@ -133,6 +133,6 @@ export default /*tw*/ {
     searchable: true,
     noClear: false,
     addOption: false,
-    labelOutside: false,
+    labelAlign: "topInside",
   },
 };

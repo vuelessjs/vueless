@@ -1,5 +1,5 @@
 <template>
-  <div tabindex="-1" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
     <div v-if="hasSlotContent(slots['left'])" v-bind="leftSlotAttrs">
       <!-- @slot Use it to add something before text. -->
       <slot name="left" />
@@ -49,8 +49,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
-
+import { computed, useSlots, ref } from "vue";
 import UIService from "../service.ui";
 
 import { useAttrs } from "./composables/attrs.composable";
@@ -180,6 +179,10 @@ const props = defineProps({
 });
 
 const slots = useSlots();
+
+const wrapperRef = ref(null);
+
+defineExpose({ wrapperRef });
 
 const { wrapperAttrs, linkAttrs, rightSlotAttrs, leftSlotAttrs, textAttrs, hasSlotContent } =
   useAttrs(props);

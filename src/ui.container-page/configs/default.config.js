@@ -2,7 +2,7 @@ export default /*tw*/ {
   htmlBody: "bg-gray-50 group/body-gray",
   wrapperMobile: "overflow-x-hidden mb-[theme('spacing.mobile-menu-height')]",
   wrapper: {
-    base: "min-h-screen overflow-auto",
+    base: "min-h-screen overflow-auto UNotifyPage",
     variants: {
       width: {
         xs: "md:w-[25rem] md:max-[500px]:!w-full",

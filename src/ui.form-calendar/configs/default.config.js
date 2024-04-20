@@ -40,7 +40,7 @@ export default /*tw*/ {
   activeMonth: "bg-gray-100",
   yearViewWrapper: "grid w-64 grid-cols-4 items-center justify-center px-3 pt-2",
   year: `
-    mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-gray-100 
+    mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-gray-100
     disabled:opacity-50 disabled:cursor-not-allowed
   `,
   selectedYear: "bg-gray-900 hover:bg-gray-900 text-white",

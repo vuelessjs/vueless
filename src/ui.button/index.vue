@@ -1,5 +1,12 @@
 <template>
-  <button :id="id" :disabled="disabled" :data-cy="dataCy" v-bind="buttonAttrs" @click="onClick">
+  <button
+    :id="id"
+    ref="buttonRef"
+    :disabled="disabled"
+    :data-cy="dataCy"
+    v-bind="buttonAttrs"
+    @click="onClick"
+  >
     <!-- @slot Use it to add something before text. -->
     <slot v-if="!loading" name="left" />
 
@@ -16,11 +23,13 @@
 </template>
 
 <script setup>
-import ULoader from "../ui.other-loader";
-import UIService, { getRandomId } from "../service.ui";
+import { ref } from "vue";
 
-import { useAttrs } from "./composables/attrs.composable";
+import UIService, { getRandomId } from "../service.ui";
+import ULoader from "../ui.other-loader";
+
 import defaultConfig from "./configs/default.config";
+import { useAttrs } from "./composables/attrs.composable";
 import { UButton } from "./constants";
 
 /* Should be a string for correct web-types gen */
@@ -139,6 +148,10 @@ const props = defineProps({
 const emit = defineEmits(["click"]);
 
 const { textAttrs, buttonAttrs } = useAttrs(props);
+
+const buttonRef = ref(null);
+
+defineExpose({ buttonRef });
 
 function onClick(event) {
   if (props.disabled) return;

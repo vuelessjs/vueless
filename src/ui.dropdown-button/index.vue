@@ -2,6 +2,7 @@
   <div v-bind="wrapperAttrs">
     <UButton
       :id="id"
+      ref="buttonRef"
       :label="label"
       :size="size"
       :variant="variant"
@@ -13,6 +14,7 @@
       :data-cy="`${dataCy}-button`"
       v-bind="buttonAttrs"
       @click.stop="onClickButton"
+      @blur="onBlurButton"
     >
       <template #right>
         <UIcon
@@ -39,7 +41,10 @@
       :value-key="valueKey"
       :label-key="labelKey"
       :data-cy="`${dataCy}-item`"
+      tabindex="-1"
       v-bind="listAttrs"
+      @mousedown.stop
+      @click.stop
     />
   </div>
 </template>
@@ -54,8 +59,8 @@ import UDropdownList from "../ui.dropdown-list";
 import UIService, { getRandomId } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
-import { UDropdownButton, BUTTON_VARIANT } from "./constants";
 import { useAttrs } from "./composables/attrs.composable";
+import { UDropdownButton, BUTTON_VARIANT } from "./constants";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDropdownButton", inheritAttrs: false });
@@ -217,6 +222,7 @@ provide("hideDropdownOptions", () => hideOptions);
 const emit = defineEmits(["update:modelValue"]);
 
 const isShownOptions = ref(false);
+const buttonRef = ref(null);
 
 const {
   config,
@@ -264,7 +270,13 @@ function hideOptions() {
 }
 
 function onClickOutside(event) {
-  if (!document.getElementById(props.id)?.contains(event.target)) {
+  if (!buttonRef.value?.buttonRef?.contains(event.target)) {
+    hideOptions();
+  }
+}
+
+function onBlurButton(event) {
+  if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
     hideOptions();
   }
 }

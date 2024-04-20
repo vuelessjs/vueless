@@ -20,6 +20,6 @@ export default /*tw*/ {
     starsNumber: 5,
     selectable: false,
     noCounter: false,
-    labelOutside: false,
+    labelAlign: "topInside",
   },
 };

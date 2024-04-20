@@ -13,6 +13,7 @@ export default /*tw*/ {
         topWithDesc: "flex-col-reverse w-fit",
         left: "flex-row w-fit",
         right: "flex-row-reverse w-fit",
+        bottom: "flex-col-reverse  w-fit",
       },
     },
     compoundVariants: [
@@ -72,6 +73,7 @@ export default /*tw*/ {
         top: "pl-0",
         left: "pl-0",
         right: "pl-0",
+        bottom: "-order-1",
       },
       error: {
         true: "text-red-500",

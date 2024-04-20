@@ -123,11 +123,12 @@ const props = defineProps({
   },
 
   /**
-   * Show label outside the input block.
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInput).default.labelOutside,
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UInput).default.labelAlign,
   },
 
   /**
@@ -284,10 +285,6 @@ const {
   rightSlotAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
-
-const labelAlign = computed(() => {
-  return props.labelOutside ? "top" : "topInside";
-});
 
 const passwordIconName = computed(() => {
   return isShownPassword.value

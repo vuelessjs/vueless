@@ -7,14 +7,14 @@ export default /*tw*/ {
   },
   buttonWrapper: "flex h-full rounded-lg focus-within:ring-4 focus-within:ring-gray-600/[.15] max-md:justify-between",
   button: `
-    shrink-0 grow rounded-none border-0 bg-zinc-100 py-2 text-base font-medium text-gray-900 shadow-none 
-  hover:bg-zinc-200 hover:ring-gray-600/[.15] focus:border-0 focus:bg-zinc-200 focus:ring-0 focus:ring-gray-600/[.15] 
+    shrink-0 grow rounded-none border-0 bg-zinc-100 py-2 text-base font-medium text-gray-900 shadow-none
+  hover:bg-zinc-200 hover:ring-gray-600/[.15] focus:border-0 focus:bg-zinc-200 focus:ring-0 focus:ring-gray-600/[.15]
   active:bg-zinc-200 disabled:cursor-not-allowed
   `,
   buttonActive: "border-0 hover:bg-zinc-200 ring-0 ring-gray-600/[.15] bg-zinc-200",
   buttonWrapperActive: "ring-4 ring-gray-600/[.15]",
   shiftRangeButton: `
-    focus:bg-bg-zinc-200 flex items-center border-0 bg-zinc-100 py-[0.71875rem] shadow-none 
+    focus:bg-bg-zinc-200 flex items-center border-0 bg-zinc-100 py-[0.71875rem] shadow-none
     hover:bg-zinc-200 hover:ring-gray-600/[.15] focus:border-0 focus:ring-0 focus:ring-gray-600/[.15] active:bg-zinc-200
     disabled:cursor-not-allowed last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none
   `,
@@ -29,7 +29,7 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
-    flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-zinc-100 
+    flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-zinc-100
     px-1.5 py-2.5 text-center text-xs font-medium text-gray-900 hover:bg-gray-200
     [&_span]:block [&_span]:font-normal [&_span]:text-gray-500
   `,

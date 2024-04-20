@@ -6,7 +6,7 @@
       :disabled="disabled"
       :error="error"
       :size="size"
-      placement="topWithDesc"
+      align="topWithDesc"
       :data-cy="dataCy"
       v-bind="labelAttrs"
     >

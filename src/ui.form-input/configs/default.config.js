@@ -66,7 +66,7 @@ export default /*tw*/ {
     error: false,
     readonly: false,
     disabled: false,
-    labelOutside: false,
+    labelAlign: "topInside",
     noAutocomplete: false,
   },
 };

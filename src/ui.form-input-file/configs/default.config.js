@@ -49,7 +49,7 @@ export default /*tw*/ {
   },
   defaultVariants: {
     size: "md",
-    labelOutside: false,
+    labelAlign: "topInside",
     allowedFileTypes: [".png", ".jpg", ".jpeg", ".pdf", ".txt", ".doc", ".docx", "xls", ".xlsx"],
     maxFileSize: 1,
     maxFiles: 3,

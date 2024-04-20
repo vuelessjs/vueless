@@ -2,6 +2,7 @@
   <div v-bind="wrapperAttrs">
     <UBadge
       :id="id"
+      ref="badgeRef"
       :label="label"
       :size="size"
       :color="color"
@@ -10,6 +11,7 @@
       :data-cy="`${dataCy}-badge`"
       v-bind="badgeAttrs"
       @click.stop="onClickBadge"
+      @blur="onBlurBadge"
     >
       <template #right>
         <UIcon
@@ -192,6 +194,8 @@ const emit = defineEmits(["update:modelValue"]);
 
 const isShownOptions = ref(false);
 
+const badgeRef = ref(null);
+
 const { config, listWrapperAttrs, wrapperAttrs, badgeAttrs, listAttrs, iconAttrs, hasSlotContent } =
   useAttrs(props, { isShownOptions });
 
@@ -227,7 +231,13 @@ function hideOptions() {
 }
 
 function onClickOutside(event) {
-  if (!document.getElementById(props.id)?.contains(event.target)) {
+  if (!badgeRef.value?.wrapperRef?.contains(event.target)) {
+    hideOptions();
+  }
+}
+
+function onBlurBadge(event) {
+  if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
     hideOptions();
   }
 }

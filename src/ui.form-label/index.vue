@@ -91,7 +91,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values topInside, top, topWithDesc, left, right
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
   align: {
     type: String,
@@ -154,10 +154,10 @@ const wrapperRef = ref(null);
 const { wrapperAttrs, labelWrapperAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
 
 const isHorizontalPlacement = computed(
-  () => props.placement === PLACEMENT.left || props.placement === PLACEMENT.right,
+  () => props.align === PLACEMENT.left || props.align === PLACEMENT.right,
 );
 
-const isTopWithDescPlacement = computed(() => props.placement === PLACEMENT.topWithDesc);
+const isTopWithDescPlacement = computed(() => props.align === PLACEMENT.topWithDesc);
 
 const labelElement = computed(() => labelRef.value);
 const wrapperElement = computed(() => wrapperRef.value);

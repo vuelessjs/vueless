@@ -3,6 +3,7 @@
     <div v-bind="triggerAttrs">
       <ULink
         :id="id"
+        ref="linkRef"
         :label="label"
         :size="size"
         :color="color"
@@ -13,6 +14,7 @@
         :data-cy="`${dataCy}-link`"
         v-bind="linkAttrs"
         @click.stop="onClickLink"
+        @blur="onBlurLink"
       >
         <template #right>
           <UIcon
@@ -210,6 +212,8 @@ const emit = defineEmits(["update:modelValue"]);
 
 const isShownOptions = ref(false);
 
+const linkRef = ref(null);
+
 const {
   config,
   listWrapperAttrs,
@@ -254,7 +258,13 @@ function hideOptions() {
 }
 
 function onClickOutside(event) {
-  if (!document.getElementById(props.id)?.contains(event.target)) {
+  if (!linkRef.value?.wrapperRef?.contains(event.target)) {
+    hideOptions();
+  }
+}
+
+function onBlurLink(event) {
+  if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
     hideOptions();
   }
 }

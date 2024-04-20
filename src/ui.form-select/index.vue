@@ -4,8 +4,8 @@
     :for="id"
     :size="size"
     :label="label"
-    :error="errorMessage"
-    :description="descriptionMessage"
+    :error="error"
+    :description="description"
     :align="labelAlign"
     :disabled="disabled"
     :data-cy="dataCy"
@@ -244,11 +244,12 @@ const props = defineProps({
   },
 
   /**
-   * Show label outside the select block.
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.labelOutside,
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, USelect).default.labelAlign,
   },
 
   /**
@@ -506,10 +507,6 @@ const isSelectedValueLabelVisible = computed(() => {
   return !props.multiple && isLocalValue.value && (!isOpen.value || !props.searchable);
 });
 
-const labelAlign = computed(() => {
-  return props.labelOutside ? "top" : "topInside";
-});
-
 const filteredOptions = computed(() => {
   const normalizedSearch = search.value.toLowerCase().trim();
 
@@ -559,14 +556,6 @@ const isLocalValue = computed(() => {
   return typeof localValue.value !== "number"
     ? Boolean(localValue.value)
     : Boolean(String(localValue.value));
-});
-
-const errorMessage = computed(() => {
-  return !isOpen.value && props.error ? props.error : "";
-});
-
-const descriptionMessage = computed(() => {
-  return !isOpen.value && props.description ? props.description : "";
 });
 
 watch(search, () => onSearchChange);

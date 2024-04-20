@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="wrapperRef"
     tabindex="1"
     :data-cy="dataCy"
     v-bind="wrapperAttrs"
@@ -26,6 +27,8 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 import UIService from "../service.ui";
 
 import { UBadge } from "./constants";
@@ -101,6 +104,10 @@ const props = defineProps({
 const emit = defineEmits(["focus", "keydown", "blur", "click"]);
 
 const { bodyAttrs, wrapperAttrs, hasSlotContent } = useAttrs(props);
+
+const wrapperRef = ref(null);
+
+defineExpose({ wrapperRef });
 
 function onFocus() {
   emit("focus");

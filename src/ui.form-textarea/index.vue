@@ -99,8 +99,8 @@ const props = defineProps({
   },
 
   /**
-   * Input label place (above the input box or inside of it).
-   * @values topInside, top
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
   labelAlign: {
     type: String,

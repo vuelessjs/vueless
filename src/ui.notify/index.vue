@@ -1,7 +1,7 @@
 <template>
   <notifications
     group="notify"
-    class="vueless-notify !top-3 mt-safe-top !w-full px-3 max-md:!left-0 md:!w-[22rem] md:px-0 lg:!top-4 lg:!mt-0"
+    class="vueless-notify mt-safe-top !top-3 !w-full px-3 max-md:!left-0 md:!w-[22rem] md:px-0 lg:!top-4 lg:!mt-0"
     :position="position"
   >
     <template #body="{ item, close: onClickClose }">
@@ -145,8 +145,8 @@ export default {
 
       const NOTIFY_CLASS = "vueless-notify";
       const classes = globalComponentConfig.UNotify?.positionClasses;
-      const pageWidth = getOffsetWidth(classes.page);
-      const asideWidth = getOffsetWidth(classes.aside);
+      const pageWidth = getOffsetWidth(classes.page || "UNotifyPage");
+      const asideWidth = getOffsetWidth(classes.aside || "UNotifyAside");
       const notifyWidth = getOffsetWidth(NOTIFY_CLASS);
 
       if (!pageWidth) return;
