@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -98,7 +98,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-calendar/components/DayView.vue",
+            "module": "vueless/ui.form-calendar/components/DayView.vue",
             "symbol": "default"
           }
         },
@@ -177,7 +177,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-calendar/components/MonthView.vue",
+            "module": "vueless/ui.form-calendar/components/MonthView.vue",
             "symbol": "default"
           }
         },
@@ -246,7 +246,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-accordion/index.vue",
+            "module": "vueless/ui.container-accordion/index.vue",
             "symbol": "default"
           }
         },
@@ -339,7 +339,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-alert/index.vue",
+            "module": "vueless/ui.text-alert/index.vue",
             "symbol": "default"
           }
         },
@@ -417,7 +417,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.image-avatar/index.vue",
+            "module": "vueless/ui.image-avatar/index.vue",
             "symbol": "default"
           }
         },
@@ -519,7 +519,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-badge/index.vue",
+            "module": "vueless/ui.text-badge/index.vue",
             "symbol": "default"
           }
         },
@@ -665,7 +665,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.button/index.vue",
+            "module": "vueless/ui.button/index.vue",
             "symbol": "default"
           }
         },
@@ -788,7 +788,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-calendar/index.vue",
+            "module": "vueless/ui.form-calendar/index.vue",
             "symbol": "default"
           }
         },
@@ -890,7 +890,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-card/index.vue",
+            "module": "vueless/ui.container-card/index.vue",
             "symbol": "default"
           }
         },
@@ -1048,7 +1048,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-checkbox/index.vue",
+            "module": "vueless/ui.form-checkbox/index.vue",
             "symbol": "default"
           }
         },
@@ -1149,7 +1149,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-checkbox-group/index.vue",
+            "module": "vueless/ui.form-checkbox-group/index.vue",
             "symbol": "default"
           }
         },
@@ -1245,7 +1245,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-checkbox-multi-state/index.vue",
+            "module": "vueless/ui.form-checkbox-multi-state/index.vue",
             "symbol": "default"
           }
         },
@@ -1350,7 +1350,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-color-picker/index.vue",
+            "module": "vueless/ui.form-color-picker/index.vue",
             "symbol": "default"
           }
         },
@@ -1470,7 +1470,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.data-list/index.vue",
+            "module": "vueless/ui.data-list/index.vue",
             "symbol": "default"
           }
         },
@@ -1634,7 +1634,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-date-picker/index.vue",
+            "module": "vueless/ui.form-date-picker/index.vue",
             "symbol": "default"
           }
         },
@@ -1786,7 +1786,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-date-picker-range/index.vue",
+            "module": "vueless/ui.form-date-picker-range/index.vue",
             "symbol": "default"
           }
         },
@@ -1922,7 +1922,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-divider/index.vue",
+            "module": "vueless/ui.container-divider/index.vue",
             "symbol": "default"
           }
         },
@@ -1968,7 +1968,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.other-dot/index.vue",
+            "module": "vueless/ui.other-dot/index.vue",
             "symbol": "default"
           }
         },
@@ -2124,7 +2124,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.dropdown-badge/index.vue",
+            "module": "vueless/ui.dropdown-badge/index.vue",
             "symbol": "default"
           }
         },
@@ -2307,7 +2307,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.dropdown-button/index.vue",
+            "module": "vueless/ui.dropdown-button/index.vue",
             "symbol": "default"
           }
         },
@@ -2354,7 +2354,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.dropdown-item/index.vue",
+            "module": "vueless/ui.dropdown-item/index.vue",
             "symbol": "default"
           }
         },
@@ -2528,7 +2528,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.dropdown-link/index.vue",
+            "module": "vueless/ui.dropdown-link/index.vue",
             "symbol": "default"
           }
         },
@@ -2671,7 +2671,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.dropdown-list/index.vue",
+            "module": "vueless/ui.dropdown-list/index.vue",
             "symbol": "default"
           }
         },
@@ -2740,7 +2740,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-empty/index.vue",
+            "module": "vueless/ui.text-empty/index.vue",
             "symbol": "default"
           }
         },
@@ -2803,7 +2803,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-file/index.vue",
+            "module": "vueless/ui.text-file/index.vue",
             "symbol": "default"
           }
         },
@@ -2871,7 +2871,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-files/index.vue",
+            "module": "vueless/ui.text-files/index.vue",
             "symbol": "default"
           }
         },
@@ -2957,7 +2957,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-group/index.vue",
+            "module": "vueless/ui.container-group/index.vue",
             "symbol": "default"
           }
         },
@@ -2991,7 +2991,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-groups/index.vue",
+            "module": "vueless/ui.container-groups/index.vue",
             "symbol": "default"
           }
         },
@@ -3069,7 +3069,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-header/index.vue",
+            "module": "vueless/ui.text-header/index.vue",
             "symbol": "default"
           }
         },
@@ -3198,7 +3198,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.image-icon/index.vue",
+            "module": "vueless/ui.image-icon/index.vue",
             "symbol": "default"
           }
         },
@@ -3398,7 +3398,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input/index.vue",
+            "module": "vueless/ui.form-input/index.vue",
             "symbol": "default"
           }
         },
@@ -3538,7 +3538,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input-file/index.vue",
+            "module": "vueless/ui.form-input-file/index.vue",
             "symbol": "default"
           }
         },
@@ -3747,7 +3747,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input-money/index.vue",
+            "module": "vueless/ui.form-input-money/index.vue",
             "symbol": "default"
           }
         },
@@ -3834,7 +3834,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input-number/index.vue",
+            "module": "vueless/ui.form-input-number/index.vue",
             "symbol": "default"
           }
         },
@@ -3958,7 +3958,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input-rating/index.vue",
+            "module": "vueless/ui.form-input-rating/index.vue",
             "symbol": "default"
           }
         },
@@ -4106,7 +4106,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-input-search/index.vue",
+            "module": "vueless/ui.form-input-search/index.vue",
             "symbol": "default"
           }
         },
@@ -4213,7 +4213,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-label/index.vue",
+            "module": "vueless/ui.form-label/index.vue",
             "symbol": "default"
           }
         },
@@ -4380,7 +4380,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.button-link/index.vue",
+            "module": "vueless/ui.button-link/index.vue",
             "symbol": "default"
           }
         },
@@ -4408,7 +4408,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.other-loader/index.vue",
+            "module": "vueless/ui.other-loader/index.vue",
             "symbol": "default"
           }
         },
@@ -4426,7 +4426,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.loader-rendering/index.vue",
+            "module": "vueless/ui.loader-rendering/index.vue",
             "symbol": "default"
           }
         },
@@ -4463,7 +4463,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.other-loader-top/index.vue",
+            "module": "vueless/ui.other-loader-top/index.vue",
             "symbol": "default"
           }
         },
@@ -4541,7 +4541,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.image-logo/index.vue",
+            "module": "vueless/ui.image-logo/index.vue",
             "symbol": "default"
           }
         },
@@ -4733,7 +4733,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-modal/index.vue",
+            "module": "vueless/ui.container-modal/index.vue",
             "symbol": "default"
           }
         },
@@ -4858,7 +4858,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-modal-confirm/index.vue",
+            "module": "vueless/ui.container-modal-confirm/index.vue",
             "symbol": "default"
           }
         },
@@ -5012,7 +5012,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-money/index.vue",
+            "module": "vueless/ui.text-money/index.vue",
             "symbol": "default"
           }
         },
@@ -5040,7 +5040,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.notify/index.vue",
+            "module": "vueless/ui.notify/index.vue",
             "symbol": "default"
           }
         },
@@ -5170,7 +5170,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-page/index.vue",
+            "module": "vueless/ui.container-page/index.vue",
             "symbol": "default"
           }
         },
@@ -5325,7 +5325,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.navigation-pagination/index.vue",
+            "module": "vueless/ui.navigation-pagination/index.vue",
             "symbol": "default"
           }
         },
@@ -5456,7 +5456,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-radio/index.vue",
+            "module": "vueless/ui.form-radio/index.vue",
             "symbol": "default"
           }
         },
@@ -5567,7 +5567,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-radio-card/index.vue",
+            "module": "vueless/ui.form-radio-card/index.vue",
             "symbol": "default"
           }
         },
@@ -5677,7 +5677,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-radio-group/index.vue",
+            "module": "vueless/ui.form-radio-group/index.vue",
             "symbol": "default"
           }
         },
@@ -5720,7 +5720,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.container-row/index.vue",
+            "module": "vueless/ui.container-row/index.vue",
             "symbol": "default"
           }
         },
@@ -6013,7 +6013,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-select/index.vue",
+            "module": "vueless/ui.form-select/index.vue",
             "symbol": "default"
           }
         },
@@ -6077,7 +6077,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.navigation-stepper/index.vue",
+            "module": "vueless/ui.navigation-stepper/index.vue",
             "symbol": "default"
           }
         },
@@ -6200,7 +6200,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-switch/index.vue",
+            "module": "vueless/ui.form-switch/index.vue",
             "symbol": "default"
           }
         },
@@ -6261,7 +6261,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.navigation-tab/index.vue",
+            "module": "vueless/ui.navigation-tab/index.vue",
             "symbol": "default"
           }
         },
@@ -6435,7 +6435,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.data-table/index.vue",
+            "module": "vueless/ui.data-table/index.vue",
             "symbol": "default"
           }
         },
@@ -6477,7 +6477,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.data-table-cell/index.vue",
+            "module": "vueless/ui.data-table-cell/index.vue",
             "symbol": "default"
           }
         },
@@ -6551,7 +6551,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.navigation-tabs/index.vue",
+            "module": "vueless/ui.navigation-tabs/index.vue",
             "symbol": "default"
           }
         },
@@ -6621,7 +6621,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.text-block/index.vue",
+            "module": "vueless/ui.text-block/index.vue",
             "symbol": "default"
           }
         },
@@ -6805,7 +6805,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-textarea/index.vue",
+            "module": "vueless/ui.form-textarea/index.vue",
             "symbol": "default"
           }
         },
@@ -6888,7 +6888,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.button-toggle/index.vue",
+            "module": "vueless/ui.button-toggle/index.vue",
             "symbol": "default"
           }
         },
@@ -6989,7 +6989,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.button-toggle-item/index.vue",
+            "module": "vueless/ui.button-toggle-item/index.vue",
             "symbol": "default"
           }
         },
@@ -7002,7 +7002,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.viewport/index.vue",
+            "module": "vueless/ui.viewport/index.vue",
             "symbol": "default"
           }
         },
@@ -7081,7 +7081,7 @@
             }
           ],
           "source": {
-            "module": "./src/ui.form-calendar/components/YearView.vue",
+            "module": "vueless/ui.form-calendar/components/YearView.vue",
             "symbol": "default"
           }
         }
