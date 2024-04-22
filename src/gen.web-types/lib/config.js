@@ -27,6 +27,6 @@ export async function extractConfig(cwd, watch = false, configFileFromCmd, pathA
     packageVersion: packageJson["version"],
     typesSyntax: "typescript",
     descriptionMarkup: "markdown",
-    ...additionalConfig,
+    ...additionalConfig.default,
   };
 }

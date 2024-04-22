@@ -216,6 +216,8 @@ async function extractInformation(absolutePath, config) {
     description += block;
   });
 
+  const componentPath = ensureRelative(path.relative(config.cwd, absolutePath));
+
   return {
     tags: [
       {
@@ -243,7 +245,7 @@ async function extractInformation(absolutePath, config) {
           description: slot.description,
         })),
         source: {
-          module: ensureRelative(path.relative(config.cwd, absolutePath)).substring(1), // TODO: maybe substring should be removed when it turns to package
+          module: config.isVuelessEnv ? componentPath.replace("./src", "vueless") : componentPath,
           symbol: doc.exportName,
         },
       },

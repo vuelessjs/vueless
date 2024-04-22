@@ -5,6 +5,8 @@ storybook-static
 dist
 src/assets
 
+yarn.lock
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

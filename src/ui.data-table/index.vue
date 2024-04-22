@@ -277,7 +277,7 @@ import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
 import UCheckbox from "../ui.form-checkbox";
-import ULoaderTop from "../ui.loader-top";
+import ULoaderTop from "../ui.other-loader-top";
 import UTableCell from "../ui.data-table-cell";
 
 import UIService from "../service.ui";
