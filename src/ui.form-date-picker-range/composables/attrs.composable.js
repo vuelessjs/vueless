@@ -25,11 +25,12 @@ export default function useAttrs(props, { isShownMenu }) {
       calendarAttrs.value.config = {};
     }
 
-    if (calendarAttrs.value.config.i18n) {
+    if (calendarAttrs.value.config.i18n || !props.config.i18n) {
       return;
     }
 
     calendarAttrs.value.config.i18n = {
+      ...config.value.i18n,
       weekdays: {
         shorthand: { ...config.value.i18n.weekdays.shorthand },
         longhand: { ...config.value.i18n.weekdays.longhand },
@@ -39,6 +40,16 @@ export default function useAttrs(props, { isShownMenu }) {
         longhand: { ...config.value.i18n.months.longhand },
       },
     };
+
+    if (props.config.i18n.weekdays.userFormat) {
+      calendarAttrs.value.config.i18n.userFormat = {
+        ...config.value.i18n.weekdays.userFormat,
+      };
+    }
+
+    if (props.config.i18n.months.userFormat) {
+      calendarAttrs.value.config.i18n.userFormat = { ...config.value.i18n.months.userFormat };
+    }
   });
 
   const inputAttrs = computed(() => {
