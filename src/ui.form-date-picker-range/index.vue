@@ -139,6 +139,7 @@
             ref="rangeInputStartRef"
             v-model="rangeStart"
             :error="inputRangeStartError"
+            size="sm"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
@@ -149,6 +150,7 @@
             ref="rangeInputEndRef"
             v-model="rangeEnd"
             :error="inputRangeEndError"
+            size="sm"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
@@ -205,6 +207,7 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
+  isSameMonth,
 } from "../ui.form-calendar/services/date.service";
 
 import {
@@ -427,6 +430,24 @@ const locale = computed(() => {
   return formattedLocale;
 });
 
+const userFormatLocale = computed(() => {
+  const currentLocale = props.config.i18n || config.value.i18n;
+
+  const formattedLocale = {
+    ...currentLocale,
+    months: {
+      shorthand: getSortedLocale(currentLocale.months.shorthand, LOCALE_TYPE.month),
+      longhand: getSortedLocale(currentLocale.months.userFormat, LOCALE_TYPE.month),
+    },
+    weekdays: {
+      shorthand: getSortedLocale(currentLocale.weekdays.shorthand, LOCALE_TYPE.day),
+      longhand: getSortedLocale(currentLocale.weekdays.userFormat, LOCALE_TYPE.day),
+    },
+  };
+
+  return formattedLocale;
+});
+
 const periods = computed(() => [
   {
     name: PERIOD.week,
@@ -489,9 +510,9 @@ const userFormatDate = computed(() => {
   const to = localValue.value.to !== null ? getDateFromUnixTimestamp(localValue.value.to) : null;
 
   if (isDefaultTitle) {
-    let startMonthName = locale.value.months.longhand[from.getMonth()];
+    let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
     let startYear = from.getFullYear();
-    let endMonthName = locale.value.months.longhand[to?.getMonth()];
+    let endMonthName = userFormatLocale.value.months.longhand[to?.getMonth()];
     let endYear = to?.getFullYear();
 
     if (startMonthName === endMonthName && endMonthName === endYear) {
@@ -502,22 +523,24 @@ const userFormatDate = computed(() => {
       startYear = "";
     }
 
-    const fromTitle = `${from.getDate()} ${startMonthName} ${startYear}`;
+    const fromTitle = isSameMonth(from, to)
+      ? from.getDate()
+      : `${from.getDate()} ${startMonthName} ${startYear}`;
     const toTitle = to ? `${to.getDate()} ${endMonthName} ${endYear}` : "";
 
     title = `${fromTitle} – ${toTitle}`;
   }
 
   if (isPeriod.value.month) {
-    const startMonthName = locale.value.months.longhand[from.getMonth()];
+    const startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
     const startYear = from.getFullYear();
 
     title = `${startMonthName} ${startYear}`;
   }
 
   if (isPeriod.value.quarter || isPeriod.value.year) {
-    const startMonthName = locale.value.months.longhand[from.getMonth()];
-    const endMonthName = locale.value.months.longhand[to?.getMonth()];
+    const startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
+    const endMonthName = userFormatLocale.value.months.longhand[to?.getMonth()];
     const endYear = to?.getFullYear();
 
     const fromTitle = `${from.getDate()} ${startMonthName}`;
@@ -745,8 +768,11 @@ function onBlur(event) {
 
 function onBlurRangeInput(event) {
   const { relatedTarget } = event;
+  const isRangeInputFocus = relatedTarget?.name === rangeInputName.value;
 
-  menuRef.value.focus();
+  if (!isRangeInputFocus) {
+    menuRef.value.focus();
+  }
 
   if (!menuRef.value.contains(relatedTarget) && !isHoverEvent.value) {
     deactivate();

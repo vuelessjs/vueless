@@ -358,6 +358,24 @@ const locale = computed(() => {
   return formattedLocale;
 });
 
+const userFormatLocale = computed(() => {
+  const currentLocale = props.config.i18n || config.value.i18n;
+
+  const formattedLocale = {
+    ...currentLocale,
+    months: {
+      shorthand: getSortedLocale(currentLocale.months.shorthand, LOCALE_TYPE.month),
+      longhand: getSortedLocale(currentLocale.months.userFormat, LOCALE_TYPE.month),
+    },
+    weekdays: {
+      shorthand: getSortedLocale(currentLocale.weekdays.shorthand, LOCALE_TYPE.day),
+      longhand: getSortedLocale(currentLocale.weekdays.userFormat, LOCALE_TYPE.day),
+    },
+  };
+
+  return formattedLocale;
+});
+
 const isTimepickerEnabled = computed(() => {
   return props.timepicker && !props.range;
 });
@@ -448,9 +466,9 @@ const formattedTime = computed(() => {
 });
 
 const userFormattedDate = computed(() => {
-  const date = formatDate(selectedDate.value, props.userFormat, locale.value);
+  const date = formatDate(selectedDate.value, props.userFormat, userFormatLocale.value);
   const dateTo = props.range
-    ? formatDate(selectedDateTo.value, props.userFormat, locale.value)
+    ? formatDate(selectedDateTo.value, props.userFormat, userFormatLocale.value)
     : undefined;
 
   if (isTimepickerEnabled.value && selectedDate.value) {
