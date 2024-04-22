@@ -9,22 +9,24 @@
     :data-cy="dataCy"
     v-bind="labelAttrs"
   >
-    <input
-      :id="id"
-      type="checkbox"
-      :value="checkboxValue"
-      :true-value="trueValue"
-      :false-value="falseValue"
-      :name="checkboxName"
-      :checked="isChecked"
-      :disabled="disabled"
-      v-bind="checkboxAttrs"
-      @change="onChange"
-    />
+    <div v-bind="inputWrapperAttrs">
+      <input
+        :id="id"
+        type="checkbox"
+        :value="checkboxValue"
+        :true-value="trueValue"
+        :false-value="falseValue"
+        :name="checkboxName"
+        :checked="isChecked"
+        :disabled="disabled"
+        v-bind="checkboxAttrs"
+        @change="onChange"
+      />
 
-    <label v-if="isChecked" v-bind="iconWrapperCellAttrs" :for="id">
-      <UIcon :name="iconName" :size="iconSize" color="white" v-bind="iconAttrs" />
-    </label>
+      <label v-if="isChecked" v-bind="iconWrapperCellAttrs" :for="id">
+        <UIcon :name="iconName" :size="iconSize" color="white" v-bind="iconAttrs" />
+      </label>
+    </div>
 
     <template #footer>
       <slot name="footer" />
@@ -182,8 +184,8 @@ const emit = defineEmits(["update:modelValue", "input"]);
 
 const checkboxName = ref("");
 
-const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = useAttrs(props);
-
+const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs, inputWrapperAttrs } =
+  useAttrs(props);
 const iconName = computed(() => {
   return props.partial ? config.value.partialIconName : config.value.selectedIconName;
 });

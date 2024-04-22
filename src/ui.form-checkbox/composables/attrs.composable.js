@@ -46,6 +46,7 @@ export function useAttrs(props) {
   const iconWrapperCellAttrs = getAttrs("iconWrapper", { classes: iconWrapperClasses });
   const iconAttrs = getAttrs("icon", { isComponent: true });
   const checkboxAttrs = getAttrs("checkbox", { classes: checkboxClasses });
+  const inputWrapperAttrs = getAttrs("inputWrapper");
 
   return {
     config,
@@ -53,5 +54,6 @@ export function useAttrs(props) {
     iconWrapperCellAttrs,
     labelAttrs,
     iconAttrs,
+    inputWrapperAttrs,
   };
 }

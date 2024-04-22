@@ -2,8 +2,9 @@ export default /*tw*/ {
   label: "w-auto max-w-max relative gap-0",
   partialIconName: "remove",
   selectedIconName: "check",
+  inputWrapper: "relative",
   iconWrapper: {
-    base: "flex items-center justify-center absolute rounded bg-{color}-500",
+    base: "flex items-center hover:cursor-pointer top-0 left-0 justify-center absolute rounded bg-{color}-500",
     variants: {
       size: {
         sm: "size-5",
@@ -19,7 +20,7 @@ export default /*tw*/ {
   checkbox: {
     base: `
       border border-solid border-{color}-300 rounded bg-white
-      hover:border-{color}-400
+      hover:border-{color}-400 hover:cursor-pointer
       focus:border-{color}-500 focus:ring-4 focus:ring-{color}-200 focus:ring-offset-0
       active:border-{color}-500 active:bg-{color}-500
       checked:border-{color}-500 checked:bg-{color}-500 checked:hover:bg-{color}-500
