@@ -11,7 +11,7 @@ import "./index.pcss";
 
 // Common stores
 import loader from "vueless/ui.loader-rendering/store";
-import loaderTop from "vueless/ui.loader-top/store";
+import loaderTop from "vueless/ui.other-loader-top/store";
 import breakpoint from "vueless/ui.viewport/store";
 
 // Create store instance
