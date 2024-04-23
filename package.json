@@ -15,7 +15,7 @@
     "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:fix": "eslint --ext .vue,.js,.ts --fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:ci": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore --max-warnings=0",
-    "release": "release-it patch --ci --npm.skipChecks --npm.publishArgs=\"--registry=https://registry.npmjs.org\"",
+    "release": "release-it patch --ci",
     "release:production": "release-it minor --ci",
     "release:production-major": "release-it major --ci",
     "sb:dev-full": "STORYBOOK_VUELESS_ENV=1 STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
