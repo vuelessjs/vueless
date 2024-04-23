@@ -7,9 +7,9 @@
   "author": "Johnny Grid",
   "main": "index.js",
   "type": "module",
-  "private": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/ tests/",
