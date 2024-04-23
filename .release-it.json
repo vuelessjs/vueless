@@ -9,7 +9,7 @@
   "github": {
     "release": false,
     "publishPath": "./dist",
-    "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
+    "tokenRef": "GITHUB_TOKEN"
   },
   "npm": {
     "publish": false
