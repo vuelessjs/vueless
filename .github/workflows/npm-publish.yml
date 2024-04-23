@@ -34,7 +34,8 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: yarn install
-      - run: yarn release
+      - run: yarn vueless:prepare
+      - run: yarn release --git.tag --gitlab.release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}

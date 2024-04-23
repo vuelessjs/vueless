@@ -1,12 +1,17 @@
 {
   "name": "vueless",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
   "author": "Johnny Grid",
   "main": "index.js",
   "type": "module",
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:fix": "eslint --ext .vue,.js,.ts --fix --ignore-path .eslintignore src/ .storybook/ tests/",
@@ -18,8 +23,7 @@
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
     "sb:build": "STORYBOOK_VUELESS_ENV=1 storybook build",
     "sb:preview": "vite preview --host --outDir=storybook-static",
-    "vueless:update": "yarn add -D file:../vite-plugin-vueless file:../vueless-storybook",
-    "vueless:prepare": "node src/gen.web-types && rm -rf dist && mkdir -p dist && cp -r src/* package.json LICENSE web-types.json README.md  dist/"
+    "vueless:prepare": "node src/gen.web-types && rm -rf dist && mkdir -p dist && cp -r src/* package.json LICENSE web-types.json README.md dist/ && rm -rf dist/assets"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.2.1",
@@ -54,6 +58,7 @@
     "postcss": "^8.4.7",
     "prettier": "^3.1.0",
     "prettier-eslint": "^16.3.0",
+    "release-it": "^17.2.0",
     "vite": "^5.2.10",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
