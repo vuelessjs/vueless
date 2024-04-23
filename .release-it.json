@@ -8,11 +8,10 @@
   },
   "github": {
     "release": false,
-    "publishPath": "./dist",
     "tokenRef": "GITHUB_TOKEN"
   },
   "npm": {
-    "publish": false
+    "publishPath": "./dist"
   },
   "hooks": {
     "after:release": "echo Successfully released ${name} v${version}."
