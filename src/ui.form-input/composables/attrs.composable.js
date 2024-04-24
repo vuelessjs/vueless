@@ -31,7 +31,7 @@ export function useAttrs(props, { inputPasswordClasses }) {
     cvaInput({
       size: props.size,
       type: props.type,
-      labelOutside: props.labelOutside,
+      labelAlign: props.labelAlign,
       label: Boolean(props.label),
       error: Boolean(props.error),
     }),
