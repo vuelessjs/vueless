@@ -17,10 +17,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: yarn install
-      - run: yarn lint:ci
+      - run: npm install
+      - run: npm run lint:ci
 
-  release-storybook:
+  release-ui:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: apt-get install lftp
+      - run: sudo apt-get install -y lftp
       - run: npm install
       - run: npm run sb:build
       - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./"
