@@ -53,9 +53,9 @@ export default /*tw*/ {
       { labelAlign: "top", size: "sm", class: "py-2" },
       { labelAlign: "top", size: "md", class: "py-2.5" },
       { labelAlign: "top", size: "lg", class: "py-3" },
-      { labelAlign: "topInside", label: false, class: "py-2" },
-      { labelAlign: "topInside", label: false, class: "py-2.5" },
-      { labelAlign: "topInside", label: false, class: "py-3" },
+      { labelAlign: "topInside", label: false, size: "sm", class: "py-2" },
+      { labelAlign: "topInside", label: false, size: "md", class: "py-2.5" },
+      { labelAlign: "topInside", label: false, size: "lg", class: "py-3" },
     ],
   },
   defaultVariants: {
