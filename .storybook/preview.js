@@ -36,7 +36,10 @@ export default {
     docs,
     backgrounds,
     options: {
-      storySort: (a, b) => (a.id === b.id ? 0 : a.name === "Docs" && a.id.localeCompare(b.id, undefined, { numeric: true })),
+      storySort: (a, b) =>
+        a.id === b.id
+          ? 0
+          : a.name === "Docs" && a.id.localeCompare(b.id, undefined, { numeric: true }),
     },
   },
 };
