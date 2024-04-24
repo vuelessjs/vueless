@@ -13,42 +13,45 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - run: npm install
+          cache: 'npm'
+      - run: npm ci
       - run: npm run lint:ci
 
   release-ui:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
       - run: sudo apt-get install -y lftp
-      - run: npm install
+      - run: npm ci
       - run: npm run sb:build
-      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --delete-first ./storybook-static ./www"
+      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./www"
 
   release-npm:
     needs: release-ui
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
           registry-url: https://registry.npmjs.org/
       - name: git config
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: npm install
+      - run: npm ci
       - run: npm run vueless:prepare
       - run: npm run release --git.tag --github.release
         env:
