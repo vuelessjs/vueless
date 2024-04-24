@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
+import path from "path";
 // Plugins
 import Vue from "@vitejs/plugin-vue";
 import Eslint from "vite-plugin-eslint";
@@ -14,20 +14,11 @@ export default defineConfig({
   ],
   resolve: {
     extensions: [".vue", ".mjs", ".js", ".ts", ".mdx"],
-    alias: [
-      {
-        find: "vueless",
-        replacement: resolve(__dirname, "./src"),
-      },
-      {
-        find: "../web-types.json",
-        replacement: resolve(__dirname, "./web-types.json"),
-      },
-      {
-        find: "../../../vueless.config.js",
-        replacement: resolve(__dirname, "./vueless.config.js"),
-      },
-    ],
+    alias: {
+      vueless: path.resolve(__dirname, "./src"),
+      "../web-types.json": path.resolve(__dirname, "./web-types.json"),
+      "../../../vueless.config.js": path.resolve(__dirname, "./vueless.config.js"),
+    },
   },
   optimizeDeps: {
     include: [

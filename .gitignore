@@ -6,6 +6,7 @@ dist
 src/assets
 
 yarn.lock
+package-lock.json
 
 # Log files
 npm-debug.log*

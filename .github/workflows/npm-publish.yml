@@ -30,7 +30,9 @@ jobs:
           node-version: 18
       - run: sudo apt-get install -y lftp
       - run: npm install
+      - run: node .github/helpers/replace
       - run: npm run sb:build
+      - run: node .github/helpers/replace revert
       - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./"
 
   release-npm:
