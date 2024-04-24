@@ -3,8 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "../web-types.json":  ["../../web-types.json"],
-      "../../../vueless.config.js": ["../../vueless.config.js"],
       "vueless": ["./src/*"]
     }
   }

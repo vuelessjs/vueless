@@ -1,6 +1,6 @@
 import colors from "tailwindcss/colors.js";
 import forms from "@tailwindcss/forms";
-import vuelessConfig from "../../../vueless.config.js";
+import vuelessConfig from "../../vueless.config.js";
 
 export const grayColors = ["slate", "gray", "zinc", "neutral", "stone"];
 export const brandColors = [
