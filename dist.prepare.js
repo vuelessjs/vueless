@@ -2,11 +2,10 @@ import { readdir, stat, readFile, writeFile } from "fs/promises";
 import { fileURLToPath } from "url";
 import { join, dirname } from "path";
 
-// Get the directory of the current ES module file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const searchPath = join(__dirname, "src"); // Assuming the src folder is in the same directory as this script
+const searchPath = join(__dirname, "dist");
 
 async function replaceTextInFiles(searchString, replaceString, directory) {
   try {
@@ -33,18 +32,6 @@ async function replaceTextInFiles(searchString, replaceString, directory) {
   }
 }
 
-const isRevert = !!process.argv[2];
-
-const vuelessEnvConfig = `"../../vueless.config.js"`;
-const npmEnvConfig = `"../../../vueless.config.js"`;
-
-const vuelessEnvWebTypes = `"../../web-types.json"`;
-const npmEnvWebTypes = `"../web-types.json"`;
-
-if (isRevert) {
-  await replaceTextInFiles(npmEnvConfig, vuelessEnvConfig, searchPath);
-  await replaceTextInFiles(npmEnvWebTypes, vuelessEnvWebTypes, searchPath);
-} else {
-  await replaceTextInFiles(vuelessEnvConfig, npmEnvConfig, searchPath);
-  await replaceTextInFiles(vuelessEnvWebTypes, npmEnvWebTypes, searchPath);
-}
+// Replace related paths to vueless.config.js and web-types.json in npm package source.
+await replaceTextInFiles(`"../../vueless.config.js"`, `"../../../vueless.config.js"`, searchPath);
+await replaceTextInFiles(`"../../web-types.json"`, `"../web-types.json"`, searchPath);
