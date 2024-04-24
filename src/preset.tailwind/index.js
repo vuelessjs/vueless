@@ -62,6 +62,13 @@ export function vuelessPreset() {
           brand: { ...brandPalette, DEFAULT: brandColor },
           gray: grayPalette,
         },
+        spacing: {
+          "safe-top": "env(safe-area-inset-top)",
+          "safe-bottom": "env(safe-area-inset-bottom)",
+          "safe-left": "env(safe-area-inset-left)",
+          "safe-right": "env(safe-area-inset-right)",
+          "mobile-menu-height": "3.5rem",
+        },
         fontSize: {
           "2xs": ["0.625rem", "0.875rem"], //  10px
         },
