@@ -31,7 +31,7 @@ jobs:
       - run: apt-get install lftp
       - run: npm install
       - run: npm run sb:build
-      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ variables.FTP_USERNAME }},${{ variables.FTP_PASSWORD }} ${{ variables.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./"
+      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./"
 
   release-npm:
     needs: build
