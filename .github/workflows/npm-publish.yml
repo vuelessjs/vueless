@@ -33,7 +33,7 @@ jobs:
       - run: node .github/helpers/replace
       - run: npm run sb:build
       - run: node .github/helpers/replace revert
-      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./"
+      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --delete-first ./storybook-static ./www"
 
   release-npm:
     needs: release-ui
