@@ -49,14 +49,13 @@ export default /*tw*/ {
         focus-within:border-red-500 focus-within:ring-red-100
       `,
     },
-    // Note: Left slot width may affect horizontal label position.
     compoundVariants: [
-      { labelOutside: true, size: "sm", class: "py-2" },
-      { labelOutside: true, size: "md", class: "py-2.5" },
-      { labelOutside: true, size: "lg", class: "py-3" },
-      { labelOutside: false, label: false, size: "sm", class: "py-2" },
-      { labelOutside: false, label: false, size: "md", class: "py-2.5" },
-      { labelOutside: false, label: false, size: "lg", class: "py-3" },
+      { labelAlign: "top", size: "sm", class: "py-2" },
+      { labelAlign: "top", size: "md", class: "py-2.5" },
+      { labelAlign: "top", size: "lg", class: "py-3" },
+      { labelAlign: "topInside", label: false, size: "sm", class: "py-2" },
+      { labelAlign: "topInside", label: false, size: "md", class: "py-2.5" },
+      { labelAlign: "topInside", label: false, size: "lg", class: "py-3" },
     ],
   },
   defaultVariants: {

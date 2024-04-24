@@ -30,12 +30,12 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelPlacement: "top", size: "sm", class: "pt-2" },
-      { labelPlacement: "top", size: "md", class: "pt-2.5" },
-      { labelPlacement: "top", size: "lg", class: "pt-3" },
-      { labelPlacement: "topInside", label: false, class: "pt-2" },
-      { labelPlacement: "topInside", label: false, class: "pt-2.5" },
-      { labelPlacement: "topInside", label: false, class: "pt-3" },
+      { labelAlign: "top", size: "sm", class: "pt-2" },
+      { labelAlign: "top", size: "md", class: "pt-2.5" },
+      { labelAlign: "top", size: "lg", class: "pt-3" },
+      { labelAlign: "topInside", label: false, class: "pt-2" },
+      { labelAlign: "topInside", label: false, class: "pt-2.5" },
+      { labelAlign: "topInside", label: false, class: "pt-3" },
     ],
   },
   textarea: {
