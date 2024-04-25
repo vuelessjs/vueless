@@ -151,7 +151,7 @@
           v-bind="caretClearTextAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
-          v-text="config.i18n.clear"
+          v-text="config.$messages.clear || t('uSelect.clear')"
         />
       </div>
 
@@ -189,11 +189,15 @@
         </template>
 
         <template #empty="{ emptyStyles }">
-          <span v-show="isEmpty" :class="emptyStyles" v-text="config.i18n.listIsEmpty" />
+          <span
+            v-show="isEmpty"
+            :class="emptyStyles"
+            v-text="config.$messages.listIsEmpty || t('uSelect.listIsEmpty')"
+          />
           <span
             v-show="options.length === 0 && !search && !isEmpty"
             :class="emptyStyles"
-            v-text="config.i18n.noDataToShow"
+            v-text="config.$messages.noDataToShow || t('uSelect.noDataToShow')"
           />
         </template>
       </UDropdownList>
@@ -214,6 +218,8 @@ import SelectService from "./services/select.service";
 import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 import { USelect, DIRECTION, KEY_CODES } from "./constants";
+
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USelect", inheritAttrs: false });
@@ -438,6 +444,7 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
+const { t } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
@@ -486,7 +493,9 @@ const {
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const inputPlaceholder = computed(() => {
-  return props.multiple && localValue.value.length ? config.value.i18n.addMore : props.placeholder;
+  const message = config.value.$messages.noDataToShow || t("uSelect.addMore");
+
+  return props.multiple && localValue.value.length ? message : props.placeholder;
 });
 
 const dropdownValue = computed({
@@ -572,7 +581,9 @@ if (props.addOption) {
   document.addEventListener("keydown", onKeydownAddOption);
 }
 
-onMounted(() => setLabelPosition());
+onMounted(() => {
+  setLabelPosition();
+});
 
 const onSearchChange = debounce(async function (query) {
   emit("searchChange", query);
