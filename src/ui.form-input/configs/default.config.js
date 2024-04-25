@@ -1,12 +1,11 @@
 export default /*tw*/ {
-  wrapper: "relative w-full",
+  label: "relative w-full",
   inputWrapper: "flex relative w-full",
   rightSlot: "flex items-center justify-end whitespace-nowrap pr-4 rounded-r-lg rounded-l-none",
   leftSlot: "flex items-center justify-end whitespace-nowrap pl-4 rounded-l-lg rounded-r-none",
   passwordIcon: "",
   passwordVisibleIconName: "visibility",
   passwordHiddenIconName: "visibility_off",
-  label: "",
   block: {
     base: `
       rounded-lg border border-solid border-gray-300 bg-white !opacity-100 relative flex
@@ -40,9 +39,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        sm: "pt-6 text-sm placeholder:text-sm placeholder:font-normal",
-        md: "pt-7 text-base placeholder:text-base placeholder:font-normal",
-        lg: "pt-8 text-lg placeholder:text-lg placeholder:font-normal",
+        sm: "pt-2 pb-2 text-sm placeholder:text-sm placeholder:font-normal",
+        md: "pt-2.5 pb-2.5 text-base placeholder:text-base placeholder:font-normal",
+        lg: "pt-3 pb-3 text-lg placeholder:text-lg placeholder:font-normal",
       },
       error: `
         border-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-100
@@ -50,12 +49,9 @@ export default /*tw*/ {
       `,
     },
     compoundVariants: [
-      { labelAlign: "top", size: "sm", class: "py-2" },
-      { labelAlign: "top", size: "md", class: "py-2.5" },
-      { labelAlign: "top", size: "lg", class: "py-3" },
-      { labelAlign: "topInside", label: false, size: "sm", class: "py-2" },
-      { labelAlign: "topInside", label: false, size: "md", class: "py-2.5" },
-      { labelAlign: "topInside", label: false, size: "lg", class: "py-3" },
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-6 pb-2" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-7 pb-2.5" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-8 pb-3" },
     ],
   },
   defaultVariants: {

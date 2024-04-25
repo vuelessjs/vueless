@@ -1,72 +1,70 @@
 <template>
-  <div v-bind="wrapperAttrs">
-    <ULabel
-      ref="labelComponent"
-      :for="id"
-      :label="label"
-      :description="description"
-      :disabled="disabled"
-      :error="error"
-      :size="size"
-      :align="labelAlign"
-      v-bind="labelAttrs"
-    >
-      <label :for="id" v-bind="blockAttrs">
-        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper" v-bind="leftSlotAttrs">
-          <!-- @slot Use it to add some component before text. -->
-          <slot name="left" />
-        </span>
+  <ULabel
+    ref="labelComponent"
+    :for="id"
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    v-bind="labelAttrs"
+  >
+    <label :for="id" v-bind="blockAttrs">
+      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper" v-bind="leftSlotAttrs">
+        <!-- @slot Use it to add some component before text. -->
+        <slot name="left" />
+      </span>
 
-        <span v-bind="inputWrapperAttrs">
-          <input
-            :id="id"
-            ref="input"
-            v-model="inputValue"
-            :placeholder="placeholder"
-            :type="inputType"
-            :readonly="readonly"
-            :disabled="disabled"
-            :maxlength="maxLength"
-            :inputmode="inputMode"
-            :data-cy="dataCy"
-            v-bind="inputAttrs"
-            @focus="onFocus"
-            @blur="onBlur"
-            @input="onInput"
-            @change="onChange"
-            @mousedown="onMousedown"
-            @click="onClick"
+      <span v-bind="inputWrapperAttrs">
+        <input
+          :id="id"
+          ref="input"
+          v-model="inputValue"
+          :placeholder="placeholder"
+          :type="inputType"
+          :readonly="readonly"
+          :disabled="disabled"
+          :maxlength="maxLength"
+          :inputmode="inputMode"
+          :data-cy="dataCy"
+          v-bind="inputAttrs"
+          @focus="onFocus"
+          @blur="onBlur"
+          @input="onInput"
+          @change="onChange"
+          @mousedown="onMousedown"
+          @click="onClick"
+        />
+      </span>
+
+      <label
+        v-if="hasSlotContent($slots['right-icon']) || isTypePassword"
+        v-bind="rightSlotAttrs"
+        :for="id"
+      >
+        <!-- @slot Use it to add icon after text. -->
+        <slot name="right-icon">
+          <UIcon
+            v-if="isTypePassword"
+            :name="passwordIconName"
+            color="gray"
+            interactive
+            fill
+            :data-cy="`${dataCy}-show-password`"
+            v-bind="passwordIconAttrs"
+            @click="onClickShowPassword"
           />
-        </span>
-
-        <label
-          v-if="hasSlotContent($slots['right-icon']) || isTypePassword"
-          v-bind="rightSlotAttrs"
-          :for="id"
-        >
-          <!-- @slot Use it to add icon after text. -->
-          <slot name="right-icon">
-            <UIcon
-              v-if="isTypePassword"
-              :name="passwordIconName"
-              color="gray"
-              interactive
-              fill
-              :data-cy="`${dataCy}-show-password`"
-              v-bind="passwordIconAttrs"
-              @click="onClickShowPassword"
-            />
-          </slot>
-        </label>
-
-        <span v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
-          <!-- @slot Use it to add some component after text. -->
-
-          <slot name="right" />
-        </span>
+        </slot>
       </label>
-    </ULabel>
-  </div>
+
+      <span v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
+        <!-- @slot Use it to add some component after text. -->
+
+        <slot name="right" />
+      </span>
+    </label>
+  </ULabel>
 </template>
 
 <script>
@@ -277,7 +275,6 @@ const {
   config,
   inputAttrs,
   blockAttrs,
-  wrapperAttrs,
   labelAttrs,
   passwordIconAttrs,
   leftSlotAttrs,

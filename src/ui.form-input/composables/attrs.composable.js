@@ -37,7 +37,6 @@ export function useAttrs(props, { inputPasswordClasses }) {
     }),
   );
 
-  const wrapperAttrs = getAttrs("wrapper");
   const inputWrapperAttrs = getAttrs("inputWrapper");
   const rightSlotAttrs = getAttrs("rightSlot");
   const leftSlotAttrs = getAttrs("leftSlot");
@@ -55,7 +54,6 @@ export function useAttrs(props, { inputPasswordClasses }) {
     config,
     inputAttrs,
     blockAttrs,
-    wrapperAttrs,
     labelAttrs,
     passwordIconAttrs,
     leftSlotAttrs,

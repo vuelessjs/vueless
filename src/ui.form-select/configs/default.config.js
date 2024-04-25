@@ -2,17 +2,12 @@ export default /*tw*/ {
   label: "w-full relative",
   wrapper: {
     base: `
-      pb-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
+      pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-lg border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:duration-100 hover:ease-in-out hover:focus-within:border-gray-500
       focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15] focus-within:outline-none
     `,
     variants: {
-      size: {
-        sm: "pt-6",
-        md: "pt-7",
-        lg: "pt-8",
-      },
       error: {
         true: `
           border-red-300 hover:border-red-300
@@ -25,11 +20,12 @@ export default /*tw*/ {
           focus-within:border-gray-100 focus-within:ring-0
         `,
       },
-      labelOutside: {
-        true: "pt-2",
-      },
     },
-    compoundVariants: [{ labelOutside: false, label: false, class: "pt-2.5" }],
+    compoundVariants: [
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-6" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-7" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-8" },
+    ],
   },
   innerWrapper: {
     base: "flex px-4 min-h-full w-full overflow-hidden",
@@ -46,9 +42,9 @@ export default /*tw*/ {
   caret: {
     base: "flex items-center mt-0",
     compoundVariants: [
-      { labelOutside: false, size: "sm", label: true, class: "-mt-3" },
-      { labelOutside: false, size: "md", label: true, class: "-mt-4" },
-      { labelOutside: false, size: "lg", label: true, class: "-mt-5" },
+      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-4" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-5" },
     ],
   },
   beforeCaretSlot: "",
@@ -122,6 +118,7 @@ export default /*tw*/ {
   },
   defaultVariants: {
     size: "md",
+    labelAlign: "topInside",
     openDirection: "auto",
     labelKey: "label",
     valueKey: "id",
@@ -133,6 +130,5 @@ export default /*tw*/ {
     searchable: true,
     noClear: false,
     addOption: false,
-    labelAlign: "topInside",
   },
 };

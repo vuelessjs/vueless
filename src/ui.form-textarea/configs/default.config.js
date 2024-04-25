@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "relative w-full",
+  label: "relative w-full",
   leftSlot: "flex items-center justify-center h-full w-11 absolute left-0",
   rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
   textareaWrapper: {
@@ -53,7 +53,6 @@ export default /*tw*/ {
       },
     },
   },
-  label: "",
   defaultVariants: {
     size: "md",
     type: "text",
