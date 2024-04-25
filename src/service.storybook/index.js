@@ -1,4 +1,4 @@
-import { contributions } from "../web-types.json";
+import { contributions } from "../../web-types.json";
 
 const getComponentData = (componentName) => {
   return contributions.html.tags.find((item) => item.name === componentName);

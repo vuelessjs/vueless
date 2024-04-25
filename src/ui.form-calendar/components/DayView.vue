@@ -210,16 +210,25 @@ function getDay(date, dayNumber) {
 }
 
 function getDayClasses(day) {
-  if (isToday(day) && props.selectedDate === null) {
+  const isNotSelectedDate =
+    (!isSelectedDay(day) && !isSelectedToDay(day)) || props.selectedDate === null;
+
+  if (isToday(day) && isNotSelectedDate) {
     return [currentDayAttrs.value.class];
   }
 
   if (props.range && isSelectedDay(day)) {
-    return [inRangeFirstDayAttrs.value.class];
+    return [
+      inRangeFirstDayAttrs.value.class,
+      isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
+    ];
   }
 
   if (props.range && isSelectedToDay(day)) {
-    return [inRangeLastDayAttrs.value.class];
+    return [
+      inRangeLastDayAttrs.value.class,
+      isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
+    ];
   }
 
   if (

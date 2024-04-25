@@ -31,13 +31,12 @@ export function useAttrs(props, { inputPasswordClasses }) {
     cvaInput({
       size: props.size,
       type: props.type,
-      labelOutside: props.labelOutside,
+      labelAlign: props.labelAlign,
       label: Boolean(props.label),
       error: Boolean(props.error),
     }),
   );
 
-  const wrapperAttrs = getAttrs("wrapper");
   const inputWrapperAttrs = getAttrs("inputWrapper");
   const rightSlotAttrs = getAttrs("rightSlot");
   const leftSlotAttrs = getAttrs("leftSlot");
@@ -55,7 +54,6 @@ export function useAttrs(props, { inputPasswordClasses }) {
     config,
     inputAttrs,
     blockAttrs,
-    wrapperAttrs,
     labelAttrs,
     passwordIconAttrs,
     leftSlotAttrs,

@@ -1,0 +1,19 @@
+{
+  "git": {
+    "tag": false,
+    "tagName": "v${version}",
+    "commitMessage": "Release v${version} / [skip ci]",
+    "requireUpstream": false,
+    "requireCleanWorkingDir": false
+  },
+  "github": {
+    "release": false,
+    "tokenRef": "GITHUB_TOKEN"
+  },
+  "npm": {
+    "publishPath": "./dist"
+  },
+  "hooks": {
+    "after:release": "echo Successfully released ${name} v${version}."
+  }
+}

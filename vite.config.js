@@ -16,8 +16,6 @@ export default defineConfig({
     extensions: [".vue", ".mjs", ".js", ".ts", ".mdx"],
     alias: {
       vueless: path.resolve(__dirname, "./src"),
-      "../web-types.json": path.resolve(__dirname, "./web-types.json"),
-      "../../../vueless.config.js": path.resolve(__dirname, "./vueless.config.js"),
     },
   },
   optimizeDeps: {

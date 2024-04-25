@@ -48,13 +48,6 @@ module.exports = {
       },
     },
     {
-      files: [".storybook/preview.{js,ts}"],
-      rules: {
-        "vue/max-len": ["error", { code: 280 }],
-        "prettier/prettier": ["warn", { printWidth: 280, tabWidth: 2 }],
-      },
-    },
-    {
       files: ["**/*.{stories}.{js,ts,jsx,tsx}"],
       extends: ["plugin:storybook/recommended"],
     },

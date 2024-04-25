@@ -49,7 +49,7 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
       size: props.size,
       error: Boolean(props.error),
       disabled: props.disabled,
-      labelOutside: props.labelOutside,
+      labelAlign: props.labelAlign,
       label: Boolean(props.label),
     }),
   );
@@ -78,7 +78,7 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   const caretClasses = computed(() =>
     cvaCaret({
       size: props.size,
-      labelOutside: props.labelOutside,
+      labelAlign: props.labelAlign,
       label: Boolean(props.label),
     }),
   );

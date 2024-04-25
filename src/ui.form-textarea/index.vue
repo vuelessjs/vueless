@@ -1,54 +1,52 @@
 <template>
-  <div v-bind="wrapperAttrs">
-    <ULabel
-      ref="labelComponent"
+  <ULabel
+    ref="labelComponent"
+    :for="id"
+    :label="label"
+    :error="error"
+    :description="description"
+    :size="size"
+    :disabled="disabled"
+    :data-cy="dataCy"
+    :align="labelAlign"
+    v-bind="labelAttrs"
+  >
+    <label
+      v-if="hasSlotContent($slots['left'])"
+      ref="leftSlotWrapper"
       :for="id"
-      :label="label"
-      :error="error"
-      :description="description"
-      :size="size"
-      :disabled="disabled"
-      :data-cy="dataCy"
-      :align="labelAlign"
-      v-bind="labelAttrs"
+      v-bind="leftSlotAttrs"
     >
-      <label
-        v-if="hasSlotContent($slots['left'])"
-        ref="leftSlotWrapper"
-        :for="id"
-        v-bind="leftSlotAttrs"
-      >
-        <!-- @slot Use it to add some component before text. -->
-        <slot name="left" />
-      </label>
-      <label ref="textareaWrapper" :for="id" v-bind="textareaWrapperAttrs">
-        <textarea
-          :id="id"
-          ref="textarea"
-          v-model="localValue"
-          :value="modelValue"
-          :placeholder="placeholder"
-          :type="type"
-          :readonly="readonly"
-          :disabled="disabled"
-          :rows="rows"
-          :inputmode="inputMode"
-          :data-cy="dataCy"
-          v-bind="textareaAttrs"
-          @focus="onFocus"
-          @blur="onBlur"
-          @change="onChange"
-          @mouseleave="onMouseleave"
-          @mousedown="onMousedown"
-          @click="onClick"
-        />
-      </label>
-      <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
-        <!-- @slot Use it to add some component after text. -->
-        <slot name="right" />
-      </label>
-    </ULabel>
-  </div>
+      <!-- @slot Use it to add some component before text. -->
+      <slot name="left" />
+    </label>
+    <label ref="textareaWrapper" :for="id" v-bind="textareaWrapperAttrs">
+      <textarea
+        :id="id"
+        ref="textarea"
+        v-model="localValue"
+        :value="modelValue"
+        :placeholder="placeholder"
+        :type="type"
+        :readonly="readonly"
+        :disabled="disabled"
+        :rows="rows"
+        :inputmode="inputMode"
+        :data-cy="dataCy"
+        v-bind="textareaAttrs"
+        @focus="onFocus"
+        @blur="onBlur"
+        @change="onChange"
+        @mouseleave="onMouseleave"
+        @mousedown="onMousedown"
+        @click="onClick"
+      />
+    </label>
+    <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
+      <!-- @slot Use it to add some component after text. -->
+      <slot name="right" />
+    </label>
+  </ULabel>
 </template>
 
 <script setup>
@@ -209,7 +207,6 @@ const {
   textareaWrapperAttrs,
   leftSlotAttrs,
   rightSlotAttrs,
-  wrapperAttrs,
   hasSlotContent,
 } = useAttrs(props);
 

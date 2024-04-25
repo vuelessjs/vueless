@@ -60,6 +60,12 @@ import { VIEW } from "../ui.form-calendar/constants";
 
 import UIService, { getRandomId } from "../service.ui";
 
+import {
+  addDays,
+  isSameDay,
+  getDateFromUnixTimestamp,
+} from "../ui.form-calendar/services/date.service";
+
 import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 import { UDatePicker } from "./constants";
@@ -193,6 +199,8 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "input"]);
 
+const STANDARD_USER_FORMAT = "l, j F, Y";
+
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
@@ -216,7 +224,7 @@ const { config, inputAttrs, calendarAttrs } = useAttrs(props, { isShownCalendar 
 function activate() {
   isShownCalendar.value = true;
 
-  nextTick(() => calendarRef.value.wrapperRef.focus());
+  nextTick(() => calendarRef.value?.wrapperRef?.focus());
 }
 
 function deactivate() {
@@ -226,7 +234,7 @@ function deactivate() {
 }
 
 function onUserFormatDateChange(value) {
-  userFormatDate.value = value || "";
+  userFormatDate.value = formatUserDate(value) || "";
 }
 
 function onFormattedDateChange(value) {
@@ -240,14 +248,45 @@ function onSubmit() {
 function onBlur(event) {
   const { relatedTarget } = event;
 
-  if (!calendarRef.value.wrapperRef.contains(relatedTarget)) deactivate();
+  if (!calendarRef?.value?.wrapperRef?.contains(relatedTarget)) deactivate();
+}
+
+function formatUserDate(data) {
+  if (props.dateFormat !== STANDARD_USER_FORMAT) return data;
+
+  const currentLocale = props.config.i18n || config.value.i18n;
+
+  let prefix = "";
+  const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
+  const formattedDateWithoutDay = formattedDate.split(",").slice(1).join("").trim();
+
+  const selectedDate = getDateFromUnixTimestamp(localValue.value);
+  const today = new Date();
+
+  const isToday = isSameDay(today, selectedDate);
+  const isYesterday = isSameDay(addDays(today, -1), selectedDate);
+  const isTomorrow = isSameDay(addDays(today, 1), selectedDate);
+
+  if (isToday) {
+    prefix = currentLocale.today;
+  }
+
+  if (isYesterday) {
+    prefix = currentLocale.yesterday;
+  }
+
+  if (isTomorrow) {
+    prefix = currentLocale.tomorrow;
+  }
+
+  return prefix ? `${prefix}, ${formattedDateWithoutDay}` : formattedDate;
 }
 
 function onInput() {
   nextTick(() => {
-    calendarRef.value.wrapperRef.blur();
+    calendarRef.value?.wrapperRef?.blur();
     emit("input", {
-      userFormatDate: userFormatDate.value,
+      userFormatDate: formatUserDate(userFormatDate.value),
       value: localValue.value,
       formattedDate: formattedDate.value,
     });

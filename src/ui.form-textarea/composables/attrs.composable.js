@@ -20,8 +20,8 @@ export function useAttrs(props) {
     compoundVariants: textareaWrapper.compoundVariants,
   });
 
-  const textareaClasses = computed(() =>
-    cvaTextarea({
+  const textareaWrapperClasses = computed(() =>
+    cvaTextareaWrapper({
       error: Boolean(props.error),
       size: props.size,
       readonly: props.readonly,
@@ -31,9 +31,8 @@ export function useAttrs(props) {
     }),
   );
 
-  const textareaWrapperClasses = computed(() => cvaTextareaWrapper({ size: props.size }));
+  const textareaClasses = computed(() => cvaTextarea({ size: props.size }));
 
-  const wrapperAttrs = getAttrs("wrapper");
   const leftSlotAttrs = getAttrs("leftSlot");
   const rightSlotAttrs = getAttrs("rightSlot");
   const labelAttrs = getAttrs("label", { isComponent: true });
@@ -46,7 +45,6 @@ export function useAttrs(props) {
     textareaWrapperAttrs,
     leftSlotAttrs,
     rightSlotAttrs,
-    wrapperAttrs,
     hasSlotContent,
   };
 }

@@ -77,15 +77,18 @@ export default /*tw*/ {
     navigation: "px-0 w-full",
     nextIcon: {
       defaultVariants: {
-        variant: "dark",
+        variant: "grayscale",
+        size: "sm",
       },
     },
     prevIcon: {
       defaultVariants: {
-        variant: "dark",
+        variant: "grayscale",
+        size: "sm",
       },
     },
-    day: "font-medium w-full h-10 text-sm",
+    day: "font-medium w-full h-10 text-sm mb-0.5",
+    currentDay: "text-white bg-gray-900 hover:bg-gray-900 hover:text-white",
     weekDay: "text-sm size-10",
     month: "font-medium",
     selectedMonth: "bg-zinc-100 text-gray-900 hover:text-white",
@@ -121,6 +124,15 @@ export default /*tw*/ {
         friday: "Friday",
         saturday: "Saturday",
       },
+      userFormat: {
+        sunday: "Sunday",
+        monday: "Monday",
+        tuesday: "Tuesday",
+        wednesday: "Wednesday",
+        thursday: "Thursday",
+        friday: "Friday",
+        saturday: "Saturday",
+      },
     },
     months: {
       shorthand: {
@@ -138,6 +150,20 @@ export default /*tw*/ {
         december: "Dec",
       },
       longhand: {
+        january: "January",
+        february: "February",
+        march: "March",
+        april: "April",
+        may: "May",
+        june: "June",
+        july: "July",
+        august: "August",
+        september: "September",
+        october: "October",
+        november: "November",
+        december: "December",
+      },
+      userFormat: {
         january: "January",
         february: "February",
         march: "March",
