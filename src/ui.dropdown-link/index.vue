@@ -264,8 +264,10 @@ function onClickOutside(event) {
 }
 
 function onBlurLink(event) {
-  if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
-    hideOptions();
-  }
+  setTimeout(() => {
+    if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
+      hideOptions();
+    }
+  }, 100);
 }
 </script>
