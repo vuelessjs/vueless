@@ -477,10 +477,6 @@ const {
 
 const normalizedColumns = computed(() => TableService.normalizeColumns(props.columns));
 
-const customI18n = computed(() => {
-  return props.config.i18n || {};
-});
-
 const isSelectedAllRows = computed(() => {
   return selectedRows.value.length === tableRows.value.length;
 });
@@ -524,8 +520,8 @@ const hasContentBeforeFirstRowSlot = computed(() => {
 
 const emptyTableMsg = computed(() => {
   return props.filters
-    ? customI18n.value.noResultsForFilters || t("UTable.noResultsForFilters")
-    : customI18n.value.noItems || t("UTable.noItems");
+    ? props.config?.i18n?.noResultsForFilters || t("UTable.noResultsForFilters")
+    : props.config?.i18n?.noItems || t("UTable.noItems");
 });
 
 watch(selectAll, onChangeSelectAll, { deep: true });

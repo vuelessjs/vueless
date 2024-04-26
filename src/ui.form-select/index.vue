@@ -151,7 +151,7 @@
           v-bind="caretClearTextAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
-          v-text="customI18n.clear || t('USelect.clear')"
+          v-text="props.config?.i18n?.clear || t('USelect.clear')"
         />
       </div>
 
@@ -192,12 +192,12 @@
           <span
             v-show="isEmpty"
             :class="emptyStyles"
-            v-text="customI18n.listIsEmpty || t('USelect.listIsEmpty')"
+            v-text="props.config?.i18n?.listIsEmpty || t('USelect.listIsEmpty')"
           />
           <span
             v-show="options.length === 0 && !search && !isEmpty"
             :class="emptyStyles"
-            v-text="customI18n.noDataToShow || t('USelect.noDataToShow')"
+            v-text="props.config?.i18n?.noDataToShow || t('USelect.noDataToShow')"
           />
         </template>
       </UDropdownList>
@@ -492,12 +492,8 @@ const {
   dropdownListAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
-const customI18n = computed(() => {
-  return props.config.i18n || {};
-});
-
 const inputPlaceholder = computed(() => {
-  const message = customI18n.value.addMore || t("USelect.addMore");
+  const message = props.config?.i18n?.value.addMore || t("USelect.addMore");
 
   return props.multiple && localValue.value.length ? message : props.placeholder;
 });

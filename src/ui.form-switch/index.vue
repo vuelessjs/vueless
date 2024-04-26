@@ -161,17 +161,13 @@ const checkedValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const customI18n = computed(() => {
-  return props.config.i18n || {};
-});
-
 const { config, iconAttrs, labelAttrs, inputAttrs, wrapperAttrs, circleAttrs, toggleLabelAttrs } =
   useAttrs(props, { checked: checkedValue });
 
 const switchLabel = computed(() => {
   return checkedValue.value
-    ? customI18n.value.active || t("USwitch.active")
-    : customI18n.value.inactive || t("USwitch.inactive");
+    ? props.config?.i18n?.active || t("USwitch.active")
+    : props.config?.i18n?.inactive || t("USwitch.inactive");
 });
 
 const iconSize = computed(() => {

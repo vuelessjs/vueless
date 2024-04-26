@@ -16,6 +16,7 @@ export default function createVuelessAdapter(options) {
     fallback,
     messages,
     t: createTranslateFunction(current, fallback, messages),
+    tm: createTranslateMessageFunction(current, fallback, messages),
     n: createNumberFunction(current, fallback),
   };
 }
@@ -48,6 +49,25 @@ function createTranslateFunction(current, fallback, messages) {
     }
 
     return replace(str, params);
+  };
+}
+
+function createTranslateMessageFunction(current, fallback, messages) {
+  return (key) => {
+    const currentLocale = current.value && messages.value[current.value];
+    const fallbackLocale = fallback.value && messages.value[fallback.value];
+
+    let str = getObjectValueByPath(currentLocale, key, null);
+
+    if (str === undefined) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Translation key "${key}" not found in "${current.value}", trying fallback locale`,
+      );
+      str = getObjectValueByPath(fallbackLocale, key, null);
+    }
+
+    return str;
   };
 }
 

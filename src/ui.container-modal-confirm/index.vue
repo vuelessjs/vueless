@@ -43,7 +43,7 @@
 
         <UButton
           v-if="cancelButton"
-          :label="customI18n.cancel || t('UModalConfirm.cancel')"
+          :label="props.config?.i18n?.cancel || t('UModalConfirm.cancel')"
           variant="thirdary"
           filled
           :data-cy="`${dataCy}-close`"
@@ -162,10 +162,6 @@ const {
   confirmButtonAttrs,
   cancelButtonAttrs,
 } = useAttrs(props);
-
-const customI18n = computed(() => {
-  return props.config.i18n || {};
-});
 
 const isShownModal = computed({
   get: () => props.modelValue,

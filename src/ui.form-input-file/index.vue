@@ -36,7 +36,7 @@
           </div>
 
           <UButton
-            :label="customI18n.selectFile || t('UInputFile.selectFile')"
+            :label="props.config?.i18n?.selectFile || t('UInputFile.selectFile')"
             :size="size"
             variant="thirdary"
             filled
@@ -217,10 +217,6 @@ const {
   hasSlotContent,
 } = useAttrs(props, { errorMessage, dragOver });
 
-const customI18n = computed(() => {
-  return props.config.i18n || {};
-});
-
 const filesList = computed(() => {
   return filesData.value.map((file) => {
     return {
@@ -249,11 +245,11 @@ const uppyUpload = computed(() => {
 const allowedFilesForUpload = computed(() => {
   const allowedFormat = props.allowedFileTypes.join(", ");
 
-  return `${customI18n.value.canAttachFilesFormat || t("UInputFile.canAttachFilesFormat")} ${allowedFormat}`;
+  return `${props.config?.i18n?.canAttachFilesFormat || t("UInputFile.canAttachFilesFormat")} ${allowedFormat}`;
 });
 
 const descriptionText = computed(() => {
-  return `${customI18n.value.selectOrDragImage || t("UInputFile.selectOrDragImage")} ${allowedFilesForUpload.value}`;
+  return `${props.config?.i18n?.selectOrDragImage || t("UInputFile.selectOrDragImage")} ${allowedFilesForUpload.value}`;
 });
 
 const componentSize = computed(() => {
@@ -370,9 +366,9 @@ function onChangeErrorFilesTypes() {
   if (errorFilesTypes.value.length) {
     const error = errorFilesTypes.value.join(", ");
     const cannotAttachFilesStart =
-      customI18n.value.cannotAttachFilesStart || t("UInputFile.cannotAttachFilesStart");
+      props.config?.i18n?.cannotAttachFilesStart || t("UInputFile.cannotAttachFilesStart");
     const cannotAttachFilesEnd =
-      customI18n.value.cannotAttachFilesEnd || t("UInputFile.cannotAttachFilesEnd");
+      props.config?.i18n?.cannotAttachFilesEnd || t("UInputFile.cannotAttachFilesEnd");
 
     errorMessage.value = `${cannotAttachFilesStart} ${error} ${cannotAttachFilesEnd}`;
   }
