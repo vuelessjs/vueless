@@ -1,16 +1,21 @@
 {
   "git": {
-    "tag": false,
+    "tag": true,
     "tagName": "v${version}",
     "commitMessage": "Release v${version} / [skip ci]",
     "requireUpstream": false,
     "requireCleanWorkingDir": false
   },
   "github": {
-    "release": true
+    "release": true,
+    "releaseName": "v${version}",
+    "assets": ["dist/*"]
   },
   "npm": {
-    "publishPath": "./dist"
+    "publish": true,
+    "ignoreVersion": true,
+    "publishPath": "./dist",
+    "versionArgs": ["--allow-same-version"]
   },
   "hooks": {
     "after:release": "echo Successfully released ${name} v${version}."
