@@ -7,8 +7,7 @@
     "requireCleanWorkingDir": false
   },
   "github": {
-    "release": false,
-    "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
+    "release": true
   },
   "npm": {
     "publishPath": "./dist"
