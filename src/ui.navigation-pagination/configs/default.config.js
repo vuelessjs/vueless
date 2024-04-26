@@ -5,8 +5,8 @@ export default /*tw*/ {
   navigationButton: "size-full rounded font-normal disabled:hover:bg-transparent",
   pageButton: "size-full rounded font-normal disabled:hover:bg-transparent",
   pageButtonActive: `
-    rounded !bg-gray-900/15
-    hover:!text-gray-900 !hover:bg-gray-900/15 disabled:hover:bg-gray-900/15
+    rounded !bg-brand-900/15
+    hover:!text-brand-900 !hover:bg-brand-900/15 disabled:hover:bg-brand-900/15
     focus:outline-none
   `,
   defaultVariants: {

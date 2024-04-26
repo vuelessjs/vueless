@@ -6,12 +6,18 @@ import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
   const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
-  const { button } = config.value;
+  const { button, text } = config.value;
 
   const cvaButton = cva({
     base: button.base,
     variants: button.variants,
     compoundVariants: button.compoundVariants,
+  });
+
+  const cvaText = cva({
+    base: text.base,
+    variants: text.variants,
+    compoundVariants: text.compoundVariants,
   });
 
   const buttonClasses = computed(() =>
@@ -31,8 +37,10 @@ export function useAttrs(props) {
     ),
   );
 
+  const textClasses = computed(() => setColor(cvaText({color: props.color,}),props.color));
+
   const buttonAttrs = getAttrs("button", { classes: buttonClasses });
-  const textAttrs = getAttrs("text");
+  const textAttrs = getAttrs("text", { classes: textClasses });
 
   return {
     textAttrs,

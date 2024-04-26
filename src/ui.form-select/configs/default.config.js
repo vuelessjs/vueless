@@ -4,8 +4,8 @@ export default /*tw*/ {
     base: `
       pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-lg border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:duration-100 hover:ease-in-out hover:focus-within:border-gray-500
-      focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15] focus-within:outline-none
+      hover:border-gray-400 hover:transition hover:duration-100 hover:ease-in-out hover:focus-within:border-brand-500
+      focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,
     variants: {
       error: {
@@ -16,8 +16,8 @@ export default /*tw*/ {
       },
       disabled: {
         true: `
-          border-gray-100 bg-gray-100 text-gray-900 hover:border-gray-100
-          focus-within:border-gray-100 focus-within:ring-0
+          border-brand-100 bg-brand-100 text-brand-900 hover:border-brand-100
+          focus-within:border-brand-100 focus-within:ring-0
         `,
       },
     },
@@ -96,7 +96,7 @@ export default /*tw*/ {
         lg: "text-lg min-h-6",
       },
       disabled: {
-        true: "bg-gray-100",
+        true: "bg-brand-100",
       },
       multiple: {
         true: "py-2 last:mb-2.5 flex justify-between border-b border-gray-100",

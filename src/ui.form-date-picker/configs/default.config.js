@@ -2,7 +2,7 @@ export default /*tw*/ {
   input: "",
   inputActive: {
     block: {
-      base: "ring-4 ring-gray-600/[.15] border-gray-500 hover:border-gray-500",
+      base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
     },
   },
   calendar: "absolute z-40 mt-2",
