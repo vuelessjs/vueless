@@ -58,3 +58,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_IT_GITHUB_TOKEN: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}
