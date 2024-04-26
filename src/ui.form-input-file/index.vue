@@ -17,10 +17,7 @@
               v-bind="iconUploadFileAttrs"
             />
 
-            <div
-              v-bind="descriptionAttrs"
-              v-text="`${config.i18n.selectOrDragImage} ${allowedFilesForUpload}`"
-            />
+            <div v-bind="descriptionAttrs" v-text="descriptionText" />
           </div>
 
           <div v-bind="listAttrs">
@@ -39,7 +36,7 @@
           </div>
 
           <UButton
-            :label="config.i18n.selectFile"
+            :label="customI18n.selectFile || t('UInputFile.selectFile')"
             :size="size"
             variant="thirdary"
             filled
@@ -77,6 +74,7 @@ import UIService, { getRandomId } from "../service.ui";
 import { UInputFile } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputFile" });
@@ -194,6 +192,8 @@ const slots = useSlots();
 
 const emit = defineEmits(["changeFiles", "deleteFile"]);
 
+const { t } = useLocale();
+
 const filesData = ref([]);
 const selectedFiles = ref([]);
 const errorMessage = ref("");
@@ -216,6 +216,10 @@ const {
   filesAttrs,
   hasSlotContent,
 } = useAttrs(props, { errorMessage, dragOver });
+
+const customI18n = computed(() => {
+  return props.config.i18n || {};
+});
 
 const filesList = computed(() => {
   return filesData.value.map((file) => {
@@ -245,7 +249,11 @@ const uppyUpload = computed(() => {
 const allowedFilesForUpload = computed(() => {
   const allowedFormat = props.allowedFileTypes.join(", ");
 
-  return `${config.value.i18n.canAttachFilesFormat} ${allowedFormat}`;
+  return `${customI18n.value.canAttachFilesFormat || t("UInputFile.canAttachFilesFormat")} ${allowedFormat}`;
+});
+
+const descriptionText = computed(() => {
+  return `${customI18n.value.selectOrDragImage || t("UInputFile.selectOrDragImage")} ${allowedFilesForUpload.value}`;
 });
 
 const componentSize = computed(() => {
@@ -360,10 +368,13 @@ function onChangeError() {
 
 function onChangeErrorFilesTypes() {
   if (errorFilesTypes.value.length) {
-    let error = errorFilesTypes.value.join(", ");
-    const localization = config.value.i18n;
+    const error = errorFilesTypes.value.join(", ");
+    const cannotAttachFilesStart =
+      customI18n.value.cannotAttachFilesStart || t("UInputFile.cannotAttachFilesStart");
+    const cannotAttachFilesEnd =
+      customI18n.value.cannotAttachFilesEnd || t("UInputFile.cannotAttachFilesEnd");
 
-    errorMessage.value = `${localization.cannotAttachFilesStart} ${error} ${localization.cannotAttachFilesEnd}`;
+    errorMessage.value = `${cannotAttachFilesStart} ${error} ${cannotAttachFilesEnd}`;
   }
 }
 

@@ -109,12 +109,11 @@ export default /*tw*/ {
     ],
   },
   dropdownList: "group-[]/top:bottom-full group-[]/top:top-auto top-full",
-  $messages: {
-    listIsEmpty: "",
-    noDataToShow: "",
-    clear: "",
-    addMore: "",
-    add: "",
+  i18n: {
+    listIsEmpty: "List is empty.",
+    noDataToShow: "No data to show.",
+    clear: "clear",
+    addMore: "Add more...",
   },
   defaultVariants: {
     size: "md",

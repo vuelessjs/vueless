@@ -46,6 +46,7 @@ import UIService, { getRandomId } from "../service.ui";
 import { USwitch } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USwitch", inheritAttrs: false });
@@ -153,16 +154,24 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const { t } = useLocale();
+
 const checkedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
+});
+
+const customI18n = computed(() => {
+  return props.config.i18n || {};
 });
 
 const { config, iconAttrs, labelAttrs, inputAttrs, wrapperAttrs, circleAttrs, toggleLabelAttrs } =
   useAttrs(props, { checked: checkedValue });
 
 const switchLabel = computed(() => {
-  return checkedValue.value ? config.value.i18n.active : config.value.i18n.inactive;
+  return checkedValue.value
+    ? customI18n.value.active || t("USwitch.active")
+    : customI18n.value.inactive || t("USwitch.inactive");
 });
 
 const iconSize = computed(() => {

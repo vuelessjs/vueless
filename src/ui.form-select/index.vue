@@ -151,7 +151,7 @@
           v-bind="caretClearTextAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
-          v-text="config.$messages.clear || t('uSelect.clear')"
+          v-text="customI18n.clear || t('USelect.clear')"
         />
       </div>
 
@@ -192,12 +192,12 @@
           <span
             v-show="isEmpty"
             :class="emptyStyles"
-            v-text="config.$messages.listIsEmpty || t('uSelect.listIsEmpty')"
+            v-text="customI18n.listIsEmpty || t('USelect.listIsEmpty')"
           />
           <span
             v-show="options.length === 0 && !search && !isEmpty"
             :class="emptyStyles"
-            v-text="config.$messages.noDataToShow || t('uSelect.noDataToShow')"
+            v-text="customI18n.noDataToShow || t('USelect.noDataToShow')"
           />
         </template>
       </UDropdownList>
@@ -492,8 +492,12 @@ const {
   dropdownListAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
+const customI18n = computed(() => {
+  return props.config.i18n || {};
+});
+
 const inputPlaceholder = computed(() => {
-  const message = config.value.$messages.noDataToShow || t("uSelect.addMore");
+  const message = customI18n.value.addMore || t("USelect.addMore");
 
   return props.multiple && localValue.value.length ? message : props.placeholder;
 });
@@ -581,9 +585,7 @@ if (props.addOption) {
   document.addEventListener("keydown", onKeydownAddOption);
 }
 
-onMounted(() => {
-  setLabelPosition();
-});
+onMounted(setLabelPosition);
 
 const onSearchChange = debounce(async function (query) {
   emit("searchChange", query);

@@ -65,7 +65,7 @@
         :empty-styles="optionClasses"
       >
         <span v-bind="optionAttrs()">
-          <span v-text="config.i18n.noDataToShow" />
+          <span v-text="customI18n.noDataToShow || t('UDropdownList.noDataToShow')" />
         </span>
       </slot>
 
@@ -73,7 +73,7 @@
       <template v-if="addOption">
         <div v-bind="addTitleWrapperAttrs" @click="onClickAddOption">
           <div v-bind="addTitleAttrs">
-            {{ config.i18n.add }}
+            {{ customI18n.add || t("UDropdownList.add") }}
             <span v-bind="addTitleHotkeyAttrs" v-text="addOptionKeyCombination" />
           </div>
         </div>
@@ -95,6 +95,8 @@ import UIService, { getRandomId, isMac } from "../service.ui";
 
 import usePointer from "./composables/usePointer";
 import useAttrs from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
+
 import defaultConfig from "./configs/default.config.js";
 import { UDropdownList } from "./constants";
 
@@ -229,7 +231,13 @@ const {
   optionContentAttrs,
 } = useAttrs(props);
 
+const { t } = useLocale();
+
 defineExpose({ pointerSet, pointerBackward, pointerForward, pointerReset, addPointerElement });
+
+const customI18n = computed(() => {
+  return props.config.i18n || {};
+});
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
