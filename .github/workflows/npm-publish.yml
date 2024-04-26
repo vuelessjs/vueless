@@ -10,7 +10,7 @@ on:
 permissions: write-all
 
 jobs:
-#  build:
+#  lint:
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v4
@@ -21,8 +21,8 @@ jobs:
 #      - run: npm ci
 #      - run: npm run lint:ci
 
-#  release-ui:
-#    needs: build
+#  release-docs-ui:
+#    needs: lint
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v4
@@ -35,8 +35,8 @@ jobs:
 #      - run: npm run sb:build
 #      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv ./storybook-static ./www"
 
-  release-npm:
-    #needs: release-ui
+  publish-npm:
+    #needs: release-docs-ui
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -53,9 +53,9 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
       - run: npm run vueless:prepare
-      - run: npm run release
+      - run: npm run release:patch
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           #RELEASE_IT_GITHUB_TOKEN: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}
