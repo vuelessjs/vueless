@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.39",
+  "version": "0.0.38",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
@@ -14,7 +14,7 @@
     "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:fix": "eslint --ext .vue,.js,.ts --fix --ignore-path .eslintignore src/ .storybook/ tests/",
     "lint:ci": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore --max-warnings=0",
-    "release:patch": "release-it patch --ci --npm.publish",
+    "release:patch": "release-it patch --ci --npm.publish --git.tag --github.release",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
     "sb:dev-full": "STORYBOOK_VUELESS_ENV=1 STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
