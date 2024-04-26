@@ -39,6 +39,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@release-it/bumper": "^6.0.1",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/compiler-sfc": "^3.4.19",
     "@vue/eslint-config-prettier": "^9.0.0",

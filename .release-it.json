@@ -13,9 +13,12 @@
   },
   "npm": {
     "publish": true,
-    "ignoreVersion": true,
-    "publishPath": "./dist",
-    "versionArgs": ["--allow-same-version"]
+    "publishPath": "./dist"
+  },
+  "plugins": {
+    "@release-it/bumper": {
+      "out": "dist/*.json"
+    }
   },
   "hooks": {
     "after:release": "echo Successfully released ${name} v${version}."
