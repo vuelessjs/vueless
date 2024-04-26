@@ -8,7 +8,7 @@
   },
   "github": {
     "release": false,
-    "tokenRef": "GITHUB_TOKEN"
+    "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
   },
   "npm": {
     "publishPath": "./dist"
