@@ -31,7 +31,7 @@ export default {
       { key: "key_4", label: "title 4" },
     ],
     itemsRow: {
-      id: getRandomId(),
+      id: "",
       isChecked: false,
       key_1: {
         primaryRow: "primaryRow",
@@ -48,6 +48,10 @@ export default {
       key_4: {
         primaryRow: "primaryRow",
         secondaryRow: "secondaryRow",
+      },
+      date: {
+        primaryRow: 1709046013,
+        separatorDate: new Date(1709046013 * 1000).toString(),
       },
     },
     numberOfRow: 5,
@@ -70,13 +74,26 @@ const DefaultTemplate = (args) => ({
   `,
   computed: {
     itemsData() {
-      const rows = [];
+      let rows = [];
 
       for (let i = 0; i < args.numberOfRow; i++) rows.push(args.itemsRow);
+      rows = rows.map((item) => (item.id = getRandomId()));
 
       return rows;
     },
   },
+});
+
+const EmptyTemplate = (args) => ({
+  components: { UTable },
+  setup() {
+    const slots = getSlotNames(UTable.name);
+
+    return { args, slots };
+  },
+  template: `
+    <UTable v-bind="args" :rows="[]" />
+  `,
 });
 
 const SlotTemplate = (args) => ({
@@ -154,13 +171,22 @@ defaultCells.args = {
   `,
 };
 
+export const Empty = EmptyTemplate.bind({});
+Empty.args = {};
+
+export const Filters = EmptyTemplate.bind({});
+Empty.args = { filters: true };
+
+export const Resource = DefaultTemplate.bind({});
+Resource.args = { resource: "/7010--resource" };
+
 export const selectable = DefaultTemplate.bind({});
 selectable.args = { selectable: true };
 
 // TODO: Don't work fixed footer. Find how to fix it.
 export const fixedFooter = SlotTemplate.bind({});
 fixedFooter.args = {
-  fixedFooter: true,
+  stickyFooter: true,
   selectable: true,
   slotTemplate: `
     <template #tfoot>
@@ -179,6 +205,21 @@ stickyHeader.args = { stickyHeader: true };
 
 export const compact = DefaultTemplate.bind({});
 compact.args = { compact: true };
+
+export const DateDivider = DefaultTemplate.bind({});
+DateDivider.args = {
+  dateDivider: true,
+};
+
+export const DateDividerCustomLabel = DefaultTemplate.bind({});
+DateDivider.args = {
+  dateDivider: [
+    {
+      date: new Date(1709046013 * 1000).toString(),
+      label: "Label for this date",
+    },
+  ],
+};
 
 export const slotDefault = SlotTemplate.bind({});
 slotDefault.args = {
