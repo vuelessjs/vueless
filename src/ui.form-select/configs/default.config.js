@@ -114,7 +114,6 @@ export default /*tw*/ {
     noDataToShow: "No data to show.",
     clear: "clear",
     addMore: "Add more...",
-    add: "Add",
   },
   defaultVariants: {
     size: "md",

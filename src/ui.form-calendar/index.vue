@@ -172,6 +172,7 @@ import {
 } from "./services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 import {
   UCalendar,
@@ -288,6 +289,8 @@ const emit = defineEmits([
   "formattedDateChange",
 ]);
 
+const { tm } = useLocale();
+
 const {
   config,
   wrapperAttrs,
@@ -342,7 +345,8 @@ const isCurrentView = computed(() => ({
 }));
 
 const locale = computed(() => {
-  const currentLocale = props.config.i18n || config.value.i18n;
+  const currentLocale = props.config.i18n || tm("UCalendar");
+
   const formattedLocale = {
     ...currentLocale,
     months: {
@@ -359,7 +363,7 @@ const locale = computed(() => {
 });
 
 const userFormatLocale = computed(() => {
-  const currentLocale = props.config.i18n || config.value.i18n;
+  const currentLocale = props.config.i18n || tm("UCalendar");
 
   const formattedLocale = {
     ...currentLocale,
