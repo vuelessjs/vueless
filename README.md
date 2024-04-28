@@ -14,16 +14,28 @@
 npm install vueless @vueless/plugin-vite
 ```
 
-2. Create `vueless.config.js` at the root of the project.
 
-```javascript filename="vueless.config.js" title="vueless.config.js"
+2. In the file where you create the Vue application, add the following code:
+```javascript
+import { createApp } from 'vue';
+import { createVueless } from "vueless";
+import App from './App.vue';
+
+const vueless = createVueless();
+
+createApp(App).use(vueless).mount('#app');
+```
+
+3. Create `vueless.config.js` at the root of the project.
+
+```javascript
 export default {
   color: {},
   component: {},
 };
 ```
 
-3. Add TailwindCSS preset.
+4. Add TailwindCSS preset.
 
 ```javascript
 import { vuelessPreset } from "vueless/preset.tailwind";
@@ -34,7 +46,7 @@ export default {
 };
 ```
 
-4. Add Vite plugins.
+5. Add Vite plugins.
 
 ```javascript
 import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
