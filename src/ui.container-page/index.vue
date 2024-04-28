@@ -66,7 +66,8 @@
 
 <script setup>
 import { computed, useSlots, onMounted } from "vue";
-import { useStore } from "vuex";
+
+import useBreakpoint from "../composable.breakpoint";
 
 import ULink from "../ui.button-link/index.vue";
 import UIcon from "../ui.image-icon/index.vue";
@@ -79,7 +80,6 @@ import { UPage } from "./constants";
 import { useAttrs } from "./composables/attrs.composable";
 
 const slots = useSlots();
-const store = useStore();
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UPage", inheritAttrs: false });
@@ -168,9 +168,7 @@ const props = defineProps({
   },
 });
 
-const isMobileDevice = computed(() => {
-  return store.getters["breakpoint/isMobileDevice"];
-});
+const { isMobileBreakpoint } = useBreakpoint();
 
 const {
   config,
@@ -190,7 +188,7 @@ const {
   footerRightAttrs,
   rightRoundingWrapperAttrs,
   hasSlotContent,
-} = useAttrs(props, { isMobileDevice });
+} = useAttrs(props, { isMobileBreakpoint });
 
 const isShownHeader = computed(() => {
   const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);

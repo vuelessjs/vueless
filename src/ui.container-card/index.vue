@@ -40,7 +40,6 @@
 
 <script setup>
 import { computed, useSlots } from "vue";
-import { useStore } from "vuex";
 
 import UIService from "../service.ui";
 import UHeader from "../ui.text-header";
@@ -49,11 +48,11 @@ import UDivider from "../ui.container-divider";
 import { UCard } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composable/attrs.composable";
+import useBreakpoint from "../composable.breakpoint";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCard", inheritAttrs: false });
 
-const store = useStore();
 const slots = useSlots();
 
 const props = defineProps({
@@ -127,9 +126,7 @@ const isShownFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
-const isMobileDevice = computed(() => {
-  return store.getters["breakpoint/isMobileDevice"];
-});
+const { isMobileBreakpoint } = useBreakpoint();
 
 const {
   hasSlotContent,
@@ -142,5 +139,5 @@ const {
   descriptionAttrs,
   contentAttrs,
   footerAttrs,
-} = useAttrs(props, { isMobileDevice });
+} = useAttrs(props, { isMobileBreakpoint });
 </script>

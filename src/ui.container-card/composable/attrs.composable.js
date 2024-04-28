@@ -4,7 +4,7 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props, { isMobileDevice }) {
+export function useAttrs(props, { isMobileBreakpoint }) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
   const { wrapper } = config.value;
 
@@ -33,7 +33,7 @@ export function useAttrs(props, { isMobileDevice }) {
 
   const footerAttrs = computed(() => {
     const footerMobileReverseClasses =
-      props.mobileFooterReverse && isMobileDevice.value && config.value.footerMobileReverse;
+      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse;
 
     return {
       ...footerAttrsRaw.value,

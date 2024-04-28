@@ -4,7 +4,7 @@ import { cva, cx, isMobileApp } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props, { isMobileDevice }) {
+export function useAttrs(props, { isMobileBreakpoint }) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
   const { wrapper, page, rightRounding } = config.value;
 
@@ -62,7 +62,7 @@ export function useAttrs(props, { isMobileDevice }) {
     ...wrapperAttrsRaw.value,
     class: cx([
       wrapperAttrsRaw.value.class,
-      isMobileDevice.value && !isMobileApp && config.value.wrapperMobile,
+      isMobileBreakpoint.value && !isMobileApp && config.value.wrapperMobile,
     ]),
   }));
 
@@ -70,7 +70,7 @@ export function useAttrs(props, { isMobileDevice }) {
     ...footerAttrsRaw.value,
     class: cx([
       footerAttrsRaw.value.class,
-      props.mobileFooterReverse && isMobileDevice.value && config.value.footerMobileReverse,
+      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
     ]),
   }));
 
