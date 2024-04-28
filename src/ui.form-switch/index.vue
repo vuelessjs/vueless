@@ -38,6 +38,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
@@ -154,7 +155,9 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { t } = useLocale();
+const { tm } = useLocale();
+
+const currentLocale = computed(() => merge(tm("USwitch"), props.config.i18n));
 
 const checkedValue = computed({
   get: () => props.modelValue,
@@ -165,9 +168,7 @@ const { config, iconAttrs, labelAttrs, inputAttrs, wrapperAttrs, circleAttrs, to
   useAttrs(props, { checked: checkedValue });
 
 const switchLabel = computed(() => {
-  return checkedValue.value
-    ? props.config?.i18n?.active || t("USwitch.active")
-    : props.config?.i18n?.inactive || t("USwitch.inactive");
+  return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
 });
 
 const iconSize = computed(() => {

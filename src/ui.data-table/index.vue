@@ -272,6 +272,7 @@ import {
   nextTick,
   onBeforeUnmount,
 } from "vue";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
@@ -404,7 +405,7 @@ const emit = defineEmits(["clickRow", "update:rows"]);
 defineExpose({ clearSelectedItems });
 
 const slots = useSlots();
-const { t } = useLocale();
+const { tm } = useLocale();
 
 const selectAll = ref(false);
 const canSelectAll = ref(true);
@@ -475,6 +476,8 @@ const {
   headerAttrs,
 } = useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFooterSticky });
 
+const currentLocale = computed(() => merge(tm("UTable"), props.config.i18n));
+
 const normalizedColumns = computed(() => TableService.normalizeColumns(props.columns));
 
 const isSelectedAllRows = computed(() => {
@@ -519,9 +522,7 @@ const hasContentBeforeFirstRowSlot = computed(() => {
 });
 
 const emptyTableMsg = computed(() => {
-  return props.filters
-    ? props.config?.i18n?.noResultsForFilters || t("UTable.noResultsForFilters")
-    : props.config?.i18n?.noItems || t("UTable.noItems");
+  return props.filters ? currentLocale.value.noResultsForFilters : currentLocale.value.noItems;
 });
 
 watch(selectAll, onChangeSelectAll, { deep: true });

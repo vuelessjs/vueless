@@ -23,6 +23,10 @@ export default /*tw*/ {
   iconEdit: "fill-gray-500 opacity-50",
   iconEditName: "edit_note",
   nested: "group/nested ml-6",
+  i18n: {
+    delete: "Delete",
+    edit: "Edit",
+  },
   defaultVariants: {
     animationDuration: 200,
     nesting: false,

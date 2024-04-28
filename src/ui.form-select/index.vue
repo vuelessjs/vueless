@@ -151,7 +151,7 @@
           v-bind="caretClearTextAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
-          v-text="props.config?.i18n?.clear || t('USelect.clear')"
+          v-text="currentLocale.clear"
         />
       </div>
 
@@ -189,15 +189,11 @@
         </template>
 
         <template #empty="{ emptyStyles }">
-          <span
-            v-show="isEmpty"
-            :class="emptyStyles"
-            v-text="props.config?.i18n?.listIsEmpty || t('USelect.listIsEmpty')"
-          />
+          <span v-show="isEmpty" :class="emptyStyles" v-text="currentLocale.listIsEmpty" />
           <span
             v-show="options.length === 0 && !search && !isEmpty"
             :class="emptyStyles"
-            v-text="props.config?.i18n?.noDataToShow || t('USelect.noDataToShow')"
+            v-text="currentLocale.noDataToShow"
           />
         </template>
       </UDropdownList>
@@ -207,7 +203,7 @@
 
 <script setup>
 import { ref, computed, nextTick, watch, useSlots, onMounted } from "vue";
-import { debounce } from "lodash-es";
+import { debounce, merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
@@ -444,7 +440,7 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { t } = useLocale();
+const { tm } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
@@ -492,8 +488,10 @@ const {
   dropdownListAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
+const currentLocale = computed(() => merge(tm("USelect"), props.config.i18n));
+
 const inputPlaceholder = computed(() => {
-  const message = props.config?.i18n?.value.addMore || t("USelect.addMore");
+  const message = currentLocale.value.addMore;
 
   return props.multiple && localValue.value.length ? message : props.placeholder;
 });

@@ -48,7 +48,7 @@
                 :name="config.iconDeleteName"
                 color="gray"
                 :data-cy="`${dataCy}-delete`"
-                :tooltip="$t('button.delete')"
+                :tooltip="currentLocale.delete"
                 v-bind="iconDeleteAttrs"
                 @click="onClickDelete(element.id, element.name)"
               />
@@ -59,7 +59,7 @@
                 :name="config.iconEditName"
                 color="gray"
                 :data-cy="`${dataCy}-edit`"
-                :tooltip="$t('button.edit')"
+                :tooltip="currentLocale.edit"
                 v-bind="iconEditAttrs"
                 @click="onClickEdit(element.id)"
               />
@@ -96,7 +96,9 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import draggable from "vuedraggable";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
@@ -106,6 +108,7 @@ import UIService from "../service.ui";
 import { UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDataList", inheritAttrs: true });
@@ -211,6 +214,9 @@ const {
   iconDragAttrs,
   hasSlotContent,
 } = useAttrs(props);
+const { tm } = useLocale();
+
+const currentLocale = computed(() => merge(tm("UDataList"), props.config.i18n));
 
 function onDragMove(event) {
   const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;

@@ -36,7 +36,7 @@
           </div>
 
           <UButton
-            :label="props.config?.i18n?.selectFile || t('UInputFile.selectFile')"
+            :label="currentLocale.selectFile"
             :size="size"
             variant="thirdary"
             filled
@@ -61,6 +61,7 @@
 <script setup>
 import Uppy from "@uppy/core";
 import DragDrop from "@uppy/vue/src/drag-drop";
+import { merge } from "lodash-es";
 
 import { computed, onBeforeUnmount, onMounted, ref, useSlots, watch } from "vue";
 
@@ -192,7 +193,7 @@ const slots = useSlots();
 
 const emit = defineEmits(["changeFiles", "deleteFile"]);
 
-const { t } = useLocale();
+const { tm } = useLocale();
 
 const filesData = ref([]);
 const selectedFiles = ref([]);
@@ -216,6 +217,8 @@ const {
   filesAttrs,
   hasSlotContent,
 } = useAttrs(props, { errorMessage, dragOver });
+
+const currentLocale = computed(() => merge(tm("UInputFile"), props.config.i18n));
 
 const filesList = computed(() => {
   return filesData.value.map((file) => {
@@ -245,11 +248,11 @@ const uppyUpload = computed(() => {
 const allowedFilesForUpload = computed(() => {
   const allowedFormat = props.allowedFileTypes.join(", ");
 
-  return `${props.config?.i18n?.canAttachFilesFormat || t("UInputFile.canAttachFilesFormat")} ${allowedFormat}`;
+  return `${currentLocale.value.canAttachFilesFormat} ${allowedFormat}`;
 });
 
 const descriptionText = computed(() => {
-  return `${props.config?.i18n?.selectOrDragImage || t("UInputFile.selectOrDragImage")} ${allowedFilesForUpload.value}`;
+  return `${currentLocale.value.selectOrDragImage} ${allowedFilesForUpload.value}`;
 });
 
 const componentSize = computed(() => {
@@ -365,10 +368,8 @@ function onChangeError() {
 function onChangeErrorFilesTypes() {
   if (errorFilesTypes.value.length) {
     const error = errorFilesTypes.value.join(", ");
-    const cannotAttachFilesStart =
-      props.config?.i18n?.cannotAttachFilesStart || t("UInputFile.cannotAttachFilesStart");
-    const cannotAttachFilesEnd =
-      props.config?.i18n?.cannotAttachFilesEnd || t("UInputFile.cannotAttachFilesEnd");
+    const cannotAttachFilesStart = currentLocale.value.cannotAttachFilesStart;
+    const cannotAttachFilesEnd = currentLocale.value.cannotAttachFilesEnd;
 
     errorMessage.value = `${cannotAttachFilesStart} ${error} ${cannotAttachFilesEnd}`;
   }

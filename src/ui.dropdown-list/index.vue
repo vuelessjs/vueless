@@ -65,7 +65,7 @@
         :empty-styles="optionClasses"
       >
         <span v-bind="optionAttrs()">
-          <span v-text="props.config?.i18n?.noDataToShow || t('UDropdownList.noDataToShow')" />
+          <span v-text="currentLocale.noDataToShow" />
         </span>
       </slot>
 
@@ -73,7 +73,7 @@
       <template v-if="addOption">
         <div v-bind="addTitleWrapperAttrs" @click="onClickAddOption">
           <div v-bind="addTitleAttrs">
-            {{ props.config?.i18n?.add || t("UDropdownList.add") }}
+            {{ currentLocale.add }}
             <span v-bind="addTitleHotkeyAttrs" v-text="addOptionKeyCombination" />
           </div>
         </div>
@@ -87,6 +87,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
@@ -231,9 +232,11 @@ const {
   optionContentAttrs,
 } = useAttrs(props);
 
-const { t } = useLocale();
+const { tm } = useLocale();
 
 defineExpose({ pointerSet, pointerBackward, pointerForward, pointerReset, addPointerElement });
+
+const currentLocale = computed(() => merge(tm("UDropdownList"), props.config.i18n));
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
