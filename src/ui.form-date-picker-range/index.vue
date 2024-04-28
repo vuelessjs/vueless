@@ -415,7 +415,7 @@ const localValue = computed({
 
 const isMobileDevice = computed(() => store.getters["breakpoint/isMobileDevice"]);
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
-const currentLocale = computed(() => merge(props.config.i18n, tm("UDatePickerRange")));
+const currentLocale = computed(() => merge(tm("UDatePickerRange"), props.config.i18n));
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -437,16 +437,24 @@ const locale = computed(() => {
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
+  const monthsLonghand = props.config.i18n?.months?.userFormat
+    ? months.userFormat
+    : months.longhand;
+
+  const weekdaysLonghand = props.config.i18n?.weekdays?.userFormat
+    ? weekdays.userFormat
+    : weekdays.longhand;
+
   // formatted locale
   return {
     ...currentLocale,
     months: {
       shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(months.userFormat || months.longhand, LOCALE_TYPE.month),
+      longhand: getSortedLocale(monthsLonghand, LOCALE_TYPE.month),
     },
     weekdays: {
       shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(weekdays.userFormat || weekdays.longhand, LOCALE_TYPE.day),
+      longhand: getSortedLocale(weekdaysLonghand, LOCALE_TYPE.day),
     },
   };
 });

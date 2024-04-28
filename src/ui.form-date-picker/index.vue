@@ -53,6 +53,7 @@
 
 <script setup>
 import { computed, nextTick, ref } from "vue";
+import { merge } from "lodash-es";
 
 import UInput from "../ui.form-input";
 import UCalendar from "../ui.form-calendar";
@@ -258,7 +259,7 @@ function onBlur(event) {
 function formatUserDate(data) {
   if (props.dateFormat !== STANDARD_USER_FORMAT) return data;
 
-  const currentLocale = props.config.i18n || tm("UDatePicker");
+  const currentLocale = merge(tm("UDatePicker"), props.config.i18n);
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
