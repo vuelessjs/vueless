@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
@@ -21,7 +21,7 @@
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
     "sb:build": "STORYBOOK_VUELESS_ENV=1 storybook build --docs",
     "sb:preview": "vite preview --host --outDir=storybook-static",
-    "package:prepare": "node src/gen.web-types && rm -rf dist && mkdir -p dist && cp -r src/* package.json LICENSE web-types.json README.md dist/ && rm -rf dist/assets && node dist.prepare"
+    "package:prepare": "node src/gen.web-types && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && rm -rf dist/assets && node dist.prepare"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.2.1",
