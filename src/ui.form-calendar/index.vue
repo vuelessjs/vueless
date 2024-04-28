@@ -148,6 +148,7 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
@@ -344,40 +345,40 @@ const isCurrentView = computed(() => ({
   year: currentView.value === VIEW.year,
 }));
 
-const locale = computed(() => {
-  const currentLocale = props.config.i18n || tm("UCalendar");
+const currentLocale = computed(() => merge(props.config.i18n, tm("UCalendar")));
 
-  const formattedLocale = {
-    ...currentLocale,
+const locale = computed(() => {
+  const { months, weekdays } = currentLocale.value;
+
+  // formatted locale
+  return {
+    ...currentLocale.value,
     months: {
-      shorthand: getSortedLocale(currentLocale.months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(currentLocale.months.longhand, LOCALE_TYPE.month),
+      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
+      longhand: getSortedLocale(months.longhand, LOCALE_TYPE.month),
     },
     weekdays: {
-      shorthand: getSortedLocale(currentLocale.weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(currentLocale.weekdays.longhand, LOCALE_TYPE.day),
+      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
+      longhand: getSortedLocale(weekdays.longhand, LOCALE_TYPE.day),
     },
   };
-
-  return formattedLocale;
 });
 
 const userFormatLocale = computed(() => {
-  const currentLocale = props.config.i18n || tm("UCalendar");
+  const { months, weekdays } = currentLocale.value;
 
-  const formattedLocale = {
+  // formatted locale
+  return {
     ...currentLocale,
     months: {
-      shorthand: getSortedLocale(currentLocale.months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(currentLocale.months.userFormat, LOCALE_TYPE.month),
+      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
+      longhand: getSortedLocale(months.userFormat || months.longhand, LOCALE_TYPE.month),
     },
     weekdays: {
-      shorthand: getSortedLocale(currentLocale.weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(currentLocale.weekdays.userFormat, LOCALE_TYPE.day),
+      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
+      longhand: getSortedLocale(weekdays.userFormat || weekdays.longhand, LOCALE_TYPE.day),
     },
   };
-
-  return formattedLocale;
 });
 
 const isTimepickerEnabled = computed(() => {
