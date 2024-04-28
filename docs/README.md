@@ -1,4 +1,4 @@
-# Quick Start
+# Quick start
 
 1\. Install `vueless` UI library packages.
 
@@ -20,9 +20,29 @@ yarn add vueless @vueless/plugin-vite
 pnpm add vueless @vueless/plugin-vite
 ```
 {% endtab %}
+
+{% tab title="bun" %}
+```bash
+bun add vueless @vueless/plugin-vite
+```
+{% endtab %}
 {% endtabs %}
 
-2\. Create `vueless.config.js` at the root of the project.
+2\. In the file where you create the Vue application, add the following code:&#x20;
+
+{% code title="main.js" %}
+```javascript
+import { createApp } from 'vue';
+import { createVueless } from "vueless";
+import App from './App.vue';
+
+const vueless = createVueless();
+
+createApp(App).use(vueless).mount('#app');
+```
+{% endcode %}
+
+3\. Create `vueless.config.js` at the root of the project.
 
 {% code title="vueless.config.js" %}
 ```javascript
@@ -33,7 +53,7 @@ export default {
 ```
 {% endcode %}
 
-3\. Add TailwindCSS preset.
+4\. Add TailwindCSS preset.
 
 <pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind";
 </strong>
@@ -43,7 +63,7 @@ export default {
 };
 </code></pre>
 
-4\. Add Vite plugins.
+5\. Add Vite plugins.
 
 {% code title="vite.config.js" overflow="wrap" %}
 ```javascript
@@ -56,7 +76,7 @@ export default defineConfig({
     VuelessUnpluginComponents(),
   ],
   ...
-})
+});
 ```
 {% endcode %}
 

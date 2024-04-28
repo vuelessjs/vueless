@@ -1,5 +1,15 @@
 # Table of contents
 
-* [Quick Start](README.md)
-* [Classes Autocompletion](classes-autocompletion.md)
-* [Known issues](known-issues.md)
+## Installation
+
+* [Quick start](README.md)
+* [Class autocompletion](installation/class-autocompletion.md)
+* [Possible issues](installation/possible-issues.md)
+
+## Customization
+
+* [Overview](customization/overview.md)
+* [Colors](customization/colors.md)
+* [Components](customization/components.md)
+* [Icons](customization/icons.md)
+* [Internationalization (i18n)](customization/internationalization-i18n.md)
