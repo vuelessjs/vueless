@@ -67,6 +67,8 @@ import {
 } from "../ui.form-calendar/services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
+
 import defaultConfig from "./configs/default.config";
 import { UDatePicker } from "./constants";
 
@@ -201,6 +203,8 @@ const emit = defineEmits(["update:modelValue", "input"]);
 
 const STANDARD_USER_FORMAT = "l, j F, Y";
 
+const { tm } = useLocale();
+
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
@@ -254,7 +258,7 @@ function onBlur(event) {
 function formatUserDate(data) {
   if (props.dateFormat !== STANDARD_USER_FORMAT) return data;
 
-  const currentLocale = props.config.i18n || config.value.i18n;
+  const currentLocale = props.config.i18n || tm("UDatePicker");
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);

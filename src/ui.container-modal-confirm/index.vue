@@ -43,7 +43,7 @@
 
         <UButton
           v-if="cancelButton"
-          :label="config.i18n.cancel"
+          :label="props.config?.i18n?.cancel || t('UModalConfirm.cancel')"
           variant="thirdary"
           filled
           :data-cy="`${dataCy}-close`"
@@ -70,6 +70,7 @@ import UModal from "../ui.container-modal";
 import defaultConfig from "./configs/default.config";
 import { UModalConfirm } from "./constants/index";
 import { useAttrs } from "./composable/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UModalConfirm", inheritAttrs: false });
@@ -152,8 +153,9 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "confirm", "close"]);
 
+const { t } = useLocale();
+
 const {
-  config,
   hasSlotContent,
   footerLeftFallbackAttrs,
   modalAttrs,

@@ -225,6 +225,8 @@ import {
 
 import { wrongDateFormat, wrongMonthNumber, wrongDayNumber } from "./services/validation.service";
 import useAttrs from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
+
 import defaultConfig from "./configs/default.config";
 import {
   UDatePickerRange,
@@ -383,6 +385,7 @@ const {
   inputRangeErrorAttrs,
 } = useAttrs(props, { isShownMenu });
 const store = useStore();
+const { tm } = useLocale();
 
 const calendarValue = ref(props.modelValue);
 const activeDate = ref(
@@ -414,7 +417,7 @@ const isMobileDevice = computed(() => store.getters["breakpoint/isMobileDevice"]
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
 
 const locale = computed(() => {
-  const currentLocale = props.config.i18n || config.value.i18n;
+  const currentLocale = props.config.i18n || tm("UDatePickerRange");
   const formattedLocale = {
     ...currentLocale,
     months: {
@@ -431,7 +434,7 @@ const locale = computed(() => {
 });
 
 const userFormatLocale = computed(() => {
-  const currentLocale = props.config.i18n || config.value.i18n;
+  const currentLocale = props.config.i18n || tm("UDatePickerRange");
 
   const formattedLocale = {
     ...currentLocale,

@@ -288,6 +288,7 @@ import TableService from "./services/table.service";
 import { HYPHEN_SYMBOL, PX_IN_REM } from "../service.ui";
 import { UTable } from "./constants";
 import { useAttrs } from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UTable", inheritAttrs: false });
@@ -403,6 +404,7 @@ const emit = defineEmits(["clickRow", "update:rows"]);
 defineExpose({ clearSelectedItems });
 
 const slots = useSlots();
+const { t } = useLocale();
 
 const selectAll = ref(false);
 const canSelectAll = ref(true);
@@ -517,7 +519,9 @@ const hasContentBeforeFirstRowSlot = computed(() => {
 });
 
 const emptyTableMsg = computed(() => {
-  return props.filters ? config.value.i18n.noResultsForFilters : config.value.i18n.noItems;
+  return props.filters
+    ? props.config?.i18n?.noResultsForFilters || t("UTable.noResultsForFilters")
+    : props.config?.i18n?.noItems || t("UTable.noItems");
 });
 
 watch(selectAll, onChangeSelectAll, { deep: true });
