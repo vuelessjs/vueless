@@ -1,0 +1,84 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
+import { getSource } from "../service.storybook";
+
+import * as stories from "./index.stories";
+import defaultConfig from "./configs/default.config?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## **Default config**
+<Source code={getSource(defaultConfig)} language="jsx" dark />
+
+## Trigger notifications
+You can trigger notification using *notify* method. Use *notifySuccess, notifyWarning, notifyError* methods to trigger notification of specific type.
+
+<Source code={`
+import {
+    notify,
+    notifySuccess,
+    notifyWarning,
+    notifyError,
+} from "vueless";
+
+notify({
+    type: "success" // success, warning, error
+    title: "" // Some label
+    text: "" // Some text content
+    duration: 1000 // Duration in milliseconds
+    delayDuplicates: false // Delay notifications with same text
+});
+
+const durationInMilliseconds = 1000;
+
+notifySuccess("Some success text", durationInMilliseconds);
+notifyWarning("Some warning text", durationInMilliseconds);
+notifyError("Some error text", durationInMilliseconds);
+`} language="jsx" dark />
+
+## Clear active notifications
+Use *clearAllNotifications* method to clear all active notifications.
+
+<Source code={`
+import { clearAllNotifications, notifySuccess } from "vueless";
+
+const durationInMilliseconds = 1000;
+notifySuccess("Some success text", durationInMilliseconds);
+
+clearAllNotifications();
+`} language="jsx" dark />
+
+## Trigger notifications
+You can create delayed notification which you can trigger any time later.
+
+<Source code={`
+import { setDelayedNotify, getDelayedNotify } from "vueless";
+
+setDelayedNotify({
+    type: "success" // success, warning, error
+    title: "" // Some label
+    text: "" // Some text content
+    duration: 1000 // Duration in milliseconds
+    delayDuplicates: false // Delay notifications with same text
+});
+
+setTimeout(getDelayedNotify, 10_000);
+`} language="jsx" dark />
+
+## Place notification relatively to navigation elements
+Provide *positionClasses* key for UNotify config to take navigation elements offset into account. 
+By default, it will be looking for UNotifyPage and UNotifyAside classes.
+
+<Source code={`
+const notifyConfig = {
+    positionClasses: {
+        page: "UNotifyPage",
+        aside: "UNotifyAside",
+    },
+}
+`} language="jsx" dark />

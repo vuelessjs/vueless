@@ -1,87 +1,89 @@
-import Vue3Notify, { notify as VueNotify } from "@kyvg/vue3-notification";
-import { globalComponentConfig } from "../../service.ui";
+import { globalComponentConfig, getRandomId } from "../../service.ui";
+
+import { NOTIFY_TYPE } from "../constants";
+
+const delayBetweenClones = 1000;
+
+let lastMessageTime = undefined;
+let lastMessage = undefined;
 
 const defaultDuration = {
   short: 4000,
   medium: 8000,
   long: 12000,
-  permanent: 300000,
 };
 
-export default class NotifyServiceDefault {
-  notifyInstance = Vue3Notify;
+const notifyClearAllEvent = new Event("notifyClearAll");
 
-  #lastMessageTime = 0;
-  #lastMessageCode = "";
+export function notify(settings) {
+  const { type, label, text, duration, delayDuplicates } = settings;
+  const currentNotifyDuration =
+    duration || globalComponentConfig.UNotify?.duration?.short || defaultDuration.short;
+  const isSameMessage = lastMessage === text && new Date() - lastMessageTime < delayBetweenClones;
 
-  notify(settings) {
-    const { type, title, text, code, duration, ignoreDuplicates, closeOnClick, data } = settings;
-    const isSameMessage =
-      this.#lastMessageCode === code && new Date() - this.#lastMessageTime < 1000;
-
-    if (isSameMessage || !code) return;
-
-    this.#lastMessageTime = new Date();
-    this.#lastMessageCode = code;
-
-    VueNotify({
-      group: "notify",
-      type,
-      title: title || "",
-      text: text || "",
-      duration: duration || globalComponentConfig.UNotify?.duration?.short || defaultDuration.short,
-      ignoreDuplicates: ignoreDuplicates || false,
-      closeOnClick: closeOnClick || false,
-      data: { ...data, code },
-    });
+  if ((isSameMessage || !text) && delayDuplicates) {
+    return;
   }
 
-  success(code, duration = globalComponentConfig.UNotify?.duration?.short) {
-    this.notify({
-      type: "success",
-      code: code,
-      duration: duration,
-    });
-  }
+  lastMessageTime = new Date();
+  lastMessage = text;
 
-  warning(code, duration = globalComponentConfig.UNotify?.duration?.medium) {
-    this.notify({
-      type: "warning",
-      code: code,
-      duration: duration,
-    });
-  }
+  const detail = {
+    type,
+    id: getRandomId(),
+    label: label || "",
+    text: text || "",
+    duration: currentNotifyDuration,
+  };
 
-  error(code, duration = globalComponentConfig.UNotify?.duration?.long) {
-    this.notify({
-      type: "error",
-      code: code,
-      duration: duration,
-    });
-  }
+  const notifyStart = new CustomEvent("notifyStart", { detail });
+  const notifyEnd = new CustomEvent("notifyEnd", { detail });
 
-  clearAll() {
-    VueNotify({
-      group: "notify",
-      clean: true,
-    });
-  }
+  window.dispatchEvent(notifyStart);
 
-  setDelayed(type, message) {
-    localStorage.setItem("notify", JSON.stringify({ type, message }));
-  }
+  setTimeout(() => window.dispatchEvent(notifyEnd), currentNotifyDuration);
+}
 
-  getDelayed() {
-    const notifyData = JSON.parse(localStorage.getItem("notify"));
+export function notifySuccess(text, duration = globalComponentConfig.UNotify?.duration?.short) {
+  notify({
+    type: NOTIFY_TYPE.success,
+    text,
+    duration,
+  });
+}
 
-    this.clearAll();
+export function notifyWarning(text, duration = globalComponentConfig.UNotify?.duration?.medium) {
+  notify({
+    type: NOTIFY_TYPE.warning,
+    text,
+    duration,
+  });
+}
 
-    if (notifyData) {
-      const { type, message } = notifyData;
+export function notifyError(text, duration = globalComponentConfig.UNotify?.duration?.long) {
+  notify({
+    type: NOTIFY_TYPE.error,
+    text,
+    duration,
+  });
+}
 
-      this[type](message);
+export function clearAllNotifications() {
+  window.dispatchEvent(notifyClearAllEvent);
+}
 
-      localStorage.removeItem("notify");
-    }
+export function setDelayedNotify(settings) {
+  localStorage.setItem("notify", JSON.stringify(settings));
+}
+
+export function getDelayedNotify() {
+  const notifyData = JSON.parse(localStorage.getItem("notify"));
+
+  clearAllNotifications();
+
+  if (notifyData) {
+    notify(notifyData);
+
+    localStorage.removeItem("notify");
   }
 }

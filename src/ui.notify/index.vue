@@ -1,248 +1,230 @@
 <template>
-  <notifications
-    group="notify"
-    class="vueless-notify mt-safe-top !top-3 !w-full px-3 max-md:!left-0 md:!w-[22rem] md:px-0 lg:!top-4 lg:!mt-0"
-    :position="position"
+  <TransitionGroup
+    ref="notificationsWrapperRef"
+    :style="notifyPositionStyles"
+    tag="div"
+    v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
   >
-    <template #body="{ item, close: onClickClose }">
-      <div :data-cy="`${item.type}-notify`" class="notify-body" :class="[item.type]">
-        <UIcon
-          v-if="isSuccessType"
-          data-cy="type-notify"
-          class="type-icon"
-          name="check_circle"
-          size="md"
-        />
+    <div
+      v-for="notification in notifications"
+      :key="notification.id"
+      v-bind="bodyAttrs"
+      :class="getNotificationClasses(notification)"
+    >
+      <UIcon
+        v-if="notification.type === NOTIFY_TYPE.success"
+        data-cy="type-notify"
+        color="green"
+        variant="light"
+        size="md"
+        :name="config.iconSuccessName"
+        v-bind="iconSuccessAttrs"
+      />
 
-        <UIcon
-          v-else-if="isWarningType"
-          data-cy="type-notify"
-          class="type-icon"
-          name="warning"
-          size="md"
-        />
+      <UIcon
+        v-else-if="notification.type === NOTIFY_TYPE.warning"
+        data-cy="type-notify"
+        color="orange"
+        variant="light"
+        size="md"
+        :name="config.iconWarningName"
+        v-bind="iconWarningAttrs"
+      />
 
-        <UIcon
-          v-else-if="isErrorType"
-          data-cy="type-notify"
-          class="type-icon"
-          name="error"
-          size="md"
-        />
+      <UIcon
+        v-else-if="notification.type === NOTIFY_TYPE.error"
+        data-cy="type-notify"
+        color="red"
+        variant="light"
+        size="md"
+        :name="config.iconErrorName"
+        v-bind="iconErrorAttrs"
+      />
 
-        <div class="color-white w-full max-w-full px-3 text-sm text-gray-200">
-          <div v-if="item.title" class="mb-1 font-medium" v-text="$t(item.title)" />
-          <div
-            class="break-words font-normal leading-5"
-            v-html="prepareMessage(item.data.code, item.type, item.text)"
-          />
-        </div>
-
-        <UIcon
-          data-cy="close-notify"
-          class="icon icon-close"
-          name="close"
-          size="xs"
-          interactive
-          @click="onClickClose"
-        />
+      <div v-bind="contentAttrs">
+        <template v-if="vHtml">
+          <span v-bind="labelAttrs" v-html="notification.label" />
+          <span v-bind="descriptionAttrs" v-html="getText(notification.text, notification.type)" />
+        </template>
+        <template v-else>
+          <span v-bind="labelAttrs" v-text="notification.label" />
+          <span v-bind="descriptionAttrs" v-text="getText(notification.text, notification.type)" />
+        </template>
       </div>
-    </template>
-  </notifications>
+
+      <UIcon
+        color="gray"
+        variant="light"
+        size="xs"
+        interactive
+        :name="config.iconCloseName"
+        v-bind="iconCloseAttrs"
+        @click="onClickClose(notification)"
+      />
+    </div>
+  </TransitionGroup>
 </template>
 
-<script>
-import { globalComponentConfig } from "../service.ui";
+<script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { merge } from "lodash-es";
+
+import UIService, { globalComponentConfig, cx } from "../service.ui";
+
+import { useLocale } from "../composable.locale";
+import { useAttrs } from "./composables/attrs.composable";
+
+import defaultConfig from "./configs/default.config";
+import { UNotify, NOTIFY_TYPE, POSITION } from "./constants";
 
 import UIcon from "../ui.image-icon";
 
-const NOTIFY_TYPE = {
-  success: "success",
-  warning: "warning",
-  error: "error",
-};
+/* Should be a string for correct web-types gen */
+defineOptions({ name: "UNotify", inheritAttrs: false });
 
-export default {
-  name: "UNotify",
-  components: {
-    UIcon,
+const props = defineProps({
+  /**
+   * A position on the x-axis.
+   * @values left, center, right
+   */
+  xPosition: {
+    type: String,
+    default: UIService.get(defaultConfig, UNotify).default.xPosition,
   },
 
-  props: {
-    /**
-     * A position on the x-axis.
-     * @values left, center, right
-     */
-    xPosition: {
-      type: String,
-      default: "center",
-    },
-
-    /**
-     * A position on the y-axis.
-     * @values top, bottom
-     */
-    yPosition: {
-      type: String,
-      default: "top",
-    },
+  /**
+   * A position on the y-axis.
+   * @values top, bottom
+   */
+  yPosition: {
+    type: String,
+    default: UIService.get(defaultConfig, UNotify).default.yPosition,
   },
 
-  data() {
-    return {
-      type: null,
-    };
+  /**
+   * Use v-html to render notification label and description content.
+   */
+  vHtml: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UNotify).default.vHtml,
   },
 
-  computed: {
-    isSuccessType() {
-      return this.type === NOTIFY_TYPE.success;
-    },
-
-    isWarningType() {
-      return this.type === NOTIFY_TYPE.warning;
-    },
-
-    isErrorType() {
-      return this.type === NOTIFY_TYPE.error;
-    },
-
-    i18n() {
-      return {
-        message: `${this.type}.default`,
-      };
-    },
-
-    position() {
-      return [this.yPosition, this.xPosition];
-    },
+  /**
+   * Sets component ui config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
   },
+});
 
-  created() {
-    window.addEventListener("resize", this.setPosition, { passive: true });
-  },
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  contentAttrs,
+  labelAttrs,
+  descriptionAttrs,
+  iconSuccessAttrs,
+  iconWarningAttrs,
+  iconErrorAttrs,
+  iconCloseAttrs,
+} = useAttrs(props);
 
-  beforeUnmount() {
-    window.removeEventListener("resize", this.setPosition);
-  },
+const { tm } = useLocale();
 
-  methods: {
-    prepareMessage(code, type, text) {
-      this.setPosition();
+const notifications = ref([]);
+const notifyPositionStyles = ref({});
 
-      this.type = type;
+const notificationsWrapperRef = ref(null);
 
-      if (text) {
-        return text;
-      }
+const currentLocale = computed(() => merge(tm("UNotify"), props.config.i18n));
 
-      return this.i18n.message;
-    },
+onMounted(() => {
+  window.addEventListener("resize", setPosition, { passive: true });
+  window.addEventListener("notifyStart", onNotifyStart);
+  window.addEventListener("notifyEnd", onNotifyEnd);
+  window.addEventListener("notifyClearAll", onClearAll);
 
-    setPosition() {
-      const getOffsetWidth = (className) =>
-        className ? document.querySelector(`.${className}`)?.offsetWidth : 0;
+  setPosition();
+});
 
-      const NOTIFY_CLASS = "vueless-notify";
-      const classes = globalComponentConfig.UNotify?.positionClasses;
-      const pageWidth = getOffsetWidth(classes.page || "UNotifyPage");
-      const asideWidth = getOffsetWidth(classes.aside || "UNotifyAside");
-      const notifyWidth = getOffsetWidth(NOTIFY_CLASS);
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", setPosition);
+  window.removeEventListener("notifyStart", onNotifyStart);
+  window.removeEventListener("notifyEnd", onNotifyEnd);
+  window.removeEventListener("notifyClearAll", onClearAll);
+});
 
-      if (!pageWidth) return;
+function onNotifyStart(event) {
+  notifications.value.push({ ...event.detail });
+}
 
-      const leftShift = asideWidth + pageWidth / 2 - notifyWidth / 2;
+function onNotifyEnd(event) {
+  notifications.value = notifications.value.filter(
+    (notification) => notification.id !== event.detail.id,
+  );
+}
 
-      document.querySelector(`.${NOTIFY_CLASS}`).style.setProperty("left", `${leftShift}px`);
-    },
-  },
-};
-</script>
+function onClearAll() {
+  notifications.value = [];
+}
 
-<i18n>
-en:
-  success:
-    default: "Operation successful."
-  error:
-    default: "Operation error."
-  warning:
-    default: "Operation warning."
-ru:
-  success:
-    default: "Произошла ошибка."
-  error:
-    default: "Операция успешна."
-  warning:
-    default: "Предупреждение."
-ua:
-  success:
-    default: "Операція успішна."
-  error:
-    default: "Сталася помилка."
-  warning:
-    default: "Попередження."
-</i18n>
+function onClickClose(targetNotification) {
+  notifications.value = notifications.value.filter(
+    (notification) => notification.id !== targetNotification.id,
+  );
+}
 
-<style lang="postcss" scoped>
-.vueless-notify {
-  :deep(.vue-notification-wrapper) {
-    @apply overflow-visible;
+function getOffsetWidth(selector) {
+  return document.querySelector(selector)?.offsetWidth || 0;
+}
+
+function setPosition() {
+  const positionClasses = globalComponentConfig.UNotify?.positionClasses;
+  const pageClass = positionClasses?.page || config.value.positionClasses.page;
+  const asideClass = positionClasses?.aside || config.value.positionClasses.aside;
+  const pageWidth = getOffsetWidth(`${pageClass}`);
+  const asideWidth = getOffsetWidth(`${asideClass}`);
+  const notifyWidth = notificationsWrapperRef.value.$el?.offsetWidth || 0;
+
+  const styles = {
+    left: "auto",
+    top: "auto",
+    right: "auto",
+    bottom: "auto",
+  };
+
+  styles[props.yPosition] = "0px";
+
+  if (props.xPosition === POSITION.center) {
+    styles.left = `calc(50% - ${notifyWidth / 2}px)`;
+  } else {
+    styles[props.xPosition] = "0px";
   }
 
-  :deep(.notify-body) {
-    @apply rounded-2xl backdrop-blur-md;
-    @apply flex items-center;
-    @apply mb-3 p-4 shadow-[0_4px_16px_rgba(17,24,39,0.5)] md:shadow-[0_0px_12px_rgba(0,0,0,0.25)];
-
-    .icon-close {
-      path {
-        @apply fill-current text-gray-400;
-      }
-    }
+  if (pageWidth && props.xPosition !== POSITION.right) {
+    styles.left = `${asideWidth + pageWidth / 2 - notifyWidth / 2}px`;
   }
 
-  :deep(.warning) {
-    background: radial-gradient(
-      100.16% 500.78% at 0% 50%,
-      rgba(251, 146, 60, 0.2) 2.17%,
-      transparent
-    );
+  notifyPositionStyles.value = styles;
+}
 
-    .type-icon path {
-      @apply fill-current text-orange-400;
-    }
+function getText(notificationText, type) {
+  return notificationText || currentLocale.value[type];
+}
+
+function getNotificationClasses(notification) {
+  if (notification.type === NOTIFY_TYPE.success) {
+    return cx([bodyAttrs.value.class, config.value.bodySuccess]);
   }
 
-  :deep(.success) {
-    background: radial-gradient(
-      100.16% 500.78% at 0% 50%,
-      rgba(74, 222, 128, 0.1) 2.17%,
-      transparent
-    );
-
-    .type-icon path {
-      @apply fill-current text-green-400;
-    }
+  if (notification.type === NOTIFY_TYPE.warning) {
+    return cx([bodyAttrs.value.class, config.value.bodyWarning]);
   }
 
-  :deep(.error) {
-    background: radial-gradient(
-      100.16% 500.78% at 0% 50%,
-      rgba(251, 113, 133, 0.2) 2.17%,
-      transparent
-    );
-
-    .type-icon path {
-      @apply fill-current text-red-400;
-    }
-  }
-
-  /*
-    NOTE! This expression should be declared after all subclasses,
-    otherwise we will get gradient with white background
-  */
-  :deep(.notify-body) {
-    @apply bg-gray-900 bg-opacity-90;
+  if (notification.type === NOTIFY_TYPE.error) {
+    return cx([bodyAttrs.value.class, config.value.bodyError]);
   }
 }
-</style>
+</script>

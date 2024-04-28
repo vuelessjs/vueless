@@ -6,7 +6,6 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 // Vue plugins
 import { createStore } from "vuex";
 import { createVueless } from "vueless";
-import NotifyServiceDefault from "vueless/ui.notify/services";
 
 // Tailwind styles
 import "./index.pcss";
@@ -27,7 +26,6 @@ const vueless = createVueless();
 const storybookApp = (app) => {
   app.use(store);
   app.use(vueless);
-  app.use(new NotifyServiceDefault().notifyInstance);
 };
 
 // Setup storybook
