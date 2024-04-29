@@ -71,6 +71,7 @@ export function useAttrs(props) {
   const rightSlotClasses = computed(() =>
     setColor(cvaRightSlot({ color: props.color }), props.color),
   );
+
   const leftSlotClasses = computed(() =>
     setColor(cvaLeftSlot({ color: props.color }), props.color),
   );

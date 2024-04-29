@@ -38,7 +38,6 @@ export function useAttrs(props) {
   );
 
   const textClasses = computed(() => setColor(cvaText({ color: props.color }), props.color));
-
   const buttonAttrs = getAttrs("button", { classes: buttonClasses });
   const textAttrs = getAttrs("text", { classes: textClasses });
 
