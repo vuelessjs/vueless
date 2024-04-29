@@ -7,6 +7,7 @@ import tableConfig from "../../ui.data-table/configs/default.config";
 import calendarConfig from "../../ui.form-calendar/configs/default.config";
 import datepickerConfig from "../../ui.form-date-picker/configs/default.config";
 import datepickerRangeConfig from "../../ui.form-date-picker-range/configs/default.config";
+import dataListConfig from "../../ui.data-list/configs/default.config";
 
 export default {
   USelect: selectConfig.i18n,
@@ -18,4 +19,5 @@ export default {
   UCalendar: calendarConfig.i18n,
   UDatePicker: datepickerConfig.i18n,
   UDatePickerRange: datepickerRangeConfig.i18n,
+  UDataList: dataListConfig.i18n,
 };

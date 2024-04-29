@@ -43,7 +43,7 @@
 
         <UButton
           v-if="cancelButton"
-          :label="props.config?.i18n?.cancel || t('UModalConfirm.cancel')"
+          :label="currentLocale.cancel"
           variant="thirdary"
           filled
           :data-cy="`${dataCy}-close`"
@@ -61,6 +61,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { merge } from "lodash-es";
 
 import UIService from "../service.ui";
 
@@ -153,7 +154,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "confirm", "close"]);
 
-const { t } = useLocale();
+const { tm } = useLocale();
 
 const {
   hasSlotContent,
@@ -167,6 +168,8 @@ const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
+
+const currentLocale = computed(() => merge(tm("UModalConfirm"), props.config.i18n));
 
 function closeModal() {
   isShownModal.value = false;

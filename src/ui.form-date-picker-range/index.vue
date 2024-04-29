@@ -633,7 +633,7 @@ function onClickPeriodButton(periodName) {
     localValue.value.from !== null ? getDateFromUnixTimestamp(localValue.value.from) : new Date();
 
   if (periodName === PERIOD.week) {
-    periodDateList.value = getWeekDateList(localDate, config.value.i18n.months.shorthand);
+    periodDateList.value = getWeekDateList(localDate, locale.value.months.shorthand);
 
     period.value = PERIOD.week;
   }
