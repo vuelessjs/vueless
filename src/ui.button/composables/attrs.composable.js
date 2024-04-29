@@ -33,7 +33,7 @@ export function useAttrs(props) {
         loading: props.loading,
         disabled: props.disabled,
       }),
-      props.color,
+      props.color
     ),
   );
 
