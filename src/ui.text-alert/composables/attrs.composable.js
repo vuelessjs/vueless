@@ -30,7 +30,7 @@ export function useAttrs(props) {
     ),
   );
 
-  const bodyClasses = computed(() => cvaBody({ size: props.size }));
+  const bodyClasses = computed(() => setColor(cvaBody({ size: props.size }), props.color));
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });

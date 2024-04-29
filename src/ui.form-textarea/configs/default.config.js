@@ -21,7 +21,7 @@ export default /*tw*/ {
         true: "cursor-not-allowed border-none focus-within:ring-0 bg-gray-100",
       },
       readonly: {
-        true: "ring-0 border-gray-300 focus-within:ring-0 focus-within:border-gray-300",
+        true: "ring-0 border-gray-300 focus-within:ring-0 focus-within:border-brand-300",
       },
       size: {
         sm: "pb-2 pr-4 pt-6",
