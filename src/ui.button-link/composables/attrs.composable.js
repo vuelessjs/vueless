@@ -33,12 +33,13 @@ export function useAttrs(props) {
     base: rightSlot.base,
     variants: rightSlot.variants,
     compoundVariants: rightSlot.compoundVariants,
-  })
+  });
+
   const cvaLeftSlot = cva({
     base: leftSlot.base,
     variants: leftSlot.variants,
     compoundVariants: leftSlot.compoundVariants,
-  })
+  });
 
   const wrapperClasses = computed(() =>
     setColor(
@@ -67,8 +68,12 @@ export function useAttrs(props) {
 
   const textClasses = computed(() => setColor(cvaText({ color: props.color }), props.color));
 
-  const rightSlotClasses = computed(() => setColor(cvaRightSlot({color: props.color}),props.color))
-  const leftSlotClasses = computed(() => setColor(cvaLeftSlot({color: props.color}),props.color))
+  const rightSlotClasses = computed(() =>
+    setColor(cvaRightSlot({ color: props.color }), props.color),
+  );
+  const leftSlotClasses = computed(() =>
+    setColor(cvaLeftSlot({ color: props.color }), props.color),
+  );
 
   const wrapperAttrsRaw = getAttrs("wrapper", { classes: wrapperClasses });
 
@@ -97,8 +102,8 @@ export function useAttrs(props) {
     };
   });
 
-  const rightSlotAttrs = getAttrs("rightSlot",{classes:rightSlotClasses});
-  const leftSlotAttrs = getAttrs("leftSlot",{classes:leftSlotClasses});
+  const rightSlotAttrs = getAttrs("rightSlot", { classes: rightSlotClasses });
+  const leftSlotAttrs = getAttrs("leftSlot", { classes: leftSlotClasses });
   const textAttrs = getAttrs("text", { classes: textClasses });
 
   return {

@@ -16,8 +16,8 @@ export default /*tw*/ {
       },
       disabled: {
         true: `
-          border-brand-100 bg-brand-100 text-brand-900 hover:border-brand-100
-          focus-within:border-brand-100 focus-within:ring-0
+          border-gray-100 bg-gray-100 text-gray-900 hover:border-gray-100
+          focus-within:border-gray-100 focus-within:ring-0
         `,
       },
     },
@@ -96,7 +96,7 @@ export default /*tw*/ {
         lg: "text-lg min-h-6",
       },
       disabled: {
-        true: "bg-brand-100",
+        true: "bg-gray-100",
       },
       multiple: {
         true: "py-2 last:mb-2.5 flex justify-between border-b border-gray-100",

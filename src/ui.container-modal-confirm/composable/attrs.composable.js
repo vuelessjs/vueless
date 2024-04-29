@@ -1,7 +1,7 @@
 import useUI from "../../composable.ui";
 import defaultConfig from "../configs/default.config";
-import {cva} from "../../service.ui/index.js";
-import {computed} from "vue";
+import { cva } from "../../service.ui/index.js";
+import { computed } from "vue";
 
 export function useAttrs(props) {
   const { config, getAttrs, hasSlotContent, setColor } = useUI(defaultConfig, () => props.config);
@@ -31,30 +31,33 @@ export function useAttrs(props) {
     compoundVariants: cancelButton.compoundVariants,
   });
 
-  const modalClasses = computed(() =>
-    setColor(cvaModal({color: props.color,}), props.color,),
-  );
+  const modalClasses = computed(() => setColor(cvaModal({ color: props.color }), props.color));
 
   const footerLeftFallbackClasses = computed(() =>
-    setColor(cvaFooterLeftFallback({color: props.color}),props.color,),
+    setColor(cvaFooterLeftFallback({ color: props.color }), props.color),
   );
 
-  const confirmButtonClasses = computed(() =>
-    setColor(cvaConfirmButton({color: props.color,}), props.color,),
-  );
+  const confirmButtonClasses = computed(() => cvaConfirmButton({ color: props.color }));
 
-  const cancelButtonClasses = computed(() =>
-    setColor(cvaCancelButton({color: props.color,}), props.color,),
-  );
+  const cancelButtonClasses = computed(() => cvaCancelButton({ color: props.color }));
 
-  const modalAttrsRaw = getAttrs("modal", { isComponent: true, classes:modalClasses });
-  const footerLeftFallbackAttrs = getAttrs("footerLeftFallback",{classes:footerLeftFallbackClasses});
-  const confirmButtonAttrs = getAttrs("confirmButton", { isComponent: true, classes:confirmButtonClasses });
-  const cancelButtonAttrs = getAttrs("cancelButton", { isComponent: true, classes:cancelButtonClasses });
+  const modalAttrsRaw = getAttrs("modal", { isComponent: true, classes: modalClasses });
+  const footerLeftFallbackAttrs = getAttrs("footerLeftFallback", {
+    classes: footerLeftFallbackClasses,
+  });
+  const confirmButtonAttrs = getAttrs("confirmButton", {
+    isComponent: true,
+    classes: confirmButtonClasses,
+  });
+  const cancelButtonAttrs = getAttrs("cancelButton", {
+    isComponent: true,
+    classes: cancelButtonClasses,
+  });
 
-  const modalAttrs =computed(() =>({
+  const modalAttrs = computed(() => ({
+    ...modalAttrsRaw.value,
     class: setColor(modalAttrsRaw.value.class, props.color),
-  }))
+  }));
 
   return {
     config,

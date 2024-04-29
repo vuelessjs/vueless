@@ -42,17 +42,16 @@ export function useAttrs(props) {
     ),
   );
 
-  const bodyClasses = computed(() => setColor(cvaBody({ size: props.size }),props.color));
+  const bodyClasses = computed(() => setColor(cvaBody({ size: props.size }), props.color));
 
-  const buttonClasses = computed(() => setColor(cvaButton,props.color));
+  const buttonClasses = computed(() => setColor(cvaButton, props.color));
 
-  const iconClasses = computed(() => setColor(cvaIcon,props.color));
-
+  const iconClasses = computed(() => setColor(cvaIcon, props.color));
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });
-  const buttonAttrs = getAttrs("button", { isComponent: true,classes:buttonClasses });
-  const iconAttrs = getAttrs("icon", { isComponent: true,classes:iconClasses });
+  const buttonAttrs = getAttrs("button", { isComponent: true, classes: buttonClasses });
+  const iconAttrs = getAttrs("icon", { isComponent: true, classes: iconClasses });
 
   return {
     config,
