@@ -10,8 +10,8 @@ export default /*tw*/ {
     base: `
       rounded-lg border border-solid border-gray-300 bg-white !opacity-100 relative flex
       transition duration-100 ease-in-out
-      hover:border-gray-400 hover:focus-within:border-gray-500
-      focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15]
+      hover:border-gray-400 hover:focus-within:border-brand-500
+      focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15]
     `,
     variants: {
       disabled: {

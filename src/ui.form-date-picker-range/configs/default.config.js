@@ -2,23 +2,23 @@ export default /*tw*/ {
   input: "",
   inputActive: {
     block: {
-      base: "ring-4 ring-gray-600/[.15] border-gray-500 hover:border-gray-500",
+      base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
     },
   },
-  buttonWrapper: "flex h-full rounded-lg focus-within:ring-4 focus-within:ring-gray-600/[.15] max-md:justify-between",
+  buttonWrapper: "flex h-full rounded-lg focus-within:ring-4 focus-within:ring-brand-600/[.15] max-md:justify-between",
   button: `
     shrink-0 grow rounded-none border-0 bg-zinc-100 py-2 text-base font-medium text-gray-900 shadow-none
-  hover:bg-zinc-200 hover:ring-gray-600/[.15] focus:border-0 focus:bg-zinc-200 focus:ring-0 focus:ring-gray-600/[.15]
-  active:bg-zinc-200 disabled:cursor-not-allowed
+    hover:bg-zinc-200 hover:ring-brand-600/[.15] focus:border-0 focus:bg-zinc-200 focus:ring-0 focus:ring-brand-600/[.15]
+    active:bg-zinc-200 disabled:cursor-not-allowed
   `,
-  buttonActive: "border-0 hover:bg-zinc-200 ring-0 ring-gray-600/[.15] bg-zinc-200",
-  buttonWrapperActive: "ring-4 ring-gray-600/[.15]",
+  buttonActive: "border-0 hover:bg-zinc-200 ring-0 ring-brand-600/[.15] bg-zinc-200",
+  buttonWrapperActive: "ring-4 ring-brand-600/[.15]",
   shiftRangeButton: `
     focus:bg-bg-zinc-200 flex items-center border-0 bg-zinc-100 py-[0.71875rem] shadow-none
-    hover:bg-zinc-200 hover:ring-gray-600/[.15] focus:border-0 focus:ring-0 focus:ring-gray-600/[.15] active:bg-zinc-200
+    hover:bg-zinc-200 hover:ring-brand-600/[.15] focus:border-0 focus:ring-0 focus:ring-brand-600/[.15] active:bg-zinc-200
     disabled:cursor-not-allowed last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none
   `,
-  menu: "absolute z-40 mt-2 w-80 overflow-hidden rounded-lg border border-gray-300 bg-white p-2 shadow focus:outline-none",
+  menu: "absolute z-40 mt-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
   menuTransition: {
     enterFromClass: "opacity-0 scale-95",
     enterActiveClass: "transition transform ease-out duration-100",
@@ -30,8 +30,8 @@ export default /*tw*/ {
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
     flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-zinc-100
-    px-1.5 py-2.5 text-center text-xs font-medium text-gray-900 hover:bg-gray-200
-    [&_span]:block [&_span]:font-normal [&_span]:text-gray-500
+    px-1.5 py-2.5 text-center text-xs font-medium text-brand-900 hover:bg-brand-200
+    [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
   periodButtonActive: "bg-zinc-200",
   rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
@@ -46,7 +46,7 @@ export default /*tw*/ {
   periodDateYearList: "grid grid-cols-3 grid-rows-1 gap-0.5",
   periodDateQuarterList: "",
   periodDate: `
-    cursor-pointer block w-full rounded-lg py-3 text-center text-sm font-medium text-gray-900 hover:rounded-lg hover:bg-gray-50
+    cursor-pointer block w-full rounded-lg py-3 text-center text-sm font-medium text-gray-900 hover:rounded-lg hover:bg-brand-50
     disabled:opacity-50 disabled:cursor-not-allowed
   `,
   periodDateActive: "bg-zinc-100",
@@ -58,7 +58,7 @@ export default /*tw*/ {
       description: "hidden",
     },
     input: {
-      base: "text-sm border-gray-100 px-4 py-2.5",
+      base: "text-sm border-brand-100 px-4 py-2.5",
       variants: {
         size: {
           md: "pt-2.5 pb-2.5",
@@ -72,7 +72,7 @@ export default /*tw*/ {
     dayViewWrapper: "p-0 w-full",
     monthViewWrapper: "p-0 w-full",
     yearViewWrapper: "p-0 w-full",
-    dayViewSwitchLabel: "font-medium text-gray-900",
+    dayViewSwitchLabel: "font-medium text-brand-900",
     nextPrevButton: "p-0 py-2 hover:bg-transparent",
     navigation: "px-0 w-full",
     nextIcon: {
@@ -88,12 +88,12 @@ export default /*tw*/ {
       },
     },
     day: "font-medium w-full h-10 text-sm mb-0.5",
-    currentDay: "text-white bg-gray-900 hover:bg-gray-900 hover:text-white",
+    currentDay: "text-white bg-brand-900 hover:bg-brand-900 hover:text-white",
     weekDay: "text-sm size-10",
     month: "font-medium",
-    selectedMonth: "bg-zinc-100 text-gray-900 hover:text-white",
+    selectedMonth: "bg-zinc-100 text-brand-900 hover:text-white",
     year: "font-medium",
-    selectedYear: "bg-zinc-100 text-gray-900 hover:text-white",
+    selectedYear: "bg-zinc-100 text-brand-900 hover:text-white",
   },
   i18n: {
     lastThirtyDays: "Last 30 days <span> and 2 next two weeks </span>",
