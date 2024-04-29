@@ -15,11 +15,7 @@ function setLoadingOn(url) {
 }
 
 function setLoadingOff(url) {
-  if (url) {
-    loaderRequestQueue.value = loaderRequestQueue.value.filter((item) => item !== url);
-  } else {
-    loaderRequestQueue.value = [];
-  }
+  loaderRequestQueue.value = url ? loaderRequestQueue.value.filter((item) => item !== url) : [];
 
   loaderRequestTimeout.value = setTimeout(() => {
     if (!loaderRequestQueue.value.length) {

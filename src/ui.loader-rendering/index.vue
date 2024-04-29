@@ -14,6 +14,9 @@ import { computed } from "vue";
 
 import useLoaderRendering from "./composables/useLoaderRendering";
 
+/* Should be a string for correct web-types gen */
+defineOptions({ name: "ULoaderRendering", inheritAttrs: false });
+
 const props = defineProps({
   loading: {
     type: Boolean,
