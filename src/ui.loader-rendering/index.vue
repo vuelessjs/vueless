@@ -9,27 +9,26 @@
   </transition>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script setup>
+import { computed } from "vue";
 
-export default {
-  name: "ULoaderRendering",
+import useLoaderRendering from "./composables/useLoaderRendering";
 
-  props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+/* Should be a string for correct web-types gen */
+defineOptions({ name: "ULoaderRendering", inheritAttrs: false });
+
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false,
   },
+});
 
-  computed: {
-    ...mapState("loader", ["isRenderingPage"]),
+const { isRenderingPage } = useLoaderRendering();
 
-    showLoader() {
-      return this.loading || this.isRenderingPage;
-    },
-  },
-};
+const showLoader = computed(() => {
+  return props.loading || isRenderingPage.value;
+});
 </script>
 
 <style lang="postcss" scoped>
