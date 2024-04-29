@@ -7,10 +7,9 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref } from "vue";
 
-import { useStore } from "vuex";
-
 import UIService, { isMobileApp } from "../service.ui";
 import { clamp, queue } from "./services/loaderTop.service";
+import useLoaderTop from "./composables/useLoaderTop";
 
 import { ULoaderTop, MAXIMUM, SPEED } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -46,21 +45,20 @@ const props = defineProps({
   },
 });
 
-const store = useStore();
-
 const error = ref(false);
 const show = ref(false);
 const progress = ref(0);
 const opacity = ref(1);
 const status = ref(null);
 
+const {
+  loaderRequestQueue,
+  isLoading,
+  componentLoaderRequestQueue,
+  setComponentRequestQueue,
+  removeComponentRequestQueue,
+} = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
-
-const loaderRequestQueue = computed(() => store.state.loaderTop.loaderRequestQueue);
-const isLoading = computed(() => store.state.loaderTop.isLoading);
-const componentLoaderRequestQueue = computed(
-  () => store.state.loaderTop.componentLoaderRequestQueue,
-);
 
 const isStarted = computed(() => {
   return typeof status.value === "number";
@@ -81,12 +79,12 @@ watch(loaderRequestQueue, onChangeRequestsQueue, { deep: true });
 watch(isLoading, onChangeLoadingState, { deep: true });
 
 if (props.resourceNames) {
-  store.commit("loaderTop/SET_COMPONENT_REQUEST_QUEUE", resourceNamesArray.value);
+  setComponentRequestQueue(resourceNamesArray.value);
 }
 
 onBeforeUnmount(() => {
   if (props.resourceNames) {
-    store.commit("loaderTop/REMOVE_COMPONENT_REQUEST_QUEUE");
+    removeComponentRequestQueue();
   }
 });
 
