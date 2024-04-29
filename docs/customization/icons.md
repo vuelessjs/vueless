@@ -1,22 +1,165 @@
 # Icons
 
-The library supports three popular icon libraries:
+Vueless supports three popular SVG icon libraries: `@material-symbols` (default), `bootstrap-icons`, `heroicons`. You can change it like this.
 
-* `@material-symbols/svg-{weight}`, where {weight} is number from 100 to 700 (`@material-symbols/svg-500` is default).
-* `bootstrap-icons`
-* `heroicons`
+if you going to use `bootstrap-icons` or `heroicons` or other weight of `@material-symbols`  you should install needed package first.
 
-{% hint style="info" %}
-The package works only with SVG icons.
-{% endhint %}
+{% tabs %}
+{% tab title="npm" %}
+```bash
+# weight from 100 to 700 are available, 500 is default
+npm install @material-symbols/svg-400
+# or
+npm install bootstrap-icons
+# or
+npm install heroicons
+```
+{% endtab %}
 
-#### Icons safelist colors
+{% tab title="yarn" %}
+```bash
+# weight from 100 to 700 are available, 500 is default
+yarn add @material-symbols/svg-400
+# or
+yarn add bootstrap-icons
+# or
+yarn add heroicons
+```
+{% endtab %}
 
-If you set some icon names dynamically in `UIcon` component, then them may be skipped on a build stage. To avoid this behavior and include the icons in the build, you can add them into a safelist.
+{% tab title="pnpm" %}
+```bash
+# weight from 100 to 700 are available, 500 is default
+pnpm add @material-symbols/svg-400
+# or
+pnpm add bootstrap-icons
+# or
+pnpm add heroicons
+```
+{% endtab %}
 
+{% tab title="bun" %}
+<pre class="language-bash"><code class="lang-bash"># weight from 100 to 700 are available, 500 is default
+bun add @material-symbols/svg-400
+# or
+<strong>bun add bootstrap-icons
+</strong># or
+bun add heroicons
+</code></pre>
+{% endtab %}
+{% endtabs %}
+
+And after set the library in the config:
+
+{% tabs %}
+{% tab title="@material-symbols/svg-400" %}
+{% code title="vueless.config.js" %}
+```javascript
+export default /*tw*/ {
+  component: {
+    UIcon: {
+      defaultVariants: {
+        library: "@material-symbols",
+        weight: "400", // 100 | 200 | ... | 700
+        style: "outlined", // sharp | rounded | outlined
+      }
+    }
+  }
+};
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="bootstrap-icons" %}
+{% code title="vueless.config.js" %}
+```javascript
+export default /*tw*/ {
+  component: {
+    UIcon: {
+      defaultVariants: {
+        library: "bootstrap-icons",
+      }
+    }
+  }
+};
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="heroicons" %}
+{% code title="vueless.config.js" %}
+```javascript
+export default /*tw*/ {
+  component: {
+    UIcon: {
+      defaultVariants: {
+        library: "bootstrap-icons",
+        style: "solid", // solid | mini | micro
+      }
+    }
+  }
+};
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+## Custom icons
+
+Vueless `UIcon` component supports custom icons as well. To use it:
+
+* Import the SVG icon, with suffix `?component` at the end.&#x20;
+* Pass the imported component in the `:src` prop.
+
+```html
+<UIcon :src="EqualIcon" color="gray" />
+
+<script setup>
+import EqualIcon from "./images/equal.svg?component";
+</script>
+```
+
+## Dynamic import
+
+Before the build Vueless automatically scan the project files and collects all the icons. If Vueless can't recognise the icon it may be skipped, what mean's it will be lost after build.
+
+To avoid this behavior and include all the icons into the build, please follow rules below or add needed icons into the safelist.
+
+```html
+<!-- ✅ this will work -->
+<UIcon name="close" />
+
+<!-- ✅ this will work too -->
+<UIcon name="isOpened ? 'arrow_up' : 'arrow_down'" />
+
+<!-- 🛑 this won't work -->
+<UIcon :name="stateIcon" />
+```
+
+If you need to use icon names in JS you should declare the icon names in any of JS object. If the key in the object includes  `icon` word it will be automatically recognised by Vueless and icon will be added to the build.
+
+```html
+<UIcon :name="stateIcon" />
+
+<script setup>
+import { computed } from "vue";
+
+/* here is the trick */
+const icons = {
+  iconArrowUp: "arrow_up",
+  iconArrowDown: "arrow_down",
+}
+
+const stateIcon = computed(() => isOpened ? icons.iconArrowUp : icons.iconArrowDown);
+</script>
+```
+
+## Icons safelist colors
+
+if you don't want to use object approach you can simply add needed icons into the safelist.
+
+{% code title="vueless.config.js" %}
 ```js
-// vueless.config.js
-
 export default {
   component: {
     UIcon: {
@@ -25,5 +168,8 @@ export default {
   }
 };
 ```
+{% endcode %}
 
-> In this case, the regular and filled icon variants will be added into the build.
+{% hint style="info" %}
+In this case regular and filled icon variants will be safelistd and added into the build.
+{% endhint %}

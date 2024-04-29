@@ -1,15 +1,39 @@
 # Components
 
-#### `vueless.config.js`
+As you may already know the Vueless components are styled with [Tailwind CSS](https://tailwindcss.com/). All default component classes which appies to each HTML tag available in [Vueless UI docs](https://ui.vueless.com/) in **`Default config`** chapter (at the end of each page).
 
-Components are styled with Tailwind CSS but classes are all defined in the default `configs/default.config.js` file located in each component folder. You can override those in your own `vueless.config.js`.
+You can change the default classes of Vueless components in 3 ways:
 
+* Globally in `vueless.config.js`,
+* Locally by component `config` prop,
+* Locally by component `class` attribute.
+
+## Classes smart merging
+
+Thanks to [tailwind-merge](https://github.com/dcastil/tailwind-merge), all those configs are smartly merged with the default config. This means you don't have to rewrite everything.
+
+### **Merging priority**
+
+* Component `class` attribute (highest priority)
+* Component `config` prop
+* Global `vueless.config.js`
+* Component default config (lowest priority)
+
+### Merging strategy
+
+You can change a merge behaviour by changing the `strategy` key in the `vueless.config.js` or `config` prop:
+
+* `merge` (default) – smartly merge provided custom classes with default config classes.
+* `replace` – replace default config keys by provided custom keys (override only provided keys, the rest classes will be taken from the default config).
+* `override` – override default config by provided custom config (keeps only custom config, removes all default classes).
+
+{% code title="vueless.config.js" %}
 ```js
-// vueless.config.js
-
 export default {
+  strategy: "override", // applies for all components
   component: {
     UButton: {
+      strategy: "merge", // applies only for UButton
       button: {
         base: "bg-red-500 w-full",
       }
@@ -17,45 +41,84 @@ export default {
   }
 };
 ```
+{% endcode %}
 
-Thanks to [tailwind-merge](https://github.com/dcastil/tailwind-merge), the `vueless.config.js` is smartly merged with the default config. This means you don't have to rewrite everything.
+## `CVA`
 
-You can change this behavior by changing `strategy` in your `vueless.config.js` to:
+For managing classes variants Vueless components use [cva](https://github.com/joe-bell/cva) (Class Variance Authority) under the hood. For more details you can read related [cva docs](https://cva.style/docs/getting-started/variants).
 
-* `override` – override default config by custom defined config (keeps only custom config and remove everything else).
-* `replace` – replace default config keys by custom defined config keys, (the rest classes takes from the default config).
-* `merge` – smartly merge custom defined classes with default config classes (default strategy).
+{% hint style="warning" %}
+Due to configs merge feature Vueless doesn't support **arrays** for values in `compoundVariants` .
+{% endhint %}
 
+***
+
+## `vueless.config.js`
+
+Some examples of changing classes for a Vueless components globally.
+
+{% code title="vueless.config.js" %}
 ```js
-// vueless.config.js
-
 export default {
-  strategy: 'override',
   component: {
+    /* simplified way of stiling */
     UButton: {
-      button: {
-        base: "bg-red-500 w-full",
-      }
+      button: "bg-red-500 w-full",
+      text: "px-4 text-lg font-bold"
+    },
+    /* full way of stiling with variants */
+    UCard: {
+      wrapper: {
+        base: "border-gray-300",
+        variants: {
+          rounded: {
+            sm: "rounded-sm",
+            md: "rounded",
+            lg: "rounded-md",
+          },
+          padding: {
+            sm: "p-2 md:p-6",
+            md: "p-4 md:p-8",
+            lg: "p-6 md:p-10",
+          },
+        },
+      },
+    }
+    /* full way of stiling with compoundVariants */
+    ULabel: {
+      label: {
+        base: "font-bold",
+        compoundVariants: [
+          { placement: "top", size: "sm", class: "m-0 p-0 text-sm" },
+          { placement: "top", size: "md", class: "m-0 p-0 text-base" },
+          { placement: "top", size: "lg", class: "m-0 p-0 text-lg" },
+        ],
+      },
+    }
+    /* setting default props */
+    UMoney: {
+      defaultVariants: {
+        delimiter: ".",
+        symbolAlign: "left",
+        divided: false,
+      },
     }
   }
 };
 ```
+{% endcode %}
 
-#### `config` prop
+## `config` prop
 
-Each component has a `config` prop that allows you to customize everything specifically.
+Each component has a `config` prop that allows to customize everything specifically.
 
 ```jsx
 <template>
-  <UButton :config="{ button: { base: 'max-w-2xl' } }">
+  <UButton :config="{ button: 'max-w-2xl' }">
     <slot />
   </UButton>
 </template>
 ```
-
-> You can find the default classes for each component under the `Config` section.
-
-Thanks to [tailwind-merge](https://github.com/dcastil/tailwind-merge), the `config` prop is smartly merged with the config. This means you don't have to rewrite everything.
 
 For example, the default preset of the `UEmpty` component looks like this:
 
@@ -90,52 +153,37 @@ For example, the default preset of the `UEmpty` component looks like this:
 }
 ```
 
-To change the font of the `title`, you only need to write:
+To change the font weight of the `title`, you only need to write:
 
 ```jsx
 <UEmpty 
-  title="The list is empty" 
-  :config="{ title: { base: 'font-bold' } }" 
+  title="The list is empty"
+  :config="{ title: 'font-bold' }" 
 />
 ```
 
 This will smartly replace the `font-medium` by `font-bold` and prevent any class duplication and any class priority issue.
 
-You can change this behavior by setting `strategy` to `replace` or `override` inside the `config` prop:
-
-```jsx
-<UButton
-  label="Submmit"
-  :config="{
-    strategy: 'replace',
-    color: {
-      white: {
-        solid: 'bg-white dark:bg-gray-900'
-      }
-    }
-  }"
-/>
-```
-
-#### `class` attribute
+## `class` attribute
 
 You can also use the `class` attribute to add classes to the component.
 
-```vue
+```html
 <template>
   <UButton label="Button" class="font-bold" />
 </template>
 ```
 
-Again, with [tailwind-merge](https://github.com/dcastil/tailwind-merge), this will smartly merge the classes with the `config` prop and the global and default configs.
+In this case classes will be applied to the top level component's HTML tag.
 
-#### Default values
+***
+
+## Default values
 
 Some component props like `size`, `color`, `variant`, etc. have a default value that you can override in your `vueless.config.js` or by the `config` prop as well.
 
+{% code title="vueless.config.js" %}
 ```js
-// vueless.config.js
-
 export default {
   component: {
     UButton: {
@@ -148,3 +196,4 @@ export default {
   }
 };
 ```
+{% endcode %}

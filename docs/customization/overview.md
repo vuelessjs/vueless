@@ -1,6 +1,6 @@
 # Overview
 
-You can customise the look and feel of the components and change the default library configuration in  `/vueless.config.js`.
+You can customise the look and feel of the components and change the default library configuration in  `vueless.config.js`.
 
 ***
 
@@ -22,7 +22,7 @@ See [Colors](colors.md) chapter for more details.
 
 ## Components
 
-Components are styled with Tailwind CSS and you can override any class of each component as on example below.&#x20;
+Components are styled with [Tailwind CSS](https://tailwindcss.com/) and you can override any class of each component.&#x20;
 
 {% code title="vueless.config.js" %}
 ```js
@@ -37,7 +37,7 @@ export default {
 ```
 {% endcode %}
 
-You can find config keys (`button`, `text`, etc...) in Default config block of our [component docs](https://ui.vueless.com) at the end of each page.
+You can find the config keys (`button`, `text`, etc...) and default classes in **Default config** block of Vueless [component docs](https://ui.vueless.com) which placed at the end of each component page.
 
 See [Components](components.md) chapter for more details.
 
@@ -45,7 +45,7 @@ See [Components](components.md) chapter for more details.
 
 ## Icons
 
-Vueless supports three popular icon libraries: `@material-symbols` (default), `bootstrap-icons`, `heroicons`. You can change the library and style as on example below.
+Vueless supports three popular icon libraries: `@material-symbols` (default), `bootstrap-icons`, `heroicons`. You can change it like this.
 
 {% code title="vueless.config.js" %}
 ```js
