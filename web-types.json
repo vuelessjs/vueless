@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.49",
+  "version": "0.0.50",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -6990,19 +6990,6 @@
           ],
           "source": {
             "module": "vueless/ui.button-toggle-item/index.vue",
-            "symbol": "default"
-          }
-        },
-        {
-          "name": "UViewport",
-          "description": "",
-          "slots": [
-            {
-              "name": "default"
-            }
-          ],
-          "source": {
-            "module": "vueless/ui.viewport/index.vue",
             "symbol": "default"
           }
         },
