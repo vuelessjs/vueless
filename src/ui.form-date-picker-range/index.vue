@@ -179,7 +179,6 @@
 
 <script setup>
 import { computed, watch, ref, nextTick } from "vue";
-import { useStore } from "vuex";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
@@ -227,6 +226,7 @@ import {
 import { wrongDateFormat, wrongMonthNumber, wrongDayNumber } from "./services/validation.service";
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
+import useBreakpoint from "../composable.breakpoint";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -385,7 +385,6 @@ const {
   rangeInputWrapperAttrs,
   inputRangeErrorAttrs,
 } = useAttrs(props, { isShownMenu });
-const store = useStore();
 const { tm } = useLocale();
 
 const calendarValue = ref(props.modelValue);
@@ -413,7 +412,7 @@ const localValue = computed({
   },
 });
 
-const isMobileDevice = computed(() => store.getters["breakpoint/isMobileDevice"]);
+const { isMobileBreakpoint } = useBreakpoint();
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
 const currentLocale = computed(() => merge(tm("UDatePickerRange"), props.config.i18n));
 
@@ -560,7 +559,7 @@ const userFormatDate = computed(() => {
     title = `${fromTitle} – ${toTitle}`;
   }
 
-  if (isMobileDevice.value && !isPeriod.value.month && isVariant.value.button) {
+  if (isMobileBreakpoint.value && !isPeriod.value.month && isVariant.value.button) {
     const startDay = String(from.getDate()).padStart(2, "0");
     const endDay = String(to?.getDate())?.padStart(2, "0");
     const startMonth = String(from.getMonth()).padStart(2, "0");

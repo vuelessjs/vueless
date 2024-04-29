@@ -25,7 +25,6 @@
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
 
 import UIcon from "../ui.image-icon";
 import URadio from "../ui.form-radio";
@@ -34,11 +33,10 @@ import UIService, { getRandomId } from "../service.ui";
 import defaultConfig from "./configs/default.config";
 import { URadioCard } from "./constants";
 import { useAttrs } from "./composables/attrs.composable";
+import useBreakpoint from "../composable.breakpoint";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "URadioCard", inheritAttrs: false });
-
-const store = useStore();
 
 const props = defineProps({
   /**
@@ -126,9 +124,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const { radioAttrs, iconAttrs, wrapperAttrs, labelAttrs, itemsAttrs } = useAttrs(props);
 
-const isMobileDevice = computed(() => {
-  return store.getters["breakpoint/isMobileDevice"];
-});
+const { isMobileBreakpoint } = useBreakpoint();
 
 const selectedItem = computed({
   get: () => props.modelValue,
@@ -137,10 +133,10 @@ const selectedItem = computed({
 
 const gridColsClass = computed(() => {
   return {
-    "grid-cols-1": isMobileDevice,
-    "grid-cols-2": props.gridCols === 2 && isMobileDevice,
-    "grid-cols-3": props.gridCols === 3 && isMobileDevice,
-    "grid-cols-4": props.gridCols === 4 && isMobileDevice,
+    "grid-cols-1": isMobileBreakpoint.value,
+    "grid-cols-2": props.gridCols === 2 && isMobileBreakpoint.value,
+    "grid-cols-3": props.gridCols === 3 && isMobileBreakpoint.value,
+    "grid-cols-4": props.gridCols === 4 && isMobileBreakpoint.value,
   };
 });
 </script>

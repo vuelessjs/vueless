@@ -14,11 +14,10 @@ import "./index.pcss";
 // Common stores
 import loader from "vueless/ui.loader-rendering/store";
 import loaderTop from "vueless/ui.other-loader-top/store";
-import breakpoint from "vueless/ui.viewport/store";
 
 // Create store instance
 const store = createStore({
-  modules: { loader, loaderTop, breakpoint },
+  modules: { loader, loaderTop },
 });
 
 // Create vueless instance

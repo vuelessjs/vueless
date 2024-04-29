@@ -2,13 +2,14 @@ import useUI from "../../composable.ui";
 import { cva, cx } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
-import { useStore } from "vuex";
 import { computed } from "vue";
 
+import useBreakpoint from "../../composable.breakpoint";
+
 export function useAttrs(props) {
-  const store = useStore();
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config, "wrapper");
   const { modal } = config.value;
+  const { isMobileBreakpoint } = useBreakpoint();
 
   const cvaModal = cva({
     base: modal.base,
@@ -44,9 +45,7 @@ export function useAttrs(props) {
     ...headerAttrsRaw.value,
     class: cx([
       headerAttrsRaw.value.class,
-      props.mobileFooterReverse &&
-        store.getters["breakpoint/isMobileDevice"] &&
-        config.value.footerMobileReverse,
+      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
     ]),
   }));
 
@@ -54,9 +53,7 @@ export function useAttrs(props) {
     ...footerAttrsRaw.value,
     class: cx([
       footerAttrsRaw.value.class,
-      props.mobileFooterReverse &&
-        store.getters["breakpoint/isMobileDevice"] &&
-        config.value.footerMobileReverse,
+      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
     ]),
   }));
 
