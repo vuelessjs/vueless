@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
   const { radio } = config.value;
 
   const cvaRadio = cva({
@@ -14,14 +14,7 @@ export function useAttrs(props) {
     compoundVariants: radio.compoundVariants,
   });
 
-  const radioClasses = computed(() =>
-    setColor(
-      cvaRadio({
-        color: props.color,
-      }),
-      props.color,
-    ),
-  );
+  const radioClasses = computed(() => cvaRadio({ color: props.color }));
 
   const wrapperAttrs = getAttrs("wrapper");
   const listAttrs = getAttrs("listAttrs");

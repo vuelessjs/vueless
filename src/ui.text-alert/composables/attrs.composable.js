@@ -6,7 +6,7 @@ import { computed } from "vue";
 
 export function useAttrs(props) {
   const { config, getAttrs, setColor, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, body, button, icon } = config.value;
+  const { wrapper, body } = config.value;
 
   const cvaWrapper = cva({
     base: wrapper.base,
@@ -18,18 +18,6 @@ export function useAttrs(props) {
     base: body.base,
     variants: body.variants,
     compoundVariants: body.compoundVariants,
-  });
-
-  const cvaButton = cva({
-    base: button.base,
-    variants: button.variants,
-    compoundVariants: button.compoundVariants,
-  });
-
-  const cvaIcon = cva({
-    base: icon.base,
-    variants: icon.variants,
-    compoundVariants: icon.compoundVariants,
   });
 
   const wrapperClasses = computed(() =>
@@ -44,14 +32,10 @@ export function useAttrs(props) {
 
   const bodyClasses = computed(() => setColor(cvaBody({ size: props.size }), props.color));
 
-  const buttonClasses = computed(() => setColor(cvaButton, props.color));
-
-  const iconClasses = computed(() => setColor(cvaIcon, props.color));
-
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });
-  const buttonAttrs = getAttrs("button", { isComponent: true, classes: buttonClasses });
-  const iconAttrs = getAttrs("icon", { isComponent: true, classes: iconClasses });
+  const buttonAttrs = getAttrs("button", { isComponent: true });
+  const iconAttrs = getAttrs("icon", { isComponent: true });
 
   return {
     config,
