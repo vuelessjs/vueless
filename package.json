@@ -24,11 +24,11 @@
     "package:prepare": "node src/gen.web-types && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && rm -rf dist/assets && node dist.prepare"
   },
   "dependencies": {
-    "@material-symbols/svg-500": "^0.14.3",
-    "@tailwindcss/forms": "^0.5.4",
-    "@uppy/core": "^3.3.1",
-    "@uppy/drag-drop": "^3.0.2",
-    "@uppy/vue": "^1.0.2",
+    "@material-symbols/svg-500": "^0.17.3",
+    "@tailwindcss/forms": "^0.5.7",
+    "@uppy/core": "^3.10.1",
+    "@uppy/drag-drop": "^3.1.0",
+    "@uppy/vue": "^1.1.2",
     "cva": "^1.0.0-beta.1",
     "lodash-es": "^4.17.21",
     "tailwind-merge": "^2.3.0",
