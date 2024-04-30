@@ -102,6 +102,7 @@ export default class UIServiceDefault {
     return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
   }
 
+  // TODO: This should be rewrote to support all set of brand colors (not only one).
   setBrandColor(brandColor) {
     function getBrandColor(color, grayColor, brandColors) {
       if (color === "grayscale") {
