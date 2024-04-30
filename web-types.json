@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -5027,7 +5027,7 @@
                 "kind": "expression",
                 "type": "'left' | 'center' | 'right'"
               },
-              "default": "\"center\""
+              "default": "center"
             },
             {
               "name": "yPosition",
@@ -5036,7 +5036,25 @@
                 "kind": "expression",
                 "type": "'top' | 'bottom'"
               },
-              "default": "\"top\""
+              "default": "top"
+            },
+            {
+              "name": "vHtml",
+              "description": "Use v-html to render notification label and description content.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "config",
+              "description": "Sets component ui config object.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
             }
           ],
           "source": {
