@@ -1,96 +1,110 @@
 # Internationalization (i18n)
 
-When bootstrapping your application, you can specify available locales and the default locale for vueless components. Vueless also supports integration with [vue-i18n](https://vue-i18n.intlify.dev/).
+You can specify locale messages and a default locale for Vueless components and integrate it with [vue-i18n](https://vue-i18n.intlify.dev/) as well.
 
+## Vueless i18n
 
+Vueless supports only English locale by default. To set additional locales, you can provide them in `createVueless()` under the `locale` key with the structure below:
 
-### Getting started
-
-Vueless supports only English locale by default. To set additional custom locales, provide locale key with the following structure:
-
+{% code title="main.js" %}
 ```javascript
-// main.js
-
 import { createVueless, defaultEnLocale } from "vueless";
 
 const vueless = createVueless({
-    locale: {
-       locale: "en" // default locale
-       fallback: "en" // fallback locale
-       massages: {
-          en: { // customize or overwrite default english locale
-             ...defaultEnLocale,
-             componentName: { // USelect for example
-                messageOne: "...",
-                messageTwo: "...",
-                ...
-             }
-          }
-       
-          ua: { // new custom locale
-             componentName: {
-                messageOne: "...",
-                messageTne: "...",
-                ...
-             }
-          }
-       } 
-    }
+  locale: {
+    locale: "en", // default locale
+    fallback: "en", // fallback locale
+    messages: {
+      en: { // customize or overwrite default english locale
+        ...defaultEnLocale,
+        USelect: { // Vueless component name
+          listIsEmpty: "List is empty.",
+          noDataToShow: "No data to show.",
+          clear: "clear",
+          addMore: "Add more...",
+        },
+      },
+      ua: { // new custom locale
+        USelect: { // Vueless component name
+          listIsEmpty: "Список порожній.",
+          noDataToShow: "Дані відсутні.",
+          clear: "очистити",
+          addMore: "Додати ще...",
+        },
+      },
+    },
+  },
 });
 ```
+{% endcode %}
 
-### Vue-i18n integration
+Full list of locale keys available in [Vueless UI docs](https://ui.vueless.com/) in **`Default config`** chapter (at the end of each page).
 
-Use `createVueI18nAdapter` function to integrate vue-i18n library with Vueless components.
+## Vue-i18n integration
 
+Use `createVueI18nAdapter()` to integrate [`vue-i18n`](https://vue-i18n.intlify.dev/) library with Vueless components.
+
+{% code title="main.js" %}
 ```javascript
-// main.js
-
 import { createVueless, defaultEnLocale, createVueI18nAdapter } from "vueless";
 import { createI18n } from "vue-i18n";
 
 const i18n = createI18n({
-    legacy: false,
-    locale: "ua",
-    fallbackLocale: "en",
-    messages: {
-        en: {
-            ...defaultEnLocale,
-            someYourMessageOne: "Hello wrold!",
-            someYourMessageTwo: "Brave new world",
-        },
-        ua: {
-            componentName: { // USelect for example
-                messageOne: "...",
-                messageTwo: "...",
-                ...
-            },
-            someYourMessageOne: "Привіт світ!",
-            someYourMessageTwo: "Прекрасний новий світ",
-        }
-    }
+  legacy: false, // legacy mode should be disabled
+  locale: "ua", // default locale
+  fallback: "en", // fallback locale
+  messages: {
+    en: { // customize or overwrite default english locale
+      ...defaultEnLocale,
+      USelect: { // Vueless component name
+        listIsEmpty: "List is empty.",
+        noDataToShow: "No data to show.",
+        clear: "clear",
+        addMore: "Add more...",
+      },
+      // other project messages
+      projectMessageOne: "Hello wrold!",
+      projectMessageTwo: "Brave new world.",
+    },
+    ua: { // new custom locale
+      USelect: { // Vueless component name
+        listIsEmpty: "Список порожній.",
+        noDataToShow: "Дані відсутні.",
+        clear: "очистити",
+        addMore: "Додати ще...",
+      },
+      // other project messages
+      projectMessageOne: "Привіт світ!",
+      projectMessageTwo: "Прекрасний новий світ.",
+    },
+  },
 });
 
-const vuless = createVueless({
-    locale: {
-        adapter: createVueI18nAdapter(i18n),
-    }
+const vueless = createVueless({
+  locale: {
+    adapter: createVueI18nAdapter(i18n),
+  },
 });
 ```
+{% endcode %}
 
-### Customizing text content in specific component
+## Customising messages in specific component
 
-You can provide custom massages for specific component, providing `i18n` key in component's config.&#x20;
+You can easily set custom massages for specific component by providing `i18n` key in the component's config.&#x20;
 
-```javascript
+```html
+<USelect :config="seelctConfig">
+
+<script setup>
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const someComponentConfig = {
-    i18n: {
-        dynamicExampleMesssage: t("exampleMessage"),
-        staticExampleMesssage: "Some example message",
-    }
+const seelctConfig = {
+  i18n: {
+    listIsEmpty: t("label.listIsEmpty"), // dynamyc message
+    clear: "x", // static message
+  }
 }
+</script>
 ```

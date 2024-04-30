@@ -173,3 +173,68 @@ export default {
 {% hint style="info" %}
 In this case regular and filled icon variants will be safelistd and added into the build.
 {% endhint %}
+
+***
+
+## Deep tuning
+
+Loding SVG icons provided by [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite)  which in turn was be inspired by [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader) .
+
+For loading SVG  [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) use [SVGO](https://github.com/svg/svgo) by default. We created and already included optimal config to cover most of the cases, but if you will face with some issues with SVG rendering feel free to change it by passing you own config under the `svgoConfig` key, ([see SVGO plugin docs](https://svgo.dev/docs/preset-default/)).
+
+{% code title="vite.config.js" %}
+```javascript
+import { Vueless } from "@vueless/plugin-vite";
+
+export default defineConfig({
+  plugins: [
+    ...
+    Vueless({
+      svgoConfig: {
+        plugins: [
+          {
+            name: "preset-default",
+            params: {
+              overrides: {
+                removeViewBox: false,
+                convertColors: {
+                  currentColor: true,
+                },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  ],
+  ...
+});
+```
+{% endcode %}
+
+Or you can disable SVGO globally as well.
+
+{% code title="vite.config.js" %}
+```javascript
+import { Vueless } from "@vueless/plugin-vite";
+
+export default defineConfig({
+  plugins: [
+    ...
+    Vueless({ svgo: false }),
+  ],
+  ...
+});
+```
+{% endcode %}
+
+SVGO also can be explicitly disabled for one file by adding the `?skipsvgo` suffix.
+
+```html
+<IconWithoutOptimizer />
+
+<script setup>
+import IconWithoutOptimizer from "./my-icon.svg?skipsvgo"
+</script>
+```
+

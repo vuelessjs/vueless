@@ -67,7 +67,41 @@ See [Icons](icons.md) chapter for more details.
 
 ## Internationalization (i18n)
 
-work in progress...
+You can specify locale messages and a default locale for Vueless components and integrate it with [vue-i18n](https://vue-i18n.intlify.dev/) as well.
+
+Vueless supports only English locale by default. To set additional locales, you can provide them in `createVueless()` under the `locale` key with the structure below:
+
+{% code title="main.js" %}
+```javascript
+import { createVueless, defaultEnLocale } from "vueless";
+
+const vueless = createVueless({
+  locale: {
+    locale: "en", // default locale
+    fallback: "en", // fallback locale
+    messages: {
+      en: { // customize or overwrite default english locale
+        ...defaultEnLocale,
+        USelect: { // Vueless component name
+          listIsEmpty: "List is empty.",
+          noDataToShow: "No data to show.",
+          clear: "clear",
+          addMore: "Add more...",
+        },
+      },
+      ua: { // new custom locale
+        USelect: { // Vueless component name
+          listIsEmpty: "Список порожній.",
+          noDataToShow: "Дані відсутні.",
+          clear: "очистити",
+          addMore: "Додати ще...",
+        },
+      },
+    },
+  },
+});
+```
+{% endcode %}
 
 See [Internationalization (i18n) ](internationalization-i18n.md)chapter for more details.
 
