@@ -1,6 +1,6 @@
 <template>
-  <div
-    v-tippy="tippyConfig"
+  <span
+    v-tooltip="tooltipConfig"
     :data-cy="dataCy"
     v-bind="wrapperAttrs"
     @focus="onFocus"
@@ -10,31 +10,20 @@
     <div v-bind="containerAttrs">
       <component :is="dynamicComponent" v-bind="iconAttrs" />
     </div>
-  </div>
+  </span>
 </template>
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
-import { directive as tippyDirective, setDefaultProps as tippySetConfig } from "vue-tippy";
-import "tippy.js/dist/tippy.css";
-import "tippy.js/themes/light.css";
-import "tippy.js/animations/shift-away.css";
 import UIService from "../service.ui";
 
 import { UIcon } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
 
-tippySetConfig({
-  arrow: true,
-  theme: "light",
-  animation: "shift-away",
-});
-
 /* Should be a string for correct web-types gen */
 defineOptions({
   name: "UIcon",
-  directives: { tippy: tippyDirective },
   inheritAttrs: false,
 });
 
@@ -215,7 +204,7 @@ const dynamicComponent = computed(() => {
   return defineAsyncComponent(libraries[library]);
 });
 
-const tippyConfig = computed(() => {
+const tooltipConfig = computed(() => {
   return { onShow: () => !!props.tooltip, ...props.tooltipSettings, content: props.tooltip };
 });
 
