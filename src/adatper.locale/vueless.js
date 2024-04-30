@@ -1,4 +1,5 @@
 import { shallowRef, ref } from "vue";
+import { merge } from "lodash-es";
 
 import en from "./locales/en";
 
@@ -8,7 +9,7 @@ export default function createVuelessAdapter(options) {
   const current = shallowRef(options?.locale ?? FALLBACK_LOCALE_CODE);
   const fallback = shallowRef(options?.fallback ?? FALLBACK_LOCALE_CODE);
 
-  const messages = ref({ en, ...options?.messages });
+  const messages = ref(merge({ en }, options?.messages));
 
   return {
     name: "vueless",

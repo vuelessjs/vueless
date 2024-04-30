@@ -2,6 +2,7 @@ import { createLocale, LocaleSymbol } from "./composable.locale";
 
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en";
+export { useLocale } from "./composable.locale";
 export {
   notify,
   notifySuccess,
@@ -13,10 +14,10 @@ export {
 } from "./ui.notify/services";
 
 export function createVueless(options = {}) {
-  const locale = createLocale(options.locale);
+  const i18n = createLocale(options.i18n);
 
   const install = (app) => {
-    app.provide(LocaleSymbol, locale);
+    app.provide(LocaleSymbol, i18n);
   };
 
   return {
