@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div v-if="fixedRounding && !isMobileDevice" v-bind="rightRoundingWrapperAttrs">
+    <div v-if="fixedRounding && !isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
       <div v-bind="rightRoundingAttrs" />
     </div>
   </div>
