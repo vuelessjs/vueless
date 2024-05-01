@@ -28,15 +28,6 @@ const props = defineProps({
   },
 
   /**
-   * Loader position.
-   * @values fixed, absolute, relative
-   */
-  position: {
-    type: String,
-    default: UIService.get(defaultConfig, ULoaderTop).default.position,
-  },
-
-  /**
    * The color of the loader stripe.
    * @values gray, red, orange, yellow, green, blue, violet, fuchsia
    */

@@ -26,7 +26,7 @@
 import { ref } from "vue";
 
 import UIService, { getRandomId } from "../service.ui";
-import ULoader from "../ui.other-loader";
+import ULoader from "../ui.loader";
 
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";

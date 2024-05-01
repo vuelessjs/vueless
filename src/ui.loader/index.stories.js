@@ -1,11 +1,11 @@
-import ULoader from "../ui.other-loader";
+import ULoader from "../ui.loader";
 import URow from "../ui.container-row";
 
 import { getArgTypes } from "../service.storybook";
 
 export default {
   id: "9020",
-  title: "Other / Loader",
+  title: "Loaders and Skeletons / Loader",
   component: ULoader,
   argTypes: {
     ...getArgTypes(ULoader.name),
@@ -31,14 +31,14 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <URow>
+    <div class="flex gap-4 flex-wrap">
       <ULoader
         v-for="(color, index) in colors"
         :color="color"
         v-bind="args"
         :key="index"
       />
-    </URow>
+    </div>
   `,
 });
 

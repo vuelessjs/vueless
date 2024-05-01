@@ -1,6 +1,6 @@
 import { ref, readonly } from "vue";
 
-const isLoading = ref(false);
+const isLoading = ref(true);
 const requestQueue = ref([]);
 const loaderRequestQueue = ref([]);
 const loaderRequestTimeout = ref(0);
@@ -33,7 +33,7 @@ function removeRequestUrl(url) {
 }
 
 function setComponentRequestQueue(requests) {
-  componentLoaderRequestQueue.value = [...componentLoaderRequestQueue, ...requests];
+  componentLoaderRequestQueue.value = [...componentLoaderRequestQueue.value, ...requests];
 }
 
 function removeComponentRequestQueue() {
