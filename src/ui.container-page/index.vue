@@ -244,9 +244,6 @@ onMounted(() => {
       &:deep(.vueless-dropdown-tag, .vueless-dropdown-link, .vueless-dropdown-button) {
         @apply w-full md:w-auto;
 
-        .dropdown-list {
-        }
-
         .dropdown-wrapper-list {
           @apply mb-2 md:mb-0;
         }

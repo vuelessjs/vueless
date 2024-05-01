@@ -48,40 +48,40 @@ const ellipseClasses = computed(() => [
 <style scoped lang="postcss">
 .vueless-internal-loader-ellipse {
   &:nth-child(1) {
-    @apply animate-[lds-ellipsis1_0.6s_infinite];
+    animation: lds-ellipsis1 0.6s infinite;
   }
 
   &:nth-child(4) {
-    @apply animate-[lds-ellipsis3_0.6s_infinite];
+    animation: lds-ellipsis3 0.6s infinite;
   }
 
   &-sm {
     &:nth-child(2) {
-      @apply animate-[lds-ellipsis2-sm_0.6s_infinite];
+      animation: lds-ellipsis2-sm 0.6s infinite;
     }
 
     &:nth-child(3) {
-      @apply animate-[lds-ellipsis2-sm_0.6s_infinite];
+      animation: lds-ellipsis2-sm 0.6s infinite;
     }
   }
 
   &-md {
     &:nth-child(2) {
-      @apply animate-[lds-ellipsis2-md_0.6s_infinite];
+      animation: lds-ellipsis2-md 0.6s infinite;
     }
 
     &:nth-child(3) {
-      @apply animate-[lds-ellipsis2-md_0.6s_infinite];
+      animation: lds-ellipsis2-md 0.6s infinite;
     }
   }
 
   &-lg {
     &:nth-child(2) {
-      @apply animate-[lds-ellipsis2-lg_0.6s_infinite];
+      animation: lds-ellipsis2-lg 0.6s infinite;
     }
 
     &:nth-child(3) {
-      @apply animate-[lds-ellipsis2-lg_0.6s_infinite];
+      animation: lds-ellipsis2-lg 0.6s infinite;
     }
   }
 }
