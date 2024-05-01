@@ -211,7 +211,7 @@ function setPosition() {
 }
 
 function getText(notificationText, type) {
-  return notificationText || currentLocale.value[type];
+  return notificationText || currentLocale.value[type]?.default;
 }
 
 function getNotificationClasses(notification) {
