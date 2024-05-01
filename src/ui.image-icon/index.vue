@@ -21,6 +21,8 @@ import { UIcon } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
 
+import vTooltip from "../directive.tooltip";
+
 /* Should be a string for correct web-types gen */
 defineOptions({
   name: "UIcon",

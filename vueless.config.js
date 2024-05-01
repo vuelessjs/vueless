@@ -1,13 +1,7 @@
 export default {
   brand: "grayscale",
   gray: "gray",
-  directive: {
-    tooltip: {
-      arrow: true,
-      theme: "light",
-      animation: "shift-away",
-    },
-  },
+  directive: {},
   component: /*tw*/ {
     // component configs
   },
