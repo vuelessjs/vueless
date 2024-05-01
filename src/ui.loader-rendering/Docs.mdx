@@ -1,0 +1,21 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
+import { getSource } from "../service.storybook";
+
+import * as stories from "./index.stories";
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Control loader
+You can control loader state using *useLoaderRendering* composable.
+
+<Source code={`
+import { useLoaderRendering } from "vueless";
+
+const { setRenderingFinished, isRenderingPage, setRenderingStarted } = useLoaderRendering();
+`} language="jsx" dark />
