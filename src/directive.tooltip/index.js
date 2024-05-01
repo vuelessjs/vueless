@@ -1,21 +1,30 @@
 import tippy from "tippy.js";
+import merge from "lodash.merge";
 
-import vuelessConfig from "../../vueless.config";
+import vuelessConfig from "../../vueless.config.js";
 
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/animations/shift-away.css";
 
-tippy.setDefaultProps(vuelessConfig.directive.tooltip);
+const globalSettings = vuelessConfig?.directive?.tooltip || {};
+const defaultSettings = {
+  arrow: true,
+  theme: "light",
+  animation: "shift-away",
+};
+const mergedSettings = merge(defaultSettings, globalSettings);
+
+tippy.setDefaultProps(mergedSettings);
 
 export default {
   mounted(el, bindings) {
-    tippy(el, bindings.value);
+    tippy(el, merge(mergedSettings, bindings.value || {}));
   },
   updated(el, bindings) {
     if (!el._tippy) return;
 
-    el._tippy.setProps(bindings);
+    el._tippy.setProps(merge(mergedSettings, bindings.value || {}));
   },
   unmounted(el) {
     if (!el._tippy) return;
