@@ -11,7 +11,7 @@ Vueless supports only English locale by default. To set additional locales, you 
 import { createVueless, defaultEnLocale } from "vueless";
 
 const vueless = createVueless({
-  locale: {
+  i18n: {
     locale: "en", // default locale
     fallback: "en", // fallback locale
     messages: {
@@ -88,7 +88,35 @@ const vueless = createVueless({
 ```
 {% endcode %}
 
-## Customising messages in specific component
+## Changing current locale
+
+If you use `vue-i18n`, you can change current locale using provided `useI18n` composable. To change current locale without `vue-i18n` use `useLocale` composable provided by Vueless.
+
+{% tabs %}
+{% tab title=" vueless-i18n" %}
+```html
+<script setup>
+import { useLocale } from "vueless"
+
+const { locale } = useLocale();
+locale.value = "ua";
+</script>
+```
+{% endtab %}
+
+{% tab title=" vue-i18n" %}
+```html
+<script setup>
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
+locale.value = "ua";
+</script>
+```
+{% endtab %}
+{% endtabs %}
+
+## Customizing messages in specific component
 
 You can easily set custom massages for specific component by providing `i18n` key in the component's config.&#x20;
 
