@@ -31,9 +31,15 @@ export default /*tw*/ {
     long: 12000,
   },
   i18n: {
-    success: "Operation successful.",
-    warning: "Operation warning.",
-    error: "Operation error.",
+    success: {
+      default: "Operation successful.",
+    },
+    warning: {
+      default: "Operation warning.",
+    },
+    error: {
+      default: "Operation error.",
+    },
   },
   positionClasses: {
     page: "UNotifyPage",
