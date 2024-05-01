@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -4408,7 +4408,7 @@
             }
           ],
           "source": {
-            "module": "vueless/ui.other-loader/index.vue",
+            "module": "vueless/ui.loader/index.vue",
             "symbol": "default"
           }
         },
@@ -4444,15 +4444,6 @@
               "default": "\"\""
             },
             {
-              "name": "position",
-              "description": "Loader position.",
-              "value": {
-                "kind": "expression",
-                "type": "'fixed' | 'absolute' | 'relative'"
-              },
-              "default": "fixed"
-            },
-            {
               "name": "color",
               "description": "The color of the loader stripe.",
               "value": {
@@ -4463,7 +4454,7 @@
             }
           ],
           "source": {
-            "module": "vueless/ui.other-loader-top/index.vue",
+            "module": "vueless/ui.loader-top/index.vue",
             "symbol": "default"
           }
         },
