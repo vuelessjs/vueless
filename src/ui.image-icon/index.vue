@@ -157,10 +157,12 @@ if (import.meta.env.PROD) {
 }
 
 const dynamicComponent = computed(() => {
+  const FILL_SUFFIX = "-fill";
+
   const library = config.value.defaultVariants.library;
   const weight = config.value.defaultVariants.weight;
   const style = config.value.defaultVariants.style;
-  const fill = props.fill || config.value.defaultVariants.fill ? "-fill" : "";
+  const fill = props.fill || config.value.defaultVariants.fill ? FILL_SUFFIX : "";
   const name = props.name;
   const src = props.src;
 
@@ -176,7 +178,7 @@ const dynamicComponent = computed(() => {
   function getIcon(params) {
     const [, component] = generatedIcons.find(([path]) =>
       params.every((param) => {
-        const skipFilled = fill ? true : !path.includes("-fill");
+        const skipFilled = fill ? true : !path.includes(FILL_SUFFIX);
 
         return skipFilled && path.includes(param);
       }),
