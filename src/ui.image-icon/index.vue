@@ -175,7 +175,11 @@ const dynamicComponent = computed(() => {
 
   function getIcon(params) {
     const [, component] = generatedIcons.find(([path]) =>
-      params.every((param) => path.includes(param)),
+      params.every((param) => {
+        const skipFilled = fill ? true : !path.includes("-fill");
+
+        return skipFilled && path.includes(param);
+      }),
     );
 
     return component;
