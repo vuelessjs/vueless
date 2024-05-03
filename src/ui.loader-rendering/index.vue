@@ -13,7 +13,8 @@
 import { computed } from "vue";
 
 import { useAttrs } from "./composables/attrs.composable";
-import useLoaderRendering from "./composables/useLoaderRendering";
+// Should be uncommented after fixing composable bug.
+// import useLoaderRendering from "./composables/useLoaderRendering";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULoaderRendering", inheritAttrs: false });
@@ -26,10 +27,10 @@ const props = defineProps({
 });
 
 const { wrapperAttrs, loaderAttrs, rippleAttrs, rippleElementAttrs, config } = useAttrs(props);
-const { isRenderingPage } = useLoaderRendering();
+// const { isRenderingPage } = useLoaderRendering();
 
 const showLoader = computed(() => {
-  return props.loading || isRenderingPage.value;
+  return props.loading; // || isRenderingPage.value;
 });
 </script>
 
