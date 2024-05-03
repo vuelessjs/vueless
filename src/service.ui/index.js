@@ -166,14 +166,8 @@ export default class UIServiceDefault {
     @returns { Object }
   */
   static get(defaultConfig, name) {
-    const globalVuelessColor = brand ? { color: brand } : {};
-
     return {
-      default: merge(
-        defaultConfig.defaultVariants,
-        globalVuelessColor,
-        globalComponentConfig[name]?.defaultVariants,
-      ),
+      default: merge(defaultConfig.defaultVariants, globalComponentConfig[name]?.defaultVariants),
     };
   }
 }
