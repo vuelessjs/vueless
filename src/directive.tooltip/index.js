@@ -1,5 +1,5 @@
 import tippy from "tippy.js";
-import merge from "lodash.merge";
+import { merge } from "lodash-es";
 
 import vuelessConfig from "../../vueless.config.js";
 

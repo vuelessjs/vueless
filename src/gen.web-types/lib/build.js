@@ -4,8 +4,8 @@ import * as chokidar from "chokidar";
 import { parse } from "vue-docgen-api";
 import * as fs from "fs";
 import mkdirp from "mkdirp";
-import _ from "lodash";
-import merge from "lodash.merge";
+import _ from "lodash-es";
+import { merge } from "lodash-es";
 
 export default async function build(config) {
   config.componentsRoot = path.resolve(config.cwd, config.componentsRoot);
