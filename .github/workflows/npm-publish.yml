@@ -3,29 +3,33 @@ name: Vueless Publish
 on:
   push:
     branches: [ main ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 
 permissions: write-all
 
 jobs:
   lint:
+    if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
       - run: npm ci
       - run: npm run lint:ci
 
   release-ui-docs:
+    if: "github.event_name != 'pull_request' || !contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
       - run: sudo apt-get install -y lftp
       - run: npm ci
@@ -33,6 +37,7 @@ jobs:
       - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --parallel=10 ./storybook-static ./www"
 
   publish-npm:
+    if: "github.event_name != 'pull_request' || !contains(github.event.head_commit.message, 'GITBOOK')"
     needs: release-ui-docs
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +46,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
           registry-url: https://registry.npmjs.org/
       - name: git config
