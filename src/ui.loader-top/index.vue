@@ -9,7 +9,7 @@ import { computed, onBeforeUnmount, watch, ref } from "vue";
 
 import UIService, { isMobileApp } from "../service.ui";
 import { clamp, queue } from "./services/loaderTop.service";
-import useLoaderTop from "./composables/useLoaderTop";
+import { useLoaderTop } from "./composables/useLoaderTop";
 
 import { ULoaderTop, MAXIMUM, SPEED } from "./constants";
 import defaultConfig from "./configs/default.config";

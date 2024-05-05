@@ -1,4 +1,6 @@
-import { ref, readonly } from "vue";
+import { ref, readonly, inject } from "vue";
+
+export const LoaderTopSymbol = Symbol.for("vueless:loader-top");
 
 const isLoading = ref(true);
 const requestQueue = ref([]);
@@ -40,7 +42,7 @@ function removeComponentRequestQueue() {
   componentLoaderRequestQueue.value = [];
 }
 
-export default function useLoaderTop() {
+export function createLoaderTop() {
   return {
     isLoading: readonly(isLoading),
     requestQueue: readonly(requestQueue),
@@ -54,4 +56,10 @@ export default function useLoaderTop() {
     setComponentRequestQueue,
     removeComponentRequestQueue,
   };
+}
+
+export function useLoaderTop() {
+  const loaderTopState = inject(LoaderTopSymbol);
+
+  return loaderTopState;
 }

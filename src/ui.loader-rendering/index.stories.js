@@ -1,7 +1,7 @@
 import ULoaderRendering from "../ui.loader-rendering";
 import UButton from "../ui.button";
 
-import useLoaderRendering from "./composables/useLoaderRendering";
+import { useLoaderRendering } from "./composables/useLoaderRendering";
 
 import { getArgTypes } from "../service.storybook";
 
