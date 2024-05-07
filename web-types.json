@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.64",
+  "version": "0.0.65",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -4283,6 +4283,24 @@
                 "type": "boolean"
               },
               "default": "false"
+            },
+            {
+              "name": "activeClass",
+              "description": "Apply classes to the link when its route is active or when it matches any parent route.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "group/router-link-active"
+            },
+            {
+              "name": "exactActiveClass",
+              "description": "Apply classes to the link when its route is active.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "group/router-link-exact-active"
             },
             {
               "name": "underlined",
