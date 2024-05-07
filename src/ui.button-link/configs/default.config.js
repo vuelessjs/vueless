@@ -65,6 +65,8 @@ export default /*tw*/ {
     color: "brand",
     type: "link",
     size: "md",
+    activeClass: "group/router-link-active",
+    exactActiveClass: "group/router-link-exact-active",
     underlined: undefined,
     block: false,
     noRing: false,

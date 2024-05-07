@@ -10,6 +10,8 @@
       :to="route"
       :target="targetValue"
       :data-cy="dataCy"
+      :active-class="activeClass"
+      :exact-active-class="exactActiveClass"
       v-bind="linkAttrs"
       @blur="onBlur"
       @click="onClick"
@@ -119,6 +121,22 @@ const props = defineProps({
   targetBlank: {
     type: Boolean,
     default: UIService.get(defaultConfig, ULink).default.targetBlank,
+  },
+
+  /**
+   * Apply classes to the link when its route is active or when it matches any parent route.
+   */
+  activeClass: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.activeClass,
+  },
+
+  /**
+   * Apply classes to the link when its route is active.
+   */
+  exactActiveClass: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.exactActiveClass,
   },
 
   /**
