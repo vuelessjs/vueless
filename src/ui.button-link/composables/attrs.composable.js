@@ -5,7 +5,7 @@ import { cva, cx } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props) {
+export function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
 
   const { config, getAttrs, hasSlotContent, setColor } = useUI(defaultConfig, () => props.config);
@@ -88,6 +88,8 @@ export function useAttrs(props) {
       class: cx([
         wrapperAttrsRaw.value.class,
         (hasDefaultSlot || hasLeftSlot || hasRightSlot) && config.value.withSlots,
+        isActive.value && props.wrapperActiveClass,
+        isExactActive.value && props.wrapperExactActiveClass,
       ]),
     };
   });
@@ -99,7 +101,12 @@ export function useAttrs(props) {
 
     return {
       ...linkAttrsRaw.value,
-      class: cx([linkAttrsRaw.value.class, hasDefaultSlot && config.value.withSlots]),
+      class: cx([
+        linkAttrsRaw.value.class,
+        hasDefaultSlot && config.value.withSlots,
+        isActive.value && props.activeClass,
+        isExactActive.value && props.exactActiveClass,
+      ]),
     };
   });
 

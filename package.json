@@ -58,7 +58,8 @@
     "vite": "^5.2.10",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vue": "^3.4.25"
+    "vue": "^3.4.25",
+    "vue-router": "^4.3.2"
   },
   "resolutions": {
     "jackspeak": "2.3.6"

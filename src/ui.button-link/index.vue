@@ -10,8 +10,6 @@
       :to="route"
       :target="targetValue"
       :data-cy="dataCy"
-      :active-class="activeClass"
-      :exact-active-class="exactActiveClass"
       v-bind="linkAttrs"
       @blur="onBlur"
       @click="onClick"
@@ -52,6 +50,7 @@
 
 <script setup>
 import { computed, useSlots, ref } from "vue";
+import { RouterLink, useLink } from "vue-router";
 import UIService from "../service.ui";
 
 import { useAttrs } from "./composables/attrs.composable";
@@ -140,6 +139,22 @@ const props = defineProps({
   },
 
   /**
+   * Apply classes to the wrapper div when link route is active or when it matches any parent route.
+   */
+  wrapperActiveClass: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.wrapperActiveClass,
+  },
+
+  /**
+   * Apply classes to the wrapper div when link route is active.
+   */
+  wrapperExactActiveClass: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.wrapperExactActiveClass,
+  },
+
+  /**
    * Show underline.
    */
   underlined: {
@@ -197,13 +212,14 @@ const props = defineProps({
 });
 
 const slots = useSlots();
+const { route, isActive, isExactActive } = useLink({ to: props.route });
 
 const wrapperRef = ref(null);
 
 defineExpose({ wrapperRef });
 
 const { wrapperAttrs, linkAttrs, rightSlotAttrs, leftSlotAttrs, textAttrs, hasSlotContent } =
-  useAttrs(props);
+  useAttrs(props, { isActive, isExactActive });
 
 const targetValue = computed(() => {
   return props.targetBlank ? "_blank" : "_self";
