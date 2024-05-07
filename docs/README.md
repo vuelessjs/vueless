@@ -1,6 +1,6 @@
 # Quick start
 
-1\. Install `vueless` UI library packages.
+1\. Install Vueless UI library packages.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -53,7 +53,7 @@ export default {
 ```
 {% endcode %}
 
-4\. Add TailwindCSS preset.
+4.Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` for it.
 
 <pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind";
 </strong>

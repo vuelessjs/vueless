@@ -4,6 +4,7 @@
 
 * [Quick start](README.md)
 * [Class autocompletion](installation/class-autocompletion.md)
+* [Storybook UI docs](installation/storybook-ui-docs.md)
 * [Possible issues](installation/possible-issues.md)
 
 ## Customization
