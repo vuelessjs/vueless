@@ -19,7 +19,7 @@ import defaultConfig from "./configs/default.config?raw"
 You can control loader state using *useLoaderRendering* composable.
 
 <Source code={`
-import { useLoaderRendeuseLoaderTopring } from "vueless";
+import { useLoaderTop } from "vueless";
 
 const { 
     setLoadingOn,
@@ -28,5 +28,5 @@ const {
     removeRequestUrl,
     setComponentRequestQueue,
     removeComponentRequestQueue,
-} = useLoaderRendering();
+} = useLoaderTop();
 `} language="jsx" dark />

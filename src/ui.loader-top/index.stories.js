@@ -1,7 +1,7 @@
 import ULoaderTop from "../ui.loader-top";
 import UButton from "../ui.button";
 
-import useLoaderTop from "../ui.loader-top/composables/useLoaderTop";
+import { useLoaderTop } from "../ui.loader-top/composables/useLoaderTop";
 
 import { getArgTypes } from "../service.storybook";
 
