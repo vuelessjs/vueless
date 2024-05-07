@@ -126,7 +126,7 @@ const props = defineProps({
    * Apply classes to the link when its route is active or when it matches any parent route.
    */
   activeClass: {
-    type: Boolean,
+    type: String,
     default: UIService.get(defaultConfig, ULink).default.activeClass,
   },
 
@@ -134,7 +134,7 @@ const props = defineProps({
    * Apply classes to the link when its route is active.
    */
   exactActiveClass: {
-    type: Boolean,
+    type: String,
     default: UIService.get(defaultConfig, ULink).default.exactActiveClass,
   },
 
@@ -142,7 +142,7 @@ const props = defineProps({
    * Apply classes to the wrapper div when link route is active or when it matches any parent route.
    */
   wrapperActiveClass: {
-    type: Boolean,
+    type: String,
     default: UIService.get(defaultConfig, ULink).default.wrapperActiveClass,
   },
 
@@ -150,7 +150,7 @@ const props = defineProps({
    * Apply classes to the wrapper div when link route is active.
    */
   wrapperExactActiveClass: {
-    type: Boolean,
+    type: String,
     default: UIService.get(defaultConfig, ULink).default.wrapperExactActiveClass,
   },
 
