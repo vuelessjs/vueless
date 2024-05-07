@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -4289,36 +4289,36 @@
               "description": "Apply classes to the link when its route is active or when it matches any parent route.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "string"
               },
-              "default": "group/router-link-active"
+              "default": ""
             },
             {
               "name": "exactActiveClass",
               "description": "Apply classes to the link when its route is active.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "string"
               },
-              "default": "group/router-link-exact-active"
+              "default": ""
             },
             {
               "name": "wrapperActiveClass",
               "description": "Apply classes to the wrapper div when link route is active or when it matches any parent route.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "string"
               },
-              "default": "UIService.get(defaultConfig, ULink).default.wrapperActiveClass"
+              "default": ""
             },
             {
               "name": "wrapperExactActiveClass",
               "description": "Apply classes to the wrapper div when link route is active.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "string"
               },
-              "default": "UIService.get(defaultConfig, ULink).default.wrapperExactActiveClass"
+              "default": ""
             },
             {
               "name": "underlined",
