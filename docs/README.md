@@ -82,3 +82,10 @@ export default defineConfig({
 
 That's it! You can use components in your app now ✨
 
+### Minimal requirements
+
+* Node 16+
+* Vite 4+
+* Vue 3.4+
+* TailwindCSS 3.4+
+
