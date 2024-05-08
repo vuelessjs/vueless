@@ -1,4 +1,4 @@
-# Storybook UI docs
+# Local Storybook docs
 
 For the component documentation Vueless use [Storybook](https://storybook.js.org/).
 
@@ -12,7 +12,7 @@ In some cases you may need to run our Storybook UI Docs locally, so for that rea
 
 ## Installation
 
-1\. Install the package.
+1\. Install the package as a dev dependency.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -50,3 +50,7 @@ Which:
 
 * creates `.storybook` config folder in the root of the project.
 * adds commands into the project `package.json` to run and build Storybook locally.
+
+{% hint style="info" %}
+If the `.storybook` folder is exist the package backup it before copying as a `.storybook-{timestamp}`.
+{% endhint %}
