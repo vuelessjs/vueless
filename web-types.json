@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -1740,6 +1740,15 @@
                 "type": "boolean"
               },
               "default": "false"
+            },
+            {
+              "name": "dateFormat",
+              "description": "Date format.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "d.m.Y"
             },
             {
               "name": "id",
