@@ -454,6 +454,15 @@ const labelComponentRef = ref(null);
 const leftSlotWrapperRef = ref(null);
 const innerWrapperRef = ref(null);
 
+defineExpose({
+  dropdownListRef,
+  wrapperRef,
+  searchInputRef,
+  labelComponentRef,
+  leftSlotWrapperRef,
+  innerWrapperRef,
+});
+
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
   if (props.openDirection === DIRECTION.bottom) return false;
