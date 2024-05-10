@@ -33,6 +33,7 @@ export default /*tw*/ {
     px-1.5 py-2.5 text-center text-xs font-medium text-brand-900 hover:bg-brand-200
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
+  periodButtonIcon: "",
   periodButtonActive: "bg-zinc-200",
   rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
   rangeSwitchTitle: "font-medium text-sm",
@@ -192,6 +193,7 @@ export default /*tw*/ {
     },
     timepicker: false,
     disabled: false,
+    dateFormat: "d.m.Y",
     maxDate: undefined,
     minDate: undefined,
   },

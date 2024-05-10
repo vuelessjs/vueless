@@ -61,6 +61,7 @@ export default function useAttrs(props, { isShownMenu }) {
   const rangeSwitchWrapperAttrs = getAttrs("rangeSwitchWrapper");
   const nextIconAttrs = getAttrs("nextIcon");
   const prevIconAttrs = getAttrs("prevIcon");
+  const periodButtonIconAttrs = getAttrs("periodButtonIcon");
   const rangeSwitchTitleAttrs = getAttrs("rangeSwitchTitle");
 
   const periodButtonAttrs = (classes = []) => {
@@ -95,6 +96,7 @@ export default function useAttrs(props, { isShownMenu }) {
     menuAttrs,
     periodsRowAttrs,
     periodButtonAttrs,
+    periodButtonIconAttrs,
     rangeSwitchWrapperAttrs,
     nextIconAttrs,
     prevIconAttrs,

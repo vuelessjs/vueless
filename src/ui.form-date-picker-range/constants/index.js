@@ -6,7 +6,6 @@ export const UDatePickerRange = "UDatePickerRange";
 
 export const DATE_PICKER_BUTTON_TYPE = "button";
 export const DATE_PICKER_INPUT_TYPE = "input";
-export const RANGE_INPUT_FORMAT = "d.m.Y";
 
 export const INPUT_RANGE_TYPE = {
   start: "start",
