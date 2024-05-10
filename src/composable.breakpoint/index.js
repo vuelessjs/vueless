@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
 
 const BREAKPOINT_NAME = {
   xs: "xs",
@@ -50,7 +50,11 @@ export default function useBreakpoint() {
   onMounted(() => {
     windowWidth.value = window.innerWidth;
 
-    window.addEventListener(resizeListener, { passive: true });
+    window.addEventListener("resize", resizeListener, { passive: true });
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("resize", resizeListener, { passive: true });
   });
 
   watch(windowWidth, setBreakpoint, { immediate: true });
