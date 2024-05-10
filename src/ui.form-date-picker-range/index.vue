@@ -91,7 +91,7 @@
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
           >
-            <UIcon name="apps" size="xs" />
+            <UIcon name="apps" size="xs" v-bind="periodButtonIconAttrs" />
 
             {{ locale.ownRange }}
           </div>
@@ -168,7 +168,7 @@
           :min-date="minDate"
           :max-date="maxDate"
           v-bind="calendarAttrs"
-          :date-format="RANGE_INPUT_FORMAT"
+          :date-format="dateFormat"
           range
           @mouseenter="onMouseoverCalendar"
         />
@@ -234,7 +234,6 @@ import {
   DATE_PICKER_BUTTON_TYPE,
   DATE_PICKER_INPUT_TYPE,
   PERIOD,
-  RANGE_INPUT_FORMAT,
   INPUT_RANGE_TYPE,
 } from "./constants";
 
@@ -336,6 +335,14 @@ const props = defineProps({
   },
 
   /**
+   * Date format.
+   */
+  dateFormat: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePickerRange).default.dateFormat,
+  },
+
+  /**
    * Unique element id.
    * @ignore
    */
@@ -372,6 +379,7 @@ const {
   menuAttrs,
   periodsRowAttrs,
   periodButtonAttrs,
+  periodButtonIconAttrs,
   rangeSwitchWrapperAttrs,
   nextIconAttrs,
   prevIconAttrs,
@@ -605,15 +613,11 @@ watch(
     }
 
     rangeStart.value = props.modelValue.from
-      ? formatDate(
-          getDateFromUnixTimestamp(props.modelValue.from),
-          RANGE_INPUT_FORMAT,
-          locale.value,
-        )
+      ? formatDate(getDateFromUnixTimestamp(props.modelValue.from), props.dateFormat, locale.value)
       : "";
 
     rangeEnd.value = props.modelValue.to
-      ? formatDate(getDateFromUnixTimestamp(props.modelValue.to), RANGE_INPUT_FORMAT, locale.value)
+      ? formatDate(getDateFromUnixTimestamp(props.modelValue.to), props.dateFormat, locale.value)
       : "";
 
     inputRangeStartError.value = "";
@@ -704,13 +708,13 @@ function isDatePeriodOutOfRange(datePeriod) {
       props.minDate,
       props.maxDate,
       locale.value,
-      RANGE_INPUT_FORMAT,
+      props.dateFormat,
     ) ||
     dateIsOutOfRange(
       getDateFromUnixTimestamp(datePeriod.endRange),
       props.minDate,
       props.maxDate,
-      RANGE_INPUT_FORMAT,
+      props.dateFormat,
     )
   );
 }
@@ -814,14 +818,14 @@ function onInputRangeInput(value, type) {
     inputRangeEndError.value = error;
   }
 
-  const parsedValue = gmtToUTC(parseDate(value || new Date(), RANGE_INPUT_FORMAT, locale.value));
+  const parsedValue = gmtToUTC(parseDate(value || new Date(), props.dateFormat, locale.value));
   const unixTimeValue = getUnixTimestampFromDate(parsedValue);
   const isOutOfRange = dateIsOutOfRange(
     parsedValue,
     props.minDate,
     props.maxDate,
     locale.value,
-    RANGE_INPUT_FORMAT,
+    props.dateFormat,
   );
   const isToLessThanFrom = unixTimeValue <= localValue.value.from;
 
