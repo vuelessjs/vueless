@@ -30,3 +30,17 @@ const {
     removeComponentRequestQueue,
 } = useLoaderTop();
 `} language="jsx" dark />
+
+## Control outside of component
+You can control loader state outside of vue components using following methods.
+
+<Source code={`
+import {
+  loaderTopOn,
+  loaderTopOff,
+  addLoadingTopRequestUrl,
+  removeLoadingTopRequestUrl,
+  setLoadingTopComponentRequestQueue,
+  removeLoadingTopComponentRequestQueue,
+} from "vueless";
+`} language="jsx" dark />
