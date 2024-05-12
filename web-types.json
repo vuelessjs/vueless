@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.71",
+  "version": "0.0.72",
   "contributions": {
     "html": {
       "description-markup": "markdown",
