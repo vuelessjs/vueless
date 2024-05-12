@@ -2,7 +2,7 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { twMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
-import { brandColors, grayColors } from "../preset.tailwind";
+import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_BRAND_COLOR } from "../preset.tailwind";
 import vuelessConfig from "../../vueless.config.js";
 
 /*
@@ -105,7 +105,7 @@ export default class UIServiceDefault {
   // TODO: This should be rewrote to support all set of brand colors (not only one).
   setBrandColor(brandColor) {
     function getBrandColor(color, grayColor, brandColors) {
-      if (color === "grayscale") {
+      if (color === GRAYSCALE_BRAND_COLOR) {
         return grayColor;
       }
 
@@ -116,9 +116,9 @@ export default class UIServiceDefault {
       return grayColors.includes(color) ? colors[color][900] : colors.zinc[900];
     }
 
-    const grayColor = getGrayColor(gray, grayColors);
-    const localBrandColor = getBrandColor(brandColor, grayColor, brandColors);
-    const globalBrandColor = getBrandColor(brand, grayColor, brandColors);
+    const grayColor = getGrayColor(gray, GRAY_COLORS);
+    const localBrandColor = getBrandColor(brandColor, grayColor, BRAND_COLORS);
+    const globalBrandColor = getBrandColor(brand, grayColor, BRAND_COLORS);
 
     const style = document.createElement("style");
     const rgb = UIServiceDefault.convertHexInRgb(localBrandColor || globalBrandColor || grayColor);
@@ -167,7 +167,11 @@ export default class UIServiceDefault {
   */
   static get(defaultConfig, name) {
     return {
-      default: merge(defaultConfig.defaultVariants, globalComponentConfig[name]?.defaultVariants),
+      default: merge(
+        defaultConfig.defaultVariants,
+        brand === GRAYSCALE_BRAND_COLOR && { color: GRAYSCALE_BRAND_COLOR },
+        globalComponentConfig[name]?.defaultVariants,
+      ),
     };
   }
 }

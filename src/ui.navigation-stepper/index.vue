@@ -46,7 +46,7 @@ import colors from "tailwindcss/colors";
 
 import UHeader from "../ui.text-header";
 import UIService from "../service.ui";
-import { grayColors } from "../preset.tailwind";
+import { GRAY_COLORS } from "../preset.tailwind";
 
 import { UStepper } from "./constants/index";
 import defaultConfig from "./configs/default.config";
@@ -112,7 +112,7 @@ const { wrapperAttrs, titleAttrs, stepperAttrs, ringAttrs, countAttrs, gradientA
 const setStepperColor = computed(() => {
   return colors[props.color]
     ? colors[props.color][500]
-    : grayColors.includes(props.color)
+    : GRAY_COLORS.includes(props.color)
       ? colors[props.color][900]
       : colors.zinc[900];
 });
