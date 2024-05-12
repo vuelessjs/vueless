@@ -3,7 +3,7 @@
 node_modules
 storybook-static
 dist
-src/assets
+src/assets/.cache/
 
 yarn.lock
 
