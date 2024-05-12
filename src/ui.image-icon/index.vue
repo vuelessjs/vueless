@@ -129,40 +129,39 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
+  /**
+   * Mark that Icon used inside Vueless components (used to get icons from vueless library).
+   * @ignore
+   */
+  internal: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["click", "focus", "blur"]);
 
 const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
 
-let generatedIcons = [];
+const generatedIcons = computed(() => {
+  if (!import.meta.env.PROD) return [];
 
-if (import.meta.env.PROD) {
-  // when building storybook from inside the package (only for Vueless contributors).
-  if (import.meta.env.STORYBOOK_VUELESS_ENV) {
-    generatedIcons = Object.entries(
-      import.meta.glob(`../assets/images/.generated/**/*.svg`, {
-        eager: true,
-        query: "?component",
-      }),
-    );
-  } else {
-    generatedIcons = Object.entries(
-      import.meta.glob(`../../../src/assets/images/.generated/**/*.svg`, {
-        eager: true,
-        query: "?component",
-      }),
-    );
-  }
-}
+  return Object.entries(
+    import.meta.glob(`../assets/icons/**/*.svg`, {
+      eager: true,
+      query: "?component",
+    }),
+  );
+});
 
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const library = config.value.defaultVariants.library;
+  const library = props.internal ? "vueless" : config.value.defaultVariants.library;
   const weight = config.value.defaultVariants.weight;
   const style = config.value.defaultVariants.style;
-  const fill = props.fill || config.value.defaultVariants.fill ? FILL_SUFFIX : "";
+  const isFill = props.name.endsWith(FILL_SUFFIX);
   const name = props.name;
   const src = props.src;
 
@@ -176,12 +175,8 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   function getIcon(params) {
-    const [, component] = generatedIcons.find(([path]) =>
-      params.every((param) => {
-        const skipFilled = fill ? true : !path.includes(FILL_SUFFIX);
-
-        return skipFilled && path.includes(param);
-      }),
+    const [, component] = generatedIcons.value.find(([path]) =>
+      params.every((param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(param)),
     );
 
     return component;
@@ -189,18 +184,23 @@ const dynamicComponent = computed(() => {
 
   /* eslint-disable vue/max-len, prettier/prettier */
   const libraries = {
+    "vueless": async () => {
+      return import.meta.env.PROD
+        ? await getIcon([name])
+        : import(/* @vite-ignore */ `../assets/icons/${name}.svg?component`);
+    },
     "@material-symbols": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, weight, style, name, fill])
-        : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}${fill}.svg?component`);
+        ? await getIcon([library, weight, style, name])
+        : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, name, fill])
-        : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}${fill}.svg?component`);
+        ? await getIcon([library, name])
+        : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
     },
-    heroicons: async () => {
-      const fillType = fill ? "solid" : "outline";
+    "heroicons": async () => {
+      const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
         ? await getIcon([library, style, fillType, name])

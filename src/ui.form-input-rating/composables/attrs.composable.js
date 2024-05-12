@@ -19,16 +19,17 @@ export function useAttrs(props) {
   const counterAttrs = getAttrs("counter", { classes: counterClasses });
   const ratingAttrs = getAttrs("rating");
   const wrapperAttrs = getAttrs("wrapper");
-  const iconsAttrs = getAttrs("icons", { isComponent: true });
-  const iconsContainerAttrs = getAttrs("iconsContainer");
+  const iconAttrs = getAttrs("icon", { isComponent: true });
+  const iconWrapperAttrs = getAttrs("iconWrapper");
   const labelAttrs = getAttrs("label", { isComponent: true });
 
   return {
+    config,
     counterAttrs,
     ratingAttrs,
     wrapperAttrs,
-    iconsAttrs,
-    iconsContainerAttrs,
+    iconAttrs,
+    iconWrapperAttrs,
     labelAttrs,
   };
 }

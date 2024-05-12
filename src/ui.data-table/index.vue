@@ -158,18 +158,20 @@
                     <div v-if="isShownIcon({ index, row })" v-bind="toggleItemButtonAttrs">
                       <UIcon
                         v-if="row.isHidden"
-                        :name="config.expandIconName"
-                        interactive
                         size="xs"
+                        internal
+                        interactive
+                        :name="config.expandIconName"
                         :color="isIconActive(row)"
                         v-bind="expandIconAttrs"
                       />
 
                       <UIcon
                         v-else
-                        :name="config.collapseIconName"
-                        interactive
                         size="xs"
+                        internal
+                        interactive
+                        :name="config.collapseIconName"
                         v-bind="collapseIconAttrs"
                       />
                     </div>

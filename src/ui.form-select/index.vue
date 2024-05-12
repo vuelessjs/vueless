@@ -38,6 +38,7 @@
         @mousedown.prevent.stop="toggle"
       >
         <UIcon
+          internal
           interactive
           color="gray"
           :size="size"
@@ -56,6 +57,7 @@
 
       <div v-if="isLocalValue && !noClear && !disabled && !multiple" v-bind="caretClearAttrs">
         <UIcon
+          internal
           interactive
           color="gray"
           :size="size"
@@ -88,6 +90,7 @@
               @click.prevent.capture
             >
               <UIcon
+                internal
                 interactive
                 color="gray"
                 :size="size"

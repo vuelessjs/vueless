@@ -47,10 +47,10 @@
         <slot name="right-icon">
           <UIcon
             v-if="isTypePassword"
-            :name="passwordIconName"
+            :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
             color="gray"
             interactive
-            fill
+            internal
             :data-cy="`${dataCy}-show-password`"
             v-bind="passwordIconAttrs"
             @click="onClickShowPassword"
@@ -282,12 +282,6 @@ const {
   rightSlotAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
-
-const passwordIconName = computed(() => {
-  return isShownPassword.value
-    ? config.value.passwordVisibleIconName
-    : config.value.passwordHiddenIconName;
-});
 
 const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;

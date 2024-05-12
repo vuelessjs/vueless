@@ -25,6 +25,8 @@ export default /*tw*/ {
     },
   },
   icon: "",
+  expandIconName: "add",
+  collapseIconName: "remove",
   separator: "mt-2 h-px w-full lg:mt-6 bg-gray-100 mt-2.5 group-last:hidden",
   defaultVariants: {
     size: "md",

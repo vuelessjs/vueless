@@ -146,7 +146,6 @@ slotLeft.args = {
       <UIcon
         name="star"
         color="gray"
-        size="md"
        />
     </template>
   `,
@@ -159,7 +158,6 @@ slotRight.args = {
       <UIcon
         name="star"
         color="gray"
-        size="md"
        />
     </template>
   `,

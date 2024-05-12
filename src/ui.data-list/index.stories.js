@@ -84,7 +84,6 @@ slotIcons.args = {
       <UIcon
         name="star"
         color="red"
-        size="md"
        />
     </template>
   `,

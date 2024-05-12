@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -3193,6 +3193,15 @@
                 "type": "string"
               },
               "default": "\"\""
+            },
+            {
+              "name": "internal",
+              "description": "@ignore: Mark that Icon used inside Vueless components (used to get icons from vueless library).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
             }
           ],
           "events": [

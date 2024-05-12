@@ -11,8 +11,9 @@
       @click="onClickRemove"
     >
       <UIcon
-        :name="config.removeIconName"
+        internal
         :size="size"
+        :name="config.removeIconName"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
         :data-cy="`${dataCy}-remove`"
         v-bind="removeIconAttrs"
@@ -35,8 +36,9 @@
       @click="onClickAdd"
     >
       <UIcon
-        :name="config.addIconName"
+        internal
         :size="size"
+        :name="config.addIconName"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
         :data-cy="`${dataCy}-add`"
         v-bind="addIconAttrs"

@@ -1,4 +1,5 @@
 export default /*tw*/ {
+  wrapper: "",
   input: "",
   inputActive: {
     block: {
@@ -34,6 +35,7 @@ export default /*tw*/ {
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
   periodButtonIcon: "",
+  periodButtonIconName: "apps",
   periodButtonActive: "bg-zinc-200",
   rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
   rangeSwitchTitle: "font-medium text-sm",

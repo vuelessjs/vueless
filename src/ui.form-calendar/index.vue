@@ -26,6 +26,7 @@
           <template #right>
             <UIcon
               v-if="!range"
+              internal
               size="sm"
               color="gray"
               variant="light"
@@ -47,6 +48,7 @@
           @click="onClickPrevButton"
         >
           <UIcon
+            internal
             size="sm"
             color="gray"
             variant="light"
@@ -67,6 +69,7 @@
           @click="onClickNextButton"
         >
           <UIcon
+            internal
             size="sm"
             color="gray"
             variant="light"

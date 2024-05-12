@@ -15,7 +15,7 @@
         >
           <!-- @slot Use it to add icon. -->
           <slot v-if="withIcon" name="icon" :item="item">
-            <UIcon :name="item.iconName" size="xl" :color="color" v-bind="iconAttrs" />
+            <UIcon internal :name="item.iconName" size="xl" :color="color" v-bind="iconAttrs" />
           </slot>
         </URadio>
       </label>

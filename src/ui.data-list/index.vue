@@ -25,7 +25,7 @@
       <template #item="{ element }">
         <div :id="element.id" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
           <div :data-cy="`${dataCy}-item-${element.id}`" v-bind="itemAttrs">
-            <UIcon :name="config.iconDragName" color="gray" v-bind="iconDragAttrs" />
+            <UIcon internal :name="config.iconDragName" color="gray" v-bind="iconDragAttrs" />
 
             <div v-bind="titleAttrs(element.isActive)">
               <slot :item="element">
@@ -44,9 +44,10 @@
 
               <UIcon
                 v-if="!element.isHiddenDelete"
+                internal
                 interactive
-                :name="config.iconDeleteName"
                 color="gray"
+                :name="config.iconDeleteName"
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
                 v-bind="iconDeleteAttrs"
@@ -55,9 +56,10 @@
 
               <UIcon
                 v-if="!element.isHiddenEdit"
+                internal
                 interactive
-                :name="config.iconEditName"
                 color="gray"
+                :name="config.iconEditName"
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
                 v-bind="iconEditAttrs"

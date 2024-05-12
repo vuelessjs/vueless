@@ -17,6 +17,7 @@
         color="green"
         variant="light"
         size="md"
+        internal
         :name="config.iconSuccessName"
         v-bind="iconSuccessAttrs"
       />
@@ -27,6 +28,7 @@
         color="orange"
         variant="light"
         size="md"
+        internal
         :name="config.iconWarningName"
         v-bind="iconWarningAttrs"
       />
@@ -37,6 +39,7 @@
         color="red"
         variant="light"
         size="md"
+        internal
         :name="config.iconErrorName"
         v-bind="iconErrorAttrs"
       />
@@ -56,6 +59,7 @@
         color="gray"
         variant="light"
         size="xs"
+        internal
         interactive
         :name="config.iconCloseName"
         v-bind="iconCloseAttrs"

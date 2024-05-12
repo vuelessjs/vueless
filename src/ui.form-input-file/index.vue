@@ -11,9 +11,10 @@
         <div :id="fileId" :data-cy="dataCy" v-bind="uploadAttrs">
           <div v-if="!filesData.length" v-bind="blockAttrs">
             <UIcon
-              :name="config.iconUploadFileName"
+              internal
               color="gray"
               :size="componentSize"
+              :name="config.iconUploadFileName"
               v-bind="iconUploadFileAttrs"
             />
 
@@ -24,10 +25,11 @@
             <UFiles :options="filesList" v-bind="filesAttrs">
               <template #right="file">
                 <UIcon
-                  :name="config.iconCloseName"
+                  internal
                   interactive
-                  :size="componentSize"
                   color="gray"
+                  :size="componentSize"
+                  :name="config.iconCloseName"
                   v-bind="iconCloseAttrs"
                   @click="onClickDeleteFile(file)"
                 />

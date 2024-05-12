@@ -17,9 +17,10 @@
                 v-bind="backLinkAttrs"
               >
                 <UIcon
-                  :name="config.backLinkIconName"
+                  internal
                   size="xs"
                   color="gray"
+                  :name="config.backLinkIconName"
                   v-bind="backLinkIconAttrs"
                 />
                 {{ backRoute.title }}

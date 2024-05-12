@@ -16,6 +16,7 @@
       <template #right>
         <UIcon
           v-if="!noIcon"
+          internal
           :name="config.iconName"
           :size="iconSize"
           :color="color"

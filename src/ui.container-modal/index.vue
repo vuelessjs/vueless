@@ -32,9 +32,10 @@
                     @click="onClickBackLink"
                   >
                     <UIcon
-                      :name="config.backLinkIconName"
+                      internal
                       size="xs"
                       color="gray"
+                      :name="config.backLinkIconName"
                       v-bind="backLinkIconAttrs"
                     />
                     {{ backRoute.title }}
@@ -54,8 +55,9 @@
               <slot name="header-right">
                 <UIcon
                   v-if="closeIcon"
-                  :name="config.closeIconName"
+                  internal
                   interactive
+                  :name="config.closeIconName"
                   :data-cy="`${dataCy}-close`"
                   v-bind="closeIconAttrs"
                   @click="onClickCloseModal"

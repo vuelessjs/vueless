@@ -25,8 +25,9 @@
 
           <UIcon
             v-if="selectedItem === ''"
-            :name="config.iconName"
+            internal
             color="gray"
+            :name="config.iconName"
             v-bind="iconAttrs"
             size="sm"
           />

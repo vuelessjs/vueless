@@ -4,8 +4,8 @@ export default /*tw*/ {
   rightSlot: "flex items-center justify-end whitespace-nowrap pr-4 rounded-r-lg rounded-l-none",
   leftSlot: "flex items-center justify-end whitespace-nowrap pl-4 rounded-l-lg rounded-r-none",
   passwordIcon: "",
-  passwordVisibleIconName: "visibility",
-  passwordHiddenIconName: "visibility_off",
+  passwordVisibleIconName: "visibility-fill",
+  passwordHiddenIconName: "visibility_off-fill",
   block: {
     base: `
       rounded-lg border border-solid border-gray-300 bg-white !opacity-100 relative flex

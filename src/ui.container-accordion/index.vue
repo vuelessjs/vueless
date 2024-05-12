@@ -4,7 +4,13 @@
       <div v-bind="titleAttrs">
         <div v-text="title" />
 
-        <UIcon :name="isOpened ? 'remove' : 'add'" :size="size" color="gray" v-bind="iconAttrs" />
+        <UIcon
+          :name="isOpened ? config.collapseIconName : config.expandIconName"
+          :size="size"
+          color="gray"
+          internal
+          v-bind="iconAttrs"
+        />
       </div>
 
       <div :id="`description-${id}`" v-bind="descriptionAttrs" v-text="description" />
@@ -84,7 +90,7 @@ const emit = defineEmits(["itemClicked"]);
 
 const isOpened = ref(false);
 
-const { wrapperAttrs, descriptionAttrs, infoAttrs, titleAttrs, iconAttrs, separatorAttrs } =
+const { config, wrapperAttrs, descriptionAttrs, infoAttrs, titleAttrs, iconAttrs, separatorAttrs } =
   useAttrs(props, { isOpened });
 
 function onClickItem() {

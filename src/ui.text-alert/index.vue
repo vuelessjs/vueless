@@ -10,9 +10,10 @@
     <UButton size="sm" variant="thirdary" :color="color" square v-bind="buttonAttrs">
       <UIcon
         v-if="closeIcon"
+        internal
+        size="xs"
         :color="color"
         :name="config.iconName"
-        size="xs"
         :data-cy="`${dataCy}-button`"
         v-bind="iconAttrs"
         @click="onHidden"

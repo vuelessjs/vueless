@@ -7,9 +7,10 @@
 
       <UIcon
         v-else
-        :name="config.iconDescriptionName"
-        color="gray"
+        internal
         interactive
+        color="gray"
+        :name="config.iconDescriptionName"
         v-bind="iconAttrs"
         @focus="onFocus"
         @blur="onBlur"

@@ -8,6 +8,7 @@ import defaultConfig from "../configs/default.config";
 export default function useAttrs(props, { isShownMenu }) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
 
+  const wrapperAttrs = getAttrs("wrapper");
   const buttonWrapperAttrsRaw = getAttrs("buttonWrapper");
   const buttonAttrsRaw = getAttrs("button");
   const shiftRangeButtonAttrs = getAttrs("shiftRangeButton");
@@ -91,6 +92,7 @@ export default function useAttrs(props, { isShownMenu }) {
 
   return {
     config,
+    wrapperAttrs,
     calendarAttrs,
     inputAttrs,
     menuAttrs,

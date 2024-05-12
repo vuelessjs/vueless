@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-bind="wrapperAttrs">
     <UInput
       v-if="isVariant.input"
       :id="id"
@@ -29,30 +29,32 @@
 
     <div v-if="isVariant.button" v-bind="buttonWrapperAttrs">
       <UButton
-        :disabled="disabled"
+        square
         :size="size"
+        :disabled="disabled"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
       >
-        <UIcon interactive size="sm" :name="config.prevIconName" v-bind="prevIconAttrs" />
+        <UIcon internal interactive size="sm" :name="config.prevIconName" v-bind="prevIconAttrs" />
       </UButton>
 
       <UButton
         :id="id"
-        :disabled="disabled"
         :size="size"
+        :disabled="disabled"
         :label="userFormatDate"
         v-bind="buttonAttrs"
         @click="activate"
       />
 
       <UButton
-        :disabled="disabled"
+        square
         :size="size"
+        :disabled="disabled"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('next')"
       >
-        <UIcon interactive size="sm" :name="config.nextIconName" v-bind="nextIconAttrs" />
+        <UIcon internal interactive size="sm" :name="config.nextIconName" v-bind="nextIconAttrs" />
       </UButton>
     </div>
 
@@ -91,8 +93,12 @@
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
           >
-            <UIcon name="apps" size="xs" v-bind="periodButtonIconAttrs" />
-
+            <UIcon
+              internal
+              :name="config.periodButtonIconName"
+              size="xs"
+              v-bind="periodButtonIconAttrs"
+            />
             {{ locale.ownRange }}
           </div>
         </div>
@@ -100,6 +106,7 @@
         <template v-if="!isPeriod.ownRange && !isPeriod.custom">
           <div v-bind="rangeSwitchWrapperAttrs">
             <UIcon
+              internal
               interactive
               color="grayscale"
               size="sm"
@@ -111,7 +118,9 @@
             <div v-bind="rangeSwitchTitleAttrs">
               {{ rangeSwitchTitle }}
             </div>
+
             <UIcon
+              internal
               interactive
               class="icon"
               size="sm"
@@ -128,9 +137,8 @@
               :disabled="isDatePeriodOutOfRange(date)"
               v-bind="periodDateAttrs(getPeriodDateClasses(date))"
               @click="selectDate(date), toggleMenu()"
-            >
-              {{ date.title }}
-            </button>
+              v-text="date.title"
+            />
           </div>
         </template>
 
@@ -374,6 +382,7 @@ const isShownMenu = ref(false);
 
 const {
   config,
+  wrapperAttrs,
   calendarAttrs,
   inputAttrs,
   menuAttrs,

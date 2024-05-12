@@ -2,8 +2,10 @@ export default /*tw*/ {
   rating: "flex flex-col",
   label: "",
   wrapper: "",
-  iconsContainer: "leading-none flex",
-  icons: "",
+  iconWrapper: "leading-none flex",
+  icon: "",
+  selectedIconName: "star-fill",
+  unselectedIconName: "star",
   counter: {
     base: "leading-none",
     variants: {

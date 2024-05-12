@@ -36,8 +36,9 @@
 
     <template #right-icon>
       <UIcon
-        color="gray"
+        internal
         interactive
+        color="gray"
         :name="config.closeIconName"
         :data-cy="`${dataCy}-close`"
         :size="iconSize"
@@ -47,9 +48,10 @@
 
       <UIcon
         v-if="!searchButton"
-        color="grayscale"
+        internal
         interactive
         :size="iconSize"
+        color="grayscale"
         :name="config.searchIconName"
         :data-cy="`${dataCy}-search`"
         v-bind="searchIconAttrs"

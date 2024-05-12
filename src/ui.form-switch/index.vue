@@ -24,7 +24,8 @@
       <span v-bind="circleAttrs">
         <UIcon
           v-if="toggleIcon"
-          :name="iconName"
+          internal
+          :name="checkedValue ? config.selectedIconName : config.unselectedIconName"
           :color="iconColor"
           :size="iconSize"
           v-bind="iconAttrs"
@@ -183,10 +184,6 @@ const iconSize = computed(() => {
 
 const iconColor = computed(() => {
   return checkedValue.value ? props.color : "grayscale";
-});
-
-const iconName = computed(() => {
-  return checkedValue.value ? config.value.selectedIconName : config.value.unselectedIconName;
 });
 
 function toggle() {

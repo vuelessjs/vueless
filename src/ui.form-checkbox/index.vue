@@ -23,7 +23,13 @@
     />
 
     <label v-if="isChecked" v-bind="iconWrapperCellAttrs" :for="id">
-      <UIcon :name="iconName" :size="iconSize" color="white" v-bind="iconAttrs" />
+      <UIcon
+        internal
+        :name="partial ? config.partialIconName : config.selectedIconName"
+        :size="iconSize"
+        color="white"
+        v-bind="iconAttrs"
+      />
     </label>
 
     <template #footer>
@@ -183,10 +189,6 @@ const emit = defineEmits(["update:modelValue", "input"]);
 const checkboxName = ref("");
 
 const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = useAttrs(props);
-
-const iconName = computed(() => {
-  return props.partial ? config.value.partialIconName : config.value.selectedIconName;
-});
 
 const iconSize = computed(() => {
   const sizes = {

@@ -16,16 +16,17 @@
           </slot>
         </div>
 
-        <div v-bind="iconsContainerAttrs">
+        <div v-bind="iconWrapperAttrs">
           <UIcon
             v-for="star in starsNumber"
             :key="star"
-            :data-cy="`${dataCy}-rating-star-${star}`"
-            :name="star <= ratingCounter ? 'star-fill' : 'star'"
-            :size="iconSize"
+            internal
             color="yellow"
+            :size="iconSize"
             :interactive="selectable"
-            v-bind="iconsAttrs"
+            :data-cy="`${dataCy}-rating-star-${star}`"
+            :name="star <= ratingCounter ? config.selectedIconName : config.unselectedIconName"
+            v-bind="iconAttrs"
             @mouseover="onMouseHover(star)"
             @mouseleave="onMouseHover()"
             @click="onClickStar(star)"
@@ -149,7 +150,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const hovered = ref(null);
 
-const { counterAttrs, ratingAttrs, wrapperAttrs, iconsAttrs, iconsContainerAttrs, labelAttrs } =
+const { config, counterAttrs, ratingAttrs, wrapperAttrs, iconAttrs, iconWrapperAttrs, labelAttrs } =
   useAttrs(props);
 
 const iconSize = computed(() => {

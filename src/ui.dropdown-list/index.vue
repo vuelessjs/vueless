@@ -78,7 +78,13 @@
           </div>
         </div>
         <UButton pill square v-bind="buttonAddAttrs" @click="onClickAddOption">
-          <UIcon color="white" size="xs" :name="config.iconAddName" v-bind="iconAddAttrs" />
+          <UIcon
+            internal
+            color="white"
+            size="xs"
+            :name="config.iconAddName"
+            v-bind="iconAddAttrs"
+          />
         </UButton>
       </template>
     </ul>

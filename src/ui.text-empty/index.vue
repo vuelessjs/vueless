@@ -3,7 +3,14 @@
     <div v-bind="headerAttrs">
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
-        <UIcon :name="config.iconName" color="gray" :size="iconSize" pill v-bind="iconAttrs" />
+        <UIcon
+          internal
+          :name="config.iconName"
+          color="gray"
+          :size="iconSize"
+          pill
+          v-bind="iconAttrs"
+        />
       </slot>
     </div>
 
