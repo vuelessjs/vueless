@@ -1,13 +1,13 @@
 # Icons
 
-Vueless supports three popular SVG icon libraries: `@material-symbols` (default), `bootstrap-icons`, `heroicons`. You can change it like this.
+Vueless supports three popular SVG icon libraries: `@material-symbols`, `bootstrap-icons`, `heroicons`.
 
 if you going to use `bootstrap-icons` or `heroicons` or other weight of `@material-symbols`  you should install needed package first.
 
 {% tabs %}
 {% tab title="npm" %}
 ```bash
-# weight from 100 to 700 are available, 500 is default
+# weight from 100 to 700 available
 npm install @material-symbols/svg-400
 # or
 npm install bootstrap-icons
@@ -18,7 +18,7 @@ npm install heroicons
 
 {% tab title="yarn" %}
 ```bash
-# weight from 100 to 700 are available, 500 is default
+# weight from 100 to 700 available
 yarn add @material-symbols/svg-400
 # or
 yarn add bootstrap-icons
@@ -29,7 +29,7 @@ yarn add heroicons
 
 {% tab title="pnpm" %}
 ```bash
-# weight from 100 to 700 are available, 500 is default
+# weight from 100 to 700 available
 pnpm add @material-symbols/svg-400
 # or
 pnpm add bootstrap-icons
@@ -39,7 +39,7 @@ pnpm add heroicons
 {% endtab %}
 
 {% tab title="bun" %}
-<pre class="language-bash"><code class="lang-bash"># weight from 100 to 700 are available, 500 is default
+<pre class="language-bash"><code class="lang-bash"># weight from 100 to 700 available
 bun add @material-symbols/svg-400
 # or
 <strong>bun add bootstrap-icons
@@ -231,7 +231,7 @@ export default defineConfig({
 SVGO also can be explicitly disabled for one file by adding the `?skipsvgo` suffix.
 
 ```html
-<IconWithoutOptimizer />
+<UIcon :src="IconWithoutOptimizer" />
 
 <script setup>
 import IconWithoutOptimizer from "./my-icon.svg?skipsvgo"

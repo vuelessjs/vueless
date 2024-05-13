@@ -45,7 +45,7 @@ See [Components](components.md) chapter for more details.
 
 ## Icons
 
-Vueless supports three popular icon libraries: `@material-symbols` (default), `bootstrap-icons`, `heroicons`. You can change it like this.
+Vueless supports three popular icon libraries: `@material-symbols`, `bootstrap-icons`, `heroicons`. You can change it like this.
 
 {% code title="vueless.config.js" %}
 ```js
