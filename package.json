@@ -21,7 +21,7 @@
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
     "sb:build": "storybook build --docs",
     "sb:preview": "vite preview --host --outDir=storybook-static",
-    "package:prepare": "node src/gen.web-types && node icons.prepare && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node dist.prepare"
+    "package:prepare": "npx @vueless/web-types && node icons.prepare && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node dist.prepare"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
@@ -42,6 +42,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vueless/plugin-vite": "^0.0.7",
     "@vueless/storybook": "^0.0.17",
+    "@vueless/web-types": "^0.0.4",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^8.55.0",
@@ -50,7 +51,6 @@
     "eslint-plugin-storybook": "^0.8.0",
     "eslint-plugin-tailwindcss": "^3.15.1",
     "eslint-plugin-vue": "^9.25.0",
-    "globby": "^13.2.2",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
