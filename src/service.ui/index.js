@@ -2,7 +2,7 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { twMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
-import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_BRAND_COLOR } from "../preset.tailwind";
+import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR, BRAND_COLOR } from "../preset.tailwind";
 import vuelessConfig from "../../vueless.config.js";
 
 /*
@@ -105,7 +105,7 @@ export default class UIServiceDefault {
   // TODO: This should be rewrote to support all set of brand colors (not only one).
   setBrandColor(brandColor) {
     function getBrandColor(color, grayColor, brandColors) {
-      if (color === GRAYSCALE_BRAND_COLOR) {
+      if (color === GRAYSCALE_COLOR) {
         return grayColor;
       }
 
@@ -166,12 +166,17 @@ export default class UIServiceDefault {
     @returns { Object }
   */
   static get(defaultConfig, name) {
+    const defaultVariants = merge(
+      defaultConfig.defaultVariants,
+      globalComponentConfig[name]?.defaultVariants,
+    );
+
+    if (brand === GRAYSCALE_COLOR && defaultVariants.color === BRAND_COLOR) {
+      defaultVariants.color = GRAYSCALE_COLOR;
+    }
+
     return {
-      default: merge(
-        defaultConfig.defaultVariants,
-        brand === GRAYSCALE_BRAND_COLOR && { color: GRAYSCALE_BRAND_COLOR },
-        globalComponentConfig[name]?.defaultVariants,
-      ),
+      default: defaultVariants,
     };
   }
 }

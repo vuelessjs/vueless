@@ -3,9 +3,10 @@ import forms from "@tailwindcss/forms";
 import vuelessConfig from "../../vueless.config.js";
 
 export const GRAY_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
-export const GRAYSCALE_BRAND_COLOR = "grayscale";
+export const GRAYSCALE_COLOR = "grayscale";
+export const BRAND_COLOR = "brand";
 export const BRAND_COLORS = [
-  "brand",
+  BRAND_COLOR,
   "red",
   "orange",
   "amber",
@@ -37,7 +38,7 @@ export function vuelessPreset() {
   let brandPalette = BRAND_COLORS.includes(brand) ? colors[brand] : colors.green;
   let grayPalette = GRAY_COLORS.includes(gray) ? colors[gray] : colors.zinc;
 
-  if (brand === GRAYSCALE_BRAND_COLOR) {
+  if (brand === GRAYSCALE_COLOR) {
     brandPalette = grayPalette;
   }
 
