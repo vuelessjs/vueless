@@ -19,3 +19,10 @@ import { useLoaderRendering } from "vueless";
 
 const { setRenderingFinished, isRenderingPage, setRenderingStarted } = useLoaderRendering();
 `} language="jsx" dark />
+
+## Control outside of component
+You can control loader state outside of vue components using following methods.
+
+<Source code={`
+import { loaderRenderingOn, loaderRenderingOff } from "vueless";
+`} language="jsx" dark />

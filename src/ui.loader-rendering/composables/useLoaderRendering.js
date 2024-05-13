@@ -1,4 +1,4 @@
-import { readonly, ref, inject } from "vue";
+import { readonly, ref, inject, onMounted, onBeforeUnmount } from "vue";
 
 export const LoaderRenderingSymbol = Symbol.for("vueless:loader-rendering");
 
@@ -22,6 +22,16 @@ export function createLoaderRendering() {
 
 export function useLoaderRendering() {
   const loaderRenderingState = inject(LoaderRenderingSymbol);
+
+  onMounted(() => {
+    window.addEventListener("setRenderingStarted", setRenderingStarted);
+    window.addEventListener("setRenderingFinished", setRenderingFinished);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("setRenderingStarted", setRenderingStarted);
+    window.removeEventListener("setRenderingFinished", setRenderingFinished);
+  });
 
   return loaderRenderingState;
 }

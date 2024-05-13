@@ -1,4 +1,4 @@
-import { ref, readonly, inject } from "vue";
+import { ref, readonly, inject, onMounted, onBeforeUnmount } from "vue";
 
 export const LoaderTopSymbol = Symbol.for("vueless:loader-top");
 
@@ -42,6 +42,18 @@ function removeComponentRequestQueue() {
   componentLoaderRequestQueue.value = [];
 }
 
+function addRequestUrlHandler(event) {
+  addRequestUrl(event.detail.url);
+}
+
+function removeRequestUrlHandler(event) {
+  removeRequestUrl(event.detail.url);
+}
+
+function setComponentRequestQueueHandler(event) {
+  setComponentRequestQueue(event.detail.requests);
+}
+
 export function createLoaderTop() {
   return {
     isLoading: readonly(isLoading),
@@ -60,6 +72,24 @@ export function createLoaderTop() {
 
 export function useLoaderTop() {
   const loaderTopState = inject(LoaderTopSymbol);
+
+  onMounted(() => {
+    window.addEventListener("setLoadingOn", setLoadingOn);
+    window.addEventListener("setLoadingOff", setLoadingOff);
+    window.addEventListener("addRequestUrl", addRequestUrlHandler);
+    window.addEventListener("removeRequestUrl", removeRequestUrlHandler);
+    window.addEventListener("setComponentRequestQueue", setComponentRequestQueueHandler);
+    window.addEventListener("removeComponentRequestQueue", removeComponentRequestQueue);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("setLoadingOn", setLoadingOn);
+    window.removeEventListener("setLoadingOff", setLoadingOff);
+    window.removeEventListener("addRequestUrl", addRequestUrlHandler);
+    window.removeEventListener("removeRequestUrl", removeRequestUrlHandler);
+    window.removeEventListener("setComponentRequestQueue", setComponentRequestQueueHandler);
+    window.removeEventListener("removeComponentRequestQueue", removeComponentRequestQueue);
+  });
 
   return loaderTopState;
 }

@@ -7,9 +7,21 @@ import { createLoaderTop, LoaderTopSymbol } from "./ui.loader-top/composables/us
 
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en";
+export { useLocale } from "./composable.locale";
 export { useLoaderRendering } from "./ui.loader-rendering/composables/useLoaderRendering";
 export { useLoaderTop } from "./ui.loader-top/composables/useLoaderTop";
-export { useLocale } from "./composable.locale";
+export {
+  loaderRenderingOn,
+  loaderRenderingOff,
+} from "./ui.loader-rendering/services/loaderRedering.service";
+export {
+  loaderTopOn,
+  loaderTopOff,
+  addLoadingTopRequestUrl,
+  removeLoadingTopRequestUrl,
+  setLoadingTopComponentRequestQueue,
+  removeLoadingTopComponentRequestQueue,
+} from "./ui.loader-top/services/loaderTop.service";
 export {
   notify,
   notifySuccess,
@@ -22,13 +34,13 @@ export {
 
 export function createVueless(options = {}) {
   const i18n = createLocale(options.i18n);
-  const loaderRenderingState = createLoaderRendering();
-  const loaderTopState = createLoaderTop();
+  const loaderRendering = createLoaderRendering();
+  const loaderTop = createLoaderTop();
 
   const install = (app) => {
     app.provide(LocaleSymbol, i18n);
-    app.provide(LoaderRenderingSymbol, loaderRenderingState);
-    app.provide(LoaderTopSymbol, loaderTopState);
+    app.provide(LoaderRenderingSymbol, loaderRendering);
+    app.provide(LoaderTopSymbol, loaderTop);
   };
 
   return {
