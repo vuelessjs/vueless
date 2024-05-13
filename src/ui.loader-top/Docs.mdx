@@ -22,12 +22,10 @@ You can control loader state using *useLoaderRendering* composable.
 import { useLoaderTop } from "vueless";
 
 const { 
-    setLoadingOn,
-    setLoadingOff,
+    setLoaderOn,
+    setLoaderOff,
     addRequestUrl,
-    removeRequestUrl,
-    setComponentRequestQueue,
-    removeComponentRequestQueue,
+    removeRequestUrl
 } = useLoaderTop();
 `} language="jsx" dark />
 
@@ -38,9 +36,5 @@ You can control loader state outside of vue components using following methods.
 import {
   loaderTopOn,
   loaderTopOff,
-  addLoadingTopRequestUrl,
-  removeLoadingTopRequestUrl,
-  setLoadingTopComponentRequestQueue,
-  removeLoadingTopComponentRequestQueue,
 } from "vueless";
 `} language="jsx" dark />

@@ -14,14 +14,7 @@ export {
   loaderRenderingOn,
   loaderRenderingOff,
 } from "./ui.loader-rendering/services/loaderRedering.service";
-export {
-  loaderTopOn,
-  loaderTopOff,
-  addLoadingTopRequestUrl,
-  removeLoadingTopRequestUrl,
-  setLoadingTopComponentRequestQueue,
-  removeLoadingTopComponentRequestQueue,
-} from "./ui.loader-top/services/loaderTop.service";
+export { loaderTopOn, loaderTopOff } from "./ui.loader-top/services/loaderTop.service";
 export {
   notify,
   notifySuccess,

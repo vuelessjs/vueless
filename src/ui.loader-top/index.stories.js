@@ -17,17 +17,17 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoaderTop, UButton },
   setup() {
-    const { setLoadingOn, setLoadingOff } = useLoaderTop();
+    const { setLoaderOn, setLoaderOff } = useLoaderTop();
 
-    return { args, setLoadingOn, setLoadingOff };
+    return { args, setLoaderOn, setLoaderOff };
   },
   template: `
     <div>
         <ULoaderTop color="blue" v-bind="args" resource-names="https://api.publicapis.org/entries"/>
 
         <div class="flex gap-2">
-          <UButton label="On" @click="setLoadingOn('https://api.publicapis.org/entries')" />
-          <UButton label="Off" @click="setLoadingOff('https://api.publicapis.org/entries')" />
+          <UButton label="On" @click="setLoaderOn('https://api.publicapis.org/entries')" />
+          <UButton label="Off" @click="setLoaderOff('https://api.publicapis.org/entries')" />
         </div>
     </div>
   `,
@@ -36,12 +36,12 @@ const DefaultTemplate = (args) => ({
 const ColorsTemplate = (args, { argTypes } = {}) => ({
   components: { ULoaderTop, UButton },
   setup() {
-    const { setLoadingOn, setLoadingOff } = useLoaderTop();
+    const { setLoaderOn, setLoaderOff } = useLoaderTop();
 
     return {
       args,
-      setLoadingOn,
-      setLoadingOff,
+      setLoaderOn,
+      setLoaderOff,
       colors: argTypes.color.options,
     };
   },
@@ -56,8 +56,8 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
       />
     </div>
     <div class="flex gap-2 pt-4">
-      <UButton label="On" @click="setLoadingOn('https://api.publicapis.org/entries')" />
-      <UButton label="Off" @click="setLoadingOff('https://api.publicapis.org/entries')" />
+      <UButton label="On" @click="setLoaderOn('https://api.publicapis.org/entries')" />
+      <UButton label="Off" @click="setLoaderOff('https://api.publicapis.org/entries')" />
     </div>
   `,
 });
