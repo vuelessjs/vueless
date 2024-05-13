@@ -8,7 +8,7 @@ const loaderRequestQueue = ref([]);
 const loaderRequestTimeout = ref(0);
 const componentLoaderRequestQueue = ref([]);
 
-function setLoadingOn(url) {
+function setLoaderOn(url) {
   loaderRequestQueue.value.push(url);
 
   isLoading.value = true;
@@ -16,7 +16,7 @@ function setLoadingOn(url) {
   clearTimeout(loaderRequestTimeout.value);
 }
 
-function setLoadingOff(url) {
+function setLoaderOff(url) {
   loaderRequestQueue.value = url ? loaderRequestQueue.value.filter((item) => item !== url) : [];
 
   loaderRequestTimeout.value = setTimeout(() => {
@@ -42,16 +42,12 @@ function removeComponentRequestQueue() {
   componentLoaderRequestQueue.value = [];
 }
 
-function addRequestUrlHandler(event) {
-  addRequestUrl(event.detail.url);
+function setLoaderOnHandler(event) {
+  setLoaderOn(event.detail.resource);
 }
 
-function removeRequestUrlHandler(event) {
-  removeRequestUrl(event.detail.url);
-}
-
-function setComponentRequestQueueHandler(event) {
-  setComponentRequestQueue(event.detail.requests);
+function setLoaderOffHandler(event) {
+  setLoaderOff(event.detail.resource);
 }
 
 export function createLoaderTop() {
@@ -61,8 +57,8 @@ export function createLoaderTop() {
     loaderRequestQueue: readonly(loaderRequestQueue),
     loaderRequestTimeout: readonly(loaderRequestTimeout),
     componentLoaderRequestQueue: readonly(componentLoaderRequestQueue),
-    setLoadingOn,
-    setLoadingOff,
+    setLoaderOn,
+    setLoaderOff,
     addRequestUrl,
     removeRequestUrl,
     setComponentRequestQueue,
@@ -74,21 +70,13 @@ export function useLoaderTop() {
   const loaderTopState = inject(LoaderTopSymbol);
 
   onMounted(() => {
-    window.addEventListener("setLoadingOn", setLoadingOn);
-    window.addEventListener("setLoadingOff", setLoadingOff);
-    window.addEventListener("addRequestUrl", addRequestUrlHandler);
-    window.addEventListener("removeRequestUrl", removeRequestUrlHandler);
-    window.addEventListener("setComponentRequestQueue", setComponentRequestQueueHandler);
-    window.addEventListener("removeComponentRequestQueue", removeComponentRequestQueue);
+    window.addEventListener("setLoaderOn", setLoaderOnHandler);
+    window.addEventListener("setLoaderOff", setLoaderOffHandler);
   });
 
   onBeforeUnmount(() => {
-    window.removeEventListener("setLoadingOn", setLoadingOn);
-    window.removeEventListener("setLoadingOff", setLoadingOff);
-    window.removeEventListener("addRequestUrl", addRequestUrlHandler);
-    window.removeEventListener("removeRequestUrl", removeRequestUrlHandler);
-    window.removeEventListener("setComponentRequestQueue", setComponentRequestQueueHandler);
-    window.removeEventListener("removeComponentRequestQueue", removeComponentRequestQueue);
+    window.removeEventListener("setLoaderOn", setLoaderOnHandler);
+    window.removeEventListener("setLoaderOff", setLoaderOffHandler);
   });
 
   return loaderTopState;

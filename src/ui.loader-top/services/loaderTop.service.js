@@ -30,34 +30,14 @@ export const queue = (() => {
   };
 })();
 
-export function loaderTopOn() {
-  window.dispatchEvent(new Event("setLoadingOn"));
+export function loaderTopOn(resource) {
+  const loaderTopOnEvent = new CustomEvent("setLoadingOn", { detail: { resource } });
+
+  window.dispatchEvent(loaderTopOnEvent);
 }
 
-export function loaderTopOff() {
-  window.dispatchEvent(new Event("setLoadingOff"));
-}
+export function loaderTopOff(resource) {
+  const loaderTopOfEvent = new CustomEvent("setLoadingOff", { detail: { resource } });
 
-export function addLoadingTopRequestUrl(url) {
-  const addRequestUrlEvent = new CustomEvent("setLoadingOff", { detail: { url } });
-
-  window.dispatchEvent(addRequestUrlEvent);
-}
-
-export function removeLoadingTopRequestUrl(url) {
-  const removeRequestUrlEvent = new CustomEvent("removeRequestUrl", { detail: { url } });
-
-  window.dispatchEvent(removeRequestUrlEvent);
-}
-
-export function setLoadingTopComponentRequestQueue(requests) {
-  const setComponentRequestQueueEvent = new CustomEvent("setComponentRequestQueue", {
-    detail: { requests },
-  });
-
-  window.dispatchEvent(setComponentRequestQueueEvent);
-}
-
-export function removeLoadingTopComponentRequestQueue() {
-  window.dispatchEvent("removeComponentRequestQueue");
+  window.dispatchEvent(loaderTopOfEvent);
 }
