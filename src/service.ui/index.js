@@ -2,6 +2,8 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { twMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
+
+import { cloneDeep } from "../service.helper";
 import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR, BRAND_COLOR } from "../preset.tailwind";
 import vuelessConfig from "../../vueless.config.js";
 
@@ -167,7 +169,7 @@ export default class UIServiceDefault {
   */
   static get(defaultConfig, name) {
     const defaultVariants = merge(
-      defaultConfig.defaultVariants,
+      cloneDeep(defaultConfig.defaultVariants),
       globalComponentConfig[name]?.defaultVariants,
     );
 
