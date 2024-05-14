@@ -1,6 +1,6 @@
 <template>
   <div v-bind="wrapperAttrs">
-    <div v-if="!hasSlotContent(slots['default'])">
+    <div v-if="!hasSlotContent($slots['default'])">
       <ULabel
         :label="props.label"
         :description="props.description"
@@ -65,7 +65,7 @@ import Uppy from "@uppy/core";
 import DragDrop from "@uppy/vue/src/drag-drop";
 import { merge } from "lodash-es";
 
-import { computed, onBeforeUnmount, onMounted, ref, useSlots, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
@@ -190,8 +190,6 @@ const props = defineProps({
     default: "",
   },
 });
-
-const slots = useSlots();
 
 const emit = defineEmits(["changeFiles", "deleteFile"]);
 

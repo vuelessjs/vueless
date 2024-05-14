@@ -65,6 +65,7 @@ export default /*tw*/ {
     color: "brand",
     type: "link",
     size: "md",
+    ariaCurrentValue: "page",
     activeClass: "",
     exactActiveClass: "",
     wrapperActiveClass: "",
@@ -75,6 +76,8 @@ export default /*tw*/ {
     dashed: false,
     disabled: false,
     targetBlank: false,
+    custom: false,
+    replace: false,
   },
   safelist: (colors) => [
     { pattern: `decoration-(${colors})-500` },

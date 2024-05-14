@@ -26,7 +26,7 @@
       <slot name="right" />
 
       <UButton
-        v-if="searchButton && !hasSlotContent(slots['right'])"
+        v-if="searchButton && !hasSlotContent($slots['right'])"
         :label="text"
         v-bind="buttonAttrs"
         :data-cy="`${dataCy}-right`"
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
+import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
@@ -184,7 +184,6 @@ const props = defineProps({
   },
 });
 
-const slots = useSlots();
 const emit = defineEmits(["update:modelValue", "clear", "search"]);
 
 const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs, hasSlotContent } =
