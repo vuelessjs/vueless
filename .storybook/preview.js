@@ -15,11 +15,7 @@ const vueless = createVueless();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_PATH),
-  routes: [
-    {
-      path: "/",
-    },
-  ],
+  routes: [{ path: "/" }],
 });
 
 // Create storybook app instance
