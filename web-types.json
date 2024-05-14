@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.78",
+  "version": "0.0.79",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -4296,6 +4296,33 @@
             {
               "name": "targetBlank",
               "description": "Open link in new window.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "ariaCurrentValue",
+              "description": "Pass value to the attribute aria-current when the link is exact active.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "page"
+            },
+            {
+              "name": "custom",
+              "description": "Whether RouterLink should not wrap its content in an a tag.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "replace",
+              "description": "Whether RouterLink should not wrap its content in an a tag.",
               "value": {
                 "kind": "expression",
                 "type": "boolean"
