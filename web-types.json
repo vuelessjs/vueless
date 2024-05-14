@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.79",
+  "version": "0.0.80",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -3120,7 +3120,7 @@
                 "kind": "expression",
                 "type": "'brand' | 'grayscale' | 'gray' | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'white'"
               },
-              "default": "black"
+              "default": "grayscale"
             },
             {
               "name": "size",
@@ -3138,7 +3138,7 @@
                 "kind": "expression",
                 "type": "boolean"
               },
-              "default": "false"
+              "default": "UIService.get(defaultConfig, UIcon).default.pill"
             },
             {
               "name": "variant",
