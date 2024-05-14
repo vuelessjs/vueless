@@ -8,7 +8,7 @@ if you going to use `bootstrap-icons` or `heroicons` or other weight of `@materi
 {% tab title="npm" %}
 ```bash
 # weight from 100 to 700 available
-npm install @material-symbols/svg-400
+npm install @material-symbols/svg-500
 # or
 npm install bootstrap-icons
 # or
@@ -19,7 +19,7 @@ npm install heroicons
 {% tab title="yarn" %}
 ```bash
 # weight from 100 to 700 available
-yarn add @material-symbols/svg-400
+yarn add @material-symbols/svg-500
 # or
 yarn add bootstrap-icons
 # or
@@ -30,7 +30,7 @@ yarn add heroicons
 {% tab title="pnpm" %}
 ```bash
 # weight from 100 to 700 available
-pnpm add @material-symbols/svg-400
+pnpm add @material-symbols/svg-500
 # or
 pnpm add bootstrap-icons
 # or
@@ -40,7 +40,7 @@ pnpm add heroicons
 
 {% tab title="bun" %}
 <pre class="language-bash"><code class="lang-bash"># weight from 100 to 700 available
-bun add @material-symbols/svg-400
+bun add @material-symbols/svg-500
 # or
 <strong>bun add bootstrap-icons
 </strong># or
@@ -52,15 +52,14 @@ bun add heroicons
 And after set the library in the config:
 
 {% tabs %}
-{% tab title="@material-symbols/svg-400" %}
+{% tab title="@material-symbols/svg-500" %}
 {% code title="vueless.config.js" %}
 ```javascript
 export default /*tw*/ {
   component: {
     UIcon: {
       defaultVariants: {
-        library: "@material-symbols",
-        weight: "400", // 100 | 200 | ... | 700
+        library: "@material-symbols/svg-500",
         style: "outlined", // sharp | rounded | outlined
       }
     }
@@ -93,8 +92,7 @@ export default /*tw*/ {
   component: {
     UIcon: {
       defaultVariants: {
-        library: "bootstrap-icons",
-        style: "solid", // solid | mini | micro
+        library: "heroicons",
       }
     }
   }
