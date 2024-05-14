@@ -84,7 +84,7 @@ const props = defineProps({
    */
   route: {
     type: Object,
-    default: () => ({ to: { path: "/" } }),
+    default: () => ({}),
   },
 
   /**
@@ -120,6 +120,30 @@ const props = defineProps({
   targetBlank: {
     type: Boolean,
     default: UIService.get(defaultConfig, ULink).default.targetBlank,
+  },
+
+  /**
+   * Pass value to the attribute aria-current when the link is exact active.
+   */
+  ariaCurrentValue: {
+    type: String,
+    default: UIService.get(defaultConfig, ULink).default.ariaCurrentValue,
+  },
+
+  /**
+   * Whether RouterLink should not wrap its content in an a tag.
+   */
+  custom: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.custom,
+  },
+
+  /**
+   * Whether RouterLink should not wrap its content in an a tag.
+   */
+  replace: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULink).default.replace,
   },
 
   /**
@@ -211,17 +235,20 @@ const props = defineProps({
   },
 });
 
-const routeFallback = { to: "/" };
-
 const isPresentRoute = computed(() => {
   for (let key in props.route) return true;
 
   return false;
 });
 
-const { route, isActive, isExactActive } = useLink(
-  isPresentRoute.value ? props.route : routeFallback,
-);
+const { route, isActive, isExactActive } = useLink({
+  activeClass: props.activeClass,
+  ariaCurrentValue: props.ariaCurrentValue,
+  exactActiveClass: props.exactActiveClass,
+  custom: props.custom,
+  replace: props.replace,
+  to: isPresentRoute.value ? props.route : "/",
+});
 
 const wrapperRef = ref(null);
 
