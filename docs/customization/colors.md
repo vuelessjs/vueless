@@ -57,7 +57,7 @@ export default {
 
 You can [generate your colors](https://tailwindcss.com/docs/customizing-colors#generating-colors) using tools such as [uicolors](https://uicolors.app) for example.
 
-## Changing `brand` color at runtime
+## Changing brand color at runtime
 
 To change the brand color at runtime, you can call the function below:
 
@@ -101,6 +101,10 @@ To reduce the app bundle size It's better to safelist colors for particular comp
 ## Replacing safelist patterns
 
 In some specific cases you may need to replace [Tailwind CSS safelist config](https://tailwindcss.com/docs/content-configuration#using-regular-expressions) as well, so for that reason you can use `safelist` callback function in particular component config.
+
+{% hint style="warning" %}
+To prevent unexpected behaviour **Vueless fully replace (do not merge) custom safelist array**. So If you need to change some safelist patterns first you need to copy entire safelist array from the components default config and after add some changes there.
+{% endhint %}
 
 {% code title="vueless.config.js" %}
 ```js

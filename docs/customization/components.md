@@ -43,17 +43,17 @@ export default {
 ```
 {% endcode %}
 
-## `CVA`
+## CVA
 
 For managing classes variants Vueless components use [cva](https://github.com/joe-bell/cva) (Class Variance Authority) under the hood. For more details you can read related [cva docs](https://cva.style/docs/getting-started/variants).
 
 {% hint style="warning" %}
-Due to configs merge feature Vueless doesn't support **arrays** for values in `compoundVariants` .
+Due to configs merge feature Vueless doesn't support **arrays** for values in `compoundVariants`.
 {% endhint %}
 
 ***
 
-## `vueless.config.js`
+## Vueless config
 
 Some examples of changing classes for a Vueless components globally.
 
@@ -108,7 +108,7 @@ export default {
 ```
 {% endcode %}
 
-## `config` prop
+## Config prop
 
 Each component has a `config` prop that allows to customize everything specifically.
 
@@ -164,7 +164,7 @@ To change the font weight of the `title`, you only need to write:
 
 This will smartly replace the `font-medium` by `font-bold` and prevent any class duplication and any class priority issue.
 
-## `class` attribute
+## Class attribute
 
 You can also use the `class` attribute to add classes to the component.
 
