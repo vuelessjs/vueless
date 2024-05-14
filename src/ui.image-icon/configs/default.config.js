@@ -71,15 +71,13 @@ export default /*tw*/ {
   },
   defaultVariants: {
     name: "",
-    library: "@material-symbols",
-    weight: 500,
+    library: "@material-symbols/svg-500",
     style: "outlined",
-    pill: false,
-    fill: false,
+    color: "grayscale",
     size: "md",
-    color: "black",
     variant: "default",
     interactive: false,
+    fill: false,
   },
   safelist: (colors) => [
     { pattern: `text-(${colors})-400` },

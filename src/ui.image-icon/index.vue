@@ -158,8 +158,10 @@ const generatedIcons = computed(() => {
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const library = props.internal ? "vueless" : config.value.defaultVariants.library;
-  const weight = config.value.defaultVariants.weight;
+  const defaultLibrary = defaultConfig.defaultVariants.library;
+  const userLibrary = defaultConfig.defaultVariants.library;
+
+  const library = props.internal && defaultLibrary === userLibrary ? "vueless" : userLibrary;
   const style = config.value.defaultVariants.style;
   const isFill = props.name.endsWith(FILL_SUFFIX);
   const name = props.name;
@@ -191,8 +193,8 @@ const dynamicComponent = computed(() => {
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, weight, style, name])
-        : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
+        ? await getIcon([library, style, name])
+        : import(/* @vite-ignore */ `/node_modules/${library}/${style}/${name}.svg?component`);
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
