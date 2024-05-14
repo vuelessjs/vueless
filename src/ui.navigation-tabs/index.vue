@@ -9,6 +9,7 @@
         :disabled="item.disabled"
         :size="size"
         :data-cy="`${dataCy}-item-${index}`"
+        v-bind="tabAttrs"
       />
     </slot>
   </div>
@@ -95,5 +96,5 @@ provide("setUTabsSelectedItem", (value) => (selectedItem.value = value));
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("getUTabsSize", () => props.size);
 
-const { wrapperAttrs } = useAttrs(props);
+const { wrapperAttrs, tabAttrs } = useAttrs(props);
 </script>

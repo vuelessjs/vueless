@@ -7,6 +7,7 @@ export default /*tw*/ {
       },
     },
   },
+  tab: "",
   defaultVariants: {
     size: "md",
     underlined: false,

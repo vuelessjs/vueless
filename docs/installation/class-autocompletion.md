@@ -1,6 +1,6 @@
-# Classes Autocompletion
+# Class autocompletion
 
-### IntelliSense
+## IntelliSense
 
 If you're using **VSCode** or **JetBrains** IDEs (WebStorm, PHPStorm, etc..) you can configure autocompletion for the classes.
 
@@ -24,7 +24,7 @@ const config = /*tw*/ {
 </script>
 ```
 
-### VSCode
+## VSCode
 
 * Install [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extension.
 * Set the plugin configuration below in the file `.vscode/settings.json`.
@@ -45,7 +45,7 @@ const config = /*tw*/ {
 }
 ```
 
-### JetBrains IDEs
+## JetBrains IDEs
 
 * Check if [Tailwind CSS IntelliSense](https://www.jetbrains.com/help/webstorm/tailwind-css.html) extension already installed in the IDE and install it if not.
 * Set the plugin configuration below in `Settings` > `Languages & Frameworks` > `Style Sheets` > `Tailwind CSS`.

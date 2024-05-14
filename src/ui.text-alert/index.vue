@@ -4,7 +4,7 @@
       <!-- @slot Use it to add something inside. -->
       <slot />
 
-      <div v-if="!hasSlotContent(slots['default'])" v-html="html" />
+      <div v-if="!hasSlotContent($slots['default'])" v-html="html" />
     </div>
 
     <UButton size="sm" variant="thirdary" :color="color" square v-bind="buttonAttrs">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, useSlots } from "vue";
+import { onMounted, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
@@ -103,7 +103,6 @@ const props = defineProps({
   },
 });
 
-const slots = useSlots();
 const emit = defineEmits(["hidden"]);
 
 const isShownAlert = ref(true);
