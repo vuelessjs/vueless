@@ -205,8 +205,8 @@ const dynamicComponent = computed(() => {
       const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
-        ? await getIcon([library, style, fillType, name])
-        : import(/* @vite-ignore */ `/node_modules/${library}/${style}/${fillType}/${name}.svg?component`);
+        ? await getIcon([library, fillType, name])
+        : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
   };
   /* eslint-enable vue/max-len, prettier/prettier */
