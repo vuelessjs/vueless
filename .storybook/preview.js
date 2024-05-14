@@ -5,6 +5,7 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 
 // Vue plugins
 import { createVueless } from "vueless";
+import { createRouter, createWebHistory } from "vue-router";
 
 // Tailwind styles
 import "./index.pcss";
@@ -12,8 +13,18 @@ import "./index.pcss";
 // Create vueless instance
 const vueless = createVueless();
 
+const router = createRouter({
+  history: createWebHistory(import.meta.env.VITE_BASE_PATH),
+  routes: [
+    {
+      path: "/",
+    },
+  ],
+});
+
 // Create storybook app instance
 const storybookApp = (app) => {
+  app.use(router);
   app.use(vueless);
 };
 

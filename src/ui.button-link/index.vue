@@ -1,6 +1,6 @@
 <template>
   <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
-    <div v-if="hasSlotContent(slots['left'])" v-bind="leftSlotAttrs">
+    <div v-if="hasSlotContent($slots['left'])" v-bind="leftSlotAttrs">
       <!-- @slot Use it to add something before text. -->
       <slot name="left" />
     </div>
@@ -19,7 +19,7 @@
     >
       <!-- @slot Use it replace the text. -->
       <slot>
-        <span v-if="!hasSlotContent(slots['default'])" v-bind="textAttrs" v-text="label" />
+        <span v-if="!hasSlotContent($slots['default'])" v-bind="textAttrs" v-text="label" />
       </slot>
     </router-link>
 
@@ -37,11 +37,11 @@
     >
       <!-- @slot Use it replace the text. -->
       <slot>
-        <span v-if="!hasSlotContent(slots['default'])" v-bind="textAttrs" v-text="label" />
+        <span v-if="!hasSlotContent($slots['default'])" v-bind="textAttrs" v-text="label" />
       </slot>
     </a>
 
-    <div v-if="hasSlotContent(slots['right'])" v-bind="rightSlotAttrs">
+    <div v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
       <!-- @slot Use it to add something after text. -->
       <slot name="right" />
     </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots, ref } from "vue";
+import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
 import UIService from "../service.ui";
 
@@ -84,7 +84,7 @@ const props = defineProps({
    */
   route: {
     type: Object,
-    default: () => ({}),
+    default: () => ({ to: { path: "/" } }),
   },
 
   /**
@@ -211,8 +211,17 @@ const props = defineProps({
   },
 });
 
-const slots = useSlots();
-const { route, isActive, isExactActive } = useLink({ to: props.route });
+const routeFallback = { to: "/" };
+
+const isPresentRoute = computed(() => {
+  for (let key in props.route) return true;
+
+  return false;
+});
+
+const { route, isActive, isExactActive } = useLink(
+  isPresentRoute.value ? props.route : routeFallback,
+);
 
 const wrapperRef = ref(null);
 
@@ -233,12 +242,6 @@ const href = computed(() => {
   };
 
   return `${types[props.type]}${props.url}`;
-});
-
-const isPresentRoute = computed(() => {
-  for (let key in props.route) return true;
-
-  return false;
 });
 
 function onClick(event) {
