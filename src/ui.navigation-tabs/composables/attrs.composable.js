@@ -18,7 +18,10 @@ export function useAttrs(props) {
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
 
+  const tabAttrs = getAttrs("tab", { isComponent: true });
+
   return {
     wrapperAttrs,
+    tabAttrs,
   };
 }
