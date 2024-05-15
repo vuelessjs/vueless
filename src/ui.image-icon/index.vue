@@ -159,7 +159,7 @@ const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
   const defaultLibrary = defaultConfig.defaultVariants.library;
-  const userLibrary = defaultConfig.defaultVariants.library;
+  const userLibrary = config.value.defaultVariants.library;
 
   const library = props.internal && defaultLibrary === userLibrary ? "vueless" : userLibrary;
   const style = config.value.defaultVariants.style;
