@@ -1,4 +1,4 @@
-import { ref, readonly, inject, onMounted, onBeforeUnmount } from "vue";
+import { ref, readonly, inject } from "vue";
 
 export const LoaderTopSymbol = Symbol.for("vueless:loader-top");
 
@@ -42,14 +42,6 @@ function removeComponentRequestQueue() {
   componentLoaderRequestQueue.value = [];
 }
 
-function setLoaderOnHandler(event) {
-  setLoaderOn(event.detail.resource);
-}
-
-function setLoaderOffHandler(event) {
-  setLoaderOff(event.detail.resource);
-}
-
 export function createLoaderTop() {
   return {
     isLoading: readonly(isLoading),
@@ -68,16 +60,6 @@ export function createLoaderTop() {
 
 export function useLoaderTop() {
   const loaderTopState = inject(LoaderTopSymbol);
-
-  onMounted(() => {
-    window.addEventListener("setLoaderOn", setLoaderOnHandler);
-    window.addEventListener("setLoaderOff", setLoaderOffHandler);
-  });
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("setLoaderOn", setLoaderOnHandler);
-    window.removeEventListener("setLoaderOff", setLoaderOffHandler);
-  });
 
   return loaderTopState;
 }

@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 
 import { useAttrs } from "./composables/attrs.composable";
 import { useLoaderRendering } from "./composables/useLoaderRendering";
@@ -26,7 +26,17 @@ const props = defineProps({
 });
 
 const { wrapperAttrs, loaderAttrs, rippleAttrs, rippleElementAttrs, config } = useAttrs(props);
-const { isRenderingPage } = useLoaderRendering();
+const { isRenderingPage, setRenderingStarted, setRenderingFinished } = useLoaderRendering();
+
+onMounted(() => {
+  window.addEventListener("setRenderingStarted", setRenderingStarted);
+  window.addEventListener("setRenderingFinished", setRenderingFinished);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("setRenderingStarted", setRenderingStarted);
+  window.removeEventListener("setRenderingFinished", setRenderingFinished);
+});
 
 const showLoader = computed(() => {
   return props.loading || isRenderingPage.value;
