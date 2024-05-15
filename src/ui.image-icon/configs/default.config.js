@@ -71,7 +71,8 @@ export default /*tw*/ {
   },
   defaultVariants: {
     name: "",
-    library: "@material-symbols/svg-500",
+    library: "@material-symbols",
+    weight: 500,
     style: "outlined",
     color: "grayscale",
     size: "md",
