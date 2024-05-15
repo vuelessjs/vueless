@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, watch, ref } from "vue";
+import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
 import UIService, { isMobileApp } from "../service.ui";
 import { clamp, queue } from "./services/loaderTop.service";
@@ -49,6 +49,8 @@ const {
   componentLoaderRequestQueue,
   setComponentRequestQueue,
   removeComponentRequestQueue,
+  setLoaderOff,
+  setLoaderOn,
 } = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
 
@@ -74,11 +76,29 @@ if (props.resourceNames) {
   setComponentRequestQueue(resourceNamesArray.value);
 }
 
+onMounted(() => {
+  window.addEventListener("setLoaderOn", setLoaderOnHandler);
+  window.addEventListener("setLoaderOff", setLoaderOffHandler);
+});
+
 onBeforeUnmount(() => {
   if (props.resourceNames) {
     removeComponentRequestQueue();
   }
 });
+
+onUnmounted(() => {
+  window.removeEventListener("setLoaderOn", setLoaderOnHandler);
+  window.removeEventListener("setLoaderOff", setLoaderOffHandler);
+});
+
+function setLoaderOnHandler(event) {
+  setLoaderOn(event.detail.resource);
+}
+
+function setLoaderOffHandler(event) {
+  setLoaderOff(event.detail.resource);
+}
 
 function requestWithoutQuery(request) {
   const [requestWithoutQuery] = request.split("?");
