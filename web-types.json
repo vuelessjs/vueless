@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.85",
+  "version": "0.0.86",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -5231,6 +5231,10 @@
           ],
           "slots": [
             {
+              "name": "header-before",
+              "description": "Use it to add something before the header."
+            },
+            {
               "name": "header-left-before",
               "description": "Use it to add something before left side of the header."
             },
@@ -5247,8 +5251,16 @@
               "description": "Use it to customise right side of the header."
             },
             {
+              "name": "header-after",
+              "description": "Use it to add something after the header."
+            },
+            {
               "name": "default",
               "description": "Use it to add main content."
+            },
+            {
+              "name": "footer-before",
+              "description": "Use it to add something before the footer."
             },
             {
               "name": "footer-left",
@@ -5257,6 +5269,10 @@
             {
               "name": "footer-right",
               "description": "Use it to add something to the right side of the footer."
+            },
+            {
+              "name": "footer-after",
+              "description": "Use it to add something after the footer."
             }
           ],
           "source": {
