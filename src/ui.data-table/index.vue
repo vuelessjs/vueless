@@ -184,7 +184,7 @@
                   <slot name="cell-other" :value="value" :row="row" />
                 </template>
 
-                <template v-else-if="value.hasOwnProperty('secondaryRow')">
+                <template v-else-if="value?.hasOwnProperty('secondaryRow')">
                   <div :data-cy="`${dataCy}-${key}-cell`">
                     {{ value.primaryRow || HYPHEN_SYMBOL }}
                   </div>
