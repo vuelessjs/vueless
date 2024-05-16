@@ -1,6 +1,9 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs">
     <div v-bind="pageAttrs">
+      <!-- @slot Use it to add something before the header. -->
+      <slot name="header-before" />
+
       <div v-if="isShownHeader" v-bind="headerAttrs">
         <div v-bind="headerLeftAttrs">
           <!-- @slot Use it to add something before left side of the header. -->
@@ -41,10 +44,16 @@
         </div>
       </div>
 
+      <!-- @slot Use it to add something after the header. -->
+      <slot name="header-after" />
+
       <div>
         <!-- @slot Use it to add main content. -->
         <slot />
       </div>
+
+      <!-- @slot Use it to add something before the footer. -->
+      <slot name="footer-before" />
 
       <div v-if="isShownFooterSlot" class="vueless-page-footer" v-bind="footerAttrs">
         <div class="vueless-page-footer-left" v-bind="footerLeftAttrs">
@@ -57,6 +66,9 @@
           <slot name="footer-right" />
         </div>
       </div>
+
+      <!-- @slot Use it to add something after the footer. -->
+      <slot name="footer-after" />
     </div>
 
     <div v-if="fixedRounding && !isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
@@ -193,9 +205,17 @@ const {
 
 const isShownHeader = computed(() => {
   const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
-  const isHeaderRightSlot = hasSlotContent(slots["header-left"]);
+  const isHeaderRightSlot = hasSlotContent(slots["header-right"]);
+  const isHeaderLeftBeforeSlot = hasSlotContent(slots["header-left-before"]);
+  const isHeaderLeftAfterSlot = hasSlotContent(slots["header-left-after"]);
 
-  return props.title || isHeaderLeftSlot || isHeaderRightSlot;
+  return (
+    props.title ||
+    isHeaderLeftSlot ||
+    isHeaderLeftBeforeSlot ||
+    isHeaderLeftAfterSlot ||
+    isHeaderRightSlot
+  );
 });
 
 const isShownFooterSlot = computed(() => {
