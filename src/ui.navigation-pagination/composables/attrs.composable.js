@@ -9,8 +9,10 @@ export function useAttrs(props) {
 
   const listAttrs = getAttrs("list");
   const itemAttrsRaw = getAttrs("item");
+  const itemEllipsisAttrs = getAttrs("itemEllipsis");
   const ellipsisAttrs = getAttrs("ellipsis");
   const navigationButtonAttrs = getAttrs("navigationButton", { isComponent: true });
+  const navigationButtonTextAttrs = getAttrs("navigationButtonText");
   const pageButtonAttrsRaw = getAttrs("pageButton", { isComponent: true });
 
   const itemAttrs = computed(() => (page = 0) => {
@@ -34,7 +36,9 @@ export function useAttrs(props) {
   return {
     listAttrs,
     itemAttrs,
+    itemEllipsisAttrs,
     navigationButtonAttrs,
+    navigationButtonTextAttrs,
     pageButtonAttrs,
     ellipsisAttrs,
   };

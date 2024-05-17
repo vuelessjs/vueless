@@ -10,7 +10,7 @@
         @click="goToFirstPage"
       >
         <slot name="first-label">
-          <span v-html="firstLabel" />
+          <span v-bind="navigationButtonTextAttrs" v-html="firstLabel" />
         </slot>
       </UButton>
     </li>
@@ -24,13 +24,13 @@
         @click="goToPrevPage"
       >
         <slot name="prev-label">
-          <span v-html="prevLabel" />
+          <span v-bind="navigationButtonTextAttrs" v-html="prevLabel" />
         </slot>
       </UButton>
     </li>
 
     <li v-for="page in pageButtons" :key="page" v-bind="itemAttrs(page)">
-      <span v-if="!isFinite(page.number)" v-html="ELLIPSIS_LABEL" />
+      <span v-if="!isFinite(page.number)" v-bind="itemEllipsisAttrs" v-html="ELLIPSIS_LABEL" />
 
       <UButton
         v-else
@@ -55,7 +55,7 @@
         @click="goToNextPage"
       >
         <slot name="next-label">
-          <span v-html="nextLabel" />
+          <span v-bind="navigationButtonTextAttrs" v-html="nextLabel" />
         </slot>
       </UButton>
     </li>
@@ -69,7 +69,7 @@
         @click="goToLastPage"
       >
         <slot name="next-label">
-          <span v-html="lastLabel" />
+          <span v-bind="navigationButtonTextAttrs" v-html="lastLabel" />
         </slot>
       </UButton>
     </li>
@@ -209,7 +209,14 @@ const props = defineProps({
 
 const emit = defineEmits(["change", "update:modelValue"]);
 
-const { listAttrs, itemAttrs, navigationButtonAttrs, pageButtonAttrs } = useAttrs(props);
+const {
+  listAttrs,
+  itemAttrs,
+  itemEllipsisAttrs,
+  navigationButtonAttrs,
+  navigationButtonTextAttrs,
+  pageButtonAttrs,
+} = useAttrs(props);
 
 const currentPage = computed({
   get: () => props.modelValue,
