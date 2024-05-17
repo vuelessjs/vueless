@@ -65,7 +65,7 @@ export default /*tw*/ {
     titleSize: "lg",
     width: "wide",
     gray: false,
-    fixedRounding: true,
+    fixedRounding: false,
     mobileFooterReverse: false,
   },
 };
