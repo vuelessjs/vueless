@@ -49,8 +49,8 @@ const {
   componentLoaderRequestQueue,
   setComponentRequestQueue,
   removeComponentRequestQueue,
-  setLoaderOff,
-  setLoaderOn,
+  setLoaderTopOff,
+  setLoaderTopOn,
 } = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
 
@@ -77,8 +77,8 @@ if (props.resourceNames) {
 }
 
 onMounted(() => {
-  window.addEventListener("setLoaderOn", setLoaderOnHandler);
-  window.addEventListener("setLoaderOff", setLoaderOffHandler);
+  window.addEventListener("loaderTopOn", setLoaderOnHandler);
+  window.addEventListener("loaderTopOff", setLoaderOffHandler);
 });
 
 onBeforeUnmount(() => {
@@ -88,16 +88,16 @@ onBeforeUnmount(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("setLoaderOn", setLoaderOnHandler);
-  window.removeEventListener("setLoaderOff", setLoaderOffHandler);
+  window.removeEventListener("loaderTopOn", setLoaderOnHandler);
+  window.removeEventListener("loaderTopOff", setLoaderOffHandler);
 });
 
 function setLoaderOnHandler(event) {
-  setLoaderOn(event.detail.resource);
+  setLoaderTopOn(event.detail.resource);
 }
 
 function setLoaderOffHandler(event) {
-  setLoaderOff(event.detail.resource);
+  setLoaderTopOff(event.detail.resource);
 }
 
 function requestWithoutQuery(request) {

@@ -8,7 +8,7 @@ const loaderRequestQueue = ref([]);
 const loaderRequestTimeout = ref(0);
 const componentLoaderRequestQueue = ref([]);
 
-function setLoaderOn(url) {
+function setLoaderTopOn(url) {
   loaderRequestQueue.value.push(url);
 
   isLoading.value = true;
@@ -16,7 +16,7 @@ function setLoaderOn(url) {
   clearTimeout(loaderRequestTimeout.value);
 }
 
-function setLoaderOff(url) {
+function setLoaderTopOff(url) {
   loaderRequestQueue.value = url ? loaderRequestQueue.value.filter((item) => item !== url) : [];
 
   loaderRequestTimeout.value = setTimeout(() => {
@@ -49,8 +49,8 @@ export function createLoaderTop() {
     loaderRequestQueue: readonly(loaderRequestQueue),
     loaderRequestTimeout: readonly(loaderRequestTimeout),
     componentLoaderRequestQueue: readonly(componentLoaderRequestQueue),
-    setLoaderOn,
-    setLoaderOff,
+    setLoaderTopOn,
+    setLoaderTopOff,
     addRequestUrl,
     removeRequestUrl,
     setComponentRequestQueue,

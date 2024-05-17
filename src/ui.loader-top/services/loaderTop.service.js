@@ -31,13 +31,13 @@ export const queue = (() => {
 })();
 
 export function loaderTopOn(resource) {
-  const loaderTopOnEvent = new CustomEvent("setLoadingOn", { detail: { resource } });
+  const loaderTopOnEvent = new CustomEvent("loaderTopOn", { detail: { resource } });
 
   window.dispatchEvent(loaderTopOnEvent);
 }
 
 export function loaderTopOff(resource) {
-  const loaderTopOfEvent = new CustomEvent("setLoadingOff", { detail: { resource } });
+  const loaderTopOfEvent = new CustomEvent("loaderTopOff", { detail: { resource } });
 
   window.dispatchEvent(loaderTopOfEvent);
 }
