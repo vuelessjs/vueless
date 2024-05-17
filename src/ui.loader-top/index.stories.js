@@ -2,6 +2,7 @@ import ULoaderTop from "../ui.loader-top";
 import UButton from "../ui.button";
 
 import { useLoaderTop } from "../ui.loader-top/composables/useLoaderTop";
+import { loaderTopOff, loaderTopOn } from "../ui.loader-top/services/loaderTop.service";
 
 import { getArgTypes } from "../service.storybook";
 
@@ -17,9 +18,9 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoaderTop, UButton },
   setup() {
-    const { setLoaderOn, setLoaderOff } = useLoaderTop();
+    const { setLoaderTopOn, setLoaderTopOff } = useLoaderTop();
 
-    return { args, setLoaderOn, setLoaderOff };
+    return { args, setLoaderTopOn, setLoaderTopOff };
   },
   template: `
     <div>
@@ -36,12 +37,10 @@ const DefaultTemplate = (args) => ({
 const ColorsTemplate = (args, { argTypes } = {}) => ({
   components: { ULoaderTop, UButton },
   setup() {
-    const { setLoaderOn, setLoaderOff } = useLoaderTop();
-
     return {
       args,
-      setLoaderOn,
-      setLoaderOff,
+      loaderTopOff,
+      loaderTopOn,
       colors: argTypes.color.options,
     };
   },
@@ -56,8 +55,8 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
       />
     </div>
     <div class="flex gap-2 pt-4">
-      <UButton label="On" @click="setLoaderOn('https://api.publicapis.org/entries')" />
-      <UButton label="Off" @click="setLoaderOff('https://api.publicapis.org/entries')" />
+      <UButton label="On" @click="loaderTopOn('https://api.publicapis.org/entries')" />
+      <UButton label="Off" @click="loaderTopOff('https://api.publicapis.org/entries')" />
     </div>
   `,
 });
