@@ -46,7 +46,6 @@
       <ULoaderTop
         v-if="resource && isHeaderSticky"
         :resource-names="resource"
-        position="absolute"
         v-bind="headerStickyLoaderAttrs"
       />
     </div>
@@ -89,12 +88,7 @@
           </tr>
 
           <!-- TODO: Change to loaders config after laoader refactoring -->
-          <ULoaderTop
-            v-if="resource"
-            :resource-names="resource"
-            position="absolute"
-            v-bind="tableLoaderAttrs"
-          />
+          <ULoaderTop v-if="resource" :resource-names="resource" v-bind="tableLoaderAttrs" />
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
