@@ -3,7 +3,7 @@
 node_modules
 storybook-static
 dist
-src/assets/.cache/
+src/assets/icons/cache/
 
 yarn.lock
 
@@ -21,3 +21,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+

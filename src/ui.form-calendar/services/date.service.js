@@ -180,11 +180,11 @@ export function getSortedLocale(locale, type) {
 }
 
 export function getDateFromUnixTimestamp(timestamp) {
-  return new Date(timestamp * 1000);
+  return new Date(timestamp);
 }
 
 export function getUnixTimestampFromDate(date) {
-  return date.getTime() / 1000;
+  return date.getTime();
 }
 
 export function getDatesDifference(dateOne, dateTwo, timeless = true) {
