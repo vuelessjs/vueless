@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.88",
+  "version": "0.0.89",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -5208,7 +5208,7 @@
                 "kind": "expression",
                 "type": "boolean"
               },
-              "default": "true"
+              "default": "false"
             },
             {
               "name": "config",
