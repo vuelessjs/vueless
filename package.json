@@ -21,7 +21,7 @@
     "sb:dev": "storybook dev -p 6006 --docs --no-open",
     "sb:build": "storybook build --docs",
     "sb:preview": "vite preview --host --outDir=storybook-static",
-    "package:prepare": "npx @vueless/web-types && node icons.prepare && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node dist.prepare"
+    "package:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.dist"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
