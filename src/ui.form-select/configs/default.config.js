@@ -8,6 +8,11 @@ export default /*tw*/ {
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,
     variants: {
+      size: {
+        sm: "pt-2 pb-2",
+        md: "pt-2.5 pb-2.5",
+        lg: "pt-3 pb-3",
+      },
       error: {
         true: `
           border-red-300 hover:border-red-300
