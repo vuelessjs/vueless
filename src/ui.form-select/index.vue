@@ -173,7 +173,7 @@
         tabindex="-1"
         v-bind="dropdownListAttrs"
         @focus="activate"
-        @addOption="onAddOption"
+        @add-option="onAddOption"
         @mousedown.prevent.capture
         @click.prevent.capture
       >

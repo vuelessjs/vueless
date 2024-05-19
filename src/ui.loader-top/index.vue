@@ -1,5 +1,5 @@
 <template>
-  <Transition :css="false" @beforeEnter="beforeEnter" @enter="enter" @afterEnter="afterEnter">
+  <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
     <div v-if="show" v-bind="progressAttrs" :style="barStyle" />
   </Transition>
 </template>

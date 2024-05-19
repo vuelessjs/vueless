@@ -76,9 +76,9 @@
             :group="group"
             :data-cy="`${dataCy}-table`"
             v-bind="nestedAttrs"
-            @clickDelete="onClickDelete"
-            @clickEdit="onClickEdit"
-            @dragSort="onDragEnd"
+            @click-delete="onClickDelete"
+            @click-edit="onClickEdit"
+            @drag-sort="onDragEnd"
           >
             <template #default="{ item }">
               <slot :item="item">

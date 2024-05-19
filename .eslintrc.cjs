@@ -34,7 +34,6 @@ module.exports = {
     ],
     "vue/max-len": ["error", { code: 120, template: 960, ignoreComments: true, ignoreUrls: true }],
     "vue/padding-line-between-blocks": ["error", "always"],
-    "vue/v-on-event-hyphenation": ["error", "never"],
     "vue/no-v-html": "off",
     "tailwindcss/no-custom-classname": "off",
     "prettier/prettier": ["warn", { printWidth: 100, tabWidth: 2 }],
