@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.89",
+  "version": "0.0.90",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -3043,6 +3043,15 @@
                 "type": "'brand' | 'grayscale' | 'gray' | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'white'"
               },
               "default": "grayscale"
+            },
+            {
+              "name": "multiline",
+              "description": "Return default line height to the component (it may be useful for multiline headers).",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
             },
             {
               "name": "underlined",
