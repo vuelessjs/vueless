@@ -423,7 +423,9 @@ const rangeInputEndRef = ref(null);
 const localValue = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit("update:modelValue", value);
+    if (value.from && value.to) {
+      emit("update:modelValue", value);
+    }
 
     activeDate.value = getDateFromUnixTimestamp(value.from || new Date());
   },
