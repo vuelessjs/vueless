@@ -4,7 +4,7 @@
       v-show="isShownStickyOrActionsHeader"
       ref="headerStickyRow"
       :style="tableRowWidthStyle"
-      v-bind="customHeaderAttrs"
+      v-bind="stickyHeaderAttrs"
     >
       <UCheckbox
         v-if="selectable"
@@ -15,18 +15,24 @@
         v-bind="selectAllCheckboxAttrs"
       />
 
-      <template v-if="selectedRows.length">
-        <div v-bind="selectedRowsCountAttrs" v-text="selectedRows.length" />
+      <div
+        v-if="selectedRows.length"
+        v-bind="selectedRowsCountAttrs"
+        v-text="selectedRows.length"
+      />
 
-        <!-- @slot Use it to add actions instead table head (it appears when you select rows in table). -->
-        <slot name="thead-actions" :selected-rows="selectedRows" />
-      </template>
+      <!-- @slot Use it to add actions instead table head (it appears when you select rows in table). -->
+      <slot
+        v-if="selectedRows.length && hasSlotContent($slots['thead-actions'])"
+        name="thead-actions"
+        :selected-rows="selectedRows"
+      />
 
       <template v-else>
         <div
           v-for="(column, index) in columns"
           :key="index"
-          v-bind="customHeaderItemAttrs(column.thClass)"
+          v-bind="stickyHeaderColumnAttrs(column.thClass)"
         >
           <template v-if="hasSlotContent($slots[`thead-${column.key}`])">
             <!-- @slot Use it to customise table column. -->
@@ -42,11 +48,10 @@
         </div>
       </template>
 
-      <!-- TODO: Change to loaders config after laoader refactoring -->
       <ULoaderTop
         v-if="resource && isHeaderSticky"
         :resource-names="resource"
-        v-bind="headerStickyLoaderAttrs"
+        v-bind="stickyHeaderLoaderAttrs"
       />
     </div>
 
@@ -87,7 +92,6 @@
             </th>
           </tr>
 
-          <!-- TODO: Change to loaders config after laoader refactoring -->
           <ULoaderTop v-if="resource" :resource-names="resource" v-bind="tableLoaderAttrs" />
         </thead>
 
@@ -431,47 +435,6 @@ const isFooterSticky = computed(
     isCheckedMoreOneTableItems.value,
 );
 
-const {
-  config,
-  wrapperAttrs,
-  customHeaderItemAttrs,
-  customHeaderAttrs,
-  tableWrapperAttrs,
-  headerRowCellAttrs,
-  afterLastRowAttrs,
-  afterLastRowCellAttrs,
-  beforeFirstRowAttrs,
-  beforeFirstRowCellAttrs,
-  bodyRowAttrs,
-  footerClassesAttrs,
-  dateSeparatorRowAttrs,
-  toggleButtonWrapperAttrs,
-  headerCellAttrs,
-  bodyCellAttrs,
-  checkboxBodyWrapperCellAttrs,
-  footerCellAttrs,
-  selectAllCheckboxAttrs,
-  headerSelectAllCheckboxAttrs,
-  tableCheckboxAttrs,
-  collapseIconAttrs,
-  expandIconAttrs,
-  emptyAttrs,
-  dateSeparatorAttrs,
-  selectedRowsCountAttrs,
-  headerStickyLoaderAttrs,
-  tableAttrs,
-  headerRowAttrs,
-  tableLoaderAttrs,
-  bodyAttrs,
-  toggleItemButtonAttrs,
-  secondaryRowAttrs,
-  secondaryRowEmptyAttrs,
-  footerRowAttrs,
-  footerStickyRowAttrs,
-  hasSlotContent,
-  headerAttrs,
-} = useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFooterSticky });
-
 const currentLocale = computed(() => merge(tm("UTable"), props.config.i18n));
 
 const normalizedColumns = computed(() => TableService.normalizeColumns(props.columns));
@@ -511,14 +474,65 @@ const isCheckedMoreOneTableItems = computed(() => {
 
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
 
-const hasContentBeforeFirstRowSlot = computed(() => {
+const hasSlotContentBeforeFirstRow = computed(() => {
   return hasSlotContent(slots["before-first-row"])
     ? slots["before-first-row"]()?.some((item) => !!item.type?.render)
     : false;
 });
 
+const hasSlotContentTheadActions = computed(() => {
+  return hasSlotContent(slots["thead-actions"]);
+});
+
 const emptyTableMsg = computed(() => {
   return props.filters ? currentLocale.value.noResultsForFilters : currentLocale.value.noItems;
+});
+
+const {
+  config,
+  wrapperAttrs,
+  stickyHeaderColumnAttrs,
+  stickyHeaderAttrs,
+  tableWrapperAttrs,
+  headerRowCellAttrs,
+  afterLastRowAttrs,
+  afterLastRowCellAttrs,
+  beforeFirstRowAttrs,
+  beforeFirstRowCellAttrs,
+  bodyRowAttrs,
+  footerClassesAttrs,
+  dateSeparatorRowAttrs,
+  toggleButtonWrapperAttrs,
+  headerCellAttrs,
+  bodyCellAttrs,
+  checkboxBodyWrapperCellAttrs,
+  footerCellAttrs,
+  selectAllCheckboxAttrs,
+  headerSelectAllCheckboxAttrs,
+  tableCheckboxAttrs,
+  collapseIconAttrs,
+  expandIconAttrs,
+  emptyAttrs,
+  dateSeparatorAttrs,
+  selectedRowsCountAttrs,
+  stickyHeaderLoaderAttrs,
+  tableAttrs,
+  headerRowAttrs,
+  tableLoaderAttrs,
+  bodyAttrs,
+  toggleItemButtonAttrs,
+  secondaryRowAttrs,
+  secondaryRowEmptyAttrs,
+  footerRowAttrs,
+  footerStickyRowAttrs,
+  hasSlotContent,
+  headerAttrs,
+} = useAttrs(props, {
+  selectedRows,
+  isHeaderSticky,
+  tableRows,
+  isFooterSticky,
+  hasSlotContentTheadActions,
 });
 
 watch(selectAll, onChangeSelectAll, { deep: true });
@@ -678,7 +692,7 @@ function isShownDateSeparator(rowIndex) {
   const currentItem = tableRows.value[rowIndex];
 
   if (rowIndex === 0) {
-    return hasContentBeforeFirstRowSlot.value;
+    return hasSlotContentBeforeFirstRow.value;
   }
 
   const isPrevSameDate = prevItem?.date?.primaryRow === currentItem?.date?.primaryRow;

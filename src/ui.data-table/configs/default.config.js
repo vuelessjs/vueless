@@ -7,30 +7,12 @@ export default /*tw*/ {
       },
     },
   },
-  customHeader: "flex items-center z-30 overflow-hidden",
-  customHeaderSticky: "fixed top-0 border border-t-0 border-gray-200 bg-white group/fixed-header",
-  customHeaderActions: "rounded-t-lg border border-blue-200 !bg-blue-50 group-[]/fixed-header:!rounded-none",
-  customHeaderHidden: "relative -top-[3.75rem] collapse",
-  customHeaderItem: {
-    base: "flex-none text-sm font-normal text-gray-500 px-[1.125rem] py-4 [&:nth-child(2)]:pl-0",
-    variants: {
-      compact: {
-        true: "!p-4 [&:nth-child(2)]:!pl-0",
-      },
-    },
-  },
-  selectedRowsCount: "flex items-center pr-4 font-medium text-gray-900",
-  selectAllCheckbox: "flex-none text-sm font-normal text-gray-500 pr-[1.125rem] pl-4 py-4 group-[]/table-compact:!px-4",
-  headerStickyLoader: "absolute top-[3.75rem] group-[]/table-compact:!top-[3.25rem]",
-  innerWrapper: "overflow-auto rounded-lg border border-gray-200",
-  innerWrapperSelected: "!rounded-t-none border-t-0",
-  table: "min-w-full border-none bg-white text-sm w-full",
   headerCheckboxWrapper: "w-[3.75rem]",
-  header: "border-b border-solid border-gray-200",
+  header: "border-b border-gray-200 ",
   headerRow: "",
   headerCell: {
     base: `
-      px-[1.125rem] py-4 text-sm font-normal text-gray-500
+      px-[1.125rem] py-4 text-sm font-normal text-gray-500 leading-none
       text-left first:p-4 last:p-4 [&:nth-child(2)]:pl-0
     `,
     variants: {
@@ -40,6 +22,25 @@ export default /*tw*/ {
     },
   },
   headerSelectAllCheckbox: "",
+  stickyHeader: "flex items-center z-30 overflow-hidden rounded-t-lg border border-gray-200 border-b-0",
+  stickyHeaderHidden: "relative -top-[3.75rem] collapse",
+  stickyHeaderLoader: "absolute top-[3.75rem] group-[]/table-compact:!top-[3.25rem]",
+  stickyHeaderActive: "fixed top-0 border  border-gray-200 bg-white rounded-none",
+  stickyHeaderActions: "rounded-t-lg border border-blue-200 !bg-blue-50",
+  stickyHeaderColumn: {
+    base: "flex-none text-sm font-normal text-gray-500 px-[1.125rem] py-4 [&:nth-child(2)]:pl-0",
+    variants: {
+      compact: {
+        true: "!p-4 [&:nth-child(2)]:!pl-0",
+      },
+    },
+  },
+
+  selectedRowsCount: "absolute left-11 pr-2 font-medium text-sm text-gray-900 bg-gradient-to-r from-white from-80%",
+  selectAllCheckbox: "flex-none text-sm font-normal text-gray-500 pr-[1.125rem] pl-4 py-4 group-[]/table-compact:!px-4",
+  innerWrapper: "overflow-auto rounded-lg border border-gray-200",
+  innerWrapperSelected: "!rounded-t-none border-t-0",
+  table: "min-w-full border-none bg-white text-sm w-full",
   tableLoader: "absolute !top-auto",
   moreRow: "!px-0 !py-4 first:mx-auto",
   moreRowHidden: "!p-0",

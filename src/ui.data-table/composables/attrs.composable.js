@@ -3,9 +3,12 @@ import defaultConfig from "../configs/default.config";
 import { cva, cx } from "../../service.ui";
 import { computed, useSlots } from "vue";
 
-export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFooterSticky }) {
+export function useAttrs(
+  props,
+  { selectedRows, isHeaderSticky, tableRows, isFooterSticky, hasSlotContentTheadActions },
+) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, customHeaderItem, headerCell } = config.value;
+  const { wrapper, stickyHeaderColumn, headerCell } = config.value;
 
   const slot = useSlots();
 
@@ -16,9 +19,9 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
   });
 
   const cvaCustomHeaderItem = cva({
-    base: customHeaderItem.base,
-    variants: customHeaderItem.variants,
-    compoundVariants: customHeaderItem.compoundVariants,
+    base: stickyHeaderColumn.base,
+    variants: stickyHeaderColumn.variants,
+    compoundVariants: stickyHeaderColumn.compoundVariants,
   });
 
   const cvaHeaderCell = cva({
@@ -34,12 +37,12 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
   const headerCellClasses = computed(() => cvaHeaderCell({ compact: props.compact }));
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const customHeaderItemAttrsRaw = getAttrs("customHeaderItem", {
+  const customHeaderItemAttrsRaw = getAttrs("stickyHeaderColumn", {
     classes: customHeaderItemClasses,
   });
   const selectedRowsCountAttrs = getAttrs("selectedRowsCount");
   const selectAllCheckboxAttrs = getAttrs("selectAllCheckbox", { isComponent: true });
-  const headerStickyLoaderAttrs = getAttrs("headerStickyLoader", { isComponent: true });
+  const stickyHeaderLoaderAttrs = getAttrs("stickyHeaderLoader", { isComponent: true });
   const tableAttrs = getAttrs("table");
   const headerAttrs = getAttrs("header");
   const headerRowAttrs = getAttrs("headerRow");
@@ -100,17 +103,23 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
   const headerRowCellAttrs = computed(() => ({
     class: cx([
       config.value.headerRow,
-      selectedRows.value.length && !isHeaderSticky.value && config.value.customHeaderHidden,
+      selectedRows.value.length && !isHeaderSticky.value && config.value.stickyHeaderHidden,
     ]),
   }));
 
-  const customHeaderAttrs = computed(() => ({
-    class: cx([
-      config.value.customHeader,
-      selectedRows.value.length && config.value.customHeaderActions,
-      isHeaderSticky.value && props.stickyHeader && config.value.customHeaderSticky,
-    ]),
-  }));
+  const stickyHeaderAttrs = computed(() => {
+    // console.log("hasSlotContentTheadActions", hasSlotContentTheadActions.value);
+
+    return {
+      class: cx([
+        config.value.stickyHeader,
+        selectedRows.value.length &&
+          hasSlotContentTheadActions.value &&
+          config.value.stickyHeaderActions,
+        isHeaderSticky.value && props.stickyHeader && config.value.stickyHeaderActive,
+      ]),
+    };
+  });
 
   const footerClassesAttrs = computed(() => ({
     class: cx([config.value.footer, isFooterSticky.value && config.value.footerSticky]),
@@ -124,7 +133,7 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
     ]),
   }));
 
-  const customHeaderItemAttrs = computed(() => (thClass) => ({
+  const stickyHeaderColumnAttrs = computed(() => (thClass) => ({
     ...customHeaderItemAttrsRaw.value,
     class: cx([customHeaderItemAttrsRaw.value.class, thClass]),
   }));
@@ -148,8 +157,8 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
   return {
     config,
     wrapperAttrs,
-    customHeaderItemAttrs,
-    customHeaderAttrs,
+    stickyHeaderColumnAttrs,
+    stickyHeaderAttrs,
     tableWrapperAttrs,
     headerRowCellAttrs,
     bodyRowAttrs,
@@ -172,7 +181,7 @@ export function useAttrs(props, { selectedRows, isHeaderSticky, tableRows, isFoo
     emptyAttrs,
     dateSeparatorAttrs,
     selectedRowsCountAttrs,
-    headerStickyLoaderAttrs,
+    stickyHeaderLoaderAttrs,
     tableAttrs,
     headerRowAttrs,
     tableLoaderAttrs,
