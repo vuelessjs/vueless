@@ -8,17 +8,26 @@ import ULink from "../ui.button-link";
 import UMoney from "../ui.text-money";
 import UBadge from "../ui.text-badge";
 
+const STICKY_PARAMETERS = {
+  docs: {
+    story: {
+      inline: false,
+      iframeHeight: 450,
+    },
+  },
+};
+
 export default {
   id: "7010",
   title: "Data / Table",
   component: UTable,
   argTypes: {
     ...getArgTypes(UTable.name),
-    itemsRow: {
+    row: {
       description:
         "The row of the table. It's not a prop (it created for ease of work with storybook).",
     },
-    numberOfRow: {
+    numberOfRows: {
       description:
         "The number of table rows. It's not a prop (it created for ease of work with storybook).",
     },
@@ -30,8 +39,8 @@ export default {
       { key: "key_3", label: "title 3" },
       { key: "key_4", label: "title 4" },
     ],
-    itemsRow: {
-      id: "",
+    row: {
+      id: 1,
       isChecked: false,
       key_1: {
         primaryRow: "primaryRow",
@@ -49,12 +58,8 @@ export default {
         primaryRow: "primaryRow",
         secondaryRow: "secondaryRow",
       },
-      date: {
-        primaryRow: 1709046013,
-        separatorDate: new Date(1709046013 * 1000).toString(),
-      },
     },
-    numberOfRow: 5,
+    numberOfRows: 5,
   },
 };
 
@@ -76,8 +81,12 @@ const DefaultTemplate = (args) => ({
     itemsData() {
       let rows = [];
 
-      for (let i = 0; i < args.numberOfRow; i++) rows.push(args.itemsRow);
-      rows = rows.map((item) => (item.id = getRandomId()));
+      for (let i = 0; i < args.numberOfRows; i++) {
+        const newRow = { ...args.row };
+
+        newRow.id = getRandomId();
+        rows.push(newRow);
+      }
 
       return rows;
     },
@@ -113,81 +122,39 @@ const SlotTemplate = (args) => ({
     itemsData() {
       const rows = [];
 
-      for (let i = 0; i < args.numberOfRow; i++) rows.push(args.itemsRow);
+      for (let i = 0; i < args.numberOfRows; i++) rows.push(args.row);
 
       return rows;
     },
   },
 });
 
-// TODO: Find how to interrupt styles inside a component for UMoney.
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-
-export const defaultCells = SlotTemplate.bind({});
-defaultCells.args = {
-  columns: [
-    { key: "link", label: "link" },
-    { key: "money", label: "money", thClass: "text-right" },
-    { key: "email", label: "email" },
-    { key: "tags", label: "tags" },
-  ],
-  itemsRow: {
-    link: "some link",
-    money: {
-      sum: 10,
-      currencySymbol: "$",
-    },
-    email: "some@email.ua",
-    tags: {
-      tags: { label: "some tag" },
-      variant: "orange",
-    },
-  },
-
-  slotTemplate: `
-    <template #cell-link="{ value }">
-      <ULink :url="value" size="value" :label="value" />
-    </template>
-
-    <template #cell-money="{ value }">
-      <UMoney :sum="value.sum" :symbol="value.currencySymbol" />
-    </template>
-
-    <template #cell-email="{ value }">
-      <ULink :label="value" :url="value" type="email" size="sm" />
-    </template>
-
-    <template #cell-tags="{ value }">
-      <div>
-        <UBadge
-          v-for="item in value.tags"
-          :key="item"
-          :label="item"
-          :color="value.variant"
-        />
-      </div>
-    </template>
-  `,
-};
 
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
 
 export const Filters = EmptyTemplate.bind({});
-Empty.args = { filters: true };
-
-export const Resource = DefaultTemplate.bind({});
-Resource.args = { resource: "/7010--resource" };
+Filters.args = { filters: true };
 
 export const selectable = DefaultTemplate.bind({});
 selectable.args = { selectable: true };
 
-// TODO: Don't work fixed footer. Find how to fix it.
-export const fixedFooter = SlotTemplate.bind({});
-fixedFooter.args = {
-  stickyFooter: true,
+export const stickyHeader = DefaultTemplate.bind({});
+stickyHeader.parameters = STICKY_PARAMETERS;
+stickyHeader.args = {
+  numberOfRows: 50,
   selectable: true,
+  stickyHeader: true,
+};
+
+export const stickyFooter = SlotTemplate.bind({});
+stickyFooter.parameters = STICKY_PARAMETERS;
+stickyFooter.args = {
+  numberOfRows: 50,
+  selectable: true,
+  stickyFooter: true,
   slotTemplate: `
     <template #tfoot>
       <UTableCell>
@@ -200,19 +167,14 @@ fixedFooter.args = {
   `,
 };
 
-export const stickyHeader = DefaultTemplate.bind({});
-stickyHeader.args = { stickyHeader: true };
-
 export const compact = DefaultTemplate.bind({});
 compact.args = { compact: true };
 
 export const DateDivider = DefaultTemplate.bind({});
-DateDivider.args = {
-  dateDivider: true,
-};
+DateDivider.args = { dateDivider: true };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
-DateDivider.args = {
+DateDividerCustomLabel.args = {
   dateDivider: [
     {
       date: new Date(1709046013 * 1000).toString(),
@@ -297,6 +259,51 @@ slotTfoot.args = {
           ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
       </UTableCell>
+    </template>
+  `,
+};
+
+export const cellSlots = SlotTemplate.bind({});
+cellSlots.args = {
+  columns: [
+    { key: "link", label: "link" },
+    { key: "money", label: "money", thClass: "text-right" },
+    { key: "email", label: "email" },
+    { key: "tags", label: "tags" },
+  ],
+  row: {
+    link: "some link",
+    money: {
+      sum: 10,
+      currencySymbol: "$",
+    },
+    email: "some@email.ua",
+    tags: {
+      tags: { label: "some tag" },
+      variant: "orange",
+    },
+  },
+
+  slotTemplate: `
+    <template #cell-link="{ value }">
+      <ULink :url="value" :label="value" />
+    </template>
+
+    <template #cell-money="{ value }">
+      <UMoney :sum="value.sum" :symbol="value.currencySymbol" />
+    </template>
+
+    <template #cell-email="{ value }">
+      <ULink :label="value" :url="value" type="email" size="sm" />
+    </template>
+
+    <template #cell-tags="{ value }">
+      <UBadge
+        v-for="item in value.tags"
+        :key="item"
+        :label="item"
+        :color="value.variant"
+      />
     </template>
   `,
 };
