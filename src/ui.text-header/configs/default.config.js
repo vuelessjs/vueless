@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "text-{color}-600 !leading-none",
+    base: "text-{color}-600",
     variants: {
       size: {
         xs: "text-lg",
@@ -19,6 +19,9 @@ export default /*tw*/ {
         brand: "text-brand",
         white: "text-white",
         grayscale: "text-gray-900",
+      },
+      multiline: {
+        true: "!leading-none",
       },
       underlined: {
         true: "border-b border-{color}-600",
@@ -39,6 +42,7 @@ export default /*tw*/ {
     color: "grayscale",
     weight: "medium",
     size: "md",
+    multiline: false,
     underlined: false,
   },
   safelist: (colors) => [{ pattern: `text-(${colors})-600` }, { pattern: `border-(${colors})-600` }],

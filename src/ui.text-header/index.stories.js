@@ -102,5 +102,12 @@ Sizes.args = {};
 export const Underlined = SizesTemplate.bind({});
 Underlined.args = { underlined: true };
 
+export const Multiline = SizesTemplate.bind({});
+Multiline.args = {
+  size: "2xl",
+  multiline: true,
+  label: "Some very long header you ever may imagine in your whole long and beautiful life",
+};
+
 export const Colors = ColorsTemplate.bind({});
 Colors.args = {};

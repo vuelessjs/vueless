@@ -55,6 +55,14 @@ const props = defineProps({
   },
 
   /**
+   * Return default line height to the component (it may be useful for multiline headers).
+   */
+  multiline: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UHeader).default.multiline,
+  },
+
+  /**
    * Show the underline.
    */
   underlined: {
