@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "",
+  wrapper: "relative",
   input: "",
   inputActive: {
     block: {
