@@ -92,8 +92,6 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   const innerWrapperAttrs = getAttrs("innerWrapper", { classes: innerWrapperClasses });
   const wrapperTopAttrs = getAttrs("wrapperTop");
   const leftSlotAttrs = getAttrs("leftSlot");
-  const beforeCaretSlotAttrs = getAttrs("beforeCaretSlot");
-  const afterCaretSlotAttrs = getAttrs("afterCaretSlot");
   const iconToggleAttrs = getAttrs("iconToggle", { isComponent: true });
   const searchInputAttrs = getAttrs("searchInput", { classes: searchInputClasses });
   const selectedLabelsAttrs = getAttrs("selectedLabels");
@@ -134,6 +132,20 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   const caretClearAttrs = computed(() => ({
     ...caretClearAttrsRaw.value,
     class: cx([caretClearAttrsRaw.value.class, caretClasses.value]),
+  }));
+
+  const beforeCaretSlotAttrsRaw = getAttrs("beforeCaretSlot");
+
+  const beforeCaretSlotAttrs = computed(() => ({
+    ...beforeCaretSlotAttrsRaw.value,
+    class: cx([beforeCaretSlotAttrsRaw.value.class, caretClasses.value]),
+  }));
+
+  const afterCaretSlotAttrsRaw = getAttrs("afterCaretSlot");
+
+  const afterCaretSlotAttrs = computed(() => ({
+    ...afterCaretSlotAttrsRaw.value,
+    class: cx([afterCaretSlotAttrsRaw.value.class, caretClasses.value]),
   }));
 
   const searchAttrsRaw = getAttrs("search");

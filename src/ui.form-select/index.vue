@@ -68,7 +68,7 @@
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
-        <div v-if="multiple" v-bind="selectedLabelsAttrs">
+        <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!-- @slot Use it to add selected value label. -->
             <slot

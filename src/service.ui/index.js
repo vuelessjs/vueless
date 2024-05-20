@@ -44,11 +44,16 @@ export default class UIServiceDefault {
   HYPHEN_SYMBOL = "-";
 
   constructor() {
-    this.isMac = this.checkIsMac();
+    // Needed to avoid error in server context for ssr
+    // TODO: Find way call it in browser
+    // Possible solution: https://github.com/nuxt/nuxt/discussions/7878
+    const isBrowser = typeof window !== "undefined";
 
-    this.isPWA = this.checkIsPWA();
-    this.isIOS = this.checkIsIOS();
-    this.isAndroid = this.checkIsAndroid();
+    this.isMac = isBrowser && this.checkIsMac();
+
+    this.isPWA = isBrowser && this.checkIsPWA();
+    this.isIOS = isBrowser && this.checkIsIOS();
+    this.isAndroid = isBrowser && this.checkIsAndroid();
 
     this.isMobileApp = this.isPWA || this.isIOS || this.isAndroid;
   }

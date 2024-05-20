@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "",
+  wrapper: "relative",
   input: "",
   inputActive: {
     block: {
@@ -55,9 +55,9 @@ export default /*tw*/ {
   periodDateActive: "bg-zinc-100",
   rangeInputWrapper: "flex mt-4",
   rangeInput: {
-    wrapper: "ml-0 group/range-input-wrapper",
     block: `focus-within:z-10 group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none`,
     label: {
+      wrapper: "group/range-input-wrapper",
       description: "hidden",
     },
     input: {
