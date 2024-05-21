@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -5441,6 +5441,49 @@
           ],
           "source": {
             "module": "vueless/ui.navigation-pagination/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "UProgress",
+          "description": "",
+          "attributes": [
+            {
+              "name": "value",
+              "required": true,
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "max",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "100"
+            },
+            {
+              "name": "size",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "md"
+            },
+            {
+              "name": "color",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "green"
+            }
+          ],
+          "source": {
+            "module": "vueless/ui.progress/index.vue",
             "symbol": "default"
           }
         },
