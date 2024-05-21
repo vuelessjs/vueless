@@ -7,8 +7,14 @@
   >
     <slot />
 
-    <div v-bind="labelWrapperAttrs">
-      <label :for="props.for" :data-cy="`${dataCy}-label`" v-bind="labelAttrs" v-text="label" />
+    <div v-if="label || error || description" v-bind="labelWrapperAttrs">
+      <label
+        v-if="label"
+        :for="props.for"
+        :data-cy="`${dataCy}-label`"
+        v-bind="labelAttrs"
+        v-text="label"
+      />
 
       <div
         v-if="error"
@@ -30,6 +36,7 @@
 
   <div v-else v-bind="wrapperAttrs">
     <label
+      v-if="label"
       ref="labelRef"
       :for="props.for"
       :data-cy="`${dataCy}-label`"
