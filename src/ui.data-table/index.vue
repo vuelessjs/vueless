@@ -352,19 +352,11 @@ const props = defineProps({
   },
 
   /**
-   * Enable nesting rows.
-   */
-  nesting: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UTable).default.nesting,
-  },
-
-  /**
    * Sets the nesting level from which folding button need to be shown.
    */
-  nestingFrom: {
+  nesting: {
     type: Number,
-    default: UIService.get(defaultConfig, UTable).default.nestingFrom,
+    default: UIService.get(defaultConfig, UTable).default.nesting,
   },
 
   /**
@@ -488,6 +480,10 @@ const emptyTableMsg = computed(() => {
   return props.filters ? currentLocale.value.noResultsForFilters : currentLocale.value.noItems;
 });
 
+const isNesting = computed(() => {
+  return !isNaN(props.nesting) && props.nesting !== null;
+});
+
 const {
   config,
   wrapperAttrs,
@@ -528,9 +524,10 @@ const {
   hasSlotContent,
   headerAttrs,
 } = useAttrs(props, {
-  selectedRows,
-  isHeaderSticky,
   tableRows,
+  selectedRows,
+  isNesting,
+  isHeaderSticky,
   isFooterSticky,
   hasSlotContentTheadActions,
 });
@@ -583,11 +580,11 @@ function onWindowResizeSetWidth() {
 
 function isShownIcon({ index, row }) {
   const isChildren = row.childrenIds?.length > 0;
-  const isWithinNestingLevel = row.nestedLevel >= props.nestingFrom;
+  const isWithinNestingLevel = row.nestedLevel >= props.nesting;
 
   const isFirstRow = index === 0;
 
-  return isFirstRow && (isChildren || row.isNestingRow) && props.nesting && isWithinNestingLevel;
+  return isFirstRow && (isChildren || row.isNestingRow) && isNesting.value && isWithinNestingLevel;
 }
 
 function isIconActive(row) {
@@ -595,7 +592,7 @@ function isIconActive(row) {
 }
 
 function onClickShowItem(row) {
-  if (!props.nesting || !row.childrenIds.length) return;
+  if (!isNesting.value || !row.childrenIds.length) return;
   const [firstElement] = row.childrenIds;
 
   row.isHidden = !row.isHidden;
@@ -604,7 +601,7 @@ function onClickShowItem(row) {
     hiddenIds.value.push(...row.childrenIds);
   } else {
     hiddenIds.value =
-      row.nestedLevel === props.nestingFromLevel
+      row.nestedLevel === props.nesting
         ? row.childrenIds.filter((item) => !hiddenIds.value.includes(item))
         : hiddenIds.value.filter((item) => item !== firstElement);
   }
@@ -674,7 +671,7 @@ function synchronizeTableItemsWithProps() {
   tableRows.value = props.rows;
 
   tableRows.value.forEach((item) => {
-    if (props.nesting && item.isHidden && item.childrenIds?.length) {
+    if (isNesting.value && item.isHidden && item.childrenIds?.length) {
       hiddenIds.value.push(...item.childrenIds);
     }
   });

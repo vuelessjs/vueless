@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative bg-white rounded-2xl",
+    base: "relative bg-white rounded-lg",
     variants: {
       compact: {
         true: "group/table-compact",
@@ -10,17 +10,7 @@ export default /*tw*/ {
   headerCheckboxWrapper: "w-[3.75rem]",
   header: "border-b border-gray-200 ",
   headerRow: "",
-  headerCell: {
-    base: `
-      px-[1.125rem] py-4 text-sm font-normal text-gray-500 leading-none
-      text-left first:p-4 last:p-4 [&:nth-child(2)]:pl-0
-    `,
-    variants: {
-      compact: {
-        true: "bg-white p-4 first:p-4 last:p-4",
-      },
-    },
-  },
+  headerCell: "p-4 text-sm font-normal text-gray-500 text-left",
   headerSelectAllCheckbox: "",
   stickyHeader: "flex items-center z-30 overflow-hidden rounded-t-lg border border-gray-200 border-b-0",
   stickyHeaderHidden: "relative -top-[3.75rem] collapse",
@@ -35,12 +25,11 @@ export default /*tw*/ {
       },
     },
   },
-
   selectedRowsCount: "absolute left-11 pr-2 font-medium text-sm text-gray-900 bg-gradient-to-r from-white from-80%",
   selectAllCheckbox: "flex-none text-sm font-normal text-gray-500 pr-[1.125rem] pl-4 py-4 group-[]/table-compact:!px-4",
   innerWrapper: "overflow-auto rounded-lg border border-gray-200",
   innerWrapperSelected: "!rounded-t-none border-t-0",
-  table: "min-w-full border-none bg-white text-sm w-full",
+  table: "min-w-full border-none text-sm w-full",
   tableLoader: "absolute !top-auto",
   moreRow: "!px-0 !py-4 first:mx-auto",
   moreRowHidden: "!p-0",
@@ -79,8 +68,7 @@ export default /*tw*/ {
     tomorrow: "tomorrow",
   },
   defaultVariants: {
-    nestingFrom: 0,
-    nesting: false,
+    nesting: null,
     compact: false,
     selectable: false,
     stickyHeader: false,

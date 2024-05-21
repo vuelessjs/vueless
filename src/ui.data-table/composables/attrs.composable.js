@@ -5,7 +5,14 @@ import { computed, useSlots } from "vue";
 
 export function useAttrs(
   props,
-  { selectedRows, isHeaderSticky, tableRows, isFooterSticky, hasSlotContentTheadActions },
+  {
+    tableRows,
+    selectedRows,
+    isNesting,
+    isHeaderSticky,
+    isFooterSticky,
+    hasSlotContentTheadActions,
+  },
 ) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
   const { wrapper, stickyHeaderColumn, headerCell } = config.value;
@@ -151,7 +158,7 @@ export function useAttrs(
   };
 
   const toggleButtonWrapperAttrs = computed(() => (index) => ({
-    class: index === 0 && props.nesting ? config.value.toggleButtonWrapper : "",
+    class: index === 0 && isNesting.value ? config.value.toggleButtonWrapper : "",
   }));
 
   return {
