@@ -2,7 +2,7 @@ export default /*tw*/ {
   tableCell: {
     base: `
       p-[1.125rem] py-5 first:p-5 [&:nth-child(2)]:pl-0 group-[]/body:truncate group-[]/body:align-top
-      group-[]/body:last:p-5
+      group-[]/body:last:p-5 !overflow-visible
     `,
     variants: {
       compact: {
