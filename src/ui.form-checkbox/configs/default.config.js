@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "w-auto max-w-max relative gap-0",
+  label: "w-auto max-w-max relative gap-3",
   partialIconName: "remove",
   selectedIconName: "check",
   iconWrapper: {
