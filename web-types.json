@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.93",
+  "version": "0.0.95",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -5445,6 +5445,49 @@
           }
         },
         {
+          "name": "UProgress",
+          "description": "",
+          "attributes": [
+            {
+              "name": "value",
+              "required": true,
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "0"
+            },
+            {
+              "name": "max",
+              "value": {
+                "kind": "expression",
+                "type": "number"
+              },
+              "default": "100"
+            },
+            {
+              "name": "size",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "md"
+            },
+            {
+              "name": "color",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "green"
+            }
+          ],
+          "source": {
+            "module": "vueless/ui.progress/index.vue",
+            "symbol": "default"
+          }
+        },
+        {
           "name": "URadio",
           "description": "",
           "attributes": [
@@ -6449,21 +6492,12 @@
             },
             {
               "name": "nesting",
-              "description": "Enable nesting rows.",
-              "value": {
-                "kind": "expression",
-                "type": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "name": "nestingFrom",
               "description": "Sets the nesting level from which folding button need to be shown.",
               "value": {
                 "kind": "expression",
                 "type": "number"
               },
-              "default": "0"
+              "default": "[object Object]"
             },
             {
               "name": "filters",
