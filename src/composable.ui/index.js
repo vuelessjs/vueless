@@ -176,10 +176,10 @@ function mergeConfigs({
     if (isGlobalConfig || isPropsConfig) {
       if (key === "strategy") {
         config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
-      } else if (key === "safelist") {
+      } else if (key === "safelist" || key === "safelistColors") {
         if (propsConfig[key]) {
           // eslint-disable-next-line no-console
-          console.warn("Passing component safelist by `config` prop is not supported.");
+          console.warn(`Passing '${key}' key by 'config' prop is not allowed.`);
         }
       } else if (key === "defaultVariants") {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
