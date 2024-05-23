@@ -3448,7 +3448,7 @@
                 "kind": "expression",
                 "type": "string"
               },
-              "default": "\"\""
+              "default": "\"Label\""
             },
             {
               "name": "description",
@@ -3457,7 +3457,7 @@
                 "kind": "expression",
                 "type": "string"
               },
-              "default": "\"\""
+              "default": "\"Some description here\""
             },
             {
               "name": "labelAlign",
@@ -3469,22 +3469,12 @@
               "default": "topInside"
             },
             {
-              "name": "files",
-              "description": "Set files data.",
+              "name": "modelValue",
               "value": {
                 "kind": "expression",
                 "type": "array"
               },
               "default": "[]"
-            },
-            {
-              "name": "local",
-              "description": "Selected files will be imported when a form will be submitted",
-              "value": {
-                "kind": "expression",
-                "type": "boolean"
-              },
-              "default": "false"
             },
             {
               "name": "maxFileSize",
@@ -3493,25 +3483,7 @@
                 "kind": "expression",
                 "type": "number"
               },
-              "default": "1"
-            },
-            {
-              "name": "multiple",
-              "description": "Allow to select multiple files.",
-              "value": {
-                "kind": "expression",
-                "type": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "name": "maxFiles",
-              "description": "Set max number files for upload",
-              "value": {
-                "kind": "expression",
-                "type": "number"
-              },
-              "default": "3"
+              "default": "100"
             },
             {
               "name": "allowedFileTypes",
@@ -3523,15 +3495,6 @@
               "default": ".png,.jpg,.jpeg,.pdf,.txt,.doc,.docx,xls,.xlsx"
             },
             {
-              "name": "error",
-              "description": "Set error text for component.",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"\""
-            },
-            {
               "name": "size",
               "description": "Set size.",
               "value": {
@@ -3539,6 +3502,15 @@
                 "type": "'sm' | 'md' | 'lg'"
               },
               "default": "md"
+            },
+            {
+              "name": "error",
+              "description": "Set error text for component.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
             },
             {
               "name": "id",
@@ -3557,28 +3529,14 @@
                 "type": "object"
               },
               "default": "{}"
-            },
-            {
-              "name": "dataCy",
-              "description": "Sets data-cy attribute for automated testing.",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              },
-              "default": "\"\""
             }
           ],
           "events": [
             {
-              "name": "changeFiles"
+              "name": "update:modelValue"
             },
             {
-              "name": "deleteFile"
-            }
-          ],
-          "slots": [
-            {
-              "name": "default"
+              "name": "update:error"
             }
           ],
           "source": {
@@ -3609,13 +3567,13 @@
               "default": "\"\""
             },
             {
-              "name": "labelOutside",
-              "description": "Show label outside the input block.",
+              "name": "labelAlign",
+              "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "symbol",
@@ -4074,13 +4032,13 @@
               "default": "\"\""
             },
             {
-              "name": "labelOutside",
-              "description": "Show label outside the input block.",
+              "name": "labelAlign",
+              "description": "Set label placement related from the default slot.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "'top' | 'topInside' | 'topWithDesc' | 'bottom' | 'left' | 'right'"
               },
-              "default": "false"
+              "default": "topInside"
             },
             {
               "name": "placeholder",
@@ -7235,14 +7193,6 @@
           ],
           "source": {
             "module": "vueless/ui.form-calendar/components/YearView.vue",
-            "symbol": "default"
-          }
-        },
-        {
-          "name": "ui.form-file",
-          "description": "",
-          "source": {
-            "module": "vueless/ui.form-file/index.vue",
             "symbol": "default"
           }
         }
