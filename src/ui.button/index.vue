@@ -1,5 +1,6 @@
 <template>
-  <button
+  <component
+    :is="tag"
     :id="id"
     ref="buttonRef"
     :disabled="disabled"
@@ -19,7 +20,7 @@
 
     <!-- @slot Use it to add something after text. -->
     <slot v-if="!loading" name="right" />
-  </button>
+  </component>
 </template>
 
 <script setup>
@@ -134,6 +135,11 @@ const props = defineProps({
   config: {
     type: Object,
     default: () => ({}),
+  },
+
+  tag: {
+    type: String,
+    default: UIService.get(defaultConfig, UButton).default.tag,
   },
 
   /**

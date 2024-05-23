@@ -1,59 +1,63 @@
 export default /*tw*/ {
-  wrapper: "w-full relative",
-  label: "group/label mb-2 font-normal text-gray-500",
-  block: {
-    base: "mb-4 space-x-2 flex",
-    variants: {
-      label: {
-        true: "mt-4",
-      },
+  label: {
+    wrapper: "relative w-full",
+    label: {
+      compoundVariants: [
+        { align: "topInside", size: "sm", class: "left-5 top-4" },
+        { align: "topInside", size: "md", class: "left-5 top-5" },
+        { align: "topInside", size: "lg", class: "left-5 top-6" },
+      ],
     },
   },
-  description: "group/description font-normal text-gray-700",
-  list: "mb-4 space-y-4",
-  button: "w-full",
-  iconUploadFileName: "upload_file",
-  iconDescriptionName: "description",
-  iconCloseName: "close",
-  iconClose: "ml-1.5",
-  iconUploadFile: "",
-  itemClose: "z-20",
-  uploadSlot: "w-fit",
-  files: "mt-4",
-  fileUploadHover: "border-gray-400 bg-gray-50",
-  dragOver: "h-full w-full",
-  uppyUpload: "opacity-0 absolute left-0 top-0 h-0 w-0 [&_.uppy-Root]:h-full [&_.uppy-Root]:w-full",
-  errorFileUpload: "hover:border-red-400 border-red-300",
-  upload: {
+  dropzoneWrapper: {
     base: `
-      relative rounded-lg border border-dashed border-gray-300 bg-white h-auto w-auto p-4
-      hover:border-gray-400 hover:bg-gray-50
+      size-auto w-full rounded border border-dashed border-gray-300 bg-white
+      p-4 px-5 py-6 hover:border-gray-400
     `,
     variants: {
-      size: {
-        sm: "group/label:text-xs group/description:text-xs group/image:h-8 group/image:w-8 group/title:text-sm",
-        md: "group/text-sm group/description:text-sm group/image:h-10 group/image:w-10 group/title:text-base",
-        ld: "group/label:text-base group/description:text-base group/image:h-12 group/image:w-12 group/title:text-lg",
-      },
       error: {
         true: "border-red-300 hover:border-red-400",
       },
     },
+    compoundVariants: [
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-8" },
+      { labelAlign: "topInside", label: true, size: "md", class: "py-10" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-12" },
+    ],
   },
+  description: "text-gray-700",
+  buttonWrapper: "relative mt-3 flex w-full gap-52 justify-between rounded bg-brand-50 p-4",
+  placeholderWrapper: "flex items-center gap-2",
+  placeholder: {
+    base: "pr-4 shrink-0 text-ellipsis overflow-hidden text-gray-700 text-nowrap",
+    variants: {
+      size: {
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
+      },
+    },
+  },
+  iconPlaceholderName: "attach_file",
+  iconPlaceholder: "-rotate-45",
+  button: "hover:cursor-pointer",
+  iconUploadFileName: "upload_file",
+  iconCloseName: "close",
+  iconClose: "",
+  iconUploadFile: "",
+  dropzoneWrapperHover: "border-gray-400 bg-gray-50",
+  dropzoneWrapperError: "hover:border-red-400 border-red-300",
+  input: "sr-only pointer-events-none size-0 opacity-0",
   i18n: {
-    selectOrDragImage: "Select or drag file in this area.",
-    canAttachFilesFormat: "You can attach files in the format:",
-    cannotAttachFilesStart: "Attaching files in",
-    cannotAttachFilesEnd: "format is not supported.",
-    selectFile: "Select file",
+    sizeError: "File size is too big.",
+    formatError: "Format is not supported.",
+    noFile: "No file selected",
+    uploadFile: "Upload file",
   },
   defaultVariants: {
     size: "md",
     labelAlign: "topInside",
     allowedFileTypes: [".png", ".jpg", ".jpeg", ".pdf", ".txt", ".doc", ".docx", "xls", ".xlsx"],
-    maxFileSize: 1,
-    maxFiles: 3,
-    local: false,
-    multiple: false,
+    maxFileSize: 100,
   },
 };

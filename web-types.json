@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.98",
+  "version": "0.0.99",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -634,6 +634,14 @@
                 "type": "object"
               },
               "default": "{}"
+            },
+            {
+              "name": "tag",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "button"
             },
             {
               "name": "dataCy",
@@ -3540,6 +3548,15 @@
                 "type": "string"
               },
               "default": "() => getRandomId()"
+            },
+            {
+              "name": "config",
+              "description": "Sets component ui config object.",
+              "value": {
+                "kind": "expression",
+                "type": "object"
+              },
+              "default": "{}"
             },
             {
               "name": "dataCy",
@@ -7218,6 +7235,14 @@
           ],
           "source": {
             "module": "vueless/ui.form-calendar/components/YearView.vue",
+            "symbol": "default"
+          }
+        },
+        {
+          "name": "ui.form-file",
+          "description": "",
+          "source": {
+            "module": "vueless/ui.form-file/index.vue",
             "symbol": "default"
           }
         }

@@ -22,8 +22,6 @@ export default defineConfig({
     include: [
       "vuex",
       "vue-tippy",
-      "@uppy/core",
-      "@uppy/vue/src/drag-drop",
       "@kyvg/vue3-notification",
       "@tailwindcss/forms",
       "tailwindcss/colors.js",
