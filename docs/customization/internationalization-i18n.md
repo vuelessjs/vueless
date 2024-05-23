@@ -81,7 +81,7 @@ const i18n = createI18n({
 });
 
 const vueless = createVueless({
-  locale: {
+  i18n: {
     adapter: createVueI18nAdapter(i18n),
   },
 });
