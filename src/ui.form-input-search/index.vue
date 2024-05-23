@@ -12,7 +12,7 @@
     :type="search"
     :input-mode="search"
     :data-cy="dataCy"
-    :label-outside="labelOutside"
+    :label-align="labelAlign"
     v-bind="inputAttrs"
     @keyup.enter="onClickSearch"
   >
@@ -136,11 +136,12 @@ const props = defineProps({
   },
 
   /**
-   * Show label outside the input block.
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputSearch).default.labelOutside,
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UInputSearch).default.labelAlign,
   },
 
   /**

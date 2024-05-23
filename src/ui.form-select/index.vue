@@ -713,7 +713,7 @@ function removeElement(option, shouldClose = true) {
 }
 
 function setLabelPosition() {
-  if (props.labelOutside || !hasSlotContent(slots["left"])) return;
+  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
   const innerWrapperPaddingLeft = parseInt(

@@ -6,7 +6,7 @@ export default /*tw*/ {
     decimalScale: 2,
     decimalSeparator: ",",
     thousandsSeparator: " ",
-    labelOutside: false,
+    labelAlign: "topInside",
     positiveOnly: false,
     rawValuePrefix: false,
     minus: false,

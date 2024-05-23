@@ -360,7 +360,7 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (props.labelOutside || !hasSlotContent(slots["left"])) return;
+  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
   const leftSlotWidth = leftSlotWrapper.value.getBoundingClientRect().width;
 

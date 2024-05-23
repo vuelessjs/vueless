@@ -13,8 +13,8 @@ export default /*tw*/ {
   button: "",
   defaultVariants: {
     size: "md",
+    labelAlign: "topInside",
     disabled: false,
     searchButton: false,
-    labelOutside: false,
   },
 };

@@ -5,7 +5,7 @@
     v-model="formattedValue"
     :size="size"
     :label="localLabel"
-    :label-outside="labelOutside"
+    :label-align="labelAlign"
     :placeholder="placeholder"
     :description="description"
     :error="error"
@@ -67,11 +67,12 @@ const props = defineProps({
   },
 
   /**
-   * Show label outside the input block.
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, bottom, left, right
    */
-  labelOutside: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.labelOutside,
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UInputMoney).default.labelAlign,
   },
 
   /**

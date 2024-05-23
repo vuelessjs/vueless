@@ -56,29 +56,30 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const LabelPlacementTemplate = (args) => ({
-  components: { UInputMoney, UGroup },
-  setup() {
-    return {
-      args,
-    };
-  },
-  template: `
-    <UGroup size="lg">
-      <UInputMoney
-        v-bind="args"
-        :label-outside="true"
-        label="top"
-      />
-
-      <UInputMoney
-        v-bind="args"
-        :label-outside="false"
-        label="topInside"
-      />
-    </UGroup>
-  `,
-});
+// TODO: Rewrite to labelAlign
+// const LabelPlacementTemplate = (args) => ({
+//   components: { UInputMoney, UGroup },
+//   setup() {
+//     return {
+//       args,
+//     };
+//   },
+//   template: `
+//     <UGroup size="lg">
+//       <UInputMoney
+//         v-bind="args"
+//         :label-outside="true"
+//         label="top"
+//       />
+//
+//       <UInputMoney
+//         v-bind="args"
+//         :label-outside="false"
+//         label="topInside"
+//       />
+//     </UGroup>
+//   `,
+// });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
@@ -89,8 +90,8 @@ sizes.args = {};
 export const symbol = DefaultTemplate.bind({});
 symbol.args = { symbol: "€" };
 
-export const labelOutside = LabelPlacementTemplate.bind({});
-labelOutside.args = {};
+// export const labelOutside = LabelPlacementTemplate.bind({});
+// labelOutside.args = {};
 
 export const placeholder = DefaultTemplate.bind({});
 placeholder.args = { placeholder: "Placeholder" };
