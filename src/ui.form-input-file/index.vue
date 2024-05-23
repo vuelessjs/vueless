@@ -64,6 +64,11 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
+import UText from "../ui.text-block";
+import UIcon from "../ui.image-icon";
+import ULabel from "../ui.form-label";
+import UButton from "../ui.button";
+
 import UIService, { getRandomId } from "../service.ui";
 import { getFileMbSize } from "./services/fileForm.service";
 
