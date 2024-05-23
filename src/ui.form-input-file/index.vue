@@ -1,18 +1,18 @@
 <template>
   <ULabel :error="error" :align="labelAlign" :label="label" :size="size" v-bind="labelAttrs">
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
-      <UText :size="size" v-bind="descriptionAttrs" :html="description" />
+      <UText :size="nestedComponentSize" v-bind="descriptionAttrs" :html="description" />
 
       <div v-bind="buttonWrapperAttrs">
         <div v-bind="placeholderWrapperAttrs">
           <UIcon
             pill
             internal
-            :size="size"
+            :size="nestedComponentSize"
             :name="config.iconPlaceholderName"
             v-bind="iconPlaceholderAttrs"
           />
-          <span :size="size" v-bind="placeholderAttrs" v-text="placeholder" />
+          <span v-bind="placeholderAttrs" v-text="placeholder" />
         </div>
 
         <template v-if="!currentFiles.length">
@@ -21,7 +21,7 @@
             :label="currentLocale.uploadFile"
             variant="thirdary"
             filled
-            :size="size"
+            :size="nestedComponentSize"
             v-bind="buttonAttrs"
             tag="label"
             :for="id"
@@ -29,7 +29,7 @@
             <template #right>
               <UIcon
                 internal
-                :size="size"
+                :size="nestedComponentSize"
                 :name="config.iconUploadFileName"
                 v-bind="iconUploadFileAttrs"
               />
@@ -49,7 +49,7 @@
           v-else
           interactive
           internal
-          :size="size"
+          :size="nestedComponentSize"
           :name="config.iconCloseName"
           pill
           v-bind="iconCloseAttrs"
@@ -201,6 +201,16 @@ const extensionNames = computed(() => {
 
 const placeholder = computed(() => {
   return currentFiles.value.length ? currentFiles.value[0].name : currentLocale.value.noFile;
+});
+
+const nestedComponentSize = computed(() => {
+  let size = "sm";
+
+  if (props.size === "sm") size = "xs";
+  if (props.size === "md") size = "sm";
+  if (props.size === "lg") size = "md";
+
+  return size;
 });
 
 onMounted(() => {

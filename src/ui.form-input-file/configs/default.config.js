@@ -11,8 +11,8 @@ export default /*tw*/ {
   },
   dropzoneWrapper: {
     base: `
-      size-auto w-full rounded border border-dashed border-gray-300 bg-white 
-      p-4 px-5 py-6 hover:border-gray-400 hover:bg-gray-50
+      size-auto w-full rounded border border-dashed border-gray-300 bg-white
+      p-4 px-5 py-6 hover:border-gray-400
     `,
     variants: {
       error: {
@@ -28,7 +28,16 @@ export default /*tw*/ {
   description: "text-gray-700",
   buttonWrapper: "relative mt-3 flex w-full gap-52 justify-between rounded bg-brand-50 p-4",
   placeholderWrapper: "flex items-center gap-2",
-  placeholder: "shrink-0 text-ellipsis overflow-hidden max-w-52 text-gray-700 text-nowrap",
+  placeholder: {
+    base: "pr-4 shrink-0 text-ellipsis overflow-hidden text-gray-700 text-nowrap",
+    variants: {
+      size: {
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
+      },
+    },
+  },
   iconPlaceholderName: "attach_file",
   iconPlaceholder: "-rotate-45",
   button: "hover:cursor-pointer",
