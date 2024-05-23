@@ -82,7 +82,6 @@ import defaultConfig from "./configs/default.config";
 import { UNotify, NOTIFY_TYPE, POSITION } from "./constants";
 
 import UIcon from "../ui.image-icon";
-import { UInputFile } from "vueless/ui.form-input-file/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UNotify", inheritAttrs: false });

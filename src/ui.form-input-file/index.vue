@@ -77,7 +77,6 @@ import { useLocale } from "../composable.locale";
 
 import { UInputFile } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { UDatePickerRange } from "vueless/ui.form-date-picker-range/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputFile" });
