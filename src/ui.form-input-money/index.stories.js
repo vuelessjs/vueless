@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UInputMoney from "../ui.form-input-money";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+// import UGroup from "../ui.container-group";
 
 export default {
   id: "3030",
