@@ -9,8 +9,8 @@
             pill
             internal
             :size="nestedComponentSize"
-            :name="config.iconPlaceholderName"
-            v-bind="iconPlaceholderAttrs"
+            :name="config.placeholderIconName"
+            v-bind="placeholderIconAttrs"
           />
           <span v-bind="placeholderAttrs" v-text="placeholder" />
         </div>
@@ -30,8 +30,8 @@
               <UIcon
                 internal
                 :size="nestedComponentSize"
-                :name="config.iconUploadFileName"
-                v-bind="iconUploadFileAttrs"
+                :name="config.chooseFileIconName"
+                v-bind="chooseFileIconAttrs"
               />
             </template>
           </UButton>
@@ -50,9 +50,9 @@
           interactive
           internal
           :size="nestedComponentSize"
-          :name="config.iconCloseName"
+          :name="config.clearIconName"
           pill
-          v-bind="iconCloseAttrs"
+          v-bind="clearIconAttrs"
           @click="onClickResetFiles"
         />
       </div>
@@ -177,9 +177,9 @@ const {
   descriptionAttrs,
   buttonWrapperAttrs,
   placeholderWrapperAttrs,
-  iconPlaceholderAttrs,
-  iconCloseAttrs,
-  iconUploadFileAttrs,
+  placeholderIconAttrs,
+  clearIconAttrs,
+  chooseFileIconAttrs,
   placeholderAttrs,
   inputAttrs,
 } = useAttrs(props);
@@ -231,7 +231,10 @@ onBeforeUnmount(() => {
 function validate(file) {
   const targetFileSize = getFileMbSize(file);
 
-  const isValidType = extensionNames.value.some((item) => file.type.includes(item));
+  const isValidType = extensionNames.value.length
+    ? extensionNames.value.some((item) => file.type.includes(item))
+    : true;
+
   const isValidSize = targetFileSize <= props.maxFileSize;
 
   if (!isValidSize) {

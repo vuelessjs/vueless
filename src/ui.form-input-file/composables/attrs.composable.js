@@ -45,9 +45,9 @@ export function useAttrs(props) {
     classes: placeholderClasses,
     isComponent: true,
   });
-  const iconPlaceholderAttrs = getAttrs("iconPlaceholder", { isComponent: true });
-  const iconCloseAttrs = getAttrs("iconClose", { isComponent: true });
-  const iconUploadFileAttrs = getAttrs("iconUploadFile", { isComponent: true });
+  const placeholderIconAttrs = getAttrs("placeholderIcon", { isComponent: true });
+  const clearIconAttrs = getAttrs("clearIcon", { isComponent: true });
+  const chooseFileIconNameAttrs = getAttrs("chooseFileIconName", { isComponent: true });
   const inputAttrs = getAttrs("input");
 
   return {
@@ -59,9 +59,9 @@ export function useAttrs(props) {
     descriptionAttrs,
     buttonWrapperAttrs,
     placeholderWrapperAttrs,
-    iconPlaceholderAttrs,
-    iconCloseAttrs,
-    iconUploadFileAttrs,
+    placeholderIconAttrs,
+    clearIconAttrs,
+    chooseFileIconNameAttrs,
     placeholderAttrs,
   };
 }
