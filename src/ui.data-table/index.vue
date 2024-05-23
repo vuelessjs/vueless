@@ -427,7 +427,8 @@ const isFooterSticky = computed(
     isCheckedMoreOneTableItems.value,
 );
 
-const currentLocale = computed(() => merge(tm("UTable"), props.config.i18n));
+const i18nGlobal = tm(UTable);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const normalizedColumns = computed(() => TableService.normalizeColumns(props.columns));
 

@@ -348,7 +348,8 @@ const isCurrentView = computed(() => ({
   year: currentView.value === VIEW.year,
 }));
 
-const currentLocale = computed(() => merge(tm("UCalendar"), props.config.i18n));
+const i18nGlobal = tm(UCalendar);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -370,13 +371,15 @@ const locale = computed(() => {
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
-  const monthsLonghand = props.config.i18n?.months?.userFormat
-    ? months.userFormat
-    : months.longhand;
+  const monthsLonghand =
+    Boolean(props.config.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+      ? months.userFormat
+      : months.longhand;
 
-  const weekdaysLonghand = props.config.i18n?.weekdays?.userFormat
-    ? weekdays.userFormat
-    : weekdays.longhand;
+  const weekdaysLonghand =
+    Boolean(props.config.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+      ? weekdays.userFormat
+      : weekdays.longhand;
 
   // formatted locale
   return {

@@ -500,7 +500,8 @@ const {
   dropdownListAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
-const currentLocale = computed(() => merge(tm("USelect"), props.config.i18n));
+const i18nGlobal = tm(USelect);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const inputPlaceholder = computed(() => {
   const message = currentLocale.value.addMore;

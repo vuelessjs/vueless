@@ -432,8 +432,10 @@ const localValue = computed({
 });
 
 const { isMobileBreakpoint } = useBreakpoint();
+const i18nGlobal = tm(UDatePickerRange);
+
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
-const currentLocale = computed(() => merge(tm("UDatePickerRange"), props.config.i18n));
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -455,13 +457,15 @@ const locale = computed(() => {
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
-  const monthsLonghand = props.config.i18n?.months?.userFormat
-    ? months.userFormat
-    : months.longhand;
+  const monthsLonghand =
+    Boolean(props.config.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+      ? months.userFormat
+      : months.longhand;
 
-  const weekdaysLonghand = props.config.i18n?.weekdays?.userFormat
-    ? weekdays.userFormat
-    : weekdays.longhand;
+  const weekdaysLonghand =
+    Boolean(props.config.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+      ? weekdays.userFormat
+      : weekdays.longhand;
 
   // formatted locale
   return {

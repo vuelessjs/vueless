@@ -259,7 +259,8 @@ function onBlur(event) {
 function formatUserDate(data) {
   if (props.dateFormat !== STANDARD_USER_FORMAT) return data;
 
-  const currentLocale = merge(tm("UDatePicker"), props.config.i18n);
+  const i18nGlobal = tm(UDatePicker);
+  const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
@@ -273,15 +274,15 @@ function formatUserDate(data) {
   const isTomorrow = isSameDay(addDays(today, 1), selectedDate);
 
   if (isToday) {
-    prefix = currentLocale.today;
+    prefix = currentLocale.value.today;
   }
 
   if (isYesterday) {
-    prefix = currentLocale.yesterday;
+    prefix = currentLocale.value.yesterday;
   }
 
   if (isTomorrow) {
-    prefix = currentLocale.tomorrow;
+    prefix = currentLocale.value.tomorrow;
   }
 
   return prefix ? `${prefix}, ${formattedDateWithoutDay}` : formattedDate;

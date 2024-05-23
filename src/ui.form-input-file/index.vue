@@ -77,6 +77,7 @@ import { useLocale } from "../composable.locale";
 
 import { UInputFile } from "./constants";
 import defaultConfig from "./configs/default.config";
+import { UDatePickerRange } from "vueless/ui.form-date-picker-range/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputFile" });
@@ -184,7 +185,8 @@ const {
   inputAttrs,
 } = useAttrs(props);
 
-const currentLocale = computed(() => merge(tm("UInputFile"), props.config.i18n));
+const i18nGlobal = tm(UInputFile);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const currentFiles = computed({
   get: () => props.modelValue,

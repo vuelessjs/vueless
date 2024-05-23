@@ -82,6 +82,7 @@ import defaultConfig from "./configs/default.config";
 import { UNotify, NOTIFY_TYPE, POSITION } from "./constants";
 
 import UIcon from "../ui.image-icon";
+import { UInputFile } from "vueless/ui.form-input-file/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UNotify", inheritAttrs: false });
@@ -142,7 +143,8 @@ const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref(null);
 
-const currentLocale = computed(() => merge(tm("UNotify"), props.config.i18n));
+const i18nGlobal = tm(UNotify);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });

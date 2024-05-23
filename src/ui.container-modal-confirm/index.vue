@@ -169,7 +169,8 @@ const isShownModal = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const currentLocale = computed(() => merge(tm("UModalConfirm"), props.config.i18n));
+const i18nGlobal = tm(UModalConfirm);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 function closeModal() {
   isShownModal.value = false;
