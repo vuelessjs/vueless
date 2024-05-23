@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.100",
+  "version": "0.0.101",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -3492,7 +3492,7 @@
                 "kind": "expression",
                 "type": "array"
               },
-              "default": ".png,.jpg,.jpeg,.pdf,.txt,.doc,.docx,xls,.xlsx"
+              "default": ""
             },
             {
               "name": "size",
