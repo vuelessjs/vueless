@@ -1,83 +1,77 @@
 <template>
-  <div v-bind="wrapperAttrs">
-    <div v-if="!hasSlotContent($slots['default'])">
-      <ULabel
-        :label="props.label"
-        :description="props.description"
-        :align="labelAlign"
-        :error="errorMessage"
-        v-bind="labelAttrs"
-      >
-        <div :id="fileId" :data-cy="dataCy" v-bind="uploadAttrs">
-          <div v-if="!filesData.length" v-bind="blockAttrs">
-            <UIcon
-              internal
-              color="gray"
-              :size="componentSize"
-              :name="config.iconUploadFileName"
-              v-bind="iconUploadFileAttrs"
-            />
+  <ULabel :error="error" :align="labelAlign" :label="label" :size="size" v-bind="labelAttrs">
+    <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
+      <UText :size="size" v-bind="descriptionAttrs" :html="description" />
 
-            <div v-bind="descriptionAttrs" v-text="descriptionText" />
-          </div>
-
-          <div v-bind="listAttrs">
-            <UFiles :options="filesList" v-bind="filesAttrs">
-              <template #right="file">
-                <UIcon
-                  internal
-                  interactive
-                  color="gray"
-                  :size="componentSize"
-                  :name="config.iconCloseName"
-                  v-bind="iconCloseAttrs"
-                  @click="onClickDeleteFile(file)"
-                />
-              </template>
-            </UFiles>
-          </div>
-
-          <UButton
-            :label="currentLocale.selectFile"
+      <div v-bind="buttonWrapperAttrs">
+        <div v-bind="placeholderWrapperAttrs">
+          <UIcon
+            pill
+            internal
             :size="size"
+            :name="config.iconPlaceholderName"
+            v-bind="iconPlaceholderAttrs"
+          />
+          <span :size="size" v-bind="placeholderAttrs" v-text="placeholder" />
+        </div>
+
+        <template v-if="!currentFiles.length">
+          <UButton
+            class="hover:cursor-pointer"
+            :label="currentLocale.uploadFile"
             variant="thirdary"
             filled
-            :data-cy="`${dataCy}-upload`"
+            :size="size"
             v-bind="buttonAttrs"
-            @click="onClickUploadFile"
+            tag="label"
+            :for="id"
+          >
+            <template #right>
+              <UIcon
+                internal
+                :size="size"
+                :name="config.iconUploadFileName"
+                v-bind="iconUploadFileAttrs"
+              />
+            </template>
+          </UButton>
+
+          <input
+            :id="id"
+            ref="fileInputRef"
+            type="file"
+            :accept="accept"
+            v-bind="inputAttrs"
+            @change="onChangeFile"
           />
-
-          <DragDrop :id="uppyId" :uppy="uppy" v-bind="uppyUploadAttrs" />
-        </div>
-      </ULabel>
+        </template>
+        <UIcon
+          v-else
+          interactive
+          internal
+          :size="size"
+          :name="config.iconCloseName"
+          pill
+          v-bind="iconCloseAttrs"
+          @click="onClickResetFiles"
+        />
+      </div>
     </div>
-
-    <div v-else :id="fileId" :data-cy="dataCy" v-bind="uploadSlotAttrs" @click="onClickUploadFile">
-      <slot />
-
-      <DragDrop :id="uppyId" :uppy="uppy" v-bind="uppyUploadAttrs" />
-    </div>
-  </div>
+  </ULabel>
 </template>
 
 <script setup>
-import Uppy from "@uppy/core";
-import DragDrop from "@uppy/vue/src/drag-drop";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-
-import UIcon from "../ui.image-icon";
-import ULabel from "../ui.form-label";
-import UButton from "../ui.button";
-import UFiles from "../ui.text-files";
-
 import UIService, { getRandomId } from "../service.ui";
+import { getFileMbSize } from "./services/fileForm.service";
+
+import { useAttrs } from "./composables/attrs.composable";
+import { useLocale } from "../composable.locale";
 
 import { UInputFile } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputFile" });
@@ -88,7 +82,7 @@ const props = defineProps({
    */
   label: {
     type: String,
-    default: "",
+    default: "Label",
   },
 
   /**
@@ -96,7 +90,7 @@ const props = defineProps({
    */
   description: {
     type: String,
-    default: "",
+    default: "Some description here",
   },
 
   /**
@@ -108,20 +102,9 @@ const props = defineProps({
     default: UIService.get(defaultConfig, UInputFile).default.labelAlign,
   },
 
-  /**
-   * Set files data.
-   */
-  files: {
+  modelValue: {
     type: Array,
     default: () => [],
-  },
-
-  /**
-   * Selected files will be imported when a form will be submitted
-   */
-  local: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputFile).default.local,
   },
 
   /**
@@ -133,35 +116,11 @@ const props = defineProps({
   },
 
   /**
-   * Allow to select multiple files.
-   */
-  multiple: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputFile).default.multiple,
-  },
-
-  /**
-   * Set max number files for upload
-   */
-  maxFiles: {
-    type: Number,
-    default: UIService.get(defaultConfig, UInputFile).default.maxFiles,
-  },
-
-  /**
    * Set allowed file types.
    */
   allowedFileTypes: {
     type: Array,
     default: () => UIService.get(defaultConfig, UInputFile).default.allowedFileTypes,
-  },
-
-  /**
-   * Set error text for component.
-   */
-  error: {
-    type: String,
-    default: "",
   },
 
   /**
@@ -174,6 +133,14 @@ const props = defineProps({
   },
 
   /**
+   * Set error text for component.
+   */
+  error: {
+    type: String,
+    default: "",
+  },
+
+  /**
    * Generates unique element id.
    * @ignore
    */
@@ -181,211 +148,137 @@ const props = defineProps({
     type: String,
     default: () => getRandomId(),
   },
-
   /**
-   * Sets data-cy attribute for automated testing.
+   * Sets component ui config object.
    */
-  dataCy: {
-    type: String,
-    default: "",
+  config: {
+    type: Object,
+    default: () => ({}),
   },
 });
 
-const emit = defineEmits(["changeFiles", "deleteFile"]);
+const emit = defineEmits(["update:modelValue", "update:error"]);
 
 const { tm } = useLocale();
 
-const filesData = ref([]);
-const selectedFiles = ref([]);
-const errorMessage = ref("");
-const dragOver = ref(false);
-const errorFilesTypes = ref([]);
+const dropZoneRef = ref(null);
+const fileInputRef = ref(null);
 
 const {
   config,
-  uploadAttrs,
-  buttonAttrs,
-  iconUploadFileAttrs,
-  iconCloseAttrs,
-  wrapperAttrs,
   labelAttrs,
-  blockAttrs,
+  buttonAttrs,
+  dropzoneWrapperAttrs,
   descriptionAttrs,
-  listAttrs,
-  uppyUploadAttrs,
-  uploadSlotAttrs,
-  filesAttrs,
-  hasSlotContent,
-} = useAttrs(props, { errorMessage, dragOver });
+  buttonWrapperAttrs,
+  placeholderWrapperAttrs,
+  iconPlaceholderAttrs,
+  iconCloseAttrs,
+  iconUploadFileAttrs,
+  placeholderAttrs,
+  inputAttrs,
+} = useAttrs(props);
 
 const currentLocale = computed(() => merge(tm("UInputFile"), props.config.i18n));
 
-const filesList = computed(() => {
-  return filesData.value.map((file) => {
-    return {
-      text: file.name,
-      id: file.id,
-    };
-  });
+const currentFiles = computed({
+  get: () => props.modelValue,
+  set: (newValue) => emit("update:modelValue", newValue),
 });
 
-const fileId = computed(() => {
-  return `file-${props.id}`;
+const currentError = computed({
+  get: () => props.error,
+  set: (newValue) => emit("update:error", newValue),
 });
 
-const uppyId = computed(() => {
-  return `uppy-${props.id}`;
+const accept = computed(() => {
+  return props.allowedFileTypes.join(",");
 });
 
-const fileUpload = computed(() => {
-  return document.getElementById(fileId.value);
+const extensionNames = computed(() => {
+  return props.allowedFileTypes.map((type) => type.replace(".", ""));
 });
 
-const uppyUpload = computed(() => {
-  return document.getElementById(uppyId.value);
+const placeholder = computed(() => {
+  return currentFiles.value.length ? currentFiles.value[0].name : currentLocale.value.noFile;
 });
-
-const allowedFilesForUpload = computed(() => {
-  const allowedFormat = props.allowedFileTypes.join(", ");
-
-  return `${currentLocale.value.canAttachFilesFormat} ${allowedFormat}`;
-});
-
-const descriptionText = computed(() => {
-  return `${currentLocale.value.selectOrDragImage} ${allowedFilesForUpload.value}`;
-});
-
-const componentSize = computed(() => {
-  const size = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return size[props.size];
-});
-
-const maxFileSizeInBytes = computed(() => {
-  return props.maxFileSize * Math.pow(2, 20);
-});
-
-const maxFilesNumber = computed(() => {
-  return props.multiple ? props.maxFiles : 1;
-});
-
-const uppy = computed(() =>
-  new Uppy({
-    id: uppyId.value,
-    restrictions: {
-      maxFileSize: maxFileSizeInBytes,
-      maxNumberOfFiles: maxFilesNumber,
-      allowedFileTypes: props.allowedFileTypes,
-    },
-  }).on("restriction-failed", (file, error) => {
-    const isFile = errorFilesTypes.value.find((item) => item === file.extension);
-
-    if (error && !isFile) errorFilesTypes.value.push(`.${file.extension}`);
-  }),
-);
-
-watch(selectedFiles, onChangeSelectedFiles, { deep: true });
-watch(() => props.files, onChangeFiles, { deep: true });
-watch(errorFilesTypes, onChangeErrorFilesTypes, { deep: true });
-watch(() => props.error, onChangeError, { deep: true, immediate: true });
 
 onMounted(() => {
-  uppy.value.on("file-added", () => {
-    uploadFiles();
-  });
-
-  addEventListener("dragover", () => (dragOver.value = true));
-
-  if (uppyUpload.value) {
-    uppyUpload.value.addEventListener("dragover", onDragOver, true);
-    uppyUpload.value.addEventListener("dragleave", onDragLeave, true);
-  }
+  dropZoneRef.value.addEventListener("dragover", onDragOver);
+  dropZoneRef.value.addEventListener("dragleave", onDragLeave);
 });
 
 onBeforeUnmount(() => {
-  removeEventListener("dragover", () => (dragOver.value = true));
-  uppyUpload.value.removeEventListener("dragover", onDragOver, true);
-  uppyUpload.value.removeEventListener("dragleave", onDragLeave, true);
+  dropZoneRef.value.removeEventListener("dragover", onDragOver);
+  dropZoneRef.value.removeEventListener("dragleave", onDragLeave);
 });
 
-function onClickUploadFile() {
-  document.querySelector(`#${fileId.value} .uppy-Root button`).click();
+function validate(file) {
+  const targetFileSize = getFileMbSize(file);
+
+  const isValidType = extensionNames.value.some((item) => file.type.includes(item));
+  const isValidSize = targetFileSize <= props.maxFileSize;
+
+  if (!isValidSize) {
+    currentError.value = currentLocale.value.sizeError;
+  }
+
+  if (!isValidType) {
+    currentError.value = currentLocale.value.formatError;
+  }
 }
 
-function uploadFiles() {
-  const { files } = uppy.value.getState();
+function onChangeFile(event) {
+  validate(event.target.files[0]);
 
-  selectedFiles.value = Object.values(files);
+  if (currentError.value) {
+    onClickResetFiles();
+
+    return;
+  }
+
+  currentFiles.value = Array.from(event.target.files);
 }
 
-function onDragOver() {
-  fileUpload.value.classList.add(config.fileUploadHover);
+function onClickResetFiles() {
+  currentFiles.value = [];
+
+  if (fileInputRef.value) fileInputRef.value.value = "";
 }
 
-function onDragLeave() {
-  fileUpload.value.classList.remove(config.fileUploadHover);
-  dragOver.value = false;
+function onDragOver(event) {
+  event.preventDefault();
+
+  dropZoneRef.value.classList.add(config.value.dropzoneWrapperHover.split(" "));
 }
 
-function onChangeSelectedFiles() {
-  uppy.value.cancelAll();
+function onDragLeave(event) {
+  event.preventDefault();
 
-  const selectedFilesData = selectedFiles.value.map((file) => {
-    file.data.id = getRandomId();
+  dropZoneRef.value.classList.remove(config.value.dropzoneWrapperHover.split(" "));
+}
 
-    return file.data;
+function onDrop(event) {
+  event.preventDefault();
+
+  let targetFile = null;
+
+  if (event.dataTransfer.items) {
+    targetFile = [...event.dataTransfer.items].find((item) => item.kind === "file")?.getAsFile();
+  } else {
+    targetFile = [...event.dataTransfer.files].at(0);
+  }
+
+  if (targetFile) validate(targetFile);
+
+  nextTick(() => {
+    if (currentError.value || !targetFile) {
+      onClickResetFiles();
+
+      return;
+    }
+
+    currentFiles.value = [targetFile];
   });
-
-  if (!props.error && errorMessage.value) {
-    errorMessage.value = "";
-    errorFilesTypes.value = [];
-  }
-
-  if (props.local) filesData.value = selectedFilesData;
-
-  emit("changeFiles", selectedFilesData);
-}
-
-function onChangeFiles() {
-  filesData.value = props.files;
-
-  if (!props.error && errorMessage.value) {
-    errorMessage.value = "";
-    errorFilesTypes.value = [];
-  }
-
-  onDragLeave();
-}
-
-function onChangeError() {
-  errorMessage.value = props.error;
-}
-
-function onChangeErrorFilesTypes() {
-  if (errorFilesTypes.value.length) {
-    const error = errorFilesTypes.value.join(", ");
-    const cannotAttachFilesStart = currentLocale.value.cannotAttachFilesStart;
-    const cannotAttachFilesEnd = currentLocale.value.cannotAttachFilesEnd;
-
-    errorMessage.value = `${cannotAttachFilesStart} ${error} ${cannotAttachFilesEnd}`;
-  }
-}
-
-function onClickDeleteFile(data) {
-  const index = filesData.value.findIndex((file) => file.id === data.file.id);
-
-  if (~index) {
-    filesData.value.splice(index, 1);
-
-    uppy.value.removeFile(data.file.id);
-
-    emit("deleteFile", data.file.id);
-
-    if (props.local) emit("changeFiles", filesData.value);
-  }
 }
 </script>

@@ -1,82 +1,52 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { errorMessage, dragOver }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { upload, block } = config.value;
+export function useAttrs(props) {
+  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
+  const { dropzoneWrapper } = config.value;
 
-  const cvaUpload = cva({
-    base: upload.base,
-    variants: upload.variants,
-    compoundVariants: upload.compoundVariants,
+  const cvaDropzoneWrapper = cva({
+    base: dropzoneWrapper.base,
+    variants: dropzoneWrapper.variants,
+    compoundVariants: dropzoneWrapper.compoundVariants,
   });
 
-  const cvaBlock = cva({
-    base: block.base,
-    variants: block.variants,
-    compoundVariants: block.compoundVariants,
-  });
-
-  const uploadClasses = computed(() =>
-    cvaUpload({
+  const dropzoneWrapperClasses = computed(() =>
+    cvaDropzoneWrapper({
+      error: Boolean(props.error),
+      label: Boolean(props.label),
+      labelAlign: props.labelAlign,
       size: props.size,
-      label: Boolean(props.label),
-      error: Boolean(errorMessage.value),
     }),
   );
 
-  const blockClasses = computed(() =>
-    cvaBlock({
-      label: Boolean(props.label),
-    }),
-  );
-
-  const uploadAttrs = getAttrs("upload", { classes: uploadClasses });
-  const buttonAttrs = getAttrs("button", { isComponent: true });
-  const iconUploadFileAttrs = getAttrs("iconUploadFile", { isComponent: true });
-  const wrapperAttrs = getAttrs("wrapper");
   const labelAttrs = getAttrs("label", { isComponent: true });
-  const blockAttrs = getAttrs("block", { classes: blockClasses });
-  const descriptionAttrs = getAttrs("description");
-  const listAttrs = getAttrs("list");
-  const itemCloseAttrs = getAttrs("itemClose");
-  const iconCloseRaw = getAttrs("iconClose", {
-    classes: itemCloseAttrs.value.class,
-    isComponent: true,
-  });
-
-  const iconCloseAttrs = computed(() => ({
-    ...iconCloseRaw.value,
-    class: cx([iconCloseRaw.value.class, itemCloseAttrs.value.class]),
-  }));
-
-  const uppyUploadRaw = getAttrs("uppyUpload");
-
-  const uppyUploadAttrs = computed(() => ({
-    ...uppyUploadRaw.value,
-    class: cx([uppyUploadRaw.value.class, dragOver.value && config.dragOver]),
-  }));
-
-  const uploadSlotAttrs = getAttrs("uploadSlot");
-  const filesAttrs = getAttrs("files", { isComponent: true });
+  const buttonAttrs = getAttrs("button", { isComponent: true });
+  const dropzoneWrapperAttrs = getAttrs("dropzoneWrapper", { classes: dropzoneWrapperClasses });
+  const descriptionAttrs = getAttrs("description", { isComponent: true });
+  const buttonWrapperAttrs = getAttrs("buttonWrapper");
+  const placeholderWrapperAttrs = getAttrs("placeholderWrapper");
+  const placeholderAttrs = getAttrs("placeholder", { isComponent: true });
+  const iconPlaceholderAttrs = getAttrs("iconPlaceholder", { isComponent: true });
+  const iconCloseAttrs = getAttrs("iconClose", { isComponent: true });
+  const iconUploadFileAttrs = getAttrs("iconUploadFile", { isComponent: true });
+  const inputAttrs = getAttrs("input");
 
   return {
     config,
-    uploadAttrs,
-    buttonAttrs,
-    iconUploadFileAttrs,
-    iconCloseAttrs,
-    wrapperAttrs,
+    inputAttrs,
     labelAttrs,
-    blockAttrs,
+    buttonAttrs,
+    dropzoneWrapperAttrs,
     descriptionAttrs,
-    listAttrs,
-    uppyUploadAttrs,
-    uploadSlotAttrs,
-    filesAttrs,
-    hasSlotContent,
+    buttonWrapperAttrs,
+    placeholderWrapperAttrs,
+    iconPlaceholderAttrs,
+    iconCloseAttrs,
+    iconUploadFileAttrs,
+    placeholderAttrs,
   };
 }

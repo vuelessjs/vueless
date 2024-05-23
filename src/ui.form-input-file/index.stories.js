@@ -1,11 +1,10 @@
 import { getArgTypes } from "../service.storybook";
 
 import UInputFile from "../ui.form-input-file";
-import UButton from "../ui.button";
 import URow from "../ui.container-row";
 
 export default {
-  id: "3020",
+  id: "30232",
   title: "Form Inputs & Controls / Input File",
   component: UInputFile,
   argTypes: {
@@ -18,26 +17,20 @@ const DefaultTemplate = (args) => ({
   setup() {
     return { args };
   },
+  data() {
+    return {
+      files: [],
+      error: args.error || "",
+    };
+  },
   template: `
     <URow>
       <UInputFile
         v-bind="args"
+        v-model="files"
+        v-model:error="error"
       />
     </URow>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UInputFile, UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UInputFile
-      v-bind="args"
-    >
-      ${args.slotTemplate}
-    </UInputFile>
   `,
 });
 
@@ -64,23 +57,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const allowedSomeFileType = DefaultTemplate.bind({});
-allowedSomeFileType.args = { allowedFileTypes: [".png", ".jpg", ".jpeg"] };
-
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
-
-export const multiple = DefaultTemplate.bind({});
-multiple.args = { multiple: true };
-
 export const error = DefaultTemplate.bind({});
 error.args = { error: "some error" };
 
-export const slotDefault = SlotTemplate.bind({});
-slotDefault.args = {
-  slotTemplate: `
-    <template #default>
-       <UButton class="w-[40rem]" label="Select file" color="red" />
-    </template>
-  `,
-};
+export const sizes = SizesTemplate.bind({});
+sizes.args = {};

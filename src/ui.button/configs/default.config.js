@@ -149,6 +149,7 @@ export default /*tw*/ {
     color: "brand",
     variant: "primary",
     size: "md",
+    tag: "button",
     pill: false,
     block: false,
     square: false,
