@@ -6,6 +6,7 @@ dist
 src/assets/icons/cache/
 
 yarn.lock
+web-types.json
 
 # Log files
 npm-debug.log*

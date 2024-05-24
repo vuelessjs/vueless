@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.103",
+  "version": "0.0.104",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -6952,26 +6952,8 @@
           "description": "",
           "attributes": [
             {
-              "name": "name",
-              "required": true,
-              "description": "Set buttons name.",
-              "value": {
-                "kind": "expression",
-                "type": "string"
-              }
-            },
-            {
-              "name": "options",
-              "description": "Set data for buttons.",
-              "value": {
-                "kind": "expression",
-                "type": "array"
-              },
-              "default": "[]"
-            },
-            {
               "name": "modelValue",
-              "description": "Set current value.",
+              "description": "Selected value.",
               "value": {
                 "kind": "expression",
                 "type": "string|number|array"
@@ -6979,17 +6961,35 @@
               "default": "() => (!this.multiple ? \"\" : [])"
             },
             {
-              "name": "multiple",
-              "description": "Allow to select a few options and return them as array.",
+              "name": "variant",
+              "description": "Toggle variants.",
               "value": {
                 "kind": "expression",
-                "type": "boolean"
+                "type": "'primary' | 'secondary' | 'thirdary'"
               },
-              "default": "false"
+              "default": "primary"
+            },
+            {
+              "name": "options",
+              "description": "Toggle item options.",
+              "value": {
+                "kind": "expression",
+                "type": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "name": "name",
+              "required": true,
+              "description": "Toggle name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
             },
             {
               "name": "size",
-              "description": "The size of the buttons.",
+              "description": "Toggle size.",
               "value": {
                 "kind": "expression",
                 "type": "'xs' | 'sm' | 'md' | 'lg'"
@@ -6999,6 +6999,15 @@
             {
               "name": "block",
               "description": "Make the toggle fill the width with its container.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "multiple",
+              "description": "Allow selecting a few options and return them as an array.",
               "value": {
                 "kind": "expression",
                 "type": "boolean"
@@ -7036,7 +7045,7 @@
           "attributes": [
             {
               "name": "modelValue",
-              "description": "Set data for button.",
+              "description": "Selected value.",
               "value": {
                 "kind": "expression",
                 "type": "string|number|array"
@@ -7045,7 +7054,7 @@
             },
             {
               "name": "value",
-              "description": "Set value for checkbox state.",
+              "description": "Value for checkbox state.",
               "value": {
                 "kind": "expression",
                 "type": "string|number"
@@ -7054,7 +7063,7 @@
             },
             {
               "name": "label",
-              "description": "Set label.",
+              "description": "Toggle item label.",
               "value": {
                 "kind": "expression",
                 "type": "string"
@@ -7063,21 +7072,12 @@
             },
             {
               "name": "disabled",
-              "description": "Make item disabled.",
+              "description": "Make toggle item disabled.",
               "value": {
                 "kind": "expression",
                 "type": "boolean"
               },
               "default": "false"
-            },
-            {
-              "name": "variant",
-              "description": "The variant of the button.",
-              "value": {
-                "kind": "expression",
-                "type": "'primary' | 'secondary' | 'thirdary'"
-              },
-              "default": "primary"
             },
             {
               "name": "id",
@@ -7090,7 +7090,7 @@
             },
             {
               "name": "config",
-              "description": "Sets component ui config object.",
+              "description": "Component ui config object.",
               "value": {
                 "kind": "expression",
                 "type": "object"
@@ -7099,7 +7099,7 @@
             },
             {
               "name": "dataCy",
-              "description": "Sets data-cy attribute for automated testing.",
+              "description": "Data-cy attribute for automated testing.",
               "value": {
                 "kind": "expression",
                 "type": "string"
