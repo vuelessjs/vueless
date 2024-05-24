@@ -4,6 +4,7 @@
       <UToggleItem
         v-for="(item, index) in options"
         :key="item.value"
+        :name="name"
         :model-value="item.value"
         :value="item.value"
         :label="item.label"
