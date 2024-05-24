@@ -3,58 +3,64 @@
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
       <UText :size="nestedComponentSize" v-bind="descriptionAttrs" :html="description" />
 
-      <div v-bind="buttonWrapperAttrs">
-        <div v-bind="placeholderWrapperAttrs">
-          <UIcon
-            pill
-            internal
-            :size="nestedComponentSize"
-            :name="config.placeholderIconName"
-            v-bind="placeholderIconAttrs"
-          />
-          <span v-bind="placeholderAttrs" v-text="placeholder" />
+      <div v-bind="contentWrapperAttrs">
+        <slot name="left" />
+        <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
+        <div v-else v-bind="fileListAttrs">
+          <template v-if="props.multiple">
+            <span
+              v-for="(file, idx) in currentFiles"
+              v-bind="selectedItemAttrs"
+              :key="idx"
+              v-text="file.name"
+            />
+          </template>
+          <span v-else v-bind="selectedItemAttrs" v-text="currentFiles.name" />
         </div>
 
-        <template v-if="!currentFiles.length">
-          <UButton
-            class="hover:cursor-pointer"
-            :label="currentLocale.uploadFile"
-            variant="thirdary"
-            filled
-            :size="nestedComponentSize"
-            v-bind="buttonAttrs"
-            tag="label"
-            :for="id"
-          >
-            <template #right>
-              <UIcon
-                internal
-                :size="nestedComponentSize"
-                :name="config.chooseFileIconName"
-                v-bind="chooseFileIconAttrs"
-              />
-            </template>
-          </UButton>
+        <div v-bind="buttonWrapperAttrs">
+          <template v-if="Array.isArray(currentFiles) || !currentFiles">
+            <UButton
+              class="hover:cursor-pointer"
+              :label="currentLocale.uploadFile"
+              variant="thirdary"
+              filled
+              :size="nestedComponentSize"
+              v-bind="buttonAttrs"
+              tag="label"
+              :for="id"
+            >
+              <template #right>
+                <UIcon
+                  internal
+                  :size="nestedComponentSize"
+                  :name="config.chooseFileIconName"
+                  v-bind="chooseFileIconAttrs"
+                />
+              </template>
+            </UButton>
 
-          <input
-            :id="id"
-            ref="fileInputRef"
-            type="file"
-            :accept="accept"
-            v-bind="inputAttrs"
-            @change="onChangeFile"
+            <input
+              :id="id"
+              ref="fileInputRef"
+              :multiple="multiple"
+              type="file"
+              :accept="accept"
+              v-bind="inputAttrs"
+              @change="onChangeFile"
+            />
+          </template>
+          <UIcon
+            v-if="isValue"
+            interactive
+            internal
+            :size="nestedComponentSize"
+            :name="config.clearIconName"
+            pill
+            v-bind="clearIconAttrs"
+            @click="onClickResetFiles"
           />
-        </template>
-        <UIcon
-          v-else
-          interactive
-          internal
-          :size="nestedComponentSize"
-          :name="config.clearIconName"
-          pill
-          v-bind="clearIconAttrs"
-          @click="onClickResetFiles"
-        />
+        </div>
       </div>
     </div>
   </ULabel>
@@ -87,7 +93,7 @@ const props = defineProps({
    */
   label: {
     type: String,
-    default: "Label",
+    default: "",
   },
 
   /**
@@ -95,7 +101,7 @@ const props = defineProps({
    */
   description: {
     type: String,
-    default: "Some description here",
+    default: "",
   },
 
   /**
@@ -108,8 +114,16 @@ const props = defineProps({
   },
 
   modelValue: {
-    type: Array,
-    default: () => [],
+    type: [Array, File],
+    default: null,
+  },
+
+  /**
+   * Allow select multiple files.
+   */
+  multiple: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputFile).default.multiple,
   },
 
   /**
@@ -175,13 +189,14 @@ const {
   buttonAttrs,
   dropzoneWrapperAttrs,
   descriptionAttrs,
-  buttonWrapperAttrs,
-  placeholderWrapperAttrs,
-  placeholderIconAttrs,
+  contentWrapperAttrs,
   clearIconAttrs,
   chooseFileIconAttrs,
   placeholderAttrs,
   inputAttrs,
+  fileListAttrs,
+  buttonWrapperAttrs,
+  selectedItemAttrs,
 } = useAttrs(props);
 
 const i18nGlobal = tm(UInputFile);
@@ -189,7 +204,11 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 
 const currentFiles = computed({
   get: () => props.modelValue,
-  set: (newValue) => emit("update:modelValue", newValue),
+  set: (newValue) => {
+    const fallbackValue = props.multiple ? [] : null;
+
+    emit("update:modelValue", newValue || fallbackValue);
+  },
 });
 
 const currentError = computed({
@@ -197,16 +216,23 @@ const currentError = computed({
   set: (newValue) => emit("update:error", newValue),
 });
 
-const accept = computed(() => {
-  return props.allowedFileTypes.join(",");
-});
-
 const extensionNames = computed(() => {
   return props.allowedFileTypes.map((type) => type.replace(".", ""));
 });
 
-const placeholder = computed(() => {
-  return currentFiles.value.length ? currentFiles.value[0].name : currentLocale.value.noFile;
+const allowedFileTypeFormats = computed(() => {
+  return props.allowedFileTypes.map((type) => (type.startsWith(".") ? type : `.${type}`));
+});
+
+const accept = computed(() => {
+  return allowedFileTypeFormats.value.join(",");
+});
+
+const isValue = computed(() => {
+  return (
+    (Array.isArray(currentFiles.value) && currentFiles.value.length) ||
+    (!Array.isArray(currentFiles.value) && currentFiles.value)
+  );
 });
 
 const nestedComponentSize = computed(() => {
@@ -238,7 +264,7 @@ function validate(file) {
 
   const isValidSize = targetFileSize <= props.maxFileSize;
 
-  if (!isValidSize) {
+  if (!isValidSize && props.maxFileSize) {
     currentError.value = currentLocale.value.sizeError;
   }
 
@@ -256,11 +282,15 @@ function onChangeFile(event) {
     return;
   }
 
-  currentFiles.value = Array.from(event.target.files);
+  currentFiles.value = props.multiple
+    ? [...currentFiles.value, Array.from(event.target.files).at(0)]
+    : Array.from(event.target.files).at(0);
+
+  if (fileInputRef.value) fileInputRef.value.value = "";
 }
 
 function onClickResetFiles() {
-  currentFiles.value = [];
+  currentFiles.value = null;
 
   if (fileInputRef.value) fileInputRef.value.value = "";
 }
@@ -268,13 +298,13 @@ function onClickResetFiles() {
 function onDragOver(event) {
   event.preventDefault();
 
-  dropZoneRef.value.classList.add(config.value.dropzoneWrapperHover.split(" "));
+  dropZoneRef.value.classList.add(...config.value.dropzoneWrapperHover.split(" "));
 }
 
 function onDragLeave(event) {
   event.preventDefault();
 
-  dropZoneRef.value.classList.remove(config.value.dropzoneWrapperHover.split(" "));
+  dropZoneRef.value.classList.remove(...config.value.dropzoneWrapperHover.split(" "));
 }
 
 function onDrop(event) {
@@ -297,7 +327,7 @@ function onDrop(event) {
       return;
     }
 
-    currentFiles.value = [targetFile];
+    currentFiles.value = props.multiple ? [...currentFiles.value, targetFile] : targetFile;
   });
 }
 </script>

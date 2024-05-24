@@ -6,7 +6,7 @@ import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { dropzoneWrapper, placeholder } = config.value;
+  const { dropzoneWrapper, placeholder, selectedItem } = config.value;
 
   const cvaDropzoneWrapper = cva({
     base: dropzoneWrapper.base,
@@ -18,6 +18,12 @@ export function useAttrs(props) {
     base: placeholder.base,
     variants: placeholder.variants,
     compoundVariants: placeholder.compoundVariants,
+  });
+
+  const cvaSelectedItem = cva({
+    base: selectedItem.base,
+    variants: selectedItem.variants,
+    compoundVariants: selectedItem.compoundVariants,
   });
 
   const dropzoneWrapperClasses = computed(() =>
@@ -35,20 +41,25 @@ export function useAttrs(props) {
     }),
   );
 
+  const selectedItemClasses = computed(() =>
+    cvaSelectedItem({
+      size: props.size,
+    }),
+  );
+
   const labelAttrs = getAttrs("label", { isComponent: true });
   const buttonAttrs = getAttrs("button", { isComponent: true });
   const dropzoneWrapperAttrs = getAttrs("dropzoneWrapper", { classes: dropzoneWrapperClasses });
   const descriptionAttrs = getAttrs("description", { isComponent: true });
+  const contentWrapperAttrs = getAttrs("contentWrapper");
   const buttonWrapperAttrs = getAttrs("buttonWrapper");
-  const placeholderWrapperAttrs = getAttrs("placeholderWrapper");
-  const placeholderAttrs = getAttrs("placeholder", {
-    classes: placeholderClasses,
-    isComponent: true,
-  });
-  const placeholderIconAttrs = getAttrs("placeholderIcon", { isComponent: true });
+  const placeholderAttrs = getAttrs("placeholder", { classes: placeholderClasses });
   const clearIconAttrs = getAttrs("clearIcon", { isComponent: true });
+  const chooseFileIconAttrs = getAttrs("chooseFileIcon", { isComponent: true });
   const chooseFileIconNameAttrs = getAttrs("chooseFileIconName", { isComponent: true });
   const inputAttrs = getAttrs("input");
+  const fileListAttrs = getAttrs("fileList");
+  const selectedItemAttrs = getAttrs("selectedItem", { classes: selectedItemClasses });
 
   return {
     config,
@@ -57,11 +68,13 @@ export function useAttrs(props) {
     buttonAttrs,
     dropzoneWrapperAttrs,
     descriptionAttrs,
-    buttonWrapperAttrs,
-    placeholderWrapperAttrs,
-    placeholderIconAttrs,
+    contentWrapperAttrs,
     clearIconAttrs,
     chooseFileIconNameAttrs,
     placeholderAttrs,
+    fileListAttrs,
+    buttonWrapperAttrs,
+    selectedItemAttrs,
+    chooseFileIconAttrs,
   };
 }

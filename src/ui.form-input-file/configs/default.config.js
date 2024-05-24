@@ -26,10 +26,20 @@ export default /*tw*/ {
     ],
   },
   description: "text-gray-700",
-  buttonWrapper: "relative mt-3 flex w-full gap-52 justify-between rounded bg-brand-50 p-4",
-  placeholderWrapper: "flex items-center gap-2",
+  contentWrapper: "relative mt-3 flex w-full gap-6 justify-between items-start rounded bg-brand-50 p-4",
+  fileList: "pr-4 shrink-0 text-gray-700 flex-grow flex flex-col gap-4",
   placeholder: {
-    base: "pr-4 shrink-0 text-ellipsis overflow-hidden text-gray-700 text-nowrap",
+    base: "pr-4 shrink-0 text-gray-700 flex-grow",
+    variants: {
+      size: {
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
+      },
+    },
+  },
+  selectedItem: {
+    base: "pr-4 shrink-0 text-gray-700 flex-grow",
     variants: {
       size: {
         sm: "text-sm",
@@ -39,25 +49,25 @@ export default /*tw*/ {
     },
   },
   button: "hover:cursor-pointer",
-  placeholderIcon: "-rotate-45",
-  placeholderIconName: "attach_file",
   chooseFileIcon: "",
-  chooseFileIconName: "upload_file",
+  chooseFileIconName: "attach_file",
   clearIcon: "",
   clearIconName: "close",
-  dropzoneWrapperHover: "border-gray-400 bg-gray-50",
+  dropzoneWrapperHover: "border-gray-400",
   dropzoneWrapperError: "hover:border-red-400 border-red-300",
   input: "sr-only pointer-events-none size-0 opacity-0",
+  buttonWrapper: "flex gap-4 items-center",
   i18n: {
     sizeError: "File size is too big.",
     formatError: "Format is not supported.",
     noFile: "No file selected",
-    uploadFile: "Upload file",
+    uploadFile: "Choose file",
   },
   defaultVariants: {
     size: "md",
     labelAlign: "topInside",
     allowedFileTypes: [],
-    maxFileSize: 100,
+    multiple: false,
+    maxFileSize: 0,
   },
 };
