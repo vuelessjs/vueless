@@ -1,7 +1,7 @@
 {
   "framework": "vue",
   "name": "vueless",
-  "version": "0.0.102",
+  "version": "0.0.103",
   "contributions": {
     "html": {
       "description-markup": "markdown",
@@ -3448,7 +3448,7 @@
                 "kind": "expression",
                 "type": "string"
               },
-              "default": "\"Label\""
+              "default": "\"\""
             },
             {
               "name": "description",
@@ -3457,7 +3457,7 @@
                 "kind": "expression",
                 "type": "string"
               },
-              "default": "\"Some description here\""
+              "default": "\"\""
             },
             {
               "name": "labelAlign",
@@ -3472,9 +3472,18 @@
               "name": "modelValue",
               "value": {
                 "kind": "expression",
-                "type": "array"
+                "type": "array|File"
               },
-              "default": "[]"
+              "default": "null"
+            },
+            {
+              "name": "multiple",
+              "description": "Allow select multiple files.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
             },
             {
               "name": "maxFileSize",
@@ -3483,7 +3492,7 @@
                 "kind": "expression",
                 "type": "number"
               },
-              "default": "100"
+              "default": "0"
             },
             {
               "name": "allowedFileTypes",
@@ -3537,6 +3546,11 @@
             },
             {
               "name": "update:error"
+            }
+          ],
+          "slots": [
+            {
+              "name": "left"
             }
           ],
           "source": {
