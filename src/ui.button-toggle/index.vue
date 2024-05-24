@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapperRef" :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-cy="dataCy" v-bind="wrapperAttrs">
     <slot>
       <UToggleItem
         v-for="(item, index) in options"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { computed, provide, readonly, ref } from "vue";
+import { computed, provide, readonly } from "vue";
 
 import UToggleItem from "../ui.button-toggle-item";
 import UIService from "../service.ui";
@@ -30,23 +30,7 @@ defineOptions({ name: "UToggle", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set buttons name.
-   */
-  name: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Set data for buttons.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Set current value.
+   * Selected value.
    */
   modelValue: {
     type: [String, Number, Array],
@@ -54,15 +38,32 @@ const props = defineProps({
   },
 
   /**
-   * Allow to select a few options and return them as array.
+   * Toggle variants.
+   * @values primary, secondary, thirdary
    */
-  multiple: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.multiple,
+  variant: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.variant,
   },
 
   /**
-   * The size of the buttons.
+   * Toggle item options.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Toggle name.
+   */
+  name: {
+    type: String,
+    required: true,
+  },
+
+  /**
+   * Toggle size.
    * @values xs, sm, md, lg
    */
   size: {
@@ -79,6 +80,14 @@ const props = defineProps({
   },
 
   /**
+   * Allow selecting a few options and return them as an array.
+   */
+  multiple: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.multiple,
+  },
+
+  /**
    * Sets data-cy attribute for automated testing.
    */
   dataCy: {
@@ -91,14 +100,14 @@ const emit = defineEmits(["update:modelValue"]);
 
 const { wrapperAttrs, toggleItemAttrs } = useAttrs(props);
 
-const wrapperRef = ref();
-
 const selectedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
 
-const type = computed(() => (props.multiple ? TYPE_CHECKBOX : TYPE_RADIO));
+const type = computed(() => {
+  return props.multiple ? TYPE_CHECKBOX : TYPE_RADIO;
+});
 
 function updateSelectedValue(value, checked) {
   if (type.value === TYPE_RADIO) {
@@ -114,14 +123,11 @@ function updateSelectedValue(value, checked) {
   }
 }
 
-provide("toggleName", () => props.name);
-
-provide("toggleSize", () => props.size);
-
-provide("toggleBlock", () => props.block);
-
 provide("toggleType", readonly(type));
-
+provide("toggleName", () => props.name);
+provide("toggleSize", () => props.size);
+provide("toggleBlock", () => props.block);
+provide("toggleVariant", () => props.variant);
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
   updateSelectedValue,

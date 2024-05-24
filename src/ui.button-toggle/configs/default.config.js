@@ -6,6 +6,7 @@ export default /*tw*/ {
   `,
   toggleItem: "",
   defaultVariants: {
+    variant: "primary",
     size: "md",
     block: false,
     multiple: false,

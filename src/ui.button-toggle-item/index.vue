@@ -3,10 +3,10 @@
     <input
       :id="id"
       v-model="selectedItem"
-      :disabled="disabled"
-      :value="value"
       :name="name"
       :type="type"
+      :value="value"
+      :disabled="disabled"
       v-bind="inputAttrs"
     />
     <label tabindex="0" :for="id" v-bind="labelAttrs" @click="onClickSetValue">
@@ -42,7 +42,7 @@ defineOptions({ name: "UToggleItem", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set data for button.
+   * Selected value.
    */
   modelValue: {
     type: [String, Number, Array],
@@ -50,7 +50,7 @@ const props = defineProps({
   },
 
   /**
-   * Set value for checkbox state.
+   * Value for checkbox state.
    */
   value: {
     type: [String, Number],
@@ -58,7 +58,7 @@ const props = defineProps({
   },
 
   /**
-   * Set label.
+   * Toggle item label.
    */
   label: {
     type: String,
@@ -66,20 +66,11 @@ const props = defineProps({
   },
 
   /**
-   * Make item disabled.
+   * Make toggle item disabled.
    */
   disabled: {
     type: Boolean,
     default: UIService.get(defaultConfig, UToggleItem).default.disabled,
-  },
-
-  /**
-   * The variant of the button.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: UIService.get(defaultConfig, UToggleItem).default.variant,
   },
 
   /**
@@ -92,7 +83,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -100,7 +91,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
@@ -110,15 +101,17 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const name = inject("toggleName", () => "toggle");
 const type = inject("toggleType", UIService.get(defaultConfig, UToggleItem).default.type);
-const name = inject("toggleName", "toggle");
 const size = inject("toggleSize", UIService.get(defaultConfig, UToggleItem).default.size);
 const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).default.block);
+const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
 const { wrapperAttrs, labelTextAttrs, labelAttrs, inputAttrs, hasSlotContent } = useAttrs(props, {
   size,
   block,
+  variant,
 });
 
 const selectedItem = ref("");

@@ -4,7 +4,7 @@ import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { size, block }) {
+export function useAttrs(props, { size, block, variant }) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
   const { label, labelText, wrapper } = config.value;
 
@@ -33,7 +33,7 @@ export function useAttrs(props, { size, block }) {
   const labelClasses = computed(() =>
     cvaLabel({
       size: toValue(size),
-      variant: props.variant,
+      variant: toValue(variant),
       disabled: props.disabled,
     }),
   );
