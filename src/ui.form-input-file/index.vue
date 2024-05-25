@@ -1,34 +1,37 @@
 <template>
-  <ULabel :error="error" :align="labelAlign" :label="label" :size="size" v-bind="labelAttrs">
+  <ULabel :label="label" :align="labelAlign" :error="error" :size="size" v-bind="labelAttrs">
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
-      <UText :size="nestedComponentSize" v-bind="descriptionAttrs" :html="description" />
+      <UText :size="nestedComponentSize" :html="description" v-bind="descriptionAttrs" />
 
       <div v-bind="contentWrapperAttrs">
+        <!-- @slot Use it to add something before placeholder. -->
         <slot name="left" />
+
         <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
+
         <div v-else v-bind="fileListAttrs">
           <template v-if="props.multiple">
             <span
               v-for="(file, idx) in currentFiles"
-              v-bind="selectedItemAttrs"
               :key="idx"
+              v-bind="selectedItemAttrs"
               v-text="file.name"
             />
           </template>
+
           <span v-else v-bind="selectedItemAttrs" v-text="currentFiles.name" />
         </div>
 
         <div v-bind="buttonWrapperAttrs">
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
-              class="hover:cursor-pointer"
-              :label="currentLocale.uploadFile"
-              variant="thirdary"
               filled
-              :size="nestedComponentSize"
-              v-bind="buttonAttrs"
               tag="label"
               :for="id"
+              variant="thirdary"
+              :size="nestedComponentSize"
+              :label="currentLocale.uploadFile"
+              v-bind="buttonAttrs"
             >
               <template #right>
                 <UIcon
@@ -43,20 +46,21 @@
             <input
               :id="id"
               ref="fileInputRef"
-              :multiple="multiple"
               type="file"
               :accept="accept"
+              :multiple="multiple"
               v-bind="inputAttrs"
               @change="onChangeFile"
             />
           </template>
+
           <UIcon
             v-if="isValue"
-            interactive
+            pill
             internal
+            interactive
             :size="nestedComponentSize"
             :name="config.clearIconName"
-            pill
             v-bind="clearIconAttrs"
             @click="onClickResetFiles"
           />
