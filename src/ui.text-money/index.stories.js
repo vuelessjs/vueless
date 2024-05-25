@@ -245,7 +245,6 @@ slotLeft.args = {
       <UIcon
         :src="icons.Debit"
         size="xs"
-        color="grayscale"
       />
     </template>
   `,

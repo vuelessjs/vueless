@@ -4,7 +4,7 @@ import URow from "../ui.container-row";
 import { getArgTypes } from "../service.storybook";
 
 export default {
-  id: "9010",
+  id: "100010",
   title: "Other / Dot",
   component: UDot,
   argTypes: {

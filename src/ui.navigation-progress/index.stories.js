@@ -4,8 +4,8 @@ import UButton from "../ui.button/index.vue";
 import { getArgTypes } from "../service.storybook";
 
 export default {
-  id: "9015",
-  title: "Other / Progress",
+  id: "8040",
+  title: "Navigation / Progress",
   component: UProgress,
   argTypes: {
     ...getArgTypes(UProgress.name),

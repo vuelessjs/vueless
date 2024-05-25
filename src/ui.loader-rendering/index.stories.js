@@ -6,7 +6,7 @@ import { useLoaderRendering } from "./composables/useLoaderRendering";
 import { getArgTypes } from "../service.storybook";
 
 export default {
-  id: "9023",
+  id: "9030",
   title: "Loaders and Skeletons / Loader rendering",
   component: ULoaderRendering,
   argTypes: {
@@ -21,7 +21,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <div>
-        <ULoaderRendering v-bind="args" class="!static !w-full" />
+      <ULoaderRendering v-bind="args" class="!static !w-full" />
     </div>
   `,
 });
@@ -43,7 +43,7 @@ const LoadingTemplate = (args) => ({
         <UButton label="Toggle loading" @click="toggleLoading"/>
       </div>
       <div>
-          <ULoaderRendering v-bind="args" class="!static !w-full" />
+        <ULoaderRendering v-bind="args" class="!static !w-full" />
       </div>
     `,
 });

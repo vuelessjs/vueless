@@ -23,7 +23,7 @@ export {
   clearAllNotifications,
   setDelayedNotify,
   getDelayedNotify,
-} from "./ui.notify/services";
+} from "./ui.text-notify/services";
 
 export function createVueless(options = {}) {
   const i18n = createLocale(options.i18n);

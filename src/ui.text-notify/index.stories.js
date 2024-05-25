@@ -1,12 +1,13 @@
-import { notify } from "../ui.notify/services";
+import { notify } from "./services";
 
-import UNotify from "../ui.notify";
+import UNotify from "../ui.text-notify";
 import UButton from "../ui.button";
 
 import { getArgTypes } from "../service.storybook";
 
 export default {
-  title: "Other / Notify",
+  id: "4035",
+  title: "Text & Content / Notify",
   component: UNotify,
   args: {
     type: "success",

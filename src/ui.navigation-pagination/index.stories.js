@@ -3,7 +3,7 @@ import { getArgTypes } from "../service.storybook";
 import UPagination from "../ui.navigation-pagination";
 
 export default {
-  id: "8040",
+  id: "8050",
   title: "Navigation / Pagination",
   component: UPagination,
   args: {

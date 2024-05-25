@@ -1,5 +1,6 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs">
+    <!-- @slot Use it to add UToggleItem directly. -->
     <slot>
       <UToggleItem
         v-for="(item, index) in options"

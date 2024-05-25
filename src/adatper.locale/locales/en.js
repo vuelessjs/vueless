@@ -8,7 +8,7 @@ import calendarConfig from "../../ui.form-calendar/configs/default.config";
 import datepickerConfig from "../../ui.form-date-picker/configs/default.config";
 import datepickerRangeConfig from "../../ui.form-date-picker-range/configs/default.config";
 import dataListConfig from "../../ui.data-list/configs/default.config";
-import notifyDefaultConfig from "../../ui.notify/configs/default.config";
+import notifyDefaultConfig from "../../ui.text-notify/configs/default.config";
 
 export default {
   USelect: selectConfig.i18n,
