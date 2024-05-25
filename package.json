@@ -17,9 +17,9 @@
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
-    "sb:dev-full": "node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
-    "sb:dev": "node prepare.icons && storybook dev -p 6006 --docs --no-open",
-    "sb:build": "node prepare.icons && storybook build --docs",
+    "sb:dev-full": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
+    "sb:dev": "npx @vueless/web-types && node prepare.icons && storybook dev -p 6006 --docs --no-open",
+    "sb:build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
     "sb:preview": "vite preview --host --outDir=storybook-static",
     "package:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.dist"
   },
