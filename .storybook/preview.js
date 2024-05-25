@@ -4,7 +4,7 @@ import { backgrounds, docs, layout } from "./configs/main.config";
 import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
 
 // Vue plugins
-import { createVueless } from "vueless";
+import { createVueless } from "../src";
 import { createRouter, createWebHistory } from "vue-router";
 
 // Tailwind styles

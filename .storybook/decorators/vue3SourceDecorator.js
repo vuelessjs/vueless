@@ -1,6 +1,5 @@
 import { addons, makeDecorator } from "@storybook/preview-api";
 import { h, onMounted, watch } from "vue";
-import { setBrandColor } from "vueless/service.ui";
 
 export const vue3SourceDecorator = makeDecorator({
   name: "vue3SourceDecorator",
@@ -20,8 +19,6 @@ export const vue3SourceDecorator = makeDecorator({
         watch(context.args, () => {
           setSourceCode();
         });
-
-        setBrandColor();
 
         function setSourceCode() {
           try {

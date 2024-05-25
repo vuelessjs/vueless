@@ -1,13 +1,13 @@
 import ULoaderTop from "../ui.loader-top";
 import UButton from "../ui.button";
 
-import { useLoaderTop } from "../ui.loader-top/composables/useLoaderTop";
-import { loaderTopOff, loaderTopOn } from "../ui.loader-top/services/loaderTop.service";
+import { useLoaderTop } from "./composables/useLoaderTop";
+import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
 import { getArgTypes } from "../service.storybook";
 
 export default {
-  id: "9024",
+  id: "9020",
   title: "Loaders and Skeletons / Loader top",
   component: ULoaderTop,
   argTypes: {

@@ -1,5 +1,5 @@
-import useUI from "vueless/composable.ui";
-import { cva } from "vueless/service.ui";
+import useUI from "../../composable.ui";
+import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
