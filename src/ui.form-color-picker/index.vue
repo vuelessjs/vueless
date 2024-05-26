@@ -56,7 +56,7 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon";
 import URadio from "../ui.form-radio";
 import ULabel from "../ui.form-label";
-import UIService, { getRandomId } from "../service.ui";
+import UIService from "../service.ui";
 
 import { UColorPicker } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -120,7 +120,8 @@ const props = defineProps({
    */
   name: {
     type: String,
-    default: () => getRandomId(),
+    required: true,
+    default: "",
   },
 
   /**

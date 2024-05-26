@@ -78,7 +78,7 @@ export default /*tw*/ {
     size: "md",
     variant: "default",
     interactive: false,
-    fill: false,
+    pill: false,
   },
   safelist: (colors) => [
     { pattern: `text-(${colors})-400` },

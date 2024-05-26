@@ -56,7 +56,7 @@ export default /*tw*/ {
     },
   },
   defaultVariants: {
-    color: "brand",
+    titleColor: "brand",
     width: "sm",
     inner: false,
     closeIcon: true,

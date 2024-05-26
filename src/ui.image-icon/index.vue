@@ -47,14 +47,6 @@ const props = defineProps({
   },
 
   /**
-   * Change icon variant from outline to filled.
-   */
-  fill: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UIcon).default.fill,
-  },
-
-  /**
    * Icon color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */

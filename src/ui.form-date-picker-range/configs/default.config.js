@@ -185,14 +185,6 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     variant: "button",
-    customRangeButton: {
-      range: {
-        from: 0,
-        to: 0,
-      },
-      label: "",
-      description: "",
-    },
     timepicker: false,
     disabled: false,
     dateFormat: "d.m.Y",

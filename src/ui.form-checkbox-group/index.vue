@@ -116,7 +116,7 @@ const props = defineProps({
    */
   dataCy: {
     type: String,
-    default: "checkbox",
+    default: "",
   },
 });
 

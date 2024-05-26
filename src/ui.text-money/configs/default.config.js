@@ -59,7 +59,7 @@ export default /*tw*/ {
     align: "right",
     symbolAlign: "right",
     weight: "regular",
-    decimalPlaces: 2,
+    decimalScale: 2,
     delimiter: ",",
     planned: false,
     integer: false,

@@ -265,7 +265,11 @@ const props = defineProps({
    */
   customRangeButton: {
     type: Object,
-    default: () => UIService.get(defaultConfig, UDatePickerRange).default.customRangeButton,
+    default: () => ({
+      range: { from: 0, to: 0 },
+      label: "",
+      description: "",
+    }),
   },
 
   /**

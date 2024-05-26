@@ -31,6 +31,7 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     color: "brand",
+    labelAlign: "left",
     disabled: false,
     checked: false,
   },

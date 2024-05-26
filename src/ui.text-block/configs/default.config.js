@@ -31,5 +31,6 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     align: "left",
+    line: false,
   },
 };

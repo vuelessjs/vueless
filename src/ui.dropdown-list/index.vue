@@ -183,7 +183,7 @@ const props = defineProps({
    * List max height in pixels.
    */
   maxHeight: {
-    type: [Number, String],
+    type: Number,
     default: UIService.get(defaultConfig, UDropdownList).default.maxHeight,
   },
 

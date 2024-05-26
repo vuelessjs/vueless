@@ -143,7 +143,7 @@ const props = defineProps({
    */
   titleColor: {
     type: String,
-    default: UIService.get(defaultConfig, UModal).default.color,
+    default: UIService.get(defaultConfig, UModal).default.titleColor,
   },
 
   /**
