@@ -22,7 +22,7 @@ export function getArgTypes(componentName) {
   component.attributes?.forEach((attribute) => {
     const type = attribute.value.type;
 
-    if (type === "string") {
+    if (type === "string" || type.includes("string")) {
       types[attribute.name] = {
         control: "text",
         table: {
@@ -45,6 +45,15 @@ export function getArgTypes(componentName) {
         control: "boolean",
         table: {
           defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
+
+    if (type === "array") {
+      types[attribute.name] = {
+        control: "array",
+        table: {
+          defaultValue: { summary: attribute.default || [] },
         },
       };
     }
