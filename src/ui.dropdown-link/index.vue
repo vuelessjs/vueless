@@ -1,9 +1,8 @@
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <div v-bind="triggerAttrs">
       <ULink
         :id="id"
-        ref="linkRef"
         :label="label"
         :size="size"
         :color="color"
@@ -13,49 +12,58 @@
         :no-ring="noRing"
         :data-cy="`${dataCy}-link`"
         v-bind="linkAttrs"
-        @click.stop="onClickLink"
-        @blur="onBlurLink"
+        @click="onClickLink"
       >
         <template #right>
           <UIcon
             v-if="!noIcon"
             internal
+            interactive
             :name="config.iconName"
             :size="iconSize"
             :color="color"
             :data-cy="`${dataCy}-caret`"
             v-bind="iconAttrs"
+            @click.stop="onClickLink"
           />
         </template>
       </ULink>
     </div>
 
-    <div v-if="isShownOptions && hasSlotContent($slots['default'])" v-bind="listWrapperAttrs">
+    <div
+      v-if="isShownOptions && hasSlotContent($slots['default'])"
+      v-bind="listWrapperAttrs"
+      @click="onClickList"
+    >
       <!-- @slot Use it to add dropdown list. -->
       <slot />
     </div>
 
     <UDropdownList
       v-if="isShownOptions && !hasSlotContent($slots['default'])"
-      v-model="selectValue"
+      v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
       :data-cy="`${dataCy}-item`"
       v-bind="listAttrs"
+      @mousedown.stop
+      @click.stop="onClickList"
     />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
 import ULink from "../ui.button-link";
 import UDropdownList from "../ui.dropdown-list";
 
 import UIService, { getRandomId } from "../service.ui";
+
+import vClickOutside from "../directive.clickOutside";
 
 import { UDropdownLink } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -65,14 +73,6 @@ import { useAttrs } from "./composables/attrs.composable";
 defineOptions({ name: "UDropdownLink", inheritAttrs: false });
 
 const props = defineProps({
-  /**
-   * Selected value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-
   /**
    * Link label.
    */
@@ -207,13 +207,12 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["select"]);
+
 provide("hideDropdownOptions", () => hideOptions());
 
-const emit = defineEmits(["update:modelValue"]);
-
 const isShownOptions = ref(false);
-
-const linkRef = ref(null);
+const selectedItem = ref("");
 
 const {
   config,
@@ -226,14 +225,6 @@ const {
   hasSlotContent,
 } = useAttrs(props, { isShownOptions });
 
-const selectValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    isShownOptions.value = false;
-    emit("update:modelValue", value);
-  },
-});
-
 const iconSize = computed(() => {
   const sizes = {
     xs: "2xs",
@@ -245,10 +236,9 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-watch(() => props.modelValue, hideOptions);
-
-onMounted(() => window.addEventListener("click", onClickOutside));
-onUnmounted(() => window.removeEventListener("click", onClickOutside));
+watch(selectedItem, () => {
+  emit("select", selectedItem.value);
+});
 
 function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
@@ -258,17 +248,7 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
-function onClickOutside(event) {
-  if (!linkRef.value?.wrapperRef?.contains(event.target)) {
-    hideOptions();
-  }
-}
-
-function onBlurLink(event) {
-  setTimeout(() => {
-    if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
-      hideOptions();
-    }
-  }, 100);
+function onClickList() {
+  hideOptions();
 }
 </script>

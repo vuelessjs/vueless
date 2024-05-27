@@ -1,8 +1,7 @@
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
       :id="id"
-      ref="buttonRef"
       :label="label"
       :size="size"
       :variant="variant"
@@ -13,8 +12,7 @@
       :disabled="disabled"
       :data-cy="`${dataCy}-button`"
       v-bind="buttonAttrs"
-      @click.stop="onClickButton"
-      @blur="onBlurButton"
+      @click="onClickButton"
     >
       <template #right>
         <UIcon
@@ -29,14 +27,18 @@
       </template>
     </UButton>
 
-    <div v-if="isShownOptions && hasSlotContent($slots['default'])" v-bind="listWrapperAttrs">
+    <div
+      v-if="isShownOptions && hasSlotContent($slots['default'])"
+      v-bind="listWrapperAttrs"
+      @click="onClickList"
+    >
       <!-- @slot Use it to add dropdown list. -->
       <slot />
     </div>
 
     <UDropdownList
       v-if="isShownOptions && !hasSlotContent($slots['default'])"
-      v-model="selectValue"
+      v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
@@ -45,19 +47,21 @@
       tabindex="-1"
       v-bind="listAttrs"
       @mousedown.stop
-      @click.stop
+      @click.stop="onClickList"
     />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 import UDropdownList from "../ui.dropdown-list";
 
 import UIService, { getRandomId } from "../service.ui";
+
+import vClickOutside from "../directive.clickOutside";
 
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
@@ -218,12 +222,12 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["select"]);
+
 provide("hideDropdownOptions", () => hideOptions);
 
-const emit = defineEmits(["update:modelValue"]);
-
 const isShownOptions = ref(false);
-const buttonRef = ref(null);
+const selectedItem = ref("");
 
 const {
   config,
@@ -234,14 +238,6 @@ const {
   wrapperAttrs,
   hasSlotContent,
 } = useAttrs(props, { isShownOptions });
-
-const selectValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    isShownOptions.value = false;
-    emit("update:modelValue", value);
-  },
-});
 
 const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
@@ -257,10 +253,9 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-watch(() => props.modelValue, hideOptions);
-
-onMounted(() => window.addEventListener("click", onClickOutside));
-onUnmounted(() => window.removeEventListener("click", onClickOutside));
+watch(selectedItem, () => {
+  emit("select", selectedItem.value);
+});
 
 function onClickButton() {
   isShownOptions.value = !isShownOptions.value;
@@ -270,17 +265,7 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
-function onClickOutside(event) {
-  if (!buttonRef.value?.buttonRef?.contains(event.target)) {
-    hideOptions();
-  }
-}
-
-function onBlurButton(event) {
-  setTimeout(() => {
-    if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
-      hideOptions();
-    }
-  }, 100);
+function onClickList() {
+  hideOptions();
 }
 </script>

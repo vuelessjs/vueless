@@ -21,11 +21,13 @@ export default {
   mounted(el, bindings) {
     tippy(el, merge(mergedSettings, bindings.value || {}));
   },
+
   updated(el, bindings) {
     if (!el._tippy) return;
 
     el._tippy.setProps(merge(mergedSettings, bindings.value || {}));
   },
+
   unmounted(el) {
     if (!el._tippy) return;
 
