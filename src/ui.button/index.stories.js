@@ -6,7 +6,7 @@ import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 
 /**
- * The `UButton` component. | [ view on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)
+ * The `UButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)
  */
 export default {
   id: "1010",
