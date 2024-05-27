@@ -26,10 +26,10 @@ export default /*tw*/ {
     ],
   },
   description: "text-gray-700",
-  contentWrapper: "relative mt-3 flex w-full gap-6 justify-between items-start rounded bg-brand-50 p-4",
+  contentWrapper: "relative mt-3 flex w-full gap-6 justify-between items-start rounded bg-brand-50 p-3",
   fileList: "pr-4 shrink-0 text-gray-700 flex-grow flex flex-col gap-4",
   placeholder: {
-    base: "pr-4 shrink-0 text-gray-700 flex-grow",
+    base: "pr-4 text-gray-700 flex-grow",
     variants: {
       size: {
         sm: "text-sm",
@@ -39,7 +39,7 @@ export default /*tw*/ {
     },
   },
   selectedItem: {
-    base: "pr-4 shrink-0 text-gray-700 flex-grow",
+    base: "pr-4 text-gray-700 flex-grow",
     variants: {
       size: {
         sm: "text-sm",
