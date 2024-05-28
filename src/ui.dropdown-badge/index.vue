@@ -1,8 +1,7 @@
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UBadge
       :id="id"
-      ref="badgeRef"
       :label="label"
       :size="size"
       :color="color"
@@ -10,8 +9,7 @@
       :variant="variant"
       :data-cy="`${dataCy}-badge`"
       v-bind="badgeAttrs"
-      @click.stop="onClickBadge"
-      @blur="onBlurBadge"
+      @click="onClickBadge"
     >
       <template #right>
         <UIcon
@@ -26,32 +24,40 @@
       </template>
     </UBadge>
 
-    <div v-if="isShownOptions && hasSlotContent($slots['default'])" v-bind="listWrapperAttrs">
+    <div
+      v-if="isShownOptions && hasSlotContent($slots['default'])"
+      v-bind="listWrapperAttrs"
+      @click="onClickList"
+    >
       <!-- @slot Use it to add dropdown list. -->
       <slot />
     </div>
 
     <UDropdownList
       v-if="isShownOptions && !hasSlotContent($slots['default'])"
-      v-model="selectValue"
+      v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
       :data-cy="`${dataCy}-item`"
       v-bind="listAttrs"
+      @mousedown.stop
+      @click.stop="onClickList"
     />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UBadge from "../ui.text-badge";
 import UDropdownList from "../ui.dropdown-list";
 
 import UIService, { getRandomId } from "../service.ui";
+
+import vClickOutside from "../directive.clickOutside";
 
 import defaultConfig from "./configs/default.config";
 import { UDropdownBadge } from "./constants";
@@ -61,14 +67,6 @@ import { useAttrs } from "./composables/attrs.composable";
 defineOptions({ name: "UDropdownBadge", inheritAttrs: false });
 
 const props = defineProps({
-  /**
-   * Selected value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-
   /**
    * Badge label.
    */
@@ -189,24 +187,15 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["select"]);
+
 provide("hideDropdownOptions", () => hideOptions);
 
-const emit = defineEmits(["update:modelValue"]);
-
 const isShownOptions = ref(false);
-
-const badgeRef = ref(null);
+const selectedItem = ref("");
 
 const { config, listWrapperAttrs, wrapperAttrs, badgeAttrs, listAttrs, iconAttrs, hasSlotContent } =
   useAttrs(props, { isShownOptions });
-
-const selectValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    isShownOptions.value = false;
-    emit("update:modelValue", value);
-  },
-});
 
 const iconSize = computed(() => {
   const sizes = {
@@ -218,10 +207,9 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-watch(() => props.modelValue, hideOptions);
-
-onMounted(() => window.addEventListener("click", onClickOutside));
-onUnmounted(() => window.removeEventListener("click", onClickOutside));
+watch(selectedItem, () => {
+  emit("select", selectedItem.value);
+});
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
@@ -231,17 +219,7 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
-function onClickOutside(event) {
-  if (!badgeRef.value?.wrapperRef?.contains(event.target)) {
-    hideOptions();
-  }
-}
-
-function onBlurBadge(event) {
-  setTimeout(() => {
-    if (!event.target.isEqualNode(event.relatedTarget) && event.relatedTarget) {
-      hideOptions();
-    }
-  }, 100);
+function onClickList() {
+  hideOptions();
 }
 </script>
