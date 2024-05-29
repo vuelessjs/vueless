@@ -17,6 +17,24 @@ defineOptions({ name: "URow", inheritAttrs: false });
 
 const props = defineProps({
   /**
+   * Row spacing between nested elements.
+   * @values none, 2xs, xs, sm, md, lg, xl, 2xl
+   */
+  gap: {
+    type: String,
+    default: UIService.get(defaultConfig, URow).default.gap,
+  },
+
+  /**
+   * Row nested elements vertical align (align-items).
+   * @values start, end, center, stretch, baseline
+   */
+  align: {
+    type: String,
+    default: UIService.get(defaultConfig, URow).default.align,
+  },
+
+  /**
    * Disables mobile adaptivity.
    */
   noMobile: {

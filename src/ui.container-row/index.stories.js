@@ -2,6 +2,8 @@ import { getArgTypes } from "../service.storybook";
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
+import UGroup from "../ui.container-group";
+import UButton from "../ui.button";
 
 export default {
   id: "5020",
@@ -13,24 +15,67 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { URow, UInput },
+  components: { URow, UInput, UButton },
   setup() {
     return { args };
   },
   template: `
     <URow v-bind="args">
-      ${args.slotTemplate}
+      ${
+        args.slotTemplate ||
+        `
+          <UInput label="Name" />
+          <UButton label="Submit" size="xs" block />
+        `
+      }
     </URow>
   `,
 });
 
-export const Default = DefaultTemplate.bind({});
-Default.args = {
-  slotTemplate: `
-    <UInput label="Name" />
-    <UInput label="Lastname" />
+const GapTemplate = (args, { argTypes } = {}) => ({
+  components: { UGroup, URow, UInput },
+  setup() {
+    return {
+      args,
+      gaps: argTypes.gap.options,
+    };
+  },
+  template: `
+    <UGroup size="lg">
+      <URow v-for="(gap, index) in gaps" :key="index" v-bind="args" :gap="gap" align="center">
+        <UInput :label="gap" />
+        <UInput :label="gap" />
+      </URow>
+    </UGroup>
   `,
-};
+});
+
+const AlignTemplate = (args, { argTypes } = {}) => ({
+  components: { UGroup, URow, UInput, UButton },
+  setup() {
+    return {
+      args,
+      aligns: argTypes.align.options,
+    };
+  },
+  template: `
+    <UGroup size="lg">
+      <URow v-for="(align, index) in aligns" :key="index" v-bind="args" :align="align">
+        <UButton :label="align" size="xs" block />
+        <UInput label="Name" />
+      </URow>
+    </UGroup>
+  `,
+});
+
+export const Default = DefaultTemplate.bind({});
+Default.args = {};
+
+export const Gap = GapTemplate.bind({});
+Gap.args = {};
+
+export const Align = AlignTemplate.bind({});
+Align.args = {};
 
 export const noMobile = DefaultTemplate.bind({});
 noMobile.args = {
@@ -53,8 +98,8 @@ nestedRows.args = {
   `,
 };
 
-export const textBlocks = DefaultTemplate.bind({});
-textBlocks.args = {
+export const textBlocksExample = DefaultTemplate.bind({});
+textBlocksExample.args = {
   slotTemplate: `
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit,

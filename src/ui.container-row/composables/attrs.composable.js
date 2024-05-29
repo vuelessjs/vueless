@@ -13,7 +13,13 @@ export function useAttrs(props) {
     compoundVariants: wrapper.compoundVariants,
   });
 
-  const wrapperClasses = computed(() => cvaWrapper({ noMobile: props.noMobile }));
+  const wrapperClasses = computed(() =>
+    cvaWrapper({
+      gap: props.gap,
+      align: props.align,
+      noMobile: props.noMobile,
+    }),
+  );
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
 
