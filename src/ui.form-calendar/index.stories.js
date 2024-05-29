@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UCalendar from "../ui.form-calendar";
 
 export default {
-  id: "3171",
+  id: "3165",
   title: "Form Inputs & Controls / Calendar",
   component: UCalendar,
   args: {
