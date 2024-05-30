@@ -137,23 +137,20 @@ const emit = defineEmits(["click", "focus", "blur"]);
 const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
-  if (!import.meta.env.PROD) return [];
-
-  return Object.entries(
-    import.meta.glob(`../assets/icons/**/*.svg`, {
-      eager: true,
-      query: "?component",
-    }),
+  return (
+    Object.entries(
+      import.meta.glob(`../assets/icons/**/*.svg`, { eager: true, query: "?component" }),
+    ) || []
   );
 });
 
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const defaultLibrary = defaultConfig.defaultVariants.library;
+  const isDefaultIcon = Boolean(generatedIcons.value.find(([path]) => path.includes(props.name)));
   const userLibrary = config.value.defaultVariants.library;
 
-  const library = props.internal && defaultLibrary === userLibrary ? "vueless" : userLibrary;
+  const library = props.internal && isDefaultIcon ? "vueless" : userLibrary;
   const weight = config.value.defaultVariants.weight;
   const style = config.value.defaultVariants.style;
   const isFill = props.name.endsWith(FILL_SUFFIX);
