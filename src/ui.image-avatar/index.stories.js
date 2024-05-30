@@ -32,7 +32,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <URow>
         <UAvatar
           v-for="(size, index) in sizes"
@@ -64,7 +64,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <URow>
         <UAvatar
           v-for="(color, index) in colors"

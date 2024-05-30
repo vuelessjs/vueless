@@ -47,7 +47,7 @@ const ValueTypesTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <UCheckbox
         v-bind="args"
         v-model="defaultValue"
@@ -97,7 +97,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <UCheckbox
         v-for="(size, index) in sizes"
         :key="index"

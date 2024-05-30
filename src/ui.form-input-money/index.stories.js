@@ -65,7 +65,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 //     };
 //   },
 //   template: `
-//     <UGroup size="lg">
+//     <UGroup gap="xl">
 //       <UInputMoney
 //         v-bind="args"
 //         :label-outside="true"

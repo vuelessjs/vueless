@@ -46,7 +46,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <UInputNumber
         v-for="(size, index) in sizes"
         v-bind="args"

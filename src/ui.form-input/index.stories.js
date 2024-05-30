@@ -98,7 +98,7 @@ const LabelPlacementTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <UInput
         v-bind="args"
         label="top"

@@ -78,7 +78,7 @@ const LabelPlacementTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <UTextarea
         v-bind="args"
         label-align="top"
