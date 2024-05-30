@@ -29,7 +29,7 @@ const props = defineProps({
 
   /**
    * The color of the loader stripe.
-   * @values gray, red, orange, yellow, green, blue, violet, fuchsia
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
   color: {
     type: String,

@@ -5,11 +5,15 @@ export default /*tw*/ {
       error: {
         true: "bg-red-500",
       },
+      color: {
+        white: "bg-white",
+        grayscale: "bg-gray-900",
+      },
     },
   },
   progressMobile: "mt-safe-top mx-3 rounded max-w-[calc(100%-1.5rem)]",
   defaultVariants: {
-    color: "blue",
+    color: "brand",
   },
   safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],
 };
