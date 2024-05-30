@@ -53,12 +53,21 @@ const props = defineProps({
   },
 
   /**
-   * The distance between nested components.
-   * @values sm, md, lg
+   * The distance between nested elements.
+   * @values none, 2xs, xs, sm, md, lg, xl, 2xl
    */
-  size: {
+  gap: {
     type: String,
-    default: UIService.get(defaultConfig, UGroup).default.size,
+    default: UIService.get(defaultConfig, UGroup).default.gap,
+  },
+
+  /**
+   * Nested items align (flex align-items).
+   * @values start, end, center, stretch, baseline
+   */
+  align: {
+    type: String,
+    default: UIService.get(defaultConfig, UGroup).default.align,
   },
 
   /**
@@ -78,7 +87,7 @@ const props = defineProps({
   },
 
   /**
-   * Set component ui config object.
+   *Component ui config object.
    */
   config: {
     type: Object,
@@ -86,7 +95,7 @@ const props = defineProps({
   },
 
   /**
-   * Set data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,

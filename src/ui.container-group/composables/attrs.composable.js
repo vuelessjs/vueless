@@ -20,7 +20,12 @@ export function useAttrs(props) {
     compoundVariants: header.compoundVariants,
   });
 
-  const contentClasses = computed(() => cvaContent({ size: props.size }));
+  const contentClasses = computed(() =>
+    cvaContent({
+      gap: props.gap,
+      align: props.align,
+    }),
+  );
 
   const headerClasses = computed(() => cvaHeader({ underlined: props.underlined }));
 

@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "",
+  wrapper: "w-full",
   upperline: "",
   header: {
     base: "flex items-center justify-between",
@@ -13,16 +13,30 @@ export default /*tw*/ {
   title: "pr-2",
   underline: "pt-1.5",
   content: {
+    base: "flex flex-col",
     variants: {
-      size: {
-        sm: "space-y-2",
+      gap: {
+        none: "space-y-0",
+        "2xs": "space-y-1",
+        xs: "space-y-2",
+        sm: "space-y-3",
         md: "space-y-4",
-        lg: "space-y-6",
+        lg: "space-y-5",
+        xl: "space-y-6",
+        "2xl": "space-y-8",
+      },
+      align: {
+        end: "items-end",
+        start: "items-start",
+        center: "items-center",
+        stretch: "items-stretch",
+        baseline: "items-baseline",
       },
     },
   },
   defaultVariants: {
-    size: "md",
+    gap: "md",
+    align: "start",
     upperlined: true,
     underlined: false,
   },
