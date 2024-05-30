@@ -6,6 +6,10 @@
 </template>
 
 <script setup>
+import UIService from "../service.ui";
+
+import { UGroups } from "./constants";
+import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
@@ -13,7 +17,25 @@ defineOptions({ name: "UGroups", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set component ui config object.
+   * The distance between nested elements.
+   * @values none, xs, sm, md, lg, xl
+   */
+  gap: {
+    type: String,
+    default: UIService.get(defaultConfig, UGroups).default.gap,
+  },
+
+  /**
+   * Nested items align (flex align-items).
+   * @values start, end, center, stretch, baseline
+   */
+  align: {
+    type: String,
+    default: UIService.get(defaultConfig, UGroups).default.align,
+  },
+
+  /**
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -21,7 +43,7 @@ const props = defineProps({
   },
 
   /**
-   * Set data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
