@@ -26,7 +26,7 @@ const props = defineProps({
   },
 
   /**
-   * Row nested elements vertical align (align-items).
+   * Nested items align (flex align-items).
    * @values start, end, center, stretch, baseline
    */
   align: {
@@ -43,7 +43,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -51,7 +51,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,

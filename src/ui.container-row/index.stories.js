@@ -14,6 +14,13 @@ export default {
   },
 };
 
+const defaultSlotTemplate = `
+  <template #default>
+    <UInput label="Name" />
+    <UButton label="Submit" size="xs" block />
+  </template>
+`;
+
 const DefaultTemplate = (args) => ({
   components: { URow, UInput, UButton },
   setup() {
@@ -21,13 +28,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <URow v-bind="args">
-      ${
-        args.slotTemplate ||
-        `
-          <UInput label="Name" />
-          <UButton label="Submit" size="xs" block />
-        `
-      }
+      ${args.slotTemplate || defaultSlotTemplate}
     </URow>
   `,
 });
@@ -41,7 +42,7 @@ const GapTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <URow v-for="(gap, index) in gaps" :key="index" v-bind="args" :gap="gap" align="center">
         <UInput :label="gap" />
         <UInput :label="gap" />
@@ -59,7 +60,7 @@ const AlignTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup size="lg">
+    <UGroup gap="xl">
       <URow v-for="(align, index) in aligns" :key="index" v-bind="args" :align="align">
         <UButton :label="align" size="xs" block />
         <UInput label="Name" />
