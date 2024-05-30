@@ -27,8 +27,10 @@ export function useAttrs(props) {
   );
 
   const avatarAttrs = getAttrs("avatar", { classes: avatarClasses });
+  const iconAttrs = getAttrs("icon", { isComponent: true });
 
   return {
     avatarAttrs,
+    iconAttrs,
   };
 }

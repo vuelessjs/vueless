@@ -1,25 +1,30 @@
 export default /*tw*/ {
   avatar: {
     base: `
-      flex h-full items-center justify-center font-medium
-      bg-contain bg-center bg-no-repeat bg-{color}-100 text-{color}-600`,
+      flex items-center justify-center shrink-0
+      bg-{color}-100 bg-contain bg-center bg-no-repeat
+      text-{color}-600
+    `,
     variants: {
       bordered: {
         true: "border border-{color}-200",
       },
       size: {
-        "2xs": "size-4 text-2xs",
-        xs: "size-5 text-2xs",
-        sm: "size-6 text-xs",
-        md: "size-8 text-sm",
-        lg: "size-10 text-lg",
-        xl: "size-12 text-2xl",
-        "2xl": "size-14 text-3xl",
+        "3xs": "size-4 text-2xs",
+        "2xs": "size-5 text-2xs",
+        xs: "size-6 text-xs",
+        sm: "size-8 text-sm",
+        md: "size-10 text-lg",
+        lg: "size-12 text-2xl",
+        xl: "size-14 text-3xl",
+        "2xl": "size-16 text-4xl",
+        "3xl": "size-20 text-5xl",
       },
       rounded: {
+        none: "rounded-none",
         sm: "rounded",
-        md: "rounded-lg",
-        lg: "rounded-xl",
+        md: "rounded-md",
+        lg: "rounded-lg",
         full: "rounded-full",
       },
       color: {
@@ -28,10 +33,12 @@ export default /*tw*/ {
       },
     },
   },
+  icon: "",
   defaultVariants: {
     color: "grayscale",
-    size: "md",
     rounded: "md",
+    size: "md",
+    icon: "image",
     bordered: false,
   },
   safelist: (colors) => [
