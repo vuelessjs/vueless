@@ -149,8 +149,8 @@ function mergeConfigs({
   config = {},
   isReplace = false,
 }) {
-  globalConfig = globalConfig || {};
-  propsConfig = propsConfig || {};
+  globalConfig = cloneDeep(globalConfig || {});
+  propsConfig = cloneDeep(propsConfig || {});
 
   const isGlobalConfig = Object.keys(globalConfig).length;
   const isPropsConfig = Object.keys(propsConfig).length;
