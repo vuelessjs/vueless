@@ -4,6 +4,9 @@ import UDatePicker from "../ui.form-date-picker";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
+/**
+ * The `UDatePicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker)
+ */
 export default {
   id: "3170",
   title: "Form Inputs & Controls / Date Picker",

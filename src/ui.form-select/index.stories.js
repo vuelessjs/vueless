@@ -4,6 +4,9 @@ import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
 import UBadge from "../ui.text-badge";
 
+/**
+ * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)
+ */
 export default {
   id: "3080",
   title: "Form Inputs & Controls / Select",

@@ -2,6 +2,9 @@ import { getArgTypes } from "../service.storybook";
 
 import UCheckboxGroup from "../ui.form-checkbox-group";
 
+/**
+ * The `UCheckboxGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-group)
+ */
 export default {
   id: "3110",
   title: "Form Inputs & Controls / Checkbox Group",

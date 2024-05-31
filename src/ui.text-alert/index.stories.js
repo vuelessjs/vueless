@@ -2,6 +2,10 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
+
+/**
+ * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
+ */
 export default {
   id: "4030",
   title: "Text & Content / Alert",

@@ -5,6 +5,9 @@ import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)
+ */
 export default {
   id: "3070",
   title: "Form Inputs & Controls / Textarea",

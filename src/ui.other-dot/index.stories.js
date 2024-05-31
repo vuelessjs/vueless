@@ -5,6 +5,9 @@ import UBadge from "../ui.text-badge";
 
 import { getArgTypes } from "../service.storybook";
 
+/**
+ * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)
+ */
 export default {
   id: "100010",
   title: "Other / Dot",

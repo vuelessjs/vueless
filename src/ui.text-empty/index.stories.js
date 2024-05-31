@@ -5,6 +5,9 @@ import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
+/**
+ * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
+ */
 export default {
   id: "4080",
   title: "Text & Content / Empty",

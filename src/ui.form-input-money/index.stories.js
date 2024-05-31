@@ -4,6 +4,9 @@ import UInputMoney from "../ui.form-input-money";
 import URow from "../ui.container-row";
 // import UGroup from "../ui.container-group";
 
+/**
+ * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
+ */
 export default {
   id: "3030",
   title: "Form Inputs & Controls / Input Money",

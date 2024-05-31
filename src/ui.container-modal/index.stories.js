@@ -8,6 +8,9 @@ import UInput from "../ui.form-input";
 import UTextarea from "../ui.form-textarea";
 import URow from "../ui.container-row";
 
+/**
+ * The `UModal` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-modal)
+ */
 export default {
   id: "5070",
   title: "Containers / Modal",

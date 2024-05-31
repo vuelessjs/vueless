@@ -2,6 +2,9 @@ import { getArgTypes } from "../service.storybook";
 
 import UFiles from "../ui.text-files";
 
+/**
+ * The `UFiles` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-files)
+ */
 export default {
   id: "4060",
   title: "Text & Content / Files",

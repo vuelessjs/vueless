@@ -5,6 +5,9 @@ import UDropdownItem from "../ui.dropdown-item";
 import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
+ */
 export default {
   id: "2010",
   title: "Dropdowns / Dropdown Button",

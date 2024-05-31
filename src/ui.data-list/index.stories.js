@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
 
+/**
+ * The `UDataList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-list)
+ */
 export default {
   id: "7020",
   title: "Data / Data List",

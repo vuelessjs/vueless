@@ -2,6 +2,9 @@ import { getArgTypes } from "../service.storybook";
 
 import UStepper from "../ui.navigation-stepper";
 
+/**
+ * The `UStepper` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-stepper)
+ */
 export default {
   id: "8030",
   title: "Navigation / Stepper",

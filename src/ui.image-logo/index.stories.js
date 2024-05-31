@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import ULogo from "../ui.image-logo";
 import URow from "../ui.container-row";
 
+/**
+ * The `ULogo` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-logo)
+ */
 export default {
   id: "6020",
   title: "Images & Icons / Logo",

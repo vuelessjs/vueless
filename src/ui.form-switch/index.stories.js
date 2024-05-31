@@ -4,6 +4,9 @@ import USwitch from "../ui.form-switch";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
+/**
+ * The `USwitch` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-switch)
+ */
 export default {
   id: "3130",
   title: "Form Inputs & Controls / Switch",

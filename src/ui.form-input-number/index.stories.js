@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import UInputNumber from "../ui.form-input-number";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UInputNumber` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-number)
+ */
 export default {
   id: "3050",
   title: "Form Inputs & Controls / Input Number",

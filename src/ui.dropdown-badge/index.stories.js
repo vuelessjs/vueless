@@ -4,6 +4,9 @@ import UDropdownBadge from "../ui.dropdown-badge";
 import UDropdownItem from "../ui.dropdown-item";
 import URow from "../ui.container-row";
 
+/**
+ * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
+ */
 export default {
   id: "2020",
   title: "Dropdowns / Dropdown Badge",

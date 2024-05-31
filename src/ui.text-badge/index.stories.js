@@ -5,6 +5,9 @@ import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)
+ */
 export default {
   id: "4090",
   title: "Text & Content / Badge",

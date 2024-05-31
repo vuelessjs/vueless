@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import UCheckboxMultiState from "../ui.form-checkbox-multi-state";
 import URow from "../ui.container-row";
 
+/**
+ * The `UCheckboxMultiState` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-multi-state)
+ */
 export default {
   id: "3120",
   title: "Form Inputs & Controls / Checkbox Multistate",

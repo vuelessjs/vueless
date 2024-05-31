@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import URadio from "../ui.form-radio";
 import UBadge from "../ui.text-badge";
 
+/**
+ * The `URadio` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio)
+ */
 export default {
   id: "3140",
   title: "Form Inputs & Controls / Radio",

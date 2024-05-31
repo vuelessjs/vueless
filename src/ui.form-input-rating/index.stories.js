@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UInputRating from "../ui.form-input-rating";
 import URow from "../ui.container-row";
 
+/**
+ * The `UInputRating` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-rating)
+ */
 export default {
   id: "3060",
   title: "Form Inputs & Controls / Input Rating",
