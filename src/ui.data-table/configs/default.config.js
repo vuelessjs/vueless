@@ -17,7 +17,7 @@ export default /*tw*/ {
   stickyHeaderLoader: "absolute top-[3.75rem] group-[]/table-compact:!top-[3.25rem]",
   stickyHeaderActive: "fixed top-0 border  border-gray-200 bg-white rounded-none",
   stickyHeaderActions: "rounded-t-lg border border-blue-200 !bg-blue-50",
-  stickyHeaderColumn: "flex-none text-sm font-normal text-gray-500 p-4",
+  stickyHeaderColumn: "flex-none text-sm font-normal text-gray-500 p-4 whitespace-nowrap",
   selectedRowsCount: "absolute left-11 pr-2 font-medium text-sm text-gray-900 bg-gradient-to-r from-white from-80%",
   selectAllCheckbox: "flex-none text-sm font-normal text-gray-500 pr-[1.125rem] pl-4 py-4 group-[]/table-compact:!px-4",
   innerWrapper: "!overflow-visible rounded-lg border border-gray-200",
