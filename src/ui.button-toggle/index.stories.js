@@ -5,6 +5,9 @@ import UIcon from "../ui.image-icon";
 import UToggleItem from "../ui.button-toggle-item";
 import URow from "../ui.container-row";
 
+/**
+ * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
+ */
 export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,

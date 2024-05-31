@@ -5,6 +5,9 @@ import UButton from "../ui.button";
 
 import { getArgTypes } from "../service.storybook";
 
+/**
+ * The `UNotify` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-notify)
+ */
 export default {
   id: "4035",
   title: "Text & Content / Notify",

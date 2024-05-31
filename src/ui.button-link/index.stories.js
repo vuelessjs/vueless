@@ -3,6 +3,10 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import ULink from "../ui.button-link";
 import UButton from "../ui.button";
 import URow from "../ui.container-row";
+
+/**
+ * The `ULink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-link)
+ */
 export default {
   id: "1060",
   title: "Buttons & Links / Link",

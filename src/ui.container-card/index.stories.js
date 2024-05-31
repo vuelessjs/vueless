@@ -7,6 +7,9 @@ import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
 
+/**
+ * The `UCard` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-card)
+ */
 export default {
   id: "5060",
   title: "Containers / Card",

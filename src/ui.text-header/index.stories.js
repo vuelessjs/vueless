@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UHeader from "../ui.text-header";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
+ */
 export default {
   id: "4010",
   title: "Text & Content / Header",

@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import UInputFile from "../ui.form-input-file";
 import URow from "../ui.container-row";
 
+/**
+ * The `UInputFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-file)
+ */
 export default {
   id: "30232",
   title: "Form Inputs & Controls / Input File",

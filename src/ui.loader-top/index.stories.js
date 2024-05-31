@@ -6,6 +6,9 @@ import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
 import { getArgTypes } from "../service.storybook";
 
+/**
+ * The `ULoaderTop` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-top)
+ */
 export default {
   id: "9020",
   title: "Loaders and Skeletons / Loader top",

@@ -2,6 +2,9 @@ import { getArgTypes } from "../service.storybook";
 
 import UDropdownItem from "../ui.dropdown-item";
 
+/**
+ * The `UDropdownItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-item)
+ */
 export default {
   id: "2040",
   title: "Dropdowns / Dropdown Item",

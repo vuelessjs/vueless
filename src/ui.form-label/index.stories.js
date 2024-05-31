@@ -5,6 +5,9 @@ import UBadge from "../ui.text-badge";
 
 import { getArgTypes } from "../service.storybook";
 
+/**
+ * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)
+ */
 export default {
   id: "3240",
   title: "Form Inputs & Controls / Label",

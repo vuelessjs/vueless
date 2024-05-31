@@ -2,6 +2,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UCalendar from "../ui.form-calendar";
 
+/**
+ * The `UCalendar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-calendar)
+ */
 export default {
   id: "3165",
   title: "Form Inputs & Controls / Calendar",

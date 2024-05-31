@@ -5,6 +5,9 @@ import { useLoaderRendering } from "./composables/useLoaderRendering";
 
 import { getArgTypes } from "../service.storybook";
 
+/**
+ * The `ULoaderRendering` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-rendering)
+ */
 export default {
   id: "9030",
   title: "Loaders and Skeletons / Loader rendering",
