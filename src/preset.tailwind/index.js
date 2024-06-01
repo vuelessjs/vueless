@@ -2,11 +2,6 @@ import colors from "tailwindcss/colors.js";
 import forms from "@tailwindcss/forms";
 import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants/index.js";
 
-/* Load Vueless config from the project root. */
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const { default: vuelessConfig } = require(process.cwd() + "/vueless.config.js");
-
 /**
  * Generates preset for TailwindCSS base on Vueless config.
  * @returns {Object}
@@ -14,7 +9,7 @@ const { default: vuelessConfig } = require(process.cwd() + "/vueless.config.js")
 export function vuelessPreset() {
   const isProd = process.env.NODE_ENV === "production";
   const brandColor = twColorWithOpacity("--color-brand");
-  const { brand, gray } = vuelessConfig;
+  const { brand, gray } = getVuelessConfig();
 
   let brandPalette = BRAND_COLORS.includes(brand) ? colors[brand] : colors.green;
   let grayPalette = GRAY_COLORS.includes(gray) ? colors[gray] : colors.zinc;
@@ -74,11 +69,19 @@ function twColorWithOpacity(variableName) {
 }
 
 /**
+ * Convert sting to object.
+ * @returns {Array} - TailwindCSS safelist.
+ */
+function getVuelessConfig() {
+  return JSON.parse(process.env.VUELESS_CONFIG_JSON || "[]");
+}
+
+/**
  * Convert sting patterns to RegExp.
  * @returns {Array} - TailwindCSS safelist.
  */
 function getSafelist() {
-  return JSON.parse(process.env.SAFELIST_JSON || "[]").map((rule) => ({
+  return JSON.parse(process.env.VUELESS_SAFELIST_JSON || "[]").map((rule) => ({
     ...rule,
     pattern: new RegExp(rule.pattern),
   }));
