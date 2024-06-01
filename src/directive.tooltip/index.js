@@ -1,11 +1,14 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
-import vuelessConfig from "../../vueless.config.js";
-
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/animations/shift-away.css";
+
+/* Load Vueless config from the project root. */
+const [vuelessConfig] = Object.values(
+  import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
+);
 
 const globalSettings = vuelessConfig?.directive?.tooltip || {};
 const defaultSettings = {

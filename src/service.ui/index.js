@@ -4,8 +4,17 @@ import { twMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
 
 import { cloneDeep } from "../service.helper";
-import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR, BRAND_COLOR } from "../preset.tailwind";
-import vuelessConfig from "../../vueless.config.js";
+import {
+  BRAND_COLORS,
+  GRAY_COLORS,
+  GRAYSCALE_COLOR,
+  BRAND_COLOR,
+} from "../preset.tailwind/constants";
+
+/* Load Vueless config from the project root. */
+const [vuelessConfig] = Object.values(
+  import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
+);
 
 /*
   Export cva (class variance authority) methods extended with tailwind-merge.

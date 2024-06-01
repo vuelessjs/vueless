@@ -1,30 +1,11 @@
 import colors from "tailwindcss/colors.js";
 import forms from "@tailwindcss/forms";
-import vuelessConfig from "../../vueless.config.js";
+import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants";
 
-export const GRAY_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
-export const GRAYSCALE_COLOR = "grayscale";
-export const BRAND_COLOR = "brand";
-export const BRAND_COLORS = [
-  BRAND_COLOR,
-  "red",
-  "orange",
-  "amber",
-  "yellow",
-  "lime",
-  "green",
-  "emerald",
-  "teal",
-  "cyan",
-  "sky",
-  "blue",
-  "indigo",
-  "violet",
-  "purple",
-  "fuchsia",
-  "pink",
-  "rose",
-];
+/* Load Vueless config from the project root. */
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { default: vuelessConfig } = require(process.cwd() + "/vueless.config.js");
 
 /**
  * Generates preset for TailwindCSS base on Vueless config.

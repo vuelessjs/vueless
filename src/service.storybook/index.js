@@ -1,7 +1,10 @@
-import { contributions } from "../../web-types.json";
+/* Load Web-Types from the project root. */
+const [webTypes] = Object.values(
+  import.meta.glob("/web-types.json", { eager: true, import: "default" }),
+);
 
 const getComponentData = (componentName) => {
-  return contributions.html.tags.find((item) => item.name === componentName);
+  return webTypes.contributions.html.tags.find((item) => item.name === componentName);
 };
 
 export function getSlotNames(componentName) {
