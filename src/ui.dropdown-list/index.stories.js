@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import UDropdownList from "../ui.dropdown-list";
 import URow from "../ui.container-row";
 
+/**
+ * The `UDropdownList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-list)
+ */
 export default {
   id: "2050",
   title: "Dropdowns / Dropdown List",

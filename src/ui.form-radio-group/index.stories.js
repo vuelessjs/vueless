@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import URadioGroup from "../ui.form-radio-group";
 import URadio from "../ui.form-radio";
 
+/**
+ * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)
+ */
 export default {
   id: "3160",
   title: "Form Inputs & Controls / Radio Group",

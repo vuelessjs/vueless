@@ -4,6 +4,9 @@ import UAccordion from "../ui.container-accordion";
 import UCard from "../ui.container-card";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UAccordion` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-accordion)
+ */
 export default {
   id: "5050",
   title: "Containers / Accordion",

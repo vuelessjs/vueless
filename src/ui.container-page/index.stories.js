@@ -9,6 +9,9 @@ import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
 
+/**
+ * The `UPage` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-page)
+ */
 export default {
   id: "5090",
   title: "Containers / Page",

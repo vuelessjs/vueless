@@ -3,6 +3,9 @@ import { getArgTypes } from "../service.storybook";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
+/**
+ * The `UIcon` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-icon)
+ */
 export default {
   id: "6010",
   title: "Images & Icons / Icon",

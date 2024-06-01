@@ -2,6 +2,9 @@ import { getArgTypes } from "../service.storybook";
 
 import UTabs from "../ui.navigation-tabs";
 
+/**
+ * The `UTabs` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tabs)
+ */
 export default {
   id: "8020",
   title: "Navigation / Tabs",

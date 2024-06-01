@@ -3,6 +3,9 @@ import URow from "../ui.container-row";
 
 import UDivider from "../ui.container-divider";
 
+/**
+ * The `UDivider` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-divider)
+ */
 export default {
   id: "5010",
   title: "Containers / Divider",

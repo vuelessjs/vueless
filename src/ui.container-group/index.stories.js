@@ -4,6 +4,9 @@ import UGroup from "../ui.container-group";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 
+/**
+ * The `UGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-group)
+ */
 export default {
   id: "5030",
   title: "Containers / Group",

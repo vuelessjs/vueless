@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UText from "../ui.text-block";
 import URow from "../ui.container-row";
 
+/**
+ * The `UText` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-block)
+ */
 export default {
   id: "4020",
   title: "Text & Content / Text",

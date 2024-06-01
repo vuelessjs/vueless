@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import URadioCard from "../ui.form-radio-card";
 import UIcon from "../ui.image-icon";
 
+/**
+ * The `URadioCard` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-card)
+ */
 export default {
   id: "3150",
   title: "Form Inputs & Controls / Radio Card",

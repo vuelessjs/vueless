@@ -4,6 +4,9 @@ import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 
+/**
+ * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
+ */
 export default {
   id: "6030",
   title: "Images & Icons / Avatar",

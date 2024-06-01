@@ -5,6 +5,9 @@ import UIcon from "../ui.image-icon";
 import UGroup from "../ui.container-group";
 import URow from "../ui.container-row";
 
+/**
+ * The `UInput` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input)
+ */
 export default {
   id: "3010",
   title: "Form Inputs & Controls / Input",

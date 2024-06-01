@@ -3,6 +3,9 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import UToggleItem from "../ui.button-toggle-item";
 import UIcon from "../ui.image-icon";
 
+/**
+ * The `UToggleItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle-item)
+ */
 export default {
   title: "Buttons & Links / Toggle Item",
   component: UToggleItem,

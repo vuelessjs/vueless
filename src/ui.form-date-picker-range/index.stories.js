@@ -5,6 +5,9 @@ import URow from "../ui.container-row";
 
 import { addDays } from "../ui.form-calendar/services/date.service";
 
+/**
+ * The `UDatePickerRange` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker-range)
+ */
 export default {
   id: "3180",
   title: "Form Inputs & Controls / Date Picker Range",

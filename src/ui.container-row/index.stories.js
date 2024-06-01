@@ -5,6 +5,9 @@ import UInput from "../ui.form-input";
 import UGroup from "../ui.container-group";
 import UButton from "../ui.button";
 
+/**
+ * The `URow` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-row)
+ */
 export default {
   id: "5020",
   title: "Containers / Row",

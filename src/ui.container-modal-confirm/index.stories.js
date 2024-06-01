@@ -6,6 +6,9 @@ import UHeader from "../ui.text-header";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
+/**
+ * The `UModalConfirm` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-modal-confirm)
+ */
 export default {
   id: "5080",
   title: "Containers / Modal Confirm",
