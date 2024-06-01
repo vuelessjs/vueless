@@ -20,7 +20,7 @@ export default /*tw*/ {
   stickyHeaderColumn: "flex-none text-sm font-normal text-gray-500 p-4",
   selectedRowsCount: "absolute left-11 pr-2 font-medium text-sm text-gray-900 bg-gradient-to-r from-white from-80%",
   selectAllCheckbox: "flex-none text-sm font-normal text-gray-500 pr-[1.125rem] pl-4 py-4 group-[]/table-compact:!px-4",
-  innerWrapper: "!overflow-visible rounded-lg border border-gray-200",
+  innerWrapper: "!overflow-x-auto rounded-lg border border-gray-200",
   innerWrapperSelected: "!rounded-t-none border-t-0",
   table: "min-w-full border-none text-sm w-full",
   tableLoader: "absolute !top-auto",
