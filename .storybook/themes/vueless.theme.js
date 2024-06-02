@@ -9,8 +9,7 @@ export default create({
 
   brandTitle: "Vueless UI",
   brandUrl: "https://vueless.com",
-  brandImage:
-    "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/logo.png",
+  brandImage: "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/logo.png",
   brandTarget: "_blank",
 
   // Main colors
