@@ -53,9 +53,9 @@ export default {
 ```
 {% endcode %}
 
-4.Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` for it.
+4.Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
 
-<pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind";
+<pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind.js";
 </strong>
 export default {
   presets: [vuelessPreset],
@@ -80,7 +80,15 @@ export default defineConfig({
 ```
 {% endcode %}
 
-That's it! You can use components in your app now ✨
+6\. Migrate you project to ECMAScript modules (ESM).
+
+<pre class="language-javascript" data-title="package.json"><code class="lang-javascript"><strong>{
+</strong>  "type": "module",
+  ...
+}
+</code></pre>
+
+That's it! You can use Vueless in your app now ✨
 
 ### Minimal requirements
 

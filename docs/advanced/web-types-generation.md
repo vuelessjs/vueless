@@ -8,6 +8,7 @@ But, in some cases you may need to install  [`@vueless/web-types`](https://www.n
 
 **When you may need to install it:**
 
+* If you going to change default values for props in `vueless.config.js`.
 * If you going to use Vue components from the `/component` folder without importing them (unplugin) to remove IDE warnings.
 * If you using JSDoc for documenting custom components and want to see props description and autocompletion on the go.
 
