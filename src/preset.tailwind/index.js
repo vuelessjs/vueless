@@ -1,4 +1,3 @@
-import colors from "tailwindcss/colors.js";
 import forms from "@tailwindcss/forms";
 import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants/index.js";
 
@@ -10,6 +9,11 @@ export function vuelessPreset() {
   const isProd = process.env.NODE_ENV === "production";
   const brandColor = twColorWithOpacity("--color-brand");
   const { brand, gray } = getVuelessConfig();
+  const colors = getTailwindColorsConfig();
+
+  if (!Object.keys(colors).length) {
+    return {};
+  }
 
   let brandPalette = BRAND_COLORS.includes(brand) ? colors[brand] : colors.green;
   let grayPalette = GRAY_COLORS.includes(gray) ? colors[gray] : colors.zinc;
@@ -70,10 +74,18 @@ function twColorWithOpacity(variableName) {
 
 /**
  * Convert sting to object.
- * @returns {Array} - TailwindCSS safelist.
+ * @returns {Object} - TailwindCSS safelist.
+ */
+function getTailwindColorsConfig() {
+  return JSON.parse(process.env.VUELESS_TAILWIND_COLORS_CONFIG_JSON || "{}");
+}
+
+/**
+ * Convert sting to object.
+ * @returns {Object} - TailwindCSS safelist.
  */
 function getVuelessConfig() {
-  return JSON.parse(process.env.VUELESS_CONFIG_JSON || "[]");
+  return JSON.parse(process.env.VUELESS_CONFIG_JSON || "{}");
 }
 
 /**
