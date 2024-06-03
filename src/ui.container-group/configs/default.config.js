@@ -16,14 +16,14 @@ export default /*tw*/ {
     base: "flex flex-col",
     variants: {
       gap: {
-        none: "space-y-0",
-        "2xs": "space-y-1",
-        xs: "space-y-2",
-        sm: "space-y-3",
-        md: "space-y-4",
-        lg: "space-y-5",
-        xl: "space-y-6",
-        "2xl": "space-y-8",
+        none: "gap-0",
+        "2xs": "gap-1",
+        xs: "gap-2",
+        sm: "gap-3",
+        md: "gap-4",
+        lg: "gap-5",
+        xl: "gap-6",
+        "2xl": "gap-8",
       },
       align: {
         end: "items-end",
