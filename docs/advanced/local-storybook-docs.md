@@ -29,7 +29,7 @@ yarn add -D @vueless/storybook
 
 {% tab title="pnpm" %}
 ```bash
-pnpm add -D @vueless/storybook
+pnpm add -D @vueless/storybook --pnpm
 ```
 {% endtab %}
 
@@ -50,6 +50,7 @@ Which:
 
 * creates `.storybook` config folder in the root of the project.
 * adds commands into the project `package.json` to run and build Storybook locally.
+* creates `.npmrc` config for `pnpm` only.
 
 {% hint style="info" %}
 If the `.storybook` folder is exist the package backup it before copying as a `.storybook-{timestamp}`.
