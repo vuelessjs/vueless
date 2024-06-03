@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div v-bind="wrapperAttrs">
     <UInput
       :id="id"
       :key="isShownCalendar"
@@ -224,7 +224,7 @@ const localValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const { config, inputAttrs, calendarAttrs } = useAttrs(props, { isShownCalendar });
+const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, { isShownCalendar });
 
 function activate() {
   isShownCalendar.value = true;
