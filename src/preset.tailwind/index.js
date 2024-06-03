@@ -8,8 +8,8 @@ import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants/index.js
 export function vuelessPreset() {
   const isProd = process.env.NODE_ENV === "production";
   const brandColor = twColorWithOpacity("--color-brand");
-  const { brand, gray } = getVuelessConfig();
-  const colors = getTailwindColorsConfig();
+  const { brand, gray } = getVuelessConfigColors();
+  const colors = getTailwindConfigColors();
 
   if (!Object.keys(colors).length) {
     return {};
@@ -76,16 +76,16 @@ function twColorWithOpacity(variableName) {
  * Convert sting to object.
  * @returns {Object} - TailwindCSS safelist.
  */
-function getTailwindColorsConfig() {
-  return JSON.parse(process.env.VUELESS_TAILWIND_COLORS_CONFIG_JSON || "{}");
+function getTailwindConfigColors() {
+  return JSON.parse(process.env.VUELESS_TAILWIND_CONFIG_COLORS || "{}");
 }
 
 /**
  * Convert sting to object.
  * @returns {Object} - TailwindCSS safelist.
  */
-function getVuelessConfig() {
-  return JSON.parse(process.env.VUELESS_CONFIG_JSON || "{}");
+function getVuelessConfigColors() {
+  return JSON.parse(process.env.VUELESS_CONFIG_COLORS || "{}");
 }
 
 /**
@@ -93,7 +93,7 @@ function getVuelessConfig() {
  * @returns {Array} - TailwindCSS safelist.
  */
 function getSafelist() {
-  return JSON.parse(process.env.VUELESS_SAFELIST_JSON || "[]").map((rule) => ({
+  return JSON.parse(process.env.VUELESS_SAFELIST || "[]").map((rule) => ({
     ...rule,
     pattern: new RegExp(rule.pattern),
   }));
