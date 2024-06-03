@@ -238,7 +238,7 @@ onMounted(() => {
 <style lang="postcss" scoped>
 /**
   * TODO: Move this styles to global vueless config using tailwind group class and remove footer classes
-  */
+  *
 .vueless-page {
   &-footer {
     &-left:deep(.vueless-dropdown-button) {
@@ -288,4 +288,5 @@ onMounted(() => {
     }
   }
 }
+*/
 </style>
