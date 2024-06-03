@@ -1,6 +1,6 @@
 export default /*tw*/ {
   htmlBody: "bg-gray-50 group/body-gray",
-  wrapperMobile: "overflow-x-hidden mb-[theme('spacing.mobile-menu-height')]",
+  wrapperMobile: "overflow-x-hidden",
   wrapper: {
     base: "min-h-screen UNotifyPage",
     variants: {
