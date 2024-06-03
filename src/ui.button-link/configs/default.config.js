@@ -82,6 +82,6 @@ export default /*tw*/ {
   safelist: (colors) => [
     { pattern: `decoration-(${colors})-500` },
     { pattern: `text-(${colors})-500` },
-    { pattern: `ring-(${colors})-500`, variants: ["focus"] },
+    { pattern: `ring-(${colors})-500`, variants: ["focus-within"] },
   ],
 };
