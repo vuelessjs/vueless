@@ -12,8 +12,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: [
-      "@tailwindcss/forms",
-      "tailwindcss/colors.js",
       "cva",
       "tailwind-merge",
       "prettier2",
