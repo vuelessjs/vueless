@@ -7,9 +7,15 @@
       <div v-if="!hasSlotContent($slots['default'])" v-html="html" />
     </div>
 
-    <UButton size="sm" variant="thirdary" :color="color" square v-bind="buttonAttrs">
+    <UButton
+      v-if="closeIcon"
+      size="sm"
+      variant="thirdary"
+      :color="color"
+      square
+      v-bind="buttonAttrs"
+    >
       <UIcon
-        v-if="closeIcon"
         internal
         size="xs"
         :color="color"
