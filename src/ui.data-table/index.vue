@@ -266,10 +266,11 @@ import {
   ref,
   computed,
   watch,
+  toValue,
   useSlots,
+  nextTick,
   onMounted,
   onUpdated,
-  nextTick,
   onBeforeUnmount,
 } from "vue";
 import { merge } from "lodash-es";
@@ -535,7 +536,7 @@ const {
 
 watch(selectAll, onChangeSelectAll, { deep: true });
 watch(selectedRows, onChangeSelectedRows, { deep: true });
-watch(tableRows, () => emit("update:rows", tableRows), { deep: true });
+watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });
 watch(() => tableRows.value.length, updateSelectedRows);
 watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
 watch(isHeaderSticky, setHeaderItemsWidth);
