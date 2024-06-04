@@ -9,6 +9,7 @@ export default function useAttrs(props, { isShownCalendar }) {
   const calendarAttrs = getAttrs("calendar");
   const inputBlurAttrs = getAttrs("input");
   const inputActiveAttrs = getAttrs("inputActive");
+  const wrapperAttrs = getAttrs("wrapper");
 
   const inputAttrs = computed(() => {
     return isShownCalendar.value ? inputActiveAttrs.value : inputBlurAttrs.value;
@@ -52,5 +53,6 @@ export default function useAttrs(props, { isShownCalendar }) {
     config,
     calendarAttrs,
     inputAttrs,
+    wrapperAttrs,
   };
 }

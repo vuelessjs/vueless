@@ -1,5 +1,6 @@
 export default /*tw*/ {
-  input: "relative",
+  wrapper: "relative",
+  input: "",
   inputActive: {
     block: {
       base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
