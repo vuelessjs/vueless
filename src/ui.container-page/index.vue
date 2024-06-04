@@ -235,7 +235,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="postcss" scoped>
+<!--style lang="postcss" scoped>
 /**
   * TODO: Move this styles to global vueless config using tailwind group class and remove footer classes
   *
@@ -258,7 +258,7 @@ onMounted(() => {
         }
 
         .dropdown-list {
-          @apply mb-[calc(theme("spacing.mobile-menu-height")+3rem)];
+           @apply xmb-[calc(theme("spacing.mobile-menu-height")+3rem)];
         }
       }
 
@@ -289,4 +289,4 @@ onMounted(() => {
   }
 }
 */
-</style>
+</style-->
