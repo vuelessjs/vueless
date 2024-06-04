@@ -30,7 +30,7 @@ const DefaultTemplate = (args) => ({
     return { args };
   },
   template: `
-    <URow v-bind="args">
+    <URow v-bind="args" class="flex">
       ${args.slotTemplate || defaultSlotTemplate}
     </URow>
   `,
