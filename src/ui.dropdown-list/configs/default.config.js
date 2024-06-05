@@ -58,8 +58,8 @@ export default /*tw*/ {
   addTitle: "text-sm font-medium text-gray-900",
   addTitleHotkey: "text-gray-500",
   buttonAdd: "sticky left-[calc(100%-2.3rem)] bottom-2.5 p-1",
-  iconAddName: "add",
-  iconAdd: "bg-transparent",
+  addIconName: "add",
+  addIcon: "bg-transparent",
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",

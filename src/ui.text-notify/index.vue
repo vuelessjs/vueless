@@ -18,8 +18,8 @@
         variant="light"
         size="md"
         internal
-        :name="config.iconSuccessName"
-        v-bind="iconSuccessAttrs"
+        :name="config.successIconName"
+        v-bind="successIconAttrs"
       />
 
       <UIcon
@@ -29,8 +29,8 @@
         variant="light"
         size="md"
         internal
-        :name="config.iconWarningName"
-        v-bind="iconWarningAttrs"
+        :name="config.warningIconName"
+        v-bind="warningIconAttrs"
       />
 
       <UIcon
@@ -40,8 +40,8 @@
         variant="light"
         size="md"
         internal
-        :name="config.iconErrorName"
-        v-bind="iconErrorAttrs"
+        :name="config.errorIconName"
+        v-bind="errorIconAttrs"
       />
 
       <div v-bind="contentAttrs">
@@ -61,8 +61,8 @@
         size="xs"
         internal
         interactive
-        :name="config.iconCloseName"
-        v-bind="iconCloseAttrs"
+        :name="config.closeIconName"
+        v-bind="closeIconAttrs"
         @click="onClickClose(notification)"
       />
     </div>
@@ -129,10 +129,10 @@ const {
   contentAttrs,
   labelAttrs,
   descriptionAttrs,
-  iconSuccessAttrs,
-  iconWarningAttrs,
-  iconErrorAttrs,
-  iconCloseAttrs,
+  successIconAttrs,
+  warningIconAttrs,
+  errorIconAttrs,
+  closeIconAttrs,
 } = useAttrs(props);
 
 const { tm } = useLocale();

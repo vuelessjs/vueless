@@ -55,12 +55,12 @@ export default /*tw*/ {
   beforeCaretSlot: "",
   afterCaretSlot: "mr-3",
   caretToggle: "mr-3",
-  iconToggle: "transform transition-all duration-300 group-[]/active:rotate-180",
-  iconToggleName: "expand_more",
-  iconClear: "",
-  iconClearName: "close_small",
-  iconRemoveItem: "",
-  iconRemoveItemName: "close_small",
+  toggleIcon: "transform transition-all duration-300 group-[]/active:rotate-180",
+  toggleIconName: "expand_more",
+  clearIcon: "",
+  clearIconName: "close_small",
+  removeItemIcon: "",
+  removeItemIconName: "close_small",
   caretRemoveItem: "flex items-center",
   caretClearText: {
     base: `

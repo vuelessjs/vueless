@@ -10,7 +10,7 @@
         internal
         interactive
         color="gray"
-        :name="config.iconDescriptionName"
+        :name="config.iconName"
         v-bind="iconAttrs"
         @focus="onFocus"
         @blur="onBlur"

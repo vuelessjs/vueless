@@ -25,7 +25,7 @@
       <template #item="{ element }">
         <div :id="element.id" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
           <div :data-cy="`${dataCy}-item-${element.id}`" v-bind="itemAttrs">
-            <UIcon internal :name="config.iconDragName" color="gray" v-bind="iconDragAttrs" />
+            <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
 
             <div v-bind="titleAttrs(element.isActive)">
               <slot :item="element">
@@ -47,10 +47,10 @@
                 internal
                 interactive
                 color="gray"
-                :name="config.iconDeleteName"
+                :name="config.deleteIconName"
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
-                v-bind="iconDeleteAttrs"
+                v-bind="deleteIconAttrs"
                 @click="onClickDelete(element.id, element.name)"
               />
 
@@ -59,10 +59,10 @@
                 internal
                 interactive
                 color="gray"
-                :name="config.iconEditName"
+                :name="config.editIconName"
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
-                v-bind="iconEditAttrs"
+                v-bind="editIconAttrs"
                 @click="onClickEdit(element.id)"
               />
             </template>
@@ -211,9 +211,9 @@ const {
   itemAttrs,
   titleAttrs,
   customActionsAttrs,
-  iconDeleteAttrs,
-  iconEditAttrs,
-  iconDragAttrs,
+  deleteIconAttrs,
+  editIconAttrs,
+  dragIconAttrs,
   hasSlotContent,
 } = useAttrs(props);
 const { tm } = useLocale();

@@ -10,10 +10,10 @@ export function useAttrs(props) {
   const contentAttrs = getAttrs("content");
   const labelAttrs = getAttrs("label");
   const descriptionAttrs = getAttrs("description");
-  const iconSuccessAttrs = getAttrs("iconSuccess");
-  const iconWarningAttrs = getAttrs("iconWarning");
-  const iconErrorAttrs = getAttrs("iconError");
-  const iconCloseAttrs = getAttrs("iconClose");
+  const successIconAttrs = getAttrs("successIcon");
+  const warningIconAttrs = getAttrs("warningIcon");
+  const errorIconAttrs = getAttrs("errorIcon");
+  const closeIconAttrs = getAttrs("closeIcon");
 
   return {
     config,
@@ -22,9 +22,9 @@ export function useAttrs(props) {
     contentAttrs,
     labelAttrs,
     descriptionAttrs,
-    iconSuccessAttrs,
-    iconWarningAttrs,
-    iconCloseAttrs,
-    iconErrorAttrs,
+    successIconAttrs,
+    warningIconAttrs,
+    errorIconAttrs,
+    closeIconAttrs,
   };
 }

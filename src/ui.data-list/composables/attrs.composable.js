@@ -14,9 +14,9 @@ export function useAttrs(props) {
   const itemWrapperAttrs = getAttrs("itemWrapper");
   const itemAttrs = getAttrs("item");
   const customActionsAttrs = getAttrs("customActions");
-  const iconDeleteAttrs = getAttrs("iconDelete", { isComponent: true });
-  const iconEditAttrs = getAttrs("iconEdit", { isComponent: true });
-  const iconDragAttrs = getAttrs("iconDrag", { isComponent: true });
+  const deleteIconAttrs = getAttrs("deleteIcon", { isComponent: true });
+  const editIconAttrs = getAttrs("editIcon", { isComponent: true });
+  const dragIconAttrs = getAttrs("dragIcon", { isComponent: true });
   const nestedAttrs = getAttrs("nested", { isComponent: true });
 
   const titleRaw = getAttrs("title");
@@ -35,11 +35,11 @@ export function useAttrs(props) {
     nestedAttrs,
     itemWrapperAttrs,
     itemAttrs,
-    iconDragAttrs,
     titleAttrs,
     customActionsAttrs,
-    iconDeleteAttrs,
-    iconEditAttrs,
     hasSlotContent,
+    deleteIconAttrs,
+    editIconAttrs,
+    dragIconAttrs,
   };
 }
