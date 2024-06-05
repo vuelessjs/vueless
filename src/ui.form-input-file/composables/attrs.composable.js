@@ -56,7 +56,6 @@ export function useAttrs(props) {
   const placeholderAttrs = getAttrs("placeholder", { classes: placeholderClasses });
   const clearIconAttrs = getAttrs("clearIcon", { isComponent: true });
   const chooseFileIconAttrs = getAttrs("chooseFileIcon", { isComponent: true });
-  const chooseFileIconNameAttrs = getAttrs("chooseFileIconName", { isComponent: true });
   const inputAttrs = getAttrs("input");
   const fileListAttrs = getAttrs("fileList");
   const selectedItemAttrs = getAttrs("selectedItem", { classes: selectedItemClasses });
@@ -70,7 +69,6 @@ export function useAttrs(props) {
     descriptionAttrs,
     contentWrapperAttrs,
     clearIconAttrs,
-    chooseFileIconNameAttrs,
     placeholderAttrs,
     fileListAttrs,
     buttonWrapperAttrs,

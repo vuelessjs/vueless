@@ -92,15 +92,15 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   const innerWrapperAttrs = getAttrs("innerWrapper", { classes: innerWrapperClasses });
   const wrapperTopAttrs = getAttrs("wrapperTop");
   const leftSlotAttrs = getAttrs("leftSlot");
-  const iconToggleAttrs = getAttrs("iconToggle", { isComponent: true });
   const searchInputAttrs = getAttrs("searchInput", { classes: searchInputClasses });
   const selectedLabelsAttrs = getAttrs("selectedLabels");
   const selectedLabelAttrs = getAttrs("selectedLabel", { classes: selectedLabelClasses });
   const dropdownListAttrs = getAttrs("dropdownList", { isComponent: true });
   const caretClearTextAttrs = getAttrs("caretClearText", { classes: caretClearTextClasses });
-  const iconClearAttrs = getAttrs("iconClear", { isComponent: true });
   const caretRemoveItemAttrs = getAttrs("caretRemoveItem");
-  const iconRemoveItemAttrs = getAttrs("iconRemoveItem", { isComponent: true });
+  const toggleIconAttrs = getAttrs("toggleIcon", { isComponent: true });
+  const clearIconAttrs = getAttrs("clearIcon", { isComponent: true });
+  const removeItemIconAttrs = getAttrs("removeItemIcon", { isComponent: true });
 
   const wrapperAttrsRaw = getAttrs("wrapper", { classes: wrapperClasses });
 
@@ -169,16 +169,16 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
     beforeCaretSlotAttrs,
     afterCaretSlotAttrs,
     caretToggleAttrs,
-    iconToggleAttrs,
     caretClearAttrs,
     caretClearTextAttrs,
-    iconClearAttrs,
     caretRemoveItemAttrs,
-    iconRemoveItemAttrs,
     searchAttrs,
     searchInputAttrs,
     selectedLabelsAttrs,
     selectedLabelAttrs,
     dropdownListAttrs,
+    toggleIconAttrs,
+    clearIconAttrs,
+    removeItemIconAttrs,
   };
 }

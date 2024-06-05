@@ -82,8 +82,8 @@
             internal
             color="white"
             size="xs"
-            :name="config.iconAddName"
-            v-bind="iconAddAttrs"
+            :name="config.addIconName"
+            v-bind="addIconAttrs"
           />
         </UButton>
       </template>
@@ -230,7 +230,7 @@ const {
   addTitleAttrs,
   addTitleHotkeyAttrs,
   buttonAddAttrs,
-  iconAddAttrs,
+  addIconAttrs,
   optionAttrs,
   subGroupLabelAttrs,
   groupLabelAttrs,

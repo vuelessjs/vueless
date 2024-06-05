@@ -42,8 +42,8 @@
           interactive
           color="gray"
           :size="size"
-          :name="config.iconToggleName"
-          v-bind="iconToggleAttrs"
+          :name="config.toggleIconName"
+          v-bind="toggleIconAttrs"
         />
       </div>
 
@@ -61,8 +61,8 @@
           interactive
           color="gray"
           :size="size"
-          :name="config.iconClearName"
-          v-bind="iconClearAttrs"
+          :name="config.clearIconName"
+          v-bind="clearIconAttrs"
           @mousedown="removeElement"
         />
       </div>
@@ -94,8 +94,8 @@
                 interactive
                 color="gray"
                 :size="size"
-                :name="config.iconRemoveItemName"
-                v-bind="iconRemoveItemAttrs"
+                :name="config.removeItemIconName"
+                v-bind="removeItemIconAttrs"
                 @mousedown="removeElement(item)"
               />
             </div>
@@ -487,17 +487,17 @@ const {
   beforeCaretSlotAttrs,
   afterCaretSlotAttrs,
   caretToggleAttrs,
-  iconToggleAttrs,
   caretClearAttrs,
   caretClearTextAttrs,
-  iconClearAttrs,
   caretRemoveItemAttrs,
-  iconRemoveItemAttrs,
   searchAttrs,
   searchInputAttrs,
   selectedLabelsAttrs,
   selectedLabelAttrs,
   dropdownListAttrs,
+  toggleIconAttrs,
+  clearIconAttrs,
+  removeItemIconAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const i18nGlobal = tm(USelect);

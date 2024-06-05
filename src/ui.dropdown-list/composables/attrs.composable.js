@@ -50,7 +50,7 @@ export default function useAttrs(props) {
   const addTitleAttrs = getAttrs("addTitle");
   const addTitleHotkeyAttrs = getAttrs("addTitleHotkey");
   const buttonAddAttrs = getAttrs("buttonAdd", { isComponent: true });
-  const iconAddAttrs = getAttrs("iconAdd", { isComponent: true });
+  const addIconAttrs = getAttrs("addIcon", { isComponent: true });
   const optionContentAttrs = getAttrs("optionContent");
 
   const subGroupLabelAttrsRaw = getAttrs("subGroupLabel", { classes: subGroupLabelClasses });
@@ -83,7 +83,7 @@ export default function useAttrs(props) {
     addTitleAttrs,
     addTitleHotkeyAttrs,
     buttonAddAttrs,
-    iconAddAttrs,
+    addIconAttrs,
     optionAttrs,
     subGroupLabelAttrs,
     groupLabelAttrs,
