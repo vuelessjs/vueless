@@ -46,14 +46,6 @@ const props = defineProps({
   },
 
   /**
-   * Fill the background for thirdary variant.
-   */
-  filled: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.filled,
-  },
-
-  /**
    * Button color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
@@ -77,6 +69,22 @@ const props = defineProps({
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Allows changing button html tag.
+   */
+  tag: {
+    type: String,
+    default: UIService.get(defaultConfig, UButton).default.tag,
+  },
+
+  /**
+   * Fill the background for thirdary variant.
+   */
+  filled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UButton).default.filled,
   },
 
   /**
@@ -134,11 +142,6 @@ const props = defineProps({
   config: {
     type: Object,
     default: () => ({}),
-  },
-
-  tag: {
-    type: String,
-    default: UIService.get(defaultConfig, UButton).default.tag,
   },
 
   /**
