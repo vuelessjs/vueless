@@ -34,14 +34,14 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <div class="flex gap-4 flex-wrap">
+    <URow class="flex-wrap">
       <ULoader
         v-for="(color, index) in colors"
         :color="color"
         v-bind="args"
         :key="index"
       />
-    </div>
+    </URow>
   `,
 });
 
@@ -57,25 +57,19 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <ULoader
         v-for="(size, index) in sizes"
-        :size="size"
-        :label="getText(size)"
-        v-bind="args"
         :key="index"
+        v-bind="args"
+        :size="size"
       />
     </URow>
   `,
-  methods: {
-    getText(value) {
-      return `Tag ${value}`;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const sizes = SizesTemplate.bind({});
+sizes.args = {};
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const colors = ColorsTemplate.bind({});
+colors.args = {};

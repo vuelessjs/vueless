@@ -1,16 +1,16 @@
 export default /*tw*/ {
   loader: {
-    base: "relative mx-1 flex h-4 items-center",
+    base: "relative flex items-center",
     variants: {
       size: {
-        sm: "w-9",
-        md: "w-[3.625rem]",
-        lg: "w-20",
+        sm: "h-1.5 w-9",
+        md: "h-2.5 w-[3.625rem]",
+        lg: "h-4 w-20",
       },
     },
   },
   ellipse: {
-    base: `absolute rounded-full bg-{color}-500 ease-[cubic-bezier(0,1,1,0)]`,
+    base: "absolute rounded-full bg-{color}-600 ease-[cubic-bezier(0,1,1,0)]",
     variants: {
       color: {
         white: "bg-white",
@@ -18,30 +18,32 @@ export default /*tw*/ {
       },
       size: {
         sm: `
-            h-1.5 w-1.5
-            [&:nth-child(1)]:left-1
-            [&:nth-child(4)]:left-7
-          `,
+          h-1.5 w-1.5
+          [&:nth-child(1)]:left-1
+          [&:nth-child(2)]:left-1
+          [&:nth-child(3)]:left-4
+          [&:nth-child(4)]:left-7
+        `,
         md: `
-            h-2.5 w-2.5
-            [&:nth-child(1)]:left-1.5
-            [&:nth-child(2)]:left-1.5
-            [&:nth-child(3)]:left-6
-            [&:nth-child(4)]:left-[2.625rem]
-          `,
+          h-2.5 w-2.5
+          [&:nth-child(1)]:left-1.5
+          [&:nth-child(2)]:left-1.5
+          [&:nth-child(3)]:left-6
+          [&:nth-child(4)]:left-[2.625rem]
+        `,
         lg: `
-            h-4 w-4
-            [&:nth-child(1)]:left-2
-            [&:nth-child(2)]:left-2
-            [&:nth-child(3)]:left-8
-            [&:nth-child(4)]:left-14
-          `,
+          h-4 w-4
+          [&:nth-child(1)]:left-2
+          [&:nth-child(2)]:left-2
+          [&:nth-child(3)]:left-8
+          [&:nth-child(4)]:left-14
+        `,
       },
     },
   },
   defaultVariants: {
-    size: "md",
     color: "brand",
+    size: "md",
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],
+  safelist: (colors) => [{ pattern: `bg-(${colors})-600` }],
 };

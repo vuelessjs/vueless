@@ -1,11 +1,11 @@
 <template>
   <div v-bind="loaderAttrs">
-    <div v-for="ellipse in ellipsesAmount" :key="ellipse" v-bind="ellipseAttrs(ellipseClasses)" />
+    <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs(ellipseClasses)" />
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import UIService from "../service.ui";
 
 import { ULoader } from "./constants";
@@ -17,7 +17,7 @@ defineOptions({ name: "ULoader", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * The size of the button.
+   * Loader size.
    * @values sm, md, lg
    */
   size: {
@@ -35,7 +35,7 @@ const props = defineProps({
   },
 });
 
-const ellipsesAmount = ref(4);
+const ELLIPSES_AMOUNT = 4;
 
 const { loaderAttrs, ellipseAttrs } = useAttrs(props);
 
