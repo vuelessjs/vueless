@@ -65,7 +65,7 @@ const props = defineProps({
 
   /**
    * Button size.
-   * @values xs, sm, md, lg
+   * @values 2xs, xs, sm, md, lg, xl
    */
   size: {
     type: String,

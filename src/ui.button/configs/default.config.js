@@ -5,39 +5,40 @@ export default /*tw*/ {
       text-base font-medium outline-none
       border border-solid rounded-lg
       transition duration-100 ease-in-out
-      focus:ring-opacity-20 focus:ring-4 focus:outline-none
-      active:ring-opacity-20
+      focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700 focus:outline-none
       disabled:ring-0 disabled:cursor-no-drop
     `,
     variants: {
       size: {
-        xs: "px-2 py-1.5 text-xs leading-tight gap-0.5",
-        sm: "px-3 py-2.5 text-sm leading-tight gap-1",
-        md: "px-4 py-3.5 text-base leading-tight gap-1.5",
-        lg: "px-5 py-[1.125rem] text-lg leading-tight gap-2",
+        "2xs": "px-3 py-1 text-2xs leading-tight gap-1",
+        xs: "px-4 py-1.5 text-xs leading-tight gap-1.5",
+        sm: "px-5 py-2.5 text-sm leading-tight gap-1.5",
+        md: "px-6 py-3.5 text-base leading-tight gap-2",
+        lg: "px-7 py-4 text-lg leading-tight gap-2.5",
+        xl: "px-8 py-5 text-xl leading-tight gap-2.5",
       },
       variant: {
         primary: `
           text-white
           bg-{color}-600 border-{color}-600
           hover:bg-{color}-700 hover:border-{color}-700
-          focus:bg-{color}-700 focus:border-{color}-700 focus:ring-{color}-700
-          active:bg-{color}-800 active:border-{color}-800 active:ring-{color}-800
+          focus:bg-{color}-700 focus:border-{color}-700
+          active:bg-{color}-800 active:border-{color}-800
           disabled:bg-{color}-300 disabled:border-{color}-300 disabled:text-white
         `,
         secondary: `
           text-{color}-600 border-{color}-600
           hover:text-{color}-700 hover:border-{color}-700
-          focus:text-{color}-700 focus:border-{color}-700 focus:ring-{color}-700
-          active:text-{color}-800 active:border-{color}-800 active:ring-{color}-800
+          focus:text-{color}-700 focus:border-{color}-700
+          active:text-{color}-800 active:border-{color}-800
           disabled:text-{color}-300 disabled:border-{color}-300
         `,
         thirdary: `
           border-transparent
           text-{color}-600
           hover:text-{color}-700 hover:bg-{color}-700 hover:bg-opacity-10
-          focus:text-{color}-700 focus:bg-{color}-700 focus:bg-opacity-10 focus:ring-{color}-700
-          active:text-{color}-800 active:bg-{color}-800 active:bg-opacity-15 active:ring-{color}-800
+          focus:text-{color}-700 focus:bg-{color}-700 focus:bg-opacity-10
+          active:text-{color}-800 active:bg-{color}-800 active:bg-opacity-15
           disabled:text-{color}-300
         `,
       },
@@ -51,8 +52,8 @@ export default /*tw*/ {
         true: "w-full",
       },
       color: {
-        grayscale: "focus:ring-gray-800 active:ring-gray-700 disabled:text-gray-400",
-        white: "focus:ring-gray-800 active:ring-gray-700 disabled:text-gray-400",
+        grayscale: "focus:ring-gray-800 disabled:text-gray-400",
+        white: "focus:ring-gray-800 disabled:text-gray-400",
       },
     },
     compoundVariants: [
@@ -83,9 +84,10 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900
-          hover:text-gray-800 hover:bg-gray-800 hover:bg-opacity-10
-          focus:text-gray-800 focus:bg-gray-800 focus:bg-opacity-10
-          active:text-gray-700 active:bg-gray-700 active:bg-opacity-15
+          hover:text-gray-800 hover:bg-gray-800
+          focus:text-gray-800 focus:bg-gray-800
+          active:text-gray-700 active:bg-gray-700
+          disabled:bg-transparent
         `,
       },
       {
@@ -102,10 +104,10 @@ export default /*tw*/ {
         color: "white",
         variant: "secondary",
         class: `
-          text-gray-900 border-white
-          hover:text-gray-800 hover:border-gray-50
-          focus:text-gray-800 focus:border-gray-50
-          active:text-gray-700 active:border-gray-100
+          text-gray-900 border-gray-200
+          hover:text-gray-800 hover:border-gray-300
+          focus:text-gray-800 focus:border-gray-300
+          active:text-gray-700 active:border-gray-400
         `,
       },
       {
@@ -113,26 +115,29 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900
-          hover:text-gray-800 hover:bg-white hover:bg-opacity-10
-          focus:text-gray-800 focus:bg-white focus:bg-opacity-10
-          active:text-gray-700 active:bg-white active:bg-opacity-15
+          hover:text-gray-800 hover:bg-white
+          focus:text-gray-800 focus:bg-white
+          active:text-gray-700 active:bg-white
+          disabled:bg-transparent
         `,
       },
-      { filled: true, variant: "thirdary", class: "bg-{color}-600 bg-opacity-10" },
+      { filled: true, variant: "thirdary", class: "bg-{color}-700 bg-opacity-10" },
       { filled: true, variant: "thirdary", color: "grayscale", class: "bg-gray-800 bg-opacity-10" },
       { filled: true, variant: "thirdary", color: "white", class: "bg-gray-50" },
       { square: true, size: "xs", class: "p-1" },
-      { square: true, size: "sm", class: "p-2" },
-      { square: true, size: "md", class: "p-3" },
+      { square: true, size: "xs", class: "p-1.5" },
+      { square: true, size: "sm", class: "p-2.5" },
+      { square: true, size: "md", class: "p-3.5" },
       { square: true, size: "lg", class: "p-4" },
+      { square: true, size: "lg", class: "p-5" },
     ],
   },
   text: "whitespace-nowrap",
   defaultVariants: {
     color: "brand",
     variant: "primary",
-    size: "md",
     tag: "button",
+    size: "md",
     pill: false,
     block: false,
     square: false,
