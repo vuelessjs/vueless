@@ -1,34 +1,43 @@
 <template>
-  <div v-bind="wrapperAttrs">
-    <input
-      :id="id"
-      v-model="selectedItem"
-      :name="name"
-      :type="type"
-      :value="value"
-      :disabled="disabled"
-      v-bind="inputAttrs"
-    />
-    <label tabindex="0" :for="id" v-bind="labelAttrs" @click="onClickSetValue">
-      <span v-if="hasSlotContent($slots['left'])">
-        <!-- @slot Use it to add some content before label. -->
-        <slot name="left" />
-      </span>
+  <UButton
+    tag="label"
+    tabindex="0"
+    :for="id"
+    :label="label"
+    :size="toValue(size)"
+    :block="toValue(block)"
+    :variant="toValue(variant)"
+    v-bind="buttonAttrs"
+    @click="onClickSetValue"
+  >
+    <template #left>
+      <slot name="left" />
+    </template>
 
-      <!-- @slot Use it to add some content instead of label. -->
-      <slot />
-      <span v-if="!hasSlotContent($slots['default'])" v-bind="labelTextAttrs" v-text="label" />
+    <template #default>
+      <input
+        :id="id"
+        v-model="selectedItem"
+        :name="name"
+        :type="type"
+        :value="value"
+        :disabled="disabled"
+        v-bind="inputAttrs"
+      />
 
-      <span v-if="hasSlotContent($slots['right'])">
-        <!-- @slot Use it to add some content after label. -->
-        <slot name="right" />
-      </span>
-    </label>
-  </div>
+      <slot name="default" />
+    </template>
+
+    <template #right>
+      <slot name="right" />
+    </template>
+  </UButton>
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, ref, toValue } from "vue";
+
+import UButton from "../ui.button";
 import UIService, { getRandomId } from "../service.ui";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants";
@@ -108,11 +117,7 @@ const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).de
 const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
-const { wrapperAttrs, labelTextAttrs, labelAttrs, inputAttrs, hasSlotContent } = useAttrs(props, {
-  size,
-  block,
-  variant,
-});
+const { buttonAttrs, inputAttrs } = useAttrs(props);
 
 const selectedItem = ref("");
 
