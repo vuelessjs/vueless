@@ -44,7 +44,7 @@ export default /*tw*/ {
         `,
       },
       loading: {
-        true: "pointer-events-none",
+        true: "pointer-events-none gap-0",
       },
       pill: {
         true: "rounded-full",

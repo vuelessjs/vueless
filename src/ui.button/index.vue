@@ -8,22 +8,28 @@
     v-bind="buttonAttrs"
     @click="onClick"
   >
-    <!-- @slot Use it to add something before text. -->
-    <slot v-if="!loading" name="left" />
+    <template v-if="loading">
+      <!-- Label is needed to prevent changing button height -->
+      <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
+      <ULoader :size="loaderSize" :color="loaderColor" v-bind="loaderAttrs" />
+    </template>
 
-    <!-- @slot Use it to add something instead of text. -->
-    <slot v-if="!loading" />
+    <template v-else>
+      <!-- @slot Use it to add something before text. -->
+      <slot name="left" />
 
-    <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
-    <ULoader v-if="loading" :size="size" color="white" />
+      <!-- @slot Use it to add something instead of text. -->
+      <slot />
+      <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
-    <!-- @slot Use it to add something after text. -->
-    <slot v-if="!loading" name="right" />
+      <!-- @slot Use it to add something after text. -->
+      <slot name="right" />
+    </template>
   </component>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import UIService, { getRandomId } from "../service.ui";
 import ULoader from "../ui.loader";
@@ -155,11 +161,28 @@ const props = defineProps({
 
 const emit = defineEmits(["click"]);
 
-const { textAttrs, buttonAttrs } = useAttrs(props);
+const { buttonAttrs, loaderAttrs, textAttrs } = useAttrs(props);
 
 const buttonRef = ref(null);
 
 defineExpose({ buttonRef });
+
+const loaderSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size];
+});
+
+const loaderColor = computed(() => {
+  return props.variant === "primary" ? "white" : props.color;
+});
 
 function onClick(event) {
   if (props.disabled) return;

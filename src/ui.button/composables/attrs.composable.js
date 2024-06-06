@@ -28,7 +28,7 @@ export function useAttrs(props) {
         variant: props.variant,
         pill: props.pill,
         block: props.block,
-        square: props.square,
+        square: props.loading || props.square,
         filled: props.filled,
         loading: props.loading,
         disabled: props.disabled,
@@ -37,12 +37,22 @@ export function useAttrs(props) {
     ),
   );
 
-  const textClasses = computed(() => setColor(cvaText({ color: props.color }), props.color));
+  const textClasses = computed(() =>
+    setColor(
+      cvaText({
+        color: props.color,
+      }),
+      props.color,
+    ),
+  );
+
   const buttonAttrs = getAttrs("button", { classes: buttonClasses });
+  const loaderAttrs = getAttrs("loader");
   const textAttrs = getAttrs("text", { classes: textClasses });
 
   return {
-    textAttrs,
     buttonAttrs,
+    loaderAttrs,
+    textAttrs,
   };
 }
