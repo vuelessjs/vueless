@@ -5,7 +5,8 @@ export default /*tw*/ {
       text-base font-medium outline-none
       border border-solid rounded-lg
       transition duration-100 ease-in-out
-      focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700 focus:outline-none
+      focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700
+      focus-within:ring-opacity-20 focus-within:ring-4 focus-within:ring-{color}-700
       disabled:ring-0 disabled:cursor-no-drop
     `,
     variants: {
@@ -52,8 +53,8 @@ export default /*tw*/ {
         true: "w-full",
       },
       color: {
-        grayscale: "focus:ring-gray-800 disabled:text-gray-400",
-        white: "focus:ring-gray-800 disabled:text-gray-400",
+        grayscale: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
+        white: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
       },
     },
     compoundVariants: [
@@ -132,7 +133,7 @@ export default /*tw*/ {
       { square: true, size: "lg", class: "p-5" },
     ],
   },
-  text: "whitespace-nowrap",
+  text: "whitespace-nowrap focus-visible:outline-none",
   defaultVariants: {
     color: "brand",
     variant: "primary",

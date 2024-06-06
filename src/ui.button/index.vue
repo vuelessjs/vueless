@@ -12,10 +12,9 @@
     <slot v-if="!loading" name="left" />
 
     <!-- @slot Use it to add something instead of text. -->
-    <slot v-if="!loading">
-      <div v-if="label" v-bind="textAttrs" v-text="label" />
-    </slot>
+    <slot v-if="!loading" />
 
+    <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
     <ULoader v-if="loading" :size="size" color="white" />
 
     <!-- @slot Use it to add something after text. -->
@@ -163,8 +162,5 @@ function onClick(event) {
   if (props.disabled) return;
 
   emit("click", event);
-
-  // TODO: Maybe this should be removed (need to test)
-  //document.getElementById(props.id).blur();
 }
 </script>
