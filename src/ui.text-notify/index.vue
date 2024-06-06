@@ -45,13 +45,20 @@
       />
 
       <div v-bind="contentAttrs">
-        <template v-if="vHtml">
+        <template v-if="html">
           <span v-bind="labelAttrs" v-html="notification.label" />
-          <span v-bind="descriptionAttrs" v-html="getText(notification.text, notification.type)" />
+          <span
+            v-bind="descriptionAttrs"
+            v-html="getText(notification.description, notification.type)"
+          />
         </template>
+
         <template v-else>
           <span v-bind="labelAttrs" v-text="notification.label" />
-          <span v-bind="descriptionAttrs" v-text="getText(notification.text, notification.type)" />
+          <span
+            v-bind="descriptionAttrs"
+            v-text="getText(notification.description, notification.type)"
+          />
         </template>
       </div>
 
@@ -106,11 +113,11 @@ const props = defineProps({
   },
 
   /**
-   * Use v-html to render notification label and description content.
+   * Use html to render you own content.
    */
-  vHtml: {
+  html: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UNotify).default.vHtml,
+    default: UIService.get(defaultConfig, UNotify).default.html,
   },
 
   /**

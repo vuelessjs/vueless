@@ -1,89 +1,86 @@
 import { globalComponentConfig, getRandomId } from "../../service.ui";
+import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "../constants";
 
-import { NOTIFY_TYPE } from "../constants";
-
-const delayBetweenClones = 1000;
+const globalNotifyDuration = globalComponentConfig.UNotify?.duration;
+const notifyClearAllEvent = new Event("notifyClearAll");
 
 let lastMessageTime = undefined;
 let lastMessage = undefined;
 
-const defaultDuration = {
-  short: 4000,
-  medium: 8000,
-  long: 12000,
-};
+export function notify({ type, label, description, duration, ignoreDuplicates } = {}) {
+  const notifyDuration = duration || globalNotifyDuration?.short || DURATION.short;
 
-const notifyClearAllEvent = new Event("notifyClearAll");
+  const isSameMessage =
+    lastMessage === description && new Date() - lastMessageTime < DELAY_BETWEEN_CLONES;
 
-export function notify(settings) {
-  const { type, label, text, duration, delayDuplicates } = settings;
-  const currentNotifyDuration =
-    duration || globalComponentConfig.UNotify?.duration?.short || defaultDuration.short;
-  const isSameMessage = lastMessage === text && new Date() - lastMessageTime < delayBetweenClones;
-
-  if ((isSameMessage || !text) && delayDuplicates) {
+  if ((isSameMessage || !description) && ignoreDuplicates) {
     return;
   }
 
   lastMessageTime = new Date();
-  lastMessage = text;
+  lastMessage = description;
 
-  const detail = {
+  const eventDetail = {
     type,
     id: getRandomId(),
     label: label || "",
-    text: text || "",
-    duration: currentNotifyDuration,
+    description: description || "",
+    duration: notifyDuration,
   };
 
-  const notifyStart = new CustomEvent("notifyStart", { detail });
-  const notifyEnd = new CustomEvent("notifyEnd", { detail });
+  const notifyStart = new CustomEvent("notifyStart", { detail: eventDetail });
+  const notifyEnd = new CustomEvent("notifyEnd", { detail: eventDetail });
 
   window.dispatchEvent(notifyStart);
 
-  setTimeout(() => window.dispatchEvent(notifyEnd), currentNotifyDuration);
+  setTimeout(() => window.dispatchEvent(notifyEnd), notifyDuration);
 }
 
-export function notifySuccess(text, duration = globalComponentConfig.UNotify?.duration?.short) {
+export function notifySuccess({ label, description, duration, ignoreDuplicates } = {}) {
   notify({
+    label,
+    description,
+    ignoreDuplicates,
     type: NOTIFY_TYPE.success,
-    text,
-    duration,
+    duration: duration || globalNotifyDuration?.short || DURATION.short,
   });
 }
 
-export function notifyWarning(text, duration = globalComponentConfig.UNotify?.duration?.medium) {
+export function notifyWarning({ label, description, duration, ignoreDuplicates } = {}) {
   notify({
+    label,
+    description,
+    ignoreDuplicates,
     type: NOTIFY_TYPE.warning,
-    text,
-    duration,
+    duration: duration || globalNotifyDuration?.medium || DURATION.medium,
   });
 }
 
-export function notifyError(text, duration = globalComponentConfig.UNotify?.duration?.long) {
+export function notifyError({ label, description, duration, ignoreDuplicates } = {}) {
   notify({
+    label,
+    description,
+    ignoreDuplicates,
     type: NOTIFY_TYPE.error,
-    text,
-    duration,
+    duration: duration || globalNotifyDuration?.long || DURATION.long,
   });
 }
 
-export function clearAllNotifications() {
+export function clearNotifications() {
   window.dispatchEvent(notifyClearAllEvent);
 }
 
 export function setDelayedNotify(settings) {
-  localStorage.setItem("notify", JSON.stringify(settings));
+  localStorage.setItem(LOCAL_STORAGE_ID, JSON.stringify(settings));
 }
 
 export function getDelayedNotify() {
-  const notifyData = JSON.parse(localStorage.getItem("notify"));
+  const notifyData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ID));
 
-  clearAllNotifications();
+  clearNotifications();
 
   if (notifyData) {
     notify(notifyData);
-
-    localStorage.removeItem("notify");
+    localStorage.removeItem(LOCAL_STORAGE_ID);
   }
 }

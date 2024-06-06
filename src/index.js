@@ -20,7 +20,7 @@ export {
   notifySuccess,
   notifyWarning,
   notifyError,
-  clearAllNotifications,
+  clearNotifications,
   setDelayedNotify,
   getDelayedNotify,
 } from "./ui.text-notify/services";

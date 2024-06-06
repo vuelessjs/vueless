@@ -15,70 +15,74 @@ import defaultConfig from "./configs/default.config?raw"
 ## **Default config**
 <Source code={getSource(defaultConfig)} language="jsx" dark />
 
-## Trigger notifications
-You can trigger notification using *notify* method. Use *notifySuccess, notifyWarning, notifyError* methods to trigger notification of specific type.
+## Triggering notification
+You can trigger notification using `notify` method.
+Use `notifySuccess`, `notifyWarning`, `notifyError` shortcut methods to trigger notification of a specific type.
 
 <Source code={`
 import {
-    notify,
-    notifySuccess,
-    notifyWarning,
-    notifyError,
+  notify,
+  notifySuccess,
+  notifyWarning,
+  notifyError,
 } from "vueless";
 
 notify({
-    type: "success" // success, warning, error
-    title: "" // Some label
-    text: "" // Some text content
-    duration: 1000 // Duration in milliseconds
-    delayDuplicates: false // Delay notifications with same text
+  type: "success", // @values: success, warning, error
+  label: "Hurray!",
+  description: "The file successfully downloaded.",
+  duration: 1000, // in milliseconds
+  ignoreDuplicates: false // ignore notifications with the same 'description'
 });
 
-const durationInMilliseconds = 1000;
-
-notifySuccess("Some success text", durationInMilliseconds);
-notifyWarning("Some warning text", durationInMilliseconds);
-notifyError("Some error text", durationInMilliseconds);
+notifySuccess({ description: "The file successfully downloaded." });
+notifyWarning({ description: "The file have been downloaded, but some data is missing." });
+notifyError({ description: "The file can't be downloaded, please check the fields and try again." });
 `} language="jsx" dark />
 
-## Clear active notifications
-Use *clearAllNotifications* method to clear all active notifications.
+## Clear notifications
+Use `clearNotifications` method to clear active notifications.
 
 <Source code={`
-import { clearAllNotifications, notifySuccess } from "vueless";
+import { clearNotifications, notifySuccess } from "vueless";
 
-const durationInMilliseconds = 1000;
-notifySuccess("Some success text", durationInMilliseconds);
+notifySuccess({ description: "The file successfully downloaded." });
 
-clearAllNotifications();
+// and somewhere below
+clearNotifications();
 `} language="jsx" dark />
 
 ## Trigger notifications
-You can create delayed notification which you can trigger any time later.
+You can create a delayed notification which you can trigger any time later.
 
 <Source code={`
 import { setDelayedNotify, getDelayedNotify } from "vueless";
 
 setDelayedNotify({
-    type: "success" // success, warning, error
-    title: "" // Some label
-    text: "" // Some text content
-    duration: 1000 // Duration in milliseconds
-    delayDuplicates: false // Delay notifications with same text
+  type: "success", // @values: success, warning, error
+  label: "Hurray!",
+  description: "The file successfully downloaded.",
+  duration: 1000, // in milliseconds
+  ignoreDuplicates: false // ignore notifications with the same 'description'
 });
 
-setTimeout(getDelayedNotify, 10_000);
+// and somewhere below
+getDelayedNotify();
 `} language="jsx" dark />
 
-## Place notification relatively to navigation elements
-Provide *positionClasses* key for UNotify config to take navigation elements offset into account. 
-By default, it will be looking for UNotifyPage and UNotifyAside classes.
+## Align notification relatively to the layout
+Use `positionClasses` in UNotify config to align a notification component related to layout.
+* `page` – align UNotify inside an element with provided class (UNotifyPage is a default class name).
+* `aside` – add shift for aside width (UNotifyAside is a default class name).
 
 <Source code={`
-const notifyConfig = {
+{
+  ...
+  UNotify: {
     positionClasses: {
-        page: "UNotifyPage",
-        aside: "UNotifyAside",
+      page: "UNotifyPage",
+      aside: "UNotifyAside",
     },
+  }
 }
 `} language="jsx" dark />
