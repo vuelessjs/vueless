@@ -13,6 +13,12 @@ export default {
   args: {
     text: "UHint",
     slotTemplate: `
+      <template #title>
+        <b>Alert Title</b>
+      </template>
+      <template #description>
+        <p>This is a custom description for the alert.</p>
+      </template>
       <template #default>
         <p>
           <b>Lorem ipsum dolor sit amet,</b>
@@ -92,7 +98,7 @@ Default.args = {};
 
 export const colors = ColorsTemplate.bind({});
 colors.args = {
-  closeIcon: true,
+  closable: true,
   slotTemplate: `
      <template #default>
        text
@@ -102,7 +108,7 @@ colors.args = {
 
 export const size = SizeTemplate.bind({});
 size.args = {
-  closeIcon: true,
+  closable: true,
   slotTemplate: `
      <template #default>
        text
@@ -110,9 +116,9 @@ size.args = {
   `,
 };
 
-export const closeIcon = DefaultTemplate.bind({});
-closeIcon.args = {
-  closeIcon: true,
+export const closable = DefaultTemplate.bind({});
+closable.args = {
+  closable: true,
   slotTemplate: `
      <template #default>
        some text
@@ -158,4 +164,52 @@ list.args = {
       </URow>
     </template>
     `,
+};
+
+export const slotTitleAndDescription = DefaultTemplate.bind({});
+slotTitleAndDescription.args = {
+  slotTemplate: `
+    <template #title>
+      <b>Alert Title</b>
+    </template>
+    <template #description>
+      <p>This is a custom description for the alert.</p>
+    </template>
+  `,
+};
+
+export const slotAlertLeft = DefaultTemplate.bind({});
+slotAlertLeft.args = {
+  slotTemplate: `
+    <template #left>
+      <span>Left Content</span>
+    </template>
+  `,
+};
+
+export const slotAlertRight = DefaultTemplate.bind({});
+slotAlertRight.args = {
+  slotTemplate: `
+    <template #right>
+      <span>Right Content</span>
+    </template>
+  `,
+};
+
+export const slotAlertTop = DefaultTemplate.bind({});
+slotAlertTop.args = {
+  slotTemplate: `
+    <template #top>
+      <span>Top Content</span>
+    </template>
+  `,
+};
+
+export const slotAlertBottom = DefaultTemplate.bind({});
+slotAlertBottom.args = {
+  slotTemplate: `
+    <template #bottom>
+      <span>Bottom Content</span>
+    </template>
+  `,
 };

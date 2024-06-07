@@ -2,14 +2,19 @@ export default /*tw*/ {
   wrapper: {
     base: "p-4 space-x-4 flex justify-between items-start rounded-lg bg-{color}-50 text-{color}-700",
     variants: {
-      color: {
-        grayscale: "bg-gray-100 text-gray-900",
+      variant: {
+        primary: "bg-{color}-50 text-{color}-700",
+        secondary: "bg-{color}-100 text-{color}-800",
+        thirdary: "bg-{color}-50 text-{color}-700",
       },
       bordered: {
         true: "border border-{color}-100",
       },
     },
-    compoundVariants: [{ color: "grayscale", bordered: true, class: "border-gray-200" }],
+    compoundVariants: [
+      { color: "grayscale", bordered: true, class: "border-gray-200" },
+      { variant: "thirdary", bordered: true, class: "border-{color}-100" },
+    ],
   },
   body: {
     base: `
@@ -32,6 +37,18 @@ export default /*tw*/ {
       },
     },
   },
+  title: {
+    base: "font-bold leading-tight",
+  },
+  description: {
+    base: "text-sm leading-normal",
+  },
+  slots: {
+    left: "flex-shrink-0 mr-4",
+    right: "flex-shrink-0 ml-4",
+    top: "mb-4",
+    bottom: "mt-4",
+  },
   button: "",
   icon: "",
   iconName: "close",
@@ -41,11 +58,13 @@ export default /*tw*/ {
     timeout: 0,
     html: undefined,
     bordered: false,
-    closeIcon: false,
+    closable: false,
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
+    { pattern: `bg-(${colors})-100` },
+    { pattern: `text-(${colors})-800` },
   ],
 };

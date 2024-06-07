@@ -1,14 +1,28 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
     <div v-bind="bodyAttrs">
-      <!-- @slot Use it to add something inside. -->
-      <slot />
+      <slot name="top" />
 
-      <div v-if="!hasSlotContent($slots['default'])" v-html="html" />
+      <div>
+        <slot name="left" />
+        <div class="flex flex-col gap-2">
+          <slot name="title">
+            <div v-if="title" class="text-lg font-bold">{{ title }}</div>
+          </slot>
+          <slot name="description">
+            <div v-if="description" class="text-sm">{{ description }}</div>
+          </slot>
+          <slot />
+          <div v-if="!hasSlotContent($slots.default)" v-html="html" />
+        </div>
+        <slot name="right" />
+      </div>
+
+      <slot name="bottom" />
     </div>
 
     <UButton
-      v-if="closeIcon"
+      v-if="closable"
       size="sm"
       variant="thirdary"
       :color="color"
@@ -87,9 +101,9 @@ const props = defineProps({
   /**
    * Show close button.
    */
-  closeIcon: {
+  closable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UAlert).default.closeIcon,
+    default: UIService.get(defaultConfig, UAlert).default.closable,
   },
 
   /**
@@ -104,6 +118,22 @@ const props = defineProps({
    * Data-cy attribute for automated testing.
    */
   dataCy: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Title of the alert.
+   */
+  title: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Description of the alert.
+   */
+  description: {
     type: String,
     default: "",
   },
