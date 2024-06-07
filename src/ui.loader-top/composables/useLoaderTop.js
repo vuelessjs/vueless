@@ -1,4 +1,4 @@
-import { ref, readonly, inject } from "vue";
+import { inject, readonly, ref } from "vue";
 
 export const LoaderTopSymbol = Symbol.for("vueless:loader-top");
 
@@ -8,15 +8,14 @@ const loaderRequestQueue = ref([]);
 const loaderRequestTimeout = ref(0);
 const componentLoaderRequestQueue = ref([]);
 
-function setLoaderTopOn(url) {
+function loaderTopOn(url) {
   loaderRequestQueue.value.push(url);
-
   isLoading.value = true;
 
   clearTimeout(loaderRequestTimeout.value);
 }
 
-function setLoaderTopOff(url) {
+function loaderTopOff(url) {
   loaderRequestQueue.value = url ? loaderRequestQueue.value.filter((item) => item !== url) : [];
 
   loaderRequestTimeout.value = setTimeout(() => {
@@ -49,8 +48,8 @@ export function createLoaderTop() {
     loaderRequestQueue: readonly(loaderRequestQueue),
     loaderRequestTimeout: readonly(loaderRequestTimeout),
     componentLoaderRequestQueue: readonly(componentLoaderRequestQueue),
-    setLoaderTopOn,
-    setLoaderTopOff,
+    loaderTopOn,
+    loaderTopOff,
     addRequestUrl,
     removeRequestUrl,
     setComponentRequestQueue,
@@ -59,7 +58,5 @@ export function createLoaderTop() {
 }
 
 export function useLoaderTop() {
-  const loaderTopState = inject(LoaderTopSymbol);
-
-  return loaderTopState;
+  return inject(LoaderTopSymbol);
 }

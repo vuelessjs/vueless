@@ -21,9 +21,9 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoaderTop, UButton },
   setup() {
-    const { setLoaderTopOn, setLoaderTopOff } = useLoaderTop();
+    const { loaderTopOn, loaderTopOff } = useLoaderTop();
 
-    return { args, setLoaderTopOn, setLoaderTopOff };
+    return { args, loaderTopOn, loaderTopOff };
   },
   template: `
     <div>

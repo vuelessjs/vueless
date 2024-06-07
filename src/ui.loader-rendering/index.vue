@@ -40,19 +40,19 @@ const props = defineProps({
 });
 
 const { wrapperAttrs, config } = useAttrs(props);
-const { isRenderingPage, setRenderingStarted, setRenderingFinished } = useLoaderRendering();
+const { isLoading, loaderRenderingOn, loaderRenderingOff } = useLoaderRendering();
 
 onMounted(() => {
-  window.addEventListener("setRenderingStarted", setRenderingStarted);
-  window.addEventListener("setRenderingFinished", setRenderingFinished);
+  window.addEventListener("setRenderingStarted", loaderRenderingOn);
+  window.addEventListener("setRenderingFinished", loaderRenderingOff);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("setRenderingStarted", setRenderingStarted);
-  window.removeEventListener("setRenderingFinished", setRenderingFinished);
+  window.removeEventListener("setRenderingStarted", loaderRenderingOn);
+  window.removeEventListener("setRenderingFinished", loaderRenderingOff);
 });
 
 const showLoader = computed(() => {
-  return props.loading || isRenderingPage.value;
+  return props.loading || isLoading.value;
 });
 </script>
