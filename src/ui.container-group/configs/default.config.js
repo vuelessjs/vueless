@@ -36,7 +36,7 @@ export default /*tw*/ {
   },
   defaultVariants: {
     gap: "md",
-    align: "start",
+    align: "stretch",
     upperlined: true,
     underlined: false,
   },
