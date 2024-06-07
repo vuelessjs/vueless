@@ -1,17 +1,19 @@
 <template>
-  <Transition name="loader" v-bind="{ ...config.transition, ...wrapperAttrs }">
-    <div v-if="showLoader" v-bind="loaderAttrs">
-      <div v-bind="rippleAttrs">
-        <div v-bind="rippleElementAttrs" class="ripple-element" />
-        <div v-bind="rippleElementAttrs" class="ripple-element" />
-      </div>
+  <Transition v-bind="config.transition">
+    <div v-if="showLoader" v-bind="wrapperAttrs">
+      <ULoader size="lg" :color="color === 'white' ? 'grayscale' : 'white'" />
     </div>
   </Transition>
 </template>
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
+import UIService from "../service.ui";
 
+import ULoader from "../ui.loader";
+
+import { ULoaderRendering } from "./constants";
+import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
@@ -19,13 +21,25 @@ import { useLoaderRendering } from "./composables/useLoaderRendering";
 defineOptions({ name: "ULoaderRendering", inheritAttrs: false });
 
 const props = defineProps({
+  /**
+   * Set loader on.
+   */
   loading: {
     type: Boolean,
     default: false,
   },
+
+  /**
+   * Loader color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
+   */
+  color: {
+    type: String,
+    default: UIService.get(defaultConfig, ULoaderRendering).default.color,
+  },
 });
 
-const { wrapperAttrs, loaderAttrs, rippleAttrs, rippleElementAttrs, config } = useAttrs(props);
+const { wrapperAttrs, config } = useAttrs(props);
 const { isRenderingPage, setRenderingStarted, setRenderingFinished } = useLoaderRendering();
 
 onMounted(() => {
@@ -42,31 +56,3 @@ const showLoader = computed(() => {
   return props.loading || isRenderingPage.value;
 });
 </script>
-
-<style lang="postcss" scoped>
-.ripple-element {
-  animation: ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-
-  &:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-}
-
-@keyframes ripple {
-  0% {
-    left: 5rem;
-    top: 5rem;
-    height: 0px;
-    width: 0px;
-    opacity: 1;
-  }
-
-  100% {
-    left: 0px;
-    top: 0px;
-    height: 10rem;
-    width: 10rem;
-    opacity: 0;
-  }
-}
-</style>
