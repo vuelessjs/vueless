@@ -6,9 +6,13 @@ export default /*tw*/ {
   `,
   toggleItem: "",
   defaultVariants: {
+    color: "brand",
     variant: "primary",
     size: "md",
     block: false,
+    pill: false,
+    square: false,
+    filled: false,
     multiple: false,
   },
 };

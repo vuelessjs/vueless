@@ -7,6 +7,10 @@
     :size="toValue(size)"
     :block="toValue(block)"
     :variant="toValue(variant)"
+    :color="color"
+    :pill="pill"
+    :filled="filled"
+    :square="square"
     v-bind="buttonAttrs"
     @click="onClickSetValue"
   >
@@ -115,6 +119,11 @@ const type = inject("toggleType", UIService.get(defaultConfig, UToggleItem).defa
 const size = inject("toggleSize", UIService.get(defaultConfig, UToggleItem).default.size);
 const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).default.block);
 const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
+const color = inject("toggleColor", UIService.get(defaultConfig, UToggleItem).default.color);
+const filled = inject("toggleFilled", UIService.get(defaultConfig, UToggleItem).default.filled);
+const pill = inject("togglePill", UIService.get(defaultConfig, UToggleItem).default.pill);
+const square = inject("toggleSquare", UIService.get(defaultConfig, UToggleItem).default.square);
+
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
 const { buttonAttrs, inputAttrs } = useAttrs(props);

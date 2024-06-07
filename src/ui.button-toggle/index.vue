@@ -39,7 +39,7 @@ const props = defineProps({
   },
 
   /**
-   * Toggle variants.
+   * Toggle variant.
    * @values primary, secondary, thirdary
    */
   variant: {
@@ -65,7 +65,7 @@ const props = defineProps({
 
   /**
    * Toggle size.
-   * @values xs, sm, md, lg
+   * @values 2xs, xs, sm, md, lg, xl
    */
   size: {
     type: String,
@@ -86,6 +86,39 @@ const props = defineProps({
   multiple: {
     type: Boolean,
     default: UIService.get(defaultConfig, UToggle).default.multiple,
+  },
+
+  /**
+   * Button color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
+   */
+  color: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.color,
+  },
+
+  /**
+   * Fill the background for thirdary variant.
+   */
+  filled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.filled,
+  },
+
+  /**
+   * Set button corners rounded.
+   */
+  pill: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.pill,
+  },
+
+  /**
+   * Set the same paddings for the button.
+   */
+  square: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.square,
   },
 
   /**
@@ -129,6 +162,12 @@ provide("toggleName", () => props.name);
 provide("toggleSize", () => props.size);
 provide("toggleBlock", () => props.block);
 provide("toggleVariant", () => props.variant);
+provide("toggleColor", () => props.color);
+provide("toggleFilled", () => props.filled);
+provide("toggleDisabled", () => props.disabled);
+provide("togglePill", () => props.pill);
+provide("toggleSquare", () => props.square);
+
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
   updateSelectedValue,
