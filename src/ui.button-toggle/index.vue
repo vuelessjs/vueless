@@ -1,24 +1,35 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
-    <!-- @slot Use it to add UToggleItem directly. -->
-    <slot>
-      <UToggleItem
-        v-for="(item, index) in options"
-        :key="item.value"
-        :name="name"
-        :model-value="item.value"
-        :value="item.value"
-        :label="item.label"
-        :data-cy="`${dataCy}-item-${index}`"
-        v-bind="toggleItemAttrs"
-      />
-    </slot>
-  </div>
+  <ULabel
+    :size="size"
+    :label="label"
+    :description="description"
+    :align="labelAlign"
+    :disabled="disabled"
+    :data-cy="dataCy"
+    v-bind="labelAttrs"
+  >
+    <div v-bind="itemsAttrs">
+      <!-- @slot Use it to add UToggleItem directly. -->
+      <slot>
+        <UToggleItem
+          v-for="(item, index) in options"
+          :key="item.value"
+          :name="name"
+          :model-value="item.value"
+          :value="item.value"
+          :label="item.label"
+          :data-cy="`${dataCy}-item-${index}`"
+          v-bind="itemAttrs"
+        />
+      </slot>
+    </div>
+  </ULabel>
 </template>
 
 <script setup>
 import { computed, provide, readonly } from "vue";
 
+import ULabel from "../ui.form-label";
 import UToggleItem from "../ui.button-toggle-item";
 import UIService from "../service.ui";
 
@@ -73,6 +84,31 @@ const props = defineProps({
   },
 
   /**
+   * Toggle label.
+   */
+  label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Toggle description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Label placement.
+   * @values top, topInside, topWithDesc, bottom, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.labelAlign,
+  },
+
+  /**
    * Make the toggle fill the width with its container.
    */
   block: {
@@ -95,6 +131,22 @@ const props = defineProps({
   color: {
     type: String,
     default: UIService.get(defaultConfig, UToggle).default.color,
+  },
+
+  /**
+   * Separate toggle items.
+   */
+  separated: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.separated,
+  },
+
+  /**
+   * Make toggle disabled.
+   */
+  disabled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.disabled,
   },
 
   /**
@@ -132,7 +184,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { wrapperAttrs, toggleItemAttrs } = useAttrs(props);
+const { labelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,
@@ -150,10 +202,10 @@ function updateSelectedValue(value, checked) {
     return;
   }
 
-  if (!checked) {
-    selectedValue.value = selectedValue.value.filter((item) => item !== value);
-  } else {
+  if (checked) {
     selectedValue.value.push(value);
+  } else {
+    selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
   }
 }
 
@@ -165,6 +217,7 @@ provide("toggleVariant", () => props.variant);
 provide("toggleColor", () => props.color);
 provide("toggleFilled", () => props.filled);
 provide("toggleDisabled", () => props.disabled);
+provide("toggleSeparated", () => props.separated);
 provide("togglePill", () => props.pill);
 provide("toggleSquare", () => props.square);
 

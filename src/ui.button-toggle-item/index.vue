@@ -7,12 +7,12 @@
     :size="toValue(size)"
     :block="toValue(block)"
     :variant="toValue(variant)"
-    :color="color"
-    :pill="pill"
-    :filled="filled"
-    :square="square"
+    :color="toValue(color)"
+    :pill="toValue(pill)"
+    :filled="toValue(filled)"
+    :square="toValue(square)"
     v-bind="buttonAttrs"
-    @click="onClickSetValue"
+    @click.stop="onClickSetValue"
   >
     <template #left>
       <slot name="left" />
@@ -25,8 +25,9 @@
         :name="name"
         :type="type"
         :value="value"
-        :disabled="disabled"
+        :disabled="toValue(disabled)"
         v-bind="inputAttrs"
+        @click.stop
       />
 
       <slot name="default" />
@@ -123,12 +124,15 @@ const color = inject("toggleColor", UIService.get(defaultConfig, UToggleItem).de
 const filled = inject("toggleFilled", UIService.get(defaultConfig, UToggleItem).default.filled);
 const pill = inject("togglePill", UIService.get(defaultConfig, UToggleItem).default.pill);
 const square = inject("toggleSquare", UIService.get(defaultConfig, UToggleItem).default.square);
+const separated = inject("toggleSeparated", false);
+// eslint-disable-next-line vue/no-dupe-keys, prettier/prettier
+const disabled = inject("toggleDisabled", UIService.get(defaultConfig, UToggleItem).default.disabled);
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
-const { buttonAttrs, inputAttrs } = useAttrs(props);
-
 const selectedItem = ref("");
+
+const { buttonAttrs, inputAttrs } = useAttrs(props, { selectedValue, separated, variant, color });
 
 onMounted(() => {
   if (type.value === TYPE_RADIO) {
