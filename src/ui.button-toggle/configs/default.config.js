@@ -11,12 +11,12 @@ export default /*tw*/ {
     base: "flex flex-wrap",
     variants: {
       size: {
-        "2xs": "gap-2",
-        xs: "gap-3",
-        sm: "gap-4",
-        md: "gap-5",
-        lg: "gap-6",
-        xl: "gap-7",
+        "2xs": "gap-0.5",
+        xs: "gap-1",
+        sm: "gap-1.5",
+        md: "gap-2",
+        lg: "gap-2.5",
+        xl: "gap-3",
       },
       separated: {
         false: `
