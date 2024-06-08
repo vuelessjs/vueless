@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "",
     variants: {
       separated: {
-        false: "rounded-none",
+        false: "!rounded-none",
       },
     },
   },
@@ -18,12 +18,12 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { color: "grayscale", variant: "primary", class: "!bg-gray-700 !border-gray-700" },
-      { color: "grayscale", variant: "secondary", class: "!text-gray-700 !border-gray-700 !bg-gray-700 !bg-opacity-15" },
-      { color: "grayscale", variant: "thirdary", class: "!text-gray-700 !bg-gray-700" },
-      { color: "white", variant: "primary", class: "!text-gray-700 !border-gray-100 !bg-gray-100" },
-      { color: "white", variant: "secondary", class: "!text-gray-700 !border-gray-400" },
-      { color: "white", variant: "thirdary", class: "!text-gray-700 !bg-white" },
+      { color: "grayscale", variant: "primary", class: "!bg-brand-700 !border-brand-700" },
+      { color: "grayscale", variant: "secondary", class: "!text-brand-700 !border-brand-700 !bg-brand-50 !bg-opacity-100" },
+      { color: "grayscale", variant: "thirdary", class: "!text-brand-700 !bg-brand-50" },
+      { color: "white", variant: "primary", class: "!text-brand-700 !border-brand-600 !bg-brand-50" },
+      { color: "white", variant: "secondary", class: "!text-brand-700 !border-brand-600 !bg-brand-50" },
+      { color: "white", variant: "thirdary", class: "!text-brand-700 !bg-brand-50" },
     ],
   },
   defaultVariants: {

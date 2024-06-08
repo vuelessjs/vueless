@@ -1,5 +1,12 @@
 export default /*tw*/ {
-  label: "",
+  label: {
+    base: "flex flex-wrap",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
+  },
   items: {
     base: "flex flex-wrap",
     variants: {
