@@ -1,8 +1,8 @@
+import { computed } from "vue";
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
-import { computed } from "vue";
 
 export function useAttrs(props) {
   const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
