@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :size="size"
+    :size="labelSize"
     :label="label"
     :description="description"
     :align="labelAlign"
@@ -189,6 +189,19 @@ const { labelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 const selectedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
+});
+
+const labelSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size];
 });
 
 const type = computed(() => {
