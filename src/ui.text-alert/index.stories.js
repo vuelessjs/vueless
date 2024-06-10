@@ -184,12 +184,42 @@ slotAlertLeft.args = {
     <template #left>
       <span>Left Content</span>
     </template>
+    <template #title>
+        <b>Alert Title</b>
+      </template>
+      <template #description>
+        <p>This is a custom description for the alert.</p>
+      </template>
+      <template #default>
+        <p>
+          <b>Lorem ipsum dolor sit amet,</b>
+          <u>consectetur adipiscing elit,</u>
+          <em>sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua.</em>
+          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+        </p>
+      </template>
   `,
 };
 
 export const slotAlertRight = DefaultTemplate.bind({});
 slotAlertRight.args = {
   slotTemplate: `
+  <template #title>
+        <b>Alert Title</b>
+      </template>
+      <template #description>
+        <p>This is a custom description for the alert.</p>
+      </template>
+      <template #default>
+        <p>
+          <b>Lorem ipsum dolor sit amet,</b>
+          <u>consectetur adipiscing elit,</u>
+          <em>sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua.</em>
+          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+        </p>
+      </template>
     <template #right>
       <span>Right Content</span>
     </template>

@@ -43,12 +43,12 @@ export default /*tw*/ {
   description: {
     base: "text-sm leading-normal",
   },
-  slots: {
-    left: "flex-shrink-0 mr-4",
-    right: "flex-shrink-0 ml-4",
-    top: "mb-4",
-    bottom: "mt-4",
+  leftSlot: {
+    base: "flex justify-start items-center",
   },
+  rightSlot: "flex justify-end items-center",
+  topSlot: "flex justify-center items-start",
+  bottomSlot: "flex justify-center items-end",
   button: "",
   icon: "",
   iconName: "close",

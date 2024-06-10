@@ -1,24 +1,34 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
     <div v-bind="bodyAttrs">
-      <slot name="top" />
+      <div v-bind="topSlotAttrs">
+        <!-- @slot Use it to add some component above text. -->
+        <slot name="top" />
+      </div>
 
-      <div>
+      <div v-bind="leftSlotAttrs">
+        <!-- @slot Use it to add some component before text. -->
         <slot name="left" />
-        <div class="flex flex-col gap-2">
+        <div>
           <slot name="title">
-            <div v-if="title" class="text-lg font-bold">{{ title }}</div>
+            <div v-if="title" v-bind="titleAttrs">{{ title }}</div>
           </slot>
           <slot name="description">
-            <div v-if="description" class="text-sm">{{ description }}</div>
+            <div v-if="description" v-bind="descriptionAttrs">{{ description }}</div>
           </slot>
           <slot />
           <div v-if="!hasSlotContent($slots.default)" v-html="html" />
         </div>
-        <slot name="right" />
+        <div v-bind="rightSlotAttrs">
+          <!-- @slot Use it to add some component after text. -->
+          <slot name="right" />
+        </div>
       </div>
 
-      <slot name="bottom" />
+      <div v-bind="bottomSlotAttrs">
+        <!-- @slot Use it to add some component under text. -->
+        <slot name="bottom" />
+      </div>
     </div>
 
     <UButton
@@ -143,7 +153,20 @@ const emit = defineEmits(["hidden"]);
 
 const isShownAlert = ref(true);
 
-const { config, wrapperAttrs, bodyAttrs, iconAttrs, buttonAttrs, hasSlotContent } = useAttrs(props);
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  titleAttrs,
+  descriptionAttrs,
+  iconAttrs,
+  buttonAttrs,
+  leftSlotAttrs,
+  rightSlotAttrs,
+  topSlotAttrs,
+  bottomSlotAttrs,
+  hasSlotContent,
+} = useAttrs(props);
 
 onMounted(() => {
   if (props.timeout > 0) {
