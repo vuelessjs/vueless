@@ -1,14 +1,19 @@
 export default /*tw*/ {
   file: "",
-  info: "flex items-start",
-  icon: "mr-3",
+  info: "flex items-center gap-2 ",
+  icon: "",
   iconName: "description",
-  itemImage: "rounded-sm",
-  text: {
-    base: "whitespace-normal pt-0.5 hover:underline hover:decoration-dashed hover:underline-offset-4",
+  image: "rounded-sm max-w-7",
+  label: {
+    base: "text-gray-700 whitespace-normal hover:underline hover:decoration-dashed hover:underline-offset-4",
     variants: {
       focus: {
         true: "underline decoration-dashed underline-offset-4",
+      },
+      size: {
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
       },
     },
   },

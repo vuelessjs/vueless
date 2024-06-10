@@ -1,9 +1,9 @@
 <template>
   <ULink :url="url" no-ring target-blank :data-cy="dataCy" v-bind="fileAttrs">
-    <slot name="left" :file="{ id, text, url, imageUrl }" />
+    <slot name="left" :file="{ id, label, url, imageUrl }" />
 
     <div v-bind="infoAttrs">
-      <img v-if="imageUrl" :src="imageUrl" v-bind="itemImageAttrs" />
+      <img v-if="imageUrl" :src="imageUrl" v-bind="imageAttrs" />
 
       <UIcon
         v-else
@@ -16,7 +16,7 @@
         @blur="onBlur"
       />
 
-      <span v-bind="textAttrs" v-text="label" />
+      <span v-bind="labelAttrs" v-text="label" />
     </div>
 
     <slot name="right" :file="{ id, label, url, imageUrl }" />
@@ -28,9 +28,12 @@ import { ref } from "vue";
 
 import ULink from "../ui.button-link";
 import UIcon from "../ui.image-icon";
-import { getRandomId } from "../service.ui";
+
+import UIService, { getRandomId } from "../service.ui";
 
 import { useAttrs } from "./composables/attrs.composable";
+import { UFile } from "./constants";
+import defaultConfig from "./configs/default.config";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UFile", inheritAttrs: false });
@@ -70,6 +73,15 @@ const props = defineProps({
   },
 
   /**
+   * Set size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UFile).default.size,
+  },
+
+  /**
    * Sets data-cy attribute for automated testing.
    */
   dataCy: {
@@ -80,7 +92,7 @@ const props = defineProps({
 
 const focus = ref(false);
 
-const { config, fileAttrs, infoAttrs, iconAttrs, textAttrs, itemImageAttrs } = useAttrs(props, {
+const { config, fileAttrs, infoAttrs, iconAttrs, labelAttrs, imageAttrs } = useAttrs(props, {
   focus,
 });
 
