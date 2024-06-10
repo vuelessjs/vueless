@@ -6,7 +6,17 @@ export default /*tw*/ {
       base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
     },
   },
-  calendar: "absolute z-40 mt-2",
+  calendar: {
+    wrapper: {
+      base: "absolute z-40 mt-2",
+      variants: {
+        openDirection: {
+          left: "left-0",
+          right: "right-0",
+        },
+      },
+    },
+  },
   calendarTransition: {
     enterFromClass: "opacity-0 scale-95",
     enterActiveClass: "transition transform ease-out duration-100",
@@ -99,6 +109,7 @@ export default /*tw*/ {
     dateFormat: "Y-m-d",
     userFormat: "F j, Y",
     size: "md",
+    openDirection: "left",
     timepicker: false,
     disabled: false,
     maxDate: undefined,

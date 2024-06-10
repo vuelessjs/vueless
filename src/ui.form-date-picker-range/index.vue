@@ -273,6 +273,15 @@ const props = defineProps({
   },
 
   /**
+   * Datepicker open direction.
+   * @values left, right
+   */
+  openDirection: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirection,
+  },
+
+  /**
    * The variant of the date picker.
    * @values button, input
    */
@@ -860,8 +869,11 @@ function onInputRangeInput(value, type) {
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
-  const from = utcToGMT(getDateFromUnixTimestamp(props.modelValue.to || new Date()));
-  const to = utcToGMT(getDateFromUnixTimestamp(props.modelValue.from || new Date()));
+  const from = utcToGMT(getDateFromUnixTimestamp(props.modelValue.from || new Date()));
+  const to = utcToGMT(getDateFromUnixTimestamp(props.modelValue.to || new Date()));
+
+  const customFrom = utcToGMT(getDateFromUnixTimestamp(props.customRangeButton.range.from));
+  const customTo = utcToGMT(getDateFromUnixTimestamp(props.customRangeButton.range.to));
 
   const isWeekPeriod =
     String(from) === String(getStartOfWeek(from, { weekStartsOn: 1 })) &&
@@ -874,6 +886,7 @@ function setDefaultPeriodForButton() {
     String(from) === String(getStartOfQuarter(from)) && String(to) === String(getEndOfQuarter(to));
   const isYearPeriod =
     String(from) === String(getStartOfYear(from)) && String(to) === String(getEndOfYear(to));
+  const isCustomPeriod = String(from) === String(customFrom) && String(to) === String(customTo);
 
   if (!props.modelValue.from && !props.modelValue.to) {
     period.value = PERIOD.ownRange;
@@ -885,6 +898,8 @@ function setDefaultPeriodForButton() {
     period.value = PERIOD.quarter;
   } else if (isWeekPeriod) {
     period.value = PERIOD.week;
+  } else if (isCustomPeriod) {
+    period.value = PERIOD.custom;
   } else {
     period.value = PERIOD.ownRange;
   }

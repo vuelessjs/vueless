@@ -1,12 +1,27 @@
 import useUI from "../../composable.ui";
+import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 import { computed, watchEffect } from "vue";
 
 export default function useAttrs(props, { isShownCalendar }) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
+  const { calendar } = config.value;
 
-  const calendarAttrs = getAttrs("calendar");
+  const cvaCalendarWrapper = cva({
+    base: calendar.wrapper.base,
+    variants: calendar.wrapper.variants,
+    compoundVariants: calendar.wrapper.compoundVariants,
+  });
+
+  const calendarWrapperClasses = computed(() =>
+    cvaCalendarWrapper({ openDirection: props.openDirection }),
+  );
+
+  const calendarAttrs = getAttrs("calendar", {
+    isComponent: true,
+    classes: calendarWrapperClasses,
+  });
   const inputBlurAttrs = getAttrs("input");
   const inputActiveAttrs = getAttrs("inputActive");
   const wrapperAttrs = getAttrs("wrapper");
