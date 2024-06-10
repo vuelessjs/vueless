@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: "relative inline-block",
   trigger: "flex items-center relative space-x-0.5",
   link: "",
-  icon: "transition-all duration-300",
+  icon: "block transition-all duration-300",
   iconName: "keyboard_arrow_down",
   iconRotate: "rotate-180",
   listWrapper: {
