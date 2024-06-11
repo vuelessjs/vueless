@@ -17,6 +17,7 @@
           :name="name"
           :model-value="item.value"
           :value="item.value"
+          :disabled="disabled"
           :label="item.label"
           :data-cy="`${dataCy}-item-${index}`"
           v-bind="itemAttrs"

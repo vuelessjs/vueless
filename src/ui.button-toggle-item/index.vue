@@ -1,6 +1,5 @@
 <template>
   <UButton
-    tag="label"
     tabindex="0"
     :for="id"
     color="grayscale"
@@ -10,6 +9,7 @@
     :pill="toValue(pill)"
     :block="toValue(block)"
     :square="toValue(square)"
+    :disabled="toValue(disabled)"
     v-bind="buttonAttrs"
     @click.stop="onClickSetValue"
   >
@@ -121,9 +121,9 @@ const pill = inject("togglePill", UIService.get(defaultConfig, UToggleItem).defa
 const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).default.block);
 const square = inject("toggleSquare", UIService.get(defaultConfig, UToggleItem).default.square);
 const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
-const separated = inject("toggleSeparated");
+const separated = inject("toggleSeparated", () => true);
 // eslint-disable-next-line vue/no-dupe-keys, prettier/prettier
-const disabled = inject("toggleDisabled", UIService.get(defaultConfig, UToggleItem).default.disabled);
+const disabled = inject("toggleDisabled", props.disabled || UIService.get(defaultConfig, UToggleItem).default.disabled);
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 

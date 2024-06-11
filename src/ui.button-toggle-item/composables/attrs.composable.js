@@ -15,16 +15,6 @@ export function useAttrs(props, { selectedValue, separated, variant }) {
   });
 
   const buttonClasses = computed(() => {
-    console.log("separated", toValue(separated));
-    //alert(toValue(separated));
-
-    // alert(
-    //   cvaButton({
-    //     variant: toValue(variant),
-    //     separated: toValue(separated),
-    //   }),
-    // );
-
     return cvaButton({
       variant: toValue(variant),
       separated: toValue(separated),
@@ -47,9 +37,9 @@ export function useAttrs(props, { selectedValue, separated, variant }) {
   const buttonAttrsRaw = getAttrs("button", { isComponent: true, classes: buttonClasses });
 
   const buttonAttrs = computed(() => {
-    const isSelected = Array.isArray(selectedValue.value)
-      ? selectedValue.value?.includes(props.value)
-      : selectedValue.value === props.value;
+    const isSelected = Array.isArray(selectedValue?.value)
+      ? selectedValue?.value?.includes(props.value)
+      : selectedValue?.value === props.value;
 
     return {
       ...buttonAttrsRaw.value,

@@ -12,6 +12,7 @@ export default {
   args: {
     value: "1",
     label: "Label",
+    modelValue: "",
   },
   argTypes: {
     ...getArgTypes(UToggleItem.name),
@@ -41,7 +42,7 @@ const SlotTemplate = (args) => ({
     return { args };
   },
   template: `
-    <UToggleItem v-bind="args" label="Label" >
+    <UToggleItem v-bind="args" >
       ${args.slotTemplate}
     </UToggleItem>
   `,

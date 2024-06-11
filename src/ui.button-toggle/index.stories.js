@@ -6,11 +6,18 @@ import UIcon from "../ui.image-icon";
 import UToggleItem from "../ui.button-toggle-item";
 import URow from "../ui.container-row";
 
+const OPTIONS = [
+  { value: "11", label: "label 1" },
+  { value: "12", label: "label 2" },
+  { value: "13", label: "label 3" },
+  { value: "14", label: "label 4" },
+];
+
 /**
  * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
  */
 export default {
-  components: { UToggleItem },
+  components: { UIcon, UToggleItem },
   title: "Buttons & Links / Toggle",
   component: UToggle,
   argTypes: {
@@ -27,22 +34,13 @@ const DefaultTemplate = (args) => ({
     };
   },
   setup() {
-    const groupOptions = [
-      { value: "11", label: "label 1" },
-      { value: "12", label: "label 2" },
-      { value: "13", label: "label 3" },
-      { value: "14", label: "label 4" },
-    ];
-
-    return { args, groupOptions };
+    return { args, OPTIONS };
   },
   template: `
     <UToggle
       v-model="value"
-      name="defaultTemplate"
       v-bind="args"
-      :options="groupOptions"
-
+      :options="OPTIONS"
     />
   `,
 });
@@ -55,21 +53,14 @@ const multipleTemplate = (args) => ({
     };
   },
   setup() {
-    const groupOptions = [
-      { value: "11", label: "label 1" },
-      { value: "12", label: "label 2" },
-      { value: "13", label: "label 3" },
-      { value: "14", label: "label 4" },
-    ];
-
-    return { args, groupOptions };
+    return { args, OPTIONS };
   },
   template: `
     <UToggle
       v-model="value"
       v-bind="args"
       multiple
-      :options="groupOptions"
+      :options="OPTIONS"
       name="multipleTemplate"
     />
   `,
@@ -163,17 +154,6 @@ label.args = {
   description: "description",
 };
 
-// export const label = DefaultTemplate.bind({});
-// label.args = {
-//   label: "Label",
-//   description: "description",
-// };
-
-export const multiple = multipleTemplate.bind({});
-multiple.args = {
-  name: "multiple",
-};
-
 export const sizes = SizesTemplate.bind({});
 sizes.args = {
   name: "sizes",
@@ -184,10 +164,50 @@ variants.args = {
   name: "variants",
 };
 
+export const multiple = multipleTemplate.bind({});
+multiple.args = {
+  name: "multiple",
+};
+
 export const block = DefaultTemplate.bind({});
 block.args = {
   name: "block",
   block: true,
+};
+
+export const separated = DefaultTemplate.bind({});
+separated.args = {
+  name: "separated",
+  separated: true,
+};
+
+export const pill = DefaultTemplate.bind({});
+pill.args = {
+  name: "pill",
+  pill: true,
+  separated: true,
+};
+
+export const square = SlotTemplate.bind({});
+square.args = {
+  name: "square",
+  variant: "secondary",
+  square: true,
+  slotTemplate: `
+    <template #default>
+      <UToggleItem value="1">
+        <UIcon name="star" />
+      </UToggleItem>
+
+      <UToggleItem value="2" >
+        <UIcon name="add" />
+      </UToggleItem>
+
+      <UToggleItem value="3">
+        <UIcon name="timer" />
+      </UToggleItem>
+    </template>
+  `,
 };
 
 export const slotDefault = SlotTemplate.bind({});
@@ -195,9 +215,9 @@ slotDefault.args = {
   name: "slotDefault",
   slotTemplate: `
     <template #default>
-      <UToggleItem label="label1" value="1" />
-      <UToggleItem label="label2" value="2" />
-      <UToggleItem label="label3" value="3" />
+      <UToggleItem label="label 1" value="1" />
+      <UToggleItem label="label 2" value="2" />
+      <UToggleItem label="label 3" value="3" />
     </template>
   `,
 };
