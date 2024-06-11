@@ -61,7 +61,67 @@ npx @vueless/web-types 'src/**/*.vue'
 {% endtab %}
 {% endtabs %}
 
-3\. Declare web-types in the project `package.json`.
+We'd recommend to add this command to `postinstall` in the project `package.json`
+
+{% tabs %}
+{% tab title="npm" %}
+{% code title="package.json" %}
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "postinstall": "npx @vueless/web-types"
+  }
+}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="yarn" %}
+{% code title="package.json" %}
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "postinstall": "yarn dlx @vueless/web-types"
+  }
+}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="pnpm" %}
+{% code title="package.json" %}
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "postinstall": "pnpx @vueless/web-types"
+  }
+}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="bun" %}
+{% code title="package.json" %}
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "postinstall": "bunx @vueless/web-types"
+  }
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+3\. Declare web-types in the project `package.json`.&#x20;
 
 {% code title="package.json" %}
 ```json
@@ -71,3 +131,7 @@ npx @vueless/web-types 'src/**/*.vue'
 }
 ```
 {% endcode %}
+
+{% hint style="success" %}
+It will be added automatically when you start the project in dev mode `npm run dev`. Vueless Vite plugin do this magic for you ✨
+{% endhint %}
