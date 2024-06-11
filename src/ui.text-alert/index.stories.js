@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
@@ -12,13 +13,7 @@ export default {
   component: UAlert,
   args: {
     text: "UHint",
-    slotTemplate: `
-      <template #title>
-        <b>Alert Title</b>
-      </template>
-      <template #description>
-        <p>This is a custom description for the alert.</p>
-      </template>
+    slotDefaultTemplate: `
       <template #default>
         <p>
           <b>Lorem ipsum dolor sit amet,</b>
@@ -36,14 +31,15 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAlert },
+  components: { UAlert, UIcon },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
     return { args, slots };
   },
   template: `
-    <UAlert v-bind="args">
+    <UAlert v-bind="args" v-model="args.value">
+      ${args.slotDefaultTemplate}
       ${args.slotTemplate || ""}
     </UAlert>
   `,
@@ -128,7 +124,7 @@ closable.args = {
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  slotTemplate: `
+  slotDefaultTemplate: `
     <template #default>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -147,7 +143,7 @@ paragraphs.args = {
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  slotTemplate: `
+  slotDefaultTemplate: `
     <template #default>
       <URow>
         <ul>
@@ -170,10 +166,10 @@ export const slotTitleAndDescription = DefaultTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
-      <b>Alert Title</b>
+      Alert Title
     </template>
     <template #description>
-      <p>This is a custom description for the alert.</p>
+      This is a custom description for the alert.
     </template>
   `,
 };
@@ -182,46 +178,22 @@ export const slotAlertLeft = DefaultTemplate.bind({});
 slotAlertLeft.args = {
   slotTemplate: `
     <template #left>
-      <span>Left Content</span>
+      <UIcon
+        name="star"
+        color="gray"
+      />
     </template>
-    <template #title>
-        <b>Alert Title</b>
-      </template>
-      <template #description>
-        <p>This is a custom description for the alert.</p>
-      </template>
-      <template #default>
-        <p>
-          <b>Lorem ipsum dolor sit amet,</b>
-          <u>consectetur adipiscing elit,</u>
-          <em>sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua.</em>
-          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-        </p>
-      </template>
   `,
 };
 
 export const slotAlertRight = DefaultTemplate.bind({});
 slotAlertRight.args = {
   slotTemplate: `
-  <template #title>
-        <b>Alert Title</b>
-      </template>
-      <template #description>
-        <p>This is a custom description for the alert.</p>
-      </template>
-      <template #default>
-        <p>
-          <b>Lorem ipsum dolor sit amet,</b>
-          <u>consectetur adipiscing elit,</u>
-          <em>sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua.</em>
-          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-        </p>
-      </template>
     <template #right>
-      <span>Right Content</span>
+        <UIcon
+        name="star"
+        color="gray"
+      />
     </template>
   `,
 };
@@ -230,7 +202,10 @@ export const slotAlertTop = DefaultTemplate.bind({});
 slotAlertTop.args = {
   slotTemplate: `
     <template #top>
-      <span>Top Content</span>
+      <UIcon
+        name="star"
+        color="gray"
+      />
     </template>
   `,
 };
@@ -239,7 +214,10 @@ export const slotAlertBottom = DefaultTemplate.bind({});
 slotAlertBottom.args = {
   slotTemplate: `
     <template #bottom>
-      <span>Bottom Content</span>
+      <UIcon
+        name="star"
+        color="gray"
+      />
     </template>
   `,
 };

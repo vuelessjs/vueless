@@ -10,12 +10,22 @@
         <!-- @slot Use it to add some component before text. -->
         <slot name="left" />
         <div>
-          <slot name="title">
-            <div v-if="title" v-bind="titleAttrs">{{ title }}</div>
-          </slot>
-          <slot name="description">
-            <div v-if="description" v-bind="descriptionAttrs">{{ description }}</div>
-          </slot>
+          <div v-bind="titleAttrs">
+            <slot name="title" :title="title" :title-attrs="titleAttrs">
+              <div v-if="title" v-bind="titleAttrs">{{ title }}</div>
+            </slot>
+          </div>
+          <div v-bind="descriptionAttrs">
+            <slot
+              name="description"
+              :description="description"
+              :description-attrs="descriptionAttrs"
+            >
+              <div v-if="description" v-bind="descriptionAttrs">
+                {{ description }}
+              </div>
+            </slot>
+          </div>
           <slot />
           <div v-if="!hasSlotContent($slots.default)" v-html="html" />
         </div>

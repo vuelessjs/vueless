@@ -38,17 +38,23 @@ export default /*tw*/ {
     },
   },
   title: {
-    base: "font-bold leading-tight",
+    base: "font-bold text-lg leading-tight mb-1",
   },
   description: {
-    base: "text-sm leading-normal",
+    base: "text-sm leading-normal mb-2",
   },
   leftSlot: {
-    base: "flex justify-start items-center",
+    base: "flex justify-start items-center gap-5",
   },
-  rightSlot: "flex justify-end items-center",
-  topSlot: "flex justify-center items-start",
-  bottomSlot: "flex justify-center items-end",
+  rightSlot: {
+    base: "flex justify-end items-center gap-5",
+  },
+  topSlot: {
+    base: "flex justify-center items-start gap-5",
+  },
+  bottomSlot: {
+    base: "flex justify-center items-end gap-5",
+  },
   button: "",
   icon: "",
   iconName: "close",

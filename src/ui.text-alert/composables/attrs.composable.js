@@ -6,7 +6,7 @@ import { computed } from "vue";
 
 export function useAttrs(props) {
   const { config, getAttrs, setColor, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, body, title, description } = config.value;
+  const { wrapper, body } = config.value;
 
   const cvaWrapper = cva({
     base: wrapper.base,
@@ -18,14 +18,6 @@ export function useAttrs(props) {
     base: body.base,
     variants: body.variants,
     compoundVariants: body.compoundVariants,
-  });
-
-  const cvaTitle = cva({
-    base: title.base,
-  });
-
-  const cvaDescription = cva({
-    base: description.base,
   });
 
   const wrapperClasses = computed(() =>
@@ -40,16 +32,10 @@ export function useAttrs(props) {
 
   const bodyClasses = computed(() => setColor(cvaBody({ size: props.size }), props.color));
 
-  const titleClasses = computed(() => cvaTitle());
-
-  const descriptionClasses = computed(() => cvaDescription());
-
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });
-  const titleAttrs = getAttrs("title", { classes: titleClasses });
-  const descriptionAttrs = getAttrs("description", {
-    classes: descriptionClasses,
-  });
+  const titleAttrs = getAttrs("title");
+  const descriptionAttrs = getAttrs("description");
   const leftSlotAttrs = getAttrs("leftSlot");
   const rightSlotAttrs = getAttrs("rightSlot");
   const topSlotAttrs = getAttrs("topSlot");
