@@ -25,7 +25,7 @@ export function vuelessPreset() {
   const prodSafelist = getSafelist();
   const devSafelist = [
     {
-      pattern: /(border|bg|text|ring)-(.*)-((50|[1-9]00|950)?)$/,
+      pattern: /^!?(border|bg|text|ring)-(.*)-((50|[1-9]00|950)?)$/,
       variants: ["hover", "focus", "focus-within", "active", "disabled"],
     },
   ];
