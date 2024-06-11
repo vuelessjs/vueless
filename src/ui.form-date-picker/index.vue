@@ -102,6 +102,15 @@ const props = defineProps({
   },
 
   /**
+   * Datepicker open direction.
+   * @values left, right
+   */
+  openDirection: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePicker).default.openDirection,
+  },
+
+  /**
    * Min date in format date string or Date.
    */
   minDate: {

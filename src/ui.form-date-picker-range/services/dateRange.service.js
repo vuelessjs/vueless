@@ -93,12 +93,10 @@ export function getWeekDateList(date, monthShortLocales = {}) {
     const isLastWeek = week + day === weeksInMonth;
 
     let monthFirstDayOfWeek = "";
-    let monthLastDayOfWeek = endOfWeekDate.toLocaleString("en-us", { month: "long" }).toLowerCase();
+    let monthLastDayOfWeek = endOfWeekDate.getMonth();
 
     if (isDayInPreviousMonth || isLastWeek) {
-      monthFirstDayOfWeek = startOfWeekDate
-        .toLocaleString("en-us", { month: "long" })
-        .toLowerCase();
+      monthFirstDayOfWeek = startOfWeekDate.getMonth();
     }
 
     const title = `${firstDayOfWeek} ${
