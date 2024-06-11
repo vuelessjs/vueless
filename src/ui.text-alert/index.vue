@@ -1,44 +1,36 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
+    <div>
+      <!-- @slot Use it to add some component above text. -->
+      <slot name="top" />
+    </div>
     <div v-bind="bodyAttrs">
-      <div v-bind="topSlotAttrs">
-        <!-- @slot Use it to add some component above text. -->
-        <slot name="top" />
-      </div>
-
-      <div v-bind="leftSlotAttrs">
+      <div>
         <!-- @slot Use it to add some component before text. -->
         <slot name="left" />
-        <div>
-          <div v-bind="titleAttrs">
-            <slot name="title" :title="title" :title-attrs="titleAttrs">
-              <div v-if="title" v-bind="titleAttrs">{{ title }}</div>
-            </slot>
-          </div>
-          <div v-bind="descriptionAttrs">
-            <slot
-              name="description"
-              :description="description"
-              :description-attrs="descriptionAttrs"
-            >
-              <div v-if="description" v-bind="descriptionAttrs">
-                {{ description }}
-              </div>
-            </slot>
-          </div>
-          <slot />
-          <div v-if="!hasSlotContent($slots.default)" v-html="html" />
-        </div>
-        <div v-bind="rightSlotAttrs">
-          <!-- @slot Use it to add some component after text. -->
-          <slot name="right" />
-        </div>
       </div>
-
-      <div v-bind="bottomSlotAttrs">
-        <!-- @slot Use it to add some component under text. -->
-        <slot name="bottom" />
+      <div>
+        <div v-bind="titleAttrs">
+          <slot name="title" :title="title">
+            <div v-if="title" v-bind="titleAttrs" v-text="title" />
+          </slot>
+        </div>
+        <div v-bind="descriptionAttrs">
+          <slot name="description" :description="description">
+            <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
+          </slot>
+        </div>
+        <slot />
+        <div v-if="!hasSlotContent($slots.default)" v-html="html" />
       </div>
+      <div>
+        <!-- @slot Use it to add some component after text. -->
+        <slot name="right" />
+      </div>
+    </div>
+    <div>
+      <!-- @slot Use it to add some component under text. -->
+      <slot name="bottom" />
     </div>
 
     <UButton
@@ -143,7 +135,7 @@ const props = defineProps({
   },
 
   /**
-   * Title of the alert.
+   * Alert title.
    */
   title: {
     type: String,
@@ -151,7 +143,7 @@ const props = defineProps({
   },
 
   /**
-   * Description of the alert.
+   * Alert description.
    */
   description: {
     type: String,
@@ -171,10 +163,6 @@ const {
   descriptionAttrs,
   iconAttrs,
   buttonAttrs,
-  leftSlotAttrs,
-  rightSlotAttrs,
-  topSlotAttrs,
-  bottomSlotAttrs,
   hasSlotContent,
 } = useAttrs(props);
 

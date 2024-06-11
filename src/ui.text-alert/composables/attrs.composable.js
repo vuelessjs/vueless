@@ -36,10 +36,6 @@ export function useAttrs(props) {
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });
   const titleAttrs = getAttrs("title");
   const descriptionAttrs = getAttrs("description");
-  const leftSlotAttrs = getAttrs("leftSlot");
-  const rightSlotAttrs = getAttrs("rightSlot");
-  const topSlotAttrs = getAttrs("topSlot");
-  const bottomSlotAttrs = getAttrs("bottomSlot");
 
   const buttonAttrs = getAttrs("button", { isComponent: true });
   const iconAttrs = getAttrs("icon", { isComponent: true });
@@ -53,9 +49,5 @@ export function useAttrs(props) {
     hasSlotContent,
     titleAttrs,
     descriptionAttrs,
-    leftSlotAttrs,
-    rightSlotAttrs,
-    topSlotAttrs,
-    bottomSlotAttrs,
   };
 }

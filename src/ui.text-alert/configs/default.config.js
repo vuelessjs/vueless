@@ -1,11 +1,31 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 space-x-4 flex justify-between items-start rounded-lg bg-{color}-50 text-{color}-700",
+    base: "p-4 space-x-4 flex justify-start items-start rounded-lg bg-{color}-50 text-{color}-700",
     variants: {
       variant: {
-        primary: "bg-{color}-50 text-{color}-700",
-        secondary: "bg-{color}-100 text-{color}-800",
-        thirdary: "bg-{color}-50 text-{color}-700",
+        primary: `
+          text-black
+          bg-{color}-600 border-{color}-600
+          hover:bg-{color}-700 hover:border-{color}-700
+          focus:bg-{color}-700 focus:border-{color}-700
+          active:bg-{color}-800 active:border-{color}-800
+          disabled:bg-{color}-300 disabled:border-{color}-300 disabled:text-white
+        `,
+        secondary: `
+          text-{color}-600 border-{color}-600
+          hover:text-{color}-700 hover:border-{color}-700
+          focus:text-{color}-700 focus:border-{color}-700
+          active:text-{color}-800 active:border-{color}-800
+          disabled:text-{color}-300 disabled:border-{color}-300
+        `,
+        thirdary: `
+          border-transparent
+          text-{color}-600
+          hover:text-{color}-700 hover:bg-{color}-700 hover:bg-opacity-10
+          focus:text-{color}-700 focus:bg-{color}-700 focus:bg-opacity-10
+          active:text-{color}-800 active:bg-{color}-800 active:bg-opacity-15
+          disabled:text-{color}-300
+        `,
       },
       bordered: {
         true: "border border-{color}-100",
@@ -37,24 +57,8 @@ export default /*tw*/ {
       },
     },
   },
-  title: {
-    base: "font-bold text-lg leading-tight mb-1",
-  },
-  description: {
-    base: "text-sm leading-normal mb-2",
-  },
-  leftSlot: {
-    base: "flex justify-start items-center gap-5",
-  },
-  rightSlot: {
-    base: "flex justify-end items-center gap-5",
-  },
-  topSlot: {
-    base: "flex justify-center items-start gap-5",
-  },
-  bottomSlot: {
-    base: "flex justify-center items-end gap-5",
-  },
+  title: "font-bold text-lg leading-tight",
+  description: "text-sm",
   button: "",
   icon: "",
   iconName: "close",
