@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: `
       flex items-center justify-center
       text-base font-medium outline-none
-      border border-solid rounded-lg
+      border border-solid
       transition duration-100 ease-in-out
       focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700
       focus-within:ring-opacity-20 focus-within:ring-4 focus-within:ring-{color}-700
@@ -47,6 +47,7 @@ export default /*tw*/ {
         true: "pointer-events-none gap-0",
       },
       pill: {
+        false: "rounded-lg",
         true: "rounded-full",
       },
       block: {

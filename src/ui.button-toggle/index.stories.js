@@ -1,4 +1,5 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { ref } from "vue";
+import { getArgTypes } from "../service.storybook";
 
 import UToggle from "../ui.button-toggle";
 import UIcon from "../ui.image-icon";
@@ -9,6 +10,7 @@ import URow from "../ui.container-row";
  * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
  */
 export default {
+  components: { UToggleItem },
   title: "Buttons & Links / Toggle",
   component: UToggle,
   argTypes: {
@@ -37,14 +39,15 @@ const DefaultTemplate = (args) => ({
   template: `
     <UToggle
       v-model="value"
+      name="defaultTemplate"
       v-bind="args"
       :options="groupOptions"
-      name="defaultTemplate"
+
     />
   `,
 });
 
-const checkboxTemplate = (args) => ({
+const multipleTemplate = (args) => ({
   components: { UToggle },
   data() {
     return {
@@ -67,24 +70,19 @@ const checkboxTemplate = (args) => ({
       v-bind="args"
       multiple
       :options="groupOptions"
-      name="defaultTemplate"
+      name="multipleTemplate"
     />
   `,
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
   components: { UToggle, URow },
-  data() {
-    return {
-      value: "",
-    };
-  },
   setup() {
-    const slots = getSlotNames(UToggle.name);
+    const value = ref("");
 
     return {
       args,
-      slots,
+      value,
       sizes: argTypes.size.options,
     };
   },
@@ -92,6 +90,9 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UToggle
         v-for="(size, index) in sizes"
+        :key="index"
+        name="sizeTemplate"
+        v-model="value"
         v-bind="args"
         :size="size"
         :label="size"
@@ -99,14 +100,37 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
           { value: size + 1, label: size },
           { value: size + 2, label: size },
         ]"
-        v-model="value"
+      />
+    </URow>
+  `,
+});
+
+const VariantsTemplate = (args, { argTypes } = {}) => ({
+  components: { UToggle, URow },
+  setup() {
+    const value = ref("");
+
+    return {
+      args,
+      value,
+      variants: argTypes.variant.options,
+    };
+  },
+  template: `
+    <URow>
+      <UToggle
+        v-for="(variant, index) in variants"
         :key="index"
         name="sizeTemplate"
-      >
-        <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-          <template v-if="args[slot]">{{ args[slot] }}</template>
-        </template>
-      </UToggle>
+        v-model="value"
+        v-bind="args"
+        :variant="variant"
+        :label="variant"
+        :options="[
+          { value: variant + 1, label: variant },
+          { value: variant + 2, label: variant },
+        ]"
+      />
     </URow>
   `,
 });
@@ -114,9 +138,11 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 const SlotTemplate = (args) => ({
   components: { UToggle, UIcon, UToggleItem },
   setup() {
+    const selected = ref("");
+
     return {
       args,
-      selected: "55",
+      selected,
     };
   },
   template: `
@@ -128,31 +154,50 @@ const SlotTemplate = (args) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
-  name: "first name",
+  name: "Default",
 };
 
-export const multiple = checkboxTemplate.bind({});
+export const label = DefaultTemplate.bind({});
+label.args = {
+  label: "Label",
+  description: "description",
+};
+
+// export const label = DefaultTemplate.bind({});
+// label.args = {
+//   label: "Label",
+//   description: "description",
+// };
+
+export const multiple = multipleTemplate.bind({});
 multiple.args = {
-  name: "second name",
+  name: "multiple",
 };
 
 export const sizes = SizesTemplate.bind({});
 sizes.args = {
-  name: "four name",
+  name: "sizes",
+};
+
+export const variants = VariantsTemplate.bind({});
+variants.args = {
+  name: "variants",
 };
 
 export const block = DefaultTemplate.bind({});
 block.args = {
-  name: "five name",
+  name: "block",
   block: true,
 };
 
 export const slotDefault = SlotTemplate.bind({});
 slotDefault.args = {
-  name: "third name",
+  name: "slotDefault",
   slotTemplate: `
     <template #default>
-      <UToggleItem label="label" />
+      <UToggleItem label="label1" value="1" />
+      <UToggleItem label="label2" value="2" />
+      <UToggleItem label="label3" value="3" />
     </template>
   `,
 };

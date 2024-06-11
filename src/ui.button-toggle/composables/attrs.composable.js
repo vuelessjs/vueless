@@ -23,6 +23,8 @@ export function useAttrs(props) {
   const itemsClasses = computed(() =>
     cvaItems({
       size: props.size,
+      variant: props.variant,
+      multiple: props.multiple,
       separated: props.separated,
     }),
   );

@@ -4,8 +4,8 @@ import useUI from "../../composable.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { selectedValue, separated, variant, color }) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+export function useAttrs(props, { selectedValue, separated, variant }) {
+  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
   const { button, selected } = config.value;
 
   const cvaButton = cva({
@@ -14,11 +14,22 @@ export function useAttrs(props, { selectedValue, separated, variant, color }) {
     compoundVariants: button.compoundVariants,
   });
 
-  const buttonClasses = computed(() =>
-    cvaButton({
+  const buttonClasses = computed(() => {
+    console.log("separated", toValue(separated));
+    //alert(toValue(separated));
+
+    // alert(
+    //   cvaButton({
+    //     variant: toValue(variant),
+    //     separated: toValue(separated),
+    //   }),
+    // );
+
+    return cvaButton({
+      variant: toValue(variant),
       separated: toValue(separated),
-    }),
-  );
+    });
+  });
 
   const cvaSelected = cva({
     base: selected.base,
@@ -27,17 +38,13 @@ export function useAttrs(props, { selectedValue, separated, variant, color }) {
   });
 
   const selectedClasses = computed(() =>
-    setColor(
-      cvaSelected({
-        color: toValue(color),
-        variant: toValue(variant),
-      }),
-      toValue(color),
-    ),
+    cvaSelected({
+      variant: toValue(variant),
+    }),
   );
 
-  const buttonAttrsRaw = getAttrs("button", { isComponent: true, classes: buttonClasses });
   const inputAttrs = getAttrs("input");
+  const buttonAttrsRaw = getAttrs("button", { isComponent: true, classes: buttonClasses });
 
   const buttonAttrs = computed(() => {
     const isSelected = Array.isArray(selectedValue.value)

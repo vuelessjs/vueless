@@ -50,6 +50,14 @@ const props = defineProps({
   },
 
   /**
+   * Toggle item options.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
    * Toggle variant.
    * @values primary, secondary, thirdary
    */
@@ -59,28 +67,21 @@ const props = defineProps({
   },
 
   /**
-   * Toggle item options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Toggle name.
-   */
-  name: {
-    type: String,
-    required: true,
-  },
-
-  /**
    * Toggle size.
    * @values 2xs, xs, sm, md, lg, xl
    */
   size: {
     type: String,
     default: UIService.get(defaultConfig, UToggle).default.size,
+  },
+
+  /**
+   * Label placement.
+   * @values top, topInside, topWithDesc, bottom, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.labelAlign,
   },
 
   /**
@@ -100,20 +101,11 @@ const props = defineProps({
   },
 
   /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * Toggle name.
    */
-  labelAlign: {
+  name: {
     type: String,
-    default: UIService.get(defaultConfig, UToggle).default.labelAlign,
-  },
-
-  /**
-   * Make the toggle fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.block,
+    required: true,
   },
 
   /**
@@ -122,15 +114,6 @@ const props = defineProps({
   multiple: {
     type: Boolean,
     default: UIService.get(defaultConfig, UToggle).default.multiple,
-  },
-
-  /**
-   * Button color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: UIService.get(defaultConfig, UToggle).default.color,
   },
 
   /**
@@ -150,11 +133,11 @@ const props = defineProps({
   },
 
   /**
-   * Fill the background for thirdary variant.
+   * Make the toggle fill the width with its container.
    */
-  filled: {
+  block: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.filled,
+    default: UIService.get(defaultConfig, UToggle).default.block,
   },
 
   /**
@@ -224,23 +207,24 @@ function updateSelectedValue(value, checked) {
   }
 
   if (checked) {
-    selectedValue.value.push(value);
+    const items = selectedValue.value || [];
+
+    items.push(value);
+    selectedValue.value = items;
   } else {
     selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
   }
 }
 
 provide("toggleType", readonly(type));
+provide("togglePill", () => props.pill);
 provide("toggleName", () => props.name);
 provide("toggleSize", () => props.size);
 provide("toggleBlock", () => props.block);
+provide("toggleSquare", () => props.square);
 provide("toggleVariant", () => props.variant);
-provide("toggleColor", () => props.color);
-provide("toggleFilled", () => props.filled);
 provide("toggleDisabled", () => props.disabled);
 provide("toggleSeparated", () => props.separated);
-provide("togglePill", () => props.pill);
-provide("toggleSquare", () => props.square);
 
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),

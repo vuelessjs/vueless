@@ -1,12 +1,4 @@
 export default /*tw*/ {
-  label: {
-    base: "flex flex-wrap",
-    variants: {
-      block: {
-        true: "w-full",
-      },
-    },
-  },
   items: {
     base: "flex flex-wrap",
     variants: {
@@ -20,23 +12,33 @@ export default /*tw*/ {
       },
       separated: {
         false: `
-          gap-px flex-nowrap
+          flex-nowrap -space-x-px gap-0
           [&>*:first-child]:rounded-l-lg [&>*:first-child]:rounded-r-none
           [&>*:last-child]:rounded-r-lg [&>*:last-child]:rounded-l-none
         `,
       },
     },
+    compoundVariants: [
+      { separated: false, variant: "thirdary", class: "space-x-0" },
+      { separated: false, multiple: true, class: "space-x-px" },
+    ],
+  },
+  label: {
+    base: "flex flex-wrap",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
   },
   item: "",
   defaultVariants: {
-    color: "brand",
     variant: "primary",
     labelAlign: "top",
     size: "md",
     block: false,
     pill: false,
     square: false,
-    filled: false,
     disabled: false,
     multiple: false,
     separated: false,
