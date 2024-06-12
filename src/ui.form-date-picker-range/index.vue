@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" ref="wrapperRef">
     <UInput
       v-if="isVariant.input"
       :id="id"
@@ -235,6 +235,7 @@ import { wrongDateFormat, wrongMonthNumber, wrongDayNumber } from "./services/va
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 import useBreakpoint from "../composable.breakpoint";
+import { useAdjustElementPosition } from "../composable.adjustElementPosition";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -273,12 +274,21 @@ const props = defineProps({
   },
 
   /**
-   * Datepicker open direction.
-   * @values left, right
+   * Datepicker open direction on x-axis.
+   * @values auto, left, right
    */
-  openDirection: {
+  openDirectionX: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirection,
+    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirectionX,
+  },
+
+  /**
+   * Datepicker open direction on y-axis.
+   * @values auto, top, bottom
+   */
+  openDirectionY: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirectionY,
   },
 
   /**
@@ -392,6 +402,23 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const isShownMenu = ref(false);
+const wrapperRef = ref(null);
+const menuRef = ref(null);
+const rangeInputStartRef = ref(null);
+const rangeInputEndRef = ref(null);
+
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+  wrapperRef,
+  menuRef,
+  {
+    x: props.openDirectionX,
+    y: props.openDirectionY,
+  },
+  {
+    x: "left",
+    y: "bottom",
+  },
+);
 
 const {
   config,
@@ -414,7 +441,7 @@ const {
   rangeInputAttrs,
   rangeInputWrapperAttrs,
   inputRangeErrorAttrs,
-} = useAttrs(props, { isShownMenu });
+} = useAttrs(props, { isShownMenu, isTop, isRight });
 const { tm } = useLocale();
 
 const calendarValue = ref(props.modelValue);
@@ -422,16 +449,15 @@ const activeDate = ref(
   props.modelValue.from !== null ? getDateFromUnixTimestamp(props.modelValue.from) : new Date(),
 );
 const period = ref(PERIOD.ownRange);
-const periodDateList = ref(null);
 const rangeStart = ref("");
 const rangeEnd = ref("");
 const inputRangeStartError = ref("");
 const inputRangeEndError = ref("");
 const isHoverEvent = ref(false);
+const periodDateList = ref(null);
 
-const menuRef = ref(null);
-const rangeInputStartRef = ref(null);
-const rangeInputEndRef = ref(null);
+const { isMobileBreakpoint } = useBreakpoint();
+const i18nGlobal = tm(UDatePickerRange);
 
 const localValue = computed({
   get: () => props.modelValue,
@@ -443,9 +469,6 @@ const localValue = computed({
     activeDate.value = getDateFromUnixTimestamp(value.from || new Date());
   },
 });
-
-const { isMobileBreakpoint } = useBreakpoint();
-const i18nGlobal = tm(UDatePickerRange);
 
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -602,7 +625,7 @@ const userFormatDate = computed(() => {
     const endMonth = String(to?.getMonth())?.padStart(2, "0");
 
     const fromTitle = `${startDay}.${startMonth}`;
-    const toTitle = to ? `${endDay}.${endMonth} / ${to.getFullYear}` : "";
+    const toTitle = to ? `${endDay}.${endMonth} / ${to.getFullYear()}` : "";
 
     title = `${fromTitle} – ${toTitle}`;
   }
@@ -791,7 +814,12 @@ function getPeriodDateListClasses() {
 function activate() {
   isShownMenu.value = true;
 
-  nextTick(() => menuRef.value.focus());
+  nextTick(() => {
+    adjustPositionY();
+    adjustPositionX();
+
+    menuRef.value.focus();
+  });
 }
 
 function deactivate() {

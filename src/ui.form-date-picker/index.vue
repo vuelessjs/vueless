@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" ref="wrapperRef">
     <UInput
       :id="id"
       :key="isShownCalendar"
@@ -69,6 +69,7 @@ import {
 
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
+import { useAdjustElementPosition } from "../composable.adjustElementPosition";
 
 import defaultConfig from "./configs/default.config";
 import { UDatePicker } from "./constants";
@@ -102,12 +103,21 @@ const props = defineProps({
   },
 
   /**
-   * Datepicker open direction.
-   * @values left, right
+   * Datepicker open direction on x-axis.
+   * @values auto, left, right
    */
-  openDirection: {
+  openDirectionX: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.openDirection,
+    default: UIService.get(defaultConfig, UDatePicker).default.openDirectionX,
+  },
+
+  /**
+   * Datepicker open direction on y-axis.
+   * @values auto, top, bottom
+   */
+  openDirectionY: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePicker).default.openDirectionY,
   },
 
   /**
@@ -220,7 +230,23 @@ const userFormatDate = ref("");
 const formattedDate = ref("");
 const customView = ref(VIEW.day);
 
+const wrapperRef = ref(null);
 const calendarRef = ref(null);
+
+const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef);
+
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+  wrapperRef,
+  calendarWrapperRef,
+  {
+    x: props.openDirectionX,
+    y: props.openDirectionY,
+  },
+  {
+    x: "left",
+    y: "bottom",
+  },
+);
 
 defineExpose({
   calendarRef,
@@ -233,12 +259,21 @@ const localValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, { isShownCalendar });
+const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
+  isShownCalendar,
+  isTop,
+  isRight,
+});
 
 function activate() {
   isShownCalendar.value = true;
 
-  nextTick(() => calendarRef.value?.wrapperRef?.focus());
+  nextTick(() => {
+    adjustPositionY();
+    adjustPositionX();
+
+    calendarRef.value.wrapperRef.focus();
+  });
 }
 
 function deactivate() {

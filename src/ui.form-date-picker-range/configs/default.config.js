@@ -20,11 +20,14 @@ export default /*tw*/ {
     disabled:cursor-not-allowed last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none
   `,
   menu: {
-    base: "absolute z-40 mt-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
+    base: "absolute z-40 my-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
     variants: {
-      openDirection: {
+      openDirectionX: {
         left: "left-0",
         right: "right-0",
+      },
+      openDirectionY: {
+        top: "bottom-full mt-0",
       },
     },
   },
@@ -193,7 +196,8 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     variant: "button",
-    openDirection: "left",
+    openDirectionX: "auto",
+    openDirectionY: "auto",
     timepicker: false,
     disabled: false,
     dateFormat: "d.m.Y",

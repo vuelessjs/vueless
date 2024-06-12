@@ -8,11 +8,14 @@ export default /*tw*/ {
   },
   calendar: {
     wrapper: {
-      base: "absolute z-40 mt-2",
+      base: "absolute z-40 my-2",
       variants: {
-        openDirection: {
+        openDirectionX: {
           left: "left-0",
           right: "right-0",
+        },
+        openDirectionY: {
+          top: "bottom-full mt-0",
         },
       },
     },
@@ -109,7 +112,8 @@ export default /*tw*/ {
     dateFormat: "Y-m-d",
     userFormat: "F j, Y",
     size: "md",
-    openDirection: "left",
+    openDirectionX: "auto",
+    openDirectionY: "auto",
     timepicker: false,
     disabled: false,
     maxDate: undefined,
