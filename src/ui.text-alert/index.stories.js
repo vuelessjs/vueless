@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
+import UGroup from "../ui.container-group";
 import UIcon from "../ui.image-icon";
 
 /**
@@ -46,7 +47,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, URow },
+  components: { UAlert, UGroup },
   setup() {
     return {
       args,
@@ -54,16 +55,17 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <URow>
+    <UGroup>
       <UAlert
         v-for="(variant, index) in variants"
         v-bind="args"
         :variant="variant"
-        :title="variant"
         :key="index"
         color="gray"
-      />
-    </URow>
+      >
+      ${args.slotDefaultTemplate}
+      </UAlert>
+    </UGroup>
   `,
 });
 
