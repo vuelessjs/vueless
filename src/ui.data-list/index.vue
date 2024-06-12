@@ -30,7 +30,7 @@
             <div v-bind="labelAttrs(element.isActive)">
               <!-- @slot Use it to modify label. -->
               <slot name="label" :item="element">
-                {{ element.label }}
+                {{ element[labelKey] }}
               </slot>
             </div>
 
@@ -52,7 +52,7 @@
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
                 v-bind="deleteIconAttrs"
-                @click="onClickDelete(element.id, element.label)"
+                @click="onClickDelete(element.id, element[labelKey])"
               />
 
               <UIcon
@@ -64,7 +64,7 @@
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
                 v-bind="editIconAttrs"
-                @click="onClickEdit(element.id, element.label)"
+                @click="onClickEdit(element.id, element[labelKey])"
               />
             </template>
           </div>
@@ -81,9 +81,9 @@
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"
           >
-            <template #default="{ item }">
-              <slot :item="item">
-                <div v-bind="labelAttrs" v-text="item.label" />
+            <template #label="{ item }">
+              <slot name="label" :item="item">
+                <div v-bind="labelAttrs" v-text="item[labelKey]" />
               </slot>
             </template>
 
@@ -108,7 +108,7 @@ import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
 import UIService from "../service.ui";
 
-import { UDataListName } from "./constants";
+import { UDataList as UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
@@ -131,6 +131,14 @@ const props = defineProps({
   group: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Label key in the item object of options.
+   */
+  labelKey: {
+    type: String,
+    default: UIService.get(defaultConfig, UDataListName).default.labelKey,
   },
 
   /**
@@ -237,12 +245,12 @@ function onDragEnd() {
   emit("dragSort", sortData);
 }
 
-function onClickEdit(id) {
-  emit("clickEdit", id);
+function onClickEdit(id, label) {
+  emit("clickEdit", id, label);
 }
 
-function onClickDelete(id, title) {
-  emit("clickDelete", id, title);
+function onClickDelete(id, label) {
+  emit("clickDelete", id, label);
 }
 
 function prepareSortData(list, parentId) {
