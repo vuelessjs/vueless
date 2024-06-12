@@ -1,31 +1,11 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 space-x-4 flex justify-start items-start rounded-lg bg-{color}-50 text-{color}-700",
+    base: "p-4 flex flex-col gap-2 rounded-lg",
     variants: {
       variant: {
-        primary: `
-          text-black
-          bg-{color}-600 border-{color}-600
-          hover:bg-{color}-700 hover:border-{color}-700
-          focus:bg-{color}-700 focus:border-{color}-700
-          active:bg-{color}-800 active:border-{color}-800
-          disabled:bg-{color}-300 disabled:border-{color}-300 disabled:text-white
-        `,
-        secondary: `
-          text-{color}-600 border-{color}-600
-          hover:text-{color}-700 hover:border-{color}-700
-          focus:text-{color}-700 focus:border-{color}-700
-          active:text-{color}-800 active:border-{color}-800
-          disabled:text-{color}-300 disabled:border-{color}-300
-        `,
-        thirdary: `
-          border-transparent
-          text-{color}-600
-          hover:text-{color}-700 hover:bg-{color}-700 hover:bg-opacity-10
-          focus:text-{color}-700 focus:bg-{color}-700 focus:bg-opacity-10
-          active:text-{color}-800 active:bg-{color}-800 active:bg-opacity-15
-          disabled:text-{color}-300
-        `,
+        primary: `bg-{color}-500 text-{color}-700`,
+        secondary: `bg-transparent border border-{color}-500`,
+        thirdary: `border-none bg-{color}-50 text-{color}-700`,
       },
       bordered: {
         true: "border border-{color}-100",
@@ -38,7 +18,7 @@ export default /*tw*/ {
   },
   body: {
     base: `
-      space-y-4 font-normal leading-normal
+      flex items-start gap-2 font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
@@ -63,7 +43,8 @@ export default /*tw*/ {
   icon: "",
   iconName: "close",
   defaultVariants: {
-    color: "grayscale",
+    variant: "primary",
+    color: "brand",
     size: "md",
     timeout: 0,
     html: undefined,
@@ -71,7 +52,7 @@ export default /*tw*/ {
     closable: false,
   },
   safelist: (colors) => [
-    { pattern: `bg-(${colors})-50` },
+    { pattern: `bg-(${colors})-500` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
     { pattern: `bg-(${colors})-100` },

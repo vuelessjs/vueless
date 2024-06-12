@@ -25,6 +25,7 @@ export function useAttrs(props) {
       cvaWrapper({
         color: props.color,
         bordered: props.bordered,
+        variant: props.variant,
       }),
       props.color,
     ),

@@ -23,34 +23,33 @@
         <slot />
         <div v-if="!hasSlotContent($slots.default)" v-html="html" />
       </div>
+      <UButton
+        v-if="closable"
+        size="sm"
+        variant="thirdary"
+        :color="color"
+        square
+        v-bind="buttonAttrs"
+      >
+        <UIcon
+          internal
+          size="xs"
+          :color="color"
+          :name="config.iconName"
+          :data-cy="`${dataCy}-button`"
+          v-bind="iconAttrs"
+          @click="onHidden"
+        />
+      </UButton>
       <div>
         <!-- @slot Use it to add some component after text. -->
         <slot name="right" />
       </div>
     </div>
-    <div>
+    <div v-bind="wrapperAttrs.vertical">
       <!-- @slot Use it to add some component under text. -->
       <slot name="bottom" />
     </div>
-
-    <UButton
-      v-if="closable"
-      size="sm"
-      variant="thirdary"
-      :color="color"
-      square
-      v-bind="buttonAttrs"
-    >
-      <UIcon
-        internal
-        size="xs"
-        :color="color"
-        :name="config.iconName"
-        :data-cy="`${dataCy}-button`"
-        v-bind="iconAttrs"
-        @click="onHidden"
-      />
-    </UButton>
   </div>
 </template>
 
@@ -69,6 +68,15 @@ import { useAttrs } from "./composables/attrs.composable";
 defineOptions({ name: "UAlert" });
 
 const props = defineProps({
+  /**
+   * Alert variant.
+   * @values primary, secondary, thirdary
+   */
+  variant: {
+    type: String,
+    default: UIService.get(defaultConfig, UAlert).default.variant,
+  },
+
   /**
    * HTML or plain text.
    */

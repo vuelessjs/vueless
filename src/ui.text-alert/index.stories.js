@@ -45,6 +45,29 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
+const VariantsTemplate = (args, { argTypes } = {}) => ({
+  components: { UAlert, URow },
+  setup() {
+    console.log(argTypes);
+
+    return {
+      args,
+      variants: argTypes.variant.options,
+    };
+  },
+  template: `
+    <URow>
+      <UAlert
+        v-for="(variant, index) in variants"
+        v-bind="args"
+        :variant="variant"
+        :title="variant"
+        :key="index"
+      />
+    </URow>
+  `,
+});
+
 const ColorsTemplate = (args, { argTypes } = {}) => ({
   components: { UAlert, URow },
   setup() {
@@ -91,6 +114,9 @@ const SizeTemplate = (args, { argTypes } = {}) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const variants = VariantsTemplate.bind({});
+variants.args = {};
 
 export const colors = ColorsTemplate.bind({});
 colors.args = {
