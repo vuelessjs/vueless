@@ -48,8 +48,6 @@ const DefaultTemplate = (args) => ({
 const VariantsTemplate = (args, { argTypes } = {}) => ({
   components: { UAlert, URow },
   setup() {
-    console.log(argTypes);
-
     return {
       args,
       variants: argTypes.variant.options,
@@ -63,6 +61,7 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
         :variant="variant"
         :title="variant"
         :key="index"
+        color="gray"
       />
     </URow>
   `,

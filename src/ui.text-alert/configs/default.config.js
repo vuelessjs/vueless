@@ -5,10 +5,10 @@ export default /*tw*/ {
       variant: {
         primary: `bg-{color}-500 text-{color}-700`,
         secondary: `bg-transparent border border-{color}-500`,
-        thirdary: `border-none bg-{color}-50 text-{color}-700`,
+        thirdary: `bg-{color}-50 text-{color}-700`,
       },
       bordered: {
-        true: "border border-{color}-100",
+        true: "border",
       },
     },
     compoundVariants: [
@@ -18,7 +18,7 @@ export default /*tw*/ {
   },
   body: {
     base: `
-      flex items-start gap-2 font-normal leading-normal
+      flex items-center gap-2 font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
@@ -43,7 +43,7 @@ export default /*tw*/ {
   icon: "",
   iconName: "close",
   defaultVariants: {
-    variant: "primary",
+    variant: "thirdary",
     color: "brand",
     size: "md",
     timeout: 0,
@@ -52,7 +52,7 @@ export default /*tw*/ {
     closable: false,
   },
   safelist: (colors) => [
-    { pattern: `bg-(${colors})-500` },
+    { pattern: `bg-(${colors})-50` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
     { pattern: `bg-(${colors})-100` },
