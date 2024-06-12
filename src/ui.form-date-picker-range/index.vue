@@ -831,7 +831,7 @@ function deactivate() {
 function onBlur(event) {
   const { relatedTarget } = event;
 
-  if (!menuRef.value.contains(relatedTarget)) {
+  if (!menuRef.value?.contains(relatedTarget)) {
     deactivate();
   }
 }
@@ -844,7 +844,7 @@ function onBlurRangeInput(event) {
     menuRef.value.focus();
   }
 
-  if (!menuRef.value.contains(relatedTarget) && !isHoverEvent.value) {
+  if (!menuRef.value?.contains(relatedTarget) && !isHoverEvent.value) {
     deactivate();
   }
 
