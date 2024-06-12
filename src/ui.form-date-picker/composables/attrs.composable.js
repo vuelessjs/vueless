@@ -1,12 +1,16 @@
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
-
-import defaultConfig from "../configs/default.config";
 import { computed, watchEffect } from "vue";
 
-export default function useAttrs(props, { isShownCalendar }) {
+import defaultConfig from "../configs/default.config";
+import { POSITION } from "../../composable.adjustElementPosition";
+
+export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
   const { calendar } = config.value;
+
+  const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
+  const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
 
   const cvaCalendarWrapper = cva({
     base: calendar.wrapper.base,
@@ -15,7 +19,10 @@ export default function useAttrs(props, { isShownCalendar }) {
   });
 
   const calendarWrapperClasses = computed(() =>
-    cvaCalendarWrapper({ openDirection: props.openDirection }),
+    cvaCalendarWrapper({
+      openDirectionY: openDirectionY.value,
+      openDirectionX: openDirectionX.value,
+    }),
   );
 
   const calendarAttrs = getAttrs("calendar", {

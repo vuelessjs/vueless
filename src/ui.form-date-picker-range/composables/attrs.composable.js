@@ -4,10 +4,14 @@ import { cx, cva } from "../../service.ui";
 import { computed, watchEffect } from "vue";
 
 import defaultConfig from "../configs/default.config";
+import { POSITION } from "../../composable.adjustElementPosition";
 
-export default function useAttrs(props, { isShownMenu }) {
+export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
   const { menu } = config.value;
+
+  const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
+  const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
 
   const cvaMenu = cva({
     base: menu.base,
@@ -15,7 +19,9 @@ export default function useAttrs(props, { isShownMenu }) {
     compoundVariants: menu.compoundVariants,
   });
 
-  const menuClasses = computed(() => cvaMenu({ openDirection: props.openDirection }));
+  const menuClasses = computed(() =>
+    cvaMenu({ openDirectionY: openDirectionY.value, openDirectionX: openDirectionX.value }),
+  );
 
   const wrapperAttrs = getAttrs("wrapper");
   const buttonWrapperAttrsRaw = getAttrs("buttonWrapper");

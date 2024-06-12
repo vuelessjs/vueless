@@ -76,11 +76,29 @@ const OpenDirectionTemplate = (args, { argTypes } = {}) => ({
     <URow class="!flex-col">
       <UDatePicker
         class="w-full"
-        v-for="(direction, index) in directions"
-        :open-direction="direction"
+        open-direction-y="top"
         v-bind="args"
         v-model="args.value"
-        :key="index"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="left"
+        v-bind="args"
+        v-model="args.value"
       />
     </URow>
   `,
