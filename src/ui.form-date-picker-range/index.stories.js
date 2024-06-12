@@ -79,11 +79,54 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
+const OpenDirectionTemplate = (args, { argTypes } = {}) => ({
+  components: { UDatePickerRange, URow },
+  setup() {
+    return {
+      args,
+      directions: argTypes.openDirection.options,
+    };
+  },
+  template: `
+    <URow class="!flex-col">
+      <UDatePickerRange
+        class="w-full"
+        open-direction-y="top"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePickerRange
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePickerRange
+        class="w-full"
+        open-direction-y="bottom"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePickerRange
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="left"
+        v-bind="args"
+        v-model="args.value"
+      />
+    </URow>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const variants = VariantsTemplate.bind({});
 variants.args = {};
+
+export const openDirection = OpenDirectionTemplate.bind({});
+openDirection.args = {};
 
 export const disabled = VariantsTemplate.bind({});
 disabled.args = { disabled: true };
