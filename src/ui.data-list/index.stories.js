@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
+import URow from "../ui.container-row";
 
 /**
  * The `UDataList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-list)
@@ -13,24 +14,24 @@ export default {
   args: {
     list: [
       {
-        name: "name 1",
+        label: "Salary",
         id: 1,
         children: [
-          { name: "name 1.1", id: 1.1 },
-          { name: "name 1.2", id: 1.2 },
-          { name: "name 1.3", id: 1.3 },
+          { label: "IT", id: 1.1 },
+          { label: "HR", id: 1.2 },
+          { label: "C Level", id: 1.3 },
         ],
       },
       {
-        name: "name 2",
+        label: "Rent",
         id: 2,
         children: [
-          { name: "name 2.1", id: 2.1 },
-          { name: "name 2.2", id: 2.2 },
+          { label: "Office", id: 2.1 },
+          { label: "Shops", id: 2.2 },
         ],
       },
       {
-        name: "name 3",
+        label: "Marketing",
         id: 3,
       },
     ],
@@ -48,7 +49,11 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UDataList v-bind="args" @dragSort="onDragSort"/>
+    <UDataList v-bind="args" @dragSort="onDragSort">
+      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
+        <template v-if="args[slot]">{{ args[slot] }}</template>
+      </template>
+    </UDataList>
   `,
   methods: {
     onDragSort(value) {
@@ -58,7 +63,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { UDataList, UIcon },
+  components: { UDataList, UIcon, URow },
   setup() {
     return { args };
   },
@@ -77,17 +82,33 @@ const SlotTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const emptyState = DefaultTemplate.bind({});
+emptyState.args = {
+  list: [],
+  emptyTitle: "The list is empty.",
+  emptyDescription: "There is no data in the list.",
+};
+
 export const nesting = DefaultTemplate.bind({});
 nesting.args = { nesting: true };
 
-export const slotIcons = SlotTemplate.bind({});
-slotIcons.args = {
+export const slotLabel = SlotTemplate.bind({});
+slotLabel.args = {
   slotTemplate: `
-    <template #icons>
-      <UIcon
-        name="star"
-        color="red"
-       />
+    <template #label="{ item }">
+      <URow gap="xs" align="center">
+        {{ item.label }}
+        <UIcon name="check" color="green" size="sm" />
+      </URow>
+    </template>
+  `,
+};
+
+export const slotActions = SlotTemplate.bind({});
+slotActions.args = {
+  slotTemplate: `
+    <template #actions>
+      <UIcon interactive name="star" color="red" />
     </template>
   `,
 };

@@ -5,7 +5,7 @@ import { cx } from "../../service.ui";
 
 export function useAttrs(props) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { titleCrossed } = config.value;
+  const { labelCrossed } = config.value;
 
   const wrapperAttrs = getAttrs("wrapper");
   const dividerAttrs = getAttrs("divider", { isComponent: true });
@@ -19,15 +19,16 @@ export function useAttrs(props) {
   const dragIconAttrs = getAttrs("dragIcon", { isComponent: true });
   const nestedAttrs = getAttrs("nested", { isComponent: true });
 
-  const titleRaw = getAttrs("title");
+  const labelAttrsRaw = getAttrs("label");
 
-  const titleAttrs = computed(() => (isActive) => ({
-    ...titleRaw,
-    class: cx([titleRaw.value.class, isActive !== undefined && !isActive ? titleCrossed : ""]),
+  const labelAttrs = computed(() => (isActive) => ({
+    ...labelAttrsRaw,
+    class: cx([labelAttrsRaw.value.class, isActive !== undefined && !isActive ? labelCrossed : ""]),
   }));
 
   return {
     config,
+    hasSlotContent,
     wrapperAttrs,
     dividerAttrs,
     emptyAttrs,
@@ -35,9 +36,8 @@ export function useAttrs(props) {
     nestedAttrs,
     itemWrapperAttrs,
     itemAttrs,
-    titleAttrs,
+    labelAttrs,
     customActionsAttrs,
-    hasSlotContent,
     deleteIconAttrs,
     editIconAttrs,
     dragIconAttrs,

@@ -4,8 +4,8 @@
 
     <UEmpty
       v-if="!hideEmptyStateForNesting && !list?.length"
-      :description="emptyDescription"
-      :title="emptyTitle"
+      :title="emptyTitle || currentLocale.emptyTitle"
+      :description="emptyDescription || currentLocale.emptyDescription"
       v-bind="emptyAttrs"
     />
 
@@ -27,19 +27,20 @@
           <div :data-cy="`${dataCy}-item-${element.id}`" v-bind="itemAttrs">
             <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
 
-            <div v-bind="titleAttrs(element.isActive)">
-              <slot :item="element">
-                {{ element.name }}
+            <div v-bind="labelAttrs(element.isActive)">
+              <!-- @slot Use it to modify label. -->
+              <slot name="label" :item="element">
+                {{ element.label }}
               </slot>
             </div>
 
-            <template v-if="!element.isHiddenAction">
+            <template v-if="!element.isHiddenActions">
               <div
-                v-if="hasSlotContent($slots['icons']) && !element.isHiddenCustomActions"
+                v-if="hasSlotContent($slots['actions']) && !element.isHiddenCustomActions"
                 v-bind="customActionsAttrs"
               >
-                <!-- @slot Use it to add icons. -->
-                <slot name="icons" :item="element" />
+                <!-- @slot Use it to add custom actions. -->
+                <slot name="actions" :item="element" />
               </div>
 
               <UIcon
@@ -51,7 +52,7 @@
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
                 v-bind="deleteIconAttrs"
-                @click="onClickDelete(element.id, element.name)"
+                @click="onClickDelete(element.id, element.label)"
               />
 
               <UIcon
@@ -63,7 +64,7 @@
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
                 v-bind="editIconAttrs"
-                @click="onClickEdit(element.id)"
+                @click="onClickEdit(element.id, element.label)"
               />
             </template>
           </div>
@@ -82,13 +83,13 @@
           >
             <template #default="{ item }">
               <slot :item="item">
-                <div v-bind="titleAttrs" v-text="item.name" />
+                <div v-bind="labelAttrs" v-text="item.label" />
               </slot>
             </template>
 
-            <template #icons="{ item }">
-              <!-- @slot Use it to add icons. -->
-              <slot name="icons" :item="item" />
+            <template #actions="{ item }">
+              <!-- @slot Use it to add custom actions. -->
+              <slot name="actions" :item="item" />
             </template>
           </UDataList>
         </div>
@@ -133,14 +134,6 @@ const props = defineProps({
   },
 
   /**
-   * Enables nesting.
-   */
-  nesting: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UDataListName).default.nesting,
-  },
-
-  /**
    * Empty state title.
    */
   emptyTitle: {
@@ -165,6 +158,14 @@ const props = defineProps({
   },
 
   /**
+   * Enables nesting.
+   */
+  nesting: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UDataListName).default.nesting,
+  },
+
+  /**
    * Add line divider above the list.
    */
   upperlined: {
@@ -173,12 +174,12 @@ const props = defineProps({
   },
 
   /**
+   * Disable empty state for nested elements if empty (internal props).
    * @ignore
-   * Disable empty state for nested elements if empty (internal prorps).
    */
   hideEmptyStateForNesting: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDataListName).default.hideEmptyStateForNesting,
+    default: false,
   },
 
   /**
@@ -209,7 +210,7 @@ const {
   nestedAttrs,
   itemWrapperAttrs,
   itemAttrs,
-  titleAttrs,
+  labelAttrs,
   customActionsAttrs,
   deleteIconAttrs,
   editIconAttrs,
