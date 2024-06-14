@@ -12,7 +12,13 @@ export default /*tw*/ {
         false: "rounded-none",
       },
       variant: {
-        thirdary: "border-none hover:bg-brand-600 hover:bg-opacity-5",
+        thirdary: `
+          !text-gray-900 bg-brand-600
+          border-transparent bg-opacity-10
+          hover:border-transparent hover:bg-opacity-15
+          focus:border-transparent focus:bg-opacity-15
+          active:border-transparent active:bg-opacity-20
+        `,
       },
     },
   },
@@ -23,7 +29,7 @@ export default /*tw*/ {
       variant: {
         primary: "!text-white bg-brand-600 border-brand-600 disabled:border-brand-600",
         secondary: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600 bg-opacity-10",
-        thirdary: "text-brand-600 bg-brand-600 bg-opacity-10",
+        thirdary: " bg-brand-600 bg-opacity-20 hover:bg-opacity-20 focus:bg-opacity-20",
       },
     },
   },

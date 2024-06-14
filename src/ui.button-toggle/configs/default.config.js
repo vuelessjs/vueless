@@ -13,13 +13,13 @@ export default /*tw*/ {
       separated: {
         false: `
           flex-nowrap -space-x-px gap-0
-          [&>*:first-child]:rounded-l-lg [&>*:first-child]:rounded-r-none
-          [&>*:last-child]:rounded-r-lg [&>*:last-child]:rounded-l-none
+          [&>:first-child]:rounded-l-lg  [&>:last-child]:rounded-r-lg
+          [&>:first-child>*>*]:rounded-l-lg  [&>:last-child>*>*]:rounded-r-lg
         `,
       },
     },
     compoundVariants: [
-      { separated: false, variant: "thirdary", class: "space-x-0" },
+      { separated: false, variant: "thirdary", class: "space-x-px" },
       { separated: false, multiple: true, class: "space-x-px" },
     ],
   },
