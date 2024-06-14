@@ -6,32 +6,33 @@ import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props, { focus }) {
   const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { text } = config.value;
+  const { label } = config.value;
 
-  const cvaText = cva({
-    base: text.base,
-    variants: text.variants,
-    compoundVariants: text.compoundVariants,
+  const cvaLabel = cva({
+    base: label.base,
+    variants: label.variants,
+    compoundVariants: label.compoundVariants,
   });
 
-  const textClasses = computed(() =>
-    cvaText({
+  const labelClasses = computed(() =>
+    cvaLabel({
       focus: Boolean(focus.value),
+      size: props.size,
     }),
   );
 
-  const textAttrs = getAttrs("text", { classes: textClasses });
+  const labelAttrs = getAttrs("label", { classes: labelClasses });
   const fileAttrs = getAttrs("file", { isComponent: true });
   const infoAttrs = getAttrs("info");
   const iconAttrs = getAttrs("icon", { isComponent: true });
-  const itemImageAttrs = getAttrs("itemImage");
+  const imageAttrs = getAttrs("image");
 
   return {
     config,
     fileAttrs,
     infoAttrs,
     iconAttrs,
-    textAttrs,
-    itemImageAttrs,
+    labelAttrs,
+    imageAttrs,
   };
 }

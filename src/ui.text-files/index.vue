@@ -1,31 +1,31 @@
 <template>
-  <div :data-cy="dataCy" v-bind="filesAttrs">
-    <ULabel :label="label" :description="description" v-bind="labelAttrs">
-      <div v-bind="bodyAttrs">
-        <slot>
-          <UFile
-            v-for="(option, index) in options"
-            :id="option.id"
-            :key="option.text"
-            :label="option.text"
-            :url="option.url"
-            :data-cy="`${dataCy}-item-${index}`"
-            v-bind="fileAttrs"
-          >
-            <template #left="{ file }">
-              <!-- @slot Use it to add something left. -->
-              <slot name="left" :file="file" />
-            </template>
+  <ULabel :label="label" :description="description" v-bind="labelAttrs">
+    <div v-bind="bodyAttrs">
+      <slot>
+        <UFile
+          v-for="file in formattedFileList"
+          :id="file.id"
+          :key="file.id"
+          :label="file.label"
+          :url="file.url"
+          :image-url="file.imageUrl"
+          :size="size"
+          v-bind="fileAttrs"
+          :data-cy="`${dataCy}-item`"
+        >
+          <template #left="{ file: currentFile }">
+            <!-- @slot Use it to add something left. -->
+            <slot name="left" :file="currentFile" />
+          </template>
 
-            <template #right="{ file }">
-              <!-- @slot Use it to add something right. -->
-              <slot name="right" :file="file" />
-            </template>
-          </UFile>
-        </slot>
-      </div>
-    </ULabel>
-  </div>
+          <template #right="{ file: currentFile }">
+            <!-- @slot Use it to add something right. -->
+            <slot name="right" :file="currentFile" />
+          </template>
+        </UFile>
+      </slot>
+    </div>
+  </ULabel>
 </template>
 
 <script setup>
@@ -36,6 +36,7 @@ import UIService from "../service.ui";
 import { UFiles } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
+import { computed } from "vue";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UFiles", inheritAttrs: false });
@@ -67,11 +68,20 @@ const props = defineProps({
   },
 
   /**
-   * Set options for files.
+   * List of file objects.
    */
-  options: {
+  fileList: {
     type: Array,
     default: () => [],
+  },
+
+  /**
+   * Set size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UFiles).default.size,
   },
 
   /**
@@ -83,5 +93,16 @@ const props = defineProps({
   },
 });
 
-const { filesAttrs, labelAttrs, bodyAttrs, fileAttrs } = useAttrs(props);
+const { labelAttrs, bodyAttrs, fileAttrs } = useAttrs(props);
+
+const formattedFileList = computed(() =>
+  props.fileList.map((file) => {
+    return {
+      id: file.name,
+      label: file.name,
+      url: URL.createObjectURL(file),
+      imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
+    };
+  }),
+);
 </script>
