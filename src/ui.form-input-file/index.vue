@@ -9,18 +9,21 @@
 
         <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
 
-        <div v-else v-bind="fileListAttrs">
-          <template v-if="props.multiple">
-            <span
-              v-for="(file, idx) in currentFiles"
-              :key="idx"
-              v-bind="selectedItemAttrs"
-              v-text="file.name"
+        <UFiles :size="size" v-bind="fileListAttrs" :file-list="fileList">
+          <template #right="{ file }">
+            <UIcon
+              v-if="props.multiple"
+              pill
+              internal
+              interactive
+              size="2xs"
+              :name="config.removeItemIconName"
+              :data-cy="`${dataCy}-remove-item`"
+              v-bind="removeItemIconAttrs"
+              @click.stop.prevent="onClickRemoveItem(file.id)"
             />
           </template>
-
-          <span v-else v-bind="selectedItemAttrs" v-text="currentFiles.name" />
-        </div>
+        </UFiles>
 
         <div v-bind="buttonWrapperAttrs">
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
@@ -31,6 +34,7 @@
               variant="thirdary"
               :size="nestedComponentSize"
               :label="currentLocale.uploadFile"
+              :data-cy="`${dataCy}-upload`"
               v-bind="buttonAttrs"
             >
               <template #right>
@@ -61,6 +65,7 @@
             interactive
             :size="nestedComponentSize"
             :name="config.clearIconName"
+            :data-cy="`${dataCy}-clear`"
             v-bind="clearIconAttrs"
             @click="onClickResetFiles"
           />
@@ -71,13 +76,14 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UText from "../ui.text-block";
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 import UButton from "../ui.button";
+import UFiles from "../ui.text-files";
 
 import UIService, { getRandomId } from "../service.ui";
 import { getFileMbSize } from "./services/fileForm.service";
@@ -178,6 +184,14 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+
+  /**
+   * Data-cy attribute for automated testing.
+   */
+  dataCy: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "update:error"]);
@@ -200,7 +214,7 @@ const {
   inputAttrs,
   fileListAttrs,
   buttonWrapperAttrs,
-  selectedItemAttrs,
+  removeItemIconAttrs,
 } = useAttrs(props);
 
 const i18nGlobal = tm(UInputFile);
@@ -234,7 +248,7 @@ const accept = computed(() => {
 
 const isValue = computed(() => {
   return (
-    (Array.isArray(currentFiles.value) && currentFiles.value.length) ||
+    (Array.isArray(currentFiles.value) && currentFiles.value?.length) ||
     (!Array.isArray(currentFiles.value) && currentFiles.value)
   );
 });
@@ -249,6 +263,14 @@ const nestedComponentSize = computed(() => {
   return size;
 });
 
+const fileList = computed(() => {
+  if (Array.isArray(currentFiles.value)) {
+    return currentFiles.value;
+  }
+
+  return currentFiles.value ? [currentFiles.value] : [];
+});
+
 onMounted(() => {
   dropZoneRef.value.addEventListener("dragover", onDragOver);
   dropZoneRef.value.addEventListener("dragleave", onDragLeave);
@@ -258,6 +280,23 @@ onBeforeUnmount(() => {
   dropZoneRef.value.removeEventListener("dragover", onDragOver);
   dropZoneRef.value.removeEventListener("dragleave", onDragLeave);
 });
+
+watch(
+  () => props.multiple,
+  () => {
+    if (!props.multiple && Array.isArray(currentFiles.value)) {
+      currentFiles.value = currentFiles.value[0];
+    }
+
+    if (props.multiple && !Array.isArray(currentFiles.value)) {
+      currentFiles.value = currentFiles.value ? [currentFiles.value] : [];
+    }
+  },
+);
+
+function removeDuplicates(files) {
+  return files.filter((file) => !fileList.value.find((item) => item.name === file.name));
+}
 
 function validate(file) {
   const targetFileSize = getFileMbSize(file);
@@ -287,7 +326,7 @@ function onChangeFile(event) {
   }
 
   currentFiles.value = props.multiple
-    ? [...currentFiles.value, Array.from(event.target.files).at(0)]
+    ? [...(currentFiles.value || []), ...removeDuplicates(Array.from(event.target.files))]
     : Array.from(event.target.files).at(0);
 
   if (fileInputRef.value) fileInputRef.value.value = "";
@@ -314,24 +353,32 @@ function onDragLeave(event) {
 function onDrop(event) {
   event.preventDefault();
 
-  let targetFile = null;
+  let targetFiles = null;
 
   if (event.dataTransfer.items) {
-    targetFile = [...event.dataTransfer.items].find((item) => item.kind === "file")?.getAsFile();
+    targetFiles = [...event.dataTransfer.items]
+      .filter((item) => item.kind === "file")
+      .map((item) => item.getAsFile());
   } else {
-    targetFile = [...event.dataTransfer.files].at(0);
+    targetFiles = [...event.dataTransfer.files];
   }
 
-  if (targetFile) validate(targetFile);
+  if (targetFiles.length) targetFiles.forEach(validate);
 
   nextTick(() => {
-    if (currentError.value || !targetFile) {
+    if (currentError.value || !targetFiles.length) {
       onClickResetFiles();
 
       return;
     }
 
-    currentFiles.value = props.multiple ? [...currentFiles.value, targetFile] : targetFile;
+    currentFiles.value = props.multiple
+      ? [...(currentFiles.value || []), ...removeDuplicates(targetFiles)]
+      : targetFiles[0];
   });
+}
+
+function onClickRemoveItem(id) {
+  currentFiles.value = currentFiles.value?.filter((file) => file.name !== id);
 }
 </script>
