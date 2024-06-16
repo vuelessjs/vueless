@@ -18,5 +18,5 @@ export const PERIOD = {
   quarter: "quarter",
   year: "year",
   ownRange: "ownRange",
-  lastThirtyDays: "lastThirtyDays",
+  custom: "custom",
 };

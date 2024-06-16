@@ -11,9 +11,9 @@ export default {
   component: UFiles,
   args: {
     label: "Label",
-    options: [
-      { text: "some file text 1", url: "https://storybook.js.org/" },
-      { text: "some file text 2", url: "https://storybook.js.org/" },
+    fileList: [
+      new File(["foo"], "foo.txt", { type: "text/plain" }),
+      new File(["bar"], "foo.txt", { type: "text/plain" }),
     ],
   },
   argTypes: {

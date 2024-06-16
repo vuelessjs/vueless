@@ -58,8 +58,8 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
     const commonAttrs = {
       ...attrs,
-      component: isDev && (attrs.component || componentName || null),
-      "config-key": isDev && (attrs["config-key"] || configKey || null),
+      component: isDev ? attrs.component || componentName || null : null,
+      "config-key": isDev ? attrs["config-key"] || configKey || null : null,
       "child-component": isDev && attrs.component ? componentName : null,
       "child-config-key": isDev && attrs.component ? configKey : null,
     };

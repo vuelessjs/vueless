@@ -1,27 +1,25 @@
-import { readonly, ref, inject } from "vue";
+import { inject, readonly, ref } from "vue";
 
 export const LoaderRenderingSymbol = Symbol.for("vueless:loader-rendering");
 
-const isRenderingPage = ref(true);
+const isLoading = ref(true);
 
-function setRenderingStarted() {
-  isRenderingPage.value = true;
+function loaderRenderingOn() {
+  isLoading.value = true;
 }
 
-function setRenderingFinished() {
-  isRenderingPage.value = false;
+function loaderRenderingOff() {
+  isLoading.value = false;
 }
 
 export function createLoaderRendering() {
   return {
-    isRenderingPage: readonly(isRenderingPage),
-    setRenderingStarted,
-    setRenderingFinished,
+    isLoading: readonly(isLoading),
+    loaderRenderingOn,
+    loaderRenderingOff,
   };
 }
 
 export function useLoaderRendering() {
-  const loaderRenderingState = inject(LoaderRenderingSymbol);
-
-  return loaderRenderingState;
+  return inject(LoaderRenderingSymbol);
 }

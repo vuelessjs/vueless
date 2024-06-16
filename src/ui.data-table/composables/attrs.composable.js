@@ -39,20 +39,22 @@ export function useAttrs(
 
   const wrapperClasses = computed(() => cvaWrapper({ compact: props.compact }));
 
-  const customHeaderItemClasses = computed(() => cvaCustomHeaderItem({ compact: props.compact }));
+  const stickyHeaderColumnClasses = computed(() => cvaCustomHeaderItem({ compact: props.compact }));
 
   const headerCellClasses = computed(() => cvaHeaderCell({ compact: props.compact }));
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const customHeaderItemAttrsRaw = getAttrs("stickyHeaderColumn", {
-    classes: customHeaderItemClasses,
+  const stickyHeaderAttrsRaw = getAttrs("stickyHeader");
+  const stickyHeaderColumnAttrsRaw = getAttrs("stickyHeaderColumn", {
+    classes: stickyHeaderColumnClasses,
   });
   const selectedRowsCountAttrs = getAttrs("selectedRowsCount");
   const selectAllCheckboxAttrs = getAttrs("selectAllCheckbox", { isComponent: true });
   const stickyHeaderLoaderAttrs = getAttrs("stickyHeaderLoader", { isComponent: true });
+  const tableWrapperAttrsRaw = getAttrs("tableWrapper");
   const tableAttrs = getAttrs("table");
   const headerAttrs = getAttrs("header");
-  const headerRowAttrs = getAttrs("headerRow");
+  const headerRowAttrsRaw = getAttrs("headerRow");
   const headerCellAttrsRaw = getAttrs("headerCell", { classes: headerCellClasses });
   const headerSelectAllCheckboxAttrs = getAttrs("headerSelectAllCheckbox", { isComponent: true });
   const tableLoaderAttrs = getAttrs("tableLoader", { isComponent: true });
@@ -66,6 +68,7 @@ export function useAttrs(
   const toggleItemButtonAttrs = getAttrs("toggleItemButton");
   const secondaryRowAttrs = getAttrs("secondaryRow");
   const secondaryRowEmptyAttrs = getAttrs("secondaryRowEmpty");
+  const footerAttrsRaw = getAttrs("footer");
   const footerRowAttrs = getAttrs("footerRow");
   const footerCellAttrs = getAttrs("footerCell", { isComponent: true });
   const footerStickyRowAttrs = getAttrs("footerStickyRow");
@@ -74,6 +77,7 @@ export function useAttrs(
   const beforeFirstRowCellAttrs = getAttrs("beforeFirstRowCell", { isComponent: true });
   const afterLastRowAttrsRaw = getAttrs("afterLastRow");
   const afterLastRowCellAttrs = getAttrs("afterLastRowCell", { isComponent: true });
+  const toggleButtonWrapperAttrsRaw = getAttrs("toggleButtonWrapper");
 
   const bodyRowAttrsRaw = getAttrs("bodyRow");
 
@@ -101,35 +105,35 @@ export function useAttrs(
   }));
 
   const tableWrapperAttrs = computed(() => ({
+    ...tableWrapperAttrsRaw.value,
     class: cx([
-      config.value.innerWrapper,
-      selectedRows.value.length && config.value.innerWrapperSelected,
+      tableWrapperAttrsRaw.value.class,
+      selectedRows.value.length && config.value.tableWrapperSelected,
     ]),
   }));
 
-  const headerRowCellAttrs = computed(() => ({
+  const headerRowAttrs = computed(() => ({
+    ...headerRowAttrsRaw.value,
     class: cx([
-      config.value.headerRow,
+      headerRowAttrsRaw.value.class,
       selectedRows.value.length && !isHeaderSticky.value && config.value.stickyHeaderHidden,
     ]),
   }));
 
-  const stickyHeaderAttrs = computed(() => {
-    // console.log("hasSlotContentTheadActions", hasSlotContentTheadActions.value);
-
-    return {
-      class: cx([
-        config.value.stickyHeader,
-        selectedRows.value.length &&
-          hasSlotContentTheadActions.value &&
-          config.value.stickyHeaderActions,
-        isHeaderSticky.value && props.stickyHeader && config.value.stickyHeaderActive,
-      ]),
-    };
-  });
+  const stickyHeaderAttrs = computed(() => ({
+    ...stickyHeaderAttrsRaw.value,
+    class: cx([
+      stickyHeaderAttrsRaw.value.class,
+      selectedRows.value.length &&
+        hasSlotContentTheadActions.value &&
+        config.value.stickyHeaderActions,
+      isHeaderSticky.value && props.stickyHeader && config.value.stickyHeaderActive,
+    ]),
+  }));
 
   const footerClassesAttrs = computed(() => ({
-    class: cx([config.value.footer, isFooterSticky.value && config.value.footerSticky]),
+    ...footerAttrsRaw.value,
+    class: cx([footerAttrsRaw.value.class, isFooterSticky.value && config.value.footerSticky]),
   }));
 
   const afterLastRowAttrs = computed(() => ({
@@ -141,8 +145,8 @@ export function useAttrs(
   }));
 
   const stickyHeaderColumnAttrs = computed(() => (thClass) => ({
-    ...customHeaderItemAttrsRaw.value,
-    class: cx([customHeaderItemAttrsRaw.value.class, thClass]),
+    ...stickyHeaderColumnAttrsRaw.value,
+    class: cx([stickyHeaderColumnAttrsRaw.value.class, thClass]),
   }));
 
   const dateSeparatorRowAttrs = (rowIndex) => {
@@ -158,6 +162,7 @@ export function useAttrs(
   };
 
   const toggleButtonWrapperAttrs = computed(() => (index) => ({
+    ...toggleButtonWrapperAttrsRaw.value,
     class: index === 0 && isNesting.value ? config.value.toggleButtonWrapper : "",
   }));
 
@@ -167,7 +172,8 @@ export function useAttrs(
     stickyHeaderColumnAttrs,
     stickyHeaderAttrs,
     tableWrapperAttrs,
-    headerRowCellAttrs,
+    headerCellAttrs,
+    headerRowAttrs,
     bodyRowAttrs,
     footerClassesAttrs,
     afterLastRowAttrs,
@@ -176,7 +182,6 @@ export function useAttrs(
     beforeFirstRowCellAttrs,
     dateSeparatorRowAttrs,
     toggleButtonWrapperAttrs,
-    headerCellAttrs,
     bodyCellAttrs,
     checkboxBodyWrapperCellAttrs,
     footerCellAttrs,
@@ -190,7 +195,6 @@ export function useAttrs(
     selectedRowsCountAttrs,
     stickyHeaderLoaderAttrs,
     tableAttrs,
-    headerRowAttrs,
     tableLoaderAttrs,
     bodyAttrs,
     toggleItemButtonAttrs,

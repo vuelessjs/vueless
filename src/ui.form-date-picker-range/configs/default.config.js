@@ -19,7 +19,18 @@ export default /*tw*/ {
     hover:bg-zinc-200 hover:ring-brand-600/[.15] focus:border-0 focus:ring-0 focus:ring-brand-600/[.15] active:bg-zinc-200
     disabled:cursor-not-allowed last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none
   `,
-  menu: "absolute z-40 mt-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
+  menu: {
+    base: "absolute z-40 my-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
+    variants: {
+      openDirectionX: {
+        left: "left-0",
+        right: "right-0",
+      },
+      openDirectionY: {
+        top: "bottom-full mt-0",
+      },
+    },
+  },
   menuTransition: {
     enterFromClass: "opacity-0 scale-95",
     enterActiveClass: "transition transform ease-out duration-100",
@@ -185,6 +196,8 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     variant: "button",
+    openDirectionX: "auto",
+    openDirectionY: "auto",
     timepicker: false,
     disabled: false,
     dateFormat: "d.m.Y",

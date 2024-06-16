@@ -1,4 +1,5 @@
 export default /*tw*/ {
+  wrapper: "absolute overflow-visible md:w-[22rem]",
   transitionGroup: {
     moveClass: "transition-all duration-500",
     enterActiveClass: "transition-all duration-500",
@@ -6,7 +7,6 @@ export default /*tw*/ {
     enterFromClass: "opacity-0",
     leaveToClass: "opacity-0",
   },
-  wrapper: "absolute overflow-visible md:w-[22rem]",
   body: `
     mb-3 flex w-full items-center justify-center gap-3 rounded-2xl bg-gray-900/90
     p-4 shadow-[0_4px_16px_rgba(17,24,39,0.5)] backdrop-blur-md md:shadow-[0_0px_12px_rgba(0,0,0,0.25)]
@@ -25,6 +25,10 @@ export default /*tw*/ {
   errorIconName: "error",
   closeIcon: "",
   closeIconName: "close",
+  positionClasses: {
+    page: "UNotifyPage",
+    aside: "UNotifyAside",
+  },
   duration: {
     short: 4000,
     medium: 8000,
@@ -40,10 +44,6 @@ export default /*tw*/ {
     error: {
       default: "Operation error.",
     },
-  },
-  positionClasses: {
-    page: "UNotifyPage",
-    aside: "UNotifyAside",
   },
   defaultVariants: {
     xPosition: "center",

@@ -1,20 +1,32 @@
+import { computed } from "vue";
 import useUI from "../../composable.ui";
+import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { getAttrs, config } = useUI(defaultConfig, () => props.config);
+  const { getAttrs, setColor, config } = useUI(defaultConfig, () => props.config);
+  const { wrapper } = config.value;
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const loaderAttrs = getAttrs("loader");
-  const rippleAttrs = getAttrs("ripple");
-  const rippleElementAttrs = getAttrs("rippleElement");
+  const cvaWrapper = cva({
+    base: wrapper.base,
+    variants: wrapper.variants,
+    compoundVariants: wrapper.compoundVariants,
+  });
+
+  const wrapperClasses = computed(() =>
+    setColor(
+      cvaWrapper({
+        color: props.color,
+      }),
+      props.color,
+    ),
+  );
+
+  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
 
   return {
     wrapperAttrs,
-    loaderAttrs,
-    rippleAttrs,
-    rippleElementAttrs,
     config,
   };
 }

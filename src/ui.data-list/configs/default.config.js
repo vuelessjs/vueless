@@ -12,8 +12,8 @@ export default /*tw*/ {
   `,
   dragIcon: "icon-drag cursor-move opacity-100 fill-gray-400 md:fill-gray-500",
   dragIconName: "drag_indicator",
-  title: "text-base font-normal text-gray-900 flex-auto pt-px",
-  titleCrossed: "line-through",
+  label: "text-base font-normal text-gray-900 flex-auto pt-px",
+  labelCrossed: "line-through",
   customActions: `
     space-x-5 opacity-50 md:flex md:items-center md:opacity-0
     group-hover/item:md:block group-hover/item:opacity-100
@@ -24,13 +24,15 @@ export default /*tw*/ {
   editIconName: "edit_note",
   nested: "group/nested ml-6",
   i18n: {
-    delete: "Delete",
     edit: "Edit",
+    delete: "Delete",
+    emptyTitle: "",
+    emptyDescription: "There is no data in the list.",
   },
   defaultVariants: {
     animationDuration: 200,
+    labelKey: "label",
     nesting: false,
     upperlined: false,
-    hideEmptyStateForNesting: false,
   },
 };

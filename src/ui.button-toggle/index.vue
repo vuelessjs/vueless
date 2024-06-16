@@ -1,24 +1,36 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
-    <!-- @slot Use it to add UToggleItem directly. -->
-    <slot>
-      <UToggleItem
-        v-for="(item, index) in options"
-        :key="item.value"
-        :name="name"
-        :model-value="item.value"
-        :value="item.value"
-        :label="item.label"
-        :data-cy="`${dataCy}-item-${index}`"
-        v-bind="toggleItemAttrs"
-      />
-    </slot>
-  </div>
+  <ULabel
+    :size="labelSize"
+    :label="label"
+    :description="description"
+    :align="labelAlign"
+    :disabled="disabled"
+    :data-cy="dataCy"
+    v-bind="labelAttrs"
+  >
+    <div v-bind="itemsAttrs">
+      <!-- @slot Use it to add UToggleItem directly. -->
+      <slot>
+        <UToggleItem
+          v-for="(item, index) in options"
+          :key="item.value"
+          :name="name"
+          :model-value="item.value"
+          :value="item.value"
+          :disabled="disabled"
+          :label="item.label"
+          :data-cy="`${dataCy}-item-${index}`"
+          v-bind="itemAttrs"
+        />
+      </slot>
+    </div>
+  </ULabel>
 </template>
 
 <script setup>
 import { computed, provide, readonly } from "vue";
 
+import ULabel from "../ui.form-label";
 import UToggleItem from "../ui.button-toggle-item";
 import UIService from "../service.ui";
 
@@ -39,7 +51,15 @@ const props = defineProps({
   },
 
   /**
-   * Toggle variants.
+   * Toggle item options.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Toggle variant.
    * @values primary, secondary, thirdary
    */
   variant: {
@@ -48,11 +68,37 @@ const props = defineProps({
   },
 
   /**
-   * Toggle item options.
+   * Toggle size.
+   * @values 2xs, xs, sm, md, lg, xl
    */
-  options: {
-    type: Array,
-    default: () => [],
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.size,
+  },
+
+  /**
+   * Label placement.
+   * @values top, topInside, topWithDesc, bottom, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UToggle).default.labelAlign,
+  },
+
+  /**
+   * Toggle label.
+   */
+  label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Toggle description.
+   */
+  description: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -64,12 +110,27 @@ const props = defineProps({
   },
 
   /**
-   * Toggle size.
-   * @values xs, sm, md, lg
+   * Allow selecting a few options and return them as an array.
    */
-  size: {
-    type: String,
-    default: UIService.get(defaultConfig, UToggle).default.size,
+  multiple: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.multiple,
+  },
+
+  /**
+   * Separate toggle items.
+   */
+  separated: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.separated,
+  },
+
+  /**
+   * Make toggle disabled.
+   */
+  disabled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.disabled,
   },
 
   /**
@@ -81,11 +142,27 @@ const props = defineProps({
   },
 
   /**
-   * Allow selecting a few options and return them as an array.
+   * Set button corners rounded.
    */
-  multiple: {
+  pill: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.multiple,
+    default: UIService.get(defaultConfig, UToggle).default.pill,
+  },
+
+  /**
+   * Set the same paddings for the button.
+   */
+  square: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UToggle).default.square,
+  },
+
+  /**
+   * Component ui config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
   },
 
   /**
@@ -99,11 +176,24 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { wrapperAttrs, toggleItemAttrs } = useAttrs(props);
+const { labelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
+});
+
+const labelSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size];
 });
 
 const type = computed(() => {
@@ -117,18 +207,26 @@ function updateSelectedValue(value, checked) {
     return;
   }
 
-  if (!checked) {
-    selectedValue.value = selectedValue.value.filter((item) => item !== value);
+  if (checked) {
+    const items = selectedValue.value || [];
+
+    items.push(value);
+    selectedValue.value = items;
   } else {
-    selectedValue.value.push(value);
+    selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
   }
 }
 
 provide("toggleType", readonly(type));
+provide("togglePill", () => props.pill);
 provide("toggleName", () => props.name);
 provide("toggleSize", () => props.size);
 provide("toggleBlock", () => props.block);
+provide("toggleSquare", () => props.square);
 provide("toggleVariant", () => props.variant);
+provide("toggleDisabled", () => props.disabled);
+provide("toggleSeparated", () => props.separated);
+
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
   updateSelectedValue,

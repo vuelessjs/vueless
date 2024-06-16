@@ -64,6 +64,46 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
+const OpenDirectionTemplate = (args, { argTypes } = {}) => ({
+  components: { UDatePicker, URow },
+  setup() {
+    return {
+      args,
+      directions: argTypes.openDirection.options,
+    };
+  },
+  template: `
+    <URow class="!flex-col">
+      <UDatePicker
+        class="w-full"
+        open-direction-y="top"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        v-bind="args"
+        v-model="args.value"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="left"
+        v-bind="args"
+        v-model="args.value"
+      />
+    </URow>
+  `,
+});
+
 const SlotTemplate = (args) => ({
   components: { UDatePicker, UIcon },
   setup() {
@@ -81,6 +121,9 @@ Default.args = { date: 1645653600 };
 
 export const sizes = SizesTemplate.bind({});
 sizes.args = { label: "" };
+
+export const openDirection = OpenDirectionTemplate.bind({});
+openDirection.args = {};
 
 export const description = DefaultTemplate.bind({});
 description.args = { description: "some description" };

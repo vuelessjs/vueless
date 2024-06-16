@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.143",
+  "version": "0.0.161",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
@@ -28,18 +28,18 @@
     "cva": "^1.0.0-beta.1",
     "lodash-es": "^4.17.21",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.4",
     "tippy.js": "^6.3.7",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@material-symbols/svg-500": "^0.17.4",
     "@release-it/bumper": "^6.0.1",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
-    "@vueless/plugin-vite": "^0.0.27",
-    "@vueless/storybook": "^0.0.27",
-    "@vueless/web-types": "^0.0.8",
+    "@vueless/plugin-vite": "^0.0.28",
+    "@vueless/storybook": "^0.0.31",
+    "@vueless/web-types": "^0.0.11",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^8.55.0",
@@ -52,10 +52,10 @@
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
     "release-it": "^17.2.1",
-    "vite": "^5.2.10",
+    "vite": "^5.2.13",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vue": "^3.4.25",
+    "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   },
   "resolutions": {
@@ -67,6 +67,5 @@
   },
   "bugs": {
     "url": "https://github.com/vuelessjs/vueless/issues"
-  },
-  "web-types": "./web-types.json"
+  }
 }

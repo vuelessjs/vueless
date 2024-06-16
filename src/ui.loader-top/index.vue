@@ -49,8 +49,8 @@ const {
   componentLoaderRequestQueue,
   setComponentRequestQueue,
   removeComponentRequestQueue,
-  setLoaderTopOff,
-  setLoaderTopOn,
+  loaderTopOff,
+  loaderTopOn,
 } = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
 
@@ -93,11 +93,11 @@ onUnmounted(() => {
 });
 
 function setLoaderOnHandler(event) {
-  setLoaderTopOn(event.detail.resource);
+  loaderTopOn(event.detail.resource);
 }
 
 function setLoaderOffHandler(event) {
-  setLoaderTopOff(event.detail.resource);
+  loaderTopOff(event.detail.resource);
 }
 
 function requestWithoutQuery(request) {

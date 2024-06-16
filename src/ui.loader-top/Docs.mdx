@@ -12,29 +12,26 @@ import defaultConfig from "./configs/default.config?raw"
 <Controls of={stories.Default} />
 <Stories of={stories} />
 
-## **Default config**
-<Source code={getSource(defaultConfig)} language="jsx" dark />
-
 ## Control loader
 You can control loader state using *useLoaderRendering* composable.
 
 <Source code={`
 import { useLoaderTop } from "vueless";
 
-const { 
-    setLoaderTopOn,
-    setLoaderTopOff,
+const {
+    loaderTopOn,
+    loaderTopOff,
     addRequestUrl,
     removeRequestUrl
 } = useLoaderTop();
 `} language="jsx" dark />
 
-## Control outside of component
-You can control loader state outside of vue components using following methods.
+## Control outside a component
+You can control loader state outside vue components using the following methods.
 
 <Source code={`
-import {
-  loaderTopOn,
-  loaderTopOff,
-} from "vueless";
+import { loaderTopOn, loaderTopOff } from "vueless";
 `} language="jsx" dark />
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />

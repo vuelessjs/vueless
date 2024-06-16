@@ -1,14 +1,17 @@
 <template>
   <UButton
-    tag="label"
     tabindex="0"
     :for="id"
+    color="grayscale"
+    variant="secondary"
     :label="label"
     :size="toValue(size)"
+    :pill="toValue(pill)"
     :block="toValue(block)"
-    :variant="toValue(variant)"
+    :square="toValue(square)"
+    :disabled="toValue(disabled)"
     v-bind="buttonAttrs"
-    @click="onClickSetValue"
+    @click.stop="onClickSetValue"
   >
     <template #left>
       <slot name="left" />
@@ -21,8 +24,9 @@
         :name="name"
         :type="type"
         :value="value"
-        :disabled="disabled"
+        :disabled="toValue(disabled)"
         v-bind="inputAttrs"
+        @click.stop
       />
 
       <slot name="default" />
@@ -113,13 +117,19 @@ const emit = defineEmits(["update:modelValue"]);
 const name = inject("toggleName", () => "toggle");
 const type = inject("toggleType", UIService.get(defaultConfig, UToggleItem).default.type);
 const size = inject("toggleSize", UIService.get(defaultConfig, UToggleItem).default.size);
+const pill = inject("togglePill", UIService.get(defaultConfig, UToggleItem).default.pill);
 const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).default.block);
+const square = inject("toggleSquare", UIService.get(defaultConfig, UToggleItem).default.square);
 const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
+const separated = inject("toggleSeparated", () => true);
+// eslint-disable-next-line vue/no-dupe-keys, prettier/prettier
+const disabled = inject("toggleDisabled", props.disabled || UIService.get(defaultConfig, UToggleItem).default.disabled);
+
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
-const { buttonAttrs, inputAttrs } = useAttrs(props);
-
 const selectedItem = ref("");
+
+const { buttonAttrs, inputAttrs } = useAttrs(props, { selectedValue, separated, variant });
 
 onMounted(() => {
   if (type.value === TYPE_RADIO) {
