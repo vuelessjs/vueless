@@ -138,10 +138,10 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaultVariants: {
-    dateFormat: "Y-m-d",
     userFormat: "F j, Y",
     range: false,
     timepicker: false,
+    dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
   },

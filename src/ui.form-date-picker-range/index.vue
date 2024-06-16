@@ -199,13 +199,9 @@ import UIService, { getRandomId } from "../service.ui";
 
 import {
   addDays,
-  gmtToUTC,
-  getUnixTimestampFromDate,
   addMonths,
   addYears,
-  getDateFromUnixTimestamp,
   getSortedLocale,
-  utcToGMT,
   getEndOfMonth,
   getEndOfQuarter,
   getEndOfWeek,
@@ -251,7 +247,7 @@ defineOptions({ name: "UDatePickerRange", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Dater picker range value as object with from and to keys (timestamp).
+   * Datepicker value in JS Date Objects or Strings formatted in provided props.dateFormat.
    */
   modelValue: {
     type: Object,
@@ -267,7 +263,7 @@ const props = defineProps({
   customRangeButton: {
     type: Object,
     default: () => ({
-      range: { from: 0, to: 0 },
+      range: { from: null, to: null },
       label: "",
       description: "",
     }),
@@ -444,33 +440,8 @@ const {
 } = useAttrs(props, { isShownMenu, isTop, isRight });
 const { tm } = useLocale();
 
-const calendarValue = ref(props.modelValue);
-const activeDate = ref(
-  props.modelValue.from !== null ? getDateFromUnixTimestamp(props.modelValue.from) : new Date(),
-);
-const period = ref(PERIOD.ownRange);
-const rangeStart = ref("");
-const rangeEnd = ref("");
-const inputRangeStartError = ref("");
-const inputRangeEndError = ref("");
-const isHoverEvent = ref(false);
-const periodDateList = ref(null);
-
-const { isMobileBreakpoint } = useBreakpoint();
 const i18nGlobal = tm(UDatePickerRange);
 
-const localValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    if (value.from && value.to) {
-      emit("update:modelValue", value);
-    }
-
-    activeDate.value = getDateFromUnixTimestamp(value.from || new Date());
-  },
-});
-
-const rangeInputName = computed(() => `rangeInput-${props.id}`);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const locale = computed(() => {
@@ -489,6 +460,54 @@ const locale = computed(() => {
     },
   };
 });
+
+const calendarValue = ref(props.modelValue);
+const activeDate = ref(
+  props.modelValue.from !== null
+    ? parseDate(props.modelValue.from, props.dateFormat, locale.value)
+    : new Date(),
+);
+const period = ref(PERIOD.ownRange);
+const rangeStart = ref("");
+const rangeEnd = ref("");
+const inputRangeStartError = ref("");
+const inputRangeEndError = ref("");
+const isHoverEvent = ref(false);
+const periodDateList = ref(null);
+
+const { isMobileBreakpoint } = useBreakpoint();
+
+const localValue = computed({
+  get: () => {
+    return {
+      from: parseDate(props.modelValue.from || null, props.dateFormat, locale.value),
+      to: parseDate(props.modelValue.to || null, props.dateFormat, locale.value),
+    };
+  },
+  set: (value) => {
+    if (value.from && value.to && !props.dateFormat) {
+      emit("update:modelValue", value);
+    }
+
+    const parsedDateFrom = parseDate(value.from || null, props.dateFormat, locale.value);
+    const parsedDateTo = parseDate(value.to || null, props.dateFormat, locale.value);
+
+    if (value.from && value.to && props.dateFormat) {
+      const newValue = {
+        from: formatDate(parsedDateFrom, props.dateFormat, locale.value),
+        to: formatDate(parsedDateTo, props.dateFormat, locale.value),
+      };
+
+      emit("update:modelValue", newValue);
+    }
+
+    activeDate.value = props.dateFormat
+      ? formatDate(parsedDateFrom || new Date(), props.dateFormat, locale.value)
+      : value.from || new Date();
+  },
+});
+
+const rangeInputName = computed(() => `rangeInput-${props.id}`);
 
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -575,8 +594,8 @@ const userFormatDate = computed(() => {
 
   const isDefaultTitle = isPeriod.value.week || isPeriod.value.custom || isPeriod.value.ownRange;
 
-  const from = getDateFromUnixTimestamp(localValue.value.from);
-  const to = localValue.value.to !== null ? getDateFromUnixTimestamp(localValue.value.to) : null;
+  const from = localValue.value.from;
+  const to = localValue.value.to !== null ? localValue.value.to : null;
 
   if (isDefaultTitle) {
     let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
@@ -637,14 +656,8 @@ watch(
   calendarValue,
   () => {
     localValue.value = {
-      from:
-        calendarValue.value.from === null
-          ? calendarValue.value.from
-          : getUnixTimestampFromDate(gmtToUTC(getDateFromUnixTimestamp(calendarValue.value.from))),
-      to:
-        calendarValue.value.to === null
-          ? calendarValue.value.to
-          : getUnixTimestampFromDate(gmtToUTC(getDateFromUnixTimestamp(calendarValue.value.to))),
+      from: calendarValue.value.from,
+      to: calendarValue.value.to,
     };
 
     nextTick(() => menuRef.value?.focus());
@@ -655,21 +668,22 @@ watch(
 watch(
   () => props.modelValue,
   () => {
-    if (props.modelValue.to !== calendarValue.value.to) {
+    if (String(props.modelValue.to) !== String(calendarValue.value.to)) {
       calendarValue.value.to = props.modelValue.to;
     }
 
-    if (props.modelValue.from !== calendarValue.value.from) {
+    if (String(props.modelValue.from) !== String(calendarValue.value.from)) {
       calendarValue.value.from = props.modelValue.from;
     }
 
+    const parsedDateFrom = parseDate(props.modelValue.from, props.dateFormat, locale.value);
+    const parsedDateTo = parseDate(props.modelValue.to, props.dateFormat, locale.value);
+
     rangeStart.value = props.modelValue.from
-      ? formatDate(getDateFromUnixTimestamp(props.modelValue.from), props.dateFormat, locale.value)
+      ? formatDate(parsedDateFrom, "d.m.Y", locale.value)
       : "";
 
-    rangeEnd.value = props.modelValue.to
-      ? formatDate(getDateFromUnixTimestamp(props.modelValue.to), props.dateFormat, locale.value)
-      : "";
+    rangeEnd.value = props.modelValue.to ? formatDate(parsedDateTo, "d.m.Y", locale.value) : "";
 
     inputRangeStartError.value = "";
     inputRangeEndError.value = "";
@@ -678,13 +692,11 @@ watch(
 );
 
 watch(period, () => {
-  activeDate.value =
-    localValue.value.from !== null ? getDateFromUnixTimestamp(localValue.value.from) : new Date();
+  activeDate.value = localValue.value.from !== null ? localValue.value.from : new Date();
 });
 
 function onClickPeriodButton(periodName) {
-  const localDate =
-    localValue.value.from !== null ? getDateFromUnixTimestamp(localValue.value.from) : new Date();
+  const localDate = localValue.value.from !== null ? localValue.value.from : new Date();
 
   if (periodName === PERIOD.week) {
     periodDateList.value = getWeekDateList(localDate, locale.value.months.shorthand);
@@ -736,37 +748,21 @@ function onClickCustomRangeButton() {
 }
 
 function selectCustomRange() {
-  const from =
-    typeof props.customRangeButton.range.from === "number"
-      ? getDateFromUnixTimestamp(props.customRangeButton.range.from)
-      : props.customRangeButton.range.from;
-
-  const to =
-    typeof props.customRangeButton.range.to === "number"
-      ? getDateFromUnixTimestamp(props.customRangeButton.range.to)
-      : props.customRangeButton.range.to;
-
   localValue.value = {
-    from: getUnixTimestampFromDate(gmtToUTC(from)),
-    to: getUnixTimestampFromDate(gmtToUTC(to)),
+    from: props.customRangeButton.range.from,
+    to: props.customRangeButton.range.to,
   };
 }
 
 function isDatePeriodOutOfRange(datePeriod) {
   return (
     dateIsOutOfRange(
-      getDateFromUnixTimestamp(datePeriod.startRange),
+      datePeriod.startRange,
       props.minDate,
       props.maxDate,
       locale.value,
       props.dateFormat,
-    ) ||
-    dateIsOutOfRange(
-      getDateFromUnixTimestamp(datePeriod.endRange),
-      props.minDate,
-      props.maxDate,
-      props.dateFormat,
-    )
+    ) || dateIsOutOfRange(datePeriod.endRange, props.minDate, props.maxDate, props.dateFormat)
   );
 }
 
@@ -874,8 +870,7 @@ function onInputRangeInput(value, type) {
     inputRangeEndError.value = error;
   }
 
-  const parsedValue = gmtToUTC(parseDate(value || new Date(), props.dateFormat, locale.value));
-  const unixTimeValue = getUnixTimestampFromDate(parsedValue);
+  const parsedValue = parseDate(value || new Date(), props.dateFormat, locale.value);
   const isOutOfRange = dateIsOutOfRange(
     parsedValue,
     props.minDate,
@@ -883,25 +878,25 @@ function onInputRangeInput(value, type) {
     locale.value,
     props.dateFormat,
   );
-  const isToLessThanFrom = unixTimeValue <= localValue.value.from;
+  const isToLessThanFrom = parsedValue <= localValue.value.from;
 
   if (type === INPUT_RANGE_TYPE.start && !error && !isOutOfRange) {
-    localValue.value.from = value ? unixTimeValue : "";
+    localValue.value.from = value ? parsedValue : "";
   }
 
   if (type === INPUT_RANGE_TYPE.end && !error && !isOutOfRange && !isToLessThanFrom) {
-    localValue.value.to = value ? unixTimeValue : "";
+    localValue.value.to = value ? parsedValue : "";
   }
 }
 
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
-  const from = utcToGMT(getDateFromUnixTimestamp(props.modelValue.from || new Date()));
-  const to = utcToGMT(getDateFromUnixTimestamp(props.modelValue.to || new Date()));
+  const from = props.modelValue.from || new Date();
+  const to = props.modelValue.to || new Date();
 
-  const customFrom = utcToGMT(getDateFromUnixTimestamp(props.customRangeButton.range.from));
-  const customTo = utcToGMT(getDateFromUnixTimestamp(props.customRangeButton.range.to));
+  const customFrom = props.customRangeButton.range.from || new Date();
+  const customTo = props.customRangeButton.range.to || new Date();
 
   const isWeekPeriod =
     String(from) === String(getStartOfWeek(from, { weekStartsOn: 1 })) &&
@@ -946,15 +941,15 @@ function onClickShiftRange(action) {
   const millisecondsPerDay =
     millisecondsPerSecond * secondsPerMinute * minutesPerHour * hoursPerDay;
 
-  const from = getDateFromUnixTimestamp(localValue.value.from);
-  const to = localValue.value.to ? getDateFromUnixTimestamp(localValue.value.to) : addDays(from, 1);
+  const from = localValue.value.from;
+  const to = localValue.value.to ? localValue.value.to : addDays(from, 1);
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
   if (action === "next") {
     if (isPeriod.value.ownRange) {
       const nextDate = {
-        to: getUnixTimestampFromDate(addDays(to, daysDifference)),
-        from: getUnixTimestampFromDate(addDays(from, daysDifference)),
+        to: addDays(to, daysDifference),
+        from: addDays(from, daysDifference),
       };
 
       if (isDatePeriodOutOfRange(nextDate)) return;
@@ -979,8 +974,8 @@ function onClickShiftRange(action) {
   } else {
     if (isPeriod.value.ownRange) {
       const previousDate = {
-        to: getUnixTimestampFromDate(gmtToUTC(addDays(to, daysDifference * -1))),
-        from: getUnixTimestampFromDate(gmtToUTC(addDays(from, daysDifference * -1))),
+        to: addDays(to, daysDifference * -1),
+        from: addDays(from, daysDifference * -1),
       };
 
       if (isDatePeriodOutOfRange(previousDate)) return;

@@ -62,7 +62,7 @@ const props = defineProps({
 
   dateFormat: {
     type: String,
-    required: true,
+    default: undefined,
   },
 
   range: {

@@ -61,11 +61,7 @@ import { VIEW } from "../ui.form-calendar/constants";
 
 import UIService, { getRandomId } from "../service.ui";
 
-import {
-  addDays,
-  isSameDay,
-  getDateFromUnixTimestamp,
-} from "../ui.form-calendar/services/date.service";
+import { addDays, isSameDay } from "../ui.form-calendar/services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
@@ -95,10 +91,10 @@ const props = defineProps({
   },
 
   /**
-   * Datepicker value (timestamp).
+   * Datepicker value in JS Date Object or String formatted in provided props.dateFormat.
    */
   modelValue: {
-    type: Number,
+    type: [Object, String],
     default: null,
   },
 
@@ -301,7 +297,7 @@ function onBlur(event) {
 }
 
 function formatUserDate(data) {
-  if (props.dateFormat !== STANDARD_USER_FORMAT) return data;
+  if (props.userFormat !== STANDARD_USER_FORMAT) return data;
 
   const i18nGlobal = tm(UDatePicker);
   const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -310,12 +306,11 @@ function formatUserDate(data) {
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
   const formattedDateWithoutDay = formattedDate.split(",").slice(1).join("").trim();
 
-  const selectedDate = getDateFromUnixTimestamp(localValue.value);
   const today = new Date();
 
-  const isToday = isSameDay(today, selectedDate);
-  const isYesterday = isSameDay(addDays(today, -1), selectedDate);
-  const isTomorrow = isSameDay(addDays(today, 1), selectedDate);
+  const isToday = isSameDay(today, localValue.value);
+  const isYesterday = isSameDay(addDays(today, -1), localValue.value);
+  const isTomorrow = isSameDay(addDays(today, 1), localValue.value);
 
   if (isToday) {
     prefix = currentLocale.value.today;

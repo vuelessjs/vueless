@@ -200,7 +200,7 @@ export default /*tw*/ {
     openDirectionY: "auto",
     timepicker: false,
     disabled: false,
-    dateFormat: "d.m.Y",
+    dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
   },
