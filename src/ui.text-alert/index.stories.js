@@ -56,7 +56,6 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <UGroup>
-    <UGroup>
       <UAlert
         v-for="(variant, index) in variants"
         v-bind="args"
