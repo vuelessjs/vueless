@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 flex flex-col gap-2 rounded-lg",
+    base: "p-4 flex flex-col rounded-lg",
     variants: {
       variant: {
         primary: `bg-{color}-500 text-{color}-700`,
@@ -13,12 +13,12 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { color: "grayscale", bordered: true, class: "border-gray-200" },
-      { variant: "thirdary", bordered: true, class: "border-{color}-100" },
+      { variant: "thirdary", class: "border border-{color}-100" },
     ],
   },
   body: {
     base: `
-      flex items-center gap-2 font-normal leading-normal
+      flex items-center font-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
@@ -55,7 +55,5 @@ export default /*tw*/ {
     { pattern: `bg-(${colors})-50` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
-    { pattern: `bg-(${colors})-100` },
-    { pattern: `text-(${colors})-800` },
   ],
 };

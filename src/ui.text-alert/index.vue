@@ -1,28 +1,27 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
-    <div>
-      <!-- @slot Use it to add some component above text. -->
-      <slot name="top" />
+    <!-- @slot Use it to add something above text. -->
+    <slot name="top" />
+
+    <div v-bind="titleAttrs">
+      <slot name="title" :title="title">
+        <div v-bind="titleAttrs" v-text="title" />
+      </slot>
     </div>
+    <div v-bind="descriptionAttrs">
+      <slot name="description" :description="description">
+        <div v-bind="descriptionAttrs" v-text="description" />
+      </slot>
+    </div>
+
     <div v-bind="bodyAttrs">
-      <div>
-        <!-- @slot Use it to add some component before text. -->
-        <slot name="left" />
-      </div>
-      <div>
-        <div v-bind="titleAttrs">
-          <slot name="title" :title="title">
-            <div v-if="title" v-bind="titleAttrs" v-text="title" />
-          </slot>
-        </div>
-        <div v-bind="descriptionAttrs">
-          <slot name="description" :description="description">
-            <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
-          </slot>
-        </div>
-        <slot />
-        <div v-if="!hasSlotContent($slots.default)" v-html="html" />
-      </div>
+      <!-- @slot Use it to add something before text. -->
+      <slot name="left" />
+
+      <!-- @slot Default slot. -->
+      <slot />
+      <div v-if="!hasSlotContent($slots.default)" v-html="html" />
+
       <UButton
         v-if="closable"
         size="sm"
@@ -30,6 +29,7 @@
         :color="color"
         square
         v-bind="buttonAttrs"
+        @click="onClickClose"
       >
         <UIcon
           internal
@@ -38,18 +38,15 @@
           :name="config.iconName"
           :data-cy="`${dataCy}-button`"
           v-bind="iconAttrs"
-          @click="onHidden"
         />
       </UButton>
-      <div>
-        <!-- @slot Use it to add some component after text. -->
-        <slot name="right" />
-      </div>
+
+      <!-- @slot Use it to add something after text. -->
+      <slot name="right" />
     </div>
-    <div v-bind="wrapperAttrs.vertical">
-      <!-- @slot Use it to add some component under text. -->
-      <slot name="bottom" />
-    </div>
+
+    <!-- @slot Use it to add something under text. -->
+    <slot name="bottom" />
   </div>
 </template>
 
@@ -176,11 +173,11 @@ const {
 
 onMounted(() => {
   if (props.timeout > 0) {
-    setTimeout(() => onHidden(), props.timeout);
+    setTimeout(() => onClickClose(), props.timeout);
   }
 });
 
-function onHidden() {
+function onClickClose() {
   isShownAlert.value = false;
   emit("hidden");
 }

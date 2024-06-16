@@ -40,8 +40,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-      ${args.slotDefaultTemplate}
       ${args.slotTemplate || ""}
+      ${args.slotDefaultTemplate}
     </UAlert>
   `,
 });
@@ -60,11 +60,10 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
         v-for="(variant, index) in variants"
         v-bind="args"
         :variant="variant"
+        :title="variant"
         :key="index"
         color="gray"
-      >
-      ${args.slotDefaultTemplate}
-      </UAlert>
+      />
     </UGroup>
   `,
 });
@@ -123,9 +122,9 @@ export const colors = ColorsTemplate.bind({});
 colors.args = {
   closable: true,
   slotTemplate: `
-     <template #default>
-       text
-     </template>
+    <template #default>
+      text
+    </template>
   `,
 };
 
@@ -133,9 +132,9 @@ export const size = SizeTemplate.bind({});
 size.args = {
   closable: true,
   slotTemplate: `
-     <template #default>
-       text
-     </template>
+    <template #default>
+      text
+    </template>
   `,
 };
 
@@ -143,9 +142,9 @@ export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
   slotTemplate: `
-     <template #default>
-       some text
-     </template>
+    <template #default>
+      some text
+    </template>
   `,
 };
 
