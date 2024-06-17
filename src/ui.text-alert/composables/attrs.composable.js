@@ -5,7 +5,10 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const { wrapper, body } = config.value;
 
   const cvaWrapper = cva({

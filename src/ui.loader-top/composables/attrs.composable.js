@@ -15,9 +15,12 @@ export function useAttrs(props) {
   });
 
   const progressClasses = computed(() =>
-    setColor(cvaProgress({
-      color: getColor(props.color)
-    }), props.color),
+    setColor(
+      cvaProgress({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
   );
 
   const progressAttrs = getAttrs("progress", { classes: progressClasses.value });

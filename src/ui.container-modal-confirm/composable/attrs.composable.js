@@ -8,7 +8,7 @@ export function useAttrs(props) {
     defaultConfig,
     () => props.config,
   );
-  const { modal, footerLeftFallback, confirmButton, cancelButton } = config.value;
+  const { modal, footerLeftFallback } = config.value;
 
   const cvaModal = cva({
     base: modal.base,
@@ -22,40 +22,26 @@ export function useAttrs(props) {
     compoundVariants: footerLeftFallback.compoundVariants,
   });
 
-  const cvaConfirmButton = cva({
-    base: confirmButton.base,
-    variants: confirmButton.variants,
-    compoundVariants: confirmButton.compoundVariants,
-  });
-
-  const cvaCancelButton = cva({
-    base: cancelButton.base,
-    variants: cancelButton.variants,
-    compoundVariants: cancelButton.compoundVariants,
-  });
-
-  const modalClasses = computed(() => setColor(cvaModal({ color: props.color }), props.color));
-
-  const footerLeftFallbackClasses = computed(() =>
-    setColor(cvaFooterLeftFallback({ color: props.color }), props.color),
+  const modalClasses = computed(() =>
+    setColor(
+      cvaModal({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
   );
 
-  const confirmButtonClasses = computed(() => cvaConfirmButton({ color: props.color }));
+  const footerLeftFallbackClasses = computed(() =>
+    setColor(cvaFooterLeftFallback({ color: getColor(props.color) }), props.color),
+  );
 
-  const cancelButtonClasses = computed(() => cvaCancelButton({ color: props.color }));
-
-  const modalAttrsRaw = getAttrs("modal", { isComponent: true, classes: modalClasses });
   const footerLeftFallbackAttrs = getAttrs("footerLeftFallback", {
     classes: footerLeftFallbackClasses,
   });
-  const confirmButtonAttrs = getAttrs("confirmButton", {
-    isComponent: true,
-    classes: confirmButtonClasses,
-  });
-  const cancelButtonAttrs = getAttrs("cancelButton", {
-    isComponent: true,
-    classes: cancelButtonClasses,
-  });
+
+  const confirmButtonAttrs = getAttrs("confirmButton", { isComponent: true });
+  const cancelButtonAttrs = getAttrs("cancelButton", { isComponent: true });
+  const modalAttrsRaw = getAttrs("modal", { isComponent: true, classes: modalClasses });
 
   const modalAttrs = computed(() => ({
     ...modalAttrsRaw.value,

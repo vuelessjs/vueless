@@ -43,5 +43,9 @@ export default /*tw*/ {
     bordered: false,
     closeIcon: false,
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-50` }, { pattern: `text-(${colors})-700` }, { pattern: `border-(${colors})-100` }],
+  safelist: (colors) => [
+    { pattern: `bg-(${colors})-50` },
+    { pattern: `text-(${colors})-700` },
+    { pattern: `border-(${colors})-100` },
+  ],
 };
