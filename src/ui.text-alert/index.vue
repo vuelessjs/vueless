@@ -4,14 +4,14 @@
     <slot name="top" />
 
     <div v-bind="titleAttrs">
-      <slot name="title" :title="title">
-        <div v-bind="titleAttrs" v-text="title" />
-      </slot>
+      <!-- @slot Use it to add something in the title. -->
+      <slot name="title" :title="title" />
+      <p v-text="title" />
     </div>
     <div v-bind="descriptionAttrs">
-      <slot name="description" :description="description">
-        <div v-bind="descriptionAttrs" v-text="description" />
-      </slot>
+      <!-- @slot Use it to add something in the description. -->
+      <slot name="description" :description="description" />
+      <p v-text="description" />
     </div>
 
     <div v-bind="bodyAttrs">

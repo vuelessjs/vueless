@@ -61,6 +61,7 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
         v-bind="args"
         :variant="variant"
         :key="index"
+        :title="variant"
         color="gray"
       />
     </UGroup>

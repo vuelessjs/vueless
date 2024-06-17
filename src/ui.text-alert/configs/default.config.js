@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "p-4 flex flex-col rounded-lg",
     variants: {
       variant: {
-        primary: `bg-{color}-500 text-{color}-700`,
+        primary: `bg-{color}-500 text-white`,
         secondary: `bg-transparent border border-{color}-500`,
         thirdary: `bg-{color}-50 text-{color}-700`,
       },
@@ -18,7 +18,7 @@ export default /*tw*/ {
   },
   body: {
     base: `
-      flex items-center font-normal
+      flex items-center gap-2 font-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
@@ -53,7 +53,9 @@ export default /*tw*/ {
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
+    { pattern: `bg-(${colors})-500` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
+    { pattern: `border-(${colors})-500` },
   ],
 };
