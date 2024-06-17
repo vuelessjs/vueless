@@ -1,12 +1,13 @@
 import forms from "@tailwindcss/forms";
 import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants/index.js";
 
+const safelist = getSafelist();
+
 /**
  * Generates preset for TailwindCSS base on Vueless config.
  * @returns {Object}
  */
 export function vuelessPreset() {
-  const isProd = process.env.NODE_ENV === "production";
   const brandColor = twColorWithOpacity("--color-brand");
   const { brand, gray } = getVuelessConfigColors();
   const colors = getTailwindConfigColors();
@@ -22,14 +23,6 @@ export function vuelessPreset() {
     brandPalette = grayPalette;
   }
 
-  const prodSafelist = getSafelist();
-  const devSafelist = [
-    {
-      pattern: /^!?(border|bg|text|ring)-(.*)-((50|[1-9]00|950)?)$/,
-      variants: ["hover", "focus", "focus-within", "active", "disabled"],
-    },
-  ];
-
   return {
     content: [
       "./index.html",
@@ -37,7 +30,7 @@ export function vuelessPreset() {
       "./vueless.config.{js,ts}",
       "./node_modules/vueless/**/*.{js,ts,vue}",
     ],
-    safelist: isProd ? prodSafelist : devSafelist,
+    safelist,
     theme: {
       extend: {
         colors: {
