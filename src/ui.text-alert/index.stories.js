@@ -40,8 +40,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-      ${args.slotTemplate || ""}
-      ${args.slotDefaultTemplate}
+    ${args.slotDefaultTemplate}
+    ${args.slotTemplate || ""}
     </UAlert>
   `,
 });
@@ -82,10 +82,9 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
         v-for="(color, index) in colors"
         v-bind="args"
         :color="color"
+        :title="color"
         :key="index"
-      >
-        ${args.slotTemplate}
-      </UAlert>
+      />
     </URow>
   `,
 });
@@ -106,7 +105,7 @@ const SizeTemplate = (args, { argTypes } = {}) => ({
         :size="size"
         :key="index"
       >
-        ${args.slotTemplate}
+        text
       </UAlert>
     </URow>
   `,
@@ -119,29 +118,15 @@ export const variants = VariantsTemplate.bind({});
 variants.args = {};
 
 export const colors = ColorsTemplate.bind({});
-colors.args = {
-  closable: true,
-  slotTemplate: `
-    <template #default>
-      text
-    </template>
-  `,
-};
+colors.args = {};
 
 export const size = SizeTemplate.bind({});
-size.args = {
-  closable: true,
-  slotTemplate: `
-    <template #default>
-      text
-    </template>
-  `,
-};
+size.args = {};
 
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  slotTemplate: `
+  slotDefaultTemplate: `
     <template #default>
       some text
     </template>
@@ -170,7 +155,6 @@ paragraphs.args = {
 export const list = DefaultTemplate.bind({});
 list.args = {
   slotDefaultTemplate: `
-    <template #default>
       <URow>
         <ul>
           <li> Lorem ipsum dolor </li>
@@ -184,7 +168,6 @@ list.args = {
           <li> Lorem ipsum dolor </li>
         </ol>
       </URow>
-    </template>
     `,
 };
 

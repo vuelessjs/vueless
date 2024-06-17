@@ -5,13 +5,15 @@
 
     <div v-bind="titleAttrs">
       <!-- @slot Use it to add something in the title. -->
-      <slot name="title" />
-      <p v-text="title" />
+      <slot name="title" :title="title">
+        <div v-text="title" />
+      </slot>
     </div>
     <div v-bind="descriptionAttrs">
       <!-- @slot Use it to add something in the description. -->
-      <slot name="description" />
-      <p v-text="description" />
+      <slot name="description" :description="description">
+        <div v-text="description" />
+      </slot>
     </div>
 
     <div v-bind="bodyAttrs">
