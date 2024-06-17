@@ -43,7 +43,7 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 */
 export const { layout, strategy, gray, brand, component: globalComponentConfig } = vuelessConfig;
 
-export default class UIServiceDefault {
+export default class UIService {
   isMac = false;
   isPWA = false;
   isIOS = false;
@@ -137,7 +137,7 @@ export default class UIServiceDefault {
     const globalBrandColor = getBrandColor(brand, grayColor, BRAND_COLORS);
 
     const style = document.createElement("style");
-    const rgb = UIServiceDefault.convertHexInRgb(localBrandColor || globalBrandColor || grayColor);
+    const rgb = UIService.convertHexInRgb(localBrandColor || globalBrandColor || grayColor);
 
     style.innerHTML = `
       :root {
@@ -187,22 +187,41 @@ export default class UIServiceDefault {
       globalComponentConfig[name]?.defaultVariants,
     );
 
-    if (brand === GRAYSCALE_COLOR && defaultVariants.color === BRAND_COLOR) {
-      defaultVariants.color = GRAYSCALE_COLOR;
-    }
+    defaultVariants.color = getColor(defaultVariants.color);
 
     return {
       default: defaultVariants,
     };
   }
+
+  /**
+   Get color for props.
+   @param { String } color
+   @returns { String }
+   */
+  getColor(color) {
+    return brand === GRAYSCALE_COLOR && color === BRAND_COLOR ? GRAYSCALE_COLOR : color;
+  }
+
+  /**
+   Find and replace all {color} variables in class names into given color.
+   @param { String } classes
+   @param { String } color
+   @returns { String }
+   */
+  setColor(classes, color) {
+    return classes?.replaceAll("{color}", color);
+  }
 }
 
 export const {
   getRandomId,
-  setBrandColor,
-  convertHexInRgb,
+  getColor,
+  setColor,
   setTitle,
   setFavicon,
+  setBrandColor,
+  convertHexInRgb,
   isMac,
   isPWA,
   isIOS,
@@ -210,4 +229,4 @@ export const {
   isMobileApp,
   PX_IN_REM,
   HYPHEN_SYMBOL,
-} = new UIServiceDefault();
+} = new UIService();

@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props, { checked }) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { wrapper, circle, toggleLabel } = config.value;
 
   const cvaWrapper = cva({
@@ -30,7 +30,7 @@ export function useAttrs(props, { checked }) {
     setColor(
       cvaWrapper({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         disabled: props.disabled,
         checked: Boolean(checked.value),
         toggleLabel: props.toggleLabel,
@@ -50,7 +50,7 @@ export function useAttrs(props, { checked }) {
     setColor(
       cvaToggleLabel({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         toggleLabel: props.toggleLabel,
         checked: Boolean(checked.value),
       }),

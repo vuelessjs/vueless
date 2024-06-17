@@ -5,7 +5,10 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, hasSlotContent, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, hasSlotContent, getAttrs, getColor, setColor } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const { money, sum, penny } = config.value;
 
   const cvaMoney = cva({
@@ -30,7 +33,7 @@ export function useAttrs(props) {
     setColor(
       cvaMoney({
         align: props.align,
-        color: props.color,
+        color: getColor(props.color),
         weight: props.weight,
       }),
       props.color,

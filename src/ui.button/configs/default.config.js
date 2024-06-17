@@ -160,7 +160,6 @@ export default /*tw*/ {
     { pattern: `text-(${colors})-700`, variants: ["hover", "focus"] },
     { pattern: `text-(${colors})-800`, variants: ["active"] },
     { pattern: `text-(${colors})-300`, variants: ["disabled"] },
-    { pattern: `ring-(${colors})-700`, variants: ["focus"] },
-    { pattern: `ring-(${colors})-800`, variants: ["active"] },
+    { pattern: `ring-(${colors})-700`, variants: ["focus", "focus-within"] },
   ],
 };

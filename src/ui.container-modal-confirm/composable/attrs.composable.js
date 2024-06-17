@@ -4,7 +4,10 @@ import { cva } from "../../service.ui/index.js";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const { modal, footerLeftFallback, confirmButton, cancelButton } = config.value;
 
   const cvaModal = cva({
