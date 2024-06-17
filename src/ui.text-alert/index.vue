@@ -3,18 +3,14 @@
     <!-- @slot Use it to add something above text. -->
     <slot name="top" />
 
-    <div v-bind="titleAttrs">
-      <!-- @slot Use it to add something in the title. -->
-      <slot name="title" :title="title">
-        <div v-text="title" />
-      </slot>
-    </div>
-    <div v-bind="descriptionAttrs">
-      <!-- @slot Use it to add something in the description. -->
-      <slot name="description" :description="description">
-        <div v-text="description" />
-      </slot>
-    </div>
+    <!-- Use it to add something instead of the title. -->
+    <slot name="title" :title="title">
+      <div v-bind="titleAttrs" v-text="title" />
+    </slot>
+    <!-- @slot Use it to add something instead of the description. -->
+    <slot name="description" :description="description">
+      <div v-bind="descriptionAttrs" v-text="description" />
+    </slot>
 
     <div v-bind="bodyAttrs">
       <!-- @slot Use it to add something before text. -->

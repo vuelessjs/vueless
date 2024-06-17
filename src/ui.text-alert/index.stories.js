@@ -175,10 +175,10 @@ export const slotTitleAndDescription = DefaultTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
-      Alert Title
+      <div>Alert Title</div>
     </template>
     <template #description>
-      This is a custom description for the alert.
+      <div>This is a custom description for the alert.</div>
     </template>
   `,
 };
