@@ -31,8 +31,9 @@ export function useAttrs(
   const stickyHeaderCellAttrsRaw = getAttrs("stickyHeaderCell", {
     classes: stickyHeaderCellClasses,
   });
-  const stickyHeaderCounterAttrs = getAttrs("stickyHeaderCounter");
-  const stickyHeaderActionsCounterAttrs = getAttrs("stickyHeaderActionsCounter");
+  const headerCounterAttrsRaw = getAttrs("headerCounter");
+  const stickyHeaderCounterAttrsRaw = getAttrs("stickyHeaderCounter");
+  const stickyHeaderActionsCounterAttrsRaw = getAttrs("stickyHeaderActionsCounter");
   const stickyHeaderCheckboxAttrs = getAttrs("stickyHeaderCheckbox", {
     isComponent: true,
   });
@@ -84,7 +85,22 @@ export function useAttrs(
 
   const headerCellAttrs = computed(() => (classes) => ({
     ...headerCellAttrsRaw.value,
-    class: cx([headerCellAttrsRaw.value.class, classes]),
+    class: cx([config.value.headerCellGeneral, headerCellAttrsRaw.value.class, classes]),
+  }));
+
+  const stickyHeaderActionsCounterAttrs = computed(() => ({
+    ...stickyHeaderActionsCounterAttrsRaw.value,
+    class: cx([config.value.headerCounterGeneral, stickyHeaderActionsCounterAttrsRaw.value.class]),
+  }));
+
+  const stickyHeaderCounterAttrs = computed(() => ({
+    ...stickyHeaderCounterAttrsRaw.value,
+    class: cx([config.value.headerCounterGeneral, stickyHeaderCounterAttrsRaw.value.class]),
+  }));
+
+  const headerCounterAttrs = computed(() => ({
+    ...headerCounterAttrsRaw.value,
+    class: cx([config.value.headerCounterGeneral, headerCounterAttrsRaw.value.class]),
   }));
 
   const bodyRowBeforeAttrs = computed(() => ({
@@ -135,7 +151,7 @@ export function useAttrs(
 
   const stickyHeaderCellAttrs = computed(() => (classes) => ({
     ...stickyHeaderCellAttrsRaw.value,
-    class: cx([stickyHeaderCellAttrsRaw.value.class, classes]),
+    class: cx([config.value.headerCellGeneral, stickyHeaderCellAttrsRaw.value.class, classes]),
   }));
 
   const bodyRowDateSeparatorAttrs = (rowIndex) => {
@@ -175,6 +191,7 @@ export function useAttrs(
     footerCellAttrs,
     stickyHeaderCounterAttrs,
     stickyHeaderActionsCounterAttrs,
+    headerCounterAttrs,
     headerCheckboxAttrs,
     bodyCheckboxAttrs,
     bodyCellNestedCollapseIconAttrs,

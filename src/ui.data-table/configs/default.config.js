@@ -1,21 +1,24 @@
 export default /*tw*/ {
   wrapper: "relative",
+  headerCellGeneral: "p-4 text-sm font-normal text-gray-500 text-left",
+  headerCounterGeneral: "mr-3 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
-  stickyHeaderCell: "flex-none text-sm text-gray-500 p-4 whitespace-nowrap",
+  stickyHeaderCell: "flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "",
-  stickyHeaderCounter: "absolute top-4 left-11 pr-3 font-medium text-sm text-gray-900 bg-gradient-to-r from-white from-80%",
+  stickyHeaderCounter: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
   stickyHeaderLoader: "",
   stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "",
-  stickyHeaderActionsCounter: "-ml-2.5 mr-3 font-medium text-sm text-gray-900", // style dupliactions
+  stickyHeaderActionsCounter: "-ml-2",
   tableWrapper: "border border-gray-200 rounded-lg bg-white",
   table: "min-w-full border-none text-sm w-full",
   header: "border-b border-gray-200",
   headerRow: "",
-  headerCell: "p-4 text-sm font-normal text-gray-500 text-left", // style dupliactions
+  headerCell: "",
   headerCellCheckbox: "w-10",
   headerCheckbox: "",
+  headerCounter: "absolute top-4 left-11 bg-gradient-to-r from-white from-80% mt-px ml-px",
   headerLoader: "absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
@@ -28,7 +31,7 @@ export default /*tw*/ {
   bodyCell: "",
   bodyCellSecondary: "mt-1 text-xs text-gray-500",
   bodyCellSecondaryEmpty: "inline-block",
-  bodyCellCheckbox: "!px-4", // try to remove important
+  bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateSeparator: "",
   bodyCellNestedWrapper: "flex items-center",
   bodyCellNested: "flex relative -top-px",
@@ -48,13 +51,10 @@ export default /*tw*/ {
     collapse group-[]/footer-fixed:[visibility:inherit]
   `,
   i18n: {
-    noItems: "There is no data in the table yet.",
-    noResultsForFilters: "No results were found for the specified filters.",
-    today: "today",
-    tomorrow: "tomorrow",
+    noData: "There is no data in the table.",
   },
   defaultVariants: {
-    nesting: null,
+    nesting: false,
     compact: false,
     selectable: false,
     stickyHeader: false,

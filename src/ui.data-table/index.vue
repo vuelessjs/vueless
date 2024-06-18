@@ -98,6 +98,12 @@
                 :data-cy="`${dataCy}-select-all`"
                 v-bind="headerCheckboxAttrs"
               />
+
+              <div
+                v-if="selectedRows.length"
+                v-bind="headerCounterAttrs"
+                v-text="selectedRows.length"
+              />
             </th>
 
             <th
@@ -169,7 +175,7 @@
                   :data-id="row.id"
                   :value="row.id"
                   size="sm"
-                  :data-cy="`${dataCy}-table-body-checkbox`"
+                  :data-cy="`${dataCy}-body-checkbox`"
                   v-bind="bodyCheckboxAttrs"
                   @click.stop
                 />
@@ -181,8 +187,9 @@
                 :compact="compact"
                 v-bind="bodyCellAttrs(getCellClasses(key))"
               >
-                <template v-if="Boolean($slots[`cell-${key}`])">
+                <template v-if="hasSlotContent($slots[`cell-${key}`])">
                   <div
+                    v-if="isNesting"
                     :style="getNestedShift(row.nestedLevel)"
                     v-bind="bodyCellNestedWrapperAttrs(index)"
                     @click="onClickNestedWrapper(row)"
@@ -207,9 +214,10 @@
                         v-bind="bodyCellNestedCollapseIconAttrs"
                       />
                     </div>
-                    <!-- @slot Use it to customise table cell item (in whole column). -->
-                    <slot :name="`cell-${key}`" :value="value" :row="row" />
                   </div>
+
+                  <!-- @slot Use it to customise table cell item (in whole column). -->
+                  <slot :name="`cell-${key}`" :value="value" :row="row" />
                 </template>
 
                 <template v-else-if="value?.hasOwnProperty('secondary')">
@@ -242,7 +250,7 @@
 
             <tr v-if="rowIndex === lastRow" v-bind="bodyRowAfterAttrs">
               <UTableCell
-                v-if="hasSlotContent(slots['after-last-row'])"
+                v-if="hasSlotContent($slots['after-last-row'])"
                 :compact="compact"
                 :colspan="colsCount"
                 v-bind="bodyRowAfterCellAttrs"
@@ -263,7 +271,7 @@
               <slot name="empty-state">
                 <UEmpty
                   size="sm"
-                  :description="emptyTableMsg"
+                  :description="currentLocale.noData"
                   :data-cy="`${dataCy}-empty`"
                   v-bind="bodyEmptyStateAttrs"
                 />
@@ -387,16 +395,8 @@ const props = defineProps({
    * Sets the nesting level from which folding button need to be shown.
    */
   nesting: {
-    type: Number,
+    type: [Number, Boolean],
     default: UIService.get(defaultConfig, UTable).default.nesting,
-  },
-
-  /**
-   * Indicate if filters applied.
-   */
-  filters: {
-    type: Boolean,
-    default: false,
   },
 
   /**
@@ -502,12 +502,8 @@ const hasSlotContentBeforeFirstRow = computed(() => {
     : false;
 });
 
-const emptyTableMsg = computed(() => {
-  return props.filters ? currentLocale.value.noResultsForFilters : currentLocale.value.noItems;
-});
-
 const isNesting = computed(() => {
-  return !isNaN(props.nesting) && props.nesting !== null;
+  return Boolean(props.nesting) || props.nesting === 0;
 });
 
 const {
@@ -531,6 +527,7 @@ const {
   stickyHeaderActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
+  headerCounterAttrs,
   bodyCheckboxAttrs,
   bodyCellNestedCollapseIconAttrs,
   bodyCellNestedExpandIconAttrs,
@@ -605,8 +602,9 @@ function onWindowResize() {
 }
 
 function isShownNestedIcon({ index, row }) {
+  const nestedLevel = props.nesting === true ? 0 : Number(props.nesting);
+  const isWithinNestingLevel = row.nestedLevel >= nestedLevel;
   const isChildren = row.childrenIds?.length > 0;
-  const isWithinNestingLevel = row.nestedLevel >= props.nesting;
 
   const isFirstRow = index === 0;
 
@@ -626,8 +624,10 @@ function onClickNestedWrapper(row) {
   if (row.isHidden && row.childrenIds.length) {
     hiddenIds.value.push(...row.childrenIds);
   } else {
+    const nestedLevel = props.nesting === true ? 0 : Number(props.nesting);
+
     hiddenIds.value =
-      row.nestedLevel === props.nesting
+      row.nestedLevel === nestedLevel
         ? row.childrenIds.filter((item) => !hiddenIds.value.includes(item))
         : hiddenIds.value.filter((item) => item !== firstElement);
   }
