@@ -7,6 +7,7 @@ import UButton from "../ui.button";
 import ULink from "../ui.button-link";
 import UMoney from "../ui.text-money";
 import UBadge from "../ui.text-badge";
+import URow from "../ui.container-row";
 
 const STICKY_PARAMETERS = {
   docs: {
@@ -46,20 +47,20 @@ export default {
       id: 1,
       isChecked: false,
       key_1: {
-        primaryRow: "primaryRow",
-        secondaryRow: "secondaryRow",
+        primary: "primary",
+        secondary: "secondary",
       },
       key_2: {
-        primaryRow: "primaryRow",
-        secondaryRow: "secondaryRow",
+        primary: "primary",
+        secondary: "secondary",
       },
       key_3: {
-        primaryRow: "primaryRow",
-        secondaryRow: "secondaryRow",
+        primary: "primary",
+        secondary: "secondary",
       },
       key_4: {
-        primaryRow: "primaryRow",
-        secondaryRow: "secondaryRow",
+        primary: "primary",
+        secondary: "secondary",
       },
     },
     numberOfRows: 5,
@@ -109,7 +110,7 @@ const EmptyTemplate = (args) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { UTable, UButton, UTableCell, ULink, UMoney, UBadge },
+  components: { UTable, UButton, UTableCell, ULink, UMoney, UBadge, URow },
   setup() {
     return { args };
   },
@@ -123,9 +124,14 @@ const SlotTemplate = (args) => ({
   `,
   computed: {
     itemsData() {
-      const rows = [];
+      let rows = [];
 
-      for (let i = 0; i < args.numberOfRows; i++) rows.push(args.row);
+      for (let i = 0; i < args.numberOfRows; i++) {
+        const newRow = { ...args.row };
+
+        newRow.id = getRandomId();
+        rows.push(newRow);
+      }
 
       return rows;
     },
@@ -159,7 +165,7 @@ stickyFooter.args = {
   selectable: true,
   stickyFooter: true,
   slotTemplate: `
-    <template #tfoot>
+    <template #footer>
       <UTableCell>
         <p>
           🤘🤘🤘
@@ -197,33 +203,32 @@ slotDefault.args = {
 
 export const slotTheadActions = SlotTemplate.bind({});
 slotTheadActions.args = {
+  numberOfRows: 50,
+  stickyHeader: true,
   selectable: true,
   slotTemplate: `
-    <template #thead-actions>
-      <p>
-        🤘🤘🤘
-        Lorem ipsum dolor sit amet.
-      </p>
+    <template #header-actions>
+      <URow gap="2xs">
+        <UButton
+          label="Edit"
+          variant="thirdary"
+          color="blue"
+          size="sm"
+        />
 
-      <UButton
-        size="sm"
-        variant="thirdary"
-        filled
-        label="some button"
-      />
-
-      <UButton
-        size="sm"
-        variant="thirdary"
-        filled
-        label="some button"
-      />
+        <UButton
+          label="Delete"
+          variant="thirdary"
+          color="blue"
+          size="sm"
+        />
+      </URow>
     </template>
   `,
 };
 
-export const slotBeforeFirstRow = SlotTemplate.bind({});
-slotBeforeFirstRow.args = {
+export const slotbodyRowBefore = SlotTemplate.bind({});
+slotbodyRowBefore.args = {
   slotTemplate: `
     <template #before-first-row>
       <p>
@@ -236,8 +241,8 @@ slotBeforeFirstRow.args = {
   `,
 };
 
-export const slotAfterLastRow = SlotTemplate.bind({});
-slotAfterLastRow.args = {
+export const slotbodyRowAfter = SlotTemplate.bind({});
+slotbodyRowAfter.args = {
   slotTemplate: `
     <template #after-last-row>
       <p>
