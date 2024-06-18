@@ -9,9 +9,7 @@ export default {
   id: "3165",
   title: "Form Inputs & Controls / Calendar",
   component: UCalendar,
-  args: {
-    label: "Label",
-  },
+  args: {},
   argTypes: {
     ...getArgTypes(UCalendar.name),
   },
@@ -31,32 +29,45 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots };
   },
+  data() {
+    return {
+      value: this.args.value,
+    };
+  },
   template: `
-      <UCalendar v-bind="args" v-model="args.value">
+      <UCalendar v-bind="args" v-model="value">
         <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
           <template v-if="args[slot]">{{ args[slot] }}</template>
         </template>
       </UCalendar>
+
+      <div class="mt-4">
+        {{ value }}
+      </div>
     `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { value: new Date() };
 
 export const Range = DefaultTemplate.bind({});
 Range.args = {
   range: true,
   value: {
-    from: 1651813634,
-    to: 1654492034,
+    from: new Date(2022, 2),
+    to: new Date(2024, 2, 14, 12, 24, 14),
   },
 };
 
 export const Timepicker = DefaultTemplate.bind({});
-Timepicker.args = { value: 1645653600, timepicker: true };
+Timepicker.args = { value: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
 export const MinMax = DefaultTemplate.bind({});
-MinMax.args = { minDate: "2022-02-22", maxDate: "2022-02-26", value: 1645653600 };
+MinMax.args = {
+  minDate: "2022-02-22",
+  maxDate: new Date(2022, 2, 26),
+  value: new Date(2022, 2, 24),
+};
 
 export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", value: 1645653600 };
+DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", value: "28.06.2024" };

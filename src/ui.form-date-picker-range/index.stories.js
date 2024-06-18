@@ -14,8 +14,8 @@ export default {
   component: UDatePickerRange,
   args: {
     value: {
-      from: 1651813634,
-      to: 1654492034,
+      from: new Date(2022, 1, 14),
+      to: new Date(2022, 2, 20),
     },
   },
   argTypes: {
@@ -37,12 +37,21 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots };
   },
+  data() {
+    return {
+      value: this.args.value,
+    };
+  },
   template: `
-    <UDatePickerRange v-bind="args" v-model="args.value">
+    <UDatePickerRange v-bind="args" v-model="value">
       <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
         <template v-if="args[slot]">{{ args[slot] }}</template>
       </template>
     </UDatePickerRange>
+
+    <div class="mt-4">
+      {{ value }}
+    </div>
   `,
 });
 
@@ -142,9 +151,16 @@ error.args = { variant: "input", error: "some error" };
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: "22.02.2022",
-  maxDate: "26.02.2022",
-  value: { from: 1645653600, to: null },
+  minDate: new Date(2022, 2, 22),
+  maxDate: new Date(2022, 2, 26),
+  value: { from: new Date(2022, 2, 24), to: null },
+};
+
+export const DateFormat = DefaultTemplate.bind({});
+DateFormat.args = {
+  dateFormat: "d.m.Y",
+  userFormat: "d.m.Y",
+  value: { from: "28.06.2024", to: "30.06.2024" },
 };
 
 export const customRangeButton = DefaultTemplate.bind({});

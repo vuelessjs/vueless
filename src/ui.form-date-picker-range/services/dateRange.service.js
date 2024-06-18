@@ -2,9 +2,7 @@ import {
   getWeeksInMonth,
   getStartOfWeek,
   getEndOfWeek,
-  gmtToUTC,
   addWeeks,
-  getUnixTimestampFromDate,
   getEndOfMonth,
   getStartOfMonth,
   getEndOfQuarter,
@@ -27,8 +25,8 @@ export function getYearDateList(date) {
 
     years.push({
       title: currentYear,
-      startRange: getUnixTimestampFromDate(gmtToUTC(getStartOfYear(new Date(currentYear, month)))),
-      endRange: getUnixTimestampFromDate(gmtToUTC(getEndOfYear(new Date(currentYear, month)))),
+      startRange: getStartOfYear(new Date(currentYear, month)),
+      endRange: getEndOfYear(new Date(currentYear, month)),
     });
   }
 
@@ -51,8 +49,8 @@ export function getQuartersDateList(date, quarterLocales = "") {
 
     quarters.push({
       title: `${currentQuarter} ${quarterLocales}`,
-      startRange: getUnixTimestampFromDate(gmtToUTC(getStartOfQuarter(newQuarter))),
-      endRange: getUnixTimestampFromDate(gmtToUTC(getEndOfQuarter(newQuarter))),
+      startRange: getStartOfQuarter(newQuarter),
+      endRange: getEndOfQuarter(newQuarter),
     });
   }
 
@@ -65,8 +63,8 @@ export function getMonthsDateList(date, monthLocales = []) {
   const months = monthLocales.map((item, index) => {
     return {
       title: item,
-      startRange: getUnixTimestampFromDate(gmtToUTC(getStartOfMonth(new Date(year, index)))),
-      endRange: getUnixTimestampFromDate(gmtToUTC(getEndOfMonth(new Date(year, index)))),
+      startRange: getStartOfMonth(new Date(year, index)),
+      endRange: getEndOfMonth(new Date(year, index)),
     };
   });
 
@@ -105,8 +103,8 @@ export function getWeekDateList(date, monthShortLocales = {}) {
 
     weeks.push({
       title,
-      startRange: getUnixTimestampFromDate(gmtToUTC(startOfWeekDate)),
-      endRange: getUnixTimestampFromDate(gmtToUTC(endOfWeekDate)),
+      startRange: startOfWeekDate,
+      endRange: endOfWeekDate,
     });
   }
 
