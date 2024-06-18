@@ -1,9 +1,4 @@
-import {
-  LOCALE_TYPE,
-  DAYS_IN_WEEK,
-  SECONDS_IN_MINUTES,
-  MILLISECONDS_IN_MINUTE,
-} from "../constants";
+import { LOCALE_TYPE, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "../constants";
 
 const daysMap = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const monthsMap = [
@@ -23,10 +18,6 @@ const monthsMap = [
 
 export function minutesToSeconds(minutes) {
   return Math.trunc(minutes * SECONDS_IN_MINUTES);
-}
-
-export function utcToGMT(date) {
-  return new Date(date.getTime() + date.getTimezoneOffset() * MILLISECONDS_IN_MINUTE);
 }
 
 export function getDaysInMonth(date) {
@@ -150,19 +141,6 @@ export function getStartOfDay(date) {
   localDate.setHours(0, 0, 0, 0);
 
   return localDate;
-}
-
-export function gmtToUTC(date) {
-  return new Date(
-    Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds(),
-    ),
-  );
 }
 
 export function getSortedLocale(locale, type) {
