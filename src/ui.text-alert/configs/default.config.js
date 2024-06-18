@@ -18,7 +18,7 @@ export default /*tw*/ {
   },
   body: {
     base: `
-      flex items-center gap-2 font-normal
+      flex gap-2 items-baseline font-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold

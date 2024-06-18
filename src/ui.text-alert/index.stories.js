@@ -111,6 +111,16 @@ const SizeTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
+const HTMLTemplate = (args) => ({
+  components: { UAlert },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UAlert :html="args.html"  />
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
@@ -120,8 +130,21 @@ variants.args = {};
 export const colors = ColorsTemplate.bind({});
 colors.args = {};
 
-export const size = SizeTemplate.bind({});
-size.args = {};
+export const sizes = SizeTemplate.bind({});
+sizes.args = {};
+
+export const HTML = HTMLTemplate.bind({});
+HTML.args = {
+  html: `
+    <p>
+      <b>Lorem ipsum dolor sit amet,</b>
+      <u>consectetur adipiscing elit,</u>
+      <em>sed do eiusmod tempor incididunt
+      ut labore et dolore magna aliqua.</em>
+      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+    </p>
+  `,
+};
 
 export const closable = DefaultTemplate.bind({});
 closable.args = {

@@ -18,7 +18,7 @@
 
       <!-- @slot Default slot. -->
       <slot />
-      <div v-if="!hasSlotContent($slots.default)" v-html="html" />
+      <div v-if="!hasSlotContent($slots.default)" v-bind="bodyAttrs" v-html="html" />
 
       <UButton
         v-if="closable"
