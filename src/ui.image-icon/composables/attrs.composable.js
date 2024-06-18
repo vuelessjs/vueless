@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { wrapper, container, icon } = config.value;
 
   const cvaWrapper = cva({
@@ -31,7 +31,7 @@ export function useAttrs(props) {
       cvaWrapper({
         pill: props.pill,
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
       }),
       props.color,
     ),
@@ -42,7 +42,7 @@ export function useAttrs(props) {
       cvaContainer({
         pill: props.pill,
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         variant: props.variant,
         interactive: props.interactive,
       }),

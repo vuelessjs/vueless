@@ -167,7 +167,6 @@ import {
 } from "./services/calendar.service";
 
 import {
-  getUnixTimestampFromDate,
   getDateWithoutTime,
   addMonths,
   addDays,
@@ -202,10 +201,10 @@ defineOptions({ name: "UCalendar" });
 
 const props = defineProps({
   /**
-   * Calendar value (timestamp).
+   * Calendar value in JS Date Object or String formatted in provided props.dateFormat.
    */
   modelValue: {
-    type: [Number, Object],
+    type: [String, Object],
     default: null,
   },
 
@@ -251,7 +250,7 @@ const props = defineProps({
   },
 
   /**
-   * Min date in format date string or Date.
+   * Min date in JS Date Object or Date String formatted in provided props.dateFormat.
    */
   minDate: {
     type: [Date, String],
@@ -259,7 +258,7 @@ const props = defineProps({
   },
 
   /**
-   * Max date in format date string or Date.
+   * Max date in JS Date Object or Date String formatted in provided props.dateFormat.
    */
   maxDate: {
     type: [Date, String],
@@ -402,7 +401,7 @@ const isTimepickerEnabled = computed(() => {
 const isModelRangeType = computed(() => {
   return (
     props.modelValue !== null &&
-    !isNumeric(props.modelValue) &&
+    !(props.modelValue instanceof Date) &&
     typeof props.modelValue === "object"
   );
 });
@@ -414,10 +413,15 @@ const localValue = computed({
 
       const to = isModelRangeType.value ? props.modelValue.to : null;
 
-      return { from, to };
+      return {
+        from: parseDate(from || null, props.dateFormat, locale.value),
+        to: parseDate(to || null, props.dateFormat, locale.value),
+      };
     }
 
-    return isModelRangeType.value ? props.modelValue.from : props.modelValue;
+    return isModelRangeType.value
+      ? parseDate(props.modelValue.from || null, props.dateFormat, locale.value)
+      : parseDate(props.modelValue || null, props.dateFormat, locale.value);
   },
   set(value) {
     value = getCurrentValueType(value);
@@ -433,9 +437,6 @@ const localValue = computed({
       parsedDate.setMinutes(Number(minutesRef.value.value));
     }
 
-    const timestamp = parsedDate ? getUnixTimestampFromDate(parsedDate) : null;
-    const timestampTo = parsedDateTo ? getUnixTimestampFromDate(parsedDateTo) : null;
-
     const isOutOfRange = dateIsOutOfRange(
       parsedDate || new Date(),
       props.minDate,
@@ -448,7 +449,15 @@ const localValue = computed({
       return;
     }
 
-    emit("update:modelValue", props.range ? { from: timestamp, to: timestampTo } : timestamp);
+    const newDate = props.dateFormat
+      ? formatDate(parsedDate || null, props.dateFormat, locale.value)
+      : parsedDate;
+
+    const newDateTo = props.dateFormat
+      ? formatDate(parsedDateTo || null, props.dateFormat, locale.value)
+      : parsedDateTo;
+
+    emit("update:modelValue", props.range ? { from: newDate, to: newDateTo } : newDate);
 
     if (parsedDate === null && isTimepickerEnabled.value) {
       const currentDate = new Date();
@@ -568,9 +577,7 @@ function onInputDate(newDate) {
 
   if (props.range) {
     const isFullReset =
-      localValue.value.to ||
-      !localValue.value.from ||
-      getUnixTimestampFromDate(date) <= localValue.value.from;
+      localValue.value.to || !localValue.value.from || date <= localValue.value.from;
 
     localValue.value = isFullReset
       ? { from: date, to: null }

@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { wrapper } = config.value;
 
   const cvaWrapper = cva({
@@ -20,7 +20,7 @@ export function useAttrs(props) {
         size: props.size,
         weight: props.weight,
         underlined: props.underlined,
-        color: props.color,
+        color: getColor(props.color),
       }),
       props.color,
     ),

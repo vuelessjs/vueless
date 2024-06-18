@@ -1,34 +1,19 @@
 import useUI from "../../composable.ui";
 import defaultConfig from "../configs/default.config";
 import { cva, cx } from "../../service.ui";
-import { computed, useSlots } from "vue";
+import { computed } from "vue";
 
 export function useAttrs(
   props,
-  {
-    tableRows,
-    selectedRows,
-    isNesting,
-    isHeaderSticky,
-    isFooterSticky,
-    hasSlotContentTheadActions,
-  },
+  { tableRows, isNesting, isShownActionsHeader, isHeaderSticky, isFooterSticky },
 ) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, stickyHeaderColumn, headerCell } = config.value;
-
-  const slot = useSlots();
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
+  const { stickyHeaderCell, headerCell } = config.value;
 
   const cvaCustomHeaderItem = cva({
-    base: stickyHeaderColumn.base,
-    variants: stickyHeaderColumn.variants,
-    compoundVariants: stickyHeaderColumn.compoundVariants,
+    base: stickyHeaderCell.base,
+    variants: stickyHeaderCell.variants,
+    compoundVariants: stickyHeaderCell.compoundVariants,
   });
 
   const cvaHeaderCell = cva({
@@ -37,53 +22,59 @@ export function useAttrs(
     compoundVariants: headerCell.compoundVariants,
   });
 
-  const wrapperClasses = computed(() => cvaWrapper({ compact: props.compact }));
-
-  const stickyHeaderColumnClasses = computed(() => cvaCustomHeaderItem({ compact: props.compact }));
+  const stickyHeaderCellClasses = computed(() => cvaCustomHeaderItem({ compact: props.compact }));
 
   const headerCellClasses = computed(() => cvaHeaderCell({ compact: props.compact }));
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
+  const wrapperAttrs = getAttrs("wrapper");
   const stickyHeaderAttrsRaw = getAttrs("stickyHeader");
-  const stickyHeaderColumnAttrsRaw = getAttrs("stickyHeaderColumn", {
-    classes: stickyHeaderColumnClasses,
+  const stickyHeaderCellAttrsRaw = getAttrs("stickyHeaderCell", {
+    classes: stickyHeaderCellClasses,
   });
-  const selectedRowsCountAttrs = getAttrs("selectedRowsCount");
-  const selectAllCheckboxAttrs = getAttrs("selectAllCheckbox", { isComponent: true });
+  const stickyHeaderCounterAttrs = getAttrs("stickyHeaderCounter");
+  const stickyHeaderActionsCounterAttrs = getAttrs("stickyHeaderActionsCounter");
+  const stickyHeaderCheckboxAttrs = getAttrs("stickyHeaderCheckbox", {
+    isComponent: true,
+  });
+  const stickyHeaderActionsCheckboxAttrs = getAttrs("stickyHeaderActionsCheckbox", {
+    isComponent: true,
+  });
   const stickyHeaderLoaderAttrs = getAttrs("stickyHeaderLoader", { isComponent: true });
-  const tableWrapperAttrsRaw = getAttrs("tableWrapper");
+  const tableWrapperAttrs = getAttrs("tableWrapper");
   const tableAttrs = getAttrs("table");
   const headerAttrs = getAttrs("header");
   const headerRowAttrsRaw = getAttrs("headerRow");
   const headerCellAttrsRaw = getAttrs("headerCell", { classes: headerCellClasses });
-  const headerSelectAllCheckboxAttrs = getAttrs("headerSelectAllCheckbox", { isComponent: true });
-  const tableLoaderAttrs = getAttrs("tableLoader", { isComponent: true });
-  const expandIconAttrs = getAttrs("expandIcon", { isComponent: true });
-  const collapseIconAttrs = getAttrs("collapseIcon", { isComponent: true });
+  const headerCheckboxAttrs = getAttrs("headerCheckbox", { isComponent: true });
+  const headerLoaderAttrs = getAttrs("headerLoader", { isComponent: true });
+  const bodyCellNestedExpandIconAttrs = getAttrs("bodyCellNestedExpandIcon", { isComponent: true });
+  const bodyCellNestedCollapseIconAttrs = getAttrs("bodyCellNestedCollapseIcon", {
+    isComponent: true,
+  });
   const bodyAttrs = getAttrs("body");
   const bodyCellAttrsRaw = getAttrs("bodyCell", { isComponent: true });
-  const checkboxBodyWrapperCellAttrs = getAttrs("checkboxBodyWrapperCell");
-  const tableCheckboxAttrs = getAttrs("tableCheckbox", { isComponent: true });
-  const dateSeparatorAttrs = getAttrs("dateSeparator", { isComponent: true });
-  const toggleItemButtonAttrs = getAttrs("toggleItemButton");
-  const secondaryRowAttrs = getAttrs("secondaryRow");
-  const secondaryRowEmptyAttrs = getAttrs("secondaryRowEmpty");
+  const bodyCheckboxAttrs = getAttrs("bodyCheckbox", { isComponent: true });
+  const bodyCellDateSeparatorAttrs = getAttrs("bodyCellDateSeparator");
+  const bodyDateSeparatorAttrs = getAttrs("bodyDateSeparator", { isComponent: true });
+  const bodyCellNestedAttrs = getAttrs("bodyCellNested");
+  const bodyCellSecondaryAttrs = getAttrs("bodyCellSecondary");
+  const bodyCellSecondaryEmptyAttrs = getAttrs("bodyCellSecondaryEmpty");
   const footerAttrsRaw = getAttrs("footer");
   const footerRowAttrs = getAttrs("footerRow");
   const footerCellAttrs = getAttrs("footerCell", { isComponent: true });
-  const footerStickyRowAttrs = getAttrs("footerStickyRow");
-  const emptyAttrs = getAttrs("empty", { isComponent: true });
-  const beforeFirstRowAttrsRaw = getAttrs("beforeFirstRow");
-  const beforeFirstRowCellAttrs = getAttrs("beforeFirstRowCell", { isComponent: true });
-  const afterLastRowAttrsRaw = getAttrs("afterLastRow");
-  const afterLastRowCellAttrs = getAttrs("afterLastRowCell", { isComponent: true });
-  const toggleButtonWrapperAttrsRaw = getAttrs("toggleButtonWrapper");
+  const stickyFooterRowAttrs = getAttrs("stickyFooterRow");
+  const bodyEmptyStateAttrs = getAttrs("bodyEmptyState", { isComponent: true });
+  const bodyRowBeforeAttrsRaw = getAttrs("bodyRowBefore");
+  const bodyRowBeforeCellAttrs = getAttrs("bodyRowBeforeCell", { isComponent: true });
+  const bodyRowAfterAttrs = getAttrs("bodyRowAfter");
+  const bodyRowAfterCellAttrs = getAttrs("bodyRowAfterCell", { isComponent: true });
+  const bodyCellNestedWrapperAttrsRaw = getAttrs("bodyCellNestedWrapper");
 
   const bodyRowAttrsRaw = getAttrs("bodyRow");
 
-  const bodyCellAttrs = computed(() => (tdClass) => ({
+  const bodyCellAttrs = computed(() => (classes) => ({
     ...bodyCellAttrsRaw.value,
-    class: cx([bodyCellAttrsRaw.value.class, tdClass || ""]),
+    class: cx([bodyCellAttrsRaw.value.class, classes || ""]),
   }));
 
   const bodyRowAttrs = computed(() => (row) => ({
@@ -96,112 +87,112 @@ export function useAttrs(
     class: cx([headerCellAttrsRaw.value.class, classes]),
   }));
 
-  const beforeFirstRowAttrs = computed(() => ({
-    ...beforeFirstRowAttrsRaw.value,
+  const bodyRowBeforeAttrs = computed(() => ({
+    ...bodyRowBeforeAttrsRaw.value,
     class: cx([
-      beforeFirstRowAttrsRaw.value.class,
-      tableRows.value[0]?.isChecked ? config.value.checkedRow : "",
+      bodyRowBeforeAttrsRaw.value.class,
+      tableRows.value[0]?.isChecked ? config.value.bodyRowChecked : "",
     ]),
   }));
 
-  const tableWrapperAttrs = computed(() => ({
-    ...tableWrapperAttrsRaw.value,
-    class: cx([
-      tableWrapperAttrsRaw.value.class,
-      selectedRows.value.length && config.value.tableWrapperSelected,
-    ]),
-  }));
+  const headerRowAttrs = computed(() => {
+    return {
+      ...headerRowAttrsRaw.value,
+      class: cx([headerRowAttrsRaw.value.class]),
+    };
+  });
 
-  const headerRowAttrs = computed(() => ({
-    ...headerRowAttrsRaw.value,
-    class: cx([
-      headerRowAttrsRaw.value.class,
-      selectedRows.value.length && !isHeaderSticky.value && config.value.stickyHeaderHidden,
-    ]),
-  }));
-
-  const stickyHeaderAttrs = computed(() => ({
-    ...stickyHeaderAttrsRaw.value,
-    class: cx([
+  const stickyHeaderAttrs = computed(() => {
+    const actionHeaderClasses = cx([
       stickyHeaderAttrsRaw.value.class,
-      selectedRows.value.length &&
-        hasSlotContentTheadActions.value &&
-        config.value.stickyHeaderActions,
-      isHeaderSticky.value && props.stickyHeader && config.value.stickyHeaderActive,
-    ]),
-  }));
+      config.value.stickyHeaderActions,
+    ]);
+
+    const actionHeaderStickyClasses = cx([
+      config.value.stickyHeaderActions,
+      stickyHeaderAttrsRaw.value.class,
+    ]);
+
+    const stickyHeaderRowClasses = cx([
+      stickyHeaderAttrsRaw.value.class,
+      config.value.stickyHeaderRow,
+    ]);
+
+    return {
+      ...stickyHeaderAttrsRaw.value,
+      class: cx([
+        isShownActionsHeader.value && actionHeaderClasses,
+        isShownActionsHeader.value && isHeaderSticky.value && actionHeaderStickyClasses,
+        !isShownActionsHeader.value && isHeaderSticky.value && stickyHeaderRowClasses,
+      ]),
+    };
+  });
 
   const footerClassesAttrs = computed(() => ({
     ...footerAttrsRaw.value,
-    class: cx([footerAttrsRaw.value.class, isFooterSticky.value && config.value.footerSticky]),
+    class: cx([footerAttrsRaw.value.class, isFooterSticky.value && config.value.stickyFooter]),
   }));
 
-  const afterLastRowAttrs = computed(() => ({
-    ...afterLastRowAttrsRaw.value,
-    class: cx([
-      afterLastRowAttrsRaw.value.class,
-      hasSlotContent(slot["after-last-row"]) ? config.value.moreRowHidden : config.value.moreRow,
-    ]),
+  const stickyHeaderCellAttrs = computed(() => (classes) => ({
+    ...stickyHeaderCellAttrsRaw.value,
+    class: cx([stickyHeaderCellAttrsRaw.value.class, classes]),
   }));
 
-  const stickyHeaderColumnAttrs = computed(() => (thClass) => ({
-    ...stickyHeaderColumnAttrsRaw.value,
-    class: cx([stickyHeaderColumnAttrsRaw.value.class, thClass]),
-  }));
-
-  const dateSeparatorRowAttrs = (rowIndex) => {
+  const bodyRowDateSeparatorAttrs = (rowIndex) => {
     const isCheckedRowBefore = tableRows.value[rowIndex - 1]?.isChecked;
     const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
 
     const activeClass =
       (isCheckedRowBefore && isCheckedRowAfter) || (rowIndex === 0 && isCheckedRowAfter)
-        ? config.value.checkedRow
+        ? config.value.bodyRowChecked
         : "";
 
-    return getAttrs("option", { classes: activeClass }).value;
+    return getAttrs("bodyRowDateSeparator", { classes: activeClass }).value;
   };
 
-  const toggleButtonWrapperAttrs = computed(() => (index) => ({
-    ...toggleButtonWrapperAttrsRaw.value,
-    class: index === 0 && isNesting.value ? config.value.toggleButtonWrapper : "",
+  const bodyCellNestedWrapperAttrs = computed(() => (index) => ({
+    ...bodyCellNestedWrapperAttrsRaw.value,
+    class: index === 0 && isNesting.value ? config.value.bodyCellNestedWrapper : "",
   }));
 
   return {
     config,
     wrapperAttrs,
-    stickyHeaderColumnAttrs,
+    stickyHeaderCellAttrs,
     stickyHeaderAttrs,
     tableWrapperAttrs,
     headerCellAttrs,
     headerRowAttrs,
     bodyRowAttrs,
     footerClassesAttrs,
-    afterLastRowAttrs,
-    afterLastRowCellAttrs,
-    beforeFirstRowAttrs,
-    beforeFirstRowCellAttrs,
-    dateSeparatorRowAttrs,
-    toggleButtonWrapperAttrs,
+    bodyRowAfterAttrs,
+    bodyRowAfterCellAttrs,
+    bodyRowBeforeAttrs,
+    bodyRowBeforeCellAttrs,
+    bodyRowDateSeparatorAttrs,
+    bodyCellNestedWrapperAttrs,
     bodyCellAttrs,
-    checkboxBodyWrapperCellAttrs,
     footerCellAttrs,
-    selectAllCheckboxAttrs,
-    headerSelectAllCheckboxAttrs,
-    tableCheckboxAttrs,
-    collapseIconAttrs,
-    expandIconAttrs,
-    emptyAttrs,
-    dateSeparatorAttrs,
-    selectedRowsCountAttrs,
+    stickyHeaderCounterAttrs,
+    stickyHeaderActionsCounterAttrs,
+    headerCheckboxAttrs,
+    bodyCheckboxAttrs,
+    bodyCellNestedCollapseIconAttrs,
+    bodyCellNestedExpandIconAttrs,
+    bodyEmptyStateAttrs,
+    bodyDateSeparatorAttrs,
+    bodyCellDateSeparatorAttrs,
+    stickyHeaderCheckboxAttrs,
+    stickyHeaderActionsCheckboxAttrs,
     stickyHeaderLoaderAttrs,
     tableAttrs,
-    tableLoaderAttrs,
+    headerLoaderAttrs,
     bodyAttrs,
-    toggleItemButtonAttrs,
-    secondaryRowAttrs,
-    secondaryRowEmptyAttrs,
+    bodyCellNestedAttrs,
+    bodyCellSecondaryAttrs,
+    bodyCellSecondaryEmptyAttrs,
     footerRowAttrs,
-    footerStickyRowAttrs,
+    stickyFooterRowAttrs,
     hasSlotContent,
     headerAttrs,
   };

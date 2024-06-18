@@ -8,7 +8,10 @@ import defaultConfig from "../configs/default.config";
 export function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
 
-  const { config, getAttrs, hasSlotContent, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const { wrapper, link, text, rightSlot, leftSlot } = config.value;
 
   const cvaWrapper = cva({
@@ -45,7 +48,7 @@ export function useAttrs(props, { isActive, isExactActive }) {
     setColor(
       cvaWrapper({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         block: props.block,
         noRing: props.noRing,
         disabled: props.disabled,
@@ -58,7 +61,7 @@ export function useAttrs(props, { isActive, isExactActive }) {
     setColor(
       cvaLink({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         dashed: props.dashed,
         underlined: props.underlined,
       }),

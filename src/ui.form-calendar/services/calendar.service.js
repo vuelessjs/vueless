@@ -15,7 +15,7 @@ export function getInitialActiveDate(localValue) {
   return new Date();
 }
 
-export function formatDate(dateObj, format, locale) {
+export function formatDate(dateObj, format = "Y-m-d H:i:S", locale) {
   if (dateObj === null) {
     return "";
   }
@@ -85,7 +85,7 @@ export function parseDate(date, format = "Y-m-d H:i:S", locale) {
   return parsedDate;
 }
 
-export function parseStringDate(dateString, format, localeTokenRegex, locale) {
+export function parseStringDate(dateString, format = "Y-m-d H:i:S", localeTokenRegex, locale) {
   const isWithinTimezone = /Z$/.test(dateString) || /GMT$/.test(dateString);
 
   if (isWithinTimezone) {
@@ -163,18 +163,16 @@ export function dateIsOutOfRange(date, min, max, locale, dateFormat = null) {
 
   const maxDate = typeof max === "string" ? parseDate(max, dateFormat, locale) : max;
 
-  const time = date.getTime();
-
   if (minDate && maxDate) {
-    return time < minDate.getTime() || time > maxDate.getTime();
+    return date < minDate || date > maxDate;
   }
 
   if (minDate) {
-    return time < minDate.getTime();
+    return date < minDate;
   }
 
   if (maxDate) {
-    return time > maxDate.getTime();
+    return date > maxDate;
   }
 
   return false;

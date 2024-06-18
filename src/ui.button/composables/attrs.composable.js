@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { button, text } = config.value;
 
   const cvaButton = cva({
@@ -24,7 +24,7 @@ export function useAttrs(props) {
     setColor(
       cvaButton({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
         variant: props.variant,
         pill: props.pill,
         block: props.block,
@@ -40,7 +40,7 @@ export function useAttrs(props) {
   const textClasses = computed(() =>
     setColor(
       cvaText({
-        color: props.color,
+        color: getColor(props.color),
       }),
       props.color,
     ),

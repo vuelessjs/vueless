@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { progress } = config.value;
 
   const cvaProgress = cva({
@@ -15,7 +15,12 @@ export function useAttrs(props) {
   });
 
   const progressClasses = computed(() =>
-    setColor(cvaProgress({ color: props.color }), props.color),
+    setColor(
+      cvaProgress({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
   );
 
   const progressAttrs = getAttrs("progress", { classes: progressClasses.value });

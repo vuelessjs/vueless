@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { getAttrs, setColor, config } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { wrapper } = config.value;
 
   const cvaWrapper = cva({
@@ -17,7 +17,7 @@ export function useAttrs(props) {
   const wrapperClasses = computed(() =>
     setColor(
       cvaWrapper({
-        color: props.color,
+        color: getColor(props.color),
       }),
       props.color,
     ),

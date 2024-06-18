@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
   const { checkbox, iconWrapper } = config.value;
 
   const cvaCheckbox = cva({
@@ -25,7 +25,7 @@ export function useAttrs(props) {
       cvaCheckbox({
         size: props.size,
         label: Boolean(props.label),
-        color: props.color,
+        color: getColor(props.color),
         disabled: props.color,
       }),
       props.color,
@@ -36,7 +36,7 @@ export function useAttrs(props) {
     setColor(
       cvaIconWrapper({
         size: props.size,
-        color: props.color,
+        color: getColor(props.color),
       }),
       props.color,
     ),

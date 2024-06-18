@@ -8,7 +8,7 @@ import {
   Text,
   Fragment,
 } from "vue";
-import { cx, globalComponentConfig, strategy } from "../service.ui";
+import { cx, globalComponentConfig, strategy, getColor, setColor } from "../service.ui";
 import { cloneDeep } from "../service.helper";
 
 const strategyType = {
@@ -94,6 +94,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
   return {
     config,
     getAttrs,
+    getColor,
     setColor,
     hasSlotContent,
   };
@@ -349,8 +350,4 @@ function hasSlotContent(slot, props = {}) {
   };
 
   return !isVNodeEmpty(slot?.(props));
-}
-
-function setColor(classes, color) {
-  return classes?.replaceAll("{color}", color);
 }
