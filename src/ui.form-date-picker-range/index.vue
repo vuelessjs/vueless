@@ -29,6 +29,7 @@
 
     <div v-if="isVariant.button" v-bind="buttonWrapperAttrs">
       <UButton
+        ref="buttonPrevRef"
         square
         :size="size"
         :disabled="disabled"
@@ -40,6 +41,7 @@
 
       <UButton
         :id="id"
+        ref="buttonRef"
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
@@ -48,6 +50,7 @@
       />
 
       <UButton
+        ref="buttonNextRef"
         square
         :size="size"
         :disabled="disabled"
@@ -62,11 +65,10 @@
       <div
         v-if="isShownMenu"
         ref="menuRef"
+        v-click-outside="[deactivate, clickOutsideOptions]"
         tabindex="-1"
         v-bind="menuAttrs"
-        @blur="onBlur"
         @keydown.esc="deactivate"
-        @mouseleave="onMouseoutMenu"
       >
         <div v-bind="periodsRowAttrs">
           <div
@@ -146,28 +148,26 @@
           <UInput
             ref="rangeInputStartRef"
             v-model="rangeStart"
-            :error="inputRangeStartError"
+            :error="inputRangeFromError"
             size="sm"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
-            @blur="onBlurRangeInput"
           />
 
           <UInput
             ref="rangeInputEndRef"
             v-model="rangeEnd"
-            :error="inputRangeEndError"
+            :error="inputRangeToError"
             size="sm"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
-            @blur="onBlurRangeInput"
           />
         </div>
 
         <div v-bind="inputRangeErrorAttrs">
-          {{ inputRangeEndError || inputRangeStartError }}
+          {{ inputRangeToError || inputRangeFromError }}
         </div>
 
         <UCalendar
@@ -179,6 +179,7 @@
           :date-format="dateFormat"
           range
           @mouseenter="onMouseoverCalendar"
+          @input="onInputCalendar"
         />
       </div>
     </Transition>
@@ -194,6 +195,8 @@ import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 import UCalendar from "../ui.form-calendar";
 import { LOCALE_TYPE } from "../ui.form-calendar/constants";
+
+import vClickOutside from "../directive.clickOutside";
 
 import UIService, { getRandomId } from "../service.ui";
 
@@ -227,7 +230,11 @@ import {
   getMonthsDateList,
 } from "./services/dateRange.service";
 
-import { wrongDateFormat, wrongMonthNumber, wrongDayNumber } from "./services/validation.service";
+import {
+  isWrongDateFormat,
+  isWrongMonthNumber,
+  isWrongDayNumber,
+} from "./services/validation.service";
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 import useBreakpoint from "../composable.breakpoint";
@@ -395,6 +402,8 @@ const props = defineProps({
   },
 });
 
+const inputRangeFormat = "d.m.Y";
+
 const emit = defineEmits(["update:modelValue"]);
 
 const isShownMenu = ref(false);
@@ -402,6 +411,9 @@ const wrapperRef = ref(null);
 const menuRef = ref(null);
 const rangeInputStartRef = ref(null);
 const rangeInputEndRef = ref(null);
+const buttonRef = ref(null);
+const buttonPrevRef = ref(null);
+const buttonNextRef = ref(null);
 
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
   wrapperRef,
@@ -444,6 +456,10 @@ const i18nGlobal = tm(UDatePickerRange);
 
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
+const clickOutsideOptions = computed(() => ({
+  ignore: [buttonRef.value.buttonRef, buttonPrevRef.value.buttonRef, buttonNextRef.value.buttonRef],
+}));
+
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
@@ -470,9 +486,9 @@ const activeDate = ref(
 const period = ref(PERIOD.ownRange);
 const rangeStart = ref("");
 const rangeEnd = ref("");
-const inputRangeStartError = ref("");
-const inputRangeEndError = ref("");
-const isHoverEvent = ref(false);
+const inputRangeFromError = ref("");
+const inputRangeToError = ref("");
+const calendarInnerValue = ref({ from: "", to: "" });
 const periodDateList = ref(null);
 
 const { isMobileBreakpoint } = useBreakpoint();
@@ -611,9 +627,19 @@ const userFormatDate = computed(() => {
       startYear = "";
     }
 
-    const fromTitle = isSameMonth(from, to)
-      ? from.getDate()
-      : `${from.getDate()} ${startMonthName} ${startYear}`;
+    const isDatesToSameMonth = isSameMonth(from, to);
+    const isDatesToSameYear = from.getFullYear() === to.getFullYear();
+
+    let fromTitle = `${from.getDate()} ${startMonthName} ${startYear}`;
+
+    if (isDatesToSameMonth && isDatesToSameYear) {
+      fromTitle = from.getDate();
+    }
+
+    if (!isDatesToSameMonth && isDatesToSameYear) {
+      fromTitle = `${from.getDate()} ${startMonthName}`;
+    }
+
     const toTitle = to ? `${to.getDate()} ${endMonthName} ${endYear}` : "";
 
     title = `${fromTitle} – ${toTitle}`;
@@ -680,13 +706,15 @@ watch(
     const parsedDateTo = parseDate(props.modelValue.to, props.dateFormat, locale.value);
 
     rangeStart.value = props.modelValue.from
-      ? formatDate(parsedDateFrom, "d.m.Y", locale.value)
+      ? formatDate(parsedDateFrom, inputRangeFormat, locale.value)
       : "";
 
-    rangeEnd.value = props.modelValue.to ? formatDate(parsedDateTo, "d.m.Y", locale.value) : "";
+    rangeEnd.value = props.modelValue.to
+      ? formatDate(parsedDateTo, inputRangeFormat, locale.value)
+      : "";
 
-    inputRangeStartError.value = "";
-    inputRangeEndError.value = "";
+    inputRangeFromError.value = "";
+    inputRangeToError.value = "";
   },
   { deep: true, immediate: true },
 );
@@ -820,72 +848,75 @@ function activate() {
 
 function deactivate() {
   isShownMenu.value = false;
-
-  isHoverEvent.value = false;
 }
 
-function onBlur(event) {
-  const { relatedTarget } = event;
+function isGraterThanTo(value) {
+  if (!value) return false;
 
-  if (!menuRef.value?.contains(relatedTarget)) {
-    deactivate();
-  }
+  const parsedValue = parseDate(value, inputRangeFormat, locale.value);
+  const parsedTo = parseDate(localValue.value.to, props.dateFormat, locale.value);
+
+  return parsedValue > parsedTo;
 }
 
-function onBlurRangeInput(event) {
-  const { relatedTarget } = event;
-  const isRangeInputFocus = relatedTarget?.name === rangeInputName.value;
+function isSmallerThanFrom(value) {
+  if (!value) return false;
 
-  if (!isRangeInputFocus) {
-    menuRef.value.focus();
-  }
+  const parsedValue = parseDate(value, inputRangeFormat, locale.value);
+  const parsedFrom = parseDate(localValue.value.from, props.dateFormat, locale.value);
 
-  if (!menuRef.value?.contains(relatedTarget) && !isHoverEvent.value) {
-    deactivate();
-  }
-
-  isHoverEvent.value = false;
+  return parsedValue < parsedFrom;
 }
 
 function onInputRangeInput(value, type) {
-  const isInvalidDateFormat = !wrongDateFormat(value);
-  const isInvalidMonthNumber = !wrongMonthNumber(value);
-  const isInvalidDayNumber = !wrongDayNumber(value);
+  const isInvalidDateFormat = isWrongDateFormat(value);
 
   let error = "";
 
   if (isInvalidDateFormat && value) {
     error = locale.value.dateFormatWithDot;
-  } else if (isInvalidMonthNumber && value) {
+  } else if (isWrongMonthNumber(value) && value) {
     error = locale.value.notCorrectMonthNumber;
-  } else if (isInvalidDayNumber && value) {
+  } else if (isWrongDayNumber(value) && value) {
     error = locale.value.notCorrectDayNumber;
+  } else if (isGraterThanTo(value) && type === INPUT_RANGE_TYPE.start) {
+    error = locale.value.fromDateGraterThanSecond;
+  } else if (isSmallerThanFrom(value) && type === INPUT_RANGE_TYPE.end) {
+    error = locale.value.toDateSmallerThanFirst;
   }
 
   if (type === INPUT_RANGE_TYPE.start) {
-    inputRangeStartError.value = error;
+    inputRangeFromError.value = error;
   }
 
   if (type === INPUT_RANGE_TYPE.end) {
-    inputRangeEndError.value = error;
+    inputRangeToError.value = error;
   }
 
-  const parsedValue = parseDate(value || new Date(), props.dateFormat, locale.value);
-  const isOutOfRange = dateIsOutOfRange(
-    parsedValue,
-    props.minDate,
-    props.maxDate,
-    locale.value,
-    props.dateFormat,
-  );
-  const isToLessThanFrom = parsedValue <= localValue.value.from;
+  if (!isInvalidDateFormat) {
+    const parsedValue = parseDate(value || new Date(), inputRangeFormat, locale.value);
 
-  if (type === INPUT_RANGE_TYPE.start && !error && !isOutOfRange) {
-    localValue.value.from = value ? parsedValue : "";
-  }
+    const isOutOfRange = dateIsOutOfRange(
+      parsedValue,
+      props.minDate,
+      props.maxDate,
+      locale.value,
+      props.dateFormat,
+    );
 
-  if (type === INPUT_RANGE_TYPE.end && !error && !isOutOfRange && !isToLessThanFrom) {
-    localValue.value.to = value ? parsedValue : "";
+    if (type === INPUT_RANGE_TYPE.start && !error && !isOutOfRange) {
+      localValue.value = {
+        from: value ? parsedValue : "",
+        to: localValue.value.to,
+      };
+    }
+
+    if (type === INPUT_RANGE_TYPE.end && !error && !isOutOfRange) {
+      localValue.value = {
+        from: localValue.value.from,
+        to: value ? parsedValue : "",
+      };
+    }
   }
 }
 
@@ -1009,26 +1040,25 @@ function onMouseoverCalendar() {
 
   if (isRangeInputFocus || !rangeInputStartRef.value || !rangeInputEndRef.value) return;
 
-  if ((rangeStart.value && rangeEnd.value && !inputRangeEndError.value) || !rangeStart.value) {
+  const hasValues =
+    calendarInnerValue.value.from && calendarInnerValue.value.to && !inputRangeToError.value;
+  const hasOnlyFromValue =
+    calendarInnerValue.value.from && !calendarInnerValue.value.to && !inputRangeFromError.value;
+
+  if (hasValues || !rangeStart.value) {
     rangeInputStartRef.value.input.focus();
 
     return;
   }
 
-  if (rangeStart.value && !rangeEnd.value && !inputRangeStartError.value) {
+  if (hasOnlyFromValue) {
     rangeInputEndRef.value.input.focus();
 
     return;
   }
 }
 
-function onMouseoutMenu() {
-  const isRangeInputFocus = document.activeElement.name === rangeInputName.value;
-
-  if (isRangeInputFocus) {
-    isHoverEvent.value = true;
-
-    document.activeElement.blur();
-  }
+function onInputCalendar(value) {
+  calendarInnerValue.value = value;
 }
 </script>

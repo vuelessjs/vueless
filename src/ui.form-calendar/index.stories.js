@@ -64,7 +64,7 @@ Timepicker.args = { value: new Date(2024, 2, 14, 12, 24, 14), timepicker: true }
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: "2022-02-22",
+  minDate: new Date(2022, 2, 22),
   maxDate: new Date(2022, 2, 26),
   value: new Date(2022, 2, 24),
 };

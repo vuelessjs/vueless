@@ -21,6 +21,7 @@
 <script setup>
 import { computed } from "vue";
 
+import { cx } from "../../service.ui";
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
 import {
   isToday,
@@ -210,33 +211,40 @@ function getDay(date, dayNumber) {
 }
 
 function getDayClasses(day) {
+  const isDayInRange =
+    props.range &&
+    localSelectedDate.value &&
+    props.selectedDateTo &&
+    !dateIsOutOfRange(
+      day,
+      props.selectedDate,
+      props.selectedDateTo,
+      props.locale,
+      props.dateFormat,
+    );
+
   const isNotSelectedDate =
     (!isSelectedDay(day) && !isSelectedToDay(day)) || props.selectedDate === null;
 
   if (isToday(day) && isNotSelectedDate) {
-    return [currentDayAttrs.value.class];
+    return cx([isDayInRange && inRangeDayAttrs.value.class, currentDayAttrs.value.class]);
   }
 
   if (props.range && isSelectedDay(day)) {
-    return [
-      inRangeFirstDayAttrs.value.class,
+    return cx([
       isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
-    ];
+      inRangeFirstDayAttrs.value.class,
+    ]);
   }
 
   if (props.range && isSelectedToDay(day)) {
-    return [
-      inRangeLastDayAttrs.value.class,
+    return cx([
       isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
-    ];
+      inRangeLastDayAttrs.value.class,
+    ]);
   }
 
-  if (
-    props.range &&
-    localSelectedDate.value &&
-    props.selectedDateTo &&
-    !dateIsOutOfRange(day, props.selectedDate, props.selectedDateTo, props.locale, props.dateFormat)
-  ) {
+  if (isDayInRange) {
     return [inRangeDayAttrs.value.class];
   }
 
