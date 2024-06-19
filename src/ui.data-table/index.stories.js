@@ -2,7 +2,6 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import { getRandomId } from "../service.ui";
 
 import UTable from "../ui.data-table";
-import UTableCell from "../ui.data-table-cell";
 import UButton from "../ui.button";
 import ULink from "../ui.button-link";
 import UMoney from "../ui.text-money";
@@ -110,7 +109,7 @@ const EmptyTemplate = (args) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { UTable, UButton, UTableCell, ULink, UMoney, UBadge, URow },
+  components: { UTable, UButton, ULink, UMoney, UBadge, URow },
   setup() {
     return { args };
   },
@@ -166,12 +165,12 @@ stickyFooter.args = {
   stickyFooter: true,
   slotTemplate: `
     <template #footer>
-      <UTableCell>
+      <td>
         <p>
           🤘🤘🤘
           Lorem ipsum dolor sit amet.
         </p>
-      </UTableCell>
+      </td>
     </template>
   `,
 };
@@ -201,8 +200,8 @@ slotDefault.args = {
   `,
 };
 
-export const slotTheadActions = SlotTemplate.bind({});
-slotTheadActions.args = {
+export const slotHeaderActions = SlotTemplate.bind({});
+slotHeaderActions.args = {
   numberOfRows: 50,
   stickyHeader: true,
   selectable: true,
@@ -227,8 +226,8 @@ slotTheadActions.args = {
   `,
 };
 
-export const slotbodyRowBefore = SlotTemplate.bind({});
-slotbodyRowBefore.args = {
+export const slotBeforeFirstRow = SlotTemplate.bind({});
+slotBeforeFirstRow.args = {
   slotTemplate: `
     <template #before-first-row>
       <p>
@@ -241,8 +240,8 @@ slotbodyRowBefore.args = {
   `,
 };
 
-export const slotbodyRowAfter = SlotTemplate.bind({});
-slotbodyRowAfter.args = {
+export const slotAfterLastRow = SlotTemplate.bind({});
+slotAfterLastRow.args = {
   slotTemplate: `
     <template #after-last-row>
       <p>
@@ -255,18 +254,18 @@ slotbodyRowAfter.args = {
   `,
 };
 
-export const slotTfoot = SlotTemplate.bind({});
-slotTfoot.args = {
+export const slotFooter = SlotTemplate.bind({});
+slotFooter.args = {
   slotTemplate: `
-    <template #tfoot>
-      <UTableCell>
+    <template #footer>
+      <td>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit,
           sed do eiusmod tempor incididunt ut labore et dolore magna
           aliqua. Ut enim ad minim veniam, quis nostrud exercitation
           ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
-      </UTableCell>
+      </td>
     </template>
   `,
 };

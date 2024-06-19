@@ -76,15 +76,14 @@
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
-            <UTableCell
+            <td
               v-if="hasSlotContent($slots['before-header'])"
               :colspan="colsCount"
-              :compact="compact"
               v-bind="headerCellAttrs()"
             >
               <!-- @slot Use it to add something before header row. -->
               <slot name="before-header" :cols-count="colsCount" />
-            </UTableCell>
+            </td>
           </tr>
 
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
@@ -132,18 +131,14 @@
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
           <template v-for="(row, rowIndex) in tableRows" :key="row.id">
-            <tr v-if="rowIndex === firstRow" v-bind="bodyRowBeforeAttrs">
-              <UTableCell
-                v-if="hasSlotContent($slots['before-first-row'])"
-                :colspan="colsCount"
-                :compact="compact"
-                v-bind="bodyRowBeforeCellAttrs"
-              >
+            <tr
+              v-if="rowIndex === firstRow && hasSlotContent($slots['before-first-row'])"
+              v-bind="bodyRowBeforeAttrs"
+            >
+              <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
                 <!-- @slot Use it to add something before first row. -->
                 <slot name="before-first-row" />
-              </UTableCell>
-
-              <td v-else :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs" />
+              </td>
             </tr>
 
             <tr
@@ -165,11 +160,7 @@
               :data-cy="`${dataCy}-row`"
               @click="onClickRow(row)"
             >
-              <UTableCell
-                v-if="selectable"
-                :compact="compact"
-                v-bind="bodyCellAttrs(config.bodyCellCheckbox)"
-              >
+              <td v-if="selectable" v-bind="bodyCellAttrs(config.bodyCellCheckbox)">
                 <UCheckbox
                   v-model="selectedRows"
                   :data-id="row.id"
@@ -179,12 +170,11 @@
                   v-bind="bodyCheckboxAttrs"
                   @click.stop
                 />
-              </UTableCell>
+              </td>
 
-              <UTableCell
+              <td
                 v-for="(value, key, index) in TableService.getFilteredRow(row, columns)"
                 :key="index"
-                :compact="compact"
                 v-bind="bodyCellAttrs(getCellClasses(key))"
               >
                 <template v-if="hasSlotContent($slots[`cell-${key}`])">
@@ -245,21 +235,17 @@
                     {{ value || HYPHEN_SYMBOL }}
                   </div>
                 </template>
-              </UTableCell>
+              </td>
             </tr>
 
-            <tr v-if="rowIndex === lastRow" v-bind="bodyRowAfterAttrs">
-              <UTableCell
-                v-if="hasSlotContent($slots['after-last-row'])"
-                :compact="compact"
-                :colspan="colsCount"
-                v-bind="bodyRowAfterCellAttrs"
-              >
+            <tr
+              v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
+              v-bind="bodyRowAfterAttrs"
+            >
+              <td :colspan="colsCount" v-bind="bodyRowAfterCellAttrs">
                 <!-- @slot Use it to add something after last row. -->
                 <slot name="after-last-row" />
-              </UTableCell>
-
-              <td v-else :colspan="colsCount" v-bind="bodyRowAfterCellAttrs" />
+              </td>
             </tr>
           </template>
         </tbody>
@@ -282,14 +268,14 @@
 
         <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerClassesAttrs">
           <tr ref="footerRowRef" v-bind="footerRowAttrs">
-            <UTableCell v-if="selectable" :compact="compact" v-bind="footerCellAttrs" />
+            <td v-if="selectable" />
 
             <!-- @slot Use it to add something in table footer. -->
             <slot name="footer" :cols-count="colsCount" />
           </tr>
 
           <tr ref="stickyFooterRowRef" :style="tableRowWidthStyle" v-bind="stickyFooterRowAttrs">
-            <UTableCell v-if="selectable" :compact="compact" v-bind="footerCellAttrs" />
+            <td v-if="selectable" />
 
             <!-- @slot Use it to add something in table footer. -->
             <slot name="footer" :cols-count="colsCount" />
@@ -319,7 +305,6 @@ import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
 import UCheckbox from "../ui.form-checkbox";
 import ULoaderTop from "../ui.loader-top";
-import UTableCell from "../ui.data-table-cell";
 
 import UIService from "../service.ui";
 
@@ -523,7 +508,6 @@ const {
   bodyCellNestedWrapperAttrs,
   headerCellAttrs,
   bodyCellAttrs,
-  footerCellAttrs,
   stickyHeaderActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
@@ -595,7 +579,7 @@ onBeforeUnmount(() => {
 });
 
 function onWindowResize() {
-  tableWidth.value = tableWrapperRef.value.offsetWidth;
+  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
 
   setHeaderCellWidth();
   setFooterCellWidth();
