@@ -7,9 +7,6 @@ export default /*tw*/ {
         secondary: `bg-transparent border border-{color}-500`,
         thirdary: `bg-{color}-50 text-{color}-700`,
       },
-      bordered: {
-        true: "border",
-      },
     },
     compoundVariants: [
       { color: "grayscale", bordered: true, class: "border-gray-200" },
