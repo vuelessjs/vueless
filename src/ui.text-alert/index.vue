@@ -7,6 +7,7 @@
     <slot name="title" :title="title">
       <div v-bind="titleAttrs" v-text="title" />
     </slot>
+
     <!-- @slot Use it to add something instead of the description. -->
     <slot name="description" :description="description">
       <div v-bind="descriptionAttrs" v-text="description" />
