@@ -1,30 +1,51 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
-    <div v-bind="bodyAttrs">
-      <!-- @slot Use it to add something inside. -->
-      <slot />
+    <!-- @slot Use it to add something above text. -->
+    <slot name="top" />
 
-      <div v-if="!hasSlotContent($slots['default'])" v-html="html" />
+    <!-- Use it to add something instead of the title. -->
+    <slot name="title" :title="title">
+      <div v-bind="titleAttrs" v-text="title" />
+    </slot>
+
+    <!-- @slot Use it to add something instead of the description. -->
+    <slot name="description" :description="description">
+      <div v-bind="descriptionAttrs" v-text="description" />
+    </slot>
+
+    <div v-bind="bodyAttrs">
+      <!-- @slot Use it to add something before text. -->
+      <slot name="left" />
+
+      <!-- @slot Default slot. -->
+      <slot />
+      <div v-if="!hasSlotContent($slots.default)" v-bind="bodyAttrs" v-html="html" />
+
+      <UButton
+        v-if="closable"
+        size="sm"
+        variant="thirdary"
+        :color="color"
+        square
+        v-bind="buttonAttrs"
+        @click="onClickClose"
+      >
+        <UIcon
+          internal
+          size="xs"
+          :color="color"
+          :name="config.iconName"
+          :data-cy="`${dataCy}-button`"
+          v-bind="iconAttrs"
+        />
+      </UButton>
+
+      <!-- @slot Use it to add something after text. -->
+      <slot name="right" />
     </div>
 
-    <UButton
-      v-if="closeIcon"
-      size="sm"
-      variant="thirdary"
-      :color="color"
-      square
-      v-bind="buttonAttrs"
-    >
-      <UIcon
-        internal
-        size="xs"
-        :color="color"
-        :name="config.iconName"
-        :data-cy="`${dataCy}-button`"
-        v-bind="iconAttrs"
-        @click="onHidden"
-      />
-    </UButton>
+    <!-- @slot Use it to add something under text. -->
+    <slot name="bottom" />
   </div>
 </template>
 
@@ -43,6 +64,15 @@ import { useAttrs } from "./composables/attrs.composable";
 defineOptions({ name: "UAlert" });
 
 const props = defineProps({
+  /**
+   * Alert variant.
+   * @values primary, secondary, thirdary
+   */
+  variant: {
+    type: String,
+    default: UIService.get(defaultConfig, UAlert).default.variant,
+  },
+
   /**
    * HTML or plain text.
    */
@@ -87,9 +117,9 @@ const props = defineProps({
   /**
    * Show close button.
    */
-  closeIcon: {
+  closable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UAlert).default.closeIcon,
+    default: UIService.get(defaultConfig, UAlert).default.closable,
   },
 
   /**
@@ -107,21 +137,46 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
+  /**
+   * Alert title.
+   */
+  title: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Alert description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["hidden"]);
 
 const isShownAlert = ref(true);
 
-const { config, wrapperAttrs, bodyAttrs, iconAttrs, buttonAttrs, hasSlotContent } = useAttrs(props);
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  titleAttrs,
+  descriptionAttrs,
+  iconAttrs,
+  buttonAttrs,
+  hasSlotContent,
+} = useAttrs(props);
 
 onMounted(() => {
   if (props.timeout > 0) {
-    setTimeout(() => onHidden(), props.timeout);
+    setTimeout(() => onClickClose(), props.timeout);
   }
 });
 
-function onHidden() {
+function onClickClose() {
   isShownAlert.value = false;
   emit("hidden");
 }

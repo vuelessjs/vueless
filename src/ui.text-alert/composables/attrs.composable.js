@@ -28,6 +28,7 @@ export function useAttrs(props) {
       cvaWrapper({
         color: getColor(props.color),
         bordered: props.bordered,
+        variant: props.variant,
       }),
       props.color,
     ),
@@ -37,6 +38,9 @@ export function useAttrs(props) {
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const bodyAttrs = getAttrs("body", { classes: bodyClasses });
+  const titleAttrs = getAttrs("title");
+  const descriptionAttrs = getAttrs("description");
+
   const buttonAttrs = getAttrs("button", { isComponent: true });
   const iconAttrs = getAttrs("icon", { isComponent: true });
 
@@ -47,5 +51,7 @@ export function useAttrs(props) {
     buttonAttrs,
     iconAttrs,
     hasSlotContent,
+    titleAttrs,
+    descriptionAttrs,
   };
 }

@@ -2,6 +2,8 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
+import UGroup from "../ui.container-group";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
@@ -12,7 +14,7 @@ export default {
   component: UAlert,
   args: {
     text: "UHint",
-    slotTemplate: `
+    slotDefaultTemplate: `
       <template #default>
         <p>
           <b>Lorem ipsum dolor sit amet,</b>
@@ -30,16 +32,39 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAlert },
+  components: { UAlert, UIcon },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
     return { args, slots };
   },
   template: `
-    <UAlert v-bind="args">
-      ${args.slotTemplate || ""}
+    <UAlert v-bind="args" v-model="args.value">
+    ${args.slotDefaultTemplate}
+    ${args.slotTemplate || ""}
     </UAlert>
+  `,
+});
+
+const VariantsTemplate = (args, { argTypes } = {}) => ({
+  components: { UAlert, UGroup },
+  setup() {
+    return {
+      args,
+      variants: argTypes.variant.options,
+    };
+  },
+  template: `
+    <UGroup>
+      <UAlert
+        v-for="(variant, index) in variants"
+        v-bind="args"
+        :variant="variant"
+        :key="index"
+        :title="variant"
+        color="gray"
+      />
+    </UGroup>
   `,
 });
 
@@ -57,10 +82,9 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
         v-for="(color, index) in colors"
         v-bind="args"
         :color="color"
+        :title="color"
         :key="index"
-      >
-        ${args.slotTemplate}
-      </UAlert>
+      />
     </URow>
   `,
 });
@@ -81,48 +105,60 @@ const SizeTemplate = (args, { argTypes } = {}) => ({
         :size="size"
         :key="index"
       >
-        ${args.slotTemplate}
+        text
       </UAlert>
     </URow>
+  `,
+});
+
+const HTMLTemplate = (args) => ({
+  components: { UAlert },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UAlert :html="args.html"  />
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const variants = VariantsTemplate.bind({});
+variants.args = {};
+
 export const colors = ColorsTemplate.bind({});
-colors.args = {
-  closeIcon: true,
-  slotTemplate: `
-     <template #default>
-       text
-     </template>
+colors.args = {};
+
+export const sizes = SizeTemplate.bind({});
+sizes.args = {};
+
+export const HTML = HTMLTemplate.bind({});
+HTML.args = {
+  html: `
+    <p>
+      <b>Lorem ipsum dolor sit amet,</b>
+      <u>consectetur adipiscing elit,</u>
+      <em>sed do eiusmod tempor incididunt
+      ut labore et dolore magna aliqua.</em>
+      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+    </p>
   `,
 };
 
-export const size = SizeTemplate.bind({});
-size.args = {
-  closeIcon: true,
-  slotTemplate: `
-     <template #default>
-       text
-     </template>
-  `,
-};
-
-export const closeIcon = DefaultTemplate.bind({});
-closeIcon.args = {
-  closeIcon: true,
-  slotTemplate: `
-     <template #default>
-       some text
-     </template>
+export const closable = DefaultTemplate.bind({});
+closable.args = {
+  closable: true,
+  slotDefaultTemplate: `
+    <template #default>
+      some text
+    </template>
   `,
 };
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  slotTemplate: `
+  slotDefaultTemplate: `
     <template #default>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -141,8 +177,7 @@ paragraphs.args = {
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  slotTemplate: `
-    <template #default>
+  slotDefaultTemplate: `
       <URow>
         <ul>
           <li> Lorem ipsum dolor </li>
@@ -156,6 +191,65 @@ list.args = {
           <li> Lorem ipsum dolor </li>
         </ol>
       </URow>
-    </template>
     `,
+};
+
+export const slotTitleAndDescription = DefaultTemplate.bind({});
+slotTitleAndDescription.args = {
+  slotTemplate: `
+    <template #title>
+      <div>Alert Title</div>
+    </template>
+    <template #description>
+      <div>This is a custom description for the alert.</div>
+    </template>
+  `,
+};
+
+export const slotAlertLeft = DefaultTemplate.bind({});
+slotAlertLeft.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon
+        name="star"
+        color="gray"
+      />
+    </template>
+  `,
+};
+
+export const slotAlertRight = DefaultTemplate.bind({});
+slotAlertRight.args = {
+  slotTemplate: `
+    <template #right>
+        <UIcon
+        name="star"
+        color="gray"
+      />
+    </template>
+  `,
+};
+
+export const slotAlertTop = DefaultTemplate.bind({});
+slotAlertTop.args = {
+  slotTemplate: `
+    <template #top>
+      <UIcon
+        name="star"
+        color="gray"
+      />
+    </template>
+  `,
+};
+
+export const slotAlertBottom = DefaultTemplate.bind({});
+slotAlertBottom.args = {
+  slotTemplate: `
+    <template #bottom>
+      <UIcon
+        name="star"
+        color="gray"
+      />
+    </template>
+  `,
 };

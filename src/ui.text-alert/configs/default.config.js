@@ -1,19 +1,21 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 space-x-4 flex justify-between items-start rounded-lg bg-{color}-50 text-{color}-700",
+    base: "p-4 flex flex-col rounded-lg",
     variants: {
-      color: {
-        grayscale: "bg-gray-100 text-gray-900",
-      },
-      bordered: {
-        true: "border border-{color}-100",
+      variant: {
+        primary: `bg-{color}-500 text-white`,
+        secondary: `bg-transparent border border-{color}-500`,
+        thirdary: `bg-{color}-50 text-{color}-700`,
       },
     },
-    compoundVariants: [{ color: "grayscale", bordered: true, class: "border-gray-200" }],
+    compoundVariants: [
+      { color: "grayscale", bordered: true, class: "border-gray-200" },
+      { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
+    ],
   },
   body: {
     base: `
-      space-y-4 font-normal leading-normal
+      flex gap-2 items-baseline font-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
@@ -32,20 +34,25 @@ export default /*tw*/ {
       },
     },
   },
+  title: "font-bold text-lg leading-tight",
+  description: "text-sm",
   button: "",
   icon: "",
   iconName: "close",
   defaultVariants: {
-    color: "grayscale",
+    variant: "thirdary",
+    color: "brand",
     size: "md",
     timeout: 0,
     html: undefined,
     bordered: false,
-    closeIcon: false,
+    closable: false,
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
+    { pattern: `bg-(${colors})-500` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
+    { pattern: `border-(${colors})-500` },
   ],
 };
