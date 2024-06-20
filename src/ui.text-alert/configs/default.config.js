@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { color: "grayscale", bordered: true, class: "border-gray-200" },
-      { variant: "thirdary", class: "border border-{color}-100" },
+      { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
     ],
   },
   body: {
