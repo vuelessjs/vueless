@@ -1,6 +1,13 @@
 export default /*tw*/ {
   wrapper: "relative",
-  headerCellGeneral: "p-4 text-sm font-normal text-gray-500 text-left",
+  headerCellGeneral: {
+    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left",
+    variants: {
+      compact: {
+        true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+      },
+    },
+  },
   headerCounterGeneral: "mr-3 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
@@ -28,7 +35,14 @@ export default /*tw*/ {
   bodyRowAfter: "!p-0",
   bodyRowAfterCell: "py-1",
   bodyRowDateSeparator: "",
-  bodyCell: "",
+  bodyCell: {
+    base: "p-[1.125rem] py-5 first:p-5 truncate align-top last:p-5",
+    variants: {
+      compact: {
+        true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+      },
+    },
+  },
   bodyCellSecondary: "mt-1 text-xs text-gray-500",
   bodyCellSecondaryEmpty: "inline-block",
   bodyCellCheckbox: "first:px-4", // try to remove first
@@ -43,8 +57,14 @@ export default /*tw*/ {
   bodyDateSeparator: "",
   bodyEmptyState: "my-8",
   footer: "group/footer border-t border-solid border-gray-200",
-  footerRow: "",
-  footerCell: "",
+  footerRow: {
+    base: "[&_td]:p-[1.125rem] [&_td]:py-5 first:[&_td]:p-5",
+    variants: {
+      compact: {
+        true: "[&_td]:p-4",
+      },
+    },
+  },
   stickyFooter: "relative group/footer-fixed",
   stickyFooterRow: `
     fixed bottom-0 -ml-px border border-b border-gray-200 bg-white
