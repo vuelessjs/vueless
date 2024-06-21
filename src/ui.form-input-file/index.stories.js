@@ -40,6 +40,28 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
+const SlotTemplate = (args) => ({
+  components: { UInputFile },
+  setup() {
+    return { args };
+  },
+  data() {
+    return {
+      files: [],
+      error: args.error || "",
+    };
+  },
+  template: `
+    <UInputFile 
+      v-bind="args"
+      v-model="files"
+      v-model:error="error"
+    >
+      ${args.slotTemplate}
+    </UInputFile>
+  `,
+});
+
 const LabelAlignTemplate = (args, { argTypes } = {}) => ({
   components: { UInputFile, URow },
   setup() {
@@ -98,3 +120,12 @@ sizes.args = {};
 
 export const labelAlign = LabelAlignTemplate.bind({});
 labelAlign.args = {};
+
+export const slotLeft = SlotTemplate.bind({});
+slotLeft.args = {
+  slotTemplate: `
+    <template #left>
+      🥸
+    </template>
+  `,
+};
