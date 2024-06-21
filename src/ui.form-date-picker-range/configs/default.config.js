@@ -102,7 +102,6 @@ export default /*tw*/ {
       },
     },
     day: "font-medium w-full h-10 text-sm mb-0.5",
-    currentDay: "text-white bg-brand-900 hover:bg-brand-900 hover:text-white",
     weekDay: "text-sm size-10",
     month: "font-medium",
     selectedMonth: "bg-zinc-100 text-brand-900 hover:text-white",
@@ -119,6 +118,8 @@ export default /*tw*/ {
     dateFormatWithDot: "Date should be in format 'dd.mm.yyyy'.",
     notCorrectMonthNumber: "Wrong month number.",
     notCorrectDayNumber: "Wrong day in month.",
+    fromDateGraterThanSecond: "The first date should be less than the second.",
+    toDateSmallerThanFirst: "The second date should be greater than the first.",
     weekdays: {
       shorthand: {
         sunday: "Sun",

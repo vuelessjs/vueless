@@ -1,14 +1,22 @@
 import { unref } from "vue";
 
 function clickOutside(target, handler, options) {
-  const { capture = true } = options;
+  const { capture = true, ignore = [] } = options;
 
   let shouldListen = true;
 
+  const ignoreList = unref(ignore).map((item) => unref(item));
   const el = unref(target);
 
   function onClick(event) {
-    if (!el || el === event.target || event.composedPath().includes(el)) return;
+    if (
+      !el ||
+      el === event.target ||
+      event.composedPath().includes(el) ||
+      ignoreList.includes(event.target)
+    ) {
+      return;
+    }
 
     if (!shouldListen) {
       shouldListen = true;

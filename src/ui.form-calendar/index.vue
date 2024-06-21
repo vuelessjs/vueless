@@ -579,17 +579,23 @@ function onInputDate(newDate) {
     const isFullReset =
       localValue.value.to || !localValue.value.from || date <= localValue.value.from;
 
-    localValue.value = isFullReset
+    const updatedValue = isFullReset
       ? { from: date, to: null }
       : { from: localValue.value.from, to: date };
+
+    localValue.value = updatedValue;
+
+    emit("input", updatedValue);
   } else {
     localValue.value = date;
+
+    emit("input", localValue.value);
   }
 
-  activeDate.value = null;
-  activeMonth.value = null;
-
-  emit("input", localValue.value);
+  if (!props.range) {
+    activeDate.value = null;
+    activeMonth.value = null;
+  }
 
   wrapperRef.value.focus();
 }
