@@ -39,13 +39,14 @@ pnpm add heroicons
 {% endtab %}
 
 {% tab title="bun" %}
-<pre class="language-bash"><code class="lang-bash"># weight from 100 to 700 available
+```bash
+# weight from 100 to 700 available
 bun add @material-symbols/svg-500
 # or
-<strong>bun add bootstrap-icons
-</strong># or
+bun add bootstrap-icons
+# or
 bun add heroicons
-</code></pre>
+```
 {% endtab %}
 {% endtabs %}
 
