@@ -7,7 +7,7 @@ if you going to use `bootstrap-icons` or `heroicons` or other weight of `@materi
 {% tabs %}
 {% tab title="npm" %}
 ```bash
-# weight from 100 to 700 available
+# weight from 100 to 700 is available
 npm install @material-symbols/svg-500
 # or
 npm install bootstrap-icons
@@ -124,13 +124,13 @@ Before the build Vueless automatically scan the project files and collects all t
 To avoid this behavior and include all the icons into the build, please follow rules below or add needed icons into the safelist.
 
 ```html
-<!-- ✅ this will work -->
+<!-- ✅ this will work (string) -->
 <UIcon name="close" />
 
-<!-- ✅ this will work too -->
+<!-- ✅ this will work too (ternary operator with strings) -->
 <UIcon name="isOpened ? 'arrow_up' : 'arrow_down'" />
 
-<!-- 🛑 this won't work -->
+<!-- 🛑 this won't work (variable) -->
 <UIcon :name="stateIcon" />
 ```
 
@@ -152,7 +152,7 @@ const stateIcon = computed(() => isOpened ? icons.iconArrowUp : icons.iconArrowD
 </script>
 ```
 
-## Icons safelist colors
+## Icons safelist
 
 if you don't want to use object approach you can simply add needed icons into the safelist.
 
@@ -172,7 +172,112 @@ export default {
 In this case regular and filled icon variants will be safelistd and added into the build.
 {% endhint %}
 
-***
+## Replace all icons at once
+
+If you going to use `bootstrap-icons` or `heroicons` you need to replace icon names in all needed Vueless components. You can easily do that by using the config below:
+
+{% code title="vueless.config.js" %}
+```javascript
+export default {
+  component: {
+    UAccordion: {
+      expandIconName: "add",
+      collapseIconName: "remove",
+    },
+    UModal: {
+      backLinkIconName: "arrow_back",
+      closeIconName: "close",
+    },
+    UPage: {
+      backLinkIconName: "arrow_back",
+    },
+    UDataList: {
+      dragIconName: "drag_indicator",
+      deleteIconName: "delete",
+      editIconName: "edit_note",
+    },
+    UTable: {
+      bodyCellNestedExpandIconName: "add",
+      bodyCellNestedCollapseIconName: "remove",
+    },
+    UDropdownBadge: {
+      iconName: "keyboard_arrow_down",
+    },
+    UDropdownButton: {
+      iconName: "keyboard_arrow_down",
+    },
+    UDropdownLink: {
+      iconName: "keyboard_arrow_down",
+    },
+    UDropdownList: {
+      addIconName: "add",
+    },
+    UCalendar: {
+      dayViewSwitchLabelIconName: "keyboard_arrow_right",
+      nextIconName: "keyboard_arrow_right",
+      prevIconName: "keyboard_arrow_left",
+    },
+    UCheckbox: {
+      partialIconName: "remove",
+      selectedIconName: "check",
+    },
+    UColorPicker: {
+      iconName: "close",
+    },
+    UDatePickerRange: {
+      periodButtonIconName: "apps",
+      nextIconName: "keyboard_arrow_right",
+      prevIconName: "keyboard_arrow_left",
+    },
+    UInput: {
+      passwordVisibleIconName: "visibility-fill",
+      passwordHiddenIconName: "visibility_off-fill",
+    },
+    UInputFile: {
+      chooseFileIconName: "attach_file",
+      clearIconName: "close",
+      removeItemIconName: "close",
+    },
+    UInputNumber: {
+      removeIconName: "remove",
+      addIconName: "add",
+    },
+    UInputRating: {
+      selectedIconName: "star-fill",
+      unselectedIconName: "star",
+    },
+    UInputSearch: {
+      closeIconName: "close",
+      searchIconName: "search",
+    },
+    USelect: {
+      toggleIconName: "expand_more",
+      clearIconName: "close_small",
+      removeItemIconName: "close_small",
+    },
+    USwitch: {
+      selectedIconName: "check",
+      unselectedIconName: "close",
+    },
+    UAlert: {
+      iconName: "close",
+    },
+    UEmpty: {
+      iconName: "emoji_food_beverage",
+    },
+    UFile: {
+      iconName: "description",
+    },
+    UNotify: {
+      successIconName: "check_circle",
+      warningIconName: "warning",
+      errorIconName: "error",
+      closeIconName: "close",
+    },
+  },
+};
+```
+{% endcode %}
 
 ## Deep tuning
 
