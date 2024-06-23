@@ -35,7 +35,7 @@ export default /*tw*/ {
     },
   },
   placeholder: {
-    base: "pr-4 text-gray-700 flex-grow",
+    base: "pr-4 text-gray-700 flex-grow w-full",
     variants: {
       size: {
         sm: "text-sm",
@@ -49,12 +49,13 @@ export default /*tw*/ {
   chooseFileIconName: "attach_file",
   clearIcon: "",
   clearIconName: "close",
-  removeItemIcon: "",
+  removeItemIcon: "ml-2",
   removeItemIconName: "close",
   dropzoneWrapperHover: "border-gray-400 border-dashed",
   dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",
   input: "sr-only pointer-events-none size-0 opacity-0",
   buttonWrapper: "flex gap-4 items-center",
+  fileList: "w-full",
   i18n: {
     sizeError: "File size is too big.",
     formatError: "Format is not supported.",
