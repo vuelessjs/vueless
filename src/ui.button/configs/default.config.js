@@ -124,7 +124,12 @@ export default /*tw*/ {
         `,
       },
       { filled: true, variant: "thirdary", class: "bg-{color}-700 bg-opacity-10" },
-      { filled: true, variant: "thirdary", color: "grayscale", class: "bg-gray-800 bg-opacity-10" },
+      {
+        filled: true,
+        variant: "thirdary",
+        color: "grayscale",
+        class: "bg-gray-800 bg-opacity-10 hover:bg-opacity-15 focus:bg-opacity-15 active:bg-opacity-20",
+      },
       { filled: true, variant: "thirdary", color: "white", class: "bg-gray-50" },
       { square: true, size: "xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
