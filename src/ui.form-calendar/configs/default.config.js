@@ -1,7 +1,7 @@
 export default /*tw*/ {
-  wrapper: "w-fit overflow-hidden rounded-lg border focus:outline-none border-brand-300 bg-white px-1 pb-4 shadow",
-  navigation: "flex items-center justify-between px-3 pt-2",
-  navigationSwitchViewButton: "",
+  wrapper: "p-3 pb-4 w-64 border border-brand-300 rounded-lg bg-white shadow overflow-hidden focus:outline-none",
+  navigation: "mb-2 pb-2 border-b flex items-center justify-between",
+  navigationSwitchViewButton: "-ml-3 pl-3 text-sm rounded-l-none",
   dayViewSwitchLabel: "flex gap-1",
   dayViewSwitchLabelMonth: "text-brand-900",
   dayViewSwitchLabelIcon: "",
@@ -19,7 +19,7 @@ export default /*tw*/ {
   nextIconName: "keyboard_arrow_right",
   prevIcon: "",
   prevIconName: "keyboard_arrow_left",
-  dayViewWrapper: "w-64 px-3 pt-2",
+  dayViewWrapper: "",
   weekDaysWrapper: "grid grid-cols-7",
   weekDay: "flex size-8 items-center justify-center text-xs uppercase text-brand-500",
   daysWrapper: "grid grid-cols-7",
@@ -31,35 +31,26 @@ export default /*tw*/ {
   selectedDay: "bg-brand-900 text-white hover:bg-brand-900",
   currentDay: "hover:bg-brand-100 border-2 border-brand-900",
   anotherMonthDay: "hover:bg-brand-100 text-brand-400",
-  monthViewWrapper: "grid w-64 grid-cols-4 items-center justify-center px-3 pt-2",
+  monthViewWrapper: "grid grid-cols-4 items-center justify-center",
   month: `
     mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-brand-100
     disabled:opacity-50 disabled:cursor-not-allowed
   `,
   selectedMonth: "bg-brand-900 hover:bg-brand-900 text-white",
   activeMonth: "bg-brand-100",
-  yearViewWrapper: "grid w-64 grid-cols-4 items-center justify-center px-3 pt-2",
+  yearViewWrapper: "grid grid-cols-4 items-center justify-center",
   year: `
     mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-brand-100
     disabled:opacity-50 disabled:cursor-not-allowed
   `,
   selectedYear: "bg-brand-900 hover:bg-brand-900 text-white",
   activeYear: "bg-brand-100",
-  timepickerWrapper: `
-    mx-2 -mb-1 mt-2 flex items-center justify-between gap-2 border-t border-brand-200 pl-2 pr-1 pt-3 text-sm
-  `,
+  timepickerWrapper: "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
   timepickerLabel: "w-full",
   timepickerInputWrapper: "flex items-center gap-px rounded-lg border border-brand-300",
-  timepickerLeftInput: `
-    w-11 rounded-l-lg border-none px-2.5 py-1.5 text-center text-sm focus:border-none focus:outline-none
-  `,
-  timepickerRightInput: `
-    w-11 rounded-r-lg border-none px-2.5 py-1.5 text-center text-sm focus:border-none focus:outline-none
-  `,
-  submitButton: `
-    rounded-lg border-none bg-brand-900/10 px-2.5 py-1.5 text-sm font-normal text-brand-900 outline-none
-    focus:ring-0 hover:bg-brand-900/10
-  `,
+  timepickerLeftInput: "w-11 rounded-l-lg border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
+  timepickerRightInput: "w-11 rounded-r-lg border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
+  submitButton: "py-2 focus:ring-0 border-0",
   i18n: {
     weekdays: {
       shorthand: {

@@ -33,6 +33,8 @@
         square
         :size="size"
         :disabled="disabled"
+        variant="thirdary"
+        filled
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
       >
@@ -45,6 +47,8 @@
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
+        variant="thirdary"
+        filled
         v-bind="buttonAttrs"
         @click="activate"
       />
@@ -54,6 +58,8 @@
         square
         :size="size"
         :disabled="disabled"
+        variant="thirdary"
+        filled
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('next')"
       >

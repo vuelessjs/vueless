@@ -24,7 +24,7 @@ export default {
   parameters: {
     docs: {
       story: {
-        height: "580px",
+        height: "620px",
       },
     },
   },

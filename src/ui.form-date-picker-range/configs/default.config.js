@@ -2,23 +2,16 @@ export default /*tw*/ {
   wrapper: "relative",
   input: "",
   inputActive: {
-    block: {
-      base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
-    },
+    block: "ring-4 ring-brand-700 ring-opacity-20 border-brand-500 hover:border-brand-500",
   },
-  buttonWrapper: "flex h-full rounded-lg focus-within:ring-4 focus-within:ring-brand-600/[.15] max-md:justify-between",
-  button: `
-    shrink-0 grow rounded-none border-0 bg-zinc-100 py-2 text-base font-medium text-gray-900 shadow-none
-    hover:bg-zinc-200 hover:ring-brand-600/[.15] focus:border-0 focus:bg-zinc-200 focus:ring-0 focus:ring-brand-600/[.15]
-    active:bg-zinc-200 disabled:cursor-not-allowed
+  buttonWrapper: `
+    flex rounded-lg max-md:justify-between
+    focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  buttonActive: "border-0 hover:bg-zinc-200 ring-0 ring-brand-600/[.15] bg-zinc-200",
-  buttonWrapperActive: "ring-4 ring-brand-600/[.15]",
-  shiftRangeButton: `
-    focus:bg-bg-zinc-200 flex items-center border-0 bg-zinc-100 py-[0.71875rem] shadow-none
-    hover:bg-zinc-200 hover:ring-brand-600/[.15] focus:border-0 focus:ring-0 focus:ring-brand-600/[.15] active:bg-zinc-200
-    disabled:cursor-not-allowed last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none
-  `,
+  button: "shrink-0 grow rounded-none focus:ring-0",
+  buttonActive: "ring-0",
+  buttonWrapperActive: "ring-4 ring-brand-700 ring-opacity-20",
+  shiftRangeButton: "focus:ring-0 last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none",
   menu: {
     base: "absolute z-40 my-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
     variants: {
@@ -41,13 +34,13 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
-    flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-zinc-100
+    flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-100
     px-1.5 py-2.5 text-center text-xs font-medium text-brand-900 hover:bg-brand-200
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
   periodButtonIcon: "",
   periodButtonIconName: "apps",
-  periodButtonActive: "bg-zinc-200",
+  periodButtonActive: "bg-gray-200",
   rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
   rangeSwitchTitle: "font-medium text-sm",
   nextIcon: "",
@@ -63,7 +56,7 @@ export default /*tw*/ {
     cursor-pointer block w-full rounded-lg py-3 text-center text-sm font-medium text-gray-900 hover:rounded-lg hover:bg-brand-50
     disabled:opacity-50 disabled:cursor-not-allowed
   `,
-  periodDateActive: "bg-zinc-100",
+  periodDateActive: "bg-gray-100",
   rangeInputWrapper: "flex mt-4",
   rangeInput: {
     block: `focus-within:z-10 group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none`,
@@ -83,43 +76,21 @@ export default /*tw*/ {
   inputRangeError: "text-xs font-normal !leading-none mt-2 text-center text-red-500",
   calendar: {
     wrapper: "p-0 mt-2 w-full border-none shadow-none",
-    dayViewWrapper: "p-0 w-full",
-    monthViewWrapper: "p-0 w-full",
-    yearViewWrapper: "p-0 w-full",
-    dayViewSwitchLabel: "font-medium text-brand-900",
-    nextPrevButton: "p-0 py-2 hover:bg-transparent",
-    navigation: "px-0 w-full",
-    nextIcon: {
-      defaultVariants: {
-        variant: "grayscale",
-        size: "sm",
-      },
-    },
-    prevIcon: {
-      defaultVariants: {
-        variant: "grayscale",
-        size: "sm",
-      },
-    },
-    day: "font-medium w-full h-10 text-sm mb-0.5",
-    weekDay: "text-sm size-10",
-    month: "font-medium",
-    selectedMonth: "bg-zinc-100 text-brand-900 hover:text-white",
-    year: "font-medium",
-    selectedYear: "bg-zinc-100 text-brand-900 hover:text-white",
+    navigation: "mb-0 border-none",
+    navigationSwitchViewButton: "rounded-lg px-3",
+    day: "w-full h-10 mb-0.5",
   },
   i18n: {
-    lastThirtyDays: "Last 30 days <span> and 2 next two weeks </span>",
     ownRange: "Own range",
     week: "Week",
     month: "Month",
     quarter: "Quarter",
     year: "Year",
-    dateFormatWithDot: "Date should be in format 'dd.mm.yyyy'.",
+    dateFormatWithDot: "The date should be in format 'dd.mm.yyyy'.",
     notCorrectMonthNumber: "Wrong month number.",
     notCorrectDayNumber: "Wrong day in month.",
-    fromDateGraterThanSecond: "The first date should be less than the second.",
-    toDateSmallerThanFirst: "The second date should be greater than the first.",
+    fromDateGraterThanSecond: "The 'from' date should be less than the 'to' date.",
+    toDateSmallerThanFirst: "The 'to' date should be greater than the 'from' date.",
     weekdays: {
       shorthand: {
         sunday: "Sun",

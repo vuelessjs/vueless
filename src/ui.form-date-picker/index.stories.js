@@ -20,7 +20,7 @@ export default {
   parameters: {
     docs: {
       story: {
-        height: "380px",
+        height: "480px",
       },
     },
   },

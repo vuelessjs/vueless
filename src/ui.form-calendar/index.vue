@@ -7,9 +7,8 @@
         :disabled="!range"
       >
         <UButton
-          size="sm"
+          size="xs"
           color="gray"
-          pill
           square
           variant="thirdary"
           v-bind="navigationSwitchViewButtonAttrs"
@@ -39,8 +38,7 @@
 
       <div v-bind="nextPrevWrapperAttrs">
         <UButton
-          pill
-          size="sm"
+          size="xs"
           square
           variant="thirdary"
           v-bind="nextPrevButtonAttrs"
@@ -60,8 +58,7 @@
         <div ref="rangeSwitchViewContainerRef" />
 
         <UButton
-          pill
-          size="sm"
+          size="xs"
           square
           variant="thirdary"
           v-bind="nextPrevButtonAttrs"
@@ -142,7 +139,14 @@
         />
       </div>
 
-      <UButton v-bind="submitButtonAttrs" @click="onClickSubmit">
+      <UButton
+        variant="thirdary"
+        size="sm"
+        square
+        filled
+        v-bind="submitButtonAttrs"
+        @click="onClickSubmit"
+      >
         {{ locale.okLabel }}
       </UButton>
     </div>
