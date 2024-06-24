@@ -10,18 +10,15 @@ import { createRouter, createWebHistory } from "vue-router";
 // Tailwind styles
 import "./index.pcss";
 
-// Create vueless instance
-const vueless = createVueless();
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [{ path: "/" }],
-});
-
 // Create storybook app instance
 const storybookApp = (app) => {
-  app.use(router);
-  app.use(vueless);
+  const vueless = createVueless();
+  const router = createRouter({ history: createWebHistory(), routes: [] });
+
+  if (!app._context.config.globalProperties.$route) {
+    app.use(router);
+    app.use(vueless);
+  }
 };
 
 // Setup storybook
@@ -36,8 +33,6 @@ export default {
     backgrounds,
     options: {
       storySort: (a, b) => {
-        if (!a.type === "docs") return;
-
         const idA = a.id.split("--")[0];
         const idB = b.id.split("--")[0];
 
