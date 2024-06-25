@@ -44,6 +44,7 @@
       <UButton
         :id="id"
         ref="buttonRef"
+        square
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
