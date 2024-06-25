@@ -15,15 +15,19 @@
     </template>
 
     <template v-else>
-      <!-- @slot Use it to add something before text. -->
-      <slot name="left" />
+      <!-- @slot Use it to add icon before text. -->
+      <slot name="left">
+        <UIcon v-if="iconLeft" :name="iconLeft" :color="iconLeftColor" />
+      </slot>
 
       <!-- @slot Use it to add something instead of text. -->
       <slot />
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
-      <!-- @slot Use it to add something after text. -->
-      <slot name="right" />
+      <!-- @slot Use it to add icon after text. -->
+      <slot name="right">
+        <UIcon v-if="iconRight" :name="iconRight" :color="iconRightColor" />
+      </slot>
     </template>
   </component>
 </template>
@@ -33,6 +37,7 @@ import { computed, ref } from "vue";
 
 import UIService, { getRandomId } from "../service.ui";
 import ULoader from "../ui.loader";
+import UIcon from "../ui.image-icon";
 
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
@@ -154,6 +159,38 @@ const props = defineProps({
    * Data-cy attribute for automated testing.
    */
   dataCy: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Icon to be displayed on the left side.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Icon to be displayed on the right side.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Left icon color.
+   */
+  iconLeftColor: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right icon color.
+   */
+  iconRightColor: {
     type: String,
     default: "",
   },
