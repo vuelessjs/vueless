@@ -42,29 +42,119 @@ export default {
       { key: "key_3", label: "title 3" },
       { key: "key_4", label: "title 4" },
     ],
-    row: {
-      id: 1,
-      isChecked: false,
-      key_1: {
-        primary: "primary",
-        secondary: "secondary",
-      },
-      key_2: {
-        primary: "primary",
-        secondary: "secondary",
-      },
-      key_3: {
-        primary: "primary",
-        secondary: "secondary",
-      },
-      key_4: {
-        primary: "primary",
-        secondary: "secondary",
-      },
-    },
+    row: getRow,
     numberOfRows: 5,
   },
 };
+
+function getNestedRow() {
+  return {
+    id: getRandomId(),
+    isChecked: false,
+    key_1: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_2: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_3: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_4: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    row: {
+      id: getRandomId(),
+      isChecked: false,
+      isHidden: true,
+      key_1: {
+        primary: "Nesting",
+        secondary: "secondary",
+      },
+      key_2: {
+        primary: "Nesting",
+        secondary: "secondary",
+      },
+      key_3: {
+        primary: "Nesting",
+        secondary: "secondary",
+      },
+      key_4: {
+        primary: "Nesting",
+        secondary: "secondary",
+      },
+      row: {
+        id: getRandomId(),
+        isChecked: false,
+        isHidden: true,
+        key_1: {
+          primary: "Two level nesting",
+          secondary: "secondary",
+        },
+        key_2: {
+          primary: "Two level nesting",
+          secondary: "secondary",
+        },
+        key_3: {
+          primary: "Two level nesting",
+          secondary: "secondary",
+        },
+        key_4: {
+          primary: "Two level nesting",
+          secondary: "secondary",
+        },
+        row: {
+          id: getRandomId(),
+          isChecked: false,
+          isHidden: true,
+          key_1: {
+            primary: "Three level nesting",
+            secondary: "secondary",
+          },
+          key_2: {
+            primary: "Three level nesting",
+            secondary: "secondary",
+          },
+          key_3: {
+            primary: "Three level nesting",
+            secondary: "secondary",
+          },
+          key_4: {
+            primary: "Three level nesting",
+            secondary: "secondary",
+          },
+        },
+      },
+    },
+  };
+}
+
+function getRow() {
+  return {
+    id: getRandomId(),
+    isChecked: false,
+    key_1: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_2: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_3: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+    key_4: {
+      primary: "primary",
+      secondary: "secondary",
+    },
+  };
+}
 
 const DefaultTemplate = (args) => ({
   components: { UTable },
@@ -85,10 +175,7 @@ const DefaultTemplate = (args) => ({
       let rows = [];
 
       for (let i = 0; i < args.numberOfRows; i++) {
-        const newRow = { ...args.row };
-
-        newRow.id = getRandomId();
-        rows.push(newRow);
+        rows.push(args.row());
       }
 
       return rows;
@@ -126,10 +213,7 @@ const SlotTemplate = (args) => ({
       let rows = [];
 
       for (let i = 0; i < args.numberOfRows; i++) {
-        const newRow = { ...args.row };
-
-        newRow.id = getRandomId();
-        rows.push(newRow);
+        rows.push(args.row());
       }
 
       return rows;
@@ -139,6 +223,12 @@ const SlotTemplate = (args) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Nesting = DefaultTemplate.bind({});
+Nesting.args = {
+  row: getNestedRow,
+  selectable: true,
+};
 
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
