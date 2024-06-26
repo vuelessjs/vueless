@@ -67,7 +67,7 @@
 
       <ULoaderTop
         v-if="resource && isHeaderSticky"
-        :resource-names="resource"
+        :resources="resource"
         v-bind="stickyHeaderLoaderAttrs"
       />
     </div>
@@ -126,7 +126,7 @@
             </th>
           </tr>
 
-          <ULoaderTop v-if="resource" :resource-names="resource" v-bind="headerLoaderAttrs" />
+          <ULoaderTop v-if="resource" :resources="resource" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
