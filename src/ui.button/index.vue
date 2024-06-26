@@ -11,13 +11,13 @@
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
       <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :size="loaderSize" :color="loaderColor" v-bind="loaderAttrs" />
+      <ULoader :size="loaderSize" :color="computedColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
       <!-- @slot Use it to add icon before text. -->
       <slot name="left">
-        <UIcon v-if="iconLeft" :name="iconLeft" :color="iconLeftColor" />
+        <UIcon v-if="iconLeft" :name="iconLeft" :color="computedColor" />
       </slot>
 
       <!-- @slot Use it to add something instead of text. -->
@@ -26,7 +26,7 @@
 
       <!-- @slot Use it to add icon after text. -->
       <slot name="right">
-        <UIcon v-if="iconRight" :name="iconRight" :color="iconRightColor" />
+        <UIcon v-if="iconRight" :name="iconRight" :color="computedColor" />
       </slot>
     </template>
   </component>
@@ -164,7 +164,7 @@ const props = defineProps({
   },
 
   /**
-   * Icon to be displayed on the left side.
+   * Left side icon name.
    */
   iconLeft: {
     type: String,
@@ -172,25 +172,9 @@ const props = defineProps({
   },
 
   /**
-   * Icon to be displayed on the right side.
+   * Right side icon name.
    */
   iconRight: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Left icon color.
-   */
-  iconLeftColor: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon color.
-   */
-  iconRightColor: {
     type: String,
     default: "",
   },
@@ -217,7 +201,7 @@ const loaderSize = computed(() => {
   return sizes[props.size];
 });
 
-const loaderColor = computed(() => {
+const computedColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
 
