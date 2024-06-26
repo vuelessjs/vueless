@@ -20,20 +20,20 @@ defineOptions({ name: "ULoaderTop", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * The name of API resource (endpoint URI).
-   */
-  resourceNames: {
-    type: [String, Array],
-    default: "",
-  },
-
-  /**
    * The color of the loader stripe.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
   color: {
     type: String,
     default: UIService.get(defaultConfig, ULoaderTop).default.color,
+  },
+
+  /**
+   * API resource names (endpoint URIs).
+   */
+  resources: {
+    type: [String, Array],
+    default: "",
   },
 });
 
@@ -44,13 +44,13 @@ const opacity = ref(1);
 const status = ref(null);
 
 const {
-  loaderRequestQueue,
   isLoading,
-  componentLoaderRequestQueue,
+  requestQueue,
+  loaderTopOn,
+  loaderTopOff,
+  loaderRequestQueue,
   setComponentRequestQueue,
   removeComponentRequestQueue,
-  loaderTopOff,
-  loaderTopOn,
 } = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
 
@@ -66,13 +66,13 @@ const barStyle = computed(() => {
 });
 
 const resourceNamesArray = computed(() => {
-  return Array.isArray(props.resourceNames) ? [...props.resourceNames] : [props.resourceNames];
+  return Array.isArray(props.resources) ? [...props.resources] : [props.resources];
 });
 
-watch(loaderRequestQueue, onChangeRequestsQueue, { deep: true });
+watch(requestQueue, onChangeRequestsQueue, { deep: true });
 watch(isLoading, onChangeLoadingState, { deep: true });
 
-if (props.resourceNames) {
+if (props.resources) {
   setComponentRequestQueue(resourceNamesArray.value);
 }
 
@@ -82,7 +82,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  if (props.resourceNames) {
+  if (props.resources) {
     removeComponentRequestQueue();
   }
 });
@@ -107,7 +107,7 @@ function requestWithoutQuery(request) {
 }
 
 function onChangeLoadingState() {
-  if (!props.resourceNames && isStarted.value && show.value && !isLoading.value) {
+  if (!props.resources && isStarted.value && show.value && !isLoading.value) {
     done();
   }
 }
@@ -115,10 +115,10 @@ function onChangeLoadingState() {
 function onChangeRequestsQueue() {
   let isActiveRequests = false;
 
-  if (props.resourceNames) {
+  if (props.resources) {
     resourceNamesArray.value.forEach((item) => {
       if (!isActiveRequests) {
-        const activeRequest = loaderRequestQueue.value.find(
+        const activeRequest = requestQueue.value.find(
           (request) => requestWithoutQuery(request) === item,
         );
 
@@ -132,8 +132,8 @@ function onChangeRequestsQueue() {
       done();
     }
   } else {
-    loaderRequestQueue.value.forEach((item) => {
-      const activeRequest = componentLoaderRequestQueue.value.find(
+    requestQueue.value.forEach((item) => {
+      const activeRequest = loaderRequestQueue.value.find(
         (request) => request === requestWithoutQuery(item),
       );
 

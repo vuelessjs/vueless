@@ -12,25 +12,57 @@ import defaultConfig from "./configs/default.config?raw"
 <Controls of={stories.Default} />
 <Stories of={stories} />
 
-## Control loader
-You can control loader state using *useLoaderRendering* composable.
+## Using loader
+To control the loader state in Vue components use `useLoaderTop` composable.
+
+The loader uses queue of resources and will be shown until at least one item is present in a queue.
 
 <Source code={`
 import { useLoaderTop } from "vueless";
 
 const {
-    loaderTopOn,
-    loaderTopOff,
-    addRequestUrl,
-    removeRequestUrl
+  isLoading,
+  loaderTopOn,
+  loaderTopOff,
+  requestQueue,
+  componentRequestQueue,
+  setComponentRequestQueue,
+  removeComponentRequestQueue
 } = useLoaderTop();
+
+// get loader state
+console.log(isLoading.value);
+
+// show loader (add resource into queue)
+loaderTopOn("/transactions");
+
+// hide loader (remove resource from queue)
+loaderTopOff("/transactions");
+
+// get current resource array
+console.log(requestQueue.value);
+
+// get current resource array for component relayed loaders (UTable)
+console.log(componentRequestQueue.value);
+
+// add resource into component related loader queue
+setComponentRequestQueue("/transactions");
+
+// remove resource from component related loader queue
+removeComponentRequestQueue("/transactions");
 `} language="jsx" dark />
 
-## Control outside a component
-You can control loader state outside vue components using the following methods.
+## Using loader outside Vue components
+To control the loader state outside Vue components, use the following methods.
 
 <Source code={`
 import { loaderTopOn, loaderTopOff } from "vueless";
+
+// show loader
+loaderTopOn("/transactions");
+
+// hide loader
+loaderTopOff("/transactions");
 `} language="jsx" dark />
 
 ## Default config
