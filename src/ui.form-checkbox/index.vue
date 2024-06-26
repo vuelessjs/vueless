@@ -135,7 +135,7 @@ const props = defineProps({
 
   /**
    * Checkbox size.
-   * @values sm, md, lg
+   * @values xs, sm, md, lg, xl
    */
   size: {
     type: String,
