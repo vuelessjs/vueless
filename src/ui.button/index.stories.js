@@ -29,6 +29,20 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
+      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
+        <template v-if="args[slot]">{{ args[slot] }}</template>
+      </template>
+    </UButton>
+  `,
+});
+
+const SlotTemplate = (args) => ({
+  components: { UButton, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UButton v-bind="args">
       ${args.slotTemplate || ""}
     </UButton>
   `,
@@ -101,26 +115,6 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const iconLeftTemplate = (args) => ({
-  components: { UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UButton v-bind="args" />
-  `,
-});
-
-const iconRightTemplate = (args) => ({
-  components: { UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UButton v-bind="args" />
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
@@ -139,19 +133,17 @@ disabled.args = { disabled: true };
 export const colors = ColorTemplate.bind({});
 colors.args = {};
 
-export const iconLeft = iconLeftTemplate.bind({});
+export const iconLeft = SlotTemplate.bind({});
 iconLeft.args = {
   iconLeft: "star",
-  iconLeftColor: "green",
 };
 
-export const iconRight = iconRightTemplate.bind({});
+export const iconRight = SlotTemplate.bind({});
 iconRight.args = {
   iconRight: "star",
-  iconRightColor: "green",
 };
 
-export const slotDefault = DefaultTemplate.bind({});
+export const slotDefault = SlotTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #default>
@@ -160,7 +152,7 @@ slotDefault.args = {
   `,
 };
 
-export const iconLeftSlot = DefaultTemplate.bind({});
+export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #left>
@@ -172,7 +164,7 @@ iconLeftSlot.args = {
   `,
 };
 
-export const iconRightSlot = DefaultTemplate.bind({});
+export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #right>
