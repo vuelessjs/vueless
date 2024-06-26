@@ -1,5 +1,6 @@
 import ULoaderRendering from "../ui.loader-rendering";
 import UButton from "../ui.button";
+import UGroup from "../ui.container-group";
 
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
@@ -10,10 +11,17 @@ import { getArgTypes } from "../service.storybook";
  */
 export default {
   id: "9030",
-  title: "Loaders and Skeletons / Loader rendering",
+  title: "Loaders and Skeletons / Loader Rendering",
   component: ULoaderRendering,
   argTypes: {
     ...getArgTypes(ULoaderRendering.name),
+  },
+  parameters: {
+    docs: {
+      story: {
+        height: "420px",
+      },
+    },
   },
 };
 
@@ -23,32 +31,29 @@ const DefaultTemplate = (args) => ({
     return { args };
   },
   template: `
-    <div>
-      <ULoaderRendering v-bind="args" class="!static !w-full" />
-    </div>
+    <ULoaderRendering v-bind="args" class="w-full h-full" />
   `,
 });
 
 const LoadingTemplate = (args) => ({
-  components: { ULoaderRendering, UButton },
+  components: { ULoaderRendering, UButton, UGroup },
   setup() {
-    const { setRenderingFinished, isRenderingPage, setRenderingStarted } = useLoaderRendering();
+    const { loaderRenderingOn, loaderRenderingOff, isLoading } = useLoaderRendering();
 
-    return { args, setRenderingFinished, setRenderingStarted, isRenderingPage };
+    return { args, loaderRenderingOn, loaderRenderingOff, isLoading };
   },
   methods: {
     toggleLoading() {
-      this.isRenderingPage ? this.setRenderingFinished() : this.setRenderingStarted();
+      this.isLoading ? this.loaderRenderingOff() : this.loaderRenderingOn();
     },
   },
   template: `
-      <div class="flex justify-center items-center pb-4">
-        <UButton label="Toggle loading" @click="toggleLoading"/>
-      </div>
-      <div>
-        <ULoaderRendering v-bind="args" class="!static !w-full" />
-      </div>
-    `,
+    <UGroup align="center" class="pb-4">
+      <UButton label="Toggle loading" size="sm" @click="toggleLoading"/>
+    </UGroup>
+
+    <ULoaderRendering v-bind="args" class="!static w-full h-96" />
+  `,
 });
 
 export const Default = DefaultTemplate.bind({});
