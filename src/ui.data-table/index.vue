@@ -154,89 +154,33 @@
               </td>
             </tr>
 
-            <tr
-              v-if="!isShownRow(row)"
+            <TableRow
               v-bind="bodyRowAttrs(getRowClasses(row))"
+              v-model:selectedRows="selectedRows"
+              :selectable="selectable"
               :data-cy="`${dataCy}-row`"
-              @click="onClickRow(row)"
+              :row="row"
+              :columns="columns"
+              :config="config"
+              :attrs="{
+                bodyCellAttrs,
+                bodyCellSecondaryAttrs,
+                bodyCellSecondaryEmptyAttrs,
+                bodyCellNestedCollapseIconAttrs,
+                bodyCellNestedExpandIconAttrs,
+                bodyCellNestedAttrs,
+              }"
+              @click="onClickRow"
+              @toggle-row-visibility="onToggleRowVisibility"
             >
-              <td v-if="selectable" v-bind="bodyCellAttrs(config.bodyCellCheckbox)">
-                <UCheckbox
-                  v-model="selectedRows"
-                  :data-id="row.id"
-                  :value="row.id"
-                  size="sm"
-                  :data-cy="`${dataCy}-body-checkbox`"
-                  v-bind="bodyCheckboxAttrs"
-                  @click.stop
-                />
-              </td>
-
-              <td
-                v-for="(value, key, index) in TableService.getFilteredRow(row, columns)"
+              <template
+                v-for="(value, key, index) in getFilteredRow(row, columns)"
                 :key="index"
-                v-bind="bodyCellAttrs(getCellClasses(key))"
+                #[`cell-${key}`]="slotValues"
               >
-                <template v-if="hasSlotContent($slots[`cell-${key}`])">
-                  <div
-                    v-if="isNesting"
-                    :style="getNestedShift(row.nestedLevel)"
-                    v-bind="bodyCellNestedWrapperAttrs(index)"
-                    @click="onClickNestedWrapper(row)"
-                  >
-                    <div v-if="isShownNestedIcon({ index, row })" v-bind="bodyCellNestedAttrs">
-                      <UIcon
-                        v-if="row.isHidden"
-                        size="xs"
-                        internal
-                        interactive
-                        :name="config.bodyCellNestedExpandIconName"
-                        :color="isActiveNestedIcon(row)"
-                        v-bind="bodyCellNestedExpandIconAttrs"
-                      />
-
-                      <UIcon
-                        v-else
-                        size="xs"
-                        internal
-                        interactive
-                        :name="config.bodyCellNestedCollapseIconName"
-                        v-bind="bodyCellNestedCollapseIconAttrs"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- @slot Use it to customise table cell item (in whole column). -->
-                  <slot :name="`cell-${key}`" :value="value" :row="row" />
-                </template>
-
-                <template v-else-if="value?.hasOwnProperty('secondary')">
-                  <div :data-cy="`${dataCy}-${key}-cell`">
-                    {{ value.primary || HYPHEN_SYMBOL }}
-                  </div>
-
-                  <div v-bind="bodyCellSecondaryAttrs">
-                    <template v-if="Array.isArray(value.secondary)">
-                      <div v-for="(secondary, idx) in value.secondary" :key="idx">
-                        <span v-bind="bodyCellSecondaryEmptyAttrs">
-                          {{ secondary }}
-                        </span>
-                      </div>
-                    </template>
-
-                    <template v-else>
-                      {{ value.secondary }}
-                    </template>
-                  </div>
-                </template>
-
-                <template v-else>
-                  <div :data-cy="`${dataCy}-${key}-cell`">
-                    {{ value || HYPHEN_SYMBOL }}
-                  </div>
-                </template>
-              </td>
-            </tr>
+                <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+              </template>
+            </TableRow>
 
             <tr
               v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
@@ -300,18 +244,25 @@ import {
 } from "vue";
 import { merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
 import UCheckbox from "../ui.form-checkbox";
 import ULoaderTop from "../ui.loader-top";
+import TableRow from "./components/TableRow";
 
 import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
-import TableService from "./services/table.service";
+import {
+  normalizeColumns,
+  getFilteredRow,
+  syncRowCheck,
+  toggleRowVisibility,
+  switchRowCheck,
+  getFlatRows,
+} from "./services/table.service";
 
-import { HYPHEN_SYMBOL, PX_IN_REM } from "../service.ui";
+import { PX_IN_REM } from "../service.ui";
 import { UTable } from "./constants";
 import { useAttrs } from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
@@ -377,14 +328,6 @@ const props = defineProps({
   },
 
   /**
-   * Sets the nesting level from which folding button need to be shown.
-   */
-  nesting: {
-    type: [Number, Boolean],
-    default: UIService.get(defaultConfig, UTable).default.nesting,
-  },
-
-  /**
    * Set loader resource name to activate table top loader exact for that resource.
    */
   resource: {
@@ -420,7 +363,6 @@ const selectAll = ref(false);
 const canSelectAll = ref(true);
 const selectedRows = ref([]);
 const tableRows = ref([]);
-const hiddenIds = ref([]);
 const firstRow = ref(0);
 const tableWidth = ref(0);
 const tableHeight = ref(0);
@@ -443,11 +385,7 @@ const isFooterSticky = computed(
     isCheckedMoreOneTableItems.value,
 );
 
-const normalizedColumns = computed(() => TableService.normalizeColumns(props.columns));
-
-const isSelectedAllRows = computed(() => {
-  return selectedRows.value.length === tableRows.value.length;
-});
+const normalizedColumns = computed(() => normalizeColumns(props.columns));
 
 const colsCount = computed(() => {
   return props.columns.length + 1;
@@ -458,7 +396,7 @@ const lastRow = computed(() => {
 });
 
 const isShownActionsHeader = computed(
-  () => hasSlotContent(slots["header-actions"]) && selectedRows.value.length,
+  () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
 );
 
 const isHeaderSticky = computed(() => {
@@ -487,8 +425,10 @@ const hasSlotContentBeforeFirstRow = computed(() => {
     : false;
 });
 
-const isNesting = computed(() => {
-  return Boolean(props.nesting) || props.nesting === 0;
+const isSelectedAllRows = computed(() => {
+  const rows = getFlatRows(tableRows.value);
+
+  return selectedRows.value.length === rows.length;
 });
 
 const {
@@ -505,14 +445,12 @@ const {
   bodyRowAttrs,
   footerClassesAttrs,
   bodyRowDateSeparatorAttrs,
-  bodyCellNestedWrapperAttrs,
   headerCellAttrs,
   bodyCellAttrs,
   stickyHeaderActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
   headerCounterAttrs,
-  bodyCheckboxAttrs,
   bodyCellNestedCollapseIconAttrs,
   bodyCellNestedExpandIconAttrs,
   bodyEmptyStateAttrs,
@@ -533,7 +471,6 @@ const {
   headerAttrs,
 } = useAttrs(props, {
   tableRows,
-  isNesting,
   isShownActionsHeader,
   isHeaderSticky,
   isFooterSticky,
@@ -551,11 +488,7 @@ watch(isFooterSticky, (newValue) =>
 watch(
   () => selectedRows.value.length,
   () => {
-    tableRows.value = tableRows.value.map((row) => {
-      row.isChecked = selectedRows.value.includes(row.id);
-
-      return row;
-    });
+    tableRows.value = tableRows.value.map((row) => syncRowCheck(row, selectedRows.value));
   },
 );
 
@@ -585,54 +518,10 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function isShownNestedIcon({ index, row }) {
-  const nestedLevel = props.nesting === true ? 0 : Number(props.nesting);
-  const isWithinNestingLevel = row.nestedLevel >= nestedLevel;
-  const isChildren = row.childrenIds?.length > 0;
-
-  const isFirstRow = index === 0;
-
-  return isFirstRow && (isChildren || row.isNestingRow) && isNesting.value && isWithinNestingLevel;
-}
-
-function isActiveNestedIcon(row) {
-  return !row.childrenIds?.length ? "grayscale" : "";
-}
-
-function onClickNestedWrapper(row) {
-  if (!isNesting.value || !row.childrenIds.length) return;
-  const [firstElement] = row.childrenIds;
-
-  row.isHidden = !row.isHidden;
-
-  if (row.isHidden && row.childrenIds.length) {
-    hiddenIds.value.push(...row.childrenIds);
-  } else {
-    const nestedLevel = props.nesting === true ? 0 : Number(props.nesting);
-
-    hiddenIds.value =
-      row.nestedLevel === nestedLevel
-        ? row.childrenIds.filter((item) => !hiddenIds.value.includes(item))
-        : hiddenIds.value.filter((item) => item !== firstElement);
-  }
-}
-
-function getNestedShift(nestedLevel) {
-  return { marginLeft: `${nestedLevel * 1.5}rem` };
-}
-
 function getDateSeparatorLabel(separatorDate) {
   return Array.isArray(props.dateDivider)
     ? props.dateDivider.find((dateItem) => dateItem.date === separatorDate)?.label || separatorDate
     : separatorDate;
-}
-
-function isShownRow(row) {
-  if (hiddenIds.value.includes(row.id)) {
-    row.isHidden = true;
-  }
-
-  return hiddenIds.value.includes(row.id);
 }
 
 function setFooterCellWidth(width) {
@@ -670,12 +559,6 @@ function synchronizeTableItemsWithProps() {
   }
 
   tableRows.value = props.rows;
-
-  tableRows.value.forEach((item) => {
-    if (isNesting.value && item.isHidden && item.childrenIds?.length) {
-      hiddenIds.value.push(...item.childrenIds);
-    }
-  });
 }
 
 function updateSelectedRows() {
@@ -715,19 +598,15 @@ function getRowClasses(row) {
   return selectedRows.value.includes(row.id) ? config.value.bodyRowChecked : "";
 }
 
-function getCellClasses(key) {
-  return props.columns.find((column) => column.key === key)?.tdClass;
-}
-
 function onChangeSelectAll(selectAll) {
   if (selectAll && canSelectAll.value) {
-    selectedRows.value = tableRows.value.map((item) => item.id);
+    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
 
-    tableRows.value.forEach((item) => (item.isChecked = true));
+    tableRows.value.forEach((row) => switchRowCheck(row, true));
   } else if (!selectAll) {
     selectedRows.value = [];
 
-    tableRows.value.forEach((item) => (item.isChecked = false));
+    tableRows.value.forEach((row) => switchRowCheck(row, false));
   }
 
   canSelectAll.value = true;
@@ -747,5 +626,9 @@ function onChangeSelectedRows(selectedRows) {
 
 function clearSelectedItems() {
   selectedRows.value = [];
+}
+
+function onToggleRowVisibility(rowId) {
+  tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
 }
 </script>
