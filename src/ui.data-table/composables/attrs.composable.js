@@ -5,10 +5,18 @@ import { computed } from "vue";
 
 export function useAttrs(
   props,
-  { tableRows, isNesting, isShownActionsHeader, isHeaderSticky, isFooterSticky },
+  { tableRows, isShownActionsHeader, isHeaderSticky, isFooterSticky },
 ) {
   const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { stickyHeaderCell, headerCell, footerRow, bodyCell, headerCellGeneral } = config.value;
+  const {
+    stickyHeaderCell,
+    headerCell,
+    footerRow,
+    bodyCell,
+    headerCellGeneral,
+    stickyHeaderCounter,
+    headerCounter,
+  } = config.value;
 
   const cvaHeaderCellGeneral = cva({
     base: headerCellGeneral.base,
@@ -40,19 +48,37 @@ export function useAttrs(
     compoundVariants: bodyCell.compoundVariants,
   });
 
+  const cvaStickyHeaderCounter = cva({
+    base: stickyHeaderCounter.base,
+    variants: stickyHeaderCounter.variants,
+    compoundVariants: stickyHeaderCounter.compoundVariants,
+  });
+
+  const cvaHeaderCounter = cva({
+    base: headerCounter.base,
+    variants: headerCounter.variants,
+    compoundVariants: headerCounter.compoundVariants,
+  });
+
   const stickyHeaderCellClasses = computed(() => cvaCustomHeaderItem({ compact: props.compact }));
   const headerCellClasses = computed(() => cvaHeaderCell({ compact: props.compact }));
   const footerRowClasses = computed(() => cvaFooterRow({ compact: props.compact }));
   const bodyCellClasses = computed(() => cvaBodyCell({ compact: props.compact }));
   const headerCellGeneralClasses = computed(() => cvaHeaderCellGeneral({ compact: props.compact }));
+  const headerCounterClasses = computed(() => cvaHeaderCounter({ compact: props.compact }));
+  const stickyHeaderCounterClasses = computed(() =>
+    cvaStickyHeaderCounter({ compact: props.compact }),
+  );
 
   const wrapperAttrs = getAttrs("wrapper");
   const stickyHeaderAttrsRaw = getAttrs("stickyHeader");
   const stickyHeaderCellAttrsRaw = getAttrs("stickyHeaderCell", {
     classes: stickyHeaderCellClasses,
   });
-  const headerCounterAttrsRaw = getAttrs("headerCounter");
-  const stickyHeaderCounterAttrsRaw = getAttrs("stickyHeaderCounter");
+  const headerCounterAttrsRaw = getAttrs("headerCounter", { classes: headerCounterClasses });
+  const stickyHeaderCounterAttrsRaw = getAttrs("stickyHeaderCounter", {
+    classes: stickyHeaderCounterClasses,
+  });
   const stickyHeaderActionsCounterAttrsRaw = getAttrs("stickyHeaderActionsCounter");
   const stickyHeaderCheckboxAttrs = getAttrs("stickyHeaderCheckbox", {
     isComponent: true,
@@ -88,7 +114,6 @@ export function useAttrs(
   const bodyRowBeforeCellAttrsRaw = getAttrs("bodyRowBeforeCell");
   const bodyRowAfterAttrs = getAttrs("bodyRowAfter");
   const bodyRowAfterCellAttrsRaw = getAttrs("bodyRowAfterCell");
-  const bodyCellNestedWrapperAttrsRaw = getAttrs("bodyCellNestedWrapper");
 
   const bodyRowAttrsRaw = getAttrs("bodyRow");
 
@@ -195,11 +220,6 @@ export function useAttrs(
     return getAttrs("bodyRowDateSeparator", { classes: activeClass }).value;
   };
 
-  const bodyCellNestedWrapperAttrs = computed(() => (index) => ({
-    ...bodyCellNestedWrapperAttrsRaw.value,
-    class: index === 0 && isNesting.value ? config.value.bodyCellNestedWrapper : "",
-  }));
-
   return {
     config,
     wrapperAttrs,
@@ -215,7 +235,6 @@ export function useAttrs(
     bodyRowBeforeAttrs,
     bodyRowBeforeCellAttrs,
     bodyRowDateSeparatorAttrs,
-    bodyCellNestedWrapperAttrs,
     bodyCellAttrs,
     stickyHeaderCounterAttrs,
     stickyHeaderActionsCounterAttrs,
