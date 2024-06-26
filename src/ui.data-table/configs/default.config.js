@@ -13,7 +13,14 @@ export default /*tw*/ {
   stickyHeaderRow: "border-gray-200 bg-white",
   stickyHeaderCell: "flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "",
-  stickyHeaderCounter: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
+  stickyHeaderCounter: {
+    base: "absolute top-5 left-11 bg-gradient-to-r from-white from-80%",
+    variants: {
+      compact: {
+        true: "top-3",
+      },
+    },
+  },
   stickyHeaderLoader: "",
   stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "",
@@ -25,7 +32,14 @@ export default /*tw*/ {
   headerCell: "",
   headerCellCheckbox: "w-10",
   headerCheckbox: "",
-  headerCounter: "absolute top-4 left-11 bg-gradient-to-r from-white from-80% mt-px ml-px",
+  headerCounter: {
+    base: "absolute top-5 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
+    variants: {
+      compact: {
+        true: "top-3",
+      },
+    },
+  },
   headerLoader: "absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
@@ -36,10 +50,10 @@ export default /*tw*/ {
   bodyRowAfterCell: "py-1",
   bodyRowDateSeparator: "",
   bodyCell: {
-    base: "p-[1.125rem] py-5 first:p-5 truncate align-top last:p-5",
+    base: "p-[1.125rem] py-5 first:!p-5 truncate align-top last:p-5",
     variants: {
       compact: {
-        true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+        true: "px-4 py-3 last:px-4 last:py-3 first:!px-3.5 first:py-3",
       },
     },
   },
@@ -47,11 +61,16 @@ export default /*tw*/ {
   bodyCellSecondaryEmpty: "inline-block",
   bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateSeparator: "",
-  bodyCellNestedWrapper: "flex items-center",
-  bodyCellNested: "flex relative -top-px",
-  bodyCellNestedExpandIcon: "mr-2 rounded-sm bg-gray-200",
+  bodyCellNested: "mr-2 mt-0.5",
+  bodyCellNestedExpandIcon: {
+    wrapper: "rounded-sm",
+    container: "bg-gray-200",
+  },
   bodyCellNestedExpandIconName: "add",
-  bodyCellNestedCollapseIcon: "mr-2 rounded-sm bg-gray-200",
+  bodyCellNestedCollapseIcon: {
+    wrapper: "rounded-sm",
+    container: "bg-gray-200",
+  },
   bodyCellNestedCollapseIconName: "remove",
   bodyCheckbox: "",
   bodyDateSeparator: "",
