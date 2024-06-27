@@ -150,12 +150,12 @@ sizes.args = {};
 export const validationRules = ValidationRuleTemplate.bind({});
 validationRules.args = {};
 
-export const iconLeft = SlotTemplate.bind({});
+export const iconLeft = DefaultTemplate.bind({});
 iconLeft.args = {
   iconLeft: "star",
 };
 
-export const iconRight = SlotTemplate.bind({});
+export const iconRight = DefaultTemplate.bind({});
 iconRight.args = {
   iconRight: "star",
 };
@@ -163,7 +163,7 @@ iconRight.args = {
 export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
-    <template #icon-left>
+    <template #left>
       🥸
     </template>
   `,
@@ -172,7 +172,7 @@ iconLeftSlot.args = {
 export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
-    <template #icon-right>
+    <template #right>
       🥸
     </template>
   `,
