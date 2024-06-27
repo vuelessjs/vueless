@@ -133,12 +133,12 @@ disabled.args = { disabled: true };
 export const colors = ColorTemplate.bind({});
 colors.args = {};
 
-export const iconLeft = SlotTemplate.bind({});
+export const iconLeft = DefaultTemplate.bind({});
 iconLeft.args = {
   iconLeft: "star",
 };
 
-export const iconRight = SlotTemplate.bind({});
+export const iconRight = DefaultTemplate.bind({});
 iconRight.args = {
   iconRight: "star",
 };
