@@ -11,19 +11,23 @@
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
       <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :size="loaderSize" :color="loaderColor" v-bind="loaderAttrs" />
+      <ULoader :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
-      <!-- @slot Use it to add something before text. -->
-      <slot name="left" />
+      <!-- @slot Use it to add icon before text. -->
+      <slot name="left">
+        <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
+      </slot>
 
       <!-- @slot Use it to add something instead of text. -->
       <slot />
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
-      <!-- @slot Use it to add something after text. -->
-      <slot name="right" />
+      <!-- @slot Use it to add icon after text. -->
+      <slot name="right">
+        <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
+      </slot>
     </template>
   </component>
 </template>
@@ -33,6 +37,7 @@ import { computed, ref } from "vue";
 
 import UIService, { getRandomId } from "../service.ui";
 import ULoader from "../ui.loader";
+import UIcon from "../ui.image-icon";
 
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
@@ -157,6 +162,22 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["click"]);
@@ -180,7 +201,7 @@ const loaderSize = computed(() => {
   return sizes[props.size];
 });
 
-const loaderColor = computed(() => {
+const componentColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
 

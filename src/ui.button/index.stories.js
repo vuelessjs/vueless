@@ -21,7 +21,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UButton },
+  components: { UButton, UIcon },
   setup() {
     const slots = getSlotNames(UButton.name);
 
@@ -43,7 +43,7 @@ const SlotTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || ""}
     </UButton>
   `,
 });
@@ -133,6 +133,16 @@ disabled.args = { disabled: true };
 export const colors = ColorTemplate.bind({});
 colors.args = {};
 
+export const iconLeft = DefaultTemplate.bind({});
+iconLeft.args = {
+  iconLeft: "star",
+};
+
+export const iconRight = DefaultTemplate.bind({});
+iconRight.args = {
+  iconRight: "star",
+};
+
 export const slotDefault = SlotTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
@@ -142,26 +152,26 @@ slotDefault.args = {
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
-slotLeft.args = {
+export const iconLeftSlot = SlotTemplate.bind({});
+iconLeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UIcon
         name="star"
-        color="gray"
-       />
+        color="green"
+      />
     </template>
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
-slotRight.args = {
+export const iconRightSlot = SlotTemplate.bind({});
+iconRightSlot.args = {
   slotTemplate: `
     <template #right>
       <UIcon
         name="star"
-        color="gray"
-       />
+        color="green"
+      />
     </template>
   `,
 };
