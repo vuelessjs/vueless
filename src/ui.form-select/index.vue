@@ -41,7 +41,7 @@
           internal
           interactive
           color="gray"
-          :size="size"
+          :size="iconSize"
           :name="config.toggleIconName"
           v-bind="toggleIconAttrs"
         />
@@ -60,7 +60,7 @@
           internal
           interactive
           color="gray"
-          :size="size"
+          :size="iconSize"
           :name="config.clearIconName"
           v-bind="clearIconAttrs"
           @mousedown="removeElement"
@@ -93,7 +93,7 @@
                 internal
                 interactive
                 color="gray"
-                :size="size"
+                :size="iconSize"
                 :name="config.removeItemIconName"
                 v-bind="removeItemIconAttrs"
                 @mousedown="removeElement(item)"
@@ -502,6 +502,16 @@ const {
 
 const i18nGlobal = tm(USelect);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "sm",
+    md: "md",
+    lg: "md",
+  };
+
+  return sizes[props.size];
+});
 
 const inputPlaceholder = computed(() => {
   const message = currentLocale.value.addMore;

@@ -192,9 +192,11 @@ const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = u
 
 const iconSize = computed(() => {
   const sizes = {
+    xs: "2xs",
     sm: "xs",
     md: "sm",
     lg: "md",
+    xl: "lg",
   };
 
   return sizes[props.size];

@@ -10,7 +10,7 @@ export default /*tw*/ {
       hover:transition hover:duration-100 hover:ease-in-out bg-white opacity-1
     `,
   subGroupLabel: {
-    base: "pointer-events-none bg-transparent !font-medium leading-none !uppercase !text-gray-500/[85] pt-1",
+    base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-1",
     variants: {
       size: {
         sm: "text-2xs",
@@ -20,7 +20,7 @@ export default /*tw*/ {
     },
   },
   groupLabel: {
-    base: "pointer-events-none bg-transparent !font-medium leading-none !uppercase !text-gray-500/[85] pt-6 group-first/item:pt-2",
+    base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-6 group-first/item:pt-2",
     variants: {
       size: {
         sm: "text-2xs pb-1 mt-4",

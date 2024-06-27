@@ -20,6 +20,7 @@ export default /*tw*/ {
   icon: "",
   checkbox: {
     base: `
+      transition duration-100 ease-in-out
       border border-solid rounded
       border-gray-300 bg-white
       hover:border-gray-400
@@ -34,11 +35,11 @@ export default /*tw*/ {
         sm: "size-5 text-sm",
         md: "size-6",
         lg: "size-7 text-lg",
-        xl: "size-6 text-xl",
+        xl: "size-8 text-xl",
       },
       color: {
         grayscale: `
-          focus:border-gray-500 focus:ring-gray-200
+          focus:border-gray-500 focus:ring-gray-500
           checked:border-gray-900 checked:bg-gray-900 checked:text-gray-900
           active:border-gray-900 active:bg-gray-900
         `,

@@ -2,6 +2,7 @@ export default /*tw*/ {
   label: "inline-flex",
   radio: {
     base: `
+      transition duration-100 ease-in-out
       border border-solid border-{color}-300 text-{color}-500
       hover:border-{color}-400
       active:border-{color}-500
@@ -10,9 +11,11 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
+        xs: "size-4",
         sm: "size-5",
         md: "size-6",
         lg: "size-7",
+        xl: "size-8",
       },
     },
     compoundVariants: [

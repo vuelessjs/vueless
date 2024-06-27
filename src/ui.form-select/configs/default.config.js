@@ -9,9 +9,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        sm: "pt-2 pb-2",
-        md: "pt-2.5 pb-2.5",
-        lg: "pt-3 pb-3",
+        sm: "pt-2 pb-1.5",
+        md: "pt-2.5 pb-1.5",
+        lg: "pt-3 pb-2",
       },
       error: {
         true: `
@@ -27,9 +27,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, size: "sm", class: "pt-6" },
-      { labelAlign: "topInside", label: true, size: "md", class: "pt-7" },
-      { labelAlign: "topInside", label: true, size: "lg", class: "pt-8" },
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
   innerWrapper: {
@@ -48,8 +48,8 @@ export default /*tw*/ {
     base: "flex items-center mt-0",
     compoundVariants: [
       { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "md", label: true, class: "-mt-4" },
-      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-5" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-3" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-4" },
     ],
   },
   beforeCaretSlot: "",

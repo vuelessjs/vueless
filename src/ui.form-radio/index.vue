@@ -77,7 +77,7 @@ const props = defineProps({
 
   /**
    * Radio size.
-   * @values sm, md, lg
+   * @values xs, sm, md, lg, xl
    */
   size: {
     type: String,

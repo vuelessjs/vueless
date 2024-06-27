@@ -4,10 +4,10 @@ export default /*tw*/ {
   rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
   textareaWrapper: {
     base: `
-      transition duration-100 ease-in-out focus-within:outline-none rounded-lg border
-      border-solid border-gray-300 focus-within:border-gray-500 focus-within:ring-4
-      focus-within:ring-gray-600/[.15] ring-0 hover:border-gray-400 pl-4 hover:focus-within:border-gray-500
-      cursor-text bg-white
+      transition duration-100 ease-in-out focus-within:outline-none
+      rounded-lg border border-solid border-gray-300 ring-0 cursor-text bg-white pr-4
+      hover:border-gray-400 pl-4 hover:focus-within:border-gray-500
+      focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15]
     `,
     variants: {
       error: {
@@ -24,18 +24,15 @@ export default /*tw*/ {
         true: "ring-0 border-gray-300 focus-within:ring-0 focus-within:border-brand-300",
       },
       size: {
-        sm: "pb-2 pr-4 pt-6",
-        md: "pb-2.5 pr-4 pt-7",
-        lg: "pb-3 pr-4 pt-8",
+        sm: "pt-2 pb-2",
+        md: "pt-2.5 pb-2.5",
+        lg: "pt-3 pb-3",
       },
     },
     compoundVariants: [
-      { labelAlign: "top", size: "sm", class: "pt-2" },
-      { labelAlign: "top", size: "md", class: "pt-2.5" },
-      { labelAlign: "top", size: "lg", class: "pt-3" },
-      { labelAlign: "topInside", label: false, class: "pt-2" },
-      { labelAlign: "topInside", label: false, class: "pt-2.5" },
-      { labelAlign: "topInside", label: false, class: "pt-3" },
+      { labelAlign: "topInside", label: true, class: "pt-5 pb-1.5" },
+      { labelAlign: "topInside", label: true, class: "pt-6 pb-1.5" },
+      { labelAlign: "topInside", label: true, class: "pt-7 pb-2" },
     ],
   },
   textarea: {

@@ -16,12 +16,7 @@
         v-text="label"
       />
 
-      <div
-        v-if="error"
-        :data-cy="`${dataCy}-error-message`"
-        v-bind="descriptionAttrs"
-        v-text="error"
-      />
+      <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
 
       <div
         v-if="description && !error"
@@ -46,12 +41,7 @@
 
     <slot />
 
-    <div
-      v-if="error"
-      :data-cy="`${dataCy}-error-message`"
-      v-bind="descriptionAttrs"
-      v-text="error"
-    />
+    <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
 
     <div
       v-if="description && !error"
@@ -89,7 +79,7 @@ const props = defineProps({
 
   /**
    * Set label size.
-   * @values sm, md, lg
+   * @values xs, sm, md, lg, xl
    */
   size: {
     type: String,

@@ -49,9 +49,9 @@ export default /*tw*/ {
       `,
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, size: "sm", class: "pt-6 pb-2" },
-      { labelAlign: "topInside", label: true, size: "md", class: "pt-7 pb-2.5" },
-      { labelAlign: "topInside", label: true, size: "lg", class: "pt-8 pb-3" },
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-5 pb-1.5" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-6 pb-1.5" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-7 pb-2" },
     ],
   },
   defaultVariants: {
