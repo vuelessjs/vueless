@@ -8,7 +8,7 @@
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
 import UIService, { isMobileApp } from "../service.ui";
-import { clamp, queue } from "./services/loaderTop.service";
+import { clamp, queue, getRequestWithoutQuery } from "./services/loaderTop.service";
 import { useLoaderTop } from "./composables/useLoaderTop";
 
 import { ULoaderTop, MAXIMUM, SPEED } from "./constants";
@@ -43,15 +43,7 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref(null);
 
-const {
-  isLoading,
-  requestQueue,
-  loaderTopOn,
-  loaderTopOff,
-  loaderRequestQueue,
-  setComponentRequestQueue,
-  removeComponentRequestQueue,
-} = useLoaderTop();
+const { requestQueue, removeRequestUrl, isLoading, loaderTopOff, loaderTopOn } = useLoaderTop();
 const { progressAttrs } = useAttrs(props, { error, isMobileApp });
 
 const isStarted = computed(() => {
@@ -66,25 +58,25 @@ const barStyle = computed(() => {
 });
 
 const resourceNamesArray = computed(() => {
-  return Array.isArray(props.resources) ? [...props.resources] : [props.resources];
+  return Array.isArray(props.resources)
+    ? props.resources.map(getRequestWithoutQuery)
+    : [getRequestWithoutQuery(props.resources)];
 });
 
-watch(requestQueue, onChangeRequestsQueue, { deep: true });
-watch(isLoading, onChangeLoadingState, { deep: true });
-
-if (props.resources) {
-  setComponentRequestQueue(resourceNamesArray.value);
-}
+watch(() => requestQueue.value.length, onChangeRequestsQueue);
+watch(isLoading, onChangeLoadingState);
 
 onMounted(() => {
   window.addEventListener("loaderTopOn", setLoaderOnHandler);
   window.addEventListener("loaderTopOff", setLoaderOffHandler);
+
+  if (props.resources) {
+    onChangeRequestsQueue();
+  }
 });
 
 onBeforeUnmount(() => {
-  if (props.resources) {
-    removeComponentRequestQueue();
-  }
+  removeRequestUrl(resourceNamesArray.value);
 });
 
 onUnmounted(() => {
@@ -100,12 +92,6 @@ function setLoaderOffHandler(event) {
   loaderTopOff(event.detail.resource);
 }
 
-function requestWithoutQuery(request) {
-  const [requestWithoutQuery] = request.split("?");
-
-  return requestWithoutQuery;
-}
-
 function onChangeLoadingState() {
   if (!props.resources && isStarted.value && show.value && !isLoading.value) {
     done();
@@ -116,13 +102,11 @@ function onChangeRequestsQueue() {
   let isActiveRequests = false;
 
   if (props.resources) {
-    resourceNamesArray.value.forEach((item) => {
+    resourceNamesArray.value.forEach((resource) => {
       if (!isActiveRequests) {
-        const activeRequest = requestQueue.value.find(
-          (request) => requestWithoutQuery(request) === item,
-        );
+        const activeRequest = requestQueue.value.find((request) => request === resource);
 
-        isActiveRequests = !!activeRequest;
+        isActiveRequests = Boolean(activeRequest);
       }
     });
 
@@ -132,10 +116,8 @@ function onChangeRequestsQueue() {
       done();
     }
   } else {
-    requestQueue.value.forEach((item) => {
-      const activeRequest = loaderRequestQueue.value.find(
-        (request) => request === requestWithoutQuery(item),
-      );
+    resourceNamesArray.value.forEach((resource) => {
+      const activeRequest = requestQueue.value.find((request) => request === resource);
 
       isActiveRequests = !activeRequest;
     });
