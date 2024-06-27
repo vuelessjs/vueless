@@ -41,3 +41,9 @@ export function loaderTopOff(resource) {
 
   window.dispatchEvent(loaderTopOfEvent);
 }
+
+export function getRequestWithoutQuery(request) {
+  const [requestWithoutQuery] = request.split("?");
+
+  return requestWithoutQuery;
+}
