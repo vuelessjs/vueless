@@ -118,7 +118,7 @@
       @input="onInput"
     />
 
-    <div v-if="isTimepickerEnabled" v-bind="timepickerWrapperAttrs">
+    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
       <span v-bind="timepickerLabelAttrs" v-text="locale.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
@@ -144,7 +144,7 @@
         size="sm"
         square
         filled
-        v-bind="submitButtonAttrs"
+        v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >
         {{ locale.okLabel }}
@@ -309,12 +309,12 @@ const {
   nextIconAttrs,
   nextPrevButtonAttrs,
   prevIconAttrs,
-  timepickerWrapperAttrs,
+  timepickerAttrs,
   timepickerLabelAttrs,
   timepickerInputWrapperAttrs,
   timepickerLeftInputAttrs,
   timepickerRightInputAttrs,
-  submitButtonAttrs,
+  timepickerSubmitButtonAttrs,
   nextPrevWrapperAttrs,
 } = useAttrs(props);
 

@@ -1,13 +1,15 @@
 <template>
-  <div v-bind="yearViewWrapperAttrs">
-    <button
+  <div v-bind="yearViewAttrs">
+    <UButton
       v-for="year in years"
       :key="year"
+      variant="thirdary"
+      color="brand"
       :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
       v-bind="yearAttrs(getYearClasses(year))"
+      :label="formatDate(year, 'Y', props.locale)"
       @mousedown.prevent.capture
       @click="onClickMonth(year)"
-      v-text="formatDate(year, 'Y', props.locale)"
     />
   </div>
 </template>
@@ -20,6 +22,8 @@ import { isSameMonth, getDateWithoutTime } from "../services/date.service";
 import useAttrs from "../composables/attrs.composable";
 
 import { YEARS_PER_VIEW } from "../constants";
+
+import UButton from "../../ui.button";
 
 const props = defineProps({
   selectedDate: {
@@ -65,7 +69,7 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const { yearViewWrapperAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs } = useAttrs(props);
+const { yearViewAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs } = useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;

@@ -221,6 +221,8 @@ const STANDARD_USER_FORMAT = "l, j F, Y";
 
 const { tm } = useLocale();
 
+const i18nGlobal = tm(UDatePicker);
+
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
@@ -254,6 +256,8 @@ const localValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
+
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
   isShownCalendar,
@@ -298,9 +302,6 @@ function onBlur(event) {
 
 function formatUserDate(data) {
   if (props.userFormat !== STANDARD_USER_FORMAT) return data;
-
-  const i18nGlobal = tm(UDatePicker);
-  const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
