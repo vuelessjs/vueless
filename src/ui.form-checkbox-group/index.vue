@@ -1,14 +1,14 @@
 <template>
   <ULabel
-    :for="id"
+    :size="size"
     :label="label"
     :error="error"
-    align="topWithDesc"
+    :description="description"
     :disabled="disabled"
+    align="topWithDesc"
     :data-cy="dataCy"
     v-bind="labelAttrs"
   >
-    {{ option }}
     <div v-bind="listAttrs">
       <slot>
         <UCheckbox
@@ -33,7 +33,7 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import UIService, { getRandomId } from "../service.ui";
+import UIService from "../service.ui";
 
 import ULabel from "../ui.form-label";
 import UCheckbox from "../ui.form-checkbox";
@@ -46,14 +46,6 @@ import { useAttrs } from "./composables/attrs.composable";
 defineOptions({ name: "UCheckboxGroup", inheritAttrs: false });
 
 const props = defineProps({
-  /**
-   * Checkbox group label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
   /**
    * Checkbox group value.
    */
@@ -71,11 +63,45 @@ const props = defineProps({
   },
 
   /**
-   * Error description.
+   * Checkbox group label.
+   */
+  label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Checkbox group description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Checkbox group error message.
    */
   error: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Radio size.
+   * @values xs, sm, md, lg, xl
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UCheckboxGroup).default.size,
+  },
+
+  /**
+   * Radio group color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
+   */
+  color: {
+    type: String,
+    default: UIService.get(defaultConfig, UCheckboxGroup).default.color,
   },
 
   /**
@@ -92,15 +118,6 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: UIService.get(defaultConfig, UCheckboxGroup).default.disabled,
-  },
-
-  /**
-   * Generates unique element id.
-   * @ignore
-   */
-  id: {
-    type: String,
-    default: () => getRandomId(),
   },
 
   /**

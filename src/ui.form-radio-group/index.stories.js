@@ -14,9 +14,9 @@ export default {
     label: "Label",
     value: "1",
     radios: [
-      { name: "radio", label: "radio 1", description: "description", value: "1" },
-      { name: "radio", label: "radio 2", description: "description", value: "2" },
-      { name: "radio", label: "radio 3", description: "description", value: "3" },
+      { name: "radio", label: "Radio 1", value: "1" },
+      { name: "radio", label: "Radio 2", value: "2" },
+      { name: "radio", label: "Radio 3", value: "3" },
     ],
   },
   argTypes: {
