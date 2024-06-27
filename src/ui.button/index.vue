@@ -11,13 +11,13 @@
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
       <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :size="loaderSize" :color="computedColor" v-bind="loaderAttrs" />
+      <ULoader :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
       <!-- @slot Use it to add icon before text. -->
       <slot name="left">
-        <UIcon v-if="iconLeft" :name="iconLeft" :color="computedColor" />
+        <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
       </slot>
 
       <!-- @slot Use it to add something instead of text. -->
@@ -26,7 +26,7 @@
 
       <!-- @slot Use it to add icon after text. -->
       <slot name="right">
-        <UIcon v-if="iconRight" :name="iconRight" :color="computedColor" />
+        <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
       </slot>
     </template>
   </component>
@@ -201,7 +201,7 @@ const loaderSize = computed(() => {
   return sizes[props.size];
 });
 
-const computedColor = computed(() => {
+const componentColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
 
