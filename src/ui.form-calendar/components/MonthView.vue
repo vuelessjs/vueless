@@ -1,13 +1,15 @@
 <template>
-  <div v-bind="monthViewWrapperAttrs">
-    <button
+  <div v-bind="monthViewAttrs">
+    <UButton
       v-for="month in months"
       :key="month"
-      :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
+      variant="thirdary"
+      color="brand"
       v-bind="monthAttrs(getMonthClasses(month))"
+      :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
+      :label="formatDate(month, 'M', props.locale)"
       @click="onClickMonth(month)"
       @mousedown.prevent.capture
-      v-text="formatDate(month, 'M', props.locale)"
     />
   </div>
 </template>
@@ -20,6 +22,8 @@ import { isSameMonth, getDateWithoutTime } from "../services/date.service";
 import useAttrs from "../composables/attrs.composable";
 
 import { MONTHS_PER_VIEW } from "../constants";
+
+import UButton from "../../ui.button";
 
 const props = defineProps({
   selectedDate: {
@@ -65,7 +69,7 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const { monthViewWrapperAttrs, selectedMonthAttrs, activeMonthAttrs, monthAttrs } = useAttrs(props);
+const { monthViewAttrs, selectedMonthAttrs, activeMonthAttrs, monthAttrs } = useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;

@@ -1,9 +1,9 @@
 <template>
-  <div v-bind="dayViewWrapperAttrs">
-    <div v-bind="weekDaysWrapperAttrs">
+  <div v-bind="dayViewAttrs">
+    <div v-bind="weekDaysAttrs">
       <span v-for="weekDay in weekdays" :key="weekDay" v-bind="weekDayAttrs" v-text="weekDay" />
     </div>
-    <div v-bind="daysWrapperAttrs">
+    <div v-bind="daysAttrs">
       <button
         v-for="day in days"
         :key="day"
@@ -90,10 +90,10 @@ const props = defineProps({
 const emit = defineEmits(["input"]);
 
 const {
-  dayViewWrapperAttrs,
-  weekDaysWrapperAttrs,
+  dayViewAttrs,
+  weekDaysAttrs,
   weekDayAttrs,
-  daysWrapperAttrs,
+  daysAttrs,
   activeDayAttrs,
   selectedDayAttrs,
   currentDayAttrs,

@@ -1,4 +1,5 @@
 export default /*tw*/ {
+  wrapper: "h-auto flex flex-col gap-1.5 w-full",
   progress: {
     base: `
       block appearance-none border-none overflow-hidden w-full
@@ -23,6 +24,37 @@ export default /*tw*/ {
         lg: "h-3",
         xl: "h-4",
         "2xl": "h-5",
+      },
+    },
+  },
+  indicator: {
+    base: "w-full flex justify-end font-medium text-brand-500 min-w-fit",
+    variants: {
+      color: {
+        white: "text-white",
+        grayscale: "text-gray-900",
+      },
+      size: {
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-md",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
+      },
+    },
+  },
+  firstStep: "text-gray-500",
+  step: {
+    base: "flex w-full justify-end text-brand-500",
+    variants: {
+      size: {
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-md",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
       },
     },
   },
