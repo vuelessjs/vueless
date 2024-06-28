@@ -44,24 +44,17 @@
         />
       </span>
 
-      <label
-        v-if="hasSlotContent($slots['password-icon']) || isTypePassword"
-        v-bind="rightSlotAttrs"
-        :for="id"
-      >
-        <!-- @slot Use it to change password icon. -->
-        <slot name="password-icon">
-          <UIcon
-            v-if="isTypePassword"
-            :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
-            color="gray"
-            interactive
-            internal
-            :data-cy="`${dataCy}-show-password`"
-            v-bind="passwordIconAttrs"
-            @click="onClickShowPassword"
-          />
-        </slot>
+      <label v-if="isTypePassword" v-bind="rightSlotAttrs" :for="id">
+        <UIcon
+          v-if="isTypePassword"
+          :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
+          color="gray"
+          interactive
+          internal
+          :data-cy="`${dataCy}-show-password`"
+          v-bind="passwordIconAttrs"
+          @click="onClickShowPassword"
+        />
       </label>
 
       <span v-if="hasSlotContent($slots['right']) || iconRight" v-bind="rightSlotAttrs">
