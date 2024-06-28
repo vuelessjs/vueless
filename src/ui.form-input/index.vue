@@ -11,9 +11,15 @@
     v-bind="labelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
-      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper" v-bind="leftSlotAttrs">
-        <!-- @slot Use it to add some component before text. -->
-        <slot name="left" />
+      <span
+        v-if="hasSlotContent($slots['left']) || iconLeft"
+        ref="leftSlotWrapper"
+        v-bind="leftSlotAttrs"
+      >
+        <!-- @slot Use it to add icon before text. -->
+        <slot name="left">
+          <UIcon v-if="iconLeft" :name="iconLeft" />
+        </slot>
       </span>
 
       <span v-bind="inputWrapperAttrs">
@@ -38,30 +44,24 @@
         />
       </span>
 
-      <label
-        v-if="hasSlotContent($slots['right-icon']) || isTypePassword"
-        v-bind="rightSlotAttrs"
-        :for="id"
-      >
-        <!-- @slot Use it to add icon after text. -->
-        <slot name="right-icon">
-          <UIcon
-            v-if="isTypePassword"
-            :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
-            color="gray"
-            interactive
-            internal
-            :data-cy="`${dataCy}-show-password`"
-            v-bind="passwordIconAttrs"
-            @click="onClickShowPassword"
-          />
-        </slot>
+      <label v-if="isTypePassword" v-bind="rightSlotAttrs" :for="id">
+        <UIcon
+          v-if="isTypePassword"
+          :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
+          color="gray"
+          interactive
+          internal
+          :data-cy="`${dataCy}-show-password`"
+          v-bind="passwordIconAttrs"
+          @click="onClickShowPassword"
+        />
       </label>
 
-      <span v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
-        <!-- @slot Use it to add some component after text. -->
-
-        <slot name="right" />
+      <span v-if="hasSlotContent($slots['right']) || iconRight" v-bind="rightSlotAttrs">
+        <!-- @slot Use it to add icon after text. -->
+        <slot name="right">
+          <UIcon v-if="iconRight" :name="iconRight" />
+        </slot>
       </span>
     </label>
   </ULabel>
@@ -247,6 +247,22 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
 });
 
 const slots = useSlots();
@@ -360,11 +376,23 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
+  if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.iconLeft)) return;
 
-  const leftSlotWidth = leftSlotWrapper.value.getBoundingClientRect().width;
+  let leftSlotOrIconWidth = 0;
 
-  labelComponent.value.labelElement.style.left = `${leftSlotWidth}px`;
+  if (leftSlotWrapper.value) {
+    leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
+  }
+
+  if (props.iconLeft) {
+    const iconLeftElement = document.querySelector(`#${props.id} ~ .ui-icon`);
+
+    if (iconLeftElement) {
+      leftSlotOrIconWidth = iconLeftElement.getBoundingClientRect().width;
+    }
+  }
+
+  labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth}px`;
 }
 </script>
 
