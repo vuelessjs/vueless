@@ -13,29 +13,29 @@ export default {
   argTypes: {
     ...getArgTypes(UText.name),
   },
-  args: {
-    slotTemplate: `
-    <template #default>
-      <p>
-        <b>Lorem ipsum dolor sit amet</b><u>, consectetur adipiscing elit,
-        </u><em> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</em>
-        <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-      </p>
-    </template>
-  `,
-  },
+  args: {},
 };
 
+const defaultTemplate = `
+  <template #default>
+    <p>
+      <b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing elit,
+       sed do <u>eiusmod</u> tempor incididunt ut <i>labore</i> et dolore magna aliqua.
+      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+    </p>
+  </template>
+`;
+
 const DefaultTemplate = (args) => ({
-  components: { UText },
+  components: { UText, URow },
   setup() {
     const slots = getSlotNames(UText.name);
 
     return { args, slots };
   },
   template: `
-    <UText v-bind="args" >
-      ${args.slotTemplate}
+    <UText v-bind="args">
+      ${args.slotTemplate || defaultTemplate}
     </UText>
   `,
 });
@@ -56,7 +56,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         v-bind="args"
         :key="index"
       >
-        ${args.slotTemplate}
+        ${args.slotTemplate || defaultTemplate}
       </UText>
     </URow>
   `,
@@ -97,7 +97,7 @@ export const list = DefaultTemplate.bind({});
 list.args = {
   slotTemplate: `
      <template #default>
-       <URow>
+       <URow gap="2xl">
          <ul>
            <li> Lorem ipsum dolor </li>
            <li> Lorem ipsum dolor </li>

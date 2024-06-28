@@ -1,7 +1,7 @@
 <template>
   <div v-bind="wrapperAttrs" :data-cy="dataCy">
-    <!-- @slot Use it to add something. -->
-    <div v-if="!hasSlotContent($slots['default'])" v-html="html" />
+    <!-- @slot Use it to add something inside. -->
+    <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
     <slot />
   </div>
 </template>
@@ -44,7 +44,7 @@ const props = defineProps({
   },
 
   /**
-   * Remove line height.
+   * Remove line height (useful for 1-line text).
    */
   line: {
     type: Boolean,
@@ -68,5 +68,5 @@ const props = defineProps({
   },
 });
 
-const { wrapperAttrs, hasSlotContent } = useAttrs(props);
+const { wrapperAttrs, htmlAttrs, hasSlotContent } = useAttrs(props);
 </script>

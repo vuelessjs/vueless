@@ -19,9 +19,11 @@ export function useAttrs(props) {
 
   const labelAttrs = getAttrs("label", { isComponent: true });
   const listAttrs = getAttrs("list", { classes: listClasses });
+  const radioAttrs = getAttrs("radio", { isComponent: true });
 
   return {
     labelAttrs,
     listAttrs,
+    radioAttrs,
   };
 }

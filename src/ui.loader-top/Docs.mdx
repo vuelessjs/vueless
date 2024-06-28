@@ -25,9 +25,8 @@ const {
   loaderTopOn,
   loaderTopOff,
   requestQueue,
-  componentRequestQueue,
-  setComponentRequestQueue,
-  removeComponentRequestQueue
+  addRequestUrl
+  removeRequestUrl
 } = useLoaderTop();
 
 // get loader state
@@ -42,14 +41,13 @@ loaderTopOff("/transactions");
 // get current resource array
 console.log(requestQueue.value);
 
-// get current resource array for component relayed loaders (UTable)
-console.log(componentRequestQueue.value);
+// add resource into loader queue
+addRequestUrl("/transactions");
+addRequestUrl(["/transactions", "/products"]);
 
-// add resource into component related loader queue
-setComponentRequestQueue("/transactions");
-
-// remove resource from component related loader queue
-removeComponentRequestQueue("/transactions");
+// remove resource from loader queue
+removeRequestUrl("/transactions");
+removeRequestUrl(["/transactions", "/products"]);
 `} language="jsx" dark />
 
 ## Using loader outside Vue components

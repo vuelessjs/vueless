@@ -3,6 +3,8 @@ export default /*tw*/ {
   list: "ml-4 flex flex-col gap-4 relative",
   checkbox: "",
   defaultVariants: {
+    color: "brand",
+    size: "md",
     disabled: false,
   },
 };

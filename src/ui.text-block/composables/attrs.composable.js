@@ -23,9 +23,11 @@ export function useAttrs(props) {
   );
 
   const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
+  const htmlAttrs = getAttrs("html");
 
   return {
     wrapperAttrs,
+    htmlAttrs,
     hasSlotContent,
   };
 }

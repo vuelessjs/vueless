@@ -1,16 +1,28 @@
 <template>
   <ULabel
+    :size="size"
     :label="label"
+    :error="error"
     :description="description"
     :disabled="disabled"
-    :error="error"
-    :size="size"
     align="topWithDesc"
     :data-cy="dataCy"
     v-bind="labelAttrs"
   >
     <div v-bind="listAttrs">
-      <slot />
+      <slot>
+        <URadio
+          v-for="(option, index) in options"
+          :key="option.value"
+          :model-value="modelValue"
+          :value="option.value"
+          :label="option.label"
+          :description="option.description"
+          :disabled="disabled"
+          :data-cy="`${dataCy}-item-${index}`"
+          v-bind="radioAttrs"
+        />
+      </slot>
     </div>
   </ULabel>
 </template>
@@ -19,6 +31,7 @@
 import { computed, provide } from "vue";
 
 import ULabel from "../ui.form-label";
+import URadio from "../ui.form-radio";
 import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
@@ -33,8 +46,16 @@ const props = defineProps({
    * Radio group selected value.
    */
   modelValue: {
-    type: [String, Number],
+    type: [Boolean, String, Number, Array, Object],
     default: "",
+  },
+
+  /**
+   * Radio group options.
+   */
+  options: {
+    type: Array,
+    default: () => [],
   },
 
   /**
@@ -46,7 +67,7 @@ const props = defineProps({
   },
 
   /**
-   * Input description.
+   * Radio group description.
    */
   description: {
     type: String,
@@ -54,7 +75,7 @@ const props = defineProps({
   },
 
   /**
-   * Error message.
+   * Radio group error message.
    */
   error: {
     type: String,
@@ -63,7 +84,7 @@ const props = defineProps({
 
   /**
    * Radio size.
-   * @values sm, md, lg
+   * @values xs, sm, md, lg, xl
    */
   size: {
     type: String,
@@ -114,7 +135,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const { listAttrs, labelAttrs } = useAttrs(props);
+const { labelAttrs, listAttrs, radioAttrs } = useAttrs(props);
 
 const selectedItem = computed({
   get: () => props.modelValue,

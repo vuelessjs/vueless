@@ -26,10 +26,10 @@ export default function useAttrs(props) {
   const nextPrevButtonAttrs = getAttrs("nextPrevButton");
   const nextIconAttrs = getAttrs("nextIcon");
   const prevIconAttrs = getAttrs("prevIcon");
-  const dayViewWrapperAttrs = getAttrs("dayViewWrapper");
-  const weekDaysWrapperAttrs = getAttrs("weekDaysWrapper");
+  const dayViewAttrs = getAttrs("dayView");
+  const weekDaysAttrs = getAttrs("weekDays");
   const weekDayAttrs = getAttrs("weekDay");
-  const daysWrapperAttrs = getAttrs("daysWrapper");
+  const daysAttrs = getAttrs("days");
   const activeDayAttrs = getAttrs("activeDay");
   const selectedDayAttrs = getAttrs("selectedDay");
   const currentDayAttrs = getAttrs("currentDay");
@@ -37,18 +37,23 @@ export default function useAttrs(props) {
   const inRangeFirstDayAttrs = getAttrs("inRangeFirstDay");
   const inRangeLastDayAttrs = getAttrs("inRangeLastDay");
   const anotherMonthDayAttrs = getAttrs("anotherMonthDay");
-  const monthViewWrapperAttrs = getAttrs("monthViewWrapper");
+  const monthViewAttrs = getAttrs("monthView");
   const selectedMonthAttrs = getAttrs("selectedMonth");
   const activeMonthAttrs = getAttrs("activeMonth");
-  const yearViewWrapperAttrs = getAttrs("yearViewWrapper");
+  const yearViewAttrs = getAttrs("yearView");
   const selectedYearAttrs = getAttrs("selectedYear");
   const activeYearAttrs = getAttrs("activeYear");
-  const timepickerWrapperAttrs = getAttrs("timepickerWrapper");
+  const timepickerAttrs = getAttrs("timepicker");
   const timepickerLabelAttrs = getAttrs("timepickerLabel");
+  const timepickerInput = getAttrs("timepickerInput");
   const timepickerInputWrapperAttrs = getAttrs("timepickerInputWrapper");
-  const timepickerLeftInputAttrs = getAttrs("timepickerLeftInput");
-  const timepickerRightInputAttrs = getAttrs("timepickerRightInput");
-  const submitButtonAttrs = getAttrs("submitButton");
+  const timepickerLeftInputAttrs = getAttrs("timepickerLeftInput", {
+    classes: timepickerInput.value.class,
+  });
+  const timepickerRightInputAttrs = getAttrs("timepickerRightInput", {
+    classes: timepickerInput.value.class,
+  });
+  const timepickerSubmitButtonAttrs = getAttrs("timepickerSubmitButton");
 
   const nextPrevWrapperAttrs = getAttrs("nextPrevWrapper", { classes: optionClasses.value });
 
@@ -57,11 +62,11 @@ export default function useAttrs(props) {
   };
 
   const monthAttrs = (classes = []) => {
-    return getAttrs("month", { classes }).value;
+    return getAttrs("month", { classes, isComponent: true }).value;
   };
 
   const yearAttrs = (classes = []) => {
-    return getAttrs("year", { classes }).value;
+    return getAttrs("year", { classes, isComponent: true }).value;
   };
 
   return {
@@ -75,10 +80,10 @@ export default function useAttrs(props) {
     nextIconAttrs,
     nextPrevButtonAttrs,
     prevIconAttrs,
-    dayViewWrapperAttrs,
-    weekDaysWrapperAttrs,
+    dayViewAttrs,
+    weekDaysAttrs,
     weekDayAttrs,
-    daysWrapperAttrs,
+    daysAttrs,
     activeDayAttrs,
     selectedDayAttrs,
     currentDayAttrs,
@@ -87,20 +92,20 @@ export default function useAttrs(props) {
     inRangeDayAttrs,
     inRangeFirstDayAttrs,
     inRangeLastDayAttrs,
-    monthViewWrapperAttrs,
+    monthViewAttrs,
     selectedMonthAttrs,
     activeMonthAttrs,
     monthAttrs,
-    yearViewWrapperAttrs,
+    yearViewAttrs,
     selectedYearAttrs,
     activeYearAttrs,
     yearAttrs,
-    timepickerWrapperAttrs,
+    timepickerAttrs,
     timepickerLabelAttrs,
     timepickerInputWrapperAttrs,
     timepickerLeftInputAttrs,
     timepickerRightInputAttrs,
-    submitButtonAttrs,
+    timepickerSubmitButtonAttrs,
     nextPrevWrapperAttrs,
   };
 }

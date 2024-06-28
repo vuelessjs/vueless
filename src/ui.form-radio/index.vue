@@ -14,7 +14,7 @@
       type="radio"
       :disabled="disabled"
       :name="radioName"
-      :value="value"
+      :value="radioValue"
       :checked="checked"
       :data-cy="dataCy"
       v-bind="radioAttrs"
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref, watchEffect } from "vue";
+import { computed, inject, onMounted, ref, watchEffect } from "vue";
 
 import ULabel from "../ui.form-label";
 import UIService, { getRandomId } from "../service.ui";
@@ -44,10 +44,10 @@ defineOptions({ name: "URadio", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Radio value.
+   * Native value attribute.
    */
   value: {
-    type: [String, Number],
+    type: [Boolean, String, Number, Array, Object],
     default: "",
   },
 
@@ -156,6 +156,10 @@ const radioColor = ref(getRadioGroupColor ? getRadioGroupColor() : props.color);
 const radioSize = ref(getRadioGroupSize ? getRadioGroupSize() : props.size);
 
 const { radioAttrs, labelAttrs } = useAttrs(props, { radioColor, radioSize });
+
+const radioValue = computed(() => {
+  return props.value === "" ? "on" : props.value;
+});
 
 onMounted(() => {
   radioName.value = props.name || getRadioGroupName;

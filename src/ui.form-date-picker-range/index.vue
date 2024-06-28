@@ -3,6 +3,7 @@
     <UInput
       v-if="isVariant.input"
       :id="id"
+      ref="inputRef"
       v-model="userFormatDate"
       :label="label"
       :placeholder="placeholder"
@@ -421,6 +422,7 @@ const rangeInputEndRef = ref(null);
 const buttonRef = ref(null);
 const buttonPrevRef = ref(null);
 const buttonNextRef = ref(null);
+const inputRef = ref(null);
 
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
   wrapperRef,
@@ -462,10 +464,6 @@ const { tm } = useLocale();
 const i18nGlobal = tm(UDatePickerRange);
 
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const clickOutsideOptions = computed(() => ({
-  ignore: [buttonRef.value.buttonRef, buttonPrevRef.value.buttonRef, buttonNextRef.value.buttonRef],
-}));
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -609,6 +607,20 @@ const isVariant = computed(() => ({
   button: props.variant === DATE_PICKER_BUTTON_TYPE,
   input: props.variant === DATE_PICKER_INPUT_TYPE,
 }));
+
+const clickOutsideOptions = computed(() => {
+  if (isVariant.value.input) {
+    return { ignore: [inputRef.value.input] };
+  }
+
+  return {
+    ignore: [
+      buttonRef.value.buttonRef,
+      buttonPrevRef.value.buttonRef,
+      buttonNextRef.value.buttonRef,
+    ],
+  };
+});
 
 const userFormatDate = computed(() => {
   if ((!localValue.value.from && !localValue.value.to) || !localValue.value.from) return "";

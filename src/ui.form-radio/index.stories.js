@@ -12,7 +12,7 @@ export default {
   component: URadio,
   args: {
     name: "radio1",
-    label: "radio",
+    label: "Radio",
     value: "1",
     color: "brand",
   },
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <URadio v-bind="args" description="description">
+    <URadio v-bind="args">
       <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
         <template v-if="args[slot]">{{ args[slot] }}</template>
       </template>
@@ -43,7 +43,7 @@ const SlotTemplate = (args) => ({
     return { args };
   },
   template: `
-    <URadio v-bind="args" description="description">
+    <URadio v-bind="args">
       ${args.slotTemplate}
     </URadio>
   `,
@@ -56,7 +56,7 @@ export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true, name: "radio2" };
 
 export const description = DefaultTemplate.bind({});
-description.args = { name: "radio3" };
+description.args = { name: "radio3", description: "description" };
 
 export const checked = DefaultTemplate.bind({});
 checked.args = { checked: true, name: "radio4" };
