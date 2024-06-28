@@ -19,10 +19,10 @@ export default /*tw*/ {
   nextIconName: "keyboard_arrow_right",
   prevIcon: "",
   prevIconName: "keyboard_arrow_left",
-  dayViewWrapper: "",
-  weekDaysWrapper: "grid grid-cols-7",
+  dayView: "",
+  weekDays: "grid grid-cols-7",
   weekDay: "flex size-8 items-center justify-center text-xs uppercase text-brand-500",
-  daysWrapper: "grid grid-cols-7",
+  days: "grid grid-cols-7",
   day: "mx-auto size-8 rounded-lg text-sm hover:bg-brand-100 disabled:opacity-50 disabled:cursor-not-allowed",
   activeDay: "bg-brand-100 hover:bg-brand-100",
   inRangeFirstDay: "rounded-none rounded-l-lg bg-brand-200 text-brand-900 hover:bg-brand-200",
@@ -31,26 +31,21 @@ export default /*tw*/ {
   selectedDay: "bg-brand-900 text-white hover:bg-brand-900",
   currentDay: "hover:bg-brand-100 border-2 border-brand-900",
   anotherMonthDay: "hover:bg-brand-100 text-brand-400",
-  monthViewWrapper: "grid grid-cols-4 items-center justify-center",
-  month: `
-    mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-brand-100
-    disabled:opacity-50 disabled:cursor-not-allowed
-  `,
+  monthView: "grid grid-cols-4 items-center justify-center",
+  month: "mx-auto flex h-12 w-full rounded-lg hover:!bg-brand-900 hover:text-white",
   selectedMonth: "bg-brand-900 hover:bg-brand-900 text-white",
   activeMonth: "bg-brand-100",
-  yearViewWrapper: "grid grid-cols-4 items-center justify-center",
-  year: `
-    mx-auto flex h-12 w-full items-center justify-center rounded-lg text-sm hover:cursor-pointer hover:bg-brand-100
-    disabled:opacity-50 disabled:cursor-not-allowed
-  `,
+  yearView: "grid grid-cols-4 items-center justify-center",
+  year: "mx-auto flex h-12 w-full rounded-lg hover:!bg-brand-900 hover:text-white",
   selectedYear: "bg-brand-900 hover:bg-brand-900 text-white",
   activeYear: "bg-brand-100",
-  timepickerWrapper: "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
+  timepicker: "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
   timepickerLabel: "w-full",
   timepickerInputWrapper: "flex items-center gap-px rounded-lg border border-brand-300",
-  timepickerLeftInput: "w-11 rounded-l-lg border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
-  timepickerRightInput: "w-11 rounded-r-lg border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
-  submitButton: "py-2 focus:ring-0 border-0",
+  timepickerInput: "w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
+  timepickerLeftInput: "rounded-l-lg",
+  timepickerRightInput: "rounded-r-lg",
+  timepickerSubmitButton: "py-2 focus:ring-0 border-0",
   i18n: {
     weekdays: {
       shorthand: {
