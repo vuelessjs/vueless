@@ -1,14 +1,14 @@
 export default /*tw*/ {
   wrapper: "relative",
   headerCellGeneral: {
-    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left",
+    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
       },
     },
   },
-  headerCounterGeneral: "mr-3 font-medium text-sm text-gray-900",
+  headerCounterGeneral: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
   stickyHeaderCell: "flex-none whitespace-nowrap",

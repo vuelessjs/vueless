@@ -3,9 +3,9 @@ export default /*tw*/ {
   listAttrs: "mt-4 gap-4 flex flex-wrap",
   label: "",
   radio: {
-    base: "size-6 cursor-pointer ",
+    base: "size-6 cursor-pointer",
     radio: {
-      base: "bg-{color}-500",
+      base: "bg-{color}-500 border-{color}-500",
     },
   },
   icon: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
@@ -17,10 +17,7 @@ export default /*tw*/ {
       compoundVariants: [
         {
           color: "grayscale",
-          class: `
-          text-white
-          checked:border-gray-300
-        `,
+          class: "text-white checked:border-gray-300",
         },
       ],
     },
