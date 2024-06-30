@@ -1,28 +1,39 @@
 export default /*tw*/ {
-  wrapper: "",
-  listAttrs: "mt-4 gap-4 flex flex-wrap",
   label: "",
-  radio: {
-    base: "size-6 cursor-pointer",
-    radio: {
-      base: "bg-{color}-500 border-{color}-500",
+  list: {
+    base: "flex flex-wrap",
+    variants: {
+      size: {
+        xs: "gap-2",
+        sm: "gap-2",
+        md: "gap-3",
+        lg: "gap-3",
+        xl: "gap-4",
+      },
     },
   },
-  icon: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-  iconName: "close",
-  uncolored: "relative flex",
-  uncoloredRadio: {
-    base: "size-6",
+  radio: {
+    radio: {
+      base: "cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
+    },
+  },
+  unselected: "relative flex",
+  unselectedRadio: {
     radio: {
       compoundVariants: [
         {
           color: "grayscale",
-          class: "text-white checked:border-gray-300",
+          class: "text-white !border-gray-300 hover:!border-gray-400 focus:!border-gray-400 active:!border-gray-500",
         },
       ],
     },
   },
+  unselectedIcon: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+  unselectedIconName: "close",
   defaultVariants: {
+    name: "UColorPicker",
+    size: "md",
+    disabled: false,
     colorOptions: [
       "red",
       "orange",
@@ -42,8 +53,6 @@ export default /*tw*/ {
       "pink",
       "rose",
     ],
-    disabled: false,
-    size: "md",
   },
   safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],
 };

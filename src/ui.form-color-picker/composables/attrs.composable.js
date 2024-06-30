@@ -1,12 +1,18 @@
+import { computed } from "vue";
 import useUI from "../../composable.ui";
+import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
-import { cva } from "../../service.ui";
-import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { radio } = config.value;
+  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { list, radio } = config.value;
+
+  const cvaList = cva({
+    base: list.base,
+    variants: list.variants,
+    compoundVariants: list.compoundVariants,
+  });
 
   const cvaRadio = cva({
     base: radio.base,
@@ -14,24 +20,23 @@ export function useAttrs(props) {
     compoundVariants: radio.compoundVariants,
   });
 
-  const radioClasses = computed(() => cvaRadio({ color: props.color }));
+  const listClasses = computed(() => cvaList({ size: props.size }));
+  const radioClasses = computed(() => setColor(cvaRadio({ color: props.color }), props.color));
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const listAttrs = getAttrs("listAttrs");
   const labelAttrs = getAttrs("label");
+  const listAttrs = getAttrs("list", { classes: listClasses });
+  const unselectedAttrs = getAttrs("unselected");
+  const unselectedRadioAttrs = getAttrs("unselectedRadio", { isComponent: true });
+  const unselectedIconAttrs = getAttrs("unselectedIcon", { isComponent: true });
   const radioAttrs = getAttrs("radio", { classes: radioClasses, isComponent: true });
-  const iconAttrs = getAttrs("icon");
-  const uncoloredAttrs = getAttrs("uncolored", { isComponent: true });
-  const uncoloredRadioAttrs = getAttrs("uncoloredRadio", { isComponent: true });
 
   return {
     config,
-    wrapperAttrs,
     listAttrs,
     labelAttrs,
     radioAttrs,
-    iconAttrs,
-    uncoloredAttrs,
-    uncoloredRadioAttrs,
+    unselectedIconAttrs,
+    unselectedAttrs,
+    unselectedRadioAttrs,
   };
 }

@@ -1,53 +1,53 @@
 <template>
-  <div v-bind="wrapperAttrs">
-    <ULabel
-      :label="label"
-      :description="description"
-      :disabled="disabled"
-      :error="error"
-      :size="size"
-      align="topWithDesc"
-      :data-cy="dataCy"
-      v-bind="labelAttrs"
-    >
-      <div v-bind="listAttrs">
-        <div v-bind="uncoloredAttrs">
-          <URadio
-            key="uncolored"
-            name="uncolored"
-            :checked="selectedItem === ''"
-            :disabled="disabled"
-            :size="size"
-            color="grayscale"
-            v-bind="uncoloredRadioAttrs"
-            @update:value="onInputRadio('')"
-          />
+  <ULabel
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    align="topWithDesc"
+    :data-cy="dataCy"
+    v-bind="labelAttrs"
+  >
+    <div v-bind="listAttrs">
+      <div v-bind="unselectedAttrs">
+        <URadio
+          :id="id"
+          :name="name"
+          :size="size"
+          color="grayscale"
+          :checked="selectedItem === ''"
+          :disabled="disabled"
+          v-bind="unselectedRadioAttrs"
+          @update:model-value="onUpdateValue('')"
+        />
 
+        <label :for="id">
           <UIcon
             v-if="selectedItem === ''"
             internal
+            :size="iconSize"
             color="gray"
-            :name="config.iconName"
-            v-bind="iconAttrs"
-            size="sm"
+            :name="config.unselectedIconName"
+            v-bind="unselectedIconAttrs"
           />
-        </div>
-
-        <URadio
-          v-for="(color, index) in colorOptions"
-          :key="index"
-          :name="name"
-          :value="color"
-          :checked="selectedItem === color"
-          :color="color"
-          :disabled="disabled"
-          :size="size"
-          v-bind="radioAttrs"
-          @update:value="onInputRadio(color)"
-        />
+        </label>
       </div>
-    </ULabel>
-  </div>
+
+      <URadio
+        v-for="(color, index) in colorOptions"
+        :key="index"
+        :name="name"
+        :size="size"
+        :value="color"
+        :color="color"
+        :checked="selectedItem === color"
+        :disabled="disabled"
+        v-bind="radioAttrs"
+        @update:model-value="onUpdateValue(color)"
+      />
+    </div>
+  </ULabel>
 </template>
 
 <script setup>
@@ -56,7 +56,7 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon";
 import URadio from "../ui.form-radio";
 import ULabel from "../ui.form-label";
-import UIService from "../service.ui";
+import UIService, { getRandomId } from "../service.ui";
 
 import { UColorPicker } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -75,11 +75,11 @@ const props = defineProps({
   },
 
   /**
-   * Color picker colors.
+   * Color picker name.
    */
-  colorOptions: {
-    type: Array,
-    default: () => UIService.get(defaultConfig, UColorPicker).default.colorOptions,
+  name: {
+    type: String,
+    default: UIService.get(defaultConfig, UColorPicker).default.name,
   },
 
   /**
@@ -108,7 +108,7 @@ const props = defineProps({
 
   /**
    * Color picker size.
-   * @values sm, md, lg
+   * @values xs, sm, md, lg, xl
    */
   size: {
     type: String,
@@ -116,12 +116,11 @@ const props = defineProps({
   },
 
   /**
-   * Color picker name.
+   * Color picker color list.
    */
-  name: {
-    type: String,
-    required: true,
-    default: "",
+  colorOptions: {
+    type: Array,
+    default: () => UIService.get(defaultConfig, UColorPicker).default.colorOptions,
   },
 
   /**
@@ -130,6 +129,15 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: UIService.get(defaultConfig, UColorPicker).default.disabled,
+  },
+
+  /**
+   * Generates unique element id.
+   * @ignore
+   */
+  id: {
+    type: String,
+    default: () => getRandomId(),
   },
 
   /**
@@ -153,13 +161,12 @@ const emit = defineEmits(["update:modelValue"]);
 
 const {
   config,
-  wrapperAttrs,
-  listAttrs,
   labelAttrs,
+  listAttrs,
   radioAttrs,
-  iconAttrs,
-  uncoloredAttrs,
-  uncoloredRadioAttrs,
+  unselectedIconAttrs,
+  unselectedAttrs,
+  unselectedRadioAttrs,
 } = useAttrs(props);
 
 const selectedItem = computed({
@@ -167,7 +174,19 @@ const selectedItem = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-function onInputRadio(value) {
+const iconSize = computed(() => {
+  const sizes = {
+    xs: "3xs",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+    xl: "md",
+  };
+
+  return sizes[props.size];
+});
+
+function onUpdateValue(value) {
   selectedItem.value = value;
 }
 </script>

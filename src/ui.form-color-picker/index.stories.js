@@ -11,7 +11,7 @@ export default {
   component: UColorPicker,
   args: {
     label: "Label",
-    value: "red",
+    value: "",
   },
   argTypes: {
     ...getArgTypes(UColorPicker.name),
