@@ -47,7 +47,7 @@ const SlotTemplate = (args) => ({
   template: `
     <UInput v-bind="args"
     >
-      ${args.slotTemplate}
+      ${args.slotTemplate || ""}
     </UInput>
   `,
 });
@@ -150,8 +150,18 @@ sizes.args = {};
 export const validationRules = ValidationRuleTemplate.bind({});
 validationRules.args = {};
 
-export const slotLeft = SlotTemplate.bind({});
-slotLeft.args = {
+export const iconLeft = DefaultTemplate.bind({});
+iconLeft.args = {
+  iconLeft: "star",
+};
+
+export const iconRight = DefaultTemplate.bind({});
+iconRight.args = {
+  iconRight: "star",
+};
+
+export const iconLeftSlot = SlotTemplate.bind({});
+iconLeftSlot.args = {
   slotTemplate: `
     <template #left>
       🥸
@@ -159,8 +169,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
-slotRight.args = {
+export const iconRightSlot = SlotTemplate.bind({});
+iconRightSlot.args = {
   slotTemplate: `
     <template #right>
       🥸
