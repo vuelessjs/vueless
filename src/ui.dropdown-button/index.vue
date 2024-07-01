@@ -224,7 +224,7 @@ const props = defineProps({
 
 const emit = defineEmits(["select"]);
 
-provide("hideDropdownOptions", () => hideOptions);
+provide("hideDropdownOptions", hideOptions);
 
 const isShownOptions = ref(false);
 const selectedItem = ref("");

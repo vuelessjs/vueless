@@ -6,7 +6,6 @@
     :disabled="disabled"
     :data-cy="dataCy"
     v-bind="buttonAttrs"
-    @click="onClick"
   >
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
@@ -180,8 +179,6 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click"]);
-
 const { buttonAttrs, loaderAttrs, textAttrs } = useAttrs(props);
 
 const buttonRef = ref(null);
@@ -204,10 +201,4 @@ const loaderSize = computed(() => {
 const componentColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
-
-function onClick(event) {
-  if (props.disabled) return;
-
-  emit("click", event);
-}
 </script>
