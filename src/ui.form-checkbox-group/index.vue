@@ -146,6 +146,8 @@ const { labelAttrs, checkboxAttrs, listAttrs } = useAttrs(props);
 provide("setCheckboxGroupCheckedItems", (value) => (checkedItems.value = value));
 provide("checkboxGroupCheckedItems", checkedItems);
 provide("checkboxGroupName", props.name);
+provide("getCheckboxGroupColor", () => props.color);
+provide("getCheckboxSize", () => props.size);
 
 watch(() => checkedItems.value.length, onChangeCheckedItems);
 watch(() => props.modelValue.length, onModelValueChange, { immediate: true });
