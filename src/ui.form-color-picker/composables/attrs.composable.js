@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { config, getAttrs, setColor } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, setColor, getColor } = useUI(defaultConfig, () => props.config);
   const { list, radio } = config.value;
 
   const cvaList = cva({
@@ -21,7 +21,14 @@ export function useAttrs(props) {
   });
 
   const listClasses = computed(() => cvaList({ size: props.size }));
-  const radioClasses = computed(() => setColor(cvaRadio({ color: props.color }), props.color));
+  const radioClasses = computed(() =>
+    setColor(
+      cvaRadio({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
+  );
 
   const labelAttrs = getAttrs("label");
   const listAttrs = getAttrs("list", { classes: listClasses });

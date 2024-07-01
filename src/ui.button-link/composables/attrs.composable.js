@@ -69,14 +69,31 @@ export function useAttrs(props, { isActive, isExactActive }) {
     ),
   );
 
-  const textClasses = computed(() => setColor(cvaText({ color: props.color }), props.color));
+  const textClasses = computed(() =>
+    setColor(
+      cvaText({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
+  );
 
   const rightSlotClasses = computed(() =>
-    setColor(cvaRightSlot({ color: props.color }), props.color),
+    setColor(
+      cvaRightSlot({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
   );
 
   const leftSlotClasses = computed(() =>
-    setColor(cvaLeftSlot({ color: props.color }), props.color),
+    setColor(
+      cvaLeftSlot({
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
   );
 
   const wrapperAttrsRaw = getAttrs("wrapper", { classes: wrapperClasses });
