@@ -1,20 +1,20 @@
 export default /*tw*/ {
-  wrapper: "h-auto flex flex-col gap-1.5 w-full",
+  wrapper: "w-full h-auto flex flex-col gap-1.5",
   progress: {
     base: `
-      block appearance-none border-none overflow-hidden w-full
-      [&::-webkit-progress-bar]:w-full h-2 rounded-full [&::-webkit-progress-bar]:rounded-full
-      [&::-webkit-progress-bar]:bg-{color}-200 [@supports(selector(&::-moz-progress-bar))]:bg-{color}-200
-      [&::-webkit-progress-value]:rounded-full  [&::-webkit-progress-value]:transition-all
-      [&::-webkit-progress-value]:ease-in-out [&::-moz-progress-bar]:rounded-full text-{color}-500
-      [&::-webkit-progress-value]:bg-current [&::-moz-progress-bar]:bg-current indeterminate:relative
-      indeterminate:after:rounded-full [&:indeterminate::-webkit-progress-value]:rounded-full
-      [&:indeterminate::-moz-progress-bar]:rounded-full
+      text-{color}-500 w-full block appearance-none border-none overflow-hidden
+      indeterminate:relative indeterminate:after:rounded-full
+      [&:indeterminate::-webkit-progress-value]:rounded-full [&:indeterminate::-moz-progress-bar]:rounded-full
+      [&::-webkit-progress-bar]:w-full [&::-webkit-progress-bar]:rounded-full
+      [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100
+      [&::-webkit-progress-value]:rounded-full [&::-moz-progress-bar]:rounded-full
+      [&::-webkit-progress-value]:transition-all [&::-moz-progress-bar]:transition-all
+      [&::-webkit-progress-value]:bg-current [&::-moz-progress-bar]:bg-current
     `,
     variants: {
       color: {
-        white: "bg-white",
-        grayscale: "bg-gray-900",
+        white: "text-gray-200",
+        grayscale: "text-gray-900",
       },
       size: {
         "2xs": "h-px",
@@ -28,10 +28,10 @@ export default /*tw*/ {
     },
   },
   indicator: {
-    base: "w-full flex justify-end font-medium text-brand-500 min-w-fit",
+    base: "text-{color}-500 flex justify-end w-full min-w-fit font-medium transition-all",
     variants: {
       color: {
-        white: "text-white",
+        white: "text-gray-200",
         grayscale: "text-gray-900",
       },
       size: {
@@ -46,8 +46,12 @@ export default /*tw*/ {
   },
   firstStep: "text-gray-500",
   step: {
-    base: "flex w-full justify-end text-brand-500",
+    base: "text-{color}-500 flex justify-end w-full transition-all",
     variants: {
+      color: {
+        white: "text-gray-200",
+        grayscale: "text-gray-900",
+      },
       size: {
         xs: "text-xs",
         sm: "text-sm",
@@ -61,6 +65,7 @@ export default /*tw*/ {
   defaultVariants: {
     color: "brand",
     size: "md",
+    indicator: false,
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-200` }, { pattern: `text-(${colors})-500` }],
+  safelist: (colors) => [{ pattern: `text-(${colors})-500` }],
 };

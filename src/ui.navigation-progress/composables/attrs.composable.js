@@ -46,7 +46,15 @@ export function useAttrs(props) {
     ),
   );
 
-  const stepClasses = computed(() => setColor(cvaStep({ size: props.size }), props.color));
+  const stepClasses = computed(() =>
+    setColor(
+      cvaStep({
+        size: props.size,
+        color: getColor(props.color),
+      }),
+      props.color,
+    ),
+  );
 
   const wrapperAttrs = getAttrs("wrapper");
   const indicatorAttrs = getAttrs("indicator", { classes: indicatorClasses });
