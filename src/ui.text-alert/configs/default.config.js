@@ -16,7 +16,7 @@ export default /*tw*/ {
   body: {
     base: `
       flex gap-2 items-baseline font-normal
-      [&_b]:font-bold [&_i]:italic [&_p]:font-normal
+      [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
       [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
       [&_ul]:font-normal [&_ol]:font-normal

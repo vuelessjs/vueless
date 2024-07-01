@@ -7,6 +7,7 @@ export default /*tw*/ {
         sm: "gap-2",
         md: "gap-3",
         lg: "gap-4",
+        xl: "gap-5",
       },
     },
   },

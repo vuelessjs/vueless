@@ -14,7 +14,7 @@
         <URadio
           v-for="(option, index) in options"
           :key="option.value"
-          :model-value="modelValue"
+          :model-value="selectedItem"
           :value="option.value"
           :label="option.label"
           :description="option.description"
@@ -143,6 +143,7 @@ const selectedItem = computed({
 });
 
 provide("setRadioGroupSelectedItem", (value) => (selectedItem.value = value));
+provide("getRadioGroupSelectedItem", () => selectedItem.value);
 provide("getRadioGroupName", () => props.name);
 provide("getRadioGroupColor", () => props.color);
 provide("getRadioGroupSize", () => props.size);
