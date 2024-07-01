@@ -15,10 +15,10 @@
       :disabled="disabled"
       :name="radioName"
       :value="radioValue"
-      :checked="checked"
+      :checked="checked || isChecked"
       :data-cy="dataCy"
       v-bind="radioAttrs"
-      @focus="onFocus"
+      @change="onChange"
     />
 
     <slot />
@@ -42,7 +42,21 @@ import { URadio } from "./constants";
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "URadio", inheritAttrs: false });
 
+const setRadioGroupSelectedItem = inject("setRadioGroupSelectedItem", null);
+const getRadioGroupName = inject("getRadioGroupName", null);
+const getRadioGroupColor = inject("getRadioGroupColor", null);
+const getRadioGroupSize = inject("getRadioGroupSize", null);
+const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
+
 const props = defineProps({
+  /**
+   * Native value attribute.
+   */
+  modelValue: {
+    type: [Boolean, String, Number, Array, Object],
+    default: null,
+  },
+
   /**
    * Native value attribute.
    */
@@ -146,14 +160,20 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const setRadioGroupSelectedItem = inject("setRadioGroupSelectedItem", null);
-const getRadioGroupName = inject("getRadioGroupName", null);
-const getRadioGroupColor = inject("getRadioGroupColor", null);
-const getRadioGroupSize = inject("getRadioGroupSize", null);
-
-const radioName = ref("");
+const localValue = ref("");
+const radioName = ref(null);
 const radioColor = ref(getRadioGroupColor ? getRadioGroupColor() : props.color);
 const radioSize = ref(getRadioGroupSize ? getRadioGroupSize() : props.size);
+
+const isChecked = computed(() => {
+  const currentValue = props.modelValue ?? localValue.value;
+
+  if (typeof currentValue !== "object") {
+    return currentValue === props.value;
+  }
+
+  return JSON.stringify(currentValue) === JSON.stringify(props.value);
+});
 
 const { radioAttrs, labelAttrs } = useAttrs(props, { radioColor, radioSize });
 
@@ -162,13 +182,18 @@ const radioValue = computed(() => {
 });
 
 onMounted(() => {
-  radioName.value = props.name || getRadioGroupName;
+  radioName.value = props.name || getRadioGroupName();
 });
 
 watchEffect(() => (radioColor.value = getRadioGroupColor ? getRadioGroupColor() : props.color));
 watchEffect(() => (radioSize.value = getRadioGroupSize ? getRadioGroupSize() : props.size));
+watchEffect(() => {
+  localValue.value = getRadioGroupSelectedItem ? getRadioGroupSelectedItem() : null;
 
-function onFocus(event) {
+  emit("update:modelValue", props.value);
+});
+
+function onChange(event) {
   setRadioGroupSelectedItem && setRadioGroupSelectedItem(props.value);
 
   emit("update:modelValue", event.target.value);

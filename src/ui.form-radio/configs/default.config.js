@@ -1,7 +1,11 @@
 export default /*tw*/ {
-  label: "inline-flex",
+  label: {
+    wrapper: "inline-flex",
+    label: "cursor-pointer",
+  },
   radio: {
     base: `
+      cursor-pointer
       transition duration-100 ease-in-out
       border border-solid border-{color}-300 text-{color}-500
       hover:border-{color}-400
