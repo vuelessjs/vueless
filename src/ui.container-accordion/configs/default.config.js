@@ -20,7 +20,7 @@ export default /*tw*/ {
         lg: "text-base",
       },
       isOpened: {
-        true: "h-full pt-3 opacity-100 transition-all duration-100 ease-in-out",
+        true: "h-full pt-3 opacity-100 transition-all",
       },
     },
   },

@@ -3,8 +3,7 @@ export default /*tw*/ {
     base: `
       flex items-center justify-center
       text-base font-medium outline-none
-      border border-solid
-      transition duration-100 ease-in-out
+      border border-solid transition-all
       focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700
       focus-within:ring-opacity-20 focus-within:ring-4 focus-within:ring-{color}-700
       disabled:ring-0 disabled:cursor-no-drop
