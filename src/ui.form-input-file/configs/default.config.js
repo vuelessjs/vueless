@@ -11,8 +11,8 @@ export default /*tw*/ {
   },
   dropzoneWrapper: {
     base: `
-      size-auto w-full rounded border border-solid border-gray-300 bg-white
-      p-4 px-5 py-6 hover:border-gray-400
+      size-auto w-full rounded-lg border border-solid border-gray-300 bg-white
+      p-4 px-5 py-6 transition-all hover:border-gray-400
     `,
     variants: {
       error: {
