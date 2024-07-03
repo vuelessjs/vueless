@@ -12,7 +12,7 @@
     <draggable
       v-else
       :list="list"
-      item-key="id"
+      :item-key="valueKey"
       :group="{ name: group }"
       handle=".icon-drag"
       :ghost-class="config.draggableGhost"
@@ -23,8 +23,8 @@
       @end="onDragEnd"
     >
       <template #item="{ element }">
-        <div :id="element.id" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
-          <div :data-cy="`${dataCy}-item-${element.id}`" v-bind="itemAttrs">
+        <div :id="element[valueKey]" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
+          <div :data-cy="`${dataCy}-item-${element[valueKey]}`" v-bind="itemAttrs">
             <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
 
             <div v-bind="labelAttrs(element.isActive)">
@@ -52,7 +52,7 @@
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
                 v-bind="deleteIconAttrs"
-                @click="onClickDelete(element.id, element[labelKey])"
+                @click="onClickDelete(element[valueKey], element[labelKey])"
               />
 
               <UIcon
@@ -64,7 +64,7 @@
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
                 v-bind="editIconAttrs"
-                @click="onClickEdit(element.id, element[labelKey])"
+                @click="onClickEdit(element[valueKey], element[labelKey])"
               />
             </template>
           </div>
@@ -139,6 +139,14 @@ const props = defineProps({
   labelKey: {
     type: String,
     default: UIService.get(defaultConfig, UDataListName).default.labelKey,
+  },
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey: {
+    type: String,
+    default: UIService.get(defaultConfig, UDataListName).default.valueKey,
   },
 
   /**
@@ -245,12 +253,12 @@ function onDragEnd() {
   emit("dragSort", sortData);
 }
 
-function onClickEdit(id, label) {
-  emit("clickEdit", id, label);
+function onClickEdit(value, label) {
+  emit("clickEdit", value, label);
 }
 
-function onClickDelete(id, label) {
-  emit("clickDelete", id, label);
+function onClickDelete(value, label) {
+  emit("clickDelete", value, label);
 }
 
 function prepareSortData(list, parentId) {
@@ -260,7 +268,7 @@ function prepareSortData(list, parentId) {
     let hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      let childrenItem = prepareSortData(item.children, item.id);
+      let childrenItem = prepareSortData(item.children, item[props.valueKey]);
 
       childrenItem.forEach((item) => {
         sortData.push(item);

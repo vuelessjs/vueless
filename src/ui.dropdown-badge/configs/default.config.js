@@ -27,6 +27,8 @@ export default /*tw*/ {
     size: "md",
     weight: "medium",
     variant: "primary",
+    labelKey: "label",
+    valueKey: "id",
     listYPosition: "bottom",
     listXPosition: "left",
     noIcon: false,

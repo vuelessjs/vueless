@@ -32,6 +32,7 @@ export default /*tw*/ {
   defaultVariants: {
     animationDuration: 200,
     labelKey: "label",
+    valueKey: "id",
     nesting: false,
     upperlined: false,
   },

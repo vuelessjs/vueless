@@ -163,13 +163,13 @@
         ref="dropdownListRef"
         v-model="dropdownValue"
         :options="filteredOptions"
-        :disabled
-        :size
+        :disabled="disabled"
+        :size="size"
         :max-height="optimizedHeight"
         :option-height="optionHeight"
-        :value-key
-        :label-key
-        :add-option
+        :value-key="valueKey"
+        :label-key="labelKey"
+        :add-option="addOption"
         tabindex="-1"
         v-bind="dropdownListAttrs"
         @focus="activate"

@@ -63,6 +63,8 @@ export default /*tw*/ {
   },
   defaultVariants: {
     size: "md",
+    labelKey: "label",
+    valueKey: "id",
     optionHeight: 40,
     maxHeight: undefined,
     disabled: false,

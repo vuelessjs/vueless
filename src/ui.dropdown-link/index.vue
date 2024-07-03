@@ -68,6 +68,7 @@ import vClickOutside from "../directive.clickOutside";
 import { UDropdownLink } from "./constants";
 import defaultConfig from "./configs/default.config";
 import { useAttrs } from "./composables/attrs.composable";
+import { UDropdownButton } from "../ui.dropdown-button/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDropdownLink", inheritAttrs: false });
@@ -152,7 +153,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: "label",
+    default: UIService.get(defaultConfig, UDropdownButton).default.labelKey,
   },
 
   /**
@@ -160,7 +161,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: "id",
+    default: UIService.get(defaultConfig, UDropdownButton).default.valueKey,
   },
 
   /**

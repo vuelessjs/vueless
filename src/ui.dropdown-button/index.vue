@@ -167,7 +167,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: "label",
+    default: UIService.get(defaultConfig, UDropdownButton).default.labelKey,
   },
 
   /**
@@ -175,7 +175,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: "id",
+    default: UIService.get(defaultConfig, UDropdownButton).default.valueKey,
   },
 
   /**
