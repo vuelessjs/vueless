@@ -1,7 +1,7 @@
 <template>
   <ULabel
     :for="id"
-    :size="size"
+    :size="checkboxSize"
     :label="label"
     :description="description"
     :align="labelAlign"
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, computed } from "vue";
+import { inject, ref, onMounted, computed, watchEffect } from "vue";
 import { isEqual } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
@@ -54,9 +54,11 @@ import { useAttrs } from "./composables/attrs.composable";
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckbox", inheritAttrs: false });
 
-const checkboxGroupName = inject("checkboxGroupName", null);
-const checkboxGroupCheckedItems = inject("checkboxGroupCheckedItems", null);
+const getCheckboxGroupName = inject("getCheckboxGroupName", null);
+const getCheckboxGroupCheckedItems = inject("getCheckboxGroupCheckedItems", null);
 const setCheckboxGroupCheckedItems = inject("setCheckboxGroupCheckedItems", null);
+const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
+const getCheckboxSize = inject("getCheckboxSize", null);
 
 const props = defineProps({
   /**
@@ -187,8 +189,13 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "input"]);
 
 const checkboxName = ref("");
+const checkboxSize = ref(props.size);
+const checkboxColor = ref(props.color);
 
-const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = useAttrs(props);
+const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = useAttrs(props, {
+  checkboxColor,
+  checkboxSize,
+});
 
 const iconSize = computed(() => {
   const sizes = {
@@ -203,7 +210,7 @@ const iconSize = computed(() => {
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
-const isCheckboxInGroup = computed(() => Boolean(checkboxGroupName));
+const isCheckboxInGroup = computed(() => Boolean(getCheckboxGroupName()));
 
 const isChecked = computed(() => {
   return isBinary.value && !isCheckboxInGroup.value
@@ -216,12 +223,17 @@ const checkboxValue = computed(() => {
 });
 
 const currentValue = computed(() => {
-  return isCheckboxInGroup.value ? checkboxGroupCheckedItems.value : props.modelValue;
+  return isCheckboxInGroup.value ? getCheckboxGroupCheckedItems() : props.modelValue;
 });
 
 onMounted(() => {
-  checkboxName.value = isCheckboxInGroup.value ? checkboxGroupName : props.name;
+  checkboxName.value = isCheckboxInGroup.value ? getCheckboxGroupName() : props.name;
 });
+
+watchEffect(
+  () => (checkboxColor.value = getCheckboxGroupColor ? getCheckboxGroupColor() : props.color),
+);
+watchEffect(() => (checkboxSize.value = getCheckboxSize ? getCheckboxSize() : props.size));
 
 function onChange() {
   let newModelValue;
