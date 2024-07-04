@@ -117,7 +117,6 @@
             :id="id"
             ref="searchInputRef"
             v-model="search"
-            :name="name"
             type="text"
             autocomplete="off"
             :spellcheck="false"
@@ -159,14 +158,13 @@
       </div>
 
       <UDropdownList
-        v-show="isOpen"
+        v-if="isOpen"
         ref="dropdownListRef"
         v-model="dropdownValue"
         :options="filteredOptions"
         :disabled="disabled"
         :size="size"
-        :max-height="optimizedHeight"
-        :option-height="optionHeight"
+        :visible-options="visibleOptions"
         :value-key="valueKey"
         :label-key="labelKey"
         :add-option="addOption"
@@ -318,8 +316,7 @@ const props = defineProps({
   /**
    * Set a name of the property containing the group label.
    */
-  // TODO: groupLabelKey ???
-  groupLabel: {
+  groupLabelKey: {
     type: String,
     default: "label",
   },
@@ -327,17 +324,7 @@ const props = defineProps({
   /**
    * Set a name of the property containing the group values.
    */
-  // TODO: groupValueKey ???
-  groupValues: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * name attribute to match optional label element.
-   */
-  // TODO: what is it?
-  name: {
+  groupValueKey: {
     type: String,
     default: "",
   },
@@ -351,18 +338,11 @@ const props = defineProps({
   },
 
   /**
-   * Sets maxHeight style value of the dropdown
+   * Amount of options you can see without scroll.
    */
-  // TODO: Should be in option amount not in pixels (option may have be different height)
-  maxHeight: {
+  visibleOptions: {
     type: Number,
-    default: UIService.get(defaultConfig, USelect).default.maxHeight,
-  },
-
-  // TODO: there is no desc
-  optionHeight: {
-    type: Number,
-    default: UIService.get(defaultConfig, USelect).default.optionHeight,
+    default: UIService.get(defaultConfig, USelect).default.visibleOptions,
   },
 
   /**
@@ -448,7 +428,6 @@ const { tm } = useLocale();
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
-const optimizedHeight = ref(props.maxHeight);
 
 const dropdownListRef = ref(null);
 const wrapperRef = ref(null);
@@ -543,17 +522,17 @@ const filteredOptions = computed(() => {
   let options = props.multiple
     ? SelectService.removeSelectedValues(
         props.options,
-        props.groupValues,
+        props.groupValueKey,
         props.valueKey,
         props.modelValue,
       )
     : [...props.options];
 
-  options = props.groupValues
+  options = props.groupValueKey
     ? filterAndFlat(options, normalizedSearch, props.labelKey)
     : SelectService.filterOptions(options, normalizedSearch, props.labelKey);
 
-  return options.slice(0, props.optionsLimit);
+  return options.slice(0, props.optionsLimit || options.length);
 });
 
 const localValue = computed(() => {
@@ -561,14 +540,14 @@ const localValue = computed(() => {
     return SelectService.getCurrentOption(
       props.modelValue,
       props.options,
-      props.groupValues,
+      props.groupValueKey,
       props.valueKey,
     );
   }
 
   return props.modelValue
     ? props.modelValue.map((item) =>
-        SelectService.getCurrentOption(item, props.options, props.groupValues, props.valueKey),
+        SelectService.getCurrentOption(item, props.options, props.groupValueKey, props.valueKey),
       )
     : [];
 });
@@ -610,7 +589,6 @@ const onSearchChange = debounce(async function (query) {
 
 function getOptionLabel(option) {
   if (!option) return "";
-  if (option.$isLabel) return option.$groupLabel;
 
   return option[props.labelKey] || "";
 }
@@ -640,11 +618,11 @@ function filterAndFlat(options, search, label) {
     options,
     search,
     label,
-    props.groupValues,
-    props.groupLabel,
+    props.groupValueKey,
+    props.groupLabelKey,
   );
 
-  return SelectService.flattenOptions(filteredGroups, props.groupValues, props.groupLabel);
+  return SelectService.flattenOptions(filteredGroups, props.groupValueKey, props.groupLabelKey);
 }
 
 function toggle() {
@@ -681,25 +659,22 @@ function activate() {
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || !dropdownListRef.value) return;
 
+  const dropdownHeight = dropdownListRef.value.wrapperRef.getBoundingClientRect().height;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
-  const hasEnoughSpaceBelow = spaceBelow > props.maxHeight;
+  const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
 
   if (hasEnoughSpaceBelow || spaceBelow > spaceAbove || props.openDirection === DIRECTION.bottom) {
     preferredOpenDirection.value = DIRECTION.bottom;
-    // TODO: magic numbers
-    optimizedHeight.value = Math.min(spaceBelow - 40, props.maxHeight);
   } else {
     preferredOpenDirection.value = DIRECTION.top;
-    optimizedHeight.value = Math.min(spaceAbove - 40, props.maxHeight);
   }
 }
 
 function removeElement(option, shouldClose = true) {
   if (props.disabled) return;
-  if (option.$isDisabled) return;
 
   if (props.noClear && !props.multiple) {
     deactivate();

@@ -66,7 +66,7 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "id",
     optionHeight: 40,
-    maxHeight: undefined,
+    visibleOptions: undefined,
     disabled: false,
     addOption: false,
   },
