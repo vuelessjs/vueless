@@ -1,6 +1,8 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "group cursor-pointer [&:not(:first-child)]:pt-6",
+  wrapper: "group cursor-pointer",
+  body: "",
+  title: {
+    base: "flex items-center justify-between font-medium text-gray-900",
     variants: {
       size: {
         sm: "text-sm",
@@ -9,10 +11,8 @@ export default /*tw*/ {
       },
     },
   },
-  info: "leading-6",
-  title: "flex items-center justify-between font-medium text-gray-800",
   description: {
-    base: "text-gray-600 leading-normal h-0 overflow-hidden opacity-0",
+    base: "text-gray-600 h-0 opacity-0 transition-all",
     variants: {
       size: {
         sm: "text-xs",
@@ -20,14 +20,14 @@ export default /*tw*/ {
         lg: "text-base",
       },
       isOpened: {
-        true: "h-full pt-3 opacity-100 transition",
+        true: "pt-2 h-full opacity-100",
       },
     },
   },
   icon: "",
   expandIconName: "add",
   collapseIconName: "remove",
-  separator: "mt-2 h-px w-full lg:mt-6 bg-gray-100 mt-2.5 group-last:hidden",
+  divider: "group-last:hidden",
   defaultVariants: {
     size: "md",
   },

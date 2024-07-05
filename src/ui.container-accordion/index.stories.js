@@ -1,8 +1,6 @@
 import { getArgTypes } from "../service.storybook";
 
 import UAccordion from "../ui.container-accordion";
-import UCard from "../ui.container-card";
-import UGroup from "../ui.container-group";
 
 /**
  * The `UAccordion` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-accordion)
@@ -17,76 +15,37 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAccordion, UCard },
+  components: { UAccordion },
   setup() {
     return { args };
   },
   template: `
-    <UCard>
-      <UAccordion
-        name="accordion1"
-        title="Excellence by necessity"
-        description="As creators and maintainers of the technologies you are using,
-              our services are here to showcase the full power of our softwares."
-      />
-      <UAccordion
-        name="accordion1"
-        title="Unique expertise"
-        description="All the peoples that will be involved in delivering your project are contributing
-              to the technologies you are using, when they are not the creators themselves."
-      />
-      <UAccordion
-        name="accordion1"
-        title="Commitment to innovation"
-        description="By working with us, you are directly supporting the open source community,
-              ensuring the ecosystem continuity and enabling Nuxt development."
-      />
-    </UCard>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UAccordion, UCard, UGroup },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <UGroup>
-      <UCard v-for="(sizes, index) in sizes" :padding="sizes">
-          <UAccordion
-            :size="size"
-            :name="size"
-            title="Excellence by necessity"
-            description="As creators and maintainers of the technologies you are using,
-              our services are here to showcase the full power of our softwares."
-            :key="index"
-          />
-          <UAccordion
-            :size="size"
-            :name="size"
-            title="Unique expertise"
-            description="All the peoples that will be involved in delivering your project are contributing
-              to the technologies you are using, when they are not the creators themselves."
-            :key="index"
-          />
-          <UAccordion
-            :size="size"
-            :name="size"
-            title="Commitment to innovation"
-            description="By working with us, you are directly supporting the open source community,
-              ensuring the ecosystem continuity and enabling Nuxt development."
-            :key="index"
-          />
-      </UCard>
-    </UGroup>
+    <UAccordion
+      v-bind="args"
+      name="Excellence"
+      title="Excellence by necessity"
+      description="As creators and maintainers of the technologies you are using,
+            our services are here to showcase the full power of our softwares."
+    />
+    <UAccordion
+      v-bind="args"
+      name="Unique"
+      title="Unique expertise"
+      description="All the peoples that will be involved in delivering your project are contributing
+            to the technologies you are using, when they are not the creators themselves."
+    />
+    <UAccordion
+      v-bind="args"
+      name="Commitment"
+      title="Commitment to innovation"
+      description="By working with us, you are directly supporting the open source community,
+            ensuring the ecosystem continuity and enabling Nuxt development."
+    />
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Size = DefaultTemplate.bind({});
+Size.args = { size: "sm" };

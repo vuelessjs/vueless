@@ -1,9 +1,8 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs" @click="onClickItem">
-    <div v-bind="infoAttrs">
+    <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
-        <div v-text="title" />
-
+        {{ title }}
         <UIcon
           :name="isOpened ? config.collapseIconName : config.expandIconName"
           :size="size"
@@ -16,14 +15,15 @@
       <div :id="`description-${id}`" v-bind="descriptionAttrs" v-text="description" />
     </div>
 
-    <div v-bind="separatorAttrs" />
+    <UDivider :size="dividerSize" v-bind="dividerAttrs" />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
+import UDivider from "../ui.container-divider";
 import UIService, { getRandomId } from "../service.ui";
 
 import { UAccordion } from "./constants/index";
@@ -35,7 +35,7 @@ defineOptions({ name: "UAccordion", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set component title.
+   * Accordion title.
    */
   title: {
     type: String,
@@ -43,7 +43,7 @@ const props = defineProps({
   },
 
   /**
-   * Set component description.
+   * Accordion description.
    */
   description: {
     type: String,
@@ -51,16 +51,15 @@ const props = defineProps({
   },
 
   /**
-   * Set unique block name.
-   * @ignore
+   * Unique block name.
    */
   name: {
     type: String,
-    required: true,
+    default: "",
   },
 
   /**
-   * The size of component.
+   * Accordion size.
    * @values sm, md, lg
    */
   size: {
@@ -78,7 +77,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
@@ -86,16 +85,26 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["itemClicked"]);
+const emit = defineEmits(["click"]);
 
 const isOpened = ref(false);
 
-const { config, wrapperAttrs, descriptionAttrs, infoAttrs, titleAttrs, iconAttrs, separatorAttrs } =
+const { config, wrapperAttrs, descriptionAttrs, bodyAttrs, titleAttrs, iconAttrs, dividerAttrs } =
   useAttrs(props, { isOpened });
+
+const dividerSize = computed(() => {
+  const sizes = {
+    sm: "md",
+    md: "lg",
+    lg: "xl",
+  };
+
+  return sizes[props.size];
+});
 
 function onClickItem() {
   isOpened.value = !isOpened.value;
 
-  emit("itemClicked", props.name);
+  emit("click", props.name);
 }
 </script>
