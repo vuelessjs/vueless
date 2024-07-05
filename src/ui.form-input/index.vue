@@ -392,7 +392,9 @@ function setLabelPosition() {
     }
   }
 
-  labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth}px`;
+  if (labelComponent.value.labelElement) {
+    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth}px`;
+  }
 }
 </script>
 

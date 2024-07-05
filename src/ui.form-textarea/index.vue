@@ -273,7 +273,10 @@ function setLabelPosition() {
 
   const leftSlotWidth = leftSlotWrapper.value.getBoundingClientRect().width;
 
-  labelComponent.value.labelElement.style.left = `${leftSlotWidth}px`;
+  if (labelComponent.value.labelElement) {
+    labelComponent.value.labelElement.style.left = `${leftSlotWidth}px`;
+  }
+
   textareaWrapper.value.style.paddingLeft = `${leftSlotWidth}px`;
 }
 
