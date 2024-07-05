@@ -4,7 +4,7 @@ export default /*tw*/ {
     base: `
       pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-lg border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition-all hover:focus-within:border-brand-500
+      hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,
     variants: {
@@ -55,7 +55,7 @@ export default /*tw*/ {
   beforeCaretSlot: "",
   afterCaretSlot: "mr-3",
   caretToggle: "mr-3",
-  toggleIcon: "transform transition-all duration-300 group-[]/active:rotate-180",
+  toggleIcon: "transform transition duration-300 group-[]/active:rotate-180",
   toggleIconName: "expand_more",
   clearIcon: "",
   clearIconName: "close_small",
@@ -63,7 +63,7 @@ export default /*tw*/ {
   removeItemIconName: "close_small",
   caretRemoveItem: "flex items-center",
   caretClearText: {
-    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition-all",
+    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
       { size: "sm", class: "text-sm" },
       { size: "md", class: "text-base" },

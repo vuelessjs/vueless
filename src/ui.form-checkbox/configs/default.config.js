@@ -20,7 +20,7 @@ export default /*tw*/ {
   icon: "",
   checkbox: {
     base: `
-      border border-solid rounded border-gray-300 bg-white hover:transition-all
+      border border-solid rounded border-gray-300 bg-white hover:transition
       hover:border-gray-400
       focus:border-{color}-500 focus:ring-4 focus:ring-opacity-20 focus:ring-offset-0 focus:ring-{color}-500
       active:border-{color}-500 active:bg-{color}-500

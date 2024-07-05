@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      w-fit inline-flex rounded transition-all
+      w-fit inline-flex rounded transition
       focus-within:ring-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15 focus-visible:outline-none
     `,
     variants: {
@@ -28,7 +28,7 @@ export default /*tw*/ {
   },
   link: {
     base: `
-      w-full inline-block !leading-none transition-all
+      w-full inline-block !leading-none transition
       text-{color}-500 decoration-{color}-500 underline-offset-4
       hover:text-opacity-80
       active:text-opacity-70

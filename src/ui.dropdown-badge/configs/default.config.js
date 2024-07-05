@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   badge: "cursor-pointer",
-  icon: "transition-all duration-300",
+  icon: "transition duration-300",
   iconName: "keyboard_arrow_down",
   iconRotate: "rotate-180",
   listWrapper: {

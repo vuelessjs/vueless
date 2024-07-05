@@ -1,6 +1,6 @@
 export default /*tw*/ {
   progress: {
-    base: "top-0 left-0 right-0 fixed h-[3px] transition-all ease-linear bg-{color}-500",
+    base: "top-0 left-0 right-0 fixed h-[3px] transition ease-linear bg-{color}-500",
     variants: {
       error: {
         true: "bg-red-500",

@@ -5,7 +5,7 @@ export default /*tw*/ {
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-none
   `,
-  list: "inline-block list-none align-top m-0 min-w-full p-0 bg-white opacity-1 hover:transition-all",
+  list: "inline-block list-none align-top m-0 min-w-full p-0 bg-white opacity-1 hover:transition",
   subGroupLabel: {
     base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-1",
     variants: {

@@ -43,7 +43,7 @@ export default /*tw*/ {
   headerLoader: "absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
-  bodyRowChecked: "bg-gray-100 transition-all",
+  bodyRowChecked: "bg-gray-100 transition",
   bodyRowBefore: "!p-0",
   bodyRowBeforeCell: "py-1",
   bodyRowAfter: "!p-0",

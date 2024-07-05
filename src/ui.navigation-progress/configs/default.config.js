@@ -8,7 +8,7 @@ export default /*tw*/ {
       [&::-webkit-progress-bar]:w-full [&::-webkit-progress-bar]:rounded-full
       [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100
       [&::-webkit-progress-value]:rounded-full [&::-moz-progress-bar]:rounded-full
-      [&::-webkit-progress-value]:transition-all [&::-moz-progress-bar]:transition-all
+      [&::-webkit-progress-value]:transition [&::-moz-progress-bar]:transition
       [&::-webkit-progress-value]:bg-current [&::-moz-progress-bar]:bg-current
     `,
     variants: {
@@ -28,7 +28,7 @@ export default /*tw*/ {
     },
   },
   indicator: {
-    base: "text-{color}-500 flex justify-end w-full min-w-fit font-medium transition-all",
+    base: "text-{color}-500 flex justify-end w-full min-w-fit font-medium transition",
     variants: {
       color: {
         white: "text-gray-200",
@@ -46,7 +46,7 @@ export default /*tw*/ {
   },
   firstStep: "text-gray-500",
   step: {
-    base: "text-{color}-500 flex justify-end w-full transition-all",
+    base: "text-{color}-500 flex justify-end w-full transition",
     variants: {
       color: {
         white: "text-gray-200",

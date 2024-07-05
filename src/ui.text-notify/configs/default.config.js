@@ -1,9 +1,9 @@
 export default /*tw*/ {
   wrapper: "absolute overflow-visible md:w-[22rem]",
   transitionGroup: {
-    moveClass: "transition-all duration-500",
-    enterActiveClass: "transition-all duration-500",
-    leaveActiveClass: "transition-all duration-500 absolute",
+    moveClass: "transition duration-500",
+    enterActiveClass: "transition duration-500",
+    leaveActiveClass: "transition duration-500 absolute",
     enterFromClass: "opacity-0",
     leaveToClass: "opacity-0",
   },
