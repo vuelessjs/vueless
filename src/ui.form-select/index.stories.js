@@ -222,12 +222,12 @@ Multiple.args = { modelValue: [] };
 export const openDirection = OpenDirectionsTemplate.bind({});
 openDirection.args = {};
 
-export const groupValues = GroupValuesTemplate.bind({});
-groupValues.args = {
+export const groupValue = GroupValuesTemplate.bind({});
+groupValue.args = {
   modelValue: "",
   modelValueMultiple: [],
-  groupValues: "libs",
-  groupLabel: "language",
+  groupValueKey: "libs",
+  groupLabelKey: "language",
   labelKey: "name",
   valueKey: "name",
   options: [

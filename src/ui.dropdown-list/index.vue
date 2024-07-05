@@ -13,15 +13,14 @@
         v-for="(option, index) of options"
         :id="`${id}-${index}`"
         :key="index"
-        :role="!(option && (option.$isLabel || option.$isDisabled)) ? 'option' : null"
         v-bind="optionItemAttrs"
+        ref="optionsRef"
+        :role="!(option && option.groupLabel) ? 'option' : null"
+        :data-group-label="Boolean(option.groupLabel)"
       >
         <!-- option title -->
         <span
-          v-if="
-            !(option && (option.$isLabel || option.$isDisabled || option.isSubGroup)) &&
-            !option.isHidden
-          "
+          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs(optionHighlight(index, option))"
           @click.stop="select(option)"
           @mouseenter.self="pointerSet(index)"
@@ -42,14 +41,8 @@
         </span>
 
         <!-- group title -->
-        <div
-          v-if="
-            option &&
-            (option.$isLabel || option.$isDisabled || option.isSubGroup) &&
-            !option.isHidden
-          "
-        >
-          <div v-if="option.$groupLabel" v-bind="groupLabelAttrs" v-text="option.$groupLabel" />
+        <div v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
+          <div v-if="option.groupLabel" v-bind="groupLabelAttrs" v-text="option.groupLabel" />
 
           <div
             v-else-if="option.isSubGroup"
@@ -180,19 +173,11 @@ const props = defineProps({
   },
 
   /**
-   * List max height in pixels.
+   * Amount of options you can see without scroll.
    */
-  maxHeight: {
+  visibleOptions: {
     type: Number,
-    default: UIService.get(defaultConfig, UDropdownList).default.maxHeight,
-  },
-
-  /**
-   * List option height in pixels.
-   */
-  optionHeight: {
-    type: Number,
-    default: UIService.get(defaultConfig, UDropdownList).default.optionHeight,
+    default: UIService.get(defaultConfig, UDropdownList).default.visibleOptions,
   },
 
   /**
@@ -216,9 +201,10 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "addOption"]);
 
 const wrapperRef = ref(null);
+const optionsRef = ref([]);
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
-  usePointer(props.options, props.optionHeight, wrapperRef);
+  usePointer(props.options, optionsRef, wrapperRef);
 
 const {
   config,
@@ -240,7 +226,15 @@ const {
 
 const { tm } = useLocale();
 
-defineExpose({ pointerSet, pointerBackward, pointerForward, pointerReset, addPointerElement });
+defineExpose({
+  pointerSet,
+  pointerBackward,
+  pointerForward,
+  pointerReset,
+  addPointerElement,
+  optionsRef,
+  wrapperRef,
+});
 
 const i18nGlobal = tm(UDropdownList);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -249,16 +243,21 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
-const wrapperHeight = computed(() =>
-  props.maxHeight === undefined ? "auto" : `${props.maxHeight}px`,
-);
+const wrapperHeight = computed(() => {
+  const maxHeight = optionsRef.value
+    .slice(0, props.visibleOptions)
+    .map((el) => el.getBoundingClientRect().height)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  return props.visibleOptions === undefined ? "auto" : `${maxHeight}px`;
+});
 
 function onClickAddOption() {
   emit("addOption");
 }
 
 function select(option, key) {
-  if (props.disabled || option.$isDisabled || option.$isLabel) {
+  if (props.disabled || option.groupLabel) {
     return;
   }
 

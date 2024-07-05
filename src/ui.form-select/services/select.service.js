@@ -4,12 +4,15 @@ export default class SelectService {
       ? options
           .filter((option) => this.interpolateLabel(option, label).includes(search))
           .sort((a, b) => {
-            return this.interpolateLabel(a, label).length - this.interpolateLabel(b, label).length;
+            return (
+              this.interpolateLabel(a, label).indexOf(search) -
+              this.interpolateLabel(b, label).indexOf(search)
+            );
           })
       : options;
   }
 
-  static filterGroups(options, search, label, values, groupLabel) {
+  static filterGroups(options, search, label, values, groupLabelKey) {
     return options.map((group) => {
       if (!group[values]) {
         // eslint-disable-next-line no-console
@@ -22,20 +25,17 @@ export default class SelectService {
 
       return groupOptions.length
         ? {
-            [groupLabel]: group[groupLabel],
+            [groupLabelKey]: group[groupLabelKey],
             [values]: groupOptions,
           }
         : [];
     });
   }
 
-  static flattenOptions(options, values, label) {
+  static flattenOptions(options, values, groupLabelKey) {
     return options.reduce((prev, curr) => {
       if (curr[values] && curr[values].length) {
-        prev.push({
-          $groupLabel: curr[label],
-          $isLabel: true,
-        });
+        prev.push({ groupLabel: curr[groupLabelKey] });
 
         return prev.concat(curr[values]);
       }
@@ -51,25 +51,27 @@ export default class SelectService {
     return !opt;
   }
 
-  static removeEmptyGroups(options, groupValues) {
+  static removeEmptyGroups(options, groupValueKey) {
     return options.filter((group) => {
-      return Boolean(group[groupValues].filter((item) => !item.isSubGroup).length);
+      return Boolean(group[groupValueKey].filter((item) => !item.isSubGroup).length);
     });
   }
 
-  static removeSelectedValues(options, groupValues, valueKey, modelValue) {
-    if (!groupValues) {
+  static removeSelectedValues(options, groupValueKey, valueKey, modelValue) {
+    if (!groupValueKey) {
       return options.filter((option) => !modelValue.includes(option[valueKey]));
     }
 
     const availableValues = options.map((group) => {
       return {
         ...group,
-        [groupValues]: group[groupValues].filter((item) => !modelValue.includes(item[valueKey])),
+        [groupValueKey]: group[groupValueKey].filter(
+          (item) => !modelValue.includes(item[valueKey]),
+        ),
       };
     });
 
-    return this.removeEmptyGroups(availableValues, groupValues);
+    return this.removeEmptyGroups(availableValues, groupValueKey);
   }
 
   static interpolateLabel(option, label) {
@@ -78,17 +80,17 @@ export default class SelectService {
     return label ? option[label] : option;
   }
 
-  static getGroupOption(item, options, groupValues, valueKey) {
+  static getGroupOption(item, options, groupValueKey, valueKey) {
     const groupOptions = options.find((option) =>
-      option[groupValues]?.find((value) => value[valueKey] === item),
+      option[groupValueKey]?.find((value) => value[valueKey] === item),
     );
 
-    return groupOptions?.[groupValues].find((value) => value[valueKey] === item);
+    return groupOptions?.[groupValueKey].find((value) => value[valueKey] === item);
   }
 
-  static getCurrentOption(item, options, groupValues, valueKey) {
-    if (groupValues) {
-      return this.getGroupOption(item, options, groupValues, valueKey);
+  static getCurrentOption(item, options, groupValueKey, valueKey) {
+    if (groupValueKey) {
+      return this.getGroupOption(item, options, groupValueKey, valueKey);
     }
 
     const value = item[valueKey] || item;
