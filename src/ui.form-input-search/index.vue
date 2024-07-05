@@ -5,14 +5,13 @@
     v-model="search"
     :size="size"
     :disabled="disabled"
-    :description="description"
+    :label-align="labelAlign"
     :label="label"
     :error="error"
+    :description="description"
     :placeholder="placeholder"
-    :type="search"
-    :input-mode="search"
+    inputmode="search"
     :data-cy="dataCy"
-    :label-align="labelAlign"
     v-bind="inputAttrs"
     @keyup.enter="onClickSearch"
   >
@@ -62,7 +61,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
@@ -179,12 +178,17 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "clear", "search"]);
 
+const localValue = ref("");
+
 const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs, hasSlotContent } =
   useAttrs(props);
 
 const search = computed({
   get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  set: (value) => {
+    localValue.value = value;
+    emit("update:modelValue", value);
+  },
 });
 
 const iconSize = computed(() => {
@@ -203,7 +207,7 @@ function onClickClear() {
 }
 
 function onClickSearch() {
-  if (!search.value) return;
-  emit("search", search.value);
+  if (!localValue.value) return;
+  emit("search", localValue.value);
 }
 </script>
