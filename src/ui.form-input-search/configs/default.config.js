@@ -8,9 +8,9 @@ export default /*tw*/ {
   },
   closeIcon: "flex h-full items-center mr-2",
   closeIconName: "close",
-  searchIcon: "mr-2",
+  searchIcon: "mr-3",
   searchIconName: "search",
-  button: "",
+  button: "rounded-l-none ml-1 !ring-0 outline outline-1 outline-gray-900",
   defaultVariants: {
     size: "md",
     labelAlign: "topInside",

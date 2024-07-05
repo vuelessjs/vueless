@@ -44,7 +44,7 @@ const SlotTemplate = (args) => ({
   },
   template: `
     <UInputSearch v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || ""}
     </UInputSearch>
   `,
 });
@@ -74,7 +74,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const searchButton = DefaultTemplate.bind({});
-searchButton.args = { searchButton: true, text: "Search" };
+searchButton.args = { searchButtonLabel: "Search" };
 
 export const sizes = SizesTemplate.bind({});
 sizes.args = {};
@@ -87,6 +87,7 @@ slotLeft.args = {
         label="filter"
         variant="thirdary"
         filled
+        class="rounded-r-none !ring-0"
       />
     </template>
   `,

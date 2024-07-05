@@ -25,38 +25,38 @@
       <!-- @slot Use it to add something before text. -->
       <slot name="right" />
 
-      <UButton
-        v-if="searchButton && !hasSlotContent($slots['right'])"
-        :label="text"
-        v-bind="buttonAttrs"
-        :data-cy="`${dataCy}-right`"
-        @click="onClickSearch"
-      />
-    </template>
+      <template v-if="!hasSlotContent($slots['right'])">
+        <UIcon
+          internal
+          interactive
+          color="gray"
+          :name="config.closeIconName"
+          :data-cy="`${dataCy}-close`"
+          :size="iconSize"
+          v-bind="closeIconAttrs"
+          @click="onClickClear"
+        />
 
-    <template #right-icon>
-      <UIcon
-        internal
-        interactive
-        color="gray"
-        :name="config.closeIconName"
-        :data-cy="`${dataCy}-close`"
-        :size="iconSize"
-        v-bind="closeIconAttrs"
-        @click="onClickClear"
-      />
+        <UButton
+          v-if="searchButtonLabel"
+          :label="searchButtonLabel"
+          v-bind="buttonAttrs"
+          :data-cy="`${dataCy}-right`"
+          @click="onClickSearch"
+        />
 
-      <UIcon
-        v-if="!searchButton"
-        internal
-        interactive
-        :size="iconSize"
-        color="grayscale"
-        :name="config.searchIconName"
-        :data-cy="`${dataCy}-search`"
-        v-bind="searchIconAttrs"
-        @click="onClickSearch"
-      />
+        <UIcon
+          v-else
+          internal
+          interactive
+          :size="iconSize"
+          color="grayscale"
+          :name="config.searchIconName"
+          :data-cy="`${dataCy}-search`"
+          v-bind="searchIconAttrs"
+          @click="onClickSearch"
+        />
+      </template>
     </template>
   </UInput>
 </template>
@@ -78,7 +78,7 @@ defineOptions({ name: "UInputSearch" });
 
 const props = defineProps({
   /**
-   * Set component value.
+   * Search input value.
    */
   modelValue: {
     type: String,
@@ -86,62 +86,12 @@ const props = defineProps({
   },
 
   /**
-   * Set input size.
+   * Input size.
    * @values sm, md, lg
    */
   size: {
     type: String,
     default: UIService.get(defaultConfig, UInputSearch).default.size,
-  },
-
-  /**
-   * Generates unique element id.
-   * @ignore
-   */
-  id: {
-    type: String,
-    default: () => getRandomId(),
-  },
-
-  /**
-   * Set input disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputSearch).default.disabled,
-  },
-
-  /**
-   * Search button text..
-   */
-  text: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Show / hide search button.
-   */
-  searchButton: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputSearch).default.searchButton,
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: UIService.get(defaultConfig, UInputSearch).default.labelAlign,
   },
 
   /**
@@ -153,9 +103,26 @@ const props = defineProps({
   },
 
   /**
+   * Label placement.
+   * @values top, topInside, topWithDesc, bottom, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UInputSearch).default.labelAlign,
+  },
+
+  /**
    * Input label.
    */
   label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Input description.
+   */
+  description: {
     type: String,
     default: "",
   },
@@ -169,7 +136,32 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Search button label.
+   */
+  searchButtonLabel: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Set input disabled.
+   */
+  disabled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputSearch).default.disabled,
+  },
+
+  /**
+   * Unique element id.
+   * @ignore
+   */
+  id: {
+    type: String,
+    default: () => getRandomId(),
+  },
+
+  /**
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -177,7 +169,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
