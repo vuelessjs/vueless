@@ -53,7 +53,7 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     type: "text",
-    inputMode: "text",
+    inputmode: "text",
     rows: "2",
     labelAlign: "topInside",
     error: false,

@@ -27,11 +27,10 @@
         v-model="localValue"
         :value="modelValue"
         :placeholder="placeholder"
-        :type="type"
         :readonly="readonly"
         :disabled="disabled"
         :rows="rows"
-        :inputmode="inputMode"
+        :inputmode="inputmode"
         :data-cy="dataCy"
         v-bind="textareaAttrs"
         @focus="onFocus"
@@ -130,21 +129,12 @@ const props = defineProps({
   },
 
   /**
-   * Set input type.
-   * @values text, number, email, tel, password, url
-   */
-  type: {
-    type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.type,
-  },
-
-  /**
    * Set proper keyboard on mobile devices.
-   * @values text, none, decimal, tel, numeric, search, email, url,
+   * @values text, decimal, numeric, tel, email, url, search, none
    */
-  inputMode: {
+  inputmode: {
     type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.inputMode,
+    default: UIService.get(defaultConfig, UTextarea).default.inputmode,
   },
 
   /**

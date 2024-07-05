@@ -32,7 +32,7 @@
           :readonly="readonly"
           :disabled="disabled"
           :maxlength="maxLength"
-          :inputmode="inputMode"
+          :inputmode="inputmode"
           :data-cy="dataCy"
           v-bind="inputAttrs"
           @focus="onFocus"
@@ -181,8 +181,8 @@ const props = defineProps({
   },
 
   /**
-   * Input type.
-   * @values text, number, email, tel, password, url
+   * Input type
+   * @values text, number, tel, email, url, search, password
    */
   type: {
     type: String,
@@ -191,12 +191,12 @@ const props = defineProps({
   },
 
   /**
-   * Input mode (to show different mobile keyboard).
-   * @values none, text, decimal, numeric, tel, email, url
+   * Set proper keyboard on mobile devices.
+   * @values text, decimal, numeric, tel, email, url, search, none
    */
-  inputMode: {
+  inputmode: {
     type: String,
-    default: UIService.get(defaultConfig, UInput).default.inputMode,
+    default: UIService.get(defaultConfig, UInput).default.inputmode,
   },
 
   /**

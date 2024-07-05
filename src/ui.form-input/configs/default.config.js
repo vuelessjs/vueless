@@ -56,7 +56,7 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     type: "text",
-    inputMode: "text",
+    inputmode: "text",
     error: false,
     readonly: false,
     disabled: false,
