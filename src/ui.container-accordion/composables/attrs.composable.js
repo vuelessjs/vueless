@@ -6,10 +6,9 @@ import defaultConfig from "../configs/default.config";
 const componentKeys = ["icon", "divider"];
 
 export function useAttrs(props, { isOpened }) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
   const attrs = {};
 
-  // New approach of defining attrs dynamically (need to test).
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -33,5 +32,6 @@ export function useAttrs(props, { isOpened }) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }
