@@ -21,11 +21,11 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAccordion
-      v-bind="args"
       name="Excellence"
       title="Excellence by necessity"
       description="As creators and maintainers of the technologies you are using,
             our services are here to showcase the full power of our softwares."
+      v-bind="args"
     />
     <UAccordion
       v-bind="args"

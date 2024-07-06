@@ -212,6 +212,23 @@ export default class UIService {
   setColor(classes, color) {
     return classes?.replaceAll("{color}", color);
   }
+
+  /**
+   Check is config key not contains classes or CVA config object.
+   @param { String } key
+   @returns { Boolean }
+   */
+  isSystemKey(key) {
+    return (
+      key === "i18n" ||
+      key === "strategy" ||
+      key === "safelist" ||
+      key === "safelistColors" ||
+      key === "defaultVariants" ||
+      key.includes("iconName") ||
+      key.includes("IconName")
+    );
+  }
 }
 
 export const {
@@ -222,6 +239,7 @@ export const {
   setFavicon,
   setBrandColor,
   convertHexInRgb,
+  isSystemKey,
   isMac,
   isPWA,
   isIOS,
