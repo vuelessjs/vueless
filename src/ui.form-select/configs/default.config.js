@@ -62,7 +62,9 @@ export default /*tw*/ {
   removeItemIcon: "",
   removeItemIconName: "close_small",
   caretRemoveItem: "flex items-center",
+  caretClear: "",
   caretClearText: {
+    // TODO: caretClearMultiple is better
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
       { size: "sm", class: "text-sm" },
