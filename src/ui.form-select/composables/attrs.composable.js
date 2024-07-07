@@ -1,12 +1,13 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva, cx, isSystemKey } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-const componentKeys = ["dropdownList", "toggleIcon", "clearIcon", "removeItemIcon", "label"];
-
 export default function useAttrs(props, { isTop, isOpen, selectedLabel: selectedLabelValue }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const attrs = {};
 
   const caretClasses = computed(() =>
@@ -35,7 +36,7 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
       );
     }
 
-    attrs[`${key}Attrs`] = getAttrs(key, { classes, isComponent: componentKeys.includes(key) });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "wrapper") {
       const wrapperAttrs = attrs[`${key}Attrs`];

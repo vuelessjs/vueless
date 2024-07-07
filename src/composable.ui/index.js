@@ -8,13 +8,33 @@ import {
   Text,
   Fragment,
 } from "vue";
-import { cx, globalComponentConfig, strategy, getColor, setColor } from "../service.ui";
+
+import {
+  cx,
+  setColor,
+  getColor,
+  strategy,
+  nestedComponentRegEx,
+  globalComponentConfig,
+} from "../service.ui";
+
 import { cloneDeep } from "../service.helper";
 
-const strategyType = {
+const STRATEGY_TYPE = {
   merge: "merge",
   replace: "replace",
   overwrite: "overwrite",
+};
+
+const SYSTEM_CONFIG_KEY = {
+  i18n: "i18n",
+  strategy: "strategy",
+  safelist: "safelist",
+  safelistColors: "safelistColors",
+  defaultVariants: "defaultVariants",
+  compoundVariants: "compoundVariants",
+  iconNameCapitalize: "IconName",
+  iconName: "iconName",
 };
 
 /**
@@ -28,8 +48,8 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
   const { name: componentName } = getCurrentInstance().type;
   const globalConfig = globalComponentConfig[componentName];
 
-  const isStrategyValid = strategy && Object.values(strategyType).includes(strategy);
-  const vuelessStrategy = isStrategyValid ? strategy : strategyType.merge;
+  const isStrategyValid = strategy && Object.values(STRATEGY_TYPE).includes(strategy);
+  const vuelessStrategy = isStrategyValid ? strategy : STRATEGY_TYPE.merge;
 
   const [firstClassKey] = Object.keys(defaultConfig);
   const config = ref({});
@@ -50,7 +70,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
   function getAttrs(configKey, options) {
     const cvaClasses = options?.classes || "";
-    const isComponent = options?.isComponent;
+    const nestedComponent = options?.isComponent || getNestedComponent(defaultConfig[configKey]); // TODO: Remove `options?.isComponent` when all `attrs.composable.js` will be migranted
 
     const attrs = useAttrs();
     const isDev = import.meta.env.DEV;
@@ -60,7 +80,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
       ...attrs,
       component: isDev ? attrs.component || componentName || null : null,
       "config-key": isDev ? attrs["config-key"] || configKey || null : null,
-      "child-component": isDev && attrs.component ? componentName : null,
+      "child-component": isDev && attrs.component ? nestedComponent || componentName : null,
       "child-config-key": isDev && attrs.component ? configKey : null,
     };
 
@@ -78,7 +98,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
 
-      const attrClass = isTopLevelClassKey && !isComponent ? attrs.class : "";
+      const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
       const configKeyClass = isObject ? configKeyValue.base : configKeyValue;
 
       vuelessAttrs.value = {
@@ -96,6 +116,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     getAttrs,
     getColor,
     setColor,
+    isSystemKey,
     hasSlotContent,
   };
 }
@@ -114,18 +135,18 @@ function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStra
 
   const strategy =
     !globalConfig && !propsConfig
-      ? strategyType.merge
+      ? STRATEGY_TYPE.merge
       : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
 
-  if (strategy === strategyType.merge) {
+  if (strategy === STRATEGY_TYPE.merge) {
     return mergeConfigs({ defaultConfig, globalConfig, propsConfig });
   }
 
-  if (strategy === strategyType.replace) {
+  if (strategy === STRATEGY_TYPE.replace) {
     return mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
   }
 
-  if (strategy === strategyType.overwrite) {
+  if (strategy === STRATEGY_TYPE.overwrite) {
     const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
     const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
 
@@ -173,18 +194,29 @@ function mergeConfigs({
     }
   }
 
+  const {
+    i18n,
+    strategy,
+    safelist,
+    safelistColors,
+    defaultVariants,
+    compoundVariants,
+    iconNameCapitalize,
+    iconName,
+  } = SYSTEM_CONFIG_KEY;
+
   for (let key in composedConfig) {
     if (isGlobalConfig || isPropsConfig) {
-      if (key === "strategy") {
+      if (key === strategy) {
         config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
-      } else if (key === "safelist" || key === "safelistColors") {
+      } else if (key === safelist || key === safelistColors) {
         if (propsConfig[key]) {
           // eslint-disable-next-line no-console
           console.warn(`Passing '${key}' key by 'config' prop is not allowed.`);
         }
-      } else if (key === "defaultVariants") {
+      } else if (key === defaultVariants) {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
-      } else if (key === "compoundVariants") {
+      } else if (key === compoundVariants) {
         config[key] = mergeCompoundVariants({
           defaultConfig: composedConfig,
           globalConfig,
@@ -199,8 +231,8 @@ function mergeConfigs({
 
         const isObject = isObjectComposedConfig || isObjectGlobalConfig || isObjectPropsConfig;
         const isEmpty = composedConfig[key] === null;
-        const isIconName = /^.*(iconName|IconName)$/.test(key);
-        const isI18n = key === "i18n";
+        const isIconName = key.includes(iconName) || key.includes(iconNameCapitalize);
+        const isI18n = key === i18n;
 
         config[key] =
           isObject && !isEmpty && !isI18n
@@ -325,6 +357,27 @@ function mergeClassesIntoConfig(config, topLevelClassKey, attrs) {
   }
 
   return config;
+}
+
+/**
+ Check is config key contains component name and if contains return it.
+ @param { String | Object } value
+ @returns { String }
+ */
+function getNestedComponent(value) {
+  const classes = typeof value === "object" ? value.base || "" : value || "";
+  const match = classes.match(nestedComponentRegEx);
+
+  return match ? match[1] : "";
+}
+
+/**
+ Check is config key not contains classes or CVA config object.
+ @param { String } key
+ @returns { Boolean }
+ */
+function isSystemKey(key) {
+  return Object.values(SYSTEM_CONFIG_KEY).some((value) => value.includes(key));
 }
 
 /**

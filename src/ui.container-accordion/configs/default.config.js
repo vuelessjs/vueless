@@ -24,10 +24,10 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "",
+  icon: "{UIcon}",
   expandIconName: "add",
   collapseIconName: "remove",
-  divider: "group-last:hidden",
+  divider: "{UDivider} group-last:hidden",
   defaultVariants: {
     size: "md",
   },

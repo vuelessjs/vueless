@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "w-full relative",
+  label: "{ULabel} w-full relative",
   wrapper: {
     base: `
       pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -55,11 +55,11 @@ export default /*tw*/ {
   beforeCaretSlot: "",
   afterCaretSlot: "mr-3",
   caretToggle: "mr-3",
-  toggleIcon: "transform transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: "{UIcon} transform transition duration-300 group-[]/active:rotate-180",
   toggleIconName: "expand_more",
-  clearIcon: "",
+  clearIcon: "{UIcon}",
   clearIconName: "close_small",
-  removeItemIcon: "",
+  removeItemIcon: "{UIcon}",
   removeItemIconName: "close_small",
   caretRemoveItem: "flex items-center",
   caretClear: "",
@@ -112,7 +112,7 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-lg" },
     ],
   },
-  dropdownList: "group-[]/top:bottom-full group-[]/top:top-auto top-full",
+  dropdownList: "{UDropdownList} group-[]/top:bottom-full group-[]/top:top-auto top-full",
   i18n: {
     listIsEmpty: "List is empty.",
     noDataToShow: "No data to show.",

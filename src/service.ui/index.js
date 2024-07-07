@@ -16,8 +16,12 @@ const [vuelessConfig] = Object.values(
   import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
 );
 
+export const nestedComponentRegEx = /\{U[^}]*}/g;
+
 /*
-  Export cva (class variance authority) methods extended with tailwind-merge.
+  Export cva (class variance authority) methods:
+   * extended with tailwind-merge
+   * remove all Vueless nested component names ({U...} strings) from class list string.
   It helps to make class variation switchers and removes class duplications.
   https://beta.cva.style
 */
@@ -26,7 +30,7 @@ export const {
   cx,
   compose,
 } = defineConfig({
-  hooks: { onComplete: (className) => twMerge(className) },
+  hooks: { onComplete: (className) => twMerge(className).replace(nestedComponentRegEx, "") },
 });
 
 export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
@@ -211,23 +215,6 @@ export default class UIService {
    */
   setColor(classes, color) {
     return classes?.replaceAll("{color}", color);
-  }
-
-  /**
-   Check is config key not contains classes or CVA config object.
-   @param { String } key
-   @returns { Boolean }
-   */
-  isSystemKey(key) {
-    return (
-      key === "i18n" ||
-      key === "strategy" ||
-      key === "safelist" ||
-      key === "safelistColors" ||
-      key === "defaultVariants" ||
-      key.includes("iconName") ||
-      key.includes("IconName")
-    );
   }
 }
 

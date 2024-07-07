@@ -1,12 +1,13 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva, isSystemKey } from "../../service.ui";
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-const componentKeys = ["icon", "divider"];
-
 export function useAttrs(props, { isOpened }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const attrs = {};
 
   for (const key in defaultConfig) {
@@ -26,7 +27,7 @@ export function useAttrs(props, { isOpened }) {
       );
     }
 
-    attrs[`${key}Attrs`] = getAttrs(key, { classes, isComponent: componentKeys.includes(key) });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
   }
 
   return {
