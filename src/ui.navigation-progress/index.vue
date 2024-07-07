@@ -1,12 +1,14 @@
 <template>
   <div v-bind="wrapperAttrs">
-    <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
-      <slot name="indicator" :percent="progressPercent" :value="value" :max="realMax">
-        {{ progressPercent }}
-      </slot>
-    </div>
+    <template v-if="isVariant.progress">
+      <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
+        <slot name="indicator" :percent="progressPercent" :value="value" :max="realMax">
+          {{ progressPercent }}
+        </slot>
+      </div>
 
-    <progress v-bind="progressAttrs" :max="realMax" :value="value" />
+      <progress v-bind="progressAttrs" :max="realMax" :value="value" />
+    </template>
 
     <div v-if="isSteps" v-bind="stepAttrs(!value && config.firstStep)">
       <template v-for="(step, index) in max" :key="index">
@@ -21,6 +23,17 @@
         </slot>
       </template>
     </div>
+
+    <template v-if="isVariant.stepper">
+      <StepperProgress
+        v-bind="stepperAttrs"
+        :color="color"
+        :max="realMax"
+        :value="value"
+        :data-cy="dataCy"
+        :progress-percent="progressPercent"
+      />
+    </template>
   </div>
 </template>
 
@@ -31,7 +44,9 @@ import UIService from "../service.ui";
 import { useAttrs } from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";
-import { UProgress } from "./constants";
+import { UProgress, VARIANT } from "./constants";
+
+import StepperProgress from "./components/StepperProgress.vue";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UProgress", inheritAttrs: false });
@@ -73,15 +88,33 @@ const props = defineProps({
   },
 
   /**
+   * Progress variant.
+   * @values stepper, progress
+   */
+  variant: {
+    type: String,
+    default: UIService.get(defaultConfig, UProgress).default.variant,
+  },
+
+  /**
    * Progress indicator visibility.
    */
   indicator: {
     type: Boolean,
     default: UIService.get(defaultConfig, UProgress).default.indicator,
   },
+
+  /**
+   * Sets data-cy attribute for automated testing.
+   */
+  dataCy: {
+    type: String,
+    default: "",
+  },
 });
 
-const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, config } = useAttrs(props);
+const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs, config } =
+  useAttrs(props);
 
 const isSteps = computed(() => Array.isArray(props.max));
 
@@ -93,7 +126,21 @@ const realMax = computed(() => {
   return Number(props.max);
 });
 
-const progressPercent = computed(() => `${(props.value / realMax.value) * 100}%`);
+const isVariant = computed(() => ({
+  stepper: props.variant === VARIANT.stepper,
+  progress: props.variant === VARIANT.progress,
+}));
+
+const progressPercent = computed(() => {
+  const maxPercent = 100;
+  const currentPercent = (props.value / realMax.value) * maxPercent;
+
+  if (isVariant.value.progress) {
+    return `${currentPercent}%`;
+  }
+
+  return `${currentPercent} ${maxPercent}`;
+});
 
 function isActiveStep(index) {
   return index + 1 == props.value;

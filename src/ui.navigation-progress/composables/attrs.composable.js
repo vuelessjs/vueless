@@ -6,7 +6,19 @@ import { computed } from "vue";
 
 export function useAttrs(props) {
   const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { progress, indicator, step } = config.value;
+  const { progress, indicator, step, wrapper, stepper } = config.value;
+
+  const cvaStepper = cva({
+    base: stepper.base,
+    variants: stepper.variants,
+    compoundVariants: stepper.compoundVariants,
+  });
+
+  const cvaWrapper = cva({
+    base: wrapper.base,
+    variants: wrapper.variants,
+    compoundVariants: wrapper.compoundVariants,
+  });
 
   const cvaProgress = cva({
     base: progress.base,
@@ -51,15 +63,25 @@ export function useAttrs(props) {
       cvaStep({
         size: props.size,
         color: getColor(props.color),
+        variant: props.variant,
       }),
       props.color,
     ),
   );
 
-  const wrapperAttrs = getAttrs("wrapper");
+  const stepperClasses = computed(() => cvaStepper({ size: props.size }));
+
+  const wrapperClasses = computed(() => cvaWrapper({ variant: props.variant }));
+
+  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
   const indicatorAttrs = getAttrs("indicator", { classes: indicatorClasses });
   const progressAttrs = getAttrs("progress", { classes: progressClasses });
   const stepAttrsRaw = getAttrs("step", { classes: stepClasses });
+  const stepperAttrs = getAttrs("stepper", { classes: stepperClasses, isComponent: true });
+  const stepperRingAttrs = getAttrs("stepperRing");
+  const stepperCountAttrs = getAttrs("stepperCount");
+  const stepperGradientAttrs = getAttrs("stepperGradient");
+  const stepperSvgAttrs = getAttrs("stepperSvg");
 
   const stepAttrs = computed(() => (classes) => ({
     ...stepAttrsRaw.value,
@@ -71,6 +93,11 @@ export function useAttrs(props) {
     wrapperAttrs,
     indicatorAttrs,
     stepAttrs,
+    stepperAttrs,
+    stepperRingAttrs,
+    stepperCountAttrs,
+    stepperGradientAttrs,
+    stepperSvgAttrs,
     config,
   };
 }
