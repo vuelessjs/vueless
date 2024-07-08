@@ -33,7 +33,7 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "flex px-4 min-h-full w-full overflow-hidden",
+    base: "flex px-4 min-h-full w-full overflow-hidden justify-between",
     variants: {
       multiple: {
         true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",

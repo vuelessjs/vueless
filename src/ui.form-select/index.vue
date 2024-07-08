@@ -68,6 +68,16 @@
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
+        <span
+          v-if="hasSlotContent($slots['icon-left']) || iconLeft"
+          ref="leftSlotWrapperRef"
+          v-bind="leftSlotAttrs"
+        >
+          <!-- @slot Use it to add icon before option. -->
+          <slot name="icon-left">
+            <UIcon v-if="iconLeft" :name="iconLeft" />
+          </slot>
+        </span>
         <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!-- @slot Use it to add selected value label. -->
@@ -155,6 +165,13 @@
           @click.prevent.capture
           v-text="currentLocale.clear"
         />
+
+        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightSlotAttrs">
+          <!-- @slot Use it to add icon after option. -->
+          <slot name="icon-right">
+            <UIcon v-if="iconRight" :name="iconRight" />
+          </slot>
+        </span>
       </div>
 
       <UDropdownList
@@ -409,6 +426,22 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits([
@@ -463,6 +496,7 @@ const {
   wrapperAttrs,
   innerWrapperAttrs,
   leftSlotAttrs,
+  rightSlotAttrs,
   beforeCaretSlotAttrs,
   afterCaretSlotAttrs,
   caretToggleAttrs,
@@ -699,7 +733,13 @@ function removeElement(option, shouldClose = true) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
+  if (
+    props.labelAlign === "top" ||
+    !hasSlotContent(slots["left"]) ||
+    (!hasSlotContent(slots["icon-left"]) && !props.iconLeft)
+  ) {
+    return;
+  }
 
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
   const innerWrapperPaddingLeft = parseInt(

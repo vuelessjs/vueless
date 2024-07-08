@@ -3,6 +3,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
 import UBadge from "../ui.text-badge";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)
@@ -170,7 +171,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { USelect },
+  components: { USelect, UIcon },
   setup() {
     return { args };
   },
@@ -337,6 +338,34 @@ slotBeforeOption.args = {
   slotTemplate: `
     <template #before-option>
        🤘
+    </template>
+  `,
+};
+
+export const iconLeft = DefaultTemplate.bind({});
+iconLeft.args = {
+  iconLeft: "star",
+};
+
+export const iconRight = DefaultTemplate.bind({});
+iconRight.args = {
+  iconRight: "star",
+};
+
+export const iconLeftSlot = SlotTemplate.bind({});
+iconLeftSlot.args = {
+  slotTemplate: `
+    <template #icon-left>
+      🥸
+    </template>
+  `,
+};
+
+export const iconRightSlot = SlotTemplate.bind({});
+iconRightSlot.args = {
+  slotTemplate: `
+    <template #icon-right>
+      🥸
     </template>
   `,
 };
