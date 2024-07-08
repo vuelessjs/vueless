@@ -163,7 +163,7 @@ iconRight.args = {
 export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
-    <template #left>
+    <template #icon-left>
       🥸
     </template>
   `,
@@ -172,7 +172,7 @@ iconLeftSlot.args = {
 export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
-    <template #right>
+    <template #icon-right>
       🥸
     </template>
   `,

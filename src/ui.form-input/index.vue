@@ -12,12 +12,12 @@
   >
     <label :for="id" v-bind="blockAttrs">
       <span
-        v-if="hasSlotContent($slots['left']) || iconLeft"
+        v-if="hasSlotContent($slots['icon-left']) || iconLeft"
         ref="leftSlotWrapper"
         v-bind="leftSlotAttrs"
       >
         <!-- @slot Use it to add icon before text. -->
-        <slot name="left">
+        <slot name="icon-left">
           <UIcon v-if="iconLeft" :name="iconLeft" />
         </slot>
       </span>
@@ -57,9 +57,9 @@
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['right']) || iconRight" v-bind="rightSlotAttrs">
+      <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightSlotAttrs">
         <!-- @slot Use it to add icon after text. -->
-        <slot name="right">
+        <slot name="icon-right">
           <UIcon v-if="iconRight" :name="iconRight" />
         </slot>
       </span>
@@ -376,7 +376,9 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.iconLeft)) return;
+  if (props.labelAlign === "top" || (!hasSlotContent(slots["icon-left"]) && !props.iconLeft)) {
+    return;
+  }
 
   let leftSlotOrIconWidth = 0;
 
