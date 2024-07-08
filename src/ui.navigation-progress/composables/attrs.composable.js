@@ -5,99 +5,49 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { progress, indicator, step, wrapper, stepper } = config.value;
-
-  const cvaStepper = cva({
-    base: stepper.base,
-    variants: stepper.variants,
-    compoundVariants: stepper.compoundVariants,
-  });
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const cvaProgress = cva({
-    base: progress.base,
-    variants: progress.variants,
-    compoundVariants: progress.compoundVariants,
-  });
-
-  const cvaIndicator = cva({
-    base: indicator.base,
-    variants: indicator.variants,
-    compoundVariants: indicator.compoundVariants,
-  });
-
-  const cvaStep = cva({
-    base: step.base,
-    variants: step.variants,
-    compoundVariants: step.compoundVariants,
-  });
-
-  const progressClasses = computed(() =>
-    setColor(
-      cvaProgress({
-        size: props.size,
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
+  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const indicatorClasses = computed(() =>
-    setColor(
-      cvaIndicator({
-        size: props.size,
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const stepClasses = computed(() =>
-    setColor(
-      cvaStep({
-        size: props.size,
-        color: getColor(props.color),
-        variant: props.variant,
-      }),
-      props.color,
-    ),
-  );
+    let classes = "";
+    let value = config.value[key];
 
-  const stepperClasses = computed(() => cvaStepper({ size: props.size }));
+    const isVariants = value.variants || value.compoundVariants;
+    const excludeKeys = ["progress", "indicator", "step"];
 
-  const wrapperClasses = computed(() => cvaWrapper({ variant: props.variant }));
+    if (isVariants && !excludeKeys.includes(key)) {
+      const getCVA = cva(value);
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const indicatorAttrs = getAttrs("indicator", { classes: indicatorClasses });
-  const progressAttrs = getAttrs("progress", { classes: progressClasses });
-  const stepAttrsRaw = getAttrs("step", { classes: stepClasses });
-  const stepperAttrs = getAttrs("stepper", { classes: stepperClasses, isComponent: true });
-  const stepperRingAttrs = getAttrs("stepperRing");
-  const stepperCountAttrs = getAttrs("stepperCount");
-  const stepperGradientAttrs = getAttrs("stepperGradient");
-  const stepperSvgAttrs = getAttrs("stepperSvg");
+      classes = computed(() => getCVA({ ...props }));
+    }
 
-  const stepAttrs = computed(() => (classes) => ({
-    ...stepAttrsRaw.value,
-    class: cx([stepAttrsRaw.value.class, classes]),
-  }));
+    if (isVariants && excludeKeys.includes(key)) {
+      const getCVA = cva(value);
+
+      classes = computed(() =>
+        setColor(getCVA({ ...props, color: getColor(props.color) }), props.color),
+      );
+    }
+
+    if (key === "step") {
+      const stepAttrsRaw = getAttrs("step", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => (classes) => ({
+        ...stepAttrsRaw.value,
+        class: cx([stepAttrsRaw.value.class, classes]),
+      }));
+    } else {
+      attrs[`${key}Attrs`] = getAttrs(key, { classes });
+    }
+  }
 
   return {
-    progressAttrs,
-    wrapperAttrs,
-    indicatorAttrs,
-    stepAttrs,
-    stepperAttrs,
-    stepperRingAttrs,
-    stepperCountAttrs,
-    stepperGradientAttrs,
-    stepperSvgAttrs,
+    ...attrs,
     config,
   };
 }

@@ -130,7 +130,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Variant = StepsTemplate.bind({});
-Variant.args = { variant: "stepper", stepperTitle: "Title" };
+Variant.args = { variant: "stepper" };
 
 export const Indicator = DefaultTemplate.bind({});
 Indicator.args = { indicator: true };

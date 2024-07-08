@@ -24,16 +24,15 @@
       </template>
     </div>
 
-    <template v-if="isVariant.stepper">
-      <StepperProgress
-        v-bind="stepperAttrs"
-        :color="color"
-        :max="realMax"
-        :value="value"
-        :data-cy="dataCy"
-        :progress-percent="progressPercent"
-      />
-    </template>
+    <StepperProgress
+      v-if="isVariant.stepper"
+      v-bind="stepperAttrs"
+      :color="color"
+      :max="realMax"
+      :value="value"
+      :data-cy="dataCy"
+      :progress-percent="progressPercent"
+    />
   </div>
 </template>
 

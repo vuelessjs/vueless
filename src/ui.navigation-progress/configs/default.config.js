@@ -22,7 +22,7 @@ export default /*tw*/ {
       },
     },
   },
-  stepperRing: "stroke-current text-gray-100",
+  stepperCircle: "stroke-current text-gray-100",
   stepperCount: "text-xl font-bold text-gray-900 translate-y-2 transform",
   stepperGradient: "",
   stepperSvg: "",

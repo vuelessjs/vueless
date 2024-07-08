@@ -2,8 +2,8 @@
   <svg width="100%" height="100%" viewBox="0 0 40 40" v-bind="stepperSvgAttrs">
     <defs>
       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%" v-bind="stepperGradientAttrs">
-        <stop offset="0%" :stop-color="setStepperColor" />
-        <stop offset="100%" :stop-color="setStepperColor" />
+        <stop offset="0%" :stop-color="stepperColor" />
+        <stop offset="100%" :stop-color="stepperColor" />
       </linearGradient>
     </defs>
 
@@ -13,7 +13,7 @@
       r="15.91549430918954"
       fill="transparent"
       stroke-width="4"
-      v-bind="stepperRingAttrs"
+      v-bind="stepperCircleAttrs"
     />
 
     <circle
@@ -36,6 +36,7 @@
 
 <script setup>
 import colors from "tailwindcss/colors";
+import { computed } from "vue";
 
 import { GRAY_COLORS } from "../../preset.tailwind/constants";
 
@@ -73,14 +74,14 @@ const props = defineProps({
   },
 });
 
-const { stepperRingAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
+const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
   useAttrs(props);
 
-function setStepperColor() {
+const stepperColor = computed(() => {
   return colors[props.color]
     ? colors[props.color][500]
     : GRAY_COLORS.includes(props.color)
       ? colors[props.color][900]
       : colors.zinc[900];
-}
+});
 </script>
