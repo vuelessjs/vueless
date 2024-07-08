@@ -166,7 +166,7 @@
           v-text="currentLocale.clear"
         />
 
-        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightSlotAttrs">
+        <span v-if="hasSlotContent($slots['icon-right']) || iconRight">
           <!-- @slot Use it to add icon after option. -->
           <slot name="icon-right">
             <UIcon v-if="iconRight" :name="iconRight" />
@@ -496,7 +496,6 @@ const {
   wrapperAttrs,
   innerWrapperAttrs,
   leftSlotAttrs,
-  rightSlotAttrs,
   beforeCaretSlotAttrs,
   afterCaretSlotAttrs,
   caretToggleAttrs,
