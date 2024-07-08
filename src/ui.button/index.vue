@@ -15,7 +15,7 @@
 
     <template v-else>
       <!-- @slot Use it to add icon before text. -->
-      <slot name="left">
+      <slot name="icon-left">
         <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
       </slot>
 
@@ -24,7 +24,7 @@
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
       <!-- @slot Use it to add icon after text. -->
-      <slot name="right">
+      <slot name="icon-right">
         <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
       </slot>
     </template>
