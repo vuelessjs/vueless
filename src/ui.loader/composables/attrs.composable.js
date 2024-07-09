@@ -47,5 +47,6 @@ export function useAttrs(props) {
   return {
     loaderAttrs,
     ellipseAttrs,
+    config,
   };
 }
