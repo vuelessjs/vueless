@@ -171,6 +171,22 @@ const props = defineProps({
   },
 
   /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
+
+  /**
    * Maximum character length.
    */
   maxLength: {
@@ -252,22 +268,6 @@ const props = defineProps({
    * Data-cy attribute for automated testing.
    */
   dataCy: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Left side icon name.
-   */
-  iconLeft: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right side icon name.
-   */
-  iconRight: {
     type: String,
     default: "",
   },
