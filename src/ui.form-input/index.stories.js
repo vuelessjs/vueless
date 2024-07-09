@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import UInput from "../ui.form-input";
 import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
 import UGroup from "../ui.container-group";
 import URow from "../ui.container-row";
 
@@ -40,7 +41,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { UInput, UIcon },
+  components: { UInput, UIcon, UButton },
   setup() {
     return { args };
   },
@@ -164,7 +165,10 @@ export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #icon-left>
-      🥸
+      <UIcon
+        name="star"
+        color="green"
+      />
     </template>
   `,
 };
@@ -173,7 +177,28 @@ export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
-      🥸
+      <UIcon
+        name="star"
+        color="green"
+      />
+    </template>
+  `,
+};
+
+export const leftSlot = SlotTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+    </template>
+  `,
+};
+
+export const rightSlot = SlotTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
     </template>
   `,
 };

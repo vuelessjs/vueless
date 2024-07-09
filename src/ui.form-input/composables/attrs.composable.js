@@ -38,8 +38,8 @@ export function useAttrs(props, { inputPasswordClasses }) {
   );
 
   const inputWrapperAttrs = getAttrs("inputWrapper");
-  const rightSlotAttrs = getAttrs("rightSlot");
-  const leftSlotAttrs = getAttrs("leftSlot");
+  const rightIconSlotAttrs = getAttrs("rightIconSlot");
+  const leftIconSlotAttrs = getAttrs("leftIconSlot");
   const passwordIconAttrs = getAttrs("passwordIcon");
   const blockAttrs = getAttrs("block", { classes: blockClasses });
   const labelAttrs = getAttrs("label", { isComponent: true });
@@ -56,9 +56,9 @@ export function useAttrs(props, { inputPasswordClasses }) {
     blockAttrs,
     labelAttrs,
     passwordIconAttrs,
-    leftSlotAttrs,
+    leftIconSlotAttrs,
     inputWrapperAttrs,
-    rightSlotAttrs,
+    rightIconSlotAttrs,
     hasSlotContent,
   };
 }

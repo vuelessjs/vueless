@@ -14,12 +14,17 @@
       <span
         v-if="hasSlotContent($slots['icon-left']) || iconLeft"
         ref="leftSlotWrapper"
-        v-bind="leftSlotAttrs"
+        v-bind="leftIconSlotAttrs"
       >
         <!-- @slot Use it to add icon before text. -->
         <slot name="icon-left">
           <UIcon v-if="iconLeft" :name="iconLeft" />
         </slot>
+      </span>
+
+      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
+        <!-- @slot Use it to add something before text. -->
+        <slot name="left" />
       </span>
 
       <span v-bind="inputWrapperAttrs">
@@ -44,7 +49,7 @@
         />
       </span>
 
-      <label v-if="isTypePassword" v-bind="rightSlotAttrs" :for="id">
+      <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="id">
         <UIcon
           v-if="isTypePassword"
           :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
@@ -57,7 +62,10 @@
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightSlotAttrs">
+      <!-- @slot Use it to add something before text. -->
+      <slot name="right" />
+
+      <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
         <!-- @slot Use it to add icon after text. -->
         <slot name="icon-right">
           <UIcon v-if="iconRight" :name="iconRight" />
@@ -293,9 +301,9 @@ const {
   blockAttrs,
   labelAttrs,
   passwordIconAttrs,
-  leftSlotAttrs,
+  leftIconSlotAttrs,
   inputWrapperAttrs,
-  rightSlotAttrs,
+  rightIconSlotAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
 
@@ -376,26 +384,19 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || (!hasSlotContent(slots["icon-left"]) && !props.iconLeft)) {
+  if (
+    props.labelAlign === "top" ||
+    (!hasSlotContent(slots["icon-left"]) && !hasSlotContent(slots["left"]) && !props.iconLeft)
+  ) {
     return;
   }
 
-  let leftSlotOrIconWidth = 0;
+  let leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
 
-  if (leftSlotWrapper.value) {
-    leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
-  }
-
-  if (props.iconLeft) {
-    const iconLeftElement = document.querySelector(`#${props.id} ~ .ui-icon`);
-
-    if (iconLeftElement) {
-      leftSlotOrIconWidth = iconLeftElement.getBoundingClientRect().width;
-    }
-  }
+  const leftPaddingValue = parseFloat(getComputedStyle(input.value).paddingLeft);
 
   if (labelComponent.value.labelElement) {
-    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth}px`;
+    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
   }
 }
 </script>
