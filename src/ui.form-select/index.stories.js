@@ -324,15 +324,6 @@ slotBeforeCaret.args = {
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
-slotLeft.args = {
-  slotTemplate: `
-    <template #left>
-       🤘
-    </template>
-  `,
-};
-
 export const slotBeforeOption = SlotTemplate.bind({});
 slotBeforeOption.args = {
   slotTemplate: `
@@ -366,6 +357,24 @@ iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
       🥸
+    </template>
+  `,
+};
+
+export const slotLeft = SlotTemplate.bind({});
+slotLeft.args = {
+  slotTemplate: `
+    <template #left>
+       🤘
+    </template>
+  `,
+};
+
+export const slotRight = SlotTemplate.bind({});
+slotRight.args = {
+  slotTemplate: `
+    <template #right>
+       🤘
     </template>
   `,
 };

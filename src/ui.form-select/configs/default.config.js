@@ -43,7 +43,8 @@ export default /*tw*/ {
   wrapperActive: "z-[inherit]", // applies when select active
   labelWrapperTop: "group/top", // applies when an open direction is top
   labelWrapperActive: "group/active",
-  leftSlot: "pr-4 flex items-center",
+  leftIconSlot: "pr-3 flex items-center",
+  rightIconSlot: "pl-3 flex items-center",
   caret: {
     base: "flex items-center mt-0",
     compoundVariants: [

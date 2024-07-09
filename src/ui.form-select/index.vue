@@ -71,13 +71,19 @@
         <span
           v-if="hasSlotContent($slots['icon-left']) || iconLeft"
           ref="leftSlotWrapperRef"
-          v-bind="leftSlotAttrs"
+          v-bind="leftIconSlotAttrs"
         >
           <!-- @slot Use it to add icon before option. -->
           <slot name="icon-left">
             <UIcon v-if="iconLeft" :name="iconLeft" />
           </slot>
         </span>
+
+        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
+          <!-- @slot Use it to add something before text. -->
+          <slot name="left" />
+        </span>
+
         <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!-- @slot Use it to add selected value label. -->
@@ -113,15 +119,6 @@
         </div>
 
         <div v-bind="searchAttrs">
-          <span
-            v-if="hasSlotContent($slots['left'])"
-            ref="leftSlotWrapperRef"
-            v-bind="leftSlotAttrs"
-          >
-            <!-- @slot Use it to add some component before text. -->
-            <slot name="left" />
-          </span>
-
           <input
             v-show="searchable || !localValue || multiple || !isOpen"
             :id="id"
@@ -166,7 +163,10 @@
           v-text="currentLocale.clear"
         />
 
-        <span v-if="hasSlotContent($slots['icon-right']) || iconRight">
+        <!-- @slot Use it to add something after text. -->
+        <slot name="right" />
+
+        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
           <!-- @slot Use it to add icon after option. -->
           <slot name="icon-right">
             <UIcon v-if="iconRight" :name="iconRight" />
@@ -306,6 +306,22 @@ const props = defineProps({
   },
 
   /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
+  },
+
+  /**
    * Select open direction.
    * @values auto, top, bottom
    */
@@ -426,22 +442,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-
-  /**
-   * Left side icon name.
-   */
-  iconLeft: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right side icon name.
-   */
-  iconRight: {
-    type: String,
-    default: "",
-  },
 });
 
 const emit = defineEmits([
@@ -495,7 +495,8 @@ const {
   labelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
-  leftSlotAttrs,
+  leftIconSlotAttrs,
+  rightIconSlotAttrs,
   beforeCaretSlotAttrs,
   afterCaretSlotAttrs,
   caretToggleAttrs,
