@@ -138,6 +138,8 @@ export default /*tw*/ {
       { square: true, size: "lg", class: "p-5" },
     ],
   },
+  leftIconSlot: "pr-0.5",
+  rightIconSlot: "pl-0.5",
   text: "whitespace-nowrap focus-visible:outline-none",
   defaultVariants: {
     color: "brand",

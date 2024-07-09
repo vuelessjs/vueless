@@ -16,16 +16,26 @@
     <template v-else>
       <!-- @slot Use it to add icon before text. -->
       <slot name="icon-left">
-        <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
+        <div v-bind="leftIconSlotAttrs">
+          <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
+        </div>
       </slot>
+
+      <!-- @slot Use it to add something before text. -->
+      <slot name="left" />
 
       <!-- @slot Use it to add something instead of text. -->
       <slot />
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
+      <!-- @slot Use it to add something after text. -->
+      <slot name="right" />
+
       <!-- @slot Use it to add icon after text. -->
       <slot name="icon-right">
-        <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
+        <div v-bind="rightIconSlotAttrs">
+          <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
+        </div>
       </slot>
     </template>
   </component>
@@ -179,7 +189,8 @@ const props = defineProps({
   },
 });
 
-const { buttonAttrs, loaderAttrs, textAttrs } = useAttrs(props);
+const { buttonAttrs, loaderAttrs, textAttrs, leftIconSlotAttrs, rightIconSlotAttrs } =
+  useAttrs(props);
 
 const buttonRef = ref(null);
 

@@ -49,10 +49,14 @@ export function useAttrs(props) {
   const buttonAttrs = getAttrs("button", { classes: buttonClasses });
   const loaderAttrs = getAttrs("loader");
   const textAttrs = getAttrs("text", { classes: textClasses });
+  const leftIconSlotAttrs = getAttrs("leftIconSlot");
+  const rightIconSlotAttrs = getAttrs("rightIconSlot");
 
   return {
     buttonAttrs,
     loaderAttrs,
     textAttrs,
+    leftIconSlotAttrs,
+    rightIconSlotAttrs,
   };
 }

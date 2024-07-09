@@ -175,3 +175,21 @@ iconRightSlot.args = {
     </template>
   `,
 };
+
+export const leftSlot = SlotTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      🥸
+    </template>
+  `,
+};
+
+export const rightSlot = SlotTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      🥸
+    </template>
+  `,
+};
