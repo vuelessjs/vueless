@@ -1,11 +1,16 @@
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
 export function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
+  const slots = useSlots();
+
+  const { config, getAttrs, getColor, setColor, hasSlotContent } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const { button, text } = config.value;
 
   const cvaButton = cva({
@@ -32,6 +37,8 @@ export function useAttrs(props) {
         filled: props.filled,
         loading: props.loading,
         disabled: props.disabled,
+        iconLeft: Boolean(props.iconLeft) || hasSlotContent(slots["icon-left"]),
+        iconRight: Boolean(props.iconRight) || hasSlotContent(slots["icon-right"]),
       }),
       props.color,
     ),
@@ -58,5 +65,6 @@ export function useAttrs(props) {
     textAttrs,
     leftIconSlotAttrs,
     rightIconSlotAttrs,
+    hasSlotContent,
   };
 }

@@ -136,6 +136,8 @@ export default /*tw*/ {
       { square: true, size: "md", class: "p-3.5" },
       { square: true, size: "lg", class: "p-4" },
       { square: true, size: "lg", class: "p-5" },
+      { iconLeft: true, size: "md", class: "px-5" },
+      { iconRight: true, size: "md", class: "px-5" },
     ],
   },
   leftIconSlot: "pr-0.5",
