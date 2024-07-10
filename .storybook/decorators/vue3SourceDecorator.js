@@ -75,7 +75,7 @@ function templateSourceCode(templateSource, args, argTypes) {
 
   const slotTemplateCode =
     // eslint-disable-next-line vue/max-len
-    '<template v-for="(slot, index) of slots" :key="index" v-slot:[slot]><template v-if="args[slot]">{{ args[slot] }}</template></template>';
+    `<template v-for="(slot, index) of slots" :key="index" v-slot:[slot]><template v-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template></template>`;
   const templateDefaultRegEx = /<template #default>([\s\S]*?)<\/template>/g;
 
   return templateSource
