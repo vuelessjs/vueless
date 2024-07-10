@@ -16,9 +16,13 @@
         ref="leftSlotWrapper"
         v-bind="leftIconSlotAttrs"
       >
-        <!-- @slot Use it to add icon before text. -->
-        <slot name="icon-left">
-          <UIcon v-if="iconLeft" :name="iconLeft" />
+        <!--
+          @slot Use it to add icon before text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
+          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
         </slot>
       </span>
 
@@ -62,13 +66,17 @@
         />
       </label>
 
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something after text. -->
       <slot name="right" />
 
       <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
-        <!-- @slot Use it to add icon after text. -->
-        <slot name="icon-right">
-          <UIcon v-if="iconRight" :name="iconRight" />
+        <!--
+          @slot Use it to add icon after text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="icon-right" :icon-name="iconLeft" :icon-size="iconSize">
+          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
         </slot>
       </span>
     </label>
@@ -96,18 +104,52 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UInput } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInput", inheritAttrs: false });
 
 const emit = defineEmits([
+  /**
+   * Triggers when the input value is updated.
+   * @property {string|number} modelValue
+   */
   "update:modelValue",
+
+  /**
+   * Triggers when the input value changes.
+   * @property {Event} event
+   */
   "change",
+
+  /**
+   * Triggers when the input is clicked.
+   * @property {Event} event
+   */
   "click",
+
+  /**
+   * Triggers when the input gains focus.
+   * @property {Event} event
+   */
   "focus",
+
+  /**
+   * Triggers when the mouse is pressed down on the input.
+   * @property {Event} event
+   */
   "mousedown",
+
+  /**
+   * Triggers when the input loses focus.
+   * @property {Event} event
+   */
   "blur",
+
+  /**
+   * Triggers when the input value is input.
+   * @property {string} value
+   */
   "input",
 ]);
 
@@ -307,6 +349,16 @@ const {
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
 
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  };
+
+  return sizes[props.size];
+});
+
 const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
 });
@@ -384,10 +436,10 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (
-    props.labelAlign === "top" ||
-    (!hasSlotContent(slots["icon-left"]) && !hasSlotContent(slots["left"]) && !props.iconLeft)
-  ) {
+  const shouldAlignLabelOnTop =
+    !hasSlotContent(slots["icon-left"]) && !hasSlotContent(slots["left"]) && !props.iconLeft;
+
+  if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
     return;
   }
 
