@@ -17,7 +17,7 @@
       <!-- @slot Use it to add icon before text. -->
       <div v-if="hasSlotContent($slots['icon-left']) || iconLeft" v-bind="leftIconSlotAttrs">
         <slot name="icon-left">
-          <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
+          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" :color="componentColor" />
         </slot>
       </div>
 
@@ -33,8 +33,8 @@
 
       <!-- @slot Use it to add icon after text. -->
       <div v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
-        <slot name="icon-right">
-          <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
+        <slot name="icon-right" :size="iconSize">
+          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" :color="componentColor" />
         </slot>
       </div>
     </template>
@@ -210,6 +210,19 @@ const loaderSize = computed(() => {
     md: "md",
     lg: "lg",
     xl: "lg",
+  };
+
+  return sizes[props.size];
+});
+
+const iconSize = computed(() => {
+  const sizes = {
+    "2xs": "2xs",
+    xs: "xs",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
   };
 
   return sizes[props.size];
