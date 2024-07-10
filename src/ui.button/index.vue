@@ -14,9 +14,19 @@
     </template>
 
     <template v-else>
-      <!-- @slot Use it to add icon before text. -->
-      <div v-if="hasSlotContent($slots['icon-left']) || iconLeft" v-bind="leftIconSlotAttrs">
-        <slot name="icon-left">
+      <div v-if="hasSlotContent($slots['icon-left']) || iconLeft">
+        <!--
+          @slot Use it to add icon before text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot
+          name="icon-left"
+          :icon-name="iconLeft"
+          :icon-size="iconSize"
+          :icon-color="componentColor"
+        >
           <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" :color="componentColor" />
         </slot>
       </div>
@@ -31,9 +41,19 @@
       <!-- @slot Use it to add something after text. -->
       <slot name="right" />
 
-      <!-- @slot Use it to add icon after text. -->
-      <div v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
-        <slot name="icon-right" :size="iconSize">
+      <div v-if="hasSlotContent($slots['icon-right']) || iconRight">
+        <!--
+          @slot Use it to add icon after text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot
+          name="icon-right"
+          :icon-name="iconRight"
+          :icon-size="iconSize"
+          :icon-color="componentColor"
+        >
           <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" :color="componentColor" />
         </slot>
       </div>
@@ -49,7 +69,7 @@ import ULoader from "../ui.loader";
 import UIcon from "../ui.image-icon";
 
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { UButton } from "./constants";
 
 /* Should be a string for correct web-types gen */
@@ -189,14 +209,7 @@ const props = defineProps({
   },
 });
 
-const {
-  buttonAttrs,
-  loaderAttrs,
-  textAttrs,
-  leftIconSlotAttrs,
-  rightIconSlotAttrs,
-  hasSlotContent,
-} = useAttrs(props);
+const { buttonAttrs, loaderAttrs, textAttrs, hasSlotContent } = useAttrs(props);
 
 const buttonRef = ref(null);
 
@@ -217,12 +230,12 @@ const loaderSize = computed(() => {
 
 const iconSize = computed(() => {
   const sizes = {
-    "2xs": "2xs",
-    xs: "xs",
-    sm: "sm",
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
     md: "md",
     lg: "lg",
-    xl: "xl",
+    xl: "lg",
   };
 
   return sizes[props.size];
