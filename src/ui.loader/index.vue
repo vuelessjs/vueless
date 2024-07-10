@@ -1,7 +1,13 @@
 <template>
-  <div v-bind="loaderAttrs">
-    <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs(ellipseClasses)" />
-  </div>
+  <Transition v-bind="config.loaderTransition">
+    <div v-if="!loading" v-bind="loaderAttrs">
+      <div
+        v-for="ellipse in ELLIPSES_AMOUNT"
+        :key="ellipse"
+        v-bind="ellipseAttrs(ellipseClasses)"
+      />
+    </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -33,11 +39,19 @@ const props = defineProps({
     type: String,
     default: UIService.get(defaultConfig, ULoader).default.color,
   },
+
+  /**
+   * Turn off/on loader.
+   */
+  loading: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULoader).default.loading,
+  },
 });
 
 const ELLIPSES_AMOUNT = 4;
 
-const { loaderAttrs, ellipseAttrs } = useAttrs(props);
+const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
 
 const ellipseClasses = computed(() => [
   "vueless-internal-loader-ellipse",

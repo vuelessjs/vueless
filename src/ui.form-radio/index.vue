@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, watchEffect } from "vue";
+import { computed, inject, onMounted, ref, watchEffect, toValue } from "vue";
 
 import ULabel from "../ui.form-label";
 import UIService, { getRandomId } from "../service.ui";
@@ -162,8 +162,8 @@ const emit = defineEmits(["update:modelValue"]);
 
 const localValue = ref("");
 const radioName = ref(null);
-const radioColor = ref(getRadioGroupColor ? getRadioGroupColor() : props.color);
-const radioSize = ref(getRadioGroupSize ? getRadioGroupSize() : props.size);
+const radioColor = ref(toValue(getRadioGroupColor) || props.color);
+const radioSize = ref(toValue(getRadioGroupSize) || props.size);
 
 const isChecked = computed(() => {
   const currentValue = props.modelValue ?? localValue.value;
@@ -182,14 +182,13 @@ const radioValue = computed(() => {
 });
 
 onMounted(() => {
-  radioName.value = props.name || getRadioGroupName();
+  radioName.value = props.name || toValue(getRadioGroupName);
 });
 
-watchEffect(() => (radioColor.value = getRadioGroupColor ? getRadioGroupColor() : props.color));
-watchEffect(() => (radioSize.value = getRadioGroupSize ? getRadioGroupSize() : props.size));
+watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color));
+watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
 watchEffect(() => {
-  localValue.value = getRadioGroupSelectedItem ? getRadioGroupSelectedItem() : null;
-
+  localValue.value = toValue(getRadioGroupSelectedItem) || null;
   emit("update:modelValue", props.value);
 });
 

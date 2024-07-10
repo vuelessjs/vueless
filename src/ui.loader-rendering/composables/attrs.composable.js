@@ -23,7 +23,7 @@ export function useAttrs(props) {
     ),
   );
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
+  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses, isComponent: true });
 
   return {
     wrapperAttrs,
