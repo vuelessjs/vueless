@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, computed, watchEffect } from "vue";
+import { inject, ref, onMounted, computed, watchEffect, toValue } from "vue";
 import { isEqual } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
@@ -210,7 +210,7 @@ const iconSize = computed(() => {
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
-const isCheckboxInGroup = computed(() => Boolean(getCheckboxGroupName()));
+const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
 
 const isChecked = computed(() => {
   return isBinary.value && !isCheckboxInGroup.value
@@ -223,17 +223,15 @@ const checkboxValue = computed(() => {
 });
 
 const currentValue = computed(() => {
-  return isCheckboxInGroup.value ? getCheckboxGroupCheckedItems() : props.modelValue;
+  return isCheckboxInGroup.value ? toValue(getCheckboxGroupCheckedItems) : props.modelValue;
 });
 
 onMounted(() => {
-  checkboxName.value = isCheckboxInGroup.value ? getCheckboxGroupName() : props.name;
+  checkboxName.value = isCheckboxInGroup.value ? toValue(getCheckboxGroupName) : props.name;
 });
 
-watchEffect(
-  () => (checkboxColor.value = getCheckboxGroupColor ? getCheckboxGroupColor() : props.color),
-);
-watchEffect(() => (checkboxSize.value = getCheckboxSize ? getCheckboxSize() : props.size));
+watchEffect(() => (checkboxColor.value = toValue(getCheckboxGroupColor) || props.color));
+watchEffect(() => (checkboxSize.value = toValue(getCheckboxSize) || props.size));
 
 function onChange() {
   let newModelValue;

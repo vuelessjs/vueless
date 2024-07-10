@@ -1,35 +1,37 @@
+import { computed } from "vue";
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
-
 import defaultConfig from "../configs/default.config";
-import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { counter } = config.value;
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
+  const attrs = {};
 
-  const cvaCounter = cva({
-    base: counter.base,
-    variants: counter.variants,
-    compoundVariants: counter.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const counterClasses = computed(() => cvaCounter({ size: props.size }));
+    let classes = "";
+    let value = config.value[key];
 
-  const counterAttrs = getAttrs("counter", { classes: counterClasses });
-  const ratingAttrs = getAttrs("rating");
-  const wrapperAttrs = getAttrs("wrapper");
-  const iconAttrs = getAttrs("icon", { isComponent: true });
-  const iconWrapperAttrs = getAttrs("iconWrapper");
-  const labelAttrs = getAttrs("label", { isComponent: true });
+    if (value.variants || value.compoundVariants) {
+      const getCVA = cva(value);
+
+      classes = computed(() =>
+        getCVA({
+          ...props,
+        }),
+      );
+    }
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    counterAttrs,
-    ratingAttrs,
-    wrapperAttrs,
-    iconAttrs,
-    iconWrapperAttrs,
-    labelAttrs,
+    hasSlotContent,
   };
 }

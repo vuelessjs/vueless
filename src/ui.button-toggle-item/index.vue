@@ -146,9 +146,7 @@ function onClickSetValue() {
     selectedItem.value = props.value;
   }
 
-  if (updateSelectedValue) {
-    updateSelectedValue(props.value, !selectedItem.value);
-  }
+  updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);
 
   emit("update:modelValue", props.value);
 }

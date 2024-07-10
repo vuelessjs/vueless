@@ -18,10 +18,6 @@ export function getArgTypes(componentName) {
 
   const types = {};
 
-  getSlotNames(componentName)?.forEach((slotName) => {
-    types[slotName] = { control: "text" };
-  });
-
   component.attributes?.forEach((attribute) => {
     const type = attribute.value.type;
 
@@ -84,16 +80,48 @@ export function getArgTypes(componentName) {
     }
   });
 
-  if (import.meta.env.STORYBOOK_FULL) {
-    component.events?.forEach((event) => {
+  component.slots?.forEach((slot) => {
+    const bindings = [];
+
+    slot.bindings?.forEach((binding) => {
+      const description = binding.description ? ` (${binding.description})` : "";
+
+      bindings.push(`${binding.name}: ${binding.type}${description}`);
+    });
+
+    types[`${slot.name}Slot`] = {
+      name: slot.name,
+      description: slot.description,
+      type: slot.bindings ? `{ ${bindings.join(", ")} }` : null,
+      control: "text",
+      table: { category: "slots" },
+    };
+  });
+
+  component.events?.forEach((event) => {
+    const properties = [];
+
+    event.properties?.forEach((property) => {
+      const description = property.description ? ` (${property.description})` : "";
+
+      properties.push(`${property.name}: ${property.type}${description}`);
+    });
+
+    types[event.name] = {
+      type: event.properties ? `{ ${properties.join(", ")} }` : null,
+      name: event.name,
+      description: event.description,
+    };
+
+    if (import.meta.env.STORYBOOK_FULL) {
       const eventName = "on" + event.name.charAt(0).toUpperCase() + event.name.slice(1);
 
       types[eventName] = {
         action: event.name,
         table: { category: "Storybook Events" },
       };
-    });
-  }
+    }
+  });
 
   return types;
 }
@@ -101,3 +129,9 @@ export function getArgTypes(componentName) {
 export function getSource(defaultCnfig) {
   return defaultCnfig.replace("export default /*tw*/ ", "").replace(";", "");
 }
+
+export const allSlotsFragment = `
+  <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
+    <template v-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
+  </template>
+`;
