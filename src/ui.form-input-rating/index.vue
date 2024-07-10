@@ -1,43 +1,52 @@
 <template>
-  <div :data-cy="dataCy" v-bind="ratingAttrs">
-    <ULabel
-      :label="label"
-      :error="error"
-      :size="size"
-      :description="description"
-      :align="labelAlign"
-      v-bind="labelAttrs"
-    >
-      <div v-bind="wrapperAttrs">
-        <div v-if="!noCounter" v-bind="counterAttrs">
-          <!-- @slot Use it to add counter. -->
-          <slot name="counter">
-            {{ ratingCounter }}
-          </slot>
-        </div>
-
-        <div v-bind="iconWrapperAttrs">
-          <UIcon
-            v-for="star in starsNumber"
-            :key="star"
-            internal
-            color="yellow"
-            :size="iconSize"
-            :interactive="selectable"
-            :data-cy="`${dataCy}-rating-star-${star}`"
-            :name="star <= ratingCounter ? config.selectedIconName : config.unselectedIconName"
-            v-bind="iconAttrs"
-            @mouseover="onMouseHover(star)"
-            @mouseleave="onMouseHover()"
-            @click="onClickStar(star)"
-          />
-        </div>
-
-        <!-- @slot Use it to add something right. -->
-        <slot name="right" />
+  <ULabel
+    :label="label"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    :description="description"
+    v-bind="labelAttrs"
+    :data-cy="dataCy"
+  >
+    <div v-bind="wrapperAttrs">
+      <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
+        <!--
+          @slot Use it to customise counter.
+          @binding {number} counter
+          @binding {number} total
+        -->
+        <slot name="counter" :counter="counterValue" :total="total">
+          {{ counterValue }}
+        </slot>
       </div>
-    </ULabel>
-  </div>
+
+      <div v-bind="starsAttrs">
+        <UIcon
+          v-for="star in stars"
+          :key="star"
+          internal
+          color="yellow"
+          :size="iconSize"
+          :interactive="selectable"
+          :name="star <= counterValue ? config.selectedIconName : config.unselectedIconName"
+          v-bind="starAttrs"
+          :data-cy="`${dataCy}-rating-star-${star}`"
+          @click="onClickStar(star)"
+          @mouseleave="onMouseHover()"
+          @mouseover="onMouseHover(star)"
+        />
+      </div>
+
+      <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
+        <!--
+          @slot Use it to customise total.
+          @binding {number} counter
+          @binding {number} total
+        -->
+        <slot name="total" :counter="counter" :total="total">({{ total }})</slot>
+      </div>
+    </div>
+  </ULabel>
 </template>
 
 <script setup>
@@ -56,31 +65,23 @@ defineOptions({ name: "UInputRating", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set input rating  label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set input rating value.
+   * Rating value.
    */
   modelValue: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputRating).default.modelValue,
+    default: 0,
   },
 
   /**
-   * Set the number of stars.
+   * Rating number of stars.
    */
-  starsNumber: {
+  stars: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputRating).default.starsNumber,
+    default: UIService.get(defaultConfig, UInputRating).default.stars,
   },
 
   /**
-   * Set component size.
+   * Rating size.
    * @values sm, md, lg
    */
   size: {
@@ -89,15 +90,15 @@ const props = defineProps({
   },
 
   /**
-   * Make stars selectable.
+   * Rating label.
    */
-  selectable: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputRating).default.selectable,
+  label: {
+    type: String,
+    default: "",
   },
 
   /**
-   * Set label placement related from the default slot.
+   * Rating label placement.
    * @values top, topInside, topWithDesc, bottom, left, right
    */
   labelAlign: {
@@ -106,7 +107,7 @@ const props = defineProps({
   },
 
   /**
-   * Set error message.
+   * Rating error message.
    */
   error: {
     type: String,
@@ -114,7 +115,7 @@ const props = defineProps({
   },
 
   /**
-   * Set description text.
+   * Rating description.
    */
   description: {
     type: String,
@@ -122,15 +123,31 @@ const props = defineProps({
   },
 
   /**
-   * Hide / show counter.
+   * Rating total.
    */
-  noCounter: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UInputRating).default.noCounter,
+  total: {
+    type: Number,
+    default: 0,
   },
 
   /**
-   * Sets component ui config object.
+   * Show rating counter.
+   */
+  counter: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputRating).default.counter,
+  },
+
+  /**
+   * Make rating selectable.
+   */
+  selectable: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputRating).default.selectable,
+  },
+
+  /**
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -138,7 +155,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
@@ -146,12 +163,26 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the rating is changes.
+   * @property {number} modelValue
+   */
+  "update:modelValue",
+]);
 
 const hovered = ref(null);
 
-const { config, counterAttrs, ratingAttrs, wrapperAttrs, iconAttrs, iconWrapperAttrs, labelAttrs } =
-  useAttrs(props);
+const {
+  config,
+  labelAttrs,
+  wrapperAttrs,
+  counterAttrs,
+  totalAttrs,
+  starsAttrs,
+  starAttrs,
+  hasSlotContent,
+} = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -163,7 +194,7 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-const ratingCounter = computed(() => {
+const counterValue = computed(() => {
   return hovered.value || props.modelValue;
 });
 
