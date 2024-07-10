@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { computed, inject } from "vue";
+import { computed, inject, toValue } from "vue";
 
 import UIService from "../service.ui";
 
@@ -68,11 +68,11 @@ const props = defineProps({
 });
 
 const selected = computed(() => {
-  return getUTabsSelectedItem && getUTabsSelectedItem() === props.value && !props.disabled;
+  return toValue(getUTabsSelectedItem) === props.value && !props.disabled;
 });
 
 const size = computed(() => {
-  return getUTabsSize ? getUTabsSize() : UIService.get(defaultConfig, UTab).default.size;
+  return toValue(getUTabsSize) || UIService.get(defaultConfig, UTab).default.size;
 });
 
 const { wrapperAttrs } = useAttrs(props, { selected, size });
