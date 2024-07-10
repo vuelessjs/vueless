@@ -46,7 +46,7 @@ function onClick() {
   // invokes click event on current item
   emit("click");
 
-  if (hideDropdownOptions) hideDropdownOptions();
+  hideDropdownOptions && hideDropdownOptions();
 }
 
 const { wrapperAttrs } = useAttrs(props);
