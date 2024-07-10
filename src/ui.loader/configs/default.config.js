@@ -41,9 +41,17 @@ export default /*tw*/ {
       },
     },
   },
+  loaderTransition: {
+    moveClass: "transition duration-500",
+    enterActiveClass: "transition duration-500",
+    leaveActiveClass: "transition duration-500 absolute",
+    enterFromClass: "opacity-0",
+    leaveToClass: "opacity-0",
+  },
   defaultVariants: {
     color: "brand",
     size: "md",
+    loading: true,
   },
   safelist: (colors) => [{ pattern: `bg-(${colors})-600` }],
 };
