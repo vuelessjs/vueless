@@ -28,7 +28,10 @@
         v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
         v-bind="afterCaretSlotAttrs"
       >
-        <!-- @slot Use it to add something after caret. -->
+        <!--
+          @slot Use it to add something after caret.
+          @binding {other} scope-props
+        -->
         <slot :scope-props="props" name="after-caret" />
       </div>
 
@@ -51,7 +54,10 @@
         v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
         v-bind="beforeCaretSlotAttrs"
       >
-        <!-- @slot Use it to add something after caret. -->
+        <!--
+          @slot Use it to add something before caret.
+          @binding {other} scope-props
+        -->
         <slot :scope-props="props" name="before-caret" />
       </div>
 
@@ -73,20 +79,28 @@
           ref="leftSlotWrapperRef"
           v-bind="leftIconSlotAttrs"
         >
-          <!-- @slot Use it to add icon before option. -->
-          <slot name="icon-left">
-            <UIcon v-if="iconLeft" :name="iconLeft" />
+          <!--
+            @slot Use it to add icon before option.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+          <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
+            <UIcon v-if="iconLeft" :name="iconLeft" :icon-size="iconSize" />
           </slot>
         </span>
 
         <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-          <!-- @slot Use it to add something before text. -->
+          <!-- @slot Use it to add something before input. -->
           <slot name="left" />
         </span>
 
         <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
-            <!-- @slot Use it to add selected value label. -->
+            <!--
+              @slot Use it to add selected value label.
+              @binding {string} selected-label
+              @binding {string} value
+            -->
             <slot
               name="selected-label"
               :selected-label="getOptionLabel(item)"
@@ -96,7 +110,10 @@
               {{ getOptionLabel(item) }}
             </slot>
 
-            <!-- @slot Use it to add selected value label. -->
+            <!--
+              @slot Use it to add something after selected value label.
+              @binding {other} scope-props
+            -->
             <slot :scope-props="props" name="selected-label-after" />
 
             <div
@@ -146,12 +163,19 @@
           v-bind="selectedLabelAttrs"
           @mousedown.prevent="toggle"
         >
-          <!-- @slot Use it to add selected value label. -->
+          <!--
+            @slot Use it to add selected value label.
+            @binding {string} selected-label
+            @binding {string} value
+          -->
           <slot name="selected-label" :selected-label="selectedLabel" :value="localValue[valueKey]">
             {{ selectedLabel }}
           </slot>
 
-          <!-- @slot Use it to add selected value label. -->
+          <!--
+            @slot Use it to add something after selected value label.
+            @binding {other} scope-props
+          -->
           <slot :scope-props="props" name="selected-label-after" />
         </span>
 
@@ -163,13 +187,17 @@
           v-text="currentLocale.clear"
         />
 
-        <!-- @slot Use it to add something after text. -->
+        <!-- @slot Use it to add something after input. -->
         <slot name="right" />
 
         <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
-          <!-- @slot Use it to add icon after option. -->
-          <slot name="icon-right">
-            <UIcon v-if="iconRight" :name="iconRight" />
+          <!--
+            @slot Use it to add icon after option.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+          <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
+            <UIcon v-if="iconRight" :name="iconRight" :icon-size="iconSize" />
           </slot>
         </span>
       </div>
@@ -193,16 +221,27 @@
         @click.prevent.capture
       >
         <template #before-option="{ option }">
-          <!-- @slot Use it to add something before option. -->
+          <!--
+            @slot Use it to add something before option.
+            @binding {other} option
+          -->
           <slot :option="option" name="before-option" />
         </template>
 
         <template #option="{ option, index }">
+          <!--
+            @slot Use it to add something instead of option.
+            @binding {other} option
+            @binding {number} index
+          -->
           <slot name="option" :option="option" :index="index" />
         </template>
 
         <template #after-option="{ option }">
-          <!-- @slot Use it to add something after option. -->
+          <!--
+            @slot Use it to add something after option.
+            @binding {other} option
+          -->
           <slot :option="option" name="after-option" />
         </template>
 

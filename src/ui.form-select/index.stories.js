@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
@@ -44,9 +44,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <USelect v-bind="args" v-model="args.modelValue">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </USelect>
   `,
 });
