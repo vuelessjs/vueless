@@ -36,7 +36,7 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UToggle", inheritAttrs: false });
@@ -174,7 +174,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when toggle item is selected.
+   * @property {string} modelValue
+   */
+  "update:modelValue",
+]);
 
 const { labelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
@@ -203,6 +209,7 @@ const type = computed(() => {
 function updateSelectedValue(value, checked) {
   if (type.value === TYPE_RADIO) {
     selectedValue.value = value;
+    console.log(selectedValue.value);
 
     return;
   }
