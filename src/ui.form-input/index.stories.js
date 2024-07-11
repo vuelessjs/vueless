@@ -46,7 +46,7 @@ const SlotTemplate = (args) => ({
   template: `
     <UInput v-bind="args"
     >
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate}
     </UInput>
   `,
 });

@@ -118,31 +118,26 @@ const emit = defineEmits([
 
   /**
    * Triggers when the input value changes.
-   * @property {Event} event
    */
   "change",
 
   /**
    * Triggers when the input is clicked.
-   * @property {Event} event
    */
   "click",
 
   /**
    * Triggers when the input gains focus.
-   * @property {Event} event
    */
   "focus",
 
   /**
    * Triggers when the mouse is pressed down on the input.
-   * @property {Event} event
    */
   "mousedown",
 
   /**
    * Triggers when the input loses focus.
-   * @property {Event} event
    */
   "blur",
 
