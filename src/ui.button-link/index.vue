@@ -53,14 +53,39 @@ import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
 import UIService from "../service.ui";
 
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 import { ULink } from "./constants";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULink", inheritAttrs: false });
 
-const emit = defineEmits(["click", "mouseover", "focus", "blur", "keydown"]);
+const emit = defineEmits([
+  /**
+   * Triggers when link is clicked.
+   */
+  "click",
+
+  /**
+   * Triggers when cursor is on the link.
+   */
+  "mouseover",
+
+  /**
+   * Triggers when link is focused.
+   */
+  "focus",
+
+  /**
+   * Triggers when link loses focus.
+   */
+  "blur",
+
+  /**
+   * Triggers when link is clicked.
+   */
+  "keydown",
+]);
 
 const props = defineProps({
   /**

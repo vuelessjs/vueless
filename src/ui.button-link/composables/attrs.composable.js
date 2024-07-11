@@ -1,146 +1,104 @@
 import { computed, useSlots } from "vue";
-
 import useUI from "../../composable.ui";
 import { cva, cx } from "../../service.ui";
-
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { isActive, isExactActive }) {
+export default function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
-
-  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(
+  const { config, getAttrs, hasSlotContent, isSystemKey, getColor, setColor } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const { wrapper, link, text, rightSlot, leftSlot } = config.value;
+  const attrs = {};
 
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
+  const createClasses = (key, extraProps = {}) => {
+    let value = config.value[key];
+    let classes = "";
 
-  const cvaLink = cva({
-    base: link.base,
-    variants: link.variants,
-    compoundVariants: link.compoundVariants,
-  });
+    if (value.variants || value.compoundVariants) {
+      const getCVA = cva(value);
 
-  const cvaText = cva({
-    base: text.base,
-    variants: text.variants,
-    compoundVariants: text.compoundVariants,
-  });
+      classes = computed(() =>
+        setColor(
+          getCVA({
+            ...props,
+            color: getColor(props.color),
+            ...extraProps,
+          }),
+          props.color,
+        ),
+      );
+    }
 
-  const cvaRightSlot = cva({
-    base: rightSlot.base,
-    variants: rightSlot.variants,
-    compoundVariants: rightSlot.compoundVariants,
-  });
+    return classes;
+  };
 
-  const cvaLeftSlot = cva({
-    base: leftSlot.base,
-    variants: leftSlot.variants,
-    compoundVariants: leftSlot.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const wrapperClasses = computed(() =>
-    setColor(
-      cvaWrapper({
+    let extraProps = {};
+
+    if (key === "wrapper") {
+      extraProps = {
         size: props.size,
-        color: getColor(props.color),
         block: props.block,
         noRing: props.noRing,
         disabled: props.disabled,
-      }),
-      props.color,
-    ),
-  );
-
-  const linkClasses = computed(() =>
-    setColor(
-      cvaLink({
+      };
+    } else if (key === "link") {
+      extraProps = {
         size: props.size,
-        color: getColor(props.color),
         dashed: props.dashed,
         underlined: props.underlined,
-      }),
-      props.color,
-    ),
-  );
+      };
+    }
 
-  const textClasses = computed(() =>
-    setColor(
-      cvaText({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+    const classes = createClasses(key, extraProps);
 
-  const rightSlotClasses = computed(() =>
-    setColor(
-      cvaRightSlot({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-  const leftSlotClasses = computed(() =>
-    setColor(
-      cvaLeftSlot({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+    if (key === "wrapper") {
+      const wrapperAttrs = attrs[`${key}Attrs`];
 
-  const wrapperAttrsRaw = getAttrs("wrapper", { classes: wrapperClasses });
+      attrs[`${key}Attrs`] = computed(() => {
+        const hasDefaultSlot = hasSlotContent(slots["default"]);
+        const hasRightSlot = hasSlotContent(slots["right"]);
+        const hasLeftSlot = hasSlotContent(slots["left"]);
 
-  const wrapperAttrs = computed(() => {
-    const hasDefaultSlot = hasSlotContent(slots["default"]);
-    const hasRightSlot = hasSlotContent(slots["right"]);
-    const hasLeftSlot = hasSlotContent(slots["left"]);
+        return {
+          ...wrapperAttrs.value,
+          class: cx([
+            wrapperAttrs.value.class,
+            (hasDefaultSlot || hasLeftSlot || hasRightSlot) && config.value.withSlots,
+            isActive.value && props.wrapperActiveClass,
+            isExactActive.value && props.wrapperExactActiveClass,
+          ]),
+        };
+      });
+    }
 
-    return {
-      ...wrapperAttrsRaw.value,
-      class: cx([
-        wrapperAttrsRaw.value.class,
-        (hasDefaultSlot || hasLeftSlot || hasRightSlot) && config.value.withSlots,
-        isActive.value && props.wrapperActiveClass,
-        isExactActive.value && props.wrapperExactActiveClass,
-      ]),
-    };
-  });
+    if (key === "link") {
+      const linkAttrs = attrs[`${key}Attrs`];
 
-  const linkAttrsRaw = getAttrs("link", { classes: linkClasses });
+      attrs[`${key}Attrs`] = computed(() => {
+        const hasDefaultSlot = hasSlotContent(slots["default"]);
 
-  const linkAttrs = computed(() => {
-    const hasDefaultSlot = hasSlotContent(slots["default"]);
-
-    return {
-      ...linkAttrsRaw.value,
-      class: cx([
-        linkAttrsRaw.value.class,
-        hasDefaultSlot && config.value.withSlots,
-        isActive.value && props.activeClass,
-        isExactActive.value && props.exactActiveClass,
-      ]),
-    };
-  });
-
-  const rightSlotAttrs = getAttrs("rightSlot", { classes: rightSlotClasses });
-  const leftSlotAttrs = getAttrs("leftSlot", { classes: leftSlotClasses });
-  const textAttrs = getAttrs("text", { classes: textClasses });
+        return {
+          ...linkAttrs.value,
+          class: cx([
+            linkAttrs.value.class,
+            hasDefaultSlot && config.value.withSlots,
+            isActive.value && props.activeClass,
+            isExactActive.value && props.exactActiveClass,
+          ]),
+        };
+      });
+    }
+  }
 
   return {
+    ...attrs,
     config,
     hasSlotContent,
-    wrapperAttrs,
-    linkAttrs,
-    rightSlotAttrs,
-    leftSlotAttrs,
-    textAttrs,
   };
 }
