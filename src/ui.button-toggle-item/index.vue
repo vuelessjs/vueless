@@ -14,6 +14,7 @@
     @click.stop="onClickSetValue"
   >
     <template #left>
+      <!-- @slot Use it to add something before text. -->
       <slot name="left" />
     </template>
 
@@ -28,11 +29,12 @@
         v-bind="inputAttrs"
         @click.stop
       />
-
+      <!-- @slot Use it to add something instead of text. -->
       <slot name="default" />
     </template>
 
     <template #right>
+      <!-- @slot Use it to add something after text. -->
       <slot name="right" />
     </template>
   </UButton>
