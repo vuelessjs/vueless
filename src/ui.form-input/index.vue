@@ -112,7 +112,8 @@ defineOptions({ name: "UInput", inheritAttrs: false });
 const emit = defineEmits([
   /**
    * Triggers when the input value is updated.
-   * @property {string|number} modelValue
+   * @property {string} modelValue
+   * @property {number} modelValue
    */
   "update:modelValue",
 
