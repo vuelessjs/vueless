@@ -1,54 +1,37 @@
-import { computed, toValue } from "vue";
-import { cx, cva } from "../../service.ui";
+import { computed } from "vue";
 import useUI from "../../composable.ui";
-
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { selectedValue, separated, variant }) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { button, selected } = config.value;
-
-  const cvaButton = cva({
-    base: button.base,
-    variants: button.variants,
-    compoundVariants: button.compoundVariants,
-  });
-
-  const buttonClasses = computed(() => {
-    return cvaButton({
-      variant: toValue(variant),
-      separated: toValue(separated),
-    });
-  });
-
-  const cvaSelected = cva({
-    base: selected.base,
-    variants: selected.variants,
-    compoundVariants: selected.compoundVariants,
-  });
-
-  const selectedClasses = computed(() =>
-    cvaSelected({
-      variant: toValue(variant),
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const inputAttrs = getAttrs("input");
-  const buttonAttrsRaw = getAttrs("button", { isComponent: true, classes: buttonClasses });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const buttonAttrs = computed(() => {
-    const isSelected = Array.isArray(selectedValue?.value)
-      ? selectedValue?.value?.includes(props.value)
-      : selectedValue?.value === props.value;
+    let classes = "";
+    let value = config.value[key];
 
-    return {
-      ...buttonAttrsRaw.value,
-      class: cx([buttonAttrsRaw.value.class, isSelected && selectedClasses.value]),
-    };
-  });
+    if (value.variants || value.compoundVariants) {
+      const getCVA = cva(value);
+
+      classes = computed(() =>
+        getCVA({
+          ...props,
+        }),
+      );
+    }
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    buttonAttrs,
-    inputAttrs,
+    ...attrs,
+    config,
+    hasSlotContent,
   };
 }
