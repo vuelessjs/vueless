@@ -108,7 +108,7 @@ export function getArgTypes(componentName) {
     });
 
     types[event.name] = {
-      type: event.properties ? `{ ${properties.join(", ")} }` : null,
+      type: event.properties ? properties.join(", ") : null,
       name: event.name,
       description: event.description,
     };
