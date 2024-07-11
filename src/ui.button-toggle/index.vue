@@ -209,7 +209,6 @@ const type = computed(() => {
 function updateSelectedValue(value, checked) {
   if (type.value === TYPE_RADIO) {
     selectedValue.value = value;
-    console.log(selectedValue.value);
 
     return;
   }
