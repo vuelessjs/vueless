@@ -484,13 +484,44 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
+  /**
+   * Triggers when dropdown list is opened.
+   * @property {string} propsId
+   */
   "open",
+
+  /**
+   * Triggers when dropdown list is closed.
+   * @property {string} propsId
+   */
   "close",
+
+  /**
+   * Triggers when the input value is changed.
+   */
   "searchChange",
+
+  /**
+   * Triggers when option is removed.
+   * @property {string} option
+   * @property {string} propsId
+   */
   "remove",
+
+  /**
+   * Triggers when option is selected.
+   * @property {number} value
+   */
   "update:modelValue",
-  "select",
+
+  /**
+   * Triggers when dropdown list is updated.
+   */
   "addOption",
+
+  /**
+   * Triggers when label position is changed.
+   */
   "change",
 ]);
 
