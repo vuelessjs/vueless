@@ -1,8 +1,9 @@
 <template>
+  <button @click="testFunc">Reactivity test button</button>
   <ULabel
     ref="labelComponentRef"
     :for="id"
-    :size="size"
+    :size="testSize"
     :label="label"
     :error="error"
     :description="description"
@@ -163,7 +164,7 @@
         v-model="dropdownValue"
         :options="filteredOptions"
         :disabled="disabled"
-        :size="size"
+        :size="testSize"
         :visible-options="visibleOptions"
         :value-key="valueKey"
         :label-key="labelKey"
@@ -217,6 +218,12 @@ import defaultConfig from "./configs/default.config";
 import { USelect, DIRECTION, KEY_CODES } from "./constants";
 
 import { useLocale } from "../composable.locale";
+
+const testSize = ref("sm");
+
+function testFunc() {
+  testSize.value = "lg";
+}
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USelect", inheritAttrs: false });
