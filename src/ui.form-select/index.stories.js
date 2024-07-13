@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import { getArgTypes, getSlotNames } from "../service.storybook";
 
 import USelect from "../ui.form-select";
@@ -48,29 +47,6 @@ const DefaultTemplate = (args) => ({
         <template v-if="args[slot]">{{ args[slot] }}</template>
       </template>
     </USelect>
-  `,
-});
-
-const ReactivePropsTemplate = (args) => ({
-  components: { USelect },
-  setup() {
-    const testSize = ref("sm");
-
-    function testFunc() {
-      testSize.value = "lg";
-    }
-
-    return { args, testFunc, testSize };
-  },
-  template: `
-    <button
-      @click="testFunc"
-      class="border-2 border-solid border-red-400 rounded p-2 mb-2"
-    >
-      Reactivity test button
-    </button>
-
-    <USelect v-bind="args" v-model="args.modelValue" :size="testSize" />
   `,
 });
 
@@ -239,9 +215,6 @@ const BadgeTemplate = (args) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-
-export const reactiveProps = ReactivePropsTemplate.bind({});
-reactiveProps.args = {};
 
 export const Multiple = multipleTemplate.bind({});
 Multiple.args = { modelValue: [] };
