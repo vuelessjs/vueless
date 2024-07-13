@@ -1,5 +1,6 @@
 import {
   ref,
+  watch,
   watchEffect,
   getCurrentInstance,
   toValue,
@@ -69,7 +70,6 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
   });
 
   function getAttrs(configKey, options) {
-    const cvaClasses = options?.classes || "";
     const nestedComponent = options?.isComponent || getNestedComponent(defaultConfig[configKey]); // TODO: Remove `options?.isComponent` when all `attrs.composable.js` will be migranted
 
     const attrs = useAttrs();
@@ -87,7 +87,9 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     // Delete value key to prevent v-model overwrite
     delete commonAttrs.value;
 
-    watchEffect(() => {
+    watch(config, updateVuelessAttrs, { immediate: true });
+
+    function updateVuelessAttrs() {
       const configKeyValue = config.value[configKey];
       const isObject = typeof configKeyValue === "object";
 
@@ -97,16 +99,15 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
       };
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
-
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-      const configKeyClass = isObject ? configKeyValue.base : configKeyValue;
+      const classes = options?.classes ? toValue(options?.classes) : getBaseClasses(configKeyValue);
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([configKeyClass, toValue(cvaClasses), attrClass]),
+        class: cx([classes, attrClass]),
         ...((isObject && configAttrs) || {}),
       };
-    });
+    }
 
     return vuelessAttrs;
   }
@@ -261,6 +262,8 @@ function mergeConfigs({
   @returns {Object}
  */
 function stringToObject(value) {
+  if (value === undefined) value = "";
+
   return typeof value === "object" ? value : { base: value };
 }
 
@@ -360,12 +363,21 @@ function mergeClassesIntoConfig(config, topLevelClassKey, attrs) {
 }
 
 /**
+ Return base classes.
+ @param { String | Object } value
+ @returns { String }
+ */
+function getBaseClasses(value) {
+  return typeof value === "object" ? value.base || "" : value || "";
+}
+
+/**
  Check is config key contains component name and if contains return it.
  @param { String | Object } value
  @returns { String }
  */
 function getNestedComponent(value) {
-  const classes = typeof value === "object" ? value.base || "" : value || "";
+  const classes = getBaseClasses(value);
   const match = classes.match(nestedComponentRegEx);
 
   return match ? match[1] : "";
