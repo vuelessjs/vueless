@@ -13,18 +13,17 @@ export default function useAttrs(props) {
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
-    let classes = "";
-    let value = config.value[key];
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    if (value.variants || value.compoundVariants) {
-      const getCVA = cva(value);
-
-      classes = computed(() =>
-        getCVA({
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
           ...props,
-        }),
-      );
-    }
+        });
+      }
+
+      return "";
+    });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
   }
