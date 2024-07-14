@@ -143,7 +143,7 @@ const emit = defineEmits([
   "blur",
 
   /**
-   * Triggers when the input value is input.
+   * Triggers when any validation rules are applied to input value.
    * @property {string} value
    */
   "input",
