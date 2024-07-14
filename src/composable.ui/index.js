@@ -162,6 +162,7 @@ function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStra
   @param {Object} propsConfig
   @param {Object} config - final merged config.
   @param {boolean} isReplace - enables class replacement instead of merge.
+  @param {boolean} isVarinants - if true, prevents adding a "base" key into nested objects.
 
   @returns {Object}
  */
@@ -171,6 +172,7 @@ function mergeConfigs({
   propsConfig,
   config = {},
   isReplace = false,
+  isVariants = false,
 }) {
   globalConfig = cloneDeep(globalConfig || {});
   propsConfig = cloneDeep(propsConfig || {});
@@ -213,7 +215,7 @@ function mergeConfigs({
       } else if (key === safelist || key === safelistColors) {
         if (propsConfig[key]) {
           // eslint-disable-next-line no-console
-          console.warn(`Passing '${key}' key by 'config' prop is not allowed.`);
+          console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
         }
       } else if (key === defaultVariants) {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
@@ -235,14 +237,19 @@ function mergeConfigs({
         const isIconName = key.includes(iconName) || key.includes(iconNameCapitalize);
         const isI18n = key === i18n;
 
+        if (key === "variants" && !isVariants) {
+          isVariants = true;
+        }
+
         config[key] =
           isObject && !isEmpty && !isI18n
             ? mergeConfigs({
-                defaultConfig: stringToObject(composedConfig[key]),
-                globalConfig: stringToObject(globalConfig[key]),
-                propsConfig: stringToObject(propsConfig[key]),
-                config: stringToObject(composedConfig[key]),
+                defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
+                globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
+                propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
+                config: stringToObject(composedConfig[key], { addBase: !isVariants }),
                 isReplace,
+                isVariants,
               })
             : isReplace || isIconName || isI18n
               ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
@@ -257,14 +264,15 @@ function mergeConfigs({
 }
 
 /**
-  Turn simplified nested component config to regular config.
-  @param {Object | String} value
-  @returns {Object}
+ Turn simplified nested component config to regular config.
+ @param {Object | String} value
+ @param {Boolean} addBase
+ @returns {Object}
  */
-function stringToObject(value) {
+function stringToObject(value, { addBase = false }) {
   if (value === undefined) value = "";
 
-  return typeof value === "object" ? value : { base: value };
+  return typeof value !== "object" ? addBase && { base: value } : value;
 }
 
 /**
