@@ -5,55 +5,31 @@ import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
-  const { config, getAttrs, hasSlotContent, isSystemKey, getColor, setColor } = useUI(
+
+  const { config, getAttrs, hasSlotContent, getColor, setColor, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
   );
   const attrs = {};
 
-  const createClasses = (key, extraProps = {}) => {
-    let value = config.value[key];
-    let classes = "";
-
-    if (value.variants || value.compoundVariants) {
-      const getCVA = cva(value);
-
-      classes = computed(() =>
-        setColor(
-          getCVA({
-            ...props,
-            color: getColor(props.color),
-            ...extraProps,
-          }),
-          props.color,
-        ),
-      );
-    }
-
-    return classes;
-  };
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
-    let extraProps = {};
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    if (key === "wrapper") {
-      extraProps = {
-        size: props.size,
-        block: props.block,
-        noRing: props.noRing,
-        disabled: props.disabled,
-      };
-    } else if (key === "link") {
-      extraProps = {
-        size: props.size,
-        dashed: props.dashed,
-        underlined: props.underlined,
-      };
-    }
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
 
-    const classes = createClasses(key, extraProps);
+      return "";
+    });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
