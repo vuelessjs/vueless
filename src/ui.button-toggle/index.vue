@@ -47,7 +47,7 @@ const props = defineProps({
    */
   modelValue: {
     type: [String, Number, Array],
-    default: () => (!this.multiple ? "" : []),
+    default: "",
   },
 
   /**
