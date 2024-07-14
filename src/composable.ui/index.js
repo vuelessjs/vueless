@@ -1,5 +1,6 @@
 import {
   ref,
+  watch,
   watchEffect,
   getCurrentInstance,
   toValue,
@@ -69,7 +70,6 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
   });
 
   function getAttrs(configKey, options) {
-    const cvaClasses = options?.classes || "";
     const nestedComponent = options?.isComponent || getNestedComponent(defaultConfig[configKey]); // TODO: Remove `options?.isComponent` when all `attrs.composable.js` will be migranted
 
     const attrs = useAttrs();
@@ -87,7 +87,9 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     // Delete value key to prevent v-model overwrite
     delete commonAttrs.value;
 
-    watchEffect(() => {
+    watch(config, updateVuelessAttrs, { immediate: true });
+
+    function updateVuelessAttrs() {
       const configKeyValue = config.value[configKey];
       const isObject = typeof configKeyValue === "object";
 
@@ -97,16 +99,15 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
       };
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
-
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-      const configKeyClass = isObject ? configKeyValue.base : configKeyValue;
+      const classes = options?.classes ? toValue(options?.classes) : getBaseClasses(configKeyValue);
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([configKeyClass, toValue(cvaClasses), attrClass]),
+        class: cx([classes, attrClass]),
         ...((isObject && configAttrs) || {}),
       };
-    });
+    }
 
     return vuelessAttrs;
   }
@@ -161,6 +162,7 @@ function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStra
   @param {Object} propsConfig
   @param {Object} config - final merged config.
   @param {boolean} isReplace - enables class replacement instead of merge.
+  @param {boolean} isVarinants - if true, prevents adding a "base" key into nested objects.
 
   @returns {Object}
  */
@@ -170,6 +172,7 @@ function mergeConfigs({
   propsConfig,
   config = {},
   isReplace = false,
+  isVariants = false,
 }) {
   globalConfig = cloneDeep(globalConfig || {});
   propsConfig = cloneDeep(propsConfig || {});
@@ -212,7 +215,7 @@ function mergeConfigs({
       } else if (key === safelist || key === safelistColors) {
         if (propsConfig[key]) {
           // eslint-disable-next-line no-console
-          console.warn(`Passing '${key}' key by 'config' prop is not allowed.`);
+          console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
         }
       } else if (key === defaultVariants) {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
@@ -234,14 +237,19 @@ function mergeConfigs({
         const isIconName = key.includes(iconName) || key.includes(iconNameCapitalize);
         const isI18n = key === i18n;
 
+        if (key === "variants" && !isVariants) {
+          isVariants = true;
+        }
+
         config[key] =
           isObject && !isEmpty && !isI18n
             ? mergeConfigs({
-                defaultConfig: stringToObject(composedConfig[key]),
-                globalConfig: stringToObject(globalConfig[key]),
-                propsConfig: stringToObject(propsConfig[key]),
-                config: stringToObject(composedConfig[key]),
+                defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
+                globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
+                propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
+                config: stringToObject(composedConfig[key], { addBase: !isVariants }),
                 isReplace,
+                isVariants,
               })
             : isReplace || isIconName || isI18n
               ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
@@ -256,12 +264,15 @@ function mergeConfigs({
 }
 
 /**
-  Turn simplified nested component config to regular config.
-  @param {Object | String} value
-  @returns {Object}
+ Turn simplified nested component config to regular config.
+ @param {Object | String} value
+ @param {Boolean} addBase
+ @returns {Object}
  */
-function stringToObject(value) {
-  return typeof value === "object" ? value : { base: value };
+function stringToObject(value, { addBase = false }) {
+  if (value === undefined) value = "";
+
+  return typeof value !== "object" ? addBase && { base: value } : value;
 }
 
 /**
@@ -360,12 +371,21 @@ function mergeClassesIntoConfig(config, topLevelClassKey, attrs) {
 }
 
 /**
+ Return base classes.
+ @param { String | Object } value
+ @returns { String }
+ */
+function getBaseClasses(value) {
+  return typeof value === "object" ? value.base || "" : value || "";
+}
+
+/**
  Check is config key contains component name and if contains return it.
  @param { String | Object } value
  @returns { String }
  */
 function getNestedComponent(value) {
-  const classes = typeof value === "object" ? value.base || "" : value || "";
+  const classes = getBaseClasses(value);
   const match = classes.match(nestedComponentRegEx);
 
   return match ? match[1] : "";
