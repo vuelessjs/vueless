@@ -19,15 +19,12 @@ export default function useAttrs(props) {
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
-    let classes = "";
-    let value = config.value[key];
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    if (value.variants || value.compoundVariants) {
-      const getCVA = cva(value);
-
-      classes = computed(() =>
-        setColor(
-          getCVA({
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
             ...props,
             color: getColor(props.color),
             square: props.loading || props.square,
@@ -35,9 +32,11 @@ export default function useAttrs(props) {
             iconRight: iconClasses.value.iconRight,
           }),
           props.color,
-        ),
-      );
-    }
+        );
+      }
+
+      return "";
+    });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
   }
