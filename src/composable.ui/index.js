@@ -46,7 +46,8 @@ const SYSTEM_CONFIG_KEY = {
   4. Component classes (class="...")
  */
 export default function useUI(defaultConfig = {}, propsConfigGetter = null, topLevelClassKey) {
-  const { name: componentName } = getCurrentInstance().type;
+  const { type, props } = getCurrentInstance();
+  const componentName = type.name;
   const globalConfig = globalComponentConfig[componentName];
 
   const isStrategyValid = strategy && Object.values(STRATEGY_TYPE).includes(strategy);
@@ -88,6 +89,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     delete commonAttrs.value;
 
     watch(config, updateVuelessAttrs, { immediate: true });
+    watch(props, updateVuelessAttrs);
 
     function updateVuelessAttrs() {
       const configKeyValue = config.value[configKey];
@@ -100,7 +102,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-      const classes = options?.classes ? toValue(options?.classes) : getBaseClasses(configKeyValue);
+      const classes = toValue(options?.classes) || getBaseClasses(configKeyValue);
 
       vuelessAttrs.value = {
         ...commonAttrs,
