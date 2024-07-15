@@ -27,7 +27,7 @@ export default function useAttrs(props, { selectedValue, separated, variant }) {
         });
       }
 
-      return value;
+      return "";
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
