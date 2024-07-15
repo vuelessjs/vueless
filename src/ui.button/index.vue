@@ -39,7 +39,7 @@ import ULoader from "../ui.loader";
 import UIcon from "../ui.image-icon";
 
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { UButton } from "./constants";
 
 /* Should be a string for correct web-types gen */
