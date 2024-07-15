@@ -1,8 +1,8 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   trigger: "flex items-center relative space-x-0.5",
-  link: "",
-  icon: "block transition duration-300",
+  link: "{ULink}",
+  icon: "{UIcon} block transition duration-300",
   iconName: "keyboard_arrow_down",
   iconRotate: "rotate-180",
   listWrapper: {
@@ -22,7 +22,7 @@ export default /*tw*/ {
       },
     },
   },
-  list: "w-fit",
+  list: "{UDropdownList} w-fit",
   defaultVariants: {
     color: "brand",
     size: "md",
