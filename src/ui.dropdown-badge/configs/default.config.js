@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  badge: "cursor-pointer",
-  icon: "transition duration-300",
+  badge: "{UDropdownBadge} cursor-pointer",
+  icon: "{UIcon} transition duration-300",
   iconName: "keyboard_arrow_down",
   iconRotate: "rotate-180",
   listWrapper: {
@@ -21,7 +21,7 @@ export default /*tw*/ {
       },
     },
   },
-  list: "w-fit",
+  list: "{UDropdownList} w-fit",
   defaultVariants: {
     color: "brand",
     size: "md",

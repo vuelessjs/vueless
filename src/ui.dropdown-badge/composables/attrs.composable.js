@@ -4,59 +4,45 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props, { isShownOptions }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { listWrapper } = config.value;
-
-  const cvaListWrapper = cva({
-    base: listWrapper.base,
-    variants: listWrapper.variants,
-    compoundVariants: listWrapper.compoundVariants,
-  });
-
-  // Get list wrapper position classes to apply them to list without wrapper
-  const cvaListWrapperVariants = cva({
-    base: "",
-    variants: listWrapper.variants,
-    compoundVariants: [],
-  });
-
-  const listWrapperPositionClasses = computed(() =>
-    cvaListWrapperVariants({
-      listYPosition: props.listYPosition,
-      listXPosition: props.listXPosition,
-    }),
+export default function useAttrs(props, { isShownOptions }) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const listWrapperClasses = computed(() =>
-    cvaListWrapper({
-      listYPosition: props.listYPosition,
-      listXPosition: props.listXPosition,
-    }),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const badgeAttrs = getAttrs("badge", { isComponent: true });
-  const iconAttrsRaw = getAttrs("icon", { isComponent: true });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const iconAttrs = computed(() => {
-    const rotateClasses = isShownOptions.value && config.value.iconRotate;
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          listYPosition: props.listYPosition,
+          listXPosition: props.listXPosition,
+        });
+      }
 
-    return {
-      ...iconAttrsRaw.value,
-      class: cx([iconAttrsRaw.value.class, rotateClasses]),
-    };
-  });
+      return "";
+    });
 
-  const listWrapperAttrs = getAttrs("listWrapper", { classes: listWrapperClasses });
-  const listAttrs = getAttrs("list", { isComponent: true, classes: listWrapperPositionClasses });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "icon") {
+      const iconAttrs = attrs[`${key}Attrs`];
+      const rotateClasses = isShownOptions.value && config.value.iconRotate;
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...iconAttrs.value,
+        class: cx([iconAttrs.value.class, rotateClasses]),
+      }));
+    }
+  }
 
   return {
-    listWrapperAttrs,
-    wrapperAttrs,
-    badgeAttrs,
-    listAttrs,
-    iconAttrs,
+    ...attrs,
     config,
     hasSlotContent,
   };
