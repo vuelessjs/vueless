@@ -226,7 +226,6 @@ export const {
   setFavicon,
   setBrandColor,
   convertHexInRgb,
-  isSystemKey,
   isMac,
   isPWA,
   isIOS,

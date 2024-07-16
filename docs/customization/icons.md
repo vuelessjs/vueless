@@ -56,7 +56,7 @@ And after set the library in the config:
 {% tab title="@material-symbols/svg-500" %}
 {% code title="vueless.config.js" %}
 ```javascript
-export default /*tw*/ {
+export default {
   component: {
     UIcon: {
       defaultVariants: {
@@ -73,7 +73,7 @@ export default /*tw*/ {
 {% tab title="bootstrap-icons" %}
 {% code title="vueless.config.js" %}
 ```javascript
-export default /*tw*/ {
+export default {
   component: {
     UIcon: {
       defaultVariants: {
@@ -89,7 +89,7 @@ export default /*tw*/ {
 {% tab title="heroicons" %}
 {% code title="vueless.config.js" %}
 ```javascript
-export default /*tw*/ {
+export default {
   component: {
     UIcon: {
       defaultVariants: {
