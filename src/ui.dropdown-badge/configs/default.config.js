@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  badge: "{UDropdownBadge} cursor-pointer",
+  badge: "{UBadge} cursor-pointer",
   icon: "{UIcon} transition duration-300",
   iconName: "keyboard_arrow_down",
   iconRotate: "rotate-180",

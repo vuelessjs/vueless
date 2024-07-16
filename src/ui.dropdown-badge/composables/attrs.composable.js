@@ -20,8 +20,6 @@ export default function useAttrs(props, { isShownOptions }) {
       if (value.variants || value.compoundVariants) {
         return cva(value)({
           ...props,
-          listYPosition: props.listYPosition,
-          listXPosition: props.listXPosition,
         });
       }
 
@@ -38,6 +36,25 @@ export default function useAttrs(props, { isShownOptions }) {
         ...iconAttrs.value,
         class: cx([iconAttrs.value.class, rotateClasses]),
       }));
+    }
+
+    if (key === "listWrapper") {
+      const cvaListWrapperVariants = cva({
+        base: "",
+        variants: config.value[key].variants,
+        compoundVariants: [],
+      });
+
+      const listWrapperPositionClasses = computed(() =>
+        cvaListWrapperVariants({
+          listYPosition: props.listYPosition,
+          listXPosition: props.listXPosition,
+        }),
+      );
+
+      attrs[`${key}PositionClasses`] = getAttrs(key, {
+        classes: listWrapperPositionClasses,
+      });
     }
   }
 
