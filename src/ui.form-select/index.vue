@@ -30,7 +30,7 @@
       >
         <!--
           @slot Use it to add something after caret.
-          @binding {other} scope-props
+          @binding {object} scope-props
         -->
         <slot :scope-props="props" name="after-caret" />
       </div>
@@ -56,7 +56,7 @@
       >
         <!--
           @slot Use it to add something before caret.
-          @binding {other} scope-props
+          @binding {object} scope-props
         -->
         <slot :scope-props="props" name="before-caret" />
       </div>
@@ -85,7 +85,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-            <UIcon v-if="iconLeft" :name="iconLeft" :icon-size="iconSize" />
+            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
           </slot>
         </span>
 
@@ -99,7 +99,6 @@
             <!--
               @slot Use it to add selected value label.
               @binding {string} selected-label
-              @binding {string} value
             -->
             <slot
               name="selected-label"
@@ -112,7 +111,7 @@
 
             <!--
               @slot Use it to add something after selected value label.
-              @binding {other} scope-props
+              @binding {object} scope-props
             -->
             <slot :scope-props="props" name="selected-label-after" />
 
@@ -174,7 +173,7 @@
 
           <!--
             @slot Use it to add something after selected value label.
-            @binding {other} scope-props
+            @binding {object} scope-props
           -->
           <slot :scope-props="props" name="selected-label-after" />
         </span>
@@ -197,7 +196,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
-            <UIcon v-if="iconRight" :name="iconRight" :icon-size="iconSize" />
+            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
           </slot>
         </span>
       </div>
@@ -515,7 +514,7 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
-   * Triggers when dropdown list is updated.
+   * Triggers when dropdown options list is updated.
    */
   "addOption",
 

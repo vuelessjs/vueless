@@ -345,7 +345,7 @@ export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #icon-left>
-      🥸
+      <UIcon name="star" color="green" />
     </template>
   `,
 };
@@ -354,7 +354,7 @@ export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
-      🥸
+      <UIcon name="star" color="green" />
     </template>
   `,
 };
