@@ -38,22 +38,22 @@ export default function useAttrs(props, { isShownOptions }) {
       }));
     }
 
-    if (key === "listWrapper") {
-      const cvaListWrapperVariants = cva({
+    if (key === "list") {
+      const getCVA = cva({
         base: "",
         variants: config.value[key].variants,
         compoundVariants: [],
       });
 
-      const listWrapperPositionClasses = computed(() =>
-        cvaListWrapperVariants({
+      const classes = computed(() =>
+        getCVA({
           listYPosition: props.listYPosition,
           listXPosition: props.listXPosition,
         }),
       );
 
       attrs[`${key}PositionClasses`] = getAttrs(key, {
-        classes: listWrapperPositionClasses,
+        classes: classes,
       });
     }
   }
