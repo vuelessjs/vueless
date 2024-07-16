@@ -17,7 +17,7 @@
         v-bind="leftIconSlotAttrs"
       >
         <!--
-          @slot Use it to add icon before text.
+          @slot Use it to add icon before the text.
           @binding {string} icon-name
           @binding {string} icon-size
         -->
@@ -27,7 +27,7 @@
       </span>
 
       <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
-        <!-- @slot Use it to add something before text. -->
+        <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
       </span>
 
@@ -66,12 +66,12 @@
         />
       </label>
 
-      <!-- @slot Use it to add something after text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
 
       <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
         <!--
-          @slot Use it to add icon after text.
+          @slot Use it to add icon after the text.
           @binding {string} icon-name
           @binding {string} icon-size
         -->

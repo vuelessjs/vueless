@@ -10,14 +10,6 @@ export default function useAttrs(props, { inputPasswordClasses }) {
   );
   const attrs = {};
 
-  const inputClasses = computed(() =>
-    cva(config.value.input)({
-      ...props,
-      error: Boolean(props.error),
-      label: Boolean(props.label),
-    }),
-  );
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -42,7 +34,7 @@ export default function useAttrs(props, { inputPasswordClasses }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...inputAttrs.value,
-        class: cx([inputAttrs.value.class, inputPasswordClasses.value, inputClasses.value]),
+        class: cx([inputAttrs.value.class, inputPasswordClasses.value]),
       }));
     }
   }
