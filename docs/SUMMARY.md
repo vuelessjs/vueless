@@ -4,7 +4,6 @@
 
 * [Quick start](README.md)
 * [Class autocompletion](installation/class-autocompletion.md)
-* [Possible issues](installation/possible-issues.md)
 
 ## Customization
 
