@@ -399,7 +399,13 @@ function getNestedComponent(value) {
  @returns { Boolean }
  */
 function isSystemKey(key) {
-  return Object.values(SYSTEM_CONFIG_KEY).some((value) => value.includes(key));
+  const isExactKey = Object.values(SYSTEM_CONFIG_KEY).some((value) => value === key);
+
+  return (
+    isExactKey ||
+    key.includes(SYSTEM_CONFIG_KEY.iconName) ||
+    key.includes(SYSTEM_CONFIG_KEY.iconNameCapitalize)
+  );
 }
 
 /**
