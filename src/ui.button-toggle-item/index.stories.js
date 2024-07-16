@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UToggleItem from "../ui.button-toggle-item";
 import UIcon from "../ui.image-icon";
@@ -29,9 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UToggleItem v-bind="args" name="toggle">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UToggleItem>
   `,
 });

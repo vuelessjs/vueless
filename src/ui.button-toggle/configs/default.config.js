@@ -24,14 +24,14 @@ export default /*tw*/ {
     ],
   },
   label: {
-    base: "flex flex-wrap",
+    base: "{ULabel} flex flex-wrap",
     variants: {
       block: {
         true: "w-full",
       },
     },
   },
-  item: "",
+  item: "{UToggleItem}",
   defaultVariants: {
     variant: "primary",
     labelAlign: "top",
