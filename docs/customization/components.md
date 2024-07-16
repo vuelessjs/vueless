@@ -61,7 +61,7 @@ Some examples of changing classes for a Vueless components globally.
 ```js
 export default {
   component: {
-    /* simplified way of stiling */
+    /* simplified way of stiling (base classes) */
     UButton: {
       button: "bg-red-500 w-full",
       text: "px-4 text-lg font-bold"
