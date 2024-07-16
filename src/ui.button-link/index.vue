@@ -1,7 +1,7 @@
 <template>
   <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
     <div v-if="hasSlotContent($slots['left'])" v-bind="leftSlotAttrs">
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </div>
 
@@ -42,7 +42,7 @@
     </a>
 
     <div v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add something after text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
     </div>
   </div>
