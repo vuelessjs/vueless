@@ -178,7 +178,10 @@ export const leftSlot = SlotTemplate.bind({});
 leftSlot.args = {
   slotTemplate: `
     <template #left>
-      🥸
+      <UIcon
+        name="archive"
+        color="red"
+      />
     </template>
   `,
 };
@@ -187,7 +190,10 @@ export const rightSlot = SlotTemplate.bind({});
 rightSlot.args = {
   slotTemplate: `
     <template #right>
-      🥸
+      <UIcon
+        name="archive"
+        color="red"
+      />
     </template>
   `,
 };

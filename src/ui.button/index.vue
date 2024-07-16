@@ -16,7 +16,7 @@
     <template v-else>
       <div v-if="hasSlotContent($slots['icon-left']) || iconLeft">
         <!--
-          @slot Use it to add icon before text.
+          @slot Use it to add icon before the text.
           @binding {string} icon-name
           @binding {string} icon-size
           @binding {string} icon-color
@@ -31,19 +31,19 @@
         </slot>
       </div>
 
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
 
-      <!-- @slot Use it to add something instead of text. -->
+      <!-- @slot Use it to add something instead of the text. -->
       <slot />
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
-      <!-- @slot Use it to add something after text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
 
       <div v-if="hasSlotContent($slots['icon-right']) || iconRight">
         <!--
-          @slot Use it to add icon after text.
+          @slot Use it to add icon after the text.
           @binding {string} icon-name
           @binding {string} icon-size
           @binding {string} icon-color

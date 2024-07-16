@@ -11,11 +11,6 @@ export default function useAttrs(props) {
   );
   const attrs = {};
 
-  const iconClasses = computed(() => ({
-    iconLeft: Boolean(props.iconLeft) || hasSlotContent(slots["icon-left"]),
-    iconRight: Boolean(props.iconRight) || hasSlotContent(slots["icon-right"]),
-  }));
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -28,8 +23,8 @@ export default function useAttrs(props) {
             ...props,
             color: getColor(props.color),
             square: props.loading || props.square,
-            iconLeft: iconClasses.value.iconLeft,
-            iconRight: iconClasses.value.iconRight,
+            iconLeft: Boolean(props.iconLeft) || hasSlotContent(slots["icon-left"]),
+            iconRight: Boolean(props.iconRight) || hasSlotContent(slots["icon-right"]),
           }),
           props.color,
         );
