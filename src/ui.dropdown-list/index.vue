@@ -26,13 +26,13 @@
           @mouseenter.self="pointerSet(index)"
         >
           <!--
-            @slot Use it to add something before option.
+            @slot Use it to add something before the option.
             @binding {other} option
           -->
           <slot :option="option" name="before-option" />
 
           <!--
-            @slot Use it to add something instead of option.
+            @slot Use it to add something instead of the option.
             @binding {other} option
             @binding {number} index
           -->
@@ -45,7 +45,7 @@
           </slot>
 
           <!--
-            @slot Use it to add something after option.
+            @slot Use it to add something after the option.
             @binding {other} option
           -->
           <slot :option="option" name="after-option" />
@@ -63,11 +63,7 @@
           />
         </div>
       </li>
-      <slot
-        v-if="hasSlotContent($slots['empty']) || options.length === 0"
-        name="empty"
-        :empty-styles="optionClasses"
-      >
+      <slot v-if="hasSlotContent($slots['empty']) || options.length === 0" name="empty">
         <span v-bind="optionAttrs()">
           <span v-text="currentLocale.noDataToShow" />
         </span>
@@ -236,7 +232,6 @@ const {
   optionAttrs,
   subGroupLabelAttrs,
   groupLabelAttrs,
-  optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
 

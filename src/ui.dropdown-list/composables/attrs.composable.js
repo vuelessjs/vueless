@@ -61,9 +61,8 @@ export default function useAttrs(props) {
 
   return {
     ...attrs,
+    optionAttrs,
     hasSlotContent,
     config,
-    optionAttrs,
-    optionClasses,
   };
 }
