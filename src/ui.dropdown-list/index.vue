@@ -63,7 +63,11 @@
           />
         </div>
       </li>
-      <slot v-if="hasSlotContent($slots['empty']) || options.length === 0" name="empty">
+      <slot
+        v-if="hasSlotContent($slots['empty']) || options.length === 0"
+        name="empty"
+        :empty-styles="optionClasses"
+      >
         <span v-bind="optionAttrs()">
           <span v-text="currentLocale.noDataToShow" />
         </span>
@@ -232,6 +236,7 @@ const {
   optionAttrs,
   subGroupLabelAttrs,
   groupLabelAttrs,
+  optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
 
