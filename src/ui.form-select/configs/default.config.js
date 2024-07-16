@@ -33,7 +33,7 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "flex px-4 min-h-full w-full overflow-hidden",
+    base: "flex px-4 min-h-full w-full overflow-hidden justify-between",
     variants: {
       multiple: {
         true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
@@ -43,7 +43,8 @@ export default /*tw*/ {
   wrapperActive: "z-[inherit]", // applies when select active
   labelWrapperTop: "group/top", // applies when an open direction is top
   labelWrapperActive: "group/active",
-  leftSlot: "pr-4 flex items-center",
+  leftIconSlot: "pr-3 flex items-center",
+  rightIconSlot: "pl-3 flex items-center",
   caret: {
     base: "flex items-center mt-0",
     compoundVariants: [

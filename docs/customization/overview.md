@@ -49,7 +49,7 @@ Vueless supports three popular icon libraries: `@material-symbols`, `bootstrap-i
 
 {% code title="vueless.config.js" %}
 ```js
-export default /*tw*/ {
+export default {
   component: {
     UIcon: {
       defaultVariants: {

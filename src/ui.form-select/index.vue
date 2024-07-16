@@ -28,7 +28,10 @@
         v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
         v-bind="afterCaretSlotAttrs"
       >
-        <!-- @slot Use it to add something after caret. -->
+        <!--
+          @slot Use it to add something after caret.
+          @binding {object} scope-props
+        -->
         <slot :scope-props="props" name="after-caret" />
       </div>
 
@@ -51,7 +54,10 @@
         v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
         v-bind="beforeCaretSlotAttrs"
       >
-        <!-- @slot Use it to add something after caret. -->
+        <!--
+          @slot Use it to add something before caret.
+          @binding {object} scope-props
+        -->
         <slot :scope-props="props" name="before-caret" />
       </div>
 
@@ -68,9 +74,32 @@
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
+        <span
+          v-if="hasSlotContent($slots['icon-left']) || iconLeft"
+          ref="leftSlotWrapperRef"
+          v-bind="leftIconSlotAttrs"
+        >
+          <!--
+            @slot Use it to add icon before option.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+          <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
+            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
+          </slot>
+        </span>
+
+        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
+          <!-- @slot Use it to add something before input. -->
+          <slot name="left" />
+        </span>
+
         <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
-            <!-- @slot Use it to add selected value label. -->
+            <!--
+              @slot Use it to add selected value label.
+              @binding {string} selected-label
+            -->
             <slot
               name="selected-label"
               :selected-label="getOptionLabel(item)"
@@ -80,7 +109,10 @@
               {{ getOptionLabel(item) }}
             </slot>
 
-            <!-- @slot Use it to add selected value label. -->
+            <!--
+              @slot Use it to add something after selected value label.
+              @binding {object} scope-props
+            -->
             <slot :scope-props="props" name="selected-label-after" />
 
             <div
@@ -103,15 +135,6 @@
         </div>
 
         <div v-bind="searchAttrs">
-          <span
-            v-if="hasSlotContent($slots['left'])"
-            ref="leftSlotWrapperRef"
-            v-bind="leftSlotAttrs"
-          >
-            <!-- @slot Use it to add some component before text. -->
-            <slot name="left" />
-          </span>
-
           <input
             v-show="searchable || !localValue || multiple || !isOpen"
             :id="id"
@@ -139,12 +162,19 @@
           v-bind="selectedLabelAttrs"
           @mousedown.prevent="toggle"
         >
-          <!-- @slot Use it to add selected value label. -->
+          <!--
+            @slot Use it to add selected value label.
+            @binding {string} selected-label
+            @binding {string} value
+          -->
           <slot name="selected-label" :selected-label="selectedLabel" :value="localValue[valueKey]">
             {{ selectedLabel }}
           </slot>
 
-          <!-- @slot Use it to add selected value label. -->
+          <!--
+            @slot Use it to add something after selected value label.
+            @binding {object} scope-props
+          -->
           <slot :scope-props="props" name="selected-label-after" />
         </span>
 
@@ -155,6 +185,20 @@
           @click.prevent.capture
           v-text="currentLocale.clear"
         />
+
+        <!-- @slot Use it to add something after input. -->
+        <slot name="right" />
+
+        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
+          <!--
+            @slot Use it to add icon after option.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+          <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
+            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
+          </slot>
+        </span>
       </div>
 
       <UDropdownList
@@ -176,16 +220,27 @@
         @click.prevent.capture
       >
         <template #before-option="{ option }">
-          <!-- @slot Use it to add something before option. -->
+          <!--
+            @slot Use it to add something before option.
+            @binding {other} option
+          -->
           <slot :option="option" name="before-option" />
         </template>
 
         <template #option="{ option, index }">
+          <!--
+            @slot Use it to add something instead of option.
+            @binding {other} option
+            @binding {number} index
+          -->
           <slot name="option" :option="option" :index="index" />
         </template>
 
         <template #after-option="{ option }">
-          <!-- @slot Use it to add something after option. -->
+          <!--
+            @slot Use it to add something after option.
+            @binding {other} option
+          -->
           <slot :option="option" name="after-option" />
         </template>
 
@@ -286,6 +341,22 @@ const props = defineProps({
   size: {
     type: String,
     default: UIService.get(defaultConfig, USelect).default.size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -412,13 +483,44 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
+  /**
+   * Triggers when dropdown list is opened.
+   * @property {string} propsId
+   */
   "open",
+
+  /**
+   * Triggers when dropdown list is closed.
+   * @property {string} propsId
+   */
   "close",
+
+  /**
+   * Triggers when the input value is changed.
+   */
   "searchChange",
+
+  /**
+   * Triggers when option is removed.
+   * @property {string} option
+   * @property {string} propsId
+   */
   "remove",
+
+  /**
+   * Triggers when option is selected.
+   * @property {number} value
+   */
   "update:modelValue",
-  "select",
+
+  /**
+   * Triggers when dropdown options list is updated.
+   */
   "addOption",
+
+  /**
+   * Triggers when label position is changed.
+   */
   "change",
 ]);
 
@@ -462,7 +564,8 @@ const {
   labelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
-  leftSlotAttrs,
+  leftIconSlotAttrs,
+  rightIconSlotAttrs,
   beforeCaretSlotAttrs,
   afterCaretSlotAttrs,
   caretToggleAttrs,
@@ -699,7 +802,13 @@ function removeElement(option, shouldClose = true) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
+  if (
+    props.labelAlign === "top" ||
+    !hasSlotContent(slots["left"]) ||
+    (!hasSlotContent(slots["icon-left"]) && !props.iconLeft)
+  ) {
+    return;
+  }
 
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
   const innerWrapperPaddingLeft = parseInt(
