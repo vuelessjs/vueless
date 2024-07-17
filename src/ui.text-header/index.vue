@@ -13,7 +13,7 @@ import UIService from "../service.ui";
 
 import { UHeader } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UHeader", inheritAttrs: false });
