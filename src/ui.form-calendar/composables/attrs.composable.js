@@ -55,17 +55,18 @@ export default function useAttrs(props) {
   });
   const timepickerSubmitButtonAttrs = getAttrs("timepickerSubmitButton");
 
-  const nextPrevWrapperAttrs = getAttrs("nextPrevWrapper", { classes: optionClasses.value });
+  const nextPrevWrapperAttrs = getAttrs("nextPrevWrapper", { classes: optionClasses });
 
-  const dayAttrs = (classes = []) => {
+  // TODO: Need to find other solution
+  const dayAttrs = (classes) => {
     return getAttrs("day", { classes }).value;
   };
 
-  const monthAttrs = (classes = []) => {
+  const monthAttrs = (classes) => {
     return getAttrs("month", { classes, isComponent: true }).value;
   };
 
-  const yearAttrs = (classes = []) => {
+  const yearAttrs = (classes) => {
     return getAttrs("year", { classes, isComponent: true }).value;
   };
 

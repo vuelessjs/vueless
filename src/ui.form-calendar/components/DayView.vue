@@ -245,19 +245,19 @@ function getDayClasses(day) {
   }
 
   if (isDayInRange) {
-    return [inRangeDayAttrs.value.class];
+    return inRangeDayAttrs.value.class;
   }
 
   if (isSelectedDay(day)) {
-    return [selectedDayAttrs.value.class];
+    return selectedDayAttrs.value.class;
   }
 
   if (isSameDay(props.activeDate, day)) {
-    return [activeDayAttrs.value.class];
+    return activeDayAttrs.value.class;
   }
 
   if (isAnotherMothDay(day, activeMonthDate.value)) {
-    return [anotherMonthDayAttrs.value.class];
+    return anotherMonthDayAttrs.value.class;
   }
 }
 
