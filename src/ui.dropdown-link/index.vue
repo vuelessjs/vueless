@@ -67,7 +67,7 @@ import vClickOutside from "../directive.clickOutside";
 
 import { UDropdownLink } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { UDropdownButton } from "../ui.dropdown-button/constants/index.js";
 
 /* Should be a string for correct web-types gen */
@@ -208,7 +208,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["select"]);
+const emit = defineEmits([
+  /**
+   * Triggers when dropdown option is selected.
+   * @property {string} value
+   */
+  "select",
+]);
 
 provide("hideDropdownOptions", hideOptions);
 

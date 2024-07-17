@@ -25,9 +25,17 @@
           @click.stop="select(option)"
           @mouseenter.self="pointerSet(index)"
         >
-          <!-- @slot Use it to add something before option. -->
+          <!--
+            @slot Use it to add something before the option.
+            @binding {other} option
+          -->
           <slot :option="option" name="before-option" />
 
+          <!--
+            @slot Use it to add something instead of the option.
+            @binding {other} option
+            @binding {number} index
+          -->
           <slot name="option" :option="option" :index="index">
             <span
               :style="getMarginForSubCategory(option.level)"
@@ -36,7 +44,10 @@
             />
           </slot>
 
-          <!-- @slot Use it to add something after option. -->
+          <!--
+            @slot Use it to add something after the option.
+            @binding {other} option
+          -->
           <slot :option="option" name="after-option" />
         </span>
 
@@ -198,7 +209,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "addOption"]);
+const emit = defineEmits([
+  /**
+   * Triggers when option is added.
+   */
+  "addOption",
+]);
 
 const wrapperRef = ref(null);
 const optionsRef = ref([]);

@@ -5,65 +5,53 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { subGroupLabel, groupLabel, option } = config.value;
-
-  const cvaSubGroupLabel = cva({
-    base: subGroupLabel.base,
-    variants: subGroupLabel.variants,
-    compoundVariants: subGroupLabel.compoundVariants,
-  });
-  const cvaGroupLabel = cva({
-    base: groupLabel.base,
-    variants: groupLabel.variants,
-    compoundVariants: groupLabel.compoundVariants,
-  });
-  const cvaOption = cva({
-    base: option.base,
-    variants: option.variants,
-    compoundVariants: option.compoundVariants,
-  });
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
+  const attrs = {};
 
   const optionClasses = computed(() =>
-    cvaOption({
-      disabled: props.disabled,
-      size: props.size,
-    }),
-  );
-  const subGroupLabelClasses = computed(() =>
-    cvaSubGroupLabel({
-      size: props.size,
-    }),
-  );
-  const groupLabelClasses = computed(() =>
-    cvaGroupLabel({
-      size: props.size,
+    cva(config.value.option)({
+      ...props,
     }),
   );
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const listAttrs = getAttrs("list");
-  const optionHighlightAttrs = getAttrs("optionHighlight");
-  const optionSelectedAttrs = getAttrs("optionSelected");
-  const optionItemAttrs = getAttrs("optionItem");
-  const addTitleWrapperAttrs = getAttrs("addTitleWrapper");
-  const addTitleAttrs = getAttrs("addTitle");
-  const addTitleHotkeyAttrs = getAttrs("addTitleHotkey");
-  const buttonAddAttrs = getAttrs("buttonAdd", { isComponent: true });
-  const addIconAttrs = getAttrs("addIcon", { isComponent: true });
-  const optionContentAttrs = getAttrs("optionContent");
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const subGroupLabelAttrsRaw = getAttrs("subGroupLabel", { classes: subGroupLabelClasses });
-  const subGroupLabelAttrs = computed(() => ({
-    ...subGroupLabelAttrsRaw.value,
-    class: cx([optionClasses.value, subGroupLabelAttrsRaw.value.class]),
-  }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const groupLabelAttrsRaw = getAttrs("groupLabel", { classes: groupLabelClasses });
-  const groupLabelAttrs = computed(() => ({
-    ...groupLabelAttrsRaw.value,
-    class: cx([optionClasses.value, groupLabelAttrsRaw.value.class]),
-  }));
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "subGroupLabel") {
+      const subGroupLabelAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...subGroupLabelAttrs.value,
+        class: cx([subGroupLabelAttrs.value.class, optionClasses.value]),
+      }));
+    }
+
+    if (key === "groupLabel") {
+      const groupLabelAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...groupLabelAttrs.value,
+        class: cx([groupLabelAttrs.value.class, optionClasses.value]),
+      }));
+    }
+  }
 
   const optionAttrs = (classes = []) => {
     const mergedClasses = cx([optionClasses.value, ...classes]);
@@ -72,22 +60,10 @@ export default function useAttrs(props) {
   };
 
   return {
+    ...attrs,
+    optionAttrs,
+    optionClasses,
     hasSlotContent,
     config,
-    wrapperAttrs,
-    listAttrs,
-    optionHighlightAttrs,
-    optionSelectedAttrs,
-    optionItemAttrs,
-    addTitleWrapperAttrs,
-    addTitleAttrs,
-    addTitleHotkeyAttrs,
-    buttonAddAttrs,
-    addIconAttrs,
-    optionAttrs,
-    subGroupLabelAttrs,
-    groupLabelAttrs,
-    optionClasses,
-    optionContentAttrs,
   };
 }

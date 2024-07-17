@@ -40,7 +40,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits([
+  /**
+   * Triggers when dropdown item is clicked.
+   * @property {string} value
+   */
+  "click",
+]);
 
 function onClick() {
   // invokes click event on current item
