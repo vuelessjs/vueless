@@ -1,30 +1,32 @@
 import useUI from "../../composable.ui";
-
+import { computed } from "vue";
 import defaultConfig from "../configs/default.config";
+import { cva } from "../../service.ui";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const bodyAttrs = getAttrs("body");
-  const contentAttrs = getAttrs("content");
-  const labelAttrs = getAttrs("label");
-  const descriptionAttrs = getAttrs("description");
-  const successIconAttrs = getAttrs("successIcon");
-  const warningIconAttrs = getAttrs("warningIcon");
-  const errorIconAttrs = getAttrs("errorIcon");
-  const closeIconAttrs = getAttrs("closeIcon");
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    wrapperAttrs,
-    bodyAttrs,
-    contentAttrs,
-    labelAttrs,
-    descriptionAttrs,
-    successIconAttrs,
-    warningIconAttrs,
-    errorIconAttrs,
-    closeIconAttrs,
   };
 }
