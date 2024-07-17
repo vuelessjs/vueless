@@ -5,64 +5,37 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export function useAttrs(props) {
-  const { config, hasSlotContent, getAttrs, getColor, setColor } = useUI(
+  const { config, hasSlotContent, getAttrs, getColor, setColor, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const { money, sum, penny } = config.value;
+  const attrs = {};
 
-  const cvaMoney = cva({
-    base: money.base,
-    variants: money.variants,
-    compoundVariants: money.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const cvaSum = cva({
-    base: sum.base,
-    variants: sum.variants,
-    compoundVariants: sum.compoundVariants,
-  });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const cvaPenny = cva({
-    base: penny.base,
-    variants: penny.variants,
-    compoundVariants: penny.compoundVariants,
-  });
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
 
-  const moneyClasses = computed(() =>
-    setColor(
-      cvaMoney({
-        align: props.align,
-        color: getColor(props.color),
-        weight: props.weight,
-      }),
-      props.color,
-    ),
-  );
+      return "";
+    });
 
-  const sumClasses = computed(() =>
-    cvaSum({
-      planned: props.planned,
-      size: props.size,
-    }),
-  );
-
-  const pennyClasses = computed(() => cvaPenny({ size: props.size }));
-
-  const moneyAttrs = getAttrs("money", { classes: moneyClasses });
-  const slotLeftAttrs = getAttrs("slotLeft");
-  const slotRightAttrs = getAttrs("slotRight");
-  const sumAttrs = getAttrs("sum", { classes: sumClasses });
-  const pennyAttrs = getAttrs("penny", { classes: pennyClasses });
-  const symbolAttrs = getAttrs("symbol");
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    sumAttrs,
-    pennyAttrs,
-    moneyAttrs,
-    slotLeftAttrs,
-    symbolAttrs,
-    slotRightAttrs,
+    ...attrs,
+    config,
     hasSlotContent,
   };
 }

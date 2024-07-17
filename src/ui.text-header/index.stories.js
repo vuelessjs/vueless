@@ -105,7 +105,7 @@ Sizes.args = {};
 export const Underlined = SizesTemplate.bind({});
 Underlined.args = { underlined: true };
 
-export const Multiline = SizesTemplate.bind({});
+export const Multiline = DefaultTemplate.bind({});
 Multiline.args = {
   size: "2xl",
   multiline: true,

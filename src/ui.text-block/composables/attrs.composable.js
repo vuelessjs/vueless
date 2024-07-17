@@ -4,30 +4,34 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      align: props.align,
-      size: props.size,
-      line: props.line,
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const htmlAttrs = getAttrs("html");
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    wrapperAttrs,
-    htmlAttrs,
+    ...attrs,
+    config,
     hasSlotContent,
   };
 }
