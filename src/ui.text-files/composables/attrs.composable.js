@@ -4,25 +4,31 @@ import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props) {
-  const { getAttrs, config } = useUI(defaultConfig, () => props.config);
-  const { body } = config.value;
+export default function useAttrs(props) {
+  const { getAttrs, config, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaBody = cva({
-    base: body.base,
-    variants: body.variants,
-    compoundVariants: body.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const bodyClasses = computed(() => cvaBody({ label: Boolean(props.label) }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const labelAttrs = getAttrs("label");
-  const bodyAttrs = getAttrs("body", { classes: bodyClasses });
-  const fileAttrs = getAttrs("file", { isComponent: true });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          label: Boolean(props.label),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    labelAttrs,
-    bodyAttrs,
-    fileAttrs,
+    ...attrs,
+    config,
   };
 }
