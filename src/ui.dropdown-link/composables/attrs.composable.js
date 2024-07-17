@@ -53,7 +53,7 @@ export default function useAttrs(props, { isShownOptions }) {
         }),
       );
 
-      attrs[`${key}PositionClasses`] = getAttrs(key, {
+      attrs[`${key}Attrs`] = getAttrs(key, {
         classes: classes,
       });
     }
