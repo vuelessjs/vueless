@@ -17,13 +17,4 @@ export default {
     ...config,
     BASE_URL: "/",
   }),
-  // TODO: test for performance improvement: prevent loading stories on hovering items in the main menu.
-  managerHead: (head) => `
-    ${head}
-    <script>
-      window.document.addEventListener('mouseout', function(ev) {
-        ev.stopImmediatePropagation();
-      }, true);
-    </script>
-  `,
 };
