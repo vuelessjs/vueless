@@ -41,7 +41,7 @@ export default function useAttrs(props, { isShownOptions }) {
     if (key === "list") {
       const getCVA = cva({
         base: "",
-        variants: config.value[key].variants,
+        variants: config.value["listWrapper"].variants,
         compoundVariants: [],
       });
 
