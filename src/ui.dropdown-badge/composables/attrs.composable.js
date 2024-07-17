@@ -48,14 +48,10 @@ export default function useAttrs(props, { isShownOptions }) {
       const classes = computed(() =>
         getCVA({
           ...props,
-          listYPosition: props.listYPosition,
-          listXPosition: props.listXPosition,
         }),
       );
 
-      attrs[`${key}Attrs`] = getAttrs(key, {
-        classes: classes,
-      });
+      attrs[`${key}Attrs`] = getAttrs(key, { classes: classes });
     }
   }
 
