@@ -64,7 +64,7 @@ import UIService, { getRandomId } from "../service.ui";
 import vClickOutside from "../directive.clickOutside";
 
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { UDropdownButton, BUTTON_VARIANT } from "./constants";
 
 /* Should be a string for correct web-types gen */
@@ -222,7 +222,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["select"]);
+const emit = defineEmits([
+  /**
+   * Triggers when dropdown option is selected.
+   * @property {string} value
+   */
+  "select",
+]);
 
 provide("hideDropdownOptions", hideOptions);
 

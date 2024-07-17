@@ -32,7 +32,7 @@ import { ref } from "vue";
 import UIService from "../service.ui";
 
 import { UBadge } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 
 /* Should be a string for correct web-types gen */
@@ -101,7 +101,27 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["focus", "keydown", "blur", "click"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the badge is focused.
+   */
+  "focus",
+
+  /**
+   * Triggers when the badge is pressed.
+   */
+  "keydown",
+
+  /**
+   * Triggers when the badge loses focus.
+   */
+  "blur",
+
+  /**
+   * Triggers when the badge is clicked.
+   */
+  "click",
+]);
 
 const { bodyAttrs, wrapperAttrs, hasSlotContent } = useAttrs(props);
 

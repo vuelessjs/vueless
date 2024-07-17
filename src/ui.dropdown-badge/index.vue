@@ -61,7 +61,7 @@ import vClickOutside from "../directive.clickOutside";
 
 import defaultConfig from "./configs/default.config";
 import { UDropdownBadge } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDropdownBadge", inheritAttrs: false });
@@ -187,7 +187,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["select"]);
+const emit = defineEmits([
+  /**
+   * Triggers when dropdown option is selected.
+   * @property {string} value
+   */
+  "select",
+]);
 
 provide("hideDropdownOptions", hideOptions);
 

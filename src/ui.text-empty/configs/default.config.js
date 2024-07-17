@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "flex flex-col items-center justify-center size-full",
   header: "mb-4 flex justify-center",
-  icon: "",
+  icon: "{UIcon}",
   iconName: "emoji_food_beverage",
   footer: "mt-4 flex justify-center",
   title: {

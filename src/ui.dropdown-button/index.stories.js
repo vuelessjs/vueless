@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UDropdownButton from "../ui.dropdown-button";
 import UDropdownItem from "../ui.dropdown-item";
@@ -43,9 +43,7 @@ const DefaultTemplate = (args) => ({
     <UDropdownButton
       v-bind="args"
     >
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UDropdownButton>
   `,
 });

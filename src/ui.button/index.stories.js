@@ -41,7 +41,7 @@ const SlotTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate}
     </UButton>
   `,
 });
@@ -153,7 +153,7 @@ slotDefault.args = {
 export const iconLeftSlot = SlotTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
-    <template #left>
+    <template #icon-left>
       <UIcon
         name="star"
         color="green"
@@ -165,10 +165,34 @@ iconLeftSlot.args = {
 export const iconRightSlot = SlotTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
-    <template #right>
+    <template #icon-right>
       <UIcon
         name="star"
         color="green"
+      />
+    </template>
+  `,
+};
+
+export const leftSlot = SlotTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const rightSlot = SlotTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UIcon
+        name="archive"
+        color="red"
       />
     </template>
   `,

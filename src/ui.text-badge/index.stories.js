@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
@@ -29,9 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UBadge v-bind="args">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UBadge>
   `,
 });

@@ -12,14 +12,23 @@
   >
     <label :for="id" v-bind="blockAttrs">
       <span
-        v-if="hasSlotContent($slots['left']) || iconLeft"
+        v-if="hasSlotContent($slots['icon-left']) || iconLeft"
         ref="leftSlotWrapper"
-        v-bind="leftSlotAttrs"
+        v-bind="leftIconSlotAttrs"
       >
-        <!-- @slot Use it to add icon before text. -->
-        <slot name="left">
-          <UIcon v-if="iconLeft" :name="iconLeft" />
+        <!--
+          @slot Use it to add icon before the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
+          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
         </slot>
+      </span>
+
+      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
+        <!-- @slot Use it to add something before the text. -->
+        <slot name="left" />
       </span>
 
       <span v-bind="inputWrapperAttrs">
@@ -44,7 +53,7 @@
         />
       </span>
 
-      <label v-if="isTypePassword" v-bind="rightSlotAttrs" :for="id">
+      <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="id">
         <UIcon
           v-if="isTypePassword"
           :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
@@ -57,10 +66,17 @@
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['right']) || iconRight" v-bind="rightSlotAttrs">
-        <!-- @slot Use it to add icon after text. -->
-        <slot name="right">
-          <UIcon v-if="iconRight" :name="iconRight" />
+      <!-- @slot Use it to add something after the text. -->
+      <slot name="right" />
+
+      <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
+        <!--
+          @slot Use it to add icon after the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="icon-right" :icon-name="iconLeft" :icon-size="iconSize">
+          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
         </slot>
       </span>
     </label>
@@ -88,18 +104,48 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UInput } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInput", inheritAttrs: false });
 
 const emit = defineEmits([
+  /**
+   * Triggers when the input value is updated.
+   * @property {string} modelValue
+   * @property {number} modelValue
+   */
   "update:modelValue",
+
+  /**
+   * Triggers when the input value changes.
+   */
   "change",
+
+  /**
+   * Triggers when the input is clicked.
+   */
   "click",
+
+  /**
+   * Triggers when the input gains focus.
+   */
   "focus",
+
+  /**
+   * Triggers when the mouse is pressed down on the input.
+   */
   "mousedown",
+
+  /**
+   * Triggers when the input loses focus.
+   */
   "blur",
+
+  /**
+   * Triggers when any validation rules are applied to input value.
+   * @property {string} value
+   */
   "input",
 ]);
 
@@ -160,6 +206,22 @@ const props = defineProps({
   size: {
     type: String,
     default: UIService.get(defaultConfig, UInput).default.size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -247,22 +309,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-
-  /**
-   * Left side icon name.
-   */
-  iconLeft: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right side icon name.
-   */
-  iconRight: {
-    type: String,
-    default: "",
-  },
 });
 
 const slots = useSlots();
@@ -293,11 +339,21 @@ const {
   blockAttrs,
   labelAttrs,
   passwordIconAttrs,
-  leftSlotAttrs,
+  leftIconSlotAttrs,
   inputWrapperAttrs,
-  rightSlotAttrs,
+  rightIconSlotAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  };
+
+  return sizes[props.size];
+});
 
 const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
@@ -376,24 +432,19 @@ function transformValue(value, exp) {
 }
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.iconLeft)) return;
+  const shouldAlignLabelOnTop =
+    !hasSlotContent(slots["icon-left"]) && !hasSlotContent(slots["left"]) && !props.iconLeft;
 
-  let leftSlotOrIconWidth = 0;
-
-  if (leftSlotWrapper.value) {
-    leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
+  if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
+    return;
   }
 
-  if (props.iconLeft) {
-    const iconLeftElement = document.querySelector(`#${props.id} ~ .ui-icon`);
+  let leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
 
-    if (iconLeftElement) {
-      leftSlotOrIconWidth = iconLeftElement.getBoundingClientRect().width;
-    }
-  }
+  const leftPaddingValue = parseFloat(getComputedStyle(input.value).paddingLeft);
 
   if (labelComponent.value.labelElement) {
-    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth}px`;
+    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
   }
 }
 </script>

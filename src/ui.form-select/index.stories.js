@@ -1,8 +1,9 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
 import UBadge from "../ui.text-badge";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)
@@ -43,9 +44,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <USelect v-bind="args" v-model="args.modelValue">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </USelect>
   `,
 });
@@ -170,7 +169,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { USelect },
+  components: { USelect, UIcon },
   setup() {
     return { args };
   },
@@ -323,6 +322,43 @@ slotBeforeCaret.args = {
   `,
 };
 
+export const slotBeforeOption = SlotTemplate.bind({});
+slotBeforeOption.args = {
+  slotTemplate: `
+    <template #before-option>
+       🤘
+    </template>
+  `,
+};
+
+export const iconLeft = DefaultTemplate.bind({});
+iconLeft.args = {
+  iconLeft: "star",
+};
+
+export const iconRight = DefaultTemplate.bind({});
+iconRight.args = {
+  iconRight: "star",
+};
+
+export const iconLeftSlot = SlotTemplate.bind({});
+iconLeftSlot.args = {
+  slotTemplate: `
+    <template #icon-left>
+      <UIcon name="star" color="green" />
+    </template>
+  `,
+};
+
+export const iconRightSlot = SlotTemplate.bind({});
+iconRightSlot.args = {
+  slotTemplate: `
+    <template #icon-right>
+      <UIcon name="star" color="green" />
+    </template>
+  `,
+};
+
 export const slotLeft = SlotTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
@@ -332,10 +368,10 @@ slotLeft.args = {
   `,
 };
 
-export const slotBeforeOption = SlotTemplate.bind({});
-slotBeforeOption.args = {
+export const slotRight = SlotTemplate.bind({});
+slotRight.args = {
   slotTemplate: `
-    <template #before-option>
+    <template #right>
        🤘
     </template>
   `,

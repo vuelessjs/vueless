@@ -14,6 +14,7 @@
     @click.stop="onClickSetValue"
   >
     <template #left>
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </template>
 
@@ -28,11 +29,12 @@
         v-bind="inputAttrs"
         @click.stop
       />
-
+      <!-- @slot Use it to add something instead of the text. -->
       <slot name="default" />
     </template>
 
     <template #right>
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
     </template>
   </UButton>
@@ -46,7 +48,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants";
 
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 import { UToggleItem } from "./constants";
 
@@ -112,7 +114,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when new value is set.
+   * @property {string} modelValue
+   */
+  "update:modelValue",
+]);
 
 const name = inject("toggleName", () => "toggle");
 const type = inject("toggleType", UIService.get(defaultConfig, UToggleItem).default.type);

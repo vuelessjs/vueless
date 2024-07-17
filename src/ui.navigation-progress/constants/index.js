@@ -3,3 +3,8 @@
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
 export const UProgress = "UProgress";
+
+export const VARIANT = {
+  stepper: "stepper",
+  progress: "progress",
+};

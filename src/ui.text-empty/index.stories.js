@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UEmpty from "../ui.text-empty";
 import UButton from "../ui.button";
@@ -30,9 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UEmpty v-bind="args">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UEmpty>
   `,
 });

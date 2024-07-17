@@ -1,20 +1,26 @@
 <template>
   <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
-    <!-- @slot Use it to add something above text. -->
+    <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
-    <!-- Use it to add something instead of the title. -->
+    <!--
+      @slot Use it to add something instead of the title.
+      @binding {string} title
+    -->
     <slot name="title" :title="title">
       <div v-bind="titleAttrs" v-text="title" />
     </slot>
 
-    <!-- @slot Use it to add something instead of the description. -->
+    <!--
+      @slot Use it to add something instead of the description.
+      @binding {string} description
+    -->
     <slot name="description" :description="description">
       <div v-bind="descriptionAttrs" v-text="description" />
     </slot>
 
     <div v-bind="bodyAttrs">
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
 
       <!-- @slot Default slot. -->
@@ -40,11 +46,11 @@
         />
       </UButton>
 
-      <!-- @slot Use it to add something after text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
     </div>
 
-    <!-- @slot Use it to add something under text. -->
+    <!-- @slot Use it to add something under the text. -->
     <slot name="bottom" />
   </div>
 </template>
@@ -58,7 +64,7 @@ import UIService from "../service.ui";
 
 import { UAlert } from "./constatns";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UAlert" });
@@ -155,7 +161,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["hidden"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the alert is hidden.
+   */
+  "hidden",
+]);
 
 const isShownAlert = ref(true);
 
