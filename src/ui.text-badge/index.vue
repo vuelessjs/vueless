@@ -108,7 +108,7 @@ const emit = defineEmits([
   "focus",
 
   /**
-   * Triggers when the badge is clicked.
+   * Triggers when the badge is pressed.
    */
   "keydown",
 

@@ -163,7 +163,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when the alert is closed.
+   * Triggers when the alert is hidden.
    */
   "hidden",
 ]);
