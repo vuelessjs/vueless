@@ -102,11 +102,12 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-      const classes = toValue(options?.classes) || getBaseClasses(configKeyValue);
+      // TODO: Uncomment and add into `cx` when getAttrs as a function will be resolved.
+      // const classes = toValue(options?.classes) || getBaseClasses(configKeyValue);
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([classes, attrClass]),
+        class: cx([getBaseClasses(configKeyValue), toValue(options?.classes), attrClass]),
         ...((isObject && configAttrs) || {}),
       };
     }
