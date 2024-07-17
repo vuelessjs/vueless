@@ -1,64 +1,47 @@
+import { computed } from "vue";
 import useUI from "../../composable.ui";
 import { cva, cx } from "../../service.ui";
-
 import defaultConfig from "../configs/default.config";
-import { computed } from "vue";
 
-export function useAttrs(props, { inputPasswordClasses }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { input, block } = config.value;
-
-  const cvaInput = cva({
-    base: input.base,
-    variants: input.variants,
-    compoundVariants: input.compoundVariants,
-  });
-
-  const cvaBlock = cva({
-    base: block.base,
-    variants: block.variants,
-    compoundVariants: block.compoundVariants,
-  });
-
-  const blockClasses = computed(() =>
-    cvaBlock({
-      error: Boolean(props.error),
-      disabled: props.disabled,
-    }),
+export default function useAttrs(props, { inputPasswordClasses }) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const inputClasses = computed(() =>
-    cvaInput({
-      size: props.size,
-      type: props.type,
-      labelAlign: props.labelAlign,
-      label: Boolean(props.label),
-      error: Boolean(props.error),
-    }),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const inputWrapperAttrs = getAttrs("inputWrapper");
-  const rightSlotAttrs = getAttrs("rightSlot");
-  const leftSlotAttrs = getAttrs("leftSlot");
-  const passwordIconAttrs = getAttrs("passwordIcon");
-  const blockAttrs = getAttrs("block", { classes: blockClasses });
-  const labelAttrs = getAttrs("label", { isComponent: true });
-  const inputAttrsRaw = getAttrs("input", { classes: inputClasses });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const inputAttrs = computed(() => ({
-    ...inputAttrsRaw.value,
-    class: cx([inputAttrsRaw.value.class, inputPasswordClasses.value]),
-  }));
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          error: Boolean(props.error),
+          label: Boolean(props.label),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "input") {
+      const inputAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...inputAttrs.value,
+        class: cx([inputAttrs.value.class, inputPasswordClasses.value]),
+      }));
+    }
+  }
 
   return {
+    ...attrs,
     config,
-    inputAttrs,
-    blockAttrs,
-    labelAttrs,
-    passwordIconAttrs,
-    leftSlotAttrs,
-    inputWrapperAttrs,
-    rightSlotAttrs,
     hasSlotContent,
   };
 }

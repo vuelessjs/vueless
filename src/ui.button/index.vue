@@ -14,19 +14,49 @@
     </template>
 
     <template v-else>
-      <!-- @slot Use it to add icon before text. -->
-      <slot name="left">
-        <UIcon v-if="iconLeft" :name="iconLeft" :color="componentColor" />
-      </slot>
+      <div v-if="hasSlotContent($slots['icon-left']) || iconLeft">
+        <!--
+          @slot Use it to add icon before the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot
+          name="icon-left"
+          :icon-name="iconLeft"
+          :icon-size="iconSize"
+          :icon-color="componentColor"
+        >
+          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" :color="componentColor" />
+        </slot>
+      </div>
 
-      <!-- @slot Use it to add something instead of text. -->
+      <!-- @slot Use it to add something before the text. -->
+      <slot name="left" />
+
+      <!-- @slot Use it to add something instead of the text. -->
       <slot />
       <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
 
-      <!-- @slot Use it to add icon after text. -->
-      <slot name="right">
-        <UIcon v-if="iconRight" :name="iconRight" :color="componentColor" />
-      </slot>
+      <!-- @slot Use it to add something after the text. -->
+      <slot name="right" />
+
+      <div v-if="hasSlotContent($slots['icon-right']) || iconRight">
+        <!--
+          @slot Use it to add icon after the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot
+          name="icon-right"
+          :icon-name="iconRight"
+          :icon-size="iconSize"
+          :icon-color="componentColor"
+        >
+          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" :color="componentColor" />
+        </slot>
+      </div>
     </template>
   </component>
 </template>
@@ -71,6 +101,22 @@ const props = defineProps({
   size: {
     type: String,
     default: UIService.get(defaultConfig, UButton).default.size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  iconLeft: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  iconRight: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -161,31 +207,28 @@ const props = defineProps({
     type: String,
     default: "",
   },
-
-  /**
-   * Left side icon name.
-   */
-  iconLeft: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right side icon name.
-   */
-  iconRight: {
-    type: String,
-    default: "",
-  },
 });
 
-const { buttonAttrs, loaderAttrs, textAttrs } = useAttrs(props);
+const { buttonAttrs, loaderAttrs, textAttrs, hasSlotContent } = useAttrs(props);
 
 const buttonRef = ref(null);
 
 defineExpose({ buttonRef });
 
 const loaderSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size];
+});
+
+const iconSize = computed(() => {
   const sizes = {
     "2xs": "sm",
     xs: "sm",

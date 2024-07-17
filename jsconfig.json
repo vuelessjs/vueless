@@ -1,9 +1,0 @@
-// https://code.visualstudio.com/docs/languages/jsconfig#_what-is-jsconfigjson
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "vueless": ["./src/*"]
-    }
-  }
-}

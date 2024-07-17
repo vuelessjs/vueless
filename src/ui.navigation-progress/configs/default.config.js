@@ -1,5 +1,31 @@
 export default /*tw*/ {
-  wrapper: "w-full h-auto flex flex-col gap-1.5",
+  wrapper: {
+    base: "",
+    variants: {
+      variant: {
+        progress: "w-full h-auto flex flex-col gap-1.5",
+        stepper: "flex items-center justify-between",
+      },
+    },
+  },
+  stepper: {
+    base: "",
+    variants: {
+      size: {
+        "2xs": "h-8 w-8",
+        xs: "h-8 w-8",
+        sm: "h-10 w-10",
+        md: "h-12 w-12",
+        lg: "h-14 w-14",
+        xl: "h-16 w-16",
+        "2xl": "h-20 w-20",
+      },
+    },
+  },
+  stepperCircle: "stroke-current text-gray-100",
+  stepperCount: "text-xl font-bold text-gray-900 translate-y-2 transform",
+  stepperGradient: "",
+  stepperSvg: "",
   progress: {
     base: `
       text-{color}-500 w-full block appearance-none border-none overflow-hidden
@@ -35,6 +61,7 @@ export default /*tw*/ {
         grayscale: "text-gray-900",
       },
       size: {
+        "2xs": "text-xs",
         xs: "text-xs",
         sm: "text-sm",
         md: "text-md",
@@ -48,11 +75,16 @@ export default /*tw*/ {
   step: {
     base: "text-{color}-500 flex justify-end w-full transition",
     variants: {
+      variant: {
+        progress: "justify-end",
+        stepper: "justify-start",
+      },
       color: {
         white: "text-gray-200",
         grayscale: "text-gray-900",
       },
       size: {
+        "2xs": "text-xs",
         xs: "text-xs",
         sm: "text-sm",
         md: "text-md",
@@ -65,6 +97,7 @@ export default /*tw*/ {
   defaultVariants: {
     color: "brand",
     size: "md",
+    variant: "progress",
     indicator: false,
   },
   safelist: (colors) => [{ pattern: `text-(${colors})-500` }],
