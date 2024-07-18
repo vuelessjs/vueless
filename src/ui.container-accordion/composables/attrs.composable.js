@@ -1,9 +1,9 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { isOpened }) {
+export default function useAttrs(props, { isOpened }) {
   const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
@@ -13,21 +13,31 @@ export function useAttrs(props, { isOpened }) {
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
-    let classes = "";
-    let value = config.value[key];
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    if (value.variants || value.compoundVariants) {
-      const getCVA = cva(value);
-
-      classes = computed(() =>
-        getCVA({
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
           ...props,
-          isOpened: isOpened.value,
-        }),
-      );
-    }
+        });
+      }
+
+      return "";
+    });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "description") {
+      const descriptionAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...descriptionAttrs.value,
+        class: cx([
+          descriptionAttrs.value.class,
+          isOpened.value && config.value.description.variants.isOpened.true,
+        ]),
+      }));
+    }
   }
 
   return {
