@@ -90,6 +90,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
     watch(config, updateVuelessAttrs, { immediate: true });
     watch(props, updateVuelessAttrs);
+    watch(options?.classes, updateVuelessAttrs);
 
     function updateVuelessAttrs() {
       const configKeyValue = config.value[configKey];
