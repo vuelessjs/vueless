@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props, { isOpened }) {
@@ -19,6 +19,7 @@ export default function useAttrs(props, { isOpened }) {
       if (value.variants || value.compoundVariants) {
         return cva(value)({
           ...props,
+          isOpened: isOpened.value,
         });
       }
 
@@ -26,18 +27,6 @@ export default function useAttrs(props, { isOpened }) {
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "description") {
-      const descriptionAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...descriptionAttrs.value,
-        class: cx([
-          descriptionAttrs.value.class,
-          isOpened.value && config.value.description.variants.isOpened.true,
-        ]),
-      }));
-    }
   }
 
   return {
