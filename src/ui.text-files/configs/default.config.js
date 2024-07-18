@@ -8,7 +8,7 @@ export default /*tw*/ {
       },
     },
   },
-  file: "{UFile}",
+  file: "{UFile} block",
   defaultVariants: {
     placement: "topInside",
     size: "md",
