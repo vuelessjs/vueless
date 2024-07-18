@@ -93,7 +93,7 @@ export default class SelectService {
       return this.getGroupOption(item, options, groupValueKey, valueKey);
     }
 
-    const value = item[valueKey] || item;
+    const value = (item && item[valueKey]) || item;
 
     return options.find((option) => option[valueKey] === value);
   }
