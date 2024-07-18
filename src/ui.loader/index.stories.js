@@ -1,5 +1,6 @@
 import ULoader from "../ui.loader";
 import URow from "../ui.container-row";
+import UButton from "../ui.button";
 
 import { getArgTypes } from "../service.storybook";
 
@@ -65,6 +66,29 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
+const LoadingTemplate = (args) => ({
+  components: { ULoader, UButton, URow },
+  setup() {
+    return { args };
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  methods: {
+    toggleLoader() {
+      this.isLoading = !this.isLoading;
+    },
+  },
+  template: `
+    <URow>
+      <ULoader v-bind="args" :loading="isLoading" />
+      <UButton @click="toggleLoader" size="sm">ToggleLoader</UButton>
+    </URow>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
@@ -73,3 +97,6 @@ sizes.args = {};
 
 export const colors = ColorsTemplate.bind({});
 colors.args = {};
+
+export const loading = LoadingTemplate.bind({});
+loading.args = {};
