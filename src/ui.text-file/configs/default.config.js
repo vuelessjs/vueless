@@ -1,7 +1,7 @@
 export default /*tw*/ {
-  file: "",
+  file: "{UFile}",
   info: "flex items-center gap-2 ",
-  icon: "",
+  icon: "{UIcon}",
   iconName: "description",
   image: "rounded-sm max-w-7",
   label: {

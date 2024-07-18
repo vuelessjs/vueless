@@ -4,35 +4,31 @@ import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { focus }) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { label } = config.value;
+export default function useAttrs(props, { focus }) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaLabel = cva({
-    base: label.base,
-    variants: label.variants,
-    compoundVariants: label.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const labelClasses = computed(() =>
-    cvaLabel({
-      focus: Boolean(focus.value),
-      size: props.size,
-    }),
-  );
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const labelAttrs = getAttrs("label", { classes: labelClasses });
-  const fileAttrs = getAttrs("file", { isComponent: true });
-  const infoAttrs = getAttrs("info");
-  const iconAttrs = getAttrs("icon", { isComponent: true });
-  const imageAttrs = getAttrs("image");
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          focus: Boolean(focus.value),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    fileAttrs,
-    infoAttrs,
-    iconAttrs,
-    labelAttrs,
-    imageAttrs,
   };
 }

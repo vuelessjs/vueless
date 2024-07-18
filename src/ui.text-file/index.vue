@@ -31,7 +31,7 @@ import UIcon from "../ui.image-icon";
 
 import UIService, { getRandomId } from "../service.ui";
 
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { UFile } from "./constants";
 import defaultConfig from "./configs/default.config";
 

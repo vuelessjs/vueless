@@ -14,12 +14,16 @@
           :data-cy="`${dataCy}-item`"
         >
           <template #left="{ file: currentFile }">
-            <!-- @slot Use it to add something left. -->
+            <!-- @slot Use it to add something left.
+              @binding {object} file
+            -->
             <slot name="left" :file="currentFile" />
           </template>
 
           <template #right="{ file: currentFile }">
-            <!-- @slot Use it to add something right. -->
+            <!-- @slot Use it to add something right.
+              @binding {object} file
+            -->
             <slot name="right" :file="currentFile" />
           </template>
         </UFile>
@@ -35,7 +39,7 @@ import UIService from "../service.ui";
 
 import { UFiles } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { computed } from "vue";
 
 /* Should be a string for correct web-types gen */

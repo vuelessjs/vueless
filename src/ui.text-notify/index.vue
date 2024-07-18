@@ -83,7 +83,7 @@ import { merge } from "lodash-es";
 import UIService, { globalComponentConfig, cx } from "../service.ui";
 
 import { useLocale } from "../composable.locale";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";
 import { UNotify, NOTIFY_TYPE, POSITION } from "./constants";
