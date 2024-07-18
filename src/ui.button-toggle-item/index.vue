@@ -11,7 +11,7 @@
     :square="toValue(square)"
     :disabled="toValue(disabled)"
     v-bind="buttonAttrs"
-    @click.stop="onClickSetValue"
+    @click="onClickSetValue"
   >
     <template #left>
       <!-- @slot Use it to add something before the text. -->
@@ -27,7 +27,6 @@
         :value="value"
         :disabled="toValue(disabled)"
         v-bind="inputAttrs"
-        @click.stop
       />
       <!-- @slot Use it to add something instead of the text. -->
       <slot name="default" />
