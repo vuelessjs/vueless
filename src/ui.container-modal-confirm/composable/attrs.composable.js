@@ -1,59 +1,49 @@
 import useUI from "../../composable.ui";
 import defaultConfig from "../configs/default.config";
-import { cva } from "../../service.ui/index.js";
+import { cva, cx } from "../../service.ui/index.js";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, getColor, setColor } = useUI(
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, getColor, setColor, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const { modal, footerLeftFallback } = config.value;
+  const attrs = {};
 
-  const cvaModal = cva({
-    base: modal.base,
-    variants: modal.variants,
-    compoundVariants: modal.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const cvaFooterLeftFallback = cva({
-    base: footerLeftFallback.base,
-    variants: footerLeftFallback.variants,
-    compoundVariants: footerLeftFallback.compoundVariants,
-  });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const modalClasses = computed(() =>
-    setColor(
-      cvaModal({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
 
-  const footerLeftFallbackClasses = computed(() =>
-    setColor(cvaFooterLeftFallback({ color: getColor(props.color) }), props.color),
-  );
+      return "";
+    });
 
-  const footerLeftFallbackAttrs = getAttrs("footerLeftFallback", {
-    classes: footerLeftFallbackClasses,
-  });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-  const confirmButtonAttrs = getAttrs("confirmButton", { isComponent: true });
-  const cancelButtonAttrs = getAttrs("cancelButton", { isComponent: true });
-  const modalAttrsRaw = getAttrs("modal", { isComponent: true, classes: modalClasses });
+    if (key === "modal") {
+      const modalAttrs = attrs[`${key}Attrs`];
 
-  const modalAttrs = computed(() => ({
-    ...modalAttrsRaw.value,
-    class: setColor(modalAttrsRaw.value.class, props.color),
-  }));
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...modalAttrs.value,
+        class: setColor(cx([modalAttrs.value.class, props.color])),
+      }));
+    }
+  }
 
   return {
+    ...attrs,
     config,
-    footerLeftFallbackAttrs,
-    modalAttrs,
-    confirmButtonAttrs,
-    cancelButtonAttrs,
     hasSlotContent,
   };
 }
