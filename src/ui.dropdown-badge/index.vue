@@ -42,8 +42,7 @@
       :label-key="labelKey"
       :data-cy="`${dataCy}-item`"
       v-bind="listAttrs"
-      @mousedown.stop
-      @click.stop="onClickList"
+      @click="onClickList"
     />
   </div>
 </template>

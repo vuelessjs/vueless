@@ -24,7 +24,7 @@
             :color="color"
             :data-cy="`${dataCy}-caret`"
             v-bind="iconAttrs"
-            @click.stop="onClickLink"
+            @click="onClickLink"
           />
         </template>
       </ULink>
@@ -48,8 +48,7 @@
       :label-key="labelKey"
       :data-cy="`${dataCy}-item`"
       v-bind="listAttrs"
-      @mousedown.stop
-      @click.stop="onClickList"
+      @click="onClickList"
     />
   </div>
 </template>
