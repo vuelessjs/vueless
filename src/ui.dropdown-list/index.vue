@@ -22,7 +22,7 @@
         <span
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs(optionHighlight(index, option))"
-          @click.stop="select(option)"
+          @click="select(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--

@@ -12,7 +12,6 @@
         size="sm"
         :data-cy="`${dataCy}-body-checkbox`"
         v-bind="attrs.bodyCheckboxAttrs"
-        @click.stop
       />
     </td>
 
