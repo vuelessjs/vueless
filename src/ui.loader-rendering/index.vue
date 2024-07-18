@@ -1,7 +1,7 @@
 <template>
   <Transition v-bind="config.transition">
     <div v-if="showLoader" v-bind="wrapperAttrs">
-      <ULoader size="lg" :color="color === 'white' ? 'grayscale' : 'white'" />
+      <ULoader :loading="showLoader" size="lg" :color="color === 'white' ? 'grayscale' : 'white'" />
     </div>
   </Transition>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <Transition v-bind="config.loaderTransition">
-    <div v-if="!loading" v-bind="loaderAttrs">
+    <div v-if="loading" v-bind="loaderAttrs">
       <div
         v-for="ellipse in ELLIPSES_AMOUNT"
         :key="ellipse"

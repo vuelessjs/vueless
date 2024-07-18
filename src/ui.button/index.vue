@@ -10,7 +10,7 @@
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
       <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
+      <ULoader :loading="loading" :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
