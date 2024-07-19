@@ -1,6 +1,6 @@
 import useUI from "../../composable.ui";
 import defaultConfig from "../configs/default.config";
-import { cva, cx } from "../../service.ui/index.js";
+import { cva } from "../../service.ui/index.js";
 import { computed } from "vue";
 
 export default function useAttrs(props) {
@@ -30,15 +30,6 @@ export default function useAttrs(props) {
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "modal") {
-      const modalAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...modalAttrs.value,
-        class: cx([modalAttrs.value.class, props.color]),
-      }));
-    }
   }
 
   return {
