@@ -26,7 +26,7 @@ export default /*tw*/ {
   stickyHeaderActionsCheckbox: "",
   stickyHeaderActionsCounter: "-ml-2",
   tableWrapper: "border border-gray-200 rounded-lg bg-white",
-  table: "min-w-full border-none text-sm w-full",
+  table: "min-w-full border-none text-sm w-full table-fixed",
   header: "border-b border-gray-200",
   headerRow: "",
   headerCell: "",
@@ -57,7 +57,8 @@ export default /*tw*/ {
       },
     },
   },
-  bodyCellSecondary: "mt-1 text-xs text-gray-500",
+  bodyCellPrimary: "text-ellipsis overflow-hidden",
+  bodyCellSecondary: "mt-1 text-xs text-gray-500 overflow-hidden text-ellipsis",
   bodyCellSecondaryEmpty: "inline-block",
   bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateSeparator: "",

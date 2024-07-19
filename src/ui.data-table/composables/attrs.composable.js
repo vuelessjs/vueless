@@ -114,6 +114,7 @@ export function useAttrs(
   const bodyRowBeforeCellAttrsRaw = getAttrs("bodyRowBeforeCell");
   const bodyRowAfterAttrs = getAttrs("bodyRowAfter");
   const bodyRowAfterCellAttrsRaw = getAttrs("bodyRowAfterCell");
+  const bodyCellPrimaryAttrs = getAttrs("bodyCellPrimary");
 
   const bodyRowAttrsRaw = getAttrs("bodyRow");
 
@@ -259,5 +260,6 @@ export function useAttrs(
     stickyFooterRowAttrs,
     hasSlotContent,
     headerAttrs,
+    bodyCellPrimaryAttrs,
   };
 }

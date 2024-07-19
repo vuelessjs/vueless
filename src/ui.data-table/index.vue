@@ -169,6 +169,7 @@
                 bodyCellNestedCollapseIconAttrs,
                 bodyCellNestedExpandIconAttrs,
                 bodyCellNestedAttrs,
+                bodyCellPrimaryAttrs,
               }"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -469,6 +470,7 @@ const {
   stickyFooterRowAttrs,
   hasSlotContent,
   headerAttrs,
+  bodyCellPrimaryAttrs,
 } = useAttrs(props, {
   tableRows,
   isShownActionsHeader,

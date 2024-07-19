@@ -46,8 +46,7 @@
       :data-cy="`${dataCy}-item`"
       tabindex="-1"
       v-bind="listAttrs"
-      @mousedown.stop
-      @click.stop="onClickList"
+      @click="onClickList"
     />
   </div>
 </template>

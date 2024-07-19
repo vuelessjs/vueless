@@ -76,9 +76,10 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     const attrs = useAttrs();
     const isDev = import.meta.env.DEV;
     const vuelessAttrs = ref({});
+    const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
     const commonAttrs = {
-      ...attrs,
+      ...(isTopLevelKey ? attrs : {}),
       component: isDev ? attrs.component || componentName || null : null,
       "config-key": isDev ? attrs["config-key"] || configKey || null : null,
       "child-component": isDev && attrs.component ? nestedComponent || componentName : null,

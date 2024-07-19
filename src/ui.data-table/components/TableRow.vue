@@ -12,7 +12,6 @@
         size="sm"
         :data-cy="`${dataCy}-body-checkbox`"
         v-bind="attrs.bodyCheckboxAttrs"
-        @click.stop
       />
     </td>
 
@@ -44,7 +43,7 @@
 
       <div v-if="value?.hasOwnProperty('secondary')">
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-cy="`${dataCy}-${key}-cell`">
+          <div :data-cy="`${dataCy}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
             {{ value.primary || HYPHEN_SYMBOL }}
           </div>
 
