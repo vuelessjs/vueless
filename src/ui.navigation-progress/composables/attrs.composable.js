@@ -4,42 +4,41 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
+export default function useAttrs(props) {
   const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
   );
+
+  const skipKeys = ["progress", "indicator", "step"];
+
   const attrs = {};
 
   for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+    if (isSystemKey(key) || skipKeys.includes(key)) continue;
 
-    let classes = "";
-    let value = config.value[key];
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    const isVariants = value.variants || value.compoundVariants;
-    const excludeKeys = ["progress", "indicator", "step"];
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
 
-    if (isVariants && !excludeKeys.includes(key)) {
-      const getCVA = cva(value);
-
-      classes = computed(() => getCVA({ ...props }));
-    }
-
-    if (isVariants && excludeKeys.includes(key)) {
-      const getCVA = cva(value);
-
-      classes = computed(() =>
-        setColor(getCVA({ ...props, color: getColor(props.color) }), props.color),
-      );
-    }
+      return "";
+    });
 
     if (key === "step") {
-      const stepAttrsRaw = getAttrs("step", { classes });
+      const stepAttrs = getAttrs("step", { classes });
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...stepAttrsRaw.value,
-        class: cx([stepAttrsRaw.value.class, classes]),
+        ...stepAttrs.value,
+        class: cx([stepAttrs.value.class, classes]),
       }));
     } else {
       attrs[`${key}Attrs`] = getAttrs(key, { classes });
