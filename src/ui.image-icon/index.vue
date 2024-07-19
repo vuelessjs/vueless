@@ -19,7 +19,7 @@ import UIService from "../service.ui";
 
 import { UIcon } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 import vTooltip from "../directive.tooltip";
 
@@ -132,7 +132,22 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click", "focus", "blur"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the icon is clicked.
+   */
+  "click",
+
+  /**
+   * Triggers when the icon is focused.
+   */
+  "focus",
+
+  /**
+   * Triggers when the icon loses focus.
+   */
+  "blur",
+]);
 
 const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
 
