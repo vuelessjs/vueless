@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "",
+  icon: "{UIcon}",
   defaultVariants: {
     color: "grayscale",
     rounded: "md",
