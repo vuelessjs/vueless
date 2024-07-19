@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
@@ -50,9 +50,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDataList v-bind="args" @dragSort="onDragSort">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UDataList>
   `,
   methods: {

@@ -1,45 +1,46 @@
 import useUI from "../../composable.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
-import { cx } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { labelCrossed } = config.value;
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
+  const attrs = {};
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const dividerAttrs = getAttrs("divider", { isComponent: true });
-  const emptyAttrs = getAttrs("empty", { isComponent: true });
-  const draggableAttrs = getAttrs("draggable");
-  const itemWrapperAttrs = getAttrs("itemWrapper");
-  const itemAttrs = getAttrs("item");
-  const customActionsAttrs = getAttrs("customActions");
-  const deleteIconAttrs = getAttrs("deleteIcon", { isComponent: true });
-  const editIconAttrs = getAttrs("editIcon", { isComponent: true });
-  const dragIconAttrs = getAttrs("dragIcon", { isComponent: true });
-  const nestedAttrs = getAttrs("nested", { isComponent: true });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const labelAttrsRaw = getAttrs("label");
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const labelAttrs = computed(() => (isActive) => ({
-    ...labelAttrsRaw,
-    class: cx([labelAttrsRaw.value.class, isActive !== undefined && !isActive ? labelCrossed : ""]),
-  }));
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "label") {
+      const labelAttrs = computed(() => (isActive) => ({
+        ...labelAttrs,
+        class: cx([
+          labelAttrs.value.class,
+          isActive !== undefined && !isActive ? config.value.labelCrossed : "",
+        ]),
+      }));
+    }
+  }
 
   return {
+    ...attrs,
     config,
     hasSlotContent,
-    wrapperAttrs,
-    dividerAttrs,
-    emptyAttrs,
-    draggableAttrs,
-    nestedAttrs,
-    itemWrapperAttrs,
-    itemAttrs,
-    labelAttrs,
-    customActionsAttrs,
-    deleteIconAttrs,
-    editIconAttrs,
-    dragIconAttrs,
   };
 }

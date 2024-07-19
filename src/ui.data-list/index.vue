@@ -110,7 +110,7 @@ import UIService from "../service.ui";
 
 import { UDataList as UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
