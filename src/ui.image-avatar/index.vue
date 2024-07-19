@@ -27,7 +27,7 @@ import UIService from "../service.ui";
 
 import { UAvatar } from "./constants/index";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UAvatar", inheritAttrs: false });
@@ -109,7 +109,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the avatar is clicked.
+   */
+  "click",
+]);
 
 const labelFirstLetters = computed(() => {
   const [firstWord, secondWord] = props.label.split(" ");
