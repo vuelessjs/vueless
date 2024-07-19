@@ -34,8 +34,7 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
-    flex h-[3.125rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-100
-    px-1.5 py-2.5 text-center text-xs font-medium text-brand-900 hover:bg-brand-200
+    h-[3.125rem] w-full flex flex-col items-center justify-center
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
   periodButtonIcon: "",
@@ -52,10 +51,7 @@ export default /*tw*/ {
   periodDateWeekList: "",
   periodDateYearList: "grid grid-cols-3 grid-rows-1 gap-0.5",
   periodDateQuarterList: "",
-  periodDate: `
-    cursor-pointer block w-full rounded-lg py-3 text-center text-sm font-medium text-gray-900 hover:rounded-lg hover:bg-brand-50
-    disabled:opacity-50 disabled:cursor-not-allowed
-  `,
+  periodDate: "w-full",
   periodDateActive: "bg-gray-100",
   rangeInputWrapper: "flex mt-4",
   rangeInput: {

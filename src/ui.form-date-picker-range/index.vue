@@ -79,27 +79,35 @@
         @keydown.esc="deactivate"
       >
         <div v-bind="periodsRowAttrs">
-          <div
+          <UButton
             v-for="periodButton in periods"
             :key="periodButton.name"
+            variant="thirdary"
+            size="xs"
+            square
+            color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(periodButton.name))"
             @click="onClickPeriodButton(periodButton.name)"
           >
             {{ periodButton.title }}
-          </div>
+          </UButton>
         </div>
 
         <div v-bind="periodsRowAttrs">
-          <div
+          <UButton
             v-if="customRangeButton.range.to && customRangeButton.range.from"
+            variant="thirdary"
+            color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
             @click="onClickCustomRangeButton"
           >
             {{ customRangeButton.label }}
             <span v-if="customRangeButton.description" v-text="customRangeButton.description" />
-          </div>
+          </UButton>
 
-          <div
+          <UButton
+            variant="thirdary"
+            color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
           >
@@ -110,7 +118,7 @@
               v-bind="periodButtonIconAttrs"
             />
             {{ locale.ownRange }}
-          </div>
+          </UButton>
         </div>
 
         <template v-if="!isPeriod.ownRange && !isPeriod.custom">
@@ -141,13 +149,16 @@
           </div>
 
           <div v-bind="periodDateListAttrs(getPeriodDateListClasses())">
-            <button
+            <UButton
               v-for="date in periodDateList"
               :key="date.title"
               :disabled="isDatePeriodOutOfRange(date)"
+              variant="thirdary"
+              color="brand"
+              size="sm"
               v-bind="periodDateAttrs(getPeriodDateClasses(date))"
+              :label="String(date.title)"
               @click="selectDate(date), toggleMenu()"
-              v-text="date.title"
             />
           </div>
         </template>
@@ -522,9 +533,7 @@ const localValue = computed({
       emit("update:modelValue", newValue);
     }
 
-    activeDate.value = props.dateFormat
-      ? formatDate(parsedDateFrom || new Date(), props.dateFormat, locale.value)
-      : value.from || new Date();
+    activeDate.value = props.dateFormat ? parsedDateFrom || new Date() : value.from || new Date();
   },
 });
 
@@ -739,7 +748,15 @@ watch(
 );
 
 watch(period, () => {
-  activeDate.value = localValue.value.from !== null ? localValue.value.from : new Date();
+  const isDate = localValue.value.from !== null;
+
+  if (isDate && !props.dateFormat) {
+    activeDate.value = isDate ? localValue.value.from : new Date();
+  }
+
+  if (isDate && props.dateFormat) {
+    activeDate.value = isDate ? parseDate(localValue.value.from, locale.value) : new Date();
+  }
 });
 
 function onClickPeriodButton(periodName) {
