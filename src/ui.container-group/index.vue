@@ -25,7 +25,7 @@
     </template>
 
     <div v-bind="contentAttrs">
-      <!-- @slot Use it to add something instead of the form. -->
+      <!-- @slot Use it to add something inside. -->
       <slot />
     </div>
   </div>

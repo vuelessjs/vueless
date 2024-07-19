@@ -261,7 +261,7 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
-   * Triggers when Back button of the modal is clicked.
+   * Triggers when back link in modal is clicked.
    */
   "back",
 ]);
