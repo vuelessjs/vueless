@@ -47,7 +47,7 @@ import UDivider from "../ui.container-divider";
 
 import { UCard } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composable/attrs.composable";
+import useAttrs from "./composable/attrs.composable";
 import useBreakpoint from "../composable.breakpoint";
 
 /* Should be a string for correct web-types gen */

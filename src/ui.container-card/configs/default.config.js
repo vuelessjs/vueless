@@ -17,10 +17,10 @@ export default /*tw*/ {
   header: "flex justify-between",
   headerLeft: "flex items-center space-x-4 w-full",
   headerLeftFallback: "flex flex-col w-full",
-  title: "",
+  title: "{UHeader}",
   description: "mt-1.5 text-base font-normal text-gray-500",
   content: "",
-  divider: "",
+  divider: "{UDivider}",
   footer: "flex justify-between",
   footerMobileReverse: "flex flex-col-reverse space-y-reverse",
   defaultVariants: {

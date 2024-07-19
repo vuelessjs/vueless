@@ -4,93 +4,58 @@ import { cva, cx, isMobileApp } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props, { isMobileBreakpoint }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, page, rightRounding } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const cvaPage = cva({
-    base: page.base,
-    variants: page.variants,
-    compoundVariants: page.compoundVariants,
-  });
-
-  const cvaRightRounding = cva({
-    base: rightRounding.base,
-    variants: rightRounding.variants,
-    compoundVariants: rightRounding.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      width: props.width,
-      fixedRounding: props.fixedRounding,
-    }),
+export default function useAttrs(props, { isMobileBreakpoint }) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const pageClasses = computed(() =>
-    cvaPage({
-      fixedRounding: props.fixedRounding,
-      gray: props.gray,
-    }),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const rightRoundingClasses = computed(() => cvaRightRounding({ gray: props.gray }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const wrapperAttrsRaw = getAttrs("wrapper", { classes: wrapperClasses });
-  const pageAttrs = getAttrs("page", { classes: pageClasses });
-  const headerAttrs = getAttrs("header");
-  const headerLeftAttrs = getAttrs("headerLeft");
-  const headerRightAttrs = getAttrs("headerRight");
-  const headerLeftFallbackAttrs = getAttrs("headerLeftFallback");
-  const backLinkAttrs = getAttrs("backLink", { isComponent: true });
-  const backLinkIconAttrs = getAttrs("backLinkIcon", { isComponent: true });
-  const titleAttrs = getAttrs("title", { isComponent: true });
-  const descriptionAttrs = getAttrs("description");
-  const footerAttrsRaw = getAttrs("footer");
-  const footerLeftAttrs = getAttrs("footerLeft");
-  const footerRightAttrs = getAttrs("footerRight");
-  const rightRoundingWrapperAttrs = getAttrs("rightRoundingWrapper");
-  const rightRoundingAttrs = getAttrs("rightRounding", { classes: rightRoundingClasses });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const wrapperAttrs = computed(() => ({
-    ...wrapperAttrsRaw.value,
-    class: cx([
-      wrapperAttrsRaw.value.class,
-      isMobileBreakpoint.value && !isMobileApp && config.value.wrapperMobile,
-    ]),
-  }));
+      return "";
+    });
 
-  const footerAttrs = computed(() => ({
-    ...footerAttrsRaw.value,
-    class: cx([
-      footerAttrsRaw.value.class,
-      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
-    ]),
-  }));
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "wrapper") {
+      const wrapperAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...wrapperAttrs.value,
+        class: cx([
+          wrapperAttrs.value.class,
+          isMobileBreakpoint.value && !isMobileApp && config.value.wrapperMobile,
+        ]),
+      }));
+    }
+
+    if (key === "footer") {
+      const footerAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...footerAttrs.value,
+        class: cx([
+          footerAttrs.value.class,
+          props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
+        ]),
+      }));
+    }
+  }
 
   return {
+    ...attrs,
     config,
-    wrapperAttrs,
-    pageAttrs,
-    rightRoundingWrapperAttrs,
-    rightRoundingAttrs,
-    headerAttrs,
-    headerRightAttrs,
-    headerLeftAttrs,
-    headerLeftFallbackAttrs,
-    titleAttrs,
-    backLinkAttrs,
-    backLinkIconAttrs,
-    descriptionAttrs,
-    footerAttrs,
-    footerLeftAttrs,
-    footerRightAttrs,
     hasSlotContent,
   };
 }

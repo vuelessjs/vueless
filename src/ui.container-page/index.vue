@@ -90,7 +90,7 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UPage } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 const slots = useSlots();
 

@@ -70,7 +70,7 @@ import UModal from "../ui.container-modal";
 
 import defaultConfig from "./configs/default.config";
 import { UModalConfirm } from "./constants/index";
-import { useAttrs } from "./composable/attrs.composable";
+import useAttrs from "./composable/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
@@ -152,7 +152,23 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "confirm", "close"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the modal is toggled.
+   * @property {Boolean} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when the action is confirmed.
+   */
+  "confirm",
+
+  /**
+   * Triggers when the action is declined or modal is closed.
+   */
+  "close",
+]);
 
 const { tm } = useLocale();
 

@@ -7,12 +7,12 @@
         <!-- @slot Use it to add something left side of the header. -->
         <slot name="left">
           <div v-bind="headerFallbackAttrs">
-            <!-- @slot Use it to add something before title. -->
+            <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
 
             <UHeader :label="title" size="xs" v-bind="titleAttrs" />
 
-            <!-- @slot Use it to add something after title. -->
+            <!-- @slot Use it to add something after the title. -->
             <slot name="after-title" />
           </div>
         </slot>
@@ -25,7 +25,7 @@
     </template>
 
     <div v-bind="contentAttrs">
-      <!-- @slot Use it to add something instead form. -->
+      <!-- @slot Use it to add something inside. -->
       <slot />
     </div>
   </div>
@@ -38,7 +38,7 @@ import UHeader from "../ui.text-header";
 
 import { UGroup } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UGroup", inheritAttrs: false });

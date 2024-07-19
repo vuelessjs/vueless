@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: "w-full",
-  upperline: "",
+  upperline: "{UDivider}",
   header: {
     base: "flex items-center justify-between",
     variants: {
@@ -10,8 +10,8 @@ export default /*tw*/ {
     },
   },
   headerFallback: "flex items-center",
-  title: "pr-2",
-  underline: "pt-1.5",
+  title: "{UHeader} pr-2",
+  underline: "{UDivider} pt-1.5",
   content: {
     base: "flex flex-col",
     variants: {

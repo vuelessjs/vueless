@@ -1,8 +1,8 @@
 export default /*tw*/ {
-  modal: "",
+  modal: "{UModal}",
   footerLeftFallback: "flex space-x-4",
-  confirmButton: "w-full",
-  cancelButton: "w-full",
+  confirmButton: "{UButton} w-full",
+  cancelButton: "{UButton} w-full",
   i18n: {
     cancel: "Cancel",
   },

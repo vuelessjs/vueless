@@ -112,7 +112,7 @@ import UDivider from "../ui.container-divider";
 
 import defaultConfig from "./configs/default.config";
 import { UModal } from "./constants/index";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UModal", inheritAttrs: false });
@@ -253,7 +253,18 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "back"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the modal is toggled.
+   * @property {Boolean} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when back link in modal is clicked.
+   */
+  "back",
+]);
 
 const {
   config,

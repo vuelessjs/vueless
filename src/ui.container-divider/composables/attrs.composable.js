@@ -4,62 +4,35 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, divider, label } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const cvaDivider = cva({
-    base: divider.base,
-    variants: divider.variants,
-    compoundVariants: divider.compoundVariants,
-  });
-
-  const cvaLabel = cva({
-    base: label.base,
-    variants: label.variants,
-    compoundVariants: label.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      size: props.size,
-      vertical: props.vertical,
-      noPadding: props.noPadding,
-      noTopPadding: props.noTopPadding,
-      noBottomPadding: props.noBottomPadding,
-      noLeftPadding: props.noLeftPadding,
-      noRightPadding: props.noRightPadding,
-      label: Boolean(props.label),
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const dividerClasses = computed(() =>
-    cvaDivider({
-      variant: props.variant,
-      dashed: props.dashed,
-      dotted: props.dotted,
-      vertical: props.vertical,
-      noBorder: props.noBorder,
-      label: Boolean(props.label),
-    }),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const labelClasses = computed(() => cvaLabel({ variant: props.variant }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const dividerAttrs = getAttrs("divider", { classes: dividerClasses });
-  const labelAttrs = getAttrs("label", { classes: labelClasses });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          label: Boolean(props.label),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
+    config,
     hasSlotContent,
-    wrapperAttrs,
-    dividerAttrs,
-    labelAttrs,
   };
 }

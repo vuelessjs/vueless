@@ -3,27 +3,30 @@ import defaultConfig from "../configs/default.config";
 import { cva } from "../../service.ui";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { wrapper } = config.value;
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      gap: props.gap,
-      align: props.align,
-      noMobile: props.noMobile,
-    }),
-  );
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    wrapperAttrs,
+    ...attrs,
+    config,
   };
 }

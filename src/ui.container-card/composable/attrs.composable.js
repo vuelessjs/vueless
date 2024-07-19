@@ -4,53 +4,46 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props, { isMobileBreakpoint }) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      padding: props.padding,
-      rounded: props.rounded,
-    }),
+export default function useAttrs(props, { isMobileBreakpoint }) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const headerAttrs = getAttrs("header");
-  const headerLeftAttrs = getAttrs("headerLeft");
-  const headerLeftFallbackAttrs = getAttrs("headerLeftFallback");
-  const titleAttrs = getAttrs("title", { isComponent: true });
-  const descriptionAttrs = getAttrs("description");
-  const contentAttrs = getAttrs("content");
-  const dividerAttrs = getAttrs("divider", { isComponent: true });
-  const footerAttrsRaw = getAttrs("footer");
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const footerAttrs = computed(() => {
-    const footerMobileReverseClasses =
-      props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse;
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    return {
-      ...footerAttrsRaw.value,
-      class: cx([footerAttrsRaw.value.class, footerMobileReverseClasses]),
-    };
-  });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "footer") {
+      const footerAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...footerAttrs.value,
+        class: cx([
+          footerAttrs.value.class,
+          props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
+        ]),
+      }));
+    }
+  }
 
   return {
+    ...attrs,
+    config,
     hasSlotContent,
-    wrapperAttrs,
-    titleAttrs,
-    dividerAttrs,
-    headerAttrs,
-    headerLeftAttrs,
-    headerLeftFallbackAttrs,
-    descriptionAttrs,
-    contentAttrs,
-    footerAttrs,
   };
 }

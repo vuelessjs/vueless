@@ -4,46 +4,30 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { content, header } = config.value;
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaContent = cva({
-    base: content.base,
-    variants: content.variants,
-    compoundVariants: content.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const cvaHeader = cva({
-    base: header.base,
-    variants: header.variants,
-    compoundVariants: header.compoundVariants,
-  });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const contentClasses = computed(() =>
-    cvaContent({
-      gap: props.gap,
-      align: props.align,
-    }),
-  );
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const headerClasses = computed(() => cvaHeader({ underlined: props.underlined }));
+      return "";
+    });
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const upperlineAttrs = getAttrs("upperline", { isComponent: true });
-  const headerAttrs = getAttrs("header", { classes: headerClasses });
-  const headerFallbackAttrs = getAttrs("headerFallback");
-  const titleAttrs = getAttrs("title", { isComponent: true });
-  const underlineAttrs = getAttrs("underline", { isComponent: true });
-  const contentAttrs = getAttrs("content", { classes: contentClasses });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    contentAttrs,
-    headerAttrs,
-    wrapperAttrs,
-    headerFallbackAttrs,
-    titleAttrs,
-    upperlineAttrs,
-    underlineAttrs,
+    ...attrs,
+    config,
   };
 }
