@@ -36,7 +36,7 @@ export default function useAttrs(props) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...modalAttrs.value,
-        class: setColor(cx([modalAttrs.value.class, props.color])),
+        class: cx([modalAttrs.value.class, props.color]),
       }));
     }
   }

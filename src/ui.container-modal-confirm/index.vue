@@ -165,7 +165,7 @@ const emit = defineEmits([
   "confirm",
 
   /**
-   * Triggers when the modal is closed.
+   * Triggers when the action is declined or modal is closed.
    */
   "close",
 ]);
