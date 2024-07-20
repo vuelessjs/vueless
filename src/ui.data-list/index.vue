@@ -28,7 +28,10 @@
             <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
 
             <div v-bind="labelAttrs(element.isActive)">
-              <!-- @slot Use it to modify label. -->
+              <!--
+                @slot Use it to modify label.
+                @binding {object} item
+              -->
               <slot name="label" :item="element">
                 {{ element[labelKey] }}
               </slot>
@@ -39,7 +42,10 @@
                 v-if="hasSlotContent($slots['actions']) && !element.isHiddenCustomActions"
                 v-bind="customActionsAttrs"
               >
-                <!-- @slot Use it to add custom actions. -->
+                <!--
+                  @slot Use it to add custom actions.
+                  @binding {object} item
+                -->
                 <slot name="actions" :item="element" />
               </div>
 
@@ -88,7 +94,10 @@
             </template>
 
             <template #actions="{ item }">
-              <!-- @slot Use it to add custom actions. -->
+              <!--
+                @slot Use it to add custom actions.
+                @binding {object} item
+              -->
               <slot name="actions" :item="item" />
             </template>
           </UDataList>
@@ -215,7 +224,27 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["dragSort", "clickEdit", "clickDelete"]);
+const emit = defineEmits([
+  /**
+   * Triggers when item is dragged.
+   * @property {array} sortData
+   */
+  "dragSort",
+
+  /**
+   * Triggers when edit button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickEdit",
+
+  /**
+   * Triggers when delete button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickDelete",
+]);
 
 const {
   config,

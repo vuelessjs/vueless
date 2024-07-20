@@ -518,8 +518,6 @@ const {
   isFooterSticky,
 });
 
-console.log(stickyHeaderCellAttrs);
-
 watch(selectAll, onChangeSelectAll, { deep: true });
 watch(selectedRows, onChangeSelectedRows, { deep: true });
 watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });

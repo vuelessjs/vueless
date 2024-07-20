@@ -13,6 +13,13 @@ export default function useAttrs(
   );
   const attrs = {};
 
+  const headerCellGeneralClasses = computed(() => {
+    return cva(config.value.headerCellGeneral)({
+      ...props,
+      compact: Boolean(props.compact),
+    });
+  });
+
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -32,7 +39,9 @@ export default function useAttrs(
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "stickyHeader") {
-      const stickyHeaderAttrs = computed(() => {
+      attrs[`${key}Attrs`] = computed(() => {
+        const stickyHeaderAttrs = getAttrs("stickyHeader", { classes });
+
         const actionHeaderClasses = cx([
           stickyHeaderAttrs.value.class,
           config.value.stickyHeaderActions,
@@ -49,7 +58,7 @@ export default function useAttrs(
         ]);
 
         return {
-          ...stickyHeaderAttrs.value,
+          ...stickyHeaderAttrs,
           class: cx([
             isShownActionsHeader.value && actionHeaderClasses,
             isShownActionsHeader.value && isHeaderSticky.value && actionHeaderStickyClasses,
@@ -60,9 +69,11 @@ export default function useAttrs(
     }
 
     if (key === "stickyHeaderCell") {
-      const stickyHeaderCellAttrs = computed(() => (classes) => ({
-        ...stickyHeaderCellAttrs.value,
-        class: cx([stickyHeaderCellAttrs.value.class, classes]),
+      const stickyHeaderCellAttrs = getAttrs("stickyHeaderCell", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => (classes) => ({
+        ...stickyHeaderCellAttrs,
+        class: cx([headerCellGeneralClasses.value, stickyHeaderCellAttrs.value.class, classes]),
       }));
     }
 
@@ -97,15 +108,19 @@ export default function useAttrs(
     }
 
     if (key === "headerCell") {
-      const headerCellAttrs = computed(() => (classes) => ({
-        ...headerCellAttrs.value,
-        class: cx([headerCellAttrs.value.class, classes]),
+      const headerCellAttrs = getAttrs("headerCell", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => (classes) => ({
+        ...headerCellAttrs,
+        class: cx([headerCellGeneralClasses.value, headerCellAttrs.value.class, classes]),
       }));
     }
 
     if (key === "bodyCell") {
-      const bodyCellAttrs = computed(() => (classes) => ({
-        ...bodyCellAttrs.value,
+      const bodyCellAttrs = getAttrs("bodyCell", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => (classes) => ({
+        ...bodyCellAttrs,
         class: cx([bodyCellAttrs.value.class, classes || ""]),
       }));
 
@@ -117,6 +132,15 @@ export default function useAttrs(
       const bodyRowAfterCellAttrs = computed(() => ({
         ...bodyRowAfterCellAttrs.value,
         class: cx([bodyCellAttrs.value().class, bodyRowAfterCellAttrs.value.class]),
+      }));
+    }
+
+    if (key === "bodyRow") {
+      const bodyRowAttrs = getAttrs("bodyRow", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => (row) => ({
+        ...bodyRowAttrs,
+        class: cx([bodyRowAttrs.value.class, row]),
       }));
     }
 
@@ -135,6 +159,20 @@ export default function useAttrs(
           tableRows.value[0]?.isChecked ? config.value.bodyRowChecked : "",
         ]),
       }));
+    }
+
+    if (key === "bodyRowDateSeparator") {
+      attrs[`${key}Attrs`] = (rowIndex) => {
+        const isCheckedRowBefore = tableRows.value[rowIndex - 1]?.isChecked;
+        const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
+
+        const activeClass =
+          (isCheckedRowBefore && isCheckedRowAfter) || (rowIndex === 0 && isCheckedRowAfter)
+            ? config.value.bodyRowChecked
+            : "";
+
+        return getAttrs("bodyRowDateSeparator", { classes: activeClass }).value;
+      };
     }
   }
 
