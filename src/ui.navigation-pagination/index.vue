@@ -85,7 +85,7 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UPagination, ELLIPSIS_LABEL } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UPagination", inheritAttrs: false });
@@ -207,7 +207,19 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["change", "update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when current page changes.
+   * @property {number} value
+   */
+  "change",
+
+  /**
+   * Triggers when current page changes.
+   * @property {number} value
+   */
+  "update:modelValue",
+]);
 
 const {
   listAttrs,

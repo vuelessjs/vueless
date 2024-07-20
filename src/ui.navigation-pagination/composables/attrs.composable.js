@@ -4,7 +4,7 @@ import defaultConfig from "../configs/default.config";
 import { cva, cx } from "../../service.ui";
 import { computed } from "vue";
 
-export function useAttrs(props) {
+export default function useAttrs(props) {
   const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
   const attrs = {};
 
@@ -26,23 +26,23 @@ export function useAttrs(props) {
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "item") {
-      const itemAttrs = computed(() => (page = 0) => {
+      attrs.itemAttrs = computed(() => (page = 0) => {
         const itemClass = page && !isFinite(page.number) && getAttrs("ellipsis");
 
         return {
-          ...itemAttrs.value,
-          class: cx([itemAttrs.value.class, itemClass]),
+          ...getAttrs("item"),
+          class: cx([getAttrs("item").value.class, itemClass]),
         };
       });
     }
 
     if (key === "pageButton") {
-      const pageButtonAttrs = computed(() => (page) => {
+      attrs.pageButtonAttrs = computed(() => (page) => {
         const pageButtonActiveClasses = page.isActive && config.value.pageButtonActive;
 
         return {
-          ...pageButtonAttrs.value,
-          class: cx([pageButtonAttrs.value.class, pageButtonActiveClasses]),
+          ...getAttrs("pageButton"),
+          class: cx([getAttrs("pageButton").value.class, pageButtonActiveClasses]),
         };
       });
     }

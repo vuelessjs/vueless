@@ -40,7 +40,7 @@
 import { computed } from "vue";
 
 import UIService from "../service.ui";
-import useAttrs from "./composables/attrs.composable";
+import { useAttrs } from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";
 import { UProgress, VARIANT } from "./constants";
