@@ -4,7 +4,7 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
+export default function useAttrs(props) {
   const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
