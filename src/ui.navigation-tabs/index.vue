@@ -1,6 +1,6 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs">
-    <!-- @slot Use it to add something instead of the tab. -->
+    <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
         v-for="(item, index) in options"

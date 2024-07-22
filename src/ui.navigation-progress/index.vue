@@ -19,7 +19,7 @@
     <div v-if="isSteps" v-bind="stepAttrs(!value && config.firstStep)">
       <template v-for="(step, index) in max" :key="index">
         <!--
-          @slot Use it to add something instead of the progress step.
+          @slot Use it to add something instead of the progress step label.
           @binding {string} name
           @binding {number} step
           @binding {number} value
