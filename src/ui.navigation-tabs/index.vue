@@ -1,5 +1,6 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs">
+    <!-- @slot Use it to add something instead of the tab. -->
     <slot>
       <UTab
         v-for="(item, index) in options"
@@ -85,7 +86,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the selected tab changes.
+   * @property {string} modelValue
+   */
+  "update:modelValue",
+]);
 
 const selectedItem = computed({
   get: () => props.modelValue,
