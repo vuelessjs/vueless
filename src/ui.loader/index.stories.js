@@ -11,6 +11,9 @@ export default {
   id: "9010",
   title: "Loaders and Skeletons / Loader",
   component: ULoader,
+  args: {
+    loading: true,
+  },
   argTypes: {
     ...getArgTypes(ULoader.name),
   },
@@ -38,9 +41,9 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     <URow class="flex-wrap">
       <ULoader
         v-for="(color, index) in colors"
-        :color="color"
-        v-bind="args"
         :key="index"
+        v-bind="args"
+        :color="color"
       />
     </URow>
   `,

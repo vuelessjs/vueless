@@ -30,9 +30,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UInput
-        v-bind="args"
-    >
+    <UInput v-bind="args" v-model="args.modelValue">
       ${allSlotsFragment}
     </UInput>
   `,
@@ -44,8 +42,7 @@ const SlotTemplate = (args) => ({
     return { args };
   },
   template: `
-    <UInput v-bind="args"
-    >
+    <UInput v-bind="args">
       ${args.slotTemplate}
     </UInput>
   `,

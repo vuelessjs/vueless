@@ -1,9 +1,9 @@
-import UProgress from "./index.vue";
-import UButton from "../ui.button/index.vue";
-import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
+import { getArgTypes, allSlotsFragment, getSlotNames } from "../service.storybook";
 
-import { getArgTypes } from "../service.storybook";
+import UProgress from "./index.vue";
+import UGroup from "../ui.container-group";
+import UButton from "../ui.button";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `UProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-progress)
@@ -18,131 +18,72 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UProgress, UButton, UIcon },
+  components: { UGroup, UProgress, UButton, UIcon },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      progress: 10,
-    };
-  },
-  methods: {
-    updateProgress() {
-      this.progress += 10;
+    const slots = getSlotNames(UProgress.name);
 
-      if (this.progress > 100) {
-        this.progress = 0;
-      }
-    },
+    args.value = args.max ? 1 : 10;
+    args.iterator = args.max ? 1 : 10;
+
+    function updateProgress() {
+      args.value = args.value < (args.max?.length || 100) ? args.value + args.iterator : 0;
+    }
+
+    return { slots, args, updateProgress };
   },
   template: `
-    <UProgress v-bind="args" :value="progress">
-      ${args.slotTemplate}
-    </UProgress>
-
-    <UButton class="mt-4" @click="updateProgress">Update Progress</UButton>
+    <UGroup align="start">
+      <UProgress v-bind="args">${args.slotTemplate || allSlotsFragment}</UProgress>
+      <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
+    </UGroup>
   `,
 });
 
-const StepsTemplate = (args) => ({
-  components: { UProgress, UButton, UIcon },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UGroup, UButton, UProgress },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      progress: 1,
-      max: ["Step 1", "Step 2", "Step 3"],
-    };
-  },
-  methods: {
-    updateProgress() {
-      this.progress += 1;
+    args.progress = 10;
 
-      if (this.progress > 3) {
-        this.progress = 0;
-      }
-    },
+    function updateProgress() {
+      args.progress = args.progress < 100 ? args.progress + 10 : 0;
+    }
+
+    return { args, updateProgress, sizes: argTypes[args.enum].options };
   },
   template: `
-    <UProgress v-bind="args" :max="max" :value="progress">
-      ${args.slotTemplate}
-    </UProgress>
+    <UGroup align="start">
+      <UGroup>
+        <UProgress
+          v-for="(size, index) in sizes"
+          :key="index"
+          :[args.enum]="size"
+          v-bind="args"
+          :value="args.progress"
+        />
+      </UGroup>
 
-    <UButton class="mt-4" @click="updateProgress">Update Progress</UButton>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UProgress, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  data() {
-    return {
-      progress: 10,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <UProgress
-        v-for="(color, index) in colors"
-        :key="index"
-        :color="color"
-        v-bind="args" 
-        :value="progress" 
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UProgress, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  data() {
-    return {
-      progress: 10,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <UProgress
-        v-for="(size, index) in sizes"
-        :key="index"
-        :size="size"
-        v-bind="args" 
-        :value="progress" 
-      />
-    </URow>
+      <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
+      </UGroup>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Variant = StepsTemplate.bind({});
-Variant.args = { variant: "stepper" };
+export const VariantStepper = DefaultTemplate.bind({});
+VariantStepper.args = { variant: "stepper", max: ["Step 1", "Step 2", "Step 3"] };
 
 export const Indicator = DefaultTemplate.bind({});
 Indicator.args = { indicator: true };
 
-export const Steps = StepsTemplate.bind({});
-Steps.args = {};
+export const Steps = DefaultTemplate.bind({});
+Steps.args = { max: ["Step 1", "Step 2", "Step 3"] };
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const IndicatorSlot = DefaultTemplate.bind({});
 IndicatorSlot.args = {
@@ -157,8 +98,9 @@ IndicatorSlot.args = {
 `,
 };
 
-export const stepSlot = StepsTemplate.bind({});
+export const stepSlot = DefaultTemplate.bind({});
 stepSlot.args = {
+  max: ["Step 1", "Step 2", "Step 3"],
   slotTemplate: `
   <template #step-0>
     💻
