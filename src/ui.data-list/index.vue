@@ -226,7 +226,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when item is dragged.
+   * Triggers when item is sorted (after drag).
    * @property {array} sortData
    */
   "dragSort",

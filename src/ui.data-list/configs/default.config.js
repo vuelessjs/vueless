@@ -22,6 +22,8 @@ export default /*tw*/ {
   deleteIconName: "delete",
   editIcon: "{UIcon} fill-gray-500 opacity-50",
   editIconName: "edit_note",
+  divider: "{UDivider}",
+  empty: "{UEmpty}",
   nested: "group/nested ml-6",
   i18n: {
     edit: "Edit",

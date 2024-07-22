@@ -28,7 +28,7 @@ export default function useAttrs(props) {
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "label") {
-      const labelAttrs = getAttrs("label", { classes });
+      const labelAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (isActive) => ({
         ...labelAttrs,
