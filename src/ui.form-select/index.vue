@@ -26,7 +26,7 @@
     >
       <div
         v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
-        v-bind="afterCaretSlotAttrs"
+        v-bind="afterCaretAttrs"
       >
         <!--
           @slot Use it to add something after caret.
@@ -37,7 +37,7 @@
 
       <div
         v-show="!multiple || (!isLocalValue && multiple)"
-        v-bind="caretToggleAttrs"
+        v-bind="toggleAttrs"
         @mousedown.prevent.stop="toggle"
       >
         <UIcon
@@ -52,7 +52,7 @@
 
       <div
         v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
-        v-bind="beforeCaretSlotAttrs"
+        v-bind="beforeCaretAttrs"
       >
         <!--
           @slot Use it to add something before caret.
@@ -61,7 +61,7 @@
         <slot :scope-props="props" name="before-caret" />
       </div>
 
-      <div v-if="isLocalValue && !noClear && !disabled && !multiple" v-bind="caretClearAttrs">
+      <div v-if="isLocalValue && !noClear && !disabled && !multiple" v-bind="clearAttrs">
         <UIcon
           internal
           interactive
@@ -77,7 +77,7 @@
         <span
           v-if="hasSlotContent($slots['icon-left']) || iconLeft"
           ref="leftSlotWrapperRef"
-          v-bind="leftIconSlotAttrs"
+          v-bind="leftIconAttrs"
         >
           <!--
             @slot Use it to add icon before option.
@@ -117,7 +117,7 @@
 
             <div
               v-if="!disabled"
-              v-bind="caretRemoveItemAttrs"
+              v-bind="clearMultipleAttrs"
               @mousedown.prevent.capture
               @click.prevent.capture
             >
@@ -126,8 +126,8 @@
                 interactive
                 color="gray"
                 :size="iconSize"
-                :name="config.removeItemIconName"
-                v-bind="removeItemIconAttrs"
+                :name="config.clearMultipleIconName"
+                v-bind="clearMultipleIconAttrs"
                 @mousedown="removeElement(item)"
               />
             </div>
@@ -180,7 +180,7 @@
 
         <div
           v-if="isLocalValue && !noClear && !disabled && multiple"
-          v-bind="caretClearTextAttrs"
+          v-bind="clearMultipleTextAllAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
           v-text="currentLocale.clear"
@@ -189,7 +189,7 @@
         <!-- @slot Use it to add something after input. -->
         <slot name="right" />
 
-        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
+        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconAttrs">
           <!--
             @slot Use it to add icon after option.
             @binding {string} icon-name
@@ -564,14 +564,14 @@ const {
   labelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
-  leftIconSlotAttrs,
-  rightIconSlotAttrs,
-  beforeCaretSlotAttrs,
-  afterCaretSlotAttrs,
-  caretToggleAttrs,
-  caretClearAttrs,
-  caretClearTextAttrs,
-  caretRemoveItemAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  beforeCaretAttrs,
+  afterCaretAttrs,
+  toggleAttrs,
+  clearAttrs,
+  clearMultipleTextAllAttrs,
+  clearMultipleAttrs,
   searchAttrs,
   searchInputAttrs,
   selectedLabelsAttrs,
@@ -579,7 +579,7 @@ const {
   dropdownListAttrs,
   toggleIconAttrs,
   clearIconAttrs,
-  removeItemIconAttrs,
+  clearMultipleIconAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const i18nGlobal = tm(USelect);

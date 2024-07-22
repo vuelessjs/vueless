@@ -4,6 +4,7 @@ import URadioGroup from "../ui.form-radio-group";
 import URadio from "../ui.form-radio";
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
+import UGroup from "../ui.container-group";
 
 /**
  * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)
@@ -12,13 +13,6 @@ export default {
   id: "3160",
   title: "Form Inputs & Controls / Radio Group",
   component: URadioGroup,
-  parameters: {
-    docs: {
-      description: {
-        story: "Another description on the story, overriding the comments",
-      },
-    },
-  },
   args: {
     label: "Label",
     value: "One",
@@ -34,7 +28,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { URadioGroup, URadio, UAlert, URow },
+  components: { URadioGroup, URadio, UAlert, URow, UGroup },
   setup() {
     return { args };
   },
@@ -44,7 +38,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <URow class="!flex-col">
+    <UGroup>
       <URadioGroup v-bind="args" v-model="value">
         <template v-for="(radio,index) in args.radios" :key="index">
           <URadio
@@ -55,14 +49,11 @@ const DefaultTemplate = (args) => ({
       </URadioGroup>
 
       <URow>
-        <UAlert color="red" v-if=args.isDefaultStory>
-          <b>NOTE:</b> <p>URadioGroup component have to have unique name attribute</p>
-        </UAlert>
-        <UAlert color="blue">
-          <p>Selected value: {{ value }}</p>
+        <UAlert color="green" size="sm">
+          <p>Selected value: <b>{{ value }}</b></p>
         </UAlert>
       </URow>
-    </URow>
+    </UGroup>
   `,
 });
 
@@ -79,7 +70,7 @@ const OptionsTemplate = (args) => ({
   template: `
     <URow class="!flex-col">
       <URadioGroup v-bind="args" v-model="value" :options="args.radios" />
-  
+
       <URow>
         <UAlert color="blue">
           <p>Selected value: {{ value }}</p>
@@ -102,15 +93,15 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <URow class="!flex-col">
-      <URadioGroup 
+      <URadioGroup
         v-bind="args"
-        v-for="color in colors" 
-        :key="color" 
-        :label="color" 
+        v-for="color in colors"
+        :key="color"
+        :label="color"
         :color="color"
-        :options="args.radios" 
+        :options="args.radios"
         name="color"
-        v-model="value" 
+        v-model="value"
       />
     </URow>
   `,
@@ -129,15 +120,15 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <URow class="!flex-col">
-      <URadioGroup 
+      <URadioGroup
         v-bind="args"
-        v-for="size in sizes" 
-        :key="size" 
-        :label="size" 
+        v-for="size in sizes"
+        :key="size"
+        :label="size"
         :size="size"
-        :options="args.radios" 
+        :options="args.radios"
         name="size"
-        v-model="value" 
+        v-model="value"
       />
     </URow>
   `,
