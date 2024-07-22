@@ -14,7 +14,7 @@ import ULoader from "../ui.loader";
 
 import { ULoaderRendering } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
 /* Should be a string for correct web-types gen */

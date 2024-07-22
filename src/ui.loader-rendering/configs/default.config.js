@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      bg-{color}-600
+      {ULoader} bg-{color}-600
       h-screen w-screen
       flex justify-center items-center
       fixed left-0 top-0 z-[9999]
