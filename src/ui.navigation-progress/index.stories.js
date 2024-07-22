@@ -48,15 +48,15 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       args.progress = args.progress < 100 ? args.progress + 10 : 0;
     }
 
-    return { args, updateProgress, sizes: argTypes[args.enum].options };
+    return { args, updateProgress, options: argTypes[args.enum].options };
   },
   template: `
     <UGroup align="start">
       <UGroup>
         <UProgress
-          v-for="(size, index) in sizes"
+          v-for="(option, index) in options"
           :key="index"
-          :[args.enum]="size"
+          :[args.enum]="option"
           v-bind="args"
           :value="args.progress"
         />
