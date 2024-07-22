@@ -20,6 +20,13 @@ export default function useAttrs(
     });
   });
 
+  const bodyCellClasses = computed(() => {
+    return cva(config.value.bodyCell)({
+      ...props,
+      compact: Boolean(props.compact),
+    });
+  });
+
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -69,7 +76,7 @@ export default function useAttrs(
     }
 
     if (key === "stickyHeaderCell") {
-      const stickyHeaderCellAttrs = getAttrs("stickyHeaderCell", { classes });
+      const stickyHeaderCellAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
         ...stickyHeaderCellAttrs,
@@ -78,28 +85,36 @@ export default function useAttrs(
     }
 
     if (key === "headerCounter") {
-      const headerCounterAttrs = computed(() => ({
+      const headerCounterAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...headerCounterAttrs.value,
         class: cx([config.value.headerCounterGeneral, headerCounterAttrs.value.class]),
       }));
     }
 
     if (key === "stickyHeaderCounter") {
-      const stickyHeaderCounterAttrs = computed(() => ({
+      const stickyHeaderCounterAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...stickyHeaderCounterAttrs.value,
         class: cx([config.value.headerCounterGeneral, stickyHeaderCounterAttrs.value.class]),
       }));
     }
 
     if (key === "stickyHeaderActionsCounter") {
-      const stickyHeaderActionsCounterAttrs = computed(() => ({
+      const stickyHeaderActionsCounterAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...stickyHeaderActionsCounterAttrs.value,
         class: cx([config.value.headerCounterGeneral, stickyHeaderActionsCounterAttrs.value.class]),
       }));
     }
 
     if (key === "headerRow") {
-      const headerRowAttrs = computed(() => {
+      const headerRowAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => {
         return {
           ...headerRowAttrs.value,
           class: cx([headerRowAttrs.value.class]),
@@ -108,7 +123,7 @@ export default function useAttrs(
     }
 
     if (key === "headerCell") {
-      const headerCellAttrs = getAttrs("headerCell", { classes });
+      const headerCellAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
         ...headerCellAttrs,
@@ -117,26 +132,34 @@ export default function useAttrs(
     }
 
     if (key === "bodyCell") {
-      const bodyCellAttrs = getAttrs("bodyCell", { classes });
+      const bodyCellAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
         ...bodyCellAttrs,
-        class: cx([bodyCellAttrs.value.class, classes || ""]),
+        class: cx([bodyCellClasses.value, bodyCellAttrs.value.class, classes]),
       }));
+    }
 
-      const bodyRowBeforeCellAttrs = computed(() => ({
+    if (key === "bodyRowBeforeCell") {
+      const bodyRowBeforeCellAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...bodyRowBeforeCellAttrs.value,
-        class: cx([bodyCellAttrs.value().class, bodyRowBeforeCellAttrs.value.class]),
+        class: cx([bodyCellClasses.value, bodyRowBeforeCellAttrs.value.class]),
       }));
+    }
 
-      const bodyRowAfterCellAttrs = computed(() => ({
+    if (key === "bodyRowAfterCell") {
+      const bodyRowAfterCellAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...bodyRowAfterCellAttrs.value,
-        class: cx([bodyCellAttrs.value().class, bodyRowAfterCellAttrs.value.class]),
+        class: cx([bodyCellClasses.value, bodyRowAfterCellAttrs.value.class]),
       }));
     }
 
     if (key === "bodyRow") {
-      const bodyRowAttrs = getAttrs("bodyRow", { classes });
+      const bodyRowAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (row) => ({
         ...bodyRowAttrs,
@@ -145,14 +168,18 @@ export default function useAttrs(
     }
 
     if (key === "footer") {
-      const footerAttrs = computed(() => ({
+      const footerAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...footerAttrs.value,
         class: cx([footerAttrs.value.class, isFooterSticky.value && config.value.stickyFooter]),
       }));
     }
 
     if (key === "bodyRowBefore") {
-      const bodyRowBeforeAttrs = computed(() => ({
+      const bodyRowBeforeAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
         ...bodyRowBeforeAttrs.value,
         class: cx([
           bodyRowBeforeAttrs.value.class,

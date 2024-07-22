@@ -233,7 +233,7 @@
           </tr>
         </tbody>
 
-        <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerClassesAttrs">
+        <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerAttrs">
           <tr ref="footerRowRef" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 
@@ -484,7 +484,7 @@ const {
   bodyRowBeforeAttrs,
   bodyRowBeforeCellAttrs,
   bodyRowAttrs,
-  footerClassesAttrs,
+  footerAttrs,
   bodyRowDateSeparatorAttrs,
   headerCellAttrs,
   bodyCellAttrs,
