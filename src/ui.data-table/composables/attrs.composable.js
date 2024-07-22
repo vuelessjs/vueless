@@ -46,9 +46,9 @@ export default function useAttrs(
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "stickyHeader") {
-      attrs[`${key}Attrs`] = computed(() => {
-        const stickyHeaderAttrs = getAttrs("stickyHeader", { classes });
+      const stickyHeaderAttrs = attrs[`${key}Attrs`];
 
+      attrs[`${key}Attrs`] = computed(() => {
         const actionHeaderClasses = cx([
           stickyHeaderAttrs.value.class,
           config.value.stickyHeaderActions,
