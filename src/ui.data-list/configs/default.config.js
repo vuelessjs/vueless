@@ -24,7 +24,7 @@ export default /*tw*/ {
   editIconName: "edit_note",
   divider: "{UDivider}",
   empty: "{UEmpty}",
-  nested: "group/nested ml-6",
+  nested: "{UDataList} group/nested ml-6",
   i18n: {
     edit: "Edit",
     delete: "Delete",
