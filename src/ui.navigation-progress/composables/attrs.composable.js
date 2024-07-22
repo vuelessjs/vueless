@@ -34,7 +34,7 @@ export default function useAttrs(props) {
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "step") {
-      const stepAttrs = getAttrs("step", { classes });
+      const stepAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
         ...stepAttrs,
