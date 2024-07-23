@@ -2,6 +2,12 @@
   <div v-bind="wrapperAttrs">
     <template v-if="isVariant.progress">
       <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
+        <!--
+          @slot Use it to add something instead of the progress indicator.
+          @binding {number} percent
+          @binding {number} value
+          @binding {number} max
+        -->
         <slot name="indicator" :percent="progressPercent" :value="value" :max="realMax">
           {{ progressPercent }}
         </slot>
@@ -12,6 +18,13 @@
 
     <div v-if="isSteps" v-bind="stepAttrs(!value && config.firstStep)">
       <template v-for="(step, index) in max" :key="index">
+        <!--
+          @slot Use it to add something instead of the progress step label.
+          @binding {string} name
+          @binding {number} step
+          @binding {number} value
+          @binding {number} max
+        -->
         <slot
           v-if="isActiveStep(index)"
           :name="`step-${index}`"
@@ -40,7 +53,7 @@
 import { computed } from "vue";
 
 import UIService from "../service.ui";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";
 import { UProgress, VARIANT } from "./constants";
