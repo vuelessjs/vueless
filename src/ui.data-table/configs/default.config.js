@@ -12,7 +12,7 @@ export default /*tw*/ {
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
   stickyHeaderCell: "flex-none whitespace-nowrap",
-  stickyHeaderCheckbox: "",
+  stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
     base: "absolute top-5 left-11 bg-gradient-to-r from-white from-80%",
     variants: {
@@ -21,9 +21,9 @@ export default /*tw*/ {
       },
     },
   },
-  stickyHeaderLoader: "",
+  stickyHeaderLoader: "{ULoader}",
   stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
-  stickyHeaderActionsCheckbox: "",
+  stickyHeaderActionsCheckbox: "{UCheckbox}",
   stickyHeaderActionsCounter: "-ml-2",
   tableWrapper: "border border-gray-200 rounded-lg bg-white",
   table: "min-w-full border-none text-sm w-full table-fixed",
@@ -31,7 +31,7 @@ export default /*tw*/ {
   headerRow: "",
   headerCell: "",
   headerCellCheckbox: "w-10",
-  headerCheckbox: "",
+  headerCheckbox: "{UCheckbox}",
   headerCounter: {
     base: "absolute top-5 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
     variants: {
@@ -40,7 +40,7 @@ export default /*tw*/ {
       },
     },
   },
-  headerLoader: "absolute !top-auto",
+  headerLoader: "{ULoader} absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
   bodyRowChecked: "bg-gray-100 transition",
@@ -64,18 +64,18 @@ export default /*tw*/ {
   bodyCellDateSeparator: "",
   bodyCellNested: "mr-2 mt-0.5",
   bodyCellNestedExpandIcon: {
-    wrapper: "rounded-sm",
+    wrapper: "{UIcon} rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedExpandIconName: "add",
   bodyCellNestedCollapseIcon: {
-    wrapper: "rounded-sm",
+    wrapper: "{UIcon} rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedCollapseIconName: "remove",
-  bodyCheckbox: "",
-  bodyDateSeparator: "",
-  bodyEmptyState: "my-8",
+  bodyCheckbox: "{UCheckbox}",
+  bodyDateSeparator: "{UDivider}",
+  bodyEmptyState: "{UEmpty} my-8",
   footer: "group/footer border-t border-solid border-gray-200",
   footerRow: {
     base: "[&_td]:p-[1.125rem] [&_td]:py-5 first:[&_td]:p-5",
