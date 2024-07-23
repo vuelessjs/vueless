@@ -58,7 +58,7 @@ import UIService from "../service.ui";
 
 import { UInputRating } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputRating", inheritAttrs: false });
@@ -165,7 +165,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when the rating is changes.
+   * Triggers when the rating is changed.
    * @property {number} modelValue
    */
   "update:modelValue",
