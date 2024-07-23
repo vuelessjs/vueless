@@ -2,10 +2,10 @@
   <Transition v-bind="config.transition">
     <div v-if="showLoader" v-bind="wrapperAttrs">
       <ULoader
-        v-bind="loaderAttrs"
         :loading="showLoader"
         size="lg"
         :color="color === 'white' ? 'grayscale' : 'white'"
+        v-bind="loaderAttrs"
       />
     </div>
   </Transition>
