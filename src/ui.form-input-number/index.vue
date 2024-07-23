@@ -56,7 +56,7 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UInputNumber } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputNumber", inheritAttrs: false });
@@ -128,7 +128,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the input value changes.
+   * @property {number} modelValue
+   */
+  "update:modelValue",
+]);
 
 const {
   config,

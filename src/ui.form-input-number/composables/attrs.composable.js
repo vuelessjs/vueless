@@ -4,44 +4,30 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { value, text } = config.value;
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaValue = cva({
-    base: value.base,
-    variants: value.variants,
-    compoundVariants: value.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const cvaText = cva({
-    base: text.base,
-    variants: text.variants,
-    compoundVariants: text.compoundVariants,
-  });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const textClasses = computed(() => cvaText({ size: props.size }));
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const valueClasses = computed(() => cvaValue({ size: props.size }));
+      return "";
+    });
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const numberAttrs = getAttrs("number");
-  const removeButtonAttrs = getAttrs("removeButton", { isComponent: true });
-  const removeIconAttrs = getAttrs("removeIcon", { isComponent: true });
-  const addButtonAttrs = getAttrs("addButton", { isComponent: true });
-  const addIconAttrs = getAttrs("addIcon", { isComponent: true });
-  const valueAttrs = getAttrs("value", { classes: valueClasses });
-  const textAttrs = getAttrs("text", { classes: textClasses });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    valueAttrs,
-    textAttrs,
-    removeButtonAttrs,
-    removeIconAttrs,
-    addButtonAttrs,
-    addIconAttrs,
-    wrapperAttrs,
-    numberAttrs,
   };
 }
