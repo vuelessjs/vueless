@@ -1,6 +1,6 @@
 export default /*tw*/ {
   label: {
-    wrapper: "relative w-full",
+    wrapper: "{ULabel} relative w-full",
     label: {
       compoundVariants: [
         { align: "topInside", size: "sm", class: "left-5 top-4" },
@@ -25,7 +25,7 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-12" },
     ],
   },
-  description: "text-gray-700",
+  description: "{UText} text-gray-700",
   contentWrapper: {
     base: "relative mt-3 flex w-full gap-6 justify-between items-start rounded bg-brand-50 p-3",
     variants: {
@@ -44,18 +44,18 @@ export default /*tw*/ {
       },
     },
   },
-  button: "hover:cursor-pointer",
-  chooseFileIcon: "",
+  button: "{UButton} hover:cursor-pointer",
+  chooseFileIcon: "{UIcon}",
   chooseFileIconName: "attach_file",
-  clearIcon: "",
+  clearIcon: "{UIcon}",
   clearIconName: "close",
-  removeItemIcon: "ml-2",
+  removeItemIcon: "{UIcon} ml-2",
   removeItemIconName: "close",
   dropzoneWrapperHover: "border-gray-400 border-dashed",
   dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",
   input: "sr-only pointer-events-none size-0 opacity-0",
   buttonWrapper: "flex gap-4 items-center",
-  fileList: "w-full",
+  fileList: "{UFiles} w-full",
   i18n: {
     sizeError: "File size is too big.",
     formatError: "Format is not supported.",

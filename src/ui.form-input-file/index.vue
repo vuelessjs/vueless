@@ -4,7 +4,7 @@
       <UText :size="nestedComponentSize" :html="description" v-bind="descriptionAttrs" />
 
       <div v-bind="contentWrapperAttrs">
-        <!-- @slot Use it to add something before placeholder. -->
+        <!-- @slot Use it to add something before the placeholder. -->
         <slot name="left" />
 
         <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
@@ -88,7 +88,7 @@ import UFiles from "../ui.text-files";
 import UIService, { getRandomId } from "../service.ui";
 import { getFileMbSize } from "./services/fileForm.service";
 
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 import { UInputFile } from "./constants";
@@ -194,7 +194,19 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "update:error"]);
+const emit = defineEmits([
+  /**
+   * Triggers when a file is uploaded
+   * @property {array} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when the input has not passed validation.
+   * @property {string} value
+   */
+  "update:error",
+]);
 
 const { tm } = useLocale();
 
