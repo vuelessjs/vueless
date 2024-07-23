@@ -16,12 +16,12 @@
     @keyup.enter="onClickSearch"
   >
     <template #left>
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </template>
 
     <template #right>
-      <!-- @slot Use it to add something before text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
 
       <template v-if="!hasSlotContent($slots['right'])">
@@ -70,7 +70,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import { UInputSearch } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputSearch" });
@@ -176,7 +176,24 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "clear", "search"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the input value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when the input value is cleared.
+   */
+  "clear",
+
+  /**
+   * Triggers when the search button is clicked.
+   * @property {string} value
+   */
+  "search",
+]);
 
 const localValue = ref("");
 
