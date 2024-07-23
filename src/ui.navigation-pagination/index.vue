@@ -10,7 +10,7 @@
         @click="goToFirstPage"
       >
         <!-- @slot Use it to add something instead of the "first" label. -->
-        <slot name="{first}">
+        <slot name="first">
           <span v-bind="navigationButtonTextAttrs" v-html="firstLabel" />
         </slot>
       </UButton>
@@ -25,7 +25,7 @@
         @click="goToPrevPage"
       >
         <!-- @slot Use it to add something instead of the "prev" label. -->
-        <slot name="{prev}">
+        <slot name="prev">
           <span v-bind="navigationButtonTextAttrs" v-html="prevLabel" />
         </slot>
       </UButton>
@@ -57,7 +57,7 @@
         @click="goToNextPage"
       >
         <!-- @slot Use it to add something instead of the "next" label. -->
-        <slot name="{next}">
+        <slot name="next">
           <span v-bind="navigationButtonTextAttrs" v-html="nextLabel" />
         </slot>
       </UButton>
@@ -72,7 +72,7 @@
         @click="goToLastPage"
       >
         <!-- @slot Use it to add something instead of the "last" label. -->
-        <slot name="{last}">
+        <slot name="last">
           <span v-bind="navigationButtonTextAttrs" v-html="lastLabel" />
         </slot>
       </UButton>
