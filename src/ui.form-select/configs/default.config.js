@@ -1,5 +1,7 @@
 export default /*tw*/ {
   label: "{ULabel} w-full relative",
+  labelWrapperTop: "group/top", // applies when an open direction is top
+  labelWrapperActive: "group/active",
   wrapper: {
     base: `
       pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -32,59 +34,12 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
+  wrapperActive: "z-[inherit]", // applies when select active
   innerWrapper: {
     base: "flex px-4 min-h-full w-full overflow-hidden justify-between",
     variants: {
       multiple: {
         true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
-      },
-    },
-  },
-  wrapperActive: "z-[inherit]", // applies when select active
-  labelWrapperTop: "group/top", // applies when an open direction is top
-  labelWrapperActive: "group/active",
-  leftIconSlot: "pr-3 flex items-center",
-  rightIconSlot: "pl-3 flex items-center",
-  caret: {
-    base: "flex items-center mt-0",
-    compoundVariants: [
-      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "md", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-4" },
-    ],
-  },
-  beforeCaretSlot: "",
-  afterCaretSlot: "mr-3",
-  caretToggle: "mr-3",
-  toggleIcon: "{UIcon} transform transition duration-300 group-[]/active:rotate-180",
-  toggleIconName: "expand_more",
-  clearIcon: "{UIcon}",
-  clearIconName: "close_small",
-  removeItemIcon: "{UIcon}",
-  removeItemIconName: "close_small",
-  caretRemoveItem: "flex items-center",
-  caretClear: "",
-  caretClearText: {
-    // TODO: caretClearMultiple is better
-    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
-    compoundVariants: [
-      { size: "sm", class: "text-sm" },
-      { size: "md", class: "text-base" },
-      { size: "lg", class: "text-lg" },
-    ],
-  },
-  search: "flex w-fit",
-  searchInput: {
-    base: `
-        p-0 font-normal leading-none text-gray-900 relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-none focus:ring-0
-        placeholder:text-gray-400 placeholder:font-normal
-      `,
-    variants: {
-      size: {
-        sm: "text-sm placeholder:text-sm",
-        md: "text-base placeholder:text-base",
-        lg: "text-lg placeholder:text-lg",
       },
     },
   },
@@ -112,6 +67,51 @@ export default /*tw*/ {
       { size: "md", multiple: true, class: "text-base" },
       { size: "lg", multiple: true, class: "text-lg" },
     ],
+  },
+  leftIcon: "pr-3 flex items-center",
+  rightIcon: "pl-3 flex items-center",
+  beforeCaret: "",
+  afterCaret: "mr-3",
+  caret: {
+    base: "flex items-center mt-0",
+    compoundVariants: [
+      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-3" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-4" },
+    ],
+  },
+  toggle: "mr-3",
+  toggleIcon: "{UIcon} transform transition duration-300 group-[]/active:rotate-180",
+  toggleIconName: "expand_more",
+  clear: "",
+  clearIcon: "{UIcon}",
+  clearIconName: "close_small",
+  clearMultiple: "flex items-center",
+  clearMultipleIcon: "{UIcon}",
+  clearMultipleIconName: "close_small",
+  clearMultipleTextAll: {
+    // TODO: clearMultiple is better
+    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
+    compoundVariants: [
+      { size: "sm", class: "text-sm" },
+      { size: "md", class: "text-base" },
+      { size: "lg", class: "text-lg" },
+    ],
+  },
+  search: "flex w-fit",
+  searchInput: {
+    base: `
+        p-0 font-normal leading-none text-gray-900 relative w-full border-none bg-transparent
+        focus:shadow-none focus:outline-none focus:ring-0
+        placeholder:text-gray-400 placeholder:font-normal
+      `,
+    variants: {
+      size: {
+        sm: "text-sm placeholder:text-sm",
+        md: "text-base placeholder:text-base",
+        lg: "text-lg placeholder:text-lg",
+      },
+    },
   },
   dropdownList: "{UDropdownList} group-[]/top:bottom-full group-[]/top:top-auto top-full",
   i18n: {

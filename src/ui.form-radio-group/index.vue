@@ -101,11 +101,11 @@ const props = defineProps({
   },
 
   /**
-   * Radio group name (sets for each radio).
+   * Unique radio group name (sets for each radio).
    */
   name: {
     type: String,
-    default: "",
+    required: true,
   },
 
   /**
