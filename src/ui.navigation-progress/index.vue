@@ -117,7 +117,15 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Component ui config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
+  },
+
+  /**
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,

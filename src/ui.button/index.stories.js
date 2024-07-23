@@ -29,19 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${allSlotsFragment}
-    </UButton>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UButton, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UButton v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || allSlotsFragment}
     </UButton>
   `,
 });
@@ -141,7 +129,7 @@ iconRight.args = {
   iconRight: "star",
 };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #default>
@@ -150,7 +138,7 @@ slotDefault.args = {
   `,
 };
 
-export const iconLeftSlot = SlotTemplate.bind({});
+export const iconLeftSlot = DefaultTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #icon-left>
@@ -162,7 +150,7 @@ iconLeftSlot.args = {
   `,
 };
 
-export const iconRightSlot = SlotTemplate.bind({});
+export const iconRightSlot = DefaultTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
@@ -174,7 +162,7 @@ iconRightSlot.args = {
   `,
 };
 
-export const leftSlot = SlotTemplate.bind({});
+export const leftSlot = DefaultTemplate.bind({});
 leftSlot.args = {
   slotTemplate: `
     <template #left>
@@ -186,7 +174,7 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = SlotTemplate.bind({});
+export const rightSlot = DefaultTemplate.bind({});
 rightSlot.args = {
   slotTemplate: `
     <template #right>

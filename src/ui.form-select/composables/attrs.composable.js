@@ -59,39 +59,39 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
       }));
     }
 
-    if (key === "caretToggle") {
-      const caretToggleAttrs = attrs[`${key}Attrs`];
+    if (key === "toggle") {
+      const toggleAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...caretToggleAttrs.value,
-        class: cx([caretToggleAttrs.value.class, caretClasses.value]),
+        ...toggleAttrs.value,
+        class: cx([toggleAttrs.value.class, caretClasses.value]),
       }));
     }
 
-    if (key === "caretClear") {
-      const caretClearAttrs = attrs[`${key}Attrs`];
+    if (key === "clear") {
+      const clearAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...caretClearAttrs.value,
-        class: cx([caretClearAttrs.value.class, caretClasses.value]),
+        ...clearAttrs.value,
+        class: cx([clearAttrs.value.class, caretClasses.value]),
       }));
     }
 
-    if (key === "beforeCaretSlot") {
-      const beforeCaretSlotAttrs = attrs[`${key}Attrs`];
+    if (key === "beforeCaret") {
+      const beforeCaretAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...beforeCaretSlotAttrs.value,
-        class: cx([beforeCaretSlotAttrs.value.class, caretClasses.value]),
+        ...beforeCaretAttrs.value,
+        class: cx([beforeCaretAttrs.value.class, caretClasses.value]),
       }));
     }
 
-    if (key === "afterCaretSlot") {
-      const afterCaretSlotAttrs = attrs[`${key}Attrs`];
+    if (key === "afterCaret") {
+      const afterCaretAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...afterCaretSlotAttrs.value,
-        class: cx([afterCaretSlotAttrs.value.class, caretClasses.value]),
+        ...afterCaretAttrs.value,
+        class: cx([afterCaretAttrs.value.class, caretClasses.value]),
       }));
     }
 

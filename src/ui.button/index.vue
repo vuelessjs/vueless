@@ -36,7 +36,12 @@
 
       <!-- @slot Use it to add something instead of the text. -->
       <slot />
-      <div v-if="label" v-bind="textAttrs" tabindex="-1" v-text="label" />
+      <div
+        v-if="label && !hasSlotContent($slots['default'])"
+        v-bind="textAttrs"
+        tabindex="-1"
+        v-text="label"
+      />
 
       <!-- @slot Use it to add something after the text. -->
       <slot name="right" />

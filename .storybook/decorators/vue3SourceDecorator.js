@@ -1,10 +1,11 @@
-import { addons, makeDecorator } from "@storybook/preview-api";
+import { addons, useArgs, makeDecorator } from "@storybook/preview-api";
 import { h, onMounted, watch } from "vue";
 
 export const vue3SourceDecorator = makeDecorator({
   name: "vue3SourceDecorator",
   wrapper: (storyFn, context) => {
     const story = storyFn(context);
+    const [, updateArgs] = useArgs();
 
     // this returns a new component that computes the source code when mounted
     // and emits an events that is handled by addons-docs
@@ -12,15 +13,17 @@ export const vue3SourceDecorator = makeDecorator({
     return {
       components: { story },
       setup() {
-        onMounted(() => {
-          setSourceCode();
+        onMounted(async () => {
+          await setSourceCode();
         });
 
-        watch(context.args, () => {
-          setSourceCode();
+        watch(context.args, async () => {
+          // it allows changing args dynamically
+          updateArgs({ ...context.args });
+          await setSourceCode();
         });
 
-        function setSourceCode() {
+        async function setSourceCode() {
           try {
             const src = context.originalStoryFn(context.args).template;
             const code = templateSourceCode(src, context.args, context.argTypes);
@@ -44,7 +47,7 @@ export const vue3SourceDecorator = makeDecorator({
               });
             };
 
-            emitFormattedTemplate();
+            await emitFormattedTemplate();
           } catch (e) {
             // eslint-disable-next-line no-console
             console.warn("Failed to render code", e);
@@ -58,9 +61,12 @@ export const vue3SourceDecorator = makeDecorator({
 });
 
 function templateSourceCode(templateSource, args, argTypes) {
+  const MODEL_VALUE_KEY = "modelValue";
   const componentArgs = {};
 
   for (const [key, val] of Object.entries(argTypes)) {
+    if (key === MODEL_VALUE_KEY) continue;
+
     const value = args[key];
 
     if (
@@ -83,6 +89,10 @@ function templateSourceCode(templateSource, args, argTypes) {
     .trim()
     .replace(slotTemplateCode, "")
     .replace(templateDefaultRegEx, "$1")
+    .replace(
+      'v-model="args.modelValue"',
+      args[MODEL_VALUE_KEY] ? `v-model="${args[MODEL_VALUE_KEY]}"` : "",
+    )
     .replace(
       'v-bind="args"',
       Object.keys(componentArgs)
