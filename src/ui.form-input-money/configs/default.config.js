@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  input: "",
+  input: "{UInput}",
   defaultVariants: {
     symbol: "$",
     size: "md",
