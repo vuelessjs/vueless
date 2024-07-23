@@ -68,7 +68,7 @@
           </template>
 
           <!--
-            @slot Use it to add content after table column.
+            @slot Use it to add something after the table column.
             @binding {string} name
             @binding {number} column
           -->
@@ -140,7 +140,7 @@
               </template>
 
               <!--
-                @slot Use it to add content after table column.
+                @slot Use it to add something after the table column.
                 @binding {string} name
                 @binding {number} column
               -->
@@ -238,7 +238,7 @@
             <td v-if="selectable" />
 
             <!--
-              @slot Use it to add something in table footer.
+              @slot Use it to add something into the table footer.
               @binding {number} cols-count
             -->
             <slot name="footer" :cols-count="colsCount" />
@@ -248,7 +248,7 @@
             <td v-if="selectable" />
 
             <!--
-              @slot Use it to add something in table footer.
+              @slot Use it to add something into the table footer.
               @binding {number} cols-count
             -->
             <slot name="footer" :cols-count="colsCount" />
@@ -383,7 +383,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when the row is clicked
+   * Triggers when the row is clicked.
    * @property {object} row
    */
   "clickRow",

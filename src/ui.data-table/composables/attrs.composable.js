@@ -111,17 +111,6 @@ export default function useAttrs(
       }));
     }
 
-    if (key === "headerRow") {
-      const headerRowAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => {
-        return {
-          ...headerRowAttrs.value,
-          class: cx([headerRowAttrs.value.class]),
-        };
-      });
-    }
-
     if (key === "headerCell") {
       const headerCellAttrs = attrs[`${key}Attrs`];
 
