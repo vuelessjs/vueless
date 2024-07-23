@@ -17,7 +17,7 @@
       :for="id"
       v-bind="leftSlotAttrs"
     >
-      <!-- @slot Use it to add some component before text. -->
+      <!-- @slot Use it to add some component before the text. -->
       <slot name="left" />
     </label>
     <label ref="textareaWrapper" :for="id" v-bind="textareaWrapperAttrs">
@@ -42,7 +42,7 @@
       />
     </label>
     <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add some component after text. -->
+      <!-- @slot Use it to add some component after the text. -->
       <slot name="right" />
     </label>
   </ULabel>
@@ -56,7 +56,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import { UTextarea } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UTextarea", inheritAttrs: false });
@@ -187,7 +187,38 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["change", "click", "focus", "blur", "update:modelValue", "mousedown"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the textarea value changes.
+   */
+  "change",
+
+  /**
+   * Triggers when the textarea is clicked.
+   */
+  "click",
+
+  /**
+   * Triggers when the textarea is focused.
+   */
+  "focus",
+
+  /**
+   * Triggers when the textarea loses focus.
+   */
+  "blur",
+
+  /**
+   * Triggers when the textarea value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when mouse button is released over the element.
+   */
+  "mousedown",
+]);
 
 const slots = useSlots();
 

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UTextarea from "../ui.form-textarea";
 import UIcon from "../ui.image-icon";
@@ -32,9 +32,7 @@ const DefaultTemplate = (args) => ({
     <UTextarea
       v-bind="args"
     >
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UTextarea>
   `,
 });
@@ -140,7 +138,7 @@ slotLeft.args = {
 };
 
 export const slotRight = SlotTemplate.bind({});
-slotLeft.args = {
+slotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon

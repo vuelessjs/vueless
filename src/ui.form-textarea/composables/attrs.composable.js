@@ -4,47 +4,36 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { textarea, textareaWrapper } = config.value;
-
-  const cvaTextarea = cva({
-    base: textarea.base,
-    variants: textarea.variants,
-    compoundVariants: textarea.compoundVariants,
-  });
-
-  const cvaTextareaWrapper = cva({
-    base: textareaWrapper.base,
-    variants: textareaWrapper.variants,
-    compoundVariants: textareaWrapper.compoundVariants,
-  });
-
-  const textareaWrapperClasses = computed(() =>
-    cvaTextareaWrapper({
-      error: Boolean(props.error),
-      size: props.size,
-      readonly: props.readonly,
-      disabled: props.disabled,
-      labelAlign: props.labelAlign,
-      label: Boolean(props.label),
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const textareaClasses = computed(() => cvaTextarea({ size: props.size }));
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const leftSlotAttrs = getAttrs("leftSlot");
-  const rightSlotAttrs = getAttrs("rightSlot");
-  const labelAttrs = getAttrs("label", { isComponent: true });
-  const textareaWrapperAttrs = getAttrs("textareaWrapper", { classes: textareaWrapperClasses });
-  const textareaAttrs = getAttrs("textarea", { classes: textareaClasses });
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          error: Boolean(props.error),
+          label: Boolean(props.label),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    textareaAttrs,
-    labelAttrs,
-    textareaWrapperAttrs,
-    leftSlotAttrs,
-    rightSlotAttrs,
+    ...attrs,
+    config,
     hasSlotContent,
   };
 }
