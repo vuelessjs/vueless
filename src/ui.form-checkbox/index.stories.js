@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UCheckbox from "../ui.form-checkbox";
 import UCheckboxGroup from "../ui.form-checkbox-group";
@@ -30,9 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCheckbox v-bind="args" v-model="args.value">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UCheckbox>
   `,
 });

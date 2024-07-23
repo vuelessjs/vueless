@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "w-auto max-w-max relative", // TODO: label classes should be defined in ULabel component
+  label: "{ULabel} w-auto max-w-max relative", // TODO: label classes should be defined in ULabel component
   partialIconName: "remove",
   selectedIconName: "check",
   iconWrapper: {
@@ -17,7 +17,7 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "",
+  icon: "{UIcon}",
   checkbox: {
     base: `
       border border-solid rounded border-gray-300 bg-white hover:transition

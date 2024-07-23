@@ -40,7 +40,7 @@ import UCheckbox from "../ui.form-checkbox";
 
 import { UCheckboxGroup } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckboxGroup", inheritAttrs: false });
@@ -137,7 +137,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when checkbox group value changes.
+   * @property {object} value
+   */
+  "update:modelValue",
+]);
 
 const checkedItems = ref([]);
 

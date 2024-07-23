@@ -20,7 +20,7 @@ import UCheckbox from "../ui.form-checkbox";
 
 import defaultConfig from "./configs/default.config";
 import { UCheckboxMultiState } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckboxMultiState", inheritAttrs: false });
@@ -102,7 +102,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when checkbox group value changes.
+   * @property {number} value
+   */
+  "update:modelValue",
+]);
 
 const index = ref(0);
 const isChecked = ref(false);
