@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      {ULoader} bg-{color}-600
+      bg-{color}-600
       h-screen w-screen
       flex justify-center items-center
       fixed left-0 top-0 z-[9999]
@@ -14,6 +14,7 @@ export default /*tw*/ {
       },
     },
   },
+  loader: "{ULoader}",
   transition: {
     enterFromClass: "scale-110 transform",
     leaveActiveClass: "scale-110 transform",

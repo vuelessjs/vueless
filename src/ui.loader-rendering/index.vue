@@ -1,7 +1,12 @@
 <template>
   <Transition v-bind="config.transition">
     <div v-if="showLoader" v-bind="wrapperAttrs">
-      <ULoader :loading="showLoader" size="lg" :color="color === 'white' ? 'grayscale' : 'white'" />
+      <ULoader
+        v-bind="loaderAttrs"
+        :loading="showLoader"
+        size="lg"
+        :color="color === 'white' ? 'grayscale' : 'white'"
+      />
     </div>
   </Transition>
 </template>
@@ -39,7 +44,7 @@ const props = defineProps({
   },
 });
 
-const { wrapperAttrs, config } = useAttrs(props);
+const { wrapperAttrs, loaderAttrs, config } = useAttrs(props);
 const { isLoading, loaderRenderingOn, loaderRenderingOff } = useLoaderRendering();
 
 onMounted(() => {
