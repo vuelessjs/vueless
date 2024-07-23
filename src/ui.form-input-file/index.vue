@@ -196,7 +196,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when a file is uploaded
+   * Triggers when a file is updated.
    * @property {array} value
    */
   "update:modelValue",

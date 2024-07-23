@@ -17,7 +17,7 @@
       :for="id"
       v-bind="leftSlotAttrs"
     >
-      <!-- @slot Use it to add some component before the text. -->
+      <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </label>
     <label ref="textareaWrapper" :for="id" v-bind="textareaWrapperAttrs">
@@ -42,7 +42,7 @@
       />
     </label>
     <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add some component after the text. -->
+      <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
     </label>
   </ULabel>
@@ -190,6 +190,12 @@ const props = defineProps({
 const emit = defineEmits([
   /**
    * Triggers when the textarea value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when the textarea value changes.
    */
   "change",
 
@@ -207,12 +213,6 @@ const emit = defineEmits([
    * Triggers when the textarea loses focus.
    */
   "blur",
-
-  /**
-   * Triggers when the textarea value changes.
-   * @property {string} value
-   */
-  "update:modelValue",
 
   /**
    * Triggers when mouse button is released over the element.

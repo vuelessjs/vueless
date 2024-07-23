@@ -165,7 +165,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when the rating is changed.
+   * Triggers when the rating value changes.
    * @property {number} modelValue
    */
   "update:modelValue",
