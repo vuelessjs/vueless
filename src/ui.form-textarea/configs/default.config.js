@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "relative w-full",
+  label: "{ULabel} relative w-full",
   leftSlot: "flex items-center justify-center h-full w-11 absolute left-0",
   rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
   textareaWrapper: {

@@ -1,11 +1,11 @@
 export default /*tw*/ {
   wrapper: "flex items-center space-x-6",
   number: "flex items-center flex-col",
-  removeButton: "",
-  removeIcon: "",
+  removeButton: "{UButton}",
+  removeIcon: "{UIcon}",
   removeIconName: "remove",
-  addButton: "",
-  addIcon: "",
+  addButton: "{UButton}",
+  addIcon: "{UIcon}",
   addIconName: "add",
   value: {
     base: "font-bold select-none !leading-none",

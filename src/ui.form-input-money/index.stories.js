@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UInputMoney from "../ui.form-input-money";
 import URow from "../ui.container-row";
@@ -32,9 +32,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.inputValue"
     >
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UInputMoney>
   `,
 });
