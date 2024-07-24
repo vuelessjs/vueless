@@ -139,7 +139,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when checkbox group value changes.
+   * Triggers when checkbox value changes.
    * @property {object} value
    */
   "update:modelValue",
