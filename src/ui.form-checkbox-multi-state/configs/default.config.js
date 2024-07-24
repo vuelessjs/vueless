@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  checkbox: "",
+  checkbox: "{UCheckbox}",
   defaultVariants: {
     color: "brand",
     size: "md",

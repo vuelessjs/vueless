@@ -47,7 +47,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import { USwitch } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
@@ -154,7 +154,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when switch value changes.
+   * @property {Boolean} value
+   */
+  "update:modelValue",
+]);
 
 const { tm } = useLocale();
 

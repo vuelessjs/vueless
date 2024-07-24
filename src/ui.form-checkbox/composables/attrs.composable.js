@@ -4,54 +4,39 @@ import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props, { checkboxColor, checkboxSize }) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { checkbox, iconWrapper } = config.value;
-
-  const cvaCheckbox = cva({
-    base: checkbox.base,
-    variants: checkbox.variants,
-    compoundVariants: checkbox.compoundVariants,
-  });
-
-  const cvaIconWrapper = cva({
-    base: iconWrapper.base,
-    variants: iconWrapper.variants,
-    compoundVariants: iconWrapper.compoundVariants,
-  });
-
-  const checkboxClasses = computed(() =>
-    setColor(
-      cvaCheckbox({
-        size: checkboxSize.value,
-        label: Boolean(props.label),
-        color: getColor(checkboxColor.value),
-        disabled: props.disabled,
-      }),
-      checkboxColor.value,
-    ),
+export default function useAttrs(props, { checkboxColor, checkboxSize }) {
+  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const iconWrapperClasses = computed(() =>
-    setColor(
-      cvaIconWrapper({
-        size: checkboxSize.value,
-        color: getColor(checkboxColor.value),
-      }),
-      checkboxColor.value,
-    ),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const labelAttrs = getAttrs("label", { isComponent: true });
-  const iconWrapperCellAttrs = getAttrs("iconWrapper", { classes: iconWrapperClasses });
-  const iconAttrs = getAttrs("icon", { isComponent: true });
-  const checkboxAttrs = getAttrs("checkbox", { classes: checkboxClasses });
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            size: checkboxSize.value,
+            label: Boolean(props.label),
+            color: getColor(checkboxColor.value),
+          }),
+          checkboxColor.value,
+        );
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    checkboxAttrs,
-    iconWrapperCellAttrs,
-    labelAttrs,
-    iconAttrs,
   };
 }

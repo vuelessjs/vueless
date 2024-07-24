@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "flex items-start",
+  label: "{ULabel} flex items-start",
   wrapper: {
     base: `
       transition duration-300
@@ -42,7 +42,7 @@ export default /*tw*/ {
       { checked: true, size: "lg", class: "ml-[calc(100%-1.5rem)]" },
     ],
   },
-  icon: "",
+  icon: "{UIcon}",
   selectedIconName: "check",
   unselectedIconName: "close",
   toggleLabel: {
