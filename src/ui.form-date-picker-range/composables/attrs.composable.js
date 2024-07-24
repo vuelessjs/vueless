@@ -7,124 +7,136 @@ import defaultConfig from "../configs/default.config";
 import { POSITION } from "../../composable.adjustElementPosition";
 
 export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { menu } = config.value;
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
   const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
   const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
 
-  const cvaMenu = cva({
-    base: menu.base,
-    variants: menu.variants,
-    compoundVariants: menu.compoundVariants,
-  });
-
   const menuClasses = computed(() =>
-    cvaMenu({ openDirectionY: openDirectionY.value, openDirectionX: openDirectionX.value }),
+    cva(config.value.menu)({
+      openDirectionY: openDirectionY.value,
+      openDirectionX: openDirectionX.value,
+    }),
   );
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const buttonWrapperAttrsRaw = getAttrs("buttonWrapper");
-  const buttonAttrsRaw = getAttrs("button");
-  const shiftRangeButtonAttrs = getAttrs("shiftRangeButton");
-  const calendarAttrs = getAttrs("calendar", { isComponent: true });
-  const inputBlurAttrs = getAttrs("input", { isComponent: true });
-  const inputActiveAttrs = getAttrs("inputActive");
-  const rangeInputAttrs = getAttrs("rangeInput", { isComponent: true });
-  const rangeInputWrapperAttrs = getAttrs("rangeInputWrapper");
-  const inputRangeErrorAttrs = getAttrs("inputRangeError");
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  // This watcher rewrites default calendar locales with datepicker range locales
-  // Watcher will not rewrite custom calendar locales
-  watchEffect(() => {
-    if (!calendarAttrs.value.config) {
-      calendarAttrs.value.config = {};
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "menu") {
+      const menuAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...menuAttrs.value,
+        class: cx([menuClasses.value, menuAttrs.value.class]),
+      }));
     }
 
-    if (calendarAttrs.value.config.i18n || !props.config.i18n) {
-      return;
+    if (key === "input") {
+      const inputActiveAttrs = getAttrs("inputActive", { classes });
+      const inputBlurAttrs = getAttrs("inputBlur", { classes });
+
+      attrs[`${key}Attrs`] = computed(() => {
+        return isShownMenu.value ? inputActiveAttrs.value : inputBlurAttrs.value;
+      });
     }
 
-    calendarAttrs.value.config.i18n = {
-      ...config.value.i18n,
-      weekdays: {
-        shorthand: { ...config.value.i18n.weekdays.shorthand },
-        longhand: { ...config.value.i18n.weekdays.longhand },
-      },
-      months: {
-        shorthand: { ...config.value.i18n.months.shorthand },
-        longhand: { ...config.value.i18n.months.longhand },
-      },
-    };
+    if (key === "buttonWrapper") {
+      const buttonWrapperAttrs = attrs[`${key}Attrs`];
 
-    if (props.config.i18n.weekdays.userFormat) {
-      calendarAttrs.value.config.i18n.userFormat = {
-        ...config.value.i18n.weekdays.userFormat,
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...buttonWrapperAttrs.value,
+        class: cx([
+          buttonWrapperAttrs.value.class,
+          isShownMenu.value && config.value.buttonWrapperActive,
+        ]),
+      }));
+    }
+
+    if (key === "button") {
+      const buttonAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...buttonAttrs.value,
+        class: cx([buttonAttrs.value.class, isShownMenu.value && config.value.buttonActive]),
+      }));
+    }
+
+    if (key === "periodButton") {
+      attrs[`${key}Attrs`] = (classes = []) => {
+        return getAttrs("periodButton", { classes }).value;
       };
     }
 
-    if (props.config.i18n.months.userFormat) {
-      calendarAttrs.value.config.i18n.userFormat = { ...config.value.i18n.months.userFormat };
+    if (key === "periodDateList") {
+      attrs[`${key}Attrs`] = (classes = []) => {
+        return getAttrs("periodDateList", { classes }).value;
+      };
     }
-  });
 
-  const inputAttrs = computed(() => {
-    return isShownMenu.value ? inputActiveAttrs.value : inputBlurAttrs.value;
-  });
+    if (key === "periodDate") {
+      attrs[`${key}Attrs`] = (classes = []) => {
+        return getAttrs("periodDate", { classes }).value;
+      };
+    }
 
-  const menuAttrs = getAttrs("menu", { classes: menuClasses });
-  const periodsRowAttrs = getAttrs("periodsRow");
-  const rangeSwitchWrapperAttrs = getAttrs("rangeSwitchWrapper");
-  const nextIconAttrs = getAttrs("nextIcon");
-  const prevIconAttrs = getAttrs("prevIcon");
-  const periodButtonIconAttrs = getAttrs("periodButtonIcon");
-  const rangeSwitchTitleAttrs = getAttrs("rangeSwitchTitle");
+    if (key === "calendar") {
+      const calendarAttrs = attrs[`${key}Attrs`];
 
-  const periodButtonAttrs = (classes = []) => {
-    return getAttrs("periodButton", { classes }).value;
-  };
+      // This watcher rewrites default calendar locales with datepicker range locales
+      // Watcher will not rewrite custom calendar locales
+      watchEffect(() => {
+        if (!calendarAttrs.value.config) {
+          calendarAttrs.value.config = {};
+        }
 
-  const periodDateListAttrs = (classes = []) => {
-    return getAttrs("periodDateList", { classes }).value;
-  };
+        if (calendarAttrs.value.config.i18n || !props.config.i18n) {
+          return;
+        }
 
-  const periodDateAttrs = (classes = []) => {
-    return getAttrs("periodDate", { classes }).value;
-  };
+        calendarAttrs.value.config.i18n = {
+          ...config.value.i18n,
+          weekdays: {
+            shorthand: { ...config.value.i18n.weekdays.shorthand },
+            longhand: { ...config.value.i18n.weekdays.longhand },
+          },
+          months: {
+            shorthand: { ...config.value.i18n.months.shorthand },
+            longhand: { ...config.value.i18n.months.longhand },
+          },
+        };
 
-  const buttonWrapperAttrs = computed(() => ({
-    ...buttonWrapperAttrsRaw.value,
-    class: cx([
-      buttonWrapperAttrsRaw.value.class,
-      isShownMenu.value && config.value.buttonWrapperActive,
-    ]),
-  }));
+        if (props.config.i18n.weekdays.userFormat) {
+          calendarAttrs.value.config.i18n.userFormat = {
+            ...config.value.i18n.weekdays.userFormat,
+          };
+        }
 
-  const buttonAttrs = computed(() => ({
-    ...buttonAttrsRaw.value,
-    class: cx([buttonAttrsRaw.value.class, isShownMenu.value && config.value.buttonActive]),
-  }));
+        if (props.config.i18n.months.userFormat) {
+          calendarAttrs.value.config.i18n.userFormat = {
+            ...config.value.i18n.months.userFormat,
+          };
+        }
+      });
+    }
+  }
 
   return {
+    ...attrs,
     config,
-    wrapperAttrs,
-    calendarAttrs,
-    inputAttrs,
-    menuAttrs,
-    periodsRowAttrs,
-    periodButtonAttrs,
-    periodButtonIconAttrs,
-    rangeSwitchWrapperAttrs,
-    nextIconAttrs,
-    prevIconAttrs,
-    periodDateAttrs,
-    periodDateListAttrs,
-    rangeSwitchTitleAttrs,
-    buttonWrapperAttrs,
-    buttonAttrs,
-    shiftRangeButtonAttrs,
-    rangeInputAttrs,
-    rangeInputWrapperAttrs,
-    inputRangeErrorAttrs,
   };
 }

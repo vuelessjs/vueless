@@ -4,46 +4,37 @@ import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props) {
-  const { config, getAttrs, setColor, getColor } = useUI(defaultConfig, () => props.config);
-  const { list, radio } = config.value;
-
-  const cvaList = cva({
-    base: list.base,
-    variants: list.variants,
-    compoundVariants: list.compoundVariants,
-  });
-
-  const cvaRadio = cva({
-    base: radio.base,
-    variants: radio.variants,
-    compoundVariants: radio.compoundVariants,
-  });
-
-  const listClasses = computed(() => cvaList({ size: props.size }));
-  const radioClasses = computed(() =>
-    setColor(
-      cvaRadio({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
+export default function useAttrs(props) {
+  const { config, getAttrs, setColor, getColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const labelAttrs = getAttrs("label");
-  const listAttrs = getAttrs("list", { classes: listClasses });
-  const unselectedAttrs = getAttrs("unselected");
-  const unselectedRadioAttrs = getAttrs("unselectedRadio", { isComponent: true });
-  const unselectedIconAttrs = getAttrs("unselectedIcon", { isComponent: true });
-  const radioAttrs = getAttrs("radio", { classes: radioClasses, isComponent: true });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
+    ...attrs,
     config,
-    listAttrs,
-    labelAttrs,
-    radioAttrs,
-    unselectedIconAttrs,
-    unselectedAttrs,
-    unselectedRadioAttrs,
   };
 }

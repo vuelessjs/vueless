@@ -423,7 +423,13 @@ const props = defineProps({
 
 const inputRangeFormat = "d.m.Y";
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when date input value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+]);
 
 const isShownMenu = ref(false);
 const wrapperRef = ref(null);

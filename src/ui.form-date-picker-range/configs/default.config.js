@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative",
-  input: "",
+  input: "{UInput}",
   inputActive: {
     block: "ring-4 ring-brand-700 ring-opacity-20 border-brand-500 hover:border-brand-500",
   },
@@ -61,7 +61,7 @@ export default /*tw*/ {
       description: "hidden",
     },
     input: {
-      base: "text-sm border-brand-100 px-4 py-2.5",
+      base: "{UInput} text-sm border-brand-100 px-4 py-2.5",
       variants: {
         size: {
           md: "pt-2.5 pb-2.5",
@@ -71,7 +71,7 @@ export default /*tw*/ {
   },
   inputRangeError: "text-xs font-normal !leading-none mt-2 text-center text-red-500",
   calendar: {
-    wrapper: "p-0 mt-2 w-full border-none shadow-none",
+    wrapper: "{UCalendar} p-0 mt-2 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
     navigationSwitchViewButton: "rounded-lg px-3",
     day: "w-full h-10 mb-0.5",

@@ -14,12 +14,13 @@ export default /*tw*/ {
   },
   radio: {
     radio: {
-      base: "cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
+      base: "{URadio} cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
     },
   },
   unselected: "relative flex",
   unselectedRadio: {
     radio: {
+      base: "{URadio}",
       compoundVariants: [
         {
           color: "grayscale",
@@ -28,7 +29,7 @@ export default /*tw*/ {
       ],
     },
   },
-  unselectedIcon: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+  unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
   unselectedIconName: "close",
   defaultVariants: {
     name: "UColorPicker",

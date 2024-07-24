@@ -287,12 +287,44 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
+  /**
+   * Triggers when date value changes.
+   * @property {object} newDate
+   */
   "update:modelValue",
+
+  /**
+   * Triggers when calendar view changes.
+   * @property {string} value
+   */
   "update:view",
+
+  /**
+   * Triggers when calendar view changes.
+   * @property {object} value
+   */
   "input",
+
+  /**
+   * Triggers when calendar date is submitted.
+   */
   "submit",
+
+  /**
+   * Triggers when arrow keys are used to change calendar date.
+   */
   "keydown",
+
+  /**
+   * Triggers when user date changes.
+   * @property {string} value
+   */
   "userDateChange",
+
+  /**
+   * Triggers when formatted date changes.
+   * @property {string} value
+   */
   "formattedDateChange",
 ]);
 

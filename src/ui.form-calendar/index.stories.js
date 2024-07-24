@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UCalendar from "../ui.form-calendar";
 
@@ -36,9 +36,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
       <UCalendar v-bind="args" v-model="value">
-        <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-          <template v-if="args[slot]">{{ args[slot] }}</template>
-        </template>
+        ${allSlotsFragment}
       </UCalendar>
 
       <div class="mt-4">
