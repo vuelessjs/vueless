@@ -5,25 +5,30 @@ import useUI from "../../composable.ui";
 
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { list } = config.value;
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaList = cva({
-    base: list.base,
-    variants: list.variants,
-    compoundVariants: list.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const listClasses = computed(() => cvaList({ size: props.size }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const labelAttrs = getAttrs("label", { isComponent: true });
-  const listAttrs = getAttrs("list", { classes: listClasses });
-  const radioAttrs = getAttrs("radio", { isComponent: true });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    labelAttrs,
-    listAttrs,
-    radioAttrs,
+    ...attrs,
+    config,
   };
 }

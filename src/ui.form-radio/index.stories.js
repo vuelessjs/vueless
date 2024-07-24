@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import URadio from "../ui.form-radio";
 import UBadge from "../ui.text-badge";
@@ -30,9 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <URadio v-bind="args">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </URadio>
   `,
 });

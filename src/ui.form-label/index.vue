@@ -25,6 +25,7 @@
         v-text="description"
       />
 
+      <!-- @slot Use it to add something to the label's footer -->
       <slot name="footer" />
     </div>
   </div>
@@ -50,6 +51,7 @@
       v-text="description"
     />
 
+    <!-- @slot Use it to add something to the label's footer -->
     <slot name="footer" />
   </div>
 </template>
@@ -61,12 +63,17 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { ULabel, PLACEMENT } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULabel", inheritAttrs: false });
 
-const emit = defineEmits(["click", "mousedown"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the label is clicked.
+   */
+  "click",
+]);
 
 const props = defineProps({
   /**
