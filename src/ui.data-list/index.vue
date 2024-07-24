@@ -28,7 +28,10 @@
             <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
 
             <div v-bind="labelAttrs(element.isActive)">
-              <!-- @slot Use it to modify label. -->
+              <!--
+                @slot Use it to modify label.
+                @binding {object} item
+              -->
               <slot name="label" :item="element">
                 {{ element[labelKey] }}
               </slot>
@@ -39,7 +42,10 @@
                 v-if="hasSlotContent($slots['actions']) && !element.isHiddenCustomActions"
                 v-bind="customActionsAttrs"
               >
-                <!-- @slot Use it to add custom actions. -->
+                <!--
+                  @slot Use it to add custom actions.
+                  @binding {object} item
+                -->
                 <slot name="actions" :item="element" />
               </div>
 
@@ -88,7 +94,10 @@
             </template>
 
             <template #actions="{ item }">
-              <!-- @slot Use it to add custom actions. -->
+              <!--
+                @slot Use it to add custom actions.
+                @binding {object} item
+              -->
               <slot name="actions" :item="item" />
             </template>
           </UDataList>
@@ -110,7 +119,7 @@ import UIService from "../service.ui";
 
 import { UDataList as UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
@@ -215,7 +224,27 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["dragSort", "clickEdit", "clickDelete"]);
+const emit = defineEmits([
+  /**
+   * Triggers when item is sorted (after drag).
+   * @property {array} sortData
+   */
+  "dragSort",
+
+  /**
+   * Triggers when edit button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickEdit",
+
+  /**
+   * Triggers when delete button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickDelete",
+]);
 
 const {
   config,

@@ -4,29 +4,37 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { wrapper } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    setColor(
-      cvaWrapper({
-        size: props.size,
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
+export default function useAttrs(props) {
+  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    wrapperAttrs,
+    ...attrs,
+    config,
   };
 }

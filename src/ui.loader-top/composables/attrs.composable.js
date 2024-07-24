@@ -4,28 +4,37 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { progress } = config.value;
-
-  const cvaProgress = cva({
-    base: progress.base,
-    variants: progress.variants,
-    compoundVariants: progress.compoundVariants,
-  });
-
-  const progressClasses = computed(() =>
-    setColor(
-      cvaProgress({
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
+export default function useAttrs(props) {
+  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const progressAttrs = getAttrs("progress", { classes: progressClasses.value });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    progressAttrs,
+    ...attrs,
+    config,
   };
 }

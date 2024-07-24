@@ -4,49 +4,46 @@ import { cva, cx } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor } = useUI(defaultConfig, () => props.config);
-  const { loader, ellipse } = config.value;
-
-  const cvaLoader = cva({
-    base: loader.base,
-    variants: loader.variants,
-    compoundVariants: loader.compoundVariants,
-  });
-
-  const cvaEllipse = cva({
-    base: ellipse.base,
-    variants: ellipse.variants,
-    compoundVariants: ellipse.compoundVariants,
-  });
-
-  const loaderClasses = computed(() =>
-    cvaLoader({
-      size: props.size,
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const ellipseClasses = computed(() =>
-    setColor(
-      cvaEllipse({
-        size: props.size,
-        color: getColor(props.color),
-      }),
-      props.color,
-    ),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const loaderAttrs = getAttrs("loader", { classes: loaderClasses });
-  const ellipseRaw = getAttrs("ellipse", { classes: ellipseClasses });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const ellipseAttrs = computed(() => (classes) => ({
-    ...ellipseRaw.value,
-    class: cx([ellipseRaw.value.class, classes]),
-  }));
+      if (value.variants || value.compoundVariants) {
+        return setColor(
+          cva(value)({
+            ...props,
+            color: getColor(props.color),
+          }),
+          props.color,
+        );
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "ellipse") {
+      const ellipseAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => (classes) => ({
+        ...ellipseAttrs,
+        class: cx([ellipseAttrs.value.class, classes]),
+      }));
+    }
+  }
 
   return {
-    loaderAttrs,
-    ellipseAttrs,
+    ...attrs,
     config,
   };
 }

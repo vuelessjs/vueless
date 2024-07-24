@@ -24,7 +24,10 @@
           v-text="selectedRows.length"
         />
 
-        <!-- @slot Use it to add action buttons instead of table row when some rows are selected. -->
+        <!--
+          @slot Use it to add action buttons instead of table row when some rows are selected.
+          @binding {array} selected-rows
+        -->
         <slot name="header-actions" :selected-rows="selectedRows" />
       </template>
 
@@ -52,7 +55,11 @@
           v-bind="stickyHeaderCellAttrs(column.thClass)"
         >
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
-            <!-- @slot Use it to customise table column. -->
+            <!--
+              @slot Use it to customise table column.
+              @binding {string} name
+              @binding {number} column
+            -->
             <slot :name="`header-${column.key}`" :column="column" />
           </template>
 
@@ -60,7 +67,11 @@
             {{ column.label }}
           </template>
 
-          <!-- @slot Use it to add content after table column. -->
+          <!--
+            @slot Use it to add something after the table column.
+            @binding {string} name
+            @binding {number} column
+          -->
           <slot :name="`header-${column.key}-after`" :column="column" />
         </div>
       </template>
@@ -81,7 +92,10 @@
               :colspan="colsCount"
               v-bind="headerCellAttrs()"
             >
-              <!-- @slot Use it to add something before header row. -->
+              <!--
+                @slot Use it to add something before header row.
+                @binding {number} cols-count
+              -->
               <slot name="before-header" :cols-count="colsCount" />
             </td>
           </tr>
@@ -110,7 +124,11 @@
               :key="index"
               v-bind="headerCellAttrs(column.thClass)"
             >
-              <!-- @slot Use it to customise table column. -->
+              <!--
+                @slot Use it to customise table column.
+                @binding {string} name
+                @binding {number} column
+              -->
               <slot
                 v-if="hasSlotContent($slots[`header-${column.key}`])"
                 :name="`header-${column.key}`"
@@ -121,7 +139,11 @@
                 {{ column.label }}
               </template>
 
-              <!-- @slot Use it to add content after table column. -->
+              <!--
+                @slot Use it to add something after the table column.
+                @binding {string} name
+                @binding {number} column
+              -->
               <slot :name="`header-${column.key}-after`" :column="column" />
             </th>
           </tr>
@@ -211,18 +233,24 @@
           </tr>
         </tbody>
 
-        <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerClassesAttrs">
+        <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerAttrs">
           <tr ref="footerRowRef" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 
-            <!-- @slot Use it to add something in table footer. -->
+            <!--
+              @slot Use it to add something into the table footer.
+              @binding {number} cols-count
+            -->
             <slot name="footer" :cols-count="colsCount" />
           </tr>
 
           <tr ref="stickyFooterRowRef" :style="tableRowWidthStyle" v-bind="stickyFooterRowAttrs">
             <td v-if="selectable" />
 
-            <!-- @slot Use it to add something in table footer. -->
+            <!--
+              @slot Use it to add something into the table footer.
+              @binding {number} cols-count
+            -->
             <slot name="footer" :cols-count="colsCount" />
           </tr>
         </tfoot>
@@ -265,7 +293,7 @@ import {
 
 import { PX_IN_REM } from "../service.ui";
 import { UTable } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 
 /* Should be a string for correct web-types gen */
@@ -353,7 +381,19 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["clickRow", "update:rows"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the row is clicked.
+   * @property {object} row
+   */
+  "clickRow",
+
+  /**
+   * Triggers when table rows are updated.
+   * @property {array} tableRows
+   */
+  "update:rows",
+]);
 
 defineExpose({ clearSelectedItems });
 
@@ -444,7 +484,7 @@ const {
   bodyRowBeforeAttrs,
   bodyRowBeforeCellAttrs,
   bodyRowAttrs,
-  footerClassesAttrs,
+  footerAttrs,
   bodyRowDateSeparatorAttrs,
   headerCellAttrs,
   bodyCellAttrs,

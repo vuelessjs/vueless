@@ -22,7 +22,7 @@
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="iconWrapperCellAttrs" :for="id">
+    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="id">
       <UIcon
         internal
         :name="partial ? config.partialIconName : config.selectedIconName"
@@ -49,7 +49,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UCheckbox } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckbox", inheritAttrs: false });
@@ -186,13 +186,25 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "input"]);
+const emit = defineEmits([
+  /**
+   * Triggers when checkbox is toggled.
+   * @property {Boolean} newModelValue
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when checkbox is toggled.
+   * @property {Boolean} newModelValue
+   */
+  "input",
+]);
 
 const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
-const { config, checkboxAttrs, iconWrapperCellAttrs, labelAttrs, iconAttrs } = useAttrs(props, {
+const { config, checkboxAttrs, iconWrapperAttrs, labelAttrs, iconAttrs } = useAttrs(props, {
   checkboxColor,
   checkboxSize,
 });

@@ -1,5 +1,6 @@
 <template>
   <div :data-cy="dataCy" v-bind="wrapperAttrs">
+    <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
         v-for="(item, index) in options"
@@ -23,7 +24,7 @@ import UIService from "../service.ui";
 
 import { UTabs } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UTabs", inheritAttrs: false });
@@ -85,7 +86,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the selected tab changes.
+   * @property {string} modelValue
+   */
+  "update:modelValue",
+]);
 
 const selectedItem = computed({
   get: () => props.modelValue,

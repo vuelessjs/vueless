@@ -1,45 +1,55 @@
 import useUI from "../../composable.ui";
 
 import defaultConfig from "../configs/default.config";
-import { cx } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const listAttrs = getAttrs("list");
-  const itemAttrsRaw = getAttrs("item");
-  const itemEllipsisAttrs = getAttrs("itemEllipsis");
-  const ellipsisAttrs = getAttrs("ellipsis");
-  const navigationButtonAttrs = getAttrs("navigationButton", { isComponent: true });
-  const navigationButtonTextAttrs = getAttrs("navigationButtonText");
-  const pageButtonAttrsRaw = getAttrs("pageButton", { isComponent: true });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const itemAttrs = computed(() => (page = 0) => {
-    const itemClass = page && !isFinite(page.number) && ellipsisAttrs;
+    const classes = computed(() => {
+      const value = config.value[key];
 
-    return {
-      ...itemAttrsRaw.value,
-      class: cx([itemAttrsRaw.value.class, itemClass]),
-    };
-  });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const pageButtonAttrs = computed(() => (page) => {
-    const pageButtonActiveClasses = page.isActive && config.value.pageButtonActive;
+      return "";
+    });
 
-    return {
-      ...pageButtonAttrsRaw.value,
-      class: cx([pageButtonAttrsRaw.value.class, pageButtonActiveClasses]),
-    };
-  });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+
+    if (key === "item") {
+      attrs.itemAttrs = computed(() => (page = 0) => {
+        const itemClass = page && !isFinite(page.number) && getAttrs("ellipsis");
+
+        return {
+          ...getAttrs("item"),
+          class: cx([getAttrs("item").value.class, itemClass]),
+        };
+      });
+    }
+
+    if (key === "pageButton") {
+      attrs.pageButtonAttrs = computed(() => (page) => {
+        const pageButtonActiveClasses = page.isActive && config.value.pageButtonActive;
+
+        return {
+          ...getAttrs("pageButton"),
+          class: cx([getAttrs("pageButton").value.class, pageButtonActiveClasses]),
+        };
+      });
+    }
+  }
 
   return {
-    listAttrs,
-    itemAttrs,
-    itemEllipsisAttrs,
-    navigationButtonAttrs,
-    navigationButtonTextAttrs,
-    pageButtonAttrs,
-    ellipsisAttrs,
+    ...attrs,
+    config,
   };
 }

@@ -1,17 +1,32 @@
 import useUI from "../../composable.ui";
-
+import { computed } from "vue";
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-export function useAttrs(props) {
-  const { getAttrs } = useUI(defaultConfig, () => props.config);
+export default function useAttrs(props) {
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const labelAttrs = getAttrs("label", { isComponent: true });
-  const listAttrs = getAttrs("list");
-  const checkboxAttrs = getAttrs("checkbox", { isComponent: true });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
+
+    const classes = computed(() => {
+      const value = config.value[key];
+
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    labelAttrs,
-    checkboxAttrs,
-    listAttrs,
+    ...attrs,
+    config,
   };
 }

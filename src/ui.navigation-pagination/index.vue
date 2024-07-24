@@ -9,7 +9,8 @@
         v-bind="navigationButtonAttrs"
         @click="goToFirstPage"
       >
-        <slot name="first-label">
+        <!-- @slot Use it to add something instead of the "first" label. -->
+        <slot name="first">
           <span v-bind="navigationButtonTextAttrs" v-html="firstLabel" />
         </slot>
       </UButton>
@@ -23,7 +24,8 @@
         v-bind="navigationButtonAttrs"
         @click="goToPrevPage"
       >
-        <slot name="prev-label">
+        <!-- @slot Use it to add something instead of the "prev" label. -->
+        <slot name="prev">
           <span v-bind="navigationButtonTextAttrs" v-html="prevLabel" />
         </slot>
       </UButton>
@@ -54,7 +56,8 @@
         v-bind="navigationButtonAttrs"
         @click="goToNextPage"
       >
-        <slot name="next-label">
+        <!-- @slot Use it to add something instead of the "next" label. -->
+        <slot name="next">
           <span v-bind="navigationButtonTextAttrs" v-html="nextLabel" />
         </slot>
       </UButton>
@@ -68,7 +71,8 @@
         v-bind="navigationButtonAttrs"
         @click="goToLastPage"
       >
-        <slot name="next-label">
+        <!-- @slot Use it to add something instead of the "last" label. -->
+        <slot name="last">
           <span v-bind="navigationButtonTextAttrs" v-html="lastLabel" />
         </slot>
       </UButton>
@@ -85,7 +89,7 @@ import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UPagination, ELLIPSIS_LABEL } from "./constants";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UPagination", inheritAttrs: false });
@@ -207,7 +211,19 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["change", "update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when current page changes.
+   * @property {number} value
+   */
+  "change",
+
+  /**
+   * Triggers when current page changes.
+   * @property {number} value
+   */
+  "update:modelValue",
+]);
 
 const {
   listAttrs,

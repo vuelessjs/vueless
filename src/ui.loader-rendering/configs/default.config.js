@@ -14,6 +14,7 @@ export default /*tw*/ {
       },
     },
   },
+  loader: "{ULoader}",
   transition: {
     enterFromClass: "scale-110 transform",
     leaveActiveClass: "scale-110 transform",
