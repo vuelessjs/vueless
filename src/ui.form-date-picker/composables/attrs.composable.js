@@ -9,9 +9,6 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
   const attrs = {};
 
-  const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
-  const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -30,12 +27,12 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     if (key === "input") {
-      const inputActiveAttrs = getAttrs("inputActive", { classes });
-      const inputBlurAttrs = getAttrs("inputBlur", { classes });
+      const inputAttrs = attrs[`${key}Attrs`];
 
-      attrs[`${key}Attrs`] = computed(() => {
-        return isShownCalendar.value ? inputActiveAttrs.value : inputBlurAttrs.value;
-      });
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...inputAttrs.value,
+        class: cx([inputAttrs.value.class, isShownCalendar.value && config.value.inputFocus]),
+      }));
     }
 
     if (key === "calendar") {
@@ -45,8 +42,8 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
         ...calendarAttrs.value,
         class: cx([
           cva(config.value.calendar.wrapper)({
-            openDirectionY,
-            openDirectionX,
+            openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
+            openDirectionX: isRight.value ? POSITION.right : POSITION.left,
           }),
           calendarAttrs.value.class,
         ]),

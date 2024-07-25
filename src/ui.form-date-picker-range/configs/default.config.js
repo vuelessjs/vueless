@@ -34,7 +34,7 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
-  {UButton} h-[3.125rem] w-full flex flex-col items-center justify-center
+    {UButton} h-[3.125rem] w-full flex flex-col items-center justify-center
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
   periodButtonIcon: "{UIcon}",
