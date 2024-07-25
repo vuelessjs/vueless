@@ -16,7 +16,7 @@ defineOptions({ name: "UHeader", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set label.
+   * Header label.
    */
   label: {
     type: String,
@@ -24,7 +24,7 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
+   * Header size.
    * @values xs, sm, md, lg, xl, 2xl
    */
   size: {
@@ -33,7 +33,7 @@ const props = defineProps({
   },
 
   /**
-   * Set weight.
+   * Header weight.
    * @values regular, medium, bold
    */
   weight: {
@@ -75,7 +75,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -83,7 +83,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
