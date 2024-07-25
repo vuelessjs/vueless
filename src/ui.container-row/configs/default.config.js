@@ -1,7 +1,17 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex flex-col md:flex-row w-full",
+    base: "flex w-full",
     variants: {
+      reverse: {
+        false: "flex-col md:flex-row",
+        true: "flex-col-reverse md:flex-row-reverse",
+      },
+      wrap: {
+        true: "flex-wrap",
+      },
+      noMobile: {
+        true: "flex-row",
+      },
       gap: {
         none: "gap-0",
         "2xs": "gap-1",
@@ -19,14 +29,22 @@ export default /*tw*/ {
         stretch: "items-stretch",
         baseline: "items-baseline",
       },
-      noMobile: {
-        true: "flex-row",
+      justify: {
+        end: "justify-end",
+        start: "justify-start",
+        center: "justify-center",
+        around: "justify-around",
+        evenly: "justify-evenly",
+        between: "justify-between",
       },
     },
   },
   defaultVariants: {
     gap: "md",
     align: "start",
+    justify: "start",
+    wrap: false,
+    reverse: false,
     noMobile: false,
   },
 };
