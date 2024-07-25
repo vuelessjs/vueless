@@ -4,62 +4,35 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-export function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
-  const { wrapper, label, description } = config.value;
-
-  const cvaWrapper = cva({
-    base: wrapper.base,
-    variants: wrapper.variants,
-    compoundVariants: wrapper.compoundVariants,
-  });
-
-  const cvaLabel = cva({
-    base: label.base,
-    variants: label.variants,
-    compoundVariants: label.compoundVariants,
-  });
-
-  const cvaDescription = cva({
-    base: description.base,
-    variants: description.variants,
-    compoundVariants: description.compoundVariants,
-  });
-
-  const wrapperClasses = computed(() =>
-    cvaWrapper({
-      size: props.size,
-      align: props.align,
-    }),
+export default function useAttrs(props) {
+  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+    defaultConfig,
+    () => props.config,
   );
+  const attrs = {};
 
-  const labelClasses = computed(() =>
-    cvaLabel({
-      size: props.size,
-      error: Boolean(props.error),
-      disabled: props.disabled,
-      align: props.align,
-    }),
-  );
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const descriptionClasses = computed(() =>
-    cvaDescription({
-      size: props.size,
-      error: Boolean(props.error),
-      align: props.align,
-    }),
-  );
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const wrapperAttrs = getAttrs("wrapper", { classes: wrapperClasses });
-  const labelAttrs = getAttrs("label", { classes: labelClasses });
-  const labelWrapperAttrs = getAttrs("labelWrapper");
-  const descriptionAttrs = getAttrs("description", { classes: descriptionClasses });
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+          error: Boolean(props.error),
+        });
+      }
+
+      return "";
+    });
+
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
+  }
 
   return {
-    wrapperAttrs,
-    labelWrapperAttrs,
-    labelAttrs,
-    descriptionAttrs,
+    ...attrs,
+    config,
     hasSlotContent,
   };
 }

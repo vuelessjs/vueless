@@ -1,11 +1,7 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
-    <template v-if="label">
-      {{ label }}
-    </template>
-
-    <slot />
-  </div>
+  <component :is="tag" v-bind="wrapperAttrs" :data-cy="dataCy">
+    <slot>{{ label }}</slot>
+  </component>
 </template>
 
 <script setup>
@@ -20,7 +16,7 @@ defineOptions({ name: "UHeader", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set label.
+   * Header label.
    */
   label: {
     type: String,
@@ -28,7 +24,7 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
+   * Header size.
    * @values xs, sm, md, lg, xl, 2xl
    */
   size: {
@@ -37,7 +33,7 @@ const props = defineProps({
   },
 
   /**
-   * Set weight.
+   * Header weight.
    * @values regular, medium, bold
    */
   weight: {
@@ -52,6 +48,14 @@ const props = defineProps({
   color: {
     type: String,
     default: UIService.get(defaultConfig, UHeader).default.color,
+  },
+
+  /**
+   * Allows changing button html tag.
+   */
+  tag: {
+    type: String,
+    default: UIService.get(defaultConfig, UHeader).default.tag,
   },
 
   /**
@@ -71,7 +75,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -79,7 +83,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,

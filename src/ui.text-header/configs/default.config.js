@@ -42,6 +42,7 @@ export default /*tw*/ {
     color: "grayscale",
     weight: "medium",
     size: "md",
+    tag: "div",
     multiline: false,
     underlined: false,
   },

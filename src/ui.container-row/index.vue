@@ -17,7 +17,7 @@ defineOptions({ name: "URow", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Row spacing between nested elements.
+   * The distance between nested elements.
    * @values none, 2xs, xs, sm, md, lg, xl, 2xl
    */
   gap: {
@@ -26,12 +26,37 @@ const props = defineProps({
   },
 
   /**
-   * Nested items align (flex align-items).
+   * Nested items vertical align (flex align-items).
    * @values start, end, center, stretch, baseline
    */
   align: {
     type: String,
     default: UIService.get(defaultConfig, URow).default.align,
+  },
+
+  /**
+   * Nested items horizontally align (flex justify-content).
+   * @values start, end, center, around, evenly, between
+   */
+  justify: {
+    type: String,
+    default: UIService.get(defaultConfig, URow).default.justify,
+  },
+
+  /**
+   * Reverse nested items order.
+   */
+  reverse: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, URow).default.reverse,
+  },
+
+  /**
+   * Allow items to wrap (flex flex-wrap).
+   */
+  wrap: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, URow).default.wrap,
   },
 
   /**

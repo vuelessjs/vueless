@@ -36,7 +36,7 @@ import ULabel from "../ui.form-label";
 import UIService, { getRandomId } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 import { URadio } from "./constants";
 
 /* Should be a string for correct web-types gen */
@@ -158,7 +158,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the value attribute changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+]);
 
 const localValue = ref("");
 const radioName = ref(null);

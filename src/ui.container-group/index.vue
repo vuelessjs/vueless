@@ -45,7 +45,7 @@ defineOptions({ name: "UGroup", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set header title.
+   * Header title.
    */
   title: {
     type: String,
@@ -68,6 +68,31 @@ const props = defineProps({
   align: {
     type: String,
     default: UIService.get(defaultConfig, UGroup).default.align,
+  },
+
+  /**
+   * Nested items horizontally align (flex justify-content).
+   * @values start, end, center, around, evenly, between
+   */
+  justify: {
+    type: String,
+    default: UIService.get(defaultConfig, UGroup).default.justify,
+  },
+
+  /**
+   * Reverse nested items order.
+   */
+  reverse: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UGroup).default.reverse,
+  },
+
+  /**
+   * Allow items to wrap (flex flex-wrap).
+   */
+  wrap: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UGroup).default.wrap,
   },
 
   /**

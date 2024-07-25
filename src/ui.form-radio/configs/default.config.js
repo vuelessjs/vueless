@@ -1,7 +1,7 @@
 export default /*tw*/ {
   label: {
     wrapper: "inline-flex",
-    label: "cursor-pointer",
+    label: "{ULabel} cursor-pointer",
   },
   radio: {
     base: `
