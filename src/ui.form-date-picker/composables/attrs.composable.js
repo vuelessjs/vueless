@@ -12,13 +12,6 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
   const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
 
-  const calendarWrapperClasses = computed(() =>
-    cva(config.value.calendar.wrapper)({
-      openDirectionY: openDirectionY.value,
-      openDirectionX: openDirectionX.value,
-    }),
-  );
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -50,21 +43,27 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...calendarAttrs.value,
-        class: cx([calendarWrapperClasses.value, calendarAttrs.value.class]),
+        class: cx([
+          cva(config.value.calendar.wrapper)({
+            openDirectionY,
+            openDirectionX,
+          }),
+          calendarAttrs.value.class,
+        ]),
       }));
 
       // This watcher rewrites default calendar locales with datepicker range locales
       // Watcher will not rewrite custom calendar locales
       watchEffect(() => {
-        if (!calendarAttrs.value.config) {
-          calendarAttrs.value.config = {};
+        if (!attrs[`${key}Attrs`].value.config) {
+          attrs[`${key}Attrs`].value.config = {};
         }
 
-        if (calendarAttrs.value.config.i18n || !props.config.i18n) {
+        if (attrs[`${key}Attrs`].value.config.i18n || !props.config.i18n) {
           return;
         }
 
-        calendarAttrs.value.config.i18n = {
+        attrs[`${key}Attrs`].value.config.i18n = {
           ...config.value.i18n,
           weekdays: {
             shorthand: { ...config.value.i18n.weekdays.shorthand },
@@ -77,13 +76,13 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
         };
 
         if (props.config.i18n.weekdays.userFormat) {
-          calendarAttrs.value.config.i18n.userFormat = {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
             ...config.value.i18n.weekdays.userFormat,
           };
         }
 
         if (props.config.i18n.months.userFormat) {
-          calendarAttrs.value.config.i18n.userFormat = {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
             ...config.value.i18n.months.userFormat,
           };
         }

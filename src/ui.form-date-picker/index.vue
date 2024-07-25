@@ -220,13 +220,13 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when date input value changes.
+   * Triggers when date picker value changes.
    * @property {string} value
    */
   "update:modelValue",
 
   /**
-   * Triggers when date input value changes.
+   * Triggers when date picker value changes.
    * @property {object} value
    */
   "input",

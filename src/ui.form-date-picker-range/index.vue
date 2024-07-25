@@ -425,7 +425,7 @@ const inputRangeFormat = "d.m.Y";
 
 const emit = defineEmits([
   /**
-   * Triggers when date input value changes.
+   * Triggers when date picker range value changes.
    * @property {string} value
    */
   "update:modelValue",

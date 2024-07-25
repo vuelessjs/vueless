@@ -295,18 +295,18 @@ const emit = defineEmits([
 
   /**
    * Triggers when calendar view changes.
-   * @property {string} value
+   * @property {string} view
    */
   "update:view",
 
   /**
-   * Triggers when calendar view changes.
+   * Triggers when date value changes.
    * @property {object} value
    */
   "input",
 
   /**
-   * Triggers when calendar date is submitted.
+   * Triggers when calendar date is selected by clicking "Enter".
    */
   "submit",
 
@@ -316,13 +316,13 @@ const emit = defineEmits([
   "keydown",
 
   /**
-   * Triggers when user date changes.
+   * Triggers when the date input value is changed by the user.
    * @property {string} value
    */
   "userDateChange",
 
   /**
-   * Triggers when formatted date changes.
+   * Triggers when the date format applied to the input changes.
    * @property {string} value
    */
   "formattedDateChange",

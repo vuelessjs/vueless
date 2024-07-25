@@ -13,9 +13,7 @@ export default /*tw*/ {
     },
   },
   radio: {
-    radio: {
-      base: "{URadio} cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
-    },
+    radio: "{URadio} cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
   },
   unselected: "relative flex",
   unselectedRadio: {

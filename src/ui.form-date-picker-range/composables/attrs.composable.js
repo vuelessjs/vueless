@@ -13,13 +13,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
   const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
   const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
 
-  const menuClasses = computed(() =>
-    cva(config.value.menu)({
-      openDirectionY: openDirectionY.value,
-      openDirectionX: openDirectionX.value,
-    }),
-  );
-
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
@@ -42,17 +35,23 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...menuAttrs.value,
-        class: cx([menuClasses.value, menuAttrs.value.class]),
+        class: cx([
+          cva(config.value.menu)({
+            openDirectionY: openDirectionY.value,
+            openDirectionX: openDirectionX.value,
+          }),
+          menuAttrs.value.class,
+        ]),
       }));
     }
 
     if (key === "input") {
-      const inputActiveAttrs = getAttrs("inputActive", { classes });
-      const inputBlurAttrs = getAttrs("inputBlur", { classes });
+      const inputAttrs = attrs[`${key}Attrs`];
 
-      attrs[`${key}Attrs`] = computed(() => {
-        return isShownMenu.value ? inputActiveAttrs.value : inputBlurAttrs.value;
-      });
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...inputAttrs.value,
+        class: cx([inputAttrs.value.class, isShownMenu.value && config.value.inputFocus]),
+      }));
     }
 
     if (key === "buttonWrapper") {
@@ -77,38 +76,36 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
     }
 
     if (key === "periodButton") {
-      attrs[`${key}Attrs`] = (classes = []) => {
+      attrs[`${key}Attrs`] = (classes) => {
         return getAttrs("periodButton", { classes }).value;
       };
     }
 
     if (key === "periodDateList") {
-      attrs[`${key}Attrs`] = (classes = []) => {
+      attrs[`${key}Attrs`] = (classes) => {
         return getAttrs("periodDateList", { classes }).value;
       };
     }
 
     if (key === "periodDate") {
-      attrs[`${key}Attrs`] = (classes = []) => {
+      attrs[`${key}Attrs`] = (classes) => {
         return getAttrs("periodDate", { classes }).value;
       };
     }
 
     if (key === "calendar") {
-      const calendarAttrs = attrs[`${key}Attrs`];
-
       // This watcher rewrites default calendar locales with datepicker range locales
       // Watcher will not rewrite custom calendar locales
       watchEffect(() => {
-        if (!calendarAttrs.value.config) {
-          calendarAttrs.value.config = {};
+        if (!attrs[`${key}Attrs`].value.config) {
+          attrs[`${key}Attrs`].value.config = {};
         }
 
-        if (calendarAttrs.value.config.i18n || !props.config.i18n) {
+        if (attrs[`${key}Attrs`].value.config.i18n || !props.config.i18n) {
           return;
         }
 
-        calendarAttrs.value.config.i18n = {
+        attrs[`${key}Attrs`].value.config.i18n = {
           ...config.value.i18n,
           weekdays: {
             shorthand: { ...config.value.i18n.weekdays.shorthand },
@@ -121,13 +118,13 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
         };
 
         if (props.config.i18n.weekdays.userFormat) {
-          calendarAttrs.value.config.i18n.userFormat = {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
             ...config.value.i18n.weekdays.userFormat,
           };
         }
 
         if (props.config.i18n.months.userFormat) {
-          calendarAttrs.value.config.i18n.userFormat = {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
             ...config.value.i18n.months.userFormat,
           };
         }
