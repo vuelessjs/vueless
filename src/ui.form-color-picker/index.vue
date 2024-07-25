@@ -60,7 +60,7 @@ import UIService, { getRandomId } from "../service.ui";
 
 import { UColorPicker } from "./constants";
 import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UColorPicker", inheritAttrs: false });
@@ -157,7 +157,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+  /**
+   * Triggers when color value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+]);
 
 const {
   config,

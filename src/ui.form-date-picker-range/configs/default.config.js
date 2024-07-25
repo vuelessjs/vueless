@@ -1,14 +1,14 @@
 export default /*tw*/ {
   wrapper: "relative",
-  input: "",
-  inputActive: {
+  input: "{UInput}",
+  inputFocus: {
     block: "ring-4 ring-brand-700 ring-opacity-20 border-brand-500 hover:border-brand-500",
   },
   buttonWrapper: `
     flex rounded-lg max-md:justify-between
     focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  button: "shrink-0 grow rounded-none focus:ring-0",
+  button: "{UButton} shrink-0 grow rounded-none focus:ring-0",
   buttonActive: "ring-0",
   buttonWrapperActive: "ring-4 ring-brand-700 ring-opacity-20",
   shiftRangeButton: "focus:ring-0 last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none",
@@ -34,17 +34,17 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: `
-    h-[3.125rem] w-full flex flex-col items-center justify-center
+    {UButton} h-[3.125rem] w-full flex flex-col items-center justify-center
     [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
   `,
-  periodButtonIcon: "",
+  periodButtonIcon: "{UIcon}",
   periodButtonIconName: "apps",
   periodButtonActive: "bg-gray-200",
   rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
   rangeSwitchTitle: "font-medium text-sm",
-  nextIcon: "",
+  nextIcon: "{UIcon}",
   nextIconName: "keyboard_arrow_right",
-  prevIcon: "",
+  prevIcon: "{UIcon}",
   prevIconName: "keyboard_arrow_left",
   periodDateList: "",
   periodDateMonthList: "grid grid-cols-3 grid-rows-1 gap-0.5",
@@ -61,7 +61,7 @@ export default /*tw*/ {
       description: "hidden",
     },
     input: {
-      base: "text-sm border-brand-100 px-4 py-2.5",
+      base: "{UInput} text-sm border-brand-100 px-4 py-2.5",
       variants: {
         size: {
           md: "pt-2.5 pb-2.5",
@@ -71,7 +71,7 @@ export default /*tw*/ {
   },
   inputRangeError: "text-xs font-normal !leading-none mt-2 text-center text-red-500",
   calendar: {
-    wrapper: "p-0 mt-2 w-full border-none shadow-none",
+    wrapper: "{UCalendar} p-0 mt-2 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
     navigationSwitchViewButton: "rounded-lg px-3",
     day: "w-full h-10 mb-0.5",

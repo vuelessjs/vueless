@@ -1,14 +1,12 @@
 export default /*tw*/ {
   wrapper: "relative",
   input: "",
-  inputActive: {
-    block: {
-      base: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
-    },
+  inputFocus: {
+    block: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
   },
   calendar: {
     wrapper: {
-      base: "absolute z-40 my-2",
+      base: "{UCalendar} absolute z-40 my-2",
       variants: {
         openDirectionX: {
           left: "left-0",

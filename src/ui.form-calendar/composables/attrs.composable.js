@@ -1,112 +1,71 @@
 import useUI from "../../composable.ui";
-import { cva } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 
 import { computed } from "vue";
 
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { nextPrevWrapper } = config.value;
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const cvaNextPrevWrapper = cva({
-    base: nextPrevWrapper.base,
-    variants: nextPrevWrapper.variants,
-    compoundVariants: nextPrevWrapper.compoundVariants,
-  });
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const optionClasses = computed(() => cvaNextPrevWrapper({ range: props.range }));
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const wrapperAttrs = getAttrs("wrapper");
-  const navigationAttrs = getAttrs("navigation");
-  const navigationSwitchViewButtonAttrs = getAttrs("navigationSwitchViewButton");
-  const dayViewSwitchLabelAttrs = getAttrs("dayViewSwitchLabel");
-  const dayViewSwitchLabelMonthAttrs = getAttrs("dayViewSwitchLabelMonth");
-  const dayViewSwitchLabelIconAttrs = getAttrs("dayViewSwitchLabelIcon");
-  const nextPrevButtonAttrs = getAttrs("nextPrevButton");
-  const nextIconAttrs = getAttrs("nextIcon");
-  const prevIconAttrs = getAttrs("prevIcon");
-  const dayViewAttrs = getAttrs("dayView");
-  const weekDaysAttrs = getAttrs("weekDays");
-  const weekDayAttrs = getAttrs("weekDay");
-  const daysAttrs = getAttrs("days");
-  const activeDayAttrs = getAttrs("activeDay");
-  const selectedDayAttrs = getAttrs("selectedDay");
-  const currentDayAttrs = getAttrs("currentDay");
-  const inRangeDayAttrs = getAttrs("inRangeDay");
-  const inRangeFirstDayAttrs = getAttrs("inRangeFirstDay");
-  const inRangeLastDayAttrs = getAttrs("inRangeLastDay");
-  const anotherMonthDayAttrs = getAttrs("anotherMonthDay");
-  const monthViewAttrs = getAttrs("monthView");
-  const selectedMonthAttrs = getAttrs("selectedMonth");
-  const activeMonthAttrs = getAttrs("activeMonth");
-  const yearViewAttrs = getAttrs("yearView");
-  const selectedYearAttrs = getAttrs("selectedYear");
-  const activeYearAttrs = getAttrs("activeYear");
-  const timepickerAttrs = getAttrs("timepicker");
-  const timepickerLabelAttrs = getAttrs("timepickerLabel");
-  const timepickerInput = getAttrs("timepickerInput");
-  const timepickerInputWrapperAttrs = getAttrs("timepickerInputWrapper");
-  const timepickerLeftInputAttrs = getAttrs("timepickerLeftInput", {
-    classes: timepickerInput.value.class,
-  });
-  const timepickerRightInputAttrs = getAttrs("timepickerRightInput", {
-    classes: timepickerInput.value.class,
-  });
-  const timepickerSubmitButtonAttrs = getAttrs("timepickerSubmitButton");
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const nextPrevWrapperAttrs = getAttrs("nextPrevWrapper", { classes: optionClasses });
+      return "";
+    });
 
-  // TODO: Need to find other solution
-  const dayAttrs = (classes) => {
-    return getAttrs("day", { classes }).value;
-  };
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-  const monthAttrs = (classes) => {
-    return getAttrs("month", { classes, isComponent: true }).value;
-  };
+    if (key === "timepickerLeftInput") {
+      const timepickerLeftInputAttrs = attrs[`${key}Attrs`];
 
-  const yearAttrs = (classes) => {
-    return getAttrs("year", { classes, isComponent: true }).value;
-  };
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...timepickerLeftInputAttrs.value,
+        class: cx([config.value.timepickerInput, timepickerLeftInputAttrs.value.class]),
+      }));
+    }
+
+    if (key === "timepickerRightInput") {
+      const timepickerRightInputAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...timepickerRightInputAttrs.value,
+        class: cx([config.value.timepickerInput, timepickerRightInputAttrs.value.class]),
+      }));
+    }
+
+    // TODO: Need to find other solution
+    if (key === "day") {
+      attrs[`${key}Attrs`] = (classes) => {
+        return getAttrs("day", { classes }).value;
+      };
+    }
+
+    if (key === "month") {
+      attrs[`${key}Attrs`] = (classes) => {
+        return getAttrs("month", { classes }).value;
+      };
+    }
+
+    if (key === "year") {
+      attrs[`${key}Attrs`] = (classes) => {
+        return getAttrs("year", { classes }).value;
+      };
+    }
+  }
 
   return {
+    ...attrs,
     config,
-    wrapperAttrs,
-    navigationAttrs,
-    navigationSwitchViewButtonAttrs,
-    dayViewSwitchLabelAttrs,
-    dayViewSwitchLabelMonthAttrs,
-    dayViewSwitchLabelIconAttrs,
-    nextIconAttrs,
-    nextPrevButtonAttrs,
-    prevIconAttrs,
-    dayViewAttrs,
-    weekDaysAttrs,
-    weekDayAttrs,
-    daysAttrs,
-    activeDayAttrs,
-    selectedDayAttrs,
-    currentDayAttrs,
-    anotherMonthDayAttrs,
-    dayAttrs,
-    inRangeDayAttrs,
-    inRangeFirstDayAttrs,
-    inRangeLastDayAttrs,
-    monthViewAttrs,
-    selectedMonthAttrs,
-    activeMonthAttrs,
-    monthAttrs,
-    yearViewAttrs,
-    selectedYearAttrs,
-    activeYearAttrs,
-    yearAttrs,
-    timepickerAttrs,
-    timepickerLabelAttrs,
-    timepickerInputWrapperAttrs,
-    timepickerLeftInputAttrs,
-    timepickerRightInputAttrs,
-    timepickerSubmitButtonAttrs,
-    nextPrevWrapperAttrs,
   };
 }

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UDatePicker from "../ui.form-date-picker";
 import UIcon from "../ui.image-icon";
@@ -40,9 +40,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDatePicker v-bind="args" v-model="value">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
+      ${allSlotsFragment}
     </UDatePicker>
 
     <div class="mt-4">
