@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { allSlotsFragment, getArgTypes, getSlotNames } from "../service.storybook";
 
 import UHeader from "../ui.text-header";
 import UGroup from "../ui.container-group";
@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UHeader v-bind="args" />
+    <UHeader v-bind="args">${allSlotsFragment}</UHeader>
   `,
 });
 

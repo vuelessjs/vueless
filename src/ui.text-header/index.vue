@@ -1,11 +1,7 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
-    <template v-if="label">
-      {{ label }}
-    </template>
-
-    <slot />
-  </div>
+  <component :is="tag" v-bind="wrapperAttrs" :data-cy="dataCy">
+    <slot>{{ label }}</slot>
+  </component>
 </template>
 
 <script setup>
@@ -52,6 +48,14 @@ const props = defineProps({
   color: {
     type: String,
     default: UIService.get(defaultConfig, UHeader).default.color,
+  },
+
+  /**
+   * Allows changing button html tag.
+   */
+  tag: {
+    type: String,
+    default: UIService.get(defaultConfig, UHeader).default.tag,
   },
 
   /**
