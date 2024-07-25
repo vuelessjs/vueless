@@ -17,4 +17,7 @@ export default /*tw*/ {
       },
     },
   },
+  defaultVariants: {
+    size: "md",
+  },
 };

@@ -2,22 +2,25 @@
   <ULink :url="url" no-ring target-blank :data-cy="dataCy" v-bind="fileAttrs">
     <slot name="left" :file="{ id, label, url, imageUrl }" />
 
-    <div v-bind="infoAttrs">
-      <img v-if="imageUrl" :src="imageUrl" v-bind="imageAttrs" />
+    <slot :file="{ id, label, url, imageUrl, iconName: config.iconName }">
+      <div v-bind="infoAttrs">
+        <img v-if="imageUrl" :src="imageUrl" v-bind="imageAttrs" />
 
-      <UIcon
-        v-else
-        internal
-        interactive
-        color="gray"
-        :name="config.iconName"
-        v-bind="iconAttrs"
-        @focus="onFocus"
-        @blur="onBlur"
-      />
+        <UIcon
+          v-else
+          internal
+          interactive
+          color="gray"
+          :size="size"
+          :name="config.iconName"
+          v-bind="iconAttrs"
+          @focus="onFocus"
+          @blur="onBlur"
+        />
 
-      <span v-bind="labelAttrs" v-text="label" />
-    </div>
+        <span v-bind="labelAttrs" v-text="label" />
+      </div>
+    </slot>
 
     <slot name="right" :file="{ id, label, url, imageUrl }" />
   </ULink>
@@ -40,7 +43,7 @@ defineOptions({ name: "UFile", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set url link for the file.
+   * File url.
    */
   url: {
     type: String,
@@ -48,7 +51,7 @@ const props = defineProps({
   },
 
   /**
-   * Set image url.
+   * Image url.
    */
   imageUrl: {
     type: String,
@@ -56,11 +59,20 @@ const props = defineProps({
   },
 
   /**
-   * Set label.
+   * File label.
    */
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * File size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UFile).default.size,
   },
 
   /**
@@ -73,16 +85,15 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
-   * @values sm, md, lg
+   * Component ui config object.
    */
-  size: {
-    type: String,
-    default: UIService.get(defaultConfig, UFile).default.size,
+  config: {
+    type: Object,
+    default: () => ({}),
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,
