@@ -255,6 +255,14 @@ export function isToday(date) {
   return isSameDay(date, new Date());
 }
 
+export function isCurrentMoth(date) {
+  return isSameMonth(date, new Date());
+}
+
+export function isCurrentYear(date) {
+  return date.getFullYear() === new Date().getFullYear();
+}
+
 export function getLastDayOfMonth(date) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }

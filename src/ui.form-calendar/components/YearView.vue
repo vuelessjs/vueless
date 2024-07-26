@@ -17,7 +17,7 @@
 <script setup>
 import { computed } from "vue";
 import { formatDate, getYearsRange, dateIsOutOfRange } from "../services/calendar.service";
-import { isSameMonth, getDateWithoutTime } from "../services/date.service";
+import { isSameMonth, getDateWithoutTime, isCurrentYear } from "../services/date.service";
 
 import useAttrs from "../composables/attrs.composable";
 
@@ -69,7 +69,8 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const { yearViewAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs } = useAttrs(props);
+const { yearViewAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs, currentYearAttrs } =
+  useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -102,12 +103,19 @@ function getYear(year) {
   return newDate;
 }
 
-function getYearClasses(day) {
-  if (isSelectedMonth(day)) {
+function getYearClasses(year) {
+  const isNotSelectedDate =
+    (!isSelectedMonth(year) && !isSelectedMonth(year)) || props.selectedDate === null;
+
+  if (isCurrentYear(year) && isNotSelectedDate) {
+    return [currentYearAttrs.value.class];
+  }
+
+  if (isSelectedMonth(year)) {
     return [selectedYearAttrs.value.class];
   }
 
-  if (isSameMonth(props.activeMonth, day)) {
+  if (isSameMonth(props.activeMonth, year)) {
     return [activeYearAttrs.value.class];
   }
 }
