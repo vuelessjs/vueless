@@ -197,6 +197,10 @@ function onClickClose() {
 }
 
 const iconColor = computed(() => {
+  if (props.color === "white") {
+    return "gray";
+  }
+
   return props.variant === "primary" ? "white" : props.color;
 });
 </script>

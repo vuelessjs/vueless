@@ -9,8 +9,12 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { color: "white", class: "text-black" },
+      { color: "white", variant: "primary", class: "text-gray-900 bg-white" },
+      { color: "white", variant: "secondary", class: "text-gray-900 bg-white border-gray-500" },
       { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
+      { color: "grayscale", variant: "primary", class: `bg-gray-900` },
+      { color: "grayscale", variant: "secondary", class: `text-gray-900 border-gray-900` },
+      { color: "grayscale", variant: "thirdary", class: `text-gray-900 ` },
     ],
   },
   body: {

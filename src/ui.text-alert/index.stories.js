@@ -21,10 +21,9 @@ export default {
 const defaultTemplate = `
   <template #default>
     <p>
-      <b>Lorem ipsum dolor sit amet,</b>
-      <u>consectetur adipiscing elit,</u>
-      <em>sed do eiusmod tempor incididunt
-      ut labore et dolore magna aliqua.</em>
+      <b>Please note that your session is about to expire </b>
+      <u>in 5 minutes,</u>
+      <em> so make sure to save your work to avoid any data loss. </em>
       <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
     </p>
   </template>
@@ -151,10 +150,9 @@ export const HTML = HTMLTemplate.bind({});
 HTML.args = {
   html: `
     <p>
-      <b>Lorem ipsum dolor sit amet,</b>
-      <u>consectetur adipiscing elit,</u>
-      <em>sed do eiusmod tempor incididunt
-      ut labore et dolore magna aliqua.</em>
+      <b>Please note that your session is about to expire </b>
+      <u>in 5 minutes,</u>
+      <em> so make sure to save your work to avoid any data loss. </em>
       <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
     </p>
   `,
@@ -212,10 +210,10 @@ export const slotTitleAndDescription = SlotTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
-      <div>Alert Title</div>
+      <div class="text-lg font-semibold">This is a custom title for the alert.</div>
     </template>
     <template #description>
-      <div>This is a custom description for the alert.</div>
+      <div class="italic">This is a custom description for the alert.</div>
     </template>
   `,
 };
