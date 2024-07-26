@@ -173,18 +173,14 @@ paragraphs.args = {
   template: `
     <template #default>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        Please be aware that the scheduled maintenance will occur this Saturday,
+        from 12 AM to 4 AM. During this time, some services may be temporarily
+        unavailable. We apologize for any inconvenience this may cause and
+        appreciate your understanding. Our team is committed to improving
+        the system's performance and reliability.
       </p>
-
     </template>
-    `,
+  `,
 };
 
 export const list = DefaultTemplate.bind({});
@@ -192,15 +188,15 @@ list.args = {
   template: `
       <URow>
         <ul>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
+          <li>Check your email for verification link.</li>
+          <li>Update your password regularly to enhance security.</li>
+          <li>Enable two-factor authentication for added protection.</li>
         </ul>
 
         <ol>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
+          <li>Sign in to your account using your credentials.</li>
+          <li>Navigate to the settings menu to update your profile.</li>
+          <li>Review your privacy settings and adjust them as needed.</li>
         </ol>
       </URow>
     `,
