@@ -1,80 +1,94 @@
 import useUI from "../../composable.ui";
-import { cva } from "../../service.ui";
+import { cva, cx } from "../../service.ui";
 import { computed, watchEffect } from "vue";
 
 import defaultConfig from "../configs/default.config";
 import { POSITION } from "../../composable.adjustElementPosition";
 
 export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
-  const { config, getAttrs } = useUI(defaultConfig, () => props.config);
-  const { calendar } = config.value;
+  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const attrs = {};
 
-  const openDirectionY = computed(() => (isTop.value ? POSITION.top : POSITION.bottom));
-  const openDirectionX = computed(() => (isRight.value ? POSITION.right : POSITION.left));
+  for (const key in defaultConfig) {
+    if (isSystemKey(key)) continue;
 
-  const cvaCalendarWrapper = cva({
-    base: calendar.wrapper.base,
-    variants: calendar.wrapper.variants,
-    compoundVariants: calendar.wrapper.compoundVariants,
-  });
+    const classes = computed(() => {
+      const value = config.value[key];
 
-  const calendarWrapperClasses = computed(() =>
-    cvaCalendarWrapper({
-      openDirectionY: openDirectionY.value,
-      openDirectionX: openDirectionX.value,
-    }),
-  );
+      if (value.variants || value.compoundVariants) {
+        return cva(value)({
+          ...props,
+        });
+      }
 
-  const calendarAttrs = getAttrs("calendar", {
-    isComponent: true,
-    classes: calendarWrapperClasses,
-  });
-  const inputBlurAttrs = getAttrs("input");
-  const inputActiveAttrs = getAttrs("inputActive");
-  const wrapperAttrs = getAttrs("wrapper");
+      return "";
+    });
 
-  const inputAttrs = computed(() => {
-    return isShownCalendar.value ? inputActiveAttrs.value : inputBlurAttrs.value;
-  });
+    attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-  // This watcher rewrites default calendar locales with datepicker range locales
-  // Watcher will not rewrite custom calendar locales
-  watchEffect(() => {
-    if (!calendarAttrs.value.config) {
-      calendarAttrs.value.config = {};
+    if (key === "input") {
+      const inputAttrs = attrs[`${key}Attrs`];
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...inputAttrs.value,
+        class: cx([inputAttrs.value.class, isShownCalendar.value && config.value.inputFocus]),
+      }));
     }
 
-    if (calendarAttrs.value.config.i18n || !props.config.i18n) {
-      return;
-    }
+    if (key === "calendar") {
+      const calendarAttrs = attrs[`${key}Attrs`];
 
-    calendarAttrs.value.config.i18n = {
-      ...config.value.i18n,
-      weekdays: {
-        shorthand: { ...config.value.i18n.weekdays.shorthand },
-        longhand: { ...config.value.i18n.weekdays.longhand },
-      },
-      months: {
-        shorthand: { ...config.value.i18n.months.shorthand },
-        longhand: { ...config.value.i18n.months.longhand },
-      },
-    };
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...calendarAttrs.value,
+        class: cx([
+          cva(config.value.calendar.wrapper)({
+            openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
+            openDirectionX: isRight.value ? POSITION.right : POSITION.left,
+          }),
+          calendarAttrs.value.class,
+        ]),
+      }));
 
-    if (props.config.i18n.weekdays.userFormat) {
-      calendarAttrs.value.config.i18n.userFormat = {
-        ...config.value.i18n.weekdays.userFormat,
-      };
-    }
+      // This watcher rewrites default calendar locales with datepicker range locales
+      // Watcher will not rewrite custom calendar locales
+      watchEffect(() => {
+        if (!attrs[`${key}Attrs`].value.config) {
+          attrs[`${key}Attrs`].value.config = {};
+        }
 
-    if (props.config.i18n.months.userFormat) {
-      calendarAttrs.value.config.i18n.userFormat = { ...config.value.i18n.months.userFormat };
+        if (attrs[`${key}Attrs`].value.config.i18n || !props.config.i18n) {
+          return;
+        }
+
+        attrs[`${key}Attrs`].value.config.i18n = {
+          ...config.value.i18n,
+          weekdays: {
+            shorthand: { ...config.value.i18n.weekdays.shorthand },
+            longhand: { ...config.value.i18n.weekdays.longhand },
+          },
+          months: {
+            shorthand: { ...config.value.i18n.months.shorthand },
+            longhand: { ...config.value.i18n.months.longhand },
+          },
+        };
+
+        if (props.config.i18n.weekdays.userFormat) {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
+            ...config.value.i18n.weekdays.userFormat,
+          };
+        }
+
+        if (props.config.i18n.months.userFormat) {
+          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
+            ...config.value.i18n.months.userFormat,
+          };
+        }
+      });
     }
-  });
+  }
 
   return {
+    ...attrs,
     config,
-    calendarAttrs,
-    inputAttrs,
-    wrapperAttrs,
   };
 }

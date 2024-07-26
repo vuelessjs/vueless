@@ -15,14 +15,17 @@
       @focus="activate"
     >
       <template #left>
+        <!-- @slot Use it add something before the date. -->
         <slot name="left" />
       </template>
 
       <template #right-icon>
+        <!-- @slot Use it add an icon after the date. -->
         <slot name="right-icon" />
       </template>
 
       <template #right>
+        <!-- @slot Use it add something after the date. -->
         <slot name="right" />
       </template>
     </UInput>
@@ -215,7 +218,19 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "input"]);
+const emit = defineEmits([
+  /**
+   * Triggers when date picker value changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when date picker value changes.
+   * @property {object} value
+   */
+  "input",
+]);
 
 const STANDARD_USER_FORMAT = "l, j F, Y";
 
