@@ -12,24 +12,23 @@ export default {
   id: "4030",
   title: "Text & Content / Alert",
   component: UAlert,
-  args: {
-    text: "UHint",
-    slotDefaultTemplate: `
-      <template #default>
-        <p>
-          <b>Lorem ipsum dolor sit amet,</b>
-          <u>consectetur adipiscing elit,</u>
-          <em>sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua.</em>
-          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-        </p>
-      </template>
-    `,
-  },
+  args: {},
   argTypes: {
     ...getArgTypes(UAlert.name),
   },
 };
+
+const defaultTemplate = `
+  <template #default>
+    <p>
+      <b>Lorem ipsum dolor sit amet,</b>
+      <u>consectetur adipiscing elit,</u>
+      <em>sed do eiusmod tempor incididunt
+      ut labore et dolore magna aliqua.</em>
+      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+    </p>
+  </template>
+`;
 
 const DefaultTemplate = (args) => ({
   components: { UAlert, UIcon },
@@ -40,8 +39,20 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-    ${args.slotDefaultTemplate}
-    ${args.slotTemplate || ""}
+      ${args.template || defaultTemplate}
+    </UAlert>
+  `,
+});
+
+const SlotTemplate = (args) => ({
+  components: { UAlert, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UAlert v-bind="args" v-model="args.value">
+      ${args.slotTemplate}
+      ${defaultTemplate}
     </UAlert>
   `,
 });
@@ -122,7 +133,10 @@ const HTMLTemplate = (args) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = {
+  title: "Default Title",
+  description: "Default Description",
+};
 
 export const variants = VariantsTemplate.bind({});
 variants.args = {};
@@ -149,7 +163,7 @@ HTML.args = {
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  slotDefaultTemplate: `
+  template: `
     <template #default>
       some text
     </template>
@@ -158,7 +172,7 @@ closable.args = {
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  slotDefaultTemplate: `
+  template: `
     <template #default>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -177,7 +191,7 @@ paragraphs.args = {
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  slotDefaultTemplate: `
+  template: `
       <URow>
         <ul>
           <li> Lorem ipsum dolor </li>
@@ -194,7 +208,7 @@ list.args = {
     `,
 };
 
-export const slotTitleAndDescription = DefaultTemplate.bind({});
+export const slotTitleAndDescription = SlotTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
@@ -206,7 +220,7 @@ slotTitleAndDescription.args = {
   `,
 };
 
-export const slotAlertLeft = DefaultTemplate.bind({});
+export const slotAlertLeft = SlotTemplate.bind({});
 slotAlertLeft.args = {
   slotTemplate: `
     <template #left>
@@ -218,7 +232,7 @@ slotAlertLeft.args = {
   `,
 };
 
-export const slotAlertRight = DefaultTemplate.bind({});
+export const slotAlertRight = SlotTemplate.bind({});
 slotAlertRight.args = {
   slotTemplate: `
     <template #right>
@@ -230,7 +244,7 @@ slotAlertRight.args = {
   `,
 };
 
-export const slotAlertTop = DefaultTemplate.bind({});
+export const slotAlertTop = SlotTemplate.bind({});
 slotAlertTop.args = {
   slotTemplate: `
     <template #top>
@@ -242,7 +256,7 @@ slotAlertTop.args = {
   `,
 };
 
-export const slotAlertBottom = DefaultTemplate.bind({});
+export const slotAlertBottom = SlotTemplate.bind({});
 slotAlertBottom.args = {
   slotTemplate: `
     <template #bottom>

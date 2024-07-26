@@ -4,12 +4,12 @@ export default /*tw*/ {
     variants: {
       variant: {
         primary: `bg-{color}-500 text-white`,
-        secondary: `bg-transparent border border-{color}-500`,
+        secondary: `bg-transparent border border-{color}-500 text-{color}-500`,
         thirdary: `bg-{color}-50 text-{color}-700`,
       },
     },
     compoundVariants: [
-      { color: "grayscale", bordered: true, class: "border-gray-200" },
+      { color: "white", class: "text-black" },
       { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
     ],
   },
@@ -27,15 +27,30 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        xs: "text-xs space-y-2",
-        sm: "text-sm space-y-3",
-        md: "text-base space-y-4",
-        lg: "text-lg space-y-5",
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
       },
     },
   },
-  title: "font-bold text-lg leading-tight",
-  description: "text-sm",
+  title: {
+    base: "font-bold leading-tight",
+    compoundVariants: [
+      { size: "xs", class: "text-sm" },
+      { size: "sm", class: "text-base" },
+      { size: "md", class: "text-lg" },
+      { size: "lg", class: "text-xl" },
+    ],
+  },
+  description: {
+    compoundVariants: [
+      { size: "xs", class: "text-xs" },
+      { size: "sm", class: "text-xs" },
+      { size: "md", class: "text-sm" },
+      { size: "lg", class: "text-base" },
+    ],
+  },
   button: "{UButton}",
   icon: "{UIcon}",
   iconName: "close",
@@ -51,6 +66,7 @@ export default /*tw*/ {
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
     { pattern: `bg-(${colors})-500` },
+    { pattern: `text-(${colors})-500` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
     { pattern: `border-(${colors})-500` },

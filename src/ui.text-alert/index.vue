@@ -8,7 +8,7 @@
       @binding {string} title
     -->
     <slot name="title" :title="title">
-      <div v-bind="titleAttrs" v-text="title" />
+      <div v-if="hasSlotContent($slots.title) || title" v-bind="titleAttrs" v-text="title" />
     </slot>
 
     <!--
@@ -16,7 +16,11 @@
       @binding {string} description
     -->
     <slot name="description" :description="description">
-      <div v-bind="descriptionAttrs" v-text="description" />
+      <div
+        v-if="hasSlotContent($slots.description) || description"
+        v-bind="descriptionAttrs"
+        v-text="description"
+      />
     </slot>
 
     <div v-bind="bodyAttrs">
@@ -39,7 +43,7 @@
         <UIcon
           internal
           size="xs"
-          :color="color"
+          :color="iconColor"
           :name="config.iconName"
           :data-cy="`${dataCy}-button`"
           v-bind="iconAttrs"
@@ -56,7 +60,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
@@ -191,4 +195,8 @@ function onClickClose() {
   isShownAlert.value = false;
   emit("hidden");
 }
+
+const iconColor = computed(() => {
+  return props.variant === "primary" ? "white" : props.color;
+});
 </script>
