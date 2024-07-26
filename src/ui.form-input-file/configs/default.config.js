@@ -35,7 +35,7 @@ export default /*tw*/ {
     },
   },
   placeholder: {
-    base: "pr-4 text-gray-700 flex-grow w-full",
+    base: "pr-4 text-gray-700 flex-grow w-full self-center",
     variants: {
       size: {
         sm: "text-sm",
