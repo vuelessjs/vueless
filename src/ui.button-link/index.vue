@@ -12,8 +12,8 @@
       :data-cy="dataCy"
       v-bind="linkAttrs"
       @blur="onBlur"
-      @click="onClick"
       @focus="onFocus"
+      @click="onClick"
       @keydown="onKeydown"
       @mouseover="onMouseover"
     >
@@ -31,9 +31,9 @@
       v-bind="linkAttrs"
       @blur="onBlur"
       @focus="onFocus"
+      @click="onClick"
       @keydown="onKeydown"
       @mouseover="onMouseover"
-      @click.prevent="onClick"
     >
       <!-- @slot Use it replace the text. -->
       <slot>
@@ -293,11 +293,11 @@ const href = computed(() => {
     link: "",
   };
 
-  return `${types[props.type]}${props.url}`;
+  return props.url ? `${types[props.type]}${props.url}` : null;
 });
 
 function onClick(event) {
-  !props.url || props.disabled ? emit("click", event) : window.open(href.value, props.targetValue);
+  emit("click", event);
 }
 
 function onMouseover(event) {
