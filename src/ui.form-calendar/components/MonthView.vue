@@ -17,7 +17,7 @@
 <script setup>
 import { computed } from "vue";
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
-import { isSameMonth, getDateWithoutTime } from "../services/date.service";
+import { isSameMonth, getDateWithoutTime, isCurrentMoth } from "../services/date.service";
 
 import useAttrs from "../composables/attrs.composable";
 
@@ -69,7 +69,8 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const { monthViewAttrs, selectedMonthAttrs, activeMonthAttrs, monthAttrs } = useAttrs(props);
+const { monthViewAttrs, selectedMonthAttrs, activeMonthAttrs, monthAttrs, currentMothAttrs } =
+  useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -98,12 +99,19 @@ function getMonth(monthNumber) {
   return newDate;
 }
 
-function getMonthClasses(day) {
-  if (isSelectedMonth(day)) {
+function getMonthClasses(month) {
+  const isNotSelectedDate =
+    (!isSelectedMonth(month) && !isSelectedMonth(month)) || props.selectedDate === null;
+
+  if (isCurrentMoth(month) && isNotSelectedDate) {
+    return [currentMothAttrs.value.class];
+  }
+
+  if (isSelectedMonth(month)) {
     return [selectedMonthAttrs.value.class];
   }
 
-  if (isSameMonth(props.activeMonth, day)) {
+  if (isSameMonth(props.activeMonth, month)) {
     return [activeMonthAttrs.value.class];
   }
 }
