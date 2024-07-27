@@ -19,8 +19,8 @@ export default {
 const defaultTemplate = `
   <template #default>
     <p>
-      <b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing elit,
-       sed do <u>eiusmod</u> tempor incididunt ut <i>labore</i> et dolore magna aliqua.
+      <b>To proceed with your registration</b>, please enter your
+        <u>email address</u> in the field below. <i>A verification link</i> will be sent to your inbox shortly.
       <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
     </p>
   </template>
@@ -73,43 +73,45 @@ paragraphs.args = {
   slotTemplate: `
     <template #default>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-        culpa qui officia deserunt mollit anim id est laborum.
+        In a world where technology evolves at an unprecedented pace, staying
+        updated with the latest advancements is crucial for success. Companies
+        that adapt quickly to new trends often find themselves at the forefront
+        of their industries, leading to increased innovation and productivity.
+        However, it's not just about adopting new tools but also about integrating
+        them seamlessly into existing workflows to maximize their potential.
       </p>
 
       <p>
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-        culpa qui officia deserunt mollit anim id est laborum.
+        Employees must be encouraged to continuously learn and develop new skills,
+        ensuring they can leverage these technological advancements effectively.
+        This not only enhances their professional growth but also contributes to
+        the overall success of the organization. By fostering a culture of
+        continuous improvement, businesses can navigate the challenges of a
+        rapidly changing landscape and emerge stronger and more competitive.
       </p>
     </template>
+
   `,
 };
 
 export const list = DefaultTemplate.bind({});
 list.args = {
   slotTemplate: `
-     <template #default>
-       <URow gap="2xl">
-         <ul>
-           <li> Lorem ipsum dolor </li>
-           <li> Lorem ipsum dolor </li>
-           <li> Lorem ipsum dolor </li>
-         </ul>
+    <template #default>
+      <URow gap="2xl">
+        <ul>
+          <li>Ensure your password is strong</li>
+          <li>Update your profile information</li>
+          <li>Check your email for updates</li>
+        </ul>
 
-         <ol>
-           <li> Lorem ipsum dolor </li>
-           <li> Lorem ipsum dolor </li>
-           <li> Lorem ipsum dolor </li>
-         </ol>
-       </URow>
-     </template>
+
+        <ol>
+          <li>Create an account by signing up</li>
+          <li>Verify your email address</li>
+          <li>Log in to access your dashboard</li>
+        </ol>
+      </URow>
+    </template>
   `,
 };
