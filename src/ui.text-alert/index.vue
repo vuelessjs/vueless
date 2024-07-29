@@ -8,7 +8,7 @@
       @binding {string} title
     -->
     <slot name="title" :title="title">
-      <div v-if="hasSlotContent($slots.title) || title" v-bind="titleAttrs" v-text="title" />
+      <div v-if="title" v-bind="titleAttrs" v-text="title" />
     </slot>
 
     <!--
@@ -16,11 +16,7 @@
       @binding {string} description
     -->
     <slot name="description" :description="description">
-      <div
-        v-if="hasSlotContent($slots.description) || description"
-        v-bind="descriptionAttrs"
-        v-text="description"
-      />
+      <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
     </slot>
 
     <div v-bind="bodyAttrs">
@@ -28,8 +24,14 @@
       <slot name="left" />
 
       <!-- @slot Default slot. -->
-      <slot />
-      <div v-if="!hasSlotContent($slots.default)" v-bind="bodyAttrs" v-html="html" />
+      <slot>
+        <UText
+          v-if="hasSlotContent($slots.default) || html"
+          v-bind="bodyAttrs"
+          :size="size"
+          :html="html"
+        />
+      </slot>
 
       <UButton
         v-if="closable"
@@ -64,6 +66,7 @@ import { onMounted, ref, computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
+import UText from "../ui.text-block";
 import UIService from "../service.ui";
 
 import { UAlert } from "./constatns";

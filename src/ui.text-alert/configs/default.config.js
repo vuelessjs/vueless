@@ -9,26 +9,17 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
       { color: "white", variant: "primary", class: "text-gray-900 bg-white" },
       { color: "white", variant: "secondary", class: "text-gray-900 bg-white border-gray-500" },
-      { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
+      { color: "white", variant: "thirdary", bordered: true, class: "text-gray-900 bg-white border border-gray-500" },
       { color: "grayscale", variant: "primary", class: `bg-gray-900` },
       { color: "grayscale", variant: "secondary", class: `text-gray-900 border-gray-900` },
-      { color: "grayscale", variant: "thirdary", class: `text-gray-900 ` },
+      { color: "grayscale", variant: "thirdary", class: `text-gray-900` },
     ],
   },
   body: {
-    base: `
-      flex gap-2 items-baseline
-      font-normal leading-normal
-      [&_b]:font-bold [&_i]:italic [&_em]:italic [&_p]:font-normal
-      [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
-      [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
-      [&_ul]:font-normal [&_ol]:font-normal
-      [&_ul]:leading-normal [&_ol]:leading-normal
-      [&_ul]:list-disc [&_ol]:list-decimal
-      [&_ul]:ml-2 [&_ol]:ml-2
-    `,
+    base: "{UText} flex gap-2 items-baseline",
     variants: {
       size: {
         xs: "text-xs",
@@ -40,20 +31,24 @@ export default /*tw*/ {
   },
   title: {
     base: "font-bold leading-tight",
-    compoundVariants: [
-      { size: "xs", class: "text-sm" },
-      { size: "sm", class: "text-base" },
-      { size: "md", class: "text-lg" },
-      { size: "lg", class: "text-xl" },
-    ],
+    variants: {
+      size: {
+        xs: "text-sm",
+        sm: "text-base",
+        md: "text-lg",
+        lg: "text-xl",
+      },
+    },
   },
   description: {
-    compoundVariants: [
-      { size: "xs", class: "text-xs" },
-      { size: "sm", class: "text-xs" },
-      { size: "md", class: "text-sm" },
-      { size: "lg", class: "text-base" },
-    ],
+    variants: {
+      size: {
+        xs: "text-xs",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
+      },
+    },
   },
   button: "{UButton}",
   icon: "{UIcon}",
