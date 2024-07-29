@@ -21,18 +21,29 @@ export default /*tw*/ {
         `,
       },
     },
+    compoundVariants: [
+      {
+        selected: true,
+        class: "relative disabled:z-10",
+      },
+      {
+        selected: true,
+        variant: "primary",
+        class: "!text-white bg-brand-600 border-brand-600 disabled:border-brand-600",
+      },
+      {
+        selected: true,
+        variant: "secondary",
+        class: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600 bg-opacity-10",
+      },
+      {
+        selected: true,
+        variant: "thirdary",
+        class: "bg-brand-600 bg-opacity-20 hover:bg-opacity-20 focus:bg-opacity-20",
+      },
+    ],
   },
   input: "p-0 m-0 size-0 invisible absolute",
-  selected: {
-    base: "relative disabled:z-10",
-    variants: {
-      variant: {
-        primary: "!text-white bg-brand-600 border-brand-600 disabled:border-brand-600",
-        secondary: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600 bg-opacity-10",
-        thirdary: " bg-brand-600 bg-opacity-20 hover:bg-opacity-20 focus:bg-opacity-20",
-      },
-    },
-  },
   defaultVariants: {
     variant: "primary",
     type: "radio",

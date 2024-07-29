@@ -148,8 +148,15 @@ Default.args = {
   name: "Default",
 };
 
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = {
+  name: "Disabled",
+  disabled: true,
+};
+
 export const label = DefaultTemplate.bind({});
 label.args = {
+  name: "Label",
   label: "Label",
   description: "description",
 };
