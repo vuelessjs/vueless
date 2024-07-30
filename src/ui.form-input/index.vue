@@ -8,6 +8,7 @@
     :error="error"
     :size="size"
     :align="labelAlign"
+    centred
     v-bind="labelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
@@ -168,7 +169,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
     type: String,

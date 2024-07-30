@@ -40,7 +40,7 @@ export default /*tw*/ {
   periodButtonIcon: "{UIcon}",
   periodButtonIconName: "apps",
   periodButtonActive: "bg-gray-200",
-  rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
+  rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchTitle: "font-medium text-sm",
   nextIcon: "{UIcon}",
   nextIconName: "keyboard_arrow_right",

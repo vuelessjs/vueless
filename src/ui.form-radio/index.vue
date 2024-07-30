@@ -91,7 +91,7 @@ const props = defineProps({
 
   /**
    * Radio size.
-   * @values xs, sm, md, lg, xl
+   * @values sm, md, lg
    */
   size: {
     type: String,
@@ -108,8 +108,8 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * Label placement.
+   * @values left, right
    */
   labelAlign: {
     type: String,

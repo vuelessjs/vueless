@@ -5,10 +5,9 @@ export default /*tw*/ {
     base: "flex flex-col",
     variants: {
       size: {
-        sm: "gap-2",
-        md: "gap-3",
-        lg: "gap-4",
-        xl: "gap-5",
+        sm: "gap-1.5 mt-1",
+        md: "gap-2 mt-1.5",
+        lg: "gap-2.5 mt-2",
       },
     },
   },

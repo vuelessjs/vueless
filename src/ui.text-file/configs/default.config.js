@@ -1,6 +1,15 @@
 export default /*tw*/ {
   file: "{UFile}",
-  info: "flex items-center gap-2 ",
+  info: {
+    base: "flex items-center",
+    variants: {
+      size: {
+        sm: "gap-1",
+        md: "gap-1.5",
+        lg: "gap-2",
+      },
+    },
+  },
   icon: "{UIcon}",
   iconName: "description",
   image: "rounded-sm max-w-7",
@@ -11,9 +20,9 @@ export default /*tw*/ {
         true: "underline decoration-dashed underline-offset-4",
       },
       size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
       },
     },
   },

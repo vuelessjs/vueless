@@ -119,7 +119,7 @@ const props = defineProps({
 
   /**
    * Label placement.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values left, right
    */
   labelAlign: {
     type: String,
@@ -137,7 +137,7 @@ const props = defineProps({
 
   /**
    * Checkbox size.
-   * @values xs, sm, md, lg, xl
+   * @values sm, md, lg
    */
   size: {
     type: String,
@@ -211,11 +211,9 @@ const { config, checkboxAttrs, iconWrapperAttrs, labelAttrs, iconAttrs } = useAt
 
 const iconSize = computed(() => {
   const sizes = {
-    xs: "2xs",
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-    xl: "lg",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
   };
 
   return sizes[props.size];

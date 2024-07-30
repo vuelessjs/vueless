@@ -42,7 +42,7 @@ export default /*tw*/ {
   backLinkIcon: "{UIcon}",
   backLinkIconName: "arrow_back",
   title: "{UHeader}",
-  description: "mt-1.5 text-base font-normal text-gray-600",
+  description: "mt-1.5 text-base font-normal text-gray-500",
   headerRight: "",
   footer: `mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200`,
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",

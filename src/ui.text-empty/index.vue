@@ -16,12 +16,8 @@
 
     <!-- @slot Use it to add something inside. -->
     <slot>
-      <div v-if="title" v-bind="titleAttrs">
-        {{ title }}
-      </div>
-      <div v-if="description" v-bind="descriptionAttrs">
-        {{ description }}
-      </div>
+      <UHeader v-if="title" :label="title" :size="titleSize" v-bind="titleAttrs" />
+      <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
     </slot>
 
     <div v-bind="footerAttrs">
@@ -35,6 +31,7 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
+import UHeader from "../ui.text-header";
 import UIService from "../service.ui";
 
 import { UEmpty } from "./constants";
@@ -92,9 +89,19 @@ const { config, titleAttrs, descriptionAttrs, wrapperAttrs, headerAttrs, footerA
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "xl",
-    md: "2xl",
-    lg: "3xl",
+    sm: "2xl",
+    md: "3xl",
+    lg: "4xl",
+  };
+
+  return sizes[props.size];
+});
+
+const titleSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
   };
 
   return sizes[props.size];

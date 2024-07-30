@@ -99,7 +99,7 @@ const props = defineProps({
 
   /**
    * Rating label placement.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, topWithDesc, left, right
    */
   labelAlign: {
     type: String,

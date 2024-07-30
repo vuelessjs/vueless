@@ -243,10 +243,7 @@ export const slotLeft = SlotTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
-      <UIcon
-        :src="icons.Debit"
-        size="xs"
-      />
+      <UIcon :src="icons.Debit" size="3xs" />
     </template>
   `,
 };
@@ -255,11 +252,7 @@ export const slotRight = SlotTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
-      <UIcon
-        :src="icons.Credit"
-        size="xs"
-        color="gray"
-      />
+      <UIcon :src="icons.Credit" size="3xs" />
     </template>
   `,
 };

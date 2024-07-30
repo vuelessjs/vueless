@@ -1,9 +1,9 @@
 import { computed } from "vue";
 import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-export default function useAttrs(props, { inputPasswordClasses }) {
+export default function useAttrs(props) {
   const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
     defaultConfig,
     () => props.config,
@@ -29,14 +29,14 @@ export default function useAttrs(props, { inputPasswordClasses }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "input") {
-      const inputAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...inputAttrs.value,
-        class: cx([inputAttrs.value.class, inputPasswordClasses.value]),
-      }));
-    }
+    // if (key === "input") {
+    //   const inputAttrs = attrs[`${key}Attrs`];
+    //
+    //   attrs[`${key}Attrs`] = computed(() => ({
+    //     ...inputAttrs.value,
+    //     class: cx([inputAttrs.value.class]),
+    //   }));
+    // }
   }
 
   return {

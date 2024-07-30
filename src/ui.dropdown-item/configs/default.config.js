@@ -7,9 +7,9 @@ export default /*tw*/ {
    `,
     variants: {
       size: {
-        sm: "text-sm p-2",
-        md: "text-base p-3",
-        lg: "text-lg p-4",
+        sm: "text-xs p-1",
+        md: "text-sm p-2",
+        lg: "text-base p-3",
       },
     },
   },

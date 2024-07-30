@@ -1,8 +1,5 @@
 export default /*tw*/ {
-  label: {
-    wrapper: "inline-flex",
-    label: "{ULabel} cursor-pointer",
-  },
+  label: "{ULabel}",
   radio: {
     base: `
       cursor-pointer
@@ -15,11 +12,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        xs: "size-4",
-        sm: "size-5",
-        md: "size-6",
-        lg: "size-7",
-        xl: "size-8",
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
       },
     },
     compoundVariants: [
@@ -38,7 +33,7 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     color: "brand",
-    labelAlign: "left",
+    labelAlign: "right",
     disabled: false,
     checked: false,
   },

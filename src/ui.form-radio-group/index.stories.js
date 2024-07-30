@@ -38,21 +38,13 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup>
+    <UGroup gap="2xl">
       <URadioGroup v-bind="args" v-model="value">
-        <template v-for="(radio,index) in args.radios" :key="index">
-          <URadio
-            v-bind="radio"
-          >
-          </URadio>
-        </template>
+        <URadio v-for="(radio, index) in args.radios" :key="index" v-bind="radio" />
       </URadioGroup>
-
-      <URow>
-        <UAlert color="green" size="sm">
-          <p>Selected value: <b>{{ value }}</b></p>
-        </UAlert>
-      </URow>
+      <UAlert color="gray" size="xs">
+        <code>Selected value: <b>{{ value }}</b></code>
+      </UAlert>
     </UGroup>
   `,
 });
@@ -100,7 +92,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
         :label="color"
         :color="color"
         :options="args.radios"
-        name="color"
+        :name="color"
         v-model="value"
       />
     </URow>
@@ -127,7 +119,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         :label="size"
         :size="size"
         :options="args.radios"
-        name="size"
+        :name="size"
         v-model="value"
       />
     </URow>

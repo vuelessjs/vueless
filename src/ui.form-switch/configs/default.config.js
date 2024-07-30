@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel} flex items-start",
+  label: "{ULabel}",
   wrapper: {
     base: `
       transition duration-300
@@ -12,15 +12,15 @@ export default /*tw*/ {
         false: "bg-gray-300 ring-gray-700 hover:bg-gray-400 active:bg-gray-500",
       },
       size: {
-        sm: "w-8",
-        md: "w-10",
-        lg: "w-12",
+        sm: "w-6",
+        md: "w-8",
+        lg: "w-10",
       },
     },
     compoundVariants: [
-      { toggleLabel: true, size: "sm", class: "w-12" },
-      { toggleLabel: true, size: "md", class: "w-14" },
-      { toggleLabel: true, size: "lg", class: "w-16" },
+      { toggleLabel: true, size: "sm", class: "w-10" },
+      { toggleLabel: true, size: "md", class: "w-12" },
+      { toggleLabel: true, size: "lg", class: "w-14" },
       { disabled: true, checked: true, class: "bg-opacity-50 pointer-events-none" },
       { disabled: true, checked: false, class: "bg-opacity-50 pointer-events-none" },
       { color: "grayscale", checked: true, class: "bg-gray-800 ring-gray-800" },
@@ -31,15 +31,15 @@ export default /*tw*/ {
     base: "transition duration-300 rounded-full bg-white flex items-center justify-center",
     variants: {
       size: {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
+        sm: "size-3",
+        md: "size-4",
+        lg: "size-5",
       },
     },
     compoundVariants: [
-      { checked: true, size: "sm", class: "ml-[calc(100%-1rem)]" },
-      { checked: true, size: "md", class: "ml-[calc(100%-1.25rem)]" },
-      { checked: true, size: "lg", class: "ml-[calc(100%-1.5rem)]" },
+      { checked: true, size: "sm", class: "ml-[calc(100%-0.75rem)]" },
+      { checked: true, size: "md", class: "ml-[calc(100%-1rem)]" },
+      { checked: true, size: "lg", class: "ml-[calc(100%-1.25rem)]" },
     ],
   },
   icon: "{UIcon}",
@@ -62,7 +62,7 @@ export default /*tw*/ {
   defaultVariants: {
     color: "brand",
     size: "md",
-    labelAlign: "left",
+    labelAlign: "right",
     disabled: false,
     toggleIcon: false,
     toggleLabel: false,

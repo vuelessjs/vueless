@@ -303,7 +303,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
     type: String,
@@ -588,7 +588,7 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 const iconSize = computed(() => {
   const sizes = {
     sm: "sm",
-    md: "md",
+    md: "sm",
     lg: "md",
   };
 

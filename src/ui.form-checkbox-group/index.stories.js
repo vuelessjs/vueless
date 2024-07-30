@@ -15,9 +15,9 @@ export default {
   args: {
     label: "Label",
     options: [
-      { label: "checkbox 1", description: "some description 1", value: "1" },
-      { label: "checkbox 2", description: "some description 2", value: "2" },
-      { label: "checkbox 3", description: "some description 3", value: "3" },
+      { label: "checkbox 1", value: "1" },
+      { label: "checkbox 2", value: "2" },
+      { label: "checkbox 3", value: "3" },
     ],
     value: ["One"],
   },
@@ -40,18 +40,12 @@ const DefaultTemplate = (args) => ({
     <URow class="!flex-col">
       <UCheckboxGroup v-bind="args" v-model="value">
         <template v-for="(radio, index) in args.options" :key="index">
-          <UCheckbox
-            v-bind="radio"
-          >
-          </UCheckbox>
+          <UCheckbox v-bind="radio"/>
         </template>
       </UCheckboxGroup>
 
       <URow>
-        <UAlert color="red" v-if=args.isDefaultStory>
-          <b>NOTE:</b> <p>UCheckboxGroup component have to have unique name attribute</p>
-        </UAlert>
-        <UAlert color="blue">
+        <UAlert size="sm" color="blue">
           <p>Selected value: {{ value }}</p>
         </UAlert>
       </URow>
@@ -72,7 +66,7 @@ const OptionsTemplate = (args) => ({
   template: `
     <URow class="!flex-col">
       <UCheckboxGroup v-bind="args" v-model="value" :options="args.options" />
-  
+
       <URow>
         <UAlert color="blue">
           <p>Selected value: {{ value }}</p>
@@ -87,18 +81,17 @@ Default.args = {
   name: "Default",
   isDefaultStory: true,
   options: [
-    { name: "Default", label: "String", description: "some description 1", value: "One" },
-    { name: "Default", label: "Boolean", description: "some description 2", value: false },
+    { name: "Default", label: "String", value: "One" },
+    { name: "Default", label: "Boolean", value: false },
     {
       name: "Default",
       label: "Object",
-      description: "some description 3",
+
       value: { key: "value" },
     },
     {
       name: "Default",
       label: "Object",
-      description: "some description 4",
       value: ["Array", 1],
     },
   ],
@@ -129,15 +122,15 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <URow class="!flex-col">
-      <UCheckboxGroup 
+      <UCheckboxGroup
         v-bind="args"
-        v-for="color in colors" 
-        :key="color" 
-        :label="color" 
+        v-for="color in colors"
+        :key="color"
+        :label="color"
         :color="color"
-        :options="args.options" 
+        :options="args.options"
         name="color"
-        v-model="value" 
+        v-model="value"
       />
     </URow>
   `,
@@ -156,15 +149,15 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <URow class="!flex-col">
-      <UCheckboxGroup 
+      <UCheckboxGroup
         v-bind="args"
-        v-for="size in sizes" 
-        :key="size" 
-        :label="size" 
+        v-for="size in sizes"
+        :key="size"
+        :label="size"
         :size="size"
-        :options="args.options" 
+        :options="args.options"
         name="size"
-        v-model="value" 
+        v-model="value"
       />
     </URow>
   `,

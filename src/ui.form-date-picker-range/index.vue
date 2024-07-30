@@ -82,21 +82,22 @@
           <UButton
             v-for="periodButton in periods"
             :key="periodButton.name"
+            :label="periodButton.title"
             variant="thirdary"
             size="xs"
             square
+            filled
             color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(periodButton.name))"
             @click="onClickPeriodButton(periodButton.name)"
-          >
-            {{ periodButton.title }}
-          </UButton>
+          />
         </div>
 
         <div v-bind="periodsRowAttrs">
           <UButton
             v-if="customRangeButton.range.to && customRangeButton.range.from"
             variant="thirdary"
+            filled
             color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
             @click="onClickCustomRangeButton"
@@ -107,6 +108,8 @@
 
           <UButton
             variant="thirdary"
+            size="xs"
+            filled
             color="brand"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
@@ -123,29 +126,33 @@
 
         <template v-if="!isPeriod.ownRange && !isPeriod.custom">
           <div v-bind="rangeSwitchWrapperAttrs">
-            <UIcon
-              internal
-              interactive
-              color="grayscale"
-              size="sm"
-              :name="config.prevIconName"
-              v-bind="prevIconAttrs"
-              @click="onClickShiftDatesList('prev')"
-            />
+            <UButton size="sm" color="brand" variant="thirdary" square>
+              <UIcon
+                internal
+                interactive
+                size="sm"
+                color="gray"
+                :name="config.prevIconName"
+                v-bind="prevIconAttrs"
+                @click="onClickShiftDatesList('prev')"
+              />
+            </UButton>
 
             <div v-bind="rangeSwitchTitleAttrs">
               {{ rangeSwitchTitle }}
             </div>
 
-            <UIcon
-              internal
-              interactive
-              class="icon"
-              size="sm"
-              :name="config.nextIconName"
-              v-bind="nextIconAttrs"
-              @click="onClickShiftDatesList('next')"
-            />
+            <UButton size="sm" color="brand" variant="thirdary" square>
+              <UIcon
+                internal
+                interactive
+                size="sm"
+                color="gray"
+                :name="config.nextIconName"
+                v-bind="nextIconAttrs"
+                @click="onClickShiftDatesList('next')"
+              />
+            </UButton>
           </div>
 
           <div v-bind="periodDateListAttrs(getPeriodDateListClasses())">

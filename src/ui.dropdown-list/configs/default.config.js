@@ -5,7 +5,7 @@ export default /*tw*/ {
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-none
   `,
-  list: "inline-block list-none align-top m-0 min-w-full p-0 bg-white opacity-1 hover:transition",
+  list: "m-1 inline-block list-none align-top w-full p-0 bg-white opacity-1 hover:transition",
   subGroupLabel: {
     base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-1",
     variants: {
@@ -28,16 +28,16 @@ export default /*tw*/ {
   },
   option: {
     base: `
-        p-3 flex items-center align-middle whitespace-nowrap cursor-pointer
-        font-normal !leading-none normal-case text-gray-900
-        hover:bg-gray-100 active:bg-gray-200 active:font-medium
-        overflow-hidden text-ellipsis
-      `,
+      rounded px-3 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
+      font-normal !leading-none normal-case text-gray-900
+      hover:bg-gray-100
+      overflow-hidden text-ellipsis
+    `,
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
       },
       disabled: {
         true: "pointer-events-none",
@@ -45,7 +45,7 @@ export default /*tw*/ {
     },
   },
   optionHighlight: "bg-gray-100",
-  optionSelected: "bg-gray-200 font-medium",
+  optionSelected: "font-bold",
   optionItem: "group/item block",
   optionContent: "overflow-hidden text-ellipsis",
   addTitleWrapper: `

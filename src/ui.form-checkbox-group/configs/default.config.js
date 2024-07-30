@@ -1,7 +1,16 @@
 export default /*tw*/ {
   label: "{ULabel}",
-  list: "ml-4 flex flex-col gap-4 relative",
   checkbox: "{UCheckbox}",
+  list: {
+    base: "flex flex-col",
+    variants: {
+      size: {
+        sm: "gap-1.5 mt-1",
+        md: "gap-2 mt-1.5",
+        lg: "gap-2.5 mt-2",
+      },
+    },
+  },
   defaultVariants: {
     color: "brand",
     size: "md",

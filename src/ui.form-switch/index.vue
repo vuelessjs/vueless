@@ -64,7 +64,7 @@ const props = defineProps({
 
   /**
    * Label alignment.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, left, right
    */
   labelAlign: {
     type: String,

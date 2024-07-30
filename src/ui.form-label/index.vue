@@ -94,12 +94,20 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * Label placement.
+   * @values top, topInside, topWithDesc, left, right
    */
   align: {
     type: String,
     default: UIService.get(defaultConfig, ULabel).default.align,
+  },
+
+  /**
+   * Centre label.
+   */
+  centred: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULabel).default.centred,
   },
 
   /**
