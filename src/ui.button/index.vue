@@ -27,7 +27,13 @@
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
-          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" :color="componentColor" />
+          <UIcon
+            v-if="iconLeft"
+            :name="iconLeft"
+            :size="iconSize"
+            :color="componentColor"
+            internal
+          />
         </slot>
       </div>
 
@@ -59,7 +65,13 @@
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
-          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" :color="componentColor" />
+          <UIcon
+            v-if="iconRight"
+            :name="iconRight"
+            :size="iconSize"
+            :color="componentColor"
+            internal
+          />
         </slot>
       </div>
     </template>

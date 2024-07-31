@@ -22,7 +22,7 @@ export default /*tw*/ {
       },
       error: {
         true: `
-          hover:bg-red-300 border-red-300
+          border-red-300
           hover:border-red-400 hover:focus-within:border-red-500
           focus-within:border-red-500 focus-within:ring-red-100
         `,
@@ -47,7 +47,7 @@ export default /*tw*/ {
       },
       error: {
         true: `
-        bg-red-50 border-red-900 hover:border-red-400 focus:border-red-500 focus:ring-red-100
+        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-100
         focus-within:border-red-500 focus-within:ring-red-100
       `,
       },

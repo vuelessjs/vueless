@@ -5,13 +5,13 @@
       :id="id"
       ref="inputRef"
       v-model="userFormatDate"
-      :label="label"
-      :placeholder="placeholder"
-      :error="error"
-      :description="description"
-      readonly
-      :disabled="disabled"
       :size="size"
+      :label="label"
+      :disabled="disabled"
+      :placeholder="placeholder"
+      :description="description"
+      :error="error"
+      readonly
       v-bind="inputAttrs"
       @focus="activate"
     >
@@ -19,8 +19,8 @@
         <slot name="left" />
       </template>
 
-      <template #right-icon>
-        <slot name="right-icon" />
+      <template #icon-right>
+        <slot name="icon-right" />
       </template>
 
       <template #right>
@@ -36,21 +36,20 @@
         :disabled="disabled"
         variant="thirdary"
         filled
+        :icon-left="config.prevIconName"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
-      >
-        <UIcon internal interactive size="sm" :name="config.prevIconName" v-bind="prevIconAttrs" />
-      </UButton>
+      />
 
       <UButton
         :id="id"
         ref="buttonRef"
         square
+        filled
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
         variant="thirdary"
-        filled
         v-bind="buttonAttrs"
         @click="activate"
       />
@@ -58,15 +57,14 @@
       <UButton
         ref="buttonNextRef"
         square
+        filled
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        filled
+        :icon-left="config.nextIconName"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('next')"
-      >
-        <UIcon internal interactive size="sm" :name="config.nextIconName" v-bind="nextIconAttrs" />
-      </UButton>
+      />
     </div>
 
     <Transition v-bind="config.menuTransition">
@@ -82,12 +80,11 @@
           <UButton
             v-for="periodButton in periods"
             :key="periodButton.name"
-            :label="periodButton.title"
-            variant="thirdary"
-            size="xs"
             square
             filled
-            color="brand"
+            size="xs"
+            variant="thirdary"
+            :label="periodButton.title"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(periodButton.name))"
             @click="onClickPeriodButton(periodButton.name)"
           />
@@ -96,9 +93,10 @@
         <div v-bind="periodsRowAttrs">
           <UButton
             v-if="customRangeButton.range.to && customRangeButton.range.from"
-            variant="thirdary"
+            square
             filled
-            color="brand"
+            size="xs"
+            variant="thirdary"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
             @click="onClickCustomRangeButton"
           >
@@ -107,62 +105,51 @@
           </UButton>
 
           <UButton
-            variant="thirdary"
-            size="xs"
+            square
             filled
-            color="brand"
+            size="xs"
+            variant="thirdary"
+            :label="locale.ownRange"
+            :icon-left="config.periodButtonIconName"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
-          >
-            <UIcon
-              internal
-              :name="config.periodButtonIconName"
-              size="xs"
-              v-bind="periodButtonIconAttrs"
-            />
-            {{ locale.ownRange }}
-          </UButton>
+          />
         </div>
 
         <template v-if="!isPeriod.ownRange && !isPeriod.custom">
           <div v-bind="rangeSwitchWrapperAttrs">
-            <UButton size="sm" color="brand" variant="thirdary" square>
-              <UIcon
-                internal
-                interactive
-                size="sm"
-                color="gray"
-                :name="config.prevIconName"
-                v-bind="prevIconAttrs"
-                @click="onClickShiftDatesList('prev')"
-              />
-            </UButton>
+            <UButton
+              square
+              size="xs"
+              color="gray"
+              variant="thirdary"
+              :icon-left="config.prevIconName"
+              v-bind="rangeSwitchButtonAttrs"
+              @click="onClickShiftDatesList('prev')"
+            />
 
             <div v-bind="rangeSwitchTitleAttrs">
               {{ rangeSwitchTitle }}
             </div>
 
-            <UButton size="sm" color="brand" variant="thirdary" square>
-              <UIcon
-                internal
-                interactive
-                size="sm"
-                color="gray"
-                :name="config.nextIconName"
-                v-bind="nextIconAttrs"
-                @click="onClickShiftDatesList('next')"
-              />
-            </UButton>
+            <UButton
+              square
+              size="xs"
+              color="gray"
+              variant="thirdary"
+              :icon-left="config.nextIconName"
+              v-bind="rangeSwitchButtonAttrs"
+              @click="onClickShiftDatesList('next')"
+            />
           </div>
 
           <div v-bind="periodDateListAttrs(getPeriodDateListClasses())">
             <UButton
               v-for="date in periodDateList"
               :key="date.title"
-              :disabled="isDatePeriodOutOfRange(date)"
-              variant="thirdary"
-              color="brand"
               size="sm"
+              variant="thirdary"
+              :disabled="isDatePeriodOutOfRange(date)"
               v-bind="periodDateAttrs(getPeriodDateClasses(date))"
               :label="String(date.title)"
               @click="selectDate(date), toggleMenu()"
@@ -175,7 +162,7 @@
             ref="rangeInputStartRef"
             v-model="rangeStart"
             :error="inputRangeFromError"
-            size="sm"
+            size="md"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
@@ -185,14 +172,14 @@
             ref="rangeInputEndRef"
             v-model="rangeEnd"
             :error="inputRangeToError"
-            size="sm"
+            size="md"
             v-bind="rangeInputAttrs"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
           />
         </div>
 
-        <div v-bind="inputRangeErrorAttrs">
+        <div v-if="inputRangeToError || inputRangeFromError" v-bind="inputRangeErrorAttrs">
           {{ inputRangeToError || inputRangeFromError }}
         </div>
 
@@ -216,7 +203,6 @@
 import { computed, watch, ref, nextTick } from "vue";
 import { merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 import UCalendar from "../ui.form-calendar";
@@ -469,12 +455,10 @@ const {
   menuAttrs,
   periodsRowAttrs,
   periodButtonAttrs,
-  periodButtonIconAttrs,
-  rangeSwitchWrapperAttrs,
-  nextIconAttrs,
-  prevIconAttrs,
   periodDateAttrs,
   periodDateListAttrs,
+  rangeSwitchWrapperAttrs,
+  rangeSwitchButtonAttrs,
   rangeSwitchTitleAttrs,
   buttonWrapperAttrs,
   buttonAttrs,

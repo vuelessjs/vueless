@@ -85,7 +85,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
+            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
           </slot>
         </span>
 
@@ -196,7 +196,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
-            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
+            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
           </slot>
         </span>
       </div>
