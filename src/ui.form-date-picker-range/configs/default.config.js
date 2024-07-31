@@ -1,9 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative",
   input: "{UInput}",
-  inputFocus: {
-    block: "ring-4 ring-brand-700 ring-opacity-20 border-brand-500 hover:border-brand-500",
-  },
   buttonWrapper: `
     flex rounded-lg max-md:justify-between
     focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
