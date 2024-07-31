@@ -23,15 +23,15 @@
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
 
-      <!-- @slot Default slot. -->
-      <slot>
-        <UText
-          v-if="hasSlotContent($slots.default) || html"
-          v-bind="bodyAttrs"
-          :size="size"
-          :html="html"
-        />
-      </slot>
+      <UText
+        v-if="hasSlotContent($slots.default) || html"
+        v-bind="bodyAttrs"
+        :size="size"
+        :html="html"
+      >
+        <!-- @slot Use it to add something instead of the text. -->
+        <slot />
+      </UText>
 
       <UButton
         v-if="closable"

@@ -4,7 +4,6 @@ import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
 import UGroup from "../ui.container-group";
 import UIcon from "../ui.image-icon";
-import UText from "../ui.text-block";
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
@@ -20,18 +19,16 @@ export default {
 };
 
 const defaultTemplate = `
-  <UText size="size">
-    <p>
-      <b>Please note that your session is about to expire </b>
-      <u>in 5 minutes,</u>
-      <em> so make sure to save your work to avoid any data loss. </em>
-      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-    </p>
-  </UText>
+  <p>
+    <b>Please note that your session is about to expire </b>
+    <u>in 5 minutes,</u>
+    <em> so make sure to save your work to avoid any data loss. </em>
+    <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+  </p>
 `;
 
 const DefaultTemplate = (args) => ({
-  components: { UAlert, UIcon, UText },
+  components: { UAlert, UIcon },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
@@ -45,7 +42,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SlotTemplate = (args) => ({
-  components: { UAlert, UIcon, UText },
+  components: { UAlert, UIcon },
   setup() {
     return { args };
   },
@@ -188,19 +185,17 @@ export const list = DefaultTemplate.bind({});
 list.args = {
   template: `
       <URow>
-        <UText>
-          <ul>
-            <li>Check your email for verification link.</li>
-            <li>Update your password regularly to enhance security.</li>
-            <li>Enable two-factor authentication for added protection.</li>
-          </ul>
+        <ul>
+          <li>Check your email for verification link.</li>
+          <li>Update your password regularly to enhance security.</li>
+          <li>Enable two-factor authentication for added protection.</li>
+        </ul>
 
-          <ol>
-            <li>Sign in to your account using your credentials.</li>
-            <li>Navigate to the settings menu to update your profile.</li>
-            <li>Review your privacy settings and adjust them as needed.</li>
-          </ol>
-        </UText>
+        <ol>
+          <li>Sign in to your account using your credentials.</li>
+          <li>Navigate to the settings menu to update your profile.</li>
+          <li>Review your privacy settings and adjust them as needed.</li>
+        </ol>
       </URow>
     `,
 };

@@ -15,7 +15,7 @@ export default /*tw*/ {
       { color: "white", variant: "thirdary", bordered: true, class: "text-gray-900 bg-white border border-gray-500" },
       { color: "grayscale", variant: "primary", class: `bg-gray-900` },
       { color: "grayscale", variant: "secondary", class: `text-gray-900 border-gray-900` },
-      { color: "grayscale", variant: "thirdary", class: `text-gray-900` },
+      { color: "grayscale", variant: "thirdary", bordered: true, class: `text-gray-900 border border-gray-500` },
     ],
   },
   body: {
