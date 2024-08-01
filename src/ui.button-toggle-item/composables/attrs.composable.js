@@ -1,9 +1,9 @@
 import { computed, toValue } from "vue";
 import useUI from "../../composable.ui";
-import { cx, cva } from "../../service.ui";
+import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
-export default function useAttrs(props, { selectedValue, separated, variant }) {
+export default function useAttrs(props, { isSelected, separated, variant }) {
   const { config, getAttrs, isSystemKey, hasSlotContent } = useUI(
     defaultConfig,
     () => props.config,
@@ -24,6 +24,7 @@ export default function useAttrs(props, { selectedValue, separated, variant }) {
           ...props,
           variant: toValue(variant),
           separated: toValue(separated),
+          selected: isSelected.value,
         });
       }
 
@@ -31,29 +32,6 @@ export default function useAttrs(props, { selectedValue, separated, variant }) {
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "button") {
-      const selectedClasses = computed(() =>
-        cva(config.value.selected)({
-          ...props,
-          variant: toValue(variant),
-          separated: toValue(separated),
-        }),
-      );
-
-      const buttonAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => {
-        const isSelected = Array.isArray(selectedValue?.value)
-          ? selectedValue?.value?.includes(props.value)
-          : selectedValue?.value === props.value;
-
-        return {
-          ...buttonAttrs.value,
-          class: cx([buttonAttrs.value.class, isSelected && selectedClasses.value]),
-        };
-      });
-    }
   }
 
   return {
