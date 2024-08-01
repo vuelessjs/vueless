@@ -9,12 +9,10 @@ export default function useAttrs(props, { isSelected, separated, variant }) {
     () => props.config,
   );
 
-  const skipKeys = ["selected"];
-
   const attrs = {};
 
   for (const key in defaultConfig) {
-    if (isSystemKey(key) || skipKeys.includes(key)) continue;
+    if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
       const value = config.value[key];

@@ -251,14 +251,8 @@ const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef);
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
   wrapperRef,
   calendarWrapperRef,
-  {
-    x: props.openDirectionX,
-    y: props.openDirectionY,
-  },
-  {
-    x: "left",
-    y: "bottom",
-  },
+  { x: props.openDirectionX, y: props.openDirectionY },
+  { x: "left", y: "bottom" },
 );
 
 defineExpose({

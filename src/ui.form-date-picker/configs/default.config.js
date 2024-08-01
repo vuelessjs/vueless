@@ -1,21 +1,20 @@
 export default /*tw*/ {
   wrapper: "relative",
-  input: "",
-  inputFocus: {
+  input: "{UInput}",
+  inputFocused: {
+    component: "{UInput}",
     block: "ring-4 ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
   },
   calendar: {
-    wrapper: {
-      component: "{UCalendar}",
-      base: "absolute z-40 my-2",
-      variants: {
-        openDirectionX: {
-          left: "left-0",
-          right: "right-0",
-        },
-        openDirectionY: {
-          top: "bottom-full mt-0",
-        },
+    component: "{UCalendar}",
+    base: "absolute z-40 my-2",
+    variants: {
+      openDirectionX: {
+        left: "left-0",
+        right: "right-0",
+      },
+      openDirectionY: {
+        top: "bottom-full mt-0",
       },
     },
   },

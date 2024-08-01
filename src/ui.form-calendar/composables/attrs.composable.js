@@ -45,6 +45,7 @@ export default function useAttrs(props) {
     }
 
     // TODO: Need to find other solution
+    // classes is not reactive here, which may cause problems in styling by `config` prop
     if (key === "day") {
       attrs[`${key}Attrs`] = (classes) => {
         return getAttrs("day", { classes }).value;

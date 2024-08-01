@@ -2,7 +2,7 @@ export default /*tw*/ {
   button: {
     component: "{UButton}",
     base: `
-    border-gray-300 font-normal
+      border-gray-300 font-normal
       hover:text-brand-600 hover:border-brand-600 hover:relative hover:z-10
       focus:text-brand-600 focus:border-brand-600 focus:relative focus:z-10 focus:ring-brand-600 focus-within:ring-brand-600
       active:text-brand-700 active:border-brand-700 active:relative active:z-10
