@@ -88,7 +88,7 @@ const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
         :key="index"
         class="border border-gray-200 rounded p-4"
       >
-        <UText>This is <b>"{{ align }}"</b> align variant.</UText>
+        <UText>This is <b>"{{ align }}"</b> label placement.</UText>
       </ULabel>
     </UGroup>
   `,
