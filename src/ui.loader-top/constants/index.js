@@ -4,5 +4,5 @@
  */
 export const ULoaderTop = "ULoaderTop";
 
-export const MAXIMUM = 97.5;
+export const MAXIMUM = 99;
 export const SPEED = 150;
