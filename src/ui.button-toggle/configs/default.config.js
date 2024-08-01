@@ -24,7 +24,8 @@ export default /*tw*/ {
     ],
   },
   label: {
-    base: "{ULabel} flex flex-wrap",
+    component: "{ULabel}",
+    base: "flex flex-wrap",
     variants: {
       block: {
         true: "w-full",
