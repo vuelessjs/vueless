@@ -8,8 +8,9 @@
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    centred
     v-bind="labelAttrs"
+    :data-cy="dataCy"
   >
     <div
       ref="wrapperRef"
@@ -587,7 +588,7 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "sm",
+    sm: "xs",
     md: "sm",
     lg: "md",
   };

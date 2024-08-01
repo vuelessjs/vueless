@@ -57,7 +57,7 @@ const props = defineProps({
 
   /**
    * Icon size.
-   * @values 3xs, 2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
+   * @values 4xs, 3xs, 2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
    */
   size: {
     type: String,

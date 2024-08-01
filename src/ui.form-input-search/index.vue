@@ -20,22 +20,46 @@
       <slot name="left" />
     </template>
 
-    <template #right>
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
+    <template #icon-left>
+      <!-- @slot Use it to add icon before the text. -->
+      <slot name="icon-left" />
+    </template>
 
-      <template v-if="!hasSlotContent($slots['right'])">
+    <template #icon-right>
+      <UIcon
+        internal
+        interactive
+        color="gray"
+        :name="config.closeIconName"
+        :data-cy="`${dataCy}-close`"
+        :size="iconSize"
+        v-bind="closeIconAttrs"
+        @click="onClickClear"
+      />
+
+      <!-- @slot Use it to add icon after the text. -->
+      <slot
+        name="icon-right"
+        :icon-name="config.searchIconName"
+        :icon-size="iconSize"
+        :search-button-label="searchButtonLabel"
+      >
         <UIcon
+          v-if="!searchButtonLabel"
           internal
           interactive
-          color="gray"
-          :name="config.closeIconName"
-          :data-cy="`${dataCy}-close`"
           :size="iconSize"
-          v-bind="closeIconAttrs"
-          @click="onClickClear"
+          :name="config.searchIconName"
+          :data-cy="`${dataCy}-search`"
+          v-bind="searchIconAttrs"
+          @click="onClickSearch"
         />
+      </slot>
+    </template>
 
+    <template #right>
+      <!-- @slot Use it to add something after the text. -->
+      <slot name="right">
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
@@ -43,19 +67,7 @@
           :data-cy="`${dataCy}-right`"
           @click="onClickSearch"
         />
-
-        <UIcon
-          v-else
-          internal
-          interactive
-          :size="iconSize"
-          color="grayscale"
-          :name="config.searchIconName"
-          :data-cy="`${dataCy}-search`"
-          v-bind="searchIconAttrs"
-          @click="onClickSearch"
-        />
-      </template>
+      </slot>
     </template>
   </UInput>
 </template>
@@ -197,8 +209,7 @@ const emit = defineEmits([
 
 const localValue = ref("");
 
-const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs, hasSlotContent } =
-  useAttrs(props);
+const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs } = useAttrs(props);
 
 const search = computed({
   get: () => props.modelValue,

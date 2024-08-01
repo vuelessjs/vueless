@@ -28,7 +28,7 @@ export default /*tw*/ {
   },
   option: {
     base: `
-      rounded px-3 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
+      rounded px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none normal-case text-gray-900
       hover:bg-gray-100
       overflow-hidden text-ellipsis

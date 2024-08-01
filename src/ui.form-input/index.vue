@@ -348,9 +348,9 @@ const {
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "sm",
-    md: "md",
-    lg: "lg",
+    sm: "xs",
+    md: "sm",
+    lg: "md",
   };
 
   return sizes[props.size];

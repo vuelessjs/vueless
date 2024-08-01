@@ -6,9 +6,9 @@ export default /*tw*/ {
     rightSlot: "pr-0",
     leftSlot: "pl-0",
   },
-  closeIcon: "{UIcon} flex h-full items-center mr-2",
+  closeIcon: "{UIcon} flex h-full items-center",
   closeIconName: "close",
-  searchIcon: "{UIcon} mr-3",
+  searchIcon: "{UIcon}",
   searchIconName: "search",
   button: "{UButton} rounded-l-none ml-1 !ring-0 outline outline-1 outline-gray-900",
   defaultVariants: {

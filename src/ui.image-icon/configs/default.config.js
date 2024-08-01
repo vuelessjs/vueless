@@ -7,6 +7,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { pill: true, size: "4xs", class: "p-0.5" },
       { pill: true, size: "3xs", class: "p-1" },
       { pill: true, size: "2xs", class: "p-1" },
       { pill: true, size: "xs", class: "p-2" },
@@ -26,6 +27,7 @@ export default /*tw*/ {
     base: "fill-current outline-0",
     variants: {
       size: {
+        "4xs": "size-2.5",
         "3xs": "size-3",
         "2xs": "size-3.5",
         xs: "size-4",
@@ -55,6 +57,7 @@ export default /*tw*/ {
   icon: {
     variants: {
       size: {
+        "4xs": "size-2.5",
         "3xs": "size-3",
         "2xs": "size-3.5",
         xs: "size-4",

@@ -2,8 +2,8 @@ export default /*tw*/ {
   label: "{ULabel} w-full",
   dropzoneWrapper: {
     base: `
-      size-auto w-full rounded-lg border border-solid border-gray-300 bg-white
-      p-3 transition hover:border-gray-400
+      p-3 size-auto w-full bg-white transition
+      rounded-lg border border-solid border-gray-300 hover:border-gray-400
     `,
     variants: {
       error: {
@@ -16,12 +16,16 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-9" },
     ],
   },
-  description: "{UText} text-gray-700",
+  descriptionTop: "{UText} text-gray-700 mb-2",
+  descriptionBottom: "{UText} text-gray-700 mt-2",
   contentWrapper: {
-    base: "relative flex w-full gap-6 justify-between items-start rounded-lg bg-brand-50 p-3",
+    base: "p-3 gap-6 w-full rounded-lg bg-brand-50 relative flex justify-between items-start",
     variants: {
       multiple: {
         false: "items-center",
+      },
+      error: {
+        true: "bg-red-50",
       },
     },
   },
@@ -36,16 +40,15 @@ export default /*tw*/ {
     },
   },
   button: "{UButton} hover:cursor-pointer",
-  chooseFileIcon: "{UIcon}",
   chooseFileIconName: "attach_file",
-  clearIcon: "{UIcon}",
+  clearButton: "{UButton}",
   clearIconName: "close",
   removeItemIcon: "{UIcon} ml-2",
   removeItemIconName: "close",
   dropzoneWrapperHover: "border-gray-400 border-dashed",
   dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",
   input: "sr-only pointer-events-none size-0 opacity-0",
-  buttonWrapper: "flex gap-4 items-center",
+  buttonWrapper: "flex gap-3 items-center",
   fileList: "{UFiles} w-full",
   i18n: {
     sizeError: "File size is too big.",

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex gap-2",
+    base: "flex gap-2 w-auto",
     variants: {
       align: {
         top: "flex-col",
@@ -17,13 +17,13 @@ export default /*tw*/ {
       { align: "right", size: "sm", class: "gap-2.5" },
       { align: "right", size: "md", class: "gap-3" },
       { align: "right", size: "lg", class: "gap-3.5" },
-      { align: "left", centred: true, class: "items-center" },
-      { align: "right", centred: true, class: "items-center" },
+      { align: "left", centred: true, class: "items-center w-auto" },
+      { align: "right", centred: true, class: "items-center w-auto" },
     ],
   },
   labelWrapper: "",
   label: {
-    base: "text-gray-900 z-10 block !leading-none",
+    base: "text-gray-900 z-10 block !leading-none w-max",
     variants: {
       size: {
         sm: "text-xs",

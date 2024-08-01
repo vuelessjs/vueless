@@ -1,7 +1,18 @@
 <template>
-  <ULabel :label="label" :align="labelAlign" :error="error" :size="size" v-bind="labelAttrs">
+  <ULabel
+    :for="id"
+    :size="size"
+    :label="label"
+    :error="error"
+    :align="labelAlign"
+    :description="description"
+    v-bind="labelAttrs"
+  >
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
-      <UText :size="nestedComponentSize" :html="description" v-bind="descriptionAttrs" />
+      <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
+        <!-- @slot Use it to add something at the top of the file block. -->
+        <slot name="top" />
+      </UText>
 
       <div v-bind="contentWrapperAttrs">
         <!-- @slot Use it to add something before the placeholder. -->
@@ -16,7 +27,7 @@
               pill
               internal
               interactive
-              size="2xs"
+              :size="removeItemIconSize"
               :name="config.removeItemIconName"
               :data-cy="`${dataCy}-remove-item`"
               v-bind="removeItemIconAttrs"
@@ -29,23 +40,15 @@
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
               filled
-              tag="label"
               :for="id"
+              tag="label"
               variant="thirdary"
-              :size="nestedComponentSize"
+              :size="buttonSize"
+              :icon-right="config.chooseFileIconName"
               :label="currentLocale.uploadFile"
               :data-cy="`${dataCy}-upload`"
               v-bind="buttonAttrs"
-            >
-              <template #right>
-                <UIcon
-                  internal
-                  :size="nestedComponentSize"
-                  :name="config.chooseFileIconName"
-                  v-bind="chooseFileIconAttrs"
-                />
-              </template>
-            </UButton>
+            />
 
             <input
               :id="id"
@@ -58,19 +61,25 @@
             />
           </template>
 
-          <UIcon
+          <UButton
             v-if="isValue"
             pill
-            internal
-            interactive
-            :size="nestedComponentSize"
-            :name="config.clearIconName"
+            square
+            filled
+            variant="thirdary"
+            :size="buttonSize"
+            :icon-left="config.clearIconName"
+            v-bind="clearButtonAttrs"
             :data-cy="`${dataCy}-clear`"
-            v-bind="clearIconAttrs"
             @click="onClickResetFiles"
           />
         </div>
       </div>
+
+      <UText v-if="hasSlotContent($slots['bottom'])" :size="size" v-bind="descriptionBottomAttrs">
+        <!-- @slot Use it to add something at the bottom of the file block. -->
+        <slot name="bottom" />
+      </UText>
     </div>
   </ULabel>
 </template>
@@ -116,7 +125,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, left, right
+   * @values top, topInside, topWithDesc
    */
   labelAlign: {
     type: String,
@@ -218,15 +227,16 @@ const {
   labelAttrs,
   buttonAttrs,
   dropzoneWrapperAttrs,
-  descriptionAttrs,
+  descriptionTopAttrs,
+  descriptionBottomAttrs,
   contentWrapperAttrs,
-  clearIconAttrs,
-  chooseFileIconAttrs,
+  clearButtonAttrs,
   placeholderAttrs,
   inputAttrs,
   fileListAttrs,
   buttonWrapperAttrs,
   removeItemIconAttrs,
+  hasSlotContent,
 } = useAttrs(props);
 
 const i18nGlobal = tm(UInputFile);
@@ -265,22 +275,32 @@ const isValue = computed(() => {
   );
 });
 
-const nestedComponentSize = computed(() => {
-  let size = "sm";
-
-  if (props.size === "sm") size = "xs";
-  if (props.size === "md") size = "sm";
-  if (props.size === "lg") size = "md";
-
-  return size;
-});
-
 const fileList = computed(() => {
   if (Array.isArray(currentFiles.value)) {
     return currentFiles.value;
   }
 
   return currentFiles.value ? [currentFiles.value] : [];
+});
+
+const removeItemIconSize = computed(() => {
+  const sizes = {
+    sm: "4xs",
+    md: "3xs",
+    lg: "2xs",
+  };
+
+  return sizes[props.size];
+});
+
+const buttonSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size];
 });
 
 onMounted(() => {
