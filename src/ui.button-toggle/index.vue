@@ -5,8 +5,9 @@
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    centred
     v-bind="labelAttrs"
+    :data-cy="dataCy"
   >
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UToggleItem directly. -->
