@@ -5,6 +5,7 @@
     v-bind="wrapperAttrs"
     @click="onClick"
   >
+    <!-- @slot Use it to add something instead of the label -->
     <slot />
 
     <div v-if="label || error || description" v-bind="labelWrapperAttrs">
@@ -40,6 +41,7 @@
       v-text="label"
     />
 
+    <!-- @slot Use it to add something instead of the label -->
     <slot />
 
     <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
@@ -86,7 +88,7 @@ const props = defineProps({
 
   /**
    * Set label size.
-   * @values xs, sm, md, lg, xl
+   * @values sm, md, lg
    */
   size: {
     type: String,
