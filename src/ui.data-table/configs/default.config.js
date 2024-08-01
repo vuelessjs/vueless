@@ -64,12 +64,14 @@ export default /*tw*/ {
   bodyCellDateSeparator: "",
   bodyCellNested: "mr-2 mt-0.5",
   bodyCellNestedExpandIcon: {
-    wrapper: "{UIcon} rounded-sm",
+    component: "{UIcon}",
+    wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedExpandIconName: "add",
   bodyCellNestedCollapseIcon: {
-    wrapper: "{UIcon} rounded-sm",
+    component: "{UIcon}",
+    wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedCollapseIconName: "remove",
