@@ -65,7 +65,7 @@ export default function useAttrs(
         ]);
 
         return {
-          ...stickyHeaderAttrs,
+          ...stickyHeaderAttrs.value,
           class: cx([
             isShownActionsHeader.value && actionHeaderClasses,
             isShownActionsHeader.value && isHeaderSticky.value && actionHeaderStickyClasses,
@@ -115,7 +115,7 @@ export default function useAttrs(
       const headerCellAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...headerCellAttrs,
+        ...headerCellAttrs.value,
         class: cx([headerCellGeneralClasses.value, headerCellAttrs.value.class, classes]),
       }));
     }
@@ -124,7 +124,7 @@ export default function useAttrs(
       const bodyCellAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...bodyCellAttrs,
+        ...bodyCellAttrs.value,
         class: cx([bodyCellClasses.value, bodyCellAttrs.value.class, classes]),
       }));
     }
@@ -151,7 +151,7 @@ export default function useAttrs(
       const bodyRowAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => (row) => ({
-        ...bodyRowAttrs,
+        ...bodyRowAttrs.value,
         class: cx([bodyRowAttrs.value.class, row]),
       }));
     }
