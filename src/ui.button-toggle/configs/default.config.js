@@ -1,4 +1,13 @@
 export default /*tw*/ {
+  label: {
+    component: "{ULabel}",
+    base: "flex flex-wrap",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
+  },
   items: {
     base: "flex flex-wrap",
     variants: {
@@ -13,8 +22,8 @@ export default /*tw*/ {
       separated: {
         false: `
           flex-nowrap -space-x-px gap-0
-          [&>:first-child]:rounded-l-lg  [&>:last-child]:rounded-r-lg
-          [&>:first-child>*>*]:rounded-l-lg  [&>:last-child>*>*]:rounded-r-lg
+          [&>:first-child]:rounded-l-lg [&>:last-child]:rounded-r-lg
+          [&>:first-child>*>*]:rounded-l-lg [&>:last-child>*>*]:rounded-r-lg
         `,
       },
     },
@@ -22,14 +31,6 @@ export default /*tw*/ {
       { separated: false, variant: "thirdary", class: "space-x-px" },
       { separated: false, multiple: true, class: "space-x-px" },
     ],
-  },
-  label: {
-    base: "{ULabel} flex flex-wrap",
-    variants: {
-      block: {
-        true: "w-full",
-      },
-    },
   },
   item: "{UToggleItem}",
   defaultVariants: {

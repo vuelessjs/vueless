@@ -5,8 +5,9 @@
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    centred
     v-bind="labelAttrs"
+    :data-cy="dataCy"
   >
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UToggleItem directly. -->
@@ -223,15 +224,15 @@ function updateSelectedValue(value, checked) {
   }
 }
 
-provide("toggleType", readonly(type));
-provide("togglePill", () => props.pill);
-provide("toggleName", () => props.name);
-provide("toggleSize", () => props.size);
-provide("toggleBlock", () => props.block);
-provide("toggleSquare", () => props.square);
-provide("toggleVariant", () => props.variant);
-provide("toggleDisabled", () => props.disabled);
-provide("toggleSeparated", () => props.separated);
+provide("getToggleName", () => props.name);
+provide("getToggleType", () => type.value);
+provide("getToggleSize", () => props.size);
+provide("getTogglePill", () => props.pill);
+provide("getToggleBlock", () => props.block);
+provide("getToggleSquare", () => props.square);
+provide("getToggleVariant", () => props.variant);
+provide("getToggleDisabled", () => props.disabled);
+provide("getToggleSeparated", () => props.separated);
 
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
