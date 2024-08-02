@@ -5,11 +5,11 @@
     color="grayscale"
     variant="secondary"
     :label="label"
-    :size="toValue(size)"
-    :pill="toValue(pill)"
-    :block="toValue(block)"
-    :square="toValue(square)"
-    :disabled="toValue(disabled)"
+    :size="getToggleSize()"
+    :pill="getTogglePill()"
+    :block="getToggleBlock()"
+    :square="getToggleSquare()"
+    :disabled="getToggleDisabled()"
     v-bind="buttonAttrs"
     @click="onClickSetValue"
   >
@@ -22,12 +22,13 @@
       <input
         :id="id"
         v-model="selectedItem"
-        :name="name"
-        :type="type"
+        :name="getToggleName()"
+        :type="getToggleType()"
         :value="value"
-        :disabled="toValue(disabled)"
+        :disabled="getToggleDisabled()"
         v-bind="inputAttrs"
       />
+      {{ label }}
       <!-- @slot Use it to add something instead of the text. -->
       <slot name="default" />
     </template>
@@ -40,7 +41,7 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref, toValue } from "vue";
+import { computed, inject, onMounted, ref } from "vue";
 
 import UButton from "../ui.button";
 import UIService, { getRandomId } from "../service.ui";
@@ -121,37 +122,44 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const name = inject("toggleName", () => "toggle");
-const type = inject("toggleType", UIService.get(defaultConfig, UToggleItem).default.type);
-const size = inject("toggleSize", UIService.get(defaultConfig, UToggleItem).default.size);
-const pill = inject("togglePill", UIService.get(defaultConfig, UToggleItem).default.pill);
-const block = inject("toggleBlock", UIService.get(defaultConfig, UToggleItem).default.block);
-const square = inject("toggleSquare", UIService.get(defaultConfig, UToggleItem).default.square);
-const variant = inject("toggleVariant", UIService.get(defaultConfig, UToggleItem).default.variant);
-const separated = inject("toggleSeparated", () => true);
-// eslint-disable-next-line vue/no-dupe-keys, prettier/prettier
-const disabled = inject("toggleDisabled", props.disabled || UIService.get(defaultConfig, UToggleItem).default.disabled);
+/* eslint-disable prettier/prettier, vue/max-len */
+const getToggleName = inject("getToggleName", () => "toggle");
+const getToggleType = inject("getToggleType", () => UIService.get(defaultConfig, UToggleItem).default.type);
+const getToggleSize = inject("getToggleSize", () => UIService.get(defaultConfig, UToggleItem).default.size);
+const getTogglePill = inject("getTogglePill", () => UIService.get(defaultConfig, UToggleItem).default.pill);
+const getToggleBlock = inject("getToggleBlock", () => UIService.get(defaultConfig, UToggleItem).default.block);
+const getToggleSquare = inject("getToggleSquare", () => UIService.get(defaultConfig, UToggleItem).default.square);
+const getToggleVariant = inject("getToggleVariant",() => UIService.get(defaultConfig, UToggleItem).default.variant);
+const getToggleSeparated = inject("getToggleSeparated", () => true);
+const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || UIService.get(defaultConfig, UToggleItem).default.disabled);
+/* eslint-enaable prettier/prettier, vue/max-len */
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
 const selectedItem = ref("");
 
-const { buttonAttrs, inputAttrs } = useAttrs(props, { selectedValue, separated, variant });
+const isSelected = computed(() => {
+  return Array.isArray(selectedValue?.value)
+    ? selectedValue?.value?.includes(props.value)
+    : selectedValue?.value === props.value;
+});
+
+const { buttonAttrs, inputAttrs } = useAttrs(props, {
+  isSelected,
+  separated: getToggleSeparated,
+  variant: getToggleVariant
+});
 
 onMounted(() => {
-  if (type.value === TYPE_RADIO) {
-    selectedItem.value = selectedValue ? selectedValue.value : selectedItem.value;
-  } else {
-    selectedItem.value = selectedValue
-      ? selectedValue.value.includes(props.value)
-      : selectedItem.value;
-  }
+  selectedItem.value = getToggleType() === TYPE_RADIO
+  ? selectedValue?.value || selectedItem.value
+  : selectedValue?.value?.includes(props.value) || selectedItem.value;
 });
 
 function onClickSetValue() {
-  if (type.value === TYPE_RADIO) {
-    selectedItem.value = props.value;
-  }
+  selectedItem.value = getToggleType() === TYPE_RADIO 
+  ? props.value 
+  : selectedValue?.value?.includes(props.value) || selectedItem.value;
 
   updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);
 

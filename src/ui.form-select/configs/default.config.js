@@ -1,20 +1,15 @@
 export default /*tw*/ {
-  label: "{ULabel} w-full relative",
+  label: "{ULabel}",
   labelWrapperTop: "group/top", // applies when an open direction is top
   labelWrapperActive: "group/active",
   wrapper: {
     base: `
-      pb-2 pt-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-lg border border-gray-300 bg-white
+      py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
+      rounded-md border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,
     variants: {
-      size: {
-        sm: "pt-2 pb-1.5",
-        md: "pt-2.5 pb-1.5",
-        lg: "pt-3 pb-2",
-      },
       error: {
         true: `
           border-red-300 hover:border-red-300
@@ -29,6 +24,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { labelAlign: "topInside", label: true, class: "rounded-lg" },
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
       { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
@@ -36,7 +32,7 @@ export default /*tw*/ {
   },
   wrapperActive: "z-[inherit]", // applies when select active
   innerWrapper: {
-    base: "flex px-4 min-h-full w-full overflow-hidden justify-between",
+    base: "px-3 flex min-h-full w-full overflow-hidden justify-between",
     variants: {
       multiple: {
         true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
@@ -51,9 +47,9 @@ export default /*tw*/ {
       `,
     variants: {
       size: {
-        sm: "text-sm min-h-4",
-        md: "text-base min-h-5",
-        lg: "text-lg min-h-6",
+        sm: "text-xs min-h-4",
+        md: "text-sm min-h-5",
+        lg: "text-base min-h-6",
       },
       disabled: {
         true: "bg-gray-100",
@@ -63,9 +59,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { size: "sm", multiple: true, class: "text-sm" },
-      { size: "md", multiple: true, class: "text-base" },
-      { size: "lg", multiple: true, class: "text-lg" },
+      { size: "sm", multiple: true, class: "text-xs" },
+      { size: "md", multiple: true, class: "text-sm" },
+      { size: "lg", multiple: true, class: "text-base" },
     ],
   },
   leftIcon: "pr-3 flex items-center",
@@ -90,12 +86,11 @@ export default /*tw*/ {
   clearMultipleIcon: "{UIcon}",
   clearMultipleIconName: "close_small",
   clearMultipleTextAll: {
-    // TODO: clearMultiple is better
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
-      { size: "sm", class: "text-sm" },
-      { size: "md", class: "text-base" },
-      { size: "lg", class: "text-lg" },
+      { size: "sm", class: "text-xs" },
+      { size: "md", class: "text-sm" },
+      { size: "lg", class: "text-base" },
     ],
   },
   search: "flex w-fit",
@@ -107,9 +102,9 @@ export default /*tw*/ {
       `,
     variants: {
       size: {
-        sm: "text-sm placeholder:text-sm",
-        md: "text-base placeholder:text-base",
-        lg: "text-lg placeholder:text-lg",
+        sm: "text-xs placeholder:text-xs",
+        md: "text-sm placeholder:text-sm",
+        lg: "text-base placeholder:text-base",
       },
     },
   },

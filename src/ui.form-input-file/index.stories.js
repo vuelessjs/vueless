@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, allSlotsFragment, getSlotNames } from "../service.storybook";
 
 import UInputFile from "../ui.form-input-file";
 import URow from "../ui.container-row";
@@ -19,9 +19,11 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UInputFile, URow },
+  components: { UInputFile },
   setup() {
-    return { args };
+    const slots = getSlotNames(UInputFile.name);
+
+    return { args, slots };
   },
   data() {
     return {
@@ -30,13 +32,13 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <URow>
-      <UInputFile
-        v-bind="args"
-        v-model="files"
-        v-model:error="error"
-      />
-    </URow>
+    <UInputFile
+      v-bind="args"
+      v-model="files"
+      v-model:error="error"
+    >
+      ${allSlotsFragment}
+    </UInputFile>
   `,
 });
 
@@ -52,7 +54,7 @@ const SlotTemplate = (args) => ({
     };
   },
   template: `
-    <UInputFile 
+    <UInputFile
       v-bind="args"
       v-model="files"
       v-model:error="error"

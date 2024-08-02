@@ -15,7 +15,7 @@
           :id="id"
           :name="name"
           :size="size"
-          color="grayscale"
+          color="gray"
           :checked="selectedItem === ''"
           :disabled="disabled"
           v-bind="unselectedRadioAttrs"
@@ -108,7 +108,7 @@ const props = defineProps({
 
   /**
    * Color picker size.
-   * @values xs, sm, md, lg, xl
+   * @values sm, md, lg
    */
   size: {
     type: String,

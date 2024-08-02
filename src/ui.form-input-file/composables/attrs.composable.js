@@ -5,7 +5,10 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, isSystemKey, hasSlotContent } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const attrs = {};
 
   for (const key in defaultConfig) {
@@ -31,5 +34,6 @@ export default function useAttrs(props) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }

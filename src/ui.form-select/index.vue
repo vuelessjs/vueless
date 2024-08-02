@@ -8,8 +8,9 @@
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    centred
     v-bind="labelAttrs"
+    :data-cy="dataCy"
   >
     <div
       ref="wrapperRef"
@@ -85,7 +86,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
+            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
           </slot>
         </span>
 
@@ -196,7 +197,7 @@
             @binding {string} icon-size
           -->
           <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
-            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
+            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
           </slot>
         </span>
       </div>
@@ -303,7 +304,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
     type: String,
@@ -587,8 +588,8 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "sm",
-    md: "md",
+    sm: "xs",
+    md: "sm",
     lg: "md",
   };
 

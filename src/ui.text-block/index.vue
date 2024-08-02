@@ -27,7 +27,7 @@ const props = defineProps({
 
   /**
    * Text size.
-   * @values xs, sm, md, lg
+   * @values sm, md, lg
    */
   size: {
     type: String,

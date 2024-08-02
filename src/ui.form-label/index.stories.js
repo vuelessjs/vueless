@@ -1,7 +1,8 @@
 import ULabel from "../ui.form-label";
 import URow from "../ui.container-row";
-import UButton from "../ui.button/index";
-import UBadge from "../ui.text-badge";
+import UGroup from "../ui.container-group";
+import UText from "../ui.text-block";
+import UIcon from "../ui.image-icon";
 
 import { getArgTypes } from "../service.storybook";
 
@@ -21,30 +22,35 @@ export default {
   },
 };
 
-const DefaultTemplate = (args) => ({
-  components: { ULabel },
-  setup() {
-    return { args };
-  },
-  template: `
-    <ULabel v-bind="args" />
-  `,
-});
+const message = "This is plain text";
 
-const SlotTemplate = (args) => ({
-  components: { ULabel, UBadge },
+const DefaultTemplate = (args) => ({
+  components: { ULabel, UText },
   setup() {
     return { args };
   },
   template: `
     <ULabel v-bind="args">
+      <UText v-bind="args">${message}</UText>
+    </ULabel>
+  `,
+});
+
+const SlotTemplate = (args) => ({
+  components: { ULabel, UText, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <ULabel v-bind="args">
+      <UText v-bind="args">${message}</UText>
       ${args.slotTemplate}
     </ULabel>
   `,
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { ULabel, URow },
+  components: { ULabel, URow, UText },
   setup() {
     return {
       args,
@@ -58,30 +64,33 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         v-bind="args"
         :size="size"
         :key="index"
-      />
+      >
+        <UText :size="size">This is <b>"{{ size }}"</b> size.</UText>
+      </ULabel>
     </URow>
   `,
 });
 
-const placementTemplate = (args, { argTypes } = {}) => ({
-  components: { ULabel, URow, UButton },
+const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
+  components: { ULabel, UGroup, UText },
   setup() {
     return {
       args,
-      placements: argTypes.placement.options,
+      placements: argTypes.align.options,
     };
   },
   template: `
-    <URow>
+    <UGroup>
       <ULabel
-        v-for="(placement, index) in placements"
+        v-for="(align, index) in placements"
         v-bind="args"
-        :align="placement"
+        :align="align"
         :key="index"
+        class="border border-gray-200 rounded p-4"
       >
-        <UButton text="Button"/>
+        <UText>This is <b>"{{ align }}"</b> label placement.</UText>
       </ULabel>
-    </URow>
+    </UGroup>
   `,
 });
 
@@ -91,11 +100,11 @@ Default.args = {};
 export const Sizes = SizesTemplate.bind({});
 Sizes.args = {};
 
-export const Placement = placementTemplate.bind({});
-Placement.args = {};
+export const LabelPlacement = LabelPlacementTemplate.bind({});
+LabelPlacement.args = {};
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { error: "some error" };
+Error.args = { error: "Error description" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -104,7 +113,7 @@ export const slotFooter = SlotTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>
-      <UBadge label="favourite" color="green" size="sm" />
+      <UIcon name="star" color="green" />
     </template>
   `,
 };

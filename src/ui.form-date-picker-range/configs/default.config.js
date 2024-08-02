@@ -1,17 +1,16 @@
 export default /*tw*/ {
   wrapper: "relative",
   input: "{UInput}",
-  inputFocus: {
-    block: "ring-4 ring-brand-700 ring-opacity-20 border-brand-500 hover:border-brand-500",
-  },
   buttonWrapper: `
     flex rounded-lg max-md:justify-between
     focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  button: "{UButton} shrink-0 grow rounded-none focus:ring-0",
+  button: "{UButton} shrink-0 grow rounded-none !ring-0",
   buttonActive: "ring-0",
   buttonWrapperActive: "ring-4 ring-brand-700 ring-opacity-20",
   shiftRangeButton: "focus:ring-0 last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none",
+  nextIconName: "keyboard_arrow_right",
+  prevIconName: "keyboard_arrow_left",
   menu: {
     base: "absolute z-40 my-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
     variants: {
@@ -33,19 +32,12 @@ export default /*tw*/ {
     leaveToClass: "opacity-0 scale-95",
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
-  periodButton: `
-    {UButton} h-[3.125rem] w-full flex flex-col items-center justify-center
-    [&_span]:block [&_span]:font-normal [&_span]:text-brand-500
-  `,
-  periodButtonIcon: "{UIcon}",
+  periodButton: "{UButton} h-[3.125rem] w-full !ring-0",
   periodButtonIconName: "apps",
-  periodButtonActive: "bg-gray-200",
-  rangeSwitchWrapper: "mb-2.5 mt-4 flex items-center justify-between py-2",
+  periodButtonActive: "!bg-opacity-20",
+  rangeSwitchWrapper: "flex items-center justify-between py-2",
+  rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-sm",
-  nextIcon: "{UIcon}",
-  nextIconName: "keyboard_arrow_right",
-  prevIcon: "{UIcon}",
-  prevIconName: "keyboard_arrow_left",
   periodDateList: "",
   periodDateMonthList: "grid grid-cols-3 grid-rows-1 gap-0.5",
   periodDateWeekList: "",
@@ -53,25 +45,24 @@ export default /*tw*/ {
   periodDateQuarterList: "",
   periodDate: "w-full",
   periodDateActive: "bg-gray-100",
-  rangeInputWrapper: "flex mt-4",
+  rangeInputWrapper: "flex mt-4 -space-x-px",
   rangeInput: {
-    block: `focus-within:z-10 group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none`,
+    component: "{UInput}",
     label: {
-      wrapper: "group/range-input-wrapper",
+      component: "{ULabel}",
+      wrapper: "group/range-input-wrapper w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    input: {
-      base: "{UInput} text-sm border-brand-100 px-4 py-2.5",
-      variants: {
-        size: {
-          md: "pt-2.5 pb-2.5",
-        },
-      },
-    },
+    block: `
+      focus-within:z-10 focus-within:ring-0
+      group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none
+    `,
+    input: "group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none",
   },
-  inputRangeError: "text-xs font-normal !leading-none mt-2 text-center text-red-500",
+  inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
-    wrapper: "{UCalendar} p-0 mt-2 w-full border-none shadow-none",
+    component: "{UCalendar}",
+    wrapper: "p-0 mt-2 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
     navigationSwitchViewButton: "rounded-lg px-3",
     day: "w-full h-10 mb-0.5",

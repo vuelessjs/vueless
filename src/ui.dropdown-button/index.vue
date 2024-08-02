@@ -14,7 +14,7 @@
       v-bind="buttonAttrs"
       @click="onClickButton"
     >
-      <template #right>
+      <template #icon-right>
         <UIcon
           v-if="!noIcon"
           internal
@@ -114,7 +114,7 @@ const props = defineProps({
 
   /**
    * Button size.
-   * @values sm, md, lg
+   * @values 2xs, xs, sm, md, lg, xl
    */
   size: {
     type: String,
@@ -250,9 +250,12 @@ const iconColor = computed(() => {
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "xs",
+    "2xs": "xs",
+    xs: "xs",
+    sm: "sm",
     md: "sm",
     lg: "md",
+    xl: "md",
   };
 
   return sizes[props.size];

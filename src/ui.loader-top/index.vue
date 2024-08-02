@@ -201,15 +201,17 @@ function increase(amount) {
 
   if (currentProgress < 100 && typeof amount !== "number") {
     if (currentProgress >= 0 && currentProgress < 25) {
-      amount = Math.random() * 3 + 3;
+      amount = 4;
     } else if (currentProgress >= 25 && currentProgress < 50) {
-      amount = Math.random() * 3;
-    } else if (currentProgress >= 50 && currentProgress < 85) {
-      amount = Math.random() * 2;
-    } else if (currentProgress >= 85 && currentProgress < 99) {
+      amount = 3;
+    } else if (currentProgress >= 50 && currentProgress < 75) {
+      amount = 2;
+    } else if (currentProgress >= 75 && currentProgress < 90) {
+      amount = 1;
+    } else if (currentProgress >= 90 && currentProgress < 95) {
       amount = 0.5;
     } else {
-      amount = 0;
+      amount = 0.05;
     }
   }
 

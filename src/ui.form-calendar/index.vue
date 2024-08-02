@@ -12,8 +12,8 @@
           square
           variant="thirdary"
           v-bind="navigationSwitchViewButtonAttrs"
-          @click="onClickViewSwitch"
           @mousedown.prevent.capture
+          @click="onClickViewSwitch"
         >
           <span v-if="isCurrentView.day" v-bind="dayViewSwitchLabelAttrs">
             <span v-bind="dayViewSwitchLabelMonthAttrs" v-text="viewSwitchLabel.month" />

@@ -265,7 +265,7 @@ const wrapperHeight = computed(() => {
     .map((el) => el.getBoundingClientRect().height)
     .reduce((acc, cur) => acc + cur, 0);
 
-  return props.visibleOptions === undefined ? "auto" : `${maxHeight}px`;
+  return props.visibleOptions === undefined ? "auto" : `${maxHeight + 10}px`;
 });
 
 function onClickAddOption() {

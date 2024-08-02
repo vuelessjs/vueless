@@ -31,6 +31,7 @@ const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
   strategy: "strategy",
   safelist: "safelist",
+  component: "component",
   safelistColors: "safelistColors",
   defaultVariants: "defaultVariants",
   compoundVariants: "compoundVariants",
@@ -71,7 +72,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
   });
 
   function getAttrs(configKey, options) {
-    const nestedComponent = options?.isComponent || getNestedComponent(defaultConfig[configKey]); // TODO: Remove `options?.isComponent` when all `attrs.composable.js` will be migranted
+    const nestedComponent = getNestedComponent(defaultConfig[configKey]);
 
     const attrs = useAttrs();
     const isDev = import.meta.env.DEV;
@@ -91,7 +92,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
     watch(config, updateVuelessAttrs, { immediate: true });
     watch(props, updateVuelessAttrs);
-    options?.classes && watch(options?.classes, updateVuelessAttrs);
+    options?.classes?.value && watch(options?.classes, updateVuelessAttrs);
 
     function updateVuelessAttrs() {
       const configKeyValue = config.value[configKey];
@@ -206,6 +207,7 @@ function mergeConfigs({
     i18n,
     strategy,
     safelist,
+    component,
     safelistColors,
     defaultVariants,
     compoundVariants,
@@ -215,13 +217,20 @@ function mergeConfigs({
 
   for (let key in composedConfig) {
     if (isGlobalConfig || isPropsConfig) {
-      if (key === strategy) {
-        config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
-      } else if (key === safelist || key === safelistColors) {
+      if (key === safelist || key === safelistColors) {
         if (propsConfig[key]) {
           // eslint-disable-next-line no-console
           console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
         }
+      } else if (key === component) {
+        config[key] = propsConfig[key] || defaultConfig[key];
+
+        if (globalConfig[key]) {
+          // eslint-disable-next-line no-console
+          console.warn(`Passing '${key}' key in 'config' prop or by global config is not allowed.`);
+        }
+      } else if (key === strategy) {
+        config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
       } else if (key === defaultVariants) {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
       } else if (key === compoundVariants) {
@@ -391,7 +400,8 @@ function getBaseClasses(value) {
  */
 function getNestedComponent(value) {
   const classes = getBaseClasses(value);
-  const match = classes.match(nestedComponentRegEx);
+  const component = value?.component || "";
+  const match = classes.match(nestedComponentRegEx) || component.match(nestedComponentRegEx);
 
   return match ? match[1] : "";
 }

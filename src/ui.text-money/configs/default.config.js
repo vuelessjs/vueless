@@ -23,14 +23,13 @@ export default /*tw*/ {
   sum: {
     variants: {
       size: {
-        xs: "text-xs",
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
-        xl: "text-xl",
-        "2xl": "text-2xl",
-        "3xl": "text-3xl",
-        "4xl": "text-4xl",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
+        xl: "text-lg",
+        "2xl": "text-xl",
+        "3xl": "text-2xl",
+        "4xl": "text-3xl",
       },
       planned: {
         true: "opacity-75 before:content-['('] after:content-[')']",

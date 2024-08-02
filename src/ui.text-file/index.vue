@@ -11,7 +11,7 @@
           internal
           interactive
           color="gray"
-          :size="size"
+          :size="iconSize"
           :name="config.iconName"
           v-bind="iconAttrs"
           @focus="onFocus"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import ULink from "../ui.button-link";
 import UIcon from "../ui.image-icon";
@@ -105,6 +105,16 @@ const focus = ref(false);
 
 const { config, fileAttrs, infoAttrs, iconAttrs, labelAttrs, imageAttrs } = useAttrs(props, {
   focus,
+});
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+  };
+
+  return sizes[props.size];
 });
 
 function onFocus() {

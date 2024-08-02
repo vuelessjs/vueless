@@ -42,15 +42,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
       }));
     }
 
-    if (key === "input") {
-      const inputAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...inputAttrs.value,
-        class: cx([inputAttrs.value.class, isShownMenu.value && config.value.inputFocus]),
-      }));
-    }
-
     if (key === "buttonWrapper") {
       const buttonWrapperAttrs = attrs[`${key}Attrs`];
 

@@ -5,6 +5,7 @@
     v-bind="wrapperAttrs"
     @click="onClick"
   >
+    <!-- @slot Use it to wrap something into the label. -->
     <slot />
 
     <div v-if="label || error || description" v-bind="labelWrapperAttrs">
@@ -25,7 +26,7 @@
         v-text="description"
       />
 
-      <!-- @slot Use it to add something to the label's footer -->
+      <!-- @slot Use it to add something to the label's footer. -->
       <slot name="footer" />
     </div>
   </div>
@@ -40,6 +41,7 @@
       v-text="label"
     />
 
+    <!-- @slot Use it to wrap something into the label. -->
     <slot />
 
     <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
@@ -51,7 +53,7 @@
       v-text="description"
     />
 
-    <!-- @slot Use it to add something to the label's footer -->
+    <!-- @slot Use it to add something to the label's footer. -->
     <slot name="footer" />
   </div>
 </template>
@@ -86,7 +88,7 @@ const props = defineProps({
 
   /**
    * Set label size.
-   * @values xs, sm, md, lg, xl
+   * @values sm, md, lg
    */
   size: {
     type: String,
@@ -94,12 +96,20 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * Label placement.
+   * @values top, topInside, topWithDesc, left, right
    */
   align: {
     type: String,
     default: UIService.get(defaultConfig, ULabel).default.align,
+  },
+
+  /**
+   * Centre label.
+   */
+  centred: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, ULabel).default.centred,
   },
 
   /**

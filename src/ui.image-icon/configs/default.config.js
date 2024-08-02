@@ -7,6 +7,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { pill: true, size: "4xs", class: "p-0.5" },
       { pill: true, size: "3xs", class: "p-1" },
       { pill: true, size: "2xs", class: "p-1" },
       { pill: true, size: "xs", class: "p-2" },
@@ -26,6 +27,7 @@ export default /*tw*/ {
     base: "fill-current outline-0",
     variants: {
       size: {
+        "4xs": "size-2.5",
         "3xs": "size-3",
         "2xs": "size-3.5",
         xs: "size-4",
@@ -55,17 +57,18 @@ export default /*tw*/ {
   icon: {
     variants: {
       size: {
-        "3xs": "h-3 w-3",
-        "2xs": "h-3.5 w-3.5",
-        xs: " h-4 w-4",
-        sm: "h-5 w-5",
-        md: "h-6 w-6",
-        lg: "h-8 w-8",
-        xl: "h-10 w-10",
-        "2xl": "h-12 w-12",
-        "3xl": "h-14 w-14",
-        "4xl": "h-16 w-16",
-        "5xl": "h-20 w-20",
+        "4xs": "size-2.5",
+        "3xs": "size-3",
+        "2xs": "size-3.5",
+        xs: "size-4",
+        sm: "size-5",
+        md: "size-6",
+        lg: "size-8",
+        xl: "size-10",
+        "2xl": "size-12",
+        "3xl": "size-14",
+        "4xl": "size-16",
+        "5xl": "size-20",
       },
     },
   },

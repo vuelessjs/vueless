@@ -1,16 +1,14 @@
 export default /*tw*/ {
-  label: "{ULabel} w-auto max-w-max relative", // TODO: label classes should be defined in ULabel component
+  label: "{ULabel}",
   partialIconName: "remove",
   selectedIconName: "check",
   iconWrapper: {
     base: "flex items-center justify-center absolute rounded bg-{color}-500",
     variants: {
       size: {
-        xs: "size-4",
-        sm: "size-5",
-        md: "size-6",
-        lg: "size-7",
-        xl: "size-8",
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
       },
       color: {
         grayscale: "border-gray-900 bg-gray-900",
@@ -29,11 +27,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        xs: "size-4 text-xs",
-        sm: "size-5 text-sm",
-        md: "size-6",
-        lg: "size-7 text-lg",
-        xl: "size-8 text-xl",
+        sm: "size-4 text-xs",
+        md: "size-5 text-sm",
+        lg: "size-6 text-base",
       },
       color: {
         grayscale: `
@@ -54,7 +50,7 @@ export default /*tw*/ {
   defaultVariants: {
     color: "brand",
     size: "md",
-    labelAlign: "left",
+    labelAlign: "right",
     partial: false,
     disabled: false,
   },

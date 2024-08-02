@@ -8,6 +8,7 @@
     :error="error"
     :size="size"
     :align="labelAlign"
+    centred
     v-bind="labelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
@@ -22,7 +23,7 @@
           @binding {string} icon-size
         -->
         <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" />
+          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
         </slot>
       </span>
 
@@ -76,7 +77,7 @@
           @binding {string} icon-size
         -->
         <slot name="icon-right" :icon-name="iconLeft" :icon-size="iconSize">
-          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" />
+          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
         </slot>
       </span>
     </label>
@@ -168,7 +169,7 @@ const props = defineProps({
 
   /**
    * Set label placement related from the default slot.
-   * @values top, topInside, topWithDesc, bottom, left, right
+   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
     type: String,
@@ -347,9 +348,9 @@ const {
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "sm",
-    md: "md",
-    lg: "lg",
+    sm: "xs",
+    md: "sm",
+    lg: "md",
   };
 
   return sizes[props.size];

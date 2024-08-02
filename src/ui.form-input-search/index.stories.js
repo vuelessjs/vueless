@@ -27,7 +27,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UInputSearch v-bind="args">
+    <UInputSearch v-bind="args" v-model="args.modelValue">
       ${allSlotsFragment}
     </UInputSearch>
   `,
@@ -41,7 +41,7 @@ const SlotTemplate = (args) => ({
     };
   },
   template: `
-    <UInputSearch v-bind="args">
+    <UInputSearch v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || ""}
     </UInputSearch>
   `,
@@ -60,6 +60,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
       <UInputSearch
         v-for="(size, index) in sizes"
         v-bind="args"
+        v-model="args.modelValue"
         :size="size"
         :key="index"
       >

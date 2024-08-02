@@ -8,7 +8,7 @@ export default /*tw*/ {
         thirdary: "text-{color}-500 border-transparent",
       },
       size: {
-        sm: "p-0.5 px-2 text-2xs",
+        sm: "px-2 py-1 text-2xs",
         md: "px-2 py-1 text-xs",
         lg: "px-3 py-1.5 text-sm",
       },
@@ -31,9 +31,9 @@ export default /*tw*/ {
     base: "flex items-center",
     variants: {
       size: {
-        sm: "space-x-1",
-        md: "space-x-1.5",
-        lg: "space-x-2",
+        sm: "space-x-0.5",
+        md: "space-x-1",
+        lg: "space-x-1.5",
       },
     },
   },

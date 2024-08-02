@@ -27,7 +27,13 @@
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
-          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" :color="componentColor" />
+          <UIcon
+            v-if="iconLeft"
+            :name="iconLeft"
+            :size="iconSize"
+            :color="componentColor"
+            internal
+          />
         </slot>
       </div>
 
@@ -59,7 +65,13 @@
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
-          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" :color="componentColor" />
+          <UIcon
+            v-if="iconRight"
+            :name="iconRight"
+            :size="iconSize"
+            :color="componentColor"
+            internal
+          />
         </slot>
       </div>
     </template>
@@ -235,11 +247,11 @@ const loaderSize = computed(() => {
 
 const iconSize = computed(() => {
   const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
+    "2xs": "3xs",
+    xs: "2xs",
+    sm: "xs",
+    md: "sm",
+    lg: "md",
     xl: "lg",
   };
 

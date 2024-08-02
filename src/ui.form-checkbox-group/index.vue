@@ -87,8 +87,8 @@ const props = defineProps({
   },
 
   /**
-   * Radio size.
-   * @values xs, sm, md, lg, xl
+   * Checkbox group size.
+   * @values sm, md, lg
    */
   size: {
     type: String,
@@ -96,7 +96,7 @@ const props = defineProps({
   },
 
   /**
-   * Radio group color.
+   * Checkbox group color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
    */
   color: {

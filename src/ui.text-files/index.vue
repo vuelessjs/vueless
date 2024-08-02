@@ -1,5 +1,5 @@
 <template>
-  <ULabel :label="label" :description="description" v-bind="labelAttrs">
+  <ULabel :label="label" :description="description" :size="size" v-bind="labelAttrs">
     <div v-bind="bodyAttrs">
       <slot>
         <UFile

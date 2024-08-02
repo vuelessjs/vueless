@@ -1,5 +1,5 @@
 import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import { cva } from "../../service.ui";
 import { computed, watchEffect } from "vue";
 
 import defaultConfig from "../configs/default.config";
@@ -18,6 +18,8 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
       if (value.variants || value.compoundVariants) {
         return cva(value)({
           ...props,
+          openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
+          openDirectionX: isRight.value ? POSITION.right : POSITION.left,
         });
       }
 
@@ -31,24 +33,14 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...inputAttrs.value,
-        class: cx([inputAttrs.value.class, isShownCalendar.value && config.value.inputFocus]),
+        config: {
+          ...inputAttrs.value.config,
+          ...(isShownCalendar.value ? config.value.inputFocused : {}),
+        },
       }));
     }
 
     if (key === "calendar") {
-      const calendarAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...calendarAttrs.value,
-        class: cx([
-          cva(config.value.calendar.wrapper)({
-            openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
-            openDirectionX: isRight.value ? POSITION.right : POSITION.left,
-          }),
-          calendarAttrs.value.class,
-        ]),
-      }));
-
       // This watcher rewrites default calendar locales with datepicker range locales
       // Watcher will not rewrite custom calendar locales
       watchEffect(() => {

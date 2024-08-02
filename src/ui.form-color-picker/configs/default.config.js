@@ -4,34 +4,26 @@ export default /*tw*/ {
     base: "flex flex-wrap",
     variants: {
       size: {
-        xs: "gap-2",
-        sm: "gap-2",
-        md: "gap-3",
-        lg: "gap-3",
-        xl: "gap-4",
+        sm: "gap-2 mt-px",
+        md: "gap-3 mt-0.5",
+        lg: "gap-3 mt-1",
       },
     },
   },
-  radio: {
-    radio: "{URadio} cursor-pointer bg-{color}-500 border-{color}-500 hover:border-{color}-500",
-  },
   unselected: "relative flex",
-  unselectedRadio: {
-    radio: {
-      base: "{URadio}",
-      compoundVariants: [
-        {
-          color: "grayscale",
-          class: "text-white !border-gray-300 hover:!border-gray-400 focus:!border-gray-400 active:!border-gray-500",
-        },
-      ],
-    },
-  },
   unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
   unselectedIconName: "close",
+  unselectedRadio: {
+    component: "{URadio}",
+    radio: "!text-white !border-gray-300 hover:!border-gray-400 focus:!border-gray-400 active:!border-gray-500",
+  },
+  radio: {
+    component: "{URadio}",
+    radio: "bg-{color}-500 border-{color}-500 hover:border-{color}-500",
+  },
   defaultVariants: {
-    name: "UColorPicker",
     size: "md",
+    name: "colorPicker",
     disabled: false,
     colorOptions: [
       "red",
