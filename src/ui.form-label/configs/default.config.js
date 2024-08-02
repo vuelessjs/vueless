@@ -9,6 +9,9 @@ export default /*tw*/ {
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
+      error: {
+        true: "text-red-500",
+      },
     },
     compoundVariants: [
       { align: "left", size: "sm", class: "gap-2" },
