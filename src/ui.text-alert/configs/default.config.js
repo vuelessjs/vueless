@@ -4,38 +4,52 @@ export default /*tw*/ {
     variants: {
       variant: {
         primary: `bg-{color}-500 text-white`,
-        secondary: `bg-transparent border border-{color}-500`,
+        secondary: `bg-transparent border border-{color}-500 text-{color}-500`,
         thirdary: `bg-{color}-50 text-{color}-700`,
       },
     },
     compoundVariants: [
-      { color: "grayscale", bordered: true, class: "border-gray-200" },
       { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
+      { color: "white", variant: "primary", class: "text-gray-900 bg-white" },
+      { color: "white", variant: "secondary", class: "text-gray-900 bg-white border-gray-500" },
+      { color: "white", variant: "thirdary", bordered: true, class: "text-gray-900 bg-white border border-gray-500" },
+      { color: "grayscale", variant: "primary", class: `bg-gray-900` },
+      { color: "grayscale", variant: "secondary", class: `text-gray-900 border-gray-900` },
+      { color: "grayscale", variant: "thirdary", bordered: true, class: `text-gray-900 border border-gray-500` },
     ],
   },
   body: {
-    base: `
-      flex gap-2 items-baseline
-      font-normal leading-normal
-      [&_b]:font-bold [&_i]:italic [&_em]:italic [&_p]:font-normal
-      [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
-      [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-bold
-      [&_ul]:font-normal [&_ol]:font-normal
-      [&_ul]:leading-normal [&_ol]:leading-normal
-      [&_ul]:list-disc [&_ol]:list-decimal
-      [&_ul]:ml-2 [&_ol]:ml-2
-    `,
+    base: "{UText} flex gap-2 items-baseline",
     variants: {
       size: {
-        xs: "text-xs space-y-2",
-        sm: "text-sm space-y-3",
-        md: "text-base space-y-4",
-        lg: "text-lg space-y-5",
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
       },
     },
   },
-  title: "font-bold text-lg leading-tight",
-  description: "text-sm",
+  title: {
+    base: "font-bold leading-tight",
+    variants: {
+      size: {
+        xs: "text-sm",
+        sm: "text-base",
+        md: "text-lg",
+        lg: "text-xl",
+      },
+    },
+  },
+  description: {
+    variants: {
+      size: {
+        xs: "text-xs",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
+      },
+    },
+  },
   button: "{UButton}",
   icon: "{UIcon}",
   iconName: "close",
@@ -51,6 +65,7 @@ export default /*tw*/ {
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
     { pattern: `bg-(${colors})-500` },
+    { pattern: `text-(${colors})-500` },
     { pattern: `text-(${colors})-700` },
     { pattern: `border-(${colors})-100` },
     { pattern: `border-(${colors})-500` },

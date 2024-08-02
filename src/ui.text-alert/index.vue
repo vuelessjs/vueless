@@ -8,7 +8,7 @@
       @binding {string} title
     -->
     <slot name="title" :title="title">
-      <div v-bind="titleAttrs" v-text="title" />
+      <div v-if="title" v-bind="titleAttrs" v-text="title" />
     </slot>
 
     <!--
@@ -16,16 +16,22 @@
       @binding {string} description
     -->
     <slot name="description" :description="description">
-      <div v-bind="descriptionAttrs" v-text="description" />
+      <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
     </slot>
 
     <div v-bind="bodyAttrs">
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
 
-      <!-- @slot Default slot. -->
-      <slot />
-      <div v-if="!hasSlotContent($slots.default)" v-bind="bodyAttrs" v-html="html" />
+      <UText
+        v-if="hasSlotContent($slots.default) || html"
+        v-bind="bodyAttrs"
+        :size="size"
+        :html="html"
+      >
+        <!-- @slot Use it to add something inside. -->
+        <slot />
+      </UText>
 
       <UButton
         v-if="closable"
@@ -39,7 +45,7 @@
         <UIcon
           internal
           size="xs"
-          :color="color"
+          :color="iconColor"
           :name="config.iconName"
           :data-cy="`${dataCy}-button`"
           v-bind="iconAttrs"
@@ -56,10 +62,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
+import UText from "../ui.text-block";
 import UIService from "../service.ui";
 
 import { UAlert } from "./constatns";
@@ -191,4 +198,12 @@ function onClickClose() {
   isShownAlert.value = false;
   emit("hidden");
 }
+
+const iconColor = computed(() => {
+  if (props.color === "white") {
+    return "gray";
+  }
+
+  return props.variant === "primary" ? "white" : props.color;
+});
 </script>

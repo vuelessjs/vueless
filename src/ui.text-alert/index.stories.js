@@ -12,24 +12,20 @@ export default {
   id: "4030",
   title: "Text & Content / Alert",
   component: UAlert,
-  args: {
-    text: "UHint",
-    slotDefaultTemplate: `
-      <template #default>
-        <p>
-          <b>Lorem ipsum dolor sit amet,</b>
-          <u>consectetur adipiscing elit,</u>
-          <em>sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua.</em>
-          <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-        </p>
-      </template>
-    `,
-  },
+  args: {},
   argTypes: {
     ...getArgTypes(UAlert.name),
   },
 };
+
+const defaultTemplate = `
+  <p>
+    <b>Please note that your session is about to expire </b>
+    <u>in 5 minutes,</u>
+    <em> so make sure to save your work to avoid any data loss. </em>
+    <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+  </p>
+`;
 
 const DefaultTemplate = (args) => ({
   components: { UAlert, UIcon },
@@ -40,8 +36,20 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-    ${args.slotDefaultTemplate}
-    ${args.slotTemplate || ""}
+      ${args.template || defaultTemplate}
+    </UAlert>
+  `,
+});
+
+const SlotTemplate = (args) => ({
+  components: { UAlert, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UAlert v-bind="args" v-model="args.value">
+      ${args.slotTemplate}
+      ${defaultTemplate}
     </UAlert>
   `,
 });
@@ -122,7 +130,10 @@ const HTMLTemplate = (args) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = {
+  title: "Default Title",
+  description: "Default Description",
+};
 
 export const variants = VariantsTemplate.bind({});
 variants.args = {};
@@ -137,11 +148,10 @@ export const HTML = HTMLTemplate.bind({});
 HTML.args = {
   html: `
     <p>
-      <b>Lorem ipsum dolor sit amet,</b>
-      <u>consectetur adipiscing elit,</u>
-      <em>sed do eiusmod tempor incididunt
-      ut labore et dolore magna aliqua.</em>
-      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+      <b>Important Security Update: </b>
+      <u>Your account password will expire in 10 days,</u>
+      <em> please update it to maintain account security. </em>
+      <a href="https://security.example.com/password-update" target="_blank">Update Password</a>
     </p>
   `,
 };
@@ -149,7 +159,7 @@ HTML.args = {
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  slotDefaultTemplate: `
+  template: `
     <template #default>
       some text
     </template>
@@ -158,55 +168,51 @@ closable.args = {
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  slotDefaultTemplate: `
+  template: `
     <template #default>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        Please be aware that the scheduled maintenance will occur this Saturday,
+        from 12 AM to 4 AM. During this time, some services may be temporarily
+        unavailable. We apologize for any inconvenience this may cause and
+        appreciate your understanding. Our team is committed to improving
+        the system's performance and reliability.
       </p>
-
     </template>
-    `,
+  `,
 };
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  slotDefaultTemplate: `
+  template: `
       <URow>
         <ul>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
+          <li>Check your email for verification link.</li>
+          <li>Update your password regularly to enhance security.</li>
+          <li>Enable two-factor authentication for added protection.</li>
         </ul>
 
         <ol>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
-          <li> Lorem ipsum dolor </li>
+          <li>Sign in to your account using your credentials.</li>
+          <li>Navigate to the settings menu to update your profile.</li>
+          <li>Review your privacy settings and adjust them as needed.</li>
         </ol>
       </URow>
     `,
 };
 
-export const slotTitleAndDescription = DefaultTemplate.bind({});
+export const slotTitleAndDescription = SlotTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
-      <div>Alert Title</div>
+      <div class="text-lg font-semibold">This is a custom title for the alert.</div>
     </template>
     <template #description>
-      <div>This is a custom description for the alert.</div>
+      <div class="italic">This is a custom description for the alert.</div>
     </template>
   `,
 };
 
-export const slotAlertLeft = DefaultTemplate.bind({});
+export const slotAlertLeft = SlotTemplate.bind({});
 slotAlertLeft.args = {
   slotTemplate: `
     <template #left>
@@ -218,7 +224,7 @@ slotAlertLeft.args = {
   `,
 };
 
-export const slotAlertRight = DefaultTemplate.bind({});
+export const slotAlertRight = SlotTemplate.bind({});
 slotAlertRight.args = {
   slotTemplate: `
     <template #right>
@@ -230,7 +236,7 @@ slotAlertRight.args = {
   `,
 };
 
-export const slotAlertTop = DefaultTemplate.bind({});
+export const slotAlertTop = SlotTemplate.bind({});
 slotAlertTop.args = {
   slotTemplate: `
     <template #top>
@@ -242,7 +248,7 @@ slotAlertTop.args = {
   `,
 };
 
-export const slotAlertBottom = DefaultTemplate.bind({});
+export const slotAlertBottom = SlotTemplate.bind({});
 slotAlertBottom.args = {
   slotTemplate: `
     <template #bottom>
