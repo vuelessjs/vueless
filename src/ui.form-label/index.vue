@@ -5,7 +5,7 @@
     v-bind="wrapperAttrs"
     @click="onClick"
   >
-    <!-- @slot Use it to add something instead of the label -->
+    <!-- @slot Use it to wrap something into the label. -->
     <slot />
 
     <div v-if="label || error || description" v-bind="labelWrapperAttrs">
@@ -26,7 +26,7 @@
         v-text="description"
       />
 
-      <!-- @slot Use it to add something to the label's footer -->
+      <!-- @slot Use it to add something to the label's footer. -->
       <slot name="footer" />
     </div>
   </div>
@@ -41,7 +41,7 @@
       v-text="label"
     />
 
-    <!-- @slot Use it to add something instead of the label -->
+    <!-- @slot Use it to wrap something into the label. -->
     <slot />
 
     <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
@@ -53,7 +53,7 @@
       v-text="description"
     />
 
-    <!-- @slot Use it to add something to the label's footer -->
+    <!-- @slot Use it to add something to the label's footer. -->
     <slot name="footer" />
   </div>
 </template>
