@@ -29,7 +29,7 @@
         :size="size"
         :html="html"
       >
-        <!-- @slot Use it to add something instead of the text. -->
+        <!-- @slot Use it to add something inside. -->
         <slot />
       </UText>
 
