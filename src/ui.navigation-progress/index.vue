@@ -32,7 +32,8 @@
           :value="value"
           :max="max"
         >
-          {{ step }}
+          <UHeader v-if="isVariant.stepper" :label="step" :size="size" />
+          <template v-else>{{ step }}</template>
         </slot>
       </template>
     </div>
@@ -41,7 +42,6 @@
       v-if="isVariant.stepper"
       v-bind="stepperAttrs"
       :color="color"
-      :max="realMax"
       :value="value"
       :data-cy="dataCy"
       :progress-percent="progressPercent"
@@ -59,6 +59,7 @@ import defaultConfig from "./configs/default.config";
 import { UProgress, VARIANT } from "./constants";
 
 import StepperProgress from "./components/StepperProgress.vue";
+import UHeader from "../ui.text-header";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UProgress", inheritAttrs: false });
@@ -163,6 +164,6 @@ const progressPercent = computed(() => {
 });
 
 function isActiveStep(index) {
-  return index + 1 == props.value;
+  return index === props.value;
 }
 </script>

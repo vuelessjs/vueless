@@ -58,11 +58,6 @@ const props = defineProps({
     required: true,
   },
 
-  max: {
-    type: Number,
-    default: null,
-  },
-
   config: {
     type: Object,
     default: () => ({}),
