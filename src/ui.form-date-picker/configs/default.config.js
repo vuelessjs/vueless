@@ -111,6 +111,7 @@ export default /*tw*/ {
     size: "md",
     openDirectionX: "auto",
     openDirectionY: "auto",
+    labelAlign: "topInside",
     timepicker: false,
     disabled: false,
     dateFormat: undefined,

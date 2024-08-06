@@ -151,7 +151,7 @@ export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
   minDate: new Date(2022, 2, 22),
   maxDate: new Date(2022, 2, 26),
-  value: { from: new Date(2022, 2, 24), to: null },
+  value: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
 };
 
 export const DateFormat = DefaultTemplate.bind({});
