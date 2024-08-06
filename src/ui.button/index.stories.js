@@ -34,45 +34,23 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UButton, URow },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UButton, URow, UGroup },
   setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
+    return { args, options: argTypes[args.enum].options };
   },
   template: `
-    <URow>
-      <UButton
-        v-for="(variant, index) in variants"
-        v-bind="args"
-        :variant="variant"
-        :label="variant"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UButton, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UButton
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :label="size"
-        :key="index"
-      />
-    </URow>
+    <UGroup>
+      <URow>
+        <UButton
+          v-for="(option, index) in options"
+          v-bind="args"
+          :[args.enum]="option"
+          :label="option"
+          :key="index"
+        />
+      </URow>
+    </UGroup>
   `,
 });
 
@@ -104,17 +82,17 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const variants = VariantsTemplate.bind({});
-variants.args = {};
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant" };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const pilled = VariantsTemplate.bind({});
-pilled.args = { pill: true };
+export const pilled = EnumVariantTemplate.bind({});
+pilled.args = { enum: "variant", pill: true };
 
-export const disabled = VariantsTemplate.bind({});
-disabled.args = { disabled: true };
+export const disabled = EnumVariantTemplate.bind({});
+disabled.args = { enum: "variant", disabled: true };
 
 export const colors = ColorTemplate.bind({});
 colors.args = {};
