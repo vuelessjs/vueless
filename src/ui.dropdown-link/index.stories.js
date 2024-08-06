@@ -32,7 +32,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownLink },
+  components: { UDropdownLink, UDropdownItem },
   setup() {
     const slots = getSlotNames(UDropdownLink.name);
 
@@ -42,81 +42,56 @@ const DefaultTemplate = (args) => ({
     <UDropdownLink
       v-bind="args"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || allSlotsFragment}
     </UDropdownLink>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UDropdownLink, UDropdownItem },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDropdownLink
-      v-bind="args"
-    >
-      ${args.slotTemplate}
-    </UDropdownLink>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownLink, URow },
   setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
+    const options = argTypes[args.enum].options;
+
+    let prefixedOptions = [];
+
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = options.map((option) => getText(option));
+    } else {
+      prefixedOptions = options;
+    }
+
+    function getText(value) {
+      return `Dropdown ${value}`;
+    }
+
+    return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
     <URow>
       <UDropdownLink
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
+        :label="prefixedOptions[index]"
         :key="index"
       />
     </URow>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UDropdownLink, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <div>
-      <URow>
-        <UDropdownLink
-          v-for="(color, id) in colors"
-          v-bind="args"
-          :color="color"
-          :label="color"
-          :key="id"
-        />
-      </URow>
-    </div>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
 
-export const dropdownListSlot = SlotTemplate.bind({});
+export const dropdownListSlot = DefaultTemplate.bind({});
 dropdownListSlot.args = {
   slotTemplate: `
     <template #default>

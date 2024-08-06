@@ -32,7 +32,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownBadge },
+  components: { UDropdownBadge, UDropdownItem },
   setup() {
     const slots = getSlotNames(UDropdownBadge.name);
 
@@ -42,61 +42,26 @@ const DefaultTemplate = (args) => ({
     <UDropdownBadge
       v-bind="args"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || allSlotsFragment}
     </UDropdownBadge>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UDropdownBadge, UDropdownItem },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDropdownBadge
-      v-bind="args"
-    >
-      ${args.slotTemplate}
-    </UDropdownBadge>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownBadge, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDropdownBadge
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
-        :label="size"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UDropdownBadge, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow>
-      <UDropdownBadge
-        v-for="(color, index) in colors"
-        :color="color"
-        :label="color"
-        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
         :key="index"
       />
     </URow>
@@ -106,16 +71,16 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
 export const withoutDropdownIcon = DefaultTemplate.bind({});
 withoutDropdownIcon.args = { noIcon: true };
 
-export const dropdownListSlot = SlotTemplate.bind({});
+export const dropdownListSlot = DefaultTemplate.bind({});
 dropdownListSlot.args = {
   slotTemplate: `
     <template #default>
