@@ -21,7 +21,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { ULink },
+  components: { ULink, UButton },
   setup() {
     const slots = getSlotNames(ULink.name);
 
@@ -29,108 +29,60 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULink v-bind="args">
-      ${allSlotsFragment}
+      ${args.slotTemplate || allSlotsFragment}
     </ULink>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULink, URow },
   setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow>
-      <ULink
-        v-for="(color, index) in colors"
-        v-bind="args"
-        :color="color"
-        :label="color"
-        :key="index"
-      />
-    </URow>
-  `,
-});
+    const options = argTypes[args.enum].options;
 
-const TypesTemplate = (args, { argTypes } = {}) => ({
-  components: { ULink, URow },
-  setup() {
-    return {
-      args,
-      types: argTypes.type.options,
-    };
-  },
-  template: `
-    <URow>
-      <ULink
-        v-for="(type, index) in types"
-        v-bind="args"
-        :label="type"
-        :type="type"
-        :key="index"
-      />
-    </URow>
-  `,
-});
+    let prefixedOptions = [];
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { ULink, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <ULink
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :label="getText(size)"
-        :key="index"
-      />
-    </URow>
-  `,
-  methods: {
-    getText(value) {
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = options.map((option) => getText(option));
+    } else {
+      prefixedOptions = options;
+    }
+
+    function getText(value) {
       return `Link ${value}`;
-    },
-  },
-});
+    }
 
-const SlotTemplate = (args) => ({
-  components: { UButton, ULink },
-  setup() {
-    return { args };
+    return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
-    <ULink>
-      ${args.slotTemplate}
-    </ULink>
+    <URow>
+      <ULink
+        v-for="(option, index) in options"
+        v-bind="args"
+        :[args.enum]="option"
+        :label="prefixedOptions[index]"
+        :key="index"
+      />
+    </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
-export const types = TypesTemplate.bind({});
-types.args = {};
+export const types = EnumVariantTemplate.bind({});
+types.args = { enum: "type" };
 
-export const underlined = ColorsTemplate.bind({});
-underlined.args = { underlined: true, dashed: false };
+export const underlined = EnumVariantTemplate.bind({});
+underlined.args = { enum: "color", underlined: true, dashed: false };
 
-export const dashed = ColorsTemplate.bind({});
-dashed.args = { dashed: true };
+export const dashed = EnumVariantTemplate.bind({});
+dashed.args = { enum: "color", dashed: true };
 
 export const url = DefaultTemplate.bind({});
 url.args = { url: "https://storybook.js.org/docs/react/get-started/introduction" };
@@ -150,7 +102,7 @@ disabled.args = { disabled: true };
 export const noRing = DefaultTemplate.bind({});
 noRing.args = { noRing: true };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #default>

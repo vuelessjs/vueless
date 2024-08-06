@@ -21,27 +21,15 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UToggleItem },
+  components: { UToggleItem, UIcon },
   setup() {
     const slots = getSlotNames(UToggleItem.name);
 
     return { args, slots };
   },
   template: `
-    <UToggleItem v-bind="args" name="toggle">
-      ${allSlotsFragment}
-    </UToggleItem>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UToggleItem, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UToggleItem v-bind="args" >
-      ${args.slotTemplate}
+    <UToggleItem v-bind="args" name="toggle" v-model="args.modelValue">
+      ${args.slotTemplate || allSlotsFragment}
     </UToggleItem>
   `,
 });
@@ -52,7 +40,7 @@ Default.args = {};
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
@@ -64,14 +52,14 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon
         name="star"
         color="green"
-       />
+      />
     </template>
   `,
 };
