@@ -33,7 +33,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownButton },
+  components: { UDropdownButton, UDropdownItem },
   setup() {
     const slots = getSlotNames(UDropdownButton.name);
 
@@ -42,62 +42,28 @@ const DefaultTemplate = (args) => ({
   template: `
     <UDropdownButton
       v-bind="args"
+      v-model="args.modelValue"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || allSlotsFragment}
     </UDropdownButton>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UDropdownButton, UDropdownItem },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDropdownButton
-      v-bind="args"
-    >
-      ${args.slotTemplate}
-    </UDropdownButton>
-  `,
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownButton, URow },
   setup() {
     return {
       args,
-      variants: argTypes.variant.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDropdownButton
-        v-for="(variant, index) in variants"
+        v-for="(option, index) in options"
         v-bind="args"
-        :variant="variant"
-        :label="variant"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UDropdownButton, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UDropdownButton
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :label="size"
+        :[args.enum]="option"
+        :label="option"
         :key="index"
       />
     </URow>
@@ -135,19 +101,19 @@ Default.args = {};
 export const Filled = DefaultTemplate.bind({});
 Filled.args = { variant: "thirdary", filled: true };
 
-export const Variants = VariantsTemplate.bind({});
-Variants.args = { text: "" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant", text: "" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = { text: "" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", text: "" };
 
 export const VariantColors = VariantColorsTemplate.bind({});
 VariantColors.args = { text: "" };
 
-export const WithoutDropdownIcon = VariantsTemplate.bind({});
-WithoutDropdownIcon.args = { noIcon: true };
+export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
+WithoutDropdownIcon.args = { enum: "variant", noIcon: true };
 
-export const dropdownListSlot = SlotTemplate.bind({});
+export const dropdownListSlot = DefaultTemplate.bind({});
 dropdownListSlot.args = {
   slotTemplate: `
     <template #default>
