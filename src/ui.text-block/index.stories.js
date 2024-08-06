@@ -40,19 +40,19 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UText, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UText
-        v-for="(size, index) in sizes"
-        :size="size"
+        v-for="(option, index) in options"
+        :[args.enum]="option"
         v-bind="args"
         :key="index"
       >
@@ -65,8 +65,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {

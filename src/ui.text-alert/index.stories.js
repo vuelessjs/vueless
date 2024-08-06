@@ -28,7 +28,7 @@ const defaultTemplate = `
 `;
 
 const DefaultTemplate = (args) => ({
-  components: { UAlert, UIcon },
+  components: { UAlert, UIcon, URow },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
@@ -36,86 +36,42 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-      ${args.template || defaultTemplate}
+      ${args.slotTemplate || defaultTemplate}
     </UAlert>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UAlert, UIcon },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UAlert, UGroup, URow },
   setup() {
-    return { args };
-  },
-  template: `
-    <UAlert v-bind="args" v-model="args.value">
-      ${args.slotTemplate}
-      ${defaultTemplate}
-    </UAlert>
-  `,
-});
+    const options = argTypes[args.enum].options;
 
-const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, UGroup },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
+    let prefixedOptions = [];
+
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = options.map((option) => getText(option));
+    } else {
+      prefixedOptions = options;
+    }
+
+    function getText(value) {
+      return `This is Alert's ${value} size`;
+    }
+
+    return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
     <UGroup>
-      <UAlert
-        v-for="(variant, index) in variants"
-        v-bind="args"
-        :variant="variant"
-        :key="index"
-        :title="variant"
-        color="gray"
-      />
+      <URow>
+        <UAlert
+          v-for="(option, index) in options"
+          v-bind="args"
+          :[args.enum]="option"
+          :key="index"
+          :title="prefixedOptions[index]"
+        />
+      </URow>
     </UGroup>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow>
-      <UAlert
-        v-for="(color, index) in colors"
-        v-bind="args"
-        :color="color"
-        :title="color"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizeTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UAlert
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :key="index"
-      >
-        text
-      </UAlert>
-    </URow>
   `,
 });
 
@@ -135,14 +91,14 @@ Default.args = {
   description: "Default Description",
 };
 
-export const variants = VariantsTemplate.bind({});
-variants.args = {};
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
-export const sizes = SizeTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const HTML = HTMLTemplate.bind({});
 HTML.args = {
@@ -159,7 +115,7 @@ HTML.args = {
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  template: `
+  slotTemplate: `
     <template #default>
       some text
     </template>
@@ -168,7 +124,7 @@ closable.args = {
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  template: `
+  slotTemplate: `
     <template #default>
       <p>
         Please be aware that the scheduled maintenance will occur this Saturday,
@@ -183,7 +139,7 @@ paragraphs.args = {
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  template: `
+  slotTemplate: `
       <URow>
         <ul>
           <li>Check your email for verification link.</li>
@@ -200,9 +156,10 @@ list.args = {
     `,
 };
 
-export const slotTitleAndDescription = SlotTemplate.bind({});
+export const slotTitleAndDescription = DefaultTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #title>
       <div class="text-lg font-semibold">This is a custom title for the alert.</div>
     </template>
@@ -212,9 +169,10 @@ slotTitleAndDescription.args = {
   `,
 };
 
-export const slotAlertLeft = SlotTemplate.bind({});
+export const slotAlertLeft = DefaultTemplate.bind({});
 slotAlertLeft.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #left>
       <UIcon
         name="star"
@@ -224,9 +182,10 @@ slotAlertLeft.args = {
   `,
 };
 
-export const slotAlertRight = SlotTemplate.bind({});
+export const slotAlertRight = DefaultTemplate.bind({});
 slotAlertRight.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #right>
         <UIcon
         name="star"
@@ -236,9 +195,10 @@ slotAlertRight.args = {
   `,
 };
 
-export const slotAlertTop = SlotTemplate.bind({});
+export const slotAlertTop = DefaultTemplate.bind({});
 slotAlertTop.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #top>
       <UIcon
         name="star"
@@ -248,9 +208,10 @@ slotAlertTop.args = {
   `,
 };
 
-export const slotAlertBottom = SlotTemplate.bind({});
+export const slotAlertBottom = DefaultTemplate.bind({});
 slotAlertBottom.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #bottom>
       <UIcon
         name="star"
