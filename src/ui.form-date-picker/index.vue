@@ -4,6 +4,7 @@
       :id="id"
       :key="isShownCalendar"
       v-model="userFormatDate"
+      :label-align="labelAlign"
       :label="label"
       :placeholder="placeholder"
       :error="error"
@@ -83,6 +84,15 @@ const props = defineProps({
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Set label placement related from the default slot.
+   * @values top, topInside, topWithDesc, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, UDatePicker).default.labelAlign,
   },
 
   /**
