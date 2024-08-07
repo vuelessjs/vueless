@@ -20,7 +20,7 @@ import {
 } from "../service.ui";
 
 import { cloneDeep } from "../service.helper";
-import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY } from "../constants";
+import { STRATEGY_TYPE, SYSTEM_CONFIG_KEY } from "../constants";
 
 /**
   Merging component configs in a given sequence (bigger number = bigger priority):
