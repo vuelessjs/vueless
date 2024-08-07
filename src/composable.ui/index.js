@@ -20,24 +20,7 @@ import {
 } from "../service.ui";
 
 import { cloneDeep } from "../service.helper";
-
-const STRATEGY_TYPE = {
-  merge: "merge",
-  replace: "replace",
-  overwrite: "overwrite",
-};
-
-const SYSTEM_CONFIG_KEY = {
-  i18n: "i18n",
-  strategy: "strategy",
-  safelist: "safelist",
-  component: "component",
-  safelistColors: "safelistColors",
-  defaultVariants: "defaultVariants",
-  compoundVariants: "compoundVariants",
-  iconNameCapitalize: "IconName",
-  iconName: "iconName",
-};
+import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY } from "../constants";
 
 /**
   Merging component configs in a given sequence (bigger number = bigger priority):

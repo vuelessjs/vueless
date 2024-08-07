@@ -1,12 +1,7 @@
 export default /*tw*/ {
   wrapper: {
-    base: "border border-gray-200 bg-white space-y-4 md:space-y-6 w-full",
+    base: "border rounded-lg border-gray-200 bg-white space-y-4 md:space-y-6 w-full",
     variants: {
-      rounded: {
-        sm: "rounded-lg",
-        md: "rounded-2xl",
-        lg: "rounded-3xl",
-      },
       padding: {
         sm: "p-2 md:p-4",
         md: "p-4 md:p-6",
@@ -25,7 +20,6 @@ export default /*tw*/ {
   footerMobileReverse: "flex flex-col-reverse space-y-reverse",
   defaultVariants: {
     padding: "md",
-    rounded: "md",
     mobileFooterReverse: false,
   },
 };

@@ -1,6 +1,8 @@
 export default {
   brand: "grayscale",
-  gray: "gray",
+  gray: "cool",
+  rounding: 8,
+  darkMode: false,
   directive: {},
   component: /*tw*/ {
     // component configs

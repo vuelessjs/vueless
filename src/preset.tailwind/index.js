@@ -1,5 +1,6 @@
 import forms from "@tailwindcss/forms";
-import { BRAND_COLORS, GRAY_COLORS, GRAYSCALE_COLOR } from "./constants/index.js";
+import defaultTheme from "tailwindcss/defaultTheme.js";
+import { COLOR_SHADES, BRAND_COLOR, GRAY_COLOR, COOL_COLOR } from "../constants/index.js";
 
 const safelist = getSafelist();
 
@@ -8,22 +9,8 @@ const safelist = getSafelist();
  * @returns {Object}
  */
 export function vuelessPreset() {
-  const brandColor = twColorWithOpacity("--color-brand");
-  const { brand, gray } = getVuelessConfigColors();
-  const colors = getTailwindConfigColors();
-
-  if (!Object.keys(colors).length) {
-    return {};
-  }
-
-  let brandPalette = BRAND_COLORS.includes(brand) ? colors[brand] : colors.green;
-  let grayPalette = GRAY_COLORS.includes(gray) ? colors[gray] : colors.zinc;
-
-  if (brand === GRAYSCALE_COLOR) {
-    brandPalette = grayPalette;
-  }
-
   return {
+    darkMode: "dark",
     content: [
       "./index.html",
       "./src/**/*.{js,ts,jsx,tsx,vue}",
@@ -34,8 +21,9 @@ export function vuelessPreset() {
     theme: {
       extend: {
         colors: {
-          brand: { ...brandPalette, DEFAULT: brandColor },
-          gray: grayPalette,
+          [BRAND_COLOR]: getPalette(BRAND_COLOR),
+          [GRAY_COLOR]: getPalette(GRAY_COLOR),
+          [COOL_COLOR]: { ...defaultTheme.colors[GRAY_COLOR] },
         },
         spacing: {
           "safe-top": "env(safe-area-inset-top)",
@@ -46,6 +34,9 @@ export function vuelessPreset() {
         fontSize: {
           "2xs": ["0.625rem", "0.875rem"], //  10px
         },
+        borderRadius: {
+          dynamic: "var(--rounding)",
+        },
       },
     },
     plugins: [forms],
@@ -54,6 +45,7 @@ export function vuelessPreset() {
 
 /**
  * Transform CSS variable with RGB numbers into CSS color.
+ * @param { String } variableName
  * @returns {Function}
  */
 function twColorWithOpacity(variableName) {
@@ -65,19 +57,20 @@ function twColorWithOpacity(variableName) {
 }
 
 /**
- * Convert sting to object.
- * @returns {Object} - TailwindCSS safelist.
+ * Convert sting patterns to RegExp.
+ * @param { String } color (gray | brand)
+ * @returns { Object } - TailwindCSS color object palette.
  */
-function getTailwindConfigColors() {
-  return JSON.parse(process.env.VUELESS_TAILWIND_CONFIG_COLORS || "{}");
-}
+function getPalette(color) {
+  let palette = {
+    DEFAULT: twColorWithOpacity(`--color-${color}-default`),
+  };
 
-/**
- * Convert sting to object.
- * @returns {Object} - TailwindCSS safelist.
- */
-function getVuelessConfigColors() {
-  return JSON.parse(process.env.VUELESS_CONFIG_COLORS || "{}");
+  COLOR_SHADES.forEach((shade) => {
+    palette[shade] = twColorWithOpacity(`--color-${color}-${shade}`);
+  });
+
+  return palette;
 }
 
 /**

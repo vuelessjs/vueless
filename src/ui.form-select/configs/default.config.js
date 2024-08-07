@@ -5,7 +5,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-md border border-gray-300 bg-white
+      rounded-lg border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,
@@ -24,7 +24,6 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, class: "rounded-lg" },
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
       { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
