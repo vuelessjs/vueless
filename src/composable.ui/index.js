@@ -27,6 +27,13 @@ const STRATEGY_TYPE = {
   overwrite: "overwrite",
 };
 
+const CVA_CONFIG_KEY = {
+  base: "base",
+  variants: "variants",
+  compoundVariants: "compoundVariants",
+  defaultVariants: "defaultVariants",
+};
+
 const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
   strategy: "strategy",
@@ -37,6 +44,7 @@ const SYSTEM_CONFIG_KEY = {
   compoundVariants: "compoundVariants",
   iconNameCapitalize: "IconName",
   iconName: "iconName",
+  ...CVA_CONFIG_KEY,
 };
 
 /**
@@ -105,12 +113,15 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-      // TODO: Uncomment and add into `cx` when getAttrs as a function will be resolved.
-      // const classes = toValue(options?.classes) || getBaseClasses(configKeyValue);
 
+      // TODO: remove `getBaseClasses(configKeyValue)` after migration to `setDynamicVars`
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([getBaseClasses(configKeyValue), toValue(options?.classes), attrClass]),
+        class: cx([
+          getBaseClasses(configKeyValue),
+          getBaseClasses(toValue(options?.classes)),
+          attrClass,
+        ]),
         ...((isObject && configAttrs) || {}),
       };
     }
@@ -123,6 +134,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     getAttrs,
     getColor,
     setColor,
+    isCVA,
     isSystemKey,
     hasSlotContent,
   };
@@ -418,6 +430,19 @@ function isSystemKey(key) {
     isExactKey ||
     key.includes(SYSTEM_CONFIG_KEY.iconName) ||
     key.includes(SYSTEM_CONFIG_KEY.iconNameCapitalize)
+  );
+}
+
+/**
+ Check is config contains default CVA keys.
+ @param { Object | String } config
+ @returns { Boolean }
+ */
+function isCVA(config) {
+  if (typeof config !== "object") return false;
+
+  return Object.values(CVA_CONFIG_KEY).some((value) =>
+    Object.keys(config).some((key) => key === value),
   );
 }
 
