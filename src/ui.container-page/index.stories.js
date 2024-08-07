@@ -19,22 +19,23 @@ export default {
   args: {
     title: "Title",
     gray: true,
-    slotDefaultTemplate: `
-      <template #default>
-        <UCard title="Card title">
-          <URow>
-            <UInput label="Name" />
-            <UInput label="Lastname" />
-          </URow>
-          <UTextarea class="mb-7 mt-4" label="Comments" rows="3" />
-        </UCard>
-      </template>
-    `,
   },
   argTypes: {
     ...getArgTypes(UPage.name),
   },
 };
+
+const defaultTemplate = `
+<template #default>
+  <UCard title="Card title">
+    <URow>
+      <UInput label="Name" />
+      <UInput label="Lastname" />
+    </URow>
+    <UTextarea class="mb-7 mt-4" label="Comments" rows="3" />
+  </UCard>
+</template>
+`;
 
 const DefaultTemplate = (args) => ({
   components: {
@@ -52,7 +53,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UPage v-bind="args">
-      ${args.slotDefaultTemplate}
+      ${defaultTemplate}
       ${args.slotTemplate || ""}
     </UPage>
   `,
@@ -96,7 +97,7 @@ slotHeaderLeftBefore.args = {
       <UIcon
         name="close"
         color="gray"
-       />
+      />
     </template>
   `,
 };
@@ -117,7 +118,7 @@ slotHeaderLeftAfter.args = {
       <UIcon
         name="close"
         color="gray"
-       />
+      />
     </template>
   `,
 };
@@ -126,7 +127,7 @@ export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
-       <UButton size="sm" color="gray" label="button" />
+      <UButton size="sm" color="gray" label="button" />
     </template>
   `,
 };
