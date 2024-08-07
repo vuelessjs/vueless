@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "border rounded-lg border-gray-200 bg-white space-y-4 md:space-y-6 w-full",
+    base: "border rounded-dynamic border-gray-200 bg-white space-y-4 md:space-y-6 w-full",
     variants: {
       padding: {
         sm: "p-2 md:p-4",

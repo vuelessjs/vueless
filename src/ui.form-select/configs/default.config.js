@@ -5,7 +5,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-lg border border-gray-300 bg-white
+      rounded-dynamic border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
     `,

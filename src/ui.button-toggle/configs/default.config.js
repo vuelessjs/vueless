@@ -22,10 +22,10 @@ export default /*tw*/ {
       separated: {
         false: `
           flex-nowrap -space-x-px gap-0
-          [&>:first-child]:rounded-lg [&>:first-child]:rounded-r-none
-          [&>:last-child]:rounded-lg [&>:last-child]:rounded-l-none
-          [&>:first-child>*>*]:rounded-lg [&>:first-child>*>*]:rounded-r-none
-          [&>:last-child>*>*]:rounded-lg [&>:last-child>*>*]:rounded-l-none
+          [&>:first-child]:rounded-dynamic [&>:first-child]:rounded-r-none
+          [&>:last-child]:rounded-dynamic [&>:last-child]:rounded-l-none
+          [&>:first-child>*>*]:rounded-dynamic [&>:first-child>*>*]:rounded-r-none
+          [&>:last-child>*>*]:rounded-dynamic [&>:last-child>*>*]:rounded-l-none
         `,
       },
     },

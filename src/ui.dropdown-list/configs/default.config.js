@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: `
     my-2 flex w-full absolute right-0 z-50
-    rounded-lg border border-gray-300 bg-white shadow
+    rounded-dynamic border border-gray-300 bg-white shadow
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-none
   `,

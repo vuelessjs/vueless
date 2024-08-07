@@ -1,15 +1,15 @@
 export default /*tw*/ {
   label: "{ULabel}",
   inputWrapper: "flex relative w-full",
-  rightIconSlot: "flex items-center justify-end whitespace-nowrap pr-3 gap-1 rounded-lg rounded-l-none",
-  leftIconSlot: "flex items-center justify-end whitespace-nowrap pl-3 gap-1 rounded-lg rounded-r-none",
+  rightIconSlot: "flex items-center justify-end whitespace-nowrap pr-3 gap-1 rounded-dynamic rounded-l-none",
+  leftIconSlot: "flex items-center justify-end whitespace-nowrap pl-3 gap-1 rounded-dynamic rounded-r-none",
   passwordIcon: "",
   passwordVisibleIconName: "visibility-fill",
   passwordHiddenIconName: "visibility_off-fill",
   block: {
     base: `
       w-full bg-white !opacity-100 relative flex transition
-      rounded-lg border border-solid border-gray-300
+      rounded-dynamic border border-solid border-gray-300
       hover:border-gray-400 hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15]
     `,
@@ -33,7 +33,7 @@ export default /*tw*/ {
     base: `
       block w-full py-2 px-3 font-normal leading-none text-gray-900
       placeholder:font-normal placeholder-gray-400
-      transition bg-white border-none border-gray-300 rounded-lg shadow-none
+      transition bg-white border-none border-gray-300 rounded-dynamic shadow-none
       focus:outline-none focus:ring-0 disabled:opacity-50
       disabled:cursor-not-allowed disabled:text-gray-900 disabled:border-gray-100
       read-only:border-gray-300 read-only:ring-0
