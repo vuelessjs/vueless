@@ -25,21 +25,21 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDivider, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDivider
         class="w-1/4"
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
         :key="index"
       />
     </URow>
@@ -49,35 +49,14 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   },
 });
 
-const VariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UDivider, URow },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
-  },
-  template: `
-    <URow>
-      <UDivider
-        class="w-1/3"
-        v-for="(variant, index) in variants"
-        v-bind="args"
-        :variant="variant"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const variants = VariantTemplate.bind({});
-variants.args = {};
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant" };
 
 export const dashed = DefaultTemplate.bind({});
 dashed.args = { dashed: true };

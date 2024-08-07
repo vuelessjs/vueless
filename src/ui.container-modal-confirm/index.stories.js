@@ -16,11 +16,7 @@ export default {
   args: {
     title: "Modal Confirm title",
     confirmLabel: "Confirm",
-    slotTemplate: `
-      <template #default>
-       Confirm the action?
-      </template>
-    `,
+    modelValue: false,
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.name),
@@ -34,106 +30,67 @@ export default {
   },
 };
 
+const defaultTemplate = `
+  <template #default>
+    Confirm the action?
+  </template>
+`;
+
 const DefaultTemplate = (args) => ({
-  components: { UModalConfirm, UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <div>
-      <UModalConfirm v-bind="args" v-model="args.value">
-        ${args.slotTemplate}
-      </UModalConfirm>
-
-      <UButton label="show modal" @click="onClick"/>
-    </div>
-  `,
-  methods: {
-    onClick() {
-      args.value = true;
-    },
-  },
-});
-
-const SlotTemplate = (args) => ({
   components: { UModalConfirm, UButton, UHeader, UIcon },
   setup() {
-    return { args };
+    function onClick() {
+      args.modelValue = true;
+    }
+
+    return { args, onClick };
   },
   template: `
     <div>
-      <UModalConfirm v-bind="args" v-model="args.value">
-        ${args.slotTemplate}
+      <UModalConfirm v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate || defaultTemplate}
       </UModalConfirm>
 
       <UButton label="show modal" @click="onClick"/>
     </div>
   `,
-  methods: {
-    onClick() {
-      args.value = true;
-    },
-  },
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
+    function onClick(value) {
+      if (argTypes[args.enum].name === "color") {
+        args.color = value;
+      } else {
+        args.width = value;
+      }
+
+      args.modelValue = true;
+    }
+
     return {
       args,
-      sizes: argTypes.width.options,
+      onClick,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <div>
-      <UModalConfirm v-bind="args" v-model="args.value">
-        ${args.slotTemplate}
+      <UModalConfirm v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate || defaultTemplate}
       </UModalConfirm>
 
       <URow>
         <UButton
-          v-for="(size, index) in sizes"
-          :key="index" :label="size" @click="onClick(size)"
+          v-for="(option, index) in options"
+          :key="index"
+          :label="option"
+          @click="onClick(option)"
         />
       </URow>
     </div>
   `,
-  methods: {
-    onClick(value) {
-      args.width = value;
-      args.value = true;
-    },
-  },
-});
-
-const ColorTemplate = (args, { argTypes } = {}) => ({
-  components: { UModalConfirm, UButton, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <div>
-      <UModalConfirm v-bind="args" v-model="args.value">
-        ${args.slotTemplate}
-      </UModalConfirm>
-
-      <URow>
-        <UButton
-          v-for="(color, index) in colors"
-          :key="index" :label="color" @click="onClick(color)"
-        />
-      </URow>
-    </div>
-  `,
-  methods: {
-    onClick(value) {
-      args.color = value;
-      args.value = true;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
@@ -145,13 +102,13 @@ withoutCancelButton.args = { cancelButton: false };
 export const disableAcceptButton = DefaultTemplate.bind({});
 disableAcceptButton.args = { confirmDisabled: true };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { text: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "width", text: "" };
 
-export const color = ColorTemplate.bind({});
-sizes.args = { text: "" };
+export const color = EnumVariantTemplate.bind({});
+color.args = { enum: "color", text: "" };
 
-export const slotHeaderLeftBefore = SlotTemplate.bind({});
+export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
@@ -163,7 +120,7 @@ slotHeaderLeftBefore.args = {
   `,
 };
 
-export const slotHeaderLeft = SlotTemplate.bind({});
+export const slotHeaderLeft = DefaultTemplate.bind({});
 slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
@@ -172,7 +129,7 @@ slotHeaderLeft.args = {
   `,
 };
 
-export const slotHeaderLeftAfter = SlotTemplate.bind({});
+export const slotHeaderLeftAfter = DefaultTemplate.bind({});
 slotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
@@ -184,16 +141,16 @@ slotHeaderLeftAfter.args = {
   `,
 };
 
-export const slotHeaderRight = SlotTemplate.bind({});
+export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
-       <UButton label="I'm in the right slot" size="sm" color="gray" />
+      <UButton label="I'm in the right slot" size="sm" color="gray" />
     </template>
   `,
 };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #default>
@@ -202,11 +159,11 @@ slotDefault.args = {
   `,
 };
 
-export const slotFooterRight = SlotTemplate.bind({});
+export const slotFooterRight = DefaultTemplate.bind({});
 slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
-       <UButton label="I'm in the right slot" size="sm" color="gray" />
+      <UButton label="I'm in the right slot" size="sm" color="gray" />
     </template>
   `,
 };
