@@ -1,6 +1,12 @@
 import forms from "@tailwindcss/forms";
 import defaultTheme from "tailwindcss/defaultTheme.js";
-import { COLOR_SHADES, BRAND_COLOR, GRAY_COLOR, COOL_COLOR } from "../constants/index.js";
+import {
+  COLOR_SHADES,
+  BRAND_COLOR,
+  GRAY_COLOR,
+  COOL_COLOR,
+  DARK_MODE_SELECTOR,
+} from "../constants/index.js";
 
 const safelist = getSafelist();
 
@@ -10,7 +16,7 @@ const safelist = getSafelist();
  */
 export function vuelessPreset() {
   return {
-    darkMode: "dark",
+    darkMode: DARK_MODE_SELECTOR,
     content: [
       "./index.html",
       "./src/**/*.{js,ts,jsx,tsx,vue}",
@@ -32,7 +38,7 @@ export function vuelessPreset() {
           "safe-right": "env(safe-area-inset-right)",
         },
         fontSize: {
-          "2xs": ["0.625rem", "0.875rem"], //  10px
+          "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
         },
         borderRadius: {
           dynamic: "var(--rounding)",

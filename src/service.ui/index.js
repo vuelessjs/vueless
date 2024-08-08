@@ -14,6 +14,7 @@ import {
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   DEFAULT_DARK_MODE,
+  DARK_MODE_SELECTOR,
 } from "../constants";
 
 /* Load Vueless config from the project root. */
@@ -75,14 +76,28 @@ export default class UIService {
     const isBrowser = typeof window !== "undefined";
 
     this.isMac = isBrowser && this.checkIsMac();
-
     this.isPWA = isBrowser && this.checkIsPWA();
     this.isIOS = isBrowser && this.checkIsIOS();
     this.isAndroid = isBrowser && this.checkIsAndroid();
-
     this.isMobileApp = this.isPWA || this.isIOS || this.isAndroid;
 
-    this.setTheme();
+    this.initTheme();
+  }
+
+  initTheme() {
+    const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
+
+    this.setTheme({
+      darkMode: prefersColorSchemeDark.matches,
+      internal: true,
+    });
+
+    prefersColorSchemeDark.addEventListener("change", (event) =>
+      this.setTheme({
+        darkMode: event.matches,
+        internal: true,
+      }),
+    );
   }
 
   checkIsPWA() {
@@ -193,19 +208,48 @@ export default class UIService {
   }
 
   /**
-   Set theme css variables.
+   Set dark mode
+   @param { Object } config
+   @returns { Boolean } isDarkMode
+   */
+  setDarkMode(config) {
+    if (!config?.internal) {
+      config?.darkMode === undefined
+        ? localStorage.removeItem(DARK_MODE_SELECTOR)
+        : localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
+    }
+
+    const storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
+
+    const isDarkMode = storedDarkMode
+      ? !!Number(storedDarkMode)
+      : Boolean(config?.darkMode) || vuelessConfig?.darkMode || DEFAULT_DARK_MODE;
+
+    isDarkMode
+      ? document.documentElement.classList.add(DARK_MODE_SELECTOR)
+      : document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+
+    return isDarkMode;
+  }
+
+  /**
+   Set theme css variables and dark mode.
    @param { Object } config
    @returns { void }
    */
   setTheme = (config = {}) => {
-    const darkMode = config?.darkMode || vuelessConfig?.darkMode || DEFAULT_DARK_MODE;
-    const rounding = config?.rounding || vuelessConfig?.rounding || DEFAULT_ROUNDING;
+    const isDarkMode = this.setDarkMode(config);
+    const rounding = Number(config?.rounding) || vuelessConfig?.rounding || DEFAULT_ROUNDING;
     const brand = config?.brand || vuelessConfig?.brand || DEFAULT_BRAND_COLOR;
     const gray = config?.gray || vuelessConfig?.gray || DEFAULT_GRAY_COLOR;
 
     // eslint-disable-next-line prettier/prettier, vue/max-len
     let brandColor = BRAND_COLORS.some((color) => color === brand) || brand === GRAYSCALE_COLOR ? brand : DEFAULT_BRAND_COLOR;
     let grayColor = BRAND_COLORS.some((color) => color === gray) ? gray : DEFAULT_GRAY_COLOR;
+
+    // set default shade related to the selected mode
+    const defaultBrandShade = isDarkMode ? 400 : 600;
+    const defaultGrayShade = isDarkMode ? 400 : 600;
 
     // handling custom `cool` color
     if (grayColor === COOL_COLOR) {
@@ -219,8 +263,8 @@ export default class UIService {
 
     const variables = {
       "--rounding": `${Number(rounding) / this.PX_IN_REM}rem`,
-      "--color-gray-default": UIService.convertHexInRgb(colors[grayColor][darkMode ? 400 : 600]),
-      "--color-brand-default": UIService.convertHexInRgb(colors[brandColor][darkMode ? 400 : 600]),
+      "--color-gray-default": UIService.convertHexInRgb(colors[grayColor][defaultBrandShade]),
+      "--color-brand-default": UIService.convertHexInRgb(colors[brandColor][defaultGrayShade]),
     };
 
     for (const key in colors[grayColor]) {
@@ -239,10 +283,6 @@ export default class UIService {
     style.innerHTML = `:root {${stringVariables}`;
 
     document.head.appendChild(style);
-
-    darkMode
-      ? document.documentElement.classList.add("dark")
-      : document.documentElement.classList.remove("dark");
   };
 
   static convertHexInRgb(hex) {
