@@ -27,37 +27,28 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UGroup, URow, UDot, UBadge },
   setup() {
     return {
       args,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <UGroup>
-      <URow v-for="(color, index) in colors" :key="index" gap="none" align="center">
-        <UDot v-bind="args" :color="color"/>
-        <UBadge :label="color" :color="color" variant="thirdary" />
-      </URow>
-    </UGroup>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UDot, UBadge },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <UGroup>
-      <URow v-for="(size, index) in sizes" :key="index" gap="none" align="center">
-        <UDot v-bind="args" :size="size"/>
-        <UBadge :label="size" variant="thirdary" />
+      <URow
+        v-for="(option, index) in options"
+        :key="index"
+        gap="none"
+        align="center"
+      >
+        <UDot v-bind="args" :[args.enum]="option"/>
+        <UBadge
+          :label="option"
+          :[args.enum]="option"
+          variant="thirdary"
+        />
       </URow>
     </UGroup>
   `,
@@ -66,8 +57,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };

@@ -28,63 +28,20 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UIcon, URow },
   setup() {
     return {
       args,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UIcon
-        v-for="(color, index) in colors"
+        v-for="(option, index) in options"
         v-bind="args"
-        :color="color"
-        name="close"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UIcon, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UIcon
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        name="close"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UIcon, URow },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
-  },
-  template: `
-    <URow>
-      <UIcon
-        v-for="(variant, index) in variants"
-        :variant="variant"
-        name="close"
-        v-bind="args"
+        :[args.enum]="option"
         :key="index"
       />
     </URow>
@@ -94,14 +51,14 @@ const VariantsTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const variants = VariantsTemplate.bind({});
-variants.args = { color: "red" };
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant", color: "red" };
 
 export const tooltip = DefaultTemplate.bind({});
 tooltip.args = { tooltip: "Some text" };
@@ -109,5 +66,5 @@ tooltip.args = { tooltip: "Some text" };
 export const interactive = DefaultTemplate.bind({});
 interactive.args = { interactive: true };
 
-export const pill = ColorsTemplate.bind({});
-pill.args = { pill: true };
+export const pill = EnumVariantTemplate.bind({});
+pill.args = { enum: "color", pill: true };
