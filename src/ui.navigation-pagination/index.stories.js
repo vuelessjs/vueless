@@ -24,7 +24,7 @@ const DefaultTemplate = (args) => ({
     return { args };
   },
   template: `
-    <UPagination v-bind="args" v-model="args.value" />
+    <UPagination v-bind="args" v-model="args.modelValue" />
   `,
 });
 
