@@ -7,7 +7,8 @@ export default /*tw*/ {
       border border-solid border-{color}-300 text-{color}-500
       hover:border-{color}-400
       active:border-{color}-500
-      focus:border-{color}-500 focus:bg-{color}-500 focus:ring-4 focus:ring-{color}-200 focus:ring-offset-0
+      focus:border-{color}-500 focus:bg-{color}-500
+      focus:ring-{color}-200 focus:ring-dynamic focus-within:ring-offset-dynamic
       disabled:border-{color}-100 disabled:bg-{color}-100
     `,
     variants: {

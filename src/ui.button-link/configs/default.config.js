@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       w-fit inline-flex rounded transition focus-visible:outline-none
-      focus-within:ring-4 focus-within:ring-offset-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15
+      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15
     `,
     variants: {
       color: {

@@ -4,7 +4,7 @@ export default /*tw*/ {
     base: `
       transition duration-300
       flex items-center p-0.5 relative rounded-3xl cursor-pointer
-      ring-opacity-10 focus-within:ring-4
+      ring-opacity-10 focus-within:ring-dynamic focus-within:ring-offset-dynamic
     `,
     variants: {
       checked: {

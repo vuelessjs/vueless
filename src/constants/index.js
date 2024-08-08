@@ -7,6 +7,8 @@ export const GRAYSCALE_COLOR = "grayscale";
 /* Vueless defaults */
 export const DEFAULT_BRAND_COLOR = GRAYSCALE_COLOR;
 export const DEFAULT_GRAY_COLOR = COOL_COLOR;
+export const DEFAULT_RING = 4; /* pixels */
+export const DEFAULT_RING_OFFSET = 0; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const DEFAULT_DARK_MODE = false;
 

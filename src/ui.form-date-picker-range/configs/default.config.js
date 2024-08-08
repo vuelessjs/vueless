@@ -3,12 +3,16 @@ export default /*tw*/ {
   input: "{UInput}",
   buttonWrapper: `
     flex rounded-dynamic max-md:justify-between
-    focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
+    focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  button: "{UButton} shrink-0 grow rounded-none !ring-0",
-  buttonActive: "ring-0",
-  buttonWrapperActive: "ring-4 ring-brand-700 ring-opacity-20",
-  shiftRangeButton: "focus:ring-0 last:rounded-dynamic last:rounded-l-none  first:rounded-dynamic first:rounded-r-none",
+  button: "{UButton} shrink-0 grow rounded-none !ring-0 !ring-offset-0",
+  buttonActive: "",
+  buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700 ring-opacity-20",
+  shiftRangeButton: `
+    first:rounded-dynamic first:rounded-r-none
+    last:rounded-dynamic last:rounded-l-none
+    focus:ring-0 focus:ring-offset-0
+  `,
   nextIconName: "keyboard_arrow_right",
   prevIconName: "keyboard_arrow_left",
   menu: {

@@ -11,7 +11,7 @@ export default /*tw*/ {
       w-full bg-white !opacity-100 relative flex transition
       rounded-dynamic border border-solid border-gray-300
       hover:border-gray-400 hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15]
+      focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-600/[.15]
     `,
     variants: {
       disabled: {

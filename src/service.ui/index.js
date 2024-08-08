@@ -1,6 +1,6 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 import colors from "tailwindcss/colors";
 
 import { cloneDeep } from "../service.helper";
@@ -10,6 +10,8 @@ import {
   BRAND_COLOR,
   BRAND_COLORS,
   GRAYSCALE_COLOR,
+  DEFAULT_RING,
+  DEFAULT_RING_OFFSET,
   DEFAULT_ROUNDING,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
@@ -21,9 +23,48 @@ const [vuelessConfig] = Object.values(
   import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
 );
 
+/*
+  Export global config settings for the current library.
+  Did as a separate variables for more comfortable usage.
+*/
+export const {
+  layout,
+  strategy,
+  rounding,
+  gray,
+  brand,
+  tailwindMerge: globalTailwindMergeConfig,
+  component: globalComponentConfig,
+} = vuelessConfig;
+
 export const nestedComponentRegEx = /\{U[^}]*}/g;
 
-/*
+//
+/**
+ Extend twMerge (tailwind merge) by vueless and user config:
+ All list of rules available here:
+ https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+ */
+const twMerge = extendTailwindMerge(
+  merge(
+    {
+      extend: {
+        theme: {
+          spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
+        },
+        classGroups: {
+          "ring-w": [{ ring: ["dynamic"] }],
+          "ring-offset-w": [{ "ring-offset": ["dynamic"] }],
+          "font-size": [{ text: ["2xs"] }],
+          rounded: [{ rounded: ["dynamic"] }],
+        },
+      },
+    },
+    globalTailwindMergeConfig,
+  ),
+);
+
+/**
   Export cva (class variance authority) methods:
    * extended with tailwind-merge
    * remove all Vueless nested component names ({U...} strings) from class list string.
@@ -35,7 +76,9 @@ export const {
   cx,
   compose,
 } = defineConfig({
-  hooks: { onComplete: (className) => twMerge(className).replace(nestedComponentRegEx, "") },
+  hooks: {
+    onComplete: (classNames) => twMerge(classNames).replace(nestedComponentRegEx, ""),
+  },
 });
 
 export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
@@ -45,19 +88,6 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
     compoundVariants,
     defaultVariants,
   });
-
-/*
-  Export global config settings for the current library.
-  Did as a separate variables for more comfortable usage.
-*/
-export const {
-  layout,
-  strategy,
-  rounding,
-  gray,
-  brand,
-  component: globalComponentConfig,
-} = vuelessConfig;
 
 export default class UIService {
   isMac = false;
@@ -198,10 +228,12 @@ export default class UIService {
    @returns { void }
    */
   setTheme = (config = {}) => {
-    const darkMode = config?.darkMode || vuelessConfig?.darkMode || DEFAULT_DARK_MODE;
-    const rounding = config?.rounding || vuelessConfig?.rounding || DEFAULT_ROUNDING;
     const brand = config?.brand || vuelessConfig?.brand || DEFAULT_BRAND_COLOR;
     const gray = config?.gray || vuelessConfig?.gray || DEFAULT_GRAY_COLOR;
+    const ring = config?.ring || vuelessConfig?.ring || DEFAULT_RING;
+    const ringOffset = config?.ringOffset || vuelessConfig?.ringOffset || DEFAULT_RING_OFFSET;
+    const rounding = config?.rounding || vuelessConfig?.rounding || DEFAULT_ROUNDING;
+    const darkMode = config?.darkMode || vuelessConfig?.darkMode || DEFAULT_DARK_MODE;
 
     // eslint-disable-next-line prettier/prettier, vue/max-len
     let brandColor = BRAND_COLORS.some((color) => color === brand) || brand === GRAYSCALE_COLOR ? brand : DEFAULT_BRAND_COLOR;
@@ -218,17 +250,21 @@ export default class UIService {
     }
 
     const variables = {
-      "--rounding": `${Number(rounding) / this.PX_IN_REM}rem`,
-      "--color-gray-default": UIService.convertHexInRgb(colors[grayColor][darkMode ? 400 : 600]),
-      "--color-brand-default": UIService.convertHexInRgb(colors[brandColor][darkMode ? 400 : 600]),
+      "--vl-ring": `${ring}px`,
+      "--vl-ring-offset": `${ringOffset}px`,
+      "--vl-rounding": `${Number(rounding) / this.PX_IN_REM}rem`,
+      "--vl-color-gray-default": UIService.convertHexInRgb(colors[grayColor][darkMode ? 400 : 600]),
+      "--vl-color-brand-default": UIService.convertHexInRgb(
+        colors[brandColor][darkMode ? 400 : 600],
+      ),
     };
 
     for (const key in colors[grayColor]) {
-      variables[`--color-gray-${key}`] = UIService.convertHexInRgb(colors[grayColor][key]);
+      variables[`--vl-color-gray-${key}`] = UIService.convertHexInRgb(colors[grayColor][key]);
     }
 
     for (const key in colors[brandColor]) {
-      variables[`--color-brand-${key}`] = UIService.convertHexInRgb(colors[brandColor][key]);
+      variables[`--vl-color-brand-${key}`] = UIService.convertHexInRgb(colors[brandColor][key]);
     }
 
     const style = document.createElement("style");
