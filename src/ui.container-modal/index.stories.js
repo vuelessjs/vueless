@@ -17,17 +17,7 @@ export default {
   component: UModal,
   args: {
     title: "Modal title",
-    value: false,
-    slotDefaultTemplate: `
-      <template #default>
-        <URow>
-          <UInput label="Name" />
-          <UInput label="Lastname" />
-        </URow>
-
-        <UTextarea class="mb-7" label="Comments" rows="3" />
-      </template>
-    `,
+    modelValue: false,
   },
   argTypes: {
     ...getArgTypes(UModal.name),
@@ -41,64 +31,76 @@ export default {
   },
 };
 
+const defaultTemplate = `
+  <template #default>
+    <URow>
+      <UInput label="Name" />
+      <UInput label="Lastname" />
+    </URow>
+
+    <UTextarea class="mb-7" label="Comments" rows="3" />
+  </template>
+`;
+
 const DefaultTemplate = (args) => ({
   components: { UModal, URow, UButton, UIcon, UHeader, UInput, UTextarea },
   setup() {
-    return { args };
+    function onClick() {
+      args.modelValue = true;
+    }
+
+    return { args, onClick };
   },
   template: `
     <div>
-      <UModal v-bind="args" v-model="args.value">
-        ${args.slotDefaultTemplate}
+      <UModal v-bind="args" v-model="args.modelValue">
+        ${defaultTemplate}
         ${args.slotTemplate || ""}
       </UModal>
 
       <UButton label="show modal" @click="onClick"/>
     </div>
   `,
-  methods: {
-    onClick() {
-      args.value = true;
-    },
-  },
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModal, UButton, URow, UInput, UTextarea },
   setup() {
+    function onClick(value) {
+      args.width = value;
+      args.modelValue = true;
+    }
+
     return {
       args,
-      sizes: argTypes.width.options,
+      options: argTypes[args.enum].options,
+      onClick,
     };
   },
   template: `
     <div>
-      <UModal v-bind="args" v-model="args.value">
-        ${args.slotDefaultTemplate}
+      <UModal v-bind="args" v-model="args.modelValue">
+        ${defaultTemplate}
         ${args.slotTemplate || ""}
       </UModal>
 
       <URow>
         <UButton
-          v-for="(size, index) in sizes"
-          :key="index" :label="size" @click="onClick(size)"
+          v-for="(option, index) in options"
+          :key="index"
+          :label="option"
+          @click="onClick(option)"
         />
       </URow>
     </div>
   `,
-  methods: {
-    onClick(value) {
-      args.width = value;
-      args.value = true;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { text: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "width", text: "" };
 
 export const backRoute = DefaultTemplate.bind({});
 backRoute.args = { backRoute: { title: "route title" } };
@@ -149,7 +151,7 @@ export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
-       <UButton size="sm" color="gray" label="some button" />
+      <UButton size="sm" color="gray" label="some button" />
     </template>
   `,
 };

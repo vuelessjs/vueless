@@ -16,25 +16,26 @@ export default {
   component: UCard,
   args: {
     title: "Title",
-    slotDefaultTemplate: `
-    <template #default>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-      </p>
-    </template>
-  `,
   },
   argTypes: {
     ...getArgTypes(UCard.name),
   },
 };
+
+const defaultTemplate = `
+  <template #default>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+      sed do eiusmod tempor incididunt ut labore et dolore magna
+      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit
+      esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+      occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum.
+    </p>
+  </template>
+`;
 
 const DefaultTemplate = (args) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
@@ -43,72 +44,46 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCard v-bind="args">
-      ${args.slotDefaultTemplate}
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate}
+      ${defaultTemplate}
     </UCard>
   `,
 });
 
-const PaddingTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCard, URow },
   setup() {
     return {
       args,
-      paddings: argTypes.padding.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
-      <UCard v-for="(padding, index) in paddings" v-bind="args" :padding="padding" :key="index">
-        ${args.slotDefaultTemplate}
-      </UCard>
-    </URow>
-  `,
-});
-
-const RoundedTemplate = (args, { argTypes } = {}) => ({
-  components: { UCard, URow },
-  setup() {
-    return {
-      args,
-      roundeds: argTypes.rounded.options,
-    };
-  },
-  template: `
-    <URow>
-      <UCard v-for="(rounded, index) in roundeds" v-bind="args" :rounded="rounded" :key="index">
-        ${args.slotDefaultTemplate}
+      <UCard
+        v-for="(option, index) in options"
+        v-bind="args"
+        :[args.enum]="option"
+        :key="index"
+      >
+        ${args.slotTemplate}
+        ${defaultTemplate}
       </UCard>
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  slotTemplate: `
-    <template #default>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-      </p>
-    </template>
-  `,
-};
+Default.args = {};
 
 export const description = DefaultTemplate.bind({});
 description.args = { description: "Card description" };
 
-export const padding = PaddingTemplate.bind({});
-padding.args = {};
+export const padding = EnumVariantTemplate.bind({});
+padding.args = { enum: "padding" };
 
-export const rounded = RoundedTemplate.bind({});
-rounded.args = {};
+export const rounded = EnumVariantTemplate.bind({});
+rounded.args = { enum: "rounded" };
 
 export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
