@@ -6,7 +6,8 @@ export default /*tw*/ {
     base: `
       px-3 py-2 rounded-dynamic border border-gray-300 cursor-text bg-white transition
       hover:border-gray-400 hover:focus-within:border-gray-500
-      focus-within:outline-none focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-600/[.15]
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-600/[.15]
+      focus-within:border-gray-500 focus-within:outline-none
     `,
     variants: {
       error: {

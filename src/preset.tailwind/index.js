@@ -40,8 +40,20 @@ export function vuelessPreset() {
         fontSize: {
           "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
         },
+        ringWidth: {
+          dynamic: "var(--vl-ring)",
+        },
+        ringOffsetWidth: {
+          dynamic: "var(--vl-ring-offset)",
+        },
+        ringWidth: {
+          dynamic: "var(--vl-ring)",
+        },
+        ringOffsetWidth: {
+          dynamic: "var(--vl-ring-offset)",
+        },
         borderRadius: {
-          dynamic: "var(--rounding)",
+          dynamic: "var(--vl-rounding)",
         },
       },
     },
@@ -69,11 +81,11 @@ function twColorWithOpacity(variableName) {
  */
 function getPalette(color) {
   let palette = {
-    DEFAULT: twColorWithOpacity(`--color-${color}-default`),
+    DEFAULT: twColorWithOpacity(`--vl-color-${color}-default`),
   };
 
   COLOR_SHADES.forEach((shade) => {
-    palette[shade] = twColorWithOpacity(`--color-${color}-${shade}`);
+    palette[shade] = twColorWithOpacity(`--vl-color-${color}-${shade}`);
   });
 
   return palette;

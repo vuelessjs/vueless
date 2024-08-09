@@ -11,7 +11,7 @@ export default /*tw*/ {
       w-full bg-white !opacity-100 relative flex transition
       rounded-dynamic border border-solid border-gray-300
       hover:border-gray-400 hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15]
+      focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-600/[.15]
     `,
     variants: {
       disabled: {
@@ -31,12 +31,12 @@ export default /*tw*/ {
   },
   input: {
     base: `
-      block w-full py-2 px-3 font-normal leading-none text-gray-900
+      block w-full py-2 px-3 font-normal leading-none text-gray-900 bg-white
+      border-none rounded-dynamic transition
       placeholder:font-normal placeholder-gray-400
-      transition bg-white border-none border-gray-300 rounded-dynamic shadow-none
-      focus:outline-none focus:ring-0 disabled:opacity-50
+      focus:ring-0 disabled:opacity-50
       disabled:cursor-not-allowed disabled:text-gray-900 disabled:border-gray-100
-      read-only:border-gray-300 read-only:ring-0
+      read-only:ring-0 read-only:border-gray-300
     `,
     variants: {
       size: {
