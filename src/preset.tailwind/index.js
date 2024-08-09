@@ -46,6 +46,12 @@ export function vuelessPreset() {
         ringOffsetWidth: {
           dynamic: "var(--vl-ring-offset)",
         },
+        ringWidth: {
+          dynamic: "var(--vl-ring)",
+        },
+        ringOffsetWidth: {
+          dynamic: "var(--vl-ring-offset)",
+        },
         borderRadius: {
           dynamic: "var(--vl-rounding)",
         },
