@@ -121,7 +121,7 @@ We'd recommend to add this command to `postinstall` in the project `package.json
 {% endtab %}
 {% endtabs %}
 
-3\. Declare web-types in the project `package.json`.&#x20;
+3\. Declare `web-types` in the project `package.json`.&#x20;
 
 {% code title="package.json" %}
 ```json
