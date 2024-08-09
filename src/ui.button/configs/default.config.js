@@ -4,8 +4,8 @@ export default /*tw*/ {
       flex items-center justify-center
       text-base font-medium outline-none
       border border-solid transition
-      focus:ring-opacity-20 focus:ring-4 focus:ring-{color}-700
-      focus-within:ring-opacity-20 focus-within:ring-4 focus-within:ring-{color}-700
+      focus:ring-{color}-700 focus:ring-opacity-20 focus:ring-dynamic focus:ring-offset-dynamic
+      focus-within:ring-{color}-700 focus-within:ring-opacity-20 focus-within:ring-dynamic focus-within:ring-offset-dynamic
       disabled:ring-0 disabled:cursor-no-drop
     `,
     variants: {
@@ -46,7 +46,7 @@ export default /*tw*/ {
         true: "pointer-events-none gap-0",
       },
       pill: {
-        false: "rounded-lg",
+        false: "rounded-dynamic",
         true: "rounded-full",
       },
       block: {

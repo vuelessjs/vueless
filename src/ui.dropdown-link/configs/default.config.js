@@ -9,7 +9,7 @@ export default /*tw*/ {
     base: `
       absolute z-10
       max-h-60 overflow-y-auto overflow-x-hidden md:!w-auto
-      rounded-lg border-gray-300 shadow bg-white
+      rounded-dynamic border-gray-300 shadow bg-white
     `,
     variants: {
       listYPosition: {

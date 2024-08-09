@@ -5,15 +5,16 @@ export default /*tw*/ {
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-md border border-gray-300 bg-white
+      rounded-dynamic border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-4 focus-within:ring-brand-600/[.15] focus-within:outline-none
+      focus-within:ring-brand-600/[.15] focus-within:ring-dynamic focus-within:ring-offset-dynamic
+      focus-within:border-brand-500 focus-within:outline-none
     `,
     variants: {
       error: {
         true: `
           border-red-300 hover:border-red-300
-          focus-within:border-red-500 focus-within:ring-4 focus-within:ring-red-100
+          focus-within:border-red-500 focus-within:ring-red-100
         `,
       },
       disabled: {
@@ -24,7 +25,6 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, class: "rounded-lg" },
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
       { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },

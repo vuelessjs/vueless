@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 flex flex-col rounded-lg",
+    base: "p-4 flex flex-col rounded-dynamic",
     variants: {
       variant: {
         primary: `bg-{color}-500 text-white`,

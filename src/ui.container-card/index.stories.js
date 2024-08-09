@@ -66,23 +66,6 @@ const PaddingTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const RoundedTemplate = (args, { argTypes } = {}) => ({
-  components: { UCard, URow },
-  setup() {
-    return {
-      args,
-      roundeds: argTypes.rounded.options,
-    };
-  },
-  template: `
-    <URow>
-      <UCard v-for="(rounded, index) in roundeds" v-bind="args" :rounded="rounded" :key="index">
-        ${args.slotDefaultTemplate}
-      </UCard>
-    </URow>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {
   slotTemplate: `
@@ -106,9 +89,6 @@ description.args = { description: "Card description" };
 
 export const padding = PaddingTemplate.bind({});
 padding.args = {};
-
-export const rounded = RoundedTemplate.bind({});
-rounded.args = {};
 
 export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
