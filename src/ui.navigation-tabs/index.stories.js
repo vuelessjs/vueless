@@ -32,21 +32,21 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UTabs },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <div class="space-y-16">
       <UTabs
         v-model="args.modelValue"
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
         :key="index"
       />
     </div>
@@ -56,8 +56,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const bottomLine = DefaultTemplate.bind({});
 bottomLine.args = { underlined: true };

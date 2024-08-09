@@ -19,23 +19,13 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UTab },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UTab v-bind="args" />
-  `,
-});
-
-const SlotTemplate = (args) => ({
   components: { UTab, UIcon },
   setup() {
     return { args };
   },
   template: `
     <UTab v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || ""}
     </UTab>
   `,
 });
@@ -46,7 +36,7 @@ defaultTemplate.args = {};
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   label: "Tag",
   slotTemplate: `
