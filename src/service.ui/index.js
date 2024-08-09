@@ -13,7 +13,6 @@ import {
   DEFAULT_ROUNDING,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
-  DEFAULT_DARK_MODE,
   DARK_MODE_SELECTOR,
 } from "../constants";
 
@@ -87,16 +86,10 @@ export default class UIService {
   initTheme() {
     const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
 
-    this.setTheme({
-      darkMode: prefersColorSchemeDark.matches,
-      internal: true,
-    });
+    this.setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
 
     prefersColorSchemeDark.addEventListener("change", (event) =>
-      this.setTheme({
-        darkMode: event.matches,
-        internal: true,
-      }),
+      this.setTheme({ systemDarkMode: event.matches }),
     );
   }
 
@@ -213,17 +206,16 @@ export default class UIService {
    @returns { Boolean } isDarkMode
    */
   setDarkMode(config) {
-    if (!config?.internal) {
-      config?.darkMode === undefined
-        ? localStorage.removeItem(DARK_MODE_SELECTOR)
-        : localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
-    }
+    config?.darkMode === undefined
+      ? localStorage.removeItem(DARK_MODE_SELECTOR)
+      : localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
 
     const storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
 
-    const isDarkMode = storedDarkMode
-      ? !!Number(storedDarkMode)
-      : Boolean(config?.darkMode) || vuelessConfig?.darkMode || DEFAULT_DARK_MODE;
+    let isDarkMode =
+      storedDarkMode !== null
+        ? !!Number(storedDarkMode)
+        : !!(config?.darkMode ?? vuelessConfig?.darkMode ?? config?.systemDarkMode);
 
     isDarkMode
       ? document.documentElement.classList.add(DARK_MODE_SELECTOR)
