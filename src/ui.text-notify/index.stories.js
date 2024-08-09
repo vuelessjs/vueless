@@ -28,39 +28,26 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UNotify, UButton },
   setup() {
-    return { args };
-  },
-  template: `
-    <UNotify class="m-4" v-bind="args" />
-    <UButton label="Show notify" @click="onClick"/>
- `,
-  methods: {
-    onClick() {
+    function onClick() {
       notify({
         type: "success",
         label: "Hurray!",
         description: "The file successfully downloaded.",
       });
-    },
+    }
+
+    return { args, onClick };
   },
+  template: `
+    <UNotify class="m-4" v-bind="args" />
+    <UButton label="Show notify" @click="onClick"/>
+  `,
 });
 
 const TypesTemplate = (args) => ({
   components: { UNotify, UButton, UGroup },
   setup() {
-    return { args };
-  },
-  template: `
-    <UNotify class="m-4" />
-
-    <UGroup>
-      <UButton label="Success" color="green" @click="onClick('success')"/>
-      <UButton label="Warning" color="orange" @click="onClick('warning')"/>
-      <UButton label="Error" color="red" @click="onClick('error')"/>
-    </UGroup>
- `,
-  methods: {
-    onClick(type) {
+    function onClick(type) {
       if (type === "success") {
         notify({
           type,
@@ -84,8 +71,19 @@ const TypesTemplate = (args) => ({
           description: "The file can't be downloaded, please check the fields and try again.",
         });
       }
-    },
+    }
+
+    return { args, onClick };
   },
+  template: `
+    <UNotify class="m-4" />
+
+    <UGroup>
+      <UButton label="Success" color="green" @click="onClick('success')"/>
+      <UButton label="Warning" color="orange" @click="onClick('warning')"/>
+      <UButton label="Error" color="red" @click="onClick('error')"/>
+    </UGroup>
+  `,
 });
 
 export const Default = DefaultTemplate.bind({});
