@@ -38,14 +38,14 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULoaderTop, UButton, UGroup, URow, UBadge },
   setup() {
     return {
       args,
       loaderTopOff,
       loaderTopOn,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
@@ -55,12 +55,19 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
         <UButton label="Off" size="sm" @click="loaderTopOff('https://api.publicapis.org/images')" />
       </URow>
 
-      <URow align="center" v-for="(color, index) in colors" :key="index">
-        <UBadge :label="color" :color="color" />
+      <URow
+        align="center"
+        v-for="(option, index) in options"
+        :key="index"
+      >
+        <UBadge
+          :label="option"
+          :[args.enum]="option"
+        />
         <ULoaderTop
           resources="https://api.publicapis.org/images"
           class="static"
-          :color="color"
+          :[args.enum]="option"
           v-bind="args"
         />
       </URow>
@@ -72,5 +79,5 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Color = ColorsTemplate.bind({});
-Color.args = {};
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };

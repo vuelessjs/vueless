@@ -157,7 +157,7 @@ function getRow() {
 }
 
 const DefaultTemplate = (args) => ({
-  components: { UTable },
+  components: { UTable, UButton, ULink, UMoney, UBadge, URow },
   setup() {
     const slots = getSlotNames(UTable.name);
 
@@ -168,6 +168,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :rows="itemsData"
     >
+      ${args.slotTemplate || ""}
     </UTable>
   `,
   computed: {
@@ -193,32 +194,6 @@ const EmptyTemplate = (args) => ({
   template: `
     <UTable v-bind="args" :rows="[]" />
   `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UTable, UButton, ULink, UMoney, UBadge, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UTable
-      v-bind="args"
-      :rows="itemsData"
-    >
-      ${args.slotTemplate}
-    </UTable>
-  `,
-  computed: {
-    itemsData() {
-      let rows = [];
-
-      for (let i = 0; i < args.numberOfRows; i++) {
-        rows.push(args.row());
-      }
-
-      return rows;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
@@ -247,7 +222,7 @@ stickyHeader.args = {
   stickyHeader: true,
 };
 
-export const stickyFooter = SlotTemplate.bind({});
+export const stickyFooter = DefaultTemplate.bind({});
 stickyFooter.parameters = STICKY_PARAMETERS;
 stickyFooter.args = {
   numberOfRows: 50,
@@ -281,7 +256,7 @@ DateDividerCustomLabel.args = {
   ],
 };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #cell-key_3="{value}">
@@ -290,7 +265,7 @@ slotDefault.args = {
   `,
 };
 
-export const slotHeaderActions = SlotTemplate.bind({});
+export const slotHeaderActions = DefaultTemplate.bind({});
 slotHeaderActions.args = {
   numberOfRows: 50,
   stickyHeader: true,
@@ -316,7 +291,7 @@ slotHeaderActions.args = {
   `,
 };
 
-export const slotBeforeFirstRow = SlotTemplate.bind({});
+export const slotBeforeFirstRow = DefaultTemplate.bind({});
 slotBeforeFirstRow.args = {
   slotTemplate: `
     <template #before-first-row>
@@ -330,7 +305,7 @@ slotBeforeFirstRow.args = {
   `,
 };
 
-export const slotAfterLastRow = SlotTemplate.bind({});
+export const slotAfterLastRow = DefaultTemplate.bind({});
 slotAfterLastRow.args = {
   slotTemplate: `
     <template #after-last-row>
@@ -344,7 +319,7 @@ slotAfterLastRow.args = {
   `,
 };
 
-export const slotFooter = SlotTemplate.bind({});
+export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>
@@ -360,7 +335,7 @@ slotFooter.args = {
   `,
 };
 
-export const cellSlots = SlotTemplate.bind({});
+export const cellSlots = DefaultTemplate.bind({});
 cellSlots.args = {
   columns: [
     { key: "link", label: "link" },
