@@ -437,14 +437,8 @@ const inputRef = ref(null);
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
   wrapperRef,
   menuRef,
-  {
-    x: props.openDirectionX,
-    y: props.openDirectionY,
-  },
-  {
-    x: "left",
-    y: "bottom",
-  },
+  computed(() => ({ x: props.openDirectionX, y: props.openDirectionY })),
+  { x: "left", y: "bottom" },
 );
 
 const {
