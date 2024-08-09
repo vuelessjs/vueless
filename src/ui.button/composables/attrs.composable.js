@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {
   const slots = useSlots();
-  const { config, getAttrs, getColor, setColor, hasSlotContent, isSystemKey } = useUI(
+  const { config, getAttrs, getColor, setColor, hasSlotContent, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -15,22 +15,19 @@ export default function useAttrs(props) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return setColor(
-          cva(value)({
-            ...props,
-            color: getColor(props.color),
-            square: props.loading || props.square,
-            iconLeft: Boolean(props.iconLeft) || hasSlotContent(slots["icon-left"]),
-            iconRight: Boolean(props.iconRight) || hasSlotContent(slots["icon-right"]),
-          }),
-          props.color,
-        );
+      if (isCVA(value)) {
+        value = cva(value)({
+          ...props,
+          color: getColor(props.color),
+          square: props.loading || props.square,
+          iconLeft: Boolean(props.iconLeft) || hasSlotContent(slots["icon-left"]),
+          iconRight: Boolean(props.iconRight) || hasSlotContent(slots["icon-right"]),
+        });
       }
 
-      return "";
+      return setColor(value, props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
