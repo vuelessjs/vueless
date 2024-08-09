@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args" v-model="args.value">
-      ${args.slotTemplate || defaultTemplate}
+      ${args.slotTemplate || defaultTemplate || allSlotsFragment}
     </UAlert>
   `,
 });
