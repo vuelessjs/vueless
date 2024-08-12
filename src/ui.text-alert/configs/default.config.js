@@ -27,8 +27,9 @@ export default /*tw*/ {
     ],
   },
   text: "{UText}",
-  body: "flex gap-2 items-baseline",
+  body: "flex items-start justify-between",
   content: "",
+  innerWrapper: "flex gap-2",
   title: {
     base: "font-bold leading-tight",
     variants: {
@@ -41,7 +42,10 @@ export default /*tw*/ {
     },
   },
   description: "",
-  button: "{UButton}",
+  button: {
+    component: "{UButton}",
+    compoundVariants: [{ color: "grayscale", variant: "primary", closable: true, class: "hover:bg-gray-200" }],
+  },
   icon: "{UIcon}",
   iconName: "close",
   defaultVariants: {
@@ -50,7 +54,7 @@ export default /*tw*/ {
     size: "md",
     timeout: 0,
     bordered: false,
-    closable: false,
+    closable: true,
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },

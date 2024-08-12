@@ -4,30 +4,35 @@
     <slot name="top" />
 
     <div v-bind="bodyAttrs">
-      <!-- @slot Use it to add something before the text. -->
-      <slot name="left" />
+      <div v-bind="innerWrapperAttrs">
+        <!-- @slot Use it to add something before the text. -->
+        <slot name="left" />
 
-      <div v-bind="contentAttrs">
-        <!--
+        <div v-bind="contentAttrs">
+          <!--
       @slot Use it to add something instead of the title.
       @binding {string} title
       -->
-        <slot name="title" :title="title">
-          <div v-if="title" v-bind="titleAttrs" v-text="title" />
-        </slot>
+          <slot name="title" :title="title">
+            <div v-if="title" v-bind="titleAttrs" v-text="title" />
+          </slot>
 
-        <!--
+          <!--
         @slot Use it to add something instead of the description.
         @binding {string} description
       -->
-        <slot name="description" :description="description">
-          <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
-        </slot>
+          <slot name="description" :description="description">
+            <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
+          </slot>
 
-        <!-- @slot Use it to add something inside. -->
-        <UText v-bind="textAttrs" :size="size">
-          <slot />
-        </UText>
+          <!-- @slot Use it to add something inside. -->
+          <UText v-bind="textAttrs" :size="size">
+            <slot />
+          </UText>
+        </div>
+
+        <!-- @slot Use it to add something after the text. -->
+        <slot name="right" />
       </div>
 
       <UButton
@@ -48,9 +53,6 @@
           v-bind="iconAttrs"
         />
       </UButton>
-
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
     </div>
 
     <!-- @slot Use it to add something under the text. -->
@@ -176,6 +178,7 @@ const {
   descriptionAttrs,
   iconAttrs,
   buttonAttrs,
+  innerWrapperAttrs,
 } = useAttrs(props);
 
 onMounted(() => {
