@@ -54,7 +54,7 @@ export default /*tw*/ {
     size: "md",
     timeout: 0,
     bordered: false,
-    closable: true,
+    closable: false,
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
