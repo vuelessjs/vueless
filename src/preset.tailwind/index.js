@@ -9,6 +9,20 @@ import {
 } from "../constants/index.js";
 
 const safelist = getSafelist();
+const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
+
+/**
+ * Vueless Tailwind CSS `content` config.
+ * Use it to extend project Tailwind CSS `content` config.
+ */
+export const vuelessContent = [
+  "./index.html",
+  "./src/**/*.{js,ts,jsx,tsx,vue}",
+  "./vueless.config.{js,ts}",
+  "./node_modules/vueless/**/*.{js,ts,vue}",
+  ...(isStrategyOverride ? ["!./src/**/ui.*/**/configs/default.config.js"] : []),
+  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/configs/default.config.js"] : []),
+];
 
 /**
  * Generates preset for TailwindCSS base on Vueless config.
@@ -17,12 +31,7 @@ const safelist = getSafelist();
 export function vuelessPreset() {
   return {
     darkMode: DARK_MODE_SELECTOR,
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx,vue}",
-      "./vueless.config.{js,ts}",
-      "./node_modules/vueless/**/*.{js,ts,vue}",
-    ],
+    content: vuelessContent,
     safelist,
     theme: {
       extend: {
