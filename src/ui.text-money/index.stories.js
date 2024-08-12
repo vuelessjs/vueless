@@ -4,7 +4,7 @@ import URow from "../ui.container-row";
 import DebitIcon from "../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../ui.text-money/assets/credit.svg?component";
 
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
@@ -40,7 +40,7 @@ const DefaultTemplate = (args) => ({
   template: `
     <div class="${COMPONENT_CLASSES}">
       <UMoney v-bind="args">
-        ${args.slotTemplate || allSlotsFragment}
+        ${args.slotTemplate || getSlotsFragment()}
       </UMoney>
     </div>
   `,

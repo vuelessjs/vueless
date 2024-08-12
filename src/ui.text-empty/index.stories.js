@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UEmpty from "../ui.text-empty";
 import UButton from "../ui.button";
@@ -30,7 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UEmpty v-bind="args">
-      ${args.slotTemplate || allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UEmpty>
   `,
 });
@@ -89,7 +89,7 @@ export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>
-        <UButton label="Add new one" size="sm" variant="thirdary" filled />
+      <UButton label="Add new one" size="sm" variant="thirdary" filled />
     </template>
   `,
 };

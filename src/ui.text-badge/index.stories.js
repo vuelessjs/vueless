@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UBadge v-bind="args">
-      ${args.slotTemplate || allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UBadge>
   `,
 });

@@ -3,35 +3,32 @@
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
-    <!--
-      @slot Use it to add something instead of the title.
-      @binding {string} title
-    -->
-    <slot name="title" :title="title">
-      <div v-if="title" v-bind="titleAttrs" v-text="title" />
-    </slot>
-
-    <!--
-      @slot Use it to add something instead of the description.
-      @binding {string} description
-    -->
-    <slot name="description" :description="description">
-      <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
-    </slot>
-
     <div v-bind="bodyAttrs">
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
 
-      <UText
-        v-if="hasSlotContent($slots.default) || html"
-        v-bind="bodyAttrs"
-        :size="size"
-        :html="html"
-      >
+      <div v-bind="contentAttrs">
+        <!--
+      @slot Use it to add something instead of the title.
+      @binding {string} title
+      -->
+        <slot name="title" :title="title">
+          <div v-if="title" v-bind="titleAttrs" v-text="title" />
+        </slot>
+
+        <!--
+        @slot Use it to add something instead of the description.
+        @binding {string} description
+      -->
+        <slot name="description" :description="description">
+          <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
+        </slot>
+
         <!-- @slot Use it to add something inside. -->
-        <slot />
-      </UText>
+        <UText v-bind="textAttrs" :size="size">
+          <slot />
+        </UText>
+      </div>
 
       <UButton
         v-if="closable"
@@ -78,20 +75,28 @@ defineOptions({ name: "UAlert" });
 
 const props = defineProps({
   /**
+   * Alert title.
+   */
+  title: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Alert description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
    * Alert variant.
    * @values primary, secondary, thirdary
    */
   variant: {
     type: String,
     default: UIService.get(defaultConfig, UAlert).default.variant,
-  },
-
-  /**
-   * HTML or plain text.
-   */
-  html: {
-    type: String,
-    default: UIService.get(defaultConfig, UAlert).default.html,
   },
 
   /**
@@ -150,22 +155,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-
-  /**
-   * Alert title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Alert description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
 });
 
 const emit = defineEmits([
@@ -181,11 +170,12 @@ const {
   config,
   wrapperAttrs,
   bodyAttrs,
+  contentAttrs,
+  textAttrs,
   titleAttrs,
   descriptionAttrs,
   iconAttrs,
   buttonAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 onMounted(() => {

@@ -25,7 +25,7 @@ export default /*tw*/ {
   stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "{UCheckbox}",
   stickyHeaderActionsCounter: "-ml-2",
-  tableWrapper: "border border-gray-200 rounded-lg bg-white",
+  tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
   table: "min-w-full border-none text-sm w-full table-fixed",
   header: "border-b border-gray-200",
   headerRow: "",

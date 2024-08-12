@@ -1,7 +1,7 @@
 export default /*tw*/ {
   input: {
     component: "{UInput}",
-    wrapper: "relative flex items-center justify-between w-full rounded-lg bg-gray-900 bg-opacity-5",
+    wrapper: "relative flex items-center justify-between w-full rounded-dynamic bg-gray-900 bg-opacity-5",
     input: "w-full",
     label: "w-full",
     rightSlot: "pr-0",
