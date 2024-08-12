@@ -63,6 +63,7 @@
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
+          no-ring
           v-bind="buttonAttrs"
           :data-cy="`${dataCy}-right`"
           @click="onClickSearch"

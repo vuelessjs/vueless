@@ -47,7 +47,7 @@ export default /*tw*/ {
   timepickerInput: " w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
   timepickerLeftInput: "rounded-l-dynamic",
   timepickerRightInput: " rounded-r-dynamic",
-  timepickerSubmitButton: "py-2 focus:ring-0 border-0",
+  timepickerSubmitButton: "{UButton} py-2 border-0",
   i18n: {
     weekdays: {
       shorthand: {

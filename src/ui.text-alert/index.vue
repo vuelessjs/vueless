@@ -35,10 +35,11 @@
 
       <UButton
         v-if="closable"
-        size="sm"
-        variant="thirdary"
-        :color="color"
         square
+        no-ring
+        size="sm"
+        :color="color"
+        variant="thirdary"
         v-bind="buttonAttrs"
         @click="onClickClose"
       >
