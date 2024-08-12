@@ -116,6 +116,9 @@ pilled.args = { pill: true };
 export const disabled = VariantsTemplate.bind({});
 disabled.args = { disabled: true };
 
+export const noRing = DefaultTemplate.bind({});
+noRing.args = { noRing: true };
+
 export const colors = ColorTemplate.bind({});
 colors.args = {};
 
