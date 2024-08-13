@@ -10,18 +10,22 @@
 
         <div v-bind="contentAttrs">
           <!--
-      @slot Use it to add something instead of the title.
-      @binding {string} title
-      -->
-          <slot name="title" :title="title">
+          @slot Use it to add something instead of the title.
+          @binding {string} title
+          -->
+          <slot v-if="!hasSlotContent($slots['default'])" name="title" :title="title">
             <div v-if="title" v-bind="titleAttrs" v-text="title" />
           </slot>
 
           <!--
-        @slot Use it to add something instead of the description.
-        @binding {string} description
-      -->
-          <slot name="description" :description="description">
+            @slot Use it to add something instead of the description.
+            @binding {string} description
+          -->
+          <slot
+            v-if="!hasSlotContent($slots['default'])"
+            name="description"
+            :description="description"
+          >
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
@@ -179,6 +183,7 @@ const {
   iconAttrs,
   buttonAttrs,
   innerWrapperAttrs,
+  hasSlotContent,
 } = useAttrs(props);
 
 onMounted(() => {
