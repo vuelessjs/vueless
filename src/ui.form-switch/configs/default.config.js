@@ -2,8 +2,7 @@ export default /*tw*/ {
   label: "{ULabel}",
   wrapper: {
     base: `
-      transition duration-300
-      flex items-center p-0.5 relative rounded-3xl cursor-pointer
+      flex items-center p-0.5 relative rounded-3xl cursor-pointer transition
       ring-opacity-10 focus-within:ring-dynamic focus-within:ring-offset-dynamic
     `,
     variants: {
@@ -28,7 +27,7 @@ export default /*tw*/ {
   },
   input: "absolute size-0 opacity-0",
   circle: {
-    base: "transition duration-300 rounded-full bg-white flex items-center justify-center",
+    base: "transition-all duration-300 rounded-full bg-white flex items-center justify-center",
     variants: {
       size: {
         sm: "size-3",
@@ -46,7 +45,7 @@ export default /*tw*/ {
   selectedIconName: "check",
   unselectedIconName: "close",
   toggleLabel: {
-    base: "absolute text-center text-2xs font-medium uppercase text-white transition duration-300",
+    base: "absolute text-center text-2xs font-medium uppercase text-white",
     compoundVariants: [
       { toggleLabel: true, checked: true, class: "w-1/2 left-1" },
       { toggleLabel: true, checked: false, class: "w-1/2 right-1" },
