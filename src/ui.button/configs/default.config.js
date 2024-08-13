@@ -42,6 +42,10 @@ export default /*tw*/ {
           disabled:text-{color}-300
         `,
       },
+      color: {
+        grayscale: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
+        white: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
+      },
       loading: {
         true: "pointer-events-none gap-0",
       },
@@ -52,9 +56,8 @@ export default /*tw*/ {
       block: {
         true: "w-full",
       },
-      color: {
-        grayscale: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
-        white: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
+      noRing: {
+        true: "focus:ring-0 focus:ring-offset-0 focus-within:ring-0 focus-within:ring-offset-0",
       },
     },
     compoundVariants: [
@@ -160,6 +163,7 @@ export default /*tw*/ {
     block: false,
     square: false,
     filled: false,
+    noRing: false,
     loading: false,
     disabled: false,
   },

@@ -12,6 +12,11 @@
     v-bind="labelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
+      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
+        <!-- @slot Use it to add something before the text. -->
+        <slot name="left" />
+      </span>
+
       <span
         v-if="hasSlotContent($slots['icon-left']) || iconLeft"
         ref="leftSlotWrapper"
@@ -25,11 +30,6 @@
         <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
           <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
         </slot>
-      </span>
-
-      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
-        <!-- @slot Use it to add something before the text. -->
-        <slot name="left" />
       </span>
 
       <span v-bind="inputWrapperAttrs">
@@ -67,9 +67,6 @@
         />
       </label>
 
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
-
       <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
         <!--
           @slot Use it to add icon after the text.
@@ -80,6 +77,9 @@
           <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
         </slot>
       </span>
+
+      <!-- @slot Use it to add something after the text. -->
+      <slot name="right" />
     </label>
   </ULabel>
 </template>

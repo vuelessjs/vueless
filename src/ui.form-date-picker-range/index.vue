@@ -32,10 +32,11 @@
       <UButton
         ref="buttonPrevRef"
         square
+        filled
+        no-ring
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        filled
         :icon-left="config.prevIconName"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
@@ -46,6 +47,7 @@
         ref="buttonRef"
         square
         filled
+        no-ring
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
@@ -58,6 +60,7 @@
         ref="buttonNextRef"
         square
         filled
+        no-ring
         :size="size"
         :disabled="disabled"
         variant="thirdary"
@@ -82,6 +85,7 @@
             :key="periodButton.name"
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             :label="periodButton.title"
@@ -95,6 +99,7 @@
             v-if="customRangeButton.range.to && customRangeButton.range.from"
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
@@ -107,6 +112,7 @@
           <UButton
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             :label="locale.ownRange"
@@ -120,6 +126,7 @@
           <div v-bind="rangeSwitchWrapperAttrs">
             <UButton
               square
+              no-ring
               size="xs"
               color="gray"
               variant="thirdary"
@@ -134,6 +141,7 @@
 
             <UButton
               square
+              no-ring
               size="xs"
               color="gray"
               variant="thirdary"
@@ -147,6 +155,7 @@
             <UButton
               v-for="date in periodDateList"
               :key="date.title"
+              no-ring
               size="sm"
               variant="thirdary"
               :disabled="isDatePeriodOutOfRange(date)"

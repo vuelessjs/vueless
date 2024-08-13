@@ -11,6 +11,7 @@
           color="gray"
           square
           variant="thirdary"
+          no-ring
           v-bind="navigationSwitchViewButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickViewSwitch"
@@ -41,6 +42,7 @@
           size="xs"
           square
           variant="thirdary"
+          no-ring
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickPrevButton"
@@ -61,6 +63,7 @@
           size="xs"
           square
           variant="thirdary"
+          no-ring
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickNextButton"
@@ -144,6 +147,7 @@
         size="sm"
         square
         filled
+        no-ring
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >

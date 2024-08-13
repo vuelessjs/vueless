@@ -5,13 +5,12 @@ export default /*tw*/ {
     flex rounded-dynamic max-md:justify-between
     focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  button: "{UButton} shrink-0 grow rounded-none !ring-0 !ring-offset-0",
+  button: "{UButton} shrink-0 grow rounded-none",
   buttonActive: "",
   buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700 ring-opacity-20",
   shiftRangeButton: `
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none
-    focus:ring-0 focus:ring-offset-0
   `,
   nextIconName: "keyboard_arrow_right",
   prevIconName: "keyboard_arrow_left",
@@ -36,7 +35,7 @@ export default /*tw*/ {
     leaveToClass: "opacity-0 scale-95",
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
-  periodButton: "{UButton} h-[3.125rem] w-full !ring-0",
+  periodButton: "{UButton} h-[3.125rem] w-full",
   periodButtonIconName: "apps",
   periodButtonActive: "!bg-opacity-20",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
