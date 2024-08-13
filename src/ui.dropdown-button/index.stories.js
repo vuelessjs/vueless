@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 import UDropdownButton from "../ui.dropdown-button";
 import UDropdownItem from "../ui.dropdown-item";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
@@ -105,7 +105,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const VariantColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UDropdownButton, URow, UGroup },
+  components: { UDropdownButton, URow, UCol },
   setup() {
     return {
       args,
@@ -114,7 +114,7 @@ const VariantColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(variant, index) in variants" :key="index">
         <UDropdownButton
           v-for="(color, idx) in colors"
@@ -125,7 +125,7 @@ const VariantColorsTemplate = (args, { argTypes } = {}) => ({
           :key="idx"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

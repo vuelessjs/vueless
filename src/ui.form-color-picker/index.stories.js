@@ -1,6 +1,6 @@
 import { getArgTypes } from "../service.storybook";
 import UColorPicker from "../ui.form-color-picker";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UColorPicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-color-picker)
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, UColorPicker },
+  components: { UCol, UColorPicker },
   setup() {
     return {
       args,
@@ -37,7 +37,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <UColorPicker
         v-for="(size, index) in sizes"
         v-bind="args"
@@ -46,7 +46,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         :name="size"
         v-model="args.value"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

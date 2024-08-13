@@ -2,7 +2,7 @@ import { getArgTypes } from "../service.storybook";
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UButton from "../ui.button";
 
 /**
@@ -37,7 +37,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const GapTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UInput },
+  components: { UCol, URow, UInput },
   setup() {
     return {
       args,
@@ -45,17 +45,17 @@ const GapTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow v-for="(gap, index) in gaps" :key="index" v-bind="args" :gap="gap" align="center">
         <UInput :label="gap" />
         <UInput :label="gap" />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
 const AlignTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UInput, UButton },
+  components: { UCol, URow, UInput, UButton },
   setup() {
     return {
       args,
@@ -63,12 +63,12 @@ const AlignTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow v-for="(align, index) in aligns" :key="index" v-bind="args" :align="align">
         <UButton :label="align" size="xs" block />
         <UInput label="Name" />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

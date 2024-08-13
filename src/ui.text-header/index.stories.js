@@ -1,7 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UHeader from "../ui.text-header";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
@@ -33,7 +33,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UHeader, UGroup },
+  components: { UHeader, UCol },
   setup() {
     return {
       args,
@@ -41,7 +41,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <UHeader
         v-for="(option, index) in options"
         :key="index"
@@ -49,7 +49,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :[args.enum]="option"
         :label="'Header ' + option"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

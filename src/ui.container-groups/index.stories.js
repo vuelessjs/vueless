@@ -2,6 +2,7 @@ import { getArgTypes } from "../service.storybook";
 
 import UGroups from "../ui.container-groups";
 import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
 
 /**
@@ -26,14 +27,16 @@ export default {
 const defaultSlotTemplate = `
   <template #default>
     <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
-      <UInput placeholder="input" label="Label" />
-      <UInput placeholder="input" label="Label" />
+      <UCol>
+        <UInput placeholder="input" label="Label" />
+        <UInput placeholder="input" label="Label" />
+      </UCol>
     </UGroup>
   </template>
 `;
 
 const DefaultTemplate = (args) => ({
-  components: { UGroups, UGroup, UInput },
+  components: { UGroups, UGroup, UCol, UInput },
   setup() {
     return { args };
   },

@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 import UCheckbox from "../ui.form-checkbox";
 import UCheckboxGroup from "../ui.form-checkbox-group";
 import UBadge from "../ui.text-badge";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UCheckbox` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox)
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const ValueTypesTemplate = (args) => ({
-  components: { UCheckbox, UCheckboxGroup, UGroup },
+  components: { UCheckbox, UCheckboxGroup, UCol },
   setup() {
     return { args };
   },
@@ -48,7 +48,7 @@ const ValueTypesTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <UCheckbox
         v-bind="args"
         v-model="defaultValue"
@@ -85,12 +85,12 @@ const ValueTypesTemplate = (args) => ({
           {{ arrayValue }}
         </span>
       </div>
-    </UGroup>
+    </UCol>
   `,
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UCheckbox, UGroup },
+  components: { UCheckbox, UCol },
   setup() {
     return {
       args,
@@ -98,7 +98,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <UCheckbox
         v-for="(size, index) in sizes"
         :key="index"
@@ -107,7 +107,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         :size="size"
         :label="size"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 
