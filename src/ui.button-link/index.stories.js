@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import ULink from "../ui.button-link";
 import UButton from "../ui.button";
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULink v-bind="args">
-      ${args.slotTemplate || allSlotsFragment}
+    ${args.slotTemplate || getSlotsFragment()}
     </ULink>
   `,
 });

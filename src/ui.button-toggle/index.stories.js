@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UToggle from "../ui.button-toggle";
 import UIcon from "../ui.image-icon";
@@ -44,7 +44,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :options="OPTIONS"
     >
-      ${args.slotTemplate || allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UToggle>
   `,
 });
