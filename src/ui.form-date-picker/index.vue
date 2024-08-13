@@ -69,7 +69,7 @@ import { addDays, isSameDay } from "../ui.form-calendar/services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
-import { useAdjustElementPosition } from "../composable.adjustElementPosition";
+import { useAutoPosition } from "../composable.autoPosition";
 
 import defaultConfig from "./configs/default.config";
 import { UDatePicker } from "./constants";
@@ -258,7 +258,7 @@ const calendarRef = ref(null);
 
 const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef);
 
-const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
   calendarWrapperRef,
   computed(() => ({ x: props.openDirectionX, y: props.openDirectionY })),

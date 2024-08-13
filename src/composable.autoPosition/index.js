@@ -8,20 +8,15 @@ export const POSITION = {
   auto: "auto",
 };
 
-export function useAdjustElementPosition(
-  anchorElement,
-  targetElement,
-  position,
-  preferredPosition,
-) {
+export function useAutoPosition(anchorElement, targetElement, position, preferredPosition) {
   const localAnchorElement = computed(() => toValue(anchorElement));
   const localTargetElement = computed(() => toValue(targetElement));
   const localPosition = computed(() => toValue(position));
   const localPreferredPosition = computed(() => toValue(preferredPosition));
 
-  const preferredOpenDirectionY = computed(
-    () => localPreferredPosition.value?.y || POSITION.bottom,
-  );
+  const preferredOpenDirectionY = computed(() => {
+    return localPreferredPosition.value?.y || POSITION.bottomi;
+  });
   const preferredOpenDirectionX = computed(() => localPreferredPosition.value?.x || POSITION.left);
 
   const isTop = computed(() => {

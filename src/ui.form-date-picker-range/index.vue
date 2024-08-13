@@ -259,7 +259,7 @@ import {
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 import useBreakpoint from "../composable.breakpoint";
-import { useAdjustElementPosition } from "../composable.adjustElementPosition";
+import { useAutoPosition } from "../composable.autoPosition";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -443,7 +443,7 @@ const buttonPrevRef = ref(null);
 const buttonNextRef = ref(null);
 const inputRef = ref(null);
 
-const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
   menuRef,
   computed(() => ({ x: props.openDirectionX, y: props.openDirectionY })),
