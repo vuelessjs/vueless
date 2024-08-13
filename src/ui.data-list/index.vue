@@ -25,7 +25,13 @@
       <template #item="{ element }">
         <div :id="element[valueKey]" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
           <div :data-cy="`${dataCy}-item-${element[valueKey]}`" v-bind="itemAttrs">
-            <UIcon internal :name="config.dragIconName" color="gray" v-bind="dragIconAttrs" />
+            <UIcon
+              internal
+              color="gray"
+              :size="iconSize"
+              :name="config.dragIconName"
+              v-bind="dragIconAttrs"
+            />
 
             <div v-bind="labelAttrs(element.isActive)">
               <!--
@@ -54,6 +60,7 @@
                 internal
                 interactive
                 color="gray"
+                :size="iconSize"
                 :name="config.deleteIconName"
                 :data-cy="`${dataCy}-delete`"
                 :tooltip="currentLocale.delete"
@@ -66,6 +73,7 @@
                 internal
                 interactive
                 color="gray"
+                :size="iconSize"
                 :name="config.editIconName"
                 :data-cy="`${dataCy}-edit`"
                 :tooltip="currentLocale.edit"
@@ -140,6 +148,15 @@ const props = defineProps({
   group: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Data list size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: UIService.get(defaultConfig, UDataListName).default.size,
   },
 
   /**
@@ -266,6 +283,16 @@ const { tm } = useLocale();
 
 const i18nGlobal = tm(UDataListName);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size];
+});
 
 function onDragMove(event) {
   const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;

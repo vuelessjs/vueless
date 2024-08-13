@@ -66,7 +66,7 @@
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row">
           <div :data-cy="`${dataCy}-${key}-cell`">
-            {{ value || HYPHEN_SYMBOL }}
+            {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
           </div>
         </slot>
       </template>

@@ -12,7 +12,16 @@ export default /*tw*/ {
   `,
   dragIcon: "{UIcon} icon-drag cursor-move opacity-100 fill-gray-400 md:fill-gray-500",
   dragIconName: "drag_indicator",
-  label: "text-base font-normal text-gray-900 flex-auto pt-px",
+  label: {
+    base: "font-normal text-gray-900 flex-auto pt-px",
+    variants: {
+      size: {
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
+      },
+    },
+  },
   labelCrossed: "line-through",
   customActions: `
     space-x-5 opacity-50 md:flex md:items-center md:opacity-0
@@ -32,9 +41,10 @@ export default /*tw*/ {
     emptyDescription: "There is no data in the list.",
   },
   defaultVariants: {
-    animationDuration: 200,
+    size: "md",
     labelKey: "label",
     valueKey: "id",
+    animationDuration: 200,
     nesting: false,
     upperlined: false,
   },

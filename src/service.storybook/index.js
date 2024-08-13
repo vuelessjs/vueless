@@ -16,7 +16,12 @@ export function getArgTypes(componentName) {
 
   if (!component) return;
 
-  const types = {};
+  const types = {
+    // Hide default template arg in docs.
+    defaultTemplate: { table: { disable: true } },
+    // Hide slot template arg in docs.
+    slotTemplate: { table: { disable: true } },
+  };
 
   component.attributes?.forEach((attribute) => {
     const type = attribute.value.type;
@@ -135,12 +140,23 @@ export function getArgTypes(componentName) {
   return types;
 }
 
-export function getSource(defaultCnfig) {
-  return defaultCnfig.replace("export default /*tw*/ ", "").replace(";", "");
+export function getSource(defaultConfig) {
+  return defaultConfig.replace("export default /*tw*/ ", "").replace(";", "");
 }
 
+// TODO: remove it when allSlotsFragment will be replaced to getSlotsFragment
 export const allSlotsFragment = `
   <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
     <template v-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
   </template>
 `;
+
+export function getSlotsFragment(defaultTemplate) {
+  return `
+  <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
+    <template v-if="slot === 'default' && !args['defaultSlot']">${defaultTemplate || ""}</template>
+    <template v-else-if="slot === 'default' && args['defaultSlot']">{{ args['defaultSlot'] }}</template>
+    <template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
+  </template>
+`;
+}

@@ -94,6 +94,9 @@ pilled.args = { enum: "variant", pill: true };
 export const disabled = EnumVariantTemplate.bind({});
 disabled.args = { enum: "variant", disabled: true };
 
+export const noRing = DefaultTemplate.bind({});
+noRing.args = { noRing: true };
+
 export const colors = ColorTemplate.bind({});
 colors.args = {};
 

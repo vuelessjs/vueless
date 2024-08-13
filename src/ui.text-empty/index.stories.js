@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UEmpty from "../ui.text-empty";
 import UButton from "../ui.button";
@@ -22,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UEmpty },
+  components: { UEmpty, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UEmpty.name);
 
@@ -30,38 +30,26 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UEmpty v-bind="args">
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UEmpty>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UEmpty, UIcon, UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UEmpty v-bind="args">
-      ${args.slotTemplate}
-    </UEmpty>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UEmpty, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UEmpty
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
-        :title="size"
+        :[args.enum]="option"
+        :title="option"
         :key="index"
       />
     </URow>
@@ -71,10 +59,10 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { title: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size", title: "" };
 
-export const slotHeader = SlotTemplate.bind({});
+export const slotHeader = DefaultTemplate.bind({});
 slotHeader.args = {
   slotTemplate: `
     <template #header>
@@ -83,12 +71,12 @@ slotHeader.args = {
         color="blue"
         size="2xl"
         pill
-       />
+      />
     </template>
   `,
 };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
     <template #default>
@@ -97,11 +85,11 @@ slotDefault.args = {
   `,
 };
 
-export const slotFooter = SlotTemplate.bind({});
+export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>
-        <UButton label="Add new one" size="sm" variant="thirdary" filled />
+      <UButton label="Add new one" size="sm" variant="thirdary" filled />
     </template>
   `,
 };
