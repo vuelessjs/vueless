@@ -1,6 +1,7 @@
 import { getArgTypes } from "../service.storybook";
 
 import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 
@@ -28,14 +29,16 @@ export default {
 
 const defaultSlotTemplate = `
   <template #default>
-    <UInput placeholder="Vasyl" label="Name" />
-    <UInput placeholder="Vasylenko" label="Surname" />
-    <UInput placeholder="Kyiv" label="Town" />
+    <UCol>
+      <UInput placeholder="Vasyl" label="Name" />
+      <UInput placeholder="Vasylenko" label="Surname" />
+      <UInput placeholder="Kyiv" label="Town" />
+    </UCol>
   </template>
 `;
 
 const DefaultTemplate = (args) => ({
-  components: { UGroup, UInput, UButton },
+  components: { UGroup, UCol, UInput, UButton },
   setup() {
     return { args };
   },
