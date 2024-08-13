@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    ref="labelComponent"
+    ref="labelComponentRef"
     :for="id"
     :label="label"
     :description="description"
@@ -12,14 +12,14 @@
     v-bind="labelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
-      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapper">
+      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
       </span>
 
       <span
         v-if="hasSlotContent($slots['icon-left']) || iconLeft"
-        ref="leftSlotWrapper"
+        ref="leftSlotWrapperRef"
         v-bind="leftIconSlotAttrs"
       >
         <!--
@@ -35,7 +35,7 @@
       <span v-bind="inputWrapperAttrs">
         <input
           :id="id"
-          ref="input"
+          ref="inputRef"
           v-model="inputValue"
           :placeholder="placeholder"
           :type="inputType"
@@ -315,11 +315,11 @@ const props = defineProps({
 const slots = useSlots();
 
 const isShownPassword = ref(false);
-const input = ref(null);
-const labelComponent = ref(null);
-const leftSlotWrapper = ref(null);
+const inputRef = ref(null);
+const labelComponentRef = ref(null);
+const leftSlotWrapperRef = ref(null);
 
-defineExpose({ input });
+defineExpose({ inputRef });
 
 const isTypePassword = computed(() => props.type === "password");
 
@@ -440,12 +440,12 @@ function setLabelPosition() {
     return;
   }
 
-  let leftSlotOrIconWidth = leftSlotWrapper.value.getBoundingClientRect().width;
+  let leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
 
-  const leftPaddingValue = parseFloat(getComputedStyle(input.value).paddingLeft);
+  const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
 
-  if (labelComponent.value.labelElement) {
-    labelComponent.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+  if (labelComponentRef.value.labelElement) {
+    labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
   }
 }
 </script>
