@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCard from "../ui.container-card";
 import URow from "../ui.container-row";
@@ -23,29 +23,28 @@ export default {
 };
 
 const defaultTemplate = `
-  <template #default>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-      sed do eiusmod tempor incididunt ut labore et dolore magna
-      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      Duis aute irure dolor in reprehenderit in voluptate velit
-      esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-      occaecat cupidatat non proident, sunt in culpa qui officia
-      deserunt mollit anim id est laborum.
-    </p>
-  </template>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+    occaecat cupidatat non proident, sunt in culpa qui officia
+    deserunt mollit anim id est laborum.
+  </p>
 `;
 
 const DefaultTemplate = (args) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCard.name);
+
+    return { args, slots };
   },
   template: `
     <UCard v-bind="args">
-      ${args.slotTemplate}
-      ${defaultTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCard>
   `,
 });
@@ -82,9 +81,6 @@ description.args = { description: "Card description" };
 export const padding = EnumVariantTemplate.bind({});
 padding.args = { enum: "padding" };
 
-export const rounded = EnumVariantTemplate.bind({});
-rounded.args = { enum: "rounded" };
-
 export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
   slotTemplate: `
@@ -95,6 +91,9 @@ slotHeaderLeftBefore.args = {
         pill
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -103,6 +102,9 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -117,6 +119,9 @@ slotHeaderLeftAfter.args = {
         pill
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -125,6 +130,9 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="Read more" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -135,6 +143,9 @@ slotFooterLeft.args = {
     <template #footer-left>
       <UButton label="Read more" />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -143,6 +154,9 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="Read more" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };

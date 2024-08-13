@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UPage from "../ui.container-page";
 import UCard from "../ui.container-card";
@@ -26,7 +26,6 @@ export default {
 };
 
 const defaultTemplate = `
-<template #default>
   <UCard title="Card title">
     <URow>
       <UInput label="Name" />
@@ -34,7 +33,6 @@ const defaultTemplate = `
     </URow>
     <UTextarea class="mb-7 mt-4" label="Comments" rows="3" />
   </UCard>
-</template>
 `;
 
 const DefaultTemplate = (args) => ({
@@ -49,12 +47,13 @@ const DefaultTemplate = (args) => ({
     UHeader,
   },
   setup() {
-    return { args };
+    const slots = getSlotNames(UPage.name);
+
+    return { args, slots };
   },
   template: `
     <UPage v-bind="args">
-      ${defaultTemplate}
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UPage>
   `,
 });
@@ -99,6 +98,9 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -107,6 +109,9 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -120,6 +125,9 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -128,6 +136,9 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="button" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -138,6 +149,9 @@ slotFooterLeft.args = {
     <template #footer-left>
         <UButton label="button" />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -145,7 +159,10 @@ export const slotFooterRight = DefaultTemplate.bind({});
 slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
-        <UButton label="button" />
+      <UButton label="button" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };

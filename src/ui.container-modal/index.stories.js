@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UModal from "../ui.container-modal";
 import UButton from "../ui.button";
@@ -32,14 +32,12 @@ export default {
 };
 
 const defaultTemplate = `
-  <template #default>
-    <URow>
-      <UInput label="Name" />
-      <UInput label="Lastname" />
-    </URow>
+  <URow>
+    <UInput label="Name" />
+    <UInput label="Lastname" />
+  </URow>
 
-    <UTextarea class="mb-7" label="Comments" rows="3" />
-  </template>
+  <UTextarea class="mb-7" label="Comments" rows="3" />
 `;
 
 const DefaultTemplate = (args) => ({
@@ -49,13 +47,14 @@ const DefaultTemplate = (args) => ({
       args.modelValue = true;
     }
 
-    return { args, onClick };
+    const slots = getSlotNames(UModal.name);
+
+    return { args, slots, onClick };
   },
   template: `
     <div>
       <UModal v-bind="args" v-model="args.modelValue">
-        ${defaultTemplate}
-        ${args.slotTemplate || ""}
+        ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModal>
 
       <UButton label="show modal" @click="onClick"/>
@@ -123,6 +122,9 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -131,6 +133,9 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -144,6 +149,9 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -152,6 +160,9 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="some button" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -162,6 +173,9 @@ slotFooterLeft.args = {
     <template #footer-left>
       <UButton label="Submit" />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -170,6 +184,9 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="Back" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };

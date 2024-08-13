@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 import URow from "../ui.container-row";
 
 import UDivider from "../ui.container-divider";
@@ -18,10 +18,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDivider },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDivider.name);
+
+    return { args, slots };
   },
   template: `
-    <UDivider v-bind="args" />
+    <UDivider v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UDivider>
   `,
 });
 
@@ -44,9 +48,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       />
     </URow>
   `,
-  created() {
-    this.mxArgTypes = argTypes;
-  },
 });
 
 export const Default = DefaultTemplate.bind({});

@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UGroups from "../ui.container-groups";
 import UGroup from "../ui.container-group";
@@ -23,23 +23,23 @@ export default {
   },
 };
 
-const defaultSlotTemplate = `
-  <template #default>
-    <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
-      <UInput placeholder="input" label="Label" />
-      <UInput placeholder="input" label="Label" />
-    </UGroup>
-  </template>
+const defaultTemplate = `
+  <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
+    <UInput placeholder="input" label="Label" />
+    <UInput placeholder="input" label="Label" />
+  </UGroup>
 `;
 
 const DefaultTemplate = (args) => ({
   components: { UGroups, UGroup, UInput },
   setup() {
-    return { args };
+    const slots = getSlotNames(UGroups.name);
+
+    return { args, slots };
   },
   template: `
     <UGroups v-bind="args">
-      ${args.slotTemplate || defaultSlotTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UGroups>
   `,
 });

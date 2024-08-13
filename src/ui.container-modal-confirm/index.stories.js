@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UModalConfirm from "../ui.container-modal-confirm";
 import UButton from "../ui.button";
@@ -30,11 +30,7 @@ export default {
   },
 };
 
-const defaultTemplate = `
-  <template #default>
-    Confirm the action?
-  </template>
-`;
+const defaultTemplate = "Confirm the action?";
 
 const DefaultTemplate = (args) => ({
   components: { UModalConfirm, UButton, UHeader, UIcon },
@@ -43,12 +39,14 @@ const DefaultTemplate = (args) => ({
       args.modelValue = true;
     }
 
-    return { args, onClick };
+    const slots = getSlotNames(UModalConfirm.name);
+
+    return { args, slots, onClick };
   },
   template: `
     <div>
       <UModalConfirm v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate || defaultTemplate}
+        ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModalConfirm>
 
       <UButton label="show modal" @click="onClick"/>
@@ -117,6 +115,9 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -125,6 +126,9 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -138,6 +142,9 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
+    <template #default>
+      ${defaultTemplate}
+    </template>
   `,
 };
 
@@ -146,6 +153,9 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton label="I'm in the right slot" size="sm" color="gray" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };
@@ -164,6 +174,9 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="I'm in the right slot" size="sm" color="gray" />
+    </template>
+    <template #default>
+      ${defaultTemplate}
     </template>
   `,
 };

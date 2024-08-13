@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
@@ -17,21 +17,16 @@ export default {
   },
 };
 
-const defaultSlotTemplate = `
-  <template #default>
-    <UInput label="Name" />
-    <UButton label="Submit" size="xs" block />
-  </template>
-`;
-
 const DefaultTemplate = (args) => ({
   components: { URow, UInput, UButton },
   setup() {
-    return { args };
+    const slots = getSlotNames(URow.name);
+
+    return { args, slots };
   },
   template: `
     <URow v-bind="args" class="flex">
-      ${args.slotTemplate || defaultSlotTemplate}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </URow>
   `,
 });
@@ -69,7 +64,12 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = {
+  defaultTemplate: `
+    <UInput label="Name" />
+    <UButton label="Submit" size="xs" block />
+  `,
+};
 
 export const Gap = EnumVariantTemplate.bind({});
 Gap.args = { enum: "gap" };
