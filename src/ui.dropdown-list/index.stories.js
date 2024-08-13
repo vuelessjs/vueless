@@ -21,12 +21,9 @@ export default {
     ...getArgTypes(UDropdownList.name),
   },
   parameters: {
-    backgrounds: {
-      default: "white",
-    },
     docs: {
       story: {
-        iframeHeight: 160,
+        height: "180px",
       },
     },
   },
@@ -38,9 +35,7 @@ const DefaultTemplate = (args) => ({
     return { args };
   },
   template: `
-    <UDropdownList
-      v-bind="args"
-    />
+    <UDropdownList v-bind="args" class="mx-4 w-[24rem]"/>
   `,
 });
 

@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       w-fit inline-flex rounded transition focus-visible:outline-none
-      focus-within:ring-4 focus-within:ring-offset-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15
+      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15
     `,
     variants: {
       color: {
@@ -12,11 +12,11 @@ export default /*tw*/ {
       disabled: {
         true: "pointer-events-none opacity-70",
       },
-      noRing: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0",
-      },
       block: {
         true: "w-full",
+      },
+      noRing: {
+        true: "focus-within:ring-0 focus-within:ring-offset-0",
       },
     },
   },
@@ -26,7 +26,7 @@ export default /*tw*/ {
       text-{color}-500 decoration-{color}-500 underline-offset-4
       hover:text-opacity-80
       active:text-opacity-70
-      focus:ring-offset-0 focus:ring-0
+      focus:ring-0 focus:ring-offset-0
     `,
     variants: {
       size: {
@@ -49,7 +49,7 @@ export default /*tw*/ {
     },
   },
   text: "w-full",
-  withSlots: "flex items-center no-underline hover:no-underline focus-within:ring-offset-0 focus-within:ring-0",
+  withSlots: "flex items-center no-underline hover:no-underline focus-within:ring-0 focus-within:ring-offset-0",
   leftSlot: "mr-1",
   rightSlot: "ml-1",
   defaultVariants: {

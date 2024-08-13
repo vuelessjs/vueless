@@ -73,15 +73,6 @@ const props = defineProps({
   },
 
   /**
-   * Card border radius.
-   * @values sm, md, lg
-   */
-  rounded: {
-    type: String,
-    default: UIService.get(defaultConfig, UCard).default.rounded,
-  },
-
-  /**
    * Card padding.
    * @values sm, md, lg
    */

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
@@ -12,154 +12,87 @@ export default {
   id: "4030",
   title: "Text & Content / Alert",
   component: UAlert,
-  args: {},
+  args: {
+    title: "Default Title",
+    description: "Default Description",
+  },
   argTypes: {
     ...getArgTypes(UAlert.name),
   },
 };
 
-const defaultTemplate = `
-  <p>
-    <b>Please note that your session is about to expire </b>
-    <u>in 5 minutes,</u>
-    <em> so make sure to save your work to avoid any data loss. </em>
-    <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-  </p>
-`;
-
 const DefaultTemplate = (args) => ({
-  components: { UAlert, UIcon },
+  components: { UAlert, UIcon, URow },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
     return { args, slots };
   },
   template: `
-    <UAlert v-bind="args" v-model="args.value">
-      ${args.template || defaultTemplate}
+    <UAlert v-bind="args">
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UAlert>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UAlert, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UAlert v-bind="args" v-model="args.value">
-      ${args.slotTemplate}
-      ${defaultTemplate}
-    </UAlert>
-  `,
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UAlert, UGroup },
   setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
+    const options = argTypes[args.enum].options;
+    let prefixedOptions = options;
+
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = options.map((option) => getText(option));
+    }
+
+    function getText(value) {
+      return `This is Alert's ${value} size`;
+    }
+
+    return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
-    <UGroup>
+    <UGroup align="stretch">
       <UAlert
-        v-for="(variant, index) in variants"
-        v-bind="args"
-        :variant="variant"
+        v-for="(option, index) in options"
         :key="index"
-        :title="variant"
-        color="gray"
+        v-bind="args"
+        :[args.enum]="option"
+        :title="prefixedOptions[index]"
       />
     </UGroup>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow>
-      <UAlert
-        v-for="(color, index) in colors"
-        v-bind="args"
-        :color="color"
-        :title="color"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizeTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UAlert
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :key="index"
-      >
-        text
-      </UAlert>
-    </URow>
-  `,
-});
-
-const HTMLTemplate = (args) => ({
-  components: { UAlert },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UAlert :html="args.html"  />
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  title: "Default Title",
-  description: "Default Description",
-};
+Default.args = {};
 
-export const variants = VariantsTemplate.bind({});
-variants.args = {};
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
-export const sizes = SizeTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const HTML = HTMLTemplate.bind({});
+export const HTML = DefaultTemplate.bind({});
 HTML.args = {
-  html: `
-    <p>
-      <b>Important Security Update: </b>
-      <u>Your account password will expire in 10 days,</u>
-      <em> please update it to maintain account security. </em>
-      <a href="https://security.example.com/password-update" target="_blank">Update Password</a>
+  title: "",
+  description: "",
+  defaultTemplate: `
+    <h3 class="text-lg font-medium mb-2">Important Security Update</h3>
+    <p class="mb-0.5">
+      <b>Your account password will expire in 10 days,</b> please update it to maintain account security.
     </p>
+    <a href="https://security.example.com/password-update" target="_blank">Update Password</a>
   `,
 };
 
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  template: `
+  slotTemplate: `
     <template #default>
       some text
     </template>
@@ -168,12 +101,15 @@ closable.args = {
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
-  template: `
+  slotTemplate: `
     <template #default>
       <p>
         Please be aware that the scheduled maintenance will occur this Saturday,
         from 12 AM to 4 AM. During this time, some services may be temporarily
-        unavailable. We apologize for any inconvenience this may cause and
+        unavailable.
+      </p>
+      <p>
+        We apologize for any inconvenience this may cause and
         appreciate your understanding. Our team is committed to improving
         the system's performance and reliability.
       </p>
@@ -183,24 +119,23 @@ paragraphs.args = {
 
 export const list = DefaultTemplate.bind({});
 list.args = {
-  template: `
-      <URow>
-        <ul>
-          <li>Check your email for verification link.</li>
-          <li>Update your password regularly to enhance security.</li>
-          <li>Enable two-factor authentication for added protection.</li>
-        </ul>
-
-        <ol>
-          <li>Sign in to your account using your credentials.</li>
-          <li>Navigate to the settings menu to update your profile.</li>
-          <li>Review your privacy settings and adjust them as needed.</li>
-        </ol>
-      </URow>
-    `,
+  slotTemplate: `
+    <URow>
+      <ul>
+        <li>Check your email for verification link.</li>
+        <li>Update your password regularly to enhance security.</li>
+        <li>Enable two-factor authentication for added protection.</li>
+      </ul>
+      <ol>
+        <li>Sign in to your account using your credentials.</li>
+        <li>Navigate to the settings menu to update your profile.</li>
+        <li>Review your privacy settings and adjust them as needed.</li>
+      </ol>
+    </URow>
+  `,
 };
 
-export const slotTitleAndDescription = SlotTemplate.bind({});
+export const slotTitleAndDescription = DefaultTemplate.bind({});
 slotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
@@ -212,8 +147,8 @@ slotTitleAndDescription.args = {
   `,
 };
 
-export const slotAlertLeft = SlotTemplate.bind({});
-slotAlertLeft.args = {
+export const slotLeft = DefaultTemplate.bind({});
+slotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -224,8 +159,8 @@ slotAlertLeft.args = {
   `,
 };
 
-export const slotAlertRight = SlotTemplate.bind({});
-slotAlertRight.args = {
+export const slotRight = DefaultTemplate.bind({});
+slotRight.args = {
   slotTemplate: `
     <template #right>
         <UIcon
@@ -236,8 +171,8 @@ slotAlertRight.args = {
   `,
 };
 
-export const slotAlertTop = SlotTemplate.bind({});
-slotAlertTop.args = {
+export const slotTop = DefaultTemplate.bind({});
+slotTop.args = {
   slotTemplate: `
     <template #top>
       <UIcon
@@ -248,8 +183,8 @@ slotAlertTop.args = {
   `,
 };
 
-export const slotAlertBottom = SlotTemplate.bind({});
-slotAlertBottom.args = {
+export const slotBottom = DefaultTemplate.bind({});
+slotBottom.args = {
   slotTemplate: `
     <template #bottom>
       <UIcon
