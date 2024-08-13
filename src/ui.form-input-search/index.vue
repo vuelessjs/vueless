@@ -27,13 +27,14 @@
 
     <template #icon-right>
       <UIcon
+        v-if="modelValue"
         internal
         interactive
         color="gray"
-        :name="config.closeIconName"
+        :name="config.clearIconName"
         :data-cy="`${dataCy}-close`"
         :size="iconSize"
-        v-bind="closeIconAttrs"
+        v-bind="clearIconAttrs"
         @click="onClickClear"
       />
 
@@ -210,7 +211,7 @@ const emit = defineEmits([
 
 const localValue = ref("");
 
-const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs } = useAttrs(props);
+const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
 
 const search = computed({
   get: () => props.modelValue,
