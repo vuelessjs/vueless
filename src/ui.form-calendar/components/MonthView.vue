@@ -5,6 +5,7 @@
       :key="month"
       variant="thirdary"
       color="brand"
+      no-ring
       v-bind="monthAttrs(getMonthClasses(month))"
       :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
       :label="formatDate(month, 'M', props.locale)"

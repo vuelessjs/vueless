@@ -20,7 +20,7 @@ export default /*tw*/ {
     base: `
       border border-solid rounded border-gray-300 bg-white hover:transition
       hover:border-gray-400
-      focus:border-{color}-500 focus:ring-4 focus:ring-opacity-20 focus:ring-offset-0 focus:ring-{color}-500
+      focus:border-{color}-500 focus:ring-dynamic focus:ring-opacity-20 focus-within:ring-offset-dynamic focus:ring-{color}-500
       active:border-{color}-500 active:bg-{color}-500
       checked:border-{color}-500 checked:bg-{color}-500 checked:text-{color}-500
       checked:hover:bg-{color}-500 checked:focus:text-{color}-500 checked:active:text-{color}-500

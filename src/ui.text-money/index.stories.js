@@ -4,7 +4,7 @@ import URow from "../ui.container-row";
 import DebitIcon from "../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../ui.text-money/assets/credit.svg?component";
 
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
@@ -26,94 +26,41 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UMoney },
+  components: { UMoney, UIcon },
   setup() {
     const slots = getSlotNames(UMoney.name);
 
-    return { args, slots };
-  },
-  template: `
-    <div class="${COMPONENT_CLASSES}">
-      <UMoney v-bind="args">
-        ${allSlotsFragment}
-      </UMoney>
-    </div>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UMoney, UIcon },
-  setup() {
     const icons = {
       Debit: DebitIcon,
       Credit: CreditIcon,
     };
 
-    return { args, icons };
+    return { args, slots, icons };
   },
   template: `
     <div class="${COMPONENT_CLASSES}">
       <UMoney v-bind="args">
-        ${args.slotTemplate}
+        ${args.slotTemplate || getSlotsFragment()}
       </UMoney>
     </div>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UMoney, URow },
   setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="${COMPONENT_CLASSES}" v-for="(size, index) in sizes" :key="index">
-        <UMoney v-bind="args" :size="size" >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
-      </div>
-    </URow>
-  `,
-});
+    const slots = getSlotNames(UMoney.name);
 
-const WeightTemplate = (args, { argTypes } = {}) => ({
-  components: { UMoney, URow },
-  setup() {
     return {
       args,
-      weights: argTypes.weight.options,
+      slots,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
-     <div class="${COMPONENT_CLASSES}" v-for="(weight, index) in weights" :key="index">
-        <UMoney v-bind="args" :weight="weight" >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
-      </div>
-    </URow>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UMoney, URow },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="${COMPONENT_CLASSES}"    v-for="(color, index) in colors" :key="index">
-        <UMoney v-bind="args" :color="color" >
+      <div class="${COMPONENT_CLASSES}" v-for="(option, index) in options" :key="index">
+        <UMoney v-bind="args" :[args.enum]="option" >
           <template v-for="(slot) in slots" v-slot:[slot]>
             <template v-if="args[slot]">{{ args[slot] }}</template>
           </template>
@@ -124,78 +71,6 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
   created() {
     this.mxArgTypes = argTypes;
   },
-});
-
-const SignsTemplate = (args, { argTypes } = {}) => ({
-  components: { UMoney, URow },
-  setup() {
-    return {
-      args,
-      signs: argTypes.sign.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="${COMPONENT_CLASSES}" v-for="(sign, index) in signs" :key="index">
-        <UMoney v-bind="args" :sign="sign"  >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
-      </div>
-    </URow>
-  `,
-  created() {
-    this.mxArgTypes = argTypes;
-  },
-});
-
-const SymbolAlignTemplate = (args, { argTypes } = {}) => ({
-  components: { UMoney, URow },
-  setup() {
-    return {
-      args,
-      symbolsAlign: argTypes.symbolAlign.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="${COMPONENT_CLASSES}" v-for="(symbolAlign, index) in symbolsAlign" :key="index">
-        <UMoney
-          v-bind="args"
-          :symbol-align="symbolAlign"
-        >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
-      </div>
-    </URow>
-  `,
-  created() {
-    this.mxArgTypes = argTypes;
-  },
-});
-
-const AlignTemplate = (args, { argTypes } = {}) => ({
-  components: { UMoney, URow },
-  setup() {
-    return {
-      args,
-      aligns: argTypes.align.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="${COMPONENT_CLASSES}" v-for="(align, index) in aligns" :key="index">
-        <UMoney :align="align" v-bind="args" >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
-      </div>
-    </URow>
-  `,
 });
 
 export const Default = DefaultTemplate.bind({});
@@ -208,24 +83,25 @@ otherValues.args = {
   sign: "negative",
 };
 
-export const colors = ColorsTemplate.bind({});
+export const colors = EnumVariantTemplate.bind({});
 colors.args = {
+  enum: "color",
   sum: 0,
   symbol: "$",
   sign: "default",
 };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const weights = WeightTemplate.bind({});
-weights.args = {};
+export const weights = EnumVariantTemplate.bind({});
+weights.args = { enum: "weight" };
 
-export const sign = SignsTemplate.bind({});
-sign.args = {};
+export const sign = EnumVariantTemplate.bind({});
+sign.args = { enum: "sign" };
 
-export const symbolAlign = SymbolAlignTemplate.bind({});
-symbolAlign.args = {};
+export const symbolAlign = EnumVariantTemplate.bind({});
+symbolAlign.args = { enum: "symbolAlign" };
 
 export const planned = DefaultTemplate.bind({});
 planned.args = { planned: true };
@@ -236,10 +112,10 @@ integer.args = { integer: true };
 export const numeralDecimalScale3 = DefaultTemplate.bind({});
 numeralDecimalScale3.args = { numeralDecimalScale: 3 };
 
-export const align = AlignTemplate.bind({});
-align.args = {};
+export const align = EnumVariantTemplate.bind({});
+align.args = { enum: "align" };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
@@ -248,7 +124,7 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
