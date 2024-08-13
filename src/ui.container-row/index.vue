@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-cy="dataCy">
     <!-- @slot Use it to add something inside. -->
     <slot />
   </div>
