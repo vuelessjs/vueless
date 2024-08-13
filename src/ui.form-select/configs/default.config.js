@@ -13,7 +13,7 @@ export default /*tw*/ {
     variants: {
       error: {
         true: `
-          border-red-300 hover:border-red-300
+          bg-red-50 border-red-300 hover:border-red-300
           focus-within:border-red-500 focus-within:ring-red-100
         `,
       },
