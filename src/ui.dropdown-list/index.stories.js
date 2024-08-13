@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotsFragment } from "../service.storybook";
 
 import UDropdownList from "../ui.dropdown-list";
 import URow from "../ui.container-row";
@@ -35,7 +35,9 @@ const DefaultTemplate = (args) => ({
     return { args };
   },
   template: `
-    <UDropdownList v-bind="args" class="mx-4 w-[24rem]"/>
+    <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UDropdownList>
   `,
 });
 

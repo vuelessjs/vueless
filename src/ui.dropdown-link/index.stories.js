@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownLink from "../ui.dropdown-link";
 import UDropdownItem from "../ui.dropdown-item";
@@ -39,10 +39,8 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UDropdownLink
-      v-bind="args"
-    >
-      ${args.slotTemplate || allSlotsFragment}
+    <UDropdownLink v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
     </UDropdownLink>
   `,
 });
@@ -51,13 +49,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownLink, URow },
   setup() {
     const options = argTypes[args.enum].options;
-
-    let prefixedOptions = [];
+    let prefixedOptions = options;
 
     if (argTypes[args.enum].name === "size") {
       prefixedOptions = options.map((option) => getText(option));
-    } else {
-      prefixedOptions = options;
     }
 
     function getText(value) {

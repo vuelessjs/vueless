@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownBadge from "../ui.dropdown-badge";
 import UDropdownItem from "../ui.dropdown-item";
@@ -42,7 +42,7 @@ const DefaultTemplate = (args) => ({
     <UDropdownBadge
       v-bind="args"
     >
-      ${args.slotTemplate || allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDropdownBadge>
   `,
 });
