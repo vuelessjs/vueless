@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UText from "../ui.text-block";
 import URow from "../ui.container-row";
@@ -17,13 +17,11 @@ export default {
 };
 
 const defaultTemplate = `
-  <template #default>
-    <p>
-      <b>To proceed with your registration</b>, please enter your
-        <u>email address</u> in the field below. <i>A verification link</i> will be sent to your inbox shortly.
-      <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
-    </p>
-  </template>
+  <p>
+    <b>To proceed with your registration</b>, please enter your
+      <u>email address</u> in the field below. <i>A verification link</i> will be sent to your inbox shortly.
+    <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+  </p>
 `;
 
 const DefaultTemplate = (args) => ({
@@ -35,24 +33,24 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UText v-bind="args">
-      ${args.slotTemplate || defaultTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UText>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UText, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UText
-        v-for="(size, index) in sizes"
-        :size="size"
+        v-for="(option, index) in options"
+        :[args.enum]="option"
         v-bind="args"
         :key="index"
       >
@@ -65,8 +63,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const paragraphs = DefaultTemplate.bind({});
 paragraphs.args = {
