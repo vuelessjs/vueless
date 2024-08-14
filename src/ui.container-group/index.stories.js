@@ -60,12 +60,23 @@ upperlined.args = { upperlined: false, underlined: true };
 export const underlined = DefaultTemplate.bind({});
 underlined.args = { upperlined: true, underlined: false };
 
+export const nestedGroups = DefaultTemplate.bind({});
+nestedGroups.args = {
+  title: "",
+  slotTemplate: `
+    <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
+      <UCol>
+        <UInput placeholder="input" label="Label" />
+        <UInput placeholder="input" label="Label" />
+      </UCol>
+    </UGroup>
+  `,
+};
+
 export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   slotTemplate: `
-    <template #default>
-      <UInput placeholder="placeholder" label="Label" />
-    </template>
+    <UInput placeholder="placeholder" label="Label" />
   `,
 };
 slotDefault.parameters = {
@@ -79,10 +90,10 @@ slotDefault.parameters = {
 export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
-    ${defaultTemplate}
     <template #right>
       <UButton size="sm" label="Edit"/>
     </template>
+    ${defaultTemplate}
   `,
 };
 slotRight.parameters = {
