@@ -30,7 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UAlert>
   `,
 });
@@ -38,15 +38,14 @@ const DefaultTemplate = (args) => ({
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UAlert, UCol },
   setup() {
-    const options = argTypes[args.enum].options;
-    let prefixedOptions = options;
-
-    if (argTypes[args.enum].name === "size") {
-      prefixedOptions = options.map((option) => getText(option));
-    }
-
     function getText(value) {
       return `This is Alert's ${value} size`;
+    }
+
+    let prefixedOptions = argTypes[args.enum].options;
+
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = prefixedOptions.map((option) => getText(option));
     }
 
     return { args, options: argTypes[args.enum].options, prefixedOptions };
@@ -80,7 +79,7 @@ export const HTML = DefaultTemplate.bind({});
 HTML.args = {
   title: "",
   description: "",
-  defaultTemplate: `
+  slotTemplate: `
     <h3 class="text-lg font-medium mb-2">Important Security Update</h3>
     <p class="mb-0.5">
       <b>Your account password will expire in 10 days,</b> please update it to maintain account security.
