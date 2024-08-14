@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
@@ -19,10 +19,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UAvatar },
   setup() {
-    return { args };
+    const slots = getSlotNames(UAvatar.name);
+
+    return { args, slots };
   },
   template: `
-    <UAvatar v-bind="args" />
+    <UAvatar v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UAvatar>
   `,
 });
 

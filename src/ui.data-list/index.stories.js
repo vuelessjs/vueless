@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
@@ -44,20 +44,19 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDataList, UIcon, URow },
   setup() {
+    function onDragSort(value) {
+      this.list = value;
+    }
+
     const slots = getSlotNames(UDataList.name);
 
-    return { args, slots };
+    return { args, slots, onDragSort };
   },
   template: `
     <UDataList v-bind="args" @dragSort="onDragSort">
-      ${args.slotTemplate || allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDataList>
   `,
-  methods: {
-    onDragSort(value) {
-      this.list = value;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});

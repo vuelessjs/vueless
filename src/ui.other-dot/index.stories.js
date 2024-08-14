@@ -3,7 +3,7 @@ import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)
@@ -20,10 +20,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDot },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDot.name);
+
+    return { args, slots };
   },
   template: `
-    <UDot v-bind="args" />
+    <UDot v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UDot>
   `,
 });
 

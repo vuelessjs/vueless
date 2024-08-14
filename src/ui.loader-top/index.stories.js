@@ -7,7 +7,7 @@ import UBadge from "../ui.text-badge";
 import { useLoaderTop } from "./composables/useLoaderTop";
 import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames } from "../service.storybook";
 
 /**
  * The `ULoaderTop` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-top)
@@ -26,7 +26,9 @@ const DefaultTemplate = (args) => ({
   setup() {
     const { loaderTopOn, loaderTopOff } = useLoaderTop();
 
-    return { args, loaderTopOn, loaderTopOff };
+    const slots = getSlotNames(ULoaderTop.name);
+
+    return { args, slots, loaderTopOn, loaderTopOff };
   },
   template: `
     <ULoaderTop color="blue" v-bind="args" resources="https://api.publicapis.org/entries"/>

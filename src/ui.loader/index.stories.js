@@ -1,8 +1,9 @@
 import ULoader from "../ui.loader";
 import URow from "../ui.container-row";
 import UButton from "../ui.button";
+import { ref } from "vue";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
@@ -22,10 +23,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoader },
   setup() {
-    return { args };
+    const slots = getSlotNames(ULoader.name);
+
+    return { args, slots };
   },
   template: `
-    <ULoader v-bind="args" />
+    <ULoader v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </ULoader>
   `,
 });
 
@@ -52,17 +57,13 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 const LoadingTemplate = (args) => ({
   components: { ULoader, UButton, URow },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      isLoading: false,
-    };
-  },
-  methods: {
-    toggleLoader() {
-      this.isLoading = !this.isLoading;
-    },
+    function toggleLoader() {
+      isLoading.value = !isLoading.value;
+    }
+
+    const isLoading = ref(false);
+
+    return { args, isLoading, toggleLoader };
   },
   template: `
     <URow>

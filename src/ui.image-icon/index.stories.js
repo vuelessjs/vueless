@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
@@ -21,10 +21,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UIcon },
   setup() {
-    return { args };
+    const slots = getSlotNames(UIcon.name);
+
+    return { args, slots };
   },
   template: `
-    <UIcon v-bind="args"/>
+    <UIcon v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UIcon>
   `,
 });
 

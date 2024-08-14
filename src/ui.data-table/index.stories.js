@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 import { getRandomId } from "../service.ui";
 
 import UTable from "../ui.data-table";
@@ -168,7 +168,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :rows="itemsData"
     >
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate || getSlotsFragment()}
     </UTable>
   `,
   computed: {
