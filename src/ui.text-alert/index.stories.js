@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UIcon from "../ui.image-icon";
 
 /**
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UAlert, UGroup },
+  components: { UAlert, UCol },
   setup() {
     const options = argTypes[args.enum].options;
     let prefixedOptions = options;
@@ -52,7 +52,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
-    <UGroup align="stretch">
+    <UCol align="stretch">
       <UAlert
         v-for="(option, index) in options"
         :key="index"
@@ -60,7 +60,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :[args.enum]="option"
         :title="prefixedOptions[index]"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

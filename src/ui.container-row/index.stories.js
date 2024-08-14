@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UButton from "../ui.button";
 
 /**
@@ -32,7 +32,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UInput, UButton },
+  components: { UCol, URow, UInput, UButton },
   setup() {
     const isGapEnum = argTypes[args.enum].name === "gap";
 
@@ -43,7 +43,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow
         v-for="(option, index) in options"
         v-bind="args"
@@ -59,7 +59,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
           <UInput label="Name" />
         </template>
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

@@ -54,7 +54,7 @@ export default /*tw*/ {
     },
   },
   label: {
-    base: "px-2 shrink-0",
+    base: "px-2 shrink-0 text-sm",
     variants: {
       variant: {
         light: "text-gray-400",

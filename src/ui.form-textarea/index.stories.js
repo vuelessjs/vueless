@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 import UTextarea from "../ui.form-textarea";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)
@@ -72,14 +72,14 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const LabelPlacementTemplate = (args) => ({
-  components: { UTextarea, UGroup },
+  components: { UTextarea, UCol },
   setup() {
     return {
       args,
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <UTextarea
         v-bind="args"
         label-align="top"
@@ -91,7 +91,7 @@ const LabelPlacementTemplate = (args) => ({
         label-align="topInside"
         label="topInside"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

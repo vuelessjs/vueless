@@ -4,7 +4,7 @@ import URadioGroup from "../ui.form-radio-group";
 import URadio from "../ui.form-radio";
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)
@@ -28,7 +28,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { URadioGroup, URadio, UAlert, URow, UGroup },
+  components: { URadioGroup, URadio, UAlert, URow, UCol },
   setup() {
     return { args };
   },
@@ -38,14 +38,14 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UGroup gap="2xl">
+    <UCol gap="2xl">
       <URadioGroup v-bind="args" v-model="value">
         <URadio v-for="(radio, index) in args.radios" :key="index" v-bind="radio" />
       </URadioGroup>
       <UAlert color="gray" size="xs">
         <code>Selected value: <b>{{ value }}</b></code>
       </UAlert>
-    </UGroup>
+    </UCol>
   `,
 });
 
