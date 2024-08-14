@@ -17,7 +17,6 @@ export default {
     title: "Modal Confirm title",
     confirmLabel: "Confirm",
     modelValue: false,
-    defaultTemplate: "Confirm the action?",
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.name),
@@ -30,6 +29,8 @@ export default {
     },
   },
 };
+
+const defaultTemplate = "Confirm the action?";
 
 const DefaultTemplate = (args) => ({
   components: { UModalConfirm, UButton, UHeader, UIcon },
@@ -44,12 +45,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <div>
-      <UModalConfirm v-if="args.slotTemplate" v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate}
-        ${args.defaultTemplate}
-      </UModalConfirm>
-      <UModalConfirm v-else v-bind="args" v-model="args.modelValue">
-        ${getSlotsFragment(args.defaultTemplate)}
+      <UModalConfirm v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModalConfirm>
 
       <UButton label="show modal" @click="onClick"/>
@@ -75,7 +72,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <div>
       <UModalConfirm v-bind="args" v-model="args.modelValue">
-        ${args.defaultTemplate}
+        ${defaultTemplate}
       </UModalConfirm>
 
       <URow>
@@ -114,6 +111,7 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -123,6 +121,7 @@ slotHeaderLeft.args = {
     <template #header-left>
       <UHeader size="lg" label="Large title" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -135,6 +134,7 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -144,6 +144,7 @@ slotHeaderRight.args = {
     <template #header-right>
       <UButton label="I'm in the right slot" size="sm" color="gray" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -159,6 +160,7 @@ slotDefault.args = {
 export const slotFooterRight = DefaultTemplate.bind({});
 slotFooterRight.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #footer-right>
       <UButton label="I'm in the right slot" size="sm" color="gray" />
     </template>

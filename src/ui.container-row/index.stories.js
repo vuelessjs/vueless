@@ -17,6 +17,11 @@ export default {
   },
 };
 
+const defaultTemplate = `
+  <UInput label="Name" />
+  <UButton label="Submit" size="xs" block />
+`;
+
 const DefaultTemplate = (args) => ({
   components: { URow, UInput, UButton },
   setup() {
@@ -26,7 +31,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <URow v-bind="args" class="flex">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </URow>
   `,
 });
@@ -64,12 +69,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  defaultTemplate: `
-    <UInput label="Name" />
-    <UButton label="Submit" size="xs" block />
-  `,
-};
+Default.args = {};
 
 export const Gap = EnumVariantTemplate.bind({});
 Gap.args = { enum: "gap" };

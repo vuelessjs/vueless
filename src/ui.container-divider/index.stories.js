@@ -24,7 +24,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDivider v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDivider>
   `,
 });
