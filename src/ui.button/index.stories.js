@@ -29,18 +29,18 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UButton>
   `,
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UButton, URow, UGroup },
+  components: { UButton, URow, UCol },
   setup() {
     return { args, options: argTypes[args.enum].options };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow>
         <UButton
           v-for="(option, index) in options"
@@ -50,7 +50,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
           :key="index"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

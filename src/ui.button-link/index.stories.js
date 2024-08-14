@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULink v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </ULink>
   `,
 });
@@ -41,12 +41,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       return `Link ${value}`;
     }
 
-    const options = argTypes[args.enum].options;
-
-    let prefixedOptions = options;
+    let prefixedOptions = argTypes[args.enum].options;
 
     if (argTypes[args.enum].name === "size") {
-      prefixedOptions = options.map((option) => getText(option));
+      prefixedOptions = prefixedOptions.map((option) => getText(option));
     }
 
     return { args, options: argTypes[args.enum].options, prefixedOptions };

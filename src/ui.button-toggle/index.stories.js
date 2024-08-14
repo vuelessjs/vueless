@@ -28,15 +28,12 @@ export default {
 
 const DefaultTemplate = (args) => ({
   components: { UToggle, UIcon, UToggleItem },
-  data() {
-    return {
-      value: "",
-    };
-  },
   setup() {
+    const value = ref("");
+
     const slots = getSlotNames(UToggle.name);
 
-    return { args, slots, OPTIONS };
+    return { args, slots, value, OPTIONS };
   },
   template: `
     <UToggle
@@ -44,7 +41,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :options="OPTIONS"
     >
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UToggle>
   `,
 });
