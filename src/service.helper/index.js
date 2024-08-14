@@ -42,3 +42,14 @@ export function cloneDeep(entity, cache = new WeakMap()) {
     ...Object.keys(entity).map((prop) => ({ [prop]: cloneDeep(entity[prop], cache) })),
   );
 }
+
+export function debounce(func, wait) {
+  let timeout;
+
+  return function (...args) {
+    const context = this;
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}

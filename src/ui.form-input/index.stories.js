@@ -100,14 +100,12 @@ const LabelPlacementTemplate = (args) => ({
     <UCol gap="xl">
       <UInput
         v-bind="args"
-        label="top"
-        :label-outside="true"
+        label-align="top"
       />
 
       <UInput
         v-bind="args"
-        label="topInside"
-        :label-outside="false"
+        label-align="topInside"
       />
     </UCol>
   `,
