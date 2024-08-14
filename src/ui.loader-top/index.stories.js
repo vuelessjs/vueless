@@ -7,7 +7,7 @@ import UBadge from "../ui.text-badge";
 import { useLoaderTop } from "./composables/useLoaderTop";
 import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames } from "../service.storybook";
 
 /**
  * The `ULoaderTop` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-top)
@@ -26,7 +26,9 @@ const DefaultTemplate = (args) => ({
   setup() {
     const { loaderTopOn, loaderTopOff } = useLoaderTop();
 
-    return { args, loaderTopOn, loaderTopOff };
+    const slots = getSlotNames(ULoaderTop.name);
+
+    return { args, slots, loaderTopOn, loaderTopOff };
   },
   template: `
     <ULoaderTop color="blue" v-bind="args" resources="https://api.publicapis.org/entries"/>
@@ -38,14 +40,14 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULoaderTop, UButton, UCol, URow, UBadge },
   setup() {
     return {
       args,
       loaderTopOff,
       loaderTopOn,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
@@ -55,12 +57,19 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
         <UButton label="Off" size="sm" @click="loaderTopOff('https://api.publicapis.org/images')" />
       </URow>
 
-      <URow align="center" v-for="(color, index) in colors" :key="index">
-        <UBadge :label="color" :color="color" />
+      <URow
+        align="center"
+        v-for="(option, index) in options"
+        :key="index"
+      >
+        <UBadge
+          :label="option"
+          :[args.enum]="option"
+        />
         <ULoaderTop
           resources="https://api.publicapis.org/images"
           class="static"
-          :color="color"
+          :[args.enum]="option"
           v-bind="args"
         />
       </URow>
@@ -72,5 +81,5 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Color = ColorsTemplate.bind({});
-Color.args = {};
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
