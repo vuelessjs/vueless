@@ -6,7 +6,7 @@ import UIcon from "../ui.image-icon";
 import UToggleItem from "../ui.button-toggle-item";
 import URow from "../ui.container-row";
 
-let OPTIONS = [
+const OPTIONS = [
   { value: "11", label: "label 1" },
   { value: "12", label: "label 2" },
   { value: "13", label: "label 3" },
@@ -44,7 +44,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :options="OPTIONS"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UToggle>
   `,
 });
@@ -78,27 +78,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const multipleTemplate = (args) => ({
-  components: { UToggle },
-  data() {
-    return {
-      value: [],
-    };
-  },
-  setup() {
-    return { args, OPTIONS };
-  },
-  template: `
-    <UToggle
-      v-model="value"
-      v-bind="args"
-      multiple
-      :options="OPTIONS"
-      name="multipleTemplate"
-    />
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {
   name: "Default",
@@ -129,7 +108,7 @@ variants.args = {
   enum: "variant",
 };
 
-export const multiple = multipleTemplate.bind({});
+export const multiple = DefaultTemplate.bind({});
 multiple.args = {
   name: "multipleTemplate",
   multiple: true,
