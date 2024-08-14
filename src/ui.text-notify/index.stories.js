@@ -2,7 +2,7 @@ import { notify } from "./services";
 
 import UNotify from "../ui.text-notify";
 import UButton from "../ui.button";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 import { getArgTypes, getSlotsFragment } from "../service.storybook";
 
@@ -47,7 +47,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const TypesTemplate = (args) => ({
-  components: { UNotify, UButton, UGroup },
+  components: { UNotify, UButton, UCol },
   setup() {
     function onClick(type) {
       if (type === "success") {
@@ -80,11 +80,11 @@ const TypesTemplate = (args) => ({
   template: `
     <UNotify class="m-4" />
 
-    <UGroup>
+    <UCol>
       <UButton label="Success" color="green" @click="onClick('success')"/>
       <UButton label="Warning" color="orange" @click="onClick('warning')"/>
       <UButton label="Error" color="red" @click="onClick('error')"/>
-    </UGroup>
+    </UCol>
   `,
 });
 

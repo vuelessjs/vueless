@@ -234,7 +234,7 @@ const localLabel = computed(() => {
 });
 
 const input = computed(() => {
-  return moneyInputRef.value.input;
+  return moneyInputRef.value.inputRef;
 });
 
 watch(

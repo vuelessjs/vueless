@@ -15,6 +15,7 @@ export default /*tw*/ {
   defaultVariants: {
     size: "md",
     labelAlign: "topInside",
+    debounce: 300,
     disabled: false,
     searchButton: false,
   },

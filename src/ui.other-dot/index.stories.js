@@ -1,6 +1,6 @@
 import UDot from "../ui.other-dot";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
 import { getArgTypes } from "../service.storybook";
@@ -28,7 +28,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UDot, UBadge },
+  components: { UCol, URow, UDot, UBadge },
   setup() {
     return {
       args,
@@ -36,17 +36,17 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(color, index) in colors" :key="index" gap="none" align="center">
         <UDot v-bind="args" :color="color"/>
         <UBadge :label="color" :color="color" variant="thirdary" />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UDot, UBadge },
+  components: { UCol, URow, UDot, UBadge },
   setup() {
     return {
       args,
@@ -54,12 +54,12 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(size, index) in sizes" :key="index" gap="none" align="center">
         <UDot v-bind="args" :size="size"/>
         <UBadge :label="size" variant="thirdary" />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

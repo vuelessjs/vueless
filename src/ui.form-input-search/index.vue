@@ -81,6 +81,7 @@ import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 import UIService, { getRandomId } from "../service.ui";
+import { debounce as debounceMethod } from "../service.helper";
 
 import { UInputSearch } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -173,6 +174,11 @@ const props = defineProps({
     default: () => getRandomId(),
   },
 
+  debounce: {
+    type: Number,
+    default: UIService.get(defaultConfig, UInputSearch).default.debounce,
+  },
+
   /**
    * Component ui config object.
    */
@@ -215,10 +221,10 @@ const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = use
 
 const search = computed({
   get: () => props.modelValue,
-  set: (value) => {
+  set: debounceMethod((value) => {
     localValue.value = value;
     emit("update:modelValue", value);
-  },
+  }, props.debounce),
 });
 
 const iconSize = computed(() => {

@@ -1,8 +1,8 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UButton from "../ui.button";
 
 /**
@@ -17,69 +17,65 @@ export default {
   },
 };
 
-const defaultSlotTemplate = `
-  <template #default>
-    <UInput label="Name" />
-    <UButton label="Submit" size="xs" block />
-  </template>
+const defaultTemplate = `
+  <UInput label="Name" />
+  <UButton label="Submit" size="xs" block />
 `;
 
 const DefaultTemplate = (args) => ({
   components: { URow, UInput, UButton },
   setup() {
-    return { args };
+    const slots = getSlotNames(URow.name);
+
+    return { args, slots };
   },
   template: `
     <URow v-bind="args" class="flex">
-      ${args.slotTemplate || defaultSlotTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </URow>
   `,
 });
 
-const GapTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UInput },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UCol, URow, UInput, UButton },
   setup() {
-    return {
-      args,
-      gaps: argTypes.gap.options,
-    };
-  },
-  template: `
-    <UGroup gap="xl">
-      <URow v-for="(gap, index) in gaps" :key="index" v-bind="args" :gap="gap" align="center">
-        <UInput :label="gap" />
-        <UInput :label="gap" />
-      </URow>
-    </UGroup>
-  `,
-});
+    const isGapEnum = argTypes[args.enum].name === "gap";
 
-const AlignTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UInput, UButton },
-  setup() {
     return {
       args,
-      aligns: argTypes.align.options,
+      options: argTypes[args.enum].options,
+      isGapEnum,
     };
   },
   template: `
-    <UGroup gap="xl">
-      <URow v-for="(align, index) in aligns" :key="index" v-bind="args" :align="align">
-        <UButton :label="align" size="xs" block />
-        <UInput label="Name" />
+    <UCol gap="xl">
+      <URow
+        v-for="(option, index) in options"
+        v-bind="args"
+        :[args.enum]="option"
+        :key="index"
+      >
+        <template v-if="isGapEnum">
+          <UInput :label="option" />
+          <UInput :label="option" />
+        </template>
+        <template v-else>
+          <UButton :label="option" size="xs" block />
+          <UInput label="Name" />
+        </template>
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Gap = GapTemplate.bind({});
-Gap.args = {};
+export const Gap = EnumVariantTemplate.bind({});
+Gap.args = { enum: "gap" };
 
-export const Align = AlignTemplate.bind({});
-Align.args = {};
+export const Align = EnumVariantTemplate.bind({});
+Align.args = { enum: "align" };
 
 export const noMobile = DefaultTemplate.bind({});
 noMobile.args = {

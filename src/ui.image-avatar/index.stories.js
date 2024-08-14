@@ -2,7 +2,7 @@ import { getArgTypes } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
@@ -27,7 +27,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UAvatar },
+  components: { UCol, URow, UAvatar },
   setup() {
     return {
       args,
@@ -35,7 +35,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow>
         <UAvatar
           v-for="(size, index) in sizes"
@@ -54,12 +54,12 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
           :label="''"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
 const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UAvatar },
+  components: { UCol, URow, UAvatar },
   setup() {
     return {
       args,
@@ -67,7 +67,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow>
         <UAvatar
           v-for="(color, index) in colors"
@@ -86,12 +86,12 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
           :label="''"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
 const RoundedTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, UAvatar, URow },
+  components: { UCol, UAvatar, URow },
   setup() {
     return {
       args,
@@ -99,7 +99,7 @@ const RoundedTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow>
         <UAvatar
           v-for="(rounded, index) in roundedValues"
@@ -109,7 +109,7 @@ const RoundedTemplate = (args, { argTypes } = {}) => ({
           :label="rounded"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-cy="dataCy">
     <template v-if="title">
       <UDivider v-if="upperlined" size="xl" no-top-padding v-bind="upperlineAttrs" />
 
@@ -24,10 +24,8 @@
       <UDivider v-if="underlined" size="xl" v-bind="underlineAttrs" />
     </template>
 
-    <div v-bind="contentAttrs">
-      <!-- @slot Use it to add something inside. -->
-      <slot />
-    </div>
+    <!-- @slot Use it to add something inside. -->
+    <slot />
   </div>
 </template>
 
@@ -50,49 +48,6 @@ const props = defineProps({
   title: {
     type: String,
     default: "",
-  },
-
-  /**
-   * The distance between nested elements.
-   * @values none, 2xs, xs, sm, md, lg, xl, 2xl
-   */
-  gap: {
-    type: String,
-    default: UIService.get(defaultConfig, UGroup).default.gap,
-  },
-
-  /**
-   * Nested items align (flex align-items).
-   * @values start, end, center, stretch, baseline
-   */
-  align: {
-    type: String,
-    default: UIService.get(defaultConfig, UGroup).default.align,
-  },
-
-  /**
-   * Nested items horizontally align (flex justify-content).
-   * @values start, end, center, around, evenly, between
-   */
-  justify: {
-    type: String,
-    default: UIService.get(defaultConfig, UGroup).default.justify,
-  },
-
-  /**
-   * Reverse nested items order.
-   */
-  reverse: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UGroup).default.reverse,
-  },
-
-  /**
-   * Allow items to wrap (flex flex-wrap).
-   */
-  wrap: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, UGroup).default.wrap,
   },
 
   /**
@@ -129,7 +84,6 @@ const props = defineProps({
 });
 
 const {
-  contentAttrs,
   headerAttrs,
   wrapperAttrs,
   headerFallbackAttrs,
