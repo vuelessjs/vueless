@@ -27,13 +27,14 @@
 
     <template #icon-right>
       <UIcon
+        v-if="modelValue"
         internal
         interactive
         color="gray"
-        :name="config.closeIconName"
+        :name="config.clearIconName"
         :data-cy="`${dataCy}-close`"
         :size="iconSize"
-        v-bind="closeIconAttrs"
+        v-bind="clearIconAttrs"
         @click="onClickClear"
       />
 
@@ -63,6 +64,7 @@
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
+          no-ring
           v-bind="buttonAttrs"
           :data-cy="`${dataCy}-right`"
           @click="onClickSearch"
@@ -79,6 +81,7 @@ import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 import UIService, { getRandomId } from "../service.ui";
+import { debounce as debounceMethod } from "../service.helper";
 
 import { UInputSearch } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -171,6 +174,11 @@ const props = defineProps({
     default: () => getRandomId(),
   },
 
+  debounce: {
+    type: Number,
+    default: UIService.get(defaultConfig, UInputSearch).default.debounce,
+  },
+
   /**
    * Component ui config object.
    */
@@ -209,14 +217,14 @@ const emit = defineEmits([
 
 const localValue = ref("");
 
-const { config, inputAttrs, searchIconAttrs, closeIconAttrs, buttonAttrs } = useAttrs(props);
+const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
 
 const search = computed({
   get: () => props.modelValue,
-  set: (value) => {
+  set: debounceMethod((value) => {
     localValue.value = value;
     emit("update:modelValue", value);
-  },
+  }, props.debounce),
 });
 
 const iconSize = computed(() => {

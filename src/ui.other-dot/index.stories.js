@@ -1,6 +1,6 @@
 import UDot from "../ui.other-dot";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
 import { getArgTypes } from "../service.storybook";
@@ -28,7 +28,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UDot, UBadge },
+  components: { UCol, URow, UDot, UBadge },
   setup() {
     return {
       args,
@@ -36,9 +36,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow
-        v-for="(option, index) in options"
+        v-for="(color, index) in colors"
         :key="index"
         gap="none"
         align="center"
@@ -47,10 +47,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         <UBadge
           :label="option"
           :[args.enum]="option"
-          variant="thirdary"
-        />
+          variant="thirdary" />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

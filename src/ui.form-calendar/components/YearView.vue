@@ -3,8 +3,9 @@
     <UButton
       v-for="year in years"
       :key="year"
-      variant="thirdary"
+      no-ring
       color="brand"
+      variant="thirdary"
       :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
       v-bind="yearAttrs(getYearClasses(year))"
       :label="formatDate(year, 'Y', props.locale)"

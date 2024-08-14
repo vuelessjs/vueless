@@ -2,7 +2,7 @@ import { getArgTypes } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
@@ -27,7 +27,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, URow, UAvatar },
+  components: { UCol, URow, UAvatar },
   setup() {
     return {
       args,
@@ -35,7 +35,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <URow>
         <UAvatar
           v-for="(option, index) in options"
@@ -54,7 +54,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
           :label="''"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

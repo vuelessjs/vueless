@@ -105,9 +105,9 @@ export default {
 
 ## Custom icons
 
-Vueless `UIcon` component supports custom icons as well. To use it:
+&#x20;`UIcon` component supports custom icons as well. To use it:
 
-* Import the SVG icon, with suffix `?component` at the end.&#x20;
+* Import the SVG icon, with suffix `?component` .&#x20;
 * Pass the imported component in the `:src` prop.
 
 ```html
@@ -170,7 +170,7 @@ export default {
 {% endcode %}
 
 {% hint style="info" %}
-In this case regular and filled icon variants will be safelistd and added into the build.
+In this case regular and filled icon variants will be safelisted and added into the build.
 {% endhint %}
 
 ## Replace all icons at once

@@ -2,17 +2,20 @@ export default /*tw*/ {
   wrapper: "relative",
   input: "{UInput}",
   buttonWrapper: `
-    flex rounded-lg max-md:justify-between
-    focus-within:ring-4 focus-within:ring-brand-700 focus-within:ring-opacity-20
+    flex rounded-dynamic max-md:justify-between
+    focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700 focus-within:ring-opacity-20
   `,
-  button: "{UButton} shrink-0 grow rounded-none !ring-0",
-  buttonActive: "ring-0",
-  buttonWrapperActive: "ring-4 ring-brand-700 ring-opacity-20",
-  shiftRangeButton: "focus:ring-0 last:rounded-l-none last:rounded-r-lg first:rounded-l-lg first:rounded-r-none",
+  button: "{UButton} shrink-0 grow rounded-none",
+  buttonActive: "",
+  buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700 ring-opacity-20",
+  shiftRangeButton: `
+    first:rounded-dynamic first:rounded-r-none
+    last:rounded-dynamic last:rounded-l-none
+  `,
   nextIconName: "keyboard_arrow_right",
   prevIconName: "keyboard_arrow_left",
   menu: {
-    base: "absolute z-40 my-2 w-80 overflow-hidden rounded-lg border border-brand-300 bg-white p-2 shadow focus:outline-none",
+    base: "absolute z-40 my-2 w-80 overflow-hidden rounded-dynamic border border-brand-300 bg-white p-2 shadow focus:outline-none",
     variants: {
       openDirectionX: {
         left: "left-0",
@@ -32,7 +35,7 @@ export default /*tw*/ {
     leaveToClass: "opacity-0 scale-95",
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
-  periodButton: "{UButton} h-[3.125rem] w-full !ring-0",
+  periodButton: "{UButton} h-[3.125rem] w-full",
   periodButtonIconName: "apps",
   periodButtonActive: "!bg-opacity-20",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
@@ -64,7 +67,7 @@ export default /*tw*/ {
     component: "{UCalendar}",
     wrapper: "p-0 mt-2 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
-    navigationSwitchViewButton: "rounded-lg px-3",
+    navigationSwitchViewButton: "rounded-dynamic px-3",
     day: "w-full h-10 mb-0.5",
   },
   i18n: {

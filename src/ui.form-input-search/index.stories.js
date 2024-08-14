@@ -86,7 +86,8 @@ slotLeft.args = {
         label="filter"
         variant="thirdary"
         filled
-        class="rounded-r-none !ring-0"
+        no-ring
+        class="rounded-r-none"
       />
     </template>
   `,

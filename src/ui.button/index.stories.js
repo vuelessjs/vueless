@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)
@@ -77,7 +77,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const ColorTemplate = (args, { argTypes } = {}) => ({
-  components: { UButton, URow, UGroup },
+  components: { UButton, URow, UCol },
   setup() {
     return {
       args,
@@ -86,7 +86,7 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(variant, index) in variants" :key="index">
         <UButton
           v-for="(color, index) in colors"
@@ -97,7 +97,7 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
           :key="index"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
@@ -115,6 +115,9 @@ pilled.args = { pill: true };
 
 export const disabled = VariantsTemplate.bind({});
 disabled.args = { disabled: true };
+
+export const noRing = DefaultTemplate.bind({});
+noRing.args = { noRing: true };
 
 export const colors = ColorTemplate.bind({});
 colors.args = {};

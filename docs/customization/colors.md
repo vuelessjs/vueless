@@ -5,25 +5,12 @@
 Components are based on a `brand` and a `gray` color.&#x20;
 
 <pre class="language-js" data-title="vueless.config.js"><code class="lang-js">export default {
-  brand: "blue",
-  gray: "stone",
+  brand: "blue", /* default -> grayscale */
+  gray: "stone", /* default -> cool */
 }<a data-footnote-ref href="#user-content-fn-1">;</a>
 </code></pre>
 
 Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CSS colors](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) or your own custom colors.
-
-**By default:**
-
-* the `brand` color is `green`,
-* the `gray` color is `zinc`.
-
-{% hint style="info" %}
-We'd advise you to use brand colors in your components and pages, e.g. `text-brand-700 dark:text-brand-300`, etc.
-{% endhint %}
-
-**Default shade**
-
-The `brand` color has a `default` shade. It is `500` in light mode and `400` in dark mode. You can use it as a shortcut in your components and pages, e.g. `bg-brand`, `focus-visible:ring-brand`, etc.
 
 ## Custom colors
 
@@ -57,21 +44,23 @@ export default {
 
 You can [generate your colors](https://tailwindcss.com/docs/customizing-colors#generating-colors) using tools such as [uicolors](https://uicolors.app) for example.
 
-## Changing brand color at runtime
+## CSS Variables <a href="#css-variables" id="css-variables"></a>
 
-To change the brand color at runtime, you can call the function below:
+To provide dynamic colors that can be changed at runtime, Vueless uses CSS variables. As Tailwind CSS already has a `gray` color, the library automatically renames it to `cool` to avoid conflicts (`coolGray` was renamed to `gray` when Tailwind CSS v3.0 was released).
 
-```js
-import { setBrandColor } from "vueless/service.ui";
+Same way, you can't define a `brand` color in your `tailwind.config.js` as it would conflict with the `brand` color defined by the library.
 
-setBrandColor("red");
-```
+## Brand colors
+
+We'd advise you to use brand colors in your components and pages, e.g.: `text-brand-700 dark:text-brand-300`, etc.
+
+The `brand` and `gray` colors has a `DEFAULT` shade that changes based on the theme. It is `500` in light mode and `400` in dark mode. You can use it as a shortcut in your components and pages, e.g. `bg-brand`, `focus:ring-brand`, etc.
 
 ***
 
 ## Smart Safelisting
 
-Components having a `color` prop like `UAvatar`, `UButton`, `URadioGroup`, `UCheckbox`, `UHeader` etc. will use the `brand` or `grayscale` color by default, but will handle all the colors defined in your `tailwind.config.js` or the default Tailwind CSS colors.
+Components having a `color` prop like `UAvatar`, `UButton`, `URadioGroup`, `UCheckbox` etc. will use the `brand` color by default, but will handle all the colors defined in your `tailwind.config.js` or the default Tailwind CSS colors.
 
 Variant classes of those components are defined with a syntax like `bg-{color}-500 dark:bg-{color}-400` so they can be used with any color. However, this means that Tailwind CSS will not find those classes and therefore will not generate the corresponding CSS.
 
@@ -103,7 +92,7 @@ To reduce the app bundle size It's better to safelist colors for particular comp
 In some specific cases you may need to replace [Tailwind CSS safelist config](https://tailwindcss.com/docs/content-configuration#using-regular-expressions) as well, so for that reason you can use `safelist` callback function in particular component config.
 
 {% hint style="warning" %}
-To prevent unexpected behaviour **Vueless fully replace (do not merge) custom safelist array**. So If you need to change some safelist patterns first you need to copy entire safelist array from the components default config and after add some changes there.
+To prevent unexpected behaviour **Vueless fully replace (do not merge) custom safelist array**. So If you need to change some safelist patterns first you need to copy entire safelist array from the components default config and after add your changes there.
 {% endhint %}
 
 {% code title="vueless.config.js" %}

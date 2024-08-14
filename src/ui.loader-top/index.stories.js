@@ -1,7 +1,7 @@
 import ULoaderTop from "../ui.loader-top";
 import UButton from "../ui.button";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
 import { useLoaderTop } from "./composables/useLoaderTop";
@@ -39,7 +39,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { ULoaderTop, UButton, UGroup, URow, UBadge },
+  components: { ULoaderTop, UButton, UCol, URow, UBadge },
   setup() {
     return {
       args,
@@ -49,7 +49,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow gap="sm" class="pb-4">
         <UButton label="On" size="sm" @click="loaderTopOn('https://api.publicapis.org/images')" />
         <UButton label="Off" size="sm" @click="loaderTopOff('https://api.publicapis.org/images')" />
@@ -72,7 +72,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         />
       </URow>
 
-    </UGroup>
+    </UCol>
   `,
 });
 

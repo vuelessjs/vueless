@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    ref="labelComponent"
+    ref="labelComponentRef"
     :for="id"
     :label="label"
     :error="error"
@@ -13,17 +13,17 @@
   >
     <label
       v-if="hasSlotContent($slots['left'])"
-      ref="leftSlotWrapper"
+      ref="leftSlotWrapperRef"
       :for="id"
       v-bind="leftSlotAttrs"
     >
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </label>
-    <label ref="textareaWrapper" :for="id" v-bind="textareaWrapperAttrs">
+    <label ref="textareaWrapperRef" :for="id" v-bind="textareaWrapperAttrs">
       <textarea
         :id="id"
-        ref="textarea"
+        ref="textareaRef"
         v-model="localValue"
         :value="modelValue"
         :placeholder="placeholder"
@@ -231,10 +231,10 @@ const {
   hasSlotContent,
 } = useAttrs(props);
 
-const textarea = ref(null);
-const labelComponent = ref(null);
-const leftSlotWrapper = ref(null);
-const textareaWrapper = ref(null);
+const textareaRef = ref(null);
+const labelComponentRef = ref(null);
+const leftSlotWrapperRef = ref(null);
+const textareaWrapperRef = ref(null);
 
 const localValue = computed({
   get() {
@@ -245,7 +245,7 @@ const localValue = computed({
   },
 });
 
-defineExpose({ textarea });
+defineExpose({ textareaRef });
 
 onMounted(() => toggleReadonly(true));
 
@@ -292,13 +292,13 @@ function toggleReadonly(hasReadonly) {
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
-  const leftSlotWidth = leftSlotWrapper.value.getBoundingClientRect().width;
+  const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
 
-  if (labelComponent.value.labelElement) {
-    labelComponent.value.labelElement.style.left = `${leftSlotWidth}px`;
+  if (labelComponentRef.value.labelElement) {
+    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth}px`;
   }
 
-  textareaWrapper.value.style.paddingLeft = `${leftSlotWidth}px`;
+  textareaWrapperRef.value.style.paddingLeft = `${leftSlotWidth}px`;
 }
 
 onMounted(() => setLabelPosition());
