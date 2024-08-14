@@ -201,6 +201,14 @@ const props = defineProps({
   },
 
   /**
+   * Remove outline ring on focus.
+   */
+  noRing: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UButton).default.noRing,
+  },
+
+  /**
    * Generates unique element id.
    * @ignore
    */

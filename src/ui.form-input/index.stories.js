@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 import UInput from "../ui.form-input";
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import URow from "../ui.container-row";
 
 /**
@@ -90,26 +90,24 @@ const ValidationRuleTemplate = (args, { argTypes } = {}) => ({
 });
 
 const LabelPlacementTemplate = (args) => ({
-  components: { UInput, UGroup },
+  components: { UInput, UCol },
   setup() {
     return {
       args,
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <UInput
         v-bind="args"
-        label="top"
-        :label-outside="true"
+        label-align="top"
       />
 
       <UInput
         v-bind="args"
-        label="topInside"
-        :label-outside="false"
+        label-align="topInside"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

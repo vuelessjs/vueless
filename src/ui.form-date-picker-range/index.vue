@@ -32,10 +32,11 @@
       <UButton
         ref="buttonPrevRef"
         square
+        filled
+        no-ring
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        filled
         :icon-left="config.prevIconName"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
@@ -46,6 +47,7 @@
         ref="buttonRef"
         square
         filled
+        no-ring
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
@@ -58,6 +60,7 @@
         ref="buttonNextRef"
         square
         filled
+        no-ring
         :size="size"
         :disabled="disabled"
         variant="thirdary"
@@ -82,6 +85,7 @@
             :key="periodButton.name"
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             :label="periodButton.title"
@@ -95,6 +99,7 @@
             v-if="customRangeButton.range.to && customRangeButton.range.from"
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
@@ -107,6 +112,7 @@
           <UButton
             square
             filled
+            no-ring
             size="xs"
             variant="thirdary"
             :label="locale.ownRange"
@@ -120,6 +126,7 @@
           <div v-bind="rangeSwitchWrapperAttrs">
             <UButton
               square
+              no-ring
               size="xs"
               color="gray"
               variant="thirdary"
@@ -134,6 +141,7 @@
 
             <UButton
               square
+              no-ring
               size="xs"
               color="gray"
               variant="thirdary"
@@ -147,6 +155,7 @@
             <UButton
               v-for="date in periodDateList"
               :key="date.title"
+              no-ring
               size="sm"
               variant="thirdary"
               :disabled="isDatePeriodOutOfRange(date)"
@@ -250,7 +259,7 @@ import {
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 import useBreakpoint from "../composable.breakpoint";
-import { useAdjustElementPosition } from "../composable.adjustElementPosition";
+import { useAutoPosition } from "../composable.autoPosition";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -434,17 +443,11 @@ const buttonPrevRef = ref(null);
 const buttonNextRef = ref(null);
 const inputRef = ref(null);
 
-const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
   menuRef,
-  {
-    x: props.openDirectionX,
-    y: props.openDirectionY,
-  },
-  {
-    x: "left",
-    y: "bottom",
-  },
+  computed(() => ({ x: props.openDirectionX, y: props.openDirectionY })),
+  { x: "left", y: "bottom" },
 );
 
 const {
@@ -616,7 +619,7 @@ const isVariant = computed(() => ({
 
 const clickOutsideOptions = computed(() => {
   if (isVariant.value.input) {
-    return { ignore: [inputRef.value.input] };
+    return { ignore: [inputRef.value.inputRef] };
   }
 
   return {

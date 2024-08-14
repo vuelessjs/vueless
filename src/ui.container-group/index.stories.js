@@ -1,6 +1,7 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 
@@ -26,22 +27,24 @@ export default {
   },
 };
 
-const defaultSlotTemplate = `
-  <template #default>
+const defaultTemplate = `
+  <UCol>
     <UInput placeholder="Vasyl" label="Name" />
     <UInput placeholder="Vasylenko" label="Surname" />
     <UInput placeholder="Kyiv" label="Town" />
-  </template>
+  </UCol>
 `;
 
 const DefaultTemplate = (args) => ({
-  components: { UGroup, UInput, UButton },
+  components: { UGroup, UCol, UInput, UButton },
   setup() {
-    return { args };
+    const slots = getSlotNames(UGroup.name);
+
+    return { args, slots };
   },
   template: `
     <UGroup v-bind="args">
-      ${args.slotTemplate || defaultSlotTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UGroup>
   `,
 });
@@ -76,6 +79,7 @@ slotDefault.parameters = {
 export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #right>
       <UButton size="sm" label="Edit"/>
     </template>

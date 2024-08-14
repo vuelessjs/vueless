@@ -3,7 +3,7 @@ export default /*tw*/ {
   dropzoneWrapper: {
     base: `
       p-3 size-auto w-full bg-white transition
-      rounded-lg border border-solid border-gray-300 hover:border-gray-400
+      rounded-dynamic border border-solid border-gray-300 hover:border-gray-400
     `,
     variants: {
       error: {
@@ -19,7 +19,7 @@ export default /*tw*/ {
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   contentWrapper: {
-    base: "p-3 gap-6 w-full rounded-lg bg-brand-50 relative flex justify-between items-start",
+    base: "p-3 gap-6 w-full rounded-dynamic bg-brand-50 relative flex justify-between items-start",
     variants: {
       multiple: {
         false: "items-center",

@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)
@@ -21,7 +21,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UBadge },
+  components: { UBadge, UIcon },
   setup() {
     const slots = getSlotNames(UBadge.name);
 
@@ -29,25 +29,13 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UBadge v-bind="args">
-      ${allSlotsFragment}
-    </UBadge>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UBadge, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UBadge v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || getSlotsFragment()}
     </UBadge>
   `,
 });
 
 const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UBadge, URow, UGroup },
+  components: { UBadge, URow, UCol },
   setup() {
     return {
       args,
@@ -56,7 +44,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(variant, index) in variants" :key="index">
         <UBadge
           v-for="(color, index) in colors"
@@ -67,104 +55,48 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
           :key="index"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UBadge, URow },
   setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
+    function getText(value) {
+      return `Badge ${value}`;
+    }
+
+    return { args, options: argTypes[args.enum].options, getText };
   },
   template: `
     <URow>
       <UBadge
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
-        :label="getText(size)"
+        :[args.enum]="option"
+        :label="getText(option)"
         :key="index"
       />
     </URow>
   `,
-  methods: {
-    getText(value) {
-      return `badge ${value}`;
-    },
-  },
-});
-
-const WeightTemplate = (args, { argTypes } = {}) => ({
-  components: { UBadge, URow },
-  setup() {
-    return {
-      args,
-      weights: argTypes.weight.options,
-    };
-  },
-  template: `
-    <URow>
-      <UBadge
-        v-for="(weight, index) in weights"
-        v-bind="args"
-        :weight="weight"
-        :label="getText(weight)"
-        :key="index"
-      />
-    </URow>
-  `,
-  methods: {
-    getText(value) {
-      return `badge ${value}`;
-    },
-  },
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UBadge, URow },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant.options,
-    };
-  },
-  template: `
-    <URow>
-      <UBadge
-        v-for="(variant, index) in variants"
-        v-bind="args"
-        :variant="variant"
-        :label="getText(variant)"
-        :key="index"
-      />
-    </URow>
-  `,
-  methods: {
-    getText(value) {
-      return `badge ${value}`;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Variants = VariantsTemplate.bind({});
-Variants.args = {};
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Weight = WeightTemplate.bind({});
-Weight.args = {};
+export const Weight = EnumVariantTemplate.bind({});
+Weight.args = { enum: "weight" };
 
 export const Colors = ColorsTemplate.bind({});
 Colors.args = {};
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
@@ -172,12 +104,12 @@ slotRight.args = {
         tooltip="tooltip text"
         name="info"
         size="xs"
-       />
+      />
     </template>
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
@@ -185,7 +117,7 @@ slotLeft.args = {
         tooltip="tooltip text"
         name="info"
         size="xs"
-       />
+      />
     </template>
   `,
 };

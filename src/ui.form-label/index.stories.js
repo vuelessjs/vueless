@@ -1,6 +1,6 @@
 import ULabel from "../ui.form-label";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UText from "../ui.text-block";
 import UIcon from "../ui.image-icon";
 
@@ -72,7 +72,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 });
 
 const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
-  components: { ULabel, UGroup, UText },
+  components: { ULabel, UCol, UText },
   setup() {
     return {
       args,
@@ -80,7 +80,7 @@ const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <ULabel
         v-for="(align, index) in placements"
         v-bind="args"
@@ -90,7 +90,7 @@ const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
       >
         <UText>This is <b>"{{ align }}"</b> label placement.</UText>
       </ULabel>
-    </UGroup>
+    </UCol>
   `,
 });
 

@@ -1,7 +1,7 @@
-import { allSlotsFragment, getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UHeader from "../ui.text-header";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
@@ -26,84 +26,44 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UHeader v-bind="args">${allSlotsFragment}</UHeader>
+    <UHeader v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UHeader>
   `,
 });
 
-const WeightTemplate = (args, { argTypes } = {}) => ({
-  components: { UHeader, UGroup },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UHeader, UCol },
   setup() {
     return {
       args,
-      weights: argTypes.weight.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <UHeader
-        v-for="(weight, index) in weights"
+        v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        :weight="weight"
-        :label="'Header ' + weight"
+        :[args.enum]="option"
+        :label="'Header ' + option"
       />
-    </UGroup>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UHeader, UGroup },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <UGroup>
-      <UHeader
-        v-for="(size, index) in sizes"
-        :key="index"
-        v-bind="args"
-        :size="size"
-        :label="'Header ' + size"
-      />
-    </UGroup>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UHeader, UGroup },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <UGroup>
-      <UHeader
-        v-for="(color, index) in colors"
-        v-bind="args"
-        :key="index"
-        :color="color"
-        :label="'Header ' + color"
-      />
-    </UGroup>
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Weights = WeightTemplate.bind({});
-Weights.args = {};
+export const Weights = EnumVariantTemplate.bind({});
+Weights.args = { enum: "weight" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Underlined = SizesTemplate.bind({});
-Underlined.args = { underlined: true };
+export const Underlined = EnumVariantTemplate.bind({});
+Underlined.args = { enum: "size", underlined: true };
 
 export const Multiline = DefaultTemplate.bind({});
 Multiline.args = {
@@ -112,5 +72,5 @@ Multiline.args = {
   label: "Some very long header you ever may imagine in your whole long and beautiful life",
 };
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };

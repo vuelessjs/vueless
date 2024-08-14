@@ -1,6 +1,6 @@
 import ULoaderRendering from "../ui.loader-rendering";
 import UButton from "../ui.button";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const LoadingTemplate = (args) => ({
-  components: { ULoaderRendering, UButton, UGroup },
+  components: { ULoaderRendering, UButton, UCol },
   setup() {
     const { loaderRenderingOn, loaderRenderingOff, isLoading } = useLoaderRendering();
 
@@ -48,9 +48,9 @@ const LoadingTemplate = (args) => ({
     },
   },
   template: `
-    <UGroup align="center" class="pb-4">
+    <UCol align="center" class="pb-4">
       <UButton label="Toggle loading" size="sm" @click="toggleLoading"/>
-    </UGroup>
+    </UCol>
 
     <ULoaderRendering v-bind="args" class="!static w-full h-96" />
   `,

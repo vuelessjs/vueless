@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCard from "../ui.container-card";
 import URow from "../ui.container-row";
@@ -16,110 +16,77 @@ export default {
   component: UCard,
   args: {
     title: "Title",
-    slotDefaultTemplate: `
-    <template #default>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-      </p>
-    </template>
-  `,
   },
   argTypes: {
     ...getArgTypes(UCard.name),
   },
 };
 
+const defaultTemplate = `
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+    occaecat cupidatat non proident, sunt in culpa qui officia
+    deserunt mollit anim id est laborum.
+  </p>
+`;
+
 const DefaultTemplate = (args) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCard.name);
+
+    return { args, slots };
   },
   template: `
     <UCard v-bind="args">
-      ${args.slotDefaultTemplate}
-      ${args.slotTemplate || ""}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCard>
   `,
 });
 
-const PaddingTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCard, URow },
   setup() {
     return {
       args,
-      paddings: argTypes.padding.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
-      <UCard v-for="(padding, index) in paddings" v-bind="args" :padding="padding" :key="index">
-        ${args.slotDefaultTemplate}
-      </UCard>
-    </URow>
-  `,
-});
-
-const RoundedTemplate = (args, { argTypes } = {}) => ({
-  components: { UCard, URow },
-  setup() {
-    return {
-      args,
-      roundeds: argTypes.rounded.options,
-    };
-  },
-  template: `
-    <URow>
-      <UCard v-for="(rounded, index) in roundeds" v-bind="args" :rounded="rounded" :key="index">
-        ${args.slotDefaultTemplate}
+      <UCard
+        v-for="(option, index) in options"
+        v-bind="args"
+        :[args.enum]="option"
+        :key="index"
+      >
+        ${defaultTemplate}
       </UCard>
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  slotTemplate: `
-    <template #default>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-      </p>
-    </template>
-  `,
-};
+Default.args = {};
 
 export const description = DefaultTemplate.bind({});
 description.args = { description: "Card description" };
 
-export const padding = PaddingTemplate.bind({});
-padding.args = {};
-
-export const rounded = RoundedTemplate.bind({});
-rounded.args = {};
+export const padding = EnumVariantTemplate.bind({});
+padding.args = { enum: "padding" };
 
 export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
-      <UIcon
-        name="star"
-        size="sm"
-        pill
-      />
+      <UIcon name="star" size="sm" pill />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -129,6 +96,7 @@ slotHeaderLeft.args = {
     <template #header-left>
       <UHeader size="lg" label="Large title" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -136,12 +104,9 @@ export const slotHeaderLeftAfter = DefaultTemplate.bind({});
 slotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
-      <UIcon
-        name="star"
-        size="sm"
-        pill
-      />
+      <UIcon name="star" size="sm" pill />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -151,12 +116,14 @@ slotHeaderRight.args = {
     <template #header-right>
       <UButton size="sm" color="gray" label="Read more" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
 export const slotFooterLeft = DefaultTemplate.bind({});
 slotFooterLeft.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #footer-left>
       <UButton label="Read more" />
     </template>
@@ -166,6 +133,7 @@ slotFooterLeft.args = {
 export const slotFooterRight = DefaultTemplate.bind({});
 slotFooterRight.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #footer-right>
       <UButton label="Read more" />
     </template>
