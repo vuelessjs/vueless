@@ -259,7 +259,7 @@ import {
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";
 import useBreakpoint from "../composable.breakpoint";
-import { useAdjustElementPosition } from "../composable.adjustElementPosition";
+import { useAutoPosition } from "../composable.autoPosition";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -443,17 +443,11 @@ const buttonPrevRef = ref(null);
 const buttonNextRef = ref(null);
 const inputRef = ref(null);
 
-const { isTop, isRight, adjustPositionY, adjustPositionX } = useAdjustElementPosition(
+const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
   menuRef,
-  {
-    x: props.openDirectionX,
-    y: props.openDirectionY,
-  },
-  {
-    x: "left",
-    y: "bottom",
-  },
+  computed(() => ({ x: props.openDirectionX, y: props.openDirectionY })),
+  { x: "left", y: "bottom" },
 );
 
 const {
@@ -625,7 +619,7 @@ const isVariant = computed(() => ({
 
 const clickOutsideOptions = computed(() => {
   if (isVariant.value.input) {
-    return { ignore: [inputRef.value.input] };
+    return { ignore: [inputRef.value.inputRef] };
   }
 
   return {

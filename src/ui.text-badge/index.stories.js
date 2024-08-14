@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)
@@ -35,7 +35,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UBadge, URow, UGroup },
+  components: { UBadge, URow, UCol },
   setup() {
     return {
       args,
@@ -44,7 +44,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup>
+    <UCol>
       <URow v-for="(variant, index) in variants" :key="index">
         <UBadge
           v-for="(color, index) in colors"
@@ -55,7 +55,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
           :key="index"
         />
       </URow>
-    </UGroup>
+    </UCol>
   `,
 });
 

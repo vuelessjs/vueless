@@ -1,7 +1,7 @@
 import { getArgTypes } from "../service.storybook";
 
 import UInputNumber from "../ui.form-input-number";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 
 /**
  * The `UInputNumber` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-number)
@@ -32,7 +32,7 @@ const DefaultTemplate = (args) => ({
 });
 
 const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UInputNumber, UGroup },
+  components: { UInputNumber, UCol },
   setup() {
     return {
       args,
@@ -49,7 +49,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <UGroup gap="xl">
+    <UCol gap="xl">
       <UInputNumber
         v-for="(size, index) in sizes"
         v-bind="args"
@@ -58,7 +58,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
         :label="sizeValues[index].label"
         v-model="sizeValues[index].count"
       />
-    </UGroup>
+    </UCol>
   `,
 });
 

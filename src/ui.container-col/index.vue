@@ -8,12 +8,12 @@
 <script setup>
 import UIService from "../service.ui";
 
-import { URow } from "./constants";
+import { UCol } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
-defineOptions({ name: "URow", inheritAttrs: false });
+defineOptions({ name: "UCol", inheritAttrs: false });
 
 const props = defineProps({
   /**
@@ -22,16 +22,16 @@ const props = defineProps({
    */
   gap: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.gap,
+    default: UIService.get(defaultConfig, UCol).default.gap,
   },
 
   /**
-   * Nested items vertical align (flex align-items).
+   * Nested items align (flex align-items).
    * @values start, end, center, stretch, baseline
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.align,
+    default: UIService.get(defaultConfig, UCol).default.align,
   },
 
   /**
@@ -40,7 +40,7 @@ const props = defineProps({
    */
   justify: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.justify,
+    default: UIService.get(defaultConfig, UCol).default.justify,
   },
 
   /**
@@ -48,7 +48,7 @@ const props = defineProps({
    */
   reverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.reverse,
+    default: UIService.get(defaultConfig, UCol).default.reverse,
   },
 
   /**
@@ -56,19 +56,11 @@ const props = defineProps({
    */
   wrap: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.wrap,
+    default: UIService.get(defaultConfig, UCol).default.wrap,
   },
 
   /**
-   * Disables mobile adaptivity.
-   */
-  noMobile: {
-    type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.noMobile,
-  },
-
-  /**
-   * Component ui config object.
+   *Component ui config object.
    */
   config: {
     type: Object,

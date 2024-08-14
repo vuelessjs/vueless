@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storyboo
 
 import UInputMoney from "../ui.form-input-money";
 import URow from "../ui.container-row";
-// import UGroup from "../ui.container-group";
+// import UCol from "../ui.container-col";
 
 /**
  * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
@@ -59,14 +59,14 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 
 // TODO: Rewrite to labelAlign
 // const LabelPlacementTemplate = (args) => ({
-//   components: { UInputMoney, UGroup },
+//   components: { UInputMoney, UCol },
 //   setup() {
 //     return {
 //       args,
 //     };
 //   },
 //   template: `
-//     <UGroup gap="xl">
+//     <UCol gap="xl">
 //       <UInputMoney
 //         v-bind="args"
 //         :label-outside="true"
@@ -78,7 +78,7 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 //         :label-outside="false"
 //         label="topInside"
 //       />
-//     </UGroup>
+//     </UCol>
 //   `,
 // });
 

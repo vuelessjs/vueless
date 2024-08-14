@@ -1,7 +1,7 @@
-import { getArgTypes, allSlotsFragment, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UProgress from "./index.vue";
-import UGroup from "../ui.container-group";
+import UCol from "../ui.container-col";
 import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 
@@ -18,7 +18,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UGroup, UProgress, UButton, UIcon },
+  components: { UCol, UProgress, UButton, UIcon },
   setup() {
     const slots = getSlotNames(UProgress.name);
 
@@ -32,15 +32,15 @@ const DefaultTemplate = (args) => ({
     return { slots, args, updateProgress };
   },
   template: `
-    <UGroup align="start">
-      <UProgress v-bind="args">${args.slotTemplate || allSlotsFragment}</UProgress>
+    <UCol align="start">
+      <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment()}</UProgress>
       <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
-    </UGroup>
+    </UCol>
   `,
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UGroup, UButton, UProgress },
+  components: { UCol, UButton, UProgress },
   setup() {
     args.progress = 10;
 
@@ -51,8 +51,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     return { args, updateProgress, options: argTypes[args.enum].options };
   },
   template: `
-    <UGroup align="start">
-      <UGroup>
+    <UCol align="start">
+      <UCol>
         <UProgress
           v-for="(option, index) in options"
           :key="index"
@@ -60,10 +60,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
           v-bind="args"
           :value="args.progress"
         />
-      </UGroup>
+      </UCol>
 
       <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
-      </UGroup>
+      </UCol>
   `,
 });
 

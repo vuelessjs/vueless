@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UModal from "../ui.container-modal";
 import UButton from "../ui.button";
@@ -17,17 +17,7 @@ export default {
   component: UModal,
   args: {
     title: "Modal title",
-    value: false,
-    slotDefaultTemplate: `
-      <template #default>
-        <URow>
-          <UInput label="Name" />
-          <UInput label="Lastname" />
-        </URow>
-
-        <UTextarea class="mb-7" label="Comments" rows="3" />
-      </template>
-    `,
+    modelValue: false,
   },
   argTypes: {
     ...getArgTypes(UModal.name),
@@ -41,64 +31,74 @@ export default {
   },
 };
 
+const defaultTemplate = `
+  <URow>
+    <UInput label="Name" />
+    <UInput label="Lastname" />
+  </URow>
+
+  <UTextarea class="mb-7" label="Comments" rows="3" />
+`;
+
 const DefaultTemplate = (args) => ({
   components: { UModal, URow, UButton, UIcon, UHeader, UInput, UTextarea },
   setup() {
-    return { args };
+    function onClick() {
+      args.modelValue = true;
+    }
+
+    const slots = getSlotNames(UModal.name);
+
+    return { args, slots, onClick };
   },
   template: `
     <div>
-      <UModal v-bind="args" v-model="args.value">
-        ${args.slotDefaultTemplate}
-        ${args.slotTemplate || ""}
+      <UModal v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModal>
 
       <UButton label="show modal" @click="onClick"/>
     </div>
   `,
-  methods: {
-    onClick() {
-      args.value = true;
-    },
-  },
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModal, UButton, URow, UInput, UTextarea },
   setup() {
+    function onClick(value) {
+      args.width = value;
+      args.modelValue = true;
+    }
+
     return {
       args,
-      sizes: argTypes.width.options,
+      options: argTypes[args.enum].options,
+      onClick,
     };
   },
   template: `
     <div>
-      <UModal v-bind="args" v-model="args.value">
-        ${args.slotDefaultTemplate}
-        ${args.slotTemplate || ""}
+      <UModal v-bind="args" v-model="args.modelValue">
+        ${defaultTemplate}
       </UModal>
 
       <URow>
         <UButton
-          v-for="(size, index) in sizes"
-          :key="index" :label="size" @click="onClick(size)"
+          v-for="(option, index) in options"
+          :key="index"
+          :label="option"
+          @click="onClick(option)"
         />
       </URow>
     </div>
   `,
-  methods: {
-    onClick(value) {
-      args.width = value;
-      args.value = true;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { text: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "width", text: "" };
 
 export const backRoute = DefaultTemplate.bind({});
 backRoute.args = { backRoute: { title: "route title" } };
@@ -121,6 +121,7 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -130,6 +131,7 @@ slotHeaderLeft.args = {
     <template #header-left>
       <UHeader size="lg" label="Large title" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -142,6 +144,7 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
+    ${defaultTemplate}
   `,
 };
 
@@ -149,14 +152,16 @@ export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
-       <UButton size="sm" color="gray" label="some button" />
+      <UButton size="sm" color="gray" label="some button" />
     </template>
+    ${defaultTemplate}
   `,
 };
 
 export const slotFooterLeft = DefaultTemplate.bind({});
 slotFooterLeft.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #footer-left>
       <UButton label="Submit" />
     </template>
@@ -166,6 +171,7 @@ slotFooterLeft.args = {
 export const slotFooterRight = DefaultTemplate.bind({});
 slotFooterRight.args = {
   slotTemplate: `
+    ${defaultTemplate}
     <template #footer-right>
       <UButton label="Back" />
     </template>
