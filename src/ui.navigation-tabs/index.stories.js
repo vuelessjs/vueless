@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UTabs from "../ui.navigation-tabs";
 
@@ -25,10 +25,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UTabs },
   setup() {
-    return { args };
+    const slots = getSlotNames(UTabs.name);
+
+    return { args, slots };
   },
   template: `
-    <UTabs v-model="args.modelValue" v-bind="args"/>
+    <UTabs v-model="args.modelValue" v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UTabs>
   `,
 });
 

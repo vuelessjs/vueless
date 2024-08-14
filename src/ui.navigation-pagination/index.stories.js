@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UPagination from "../ui.navigation-pagination";
 
@@ -21,10 +21,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UPagination },
   setup() {
-    return { args };
+    const slots = getSlotNames(UPagination.name);
+
+    return { args, slots };
   },
   template: `
-    <UPagination v-bind="args" v-model="args.modelValue" />
+    <UPagination v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UPagination>
   `,
 });
 

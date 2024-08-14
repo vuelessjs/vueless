@@ -1,4 +1,4 @@
-import { getArgTypes, allSlotsFragment, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UProgress from "./index.vue";
 import UCol from "../ui.container-col";
@@ -33,7 +33,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCol align="start">
-      <UProgress v-bind="args">${args.slotTemplate || allSlotsFragment}</UProgress>
+      <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment()}</UProgress>
       <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
     </UCol>
   `,
