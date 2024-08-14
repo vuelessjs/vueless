@@ -48,10 +48,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         align="center"
       >
         <UDot v-bind="args" :[args.enum]="option"/>
-        <UBadge
-          :label="option"
-          :[args.enum]="option"
-          variant="thirdary" />
+        <UBadge :label="option" :[args.enum]="option" variant="thirdary" />
       </URow>
     </UCol>
   `,
