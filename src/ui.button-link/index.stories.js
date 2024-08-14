@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULink v-bind="args">
-    ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </ULink>
   `,
 });
@@ -37,18 +37,16 @@ const DefaultTemplate = (args) => ({
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULink, URow },
   setup() {
+    function getText(value) {
+      return `Link ${value}`;
+    }
+
     const options = argTypes[args.enum].options;
 
-    let prefixedOptions = [];
+    let prefixedOptions = options;
 
     if (argTypes[args.enum].name === "size") {
       prefixedOptions = options.map((option) => getText(option));
-    } else {
-      prefixedOptions = options;
-    }
-
-    function getText(value) {
-      return `Link ${value}`;
     }
 
     return { args, options: argTypes[args.enum].options, prefixedOptions };

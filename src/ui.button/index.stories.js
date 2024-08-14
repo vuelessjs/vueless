@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UButton>
   `,
 });
