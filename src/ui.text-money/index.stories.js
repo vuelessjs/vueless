@@ -60,11 +60,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <URow>
       <div class="${COMPONENT_CLASSES}" v-for="(option, index) in options" :key="index">
-        <UMoney v-bind="args" :[args.enum]="option" >
-          <template v-for="(slot) in slots" v-slot:[slot]>
-            <template v-if="args[slot]">{{ args[slot] }}</template>
-          </template>
-        </UMoney>
+        <UMoney v-bind="args" :[args.enum]="option" />
       </div>
     </URow>
   `,

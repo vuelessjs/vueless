@@ -27,7 +27,7 @@ export default /*tw*/ {
     ],
   },
   text: "{UText}",
-  body: "flex items-start justify-between",
+  body: "flex items-baseline justify-between",
   content: "",
   innerWrapper: "flex gap-2",
   title: {
