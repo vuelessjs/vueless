@@ -619,7 +619,7 @@ const isVariant = computed(() => ({
 
 const clickOutsideOptions = computed(() => {
   if (isVariant.value.input) {
-    return { ignore: [inputRef.value.input] };
+    return { ignore: [inputRef.value.inputRef] };
   }
 
   return {
