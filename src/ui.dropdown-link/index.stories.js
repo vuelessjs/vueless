@@ -40,7 +40,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDropdownLink v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UDropdownLink>
   `,
 });
@@ -48,15 +48,14 @@ const DefaultTemplate = (args) => ({
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownLink, URow },
   setup() {
-    const options = argTypes[args.enum].options;
-    let prefixedOptions = options;
-
-    if (argTypes[args.enum].name === "size") {
-      prefixedOptions = options.map((option) => getText(option));
-    }
-
     function getText(value) {
       return `Dropdown ${value}`;
+    }
+
+    let prefixedOptions = argTypes[args.enum].options;
+
+    if (argTypes[args.enum].name === "size") {
+      prefixedOptions = prefixedOptions.map((option) => getText(option));
     }
 
     return { args, options: argTypes[args.enum].options, prefixedOptions };

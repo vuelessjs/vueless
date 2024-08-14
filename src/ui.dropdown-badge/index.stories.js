@@ -42,7 +42,7 @@ const DefaultTemplate = (args) => ({
     <UDropdownBadge
       v-bind="args"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UDropdownBadge>
   `,
 });

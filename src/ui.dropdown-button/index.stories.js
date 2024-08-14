@@ -44,7 +44,7 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.modelValue"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UDropdownButton>
   `,
 });

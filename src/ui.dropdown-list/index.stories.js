@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UDropdownList>
   `,
 });
