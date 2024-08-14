@@ -24,8 +24,10 @@
       <UDivider v-if="underlined" size="xl" v-bind="underlineAttrs" />
     </template>
 
-    <!-- @slot Use it to add something inside. -->
-    <slot />
+    <div v-bind="contentAttrs">
+      <!-- @slot Use it to add something inside. -->
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -48,6 +50,15 @@ const props = defineProps({
   title: {
     type: String,
     default: "",
+  },
+
+  /**
+   * The distance between nested elements.
+   * @values none, xs, sm, md, lg, xl
+   */
+  gap: {
+    type: String,
+    default: UIService.get(defaultConfig, UGroup).default.gap,
   },
 
   /**
@@ -90,5 +101,6 @@ const {
   titleAttrs,
   upperlineAttrs,
   underlineAttrs,
+  contentAttrs,
 } = useAttrs(props);
 </script>
