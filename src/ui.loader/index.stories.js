@@ -1,8 +1,9 @@
 import ULoader from "../ui.loader";
 import URow from "../ui.container-row";
 import UButton from "../ui.button";
+import { ref } from "vue";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
@@ -22,48 +23,32 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoader },
   setup() {
-    return { args };
+    const slots = getSlotNames(ULoader.name);
+
+    return { args, slots };
   },
   template: `
-    <ULoader v-bind="args" />
+    <ULoader v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </ULoader>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULoader, URow },
   setup() {
     return {
       args,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow class="flex-wrap">
       <ULoader
-        v-for="(color, index) in colors"
+        v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        :color="color"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { ULoader, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <ULoader
-        v-for="(size, index) in sizes"
-        :key="index"
-        v-bind="args"
-        :size="size"
+        :[args.enum]="option"
       />
     </URow>
   `,
@@ -72,17 +57,13 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 const LoadingTemplate = (args) => ({
   components: { ULoader, UButton, URow },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      isLoading: false,
-    };
-  },
-  methods: {
-    toggleLoader() {
-      this.isLoading = !this.isLoading;
-    },
+    function toggleLoader() {
+      isLoading.value = !isLoading.value;
+    }
+
+    const isLoading = ref(false);
+
+    return { args, isLoading, toggleLoader };
   },
   template: `
     <URow>
@@ -95,11 +76,11 @@ const LoadingTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
 export const loading = LoadingTemplate.bind({});
 loading.args = {};

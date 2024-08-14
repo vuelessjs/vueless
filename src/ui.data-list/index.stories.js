@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
@@ -42,39 +42,21 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDataList },
-  setup() {
-    const slots = getSlotNames(UDataList.name);
-
-    return { args, slots };
-  },
-  template: `
-    <UDataList v-bind="args" @dragSort="onDragSort">
-      ${allSlotsFragment}
-    </UDataList>
-  `,
-  methods: {
-    onDragSort(value) {
-      this.list = value;
-    },
-  },
-});
-
-const SlotTemplate = (args) => ({
   components: { UDataList, UIcon, URow },
   setup() {
-    return { args };
+    function onDragSort(value) {
+      this.list = value;
+    }
+
+    const slots = getSlotNames(UDataList.name);
+
+    return { args, slots, onDragSort };
   },
   template: `
     <UDataList v-bind="args" @dragSort="onDragSort">
-      ${args.slotTemplate}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDataList>
   `,
-  methods: {
-    onDragSort(value) {
-      this.list = value;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
@@ -90,7 +72,7 @@ emptyState.args = {
 export const nesting = DefaultTemplate.bind({});
 nesting.args = { nesting: true };
 
-export const slotLabel = SlotTemplate.bind({});
+export const slotLabel = DefaultTemplate.bind({});
 slotLabel.args = {
   slotTemplate: `
     <template #label="{ item }">
@@ -102,7 +84,7 @@ slotLabel.args = {
   `,
 };
 
-export const slotActions = SlotTemplate.bind({});
+export const slotActions = DefaultTemplate.bind({});
 slotActions.args = {
   slotTemplate: `
     <template #actions>

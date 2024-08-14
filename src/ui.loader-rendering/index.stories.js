@@ -4,7 +4,7 @@ import UCol from "../ui.container-col";
 
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `ULoaderRendering` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-rendering)
@@ -28,10 +28,14 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoaderRendering },
   setup() {
-    return { args };
+    const slots = getSlotNames(ULoaderRendering.name);
+
+    return { args, slots };
   },
   template: `
-    <ULoaderRendering v-bind="args" class="w-full h-full" />
+    <ULoaderRendering v-bind="args" class="w-full h-full">
+      ${args.slotTemplate || getSlotsFragment()}
+    </ULoaderRendering>
   `,
 });
 
@@ -40,12 +44,11 @@ const LoadingTemplate = (args) => ({
   setup() {
     const { loaderRenderingOn, loaderRenderingOff, isLoading } = useLoaderRendering();
 
-    return { args, loaderRenderingOn, loaderRenderingOff, isLoading };
-  },
-  methods: {
-    toggleLoading() {
-      this.isLoading ? this.loaderRenderingOff() : this.loaderRenderingOn();
-    },
+    function toggleLoading() {
+      isLoading.value ? loaderRenderingOff() : loaderRenderingOn();
+    }
+
+    return { args, loaderRenderingOn, loaderRenderingOff, isLoading, toggleLoading };
   },
   template: `
     <UCol align="center" class="pb-4">

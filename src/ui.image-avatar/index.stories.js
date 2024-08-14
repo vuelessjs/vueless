@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
@@ -19,94 +19,43 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UAvatar },
   setup() {
-    return { args };
+    const slots = getSlotNames(UAvatar.name);
+
+    return { args, slots };
   },
   template: `
-    <UAvatar v-bind="args" />
+    <UAvatar v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UAvatar>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCol, URow, UAvatar },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <UCol gap="xl">
       <URow>
         <UAvatar
-          v-for="(size, index) in sizes"
+          v-for="(option, index) in options"
           :key="index"
           v-bind="args"
-          :size="size"
-          :label="size"
+          :[args.enum]="option"
+          :label="option"
         />
       </URow>
       <URow>
         <UAvatar
-          v-for="(size, index) in sizes"
+          v-for="(option, index) in options"
           :key="index"
           v-bind="args"
-          :size="size"
+          :[args.enum]="option"
           :label="''"
-        />
-      </URow>
-    </UCol>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UCol, URow, UAvatar },
-  setup() {
-    return {
-      args,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <UCol gap="xl">
-      <URow>
-        <UAvatar
-          v-for="(color, index) in colors"
-          v-bind="args"
-          :color="color"
-          :key="index"
-          :label="color"
-        />
-      </URow>
-      <URow>
-        <UAvatar
-          v-for="(color, index) in colors"
-          :key="index"
-          v-bind="args"
-          :color="color"
-          :label="''"
-        />
-      </URow>
-    </UCol>
-  `,
-});
-
-const RoundedTemplate = (args, { argTypes } = {}) => ({
-  components: { UCol, UAvatar, URow },
-  setup() {
-    return {
-      args,
-      roundedValues: argTypes.rounded.options,
-    };
-  },
-  template: `
-    <UCol>
-      <URow>
-        <UAvatar
-          v-for="(rounded, index) in roundedValues"
-          :key="index"
-          v-bind="args"
-          :rounded="rounded"
-          :label="rounded"
         />
       </URow>
     </UCol>
@@ -128,23 +77,23 @@ label.args = { label: "Name Surname", size: "3xl" };
 /**
  * Hold cursor above an avatar to see value.
  */
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const rounded = RoundedTemplate.bind({});
-rounded.args = { label: "John Doe", color: "orange" };
+export const rounded = EnumVariantTemplate.bind({});
+rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const colors = ColorsTemplate.bind({});
-colors.args = {};
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const bordered = ColorsTemplate.bind({});
-bordered.args = { bordered: true };
+export const bordered = EnumVariantTemplate.bind({});
+bordered.args = { enum: "color", bordered: true };
