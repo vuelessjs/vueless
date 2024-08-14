@@ -18,6 +18,14 @@ export default {
   args: {
     title: "Modal title",
     modelValue: false,
+    defaultTemplate: `
+      <URow>
+        <UInput label="Name" />
+        <UInput label="Lastname" />
+      </URow>
+
+      <UTextarea class="mb-7" label="Comments" rows="3" />
+    `,
   },
   argTypes: {
     ...getArgTypes(UModal.name),
@@ -30,15 +38,6 @@ export default {
     },
   },
 };
-
-const defaultTemplate = `
-  <URow>
-    <UInput label="Name" />
-    <UInput label="Lastname" />
-  </URow>
-
-  <UTextarea class="mb-7" label="Comments" rows="3" />
-`;
 
 const DefaultTemplate = (args) => ({
   components: { UModal, URow, UButton, UIcon, UHeader, UInput, UTextarea },
@@ -53,8 +52,12 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <div>
-      <UModal v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      <UModal v-if="args.slotTemplate" v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate}
+        ${args.defaultTemplate}
+      </UModal>
+      <UModal v-else v-bind="args" v-model="args.modelValue">
+        ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
       </UModal>
 
       <UButton label="show modal" @click="onClick"/>
@@ -79,8 +82,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <div>
       <UModal v-bind="args" v-model="args.modelValue">
-        ${defaultTemplate}
-        ${args.slotTemplate || ""}
+        ${args.defaultTemplate}
       </UModal>
 
       <URow>
@@ -122,9 +124,6 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -133,9 +132,6 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -149,9 +145,6 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -160,9 +153,6 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="some button" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -173,9 +163,6 @@ slotFooterLeft.args = {
     <template #footer-left>
       <UButton label="Submit" />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -184,9 +171,6 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="Back" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };

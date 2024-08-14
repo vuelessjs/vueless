@@ -16,24 +16,23 @@ export default {
   component: UCard,
   args: {
     title: "Title",
+    defaultTemplate: `
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit
+        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.
+      </p>
+    `,
   },
   argTypes: {
     ...getArgTypes(UCard.name),
   },
 };
-
-const defaultTemplate = `
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-    occaecat cupidatat non proident, sunt in culpa qui officia
-    deserunt mollit anim id est laborum.
-  </p>
-`;
 
 const DefaultTemplate = (args) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
@@ -43,8 +42,12 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UCard v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+    <UCard v-if="args.slotTemplate" v-bind="args">
+      ${args.slotTemplate}
+      ${args.defaultTemplate}
+    </UCard>
+    <UCard v-else v-bind="args">
+      ${getSlotsFragment(args.defaultTemplate)}
     </UCard>
   `,
 });
@@ -65,7 +68,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :[args.enum]="option"
         :key="index"
       >
-        ${defaultTemplate}
+        ${args.defaultTemplate}
       </UCard>
     </URow>
   `,
@@ -90,9 +93,6 @@ slotHeaderLeftBefore.args = {
         pill
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -101,9 +101,6 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -118,9 +115,6 @@ slotHeaderLeftAfter.args = {
         pill
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -129,9 +123,6 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="Read more" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -142,9 +133,6 @@ slotFooterLeft.args = {
     <template #footer-left>
       <UButton label="Read more" />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -153,9 +141,6 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="Read more" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };

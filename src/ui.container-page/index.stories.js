@@ -19,21 +19,20 @@ export default {
   args: {
     title: "Title",
     gray: true,
+    defaultTemplate: `
+      <UCard title="Card title">
+        <URow>
+          <UInput label="Name" />
+          <UInput label="Lastname" />
+        </URow>
+        <UTextarea class="mb-7 mt-4" label="Comments" rows="3" />
+      </UCard>
+    `,
   },
   argTypes: {
     ...getArgTypes(UPage.name),
   },
 };
-
-const defaultTemplate = `
-  <UCard title="Card title">
-    <URow>
-      <UInput label="Name" />
-      <UInput label="Lastname" />
-    </URow>
-    <UTextarea class="mb-7 mt-4" label="Comments" rows="3" />
-  </UCard>
-`;
 
 const DefaultTemplate = (args) => ({
   components: {
@@ -52,8 +51,12 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UPage v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+    <UPage v-if="args.slotTemplate" v-bind="args">
+      ${args.slotTemplate}
+      ${args.defaultTemplate}
+    </UPage>
+    <UPage v-else v-bind="args">
+      ${getSlotsFragment(args.defaultTemplate)}
     </UPage>
   `,
 });
@@ -98,9 +101,6 @@ slotHeaderLeftBefore.args = {
         color="gray"
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -109,9 +109,6 @@ slotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -125,9 +122,6 @@ slotHeaderLeftAfter.args = {
         color="gray"
       />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -136,9 +130,6 @@ slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="button" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };
@@ -149,9 +140,6 @@ slotFooterLeft.args = {
     <template #footer-left>
         <UButton label="button" />
     </template>
-    <template #default>
-      ${defaultTemplate}
-    </template>
   `,
 };
 
@@ -160,9 +148,6 @@ slotFooterRight.args = {
   slotTemplate: `
     <template #footer-right>
       <UButton label="button" />
-    </template>
-    <template #default>
-      ${defaultTemplate}
     </template>
   `,
 };

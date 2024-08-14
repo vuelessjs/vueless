@@ -14,6 +14,13 @@ export default {
   component: UGroup,
   args: {
     title: "Form group",
+    defaultTemplate: `
+      <UCol>
+        <UInput placeholder="Vasyl" label="Name" />
+        <UInput placeholder="Vasylenko" label="Surname" />
+        <UInput placeholder="Kyiv" label="Town" />
+      </UCol>
+    `,
   },
   argTypes: {
     ...getArgTypes(UGroup.name),
@@ -27,14 +34,6 @@ export default {
   },
 };
 
-const defaultTemplate = `
-  <UCol>
-    <UInput placeholder="Vasyl" label="Name" />
-    <UInput placeholder="Vasylenko" label="Surname" />
-    <UInput placeholder="Kyiv" label="Town" />
-  </UCol>
-`;
-
 const DefaultTemplate = (args) => ({
   components: { UGroup, UCol, UInput, UButton },
   setup() {
@@ -44,7 +43,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UGroup v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UGroup>
   `,
 });

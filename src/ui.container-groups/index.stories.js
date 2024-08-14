@@ -12,6 +12,16 @@ export default {
   id: "5040",
   title: "Containers / Groups",
   component: UGroups,
+  args: {
+    defaultTemplate: `
+      <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
+        <UCol>
+          <UInput placeholder="input" label="Label" />
+          <UInput placeholder="input" label="Label" />
+        </UCol>
+      </UGroup>
+    `,
+  },
   argTypes: {
     ...getArgTypes(UGroups.name),
   },
@@ -24,15 +34,6 @@ export default {
   },
 };
 
-const defaultTemplate = `
-  <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
-    <UCol>
-      <UInput placeholder="input" label="Label" />
-      <UInput placeholder="input" label="Label" />
-    </UCol>
-  </UGroup>
-`;
-
 const DefaultTemplate = (args) => ({
   components: { UGroups, UGroup, UCol, UInput },
   setup() {
@@ -42,7 +43,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UGroups v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UGroups>
   `,
 });

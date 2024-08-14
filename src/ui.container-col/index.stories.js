@@ -11,7 +11,13 @@ export default {
   id: "5015",
   title: "Containers / Col",
   component: UCol,
-  args: {},
+  args: {
+    defaultTemplate: `
+      <UInput placeholder="Vasyl" label="Name" />
+      <UInput placeholder="Vasylenko" label="Surname" />
+      <UInput placeholder="Kyiv" label="Town" />
+    `,
+  },
   argTypes: {
     ...getArgTypes(UCol.name),
   },
@@ -24,12 +30,6 @@ export default {
   },
 };
 
-const defaultTemplate = `
-  <UInput placeholder="Vasyl" label="Name" />
-  <UInput placeholder="Vasylenko" label="Surname" />
-  <UInput placeholder="Kyiv" label="Town" />
-`;
-
 const DefaultTemplate = (args) => ({
   components: { UCol, UInput, UButton },
   setup() {
@@ -39,7 +39,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCol v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
     </UCol>
   `,
 });
