@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownList from "../ui.dropdown-list";
 import URow from "../ui.container-row";
@@ -32,29 +32,33 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownList },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDropdownList.name);
+
+    return { args, slots };
   },
   template: `
-    <UDropdownList v-bind="args" class="mx-4 w-[24rem]"/>
+    <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UDropdownList>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDropdownList, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <div class="flex flex-col gap-6">
       <URow>
         <UDropdownList
-          v-for="(size, index) in sizes"
+          v-for="(option, index) in options"
           :key="index"
           v-bind="args"
-          :size="size"
+          :[args.enum]="option"
         />
       </URow>
     </div>
@@ -64,8 +68,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const maxHeight = DefaultTemplate.bind({});
 maxHeight.args = { maxHeight: 80 };
