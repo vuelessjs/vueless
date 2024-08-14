@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UToggle from "../ui.button-toggle";
 import UIcon from "../ui.image-icon";
@@ -27,119 +27,51 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UToggle },
-  data() {
-    return {
-      value: "",
-    };
-  },
-  setup() {
-    return { args, OPTIONS };
-  },
-  template: `
-    <UToggle
-      v-model="value"
-      v-bind="args"
-      :options="OPTIONS"
-    />
-  `,
-});
-
-const multipleTemplate = (args) => ({
-  components: { UToggle },
-  data() {
-    return {
-      value: [],
-    };
-  },
-  setup() {
-    return { args, OPTIONS };
-  },
-  template: `
-    <UToggle
-      v-model="value"
-      v-bind="args"
-      multiple
-      :options="OPTIONS"
-      name="multipleTemplate"
-    />
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UToggle, URow },
-  setup() {
-    const value = ref("");
-
-    return {
-      args,
-      value,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UToggle
-        v-for="(size, index) in sizes"
-        :key="index"
-        name="sizeTemplate"
-        v-model="value"
-        v-bind="args"
-        :size="size"
-        :label="size"
-        :options="[
-          { value: size + 1, label: size },
-          { value: size + 2, label: size },
-        ]"
-      />
-    </URow>
-  `,
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
-  components: { UToggle, URow },
-  setup() {
-    const value = ref("");
-
-    return {
-      args,
-      value,
-      variants: argTypes.variant.options,
-    };
-  },
-  template: `
-    <URow>
-      <UToggle
-        v-for="(variant, index) in variants"
-        :key="index"
-        name="sizeTemplate"
-        v-model="value"
-        v-bind="args"
-        :variant="variant"
-        :label="variant"
-        :options="[
-          { value: variant + 1, label: variant },
-          { value: variant + 2, label: variant },
-        ]"
-      />
-    </URow>
-  `,
-});
-
-const SlotTemplate = (args) => ({
   components: { UToggle, UIcon, UToggleItem },
   setup() {
-    const selected = ref("");
+    const value = ref("");
+
+    const slots = getSlotNames(UToggle.name);
+
+    return { args, slots, value, OPTIONS };
+  },
+  template: `
+    <UToggle
+      v-model="value"
+      v-bind="args"
+      :options="OPTIONS"
+    >
+      ${args.slotTemplate || getSlotsFragment()}
+    </UToggle>
+  `,
+});
+
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UToggle, URow },
+  setup() {
+    const value = ref("");
 
     return {
       args,
-      selected,
+      value,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <UToggle v-bind="args" name="slotTemplate" v-model="selected">
-      ${args.slotTemplate}
-    </UToggle>
+    <URow>
+      <UToggle
+        v-for="(option, index) in options"
+        :key="index"
+        v-model="value"
+        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
+        :options="[
+          { value: option + 1, label: option },
+          { value: option + 2, label: option },
+        ]"
+      />
+    </URow>
   `,
 });
 
@@ -161,19 +93,22 @@ label.args = {
   description: "description",
 };
 
-export const sizes = SizesTemplate.bind({});
+export const sizes = EnumVariantTemplate.bind({});
 sizes.args = {
-  name: "sizes",
+  name: "sizeTemplate",
+  enum: "size",
 };
 
-export const variants = VariantsTemplate.bind({});
+export const variants = EnumVariantTemplate.bind({});
 variants.args = {
-  name: "variants",
+  name: "sizeTemplate",
+  enum: "variant",
 };
 
-export const multiple = multipleTemplate.bind({});
+export const multiple = DefaultTemplate.bind({});
 multiple.args = {
-  name: "multiple",
+  name: "multipleTemplate",
+  multiple: true,
 };
 
 export const block = DefaultTemplate.bind({});
@@ -195,7 +130,7 @@ pill.args = {
   separated: true,
 };
 
-export const square = SlotTemplate.bind({});
+export const square = DefaultTemplate.bind({});
 square.args = {
   name: "square",
   variant: "secondary",
@@ -217,7 +152,7 @@ square.args = {
   `,
 };
 
-export const slotDefault = SlotTemplate.bind({});
+export const slotDefault = DefaultTemplate.bind({});
 slotDefault.args = {
   name: "slotDefault",
   slotTemplate: `
