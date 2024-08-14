@@ -58,11 +58,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
     function onClick(value) {
-      if (argTypes[args.enum].name === "color") {
-        args.color = value;
-      } else {
-        args.width = value;
-      }
+      argTypes[args.enum].name === "color" ? (args.color = value) : (args.width = value);
 
       args.modelValue = true;
     }

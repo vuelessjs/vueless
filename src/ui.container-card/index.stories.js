@@ -65,7 +65,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :[args.enum]="option"
         :key="index"
       >
-        ${args.slotTemplate}
         ${defaultTemplate}
       </UCard>
     </URow>

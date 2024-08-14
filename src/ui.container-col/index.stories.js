@@ -1,11 +1,11 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
 
 /**
- * The `UGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-group)
+ * The `UCol` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-col)
  */
 export default {
   id: "5015",
@@ -24,22 +24,22 @@ export default {
   },
 };
 
-const defaultSlotTemplate = `
-  <template #default>
-    <UInput placeholder="Vasyl" label="Name" />
-    <UInput placeholder="Vasylenko" label="Surname" />
-    <UInput placeholder="Kyiv" label="Town" />
-  </template>
+const defaultTemplate = `
+  <UInput placeholder="Vasyl" label="Name" />
+  <UInput placeholder="Vasylenko" label="Surname" />
+  <UInput placeholder="Kyiv" label="Town" />
 `;
 
 const DefaultTemplate = (args) => ({
   components: { UCol, UInput, UButton },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCol.name);
+
+    return { args, slots };
   },
   template: `
     <UCol v-bind="args">
-      ${args.slotTemplate || defaultSlotTemplate}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCol>
   `,
 });
