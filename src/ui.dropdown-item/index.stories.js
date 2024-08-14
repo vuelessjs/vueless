@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownItem from "../ui.dropdown-item";
 
@@ -20,11 +20,13 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownItem },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDropdownItem.name);
+
+    return { args, slots };
   },
   template: `
     <UDropdownItem v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDropdownItem>
   `,
 });

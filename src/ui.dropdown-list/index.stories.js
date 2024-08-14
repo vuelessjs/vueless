@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownList from "../ui.dropdown-list";
 import URow from "../ui.container-row";
@@ -32,11 +32,13 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownList },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDropdownList.name);
+
+    return { args, slots };
   },
   template: `
     <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
-      ${args.slotTemplate || getSlotsFragment(args.defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDropdownList>
   `,
 });
