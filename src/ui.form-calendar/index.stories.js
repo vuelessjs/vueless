@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCalendar from "../ui.form-calendar";
 
@@ -35,8 +35,8 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-      <UCalendar v-bind="args" v-model="value">
-        ${allSlotsFragment}
+      <UCalendar v-model="value" v-bind="args">
+        ${args.slotTemplate || getSlotsFragment()}
       </UCalendar>
 
       <div class="mt-4">
@@ -52,8 +52,8 @@ export const Range = DefaultTemplate.bind({});
 Range.args = {
   range: true,
   value: {
-    from: new Date(2022, 2),
-    to: new Date(2024, 2, 14, 12, 24, 14),
+    from: new Date(new Date().setDate(new Date().getDate() - new Date().getDay())),
+    to: new Date(new Date().setDate(new Date().getDate() + (6 - new Date().getDay()))),
   },
 };
 

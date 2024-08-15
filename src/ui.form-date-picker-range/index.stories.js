@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDatePickerRange from "../ui.form-date-picker-range";
 import URow from "../ui.container-row";
@@ -43,8 +43,8 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UDatePickerRange v-bind="args" v-model="value">
-      ${allSlotsFragment}
+    <UDatePickerRange v-model="value" v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
     </UDatePickerRange>
 
     <div class="mt-4">
@@ -53,74 +53,65 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UDatePickerRange },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDatePickerRange v-bind="args" v-model="args.value">
-      ${args.slotTemplate}
-    </UDatePickerRange>
-  `,
-});
-
-const VariantsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDatePickerRange, URow },
   setup() {
     return {
       args,
-      variants: argTypes.variant.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDatePickerRange
-        v-for="(variant, index) in variants"
-        :variant="variant"
-        v-bind="args"
-        v-model="args.value"
+        v-for="(option, index) in options"
         :key="index"
+        v-model="args.value"
+        v-bind="args"
+        :[args.enum]="option"
       />
     </URow>
   `,
 });
 
-const OpenDirectionTemplate = (args, { argTypes } = {}) => ({
+const OpenDirectionTemplate = (args) => ({
   components: { UDatePickerRange, URow },
   setup() {
-    return {
-      args,
-      directions: argTypes.openDirection.options,
-    };
+    return { args };
   },
   template: `
     <URow class="!flex-col">
       <UDatePickerRange
         class="w-full"
         open-direction-y="top"
-        v-bind="args"
+        open-direction-x="left"
         v-model="args.value"
+        v-bind="args"
+        label="Top Left"
       />
       <UDatePickerRange
         class="w-full"
-        open-direction-y="bottom"
+        open-direction-y="top"
         open-direction-x="right"
-        v-bind="args"
         v-model="args.value"
-      />
-      <UDatePickerRange
-        class="w-full"
-        open-direction-y="bottom"
         v-bind="args"
-        v-model="args.value"
+        label="Top Right"
       />
       <UDatePickerRange
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="left"
-        v-bind="args"
         v-model="args.value"
+        v-bind="args"
+        label="Bottom Left"
+      />
+      <UDatePickerRange
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-model="args.value"
+        v-bind="args"
+        label="Bottom Right"
       />
     </URow>
   `,
@@ -129,14 +120,14 @@ const OpenDirectionTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const variants = VariantsTemplate.bind({});
-variants.args = {};
+export const variants = EnumVariantTemplate.bind({});
+variants.args = { enum: "variant" };
 
 export const openDirection = OpenDirectionTemplate.bind({});
 openDirection.args = {};
 
-export const disabled = VariantsTemplate.bind({});
-disabled.args = { disabled: true };
+export const disabled = EnumVariantTemplate.bind({});
+disabled.args = { enum: "variant", disabled: true };
 
 export const label = DefaultTemplate.bind({});
 label.args = { variant: "input", label: "some label" };
@@ -174,7 +165,7 @@ customRangeButton.args = {
   value: { from: null, to: null },
 };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   variant: "input",
   slotTemplate: `
@@ -184,7 +175,7 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   variant: "input",
   slotTemplate: `
