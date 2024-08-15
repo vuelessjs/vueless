@@ -78,7 +78,7 @@
         <span
           v-if="hasSlotContent($slots['icon-left']) || iconLeft"
           ref="leftSlotWrapperRef"
-          v-bind="leftIconAttrs"
+          v-bind="leftIconWrapperAttrs"
         >
           <!--
             @slot Use it to add icon before option.
@@ -86,7 +86,13 @@
             @binding {string} icon-size
           -->
           <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-            <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
+            <UIcon
+              v-if="iconLeft"
+              :name="iconLeft"
+              :size="iconSize"
+              internal
+              v-bind="iconLeftAttrs"
+            />
           </slot>
         </span>
 
@@ -190,14 +196,23 @@
         <!-- @slot Use it to add something after input. -->
         <slot name="right" />
 
-        <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconAttrs">
+        <span
+          v-if="hasSlotContent($slots['icon-right']) || iconRight"
+          v-bind="rightIconWrapperAttrs"
+        >
           <!--
             @slot Use it to add icon after option.
             @binding {string} icon-name
             @binding {string} icon-size
           -->
           <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
-            <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
+            <UIcon
+              v-if="iconRight"
+              :name="iconRight"
+              :size="iconSize"
+              internal
+              v-bind="iconRightAttrs"
+            />
           </slot>
         </span>
       </div>
@@ -565,8 +580,10 @@ const {
   labelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
+  leftIconWrapperAttrs,
+  rightIconWrapperAttrs,
+  iconLeftAttrs,
+  iconRightAttrs,
   beforeCaretAttrs,
   afterCaretAttrs,
   toggleAttrs,
