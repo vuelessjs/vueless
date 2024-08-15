@@ -261,11 +261,11 @@ export default class UIService {
    */
   setTheme = (config = {}) => {
     const isDarkMode = this.setDarkMode(config);
-    const brand = config?.brand || vuelessConfig?.brand || DEFAULT_BRAND_COLOR;
-    const gray = config?.gray || vuelessConfig?.gray || DEFAULT_GRAY_COLOR;
-    const ring = config?.ring || vuelessConfig?.ring || DEFAULT_RING;
-    const ringOffset = config?.ringOffset || vuelessConfig?.ringOffset || DEFAULT_RING_OFFSET;
-    const rounding = Number(config?.rounding) || vuelessConfig?.rounding || DEFAULT_ROUNDING;
+    const brand = config?.brand ?? vuelessConfig?.brand ?? DEFAULT_BRAND_COLOR;
+    const gray = config?.gray ?? vuelessConfig?.gray ?? DEFAULT_GRAY_COLOR;
+    const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
+    const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;
+    const rounding = config?.rounding ?? vuelessConfig?.rounding ?? DEFAULT_ROUNDING;
 
     // eslint-disable-next-line prettier/prettier, vue/max-len
     let brandColor = BRAND_COLORS.some((color) => color === brand) || brand === GRAYSCALE_COLOR ? brand : DEFAULT_BRAND_COLOR;
