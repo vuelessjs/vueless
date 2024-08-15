@@ -47,10 +47,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UEmpty
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
         :title="option"
-        :key="index"
       />
     </URow>
   `,

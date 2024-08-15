@@ -47,11 +47,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <div class="space-y-16">
       <UTabs
-        v-model="args.modelValue"
         v-for="(option, index) in options"
+        :key="index"
+        v-model="args.modelValue"
         v-bind="args"
         :[args.enum]="option"
-        :key="index"
       />
     </div>
   `,

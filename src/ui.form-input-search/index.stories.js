@@ -24,7 +24,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UInputSearch v-bind="args" v-model="args.modelValue">
+    <UInputSearch v-model="args.modelValue" v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </UInputSearch>
   `,
@@ -42,10 +42,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UInputSearch
         v-for="(option, index) in options"
-        v-bind="args"
-        v-model="args.modelValue"
-        :[args.enum]="option"
         :key="index"
+        v-model="args.modelValue"
+        v-bind="args"
+        :[args.enum]="option"
       >
       </UInputSearch>
     </URow>

@@ -67,14 +67,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <URow class="!flex-col">
       <UCheckboxGroup
-        v-bind="args"
         v-for="(option, index) in options"
         :key="option"
+        v-model="value"
+        v-bind="args"
         :label="option"
         :[args.enum]="option"
         :options="args.options"
         name="option"
-        v-model="value"
       />
     </URow>
   `,
@@ -83,7 +83,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {
   name: "Default",
-  isDefaultStory: true,
   slotTemplate: `
     <template v-for="(radio, index) in args.options" :key="index">
       <UCheckbox v-bind="radio"/>

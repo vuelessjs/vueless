@@ -28,8 +28,12 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UToggleItem v-bind="args" name="toggle" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+    <UToggleItem
+        v-model="args.modelValue"
+        v-bind="args"
+        name="toggle"
+      >
+        ${args.slotTemplate || getSlotsFragment()}
     </UToggleItem>
   `,
 });

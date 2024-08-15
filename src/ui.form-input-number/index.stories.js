@@ -56,11 +56,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <UCol gap="xl">
       <UInputNumber
         v-for="(option, index) in options"
+        :key="index"
+        v-model="sizeValues[index].count"
         v-bind="args"
         :[args.enum]="option"
-        :key="index"
         :label="sizeValues[index].label"
-        v-model="sizeValues[index].count"
       />
     </UCol>
   `,

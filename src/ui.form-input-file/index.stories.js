@@ -33,9 +33,9 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputFile
-      v-bind="args"
       v-model="files"
       v-model:error="error"
+      v-bind="args"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UInputFile>
@@ -54,8 +54,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <UCol gap="xl">
       <div v-for="(option, index) in options" :key="index">
         <UInputFile
-          :[args.enum]="option"
           v-bind="args"
+          :[args.enum]="option"
           :label="option"
         />
       </div>

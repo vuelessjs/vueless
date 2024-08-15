@@ -53,10 +53,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <ULink
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
         :label="prefixedOptions[index]"
-        :key="index"
       />
     </URow>
   `,

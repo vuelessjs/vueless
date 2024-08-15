@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UPagination v-bind="args" v-model="args.modelValue">
+    <UPagination v-model="args.modelValue" v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </UPagination>
   `,

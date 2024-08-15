@@ -48,11 +48,11 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
       <URow v-for="(variant, index) in variants" :key="index">
         <UBadge
           v-for="(color, index) in colors"
+          :key="index"
           v-bind="args"
           :color="color"
           :variant="variant"
           :label="color"
-          :key="index"
         />
       </URow>
     </UCol>
@@ -72,10 +72,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UBadge
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
         :label="getText(option)"
-        :key="index"
       />
     </URow>
   `,

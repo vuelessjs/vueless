@@ -49,11 +49,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UCheckboxMultiState
         v-for="(option, index) in options"
+        :key="index"
+        v-model="args.value"
         v-bind="args"
         :[args.enum]="option"
-        v-model="args.value"
         :label="option"
-        :key="index"
       />
     </URow>
   `,

@@ -42,9 +42,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULabel, UCol, UText },
   setup() {
     function getText(value, name) {
-      return name === "size"
-        ? `This is "<b>${value}</b>" size.`
-        : `This is "<b>${value}</b>" label placement.`;
+      return name === "size" ? `This is ${value} size.` : `This is ${value} label placement.`;
     }
 
     const { name, options } = argTypes[args.enum];
@@ -60,12 +58,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <UCol>
       <ULabel
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :key="index"
         class="border border-gray-200 rounded p-4"
       >
-        <UText :[args.enum]="option" v-html="prefixedOptions[index]" />
+        <UText :[args.enum]="option">
+          {{ prefixedOptions[index] }}
+        </UText>
       </ULabel>
     </UCol>
   `,

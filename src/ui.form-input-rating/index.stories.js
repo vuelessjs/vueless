@@ -28,8 +28,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputRating
-      v-bind="args"
       v-model="args.modelValue"
+      v-bind="args"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UInputRating>
@@ -49,8 +49,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UInputRating
         v-for="(option, index) in options"
         :key="index"
-        v-bind="args"
         v-model="args.modelValue"
+        v-bind="args"
         :[args.enum]="option"
       />
     </URow>

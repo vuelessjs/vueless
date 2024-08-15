@@ -27,7 +27,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <USwitch v-bind="args" v-model="args.value">
+    <USwitch v-model="args.value" v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </USwitch>
   `,
@@ -45,11 +45,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <USwitch
         v-for="(option, index) in options"
+        :key="index"
+        v-model="args.value"
         v-bind="args"
         :[args.enum]="option"
         :label="option"
-        v-model="args.value"
-        :key="index"
       />
     </URow>
   `,

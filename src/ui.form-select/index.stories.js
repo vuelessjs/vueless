@@ -47,7 +47,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots, getSelectedBadge };
   },
   template: `
-    <USelect v-bind="args" v-model="args.modelValue">
+    <USelect v-model="args.modelValue" v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </USelect>
   `,
@@ -66,10 +66,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <USelect
         v-for="(option, index) in options"
         :key="index"
+        v-model="args.modelValue"
         v-bind="args"
         :[args.enum]="option"
         :label="option"
-        v-model="args.modelValue"
       />
     </URow>
   `,
@@ -84,9 +84,9 @@ const GroupValuesTemplate = (args) => ({
   },
   template: `
     <USelect
+      v-model="args.modelValue"
       v-bind="args"
       label="Single"
-      v-model="args.modelValue"
     />
     <USelect
       class="mt-5"

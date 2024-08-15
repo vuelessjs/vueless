@@ -56,8 +56,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         <UProgress
           v-for="(option, index) in options"
           :key="index"
-          :[args.enum]="option"
           v-bind="args"
+          :[args.enum]="option"
           :value="args.progress"
         />
       </UCol>
