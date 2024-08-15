@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInputSearch from "../ui.form-input-search";
 import UButton from "../ui.button";
@@ -17,51 +17,34 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UInputSearch },
+  components: { UInputSearch, UButton },
   setup() {
     const slots = getSlotNames(UInputSearch.name);
 
-    return {
-      args,
-      slots,
-    };
+    return { args, slots };
   },
   template: `
     <UInputSearch v-bind="args" v-model="args.modelValue">
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UInputSearch>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UInputSearch, UButton },
-  setup() {
-    return {
-      args,
-    };
-  },
-  template: `
-    <UInputSearch v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || ""}
-    </UInputSearch>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UInputSearch, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UInputSearch
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
         v-model="args.modelValue"
-        :size="size"
+        :[args.enum]="option"
         :key="index"
       >
       </UInputSearch>
@@ -75,15 +58,15 @@ Default.args = {};
 export const searchButton = DefaultTemplate.bind({});
 searchButton.args = { searchButtonLabel: "Search" };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
       <UButton
-        label="filter"
+        label="Filter"
         variant="thirdary"
         filled
         no-ring

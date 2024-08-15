@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInputNumber from "../ui.form-input-number";
 import UCol from "../ui.container-col";
@@ -19,7 +19,9 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UInputNumber },
   setup() {
-    return { args };
+    const slots = getSlotNames(UInputNumber.name);
+
+    return { args, slots };
   },
   data() {
     return {
@@ -27,16 +29,18 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UInputNumber v-model="count" v-bind="args" />
+    <UInputNumber v-model="count" v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UInputNumber>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UInputNumber, UCol },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   data() {
@@ -51,9 +55,9 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
   template: `
     <UCol gap="xl">
       <UInputNumber
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
         :key="index"
         :label="sizeValues[index].label"
         v-model="sizeValues[index].count"
@@ -79,8 +83,9 @@ label.args = {
   label: "Year",
 };
 
-export const sizes = SizesTemplate.bind({});
+export const sizes = EnumVariantTemplate.bind({});
 sizes.args = {
+  enum: "size",
   value: 1,
   step: 1,
   min: 1,

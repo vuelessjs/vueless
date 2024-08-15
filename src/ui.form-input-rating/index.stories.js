@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInputRating from "../ui.form-input-rating";
 import URow from "../ui.container-row";
@@ -31,42 +31,27 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.modelValue"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UInputRating>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UInputRating },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UInputRating
-      v-bind="args"
-      v-model="args.modelValue"
-    >
-      ${args.slotTemplate}
-    </UInputRating>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UInputRating, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow gap="2xl">
       <UInputRating
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         v-model="args.modelValue"
-        :size="size"
+        :[args.enum]="option"
       />
     </URow>
   `,
@@ -75,8 +60,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const starAmount = DefaultTemplate.bind({});
 starAmount.args = { value: 4, stars: 7 };
@@ -96,7 +81,7 @@ withCounter.args = { counter: true };
 export const withTotal = DefaultTemplate.bind({});
 withTotal.args = { total: 250 };
 
-export const slotCounter = SlotTemplate.bind({});
+export const slotCounter = DefaultTemplate.bind({});
 slotCounter.args = {
   slotTemplate: `
     <template #counter="{counter}">
@@ -105,7 +90,7 @@ slotCounter.args = {
   `,
 };
 
-export const slotTotal = SlotTemplate.bind({});
+export const slotTotal = DefaultTemplate.bind({});
 slotTotal.args = {
   total: 250,
   slotTemplate: `
