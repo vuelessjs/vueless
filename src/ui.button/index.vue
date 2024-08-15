@@ -33,6 +33,7 @@
             :size="iconSize"
             :color="componentColor"
             internal
+            v-bind="iconLeftAttrs"
           />
         </slot>
       </div>
@@ -71,6 +72,7 @@
             :size="iconSize"
             :color="componentColor"
             internal
+            v-bind="iconRightAttrs"
           />
         </slot>
       </div>
@@ -234,7 +236,8 @@ const props = defineProps({
   },
 });
 
-const { buttonAttrs, loaderAttrs, textAttrs, hasSlotContent } = useAttrs(props);
+const { buttonAttrs, loaderAttrs, textAttrs, iconLeftAttrs, iconRightAttrs, hasSlotContent } =
+  useAttrs(props);
 
 const buttonRef = ref(null);
 
@@ -255,12 +258,12 @@ const loaderSize = computed(() => {
 
 const iconSize = computed(() => {
   const sizes = {
-    "2xs": "3xs",
-    xs: "2xs",
-    sm: "xs",
+    "2xs": "xs",
+    xs: "xs",
+    sm: "sm",
     md: "sm",
     lg: "md",
-    xl: "lg",
+    xl: "md",
   };
 
   return sizes[props.size];

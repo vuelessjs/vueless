@@ -192,6 +192,7 @@
                 bodyCellNestedExpandIconAttrs,
                 bodyCellNestedAttrs,
                 bodyCellPrimaryAttrs,
+                bodyCheckboxAttrs,
               }"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -511,6 +512,7 @@ const {
   hasSlotContent,
   headerAttrs,
   bodyCellPrimaryAttrs,
+  bodyCheckboxAttrs,
 } = useAttrs(props, {
   tableRows,
   isShownActionsHeader,

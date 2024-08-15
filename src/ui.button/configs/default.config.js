@@ -10,12 +10,12 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        "2xs": "px-2 py-1 text-xs leading-tight gap-0.5",
-        xs: "px-3 py-1.5 text-xs leading-tight gap-0.5",
-        sm: "px-4 py-2 text-sm leading-tight gap-1",
-        md: "px-5 py-3 text-sm leading-tight gap-1",
-        lg: "px-6 py-3.5 text-base leading-tight gap-1.5",
-        xl: "px-7 py-4 text-base leading-tight gap-1.5",
+        "2xs": "px-2 py-1 text-xs gap-0.5",
+        xs: "px-3 py-1.5 text-xs gap-1",
+        sm: "px-4 py-2 text-sm gap-1.5",
+        md: "px-5 py-3 text-sm gap-1.5",
+        lg: "px-6 py-3.5 text-base gap-1.5",
+        xl: "px-7 py-4 text-base gap-2",
       },
       variant: {
         primary: `
@@ -134,11 +134,11 @@ export default /*tw*/ {
       },
       { filled: true, variant: "thirdary", color: "white", class: "bg-gray-50" },
       { iconLeft: true, size: "2xs", class: "pl-1" },
-      { iconLeft: true, size: "xs", class: "pl-1.5" },
-      { iconLeft: true, size: "sm", class: "pl-2" },
+      { iconLeft: true, size: "xs", class: "pl-2" },
+      { iconLeft: true, size: "sm", class: "pl-3" },
       { iconLeft: true, size: "md", class: "pl-4" },
-      { iconLeft: true, size: "lg", class: "pl-3.5" },
-      { iconLeft: true, size: "xl", class: "pl-4" },
+      { iconLeft: true, size: "lg", class: "pl-5" },
+      { iconLeft: true, size: "xl", class: "pl-6" },
       { iconRight: true, size: "2xs", class: "pr-1" },
       { iconRight: true, size: "xs", class: "pr-2" },
       { iconRight: true, size: "sm", class: "pr-3" },
@@ -154,6 +154,8 @@ export default /*tw*/ {
     ],
   },
   text: "whitespace-nowrap focus-visible:outline-none",
+  iconLeft: "{UIcon}",
+  iconRight: "{UIcon}",
   defaultVariants: {
     color: "brand",
     variant: "primary",

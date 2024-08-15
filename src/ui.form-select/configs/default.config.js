@@ -64,8 +64,10 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-base" },
     ],
   },
-  leftIcon: "pr-3 flex items-center",
-  rightIcon: "pl-3 flex items-center",
+  leftIconWrapper: "pr-3 flex items-center",
+  rightIconWrapper: "pl-3 flex items-center",
+  iconLeft: "{UIcon}",
+  iconRight: "{UIcon}",
   beforeCaret: "",
   afterCaret: "mr-3",
   caret: {
