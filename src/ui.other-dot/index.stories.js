@@ -3,7 +3,7 @@ import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)
@@ -20,44 +20,35 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDot },
   setup() {
-    return { args };
+    const slots = getSlotNames(UDot.name);
+
+    return { args, slots };
   },
   template: `
-    <UDot v-bind="args" />
+    <UDot v-bind="args">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UDot>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCol, URow, UDot, UBadge },
   setup() {
     return {
       args,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <UCol>
-      <URow v-for="(color, index) in colors" :key="index" gap="none" align="center">
-        <UDot v-bind="args" :color="color"/>
-        <UBadge :label="color" :color="color" variant="thirdary" />
-      </URow>
-    </UCol>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UCol, URow, UDot, UBadge },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <UCol>
-      <URow v-for="(size, index) in sizes" :key="index" gap="none" align="center">
-        <UDot v-bind="args" :size="size"/>
-        <UBadge :label="size" variant="thirdary" />
+      <URow
+        v-for="(color, index) in colors"
+        :key="index"
+        gap="none"
+        align="center"
+      >
+        <UDot v-bind="args" :[args.enum]="option"/>
+        <UBadge :label="option" :[args.enum]="option" variant="thirdary" />
       </URow>
     </UCol>
   `,
@@ -66,8 +57,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
