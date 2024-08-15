@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCheckboxGroup from "../ui.form-checkbox-group";
 import UCheckbox from "../ui.form-checkbox";
@@ -29,7 +29,9 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UCheckboxGroup, UCheckbox, UAlert, URow },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCheckboxGroup.name);
+
+    return { args, slots };
   },
   data() {
     return {
@@ -39,9 +41,7 @@ const DefaultTemplate = (args) => ({
   template: `
     <URow class="!flex-col">
       <UCheckboxGroup v-bind="args" v-model="value">
-        <template v-for="(radio, index) in args.options" :key="index">
-          <UCheckbox v-bind="radio"/>
-        </template>
+        ${args.slotTemplate || getSlotsFragment()}
       </UCheckboxGroup>
 
       <URow>
@@ -53,25 +53,29 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const OptionsTemplate = (args) => ({
-  components: { UCheckboxGroup, UCheckbox, UAlert, URow },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UCheckboxGroup, URow },
   setup() {
     return { args };
   },
   data() {
     return {
       value: args.value,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow class="!flex-col">
-      <UCheckboxGroup v-bind="args" v-model="value" :options="args.options" />
-
-      <URow>
-        <UAlert color="blue">
-          <p>Selected value: {{ value }}</p>
-        </UAlert>
-      </URow>
+      <UCheckboxGroup
+        v-bind="args"
+        v-for="(option, index) in options"
+        :key="option"
+        :label="option"
+        :[args.enum]="option"
+        :options="args.options"
+        name="option"
+        v-model="value"
+      />
     </URow>
   `,
 });
@@ -80,6 +84,11 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {
   name: "Default",
   isDefaultStory: true,
+  slotTemplate: `
+    <template v-for="(radio, index) in args.options" :key="index">
+      <UCheckbox v-bind="radio"/>
+    </template>
+  `,
   options: [
     { name: "Default", label: "String", value: "One" },
     { name: "Default", label: "Boolean", value: false },
@@ -97,7 +106,7 @@ Default.args = {
   ],
 };
 
-export const Options = OptionsTemplate.bind({});
+export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   options: [
@@ -109,68 +118,14 @@ Options.args = {
   ],
 };
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
-  components: { UCheckboxGroup, URow },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      value: args.value,
-      colors: argTypes.color.options,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <UCheckboxGroup
-        v-bind="args"
-        v-for="color in colors"
-        :key="color"
-        :label="color"
-        :color="color"
-        :options="args.options"
-        name="color"
-        v-model="value"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UCheckboxGroup, URow },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      value: args.value,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <UCheckboxGroup
-        v-bind="args"
-        v-for="size in sizes"
-        :key="size"
-        :label="size"
-        :size="size"
-        :options="args.options"
-        name="size"
-        v-model="value"
-      />
-    </URow>
-  `,
-});
-
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { name: "Disabled", disabled: true };
 
 export const error = DefaultTemplate.bind({});
 error.args = { name: "Error", error: "some error" };
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = { name: "Colors" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", name: "Colors" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = { name: "Sizes" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", name: "Sizes" };

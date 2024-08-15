@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCheckboxMultiState from "../ui.form-checkbox-multi-state";
 import URow from "../ui.container-row";
@@ -26,29 +26,33 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UCheckboxMultiState },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCheckboxMultiState.name);
+
+    return { args, slots };
   },
   template: `
-    <UCheckboxMultiState v-bind="args" v-model="args.value" />
+    <UCheckboxMultiState v-bind="args" v-model="args.value">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UCheckboxMultiState>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCheckboxMultiState, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UCheckboxMultiState
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
         v-model="args.value"
-        :label="size"
+        :label="option"
         :key="index"
       />
     </URow>
@@ -58,5 +62,5 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };

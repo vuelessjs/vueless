@@ -1,10 +1,9 @@
 import ULabel from "../ui.form-label";
-import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UText from "../ui.text-block";
 import UIcon from "../ui.image-icon";
 
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)
@@ -22,73 +21,51 @@ export default {
   },
 };
 
-const message = "This is plain text";
+const defaultTemplate = "This is plain text";
 
 const DefaultTemplate = (args) => ({
-  components: { ULabel, UText },
-  setup() {
-    return { args };
-  },
-  template: `
-    <ULabel v-bind="args">
-      <UText v-bind="args">${message}</UText>
-    </ULabel>
-  `,
-});
-
-const SlotTemplate = (args) => ({
   components: { ULabel, UText, UIcon },
   setup() {
-    return { args };
+    const slots = getSlotNames(ULabel.name);
+
+    return { args, slots };
   },
   template: `
     <ULabel v-bind="args">
-      <UText v-bind="args">${message}</UText>
-      ${args.slotTemplate}
+      <UText v-bind="args">${getSlotsFragment(defaultTemplate)}</UText>
+      ${args.slotTemplate ? args.slotTemplate : ""}
     </ULabel>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { ULabel, URow, UText },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <ULabel
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :key="index"
-      >
-        <UText :size="size">This is <b>"{{ size }}"</b> size.</UText>
-      </ULabel>
-    </URow>
-  `,
-});
-
-const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULabel, UCol, UText },
   setup() {
+    function getText(value, name) {
+      return name === "size"
+        ? `This is "<b>${value}</b>" size.`
+        : `This is "<b>${value}</b>" label placement.`;
+    }
+
+    const { name, options } = argTypes[args.enum];
+    const prefixedOptions = options.map((option) => getText(option, name));
+
     return {
       args,
-      placements: argTypes.align.options,
+      options: argTypes[args.enum].options,
+      prefixedOptions,
     };
   },
   template: `
     <UCol>
       <ULabel
-        v-for="(align, index) in placements"
+        v-for="(option, index) in options"
         v-bind="args"
-        :align="align"
+        :[args.enum]="option"
         :key="index"
         class="border border-gray-200 rounded p-4"
       >
-        <UText>This is <b>"{{ align }}"</b> label placement.</UText>
+        <UText :[args.enum]="option" v-html="prefixedOptions[index]" />
       </ULabel>
     </UCol>
   `,
@@ -97,11 +74,11 @@ const LabelPlacementTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const LabelPlacement = LabelPlacementTemplate.bind({});
-LabelPlacement.args = {};
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "align" };
 
 export const Error = DefaultTemplate.bind({});
 Error.args = { error: "Error description" };
@@ -109,7 +86,7 @@ Error.args = { error: "Error description" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const slotFooter = SlotTemplate.bind({});
+export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>

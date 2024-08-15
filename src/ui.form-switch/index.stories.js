@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import USwitch from "../ui.form-switch";
 import UIcon from "../ui.image-icon";
@@ -22,48 +22,32 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { USwitch, UIcon },
   setup() {
-    return { args };
+    const slots = getSlotNames(USwitch.name);
+
+    return { args, slots };
   },
   template: `
-    <USwitch v-bind="args" v-model="args.value" />
+    <USwitch v-bind="args" v-model="args.value">
+      ${args.slotTemplate || getSlotsFragment()}
+    </USwitch>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { USwitch, URow },
   setup() {
     return {
       args,
-      colors: argTypes.color.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <USwitch
-        v-for="(color, index) in colors"
+        v-for="(option, index) in options"
         v-bind="args"
-        :color="color"
-        v-model="args.value"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { USwitch, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <USwitch
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
+        :[args.enum]="option"
+        :label="option"
         v-model="args.value"
         :key="index"
       />
@@ -80,14 +64,14 @@ label.args = { label: "Some label" };
 export const description = DefaultTemplate.bind({});
 description.args = { label: "Label", description: "Some description" };
 
-export const colors = ColorsTemplate.bind({});
-colors.args = { modelValue: true };
+export const colors = EnumVariantTemplate.bind({});
+colors.args = { enum: "color", modelValue: true };
 
 export const toggleLabel = DefaultTemplate.bind({});
 toggleLabel.args = { toggleLabel: true };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { color: "yellow" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size", color: "yellow" };
 
 export const icon = DefaultTemplate.bind({});
 icon.args = { toggleIcon: true, color: "yellow" };
