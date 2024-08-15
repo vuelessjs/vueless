@@ -1,7 +1,7 @@
-import { getArgTypes, allSlotsFragment, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInputFile from "../ui.form-input-file";
-import URow from "../ui.container-row";
+import UCol from "../ui.container-col";
 
 /**
  * The `UInputFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-file)
@@ -37,71 +37,29 @@ const DefaultTemplate = (args) => ({
       v-model="files"
       v-model:error="error"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UInputFile>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UInputFile },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      files: [],
-      error: args.error || "",
-    };
-  },
-  template: `
-    <UInputFile
-      v-bind="args"
-      v-model="files"
-      v-model:error="error"
-    >
-      ${args.slotTemplate}
-    </UInputFile>
-  `,
-});
-
-const LabelAlignTemplate = (args, { argTypes } = {}) => ({
-  components: { UInputFile, URow },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UInputFile, UCol },
   setup() {
     return {
       args,
-      alignOptions: argTypes.labelAlign.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <URow class="!flex-col" gap="xl">
-      <div v-for="(align, index) in alignOptions" :key="index">
+    <UCol gap="xl">
+      <div v-for="(option, index) in options" :key="index">
         <UInputFile
-          :label-align="align"
+          :[args.enum]="option"
           v-bind="args"
-          :label="align"
+          :label="option"
         />
       </div>
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UInputFile, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <div v-for="(size, index) in sizes" :key="index">
-        <UInputFile
-          :size="size"
-          v-bind="args"
-        />
-      </div>
-    </URow>
+    </UCol>
   `,
 });
 
@@ -117,17 +75,17 @@ allowedFileTypes.args = { allowedFileTypes: ["png", "jpeg"], label: "Allow only 
 export const error = DefaultTemplate.bind({});
 error.args = { error: "some error" };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const labelAlign = LabelAlignTemplate.bind({});
-labelAlign.args = {};
+export const labelAlign = EnumVariantTemplate.bind({});
+labelAlign.args = { enum: "labelAlign" };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
-      🥸
+      🤘
     </template>
   `,
 };

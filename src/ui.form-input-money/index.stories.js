@@ -1,8 +1,7 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInputMoney from "../ui.form-input-money";
-import URow from "../ui.container-row";
-// import UCol from "../ui.container-col";
+import UCol from "../ui.container-col";
 
 /**
  * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
@@ -32,67 +31,43 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.inputValue"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UInputMoney>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UInputMoney, URow },
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+  components: { UInputMoney, UCol },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <URow>
+    <UCol>
       <UInputMoney
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         v-bind="args"
-        :size="size"
+        :[args.enum]="option"
+        :label="option"
         :key="index"
       />
-    </URow>
+    </UCol>
   `,
 });
-
-// TODO: Rewrite to labelAlign
-// const LabelPlacementTemplate = (args) => ({
-//   components: { UInputMoney, UCol },
-//   setup() {
-//     return {
-//       args,
-//     };
-//   },
-//   template: `
-//     <UCol gap="xl">
-//       <UInputMoney
-//         v-bind="args"
-//         :label-outside="true"
-//         label="top"
-//       />
-//
-//       <UInputMoney
-//         v-bind="args"
-//         :label-outside="false"
-//         label="topInside"
-//       />
-//     </UCol>
-//   `,
-// });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
 export const symbol = DefaultTemplate.bind({});
 symbol.args = { symbol: "€" };
 
-// export const labelOutside = LabelPlacementTemplate.bind({});
-// labelOutside.args = {};
+export const labelAlign = EnumVariantTemplate.bind({});
+labelAlign.args = { enum: "labelAlign" };
 
 export const placeholder = DefaultTemplate.bind({});
 placeholder.args = { placeholder: "Placeholder" };

@@ -1,8 +1,7 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UTextarea from "../ui.form-textarea";
 import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 
 /**
@@ -22,7 +21,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UTextarea },
+  components: { UTextarea, UIcon },
   setup() {
     const slots = getSlotNames(UTextarea.name);
 
@@ -32,65 +31,28 @@ const DefaultTemplate = (args) => ({
     <UTextarea
       v-bind="args"
     >
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UTextarea>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UTextarea, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UTextarea
-      v-bind="args"
-    >
-      ${args.slotTemplate}
-    </UTextarea>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UTextarea, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <div class="w-1/3" v-for="(size, index) in sizes" :key="index">
-        <UTextarea
-          v-bind="args"
-          :size="size"
-        />
-      </div>
-    </URow>
-  `,
-});
-
-const LabelPlacementTemplate = (args) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UTextarea, UCol },
   setup() {
     return {
       args,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <UCol gap="xl">
-      <UTextarea
-        v-bind="args"
-        label-align="top"
-        label="top"
-      />
-
-      <UTextarea
-        v-bind="args"
-        label-align="topInside"
-        label="topInside"
-      />
+    <UCol>
+      <div class="w-1/3" v-for="(option, index) in options" :key="index">
+        <UTextarea
+          v-bind="args"
+          :[args.enum]="option"
+          :label="option"
+        />
+      </div>
     </UCol>
   `,
 });
@@ -98,8 +60,8 @@ const LabelPlacementTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const labelPlacement = LabelPlacementTemplate.bind({});
-labelPlacement.args = {};
+export const labelPlacement = EnumVariantTemplate.bind({});
+labelPlacement.args = { enum: "labelAlign" };
 
 export const placeholder = DefaultTemplate.bind({});
 placeholder.args = { placeholder: "some placeholder text" };
@@ -122,10 +84,10 @@ readonly.args = { readonly: true, value: "some value for read" };
 export const noAutocomplete = DefaultTemplate.bind({});
 noAutocomplete.args = { noAutocomplete: true };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
@@ -137,7 +99,7 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>

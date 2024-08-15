@@ -1,10 +1,9 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UInput from "../ui.form-input";
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 import UCol from "../ui.container-col";
-import URow from "../ui.container-row";
 
 /**
  * The `UInput` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input)
@@ -23,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UInput },
+  components: { UInput, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInput.name);
 
@@ -31,81 +30,27 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInput v-bind="args" v-model="args.modelValue">
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UInput>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UInput, UIcon, UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UInput v-bind="args">
-      ${args.slotTemplate}
-    </UInput>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { UInput, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow>
-      <UInput
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        :key="index"
-      />
-    </URow>
-  `,
-});
-
-const ValidationRuleTemplate = (args, { argTypes } = {}) => ({
-  components: { UInput, URow },
-  setup() {
-    return {
-      args,
-      rules: argTypes.validationRule.options,
-    };
-  },
-  template: `
-    <URow>
-      <UInput
-        v-for="(rule, index) in rules"
-        v-bind="args"
-        :validationRule="rule"
-        :key="index"
-        :description="rule"
-      />
-    </URow>
-  `,
-});
-
-const LabelPlacementTemplate = (args) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UInput, UCol },
   setup() {
     return {
       args,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <UCol gap="xl">
+    <UCol>
       <UInput
+        v-for="(option, index) in options"
         v-bind="args"
-        label-align="top"
-      />
-
-      <UInput
-        v-bind="args"
-        label-align="topInside"
+        :[args.enum]="option"
+        :label="option"
+        :key="index"
       />
     </UCol>
   `,
@@ -135,14 +80,14 @@ noAutocomplete.args = { noAutocomplete: true };
 export const typePassword = DefaultTemplate.bind({});
 typePassword.args = { type: "password" };
 
-export const labelPlacement = LabelPlacementTemplate.bind({});
-labelPlacement.args = {};
+export const labelPlacement = EnumVariantTemplate.bind({});
+labelPlacement.args = { enum: "labelAlign" };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };
 
-export const validationRules = ValidationRuleTemplate.bind({});
-validationRules.args = {};
+export const validationRules = EnumVariantTemplate.bind({});
+validationRules.args = { enum: "validationRule" };
 
 export const iconLeft = DefaultTemplate.bind({});
 iconLeft.args = {
@@ -154,7 +99,7 @@ iconRight.args = {
   iconRight: "star",
 };
 
-export const iconLeftSlot = SlotTemplate.bind({});
+export const iconLeftSlot = DefaultTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #icon-left>
@@ -166,7 +111,7 @@ iconLeftSlot.args = {
   `,
 };
 
-export const iconRightSlot = SlotTemplate.bind({});
+export const iconRightSlot = DefaultTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
@@ -178,7 +123,7 @@ iconRightSlot.args = {
   `,
 };
 
-export const leftSlot = SlotTemplate.bind({});
+export const leftSlot = DefaultTemplate.bind({});
 leftSlot.args = {
   slotTemplate: `
     <template #left>
@@ -187,7 +132,7 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = SlotTemplate.bind({});
+export const rightSlot = DefaultTemplate.bind({});
 rightSlot.args = {
   slotTemplate: `
     <template #right>
