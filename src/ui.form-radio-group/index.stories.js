@@ -13,7 +13,9 @@ export default {
   id: "3160",
   title: "Form Inputs & Controls / Radio Group",
   component: URadioGroup,
-  args: {},
+  args: {
+    modelValue: "One",
+  },
   argTypes: {
     ...getArgTypes(URadioGroup.name),
   },
@@ -36,14 +38,9 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots, radios };
   },
-  data() {
-    return {
-      value: args.value,
-    };
-  },
   template: `
     <UCol gap="2xl">
-      <URadioGroup v-bind="args" v-model="value">
+      <URadioGroup v-bind="args" v-model="args.modelValue">
         <URadio
           v-for="(radio, index) in radios"
           :key="index"
@@ -53,7 +50,7 @@ const DefaultTemplate = (args) => ({
         </URadio>
       </URadioGroup>
       <UAlert color="gray" size="xs">
-        <code>Selected value: <b>{{ value }}</b></code>
+        <code>Selected value: <b>{{ args.modelValue }}</b></code>
       </UAlert>
     </UCol>
   `,
@@ -70,18 +67,13 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       radios,
     };
   },
-  data() {
-    return {
-      value: args.value,
-    };
-  },
   template: `
     <URow class="!flex-col">
       <URadioGroup
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="value"
+        v-model="args.modelValue"
         :[args.enum]="option"
         :label="option"
         :options="radios"

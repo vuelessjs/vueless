@@ -14,10 +14,10 @@ export default {
   component: UCheckbox,
   args: {
     label: "Label",
-    value: {},
   },
   argTypes: {
     ...getArgTypes(UCheckbox.name),
+    modelValue: { control: { type: "boolean" } },
   },
 };
 
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UCheckbox v-bind="args" v-model="args.value">
+    <UCheckbox v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UCheckbox>
   `,
@@ -103,7 +103,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="args.value[option]"
         :[args.enum]="option"
         :label="option"
       />

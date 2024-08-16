@@ -31,7 +31,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UCheckboxMultiState v-bind="args" v-model="args.value">
+    <UCheckboxMultiState v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UCheckboxMultiState>
   `,
@@ -51,7 +51,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         :[args.enum]="option"
         :label="option"
       />
