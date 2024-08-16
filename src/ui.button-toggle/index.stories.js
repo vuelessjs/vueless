@@ -37,8 +37,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UToggle
-      v-model="value"
       v-bind="args"
+      v-model="value"
       :options="OPTIONS"
     >
       ${args.slotTemplate || getSlotsFragment()}
@@ -62,8 +62,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UToggle
         v-for="(option, index) in options"
         :key="index"
-        v-model="value"
         v-bind="args"
+        v-model="value"
         :[args.enum]="option"
         :label="option"
         :options="[

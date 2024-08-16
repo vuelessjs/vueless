@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UInputNumber v-model="count" v-bind="args">
+    <UInputNumber v-bind="args" v-model="count">
       ${args.slotTemplate || getSlotsFragment()}
     </UInputNumber>
   `,
@@ -57,8 +57,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UInputNumber
         v-for="(option, index) in options"
         :key="index"
-        v-model="sizeValues[index].count"
         v-bind="args"
+        v-model="sizeValues[index].count"
         :[args.enum]="option"
         :label="sizeValues[index].label"
       />

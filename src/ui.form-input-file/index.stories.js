@@ -33,9 +33,9 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputFile
+      v-bind="args"
       v-model="files"
       v-model:error="error"
-      v-bind="args"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UInputFile>

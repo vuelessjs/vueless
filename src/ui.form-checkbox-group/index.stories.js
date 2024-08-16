@@ -69,8 +69,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UCheckboxGroup
         v-for="(option, index) in options"
         :key="option"
-        v-model="value"
         v-bind="args"
+        v-model="value"
         :label="option"
         :[args.enum]="option"
         :options="args.options"

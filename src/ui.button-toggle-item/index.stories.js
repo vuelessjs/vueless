@@ -29,8 +29,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UToggleItem
-        v-model="args.modelValue"
         v-bind="args"
+        v-model="args.modelValue"
         name="toggle"
       >
         ${args.slotTemplate || getSlotsFragment()}

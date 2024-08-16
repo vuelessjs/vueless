@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UInput v-model="args.modelValue" v-bind="args">
+    <UInput v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UInput>
   `,

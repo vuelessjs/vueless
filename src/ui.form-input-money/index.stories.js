@@ -28,8 +28,8 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputMoney
-      v-model="args.inputValue"
       v-bind="args"
+      v-model="args.inputValue"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UInputMoney>

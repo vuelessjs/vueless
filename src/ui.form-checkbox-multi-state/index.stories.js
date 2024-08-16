@@ -50,8 +50,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UCheckboxMultiState
         v-for="(option, index) in options"
         :key="index"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         :[args.enum]="option"
         :label="option"
       />
