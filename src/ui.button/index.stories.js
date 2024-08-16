@@ -44,10 +44,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <URow>
         <UButton
           v-for="(option, index) in options"
+          :key="index"
           v-bind="args"
           :[args.enum]="option"
           :label="option"
-          :key="index"
         />
       </URow>
     </UCol>

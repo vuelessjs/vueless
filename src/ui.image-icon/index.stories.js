@@ -44,9 +44,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UIcon
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :key="index"
       />
     </URow>
   `,

@@ -11,7 +11,7 @@ export default {
   component: UColorPicker,
   args: {
     label: "Label",
-    value: "",
+    modelValue: "",
   },
   argTypes: {
     ...getArgTypes(UColorPicker.name),
@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UColorPicker v-bind="args" v-model="args.value">
+    <UColorPicker v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UColorPicker>
   `,
@@ -46,7 +46,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         :[args.enum]="option"
         :name="option"
       />

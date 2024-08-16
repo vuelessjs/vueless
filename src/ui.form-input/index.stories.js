@@ -47,10 +47,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <UCol>
       <UInput
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
         :label="option"
-        :key="index"
       />
     </UCol>
   `,

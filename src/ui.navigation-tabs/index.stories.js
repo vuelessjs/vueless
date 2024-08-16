@@ -30,7 +30,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UTabs v-model="args.modelValue" v-bind="args">
+    <UTabs v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UTabs>
   `,
@@ -47,11 +47,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <div class="space-y-16">
       <UTabs
-        v-model="args.modelValue"
         v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
         :key="index"
+        v-bind="args"
+        v-model="args.modelValue"
+        :[args.enum]="option"
       />
     </div>
   `,

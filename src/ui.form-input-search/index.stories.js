@@ -42,10 +42,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UInputSearch
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         v-model="args.modelValue"
         :[args.enum]="option"
-        :key="index"
       >
       </UInputSearch>
     </URow>

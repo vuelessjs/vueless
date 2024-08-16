@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
@@ -36,66 +36,42 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { USelect },
+  components: { USelect, UIcon, UBadge },
   setup() {
+    function getSelectedBadge(options, currentValue) {
+      return options?.find((option) => option.id === currentValue);
+    }
+
     const slots = getSlotNames(USelect.name);
 
-    return { args, slots };
+    return { args, slots, getSelectedBadge };
   },
   template: `
     <USelect v-bind="args" v-model="args.modelValue">
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </USelect>
   `,
 });
 
-const multipleTemplate = (args) => ({
-  components: { USelect },
-  setup() {
-    const slots = getSlotNames(USelect.name);
-
-    return { args, slots };
-  },
-  template: `
-    <USelect v-bind="args" multiple v-model="args.modelValue">
-      <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-        <template v-if="args[slot]">{{ args[slot] }}</template>
-      </template>
-    </USelect>
-  `,
-});
-
-const OpenDirectionsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { USelect, URow },
   setup() {
     return {
       args,
-      openDirections: argTypes.openDirection.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
-    <div class="flex flex-col gap-6">
-      <URow>
-        <USelect
-          v-for="(openDirection, index) in openDirections"
-          :key="index"
-          v-bind="args"
-          :open-direction="openDirection"
-          :label="openDirection"
-          v-model="args.modelValue"
-        />
-      </URow>
-      <URow>
-        <USelect
-          v-for="(openDirection, index) in openDirections"
-          :key="index"
-          v-bind="args"
-          :open-direction="openDirection"
-          v-model="args.modelValue"
-          label=""
-        />
-      </URow>
-    </div>
+    <URow>
+      <USelect
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        v-model="args.modelValue"
+        :[args.enum]="option"
+        :label="option"
+      />
+    </URow>
   `,
 });
 
@@ -109,8 +85,8 @@ const GroupValuesTemplate = (args) => ({
   template: `
     <USelect
       v-bind="args"
-      label="Single"
       v-model="args.modelValue"
+      label="Single"
     />
     <USelect
       class="mt-5"
@@ -122,104 +98,14 @@ const GroupValuesTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { USelect, URow },
-  setup() {
-    return {
-      args,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <div class="flex flex-col gap-6">
-      <URow>
-        <USelect
-          v-for="(size, index) in sizes"
-          v-bind="args"
-          :key="index"
-          :size="size"
-          :label="size"
-          v-model="args.modelValue"
-        />
-        </URow>
-      <URow>
-        <USelect
-          v-for="(size, index) in sizes"
-          v-bind="args"
-          :key="index"
-          :size="size"
-          :label="size"
-          label-outside
-          v-model="args.modelValue"
-        />
-      </URow>
-      <URow>
-        <USelect
-          v-for="(size, index) in sizes"
-          v-bind="args"
-          :key="index"
-          :label="size"
-          :size="size"
-          multiple
-          v-model="args.multipleModelValue"
-        />
-      </URow>
-    </div>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { USelect, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <USelect
-      v-bind="args"
-      v-model="args.modelValue"
-    >
-      ${args.slotTemplate}
-    </USelect>
-  `,
-});
-
-const BadgeTemplate = (args) => ({
-  components: { USelect, UBadge },
-  setup() {
-    return { args };
-  },
-  methods: {
-    getSelectedBadge(options, currentValue) {
-      return options?.find((option) => option.id === currentValue);
-    },
-  },
-  template: `
-    <USelect
-      v-bind="args"
-      v-model="args.modelValue"
-    >
-      <template #after-caret="{ scopeProps }">
-        <UBadge
-          v-show="scopeProps?.modelValue"
-          :label="getSelectedBadge(scopeProps?.options, scopeProps?.modelValue)?.badge"
-        />
-      </template>
-      <template #option="{ option }">
-        {{ option.label }}
-        <UBadge :label="option.badge" />
-      </template>
-    </USelect>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Multiple = multipleTemplate.bind({});
-Multiple.args = { modelValue: [] };
+export const Multiple = DefaultTemplate.bind({});
+Multiple.args = { multiple: true, modelValue: [] };
 
-export const openDirection = OpenDirectionsTemplate.bind({});
-openDirection.args = {};
+export const openDirection = EnumVariantTemplate.bind({});
+openDirection.args = { enum: "openDirection" };
 
 export const groupValue = GroupValuesTemplate.bind({});
 groupValue.args = {
@@ -280,53 +166,70 @@ optionIsHidden.args = {
   ],
 };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { multipleModelValue: [] };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = {
+  enum: "size",
+  multiple: true,
+  multipleModelValue: [],
+};
 
-export const slotSelectedValueLabel = SlotTemplate.bind({});
+export const slotSelectedValueLabel = DefaultTemplate.bind({});
 slotSelectedValueLabel.args = {
   slotTemplate: `
     <template #selected-label>
-       🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };
 
-export const slotSelectedValueLabelAfter = SlotTemplate.bind({});
+export const slotSelectedValueLabelAfter = DefaultTemplate.bind({});
 slotSelectedValueLabelAfter.args = {
   slotTemplate: `
     <template #selected-label-after>
-       🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };
 
-export const slotOption = SlotTemplate.bind({});
+export const slotOption = DefaultTemplate.bind({});
 slotOption.args = {
   slotTemplate: `
     <template #option>
-       🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };
 
-export const slotAfterCaret = BadgeTemplate.bind({});
-slotAfterCaret.args = {};
+export const slotAfterCaret = DefaultTemplate.bind({});
+slotAfterCaret.args = {
+  slotTemplate: `
+    <template #after-caret="{ scopeProps }">
+      <UBadge
+        v-show="scopeProps?.modelValue"
+        :label="getSelectedBadge(scopeProps?.options, scopeProps?.modelValue)?.badge"
+      />
+    </template>
+    <template #option="{ option }">
+      {{ option.label }}
+      <UBadge :label="option.badge" />
+    </template>
+  `,
+};
 
-export const slotBeforeCaret = SlotTemplate.bind({});
+export const slotBeforeCaret = DefaultTemplate.bind({});
 slotBeforeCaret.args = {
   slotTemplate: `
     <template #before-caret>
-       🤘
+      🤘
     </template>
   `,
 };
 
-export const slotBeforeOption = SlotTemplate.bind({});
+export const slotBeforeOption = DefaultTemplate.bind({});
 slotBeforeOption.args = {
   slotTemplate: `
     <template #before-option>
-       🤘
+      🤘
     </template>
   `,
 };
@@ -341,7 +244,7 @@ iconRight.args = {
   iconRight: "star",
 };
 
-export const iconLeftSlot = SlotTemplate.bind({});
+export const iconLeftSlot = DefaultTemplate.bind({});
 iconLeftSlot.args = {
   slotTemplate: `
     <template #icon-left>
@@ -350,7 +253,7 @@ iconLeftSlot.args = {
   `,
 };
 
-export const iconRightSlot = SlotTemplate.bind({});
+export const iconRightSlot = DefaultTemplate.bind({});
 iconRightSlot.args = {
   slotTemplate: `
     <template #icon-right>
@@ -359,20 +262,20 @@ iconRightSlot.args = {
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
-       🤘
+      🤘
     </template>
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
-       🤘
+      🤘
     </template>
   `,
 };
