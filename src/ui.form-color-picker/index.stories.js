@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 import UColorPicker from "../ui.form-color-picker";
 import UCol from "../ui.container-col";
 
@@ -21,30 +21,34 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UColorPicker },
   setup() {
-    return { args };
+    const slots = getSlotNames(UColorPicker.name);
+
+    return { args, slots };
   },
   template: `
-    <UColorPicker v-bind="args" v-model="args.value"/>
+    <UColorPicker v-bind="args" v-model="args.value">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UColorPicker>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCol, UColorPicker },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <UCol>
       <UColorPicker
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
+        v-for="(option, index) in options"
         :key="index"
-        :name="size"
+        v-bind="args"
         v-model="args.value"
+        :[args.enum]="option"
+        :name="option"
       />
     </UCol>
   `,
@@ -53,8 +57,8 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Description" };

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDatePicker from "../ui.form-date-picker";
 import UIcon from "../ui.image-icon";
@@ -27,7 +27,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDatePicker },
+  components: { UDatePicker, UIcon },
   setup() {
     const slots = getSlotNames(UDatePicker.name);
 
@@ -40,7 +40,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDatePicker v-bind="args" v-model="value">
-      ${allSlotsFragment}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDatePicker>
 
     <div class="mt-4">
@@ -49,24 +49,23 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDatePicker, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDatePicker
-        v-for="(size, index) in sizes"
-        :size="size"
-        :label="size"
-        v-bind="args"
+        v-for="(option, index) in options"
         :key="index"
-      >
-      </UDatePicker>
+        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
+      />
     </URow>
   `,
 });
@@ -83,21 +82,18 @@ const OpenDirectionTemplate = (args) => ({
       <UDatePicker
         class="w-full"
         open-direction-y="top"
+        open-direction-x="left"
         v-bind="args"
         v-model="args.value"
+        label="Top Left"
       />
       <UDatePicker
         class="w-full"
-        open-direction-y="bottom"
+        open-direction-y="top"
         open-direction-x="right"
         v-bind="args"
         v-model="args.value"
-      />
-      <UDatePicker
-        class="w-full"
-        open-direction-y="bottom"
-        v-bind="args"
-        v-model="args.value"
+        label="Top Right"
       />
       <UDatePicker
         class="w-full"
@@ -105,28 +101,25 @@ const OpenDirectionTemplate = (args) => ({
         open-direction-x="left"
         v-bind="args"
         v-model="args.value"
+        label="Bottom Left"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-bind="args"
+        v-model="args.value"
+        label="Bottom Right"
       />
     </URow>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UDatePicker, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDatePicker v-bind="args">
-      ${args.slotTemplate}
-    </UDatePicker>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = { value: new Date() };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { label: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size", label: "" };
 
 export const openDirection = OpenDirectionTemplate.bind({});
 openDirection.args = {};
@@ -156,32 +149,29 @@ MinMax.args = {
   value: new Date(2022, 2, 24),
 };
 
-export const slotIcon = SlotTemplate.bind({});
+export const slotIcon = DefaultTemplate.bind({});
 slotIcon.args = {
   slotTemplate: `
     <template #right-icon>
-      <UIcon
-        name="star"
-        color="black"
-       />
+      <UIcon name="star" color="black" />
     </template>
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
-        🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #left>
-        🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };

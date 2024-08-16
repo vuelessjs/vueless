@@ -15,6 +15,7 @@ export default /*tw*/ {
       },
       openDirectionY: {
         top: "bottom-full mt-0",
+        bottom: "top-full mb-0",
       },
     },
   },
