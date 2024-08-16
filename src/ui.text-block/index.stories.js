@@ -50,9 +50,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UText
         v-for="(option, index) in options"
-        :[args.enum]="option"
-        v-bind="args"
         :key="index"
+        v-bind="args"
+        :[args.enum]="option"
       >
         ${args.slotTemplate || defaultTemplate}
       </UText>

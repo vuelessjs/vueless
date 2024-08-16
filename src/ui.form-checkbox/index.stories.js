@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCheckbox from "../ui.form-checkbox";
 import UCheckboxGroup from "../ui.form-checkbox-group";
@@ -14,23 +14,23 @@ export default {
   component: UCheckbox,
   args: {
     label: "Label",
-    value: {},
   },
   argTypes: {
     ...getArgTypes(UCheckbox.name),
+    modelValue: { control: { type: "boolean" } },
   },
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UCheckbox },
+  components: { UCheckbox, UBadge },
   setup() {
     const slots = getSlotNames(UCheckbox.name);
 
     return { args, slots };
   },
   template: `
-    <UCheckbox v-bind="args" v-model="args.value">
-      ${allSlotsFragment}
+    <UCheckbox v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment()}
     </UCheckbox>
   `,
 });
@@ -89,37 +89,24 @@ const ValueTypesTemplate = (args) => ({
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCheckbox, UCol },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <UCol gap="xl">
       <UCheckbox
-        v-for="(size, index) in sizes"
+        v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="args.value[size]"
-        :size="size"
-        :label="size"
+        :[args.enum]="option"
+        :label="option"
       />
     </UCol>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { UCheckbox, UBadge },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UCheckbox v-bind="args" v-model="args.value" description="hello">
-      ${args.slotTemplate}
-    </UCheckbox>
   `,
 });
 
@@ -129,8 +116,8 @@ Default.args = {};
 export const CustomValues = ValueTypesTemplate.bind({});
 CustomValues.args = {};
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = {};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -138,7 +125,7 @@ Disabled.args = { disabled: true };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Some description" };
 
-export const slotFooter = SlotTemplate.bind({});
+export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `
     <template #footer>

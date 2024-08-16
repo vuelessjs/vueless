@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UCheckboxMultiState from "../ui.form-checkbox-multi-state";
 import URow from "../ui.container-row";
@@ -11,7 +11,6 @@ export default {
   title: "Form Inputs & Controls / Checkbox Multistate",
   component: UCheckboxMultiState,
   args: {
-    modelValue: false,
     options: [
       { value: false, label: "empty", icon: "", description: "checkbox empty" },
       { value: true, label: "selected", icon: "check", description: "checkbox selected" },
@@ -20,36 +19,41 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxMultiState.name),
+    modelValue: { control: { type: "boolean" } },
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UCheckboxMultiState },
   setup() {
-    return { args };
+    const slots = getSlotNames(UCheckboxMultiState.name);
+
+    return { args, slots };
   },
   template: `
-    <UCheckboxMultiState v-bind="args" v-model="args.value" />
+    <UCheckboxMultiState v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment()}
+    </UCheckboxMultiState>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UCheckboxMultiState, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UCheckboxMultiState
-        v-for="(size, index) in sizes"
-        v-bind="args"
-        :size="size"
-        v-model="args.value"
-        :label="size"
+        v-for="(option, index) in options"
         :key="index"
+        v-bind="args"
+        v-model="args.modelValue"
+        :[args.enum]="option"
+        :label="option"
       />
     </URow>
   `,
@@ -58,5 +62,5 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = {};
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size" };

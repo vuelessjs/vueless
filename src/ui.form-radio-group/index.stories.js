@@ -1,4 +1,4 @@
-import { getArgTypes } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import URadioGroup from "../ui.form-radio-group";
 import URadio from "../ui.form-radio";
@@ -14,113 +14,70 @@ export default {
   title: "Form Inputs & Controls / Radio Group",
   component: URadioGroup,
   args: {
-    label: "Label",
-    value: "One",
-    radios: [
-      { name: "radio", label: "Radio 1", value: "1" },
-      { name: "radio", label: "Radio 2", value: "2" },
-      { name: "radio", label: "Radio 3", value: "3" },
-    ],
+    modelValue: "One",
   },
   argTypes: {
     ...getArgTypes(URadioGroup.name),
   },
 };
 
+const defaultRadios = [
+  { name: "slotValues", label: "Boolean", value: false },
+  { name: "slotValues", label: "String", value: "One" },
+  { name: "slotValues", label: "Number", value: 3 },
+  { name: "slotValues", label: "Object", value: { key: "value" } },
+  { name: "slotValues", label: "Array", value: ["Array", 1] },
+];
+
 const DefaultTemplate = (args) => ({
   components: { URadioGroup, URadio, UAlert, URow, UCol },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      value: args.value,
-    };
+    const slots = getSlotNames(URadioGroup.name);
+
+    const radios = args.radios ? args.radios : defaultRadios;
+
+    return { args, slots, radios };
   },
   template: `
     <UCol gap="2xl">
-      <URadioGroup v-bind="args" v-model="value">
-        <URadio v-for="(radio, index) in args.radios" :key="index" v-bind="radio" />
+      <URadioGroup v-bind="args" v-model="args.modelValue">
+        <URadio
+          v-for="(radio, index) in radios"
+          :key="index"
+          v-bind="radio"
+        >
+          ${args.slotTemplate || getSlotsFragment()}
+        </URadio>
       </URadioGroup>
       <UAlert color="gray" size="xs">
-        <code>Selected value: <b>{{ value }}</b></code>
+        <code>Selected value: <b>{{ args.modelValue }}</b></code>
       </UAlert>
     </UCol>
   `,
 });
 
-const OptionsTemplate = (args) => ({
-  components: { URadioGroup, URadio, UAlert, URow },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      value: args.value,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <URadioGroup v-bind="args" v-model="value" :options="args.radios" />
-
-      <URow>
-        <UAlert color="blue">
-          <p>Selected value: {{ value }}</p>
-        </UAlert>
-      </URow>
-    </URow>
-  `,
-});
-
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { URadioGroup, URow },
   setup() {
-    return { args };
-  },
-  data() {
+    const radios = defaultRadios;
+
     return {
-      value: args.value,
-      colors: argTypes.color.options,
+      args,
+      options: argTypes[args.enum].options,
+      radios,
     };
   },
   template: `
     <URow class="!flex-col">
       <URadioGroup
+        v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
-        v-for="color in colors"
-        :key="color"
-        :label="color"
-        :color="color"
-        :options="args.radios"
-        :name="color"
-        v-model="value"
-      />
-    </URow>
-  `,
-});
-
-const SizesTemplate = (args, { argTypes } = {}) => ({
-  components: { URadioGroup, URow },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      value: args.value,
-      sizes: argTypes.size.options,
-    };
-  },
-  template: `
-    <URow class="!flex-col">
-      <URadioGroup
-        v-bind="args"
-        v-for="size in sizes"
-        :key="size"
-        :label="size"
-        :size="size"
-        :options="args.radios"
-        :name="size"
-        v-model="value"
+        v-model="args.modelValue"
+        :[args.enum]="option"
+        :label="option"
+        :options="radios"
+        :name="option"
       />
     </URow>
   `,
@@ -129,30 +86,22 @@ const SizesTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {
   name: "Default",
-  isDefaultStory: true,
-  radios: [
-    { name: "slotValues", label: "Boolean", value: false },
-    { name: "slotValues", label: "String", value: "One" },
-    { name: "slotValues", label: "Number", value: 3 },
-    { name: "slotValues", label: "Object", value: { key: "value" } },
-    { name: "slotValues", label: "Array", value: ["Array", 1] },
-  ],
 };
 
-export const Options = OptionsTemplate.bind({});
+export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   radios: [
     { name: "radioValues", label: "Boolean", value: false },
-    { name: "radioValues", label: "String", value: "One" },
-    { name: "radioValues", label: "Number", value: 3 },
-    { name: "radioValues", label: "Object", value: { key: "value" } },
-    { name: "radioValues", label: "Array", value: ["Array", 1] },
+    { name: "radioValues", label: "String", value: "Custom string value" },
+    { name: "radioValues", label: "Number", value: 4 },
+    { name: "radioValues", label: "Object", value: { key: "Custom object value" } },
+    { name: "radioValues", label: "Array", value: ["Custom array value", 2] },
   ],
 };
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = { name: "Colors" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", name: "Colors" };
 
-export const Sizes = SizesTemplate.bind({});
-Sizes.args = { name: "Sizes" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", name: "Sizes" };

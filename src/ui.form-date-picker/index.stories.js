@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDatePicker from "../ui.form-date-picker";
 import UIcon from "../ui.image-icon";
@@ -13,6 +13,7 @@ export default {
   component: UDatePicker,
   args: {
     label: "Label",
+    modelValue: null,
   },
   argTypes: {
     ...getArgTypes(UDatePicker.name),
@@ -27,46 +28,40 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDatePicker },
+  components: { UDatePicker, UIcon },
   setup() {
     const slots = getSlotNames(UDatePicker.name);
 
     return { args, slots };
   },
-  data() {
-    return {
-      value: this.args.value,
-    };
-  },
   template: `
-    <UDatePicker v-bind="args" v-model="value">
-      ${allSlotsFragment}
+    <UDatePicker v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment()}
     </UDatePicker>
 
     <div class="mt-4">
-      {{ value }}
+      {{ args.modelValue }}
     </div>
   `,
 });
 
-const SizesTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UDatePicker, URow },
   setup() {
     return {
       args,
-      sizes: argTypes.size.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
     <URow>
       <UDatePicker
-        v-for="(size, index) in sizes"
-        :size="size"
-        :label="size"
-        v-bind="args"
+        v-for="(option, index) in options"
         :key="index"
-      >
-      </UDatePicker>
+        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
+      />
     </URow>
   `,
 });
@@ -83,50 +78,44 @@ const OpenDirectionTemplate = (args) => ({
       <UDatePicker
         class="w-full"
         open-direction-y="top"
+        open-direction-x="left"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
+        label="Top Left"
       />
       <UDatePicker
         class="w-full"
-        open-direction-y="bottom"
+        open-direction-y="top"
         open-direction-x="right"
         v-bind="args"
-        v-model="args.value"
-      />
-      <UDatePicker
-        class="w-full"
-        open-direction-y="bottom"
-        v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
+        label="Top Right"
       />
       <UDatePicker
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="left"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
+        label="Bottom Left"
+      />
+      <UDatePicker
+        class="w-full"
+        open-direction-y="bottom"
+        open-direction-x="right"
+        v-bind="args"
+        v-model="args.modelValue"
+        label="Bottom Right"
       />
     </URow>
   `,
 });
 
-const SlotTemplate = (args) => ({
-  components: { UDatePicker, UIcon },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDatePicker v-bind="args">
-      ${args.slotTemplate}
-    </UDatePicker>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
-Default.args = { value: new Date() };
+Default.args = { modelValue: new Date() };
 
-export const sizes = SizesTemplate.bind({});
-sizes.args = { label: "" };
+export const sizes = EnumVariantTemplate.bind({});
+sizes.args = { enum: "size", label: "" };
 
 export const openDirection = OpenDirectionTemplate.bind({});
 openDirection.args = {};
@@ -144,44 +133,41 @@ export const placeholder = DefaultTemplate.bind({});
 placeholder.args = { placeholder: "some placeholder" };
 
 export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", value: "28.06.2024" };
+DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", modelValue: "28.06.2024" };
 
 export const Timepicker = DefaultTemplate.bind({});
-Timepicker.args = { timepicker: true, value: new Date(2024, 2, 14, 12, 24, 14) };
+Timepicker.args = { timepicker: true, modelValue: new Date(2024, 2, 14, 12, 24, 14) };
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
   minDate: new Date(2022, 2, 22),
   maxDate: new Date(2022, 2, 26),
-  value: new Date(2022, 2, 24),
+  modelValue: new Date(2022, 2, 24),
 };
 
-export const slotIcon = SlotTemplate.bind({});
+export const slotIcon = DefaultTemplate.bind({});
 slotIcon.args = {
   slotTemplate: `
     <template #right-icon>
-      <UIcon
-        name="star"
-        color="black"
-       />
+      <UIcon name="star" color="black" />
     </template>
   `,
 };
 
-export const slotRight = SlotTemplate.bind({});
+export const slotRight = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #right>
-        🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };
 
-export const slotLeft = SlotTemplate.bind({});
+export const slotLeft = DefaultTemplate.bind({});
 slotRight.args = {
   slotTemplate: `
     <template #left>
-        🤘🤘🤘
+      🤘🤘🤘
     </template>
   `,
 };

@@ -61,9 +61,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UCard
         v-for="(option, index) in options"
+        :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :key="index"
       >
         ${defaultTemplate}
       </UCard>

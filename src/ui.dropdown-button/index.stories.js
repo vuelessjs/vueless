@@ -40,10 +40,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UDropdownButton
-      v-bind="args"
-      v-model="args.modelValue"
-    >
+    <UDropdownButton v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </UDropdownButton>
   `,
@@ -83,12 +80,12 @@ const VariantColorsTemplate = (args, { argTypes } = {}) => ({
     <UCol>
       <URow v-for="(variant, index) in variants" :key="index">
         <UDropdownButton
-          v-for="(color, idx) in colors"
+          v-for="(color, index) in colors"
+          :key="index"
           v-bind="args"
           :color="color"
           :variant="variant"
           :label="color"
-          :key="idx"
         />
       </URow>
     </UCol>
