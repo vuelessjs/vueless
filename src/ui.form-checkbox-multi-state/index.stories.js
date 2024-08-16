@@ -11,7 +11,6 @@ export default {
   title: "Form Inputs & Controls / Checkbox Multistate",
   component: UCheckboxMultiState,
   args: {
-    modelValue: false,
     options: [
       { value: false, label: "empty", icon: "", description: "checkbox empty" },
       { value: true, label: "selected", icon: "check", description: "checkbox selected" },
@@ -20,6 +19,7 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxMultiState.name),
+    modelValue: { control: { type: "boolean" } },
   },
 };
 
