@@ -39,7 +39,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UDatePicker v-model="value" v-bind="args">
+    <UDatePicker v-bind="args" v-model="value">
       ${args.slotTemplate || getSlotsFragment()}
     </UDatePicker>
 
@@ -83,32 +83,32 @@ const OpenDirectionTemplate = (args) => ({
         class="w-full"
         open-direction-y="top"
         open-direction-x="left"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Top Left"
       />
       <UDatePicker
         class="w-full"
         open-direction-y="top"
         open-direction-x="right"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Top Right"
       />
       <UDatePicker
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="left"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Bottom Left"
       />
       <UDatePicker
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="right"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Bottom Right"
       />
     </URow>
@@ -153,10 +153,7 @@ export const slotIcon = DefaultTemplate.bind({});
 slotIcon.args = {
   slotTemplate: `
     <template #right-icon>
-      <UIcon
-        name="star"
-        color="black"
-      />
+      <UIcon name="star" color="black" />
     </template>
   `,
 };

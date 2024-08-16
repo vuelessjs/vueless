@@ -43,7 +43,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UDatePickerRange v-model="value" v-bind="args">
+    <UDatePickerRange v-bind="args" v-model="value">
       ${args.slotTemplate || getSlotsFragment()}
     </UDatePickerRange>
 
@@ -66,8 +66,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UDatePickerRange
         v-for="(option, index) in options"
         :key="index"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         :[args.enum]="option"
       />
     </URow>
@@ -85,32 +85,32 @@ const OpenDirectionTemplate = (args) => ({
         class="w-full"
         open-direction-y="top"
         open-direction-x="left"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Top Left"
       />
       <UDatePickerRange
         class="w-full"
         open-direction-y="top"
         open-direction-x="right"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Top Right"
       />
       <UDatePickerRange
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="left"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Bottom Left"
       />
       <UDatePickerRange
         class="w-full"
         open-direction-y="bottom"
         open-direction-x="right"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         label="Bottom Right"
       />
     </URow>

@@ -43,7 +43,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCol gap="2xl">
-      <URadioGroup v-model="value" v-bind="args">
+      <URadioGroup v-bind="args" v-model="value">
         <URadio
           v-for="(radio, index) in radios"
           :key="index"
@@ -80,8 +80,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <URadioGroup
         v-for="(option, index) in options"
         :key="index"
-        v-model="value"
         v-bind="args"
+        v-model="value"
         :[args.enum]="option"
         :label="option"
         :options="radios"

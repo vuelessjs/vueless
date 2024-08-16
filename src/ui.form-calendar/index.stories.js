@@ -35,7 +35,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-      <UCalendar v-model="value" v-bind="args">
+      <UCalendar v-bind="args" v-model="value">
         ${args.slotTemplate || getSlotsFragment()}
       </UCalendar>
 

@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UColorPicker v-model="args.value" v-bind="args">
+    <UColorPicker v-bind="args" v-model="args.value">
       ${args.slotTemplate || getSlotsFragment()}
     </UColorPicker>
   `,
@@ -45,8 +45,8 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UColorPicker
         v-for="(option, index) in options"
         :key="index"
-        v-model="args.value"
         v-bind="args"
+        v-model="args.value"
         :[args.enum]="option"
         :name="option"
       />
