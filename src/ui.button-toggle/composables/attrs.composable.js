@@ -4,7 +4,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -14,15 +14,15 @@ export default function useAttrs(props) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return cva(value)({
+      if (isCVA(value)) {
+        value = cva(value)({
           ...props,
         });
       }
 
-      return "";
+      return value;
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });

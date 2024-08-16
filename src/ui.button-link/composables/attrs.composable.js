@@ -6,7 +6,7 @@ import defaultConfig from "../configs/default.config";
 export default function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
 
-  const { config, getAttrs, hasSlotContent, getColor, setColor, isSystemKey } = useUI(
+  const { config, getAttrs, hasSlotContent, getColor, setColor, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -16,19 +16,16 @@ export default function useAttrs(props, { isActive, isExactActive }) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return setColor(
-          cva(value)({
-            ...props,
-            color: getColor(props.color),
-          }),
-          props.color,
-        );
+      if (isCVA(value)) {
+        value = cva(value)({
+          ...props,
+          color: getColor(props.color),
+        });
       }
 
-      return "";
+      return setColor(value, props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
