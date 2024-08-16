@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, allSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import URadio from "../ui.form-radio";
 import UBadge from "../ui.text-badge";
@@ -22,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { URadio },
+  components: { URadio, UBadge },
   setup() {
     const slots = getSlotNames(URadio.name);
 
@@ -30,19 +30,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <URadio v-bind="args">
-      ${allSlotsFragment}
-    </URadio>
-  `,
-});
-
-const SlotTemplate = (args) => ({
-  components: { URadio, UBadge },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URadio v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || getSlotsFragment()}
     </URadio>
   `,
 });
@@ -59,14 +47,14 @@ description.args = { name: "radio3", description: "description" };
 export const checked = DefaultTemplate.bind({});
 checked.args = { checked: true, name: "radio4" };
 
-export const slotFooter = SlotTemplate.bind({});
+export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   name: "radio5",
   label: "radio",
   value: "radio",
   slotTemplate: `
     <template #footer>
-       <UBadge label="favourite" color="green" size="sm" />
+      <UBadge label="favourite" color="green" size="sm" />
     </template>
   `,
 };
