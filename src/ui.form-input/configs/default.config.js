@@ -13,7 +13,7 @@ export default /*tw*/ {
       w-full bg-white !opacity-100 relative flex transition
       rounded-dynamic border border-solid border-gray-300
       hover:border-gray-400 hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-600/[.15]
+      focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
     variants: {
       disabled: {
@@ -26,7 +26,7 @@ export default /*tw*/ {
         true: `
           border-red-300
           hover:border-red-400 hover:focus-within:border-red-500
-          focus-within:border-red-500 focus-within:ring-red-100
+          focus-within:border-red-500 focus-within:ring-red-700/15
         `,
       },
     },
@@ -48,8 +48,8 @@ export default /*tw*/ {
       },
       error: {
         true: `
-        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-100
-        focus-within:border-red-500 focus-within:ring-red-100
+        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
+        focus-within:border-red-500 focus-within:ring-red-700/15
       `,
       },
     },

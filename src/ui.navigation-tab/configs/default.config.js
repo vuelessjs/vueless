@@ -8,7 +8,7 @@ export default /*tw*/ {
         lg: "text-base",
       },
       disabled: {
-        true: "text-gray-500",
+        true: "text-gray-500 cursor-not-allowed",
       },
       selected: {
         true: "border-b-2 border-gray-900",

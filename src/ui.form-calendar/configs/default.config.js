@@ -44,7 +44,7 @@ export default /*tw*/ {
   timepicker: "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
   timepickerLabel: "w-full",
   timepickerInputWrapper: "flex items-center gap-px rounded-dynamic border border-brand-300",
-  timepickerInput: " w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-500",
+  timepickerInput: " w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-700/15",
   timepickerLeftInput: "rounded-l-dynamic",
   timepickerRightInput: " rounded-r-dynamic",
   timepickerSubmitButton: "{UButton} py-2 border-0",

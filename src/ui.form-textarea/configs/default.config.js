@@ -6,7 +6,7 @@ export default /*tw*/ {
     base: `
       px-3 py-2 rounded-dynamic border border-gray-300 cursor-text bg-white transition
       hover:border-gray-400 hover:focus-within:border-gray-500
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-600/[.15]
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-700/15
       focus-within:border-gray-500 focus-within:outline-none
     `,
     variants: {
@@ -14,7 +14,7 @@ export default /*tw*/ {
         true: `
           bg-red-50 border-red-300
           hover:border-red-400 hover:focus-within:border-red-500
-          focus-within:border-red-500 focus-within:ring-red-100
+          focus-within:border-red-500 focus-within:ring-red-700/15
         `,
       },
       disabled: {

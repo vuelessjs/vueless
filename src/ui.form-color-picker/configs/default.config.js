@@ -11,15 +11,15 @@ export default /*tw*/ {
     },
   },
   unselected: "relative flex",
-  unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+  unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
   unselectedIconName: "close",
   unselectedRadio: {
     component: "{URadio}",
-    radio: "!text-white !border-gray-300 hover:!border-gray-400 focus:!border-gray-400 active:!border-gray-500",
+    radio: "checked:text-white !border-gray-400",
   },
   radio: {
     component: "{URadio}",
-    radio: "bg-{color}-500 border-{color}-500 hover:border-{color}-500",
+    radio: "bg-{color}-500 border-{color}-500 hover:border-{color}-500 disabled:border-{color}-400 disabled:bg-{color}-400",
   },
   defaultVariants: {
     size: "md",
@@ -45,5 +45,10 @@ export default /*tw*/ {
       "rose",
     ],
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],
+  safelist: (colors) => [
+    { pattern: `bg-(${colors})-500` },
+    { pattern: `border-(${colors})-500` },
+    { pattern: `bg-(${colors})-400`, variants: ["disabled"] },
+    { pattern: `border-(${colors})-400`, variants: ["disabled"] },
+  ],
 };

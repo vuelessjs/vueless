@@ -4,7 +4,7 @@ export default /*tw*/ {
     base: `
       border-gray-300 font-normal
       hover:text-brand-600 hover:border-brand-600 hover:relative hover:z-10
-      focus:text-brand-600 focus:border-brand-600 focus:relative focus:z-10 focus:ring-brand-600 focus-within:ring-brand-600
+      focus:text-brand-600 focus:border-brand-600 focus:relative focus:z-10 focus:ring-brand-700/15 focus-within:ring-brand-700/15
       active:text-brand-700 active:border-brand-700 active:relative active:z-10
       disabled:border-brand-300 disabled:z-0
     `,

@@ -2,15 +2,15 @@ export default /*tw*/ {
   wrapper: {
     base: `
       w-fit inline-flex rounded transition focus-visible:outline-none
-      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-500 focus-within:ring-opacity-15
+      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-500/15
     `,
     variants: {
       color: {
-        grayscale: "focus-within:ring-gray-900/10",
-        white: "focus-within:ring-white/10",
+        grayscale: "focus-within:ring-gray-700/15",
+        white: "focus-within:ring-white/15",
       },
       disabled: {
-        true: "pointer-events-none opacity-70",
+        true: "pointer-events-none text-gray-400",
       },
       block: {
         true: "w-full",

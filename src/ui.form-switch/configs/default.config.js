@@ -3,12 +3,12 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex items-center p-0.5 relative rounded-3xl cursor-pointer transition
-      ring-opacity-10 focus-within:ring-dynamic focus-within:ring-offset-dynamic
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic
     `,
     variants: {
       checked: {
-        true: "bg-{color}-500 ring-{color}-700 hover:bg-{color}-600 active:bg-{color}-700",
-        false: "bg-gray-300 ring-gray-700 hover:bg-gray-400 active:bg-gray-500",
+        true: "bg-{color}-600 ring-{color}-700/15 hover:bg-{color}-700 active:bg-{color}-800",
+        false: "bg-gray-300 ring-gray-700/15 hover:bg-gray-400 active:bg-gray-500",
       },
       size: {
         sm: "w-6",
@@ -22,7 +22,7 @@ export default /*tw*/ {
       { toggleLabel: true, size: "lg", class: "w-14" },
       { disabled: true, checked: true, class: "bg-opacity-50 pointer-events-none" },
       { disabled: true, checked: false, class: "bg-opacity-50 pointer-events-none" },
-      { color: "grayscale", checked: true, class: "bg-gray-800 ring-gray-800" },
+      { color: "grayscale", checked: true, class: "bg-gray-900 ring-gray-700/15" },
     ],
   },
   input: "absolute size-0 opacity-0",
@@ -49,7 +49,7 @@ export default /*tw*/ {
     compoundVariants: [
       { toggleLabel: true, checked: true, class: "w-1/2 left-1" },
       { toggleLabel: true, checked: false, class: "w-1/2 right-1" },
-      { toggleLabel: false, checked: true, class: "bg-{color}-500 hover:bg-{color}-600 active:bg-{color}-700" },
+      { toggleLabel: false, checked: true, class: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800" },
       { toggleLabel: false, checked: false, class: "bg-gray-300 hover:bg-gray-400 active:bg-gray-500" },
       { toggleLabel: false, color: "grayscale", class: "bg-gray-700 hover:bg-gray-800 active:bg-gray-900" },
     ],
@@ -68,8 +68,8 @@ export default /*tw*/ {
   },
   safelist: (colors) => [
     { pattern: `ring-(${colors})-700` },
-    { pattern: `bg-(${colors})-500` },
-    { pattern: `bg-(${colors})-600`, variants: ["hover"] },
-    { pattern: `bg-(${colors})-700`, variants: ["active"] },
+    { pattern: `bg-(${colors})-600` },
+    { pattern: `bg-(${colors})-700`, variants: ["hover"] },
+    { pattern: `bg-(${colors})-800`, variants: ["active"] },
   ],
 };

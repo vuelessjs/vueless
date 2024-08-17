@@ -4,8 +4,8 @@ export default /*tw*/ {
       flex items-center justify-center
       text-base font-medium outline-none
       border border-solid transition
-      focus:ring-{color}-700 focus:ring-opacity-20 focus:ring-dynamic focus:ring-offset-dynamic
-      focus-within:ring-{color}-700 focus-within:ring-opacity-20 focus-within:ring-dynamic focus-within:ring-offset-dynamic
+      focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
+      focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
       disabled:ring-0 disabled:cursor-no-drop
     `,
     variants: {
@@ -43,8 +43,8 @@ export default /*tw*/ {
         `,
       },
       color: {
-        grayscale: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
-        white: "focus:ring-gray-800 focus-within:ring-gray-800 disabled:text-gray-400",
+        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15 disabled:text-gray-400",
+        white: "focus:ring-gray-800/15 focus-within:ring-gray-800/15 disabled:text-gray-400",
       },
       loading: {
         true: "pointer-events-none gap-0",

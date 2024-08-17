@@ -3,7 +3,7 @@ export default /*tw*/ {
   input: "{UInput}",
   inputFocused: {
     component: "{UInput}",
-    block: "ring-dynamic ring-offset-dynamic ring-brand-600/[.15] border-brand-500 hover:border-brand-500",
+    block: "ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
   },
   calendar: {
     component: "{UCalendar}",

@@ -3,11 +3,11 @@ export default /*tw*/ {
   input: "{UInput}",
   buttonWrapper: `
     flex rounded-dynamic max-md:justify-between
-    focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700 focus-within:ring-opacity-20
+    focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
   `,
   button: "{UButton} shrink-0 grow rounded-none",
   buttonActive: "",
-  buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700 ring-opacity-20",
+  buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700/15",
   shiftRangeButton: `
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none

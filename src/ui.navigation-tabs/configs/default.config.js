@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "mb-6 flex space-x-8",
+    base: "mb-6 flex gap-8",
     variants: {
       underlined: {
         true: "border-b border-gray-100",
