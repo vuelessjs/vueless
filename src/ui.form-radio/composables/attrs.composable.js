@@ -21,8 +21,10 @@ export default function useAttrs(props, { radioColor, radioSize }) {
         return setColor(
           cva(value)({
             ...props,
-            color: getColor(radioColor.value),
             size: radioSize.value,
+            label: Boolean(props.label),
+            error: Boolean(props.error),
+            color: getColor(radioColor.value),
           }),
           radioColor.value,
         );

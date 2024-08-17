@@ -3,11 +3,12 @@
     :for="id"
     :size="checkboxSize"
     :label="label"
-    :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    :error="error"
+    :description="description"
     v-bind="labelAttrs"
+    :data-cy="`${dataCy}-label`"
   >
     <input
       :id="id"
@@ -19,6 +20,7 @@
       :checked="isChecked"
       :disabled="disabled"
       v-bind="checkboxAttrs"
+      :data-cy="dataCy"
       @change="onChange"
     />
 
@@ -113,6 +115,14 @@ const props = defineProps({
    * Checkbox label description.
    */
   description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Error message.
+   */
+  error: {
     type: String,
     default: "",
   },

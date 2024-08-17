@@ -23,6 +23,7 @@ export default function useAttrs(props, { checkboxColor, checkboxSize }) {
             ...props,
             size: checkboxSize.value,
             label: Boolean(props.label),
+            error: Boolean(props.error),
             color: getColor(checkboxColor.value),
           }),
           checkboxColor.value,

@@ -4,10 +4,11 @@
     :label="label"
     :size="radioSize"
     :align="labelAlign"
+    :error="error"
     :description="description"
     :disabled="disabled"
-    :data-cy="dataCy"
     v-bind="labelAttrs"
+    :data-cy="`${dataCy}-label`"
   >
     <input
       :id="id"
@@ -16,8 +17,8 @@
       :name="radioName"
       :value="radioValue"
       :checked="checked || isChecked"
-      :data-cy="dataCy"
       v-bind="radioAttrs"
+      :data-cy="dataCy"
       @change="onChange"
     />
 
@@ -74,10 +75,27 @@ const props = defineProps({
   },
 
   /**
+   * Label placement.
+   * @values left, right
+   */
+  labelAlign: {
+    type: String,
+    default: UIService.get(defaultConfig, URadio).default.labelAlign,
+  },
+
+  /**
    * Radio description.
    */
   description: {
     type: [String, Object],
+    default: "",
+  },
+
+  /**
+   * Error message.
+   */
+  error: {
+    type: String,
     default: "",
   },
 
@@ -105,15 +123,6 @@ const props = defineProps({
   color: {
     type: String,
     default: UIService.get(defaultConfig, URadio).default.color,
-  },
-
-  /**
-   * Label placement.
-   * @values left, right
-   */
-  labelAlign: {
-    type: String,
-    default: UIService.get(defaultConfig, URadio).default.labelAlign,
   },
 
   /**
