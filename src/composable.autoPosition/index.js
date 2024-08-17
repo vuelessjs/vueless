@@ -1,4 +1,4 @@
-import { computed, toValue } from "vue";
+import { computed, toValue, ref } from "vue";
 
 export const POSITION = {
   left: "left",
@@ -14,10 +14,8 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
   const localPosition = computed(() => toValue(position));
   const localPreferredPosition = computed(() => toValue(preferredPosition));
 
-  const preferredOpenDirectionY = computed(() => {
-    return localPreferredPosition.value?.y || POSITION.bottomi;
-  });
-  const preferredOpenDirectionX = computed(() => localPreferredPosition.value?.x || POSITION.left);
+  const preferredOpenDirectionY = ref(localPreferredPosition.value?.y || POSITION.bottom);
+  const preferredOpenDirectionX = ref(localPreferredPosition.value?.x || POSITION.left);
 
   const isTop = computed(() => {
     if (localPosition.value.y !== POSITION.auto) {
@@ -45,7 +43,7 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
 
   const isRight = computed(() => {
     if (localPosition.value.x !== POSITION.auto) {
-      return localPosition.value.y === POSITION.right;
+      return localPosition.value.x === POSITION.right;
     }
 
     return preferredOpenDirectionX.value === POSITION.right;
