@@ -5,8 +5,10 @@
     v-bind="wrapperAttrs"
     @click="onClick"
   >
-    <!-- @slot Use it to wrap something into the label. -->
-    <slot />
+    <div v-bind="contentAttrs">
+      <!-- @slot Use it to wrap something into the label. -->
+      <slot />
+    </div>
 
     <div v-if="label || error || description" v-bind="labelWrapperAttrs">
       <label
@@ -165,7 +167,8 @@ const props = defineProps({
 const labelRef = ref(null);
 const wrapperRef = ref(null);
 
-const { wrapperAttrs, labelWrapperAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
+const { wrapperAttrs, contentAttrs, labelWrapperAttrs, labelAttrs, descriptionAttrs } =
+  useAttrs(props);
 
 const isHorizontalPlacement = computed(
   () => props.align === PLACEMENT.left || props.align === PLACEMENT.right,

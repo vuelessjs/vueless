@@ -9,8 +9,8 @@ export default /*tw*/ {
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
-      error: {
-        true: "text-red-500",
+      disabled: {
+        true: "cursor-not-allowed",
       },
     },
     compoundVariants: [
@@ -23,6 +23,14 @@ export default /*tw*/ {
       { align: "left", centred: true, class: "items-center w-auto" },
       { align: "right", centred: true, class: "items-center w-auto" },
     ],
+  },
+  content: {
+    base: "flex",
+    variants: {
+      disabled: {
+        true: "pointer-events-none",
+      },
+    },
   },
   labelWrapper: "",
   label: {
@@ -44,7 +52,7 @@ export default /*tw*/ {
         true: "text-red-500",
       },
       disabled: {
-        true: "text-gray-900 opacity-50",
+        true: "text-gray-500 pointer-events-none",
       },
     },
     compoundVariants: [
