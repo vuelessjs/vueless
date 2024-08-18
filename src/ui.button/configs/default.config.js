@@ -6,7 +6,7 @@ export default /*tw*/ {
       border border-solid transition
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
       focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
-      disabled:ring-0 disabled:cursor-no-drop
+      disabled:ring-0 disabled:cursor-not-allowed
     `,
     variants: {
       size: {
@@ -36,15 +36,15 @@ export default /*tw*/ {
         thirdary: `
           border-transparent
           text-{color}-600
-          hover:text-{color}-700 hover:bg-{color}-700 hover:bg-opacity-10
-          focus:text-{color}-700 focus:bg-{color}-700 focus:bg-opacity-10
-          active:text-{color}-800 active:bg-{color}-800 active:bg-opacity-15
+          hover:text-{color}-700 hover:bg-{color}-700/10
+          focus:text-{color}-700 focus:bg-{color}-700/10
+          active:text-{color}-800 active:bg-{color}-800/15
           disabled:text-{color}-300
         `,
       },
       color: {
         grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15 disabled:text-gray-400",
-        white: "focus:ring-gray-800/15 focus-within:ring-gray-800/15 disabled:text-gray-400",
+        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15 disabled:text-gray-400",
       },
       loading: {
         true: "pointer-events-none gap-0",
@@ -88,9 +88,9 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900
-          hover:text-gray-800 hover:bg-gray-800
-          focus:text-gray-800 focus:bg-gray-800
-          active:text-gray-700 active:bg-gray-700
+          hover:text-gray-800 hover:bg-gray-800/15
+          focus:text-gray-800 focus:bg-gray-800/15
+          active:text-gray-700 active:bg-gray-700/20
           disabled:bg-transparent
         `,
       },
@@ -125,13 +125,8 @@ export default /*tw*/ {
           disabled:bg-transparent
         `,
       },
-      { filled: true, variant: "thirdary", class: "bg-{color}-700 bg-opacity-10" },
-      {
-        filled: true,
-        variant: "thirdary",
-        color: "grayscale",
-        class: "bg-gray-800 bg-opacity-10 hover:bg-opacity-15 focus:bg-opacity-15 active:bg-opacity-20",
-      },
+      { filled: true, variant: "thirdary", class: "bg-{color}-700/10" },
+      { filled: true, variant: "thirdary", color: "grayscale", class: "bg-gray-900/10" },
       { filled: true, variant: "thirdary", color: "white", class: "bg-gray-50" },
       { iconLeft: true, size: "2xs", class: "pl-1" },
       { iconLeft: true, size: "xs", class: "pl-2" },

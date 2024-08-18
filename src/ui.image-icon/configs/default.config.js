@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "",
     variants: {
       pill: {
-        true: "rounded-full bg-{color}-500 bg-opacity-5",
+        true: "rounded-full bg-{color}-500/5",
       },
     },
     compoundVariants: [

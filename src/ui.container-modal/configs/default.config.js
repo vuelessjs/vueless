@@ -8,7 +8,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-y-0 transform sm:scale-100",
     leaveToClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
   },
-  overlay: "fixed inset-0 z-40 bg-gray-900 bg-opacity-75",
+  overlay: "fixed inset-0 z-40 bg-gray-900/75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",

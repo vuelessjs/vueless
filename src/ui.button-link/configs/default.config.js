@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       w-fit inline-flex rounded transition focus-visible:outline-none
-      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-500/15
+      focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-700/15
     `,
     variants: {
       color: {
@@ -10,7 +10,7 @@ export default /*tw*/ {
         white: "focus-within:ring-white/15",
       },
       disabled: {
-        true: "pointer-events-none text-gray-400",
+        true: "focus-within:ring-0 cursor-not-allowed",
       },
       block: {
         true: "w-full",
@@ -23,10 +23,10 @@ export default /*tw*/ {
   link: {
     base: `
       w-full inline-block cursor-pointer !leading-none transition
-      text-{color}-500 decoration-{color}-500 underline-offset-4
-      hover:text-opacity-80
-      active:text-opacity-70
-      focus:ring-0 focus:ring-offset-0
+      text-{color}-600 decoration-{color}-600 underline-offset-4
+      hover:text-{color}-700 hover:decoration-{color}-700
+      focus:text-{color}-700 focus:decoration-{color}-700 focus:ring-0 focus:ring-offset-0
+      active:text-{color}-800 active:decoration-{color}-800
     `,
     variants: {
       size: {
@@ -40,11 +40,19 @@ export default /*tw*/ {
         false: "no-underline",
       },
       color: {
-        grayscale: "decoration-gray-900 text-gray-900",
+        grayscale: `
+          text-gray-900 decoration-gray-900
+          hover:text-gray-800 hover:decoration-gray-800
+          focus:text-gray-800 focus:decoration-gray-800
+          active:text-gray-700 active:decoration-gray-700
+        `,
         white: "decoration-white text-white",
       },
       dashed: {
         true: "hover:decoration-dashed decoration-dashed",
+      },
+      disabled: {
+        true: "text-gray-400 pointer-events-none",
       },
     },
   },

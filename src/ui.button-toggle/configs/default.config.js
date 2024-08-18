@@ -9,7 +9,7 @@ export default /*tw*/ {
     },
   },
   items: {
-    base: "flex flex-wrap",
+    base: "",
     variants: {
       size: {
         "2xs": "gap-1",
@@ -20,12 +20,14 @@ export default /*tw*/ {
         xl: "gap-3",
       },
       separated: {
+        true: "flex flex-wrap",
         false: `
-          flex-nowrap -space-x-px gap-0
+          flex flex-nowrap -space-x-px gap-0 rounded-dynamic transition w-fit
           [&>:first-child]:rounded-dynamic [&>:first-child]:rounded-r-none
           [&>:last-child]:rounded-dynamic [&>:last-child]:rounded-l-none
           [&>:first-child>*>*]:rounded-dynamic [&>:first-child>*>*]:rounded-r-none
           [&>:last-child>*>*]:rounded-dynamic [&>:last-child>*>*]:rounded-l-none
+          focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
         `,
       },
     },

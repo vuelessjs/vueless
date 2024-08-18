@@ -37,7 +37,7 @@ export default /*tw*/ {
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
   periodButtonIconName: "apps",
-  periodButtonActive: "!bg-opacity-20",
+  periodButtonActive: "!bg-gray-800/20",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-sm",
