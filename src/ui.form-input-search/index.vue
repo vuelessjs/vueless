@@ -64,6 +64,7 @@
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
+          :size="buttonSize"
           no-ring
           v-bind="buttonAttrs"
           :data-cy="`${dataCy}-right`"
@@ -232,6 +233,16 @@ const iconSize = computed(() => {
     sm: "xs",
     md: "sm",
     lg: "md",
+  };
+
+  return sizes[props.size];
+});
+
+const buttonSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "md",
+    lg: "lg",
   };
 
   return sizes[props.size];
