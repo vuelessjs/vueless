@@ -89,7 +89,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
       const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
 
-      // TODO: remove `getBaseClasses(configKeyValue)` after migration to `setDynamicVars`
+      // TODO: remove `getBaseClasses(configKeyValue)` after migration of all composables to the new logic
       vuelessAttrs.value = {
         ...commonAttrs,
         class: cx([
