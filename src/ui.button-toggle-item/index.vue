@@ -2,6 +2,7 @@
   <UButton
     tabindex="0"
     :for="id"
+    :no-ring="!getToggleSeparated()"
     color="grayscale"
     variant="secondary"
     :label="label"
@@ -157,8 +158,8 @@ onMounted(() => {
 });
 
 function onClickSetValue() {
-  selectedItem.value = getToggleType() === TYPE_RADIO 
-  ? props.value 
+  selectedItem.value = getToggleType() === TYPE_RADIO
+  ? props.value
   : selectedValue?.value?.includes(props.value) || selectedItem.value;
 
   updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);

@@ -14,11 +14,8 @@ export default /*tw*/ {
       },
       variant: {
         thirdary: `
-          !text-gray-900 bg-brand-600
-          border-transparent bg-opacity-10
-          hover:border-transparent hover:bg-opacity-15
-          focus:border-transparent focus:bg-opacity-15
-          active:border-transparent active:bg-opacity-20
+          !text-gray-900 !border-transparent bg-brand-600/10
+          hover:bg-brand-600/15 focus:bg-brand-600/15 active:bg-brand-600/20
         `,
       },
     },
@@ -35,12 +32,12 @@ export default /*tw*/ {
       {
         selected: true,
         variant: "secondary",
-        class: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600 bg-opacity-10",
+        class: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600/10",
       },
       {
         selected: true,
         variant: "thirdary",
-        class: "bg-brand-600 bg-opacity-20 hover:bg-opacity-20 focus:bg-opacity-20",
+        class: "!bg-brand-600/20",
       },
     ],
   },
