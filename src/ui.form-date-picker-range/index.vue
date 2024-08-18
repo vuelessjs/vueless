@@ -856,19 +856,19 @@ function onClickShiftDatesList(action) {
 }
 
 function getPeriodButtonsClasses(periodName) {
-  return period.value === periodName ? [config.value.periodButtonActive] : [];
+  return period.value === periodName ? config.value.periodButtonActive : "";
 }
 
 function getPeriodDateClasses(date) {
-  return localValue.value.from === date.startRange ? [config.value.periodDateActive] : [];
+  return localValue.value.from === date.startRange ? config.value.periodDateActive : "";
 }
 
 function getPeriodDateListClasses() {
   if (isPeriod.value.ownRange) return [];
-  if (isPeriod.value.week) return [config.value.periodDateWeekList];
-  if (isPeriod.value.month) return [config.value.periodDateMonthList];
-  if (isPeriod.value.quarter) return [config.value.periodDateQuarterList];
-  if (isPeriod.value.year) return [config.value.periodDateYearList];
+  if (isPeriod.value.week) return config.value.periodDateWeekList;
+  if (isPeriod.value.month) return config.value.periodDateMonthList;
+  if (isPeriod.value.quarter) return config.value.periodDateQuarterList;
+  if (isPeriod.value.year) return config.value.periodDateYearList;
 }
 
 function activate() {
