@@ -7,7 +7,7 @@ export default /*tw*/ {
   `,
   list: "m-1 inline-block list-none align-top w-full p-0 bg-white opacity-1 hover:transition",
   subGroupLabel: {
-    base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-1",
+    base: "pointer-events-none bg-transparent font-medium leading-none uppercase text-gray-400 pt-2",
     variants: {
       size: {
         sm: "text-2xs",
@@ -17,12 +17,12 @@ export default /*tw*/ {
     },
   },
   groupLabel: {
-    base: "pointer-events-none bg-transparent !font-medium !leading-none !uppercase !text-gray-500/[85] pt-6 group-first/item:pt-2",
+    base: "pointer-events-none bg-transparent font-medium leading-none uppercase text-gray-400 pt-4 pb-1 group-first/item:pt-2",
     variants: {
       size: {
-        sm: "text-2xs pb-1 mt-4",
-        md: "text-xs pb-1",
-        lg: "text-sm pb-1 mt-4",
+        sm: "text-2xs",
+        md: "text-xs",
+        lg: "text-sm",
       },
     },
   },

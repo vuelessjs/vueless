@@ -16,6 +16,7 @@ import {
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   DARK_MODE_SELECTOR,
+  GRAY_COLORS,
 } from "../constants";
 
 /* Load Vueless config from the project root. */
@@ -261,44 +262,53 @@ export default class UIService {
    */
   setTheme = (config = {}) => {
     const isDarkMode = this.setDarkMode(config);
-    const brand = config?.brand ?? vuelessConfig?.brand ?? DEFAULT_BRAND_COLOR;
-    const gray = config?.gray ?? vuelessConfig?.gray ?? DEFAULT_GRAY_COLOR;
     const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
     const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;
     const rounding = config?.rounding ?? vuelessConfig?.rounding ?? DEFAULT_ROUNDING;
+    let brand = config?.brand ?? vuelessConfig?.brand ?? DEFAULT_BRAND_COLOR;
+    let gray = config?.gray ?? vuelessConfig?.gray ?? DEFAULT_GRAY_COLOR;
 
-    // eslint-disable-next-line prettier/prettier, vue/max-len
-    let brandColor = BRAND_COLORS.some((color) => color === brand) || brand === GRAYSCALE_COLOR ? brand : DEFAULT_BRAND_COLOR;
-    let grayColor = BRAND_COLORS.some((color) => color === gray) ? gray : DEFAULT_GRAY_COLOR;
+    const isBrandColor = BRAND_COLORS.some((color) => color === brand);
+    const isGrayColor = GRAY_COLORS.some((color) => color === gray);
+
+    if (!isBrandColor) {
+      // eslint-disable-next-line no-console
+      console.log(`Brand color '${brand}' is incorrect.`);
+    }
+
+    if (!isGrayColor) {
+      // eslint-disable-next-line no-console
+      console.log(`Gray color '${gray}' is incorrect.`);
+    }
 
     // set default shade related to the selected mode
     const defaultBrandShade = isDarkMode ? 400 : 600;
     const defaultGrayShade = isDarkMode ? 400 : 600;
 
     // handling custom `cool` color
-    if (grayColor === COOL_COLOR) {
-      grayColor = GRAY_COLOR;
+    if (gray === COOL_COLOR) {
+      gray = GRAY_COLOR;
     }
 
     // handling custom `grayscale` color
-    if (brandColor === GRAYSCALE_COLOR) {
-      brandColor = grayColor;
+    if (brand === GRAYSCALE_COLOR) {
+      brand = gray;
     }
 
     const variables = {
       "--vl-ring": `${ring}px`,
       "--vl-ring-offset": `${ringOffset}px`,
       "--vl-rounding": `${Number(rounding) / this.PX_IN_REM}rem`,
-      "--vl-color-gray-default": UIService.convertHexInRgb(colors[grayColor][defaultBrandShade]),
-      "--vl-color-brand-default": UIService.convertHexInRgb(colors[brandColor][defaultGrayShade]),
+      "--vl-color-gray-default": UIService.convertHexInRgb(colors[gray][defaultBrandShade]),
+      "--vl-color-brand-default": UIService.convertHexInRgb(colors[brand][defaultGrayShade]),
     };
 
-    for (const key in colors[grayColor]) {
-      variables[`--vl-color-gray-${key}`] = UIService.convertHexInRgb(colors[grayColor][key]);
+    for (const key in colors[gray]) {
+      variables[`--vl-color-gray-${key}`] = UIService.convertHexInRgb(colors[gray][key]);
     }
 
-    for (const key in colors[brandColor]) {
-      variables[`--vl-color-brand-${key}`] = UIService.convertHexInRgb(colors[brandColor][key]);
+    for (const key in colors[brand]) {
+      variables[`--vl-color-brand-${key}`] = UIService.convertHexInRgb(colors[brand][key]);
     }
 
     const style = document.createElement("style");
