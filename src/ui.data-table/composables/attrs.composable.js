@@ -7,7 +7,7 @@ export default function useAttrs(
   props,
   { tableRows, isShownActionsHeader, isHeaderSticky, isFooterSticky },
 ) {
-  const { config, getAttrs, hasSlotContent, isSystemKey } = useUI(
+  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -31,16 +31,16 @@ export default function useAttrs(
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return cva(value)({
+      if (isCVA(value)) {
+        value = cva(value)({
           ...props,
           compact: Boolean(props.compact),
         });
       }
 
-      return "";
+      return value;
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
