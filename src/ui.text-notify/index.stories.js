@@ -4,7 +4,7 @@ import UNotify from "../ui.text-notify";
 import UButton from "../ui.button";
 import UCol from "../ui.container-col";
 
-import { getArgTypes, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 /**
  * The `UNotify` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-notify)
@@ -36,7 +36,9 @@ const DefaultTemplate = (args) => ({
       });
     }
 
-    return { args, onClick };
+    const slots = getSlotNames(UNotify.name);
+
+    return { args, slots, onClick };
   },
   template: `
     <UNotify class="m-4" v-bind="args">

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UFile from "../ui.text-file";
 
@@ -21,7 +21,9 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UFile },
   setup() {
-    return { args };
+    const slots = getSlotNames(UFile.name);
+
+    return { args, slots };
   },
   template: `
     <UFile v-bind="args">
