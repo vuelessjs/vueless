@@ -5,6 +5,7 @@
     v-model="search"
     :size="size"
     :disabled="disabled"
+    :readonly="readonly"
     :label-align="labelAlign"
     :label="label"
     :error="error"
@@ -156,6 +157,14 @@ const props = defineProps({
   searchButtonLabel: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Set input read-only.
+   */
+  readonly: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputSearch).default.readonly,
   },
 
   /**
