@@ -4,12 +4,13 @@ export default /*tw*/ {
   confirmButton: "{UButton} w-full",
   cancelButton: "{UButton} w-full",
   i18n: {
+    confirm: "Confirm",
     cancel: "Cancel",
   },
   defaultVariants: {
-    color: "brand",
     width: "sm",
-    cancelButton: true,
+    confirmColor: "brand",
     confirmDisabled: false,
+    cancelButton: true,
   },
 };

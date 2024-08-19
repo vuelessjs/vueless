@@ -33,8 +33,8 @@
 
       <div v-else v-bind="footerLeftFallbackAttrs">
         <UButton
-          :label="confirmLabel"
-          :color="color"
+          :label="confirmLabel || currentLocale.confirm"
+          :color="confirmColor"
           :disabled="confirmDisabled"
           :data-cy="`${dataCy}-accept`"
           v-bind="confirmButtonAttrs"
@@ -45,6 +45,7 @@
           v-if="cancelButton"
           :label="currentLocale.cancel"
           variant="thirdary"
+          color="gray"
           filled
           :data-cy="`${dataCy}-close`"
           v-bind="cancelButtonAttrs"
@@ -78,7 +79,7 @@ defineOptions({ name: "UModalConfirm", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Change modal state (hidden / shown).
+   * Change modal state (shown / hidden).
    */
   modelValue: {
     type: Boolean,
@@ -86,7 +87,7 @@ const props = defineProps({
   },
 
   /**
-   * Set modal's title.
+   * Modal title.
    */
   title: {
     type: String,
@@ -94,11 +95,20 @@ const props = defineProps({
   },
 
   /**
-   * Set confirm button label.
+   * Confirm button label.
    */
   confirmLabel: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Confirm button color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
+   */
+  confirmColor: {
+    type: String,
+    default: UIService.get(defaultConfig, UModalConfirm).default.confirmColor,
   },
 
   /**
@@ -118,16 +128,7 @@ const props = defineProps({
   },
 
   /**
-   * Buttons and modal title color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  color: {
-    type: String,
-    default: UIService.get(defaultConfig, UModalConfirm).default.color,
-  },
-
-  /**
-   * Set width for modal.
+   * Modal width.
    * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
    */
   width: {
@@ -136,7 +137,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -144,7 +145,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-cy attribute for automated testing.
    */
   dataCy: {
     type: String,

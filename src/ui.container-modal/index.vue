@@ -25,7 +25,7 @@
                 <div v-bind="headerLeftFallbackAttrs">
                   <ULink
                     v-if="isShownArrowButton"
-                    size="xs"
+                    size="sm"
                     color="gray"
                     :route="backRoute"
                     v-bind="backLinkAttrs"
@@ -41,7 +41,7 @@
                     {{ backRoute.title }}
                   </ULink>
 
-                  <UHeader size="md" :color="titleColor" :label="title" v-bind="titleAttrs" />
+                  <UHeader :label="title" v-bind="titleAttrs" />
                   <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
                 </div>
               </slot>
@@ -135,15 +135,6 @@ const props = defineProps({
   title: {
     type: String,
     default: "",
-  },
-
-  /**
-   * The color of the title.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  titleColor: {
-    type: String,
-    default: UIService.get(defaultConfig, UModal).default.titleColor,
   },
 
   /**
