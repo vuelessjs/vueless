@@ -42,7 +42,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   template: `
     <UCol>
       <URow
-        v-for="(color, index) in colors"
+        v-for="(option, index) in options"
         :key="index"
         gap="none"
         align="center"
