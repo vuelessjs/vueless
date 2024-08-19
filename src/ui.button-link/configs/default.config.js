@@ -12,11 +12,11 @@ export default /*tw*/ {
       disabled: {
         true: "focus-within:ring-0 cursor-not-allowed",
       },
-      block: {
-        true: "w-full",
-      },
       noRing: {
         true: "focus-within:ring-0 focus-within:ring-offset-0",
+      },
+      block: {
+        true: "w-full",
       },
     },
   },

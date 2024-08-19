@@ -81,7 +81,7 @@ const ValueTypesTemplate = (args) => ({
           />
         </UCheckboxGroup>
 
-        <span class="font-normal text-gray-500/[85] text-xs pl-0 mt-1">
+        <span class="font-normal text-gray-400 text-xs pl-0 mt-1">
           {{ arrayValue }}
         </span>
       </div>

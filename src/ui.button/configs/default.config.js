@@ -6,7 +6,7 @@ export default /*tw*/ {
       border border-solid transition
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
       focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
-      disabled:ring-0 disabled:cursor-not-allowed
+      disabled:ring-0 disabled:cursor-not-allowed cursor-pointer
     `,
     variants: {
       size: {

@@ -10,6 +10,7 @@ export default /*tw*/ {
     labelAlign: "topInside",
     debounce: 300,
     disabled: false,
+    readonly: false,
     searchButton: false,
   },
 };
