@@ -24,7 +24,7 @@ export default function useAttrs(props) {
         });
       }
 
-      return setColor(value, props.color);
+      return setColor(String(value), props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
