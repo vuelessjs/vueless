@@ -9,6 +9,9 @@ export default /*tw*/ {
       error: {
         true: "border-red-300 hover:border-red-400",
       },
+      disabled: {
+        true: "pointer-events-none bg-gray-100",
+      },
     },
     compoundVariants: [
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-7" },
@@ -19,13 +22,16 @@ export default /*tw*/ {
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   contentWrapper: {
-    base: "p-3 gap-6 w-full rounded-dynamic bg-brand-50 relative flex justify-between items-start",
+    base: "p-3 gap-6 flex justify-between items-start relative w-full rounded-dynamic bg-brand-50",
     variants: {
       multiple: {
         false: "items-center",
       },
       error: {
         true: "bg-red-50",
+      },
+      disabled: {
+        true: "bg-gray-200",
       },
     },
   },
@@ -39,7 +45,14 @@ export default /*tw*/ {
       },
     },
   },
-  button: "{UButton} hover:cursor-pointer",
+  chooseFileButton: {
+    component: "{UButton}",
+    variants: {
+      disabled: {
+        true: "opacity-75",
+      },
+    },
+  },
   chooseFileIconName: "attach_file",
   clearButton: "{UButton}",
   clearIconName: "close",
@@ -47,7 +60,7 @@ export default /*tw*/ {
   removeItemIconName: "close",
   dropzoneWrapperHover: "border-gray-400 border-dashed",
   dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",
-  input: "sr-only pointer-events-none size-0 opacity-0",
+  input: "sr-only",
   buttonWrapper: "flex gap-3 items-center",
   fileList: "{UFiles} w-full",
   i18n: {
@@ -60,7 +73,8 @@ export default /*tw*/ {
     size: "md",
     labelAlign: "topInside",
     allowedFileTypes: [],
-    multiple: false,
     maxFileSize: 0,
+    multiple: false,
+    disabled: false,
   },
 };

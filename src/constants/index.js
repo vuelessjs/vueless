@@ -18,6 +18,7 @@ export const DEFAULT_ROUNDING = 8; /* pixels */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 export const GRAY_COLORS = ["slate", COOL_COLOR, "zinc", "neutral", "stone"];
 export const BRAND_COLORS = [
+  GRAYSCALE_COLOR,
   "red",
   "orange",
   "amber",
