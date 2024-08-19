@@ -5,6 +5,7 @@
     :label="label"
     :error="error"
     :align="labelAlign"
+    :disabled="disabled"
     :description="description"
     v-bind="labelAttrs"
   >
@@ -23,7 +24,7 @@
         <UFiles :size="size" v-bind="fileListAttrs" :file-list="fileList">
           <template #right="{ file }">
             <UIcon
-              v-if="props.multiple"
+              v-if="props.multiple && !disabled"
               pill
               internal
               interactive
@@ -40,14 +41,16 @@
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
               filled
+              no-ring
               :for="id"
               tag="label"
               variant="thirdary"
               :size="buttonSize"
               :icon-right="config.chooseFileIconName"
               :label="currentLocale.uploadFile"
+              :disabled="disabled"
+              v-bind="chooseFileButtonAttrs"
               :data-cy="`${dataCy}-upload`"
-              v-bind="buttonAttrs"
             />
 
             <input
@@ -62,12 +65,14 @@
           </template>
 
           <UButton
-            v-if="isValue"
+            v-if="isValue && !disabled"
             pill
             square
             filled
+            no-ring
             variant="thirdary"
             :size="buttonSize"
+            :disabled="disabled"
             :icon-left="config.clearIconName"
             v-bind="clearButtonAttrs"
             :data-cy="`${dataCy}-clear`"
@@ -179,6 +184,14 @@ const props = defineProps({
   },
 
   /**
+   * Disable the input.
+   */
+  disabled: {
+    type: Boolean,
+    default: UIService.get(defaultConfig, UInputFile).default.disabled,
+  },
+
+  /**
    * Generates unique element id.
    * @ignore
    */
@@ -225,7 +238,7 @@ const fileInputRef = ref(null);
 const {
   config,
   labelAttrs,
-  buttonAttrs,
+  chooseFileButtonAttrs,
   dropzoneWrapperAttrs,
   descriptionTopAttrs,
   descriptionBottomAttrs,
