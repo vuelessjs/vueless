@@ -10,9 +10,12 @@ export default {
   id: "3050",
   title: "Form Inputs & Controls / Input Number",
   component: UInputNumber,
+  args: {
+    modelValue: 1,
+  },
   argTypes: {
     ...getArgTypes(UInputNumber.name),
-    value: 1,
+    modelValue: { control: { type: "number" } },
   },
 };
 
@@ -23,13 +26,8 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots };
   },
-  data() {
-    return {
-      count: 1,
-    };
-  },
   template: `
-    <UInputNumber v-bind="args" v-model="count">
+    <UInputNumber v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UInputNumber>
   `,
@@ -68,7 +66,6 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
-  value: 1,
   step: 1,
   min: 1,
   max: 100,

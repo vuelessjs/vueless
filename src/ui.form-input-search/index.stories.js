@@ -13,6 +13,7 @@ export default {
   component: UInputSearch,
   argTypes: {
     ...getArgTypes(UInputSearch.name),
+    modelValue: { control: { type: "text" } },
   },
 };
 
