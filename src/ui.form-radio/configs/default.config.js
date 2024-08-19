@@ -27,9 +27,9 @@ export default /*tw*/ {
     disabled: false,
   },
   safelist: (colors) => [
-    { pattern: `text-(${colors})-600` },
     { pattern: `border-(${colors})-500`, variants: ["focus"] },
     { pattern: `border-(${colors})-800`, variants: ["active"] },
+    { pattern: `text-(${colors})-600`, variants: ["checked"] },
     { pattern: `ring-(${colors})-700`, variants: ["focus"] },
   ],
 };

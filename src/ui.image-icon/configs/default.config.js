@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "",
     variants: {
       pill: {
-        true: "rounded-full bg-{color}-500/5",
+        true: "rounded-full bg-{color}-600/5",
       },
     },
     compoundVariants: [
@@ -19,8 +19,8 @@ export default /*tw*/ {
       { pill: true, size: "3xl", class: "p-4" },
       { pill: true, size: "4xl", class: "p-5" },
       { pill: true, size: "5xl", class: "p-5" },
-      { pill: true, color: "white", class: "bg-white" },
-      { pill: true, color: "grayscale", class: "bg-gray-900" },
+      { pill: true, color: "white", class: "bg-white/5" },
+      { pill: true, color: "grayscale", class: "bg-gray-700/5" },
     ],
   },
   container: {
@@ -42,15 +42,15 @@ export default /*tw*/ {
       },
       variant: {
         light: "text-{color}-400",
-        default: "text-{color}-500",
-        dark: "text-{color}-700",
+        default: "text-{color}-600",
+        dark: "text-{color}-800",
       },
       color: {
         white: "text-white",
         grayscale: "text-gray-900",
       },
       interactive: {
-        true: "cursor-pointer hover:opacity-50, active:opacity-50",
+        true: "cursor-pointer hover:opacity-50 active:opacity-50",
       },
     },
   },

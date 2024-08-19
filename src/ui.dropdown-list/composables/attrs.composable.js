@@ -39,7 +39,7 @@ export default function useAttrs(props) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...subGroupLabelAttrs.value,
-        class: cx([subGroupLabelAttrs.value.class, optionClasses.value]),
+        class: cx([optionClasses.value, subGroupLabelAttrs.value.class]),
       }));
     }
 
@@ -48,7 +48,7 @@ export default function useAttrs(props) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...groupLabelAttrs.value,
-        class: cx([groupLabelAttrs.value.class, optionClasses.value]),
+        class: cx([optionClasses.value, groupLabelAttrs.value.class]),
       }));
     }
   }
