@@ -5,7 +5,7 @@ import { cva } from "../../service.ui";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props, { checkboxColor, checkboxSize }) {
-  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+  const { config, getAttrs, getColor, setColor, isSystemKey, hasSlotContent, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -15,22 +15,19 @@ export default function useAttrs(props, { checkboxColor, checkboxSize }) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return setColor(
-          cva(value)({
-            ...props,
-            size: checkboxSize.value,
-            label: Boolean(props.label),
-            error: Boolean(props.error),
-            color: getColor(checkboxColor.value),
-          }),
-          checkboxColor.value,
-        );
+      if (isCVA(value)) {
+        value = cva(value)({
+          ...props,
+          size: checkboxSize.value,
+          label: Boolean(props.label),
+          error: Boolean(props.error),
+          color: getColor(checkboxColor.value),
+        });
       }
 
-      return "";
+      return setColor(value, checkboxColor.value);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -39,5 +36,6 @@ export default function useAttrs(props, { checkboxColor, checkboxSize }) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }
