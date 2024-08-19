@@ -198,7 +198,6 @@ function mergeConfigs({
     safelistColors,
     defaultVariants,
     compoundVariants,
-    iconNameCapitalize,
     iconName,
   } = SYSTEM_CONFIG_KEY;
 
@@ -235,7 +234,7 @@ function mergeConfigs({
 
         const isObject = isObjectComposedConfig || isObjectGlobalConfig || isObjectPropsConfig;
         const isEmpty = composedConfig[key] === null;
-        const isIconName = key.includes(iconName) || key.includes(iconNameCapitalize);
+        const isIconName = key.toLowerCase().includes(iconName.toLowerCase());
         const isI18n = key === i18n;
 
         if (key === "variants" && !isVariants) {
@@ -403,8 +402,8 @@ function isSystemKey(key) {
 
   return (
     isExactKey ||
-    key.includes(SYSTEM_CONFIG_KEY.iconName) ||
-    key.includes(SYSTEM_CONFIG_KEY.iconNameCapitalize)
+    key.toLowerCase().includes(SYSTEM_CONFIG_KEY.iconName.toLowerCase()) ||
+    key.toLowerCase().includes(SYSTEM_CONFIG_KEY.transition.toLowerCase())
   );
 }
 

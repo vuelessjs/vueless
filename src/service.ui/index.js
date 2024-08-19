@@ -228,6 +228,10 @@ export default class UIService {
    @returns { String }
    */
   setColor(classes, color) {
+    if (typeof classes !== "string") {
+      return "";
+    }
+
     return classes?.replaceAll("{color}", color);
   }
 

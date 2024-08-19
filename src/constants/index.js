@@ -60,7 +60,7 @@ export const SYSTEM_CONFIG_KEY = {
   safelist: "safelist",
   component: "component",
   safelistColors: "safelistColors",
-  iconNameCapitalize: "IconName",
+  transition: "transition",
   iconName: "iconName",
   ...CVA_CONFIG_KEY,
 };
