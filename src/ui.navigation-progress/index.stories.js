@@ -51,19 +51,16 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     return { args, updateProgress, options: argTypes[args.enum].options };
   },
   template: `
-    <UCol align="start">
-      <UCol>
-        <UProgress
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          :[args.enum]="option"
-          :value="args.progress"
-        />
-      </UCol>
-
-      <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
-      </UCol>
+    <UCol>
+      <UProgress
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        :[args.enum]="option"
+        :value="args.progress"
+      />
+    <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
+    </UCol>
   `,
 });
 

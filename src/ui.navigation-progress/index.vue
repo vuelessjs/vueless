@@ -164,6 +164,6 @@ const progressPercent = computed(() => {
 });
 
 function isActiveStep(index) {
-  return index === props.value;
+  return index === props.value - 1;
 }
 </script>
