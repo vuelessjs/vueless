@@ -4,10 +4,9 @@ export default /*tw*/ {
   rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
   textareaWrapper: {
     base: `
-      px-3 py-2 rounded-dynamic border border-gray-300 cursor-text bg-white transition
-      hover:border-gray-400 hover:focus-within:border-gray-500
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-700/15
-      focus-within:border-gray-500 focus-within:outline-none
+      px-3 py-2 bg-white transition
+      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-gray-500 focus-within:border-gray-500
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-700/15 focus-within:outline-none
     `,
     variants: {
       error: {
@@ -18,10 +17,7 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: "cursor-not-allowed border-none focus-within:ring-0 bg-gray-100",
-      },
-      readonly: {
-        true: "ring-0 border-gray-300 focus-within:ring-0 focus-within:border-brand-300",
+        true: "pointer-events-none bg-gray-100",
       },
     },
     compoundVariants: [
@@ -32,10 +28,9 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      placeholder:font-normal placeholder:text-gray-400 shadow-none w-full
-      disabled:cursor-not-allowed font-normal text-gray-900 resize-none block
-      border-none focus:border-none focus:outline-none focus:ring-0 p-0
-      bg-transparent
+      p-0 block w-full bg-transparent border-none font-normal text-gray-900
+      placeholder:font-normal placeholder:text-gray-400
+      focus:border-none focus:outline-none focus:ring-0
     `,
     variants: {
       size: {
@@ -46,7 +41,7 @@ export default /*tw*/ {
     },
   },
   defaultVariants: {
-    rows: "2",
+    rows: "3",
     size: "md",
     type: "text",
     inputmode: "text",

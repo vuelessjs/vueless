@@ -16,12 +16,6 @@ export default /*tw*/ {
       focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
     variants: {
-      disabled: {
-        true: `
-          text-gray-900 border-gray-100 bg-gray-100 opacity-100 cursor-default
-          hover:border-gray-100
-        `,
-      },
       error: {
         true: `
           border-red-300
@@ -29,16 +23,17 @@ export default /*tw*/ {
           focus-within:border-red-500 focus-within:ring-red-700/15
         `,
       },
+      disabled: {
+        true: "pointer-events-none",
+      },
     },
   },
   input: {
     base: `
       block w-full py-2 px-3 font-normal leading-none text-gray-900 bg-white
-      border-none rounded-dynamic transition
+      border-none rounded-dynamic transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
-      focus:ring-0 disabled:opacity-50
-      disabled:cursor-not-allowed disabled:text-gray-900 disabled:border-gray-100
-      read-only:ring-0 read-only:border-gray-300
+      disabled:text-gray-700 disabled:bg-gray-100
     `,
     variants: {
       size: {
