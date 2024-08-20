@@ -7,22 +7,25 @@ import defaultConfig from "../configs/default.config";
 import { POSITION } from "../../composable.autoPosition";
 
 export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
-  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const attrs = {};
 
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return cva(value)({
+      if (isCVA(value)) {
+        value = cva(value)({
           ...props,
         });
       }
 
-      return "";
+      return value;
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -123,5 +126,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }
