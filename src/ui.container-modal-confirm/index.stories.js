@@ -58,7 +58,9 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
     function onClick(value) {
-      argTypes[args.enum].name === "color" ? (args.color = value) : (args.width = value);
+      argTypes[args.enum].name === "confirmColor"
+        ? (args.confirmColor = value)
+        : (args.width = value);
 
       args.modelValue = true;
     }
@@ -97,10 +99,10 @@ export const disableAcceptButton = DefaultTemplate.bind({});
 disableAcceptButton.args = { confirmDisabled: true };
 
 export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "width", text: "" };
+sizes.args = { enum: "width" };
 
 export const color = EnumVariantTemplate.bind({});
-color.args = { enum: "color", text: "" };
+color.args = { enum: "confirmColor" };
 
 export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
