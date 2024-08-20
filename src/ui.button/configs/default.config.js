@@ -69,7 +69,6 @@ export default /*tw*/ {
           hover:bg-gray-800 hover:border-gray-800
           focus:bg-gray-800 focus:border-gray-800
           active:bg-gray-700 active:border-gray-700
-          disabled:text-white
         `,
       },
       {
