@@ -218,7 +218,9 @@ export default class UIService {
    @returns { String }
    */
   getColor(color) {
-    return brand === GRAYSCALE_COLOR && color === BRAND_COLOR ? GRAYSCALE_COLOR : color;
+    return (brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR && color === BRAND_COLOR
+      ? GRAYSCALE_COLOR
+      : color;
   }
 
   /**
