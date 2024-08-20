@@ -28,7 +28,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UTextarea v-bind="args">
+    <UTextarea v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UTextarea>
   `,

@@ -5,7 +5,7 @@ import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
 export default function useAttrs(props, { checked }) {
-  const { config, getAttrs, getColor, setColor, isSystemKey } = useUI(
+  const { config, getAttrs, getColor, setColor, isSystemKey, hasSlotContent, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -15,20 +15,17 @@ export default function useAttrs(props, { checked }) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return setColor(
-          cva(value)({
-            ...props,
-            color: getColor(props.color),
-            checked: Boolean(checked.value),
-          }),
-          props.color,
-        );
+      if (isCVA(value)) {
+        value = cva(value)({
+          ...props,
+          color: getColor(props.color),
+          checked: Boolean(checked.value),
+        });
       }
 
-      return "";
+      return setColor(value, props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -37,5 +34,6 @@ export default function useAttrs(props, { checked }) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }
