@@ -1,9 +1,14 @@
 export default /*tw*/ {
   wrapper: {
-    base: "mb-6 flex gap-8",
+    base: "mb-6 flex",
     variants: {
+      size: {
+        sm: "gap-5",
+        md: "gap-6",
+        lg: "gap-7",
+      },
       underlined: {
-        true: "border-b border-brand-100",
+        true: "border-b border-gray-100",
       },
     },
   },

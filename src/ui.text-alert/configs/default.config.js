@@ -3,9 +3,9 @@ export default /*tw*/ {
     base: "p-4 flex flex-col rounded-dynamic",
     variants: {
       variant: {
-        primary: "bg-{color}-500 text-white",
-        secondary: "bg-transparent border border-{color}-500 text-{color}-500",
-        thirdary: "bg-{color}-50 text-{color}-700",
+        primary: "bg-{color}-600 text-white",
+        secondary: "bg-transparent border border-{color}-600 text-{color}-600",
+        thirdary: "bg-{color}-50 text-{color}-600",
       },
       size: {
         xs: "text-2xs",
@@ -58,10 +58,9 @@ export default /*tw*/ {
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
-    { pattern: `bg-(${colors})-500` },
-    { pattern: `text-(${colors})-500` },
-    { pattern: `text-(${colors})-700` },
+    { pattern: `bg-(${colors})-600` },
+    { pattern: `text-(${colors})-600` },
     { pattern: `border-(${colors})-100` },
-    { pattern: `border-(${colors})-500` },
+    { pattern: `border-(${colors})-600` },
   ],
 };
