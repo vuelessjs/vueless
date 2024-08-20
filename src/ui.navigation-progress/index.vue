@@ -52,7 +52,7 @@
 <script setup>
 import { computed } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 import useAttrs from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";
@@ -88,7 +88,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UProgress).default.size,
+    default: getDefault(defaultConfig, UProgress).size,
   },
 
   /**
@@ -97,7 +97,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UProgress).default.color,
+    default: getDefault(defaultConfig, UProgress).color,
   },
 
   /**
@@ -106,7 +106,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UProgress).default.variant,
+    default: getDefault(defaultConfig, UProgress).variant,
   },
 
   /**
@@ -114,7 +114,7 @@ const props = defineProps({
    */
   indicator: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UProgress).default.indicator,
+    default: getDefault(defaultConfig, UProgress).indicator,
   },
 
   /**

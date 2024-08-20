@@ -100,7 +100,7 @@ import ULabel from "../ui.form-label";
 import UButton from "../ui.button";
 import UFiles from "../ui.text-files";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 import { getFileMbSize } from "./services/fileForm.service";
 
 import useAttrs from "./composables/attrs.composable";
@@ -135,7 +135,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInputFile).default.labelAlign,
+    default: getDefault(defaultConfig, UInputFile).labelAlign,
   },
 
   modelValue: {
@@ -148,7 +148,7 @@ const props = defineProps({
    */
   multiple: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputFile).default.multiple,
+    default: getDefault(defaultConfig, UInputFile).multiple,
   },
 
   /**
@@ -156,7 +156,7 @@ const props = defineProps({
    */
   maxFileSize: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputFile).default.maxFileSize,
+    default: getDefault(defaultConfig, UInputFile).maxFileSize,
   },
 
   /**
@@ -164,7 +164,7 @@ const props = defineProps({
    */
   allowedFileTypes: {
     type: Array,
-    default: () => UIService.get(defaultConfig, UInputFile).default.allowedFileTypes,
+    default: () => getDefault(defaultConfig, UInputFile).allowedFileTypes,
   },
 
   /**
@@ -173,7 +173,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInputFile).default.size,
+    default: getDefault(defaultConfig, UInputFile).size,
   },
 
   /**
@@ -189,7 +189,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputFile).default.disabled,
+    default: getDefault(defaultConfig, UInputFile).disabled,
   },
 
   /**

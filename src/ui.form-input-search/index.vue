@@ -82,7 +82,7 @@ import { computed, ref } from "vue";
 import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
 import UButton from "../ui.button";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 import { debounce as debounceMethod } from "../service.helper";
 
 import { UInputSearch } from "./constants";
@@ -107,7 +107,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInputSearch).default.size,
+    default: getDefault(defaultConfig, UInputSearch).size,
   },
 
   /**
@@ -124,7 +124,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInputSearch).default.labelAlign,
+    default: getDefault(defaultConfig, UInputSearch).labelAlign,
   },
 
   /**
@@ -164,7 +164,7 @@ const props = defineProps({
    */
   readonly: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputSearch).default.readonly,
+    default: getDefault(defaultConfig, UInputSearch).readonly,
   },
 
   /**
@@ -172,7 +172,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputSearch).default.disabled,
+    default: getDefault(defaultConfig, UInputSearch).disabled,
   },
 
   /**
@@ -186,7 +186,7 @@ const props = defineProps({
 
   debounce: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputSearch).default.debounce,
+    default: getDefault(defaultConfig, UInputSearch).debounce,
   },
 
   /**

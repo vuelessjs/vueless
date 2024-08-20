@@ -83,7 +83,7 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 import ULoader from "../ui.loader";
 import UIcon from "../ui.image-icon";
 
@@ -101,7 +101,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UButton).default.variant,
+    default: getDefault(defaultConfig, UButton).variant,
   },
 
   /**
@@ -110,7 +110,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UButton).default.color,
+    default: getDefault(defaultConfig, UButton).color,
   },
 
   /**
@@ -119,7 +119,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UButton).default.size,
+    default: getDefault(defaultConfig, UButton).size,
   },
 
   /**
@@ -151,7 +151,7 @@ const props = defineProps({
    */
   tag: {
     type: String,
-    default: UIService.get(defaultConfig, UButton).default.tag,
+    default: getDefault(defaultConfig, UButton).tag,
   },
 
   /**
@@ -159,7 +159,7 @@ const props = defineProps({
    */
   filled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.filled,
+    default: getDefault(defaultConfig, UButton).filled,
   },
 
   /**
@@ -167,7 +167,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.disabled,
+    default: getDefault(defaultConfig, UButton).disabled,
   },
 
   /**
@@ -175,7 +175,7 @@ const props = defineProps({
    */
   block: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.block,
+    default: getDefault(defaultConfig, UButton).block,
   },
 
   /**
@@ -183,7 +183,7 @@ const props = defineProps({
    */
   pill: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.pill,
+    default: getDefault(defaultConfig, UButton).pill,
   },
 
   /**
@@ -191,7 +191,7 @@ const props = defineProps({
    */
   square: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.square,
+    default: getDefault(defaultConfig, UButton).square,
   },
 
   /**
@@ -199,7 +199,7 @@ const props = defineProps({
    */
   loading: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.loading,
+    default: getDefault(defaultConfig, UButton).loading,
   },
 
   /**
@@ -207,7 +207,7 @@ const props = defineProps({
    */
   noRing: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UButton).default.noRing,
+    default: getDefault(defaultConfig, UButton).noRing,
   },
 
   /**

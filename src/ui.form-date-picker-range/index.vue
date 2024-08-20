@@ -219,7 +219,7 @@ import { LOCALE_TYPE } from "../ui.form-calendar/constants";
 
 import vClickOutside from "../directive.clickOutside";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import {
   addDays,
@@ -303,7 +303,7 @@ const props = defineProps({
    */
   openDirectionX: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirectionX,
+    default: getDefault(defaultConfig, UDatePickerRange).openDirectionX,
   },
 
   /**
@@ -312,7 +312,7 @@ const props = defineProps({
    */
   openDirectionY: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.openDirectionY,
+    default: getDefault(defaultConfig, UDatePickerRange).openDirectionY,
   },
 
   /**
@@ -321,7 +321,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.variant,
+    default: getDefault(defaultConfig, UDatePickerRange).variant,
   },
 
   /**
@@ -329,7 +329,7 @@ const props = defineProps({
    */
   minDate: {
     type: [String, Date],
-    default: UIService.get(defaultConfig, UDatePickerRange).default.minDate,
+    default: getDefault(defaultConfig, UDatePickerRange).minDate,
   },
 
   /**
@@ -337,7 +337,7 @@ const props = defineProps({
    */
   maxDate: {
     type: [String, Date],
-    default: UIService.get(defaultConfig, UDatePickerRange).default.maxDate,
+    default: getDefault(defaultConfig, UDatePickerRange).maxDate,
   },
 
   /**
@@ -346,7 +346,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.size,
+    default: getDefault(defaultConfig, UDatePickerRange).size,
   },
 
   /**
@@ -386,7 +386,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.disabled,
+    default: getDefault(defaultConfig, UDatePickerRange).disabled,
   },
 
   /**
@@ -394,7 +394,7 @@ const props = defineProps({
    */
   dateFormat: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePickerRange).default.dateFormat,
+    default: getDefault(defaultConfig, UDatePickerRange).dateFormat,
   },
 
   /**

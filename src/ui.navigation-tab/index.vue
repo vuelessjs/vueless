@@ -10,7 +10,7 @@
 <script setup>
 import { computed, inject, toValue } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UTab } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -47,7 +47,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTab).default.disabled,
+    default: getDefault(defaultConfig, UTab).disabled,
   },
 
   /**
@@ -72,7 +72,7 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || UIService.get(defaultConfig, UTab).default.size;
+  return toValue(getUTabsSize) || getDefault(defaultConfig, UTab).size;
 });
 
 const { wrapperAttrs } = useAttrs(props, { selected, size });

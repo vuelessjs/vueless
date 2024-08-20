@@ -85,7 +85,7 @@ import { computed } from "vue";
 import { range } from "lodash-es";
 
 import UButton from "../ui.button";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UPagination, ELLIPSIS_LABEL } from "./constants";
@@ -108,7 +108,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPagination).default.disabled,
+    default: getDefault(defaultConfig, UPagination).disabled,
   },
 
   /**
@@ -116,7 +116,7 @@ const props = defineProps({
    */
   perPage: {
     type: Number,
-    default: UIService.get(defaultConfig, UPagination).default.perPage,
+    default: getDefault(defaultConfig, UPagination).perPage,
     validator: (value) => value > 0,
   },
 
@@ -134,7 +134,7 @@ const props = defineProps({
    */
   limit: {
     type: Number,
-    default: UIService.get(defaultConfig, UPagination).default.limit,
+    default: getDefault(defaultConfig, UPagination).limit,
     validator: (value) => value >= 0,
   },
 
@@ -143,7 +143,7 @@ const props = defineProps({
    */
   ellipsis: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPagination).default.ellipsis,
+    default: getDefault(defaultConfig, UPagination).ellipsis,
   },
 
   /**
@@ -151,7 +151,7 @@ const props = defineProps({
    */
   prevLabel: {
     type: String,
-    default: UIService.get(defaultConfig, UPagination).default.prevLabel,
+    default: getDefault(defaultConfig, UPagination).prevLabel,
   },
 
   /**
@@ -159,7 +159,7 @@ const props = defineProps({
    */
   nextLabel: {
     type: String,
-    default: UIService.get(defaultConfig, UPagination).default.nextLabel,
+    default: getDefault(defaultConfig, UPagination).nextLabel,
   },
 
   /**
@@ -167,7 +167,7 @@ const props = defineProps({
    */
   firstLabel: {
     type: String,
-    default: UIService.get(defaultConfig, UPagination).default.firstLabel,
+    default: getDefault(defaultConfig, UPagination).firstLabel,
   },
 
   /**
@@ -175,7 +175,7 @@ const props = defineProps({
    */
   lastLabel: {
     type: String,
-    default: UIService.get(defaultConfig, UPagination).default.lastLabel,
+    default: getDefault(defaultConfig, UPagination).lastLabel,
   },
 
   /**
@@ -183,7 +183,7 @@ const props = defineProps({
    */
   showFirst: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPagination).default.showLast,
+    default: getDefault(defaultConfig, UPagination).showLast,
   },
 
   /**
@@ -191,7 +191,7 @@ const props = defineProps({
    */
   showLast: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPagination).default.showLast,
+    default: getDefault(defaultConfig, UPagination).showLast,
   },
 
   /**

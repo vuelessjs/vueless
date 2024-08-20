@@ -52,7 +52,7 @@
 import { computed, onMounted, ref, useSlots } from "vue";
 
 import ULabel from "../ui.form-label";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { UTextarea } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -68,7 +68,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.size,
+    default: getDefault(defaultConfig, UTextarea).size,
   },
 
   /**
@@ -101,7 +101,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.labelAlign,
+    default: getDefault(defaultConfig, UTextarea).labelAlign,
   },
 
   /**
@@ -117,7 +117,7 @@ const props = defineProps({
    */
   readonly: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTextarea).default.readonly,
+    default: getDefault(defaultConfig, UTextarea).readonly,
   },
 
   /**
@@ -125,7 +125,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTextarea).default.disabled,
+    default: getDefault(defaultConfig, UTextarea).disabled,
   },
 
   /**
@@ -134,7 +134,7 @@ const props = defineProps({
    */
   inputmode: {
     type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.inputmode,
+    default: getDefault(defaultConfig, UTextarea).inputmode,
   },
 
   /**
@@ -142,7 +142,7 @@ const props = defineProps({
    */
   noAutocomplete: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTextarea).default.noAutocomplete,
+    default: getDefault(defaultConfig, UTextarea).noAutocomplete,
   },
 
   /**
@@ -158,7 +158,7 @@ const props = defineProps({
    */
   rows: {
     type: String,
-    default: UIService.get(defaultConfig, UTextarea).default.rows,
+    default: getDefault(defaultConfig, UTextarea).rows,
   },
 
   /**

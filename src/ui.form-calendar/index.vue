@@ -134,7 +134,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import {
   parseDate,
@@ -200,7 +200,7 @@ const props = defineProps({
    */
   range: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCalendar).default.range,
+    default: getDefault(defaultConfig, UCalendar).range,
   },
 
   /**
@@ -208,7 +208,7 @@ const props = defineProps({
    */
   timepicker: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCalendar).default.timepicker,
+    default: getDefault(defaultConfig, UCalendar).timepicker,
   },
 
   /**
@@ -216,7 +216,7 @@ const props = defineProps({
    */
   dateFormat: {
     type: String,
-    default: UIService.get(defaultConfig, UCalendar).default.dateFormat,
+    default: getDefault(defaultConfig, UCalendar).dateFormat,
   },
 
   /**
@@ -224,7 +224,7 @@ const props = defineProps({
    */
   userFormat: {
     type: String,
-    default: UIService.get(defaultConfig, UCalendar).default.userFormat,
+    default: getDefault(defaultConfig, UCalendar).userFormat,
   },
 
   /**
@@ -232,7 +232,7 @@ const props = defineProps({
    */
   minDate: {
     type: [Date, String],
-    default: UIService.get(defaultConfig, UCalendar).default.minDate,
+    default: getDefault(defaultConfig, UCalendar).minDate,
   },
 
   /**
@@ -240,7 +240,7 @@ const props = defineProps({
    */
   maxDate: {
     type: [Date, String],
-    default: UIService.get(defaultConfig, UCalendar).default.maxDate,
+    default: getDefault(defaultConfig, UCalendar).maxDate,
   },
 
   /**

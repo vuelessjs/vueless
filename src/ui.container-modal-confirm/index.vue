@@ -64,7 +64,7 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import UButton from "../ui.button";
 import UModal from "../ui.container-modal";
@@ -108,7 +108,7 @@ const props = defineProps({
    */
   confirmColor: {
     type: String,
-    default: UIService.get(defaultConfig, UModalConfirm).default.confirmColor,
+    default: getDefault(defaultConfig, UModalConfirm).confirmColor,
   },
 
   /**
@@ -116,7 +116,7 @@ const props = defineProps({
    */
   confirmDisabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModalConfirm).default.confirmDisabled,
+    default: getDefault(defaultConfig, UModalConfirm).confirmDisabled,
   },
 
   /**
@@ -124,7 +124,7 @@ const props = defineProps({
    */
   cancelButton: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModalConfirm).default.cancelButton,
+    default: getDefault(defaultConfig, UModalConfirm).cancelButton,
   },
 
   /**
@@ -133,7 +133,7 @@ const props = defineProps({
    */
   width: {
     type: String,
-    default: UIService.get(defaultConfig, UModalConfirm).default.width,
+    default: getDefault(defaultConfig, UModalConfirm).width,
   },
 
   /**

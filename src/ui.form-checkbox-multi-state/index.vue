@@ -15,7 +15,7 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 import UCheckbox from "../ui.form-checkbox";
 
 import defaultConfig from "./configs/default.config";
@@ -56,7 +56,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckboxMultiState).default.size,
+    default: getDefault(defaultConfig, UCheckboxMultiState).size,
   },
 
   /**
@@ -65,7 +65,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckboxMultiState).default.color,
+    default: getDefault(defaultConfig, UCheckboxMultiState).color,
   },
 
   /**
@@ -74,7 +74,7 @@ const props = defineProps({
    */
   placement: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckboxMultiState).default.placement,
+    default: getDefault(defaultConfig, UCheckboxMultiState).placement,
   },
 
   /**
@@ -82,7 +82,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCheckboxMultiState).default.disabled,
+    default: getDefault(defaultConfig, UCheckboxMultiState).disabled,
   },
 
   /**

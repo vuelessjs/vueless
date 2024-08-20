@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { URow } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -22,7 +22,7 @@ const props = defineProps({
    */
   gap: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.gap,
+    default: getDefault(defaultConfig, URow).gap,
   },
 
   /**
@@ -31,7 +31,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.align,
+    default: getDefault(defaultConfig, URow).align,
   },
 
   /**
@@ -40,7 +40,7 @@ const props = defineProps({
    */
   justify: {
     type: String,
-    default: UIService.get(defaultConfig, URow).default.justify,
+    default: getDefault(defaultConfig, URow).justify,
   },
 
   /**
@@ -48,7 +48,7 @@ const props = defineProps({
    */
   reverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.reverse,
+    default: getDefault(defaultConfig, URow).reverse,
   },
 
   /**
@@ -56,7 +56,7 @@ const props = defineProps({
    */
   wrap: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.wrap,
+    default: getDefault(defaultConfig, URow).wrap,
   },
 
   /**
@@ -64,7 +64,7 @@ const props = defineProps({
    */
   noMobile: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URow).default.noMobile,
+    default: getDefault(defaultConfig, URow).noMobile,
   },
 
   /**

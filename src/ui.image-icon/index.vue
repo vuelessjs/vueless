@@ -15,7 +15,7 @@
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UIcon } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -52,7 +52,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UIcon).default.color,
+    default: getDefault(defaultConfig, UIcon).color,
   },
 
   /**
@@ -61,7 +61,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UIcon).default.size,
+    default: getDefault(defaultConfig, UIcon).size,
   },
 
   /**
@@ -69,7 +69,7 @@ const props = defineProps({
    */
   pill: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UIcon).default.pill,
+    default: getDefault(defaultConfig, UIcon).pill,
   },
 
   /**
@@ -78,7 +78,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UIcon).default.variant,
+    default: getDefault(defaultConfig, UIcon).variant,
   },
 
   /**
@@ -86,7 +86,7 @@ const props = defineProps({
    */
   interactive: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UIcon).default.interactive,
+    default: getDefault(defaultConfig, UIcon).interactive,
   },
 
   /**

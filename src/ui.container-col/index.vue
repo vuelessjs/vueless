@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UCol } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -22,7 +22,7 @@ const props = defineProps({
    */
   gap: {
     type: String,
-    default: UIService.get(defaultConfig, UCol).default.gap,
+    default: getDefault(defaultConfig, UCol).gap,
   },
 
   /**
@@ -31,7 +31,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, UCol).default.align,
+    default: getDefault(defaultConfig, UCol).align,
   },
 
   /**
@@ -40,7 +40,7 @@ const props = defineProps({
    */
   justify: {
     type: String,
-    default: UIService.get(defaultConfig, UCol).default.justify,
+    default: getDefault(defaultConfig, UCol).justify,
   },
 
   /**
@@ -48,7 +48,7 @@ const props = defineProps({
    */
   reverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCol).default.reverse,
+    default: getDefault(defaultConfig, UCol).reverse,
   },
 
   /**
@@ -56,7 +56,7 @@ const props = defineProps({
    */
   wrap: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCol).default.wrap,
+    default: getDefault(defaultConfig, UCol).wrap,
   },
 
   /**

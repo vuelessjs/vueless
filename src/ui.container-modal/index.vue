@@ -103,7 +103,7 @@
 <script setup>
 import { computed, useSlots, watch, ref } from "vue";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import ULink from "../ui.button-link";
 import UIcon from "../ui.image-icon";
@@ -159,7 +159,7 @@ const props = defineProps({
    */
   width: {
     type: String,
-    default: UIService.get(defaultConfig, UModal).default.width,
+    default: getDefault(defaultConfig, UModal).width,
   },
 
   /**
@@ -167,7 +167,7 @@ const props = defineProps({
    */
   clickToClose: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.clickToClose,
+    default: getDefault(defaultConfig, UModal).clickToClose,
   },
 
   /**
@@ -175,7 +175,7 @@ const props = defineProps({
    */
   closeIcon: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.closeIcon,
+    default: getDefault(defaultConfig, UModal).closeIcon,
   },
 
   /**
@@ -183,7 +183,7 @@ const props = defineProps({
    */
   escToClose: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.escToClose,
+    default: getDefault(defaultConfig, UModal).escToClose,
   },
 
   /**
@@ -191,7 +191,7 @@ const props = defineProps({
    */
   inner: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.inner,
+    default: getDefault(defaultConfig, UModal).inner,
   },
 
   /**
@@ -199,7 +199,7 @@ const props = defineProps({
    */
   noDivider: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.noDivider,
+    default: getDefault(defaultConfig, UModal).noDivider,
   },
 
   /**
@@ -207,7 +207,7 @@ const props = defineProps({
    */
   mobileFooterReverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.mobileFooterReverse,
+    default: getDefault(defaultConfig, UModal).mobileFooterReverse,
   },
 
   /**
@@ -215,7 +215,7 @@ const props = defineProps({
    */
   mobileBottomAlign: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UModal).default.mobileBottomAlign,
+    default: getDefault(defaultConfig, UModal).mobileBottomAlign,
   },
 
   /**

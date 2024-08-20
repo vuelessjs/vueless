@@ -12,7 +12,7 @@
 
 <script setup>
 import { computed } from "vue";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { ULoader } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -28,7 +28,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, ULoader).default.size,
+    default: getDefault(defaultConfig, ULoader).size,
   },
 
   /**
@@ -37,7 +37,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, ULoader).default.color,
+    default: getDefault(defaultConfig, ULoader).color,
   },
 
   /**
@@ -45,7 +45,7 @@ const props = defineProps({
    */
   loading: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULoader).default.loading,
+    default: getDefault(defaultConfig, ULoader).loading,
   },
 });
 

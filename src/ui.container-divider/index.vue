@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UDivider } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -33,7 +33,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDivider).default.size,
+    default: getDefault(defaultConfig, UDivider).size,
   },
 
   /**
@@ -42,7 +42,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UDivider).default.variant,
+    default: getDefault(defaultConfig, UDivider).variant,
   },
 
   /**
@@ -50,7 +50,7 @@ const props = defineProps({
    */
   dashed: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.dashed,
+    default: getDefault(defaultConfig, UDivider).dashed,
   },
 
   /**
@@ -58,7 +58,7 @@ const props = defineProps({
    */
   dotted: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.dotted,
+    default: getDefault(defaultConfig, UDivider).dotted,
   },
 
   /**
@@ -66,7 +66,7 @@ const props = defineProps({
    */
   vertical: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.vertical,
+    default: getDefault(defaultConfig, UDivider).vertical,
   },
 
   /**
@@ -74,7 +74,7 @@ const props = defineProps({
    */
   noBorder: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noBorder,
+    default: getDefault(defaultConfig, UDivider).noBorder,
   },
 
   /**
@@ -82,7 +82,7 @@ const props = defineProps({
    */
   noPadding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noPadding,
+    default: getDefault(defaultConfig, UDivider).noPadding,
   },
 
   /**
@@ -90,7 +90,7 @@ const props = defineProps({
    */
   noTopPadding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noTopPadding,
+    default: getDefault(defaultConfig, UDivider).noTopPadding,
   },
 
   /**
@@ -98,7 +98,7 @@ const props = defineProps({
    */
   noBottomPadding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noBottomPadding,
+    default: getDefault(defaultConfig, UDivider).noBottomPadding,
   },
 
   /**
@@ -106,7 +106,7 @@ const props = defineProps({
    */
   noLeftPadding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noLeftPadding,
+    default: getDefault(defaultConfig, UDivider).noLeftPadding,
   },
 
   /**
@@ -114,7 +114,7 @@ const props = defineProps({
    */
   noRightPadding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDivider).default.noRightPadding,
+    default: getDefault(defaultConfig, UDivider).noRightPadding,
   },
 
   /**

@@ -280,7 +280,7 @@ import UCheckbox from "../ui.form-checkbox";
 import ULoaderTop from "../ui.loader-top";
 import TableRow from "./components/TableRow";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -330,7 +330,7 @@ const props = defineProps({
    */
   selectable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTable).default.selectable,
+    default: getDefault(defaultConfig, UTable).selectable,
   },
 
   /**
@@ -338,7 +338,7 @@ const props = defineProps({
    */
   compact: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTable).default.compact,
+    default: getDefault(defaultConfig, UTable).compact,
   },
 
   /**
@@ -346,7 +346,7 @@ const props = defineProps({
    */
   stickyHeader: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTable).default.stickyHeader,
+    default: getDefault(defaultConfig, UTable).stickyHeader,
   },
 
   /**
@@ -354,7 +354,7 @@ const props = defineProps({
    */
   stickyFooter: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTable).default.stickyFooter,
+    default: getDefault(defaultConfig, UTable).stickyFooter,
   },
 
   /**

@@ -102,7 +102,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 
-import UIService, { getRandomId, isMac } from "../service.ui";
+import { getRandomId, isMac, getDefault } from "../service.ui";
 
 import usePointer from "./composables/usePointer";
 import useAttrs from "./composables/attrs.composable";
@@ -131,7 +131,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownList).default.valueKey,
+    default: getDefault(defaultConfig, UDropdownList).valueKey,
   },
 
   /**
@@ -139,7 +139,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownList).default.valueKey,
+    default: getDefault(defaultConfig, UDropdownList).valueKey,
   },
 
   /**
@@ -171,7 +171,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownList).default.disabled,
+    default: getDefault(defaultConfig, UDropdownList).disabled,
   },
 
   /**
@@ -180,7 +180,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownList).default.size,
+    default: getDefault(defaultConfig, UDropdownList).size,
   },
 
   /**
@@ -188,7 +188,7 @@ const props = defineProps({
    */
   visibleOptions: {
     type: Number,
-    default: UIService.get(defaultConfig, UDropdownList).default.visibleOptions,
+    default: getDefault(defaultConfig, UDropdownList).visibleOptions,
   },
 
   /**

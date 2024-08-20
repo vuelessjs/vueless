@@ -41,7 +41,7 @@
 <script setup>
 import { computed, useSlots } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 import UHeader from "../ui.text-header";
 import UDivider from "../ui.container-divider";
 
@@ -78,7 +78,7 @@ const props = defineProps({
    */
   padding: {
     type: String,
-    default: UIService.get(defaultConfig, UCard).default.padding,
+    default: getDefault(defaultConfig, UCard).padding,
   },
 
   /**
@@ -86,7 +86,7 @@ const props = defineProps({
    */
   mobileFooterReverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCard).default.mobileFooterReverse,
+    default: getDefault(defaultConfig, UCard).mobileFooterReverse,
   },
 
   /**
