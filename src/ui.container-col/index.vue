@@ -18,7 +18,7 @@ defineOptions({ name: "UCol", inheritAttrs: false });
 const props = defineProps({
   /**
    * The distance between nested elements.
-   * @values none, 2xs, xs, sm, md, lg, xl, 2xl
+   * @values none, 3xs, 2xs, xs, sm, md, lg, xl, 2xl, 3xl
    */
   gap: {
     type: String,
