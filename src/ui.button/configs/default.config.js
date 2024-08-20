@@ -2,7 +2,7 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center
-      text-base font-medium outline-none
+      font-medium outline-none
       border border-solid transition
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
       focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
@@ -43,8 +43,8 @@ export default /*tw*/ {
         `,
       },
       color: {
-        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15 disabled:text-gray-400",
-        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15 disabled:text-gray-400",
+        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
+        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
       },
       loading: {
         true: "pointer-events-none gap-0",
