@@ -1,6 +1,6 @@
 export default {
   strategy: "merge",
-  brand: "grayscale",
+  // brand: "indigo",
   gray: "cool",
   ring: 4,
   ringOffset: 0,

@@ -1,5 +1,5 @@
 <template>
-  <span
+  <div
     v-tooltip="tooltipConfig"
     :data-cy="dataCy"
     v-bind="wrapperAttrs"
@@ -10,7 +10,7 @@
     <div v-bind="containerAttrs">
       <component :is="dynamicComponent" v-bind="iconAttrs" />
     </div>
-  </span>
+  </div>
 </template>
 
 <script setup>
