@@ -19,7 +19,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxMultiState.name),
-    modelValue: { control: { type: "boolean" } },
   },
 };
 

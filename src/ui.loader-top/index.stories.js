@@ -31,7 +31,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots, loaderTopOn, loaderTopOff };
   },
   template: `
-    <ULoaderTop color="blue" v-bind="args" resources="https://api.publicapis.org/entries"/>
+    <ULoaderTop v-bind="args" resources="https://api.publicapis.org/entries"/>
 
     <URow gap="sm">
       <UButton label="On" size="sm" @click="loaderTopOn('https://api.publicapis.org/entries')" />

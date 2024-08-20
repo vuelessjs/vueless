@@ -6,24 +6,27 @@ import defaultConfig from "../configs/default.config";
 import { POSITION } from "../../composable.autoPosition";
 
 export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
-  const { config, getAttrs, isSystemKey } = useUI(defaultConfig, () => props.config);
+  const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
   const attrs = {};
 
   for (const key in defaultConfig) {
     if (isSystemKey(key)) continue;
 
     const classes = computed(() => {
-      const value = config.value[key];
+      let value = config.value[key];
 
-      if (value.variants || value.compoundVariants) {
-        return cva(value)({
+      if (isCVA(value)) {
+        value = cva(value)({
           ...props,
           openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
           openDirectionX: isRight.value ? POSITION.right : POSITION.left,
         });
       }
 
-      return "";
+      return value;
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -82,5 +85,6 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   return {
     ...attrs,
     config,
+    hasSlotContent,
   };
 }

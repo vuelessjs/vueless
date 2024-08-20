@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "mb-6 flex gap-8",
     variants: {
       underlined: {
-        true: "border-b border-gray-100",
+        true: "border-b border-brand-100",
       },
     },
   },

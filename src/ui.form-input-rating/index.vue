@@ -25,7 +25,7 @@
           v-for="star in stars"
           :key="star"
           internal
-          color="yellow"
+          :color="error ? 'red' : 'brand'"
           :size="iconSize"
           :interactive="selectable"
           :name="star <= counterValue ? config.selectedIconName : config.unselectedIconName"

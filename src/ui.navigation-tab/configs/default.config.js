@@ -11,7 +11,7 @@ export default /*tw*/ {
         true: "text-gray-500 cursor-not-allowed",
       },
       selected: {
-        true: "border-b-2 border-gray-900",
+        true: "border-b-2 text-brand-600 border-brand-600",
       },
     },
   },

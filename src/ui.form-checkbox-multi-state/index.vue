@@ -8,7 +8,7 @@
     :color="color"
     :placement="placement"
     v-bind="checkboxAttrs"
-    @click.self="onClickCheckbox"
+    @input="onClickCheckbox"
   />
 </template>
 
