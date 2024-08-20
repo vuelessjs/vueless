@@ -59,7 +59,7 @@
                 v-if="!element.isHiddenDelete"
                 internal
                 interactive
-                color="gray"
+                color="red"
                 :size="iconSize"
                 :name="config.deleteIconName"
                 :data-cy="`${dataCy}-delete`"

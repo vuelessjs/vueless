@@ -12,8 +12,8 @@ export default /*tw*/ {
     `,
     variants: {
       listYPosition: {
-        top: "bottom-full mb-4",
-        bottom: "top-full mt-4",
+        top: "bottom-full mb-2",
+        bottom: "top-full mt-2",
       },
       listXPosition: {
         left: "left-0",

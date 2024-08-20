@@ -5,8 +5,8 @@ export default /*tw*/ {
   textareaWrapper: {
     base: `
       px-3 py-2 bg-white transition
-      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-gray-500 focus-within:border-gray-500
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-gray-700/15 focus-within:outline-none
+      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15 focus-within:outline-none
     `,
     variants: {
       error: {

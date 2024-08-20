@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "",
+    base: "flex",
     variants: {
       pill: {
         true: "rounded-full bg-{color}-600/5",
