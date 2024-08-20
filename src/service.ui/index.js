@@ -90,15 +90,15 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
     defaultVariants,
   });
 
-export let isMac = false;
-export let isPWA = false;
-export let isIOS = false;
-export let isAndroid = false;
-export let isMobileApp = false;
+let isMac = false;
+let isPWA = false;
+let isIOS = false;
+let isAndroid = false;
+let isMobileApp = false;
 
-export const PX_IN_REM = 16;
+const PX_IN_REM = 16;
 
-export const HYPHEN_SYMBOL = "-";
+const HYPHEN_SYMBOL = "-";
 
 (function init() {
   const isBrowser = typeof window !== "undefined";
@@ -153,7 +153,7 @@ function getPlatform() {
   return navigator.userAgentData?.platform || navigator.platform || "unknown";
 }
 
-export function getRandomId(length = 15) {
+function getRandomId(length = 15) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   const charactersLength = characters.length;
   let id = "";
@@ -165,11 +165,11 @@ export function getRandomId(length = 15) {
   return id;
 }
 
-export function setTitle({ title, separator = " / ", suffix = "" }) {
+function setTitle({ title, separator = " / ", suffix = "" }) {
   document.title = title ? title + separator + suffix : suffix;
 }
 
-export function setFavicon(faviconPath) {
+function setFavicon(faviconPath) {
   if (!faviconPath) return;
 
   const head = document.querySelector("head");
@@ -181,7 +181,7 @@ export function setFavicon(faviconPath) {
   head.appendChild(faviconTag);
 }
 
-export function getDefault(defaultConfig, name) {
+function getDefault(defaultConfig, name) {
   const defaultVariants = merge(
     cloneDeep(defaultConfig.defaultVariants),
     globalComponentConfig[name]?.defaultVariants,
@@ -192,13 +192,13 @@ export function getDefault(defaultConfig, name) {
   return defaultVariants;
 }
 
-export function getColor(color) {
+function getColor(color) {
   return (brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR && color === BRAND_COLOR
     ? GRAYSCALE_COLOR
     : color;
 }
 
-export function setColor(classes, color) {
+function setColor(classes, color) {
   if (typeof classes !== "string") {
     return "";
   }
@@ -206,7 +206,7 @@ export function setColor(classes, color) {
   return classes?.replaceAll("{color}", color);
 }
 
-export function setDarkMode(config) {
+function setDarkMode(config) {
   config?.darkMode === undefined
     ? localStorage.removeItem(DARK_MODE_SELECTOR)
     : localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
@@ -225,7 +225,7 @@ export function setDarkMode(config) {
   return isDarkMode;
 }
 
-export function setTheme(config = {}) {
+function setTheme(config = {}) {
   const isDarkMode = setDarkMode(config);
   const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;
@@ -281,7 +281,7 @@ export function setTheme(config = {}) {
   document.head.appendChild(style);
 }
 
-export function convertHexInRgb(hex) {
+function convertHexInRgb(hex) {
   const color = hex.replace(/#/g, "");
 
   let r, g, b;
@@ -300,3 +300,22 @@ export function convertHexInRgb(hex) {
 
   return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
 }
+
+export {
+  isMac,
+  isPWA,
+  isIOS,
+  isAndroid,
+  isMobileApp,
+  PX_IN_REM,
+  HYPHEN_SYMBOL,
+  getRandomId,
+  setTitle,
+  setFavicon,
+  getDefault,
+  getColor,
+  setColor,
+  setDarkMode,
+  setTheme,
+  convertHexInRgb,
+};
