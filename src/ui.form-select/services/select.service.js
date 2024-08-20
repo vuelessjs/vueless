@@ -2,7 +2,7 @@ export default class SelectService {
   static filterOptions(options, search, label) {
     return search
       ? options
-          .filter((option) => this.interpolateLabel(option, label).includes(search))
+          .filter((option) => this.interpolateLabel(option, label).toLowerCase().includes(search))
           .sort((a, b) => {
             return (
               this.interpolateLabel(a, label).indexOf(search) -
