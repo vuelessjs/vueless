@@ -3,9 +3,9 @@ export default /*tw*/ {
     base: "border border-solid rounded-full inline-block !leading-none",
     variants: {
       variant: {
-        primary: "bg-{color}-100 text-{color}-500 border-transparent",
-        secondary: "border-{color}-500 text-{color}-500",
-        thirdary: "text-{color}-500 border-transparent",
+        primary: "bg-{color}-50 text-{color}-600 border-transparent",
+        secondary: "border-{color}-600 text-{color}-600",
+        thirdary: "text-{color}-600 border-transparent",
       },
       size: {
         sm: "px-2 py-1 text-2xs",
@@ -44,8 +44,8 @@ export default /*tw*/ {
     variant: "primary",
   },
   safelist: (colors) => [
-    { pattern: `bg-(${colors})-100` },
-    { pattern: `border-(${colors})-500` },
-    { pattern: `text-(${colors})-500` },
+    { pattern: `bg-(${colors})-50` },
+    { pattern: `border-(${colors})-600` },
+    { pattern: `text-(${colors})-600` },
   ],
 };
