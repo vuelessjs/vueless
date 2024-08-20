@@ -30,7 +30,7 @@ export default /*tw*/ {
     base: `
       rounded px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none normal-case text-gray-900
-      hover:bg-gray-100
+      hover:bg-brand-50
       overflow-hidden text-ellipsis
     `,
     variants: {
@@ -44,13 +44,13 @@ export default /*tw*/ {
       },
     },
   },
-  optionHighlight: "bg-gray-100",
+  optionHighlight: "bg-brand-50",
   optionSelected: "font-bold",
   optionItem: "group/item block",
   optionContent: "overflow-hidden text-ellipsis",
   addTitleWrapper: `
-    flex items-center justify-between cursor-pointer p-3 hover:bg-gray-100
-    active:bg-gray-200 active:font-medium -mb-6
+    flex items-center justify-between cursor-pointer p-3 hover:bg-brand-50
+    active:bg-brand-100 active:font-medium -mb-6
   `,
   addTitle: "text-sm font-medium text-gray-900",
   addTitleHotkey: "text-gray-500",

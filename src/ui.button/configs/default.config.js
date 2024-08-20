@@ -24,14 +24,14 @@ export default /*tw*/ {
           hover:bg-{color}-700 hover:border-{color}-700
           focus:bg-{color}-700 focus:border-{color}-700
           active:bg-{color}-800 active:border-{color}-800
-          disabled:bg-{color}-300 disabled:border-{color}-300 disabled:text-white
+          disabled:bg-gray-400 disabled:border-gray-400 disabled:text-white
         `,
         secondary: `
           text-{color}-600 border-{color}-600
           hover:text-{color}-700 hover:border-{color}-700
           focus:text-{color}-700 focus:border-{color}-700
           active:text-{color}-800 active:border-{color}-800
-          disabled:text-{color}-300 disabled:border-{color}-300
+          disabled:text-gray-400 disabled:border-gray-400
         `,
         thirdary: `
           border-transparent
@@ -39,7 +39,7 @@ export default /*tw*/ {
           hover:text-{color}-700 hover:bg-{color}-700/10
           focus:text-{color}-700 focus:bg-{color}-700/10
           active:text-{color}-800 active:bg-{color}-800/15
-          disabled:text-{color}-300
+          disabled:text-gray-400 disabled:bg-transparent
         `,
       },
       color: {
@@ -69,7 +69,6 @@ export default /*tw*/ {
           hover:bg-gray-800 hover:border-gray-800
           focus:bg-gray-800 focus:border-gray-800
           active:bg-gray-700 active:border-gray-700
-          disabled:bg-gray-400 disabled:border-gray-400 disabled:text-white
         `,
       },
       {
@@ -80,7 +79,6 @@ export default /*tw*/ {
           hover:text-gray-800 hover:border-gray-800
           focus:text-gray-800 focus:border-gray-800
           active:text-gray-700 active:border-gray-700
-          disabled:border-gray-400
         `,
       },
       {
@@ -91,7 +89,6 @@ export default /*tw*/ {
           hover:text-gray-800 hover:bg-gray-800/15
           focus:text-gray-800 focus:bg-gray-800/15
           active:text-gray-700 active:bg-gray-700/20
-          disabled:bg-transparent
         `,
       },
       {
@@ -122,10 +119,9 @@ export default /*tw*/ {
           hover:text-gray-800 hover:bg-white
           focus:text-gray-800 focus:bg-white
           active:text-gray-700 active:bg-white
-          disabled:bg-transparent
         `,
       },
-      { filled: true, variant: "thirdary", class: "bg-{color}-700/10" },
+      { filled: true, variant: "thirdary", class: "bg-{color}-600/10" },
       { filled: true, variant: "thirdary", color: "grayscale", class: "bg-gray-900/10" },
       { filled: true, variant: "thirdary", color: "white", class: "bg-gray-50" },
       { iconLeft: true, size: "2xs", class: "pl-1" },

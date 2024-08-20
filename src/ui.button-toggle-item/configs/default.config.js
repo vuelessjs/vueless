@@ -6,7 +6,7 @@ export default /*tw*/ {
       hover:text-brand-600 hover:border-brand-600 hover:relative hover:z-10
       focus:text-brand-600 focus:border-brand-600 focus:relative focus:z-10 focus:ring-brand-700/15 focus-within:ring-brand-700/15
       active:text-brand-700 active:border-brand-700 active:relative active:z-10
-      disabled:border-brand-300 disabled:z-0
+      disabled:z-0
     `,
     variants: {
       separated: {
@@ -27,12 +27,12 @@ export default /*tw*/ {
       {
         selected: true,
         variant: "primary",
-        class: "!text-white bg-brand-600 border-brand-600 disabled:border-brand-600",
+        class: "!text-white bg-brand-600 border-brand-600 ",
       },
       {
         selected: true,
         variant: "secondary",
-        class: "text-brand-600 border-brand-600 disabled:border-brand-600 bg-brand-600/10",
+        class: "text-brand-600 border-brand-600  bg-brand-600/10",
       },
       {
         selected: true,

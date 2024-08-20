@@ -7,11 +7,11 @@
         :disabled="!range"
       >
         <UButton
-          size="xs"
-          color="gray"
           square
-          variant="thirdary"
           no-ring
+          size="sm"
+          variant="thirdary"
+          :icon-right="config.dayViewSwitchLabelIconName"
           v-bind="navigationSwitchViewButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickViewSwitch"
@@ -22,61 +22,33 @@
           </span>
           <span v-if="isCurrentView.month" v-text="viewSwitchLabel.year" />
           <span v-if="isCurrentView.year" v-text="viewSwitchLabel.yearsRange" />
-
-          <template #right>
-            <UIcon
-              v-if="!range"
-              internal
-              size="sm"
-              color="gray"
-              variant="light"
-              :name="config.dayViewSwitchLabelIconName"
-              v-bind="dayViewSwitchLabelIconAttrs"
-            />
-          </template>
         </UButton>
       </Teleport>
 
       <div v-bind="nextPrevWrapperAttrs">
         <UButton
-          size="xs"
           square
-          variant="thirdary"
           no-ring
+          size="sm"
+          variant="thirdary"
+          :icon-left="config.prevIconName"
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickPrevButton"
-        >
-          <UIcon
-            internal
-            size="sm"
-            color="gray"
-            variant="light"
-            :name="config.prevIconName"
-            v-bind="prevIconAttrs"
-          />
-        </UButton>
+        />
 
         <div ref="rangeSwitchViewContainerRef" />
 
         <UButton
-          size="xs"
           square
-          variant="thirdary"
           no-ring
+          size="sm"
+          variant="thirdary"
+          :icon-left="config.nextIconName"
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickNextButton"
-        >
-          <UIcon
-            internal
-            size="sm"
-            color="gray"
-            variant="light"
-            :name="config.nextIconName"
-            v-bind="nextIconAttrs"
-          />
-        </UButton>
+        />
       </div>
     </div>
 
@@ -161,9 +133,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
-
 import UIService from "../service.ui";
 
 import {
@@ -341,10 +311,7 @@ const {
   navigationSwitchViewButtonAttrs,
   dayViewSwitchLabelAttrs,
   dayViewSwitchLabelMonthAttrs,
-  dayViewSwitchLabelIconAttrs,
-  nextIconAttrs,
   nextPrevButtonAttrs,
-  prevIconAttrs,
   timepickerAttrs,
   timepickerLabelAttrs,
   timepickerInputWrapperAttrs,

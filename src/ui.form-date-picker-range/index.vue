@@ -1082,13 +1082,13 @@ function onMouseoverCalendar() {
     calendarInnerValue.value.from && !calendarInnerValue.value.to && !inputRangeFromError.value;
 
   if (hasValues || !rangeStart.value) {
-    rangeInputStartRef.value.input.focus();
+    rangeInputStartRef.value.inputRef.focus();
 
     return;
   }
 
   if (hasOnlyFromValue) {
-    rangeInputEndRef.value.input.focus();
+    rangeInputEndRef.value.inputRef.focus();
 
     return;
   }

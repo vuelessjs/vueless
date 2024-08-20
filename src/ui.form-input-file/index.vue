@@ -28,6 +28,7 @@
               pill
               internal
               interactive
+              color="brand"
               :size="removeItemIconSize"
               :name="config.removeItemIconName"
               :data-cy="`${dataCy}-remove-item`"
@@ -143,7 +144,7 @@ const props = defineProps({
   },
 
   /**
-   * Allow select multiple files.
+   * Allow selecting multiple files.
    */
   multiple: {
     type: Boolean,

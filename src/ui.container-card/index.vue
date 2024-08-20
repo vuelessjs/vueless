@@ -8,7 +8,7 @@
         <!-- @slot Use it to customise left side of the header. -->
         <slot name="header-left">
           <div v-bind="headerLeftFallbackAttrs">
-            <UHeader :label="title" size="md" color="brand" v-bind="titleAttrs" />
+            <UHeader :label="title" size="md" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </div>
         </slot>
