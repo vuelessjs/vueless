@@ -12,10 +12,10 @@ export default {
   component: UInputMoney,
   args: {
     label: "Label",
-    inputValue: 245000.42,
   },
   argTypes: {
     ...getArgTypes(UInputMoney.name),
+    modelValue: { control: { type: "number" } },
   },
 };
 
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   template: `
     <UInputMoney
       v-bind="args"
-      v-model="args.inputValue"
+      v-model="args.modelValue"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UInputMoney>
@@ -58,7 +58,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { modelValue: 245000.42 };
 
 export const sizes = EnumVariantTemplate.bind({});
 sizes.args = { enum: "size" };
