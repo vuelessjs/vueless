@@ -25,7 +25,7 @@ export default /*tw*/ {
       w-full inline-block cursor-pointer !leading-none transition
       text-{color}-600 decoration-{color}-600 underline-offset-4
       hover:text-{color}-700 hover:decoration-{color}-700
-      focus:text-{color}-700 focus:decoration-{color}-700 focus:ring-0 focus:ring-offset-0
+      focus:text-{color}-700 focus:decoration-{color}-700 focus:outline-0
       active:text-{color}-800 active:decoration-{color}-800
     `,
     variants: {
@@ -79,8 +79,12 @@ export default /*tw*/ {
     replace: false,
   },
   safelist: (colors) => [
-    { pattern: `decoration-(${colors})-500` },
-    { pattern: `text-(${colors})-500` },
-    { pattern: `ring-(${colors})-500`, variants: ["focus-within"] },
+    { pattern: `text-(${colors})-600` },
+    { pattern: `text-(${colors})-700`, variants: ["hover", "focus"] },
+    { pattern: `text-(${colors})-800`, variants: ["active"] },
+    { pattern: `decoration-(${colors})-600` },
+    { pattern: `decoration-(${colors})-700`, variants: ["hover", "focus"] },
+    { pattern: `decoration-(${colors})-800`, variants: ["active"] },
+    { pattern: `ring-(${colors})-700`, variants: ["focus-within"] },
   ],
 };

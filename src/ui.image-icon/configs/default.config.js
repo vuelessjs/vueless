@@ -84,9 +84,9 @@ export default /*tw*/ {
     pill: false,
   },
   safelist: (colors) => [
+    { pattern: `bg-(${colors})-600` },
     { pattern: `text-(${colors})-400` },
-    { pattern: `text-(${colors})-500` },
-    { pattern: `text-(${colors})-700` },
-    { pattern: `bg-(${colors})-500` },
+    { pattern: `text-(${colors})-600` },
+    { pattern: `text-(${colors})-800` },
   ],
 };

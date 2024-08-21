@@ -3,6 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 import UCheckboxGroup from "../ui.form-checkbox-group";
 import UCheckbox from "../ui.form-checkbox";
 import UAlert from "../ui.text-alert";
+import UCol from "../ui.container-col";
 import URow from "../ui.container-row";
 
 /**
@@ -27,7 +28,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UCheckboxGroup, UCheckbox, UAlert, URow },
+  components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol },
   setup() {
     const slots = getSlotNames(UCheckboxGroup.name);
 
@@ -39,22 +40,22 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <URow class="!flex-col">
+    <UCol>
       <UCheckboxGroup v-bind="args" v-model="value">
         ${args.slotTemplate || getSlotsFragment()}
       </UCheckboxGroup>
 
       <URow>
-        <UAlert size="sm" color="blue">
+        <UAlert size="sm" color="gray">
           <p>Selected value: {{ value }}</p>
         </UAlert>
       </URow>
-    </URow>
+    </UCol>
   `,
 });
 
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UCheckboxGroup, URow },
+  components: { UCheckboxGroup, UCol },
   setup() {
     return { args };
   },
@@ -65,10 +66,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     };
   },
   template: `
-    <URow class="!flex-col">
+    <UCol>
       <UCheckboxGroup
         v-for="(option, index) in options"
-        :key="option"
+        :key="index"
         v-bind="args"
         v-model="value"
         :label="option"
@@ -76,7 +77,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :options="args.options"
         name="option"
       />
-    </URow>
+    </UCol>
   `,
 });
 
