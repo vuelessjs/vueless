@@ -1,11 +1,11 @@
 <template>
   <ULabel
     :for="id"
-    :size="checkboxSize"
     :label="label"
+    :error="error"
+    :size="checkboxSize"
     :align="labelAlign"
     :disabled="disabled"
-    :error="error"
     :description="description"
     v-bind="labelAttrs"
     :data-cy="`${dataCy}-label`"

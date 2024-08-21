@@ -15,11 +15,14 @@ export default /*tw*/ {
   unselectedIconName: "close",
   unselectedRadio: {
     component: "{URadio}",
-    radio: "checked:text-white !border-gray-400",
+    radio: "checked:text-white !border-gray-300",
   },
   radio: {
     component: "{URadio}",
-    radio: "bg-{color}-500 border-{color}-500 hover:border-{color}-500 disabled:border-{color}-400 disabled:bg-{color}-400",
+    radio: `
+      bg-{color}-600 border-{color}-600 hover:border-{color}-600 active:bg-{color}-800
+      disabled:border-{color}-400 disabled:bg-{color}-400
+    `,
   },
   defaultVariants: {
     size: "md",

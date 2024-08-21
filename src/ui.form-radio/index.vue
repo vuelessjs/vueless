@@ -2,27 +2,25 @@
   <ULabel
     :for="id"
     :label="label"
+    :error="error"
     :size="radioSize"
     :align="labelAlign"
-    :error="error"
-    :description="description"
     :disabled="disabled"
+    :description="description"
     v-bind="labelAttrs"
     :data-cy="`${dataCy}-label`"
   >
     <input
       :id="id"
       type="radio"
-      :disabled="disabled"
-      :name="radioName"
       :value="radioValue"
+      :name="radioName"
       :checked="checked || isChecked"
+      :disabled="disabled"
       v-bind="radioAttrs"
       :data-cy="dataCy"
       @change="onChange"
     />
-
-    <slot />
 
     <template #footer>
       <slot name="footer" />

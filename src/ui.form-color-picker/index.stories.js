@@ -55,16 +55,16 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { name: "Default" };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+Sizes.args = { name: "Sizes", enum: "size" };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Description" };
+Description.args = { name: "Description", description: "Description" };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { error: "some error" };
+Error.args = { name: "Error", error: "some error" };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
+Disabled.args = { name: "Disabled", disabled: true };
