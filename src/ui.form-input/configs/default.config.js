@@ -24,7 +24,7 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: "pointer-events-none",
+        true: "focus-within:ring-0 focus-within:ring-offset-0 pointer-events-none",
       },
     },
   },

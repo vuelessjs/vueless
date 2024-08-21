@@ -17,7 +17,7 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: "pointer-events-none bg-gray-100",
+        true: "focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 pointer-events-none",
       },
     },
     compoundVariants: [

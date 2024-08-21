@@ -20,7 +20,7 @@ export default /*tw*/ {
       disabled: {
         true: `
           border-gray-100 bg-gray-100 text-gray-900 hover:border-gray-100
-          focus-within:border-gray-100 focus-within:ring-0
+          focus-within:border-gray-100 focus-within:ring-0 focus-within:ring-offset-0
         `,
       },
     },

@@ -10,7 +10,7 @@ export default /*tw*/ {
         white: "focus-within:ring-white/15",
       },
       disabled: {
-        true: "focus-within:ring-0 cursor-not-allowed",
+        true: "focus-within:ring-0 focus-within:ring-offset-0 cursor-not-allowed",
       },
       noRing: {
         true: "focus-within:ring-0 focus-within:ring-offset-0",
