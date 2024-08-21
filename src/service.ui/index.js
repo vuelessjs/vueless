@@ -188,12 +188,12 @@ function setTheme(config = {}) {
 
   if (!isBrandColor) {
     // eslint-disable-next-line no-console
-    console.log(`Brand color '${brand}' is incorrect.`);
+    console.warn(`Brand color '${brand}' is incorrect.`);
   }
 
   if (!isGrayColor) {
     // eslint-disable-next-line no-console
-    console.log(`Gray color '${gray}' is incorrect.`);
+    console.warn(`Gray color '${gray}' is incorrect.`);
   }
 
   const defaultBrandShade = isDarkMode ? 400 : 600;
