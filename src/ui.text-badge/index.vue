@@ -13,12 +13,50 @@
       <!-- @slot Use it to add something before text. -->
       <slot name="left" />
 
+      <div v-if="hasSlotContent($slots['left-icon']) || leftIcon">
+        <!--
+          @slot Use it to add icon before the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="color">
+          <UIcon
+            v-if="leftIcon"
+            :name="leftIcon"
+            :size="iconSize"
+            :color="color"
+            internal
+            v-bind="leftIconAttrs"
+          />
+        </slot>
+      </div>
+
       <!-- @slot Use it to add something instead of text. -->
       <slot>
         <div v-if="!hasSlotContent($slots['default'])">
           {{ label }}
         </div>
       </slot>
+
+      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon">
+        <!--
+          @slot Use it to add icon after the text.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="color">
+          <UIcon
+            v-if="rightIcon"
+            :name="rightIcon"
+            :size="iconSize"
+            :color="color"
+            internal
+            v-bind="rightIconAttrs"
+          />
+        </slot>
+      </div>
 
       <!-- @slot Use it to add something after text. -->
       <slot name="right" />
@@ -27,9 +65,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import { getDefault } from "../service.ui";
+import UIcon from "../ui.image-icon";
 
 import { UBadge } from "./constants";
 import useAttrs from "./composables/attrs.composable";
@@ -64,6 +103,22 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UBadge).size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -123,11 +178,21 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { bodyAttrs, wrapperAttrs, hasSlotContent } = useAttrs(props);
+const { bodyAttrs, wrapperAttrs, leftIconAttrs, rightIconAttrs, hasSlotContent } = useAttrs(props);
 
 const wrapperRef = ref(null);
 
 defineExpose({ wrapperRef });
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size];
+});
 
 function onFocus() {
   emit("focus");

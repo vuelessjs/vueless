@@ -96,14 +96,35 @@ Weight.args = { enum: "weight" };
 export const Colors = ColorsTemplate.bind({});
 Colors.args = {};
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
+};
+
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
+};
+
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
   slotTemplate: `
-    <template #right>
+    <template #left-icon>
       <UIcon
-        tooltip="tooltip text"
         name="info"
-        size="xs"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
+  slotTemplate: `
+    <template #right-icon>
+      <UIcon
+        name="info"
+        color="red"
       />
     </template>
   `,
@@ -113,11 +134,16 @@ export const slotLeft = DefaultTemplate.bind({});
 slotLeft.args = {
   slotTemplate: `
     <template #left>
-      <UIcon
-        tooltip="tooltip text"
-        name="info"
-        size="xs"
-      />
+      🤘
+    </template>
+  `,
+};
+
+export const slotRight = DefaultTemplate.bind({});
+slotRight.args = {
+  slotTemplate: `
+    <template #right>
+      🤘
     </template>
   `,
 };

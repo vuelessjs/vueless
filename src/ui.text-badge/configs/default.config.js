@@ -37,6 +37,8 @@ export default /*tw*/ {
       },
     },
   },
+  leftIcon: "{UIcon}",
+  rightIcon: "{UIcon}",
   defaultVariants: {
     color: "brand",
     size: "md",
