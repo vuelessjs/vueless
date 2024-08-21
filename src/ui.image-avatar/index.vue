@@ -23,7 +23,7 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UAvatar } from "./constants/index";
 import defaultConfig from "./configs/default.config";
@@ -54,7 +54,7 @@ const props = defineProps({
    */
   icon: {
     type: String,
-    default: UIService.get(defaultConfig, UAvatar).default.icon,
+    default: getDefault(defaultConfig, UAvatar).icon,
   },
 
   /**
@@ -63,7 +63,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UAvatar).default.size,
+    default: getDefault(defaultConfig, UAvatar).size,
   },
 
   /**
@@ -72,7 +72,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UAvatar).default.color,
+    default: getDefault(defaultConfig, UAvatar).color,
   },
 
   /**
@@ -81,7 +81,7 @@ const props = defineProps({
    */
   rounded: {
     type: String,
-    default: UIService.get(defaultConfig, UAvatar).default.rounded,
+    default: getDefault(defaultConfig, UAvatar).rounded,
   },
 
   /**
@@ -89,7 +89,7 @@ const props = defineProps({
    */
   bordered: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UAvatar).default.bordered,
+    default: getDefault(defaultConfig, UAvatar).bordered,
   },
 
   /**

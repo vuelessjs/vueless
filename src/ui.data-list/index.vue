@@ -123,7 +123,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UDataList as UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -156,7 +156,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDataListName).default.size,
+    default: getDefault(defaultConfig, UDataListName).size,
   },
 
   /**
@@ -164,7 +164,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDataListName).default.labelKey,
+    default: getDefault(defaultConfig, UDataListName).labelKey,
   },
 
   /**
@@ -172,7 +172,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDataListName).default.valueKey,
+    default: getDefault(defaultConfig, UDataListName).valueKey,
   },
 
   /**
@@ -196,7 +196,7 @@ const props = defineProps({
    */
   animationDuration: {
     type: Number,
-    default: UIService.get(defaultConfig, UDataListName).default.animationDuration,
+    default: getDefault(defaultConfig, UDataListName).animationDuration,
   },
 
   /**
@@ -204,7 +204,7 @@ const props = defineProps({
    */
   nesting: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDataListName).default.nesting,
+    default: getDefault(defaultConfig, UDataListName).nesting,
   },
 
   /**
@@ -212,7 +212,7 @@ const props = defineProps({
    */
   upperlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDataListName).default.upperlined,
+    default: getDefault(defaultConfig, UDataListName).upperlined,
   },
 
   /**

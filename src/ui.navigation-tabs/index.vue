@@ -20,7 +20,7 @@
 import { computed, provide } from "vue";
 
 import UTab from "../ui.navigation-tab";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UTabs } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -58,7 +58,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UTabs).default.size,
+    default: getDefault(defaultConfig, UTabs).size,
   },
 
   /**
@@ -66,7 +66,7 @@ const props = defineProps({
    */
   underlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UTabs).default.underlined,
+    default: getDefault(defaultConfig, UTabs).underlined,
   },
 
   /**

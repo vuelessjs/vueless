@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UHeader } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -29,7 +29,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UHeader).default.size,
+    default: getDefault(defaultConfig, UHeader).size,
   },
 
   /**
@@ -38,7 +38,7 @@ const props = defineProps({
    */
   weight: {
     type: String,
-    default: UIService.get(defaultConfig, UHeader).default.weight,
+    default: getDefault(defaultConfig, UHeader).weight,
   },
 
   /**
@@ -47,7 +47,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UHeader).default.color,
+    default: getDefault(defaultConfig, UHeader).color,
   },
 
   /**
@@ -55,7 +55,7 @@ const props = defineProps({
    */
   tag: {
     type: String,
-    default: UIService.get(defaultConfig, UHeader).default.tag,
+    default: getDefault(defaultConfig, UHeader).tag,
   },
 
   /**
@@ -63,7 +63,7 @@ const props = defineProps({
    */
   multiline: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UHeader).default.multiline,
+    default: getDefault(defaultConfig, UHeader).multiline,
   },
 
   /**
@@ -71,7 +71,7 @@ const props = defineProps({
    */
   underlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UHeader).default.underlined,
+    default: getDefault(defaultConfig, UHeader).underlined,
   },
 
   /**

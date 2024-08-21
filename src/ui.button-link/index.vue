@@ -53,7 +53,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
@@ -120,7 +120,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.size,
+    default: getDefault(defaultConfig, ULink).size,
   },
 
   /**
@@ -129,7 +129,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.color,
+    default: getDefault(defaultConfig, ULink).color,
   },
 
   /**
@@ -138,7 +138,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.type,
+    default: getDefault(defaultConfig, ULink).type,
   },
 
   /**
@@ -146,7 +146,7 @@ const props = defineProps({
    */
   targetBlank: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.targetBlank,
+    default: getDefault(defaultConfig, ULink).targetBlank,
   },
 
   /**
@@ -154,7 +154,7 @@ const props = defineProps({
    */
   ariaCurrentValue: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.ariaCurrentValue,
+    default: getDefault(defaultConfig, ULink).ariaCurrentValue,
   },
 
   /**
@@ -162,7 +162,7 @@ const props = defineProps({
    */
   custom: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.custom,
+    default: getDefault(defaultConfig, ULink).custom,
   },
 
   /**
@@ -170,7 +170,7 @@ const props = defineProps({
    */
   replace: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.replace,
+    default: getDefault(defaultConfig, ULink).replace,
   },
 
   /**
@@ -178,7 +178,7 @@ const props = defineProps({
    */
   activeClass: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.activeClass,
+    default: getDefault(defaultConfig, ULink).activeClass,
   },
 
   /**
@@ -186,7 +186,7 @@ const props = defineProps({
    */
   exactActiveClass: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.exactActiveClass,
+    default: getDefault(defaultConfig, ULink).exactActiveClass,
   },
 
   /**
@@ -194,7 +194,7 @@ const props = defineProps({
    */
   wrapperActiveClass: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.wrapperActiveClass,
+    default: getDefault(defaultConfig, ULink).wrapperActiveClass,
   },
 
   /**
@@ -202,7 +202,7 @@ const props = defineProps({
    */
   wrapperExactActiveClass: {
     type: String,
-    default: UIService.get(defaultConfig, ULink).default.wrapperExactActiveClass,
+    default: getDefault(defaultConfig, ULink).wrapperExactActiveClass,
   },
 
   /**
@@ -210,7 +210,7 @@ const props = defineProps({
    */
   underlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.underlined,
+    default: getDefault(defaultConfig, ULink).underlined,
   },
 
   /**
@@ -218,7 +218,7 @@ const props = defineProps({
    */
   dashed: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.dashed,
+    default: getDefault(defaultConfig, ULink).dashed,
   },
 
   /**
@@ -226,7 +226,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.disabled,
+    default: getDefault(defaultConfig, ULink).disabled,
   },
 
   /**
@@ -234,7 +234,7 @@ const props = defineProps({
    */
   block: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.block,
+    default: getDefault(defaultConfig, ULink).block,
   },
 
   /**
@@ -242,7 +242,7 @@ const props = defineProps({
    */
   noRing: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULink).default.noRing,
+    default: getDefault(defaultConfig, ULink).noRing,
   },
 
   /**

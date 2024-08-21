@@ -80,7 +80,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import UIService, { globalComponentConfig, cx } from "../service.ui";
+import { globalComponentConfig, cx, getDefault } from "../service.ui";
 
 import { useLocale } from "../composable.locale";
 import useAttrs from "./composables/attrs.composable";
@@ -100,7 +100,7 @@ const props = defineProps({
    */
   xPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UNotify).default.xPosition,
+    default: getDefault(defaultConfig, UNotify).xPosition,
   },
 
   /**
@@ -109,7 +109,7 @@ const props = defineProps({
    */
   yPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UNotify).default.yPosition,
+    default: getDefault(defaultConfig, UNotify).yPosition,
   },
 
   /**
@@ -117,7 +117,7 @@ const props = defineProps({
    */
   html: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UNotify).default.html,
+    default: getDefault(defaultConfig, UNotify).html,
   },
 
   /**

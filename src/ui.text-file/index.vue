@@ -32,7 +32,7 @@ import { computed, ref } from "vue";
 import ULink from "../ui.button-link";
 import UIcon from "../ui.image-icon";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import useAttrs from "./composables/attrs.composable";
 import { UFile } from "./constants";
@@ -72,7 +72,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UFile).default.size,
+    default: getDefault(defaultConfig, UFile).size,
   },
 
   /**

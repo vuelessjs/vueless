@@ -32,7 +32,7 @@
 import { computed, inject, onMounted, ref, watchEffect, toValue } from "vue";
 
 import ULabel from "../ui.form-label";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
@@ -78,7 +78,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, URadio).default.labelAlign,
+    default: getDefault(defaultConfig, URadio).labelAlign,
   },
 
   /**
@@ -111,7 +111,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, URadio).default.size,
+    default: getDefault(defaultConfig, URadio).size,
   },
 
   /**
@@ -120,7 +120,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, URadio).default.color,
+    default: getDefault(defaultConfig, URadio).color,
   },
 
   /**
@@ -128,7 +128,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URadio).default.disabled,
+    default: getDefault(defaultConfig, URadio).disabled,
   },
 
   /**
@@ -136,7 +136,7 @@ const props = defineProps({
    */
   checked: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URadio).default.checked,
+    default: getDefault(defaultConfig, URadio).checked,
   },
 
   /**

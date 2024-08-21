@@ -7,7 +7,8 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import UIService, { isMobileApp } from "../service.ui";
+import { getDefault } from "../service.ui";
+import { isMobileApp } from "../service.platform";
 import { clamp, queue, getRequestWithoutQuery } from "./services/loaderTop.service";
 import { useLoaderTop } from "./composables/useLoaderTop";
 
@@ -25,7 +26,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, ULoaderTop).default.color,
+    default: getDefault(defaultConfig, ULoaderTop).color,
   },
 
   /**

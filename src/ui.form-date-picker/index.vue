@@ -63,7 +63,7 @@ import UInput from "../ui.form-input";
 import UCalendar from "../ui.form-calendar";
 import { VIEW } from "../ui.form-calendar/constants";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { addDays, isSameDay } from "../ui.form-calendar/services/date.service";
 
@@ -92,7 +92,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.labelAlign,
+    default: getDefault(defaultConfig, UDatePicker).labelAlign,
   },
 
   /**
@@ -117,7 +117,7 @@ const props = defineProps({
    */
   openDirectionX: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.openDirectionX,
+    default: getDefault(defaultConfig, UDatePicker).openDirectionX,
   },
 
   /**
@@ -126,7 +126,7 @@ const props = defineProps({
    */
   openDirectionY: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.openDirectionY,
+    default: getDefault(defaultConfig, UDatePicker).openDirectionY,
   },
 
   /**
@@ -134,7 +134,7 @@ const props = defineProps({
    */
   minDate: {
     type: [String, Date],
-    default: UIService.get(defaultConfig, UDatePicker).default.minDate,
+    default: getDefault(defaultConfig, UDatePicker).minDate,
   },
 
   /**
@@ -142,7 +142,7 @@ const props = defineProps({
    */
   maxDate: {
     type: [String, Date],
-    default: UIService.get(defaultConfig, UDatePicker).default.maxDate,
+    default: getDefault(defaultConfig, UDatePicker).maxDate,
   },
 
   /**
@@ -150,7 +150,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDatePicker).default.disabled,
+    default: getDefault(defaultConfig, UDatePicker).disabled,
   },
 
   /**
@@ -158,7 +158,7 @@ const props = defineProps({
    */
   timepicker: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDatePicker).default.timepicker,
+    default: getDefault(defaultConfig, UDatePicker).timepicker,
   },
 
   /**
@@ -183,7 +183,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.size,
+    default: getDefault(defaultConfig, UDatePicker).size,
   },
 
   /**
@@ -191,7 +191,7 @@ const props = defineProps({
    */
   dateFormat: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.dateFormat,
+    default: getDefault(defaultConfig, UDatePicker).dateFormat,
   },
 
   /**
@@ -199,7 +199,7 @@ const props = defineProps({
    */
   userFormat: {
     type: String,
-    default: UIService.get(defaultConfig, UDatePicker).default.userFormat,
+    default: getDefault(defaultConfig, UDatePicker).userFormat,
   },
 
   /**

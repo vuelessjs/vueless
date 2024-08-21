@@ -58,7 +58,7 @@ import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 import UDropdownList from "../ui.dropdown-list";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import vClickOutside from "../directive.clickOutside";
 
@@ -92,7 +92,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.variant,
+    default: getDefault(defaultConfig, UDropdownButton).variant,
   },
 
   /**
@@ -100,7 +100,7 @@ const props = defineProps({
    */
   filled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownButton).default.filled,
+    default: getDefault(defaultConfig, UDropdownButton).filled,
   },
 
   /**
@@ -109,7 +109,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.color,
+    default: getDefault(defaultConfig, UDropdownButton).color,
   },
 
   /**
@@ -118,7 +118,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.size,
+    default: getDefault(defaultConfig, UDropdownButton).size,
   },
 
   /**
@@ -126,7 +126,7 @@ const props = defineProps({
    */
   pill: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownButton).default.pill,
+    default: getDefault(defaultConfig, UDropdownButton).pill,
   },
 
   /**
@@ -134,7 +134,7 @@ const props = defineProps({
    */
   square: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownButton).default.square,
+    default: getDefault(defaultConfig, UDropdownButton).square,
   },
 
   /**
@@ -142,7 +142,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownButton).default.disabled,
+    default: getDefault(defaultConfig, UDropdownButton).disabled,
   },
 
   /**
@@ -150,7 +150,7 @@ const props = defineProps({
    */
   noIcon: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownButton).default.noIcon,
+    default: getDefault(defaultConfig, UDropdownButton).noIcon,
   },
 
   /**
@@ -166,7 +166,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.labelKey,
+    default: getDefault(defaultConfig, UDropdownButton).labelKey,
   },
 
   /**
@@ -174,7 +174,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.valueKey,
+    default: getDefault(defaultConfig, UDropdownButton).valueKey,
   },
 
   /**
@@ -183,7 +183,7 @@ const props = defineProps({
    */
   listYPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.listYPosition,
+    default: getDefault(defaultConfig, UDropdownButton).listYPosition,
   },
 
   /**
@@ -192,7 +192,7 @@ const props = defineProps({
    */
   listXPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownButton).default.listXPosition,
+    default: getDefault(defaultConfig, UDropdownButton).listXPosition,
   },
 
   /**

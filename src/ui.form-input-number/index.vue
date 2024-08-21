@@ -52,7 +52,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UInputNumber } from "./constants";
@@ -108,7 +108,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInputNumber).default.size,
+    default: getDefault(defaultConfig, UInputNumber).size,
   },
 
   /**

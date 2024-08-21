@@ -33,7 +33,7 @@
 <script setup>
 import { computed } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UMoney } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -65,7 +65,7 @@ const props = defineProps({
    */
   planned: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UMoney).default.planned,
+    default: getDefault(defaultConfig, UMoney).planned,
   },
 
   /**
@@ -73,7 +73,7 @@ const props = defineProps({
    */
   integer: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UMoney).default.integer,
+    default: getDefault(defaultConfig, UMoney).integer,
   },
 
   /**
@@ -82,7 +82,7 @@ const props = defineProps({
    */
   sign: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.sign,
+    default: getDefault(defaultConfig, UMoney).sign,
   },
 
   /**
@@ -91,7 +91,7 @@ const props = defineProps({
    */
   symbolAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.symbolAlign,
+    default: getDefault(defaultConfig, UMoney).symbolAlign,
   },
 
   /**
@@ -100,7 +100,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.size,
+    default: getDefault(defaultConfig, UMoney).size,
   },
 
   /**
@@ -109,7 +109,7 @@ const props = defineProps({
    */
   weight: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.weight,
+    default: getDefault(defaultConfig, UMoney).weight,
   },
 
   /**
@@ -118,7 +118,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.color,
+    default: getDefault(defaultConfig, UMoney).color,
   },
 
   /**
@@ -126,7 +126,7 @@ const props = defineProps({
    */
   decimalScale: {
     type: Number,
-    default: UIService.get(defaultConfig, UMoney).default.decimalScale,
+    default: getDefault(defaultConfig, UMoney).decimalScale,
   },
 
   /**
@@ -134,7 +134,7 @@ const props = defineProps({
    */
   delimiter: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.delimiter,
+    default: getDefault(defaultConfig, UMoney).delimiter,
   },
 
   /**
@@ -143,7 +143,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, UMoney).default.align,
+    default: getDefault(defaultConfig, UMoney).align,
   },
 
   /**
@@ -156,7 +156,7 @@ const props = defineProps({
 
   divided: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UMoney).default.divided,
+    default: getDefault(defaultConfig, UMoney).divided,
   },
 
   /**

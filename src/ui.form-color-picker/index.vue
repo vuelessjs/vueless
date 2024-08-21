@@ -56,7 +56,7 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon";
 import URadio from "../ui.form-radio";
 import ULabel from "../ui.form-label";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { UColorPicker } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -79,7 +79,7 @@ const props = defineProps({
    */
   name: {
     type: String,
-    default: UIService.get(defaultConfig, UColorPicker).default.name,
+    default: getDefault(defaultConfig, UColorPicker).name,
   },
 
   /**
@@ -112,7 +112,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UColorPicker).default.size,
+    default: getDefault(defaultConfig, UColorPicker).size,
   },
 
   /**
@@ -120,7 +120,7 @@ const props = defineProps({
    */
   colorOptions: {
     type: Array,
-    default: () => UIService.get(defaultConfig, UColorPicker).default.colorOptions,
+    default: () => getDefault(defaultConfig, UColorPicker).colorOptions,
   },
 
   /**
@@ -128,7 +128,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UColorPicker).default.disabled,
+    default: getDefault(defaultConfig, UColorPicker).disabled,
   },
 
   /**

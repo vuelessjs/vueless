@@ -33,7 +33,7 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import ULabel from "../ui.form-label";
 import UCheckbox from "../ui.form-checkbox";
@@ -92,7 +92,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckboxGroup).default.size,
+    default: getDefault(defaultConfig, UCheckboxGroup).size,
   },
 
   /**
@@ -101,7 +101,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckboxGroup).default.color,
+    default: getDefault(defaultConfig, UCheckboxGroup).color,
   },
 
   /**
@@ -117,7 +117,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCheckboxGroup).default.disabled,
+    default: getDefault(defaultConfig, UCheckboxGroup).disabled,
   },
 
   /**

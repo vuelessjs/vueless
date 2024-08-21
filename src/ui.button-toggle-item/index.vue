@@ -45,7 +45,7 @@
 import { computed, inject, onMounted, ref } from "vue";
 
 import UButton from "../ui.button";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants";
 
@@ -86,7 +86,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggleItem).default.disabled,
+    default: getDefault(defaultConfig, UToggleItem).disabled,
   },
 
   /**
@@ -125,14 +125,14 @@ const emit = defineEmits([
 
 /* eslint-disable prettier/prettier, vue/max-len */
 const getToggleName = inject("getToggleName", () => "toggle");
-const getToggleType = inject("getToggleType", () => UIService.get(defaultConfig, UToggleItem).default.type);
-const getToggleSize = inject("getToggleSize", () => UIService.get(defaultConfig, UToggleItem).default.size);
-const getTogglePill = inject("getTogglePill", () => UIService.get(defaultConfig, UToggleItem).default.pill);
-const getToggleBlock = inject("getToggleBlock", () => UIService.get(defaultConfig, UToggleItem).default.block);
-const getToggleSquare = inject("getToggleSquare", () => UIService.get(defaultConfig, UToggleItem).default.square);
-const getToggleVariant = inject("getToggleVariant",() => UIService.get(defaultConfig, UToggleItem).default.variant);
+const getToggleType = inject("getToggleType", () => getDefault(defaultConfig, UToggleItem).type);
+const getToggleSize = inject("getToggleSize", () => getDefault(defaultConfig, UToggleItem).size);
+const getTogglePill = inject("getTogglePill", () => getDefault(defaultConfig, UToggleItem).pill);
+const getToggleBlock = inject("getToggleBlock", () => getDefault(defaultConfig, UToggleItem).block);
+const getToggleSquare = inject("getToggleSquare", () => getDefault(defaultConfig, UToggleItem).square);
+const getToggleVariant = inject("getToggleVariant",() => getDefault(defaultConfig, UToggleItem).variant);
 const getToggleSeparated = inject("getToggleSeparated", () => true);
-const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || UIService.get(defaultConfig, UToggleItem).default.disabled);
+const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || getDefault(defaultConfig, UToggleItem).disabled);
 /* eslint-enaable prettier/prettier, vue/max-len */
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});

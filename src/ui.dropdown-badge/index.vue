@@ -54,7 +54,7 @@ import UIcon from "../ui.image-icon";
 import UBadge from "../ui.text-badge";
 import UDropdownList from "../ui.dropdown-list";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import vClickOutside from "../directive.clickOutside";
 
@@ -80,7 +80,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.variant,
+    default: getDefault(defaultConfig, UDropdownBadge).variant,
   },
 
   /**
@@ -89,7 +89,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.color,
+    default: getDefault(defaultConfig, UDropdownBadge).color,
   },
 
   /**
@@ -98,7 +98,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.size,
+    default: getDefault(defaultConfig, UDropdownBadge).size,
   },
 
   /**
@@ -107,7 +107,7 @@ const props = defineProps({
    */
   weight: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.weight,
+    default: getDefault(defaultConfig, UDropdownBadge).weight,
   },
 
   /**
@@ -115,7 +115,7 @@ const props = defineProps({
    */
   noIcon: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.noIcon,
+    default: getDefault(defaultConfig, UDropdownBadge).noIcon,
   },
 
   /**
@@ -131,7 +131,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.labelKey,
+    default: getDefault(defaultConfig, UDropdownBadge).labelKey,
   },
 
   /**
@@ -139,7 +139,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.valueKey,
+    default: getDefault(defaultConfig, UDropdownBadge).valueKey,
   },
 
   /**
@@ -148,7 +148,7 @@ const props = defineProps({
    */
   listYPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.listYPosition,
+    default: getDefault(defaultConfig, UDropdownBadge).listYPosition,
   },
 
   /**
@@ -157,7 +157,7 @@ const props = defineProps({
    */
   listXPosition: {
     type: String,
-    default: UIService.get(defaultConfig, UDropdownBadge).default.listXPosition,
+    default: getDefault(defaultConfig, UDropdownBadge).listXPosition,
   },
 
   /**

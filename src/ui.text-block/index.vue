@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UText } from "./constatns";
 import defaultConfig from "./configs/default.config";
@@ -31,7 +31,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UText).default.size,
+    default: getDefault(defaultConfig, UText).size,
   },
 
   /**
@@ -40,7 +40,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, UText).default.align,
+    default: getDefault(defaultConfig, UText).align,
   },
 
   /**
@@ -48,7 +48,7 @@ const props = defineProps({
    */
   line: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UText).default.line,
+    default: getDefault(defaultConfig, UText).line,
   },
 
   /**

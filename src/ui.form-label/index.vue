@@ -63,7 +63,7 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { ULabel, PLACEMENT } from "./constants";
@@ -94,7 +94,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, ULabel).default.size,
+    default: getDefault(defaultConfig, ULabel).size,
   },
 
   /**
@@ -103,7 +103,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: UIService.get(defaultConfig, ULabel).default.align,
+    default: getDefault(defaultConfig, ULabel).align,
   },
 
   /**
@@ -111,7 +111,7 @@ const props = defineProps({
    */
   centred: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULabel).default.centred,
+    default: getDefault(defaultConfig, ULabel).centred,
   },
 
   /**
@@ -144,7 +144,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, ULabel).default.disabled,
+    default: getDefault(defaultConfig, ULabel).disabled,
   },
 
   /**

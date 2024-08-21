@@ -13,7 +13,7 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import ULoader from "../ui.loader";
 
@@ -40,7 +40,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, ULoaderRendering).default.color,
+    default: getDefault(defaultConfig, ULoaderRendering).color,
   },
 });
 

@@ -37,7 +37,7 @@
 <script setup>
 import { computed, ref, watch, onMounted, nextTick } from "vue";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import UInput from "../ui.form-input";
 import { SYMBOL_MINUS } from "../ui.text-money/constants";
@@ -72,7 +72,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInputMoney).default.labelAlign,
+    default: getDefault(defaultConfig, UInputMoney).labelAlign,
   },
 
   /**
@@ -80,7 +80,7 @@ const props = defineProps({
    */
   symbol: {
     type: String,
-    default: UIService.get(defaultConfig, UInputMoney).default.symbol,
+    default: getDefault(defaultConfig, UInputMoney).symbol,
   },
 
   /**
@@ -113,7 +113,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInputMoney).default.size,
+    default: getDefault(defaultConfig, UInputMoney).size,
   },
 
   /**
@@ -121,7 +121,7 @@ const props = defineProps({
    */
   decimalScale: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputMoney).default.decimalScale,
+    default: getDefault(defaultConfig, UInputMoney).decimalScale,
   },
 
   /**
@@ -129,7 +129,7 @@ const props = defineProps({
    */
   decimalSeparator: {
     type: String,
-    default: UIService.get(defaultConfig, UInputMoney).default.decimalSeparator,
+    default: getDefault(defaultConfig, UInputMoney).decimalSeparator,
   },
 
   /**
@@ -137,7 +137,7 @@ const props = defineProps({
    */
   thousandsSeparator: {
     type: String,
-    default: UIService.get(defaultConfig, UInputMoney).default.thousandsSeparator,
+    default: getDefault(defaultConfig, UInputMoney).thousandsSeparator,
   },
 
   /**
@@ -145,7 +145,7 @@ const props = defineProps({
    */
   positiveOnly: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.positiveOnly,
+    default: getDefault(defaultConfig, UInputMoney).positiveOnly,
   },
 
   /**
@@ -153,7 +153,7 @@ const props = defineProps({
    */
   rawValuePrefix: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.rawValuePrefix,
+    default: getDefault(defaultConfig, UInputMoney).rawValuePrefix,
   },
 
   /**
@@ -161,7 +161,7 @@ const props = defineProps({
    */
   minus: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.minus,
+    default: getDefault(defaultConfig, UInputMoney).minus,
   },
 
   /**
@@ -169,7 +169,7 @@ const props = defineProps({
    */
   readonly: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.readonly,
+    default: getDefault(defaultConfig, UInputMoney).readonly,
   },
 
   /**
@@ -177,7 +177,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputMoney).default.disabled,
+    default: getDefault(defaultConfig, UInputMoney).disabled,
   },
 
   /**

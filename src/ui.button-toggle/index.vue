@@ -33,7 +33,7 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label";
 import UToggleItem from "../ui.button-toggle-item";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants";
@@ -65,7 +65,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UToggle).default.variant,
+    default: getDefault(defaultConfig, UToggle).variant,
   },
 
   /**
@@ -74,7 +74,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UToggle).default.size,
+    default: getDefault(defaultConfig, UToggle).size,
   },
 
   /**
@@ -83,7 +83,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UToggle).default.labelAlign,
+    default: getDefault(defaultConfig, UToggle).labelAlign,
   },
 
   /**
@@ -115,7 +115,7 @@ const props = defineProps({
    */
   multiple: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.multiple,
+    default: getDefault(defaultConfig, UToggle).multiple,
   },
 
   /**
@@ -123,7 +123,7 @@ const props = defineProps({
    */
   separated: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.separated,
+    default: getDefault(defaultConfig, UToggle).separated,
   },
 
   /**
@@ -131,7 +131,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.disabled,
+    default: getDefault(defaultConfig, UToggle).disabled,
   },
 
   /**
@@ -139,7 +139,7 @@ const props = defineProps({
    */
   block: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.block,
+    default: getDefault(defaultConfig, UToggle).block,
   },
 
   /**
@@ -147,7 +147,7 @@ const props = defineProps({
    */
   pill: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.pill,
+    default: getDefault(defaultConfig, UToggle).pill,
   },
 
   /**
@@ -155,7 +155,7 @@ const props = defineProps({
    */
   square: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UToggle).default.square,
+    default: getDefault(defaultConfig, UToggle).square,
   },
 
   /**

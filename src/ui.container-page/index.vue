@@ -86,7 +86,7 @@ import ULink from "../ui.button-link/index.vue";
 import UIcon from "../ui.image-icon/index.vue";
 import UHeader from "../ui.text-header/index.vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UPage } from "./constants";
@@ -104,7 +104,7 @@ const props = defineProps({
    */
   width: {
     type: String,
-    default: UIService.get(defaultConfig, UPage).default.width,
+    default: getDefault(defaultConfig, UPage).width,
   },
 
   /**
@@ -121,7 +121,7 @@ const props = defineProps({
    */
   titleSize: {
     type: String,
-    default: UIService.get(defaultConfig, UPage).default.titleSize,
+    default: getDefault(defaultConfig, UPage).titleSize,
   },
 
   /**
@@ -145,7 +145,7 @@ const props = defineProps({
    */
   gray: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPage).default.gray,
+    default: getDefault(defaultConfig, UPage).gray,
   },
 
   /**
@@ -153,7 +153,7 @@ const props = defineProps({
    */
   mobileFooterReverse: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPage).default.mobileFooterReverse,
+    default: getDefault(defaultConfig, UPage).mobileFooterReverse,
   },
 
   /**
@@ -161,7 +161,7 @@ const props = defineProps({
    */
   fixedRounding: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UPage).default.fixedRounding,
+    default: getDefault(defaultConfig, UPage).fixedRounding,
   },
 
   /**

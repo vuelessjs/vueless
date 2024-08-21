@@ -32,7 +32,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UEmpty } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -64,7 +64,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UEmpty).default.size,
+    default: getDefault(defaultConfig, UEmpty).size,
   },
 
   /**

@@ -43,7 +43,7 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { USwitch } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -68,7 +68,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, USwitch).default.labelAlign,
+    default: getDefault(defaultConfig, USwitch).labelAlign,
   },
 
   /**
@@ -93,7 +93,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, USwitch).default.size,
+    default: getDefault(defaultConfig, USwitch).size,
   },
 
   /**
@@ -101,7 +101,7 @@ const props = defineProps({
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, USwitch).default.color,
+    default: getDefault(defaultConfig, USwitch).color,
   },
 
   /**
@@ -109,7 +109,7 @@ const props = defineProps({
    */
   toggleIcon: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USwitch).default.toggleIcon,
+    default: getDefault(defaultConfig, USwitch).toggleIcon,
   },
 
   /**
@@ -117,7 +117,7 @@ const props = defineProps({
    */
   toggleLabel: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USwitch).default.toggleLabel,
+    default: getDefault(defaultConfig, USwitch).toggleLabel,
   },
 
   /**
@@ -125,7 +125,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USwitch).default.disabled,
+    default: getDefault(defaultConfig, USwitch).disabled,
   },
 
   /**

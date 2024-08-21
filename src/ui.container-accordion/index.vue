@@ -24,7 +24,7 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UDivider from "../ui.container-divider";
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import { UAccordion } from "./constants/index";
 import defaultConfig from "./configs/default.config";
@@ -64,7 +64,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UAccordion).default.size,
+    default: getDefault(defaultConfig, UAccordion).size,
   },
 
   /**

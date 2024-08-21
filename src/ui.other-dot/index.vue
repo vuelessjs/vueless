@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UDot } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -19,7 +19,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UDot).default.color,
+    default: getDefault(defaultConfig, UDot).color,
   },
 
   /**
@@ -28,7 +28,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UDot).default.size,
+    default: getDefault(defaultConfig, UDot).size,
   },
 
   /**

@@ -280,7 +280,8 @@ import { debounce, merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 import UDropdownList from "../ui.dropdown-list";
-import UIService, { getRandomId, isMac } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
+import { isMac } from "../service.platform";
 
 import SelectService from "./services/select.service";
 import useAttrs from "./composables/attrs.composable";
@@ -323,7 +324,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, USelect).default.labelAlign,
+    default: getDefault(defaultConfig, USelect).labelAlign,
   },
 
   /**
@@ -356,7 +357,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, USelect).default.size,
+    default: getDefault(defaultConfig, USelect).size,
   },
 
   /**
@@ -381,7 +382,7 @@ const props = defineProps({
    */
   openDirection: {
     type: String,
-    default: UIService.get(defaultConfig, USelect).default.openDirection,
+    default: getDefault(defaultConfig, USelect).openDirection,
   },
 
   /**
@@ -389,7 +390,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: UIService.get(defaultConfig, USelect).default.labelKey,
+    default: getDefault(defaultConfig, USelect).labelKey,
   },
 
   /**
@@ -397,7 +398,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: UIService.get(defaultConfig, USelect).default.valueKey,
+    default: getDefault(defaultConfig, USelect).valueKey,
   },
 
   /**
@@ -421,7 +422,7 @@ const props = defineProps({
    */
   optionsLimit: {
     type: Number,
-    default: UIService.get(defaultConfig, USelect).default.optionsLimit,
+    default: getDefault(defaultConfig, USelect).optionsLimit,
   },
 
   /**
@@ -429,7 +430,7 @@ const props = defineProps({
    */
   visibleOptions: {
     type: Number,
-    default: UIService.get(defaultConfig, USelect).default.visibleOptions,
+    default: getDefault(defaultConfig, USelect).visibleOptions,
   },
 
   /**
@@ -437,7 +438,7 @@ const props = defineProps({
    */
   noClear: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.noClear,
+    default: getDefault(defaultConfig, USelect).noClear,
   },
 
   /**
@@ -445,7 +446,7 @@ const props = defineProps({
    */
   multiple: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.multiple,
+    default: getDefault(defaultConfig, USelect).multiple,
   },
 
   /**
@@ -453,7 +454,7 @@ const props = defineProps({
    */
   searchable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.searchable,
+    default: getDefault(defaultConfig, USelect).searchable,
   },
 
   /**
@@ -461,7 +462,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.disabled,
+    default: getDefault(defaultConfig, USelect).disabled,
   },
 
   /**
@@ -469,7 +470,7 @@ const props = defineProps({
    */
   addOption: {
     type: Boolean,
-    default: UIService.get(defaultConfig, USelect).default.addOption,
+    default: getDefault(defaultConfig, USelect).addOption,
   },
 
   /**

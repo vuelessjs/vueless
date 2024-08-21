@@ -71,7 +71,7 @@ import { onMounted, ref, computed } from "vue";
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 import UText from "../ui.text-block";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UAlert } from "./constatns";
 import defaultConfig from "./configs/default.config";
@@ -103,7 +103,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UAlert).default.variant,
+    default: getDefault(defaultConfig, UAlert).variant,
   },
 
   /**
@@ -112,7 +112,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UAlert).default.size,
+    default: getDefault(defaultConfig, UAlert).size,
   },
 
   /**
@@ -120,7 +120,7 @@ const props = defineProps({
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UAlert).default.color,
+    default: getDefault(defaultConfig, UAlert).color,
   },
 
   /**
@@ -128,7 +128,7 @@ const props = defineProps({
    */
   bordered: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UAlert).default.bordered,
+    default: getDefault(defaultConfig, UAlert).bordered,
   },
 
   /**
@@ -136,7 +136,7 @@ const props = defineProps({
    */
   timeout: {
     type: Number,
-    default: UIService.get(defaultConfig, UAlert).default.timeout,
+    default: getDefault(defaultConfig, UAlert).timeout,
   },
 
   /**
@@ -144,7 +144,7 @@ const props = defineProps({
    */
   closable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UAlert).default.closable,
+    default: getDefault(defaultConfig, UAlert).closable,
   },
 
   /**

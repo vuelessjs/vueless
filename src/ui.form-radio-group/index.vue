@@ -32,7 +32,7 @@ import { computed, provide } from "vue";
 
 import ULabel from "../ui.form-label";
 import URadio from "../ui.form-radio";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { URadioGroup } from "./constants";
@@ -88,7 +88,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, URadioGroup).default.size,
+    default: getDefault(defaultConfig, URadioGroup).size,
   },
 
   /**
@@ -97,7 +97,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, URadioGroup).default.color,
+    default: getDefault(defaultConfig, URadioGroup).color,
   },
 
   /**
@@ -113,7 +113,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, URadioGroup).default.disabled,
+    default: getDefault(defaultConfig, URadioGroup).disabled,
   },
 
   /**

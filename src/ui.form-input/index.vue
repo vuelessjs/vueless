@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,
@@ -101,7 +101,6 @@ import { ref, computed, onMounted, useSlots } from "vue";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
-import UIService from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UInput } from "./constants";
@@ -173,7 +172,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInput).default.labelAlign,
+    default: getDefault(defaultConfig, UInput).labelAlign,
   },
 
   /**
@@ -206,7 +205,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInput).default.size,
+    default: getDefault(defaultConfig, UInput).size,
   },
 
   /**
@@ -259,7 +258,7 @@ const props = defineProps({
    */
   inputmode: {
     type: String,
-    default: UIService.get(defaultConfig, UInput).default.inputmode,
+    default: getDefault(defaultConfig, UInput).inputmode,
   },
 
   /**
@@ -267,7 +266,7 @@ const props = defineProps({
    */
   readonly: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInput).default.readonly,
+    default: getDefault(defaultConfig, UInput).readonly,
   },
 
   /**
@@ -275,7 +274,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInput).default.disabled,
+    default: getDefault(defaultConfig, UInput).disabled,
   },
 
   /**
@@ -283,7 +282,7 @@ const props = defineProps({
    */
   noAutocomplete: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInput).default.noAutocomplete,
+    default: getDefault(defaultConfig, UInput).noAutocomplete,
   },
 
   /**

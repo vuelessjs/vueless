@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 import UDivider from "../ui.container-divider";
 import UHeader from "../ui.text-header";
 
@@ -58,7 +58,7 @@ const props = defineProps({
    */
   gap: {
     type: String,
-    default: UIService.get(defaultConfig, UGroup).default.gap,
+    default: getDefault(defaultConfig, UGroup).gap,
   },
 
   /**
@@ -66,7 +66,7 @@ const props = defineProps({
    */
   upperlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UGroup).default.upperlined,
+    default: getDefault(defaultConfig, UGroup).upperlined,
   },
 
   /**
@@ -74,7 +74,7 @@ const props = defineProps({
    */
   underlined: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UGroup).default.underlined,
+    default: getDefault(defaultConfig, UGroup).underlined,
   },
 
   /**

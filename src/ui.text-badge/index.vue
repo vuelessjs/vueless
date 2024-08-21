@@ -29,7 +29,7 @@
 <script setup>
 import { ref } from "vue";
 
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UBadge } from "./constants";
 import useAttrs from "./composables/attrs.composable";
@@ -54,7 +54,7 @@ const props = defineProps({
    */
   variant: {
     type: String,
-    default: UIService.get(defaultConfig, UBadge).default.variant,
+    default: getDefault(defaultConfig, UBadge).variant,
   },
 
   /**
@@ -63,7 +63,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UBadge).default.size,
+    default: getDefault(defaultConfig, UBadge).size,
   },
 
   /**
@@ -72,7 +72,7 @@ const props = defineProps({
    */
   weight: {
     type: String,
-    default: UIService.get(defaultConfig, UBadge).default.weight,
+    default: getDefault(defaultConfig, UBadge).weight,
   },
 
   /**
@@ -81,7 +81,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UBadge).default.color,
+    default: getDefault(defaultConfig, UBadge).color,
   },
 
   /**

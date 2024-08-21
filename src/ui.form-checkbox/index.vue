@@ -47,7 +47,7 @@ import { isEqual } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 
-import UIService, { getRandomId } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
 import { UCheckbox } from "./constants";
@@ -133,7 +133,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckbox).default.labelAlign,
+    default: getDefault(defaultConfig, UCheckbox).labelAlign,
   },
 
   /**
@@ -142,7 +142,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckbox).default.color,
+    default: getDefault(defaultConfig, UCheckbox).color,
   },
 
   /**
@@ -151,7 +151,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UCheckbox).default.size,
+    default: getDefault(defaultConfig, UCheckbox).size,
   },
 
   /**
@@ -159,7 +159,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCheckbox).default.disabled,
+    default: getDefault(defaultConfig, UCheckbox).disabled,
   },
 
   /**
@@ -167,7 +167,7 @@ const props = defineProps({
    */
   partial: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UCheckbox).default.partial,
+    default: getDefault(defaultConfig, UCheckbox).partial,
   },
 
   /**

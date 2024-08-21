@@ -54,7 +54,7 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UInputRating } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -77,7 +77,7 @@ const props = defineProps({
    */
   stars: {
     type: Number,
-    default: UIService.get(defaultConfig, UInputRating).default.stars,
+    default: getDefault(defaultConfig, UInputRating).stars,
   },
 
   /**
@@ -86,7 +86,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UInputRating).default.size,
+    default: getDefault(defaultConfig, UInputRating).size,
   },
 
   /**
@@ -103,7 +103,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: UIService.get(defaultConfig, UInputRating).default.labelAlign,
+    default: getDefault(defaultConfig, UInputRating).labelAlign,
   },
 
   /**
@@ -135,7 +135,7 @@ const props = defineProps({
    */
   counter: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputRating).default.counter,
+    default: getDefault(defaultConfig, UInputRating).counter,
   },
 
   /**
@@ -143,7 +143,7 @@ const props = defineProps({
    */
   selectable: {
     type: Boolean,
-    default: UIService.get(defaultConfig, UInputRating).default.selectable,
+    default: getDefault(defaultConfig, UInputRating).selectable,
   },
 
   /**

@@ -35,7 +35,7 @@
 <script setup>
 import UFile from "../ui.text-file";
 import ULabel from "../ui.form-label";
-import UIService from "../service.ui";
+import { getDefault } from "../service.ui";
 
 import { UFiles } from "./constants";
 import defaultConfig from "./configs/default.config";
@@ -68,7 +68,7 @@ const props = defineProps({
    */
   placement: {
     type: String,
-    default: UIService.get(defaultConfig, UFiles).default.placement,
+    default: getDefault(defaultConfig, UFiles).placement,
   },
 
   /**
@@ -85,7 +85,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: UIService.get(defaultConfig, UFiles).default.size,
+    default: getDefault(defaultConfig, UFiles).size,
   },
 
   /**
