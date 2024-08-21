@@ -10,12 +10,12 @@ function checkIsWindows() {
   return getPlatform().toUpperCase().indexOf("WINDOWS") >= 0;
 }
 
-function checkIsPWA() {
-  return !!navigator.standalone;
-}
-
 function checkIsMac() {
   return getPlatform().toUpperCase().indexOf("MAC") >= 0;
+}
+
+function checkIsPWA() {
+  return !!navigator.standalone;
 }
 
 function checkIsIOS() {
@@ -27,6 +27,7 @@ function checkIsIOS() {
     "iPhone",
     "iPod",
   ];
+
   const platform = getPlatform();
   const isIpodIOS13 = platform.includes("Mac") && "ontouchend" in document;
 

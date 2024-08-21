@@ -93,9 +93,7 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 const PX_IN_REM = 16;
 const HYPHEN_SYMBOL = "-";
 
-initTheme();
-
-function initTheme() {
+(() => {
   const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
 
   setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
@@ -103,7 +101,7 @@ function initTheme() {
   prefersColorSchemeDark.addEventListener("change", (event) =>
     setTheme({ systemDarkMode: event.matches }),
   );
-}
+})();
 
 function getRandomId(length = 15) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
