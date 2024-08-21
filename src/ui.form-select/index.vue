@@ -280,7 +280,8 @@ import { debounce, merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 import UDropdownList from "../ui.dropdown-list";
-import { getRandomId, isMac, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
+import { isMac } from "../service.platform";
 
 import SelectService from "./services/select.service";
 import useAttrs from "./composables/attrs.composable";

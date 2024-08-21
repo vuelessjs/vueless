@@ -7,7 +7,8 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { isMobileApp, getDefault } from "../service.ui";
+import { getDefault } from "../service.ui";
+import { isMobileApp } from "../service.platform";
 import { clamp, queue, getRequestWithoutQuery } from "./services/loaderTop.service";
 import { useLoaderTop } from "./composables/useLoaderTop";
 

@@ -90,27 +90,10 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
     defaultVariants,
   });
 
-let isMac = false;
-let isPWA = false;
-let isIOS = false;
-let isAndroid = false;
-let isMobileApp = false;
-
 const PX_IN_REM = 16;
-
 const HYPHEN_SYMBOL = "-";
 
-(function init() {
-  const isBrowser = typeof window !== "undefined";
-
-  isMac = isBrowser && checkIsMac();
-  isPWA = isBrowser && checkIsPWA();
-  isIOS = isBrowser && checkIsIOS();
-  isAndroid = isBrowser && checkIsAndroid();
-  isMobileApp = isPWA || isIOS || isAndroid;
-
-  initTheme();
-})();
+initTheme();
 
 function initTheme() {
   const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
@@ -120,37 +103,6 @@ function initTheme() {
   prefersColorSchemeDark.addEventListener("change", (event) =>
     setTheme({ systemDarkMode: event.matches }),
   );
-}
-
-function checkIsPWA() {
-  return !!navigator.standalone;
-}
-
-function checkIsMac() {
-  return getPlatform().toUpperCase().indexOf("MAC") >= 0;
-}
-
-function checkIsIOS() {
-  const iOSDevices = [
-    "iPad Simulator",
-    "iPhone Simulator",
-    "iPod Simulator",
-    "iPad",
-    "iPhone",
-    "iPod",
-  ];
-  const platform = getPlatform();
-  const isIpodIOS13 = platform.includes("Mac") && "ontouchend" in document;
-
-  return iOSDevices.includes(platform) || isIpodIOS13;
-}
-
-function checkIsAndroid() {
-  return getPlatform().toUpperCase().indexOf("ANDROID") >= 0;
-}
-
-function getPlatform() {
-  return navigator.userAgentData?.platform || navigator.platform || "unknown";
 }
 
 function getRandomId(length = 15) {
@@ -302,11 +254,6 @@ function convertHexInRgb(hex) {
 }
 
 export {
-  isMac,
-  isPWA,
-  isIOS,
-  isAndroid,
-  isMobileApp,
   PX_IN_REM,
   HYPHEN_SYMBOL,
   getRandomId,

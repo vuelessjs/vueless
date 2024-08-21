@@ -102,7 +102,8 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 
-import { getRandomId, isMac, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../service.ui";
+import { isMac } from "../service.platform";
 
 import usePointer from "./composables/usePointer";
 import useAttrs from "./composables/attrs.composable";
