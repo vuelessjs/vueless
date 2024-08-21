@@ -14,7 +14,7 @@
       v-bind="buttonAttrs"
       @click="onClickButton"
     >
-      <template #icon-right>
+      <template #right-icon>
         <UIcon
           v-if="!noIcon"
           internal

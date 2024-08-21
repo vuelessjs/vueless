@@ -14,7 +14,7 @@
     </template>
 
     <template v-else>
-      <div v-if="hasSlotContent($slots['icon-left']) || iconLeft">
+      <div v-if="hasSlotContent($slots['left-icon']) || leftIcon">
         <!--
           @slot Use it to add icon before the text.
           @binding {string} icon-name
@@ -22,18 +22,18 @@
           @binding {string} icon-color
         -->
         <slot
-          name="icon-left"
-          :icon-name="iconLeft"
+          name="left-icon"
+          :icon-name="leftIcon"
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
           <UIcon
-            v-if="iconLeft"
-            :name="iconLeft"
+            v-if="leftIcon"
+            :name="leftIcon"
             :size="iconSize"
             :color="componentColor"
             internal
-            v-bind="iconLeftAttrs"
+            v-bind="leftIconAttrs"
           />
         </slot>
       </div>
@@ -53,7 +53,7 @@
       <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
 
-      <div v-if="hasSlotContent($slots['icon-right']) || iconRight">
+      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon">
         <!--
           @slot Use it to add icon after the text.
           @binding {string} icon-name
@@ -61,18 +61,18 @@
           @binding {string} icon-color
         -->
         <slot
-          name="icon-right"
-          :icon-name="iconRight"
+          name="right-icon"
+          :icon-name="rightIcon"
           :icon-size="iconSize"
           :icon-color="componentColor"
         >
           <UIcon
-            v-if="iconRight"
-            :name="iconRight"
+            v-if="rightIcon"
+            :name="rightIcon"
             :size="iconSize"
             :color="componentColor"
             internal
-            v-bind="iconRightAttrs"
+            v-bind="rightIconAttrs"
           />
         </slot>
       </div>
@@ -125,7 +125,7 @@ const props = defineProps({
   /**
    * Left side icon name.
    */
-  iconLeft: {
+  leftIcon: {
     type: String,
     default: "",
   },
@@ -133,7 +133,7 @@ const props = defineProps({
   /**
    * Right side icon name.
    */
-  iconRight: {
+  rightIcon: {
     type: String,
     default: "",
   },
@@ -236,7 +236,7 @@ const props = defineProps({
   },
 });
 
-const { buttonAttrs, loaderAttrs, textAttrs, iconLeftAttrs, iconRightAttrs, hasSlotContent } =
+const { buttonAttrs, loaderAttrs, textAttrs, leftIconAttrs, rightIconAttrs, hasSlotContent } =
   useAttrs(props);
 
 const buttonRef = ref(null);

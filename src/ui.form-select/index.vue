@@ -76,7 +76,7 @@
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
         <span
-          v-if="hasSlotContent($slots['icon-left']) || iconLeft"
+          v-if="hasSlotContent($slots['left-icon']) || leftIcon"
           ref="leftSlotWrapperRef"
           v-bind="leftIconWrapperAttrs"
         >
@@ -85,13 +85,13 @@
             @binding {string} icon-name
             @binding {string} icon-size
           -->
-          <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
+          <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
             <UIcon
-              v-if="iconLeft"
-              :name="iconLeft"
+              v-if="leftIcon"
+              :name="leftIcon"
               :size="iconSize"
               internal
-              v-bind="iconLeftAttrs"
+              v-bind="leftIconAttrs"
             />
           </slot>
         </span>
@@ -197,7 +197,7 @@
         <slot name="right" />
 
         <span
-          v-if="hasSlotContent($slots['icon-right']) || iconRight"
+          v-if="hasSlotContent($slots['right-icon']) || rightIcon"
           v-bind="rightIconWrapperAttrs"
         >
           <!--
@@ -205,13 +205,13 @@
             @binding {string} icon-name
             @binding {string} icon-size
           -->
-          <slot name="icon-right" :icon-name="iconRight" :icon-size="iconSize">
+          <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
             <UIcon
-              v-if="iconRight"
-              :name="iconRight"
+              v-if="rightIcon"
+              :name="rightIcon"
               :size="iconSize"
               internal
-              v-bind="iconRightAttrs"
+              v-bind="rightIconAttrs"
             />
           </slot>
         </span>
@@ -363,7 +363,7 @@ const props = defineProps({
   /**
    * Left side icon name.
    */
-  iconLeft: {
+  leftIcon: {
     type: String,
     default: "",
   },
@@ -371,7 +371,7 @@ const props = defineProps({
   /**
    * Right side icon name.
    */
-  iconRight: {
+  rightIcon: {
     type: String,
     default: "",
   },
@@ -583,8 +583,8 @@ const {
   innerWrapperAttrs,
   leftIconWrapperAttrs,
   rightIconWrapperAttrs,
-  iconLeftAttrs,
-  iconRightAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
   beforeCaretAttrs,
   afterCaretAttrs,
   toggleAttrs,
@@ -824,7 +824,7 @@ function setLabelPosition() {
   if (
     props.labelAlign === "top" ||
     !hasSlotContent(slots["left"]) ||
-    (!hasSlotContent(slots["icon-left"]) && !props.iconLeft)
+    (!hasSlotContent(slots["left-icon"]) && !props.leftIcon)
   ) {
     return;
   }

@@ -21,12 +21,12 @@
       <slot name="left" />
     </template>
 
-    <template #icon-left>
+    <template #left-icon>
       <!-- @slot Use it to add icon before the text. -->
-      <slot name="icon-left" />
+      <slot name="left-icon" />
     </template>
 
-    <template #icon-right>
+    <template #right-icon>
       <UIcon
         v-if="modelValue"
         internal
@@ -41,7 +41,7 @@
 
       <!-- @slot Use it to add icon after the text. -->
       <slot
-        name="icon-right"
+        name="right-icon"
         :icon-name="config.searchIconName"
         :icon-size="iconSize"
         :search-button-label="searchButtonLabel"
