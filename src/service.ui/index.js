@@ -187,10 +187,12 @@ function setTheme(config = {}) {
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
 
   if (!isBrandColor) {
+    // eslint-disable-next-line no-console
     console.log(`Brand color '${brand}' is incorrect.`);
   }
 
   if (!isGrayColor) {
+    // eslint-disable-next-line no-console
     console.log(`Gray color '${gray}' is incorrect.`);
   }
 
