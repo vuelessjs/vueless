@@ -66,8 +66,8 @@ export default /*tw*/ {
   },
   leftIconWrapper: "pr-3 flex items-center",
   rightIconWrapper: "pl-3 flex items-center",
-  iconLeft: "{UIcon}",
-  iconRight: "{UIcon}",
+  leftIcon: "{UIcon}",
+  rightIcon: "{UIcon}",
   beforeCaret: "",
   afterCaret: "mr-3",
   caret: {

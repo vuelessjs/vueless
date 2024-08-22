@@ -18,7 +18,7 @@
       </span>
 
       <span
-        v-if="hasSlotContent($slots['icon-left']) || iconLeft"
+        v-if="hasSlotContent($slots['left-icon']) || leftIcon"
         ref="leftSlotWrapperRef"
         v-bind="leftIconSlotAttrs"
       >
@@ -27,8 +27,14 @@
           @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="icon-left" :icon-name="iconLeft" :icon-size="iconSize">
-          <UIcon v-if="iconLeft" :name="iconLeft" :size="iconSize" internal />
+        <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
+          <UIcon
+            v-if="leftIcon"
+            :name="leftIcon"
+            :size="iconSize"
+            internal
+            v-bind="leftIconAttrs"
+          />
         </slot>
       </span>
 
@@ -67,14 +73,20 @@
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['icon-right']) || iconRight" v-bind="rightIconSlotAttrs">
+      <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconSlotAttrs">
         <!--
           @slot Use it to add icon after the text.
           @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="icon-right" :icon-name="iconLeft" :icon-size="iconSize">
-          <UIcon v-if="iconRight" :name="iconRight" :size="iconSize" internal />
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
+          <UIcon
+            v-if="rightIcon"
+            :name="rightIcon"
+            :size="iconSize"
+            internal
+            v-bind="rightIconAttrs"
+          />
         </slot>
       </span>
 
@@ -211,7 +223,7 @@ const props = defineProps({
   /**
    * Left side icon name.
    */
-  iconLeft: {
+  leftIcon: {
     type: String,
     default: "",
   },
@@ -219,7 +231,7 @@ const props = defineProps({
   /**
    * Right side icon name.
    */
-  iconRight: {
+  rightIcon: {
     type: String,
     default: "",
   },
@@ -340,7 +352,9 @@ const {
   labelAttrs,
   passwordIconAttrs,
   leftIconSlotAttrs,
+  leftIconAttrs,
   inputWrapperAttrs,
+  rightIconAttrs,
   rightIconSlotAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
@@ -433,7 +447,7 @@ function transformValue(value, exp) {
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop =
-    !hasSlotContent(slots["icon-left"]) && !hasSlotContent(slots["left"]) && !props.iconLeft;
+    !hasSlotContent(slots["left-icon"]) && !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
     return;

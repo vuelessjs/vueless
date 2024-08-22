@@ -89,20 +89,20 @@ sizes.args = { enum: "size" };
 export const validationRules = EnumVariantTemplate.bind({});
 validationRules.args = { enum: "validationRule" };
 
-export const iconLeft = DefaultTemplate.bind({});
-iconLeft.args = {
-  iconLeft: "star",
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
 };
 
-export const iconRight = DefaultTemplate.bind({});
-iconRight.args = {
-  iconRight: "star",
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
 };
 
-export const iconLeftSlot = DefaultTemplate.bind({});
-iconLeftSlot.args = {
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
   slotTemplate: `
-    <template #icon-left>
+    <template #left-icon>
       <UIcon
         name="star"
         color="green"
@@ -111,10 +111,10 @@ iconLeftSlot.args = {
   `,
 };
 
-export const iconRightSlot = DefaultTemplate.bind({});
-iconRightSlot.args = {
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
   slotTemplate: `
-    <template #icon-right>
+    <template #right-icon>
       <UIcon
         name="star"
         color="green"
