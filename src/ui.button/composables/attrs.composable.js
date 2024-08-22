@@ -22,8 +22,8 @@ export default function useAttrs(props) {
           ...props,
           color: getColor(props.color),
           square: props.loading || props.square,
-          leftIcon: Boolean(props.iconLeft) || hasSlotContent(slots["left-icon"]),
-          rightIcon: Boolean(props.iconRight) || hasSlotContent(slots["right-icon"]),
+          leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left-icon"]),
+          rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right-icon"]),
         });
       }
 
