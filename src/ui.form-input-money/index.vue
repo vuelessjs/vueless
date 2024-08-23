@@ -12,6 +12,8 @@
     :disabled="disabled"
     inputmode="decimal"
     :data-cy="`${dataCy}-base-currency`"
+    :left-icon="leftIcon"
+    :right-icon="rightIcon"
     v-bind="inputAttrs"
     @keyup="onKeyup"
     @blur="onBlur"
@@ -22,14 +24,19 @@
       <slot name="left" />
     </template>
 
-    <template #right>
-      <!-- @slot Use it to add something right. -->
-      <slot name="right" />
+    <template #left-icon>
+      <!-- @slot Use it to add icon before the text. -->
+      <slot name="left-icon" />
     </template>
 
     <template #right-icon>
-      <!-- @slot Use it to add right icon. -->
+      <!-- @slot Use it to add icon after the text. -->
       <slot name="right-icon" />
+    </template>
+
+    <template #right>
+      <!-- @slot Use it to add something right. -->
+      <slot name="right" />
     </template>
   </UInput>
 </template>
@@ -114,6 +121,22 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UInputMoney).size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**

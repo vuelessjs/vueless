@@ -2,6 +2,8 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UDatePickerRange from "../ui.form-date-picker-range";
 import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
 
 import { addDays } from "../ui.form-calendar/services/date.service";
 
@@ -31,7 +33,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDatePickerRange },
+  components: { UDatePickerRange, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UDatePickerRange.name);
 
@@ -165,22 +167,60 @@ customRangeButton.args = {
   value: { from: null, to: null },
 };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
+  variant: "input",
+};
+
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
+  variant: "input",
+};
+
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
   variant: "input",
   slotTemplate: `
-    <template #left>
-      🤘
+    <template #left-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
     </template>
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
+  variant: "input",
+  slotTemplate: `
+    <template #right-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const leftSlot = DefaultTemplate.bind({});
+leftSlot.args = {
+  variant: "input",
+  slotTemplate: `
+    <template #left>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+    </template>
+  `,
+};
+
+export const rightSlot = DefaultTemplate.bind({});
+rightSlot.args = {
   variant: "input",
   slotTemplate: `
     <template #right>
-      🤘
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
     </template>
   `,
 };

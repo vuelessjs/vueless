@@ -13,6 +13,7 @@
     :placeholder="placeholder"
     inputmode="search"
     :data-cy="dataCy"
+    :left-icon="leftIcon"
     v-bind="inputAttrs"
     @keyup.enter="onClickSearch"
   >
@@ -51,7 +52,7 @@
           internal
           interactive
           :size="iconSize"
-          :name="config.searchIconName"
+          :name="rightIcon || config.searchIconName"
           :data-cy="`${dataCy}-search`"
           v-bind="searchIconAttrs"
           @click="onClickSearch"
@@ -108,6 +109,22 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UInputSearch).size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**
