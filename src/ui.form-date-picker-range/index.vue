@@ -12,18 +12,28 @@
       :description="description"
       :error="error"
       readonly
+      :left-icon="leftIcon"
+      :right-icon="rightIcon"
       v-bind="inputAttrs"
       @focus="activate"
     >
       <template #left>
+        <!-- @slot Use it to add something before the date. -->
         <slot name="left" />
       </template>
 
+      <template #left-icon>
+        <!-- @slot Use it to add icon before the date. -->
+        <slot name="left-icon" />
+      </template>
+
       <template #right-icon>
+        <!-- @slot Use it to add icon after the date. -->
         <slot name="right-icon" />
       </template>
 
       <template #right>
+        <!-- @slot Use it to add something after the date. -->
         <slot name="right" />
       </template>
     </UInput>
@@ -347,6 +357,22 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UDatePickerRange).size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**

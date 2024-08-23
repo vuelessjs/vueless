@@ -12,12 +12,19 @@
       readonly
       :disabled="disabled"
       :size="size"
+      :left-icon="leftIcon"
+      :right-icon="rightIcon"
       v-bind="inputAttrs"
       @focus="activate"
     >
       <template #left>
         <!-- @slot Use it add something before the date. -->
         <slot name="left" />
+      </template>
+
+      <template #left-icon>
+        <!-- @slot Use it add an icon before the date. -->
+        <slot name="left-icon" />
       </template>
 
       <template #right-icon>
@@ -184,6 +191,22 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UDatePicker).size,
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**

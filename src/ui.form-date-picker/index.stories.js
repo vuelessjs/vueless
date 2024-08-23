@@ -145,29 +145,36 @@ MinMax.args = {
   modelValue: new Date(2022, 2, 24),
 };
 
-export const slotIcon = DefaultTemplate.bind({});
-slotIcon.args = {
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
+};
+
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
+};
+
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
+  slotTemplate: `
+    <template #left-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
-      <UIcon name="star" color="black" />
-    </template>
-  `,
-};
-
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
-  slotTemplate: `
-    <template #right>
-      🤘🤘🤘
-    </template>
-  `,
-};
-
-export const slotLeft = DefaultTemplate.bind({});
-slotRight.args = {
-  slotTemplate: `
-    <template #left>
-      🤘🤘🤘
+      <UIcon
+        name="archive"
+        color="red"
+      />
     </template>
   `,
 };

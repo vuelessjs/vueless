@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UInputSearch from "../ui.form-input-search";
 import UButton from "../ui.button";
+import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 
 /**
@@ -17,7 +18,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UInputSearch, UButton },
+  components: { UInputSearch, UButton, UIcon },
   setup() {
     const slots = getSlotNames(UInputSearch.name);
 
@@ -61,17 +62,54 @@ searchButton.args = { searchButtonLabel: "Search" };
 export const sizes = EnumVariantTemplate.bind({});
 sizes.args = { enum: "size" };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
+};
+
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
+};
+
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
+  slotTemplate: `
+    <template #left-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
+  slotTemplate: `
+    <template #right-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const leftSlot = DefaultTemplate.bind({});
+leftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UButton
-        label="Filter"
-        variant="thirdary"
-        filled
-        no-ring
-        class="rounded-r-none"
-      />
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+    </template>
+  `,
+};
+
+export const rightSlot = DefaultTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
     </template>
   `,
 };

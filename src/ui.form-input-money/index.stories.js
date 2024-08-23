@@ -2,6 +2,8 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UInputMoney from "../ui.form-input-money";
 import UCol from "../ui.container-col";
+import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
 
 /**
  * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
@@ -20,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UInputMoney },
+  components: { UInputMoney, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInputMoney.name);
 
@@ -101,3 +103,55 @@ readOnly.args = { readOnly: true };
 
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };
+
+export const leftIcon = DefaultTemplate.bind({});
+leftIcon.args = {
+  leftIcon: "star",
+};
+
+export const rightIcon = DefaultTemplate.bind({});
+rightIcon.args = {
+  rightIcon: "star",
+};
+
+export const leftIconSlot = DefaultTemplate.bind({});
+leftIconSlot.args = {
+  slotTemplate: `
+    <template #left-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const rightIconSlot = DefaultTemplate.bind({});
+rightIconSlot.args = {
+  slotTemplate: `
+    <template #right-icon>
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+  `,
+};
+
+export const leftSlot = DefaultTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+    </template>
+  `,
+};
+
+export const rightSlot = DefaultTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
+    </template>
+  `,
+};
