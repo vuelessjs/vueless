@@ -1,6 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import ULink from "../ui.button-link";
+import UIcon from "../ui.image-icon";
 import UButton from "../ui.button";
 import URow from "../ui.container-row";
 
@@ -21,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { ULink, UButton },
+  components: { ULink, UButton, UIcon },
   setup() {
     const slots = getSlotNames(ULink.name);
 
@@ -103,6 +104,24 @@ slotDefault.args = {
   slotTemplate: `
     <template #default>
       <UButton label="Text" />
+    </template>
+  `,
+};
+
+export const slotLeft = DefaultTemplate.bind({});
+slotLeft.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon name="star" size="xs" />
+    </template>
+  `,
+};
+
+export const slotRight = DefaultTemplate.bind({});
+slotRight.args = {
+  slotTemplate: `
+    <template #right>
+      <UIcon name="star" size="xs" />
     </template>
   `,
 };

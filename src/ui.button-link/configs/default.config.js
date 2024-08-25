@@ -1,10 +1,15 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      w-fit inline-flex rounded transition focus-visible:outline-none
+      w-fit inline-flex items-center rounded transition focus-visible:outline-none
       focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-700/15
     `,
     variants: {
+      size: {
+        sm: "gap-1",
+        md: "gap-1.5",
+        lg: "gap-1.5",
+      },
       color: {
         grayscale: "focus-within:ring-gray-700/15",
         white: "focus-within:ring-white/15",
@@ -56,10 +61,7 @@ export default /*tw*/ {
       },
     },
   },
-  text: "w-full",
-  withSlots: "flex items-center no-underline hover:no-underline focus-within:ring-0 focus-within:ring-offset-0",
-  leftSlot: "mr-1",
-  rightSlot: "ml-1",
+  withChild: "flex no-underline hover:no-underline focus-within:ring-0 focus-within:ring-offset-0",
   defaultVariants: {
     color: "brand",
     type: "link",

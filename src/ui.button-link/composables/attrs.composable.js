@@ -33,39 +33,29 @@ export default function useAttrs(props, { isActive, isExactActive }) {
     if (key === "wrapper") {
       const wrapperAttrs = attrs[`${key}Attrs`];
 
-      attrs[`${key}Attrs`] = computed(() => {
-        const hasDefaultSlot = hasSlotContent(slots["default"]);
-        const hasRightSlot = hasSlotContent(slots["right"]);
-        const hasLeftSlot = hasSlotContent(slots["left"]);
-
-        return {
-          ...wrapperAttrs.value,
-          class: cx([
-            wrapperAttrs.value.class,
-            (hasDefaultSlot || hasLeftSlot || hasRightSlot) && config.value.withSlots,
-            isActive.value && props.wrapperActiveClass,
-            isExactActive.value && props.wrapperExactActiveClass,
-          ]),
-        };
-      });
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...wrapperAttrs.value,
+        class: cx([
+          wrapperAttrs.value.class,
+          hasSlotContent(slots["default"]) && config.value.withChild,
+          isActive.value && props.wrapperActiveClass,
+          isExactActive.value && props.wrapperExactActiveClass,
+        ]),
+      }));
     }
 
     if (key === "link") {
       const linkAttrs = attrs[`${key}Attrs`];
 
-      attrs[`${key}Attrs`] = computed(() => {
-        const hasDefaultSlot = hasSlotContent(slots["default"]);
-
-        return {
-          ...linkAttrs.value,
-          class: cx([
-            linkAttrs.value.class,
-            hasDefaultSlot && config.value.withSlots,
-            isActive.value && props.activeClass,
-            isExactActive.value && props.exactActiveClass,
-          ]),
-        };
-      });
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...linkAttrs.value,
+        class: cx([
+          linkAttrs.value.class,
+          hasSlotContent(slots["default"]) && config.value.withChild,
+          isActive.value && props.activeClass,
+          isExactActive.value && props.exactActiveClass,
+        ]),
+      }));
     }
   }
 

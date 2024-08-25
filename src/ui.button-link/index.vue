@@ -1,16 +1,14 @@
 <template>
   <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
-    <div v-if="hasSlotContent($slots['left'])" v-bind="leftSlotAttrs">
-      <!-- @slot Use it to add something before the text. -->
-      <slot name="left" />
-    </div>
+    <!-- @slot Use it to add something before the text. -->
+    <slot name="left" />
 
     <router-link
       v-if="isPresentRoute"
       :to="route"
       :target="targetValue"
-      :data-test="dataTest"
       v-bind="linkAttrs"
+      :data-test="dataTest"
       tabindex="0"
       @blur="onBlur"
       @focus="onFocus"
@@ -20,16 +18,16 @@
     >
       <!-- @slot Use it replace the text. -->
       <slot>
-        <span v-if="!hasSlotContent($slots['default'])" v-bind="textAttrs" v-text="label" />
+        {{ label }}
       </slot>
     </router-link>
 
     <a
       v-else
-      :href="href"
+      :href="prefixedHref"
       :target="targetValue"
-      :data-test="dataTest"
       v-bind="linkAttrs"
+      :data-test="dataTest"
       tabindex="0"
       @blur="onBlur"
       @focus="onFocus"
@@ -39,14 +37,12 @@
     >
       <!-- @slot Use it replace the text. -->
       <slot>
-        <span v-if="!hasSlotContent($slots['default'])" v-bind="textAttrs" v-text="label" />
+        {{ label }}
       </slot>
     </a>
 
-    <div v-if="hasSlotContent($slots['right'])" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
-    </div>
+    <!-- @slot Use it to add something after the text. -->
+    <slot name="right" />
   </div>
 </template>
 
@@ -99,17 +95,17 @@ const props = defineProps({
   },
 
   /**
-   * Link url.
+   * Link href url.
    */
-  url: {
+  href: {
     type: String,
     default: "",
   },
 
   /**
-   * Vue route object.
+   * Vue-router to prop.
    */
-  route: {
+  to: {
     type: Object,
     default: () => ({}),
   },
@@ -142,7 +138,7 @@ const props = defineProps({
   },
 
   /**
-   * Open link in new window.
+   * Open link in the new tab.
    */
   targetBlank: {
     type: Boolean,
@@ -263,7 +259,7 @@ const props = defineProps({
 });
 
 const isPresentRoute = computed(() => {
-  for (let key in props.route) return true;
+  for (let key in props.to) return true;
 
   return false;
 });
@@ -274,28 +270,27 @@ const { route, isActive, isExactActive } = useLink({
   exactActiveClass: props.exactActiveClass,
   custom: props.custom,
   replace: props.replace,
-  to: isPresentRoute.value ? props.route : "/",
+  to: isPresentRoute.value ? props.to : "/",
 });
 
 const wrapperRef = ref(null);
 
 defineExpose({ wrapperRef });
 
-const { wrapperAttrs, linkAttrs, rightSlotAttrs, leftSlotAttrs, textAttrs, hasSlotContent } =
-  useAttrs(props, { isActive, isExactActive });
+const { wrapperAttrs, linkAttrs } = useAttrs(props, { isActive, isExactActive });
 
 const targetValue = computed(() => {
   return props.targetBlank ? "_blank" : "_self";
 });
 
-const href = computed(() => {
+const prefixedHref = computed(() => {
   const types = {
     phone: "tel:",
     email: "mailto:",
     link: "",
   };
 
-  return props.url ? `${types[props.type]}${props.url}` : null;
+  return props.href ? `${types[props.type]}${props.href}` : null;
 });
 
 function onClick(event) {
