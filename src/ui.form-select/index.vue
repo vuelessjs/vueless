@@ -10,7 +10,7 @@
     :disabled="disabled"
     centred
     v-bind="labelAttrs"
-    :data-cy="dataCy"
+    :data-test="dataTest"
   >
     <div
       ref="wrapperRef"
@@ -491,9 +491,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

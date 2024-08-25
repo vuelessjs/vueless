@@ -6,7 +6,7 @@
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="labelAttrs"
     @click="onClickToggle"
   >
@@ -146,9 +146,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

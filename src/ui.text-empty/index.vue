@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-bind="headerAttrs">
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
@@ -76,9 +76,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

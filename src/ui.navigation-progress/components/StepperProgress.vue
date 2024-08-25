@@ -63,7 +63,7 @@ const props = defineProps({
     default: () => ({}),
   },
 
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

@@ -8,7 +8,7 @@
     :disabled="disabled"
     :description="description"
     v-bind="labelAttrs"
-    :data-cy="`${dataCy}-label`"
+    :data-test="`${dataTest}-label`"
   >
     <input
       :id="id"
@@ -20,7 +20,7 @@
       :checked="isChecked"
       :disabled="disabled"
       v-bind="checkboxAttrs"
-      :data-cy="dataCy"
+      :data-test="dataTest"
       @change="onChange"
     />
 
@@ -188,9 +188,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

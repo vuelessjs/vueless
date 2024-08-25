@@ -6,7 +6,7 @@
     :align="labelAlign"
     :description="description"
     v-bind="labelAttrs"
-    :data-cy="dataCy"
+    :data-test="dataTest"
   >
     <div v-bind="wrapperAttrs">
       <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
@@ -30,7 +30,7 @@
           :interactive="selectable"
           :name="star <= counterValue ? config.selectedIconName : config.unselectedIconName"
           v-bind="starAttrs"
-          :data-cy="`${dataCy}-rating-star-${star}`"
+          :data-test="`${dataTest}-rating-star-${star}`"
           @click="onClickStar(star)"
           @mouseleave="onMouseHover()"
           @mouseover="onMouseHover(star)"
@@ -155,9 +155,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

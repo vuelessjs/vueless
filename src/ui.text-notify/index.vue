@@ -13,7 +13,7 @@
     >
       <UIcon
         v-if="notification.type === NOTIFY_TYPE.success"
-        data-cy="type-notify"
+        data-test="type-notify"
         color="green"
         variant="light"
         size="md"
@@ -24,7 +24,7 @@
 
       <UIcon
         v-else-if="notification.type === NOTIFY_TYPE.warning"
-        data-cy="type-notify"
+        data-test="type-notify"
         color="orange"
         variant="light"
         size="md"
@@ -35,7 +35,7 @@
 
       <UIcon
         v-else-if="notification.type === NOTIFY_TYPE.error"
-        data-cy="type-notify"
+        data-test="type-notify"
         color="red"
         variant="light"
         size="md"

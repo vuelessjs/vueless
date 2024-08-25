@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="wrapperAttrs">
     <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
@@ -9,7 +9,7 @@
         :value="item.value"
         :disabled="item.disabled"
         :size="size"
-        :data-cy="`${dataCy}-item-${index}`"
+        :data-test="`${dataTest}-item-${index}`"
         v-bind="tabAttrs"
       />
     </slot>
@@ -78,9 +78,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

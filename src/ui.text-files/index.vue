@@ -11,7 +11,7 @@
           :image-url="file.imageUrl"
           :size="size"
           v-bind="fileAttrs"
-          :data-cy="`${dataCy}-item`"
+          :data-test="`${dataTest}-item`"
         >
           <template #left="{ file: currentFile }">
             <!-- @slot Use it to add something left.
@@ -97,9 +97,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

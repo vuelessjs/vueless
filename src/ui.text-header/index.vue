@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" v-bind="wrapperAttrs" :data-cy="dataCy">
+  <component :is="tag" v-bind="wrapperAttrs" :data-test="dataTest">
     <slot>{{ label }}</slot>
   </component>
 </template>
@@ -83,9 +83,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

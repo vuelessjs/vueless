@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs" @click="onClickSetValue">
+  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickSetValue">
     <!-- @slot Use it to add something instead of label. -->
     <slot>
       {{ label }}
@@ -59,9 +59,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

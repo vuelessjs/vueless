@@ -1,7 +1,7 @@
 <template>
   <div
     v-tooltip="tooltipConfig"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="wrapperAttrs"
     @focus="onFocus"
     @blur="onBlur"
@@ -115,9 +115,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

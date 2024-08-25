@@ -7,7 +7,7 @@
     :disabled="disabled"
     centred
     v-bind="labelAttrs"
-    :data-cy="dataCy"
+    :data-test="dataTest"
   >
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UToggleItem directly. -->
@@ -20,7 +20,7 @@
           :value="item.value"
           :disabled="disabled"
           :label="item.label"
-          :data-cy="`${dataCy}-item-${index}`"
+          :data-test="`${dataTest}-item-${index}`"
           v-bind="itemAttrs"
         />
       </slot>
@@ -167,9 +167,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs" @click="onClick">
+  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClick">
     <template v-if="label">{{ label }}</template>
     <slot />
   </div>
@@ -32,9 +32,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

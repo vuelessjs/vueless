@@ -43,7 +43,7 @@
       v-bind="stepperAttrs"
       :color="color"
       :value="value"
-      :data-cy="dataCy"
+      :data-test="dataTest"
       :progress-percent="progressPercent"
     />
   </div>
@@ -126,9 +126,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

@@ -10,7 +10,7 @@
       :round="round"
       :square="square"
       :disabled="disabled"
-      :data-cy="`${dataCy}-button`"
+      :data-test="`${dataTest}-button`"
       v-bind="buttonAttrs"
       @click="onClickButton"
     >
@@ -21,7 +21,7 @@
           :name="config.iconName"
           :size="iconSize"
           :color="iconColor"
-          :data-cy="`${dataCy}-caret`"
+          :data-test="`${dataTest}-caret`"
           v-bind="iconAttrs"
         />
       </template>
@@ -43,7 +43,7 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-cy="`${dataCy}-item`"
+      :data-test="`${dataTest}-item`"
       tabindex="-1"
       v-bind="listAttrs"
       @click="onClickList"
@@ -213,9 +213,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

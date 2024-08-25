@@ -5,7 +5,7 @@
         square
         variant="thirdary"
         :disabled="prevIsDisabled"
-        :data-cy="`${dataCy}-first`"
+        :data-test="`${dataTest}-first`"
         v-bind="navigationButtonAttrs"
         @click="goToFirstPage"
       >
@@ -20,7 +20,7 @@
         square
         variant="thirdary"
         :disabled="prevIsDisabled"
-        :data-cy="`${dataCy}-prev`"
+        :data-test="`${dataTest}-prev`"
         v-bind="navigationButtonAttrs"
         @click="goToPrevPage"
       >
@@ -38,7 +38,7 @@
         v-else
         square
         variant="thirdary"
-        :data-cy="`${dataCy}-page`"
+        :data-test="`${dataTest}-page`"
         :disabled="disabled"
         v-bind="pageButtonAttrs(page)"
         @click="selectPage(page.number)"
@@ -52,7 +52,7 @@
         square
         variant="thirdary"
         :disabled="nextIsDisabled"
-        :data-cy="`${dataCy}-next`"
+        :data-test="`${dataTest}-next`"
         v-bind="navigationButtonAttrs"
         @click="goToNextPage"
       >
@@ -67,7 +67,7 @@
         square
         variant="thirdary"
         :disabled="nextIsDisabled"
-        :data-cy="`${dataCy}-last`"
+        :data-test="`${dataTest}-last`"
         v-bind="navigationButtonAttrs"
         @click="goToLastPage"
       >
@@ -203,9 +203,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

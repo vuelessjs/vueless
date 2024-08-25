@@ -17,14 +17,14 @@
       handle=".icon-drag"
       :ghost-class="config.draggableGhost"
       :drag-class="config.draggableDrag"
-      :data-cy="dataCy"
+      :data-test="dataTest"
       v-bind="draggableAttrs"
       :move="onDragMove"
       @end="onDragEnd"
     >
       <template #item="{ element }">
-        <div :id="element[valueKey]" :data-cy="`${dataCy}-item`" v-bind="itemWrapperAttrs">
-          <div :data-cy="`${dataCy}-item-${element[valueKey]}`" v-bind="itemAttrs">
+        <div :id="element[valueKey]" :data-test="`${dataTest}-item`" v-bind="itemWrapperAttrs">
+          <div :data-test="`${dataTest}-item-${element[valueKey]}`" v-bind="itemAttrs">
             <UIcon
               internal
               color="gray"
@@ -62,7 +62,7 @@
                 color="red"
                 :size="iconSize"
                 :name="config.deleteIconName"
-                :data-cy="`${dataCy}-delete`"
+                :data-test="`${dataTest}-delete`"
                 :tooltip="currentLocale.delete"
                 v-bind="deleteIconAttrs"
                 @click="onClickDelete(element[valueKey], element[labelKey])"
@@ -75,7 +75,7 @@
                 color="gray"
                 :size="iconSize"
                 :name="config.editIconName"
-                :data-cy="`${dataCy}-edit`"
+                :data-test="`${dataTest}-edit`"
                 :tooltip="currentLocale.edit"
                 v-bind="editIconAttrs"
                 @click="onClickEdit(element[valueKey], element[labelKey])"
@@ -89,7 +89,7 @@
             hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
-            :data-cy="`${dataCy}-table`"
+            :data-test="`${dataTest}-table`"
             v-bind="nestedAttrs"
             @click-delete="onClickDelete"
             @click-edit="onClickEdit"
@@ -233,9 +233,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

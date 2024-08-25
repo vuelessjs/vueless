@@ -6,7 +6,7 @@
     :disabled="disabled"
     v-bind="buttonAttrs"
     :tabindex="loading && '-1'"
-    :data-cy="dataCy"
+    :data-test="dataTest"
   >
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
@@ -250,9 +250,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

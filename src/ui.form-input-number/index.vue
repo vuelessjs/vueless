@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="wrapperAttrs">
     <UButton
       variant="thirdary"
       size="sm"
@@ -15,7 +15,7 @@
         :size="size"
         :name="config.removeIconName"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
-        :data-cy="`${dataCy}-remove`"
+        :data-test="`${dataTest}-remove`"
         v-bind="removeIconAttrs"
       />
     </UButton>
@@ -40,7 +40,7 @@
         :size="size"
         :name="config.addIconName"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
-        :data-cy="`${dataCy}-add`"
+        :data-test="`${dataTest}-add`"
         v-bind="addIconAttrs"
       />
     </UButton>
@@ -120,9 +120,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

@@ -7,7 +7,7 @@
     :description="description"
     :size="size"
     :disabled="disabled"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     :align="labelAlign"
     v-bind="labelAttrs"
   >
@@ -31,7 +31,7 @@
         :disabled="disabled"
         :rows="rows"
         :inputmode="inputmode"
-        :data-cy="dataCy"
+        :data-test="dataTest"
         v-bind="textareaAttrs"
         @focus="onFocus"
         @blur="onBlur"
@@ -179,9 +179,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

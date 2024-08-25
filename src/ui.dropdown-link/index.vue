@@ -10,7 +10,7 @@
         :underlined="underlined"
         :disabled="disabled"
         :no-ring="noRing"
-        :data-cy="`${dataCy}-link`"
+        :data-test="`${dataTest}-link`"
         v-bind="linkAttrs"
         @click="onClickLink"
       >
@@ -22,7 +22,7 @@
             :name="config.iconName"
             :size="iconSize"
             :color="color"
-            :data-cy="`${dataCy}-caret`"
+            :data-test="`${dataTest}-caret`"
             v-bind="iconAttrs"
             @click="onClickLink"
           />
@@ -46,7 +46,7 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-cy="`${dataCy}-item`"
+      :data-test="`${dataTest}-item`"
       v-bind="listAttrs"
       @click="onClickList"
     />
@@ -199,9 +199,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

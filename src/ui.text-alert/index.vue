@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShownAlert" :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div v-if="isShownAlert" :data-test="dataTest" v-bind="wrapperAttrs">
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
@@ -54,7 +54,7 @@
           size="xs"
           :color="iconColor"
           :name="config.iconName"
-          :data-cy="`${dataCy}-button`"
+          :data-test="`${dataTest}-button`"
           v-bind="iconAttrs"
         />
       </UButton>
@@ -156,9 +156,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

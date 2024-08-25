@@ -6,7 +6,7 @@
     :description="description"
     :disabled="disabled"
     align="topWithDesc"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="labelAttrs"
   >
     <div v-bind="listAttrs">
@@ -21,7 +21,7 @@
           :label="option.label"
           :description="option.description"
           :disabled="disabled"
-          :data-cy="`${dataCy}-item-${index}`"
+          :data-test="`${dataTest}-item-${index}`"
           v-bind="checkboxAttrs"
         />
       </slot>
@@ -129,9 +129,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

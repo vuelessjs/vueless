@@ -1,5 +1,5 @@
 <template>
-  <ULink :url="url" no-ring target-blank :data-cy="dataCy" v-bind="fileAttrs">
+  <ULink :url="url" no-ring target-blank :data-test="dataTest" v-bind="fileAttrs">
     <slot name="left" :file="{ id, label, url, imageUrl }" />
 
     <slot :file="{ id, label, url, imageUrl, iconName: config.iconName }">
@@ -93,9 +93,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

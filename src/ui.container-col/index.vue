@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="wrapperAttrs" :data-cy="dataCy">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <!-- @slot Use it to add something inside. -->
     <slot />
   </div>
@@ -68,9 +68,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

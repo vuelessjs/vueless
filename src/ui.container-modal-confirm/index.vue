@@ -5,7 +5,7 @@
     :title="title"
     no-divider
     mobile-bottom-align
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="modalAttrs"
   >
     <template #header-left-before>
@@ -36,7 +36,7 @@
           :label="confirmLabel || currentLocale.confirm"
           :color="confirmColor"
           :disabled="confirmDisabled"
-          :data-cy="`${dataCy}-accept`"
+          :data-test="`${dataTest}-accept`"
           v-bind="confirmButtonAttrs"
           @click="emitConfirmAction"
         />
@@ -47,7 +47,7 @@
           variant="thirdary"
           color="gray"
           filled
-          :data-cy="`${dataCy}-close`"
+          :data-test="`${dataTest}-close`"
           v-bind="cancelButtonAttrs"
           @click="onCloseModal"
         />
@@ -145,9 +145,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

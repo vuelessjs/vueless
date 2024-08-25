@@ -10,7 +10,7 @@
         :data-id="row.id"
         :value="row.id"
         size="sm"
-        :data-cy="`${dataCy}-body-checkbox`"
+        :data-test="`${dataTest}-body-checkbox`"
         v-bind="attrs.bodyCheckboxAttrs"
       />
     </td>
@@ -43,7 +43,7 @@
 
       <div v-if="value?.hasOwnProperty('secondary')">
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-cy="`${dataCy}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
+          <div :data-test="`${dataTest}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
             {{ value.primary || HYPHEN_SYMBOL }}
           </div>
 
@@ -65,7 +65,7 @@
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-cy="`${dataCy}-${key}-cell`">
+          <div :data-test="`${dataTest}-${key}-cell`">
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
           </div>
         </slot>
@@ -80,7 +80,7 @@
     :attrs="attrs"
     :columns="columns"
     :row="row.row"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     :nested-level="nestedLevel + 1"
     :config="config"
     :selectable="selectable"
@@ -119,7 +119,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  dataCy: {
+  dataTest: {
     type: String,
     required: true,
   },

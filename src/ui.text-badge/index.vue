@@ -2,7 +2,7 @@
   <div
     ref="wrapperRef"
     tabindex="1"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="wrapperAttrs"
     @blur="onBlur"
     @focus="onFocus"
@@ -148,9 +148,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

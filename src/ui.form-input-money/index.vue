@@ -11,7 +11,7 @@
     :error="error"
     :disabled="disabled"
     inputmode="decimal"
-    :data-cy="`${dataCy}-base-currency`"
+    :data-test="`${dataTest}-base-currency`"
     :left-icon="leftIcon"
     :right-icon="rightIcon"
     v-bind="inputAttrs"
@@ -221,9 +221,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

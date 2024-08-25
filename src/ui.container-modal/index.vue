@@ -9,7 +9,7 @@
       :id="id"
       ref="wrapperRef"
       tabindex="0"
-      :data-cy="dataCy"
+      :data-test="dataTest"
       v-bind="wrapperAttrs"
       @keydown.self.esc="onKeydownEsc"
     >
@@ -58,7 +58,7 @@
                   internal
                   interactive
                   :name="config.closeIconName"
-                  :data-cy="`${dataCy}-close`"
+                  :data-test="`${dataTest}-close`"
                   v-bind="closeIconAttrs"
                   @click="onClickCloseModal"
                 />
@@ -236,9 +236,9 @@ const props = defineProps({
   },
 
   /**
-   * Set data-cy attribute for automated testing.
+   * Set data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

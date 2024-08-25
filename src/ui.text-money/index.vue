@@ -5,7 +5,7 @@
       <slot name="left" />
     </div>
 
-    <div :data-cy="dataCy" v-bind="sumAttrs">
+    <div :data-test="dataTest" v-bind="sumAttrs">
       <span v-if="currencySymbolPosition.left" v-bind="symbolAttrs">
         {{ symbol + currencySpace }}
       </span>
@@ -160,9 +160,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

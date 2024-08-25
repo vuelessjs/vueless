@@ -12,7 +12,7 @@
     :description="description"
     :placeholder="placeholder"
     inputmode="search"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     :left-icon="leftIcon"
     v-bind="inputAttrs"
     @keyup.enter="onClickSearch"
@@ -34,7 +34,7 @@
         interactive
         color="gray"
         :name="config.clearIconName"
-        :data-cy="`${dataCy}-close`"
+        :data-test="`${dataTest}-close`"
         :size="iconSize"
         v-bind="clearIconAttrs"
         @click="onClickClear"
@@ -53,7 +53,7 @@
           interactive
           :size="iconSize"
           :name="rightIcon || config.searchIconName"
-          :data-cy="`${dataCy}-search`"
+          :data-test="`${dataTest}-search`"
           v-bind="searchIconAttrs"
           @click="onClickSearch"
         />
@@ -69,7 +69,7 @@
           :size="buttonSize"
           no-ring
           v-bind="buttonAttrs"
-          :data-cy="`${dataCy}-right`"
+          :data-test="`${dataTest}-right`"
           @click="onClickSearch"
         />
       </slot>
@@ -215,9 +215,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

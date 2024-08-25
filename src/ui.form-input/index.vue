@@ -49,7 +49,7 @@
           :disabled="disabled"
           :maxlength="maxLength"
           :inputmode="inputmode"
-          :data-cy="dataCy"
+          :data-test="dataTest"
           v-bind="inputAttrs"
           @focus="onFocus"
           @blur="onBlur"
@@ -67,7 +67,7 @@
           color="gray"
           interactive
           internal
-          :data-cy="`${dataCy}-show-password`"
+          :data-test="`${dataTest}-show-password`"
           v-bind="passwordIconAttrs"
           @click="onClickShowPassword"
         />
@@ -315,9 +315,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

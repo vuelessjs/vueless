@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div
       v-show="isHeaderSticky || isShownActionsHeader"
       ref="stickyHeaderRowRef"
@@ -13,7 +13,7 @@
             v-model="selectAll"
             size="sm"
             :partial="!isSelectedAllRows"
-            :data-cy="`${dataCy}-select-all`"
+            :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderActionsCheckboxAttrs"
           />
         </div>
@@ -38,7 +38,7 @@
             v-model="selectAll"
             size="sm"
             :partial="!isSelectedAllRows"
-            :data-cy="`${dataCy}-select-all`"
+            :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderCheckboxAttrs"
           />
 
@@ -108,7 +108,7 @@
                 v-model="selectAll"
                 size="sm"
                 :partial="!isSelectedAllRows"
-                :data-cy="`${dataCy}-select-all`"
+                :data-test="`${dataTest}-select-all`"
                 v-bind="headerCheckboxAttrs"
               />
 
@@ -180,7 +180,7 @@
               v-bind="bodyRowAttrs(getRowClasses(row))"
               v-model:selectedRows="selectedRows"
               :selectable="selectable"
-              :data-cy="`${dataCy}-row`"
+              :data-test="`${dataTest}-row`"
               :row="row"
               :columns="columns"
               :config="config"
@@ -226,7 +226,7 @@
                 <UEmpty
                   size="sm"
                   :description="currentLocale.noData"
-                  :data-cy="`${dataCy}-empty`"
+                  :data-test="`${dataTest}-empty`"
                   v-bind="bodyEmptyStateAttrs"
                 />
               </slot>
@@ -374,9 +374,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

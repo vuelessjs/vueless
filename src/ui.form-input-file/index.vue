@@ -31,7 +31,7 @@
               color="brand"
               :size="removeItemIconSize"
               :name="config.removeItemIconName"
-              :data-cy="`${dataCy}-remove-item`"
+              :data-test="`${dataTest}-remove-item`"
               v-bind="removeItemIconAttrs"
               @click.stop.prevent="onClickRemoveItem(file.id)"
             />
@@ -51,7 +51,7 @@
               :label="currentLocale.uploadFile"
               :disabled="disabled"
               v-bind="chooseFileButtonAttrs"
-              :data-cy="`${dataCy}-upload`"
+              :data-test="`${dataTest}-upload`"
             />
 
             <input
@@ -76,7 +76,7 @@
             :disabled="disabled"
             :left-icon="config.clearIconName"
             v-bind="clearButtonAttrs"
-            :data-cy="`${dataCy}-clear`"
+            :data-test="`${dataTest}-clear`"
             @click="onClickResetFiles"
           />
         </div>
@@ -209,9 +209,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

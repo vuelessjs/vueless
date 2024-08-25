@@ -14,16 +14,16 @@
       <label
         v-if="label"
         :for="props.for"
-        :data-cy="`${dataCy}-label`"
+        :data-test="`${dataTest}-label`"
         v-bind="labelAttrs"
         v-text="label"
       />
 
-      <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
+      <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
 
       <div
         v-if="description && !error"
-        :data-cy="`${dataCy}-description`"
+        :data-test="`${dataTest}-description`"
         v-bind="descriptionAttrs"
         v-text="description"
       />
@@ -38,7 +38,7 @@
       v-if="label"
       ref="labelRef"
       :for="props.for"
-      :data-cy="`${dataCy}-label`"
+      :data-test="`${dataTest}-label`"
       v-bind="labelAttrs"
       v-text="label"
     />
@@ -46,11 +46,11 @@
     <!-- @slot Use it to wrap something into the label. -->
     <slot />
 
-    <div v-if="error" :data-cy="`${dataCy}-error`" v-bind="descriptionAttrs" v-text="error" />
+    <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
 
     <div
       v-if="description && !error"
-      :data-cy="`${dataCy}-description`"
+      :data-test="`${dataTest}-description`"
       v-bind="descriptionAttrs"
       v-text="description"
     />
@@ -156,9 +156,9 @@ const props = defineProps({
   },
 
   /**
-   * Sets data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

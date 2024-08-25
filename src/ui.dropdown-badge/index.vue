@@ -7,7 +7,7 @@
       :color="color"
       :weight="weight"
       :variant="variant"
-      :data-cy="`${dataCy}-badge`"
+      :data-test="`${dataTest}-badge`"
       v-bind="badgeAttrs"
       @click="onClickBadge"
     >
@@ -18,7 +18,7 @@
           :name="config.iconName"
           :size="iconSize"
           :color="color"
-          :data-cy="`${dataCy}-caret`"
+          :data-test="`${dataTest}-caret`"
           v-bind="iconAttrs"
         />
       </template>
@@ -40,7 +40,7 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-cy="`${dataCy}-item`"
+      :data-test="`${dataTest}-item`"
       v-bind="listAttrs"
       @click="onClickList"
     />
@@ -178,9 +178,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

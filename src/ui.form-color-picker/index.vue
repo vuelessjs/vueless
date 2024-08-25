@@ -6,7 +6,7 @@
     :error="error"
     :size="size"
     align="topWithDesc"
-    :data-cy="dataCy"
+    :data-test="dataTest"
     v-bind="labelAttrs"
   >
     <div v-bind="listAttrs">
@@ -149,9 +149,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "radio",
   },

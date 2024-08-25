@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="wrapperAttrs" :data-cy="dataCy">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <template v-if="title">
       <UDivider v-if="upperlined" size="xl" no-top-padding v-bind="upperlineAttrs" />
 
@@ -86,9 +86,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },

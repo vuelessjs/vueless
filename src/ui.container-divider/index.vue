@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="dataCy" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-bind="dividerAttrs" />
     <template v-if="label && !vertical">
       <span v-bind="labelAttrs" v-text="label" />
@@ -126,9 +126,9 @@ const props = defineProps({
   },
 
   /**
-   * Data-cy attribute for automated testing.
+   * Data-test attribute for automated testing.
    */
-  dataCy: {
+  dataTest: {
     type: String,
     default: "",
   },
