@@ -1,9 +1,8 @@
 export default /*tw*/ {
   button: {
     base: `
-      flex items-center justify-center
-      font-medium outline-none
-      border border-solid transition
+      flex items-center justify-center transition
+      border font-medium outline-none whitespace-nowrap
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
       focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
       disabled:ring-0 disabled:ring-offset-0 disabled:cursor-not-allowed cursor-pointer
@@ -42,22 +41,22 @@ export default /*tw*/ {
           disabled:text-gray-400 disabled:bg-transparent
         `,
       },
-      color: {
-        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
-        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
+      round: {
+        false: "rounded-dynamic",
+        true: "rounded-full",
+      },
+      noRing: {
+        true: "focus:ring-0 focus:ring-offset-0 focus-within:ring-0 focus-within:ring-offset-0",
       },
       loading: {
         true: "pointer-events-none gap-0",
       },
-      pill: {
-        false: "rounded-dynamic",
-        true: "rounded-full",
-      },
       block: {
         true: "w-full",
       },
-      noRing: {
-        true: "focus:ring-0 focus:ring-offset-0 focus-within:ring-0 focus-within:ring-offset-0",
+      color: {
+        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
+        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
       },
     },
     compoundVariants: [
@@ -144,15 +143,16 @@ export default /*tw*/ {
       { square: true, size: "xl", class: "p-4" },
     ],
   },
-  text: "whitespace-nowrap focus-visible:outline-none",
+  loader: "{ULoader}",
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
+  centerIcon: "{UIcon}",
   defaultVariants: {
     color: "brand",
     variant: "primary",
     tag: "button",
     size: "md",
-    pill: false,
+    round: false,
     block: false,
     square: false,
     filled: false,

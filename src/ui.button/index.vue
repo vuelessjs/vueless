@@ -4,78 +4,92 @@
     :id="id"
     ref="buttonRef"
     :disabled="disabled"
-    :data-cy="dataCy"
     v-bind="buttonAttrs"
+    :tabindex="loading && '-1'"
+    :data-cy="dataCy"
   >
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
-      <div v-bind="textAttrs" tabindex="-1" class="invisible w-0" v-text="label" />
+      <div tabindex="-1" class="invisible w-0" v-text="label" />
       <ULoader :loading="loading" :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
-      <div v-if="hasSlotContent($slots['left-icon']) || leftIcon">
-        <!--
-          @slot Use it to add icon before the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {string} icon-color
-        -->
-        <slot
-          name="left-icon"
-          :icon-name="leftIcon"
-          :icon-size="iconSize"
-          :icon-color="componentColor"
-        >
-          <UIcon
-            v-if="leftIcon"
-            :name="leftIcon"
-            :size="iconSize"
-            :color="componentColor"
-            internal
-            v-bind="leftIconAttrs"
-          />
-        </slot>
-      </div>
+      <!--
+        @slot Use it to add icon before the label.
+        @binding {string} icon-name
+        @binding {string} icon-size
+        @binding {string} icon-color
+      -->
+      <slot
+        name="left-icon"
+        :icon-name="leftIcon"
+        :icon-size="iconSize"
+        :icon-color="componentColor"
+      >
+        <UIcon
+          v-if="leftIcon"
+          internal
+          :name="leftIcon"
+          :size="iconSize"
+          :color="componentColor"
+          v-bind="leftIconAttrs"
+        />
+      </slot>
 
-      <!-- @slot Use it to add something before the text. -->
+      <!-- @slot Use it to add something before the label. -->
       <slot name="left" />
 
-      <!-- @slot Use it to add something instead of the text. -->
-      <slot />
-      <div
-        v-if="label && !hasSlotContent($slots['default'])"
-        v-bind="textAttrs"
-        tabindex="-1"
-        v-text="label"
-      />
+      <!--
+        @slot Use it to add something instead of the label.
+        @binding {string} icon-name
+        @binding {string} icon-size
+        @binding {string} icon-color
+      -->
+      <slot
+        name="default"
+        :label="label"
+        :icon-name="icon"
+        :icon-size="iconSize"
+        :icon-color="componentColor"
+      >
+        <UIcon
+          v-if="icon"
+          internal
+          :name="icon"
+          :size="iconSize"
+          :color="componentColor"
+          v-bind="centerIconAttrs"
+        />
+        <template v-else>
+          {{ label }}
+        </template>
+      </slot>
 
-      <!-- @slot Use it to add something after the text. -->
+      <!-- @slot Use it to add something after the label. -->
       <slot name="right" />
 
-      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon">
-        <!--
-          @slot Use it to add icon after the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {string} icon-color
-        -->
-        <slot
-          name="right-icon"
-          :icon-name="rightIcon"
-          :icon-size="iconSize"
-          :icon-color="componentColor"
-        >
-          <UIcon
-            v-if="rightIcon"
-            :name="rightIcon"
-            :size="iconSize"
-            :color="componentColor"
-            internal
-            v-bind="rightIconAttrs"
-          />
-        </slot>
-      </div>
+      <!--
+        @slot Use it to add icon after the label.
+        @binding {string} icon-name
+        @binding {string} icon-size
+        @binding {string} icon-color
+      -->
+      <slot
+        name="right-icon"
+        :icon-name="rightIcon"
+        :icon-size="iconSize"
+        :icon-color="componentColor"
+      >
+        <UIcon
+          v-if="rightIcon"
+          internal
+          :name="rightIcon"
+          :size="iconSize"
+          :color="componentColor"
+          v-bind="rightIconAttrs"
+        />
+      </slot>
     </template>
   </component>
 </template>
@@ -123,22 +137,6 @@ const props = defineProps({
   },
 
   /**
-   * Left side icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right side icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
    * Button label.
    */
   label: {
@@ -152,6 +150,30 @@ const props = defineProps({
   tag: {
     type: String,
     default: getDefault(defaultConfig, UButton).tag,
+  },
+
+  /**
+   * Icon name (appears instead of label).
+   */
+  icon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Left side icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right side icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -181,9 +203,9 @@ const props = defineProps({
   /**
    * Set button corners rounded.
    */
-  pill: {
+  round: {
     type: Boolean,
-    default: getDefault(defaultConfig, UButton).pill,
+    default: getDefault(defaultConfig, UButton).round,
   },
 
   /**
@@ -203,7 +225,7 @@ const props = defineProps({
   },
 
   /**
-   * Remove outline ring on focus.
+   * Remove button ring on focus.
    */
   noRing: {
     type: Boolean,
@@ -236,7 +258,7 @@ const props = defineProps({
   },
 });
 
-const { buttonAttrs, loaderAttrs, textAttrs, leftIconAttrs, rightIconAttrs, hasSlotContent } =
+const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
   useAttrs(props);
 
 const buttonRef = ref(null);

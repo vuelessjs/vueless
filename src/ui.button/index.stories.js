@@ -88,8 +88,8 @@ variants.args = { enum: "variant" };
 export const sizes = EnumVariantTemplate.bind({});
 sizes.args = { enum: "size" };
 
-export const pilled = EnumVariantTemplate.bind({});
-pilled.args = { enum: "variant", pill: true };
+export const round = EnumVariantTemplate.bind({});
+round.args = { enum: "variant", round: true };
 
 export const disabled = EnumVariantTemplate.bind({});
 disabled.args = { enum: "variant", disabled: true };
@@ -126,6 +126,7 @@ leftIconSlot.args = {
       <UIcon
         name="star"
         color="green"
+        size="sm"
       />
     </template>
   `,
@@ -138,6 +139,7 @@ rightIconSlot.args = {
       <UIcon
         name="star"
         color="green"
+        size="sm"
       />
     </template>
   `,
@@ -150,6 +152,7 @@ leftSlot.args = {
       <UIcon
         name="archive"
         color="red"
+        size="sm"
       />
     </template>
   `,
@@ -162,6 +165,7 @@ rightSlot.args = {
       <UIcon
         name="archive"
         color="red"
+        size="sm"
       />
     </template>
   `,
