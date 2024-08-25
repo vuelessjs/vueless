@@ -82,9 +82,9 @@ widePage.args = { widePage: true, width: "sm" };
 
 export const backRoute = DefaultTemplate.bind({});
 backRoute.args = {
+  backLabel: "back",
   backRoute: {
-    name: "",
-    title: "some route title",
+    path: "/",
     params: {},
   },
 };

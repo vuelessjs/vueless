@@ -14,19 +14,22 @@
             <div v-bind="headerLeftFallbackAttrs">
               <ULink
                 v-if="isShownArrowButton"
+                no-ring
                 size="sm"
                 color="gray"
                 :to="backRoute"
+                :label="backLabel"
                 v-bind="backLinkAttrs"
               >
-                <UIcon
-                  internal
-                  size="xs"
-                  color="gray"
-                  :name="config.backLinkIconName"
-                  v-bind="backLinkIconAttrs"
-                />
-                {{ backRoute.title }}
+                <template #left>
+                  <UIcon
+                    internal
+                    size="xs"
+                    color="gray"
+                    :name="config.backLinkIconName"
+                    v-bind="backLinkIconAttrs"
+                  />
+                </template>
               </ULink>
 
               <UHeader :label="title" :size="titleSize" v-bind="titleAttrs" />
@@ -133,11 +136,19 @@ const props = defineProps({
   },
 
   /**
-   * Set Vue router route params for back arrow.
+   * Back link vue-router route object.
    */
   backRoute: {
     type: Object,
     default: () => ({}),
+  },
+
+  /**
+   * Back link label.
+   */
+  backLabel: {
+    type: String,
+    default: "",
   },
 
   /**

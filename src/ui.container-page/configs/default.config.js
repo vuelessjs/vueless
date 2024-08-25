@@ -38,7 +38,7 @@ export default /*tw*/ {
   header: "flex items-start justify-between mb-4 md:mb-6",
   headerLeft: "flex items-center space-x-4",
   headerLeftFallback: "flex flex-col",
-  backLink: "{ULink} flex items-center gap-0.5",
+  backLink: "{ULink}",
   backLinkIcon: "{UIcon}",
   backLinkIconName: "arrow_back",
   title: "{UHeader}",

@@ -103,7 +103,7 @@ const props = defineProps({
   },
 
   /**
-   * Vue-router to prop.
+   * Vue-router route object.
    */
   to: {
     type: Object,
