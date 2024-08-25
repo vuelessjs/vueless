@@ -43,8 +43,8 @@ export default /*tw*/ {
       },
       error: {
         true: `
-        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-500/15
-        focus-within:border-red-500 focus-within:ring-red-500/15
+        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
+        focus-within:border-red-500 focus-within:ring-red-700/15
       `,
       },
     },
