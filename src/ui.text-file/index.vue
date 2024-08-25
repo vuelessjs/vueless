@@ -1,5 +1,5 @@
 <template>
-  <ULink :url="url" no-ring target-blank :data-test="dataTest" v-bind="fileAttrs">
+  <ULink :href="url" no-ring target-blank :data-test="dataTest" v-bind="fileAttrs">
     <slot name="left" :file="{ id, label, url, imageUrl }" />
 
     <slot :file="{ id, label, url, imageUrl, iconName: config.iconName }">

@@ -14,9 +14,9 @@
             <div v-bind="headerLeftFallbackAttrs">
               <ULink
                 v-if="isShownArrowButton"
-                size="xs"
+                size="sm"
                 color="gray"
-                :route="backRoute"
+                :to="backRoute"
                 v-bind="backLinkAttrs"
               >
                 <UIcon

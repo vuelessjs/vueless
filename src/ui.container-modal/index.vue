@@ -27,7 +27,7 @@
                     v-if="isShownArrowButton"
                     size="sm"
                     color="gray"
-                    :route="backRoute"
+                    :to="backRoute"
                     v-bind="backLinkAttrs"
                     @click="onClickBackLink"
                   >

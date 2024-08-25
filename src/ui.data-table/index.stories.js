@@ -366,7 +366,7 @@ cellSlots.args = {
     </template>
 
     <template #cell-email="{ value }">
-      <ULink :label="value" :url="value" type="email" size="sm" />
+      <ULink :label="value" :url="value" type="email" />
     </template>
 
     <template #cell-tags="{ value }">
