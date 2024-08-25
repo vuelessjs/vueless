@@ -22,6 +22,8 @@ tippy.setDefaultProps(mergedSettings);
 
 export default {
   mounted(el, bindings) {
+    if (!bindings.value.content) return;
+
     tippy(el, merge(mergedSettings, bindings.value || {}));
   },
 
