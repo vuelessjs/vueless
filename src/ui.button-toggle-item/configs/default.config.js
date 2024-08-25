@@ -47,7 +47,7 @@ export default /*tw*/ {
     type: "radio",
     size: "md",
     block: false,
-    pill: false,
+    round: false,
     square: false,
     disabled: false,
   },

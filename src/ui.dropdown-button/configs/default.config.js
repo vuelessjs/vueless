@@ -31,7 +31,7 @@ export default /*tw*/ {
     listYPosition: "bottom",
     listXPosition: "left",
     filled: false,
-    pill: false,
+    round: false,
     square: false,
     noIcon: false,
     disabled: false,

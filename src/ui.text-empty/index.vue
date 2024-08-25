@@ -8,7 +8,7 @@
           :name="config.iconName"
           color="gray"
           :size="iconSize"
-          pill
+          round
           v-bind="iconAttrs"
         />
       </slot>

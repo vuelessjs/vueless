@@ -25,7 +25,7 @@
           <template #right="{ file }">
             <UIcon
               v-if="props.multiple && !disabled"
-              pill
+              round
               internal
               interactive
               color="brand"
@@ -67,7 +67,7 @@
 
           <UButton
             v-if="isValue && !disabled"
-            pill
+            round
             square
             filled
             no-ring

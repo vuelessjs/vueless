@@ -7,7 +7,7 @@
     variant="secondary"
     :label="label"
     :size="getToggleSize()"
-    :pill="getTogglePill()"
+    :round="getToggleRound()"
     :block="getToggleBlock()"
     :square="getToggleSquare()"
     :disabled="getToggleDisabled()"
@@ -127,7 +127,7 @@ const emit = defineEmits([
 const getToggleName = inject("getToggleName", () => "toggle");
 const getToggleType = inject("getToggleType", () => getDefault(defaultConfig, UToggleItem).type);
 const getToggleSize = inject("getToggleSize", () => getDefault(defaultConfig, UToggleItem).size);
-const getTogglePill = inject("getTogglePill", () => getDefault(defaultConfig, UToggleItem).pill);
+const getToggleRound = inject("getToggleRound", () => getDefault(defaultConfig, UToggleItem).round);
 const getToggleBlock = inject("getToggleBlock", () => getDefault(defaultConfig, UToggleItem).block);
 const getToggleSquare = inject("getToggleSquare", () => getDefault(defaultConfig, UToggleItem).square);
 const getToggleVariant = inject("getToggleVariant",() => getDefault(defaultConfig, UToggleItem).variant);

@@ -84,7 +84,7 @@ export const slotHeaderLeftBefore = DefaultTemplate.bind({});
 slotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
-      <UIcon name="star" size="sm" pill />
+      <UIcon name="star" size="sm" round />
     </template>
     ${defaultTemplate}
   `,
@@ -104,7 +104,7 @@ export const slotHeaderLeftAfter = DefaultTemplate.bind({});
 slotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
-      <UIcon name="star" size="sm" pill />
+      <UIcon name="star" size="sm" round />
     </template>
     ${defaultTemplate}
   `,

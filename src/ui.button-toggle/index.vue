@@ -145,9 +145,9 @@ const props = defineProps({
   /**
    * Set button corners rounded.
    */
-  pill: {
+  round: {
     type: Boolean,
-    default: getDefault(defaultConfig, UToggle).pill,
+    default: getDefault(defaultConfig, UToggle).round,
   },
 
   /**
@@ -227,7 +227,7 @@ function updateSelectedValue(value, checked) {
 provide("getToggleName", () => props.name);
 provide("getToggleType", () => type.value);
 provide("getToggleSize", () => props.size);
-provide("getTogglePill", () => props.pill);
+provide("getToggleRound", () => props.round);
 provide("getToggleBlock", () => props.block);
 provide("getToggleSquare", () => props.square);
 provide("getToggleVariant", () => props.variant);

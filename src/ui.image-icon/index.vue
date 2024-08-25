@@ -65,11 +65,11 @@ const props = defineProps({
   },
 
   /**
-   * Set pill mild semi-transparent background and solid colour icon.
+   * Set round mild semi-transparent background and solid colour icon.
    */
-  pill: {
+  round: {
     type: Boolean,
-    default: getDefault(defaultConfig, UIcon).pill,
+    default: getDefault(defaultConfig, UIcon).round,
   },
 
   /**

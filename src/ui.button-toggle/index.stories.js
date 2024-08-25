@@ -123,10 +123,10 @@ separated.args = {
   separated: true,
 };
 
-export const pill = DefaultTemplate.bind({});
-pill.args = {
-  name: "pill",
-  pill: true,
+export const round = DefaultTemplate.bind({});
+round.args = {
+  name: "round",
+  round: true,
   separated: true,
 };
 

@@ -70,7 +70,7 @@ slotHeader.args = {
         name="person"
         color="blue"
         size="2xl"
-        pill
+        round
       />
     </template>
   `,

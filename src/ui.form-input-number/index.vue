@@ -5,7 +5,7 @@
       size="sm"
       filled
       square
-      pill
+      round
       :disabled="isRemoveButtonDisabled"
       v-bind="removeButtonAttrs"
       @click="onClickRemove"
@@ -30,7 +30,7 @@
       size="sm"
       filled
       square
-      pill
+      round
       :disabled="isAddButtonDisabled"
       v-bind="addButtonAttrs"
       @click="onClickAdd"

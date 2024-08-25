@@ -42,7 +42,7 @@ export default /*tw*/ {
     labelAlign: "top",
     size: "md",
     block: false,
-    pill: false,
+    round: false,
     square: false,
     disabled: false,
     multiple: false,

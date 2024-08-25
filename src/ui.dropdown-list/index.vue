@@ -81,7 +81,7 @@
             <span v-bind="addTitleHotkeyAttrs" v-text="addOptionKeyCombination" />
           </div>
         </div>
-        <UButton pill square v-bind="buttonAddAttrs" @click="onClickAddOption">
+        <UButton round square v-bind="buttonAddAttrs" @click="onClickAddOption">
           <UIcon
             internal
             color="white"

@@ -7,7 +7,7 @@
       :variant="variant"
       :filled="filled || isShownOptions"
       :color="color"
-      :pill="pill"
+      :round="round"
       :square="square"
       :disabled="disabled"
       :data-cy="`${dataCy}-button`"
@@ -124,9 +124,9 @@ const props = defineProps({
   /**
    * Set button corners rounded.
    */
-  pill: {
+  round: {
     type: Boolean,
-    default: getDefault(defaultConfig, UDropdownButton).pill,
+    default: getDefault(defaultConfig, UDropdownButton).round,
   },
 
   /**

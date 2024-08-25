@@ -70,5 +70,5 @@ tooltip.args = { tooltip: "Some text" };
 export const interactive = DefaultTemplate.bind({});
 interactive.args = { interactive: true };
 
-export const pill = EnumVariantTemplate.bind({});
-pill.args = { enum: "color", pill: true };
+export const round = EnumVariantTemplate.bind({});
+round.args = { enum: "color", round: true };
