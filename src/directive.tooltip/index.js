@@ -16,14 +16,13 @@ const defaultSettings = {
   theme: "light",
   animation: "shift-away",
 };
+
 const mergedSettings = merge(defaultSettings, globalSettings);
 
 tippy.setDefaultProps(mergedSettings);
 
 export default {
   mounted(el, bindings) {
-    if (!bindings.value.content) return;
-
     tippy(el, merge(mergedSettings, bindings.value || {}));
   },
 
