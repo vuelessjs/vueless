@@ -1,45 +1,7 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "flex w-fit",
+  icon: {
+    base: "flex w-fit fill-current outline-0",
     variants: {
-      round: {
-        true: "rounded-full bg-{color}-600/5",
-      },
-    },
-    compoundVariants: [
-      { round: true, size: "4xs", class: "p-0.5" },
-      { round: true, size: "3xs", class: "p-1" },
-      { round: true, size: "2xs", class: "p-1" },
-      { round: true, size: "xs", class: "p-2" },
-      { round: true, size: "sm", class: "p-2" },
-      { round: true, size: "md", class: "p-3" },
-      { round: true, size: "lg", class: "p-3" },
-      { round: true, size: "xl", class: "p-4" },
-      { round: true, size: "2xl", class: "p-4" },
-      { round: true, size: "3xl", class: "p-4" },
-      { round: true, size: "4xl", class: "p-5" },
-      { round: true, size: "5xl", class: "p-5" },
-      { round: true, color: "white", class: "bg-white/5" },
-      { round: true, color: "grayscale", class: "bg-gray-700/5" },
-    ],
-  },
-  container: {
-    base: "fill-current outline-0",
-    variants: {
-      size: {
-        "4xs": "size-2.5",
-        "3xs": "size-3",
-        "2xs": "size-3.5",
-        xs: "size-4",
-        sm: "size-5",
-        md: "size-6",
-        lg: "size-8",
-        xl: "size-10",
-        "2xl": "size-12",
-        "3xl": "size-14",
-        "4xl": "size-16",
-        "5xl": "size-20",
-      },
       variant: {
         light: "text-{color}-400",
         default: "text-{color}-600",
@@ -50,12 +12,8 @@ export default /*tw*/ {
         grayscale: "text-gray-900",
       },
       interactive: {
-        true: "cursor-pointer hover:opacity-50 active:opacity-50",
+        true: "cursor-pointer",
       },
-    },
-  },
-  icon: {
-    variants: {
       size: {
         "4xs": "size-2.5",
         "3xs": "size-3",
@@ -81,10 +39,8 @@ export default /*tw*/ {
     size: "md",
     variant: "default",
     interactive: false,
-    round: false,
   },
   safelist: (colors) => [
-    { pattern: `bg-(${colors})-600` },
     { pattern: `text-(${colors})-400` },
     { pattern: `text-(${colors})-600` },
     { pattern: `text-(${colors})-800` },

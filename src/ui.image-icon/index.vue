@@ -1,16 +1,11 @@
 <template>
-  <div
+  <component
+    :is="dynamicComponent"
     v-tooltip="tooltipConfig"
+    v-bind="iconAttrs"
     :data-test="dataTest"
-    v-bind="wrapperAttrs"
-    @focus="onFocus"
-    @blur="onBlur"
     @click="onClick"
-  >
-    <div v-bind="containerAttrs">
-      <component :is="dynamicComponent" v-bind="iconAttrs" />
-    </div>
-  </div>
+  />
 </template>
 
 <script setup>
@@ -62,14 +57,6 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UIcon).size,
-  },
-
-  /**
-   * Set round mild semi-transparent background and solid colour icon.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UIcon).round,
   },
 
   /**
@@ -137,19 +124,9 @@ const emit = defineEmits([
    * Triggers when the icon is clicked.
    */
   "click",
-
-  /**
-   * Triggers when the icon is focused.
-   */
-  "focus",
-
-  /**
-   * Triggers when the icon loses focus.
-   */
-  "blur",
 ]);
 
-const { config, wrapperAttrs, containerAttrs, iconAttrs } = useAttrs(props);
+const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
   return (
@@ -219,19 +196,13 @@ const dynamicComponent = computed(() => {
   return defineAsyncComponent(libraries[library]);
 });
 
-const tooltipConfig = computed(() => {
-  return { onShow: () => !!props.tooltip, ...props.tooltipSettings, content: props.tooltip };
-});
+const tooltipConfig = computed(() => ({
+  onShow: () => !!props.tooltip,
+  ...props.tooltipSettings,
+  content: props.tooltip,
+}));
 
 function onClick(event) {
   emit("click", event);
-}
-
-function onFocus() {
-  emit("focus");
-}
-
-function onBlur(event) {
-  emit("blur", event);
 }
 </script>
