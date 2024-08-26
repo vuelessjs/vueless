@@ -10,10 +10,19 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "{UIcon}",
-  iconName: "emoji_food_beverage",
-  footer: "mt-4 flex justify-center",
+  emptyIconWrapper: {
+    base: "rounded-full bg-gray-700/5",
+    variants: {
+      size: {
+        sm: "p-4",
+        md: "p-5",
+        lg: "p-6",
+      },
+    },
+  },
+  emptyIcon: "{UIcon}",
   title: "{UHeader}",
+  footer: "mt-4 flex justify-center",
   description: {
     base: "text-center",
     variants: {
@@ -26,5 +35,6 @@ export default /*tw*/ {
   },
   defaults: {
     size: "md",
+    emptyIcon: "emoji_food_beverage",
   },
 };

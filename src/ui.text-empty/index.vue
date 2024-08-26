@@ -3,14 +3,15 @@
     <div v-bind="headerAttrs">
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
-        <UIcon
-          internal
-          :name="config.iconName"
-          color="gray"
-          :size="iconSize"
-          round
-          v-bind="iconAttrs"
-        />
+        <div v-bind="emptyIconWrapperAttrs">
+          <UIcon
+            internal
+            :name="config.defaults.emptyIcon"
+            color="gray"
+            :size="iconSize"
+            v-bind="emptyIconAttrs"
+          />
+        </div>
       </slot>
     </div>
 
@@ -84,8 +85,16 @@ const props = defineProps({
   },
 });
 
-const { config, titleAttrs, descriptionAttrs, wrapperAttrs, headerAttrs, footerAttrs, iconAttrs } =
-  useAttrs(props);
+const {
+  config,
+  titleAttrs,
+  descriptionAttrs,
+  wrapperAttrs,
+  headerAttrs,
+  footerAttrs,
+  emptyIconWrapperAttrs,
+  emptyIconAttrs,
+} = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
