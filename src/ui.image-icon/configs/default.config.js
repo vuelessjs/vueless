@@ -72,7 +72,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     name: "",
     library: "@material-symbols",
     weight: 500,

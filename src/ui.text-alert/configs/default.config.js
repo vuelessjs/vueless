@@ -48,7 +48,7 @@ export default /*tw*/ {
   },
   icon: "{UIcon}",
   iconName: "close",
-  defaultVariants: {
+  defaults: {
     variant: "primary",
     color: "brand",
     size: "md",

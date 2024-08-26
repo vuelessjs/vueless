@@ -24,7 +24,7 @@ export default /*tw*/ {
       disabled:border-{color}-400 disabled:bg-{color}-400
     `,
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     name: "colorPicker",
     disabled: false,

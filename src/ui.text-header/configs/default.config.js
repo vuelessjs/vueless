@@ -38,7 +38,7 @@ export default /*tw*/ {
       { underlined: true, color: "grayscale", class: "border-gray-600" },
     ],
   },
-  defaultVariants: {
+  defaults: {
     color: "grayscale",
     weight: "medium",
     size: "md",

@@ -19,7 +19,7 @@ export default /*tw*/ {
     enterFromClass: "scale-110 transform",
     leaveActiveClass: "scale-110 transform",
   },
-  defaultVariants: {
+  defaults: {
     color: "brand",
   },
   safelist: (colors) => [{ pattern: `bg-(${colors})-600` }],

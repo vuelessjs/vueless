@@ -83,7 +83,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
       const configAttrs = {
         config: configKeyValue,
-        ...configKeyValue?.defaultVariants,
+        ...configKeyValue?.defaults,
       };
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
@@ -192,6 +192,7 @@ function mergeConfigs({
 
   const {
     i18n,
+    defaults,
     strategy,
     safelist,
     component,
@@ -217,7 +218,7 @@ function mergeConfigs({
         }
       } else if (key === strategy) {
         config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
-      } else if (key === defaultVariants) {
+      } else if (key === defaults || key === defaultVariants) {
         config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
       } else if (key === compoundVariants) {
         config[key] = mergeCompoundVariants({

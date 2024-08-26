@@ -7,7 +7,7 @@ export default /*tw*/ {
     confirm: "Confirm",
     cancel: "Cancel",
   },
-  defaultVariants: {
+  defaults: {
     width: "sm",
     confirmColor: "brand",
     confirmDisabled: false,

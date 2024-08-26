@@ -45,7 +45,7 @@ export default /*tw*/ {
       default: "Operation error.",
     },
   },
-  defaultVariants: {
+  defaults: {
     xPosition: "center",
     yPosition: "top",
   },

@@ -132,14 +132,11 @@ function setFavicon(faviconPath) {
 }
 
 function getDefault(defaultConfig, name) {
-  const defaultVariants = merge(
-    cloneDeep(defaultConfig.defaultVariants),
-    globalComponentConfig[name]?.defaultVariants,
-  );
+  const defaults = merge(cloneDeep(defaultConfig.defaults), globalComponentConfig[name]?.defaults);
 
-  defaultVariants.color = getColor(defaultVariants.color);
+  defaults.color = getColor(defaults.color);
 
-  return defaultVariants;
+  return defaults;
 }
 
 function getColor(color) {

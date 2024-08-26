@@ -40,7 +40,7 @@ export default /*tw*/ {
     emptyTitle: "",
     emptyDescription: "There is no data in the list.",
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     labelKey: "label",
     valueKey: "id",

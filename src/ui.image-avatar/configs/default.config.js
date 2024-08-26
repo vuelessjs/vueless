@@ -34,7 +34,7 @@ export default /*tw*/ {
     },
   },
   icon: "{UIcon}",
-  defaultVariants: {
+  defaults: {
     color: "grayscale",
     rounded: "md",
     size: "md",

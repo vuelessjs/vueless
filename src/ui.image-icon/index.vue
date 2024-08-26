@@ -163,11 +163,11 @@ const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
   const isDefaultIcon = Boolean(generatedIcons.value.find(([path]) => path.includes(props.name)));
-  const userLibrary = config.value.defaultVariants.library;
+  const userLibrary = config.value.defaults.library;
 
   const library = props.internal && isDefaultIcon ? "vueless" : userLibrary;
-  const weight = config.value.defaultVariants.weight;
-  const style = config.value.defaultVariants.style;
+  const weight = config.value.defaults.weight;
+  const style = config.value.defaults.style;
   const isFill = props.name.endsWith(FILL_SUFFIX);
   const name = props.name;
   const src = props.src;

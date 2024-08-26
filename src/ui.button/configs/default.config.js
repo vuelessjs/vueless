@@ -147,7 +147,7 @@ export default /*tw*/ {
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
   centerIcon: "{UIcon}",
-  defaultVariants: {
+  defaults: {
     color: "brand",
     variant: "primary",
     tag: "button",

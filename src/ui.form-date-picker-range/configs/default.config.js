@@ -155,7 +155,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     variant: "button",
     openDirectionX: "auto",

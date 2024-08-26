@@ -55,7 +55,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     width: "sm",
     inner: false,
     closeIcon: true,

@@ -19,7 +19,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     color: "brand",
     labelAlign: "right",
     size: "md",

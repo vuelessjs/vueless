@@ -54,7 +54,7 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     type: "text",
     inputmode: "text",

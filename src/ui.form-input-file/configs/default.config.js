@@ -69,7 +69,7 @@ export default /*tw*/ {
     noFile: "No file selected",
     uploadFile: "Choose file",
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     labelAlign: "topInside",
     allowedFileTypes: [],

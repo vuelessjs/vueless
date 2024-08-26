@@ -56,11 +56,12 @@ export const CVA_CONFIG_KEY = {
 /* Vueless default config keys */
 export const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
+  defaults: "defaults",
   strategy: "strategy",
   safelist: "safelist",
   component: "component",
-  safelistColors: "safelistColors",
   transition: "transition",
+  safelistColors: "safelistColors",
   iconName: "iconName",
   ...CVA_CONFIG_KEY,
 };

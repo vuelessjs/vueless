@@ -95,7 +95,7 @@ export default /*tw*/ {
   i18n: {
     noData: "There is no data in the table.",
   },
-  defaultVariants: {
+  defaults: {
     nesting: false,
     compact: false,
     selectable: false,

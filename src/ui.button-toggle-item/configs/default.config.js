@@ -42,7 +42,7 @@ export default /*tw*/ {
     ],
   },
   input: "p-0 m-0 size-0 invisible absolute",
-  defaultVariants: {
+  defaults: {
     variant: "primary",
     type: "radio",
     size: "md",

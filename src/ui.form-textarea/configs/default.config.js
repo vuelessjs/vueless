@@ -40,7 +40,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     rows: "3",
     size: "md",
     type: "text",

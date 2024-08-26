@@ -97,7 +97,7 @@ export default /*tw*/ {
       { align: "topInside", size: "lg", class: "mt-2.5" },
     ],
   },
-  defaultVariants: {
+  defaults: {
     align: "top",
     size: "md",
     error: false,

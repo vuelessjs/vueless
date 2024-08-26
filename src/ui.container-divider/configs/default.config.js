@@ -63,7 +63,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     variant: "default",
     size: "md",
     dashed: false,

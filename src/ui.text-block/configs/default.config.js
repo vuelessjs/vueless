@@ -27,7 +27,7 @@ export default /*tw*/ {
     },
   },
   html: "",
-  defaultVariants: {
+  defaults: {
     size: "md",
     align: "left",
     line: false,

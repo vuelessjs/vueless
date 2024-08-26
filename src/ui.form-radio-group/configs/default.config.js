@@ -11,7 +11,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     color: "brand",
     size: "md",
     disabled: false,

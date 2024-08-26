@@ -39,7 +39,7 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
-  defaultVariants: {
+  defaults: {
     color: "brand",
     size: "md",
     weight: "medium",

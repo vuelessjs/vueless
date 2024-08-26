@@ -48,7 +48,7 @@ export default /*tw*/ {
     enterFromClass: "opacity-0",
     leaveToClass: "opacity-0",
   },
-  defaultVariants: {
+  defaults: {
     color: "brand",
     size: "md",
     loading: false,

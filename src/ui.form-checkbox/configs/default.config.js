@@ -43,7 +43,7 @@ export default /*tw*/ {
   icon: "{UIcon}",
   partialIconName: "remove",
   selectedIconName: "check",
-  defaultVariants: {
+  defaults: {
     color: "brand",
     size: "md",
     labelAlign: "right",

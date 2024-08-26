@@ -1,6 +1,6 @@
 export default /*tw*/ {
   input: "{UInput}",
-  defaultVariants: {
+  defaults: {
     symbol: "$",
     size: "md",
     decimalScale: 2,

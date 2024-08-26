@@ -123,7 +123,7 @@ export default /*tw*/ {
     timeLabel: "Time",
     okLabel: "Ok",
   },
-  defaultVariants: {
+  defaults: {
     userFormat: "F j, Y",
     range: false,
     timepicker: false,

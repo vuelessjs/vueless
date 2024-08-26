@@ -28,7 +28,7 @@ export default /*tw*/ {
   expandIconName: "add",
   collapseIconName: "remove",
   divider: "{UDivider} group-last:hidden",
-  defaultVariants: {
+  defaults: {
     size: "md",
   },
 };

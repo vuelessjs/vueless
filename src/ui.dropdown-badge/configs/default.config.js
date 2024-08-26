@@ -22,7 +22,7 @@ export default /*tw*/ {
     },
   },
   list: "{UDropdownList} w-fit",
-  defaultVariants: {
+  defaults: {
     color: "brand",
     size: "md",
     weight: "medium",

@@ -61,7 +61,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     titleSize: "lg",
     width: "wide",
     gray: false,

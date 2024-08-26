@@ -11,7 +11,7 @@ export default /*tw*/ {
     hover:!text-brand-900 !hover:bg-brand-900/15 disabled:hover:bg-brand-900/15
     focus:outline-none
   `,
-  defaultVariants: {
+  defaults: {
     limit: 5,
     perPage: 20,
     prevLabel: "&lsaquo;",

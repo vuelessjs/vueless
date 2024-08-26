@@ -13,7 +13,7 @@ export default /*tw*/ {
     },
   },
   tab: "{UTab}",
-  defaultVariants: {
+  defaults: {
     size: "md",
     underlined: false,
   },

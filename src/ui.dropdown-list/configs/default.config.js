@@ -61,7 +61,7 @@ export default /*tw*/ {
     noDataToShow: "No data to show.",
     add: "Add",
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     labelKey: "label",
     valueKey: "id",

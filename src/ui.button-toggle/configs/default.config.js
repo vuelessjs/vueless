@@ -37,7 +37,7 @@ export default /*tw*/ {
     ],
   },
   item: "{UToggleItem}",
-  defaultVariants: {
+  defaults: {
     variant: "primary",
     labelAlign: "top",
     size: "md",

@@ -117,7 +117,7 @@ export default /*tw*/ {
     clear: "clear",
     addMore: "Add more...",
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
     labelAlign: "topInside",
     openDirection: "auto",

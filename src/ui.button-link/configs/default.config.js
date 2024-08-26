@@ -62,7 +62,7 @@ export default /*tw*/ {
     },
   },
   withChild: "flex no-underline hover:no-underline focus-within:ring-0 focus-within:ring-offset-0",
-  defaultVariants: {
+  defaults: {
     color: "brand",
     type: "link",
     size: "md",

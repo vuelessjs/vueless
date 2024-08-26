@@ -107,7 +107,7 @@ export default /*tw*/ {
     timeLabel: "Time",
     okLabel: "Ok",
   },
-  defaultVariants: {
+  defaults: {
     userFormat: "F j, Y",
     size: "md",
     openDirectionX: "auto",

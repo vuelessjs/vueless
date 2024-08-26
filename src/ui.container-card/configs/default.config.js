@@ -18,7 +18,7 @@ export default /*tw*/ {
   divider: "{UDivider}",
   footer: "flex justify-between",
   footerMobileReverse: "flex flex-col-reverse space-y-reverse",
-  defaultVariants: {
+  defaults: {
     padding: "md",
     mobileFooterReverse: false,
   },

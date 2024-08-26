@@ -12,7 +12,7 @@ export default /*tw*/ {
     },
   },
   progressMobile: "mt-safe-top mx-3 rounded max-w-[calc(100%-1.5rem)]",
-  defaultVariants: {
+  defaults: {
     color: "brand",
   },
   safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],

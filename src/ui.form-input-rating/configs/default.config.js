@@ -32,7 +32,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     labelAlign: "top",
     size: "md",
     stars: 5,

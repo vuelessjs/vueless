@@ -25,7 +25,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     gap: "md",
     upperlined: false,
     underlined: false,

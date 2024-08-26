@@ -51,7 +51,7 @@ export default /*tw*/ {
     },
   },
   symbol: "",
-  defaultVariants: {
+  defaults: {
     color: "grayscale",
     size: "md",
     sign: "default",

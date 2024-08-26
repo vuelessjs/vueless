@@ -38,7 +38,7 @@ export default /*tw*/ {
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     gap: "md",
     align: "start",
     justify: "start",
