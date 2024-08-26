@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  file: "{UFile}",
+  file: "{ULink}",
   info: {
     base: "flex items-center",
     variants: {

@@ -280,7 +280,7 @@ const loaderSize = computed(() => {
 
 const iconSize = computed(() => {
   const sizes = {
-    "2xs": "xs",
+    "2xs": "2xs",
     xs: "xs",
     sm: "sm",
     md: "sm",

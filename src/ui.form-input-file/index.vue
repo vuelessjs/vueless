@@ -23,16 +23,18 @@
 
         <UFiles :size="size" v-bind="fileListAttrs" :file-list="fileList">
           <template #right="{ file }">
-            <UIcon
+            <UButton
               v-if="props.multiple && !disabled"
               round
-              internal
-              interactive
-              color="brand"
-              :size="removeItemIconSize"
-              :name="config.removeItemIconName"
+              filled
+              square
+              no-ring
+              variant="thirdary"
+              :size="removeItemButtonSize"
+              :left-icon="config.removeItemIconName"
+              :disabled="disabled"
+              v-bind="removeItemButtonAttrs"
               :data-test="`${dataTest}-remove-item`"
-              v-bind="removeItemIconAttrs"
               @click.stop.prevent="onClickRemoveItem(file.id)"
             />
           </template>
@@ -95,7 +97,6 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { merge } from "lodash-es";
 
 import UText from "../ui.text-block";
-import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 import UButton from "../ui.button";
 import UFiles from "../ui.text-files";
@@ -249,7 +250,7 @@ const {
   inputAttrs,
   fileListAttrs,
   buttonWrapperAttrs,
-  removeItemIconAttrs,
+  removeItemButtonAttrs,
   hasSlotContent,
 } = useAttrs(props);
 
@@ -297,11 +298,11 @@ const fileList = computed(() => {
   return currentFiles.value ? [currentFiles.value] : [];
 });
 
-const removeItemIconSize = computed(() => {
+const removeItemButtonSize = computed(() => {
   const sizes = {
-    sm: "4xs",
-    md: "3xs",
-    lg: "2xs",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
   };
 
   return sizes[props.size];

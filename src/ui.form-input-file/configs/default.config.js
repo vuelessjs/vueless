@@ -56,7 +56,7 @@ export default /*tw*/ {
   chooseFileIconName: "attach_file",
   clearButton: "{UButton}",
   clearIconName: "close",
-  removeItemIcon: "{UIcon} ml-2",
+  removeItemButton: "{UButton} ml-2",
   removeItemIconName: "close",
   dropzoneWrapperHover: "border-gray-400 border-dashed",
   dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",

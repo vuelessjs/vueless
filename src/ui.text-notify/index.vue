@@ -13,24 +13,24 @@
     >
       <UIcon
         v-if="notification.type === NOTIFY_TYPE.success"
-        data-test="type-notify"
         color="green"
         variant="light"
         size="md"
         internal
         :name="config.successIconName"
         v-bind="successIconAttrs"
+        data-test="type-notify"
       />
 
       <UIcon
         v-else-if="notification.type === NOTIFY_TYPE.warning"
-        data-test="type-notify"
         color="orange"
         variant="light"
         size="md"
         internal
         :name="config.warningIconName"
         v-bind="warningIconAttrs"
+        data-test="type-notify"
       />
 
       <UIcon
