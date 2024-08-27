@@ -74,7 +74,7 @@ export const description = DefaultTemplate.bind({});
 description.args = { description: "some description text" };
 
 export const rows1 = DefaultTemplate.bind({});
-rows1.args = { rows: 1 };
+rows1.args = { rows: "1" };
 
 export const readonly = DefaultTemplate.bind({});
 readonly.args = { readonly: true, value: "some value for read" };

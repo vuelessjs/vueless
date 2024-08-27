@@ -41,7 +41,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    rows: 3,
+    rows: "3",
     resizable: false,
     size: "md",
     type: "text",

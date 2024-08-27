@@ -40,7 +40,8 @@
         @mouseleave="onMouseleave"
         @mousedown="onMousedown"
         @click="onClick"
-        @keydown="onKeydown"
+        @keydown.enter="onEnter"
+        @keydown.backspace="onBackspace"
       />
     </label>
     <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
@@ -167,7 +168,7 @@ const props = defineProps({
    * Set number of visible rows.
    */
   rows: {
-    type: Number,
+    type: [String, Number],
     default: getDefault(defaultConfig, UTextarea).rows,
   },
 
@@ -255,23 +256,21 @@ watch(
   },
 );
 
-function onKeydown(event) {
+function onEnter() {
+  currentRows.value++;
+}
+
+function onBackspace() {
   const textarea = textareaRef.value;
 
   if (!textarea) return;
 
-  if (event.key === "Enter") {
-    currentRows.value++;
-  } else if (event.key === "Backspace") {
-    const content = textarea.value;
+  const content = textarea.value;
+  const newlineCount = (content.match(/\n/g) || []).length;
+  const newRowCount = Math.max(props.rows, newlineCount + 1);
 
-    const newlineCount = (content.match(/\n/g) || []).length;
-
-    const newRowCount = Math.max(props.rows, newlineCount + 1);
-
-    if (newRowCount < currentRows.value) {
-      currentRows.value = newRowCount;
-    }
+  if (newRowCount < currentRows.value) {
+    currentRows.value = newRowCount;
   }
 }
 
