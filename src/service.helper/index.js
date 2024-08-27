@@ -6,40 +6,34 @@
  @returns {Object}
  */
 export function cloneDeep(entity, cache = new WeakMap()) {
-  const referenceTypes = ["Array", "Object", "Map", "Set", "Date"];
-  const entityType = Object.prototype.toString.call(entity);
-
-  if (
-    !new RegExp(referenceTypes.join("|")).test(entityType) ||
-    entity instanceof WeakMap ||
-    entity instanceof WeakSet
-  ) {
+  // primitives
+  if (Object(entity) !== entity) {
     return entity;
   }
 
+  // cyclic reference
   if (cache.has(entity)) {
     return cache.get(entity);
   }
 
-  const c = new entity.constructor();
+  const result =
+    entity instanceof Set
+      ? new Set(entity)
+      : entity instanceof Map
+        ? new Map(Array.from(entity, ([key, val]) => [key, cloneDeep(val, cache)]))
+        : entity instanceof Date
+          ? new Date(entity)
+          : entity instanceof RegExp
+            ? new RegExp(entity.source, entity.flags)
+            : entity.constructor
+              ? new entity.constructor()
+              : Object.create(null);
 
-  if (entity instanceof Map) {
-    entity.forEach((value, key) => c.set(cloneDeep(key), cloneDeep(value)));
-  }
-
-  if (entity instanceof Set) {
-    entity.forEach((value) => c.add(cloneDeep(value)));
-  }
-
-  if (entity instanceof Date) {
-    return new Date(entity);
-  }
-
-  cache.set(entity, c);
+  cache.set(entity, result);
 
   return Object.assign(
-    c,
-    ...Object.keys(entity).map((prop) => ({ [prop]: cloneDeep(entity[prop], cache) })),
+    result,
+    ...Object.keys(entity).map((key) => ({ [key]: cloneDeep(entity[key], cache) })),
   );
 }
 
