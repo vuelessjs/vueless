@@ -32,7 +32,7 @@
         :rows="currentRows"
         :inputmode="inputmode"
         :data-test="dataTest"
-        :class="{ 'resize-none': !resizable }"
+        :resizable="resizable"
         v-bind="textareaAttrs"
         @focus="onFocus"
         @blur="onBlur"

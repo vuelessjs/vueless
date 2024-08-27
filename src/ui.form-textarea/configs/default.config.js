@@ -19,6 +19,9 @@ export default /*tw*/ {
       disabled: {
         true: "focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 pointer-events-none",
       },
+      resizable: {
+        false: "resize-none",
+      },
     },
     compoundVariants: [
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
@@ -42,11 +45,11 @@ export default /*tw*/ {
   },
   defaults: {
     rows: "3",
-    resizable: false,
     size: "md",
     type: "text",
     inputmode: "text",
     labelAlign: "topInside",
+    resizable: false,
     disabled: false,
     readonly: false,
     noAutocomplete: false,
