@@ -15,11 +15,11 @@
         <UIcon
           v-if="!noIcon"
           internal
-          :name="config.iconName"
+          :name="config.defaults.dropdownIcon"
           :size="iconSize"
           :color="color"
           :data-test="`${dataTest}-caret`"
-          v-bind="iconAttrs"
+          v-bind="dropdownIconAttrs"
         />
       </template>
     </UBadge>
@@ -199,8 +199,15 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const { config, listWrapperAttrs, wrapperAttrs, badgeAttrs, listAttrs, iconAttrs, hasSlotContent } =
-  useAttrs(props, { isShownOptions });
+const {
+  config,
+  listWrapperAttrs,
+  wrapperAttrs,
+  badgeAttrs,
+  listAttrs,
+  dropdownIconAttrs,
+  hasSlotContent,
+} = useAttrs(props, { isShownOptions });
 
 const iconSize = computed(() => {
   const sizes = {

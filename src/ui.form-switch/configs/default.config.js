@@ -41,9 +41,7 @@ export default /*tw*/ {
       { checked: true, size: "lg", class: "ml-[calc(100%-1.25rem)]" },
     ],
   },
-  icon: "{UIcon}",
-  selectedIconName: "check",
-  unselectedIconName: "close",
+  toggleIcon: "{UIcon}",
   toggleLabel: {
     base: "absolute text-center text-2xs font-medium uppercase text-white",
     compoundVariants: [
@@ -59,6 +57,8 @@ export default /*tw*/ {
     active: "On",
   },
   defaults: {
+    enabledIcon: "check",
+    disabledIcon: "close",
     color: "brand",
     size: "md",
     labelAlign: "right",

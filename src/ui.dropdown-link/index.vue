@@ -19,11 +19,11 @@
             v-if="!noIcon"
             internal
             interactive
-            :name="config.iconName"
+            :name="config.defaults.dropdownIcon"
             :size="iconSize"
             :color="color"
             :data-test="`${dataTest}-caret`"
-            v-bind="iconAttrs"
+            v-bind="dropdownIconAttrs"
             @click="onClickLink"
           />
         </template>
@@ -226,7 +226,7 @@ const {
   wrapperAttrs,
   linkAttrs,
   listAttrs,
-  iconAttrs,
+  dropdownIconAttrs,
   triggerAttrs,
   hasSlotContent,
 } = useAttrs(props, { isShownOptions });

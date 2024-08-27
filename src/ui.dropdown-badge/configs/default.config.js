@@ -12,8 +12,7 @@ export default /*tw*/ {
     },
   },
   badgeActive: "group",
-  icon: "{UIcon} transition duration-300 group-[]:rotate-180",
-  iconName: "keyboard_arrow_down",
+  dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   listWrapper: {
     base: `
       absolute z-10
@@ -33,6 +32,7 @@ export default /*tw*/ {
   },
   list: "{UDropdownList} w-fit",
   defaults: {
+    dropdownIcon: "keyboard_arrow_down",
     color: "brand",
     size: "md",
     weight: "medium",

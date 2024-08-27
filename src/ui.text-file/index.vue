@@ -12,8 +12,8 @@
           interactive
           color="gray"
           :size="iconSize"
-          :name="config.iconName"
-          v-bind="iconAttrs"
+          :name="config.defaults.fileIcon"
+          v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
         />
@@ -103,7 +103,7 @@ const props = defineProps({
 
 const focus = ref(false);
 
-const { config, fileAttrs, infoAttrs, iconAttrs, labelAttrs, imageAttrs } = useAttrs(props, {
+const { config, fileAttrs, infoAttrs, fileIconAttrs, labelAttrs, imageAttrs } = useAttrs(props, {
   focus,
 });
 

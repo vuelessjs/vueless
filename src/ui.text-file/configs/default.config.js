@@ -10,8 +10,7 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "{UIcon}",
-  iconName: "description",
+  fileIcon: "{UIcon}",
   image: "rounded-sm max-w-7",
   label: {
     base: "text-gray-700 whitespace-normal hover:underline hover:decoration-dashed hover:underline-offset-4",
@@ -27,6 +26,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    fileIcon: "description",
     size: "md",
   },
 };

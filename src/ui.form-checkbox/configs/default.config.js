@@ -40,10 +40,10 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "{UIcon}",
-  partialIconName: "remove",
-  selectedIconName: "check",
+  checkedIcon: "{UIcon}",
   defaults: {
+    partiallyCheckedIcon: "remove",
+    checkedIcon: "check",
     color: "brand",
     size: "md",
     labelAlign: "right",
