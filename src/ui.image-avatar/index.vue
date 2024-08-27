@@ -13,7 +13,7 @@
         :name="icon"
         :color="color === 'white' ? 'grayscale' : color"
         :size="size"
-        v-bind="iconAttrs"
+        v-bind="avatarIconAttrs"
       />
     </template>
   </div>
@@ -54,7 +54,7 @@ const props = defineProps({
    */
   icon: {
     type: String,
-    default: getDefault(defaultConfig, UAvatar).icon,
+    default: getDefault(defaultConfig, UAvatar).avatarIcon,
   },
 
   /**
@@ -132,7 +132,7 @@ const backgroundImage = computed(() => {
   return props.src ? `background-image: url(${src});` : "";
 });
 
-const { avatarAttrs, iconAttrs } = useAttrs(props);
+const { avatarAttrs, avatarIconAttrs } = useAttrs(props);
 
 function onClick(event) {
   emit("click", event);

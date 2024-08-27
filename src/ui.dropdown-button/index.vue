@@ -18,11 +18,11 @@
         <UIcon
           v-if="!noIcon"
           internal
-          :name="config.iconName"
+          :name="config.defaults.dropdownIcon"
           :size="iconSize"
           :color="iconColor"
           :data-test="`${dataTest}-caret`"
-          v-bind="iconAttrs"
+          v-bind="dropdownIconAttrs"
         />
       </template>
     </UButton>
@@ -239,7 +239,7 @@ const {
   listWrapperAttrs,
   buttonAttrs,
   listAttrs,
-  iconAttrs,
+  dropdownIconAttrs,
   wrapperAttrs,
   hasSlotContent,
 } = useAttrs(props, { isShownOptions });

@@ -3,8 +3,7 @@ export default /*tw*/ {
   trigger: "flex items-center relative space-x-0.5",
   link: "{ULink}",
   linkActive: "group",
-  icon: "{UIcon} block transition duration-300 group-[]:rotate-180",
-  iconName: "keyboard_arrow_down",
+  dropdownIcon: "{UIcon} block transition duration-300 group-[]:rotate-180",
   listWrapper: {
     base: `
       absolute z-10
@@ -24,6 +23,7 @@ export default /*tw*/ {
   },
   list: "{UDropdownList} w-fit",
   defaults: {
+    dropdownIcon: "keyboard_arrow_down",
     color: "brand",
     size: "md",
     labelKey: "label",
