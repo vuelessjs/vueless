@@ -27,7 +27,7 @@ export default /*tw*/ {
     ],
   },
   text: "{UText}",
-  body: "flex items-baseline justify-between",
+  body: "flex items-start justify-between",
   content: "",
   innerWrapper: "flex gap-2",
   title: {
@@ -42,10 +42,7 @@ export default /*tw*/ {
     },
   },
   description: "",
-  button: {
-    component: "{UButton}",
-    compoundVariants: [{ color: "grayscale", variant: "primary", closable: true, class: "hover:bg-gray-200" }],
-  },
+  closeButton: "{UButton}",
   closeIcon: "{UIcon}",
   defaults: {
     closeIcon: "close",

@@ -43,15 +43,15 @@
         v-if="closable"
         square
         no-ring
-        size="sm"
-        :color="color"
+        size="xs"
+        :color="closeButtonColor"
         variant="thirdary"
-        v-bind="buttonAttrs"
+        v-bind="closeButtonAttrs"
         @click="onClickClose"
       >
         <UIcon
           internal
-          size="xs"
+          :size="closeIconSize"
           :color="iconColor"
           :name="config.defaults.closeIcon"
           :data-test="`${dataTest}-button`"
@@ -181,8 +181,8 @@ const {
   textAttrs,
   titleAttrs,
   descriptionAttrs,
+  closeButtonAttrs,
   closeIconAttrs,
-  buttonAttrs,
   innerWrapperAttrs,
   hasSlotContent,
 } = useAttrs(props);
@@ -198,10 +198,26 @@ function onClickClose() {
   emit("hidden");
 }
 
+const closeIconSize = computed(() => {
+  const sizes = {
+    xs: "3xs",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+  };
+
+  return sizes[props.size];
+});
+
+const closeButtonColor = computed(() => {
+  if (props.color === "grayscale") return "white";
+  if (props.color === "white") return "grayscale";
+
+  return props.color;
+});
+
 const iconColor = computed(() => {
-  if (props.color === "white") {
-    return "gray";
-  }
+  if (props.color === "white") return "gray";
 
   return props.variant === "primary" ? "white" : props.color;
 });
