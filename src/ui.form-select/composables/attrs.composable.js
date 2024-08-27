@@ -68,30 +68,18 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
       }));
     }
 
-    if (key === "clear") {
-      const clearAttrs = attrs[`${key}Attrs`];
+    if (
+      key === "toggle" ||
+      key === "clear" ||
+      key === "beforeCaret" ||
+      key === "afterCaret" ||
+      key === "rightIconWrapper"
+    ) {
+      const keyAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...clearAttrs.value,
-        class: cx([clearAttrs.value.class, caretClasses.value]),
-      }));
-    }
-
-    if (key === "beforeCaret") {
-      const beforeCaretAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...beforeCaretAttrs.value,
-        class: cx([beforeCaretAttrs.value.class, caretClasses.value]),
-      }));
-    }
-
-    if (key === "afterCaret") {
-      const afterCaretAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...afterCaretAttrs.value,
-        class: cx([afterCaretAttrs.value.class, caretClasses.value]),
+        ...keyAttrs.value,
+        class: cx([keyAttrs.value.class, caretClasses.value]),
       }));
     }
 

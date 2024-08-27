@@ -18,10 +18,7 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: `
-          border-gray-100 bg-gray-100 text-gray-900 hover:border-gray-100
-          focus-within:border-gray-100 focus-within:ring-0 focus-within:ring-offset-0
-        `,
+        true: "bg-gray-100 pointer-events-none",
       },
     },
     compoundVariants: [
@@ -52,7 +49,7 @@ export default /*tw*/ {
         lg: "text-base min-h-6",
       },
       disabled: {
-        true: "bg-gray-100",
+        true: "text-gray-700",
       },
       multiple: {
         true: "py-2 last:mb-2.5 flex justify-between border-b border-gray-100",
@@ -64,8 +61,8 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-base" },
     ],
   },
-  leftIconWrapper: "pr-3 flex items-center",
-  rightIconWrapper: "pl-3 flex items-center",
+  leftIconWrapper: "pr-1.5",
+  rightIconWrapper: "pr-3",
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
   beforeCaret: "",
@@ -95,7 +92,7 @@ export default /*tw*/ {
       { size: "lg", class: "text-base" },
     ],
   },
-  search: "flex w-fit",
+  search: "flex w-full",
   searchInput: {
     base: `
         p-0 font-normal leading-none text-gray-900 relative w-full border-none bg-transparent

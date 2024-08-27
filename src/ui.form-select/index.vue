@@ -11,10 +11,11 @@
     centred
     v-bind="labelAttrs"
     :data-test="dataTest"
+    :tabindex="-1"
   >
     <div
       ref="wrapperRef"
-      :tabindex="searchable ? -1 : 0"
+      :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + id"
       v-bind="wrapperAttrs"
@@ -25,9 +26,30 @@
       @keydown.enter.tab.stop.self="dropdownListRef.addPointerElement"
       @keyup.esc="deactivate"
     >
+      <!-- @slot Use it to add something after input. -->
+      <slot name="right" />
+
+      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
+        <!--
+            @slot Use it to add icon after option.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
+          <UIcon
+            v-if="rightIcon"
+            :name="rightIcon"
+            :size="iconSize"
+            internal
+            v-bind="rightIconAttrs"
+          />
+        </slot>
+      </div>
+
       <div
         v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
         v-bind="afterCaretAttrs"
+        :tabindex="-1"
       >
         <!--
           @slot Use it to add something after caret.
@@ -39,6 +61,7 @@
       <div
         v-show="!multiple || (!isLocalValue && multiple)"
         v-bind="toggleAttrs"
+        :tabindex="-1"
         @mousedown.prevent.stop="toggle"
       >
         <UIcon
@@ -48,18 +71,8 @@
           :size="iconSize"
           :name="config.toggleIconName"
           v-bind="toggleIconAttrs"
+          :tabindex="-1"
         />
-      </div>
-
-      <div
-        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
-        v-bind="beforeCaretAttrs"
-      >
-        <!--
-          @slot Use it to add something before caret.
-          @binding {object} scope-props
-        -->
-        <slot :scope-props="props" name="before-caret" />
       </div>
 
       <div v-if="isLocalValue && !noClear && !disabled && !multiple" v-bind="clearAttrs">
@@ -72,6 +85,17 @@
           v-bind="clearIconAttrs"
           @mousedown="removeElement"
         />
+      </div>
+
+      <div
+        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
+        v-bind="beforeCaretAttrs"
+      >
+        <!--
+          @slot Use it to add something before caret.
+          @binding {object} scope-props
+        -->
+        <slot :scope-props="props" name="before-caret" />
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
@@ -192,29 +216,6 @@
           @click.prevent.capture
           v-text="currentLocale.clear"
         />
-
-        <!-- @slot Use it to add something after input. -->
-        <slot name="right" />
-
-        <span
-          v-if="hasSlotContent($slots['right-icon']) || rightIcon"
-          v-bind="rightIconWrapperAttrs"
-        >
-          <!--
-            @slot Use it to add icon after option.
-            @binding {string} icon-name
-            @binding {string} icon-size
-          -->
-          <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
-            <UIcon
-              v-if="rightIcon"
-              :name="rightIcon"
-              :size="iconSize"
-              internal
-              v-bind="rightIconAttrs"
-            />
-          </slot>
-        </span>
       </div>
 
       <UDropdownList
@@ -752,7 +753,7 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value) return;
+  if (!isOpen.value || props.disabled) return;
 
   props.searchable && searchInputRef.value ? searchInputRef.value.blur() : wrapperRef.value?.blur();
 
