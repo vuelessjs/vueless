@@ -53,9 +53,9 @@
           internal
           size="xs"
           :color="iconColor"
-          :name="config.iconName"
+          :name="config.defaults.closeIcon"
           :data-test="`${dataTest}-button`"
-          v-bind="iconAttrs"
+          v-bind="closeIconAttrs"
         />
       </UButton>
     </div>
@@ -181,7 +181,7 @@ const {
   textAttrs,
   titleAttrs,
   descriptionAttrs,
-  iconAttrs,
+  closeIconAttrs,
   buttonAttrs,
   innerWrapperAttrs,
   hasSlotContent,

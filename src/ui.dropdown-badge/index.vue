@@ -11,7 +11,7 @@
       v-bind="badgeAttrs"
       @click="onClickBadge"
     >
-      <template #right>
+      <template #right-icon>
         <UIcon
           v-if="!noIcon"
           internal
@@ -204,9 +204,9 @@ const { config, listWrapperAttrs, wrapperAttrs, badgeAttrs, listAttrs, iconAttrs
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
   };
 
   return sizes[props.size];

@@ -1,9 +1,19 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  badge: "{UBadge} cursor-pointer",
-  icon: "{UIcon} transition duration-300",
+  badge: {
+    component: "{UBadge}",
+    base: "cursor-pointer",
+    variants: {
+      size: {
+        sm: "pr-1",
+        md: "pr-1.5",
+        lg: "pr-1.5",
+      },
+    },
+  },
+  badgeActive: "group",
+  icon: "{UIcon} transition duration-300 group-[]:rotate-180",
   iconName: "keyboard_arrow_down",
-  iconRotate: "rotate-180",
   listWrapper: {
     base: `
       absolute z-10

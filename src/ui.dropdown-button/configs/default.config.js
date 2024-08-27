@@ -1,9 +1,9 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   button: "{UButton}",
-  icon: "{UIcon} transition duration-300",
+  buttonActive: "group",
+  icon: "{UIcon} transition duration-300 group-[]:rotate-180",
   iconName: "keyboard_arrow_down",
-  iconRotate: "rotate-180",
   listWrapper: {
     base: `
       absolute z-10 inline-block

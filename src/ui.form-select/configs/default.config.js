@@ -79,7 +79,7 @@ export default /*tw*/ {
     ],
   },
   toggle: "mr-3",
-  toggleIcon: "{UIcon} transform transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
   toggleIconName: "expand_more",
   clear: "",
   clearIcon: "{UIcon}",

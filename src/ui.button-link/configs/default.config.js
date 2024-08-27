@@ -7,7 +7,7 @@ export default /*tw*/ {
     variants: {
       size: {
         sm: "gap-1",
-        md: "gap-1.5",
+        md: "gap-1",
         lg: "gap-1.5",
       },
       color: {
@@ -27,7 +27,7 @@ export default /*tw*/ {
   },
   link: {
     base: `
-      w-full inline-block cursor-pointer !leading-none transition
+      inline-block cursor-pointer !leading-none transition
       text-{color}-600 decoration-{color}-600 underline-offset-4
       hover:text-{color}-700 hover:decoration-{color}-700
       focus:text-{color}-700 focus:decoration-{color}-700 focus:outline-0

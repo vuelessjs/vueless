@@ -1,6 +1,6 @@
 <template>
   <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
-    <!-- @slot Use it to add something before the text. -->
+    <!-- @slot Use it to add something before the label. -->
     <slot name="left" />
 
     <router-link
@@ -16,7 +16,7 @@
       @keydown="onKeydown"
       @mouseover="onMouseover"
     >
-      <!-- @slot Use it replace the text. -->
+      <!-- @slot Use it replace the label. -->
       <slot>
         {{ label }}
       </slot>
@@ -35,13 +35,11 @@
       @keydown="onKeydown"
       @mouseover="onMouseover"
     >
-      <!-- @slot Use it replace the text. -->
-      <slot>
-        {{ label }}
-      </slot>
+      <!-- @slot Use it replace the label. -->
+      <slot>{{ label }}</slot>
     </a>
 
-    <!-- @slot Use it to add something after the text. -->
+    <!-- @slot Use it to add something after the label. -->
     <slot name="right" />
   </div>
 </template>

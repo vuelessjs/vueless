@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "border border-solid rounded-full inline-block !leading-none",
+    base: "border rounded-full inline-block py-1 !leading-none",
     variants: {
       variant: {
         primary: "bg-{color}-50 text-{color}-600 border-transparent",
@@ -8,9 +8,9 @@ export default /*tw*/ {
         thirdary: "text-{color}-600 border-transparent",
       },
       size: {
-        sm: "px-2 py-1 text-2xs",
-        md: "px-2 py-1 text-xs",
-        lg: "px-3 py-1.5 text-sm",
+        sm: "px-2 text-2xs",
+        md: "px-2.5 text-xs",
+        lg: "px-3 text-sm",
       },
       weight: {
         regular: "font-normal",
@@ -31,9 +31,9 @@ export default /*tw*/ {
     base: "flex items-center",
     variants: {
       size: {
-        sm: "space-x-0.5",
-        md: "space-x-1",
-        lg: "space-x-1.5",
+        sm: "gap-0.5",
+        md: "gap-x-0.5",
+        lg: "gap-x-0.5",
       },
     },
   },

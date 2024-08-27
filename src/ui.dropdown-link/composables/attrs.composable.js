@@ -28,12 +28,12 @@ export default function useAttrs(props, { isShownOptions }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "icon") {
-      const iconAttrs = attrs[`${key}Attrs`];
+    if (key === "link") {
+      const linkAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...iconAttrs.value,
-        class: cx([iconAttrs.value.class, isShownOptions.value && config.value.iconRotate]),
+        ...linkAttrs.value,
+        class: cx([linkAttrs.value.class, isShownOptions.value && config.value.linkActive]),
       }));
     }
 

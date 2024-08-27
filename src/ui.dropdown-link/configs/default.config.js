@@ -2,9 +2,9 @@ export default /*tw*/ {
   wrapper: "relative inline-block",
   trigger: "flex items-center relative space-x-0.5",
   link: "{ULink}",
-  icon: "{UIcon} block transition duration-300",
+  linkActive: "group",
+  icon: "{UIcon} block transition duration-300 group-[]:rotate-180",
   iconName: "keyboard_arrow_down",
-  iconRotate: "rotate-180",
   listWrapper: {
     base: `
       absolute z-10

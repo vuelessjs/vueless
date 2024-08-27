@@ -46,9 +46,9 @@ export default /*tw*/ {
     component: "{UButton}",
     compoundVariants: [{ color: "grayscale", variant: "primary", closable: true, class: "hover:bg-gray-200" }],
   },
-  icon: "{UIcon}",
-  iconName: "close",
+  closeIcon: "{UIcon}",
   defaults: {
+    closeIcon: "close",
     variant: "primary",
     color: "brand",
     size: "md",

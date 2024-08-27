@@ -28,12 +28,12 @@ export default function useAttrs(props, { isShownOptions }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "icon") {
-      const iconAttrs = attrs[`${key}Attrs`];
+    if (key === "badge") {
+      const badgeAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...iconAttrs.value,
-        class: cx([iconAttrs.value.class, isShownOptions.value && config.value.iconRotate]),
+        ...badgeAttrs.value,
+        class: cx([badgeAttrs.value.class, isShownOptions.value && config.value.badgeActive]),
       }));
     }
 
