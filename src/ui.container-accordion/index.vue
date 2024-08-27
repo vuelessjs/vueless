@@ -4,7 +4,7 @@
       <div v-bind="titleAttrs">
         {{ title }}
         <UIcon
-          :name="isOpened ? config.defaults.toggleСollapseIcon : config.defaults.toggleExpandIcon"
+          :name="isOpened ? config.defaults.collapseIcon : config.defaults.expandIcon"
           :size="size"
           color="gray"
           internal

@@ -25,9 +25,7 @@
         <UIcon
           v-if="toggleIcon"
           internal
-          :name="
-            checkedValue ? config.defaults.toggleSelectIcon : config.defaults.toggleUnselectIcon
-          "
+          :name="checkedValue ? config.defaults.enabledIcon : config.defaults.disabledIcon"
           :color="iconColor"
           :size="iconSize"
           v-bind="toggleIconAttrs"

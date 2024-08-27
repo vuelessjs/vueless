@@ -27,8 +27,8 @@ export default /*tw*/ {
   toggleIcon: "{UIcon}",
   divider: "{UDivider} group-last:hidden",
   defaults: {
-    toggleExpandIcon: "add",
-    toggleСollapseIcon: "remove",
+    expandIcon: "add",
+    collapseIcon: "remove",
     size: "md",
   },
 };

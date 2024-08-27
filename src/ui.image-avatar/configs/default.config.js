@@ -33,12 +33,12 @@ export default /*tw*/ {
       },
     },
   },
-  avatarIcon: "{UIcon}",
+  placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",
     rounded: "md",
     size: "md",
-    avatarIcon: "image",
+    placeholderIcon: "image",
     bordered: false,
   },
   safelist: (colors) => [

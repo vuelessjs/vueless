@@ -57,8 +57,8 @@ export default /*tw*/ {
     active: "On",
   },
   defaults: {
-    toggleSelectIcon: "check",
-    toggleUnselectIcon: "close",
+    enabledIcon: "check",
+    disabledIcon: "close",
     color: "brand",
     size: "md",
     labelAlign: "right",
