@@ -2,6 +2,7 @@
   <component
     :is="dynamicComponent"
     v-tooltip="tooltipConfig"
+    tabindex="-1"
     v-bind="iconAttrs"
     :data-test="dataTest"
     @click="onClick"
