@@ -38,6 +38,9 @@ export default /*tw*/ {
         md: "text-sm placeholder:text-sm",
         lg: "text-base placeholder:text-base",
       },
+      resizable: {
+        false: "resize-none",
+      },
     },
   },
   defaults: {
@@ -46,6 +49,7 @@ export default /*tw*/ {
     type: "text",
     inputmode: "text",
     labelAlign: "topInside",
+    resizable: false,
     disabled: false,
     readonly: false,
     noAutocomplete: false,
