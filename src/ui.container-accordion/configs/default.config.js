@@ -24,11 +24,11 @@ export default /*tw*/ {
       },
     },
   },
-  icon: "{UIcon}",
-  expandIconName: "add",
-  collapseIconName: "remove",
+  toggleIcon: "{UIcon}",
   divider: "{UDivider} group-last:hidden",
   defaults: {
+    toggleExpandIcon: "add",
+    toggleСollapseIcon: "remove",
     size: "md",
   },
 };

@@ -4,11 +4,11 @@
       <div v-bind="titleAttrs">
         {{ title }}
         <UIcon
-          :name="isOpened ? config.collapseIconName : config.expandIconName"
+          :name="isOpened ? config.defaults.toggleСollapseIcon : config.defaults.toggleExpandIcon"
           :size="size"
           color="gray"
           internal
-          v-bind="iconAttrs"
+          v-bind="toggleIconAttrs"
         />
       </div>
 
@@ -95,8 +95,15 @@ const emit = defineEmits([
 
 const isOpened = ref(false);
 
-const { config, wrapperAttrs, descriptionAttrs, bodyAttrs, titleAttrs, iconAttrs, dividerAttrs } =
-  useAttrs(props, { isOpened });
+const {
+  config,
+  wrapperAttrs,
+  descriptionAttrs,
+  bodyAttrs,
+  titleAttrs,
+  toggleIconAttrs,
+  dividerAttrs,
+} = useAttrs(props, { isOpened });
 
 const dividerSize = computed(() => {
   const sizes = {

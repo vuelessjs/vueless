@@ -27,10 +27,10 @@
     <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="id">
       <UIcon
         internal
-        :name="partial ? config.partialIconName : config.selectedIconName"
+        :name="partial ? config.defaults.partialIcon : config.defaults.selectedIcon"
         :size="iconSize"
         color="white"
-        v-bind="iconAttrs"
+        v-bind="checkboxIconAttrs"
       />
     </label>
 
@@ -214,7 +214,7 @@ const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
-const { config, checkboxAttrs, iconWrapperAttrs, labelAttrs, iconAttrs } = useAttrs(props, {
+const { config, checkboxAttrs, iconWrapperAttrs, labelAttrs, checkboxIconAttrs } = useAttrs(props, {
   checkboxColor,
   checkboxSize,
 });

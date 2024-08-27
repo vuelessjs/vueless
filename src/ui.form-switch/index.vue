@@ -25,10 +25,12 @@
         <UIcon
           v-if="toggleIcon"
           internal
-          :name="checkedValue ? config.selectedIconName : config.unselectedIconName"
+          :name="
+            checkedValue ? config.defaults.toggleSelectIcon : config.defaults.toggleUnselectIcon
+          "
           :color="iconColor"
           :size="iconSize"
-          v-bind="iconAttrs"
+          v-bind="toggleIconAttrs"
         />
       </span>
 
@@ -172,8 +174,15 @@ const checkedValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const { config, iconAttrs, labelAttrs, inputAttrs, wrapperAttrs, circleAttrs, toggleLabelAttrs } =
-  useAttrs(props, { checked: checkedValue });
+const {
+  config,
+  toggleIconAttrs,
+  labelAttrs,
+  inputAttrs,
+  wrapperAttrs,
+  circleAttrs,
+  toggleLabelAttrs,
+} = useAttrs(props, { checked: checkedValue });
 
 const switchLabel = computed(() => {
   return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
