@@ -60,6 +60,7 @@
               :id="id"
               ref="fileInputRef"
               type="file"
+              :disabled="disabled"
               :accept="accept"
               :multiple="multiple"
               v-bind="inputAttrs"
