@@ -115,9 +115,9 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900
-          hover:text-gray-800 hover:bg-white
-          focus:text-gray-800 focus:bg-white
-          active:text-gray-700 active:bg-white
+          hover:text-gray-800 hover:bg-white/15
+          focus:text-gray-800 focus:bg-white/15
+          active:text-gray-700 active:bg-white/20
         `,
       },
       { filled: true, variant: "thirdary", class: "bg-{color}-600/10" },
