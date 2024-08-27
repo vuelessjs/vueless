@@ -29,7 +29,7 @@
         :placeholder="placeholder"
         :readonly="readonly"
         :disabled="disabled"
-        :rows="rows"
+        :rows="currentRows"
         :inputmode="inputmode"
         :data-test="dataTest"
         v-bind="textareaAttrs"
@@ -39,6 +39,8 @@
         @mouseleave="onMouseleave"
         @mousedown="onMousedown"
         @click="onClick"
+        @keydown.enter="onEnter"
+        @keydown.backspace="onBackspace"
       />
     </label>
     <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
@@ -49,7 +51,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, useSlots } from "vue";
+import { computed, onMounted, ref, watch, useSlots } from "vue";
 
 import ULabel from "../ui.form-label";
 import { getRandomId, getDefault } from "../service.ui";
@@ -113,6 +115,14 @@ const props = defineProps({
   },
 
   /**
+   * Allow resizing of the textarea.
+   */
+  resizable: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UTextarea).resizable,
+  },
+
+  /**
    * Make textarea read only.
    */
   readonly: {
@@ -157,7 +167,7 @@ const props = defineProps({
    * Set number of visible rows.
    */
   rows: {
-    type: String,
+    type: [String, Number],
     default: getDefault(defaultConfig, UTextarea).rows,
   },
 
@@ -235,6 +245,33 @@ const textareaRef = ref(null);
 const labelComponentRef = ref(null);
 const leftSlotWrapperRef = ref(null);
 const textareaWrapperRef = ref(null);
+
+const currentRows = ref(props.rows);
+
+watch(
+  () => props.rows,
+  (newRows) => {
+    currentRows.value = newRows;
+  },
+);
+
+function onEnter() {
+  currentRows.value++;
+}
+
+function onBackspace() {
+  const textarea = textareaRef.value;
+
+  if (!textarea) return;
+
+  const content = textarea.value;
+  const newlineCount = (content.match(/\n/g) || []).length;
+  const newRowCount = Math.max(props.rows, newlineCount + 1);
+
+  if (newRowCount < currentRows.value) {
+    currentRows.value = newRowCount;
+  }
+}
 
 const localValue = computed({
   get() {
