@@ -118,7 +118,7 @@ export default {
     }
     /* setting default props */
     UMoney: {
-      defaultVariants: {
+      defaults: {
         delimiter: ".",
         symbolAlign: "left",
         divided: false,
@@ -168,7 +168,7 @@ For example, the default preset of the `UEmpty` component looks like this:
       },
     },
   },
-  defaultVariants: {
+  defaults: {
     size: "md",
   },
 }
@@ -208,7 +208,7 @@ Some component props like `size`, `color`, `variant`, etc. have a default value 
 export default {
   component: {
     UButton: {
-      defaultVariants: {
+      defaults: {
         size: "lg",
         color: "red",
         variant: "secondary"

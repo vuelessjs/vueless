@@ -92,7 +92,7 @@ Vueless supports three popular icon libraries: `@material-symbols`, `bootstrap-i
 export default {
   component: {
     UIcon: {
-      defaultVariants: {
+      defaults: {
         library: "bootstrap-icons",
       }
     }

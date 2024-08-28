@@ -59,7 +59,7 @@ And after set the library in the config:
 export default {
   component: {
     UIcon: {
-      defaultVariants: {
+      defaults: {
         library: "@material-symbols/svg-500",
         style: "outlined", // sharp | rounded | outlined
       }
@@ -76,7 +76,7 @@ export default {
 export default {
   component: {
     UIcon: {
-      defaultVariants: {
+      defaults: {
         library: "bootstrap-icons",
       }
     }
@@ -92,7 +92,7 @@ export default {
 export default {
   component: {
     UIcon: {
-      defaultVariants: {
+      defaults: {
         library: "heroicons",
       }
     }
