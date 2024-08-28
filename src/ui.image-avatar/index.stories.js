@@ -1,6 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
+import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 
@@ -17,7 +18,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAvatar },
+  components: { UAvatar, UIcon },
   setup() {
     const slots = getSlotNames(UAvatar.name);
 
@@ -97,3 +98,13 @@ colors.args = { enum: "color" };
  */
 export const bordered = EnumVariantTemplate.bind({});
 bordered.args = { enum: "color", bordered: true };
+
+export const slotPlaceholder = DefaultTemplate.bind({});
+slotPlaceholder.args = {
+  size: "3xl",
+  slotTemplate: `
+    <template #placeholder>
+      <UIcon name="no_accounts" color="red" size="3xl" />
+    </template>
+  `,
+};

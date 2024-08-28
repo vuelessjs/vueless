@@ -8,13 +8,14 @@
   >
     <template v-if="!backgroundImage">
       <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
-      <UIcon
-        v-else
-        :name="icon"
-        :color="color === 'white' ? 'grayscale' : color"
-        :size="size"
-        v-bind="placeholderIconAttrs"
-      />
+      <!--
+        @slot Use it to add something instead of the avatar placeholder.
+        @binding {string} icon-color
+        @binding {string} icon-size
+      -->
+      <slot v-else name="placeholder" :icon-color="componentColor" :icon-size="size">
+        <UIcon :name="icon" :color="componentColor" :size="size" v-bind="placeholderIconAttrs" />
+      </slot>
     </template>
   </div>
 </template>
@@ -133,6 +134,8 @@ const backgroundImage = computed(() => {
 });
 
 const { avatarAttrs, placeholderIconAttrs } = useAttrs(props);
+
+const componentColor = computed(() => (props.color === "white" ? "grayscale" : props.color));
 
 function onClick(event) {
   emit("click", event);

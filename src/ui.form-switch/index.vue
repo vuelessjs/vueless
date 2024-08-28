@@ -22,6 +22,11 @@
       />
 
       <span v-bind="circleAttrs">
+        <!--
+          @slot Use it to add something instead of the default toggle icon.
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
         <slot name="toggle" :icon-size="iconSize" :icon-color="iconColor" :checked="checkedValue">
           <UIcon
             v-if="toggleIcon"
