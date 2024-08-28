@@ -49,14 +49,21 @@
         v-bind="closeButtonAttrs"
         @click="onClickClose"
       >
-        <UIcon
-          internal
-          :size="closeIconSize"
-          :color="iconColor"
-          :name="config.defaults.closeIcon"
-          :data-test="`${dataTest}-button`"
-          v-bind="closeIconAttrs"
-        />
+        <!--
+          @slot Use it to add something instead of the closable icon.
+          @binding {string} icon-size
+          @binding {string} icon-color
+        -->
+        <slot name="closable" :icon-size="closeIconSize" :icon-color="iconColor">
+          <UIcon
+            internal
+            :size="closeIconSize"
+            :color="iconColor"
+            :name="config.defaults.closeIcon"
+            :data-test="`${dataTest}-button`"
+            v-bind="closeIconAttrs"
+          />
+        </slot>
       </UButton>
     </div>
 

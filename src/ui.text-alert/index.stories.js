@@ -92,9 +92,7 @@ export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
   slotTemplate: `
-    <template #default>
-      some text
-    </template>
+    This story demonstrates closable prop.
   `,
 };
 
@@ -142,6 +140,20 @@ slotTitleAndDescription.args = {
     </template>
     <template #description>
       <div class="italic">This is a custom description for the alert.</div>
+    </template>
+  `,
+};
+
+export const slotClosable = DefaultTemplate.bind({});
+slotClosable.args = {
+  closable: true,
+  slotTemplate: `
+    <template #closable>
+      <UIcon
+        name="block"
+        color="white"
+        size="md"
+      />
     </template>
   `,
 };
