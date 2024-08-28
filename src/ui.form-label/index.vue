@@ -10,7 +10,8 @@
       <slot />
     </div>
 
-    <div v-if="label || error || description" v-bind="labelWrapperAttrs">
+    <!-- `v-bind` isn't assigned, because the div is system -->
+    <div v-if="label || error || description">
       <label
         v-if="label"
         :for="props.for"
@@ -28,8 +29,8 @@
         v-text="description"
       />
 
-      <!-- @slot Use it to add something to the label's footer. -->
-      <slot name="footer" />
+      <!-- @slot Use it to add something below the label content. -->
+      <slot name="bottom" />
     </div>
   </div>
 
@@ -43,8 +44,10 @@
       v-text="label"
     />
 
-    <!-- @slot Use it to wrap something into the label. -->
-    <slot />
+    <div v-bind="contentAttrs">
+      <!-- @slot Use it to wrap something into the label. -->
+      <slot />
+    </div>
 
     <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
 
@@ -55,8 +58,8 @@
       v-text="description"
     />
 
-    <!-- @slot Use it to add something to the label's footer. -->
-    <slot name="footer" />
+    <!-- @slot Use it to add something below the label content. -->
+    <slot name="bottom" />
   </div>
 </template>
 
@@ -167,8 +170,7 @@ const props = defineProps({
 const labelRef = ref(null);
 const wrapperRef = ref(null);
 
-const { wrapperAttrs, contentAttrs, labelWrapperAttrs, labelAttrs, descriptionAttrs } =
-  useAttrs(props);
+const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
 
 const isHorizontalPlacement = computed(
   () => props.align === PLACEMENT.left || props.align === PLACEMENT.right,

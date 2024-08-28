@@ -32,7 +32,6 @@ export default /*tw*/ {
       },
     },
   },
-  labelWrapper: "",
   label: {
     base: "text-gray-900 z-10 block !leading-none w-max",
     variants: {
