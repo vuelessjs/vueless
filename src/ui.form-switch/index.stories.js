@@ -78,3 +78,14 @@ icon.args = { toggleIcon: true, color: "yellow" };
 
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };
+
+export const slotToggle = DefaultTemplate.bind({});
+slotToggle.args = {
+  slotTemplate: `
+    <template #toggle="{ checked }">
+      <UIcon
+        :name="checked ? 'verified' : 'cancel'"
+      />
+    </template>
+  `,
+};
