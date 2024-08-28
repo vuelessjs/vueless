@@ -1,14 +1,10 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  button: "{UButton}",
-  buttonActive: "group",
+  dropdownButton: "{UButton}",
+  dropdownButtonActive: "group",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
-  listWrapper: {
-    base: `
-      absolute z-10 inline-block
-      max-h-60 overflow-y-auto overflow-x-hidden md:!w-auto
-      rounded-dynamic border-gray-300 shadow bg-white
-    `,
+  dropdownList: {
+    base: "{UDropdownList} w-fit",
     variants: {
       listYPosition: {
         top: "bottom-full mb-2",
@@ -20,7 +16,6 @@ export default /*tw*/ {
       },
     },
   },
-  list: "{UDropdownList} w-fit",
   defaults: {
     dropdownIcon: "keyboard_arrow_down",
     color: "brand",

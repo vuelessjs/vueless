@@ -13,12 +13,8 @@ export default /*tw*/ {
   },
   badgeActive: "group",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
-  listWrapper: {
-    base: `
-      absolute z-10
-      max-h-60 overflow-y-auto overflow-x-hidden md:!w-auto
-      rounded-dynamic border-gray-300 shadow bg-white
-    `,
+  list: {
+    base: "{UDropdownList} w-fit",
     variants: {
       listYPosition: {
         top: "bottom-6 mb-6",
@@ -30,7 +26,6 @@ export default /*tw*/ {
       },
     },
   },
-  list: "{UDropdownList} w-fit",
   defaults: {
     dropdownIcon: "keyboard_arrow_down",
     color: "brand",

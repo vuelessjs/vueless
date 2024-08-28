@@ -1,7 +1,6 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownLink from "../ui.dropdown-link";
-import UDropdownItem from "../ui.dropdown-item";
 import URow from "../ui.container-row";
 
 /**
@@ -32,7 +31,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownLink, UDropdownItem },
+  components: { UDropdownLink },
   setup() {
     const slots = getSlotNames(UDropdownLink.name);
 
@@ -84,14 +83,3 @@ colors.args = { enum: "color" };
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
-
-export const dropdownListSlot = DefaultTemplate.bind({});
-dropdownListSlot.args = {
-  slotTemplate: `
-    <template #default>
-      <UDropdownItem label="Some option" />
-      <UDropdownItem label="Some option 2" />
-      <UDropdownItem label="Some option 3" />
-    </template>
-  `,
-};

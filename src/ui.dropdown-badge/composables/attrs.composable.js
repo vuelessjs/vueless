@@ -36,22 +36,6 @@ export default function useAttrs(props, { isShownOptions }) {
         class: cx([badgeAttrs.value.class, isShownOptions.value && config.value.badgeActive]),
       }));
     }
-
-    if (key === "list") {
-      const getCVA = cva({
-        base: "",
-        variants: config.value["listWrapper"].variants,
-        compoundVariants: [],
-      });
-
-      const classes = computed(() =>
-        getCVA({
-          ...props,
-        }),
-      );
-
-      attrs[`${key}Attrs`] = getAttrs(key, { classes: classes });
-    }
   }
 
   return {

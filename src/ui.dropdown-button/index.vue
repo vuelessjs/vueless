@@ -11,10 +11,10 @@
       :square="square"
       :disabled="disabled"
       :data-test="`${dataTest}-button`"
-      v-bind="buttonAttrs"
+      v-bind="dropdownButtonAttrs"
       @click="onClickButton"
     >
-      <template #right-icon>
+      <template #right>
         <UIcon
           v-if="!noIcon"
           internal
@@ -27,17 +27,8 @@
       </template>
     </UButton>
 
-    <div
-      v-if="isShownOptions && hasSlotContent($slots['default'])"
-      v-bind="listWrapperAttrs"
-      @click="onClickList"
-    >
-      <!-- @slot Use it to add dropdown list. -->
-      <slot />
-    </div>
-
     <UDropdownList
-      v-if="isShownOptions && !hasSlotContent($slots['default'])"
+      v-if="isShownOptions"
       v-model="selectedItem"
       :size="size"
       :options="options"
@@ -45,7 +36,7 @@
       :label-key="labelKey"
       :data-test="`${dataTest}-item`"
       tabindex="-1"
-      v-bind="listAttrs"
+      v-bind="dropdownListAttrs"
       @click="onClickList"
     />
   </div>
@@ -234,15 +225,8 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const {
-  config,
-  listWrapperAttrs,
-  buttonAttrs,
-  listAttrs,
-  dropdownIconAttrs,
-  wrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props, { isShownOptions });
+const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapperAttrs } =
+  useAttrs(props, { isShownOptions });
 
 const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;

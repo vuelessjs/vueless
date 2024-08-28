@@ -1,7 +1,6 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UDropdownBadge from "../ui.dropdown-badge";
-import UDropdownItem from "../ui.dropdown-item";
 import URow from "../ui.container-row";
 
 /**
@@ -79,14 +78,3 @@ colors.args = { enum: "color" };
 
 export const withoutDropdownIcon = DefaultTemplate.bind({});
 withoutDropdownIcon.args = { noIcon: true };
-
-export const dropdownListSlot = DefaultTemplate.bind({});
-dropdownListSlot.args = {
-  slotTemplate: `
-    <template #default>
-      <UDropdownItem label="Some option" />
-      <UDropdownItem label="Some option 2" />
-      <UDropdownItem label="Some option 3" />
-    </template>
-  `,
-};

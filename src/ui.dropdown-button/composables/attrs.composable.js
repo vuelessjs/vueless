@@ -28,29 +28,16 @@ export default function useAttrs(props, { isShownOptions }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "button") {
-      const buttonAttrs = attrs[`${key}Attrs`];
+    if (key === "dropdownButton") {
+      const dropdownButton = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...buttonAttrs.value,
-        class: cx([buttonAttrs.value.class, isShownOptions.value && config.value.buttonActive]),
+        ...dropdownButton.value,
+        class: cx([
+          dropdownButton.value.class,
+          isShownOptions.value && config.value.dropdownButtonActive,
+        ]),
       }));
-    }
-
-    if (key === "list") {
-      const getCVA = cva({
-        base: "",
-        variants: config.value["listWrapper"].variants,
-        compoundVariants: [],
-      });
-
-      const classes = computed(() =>
-        getCVA({
-          ...props,
-        }),
-      );
-
-      attrs[`${key}Attrs`] = getAttrs(key, { classes: classes });
     }
   }
 

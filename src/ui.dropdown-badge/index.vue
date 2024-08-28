@@ -24,17 +24,8 @@
       </template>
     </UBadge>
 
-    <div
-      v-if="isShownOptions && hasSlotContent($slots['default'])"
-      v-bind="listWrapperAttrs"
-      @click="onClickList"
-    >
-      <!-- @slot Use it to add dropdown list. -->
-      <slot />
-    </div>
-
     <UDropdownList
-      v-if="isShownOptions && !hasSlotContent($slots['default'])"
+      v-if="isShownOptions"
       v-model="selectedItem"
       :size="size"
       :options="options"
@@ -199,15 +190,9 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const {
-  config,
-  listWrapperAttrs,
-  wrapperAttrs,
-  badgeAttrs,
-  listAttrs,
-  dropdownIconAttrs,
-  hasSlotContent,
-} = useAttrs(props, { isShownOptions });
+const { config, wrapperAttrs, badgeAttrs, listAttrs, dropdownIconAttrs } = useAttrs(props, {
+  isShownOptions,
+});
 
 const iconSize = computed(() => {
   const sizes = {
