@@ -173,6 +173,38 @@ sizes.args = {
   multipleModelValue: [],
 };
 
+export const slotToggle = DefaultTemplate.bind({});
+slotToggle.args = {
+  slotTemplate: `
+    <template #toggle>
+      <UIcon
+        name="expand_circle_down"
+        class="transition duration-300 group-[]/active:rotate-180"
+      />
+    </template>
+  `,
+};
+
+export const slotClear = DefaultTemplate.bind({});
+slotClear.args = {
+  slotTemplate: `
+    <template #clear>
+      <UIcon interactive name="cancel" />
+    </template>
+  `,
+};
+
+export const slotClearMultiple = DefaultTemplate.bind({});
+slotClearMultiple.args = {
+  multiple: true,
+  modelValue: [],
+  slotTemplate: `
+    <template #clear-multiple>
+      <UIcon interactive name="cancel" />
+    </template>
+  `,
+};
+
 export const slotSelectedValueLabel = DefaultTemplate.bind({});
 slotSelectedValueLabel.args = {
   slotTemplate: `
