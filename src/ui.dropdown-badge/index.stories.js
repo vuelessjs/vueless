@@ -31,7 +31,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownBadge, UDropdownItem },
+  components: { UDropdownBadge },
   setup() {
     const slots = getSlotNames(UDropdownBadge.name);
 

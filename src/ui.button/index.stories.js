@@ -119,32 +119,6 @@ slotDefault.args = {
   `,
 };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
-  slotTemplate: `
-    <template #left-icon>
-      <UIcon
-        name="star"
-        color="green"
-        size="sm"
-      />
-    </template>
-  `,
-};
-
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
-  slotTemplate: `
-    <template #right-icon>
-      <UIcon
-        name="star"
-        color="green"
-        size="sm"
-      />
-    </template>
-  `,
-};
-
 export const leftSlot = DefaultTemplate.bind({});
 leftSlot.args = {
   slotTemplate: `
