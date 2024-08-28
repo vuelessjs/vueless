@@ -11,14 +11,15 @@
     :block="getToggleBlock()"
     :square="getToggleSquare()"
     :disabled="getToggleDisabled()"
-    v-bind="buttonAttrs"
+    v-bind="toggleButtonAttrs"
     @click="onClickSetValue"
   >
     <template #left>
-      <!-- @slot Use it to add something before the text. -->
+      <!-- @slot Use it to add something before the label. -->
       <slot name="left" />
     </template>
 
+    <!-- @slot Use it to add something instead of the label. -->
     <template #default>
       <input
         :id="id"
@@ -27,15 +28,20 @@
         :type="getToggleType()"
         :value="value"
         :disabled="getToggleDisabled()"
-        v-bind="inputAttrs"
+        v-bind="toggleInputAttrs"
       />
-      {{ label }}
-      <!-- @slot Use it to add something instead of the text. -->
-      <slot name="default" />
+
+      <!--
+        @slot Use it to add something instead of the label.
+        @binding {string} label
+      -->
+      <slot name="default" :label="label">
+        {{ label }}
+      </slot>
     </template>
 
     <template #right>
-      <!-- @slot Use it to add something after the text. -->
+      <!-- @slot Use it to add something after the label. -->
       <slot name="right" />
     </template>
   </UButton>
@@ -145,7 +151,7 @@ const isSelected = computed(() => {
     : selectedValue?.value === props.value;
 });
 
-const { buttonAttrs, inputAttrs } = useAttrs(props, {
+const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
   isSelected,
   separated: getToggleSeparated,
   variant: getToggleVariant

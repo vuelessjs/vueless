@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  button: {
+  toggleButton: {
     component: "{UButton}",
     base: `
       border-gray-300 font-normal
@@ -41,7 +41,7 @@ export default /*tw*/ {
       },
     ],
   },
-  input: "p-0 m-0 size-0 invisible absolute",
+  toggleInput: "p-0 m-0 size-0 invisible absolute",
   defaults: {
     variant: "primary",
     type: "radio",
