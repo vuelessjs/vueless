@@ -99,17 +99,28 @@
       <div v-bind="timepickerInputWrapperAttrs">
         <input
           ref="hoursRef"
+          placeholder="00"
           type="text"
-          v-bind="timepickerLeftInputAttrs"
+          v-bind="timepickerInputHoursAttrs"
           @input.prevent="onTimeInput($event, INPUT_TYPE.hours, MAX_HOURS, MIN_HOURS)"
           @keydown="onTimeKeydown"
         />
         &#8282;
         <input
           ref="minutesRef"
+          placeholder="00"
           type="text"
-          v-bind="timepickerRightInputAttrs"
+          v-bind="timepickerInputMinutesAttrs"
           @input.prevent="onTimeInput($event, INPUT_TYPE.minutes, MAX_MINUTES, MIN_MINUTES)"
+          @keydown="onTimeKeydown"
+        />
+        &#8282;
+        <input
+          ref="secondsRef"
+          placeholder="00"
+          type="text"
+          v-bind="timepickerInputSecondsAttrs"
+          @input.prevent="onTimeInput($event, INPUT_TYPE.seconds, MAX_SECONDS, MIN_SECONDS)"
           @keydown="onTimeKeydown"
         />
       </div>
@@ -167,6 +178,8 @@ import {
   SEPARATOR,
   INPUT_TYPE,
   LOCALE_TYPE,
+  MAX_SECONDS,
+  MIN_SECONDS,
 } from "./constants";
 
 import defaultConfig from "./configs/default.config";
@@ -315,8 +328,9 @@ const {
   timepickerAttrs,
   timepickerLabelAttrs,
   timepickerInputWrapperAttrs,
-  timepickerLeftInputAttrs,
-  timepickerRightInputAttrs,
+  timepickerInputHoursAttrs,
+  timepickerInputMinutesAttrs,
+  timepickerInputSecondsAttrs,
   timepickerSubmitButtonAttrs,
   nextPrevWrapperAttrs,
 } = useAttrs(props);
@@ -324,6 +338,7 @@ const {
 const wrapperRef = ref(null);
 const hoursRef = ref(null);
 const minutesRef = ref(null);
+const secondsRef = ref(null);
 const rangeSwitchViewContainerRef = ref(null);
 
 const activeDate = ref(null);
@@ -442,6 +457,7 @@ const localValue = computed({
     if (parsedDate && isTimepickerEnabled.value) {
       parsedDate.setHours(Number(hoursRef.value.value));
       parsedDate.setMinutes(Number(minutesRef.value.value));
+      parsedDate.setSeconds(Number(secondsRef.value.value));
     }
 
     const isOutOfRange = dateIsOutOfRange(
@@ -471,6 +487,7 @@ const localValue = computed({
 
       hoursRef.value.value = String(currentDate.getHours()).padStart(2, "0");
       minutesRef.value.value = String(currentDate.getMinutes()).padStart(2, "0");
+      secondsRef.value.value = String(currentDate.getSeconds()).padStart(2, "0");
     }
   },
 });
@@ -491,24 +508,11 @@ const formattedDate = computed(() => {
   return formatDate(selectedDate.value, props.dateFormat, locale.value);
 });
 
-const formattedTime = computed(() => {
-  if (!isTimepickerEnabled.value) return undefined;
-
-  const hours = String(selectedDate.value?.getHours()).padStart(2, "0");
-  const minutes = String(selectedDate.value?.getMinutes()).padStart(2, "0");
-
-  return selectedDate.value ? `${hours}:${minutes}` : "";
-});
-
 const userFormattedDate = computed(() => {
   const date = formatDate(selectedDate.value, props.userFormat, userFormatLocale.value);
   const dateTo = props.range
     ? formatDate(selectedDateTo.value, props.userFormat, userFormatLocale.value)
     : undefined;
-
-  if (isTimepickerEnabled.value && selectedDate.value) {
-    return `${date} ${SEPARATOR} ${formattedTime.value}`;
-  }
 
   return props.range ? `${date} ${SEPARATOR} ${dateTo}` : date;
 });
@@ -546,6 +550,7 @@ onMounted(() => {
   if (selectedDate.value && isTimepickerEnabled.value) {
     hoursRef.value.value = String(selectedDate.value.getHours()).padStart(2, "0");
     minutesRef.value.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+    secondsRef.value.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
   }
 
   emit("userDateChange", userFormattedDate.value);
@@ -619,13 +624,17 @@ function onKeydown(event) {
 
     minutesRef.value?.blur();
     hoursRef.value?.blur();
+    secondsRef.value?.blur();
   }
 
   if (event.keyCode === KEY_CODE.enter) {
     enterKeyHandler(event);
   }
 
-  if (isNumeric(event.key) && document.activeElement !== minutesRef.value) {
+  const isActiveTimeInput =
+    document.activeElement !== minutesRef.value && document.activeElement !== secondsRef.value;
+
+  if (isNumeric(event.key) && isActiveTimeInput) {
     hoursRef.value?.focus();
   }
 
@@ -748,6 +757,7 @@ function onClickViewSwitch() {
 
 let lastValidHourValue = "";
 let lastValidMinuteValue = "";
+let lastValidSecondValue = "";
 
 function onTimeKeydown(event) {
   if ([KEY_CODE.left, KEY_CODE.up, KEY_CODE.right, KEY_CODE.down].includes(event.keyCode)) {
@@ -773,9 +783,21 @@ function onTimeInput(event, type, maxValue, minValue) {
   const numericValue = Number(value);
 
   const isHours = type === INPUT_TYPE.hours;
+  const isMinutes = type === INPUT_TYPE.minutes;
+  const isSeconds = type === INPUT_TYPE.seconds;
 
-  if (!isNumeric(event.data)) {
-    input.value = isHours ? lastValidHourValue : lastValidMinuteValue;
+  if (!isNumeric(event.data) && event.data !== null) {
+    if (isHours) {
+      input.value = lastValidHourValue;
+    }
+
+    if (isMinutes) {
+      input.value = lastValidMinuteValue;
+    }
+
+    if (isSeconds) {
+      input.value = lastValidSecondValue;
+    }
 
     return;
   }
@@ -786,12 +808,22 @@ function onTimeInput(event, type, maxValue, minValue) {
     return;
   }
 
-  isHours ? (lastValidHourValue = numericValue) : (lastValidMinuteValue = numericValue);
+  if (isHours) {
+    lastValidHourValue = numericValue;
+  }
+
+  if (isMinutes) {
+    lastValidMinuteValue = numericValue;
+  }
+
+  if (isSeconds) {
+    lastValidSecondValue = numericValue;
+  }
 
   if (selectedDate.value) {
     const date = new Date(selectedDate.value.valueOf());
 
-    date.setHours(lastValidHourValue, lastValidMinuteValue);
+    date.setHours(lastValidHourValue, lastValidMinuteValue, lastValidSecondValue);
     localValue.value = date;
   }
 

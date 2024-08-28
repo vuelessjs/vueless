@@ -43,8 +43,9 @@ export default /*tw*/ {
   timepickerLabel: "w-full",
   timepickerInputWrapper: "flex items-center gap-px rounded-dynamic border border-brand-300",
   timepickerInput: "w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-700/15",
-  timepickerLeftInput: "rounded-l-dynamic",
-  timepickerRightInput: " rounded-r-dynamic",
+  timepickerInputHours: "rounded-l-dynamic",
+  timepickerInputMinutes: "",
+  timepickerInputSeconds: "rounded-r-dynamic",
   timepickerSubmitButton: "{UButton} py-2 border-0",
   i18n: {
     weekdays: {
@@ -124,7 +125,7 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    userFormat: "F j, Y",
+    userFormat: "j F, Y",
     range: false,
     timepicker: false,
     dateFormat: undefined,

@@ -4,6 +4,8 @@
  */
 export const UCalendar = "UCalendar";
 
+export const STANDARD_USER_FORMAT = "j F, Y";
+
 export const YEARS_PER_VIEW = 12;
 export const MONTHS_PER_VIEW = 12;
 export const START_WEEK = 1;
@@ -15,6 +17,8 @@ export const MAX_HOURS = 23;
 export const MIN_HOURS = 0;
 export const MAX_MINUTES = 59;
 export const MIN_MINUTES = 0;
+export const MAX_SECONDS = 59;
+export const MIN_SECONDS = 0;
 export const SEPARATOR = "—";
 
 export const LOCALE_TYPE = {
@@ -31,6 +35,7 @@ export const VIEW = {
 export const INPUT_TYPE = {
   hours: "hours",
   minutes: "minutes",
+  seconds: "seconds",
 };
 
 export const KEY_CODE = {
