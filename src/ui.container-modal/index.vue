@@ -31,15 +31,13 @@
                     v-bind="backLinkAttrs"
                     @click="onClickBackLink"
                   >
-                    <slot name="backlink" :icon-name="config.defaults.backLinkIcon">
-                      <UIcon
-                        internal
-                        size="xs"
-                        color="gray"
-                        :name="config.defaults.backLinkIcon"
-                        v-bind="backLinkIconAttrs"
-                      />
-                    </slot>
+                    <UIcon
+                      internal
+                      size="xs"
+                      color="gray"
+                      :name="config.defaults.backLinkIcon"
+                      v-bind="backLinkIconAttrs"
+                    />
                     {{ backRoute.title }}
                   </ULink>
 
@@ -53,10 +51,17 @@
             </div>
 
             <div v-bind="headerRightAttrs">
+              <!-- @slot Use it to add something to the header right. -->
+              <slot name="header-right">
+                <slot name="header-right" />
+              </slot>
+            </div>
+
+            <div v-bind="closeIconAttrs">
               <!-- @slot Use it to add something instead of the close button. -->
-              <slot name="close-button" :icon-name="config.defaults.closeIcon">
+              <slot name="close-button">
                 <UIcon
-                  v-if="isCloseIcon"
+                  v-if="closeButton"
                   internal
                   interactive
                   :name="config.defaults.closeIcon"
@@ -175,9 +180,9 @@ const props = defineProps({
   /**
    * Allow closing modal by clicking on close icon.
    */
-  isCloseIcon: {
+  closeButton: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).isCloseIcon,
+    default: getDefault(defaultConfig, UModal).closeButton,
   },
 
   /**
@@ -333,7 +338,7 @@ function onKeydownEsc() {
 }
 
 function onClickCloseModal() {
-  props.isCloseIcon && closeModal();
+  props.closeButton && closeModal();
 }
 
 function closeModal() {

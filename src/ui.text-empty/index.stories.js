@@ -85,15 +85,6 @@ slotDefault.args = {
   `,
 };
 
-export const slotEmpty = DefaultTemplate.bind({});
-slotEmpty.args = {
-  slotTemplate: `
-    <template #empty>
-      <UBadge size="lg" label="Unfortunately, something went wrong." />
-    </template>
-  `,
-};
-
 export const slotFooter = DefaultTemplate.bind({});
 slotFooter.args = {
   slotTemplate: `

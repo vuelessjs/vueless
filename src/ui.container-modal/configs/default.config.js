@@ -58,7 +58,7 @@ export default /*tw*/ {
     closeIcon: "close",
     width: "sm",
     inner: false,
-    isCloseIcon: true,
+    closeButton: true,
     escToClose: true,
     clickToClose: true,
     noDivider: false,
