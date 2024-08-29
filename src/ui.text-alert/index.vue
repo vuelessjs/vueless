@@ -50,11 +50,11 @@
         @click="onClickClose"
       >
         <!--
-          @slot Use it to add something instead of the closable icon.
+          @slot Use it to add something instead of the close button.
           @binding {string} icon-size
           @binding {string} icon-color
         -->
-        <slot name="closable" :icon-size="closeIconSize" :icon-color="iconColor">
+        <slot name="close" :icon-size="closeIconSize" :icon-color="iconColor">
           <UIcon
             internal
             :size="closeIconSize"

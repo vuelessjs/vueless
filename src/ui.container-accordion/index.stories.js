@@ -11,9 +11,26 @@ export default {
   title: "Containers / Accordion",
   component: UAccordion,
   args: {
-    name: "Excellence",
-    title: "Excellence by necessity",
-    description: "As creators and maintainers of the technologies you are using.",
+    accordions: [
+      {
+        name: "Excellence",
+        title: "Excellence by necessity",
+        description: `As creators and maintainers of the technologies you are using,
+            our services are here to showcase the full power of our softwares.`,
+      },
+      {
+        name: "Innovation",
+        title: "Driving innovation forward",
+        description: `All the people that will be involved in delivering your project are contributing
+            to the technologies you are using, when they are not the creators themselves.`,
+      },
+      {
+        name: "Collaboration",
+        title: "Fostering collaboration",
+        description: `By working with us, you are directly supporting the open source community,
+            ensuring the ecosystem continuity and enabling Nuxt development.`,
+      },
+    ],
   },
   argTypes: {
     ...getArgTypes(UAccordion.name),
@@ -28,7 +45,11 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UAccordion v-bind="args">
+    <UAccordion
+      v-for="(accordion, index) in args.accordions"
+      :key="index"
+      v-bind="accordion"
+    >
       ${args.slotTemplate || getSlotsFragment()}
     </UAccordion>
   `,

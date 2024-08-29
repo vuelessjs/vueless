@@ -4,6 +4,7 @@ import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
+import ULink from "../ui.button-link";
 
 /**
  * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)
@@ -36,7 +37,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { USelect, UIcon, UBadge },
+  components: { USelect, UIcon, UBadge, ULink },
   setup() {
     function getSelectedBadge(options, currentValue) {
       return options?.find((option) => option.id === currentValue);
@@ -176,10 +177,10 @@ sizes.args = {
 export const slotToggle = DefaultTemplate.bind({});
 slotToggle.args = {
   slotTemplate: `
-    <template #toggle>
+    <template #toggle="{ opened }">
       <UIcon
         name="expand_circle_down"
-        class="transition duration-300 group-[]/active:rotate-180"
+        :class="{ 'rotate-180': opened }"
       />
     </template>
   `,
@@ -189,7 +190,7 @@ export const slotClear = DefaultTemplate.bind({});
 slotClear.args = {
   slotTemplate: `
     <template #clear>
-      <UIcon interactive name="cancel" />
+      <ULink label="Close" />
     </template>
   `,
 };
@@ -200,7 +201,7 @@ slotClearMultiple.args = {
   modelValue: [],
   slotTemplate: `
     <template #clear-multiple>
-      <UIcon interactive name="cancel" />
+      <ULink label="Close" />
     </template>
   `,
 };

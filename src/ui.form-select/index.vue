@@ -66,9 +66,15 @@
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
+          @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="toggle" :icon-size="iconSize">
+        <slot
+          name="toggle"
+          :icon-name="config.toggleIconName"
+          :icon-size="iconSize"
+          :opened="isOpen"
+        >
           <UIcon
             internal
             interactive
@@ -88,9 +94,10 @@
       >
         <!--
           @slot Use it to add something instead of the clear icon.
+          @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="clear" :icon-size="iconSize">
+        <slot name="clear" :icon-name="config.clearIconName" :icon-size="iconSize">
           <UIcon
             internal
             interactive
@@ -169,10 +176,15 @@
               @mousedown="removeElement(item)"
             >
               <!--
-                @slot Use it to add something instead of the multiple options clear icon.
+                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
+                @binding {string} icon-name
                 @binding {string} icon-size
               -->
-              <slot name="clear-multiple" :icon-size="iconSize">
+              <slot
+                name="clear-multiple"
+                :icon-name="config.clearMultipleIconName"
+                :icon-size="iconSize"
+              >
                 <UIcon
                   internal
                   interactive

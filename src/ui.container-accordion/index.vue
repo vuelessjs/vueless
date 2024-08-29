@@ -9,13 +9,7 @@
           @binding {boolean} opened
         -->
         <slot name="toggle" :icon-size="size" :opened="isOpened">
-          <UIcon
-            :name="isOpened ? config.defaults.collapseIcon : config.defaults.expandIcon"
-            :size="size"
-            color="gray"
-            internal
-            v-bind="toggleIconAttrs"
-          />
+          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
         </slot>
       </div>
 
@@ -111,6 +105,10 @@ const {
   toggleIconAttrs,
   dividerAttrs,
 } = useAttrs(props, { isOpened });
+
+const toggleIcon = computed(() =>
+  isOpened.value ? config.value.defaults.collapseIcon : config.value.defaults.expandIcon,
+);
 
 const dividerSize = computed(() => {
   const sizes = {

@@ -1,9 +1,9 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
 
 import UAvatar from "../ui.image-avatar";
-import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
+import ULoader from "../ui.loader";
 
 /**
  * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
@@ -18,7 +18,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAvatar, UIcon },
+  components: { UAvatar, ULoader },
   setup() {
     const slots = getSlotNames(UAvatar.name);
 
@@ -104,7 +104,7 @@ slotPlaceholder.args = {
   size: "3xl",
   slotTemplate: `
     <template #placeholder>
-      <UIcon name="no_accounts" color="red" size="3xl" />
+      <ULoader loading />
     </template>
   `,
 };
