@@ -28,7 +28,9 @@
           :color="error ? 'red' : 'brand'"
           :size="iconSize"
           :interactive="selectable"
-          :name="star <= counterValue ? config.selectedIconName : config.unselectedIconName"
+          :name="
+            star <= counterValue ? config.defaults.selectedIcon : config.defaults.unselectedIcon
+          "
           v-bind="starAttrs"
           :data-test="`${dataTest}-rating-star-${star}`"
           @click="onClickStar(star)"

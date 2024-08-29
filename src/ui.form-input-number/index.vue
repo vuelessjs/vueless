@@ -13,7 +13,7 @@
       <UIcon
         internal
         :size="size"
-        :name="config.removeIconName"
+        :name="config.defaults.removeIcon"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
         :data-test="`${dataTest}-remove`"
         v-bind="removeIconAttrs"
@@ -38,7 +38,7 @@
       <UIcon
         internal
         :size="size"
-        :name="config.addIconName"
+        :name="config.defaults.addIcon"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
         :data-test="`${dataTest}-add`"
         v-bind="addIconAttrs"

@@ -17,7 +17,7 @@
         variant="light"
         size="md"
         internal
-        :name="config.successIconName"
+        :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
       />
@@ -28,7 +28,7 @@
         variant="light"
         size="md"
         internal
-        :name="config.warningIconName"
+        :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
       />
@@ -40,7 +40,7 @@
         variant="light"
         size="md"
         internal
-        :name="config.errorIconName"
+        :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
 
@@ -68,7 +68,7 @@
         size="xs"
         internal
         interactive
-        :name="config.closeIconName"
+        :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"
         @click="onClickClose(notification)"
       />

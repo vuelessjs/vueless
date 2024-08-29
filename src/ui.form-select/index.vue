@@ -64,27 +64,49 @@
         :tabindex="-1"
         @mousedown.prevent.stop="toggle"
       >
-        <UIcon
-          internal
-          interactive
-          color="gray"
-          :size="iconSize"
-          :name="config.toggleIconName"
-          v-bind="toggleIconAttrs"
-          :tabindex="-1"
-        />
+        <!--
+          @slot Use it to add something instead of the toggle icon.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot
+          name="toggle"
+          :icon-name="config.defaults.toggleIcon"
+          :icon-size="iconSize"
+          :opened="isOpen"
+        >
+          <UIcon
+            internal
+            interactive
+            color="gray"
+            :size="iconSize"
+            :name="config.defaults.toggleIcon"
+            v-bind="toggleIconAttrs"
+            :tabindex="-1"
+          />
+        </slot>
       </div>
 
-      <div v-if="isLocalValue && !noClear && !disabled && !multiple" v-bind="clearAttrs">
-        <UIcon
-          internal
-          interactive
-          color="gray"
-          :size="iconSize"
-          :name="config.clearIconName"
-          v-bind="clearIconAttrs"
-          @mousedown="removeElement"
-        />
+      <div
+        v-if="isLocalValue && !noClear && !disabled && !multiple"
+        v-bind="clearAttrs"
+        @mousedown="removeElement"
+      >
+        <!--
+          @slot Use it to add something instead of the clear icon.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
+          <UIcon
+            internal
+            interactive
+            color="gray"
+            :size="iconSize"
+            :name="config.defaults.clearIcon"
+            v-bind="clearIconAttrs"
+          />
+        </slot>
       </div>
 
       <div
@@ -151,16 +173,27 @@
               v-bind="clearMultipleAttrs"
               @mousedown.prevent.capture
               @click.prevent.capture
+              @mousedown="removeElement(item)"
             >
-              <UIcon
-                internal
-                interactive
-                color="gray"
-                :size="iconSize"
-                :name="config.clearMultipleIconName"
-                v-bind="clearMultipleIconAttrs"
-                @mousedown="removeElement(item)"
-              />
+              <!--
+                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
+                @binding {string} icon-name
+                @binding {string} icon-size
+              -->
+              <slot
+                name="clear-multiple"
+                :icon-name="config.defaults.clearMultipleIcon"
+                :icon-size="iconSize"
+              >
+                <UIcon
+                  internal
+                  interactive
+                  color="gray"
+                  :size="iconSize"
+                  :name="config.defaults.clearMultipleIcon"
+                  v-bind="clearMultipleIconAttrs"
+                />
+              </slot>
             </div>
           </span>
         </div>

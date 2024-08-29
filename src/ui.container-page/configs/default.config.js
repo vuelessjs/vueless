@@ -40,7 +40,6 @@ export default /*tw*/ {
   headerLeftFallback: "flex flex-col",
   backLink: "{ULink}",
   backLinkIcon: "{UIcon}",
-  backLinkIconName: "arrow_back",
   title: "{UHeader}",
   description: "mt-1.5 text-base font-normal text-gray-500",
   headerRight: "",
@@ -62,6 +61,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    backLinkIcon: "arrow_back",
     titleSize: "lg",
     width: "wide",
     gray: false,

@@ -2,7 +2,7 @@
   <ULink :href="url" no-ring target-blank :data-test="dataTest" v-bind="fileAttrs">
     <slot name="left" :file="{ id, label, url, imageUrl }" />
 
-    <slot :file="{ id, label, url, imageUrl, iconName: config.iconName }">
+    <slot :file="{ id, label, url, imageUrl }">
       <div v-bind="infoAttrs">
         <img v-if="imageUrl" :src="imageUrl" v-bind="imageAttrs" />
 

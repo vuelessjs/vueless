@@ -28,7 +28,7 @@
             internal
             :size="iconSize"
             color="gray"
-            :name="config.unselectedIconName"
+            :name="config.defaults.unselectedIcon"
             v-bind="unselectedIconAttrs"
           />
         </label>

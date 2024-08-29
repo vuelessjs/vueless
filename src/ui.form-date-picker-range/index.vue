@@ -47,7 +47,7 @@
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        :left-icon="config.prevIconName"
+        :left-icon="config.defaults.prevIcon"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('prev')"
       />
@@ -74,7 +74,7 @@
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        :left-icon="config.nextIconName"
+        :left-icon="config.defaults.nextIcon"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange('next')"
       />
@@ -126,7 +126,7 @@
             size="xs"
             variant="thirdary"
             :label="locale.ownRange"
-            :left-icon="config.periodButtonIconName"
+            :left-icon="config.defaults.periodButtonIcon"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
           />
@@ -140,7 +140,7 @@
               size="xs"
               color="gray"
               variant="thirdary"
-              :left-icon="config.prevIconName"
+              :left-icon="config.defaults.prevIcon"
               v-bind="rangeSwitchButtonAttrs"
               @click="onClickShiftDatesList('prev')"
             />
@@ -155,7 +155,7 @@
               size="xs"
               color="gray"
               variant="thirdary"
-              :left-icon="config.nextIconName"
+              :left-icon="config.defaults.nextIcon"
               v-bind="rangeSwitchButtonAttrs"
               @click="onClickShiftDatesList('next')"
             />

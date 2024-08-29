@@ -17,10 +17,10 @@
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
             <div v-bind="headerLeftAttrs">
-              <!-- @slot Use it to add something to the header left before. -->
+              <!-- @slot Use it to add something before the left part of the header. -->
               <slot name="header-left-before" />
 
-              <!-- @slot Use it to add something to the header left. -->
+              <!-- @slot Use it to add something to the left part of the header.. -->
               <slot name="header-left">
                 <div v-bind="headerLeftFallbackAttrs">
                   <ULink
@@ -35,7 +35,7 @@
                       internal
                       size="xs"
                       color="gray"
-                      :name="config.backLinkIconName"
+                      :name="config.defaults.backLinkIcon"
                       v-bind="backLinkIconAttrs"
                     />
                     {{ backRoute.title }}
@@ -46,18 +46,26 @@
                 </div>
               </slot>
 
-              <!-- @slot Use it to add something to the header left after. -->
+              <!-- @slot Use it to add something after the left part of the header. -->
               <slot name="header-left-after" />
             </div>
 
             <div v-bind="headerRightAttrs">
-              <!-- @slot Use it to add something to the header right. -->
-              <slot name="header-right">
+              <!-- @slot Use it to add something to the right part of the header. -->
+              <slot name="header-right" />
+            </div>
+
+            <div v-bind="closeIconAttrs">
+              <!--
+                @slot Use it to add something instead of the close button.
+                @binding {string} icon-name
+              -->
+              <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
-                  v-if="closeIcon"
+                  v-if="closeButton"
                   internal
                   interactive
-                  :name="config.closeIconName"
+                  :name="config.defaults.closeIcon"
                   :data-test="`${dataTest}-close`"
                   v-bind="closeIconAttrs"
                   @click="onClickCloseModal"
@@ -84,12 +92,12 @@
 
             <div v-bind="footerAttrs">
               <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
-                <!-- @slot Use it to add something to the footer left. -->
+                <!-- @slot Use it to add something to the left part of the footer. -->
                 <slot name="footer-left" />
               </div>
 
               <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
-                <!-- @slot Use it to add something to the footer right. -->
+                <!-- @slot Use it to add something to the right part of the footer. -->
                 <slot name="footer-right" />
               </div>
             </div>
@@ -173,9 +181,9 @@ const props = defineProps({
   /**
    * Allow closing modal by clicking on close icon.
    */
-  closeIcon: {
+  closeButton: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeIcon,
+    default: getDefault(defaultConfig, UModal).closeButton,
   },
 
   /**
@@ -331,7 +339,7 @@ function onKeydownEsc() {
 }
 
 function onClickCloseModal() {
-  props.closeIcon && closeModal();
+  props.closeButton && closeModal();
 }
 
 function closeModal() {

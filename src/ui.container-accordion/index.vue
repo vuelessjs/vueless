@@ -3,13 +3,14 @@
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}
-        <UIcon
-          :name="isOpened ? config.defaults.collapseIcon : config.defaults.expandIcon"
-          :size="size"
-          color="gray"
-          internal
-          v-bind="toggleIconAttrs"
-        />
+        <!--
+          @slot Use it to add something instead of the toggle icon.
+          @binding {string} icon-size
+          @binding {boolean} opened
+        -->
+        <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">
+          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
+        </slot>
       </div>
 
       <div :id="`description-${id}`" v-bind="descriptionAttrs" v-text="description" />
@@ -104,6 +105,10 @@ const {
   toggleIconAttrs,
   dividerAttrs,
 } = useAttrs(props, { isOpened });
+
+const toggleIcon = computed(() =>
+  isOpened.value ? config.value.defaults.collapseIcon : config.value.defaults.expandIcon,
+);
 
 const dividerSize = computed(() => {
   const sizes = {

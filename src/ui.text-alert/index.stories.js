@@ -4,6 +4,7 @@ import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
@@ -22,7 +23,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAlert, UIcon, URow },
+  components: { UAlert, UIcon, URow, UButton },
   setup() {
     const slots = getSlotNames(UAlert.name);
 
@@ -91,11 +92,6 @@ HTML.args = {
 export const closable = DefaultTemplate.bind({});
 closable.args = {
   closable: true,
-  slotTemplate: `
-    <template #default>
-      some text
-    </template>
-  `,
 };
 
 export const paragraphs = DefaultTemplate.bind({});
@@ -142,6 +138,21 @@ slotTitleAndDescription.args = {
     </template>
     <template #description>
       <div class="italic">This is a custom description for the alert.</div>
+    </template>
+  `,
+};
+
+export const slotClose = DefaultTemplate.bind({});
+slotClose.args = {
+  closable: true,
+  slotTemplate: `
+    <template #close>
+      <UButton
+        variant="primary"
+        color="white"
+        size="sm"
+        label="Close"
+      />
     </template>
   `,
 };

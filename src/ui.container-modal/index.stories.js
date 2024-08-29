@@ -152,7 +152,20 @@ export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
-      <UButton size="sm" color="gray" label="some button" />
+      <UIcon
+        name="archive"
+        color="red"
+      />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const slotCloseButton = DefaultTemplate.bind({});
+slotCloseButton.args = {
+  slotTemplate: `
+    <template #close-button>
+      <UButton size="sm" color="grayscale" label="Close" />
     </template>
     ${defaultTemplate}
   `,

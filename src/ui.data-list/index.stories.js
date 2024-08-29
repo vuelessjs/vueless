@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UDataList from "../ui.data-list";
 import UIcon from "../ui.image-icon";
+import UButton from "../ui.button";
 import URow from "../ui.container-row";
 
 /**
@@ -42,7 +43,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDataList, UIcon, URow },
+  components: { UDataList, UIcon, URow, UButton },
   setup() {
     function onDragSort(value) {
       this.list = value;
@@ -89,6 +90,33 @@ slotActions.args = {
   slotTemplate: `
     <template #actions>
       <UIcon interactive name="star" color="red" />
+    </template>
+  `,
+};
+
+export const slotDrag = DefaultTemplate.bind({});
+slotDrag.args = {
+  slotTemplate: `
+    <template #drag>
+      <UIcon interactive name="swap_vert" size="sm" />
+    </template>
+  `,
+};
+
+export const slotDelete = DefaultTemplate.bind({});
+slotDelete.args = {
+  slotTemplate: `
+    <template #delete>
+      <UButton label="Delete" size="xs" variant="secondary" color="red" />
+    </template>
+  `,
+};
+
+export const slotEdit = DefaultTemplate.bind({});
+slotEdit.args = {
+  slotTemplate: `
+    <template #edit>
+      <UButton label="Edit" size="xs" variant="secondary" color="grayscale" />
     </template>
   `,
 };

@@ -32,8 +32,8 @@
           interactive
           :name="
             row?.row?.isHidden
-              ? config.bodyCellNestedExpandIconName
-              : config.bodyCellNestedCollapseIconName
+              ? config.defaults.bodyCellNestedExpandIcon
+              : config.defaults.bodyCellNestedCollapseIcon
           "
           color="brand"
           v-bind="toggleIconConfig"

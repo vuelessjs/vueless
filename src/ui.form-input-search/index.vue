@@ -33,7 +33,7 @@
         internal
         interactive
         color="gray"
-        :name="config.clearIconName"
+        :name="config.defaults.clearIcon"
         :data-test="`${dataTest}-close`"
         :size="iconSize"
         v-bind="clearIconAttrs"
@@ -43,7 +43,7 @@
       <!-- @slot Use it to add icon after the text. -->
       <slot
         name="right-icon"
-        :icon-name="config.searchIconName"
+        :icon-name="config.defaults.searchIcon"
         :icon-size="iconSize"
         :search-button-label="searchButtonLabel"
       >
@@ -52,7 +52,7 @@
           internal
           interactive
           :size="iconSize"
-          :name="rightIcon || config.searchIconName"
+          :name="rightIcon || config.defaults.searchIcon"
           :data-test="`${dataTest}-search`"
           v-bind="searchIconAttrs"
           @click="onClickSearch"

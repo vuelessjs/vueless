@@ -11,7 +11,7 @@
           no-ring
           size="sm"
           variant="thirdary"
-          :right-icon="config.dayViewSwitchLabelIconName"
+          :right-icon="config.defaults.dayViewSwitchLabelIcon"
           v-bind="navigationSwitchViewButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickViewSwitch"
@@ -31,7 +31,7 @@
           no-ring
           size="sm"
           variant="thirdary"
-          :left-icon="config.prevIconName"
+          :left-icon="config.defaults.prevIcon"
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickPrevButton"
@@ -44,7 +44,7 @@
           no-ring
           size="sm"
           variant="thirdary"
-          :left-icon="config.nextIconName"
+          :left-icon="config.defaults.nextIcon"
           v-bind="nextPrevButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickNextButton"

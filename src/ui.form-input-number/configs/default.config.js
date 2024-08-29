@@ -3,10 +3,8 @@ export default /*tw*/ {
   number: "flex items-center flex-col",
   removeButton: "{UButton}",
   removeIcon: "{UIcon}",
-  removeIconName: "remove",
   addButton: "{UButton}",
   addIcon: "{UIcon}",
-  addIconName: "add",
   value: {
     base: "font-bold select-none !leading-none",
     variants: {
@@ -28,6 +26,8 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    removeIcon: "remove",
+    addIcon: "add",
     size: "md",
   },
 };

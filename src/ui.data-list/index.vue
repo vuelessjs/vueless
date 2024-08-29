@@ -25,13 +25,19 @@
       <template #item="{ element }">
         <div :id="element[valueKey]" :data-test="`${dataTest}-item`" v-bind="itemWrapperAttrs">
           <div :data-test="`${dataTest}-item-${element[valueKey]}`" v-bind="itemAttrs">
-            <UIcon
-              internal
-              color="gray"
-              :size="iconSize"
-              :name="config.dragIconName"
-              v-bind="dragIconAttrs"
-            />
+            <!--
+              @slot Use it to add something instead of the drag icon.
+              @binding {string} icon-size
+            -->
+            <slot name="drag" :icon-name="config.defaults.dragIcon" :icon-size="iconSize">
+              <UIcon
+                internal
+                color="gray"
+                :size="iconSize"
+                :name="config.defaults.dragIcon"
+                v-bind="dragIconAttrs"
+              />
+            </slot>
 
             <div v-bind="labelAttrs(element.isActive)">
               <!--
@@ -55,31 +61,43 @@
                 <slot name="actions" :item="element" />
               </div>
 
-              <UIcon
-                v-if="!element.isHiddenDelete"
-                internal
-                interactive
-                color="red"
-                :size="iconSize"
-                :name="config.deleteIconName"
-                :data-test="`${dataTest}-delete`"
-                :tooltip="currentLocale.delete"
-                v-bind="deleteIconAttrs"
-                @click="onClickDelete(element[valueKey], element[labelKey])"
-              />
+              <!--
+                @slot Use it to add something instead of the delete icon.
+                @binding {string} icon-size
+              -->
+              <slot name="delete" :icon-name="config.defaults.deleteIcon" :icon-size="iconSize">
+                <UIcon
+                  v-if="!element.isHiddenDelete"
+                  internal
+                  interactive
+                  color="red"
+                  :size="iconSize"
+                  :name="config.defaults.deleteIcon"
+                  :data-test="`${dataTest}-delete`"
+                  :tooltip="currentLocale.delete"
+                  v-bind="deleteIconAttrs"
+                  @click="onClickDelete(element[valueKey], element[labelKey])"
+                />
+              </slot>
 
-              <UIcon
-                v-if="!element.isHiddenEdit"
-                internal
-                interactive
-                color="gray"
-                :size="iconSize"
-                :name="config.editIconName"
-                :data-test="`${dataTest}-edit`"
-                :tooltip="currentLocale.edit"
-                v-bind="editIconAttrs"
-                @click="onClickEdit(element[valueKey], element[labelKey])"
-              />
+              <!--
+                @slot Use it to add something instead of the edit icon.
+                @binding {string} icon-size
+              -->
+              <slot name="edit" :icon-name="config.defaults.editIcon" :icon-size="iconSize">
+                <UIcon
+                  v-if="!element.isHiddenEdit"
+                  internal
+                  interactive
+                  color="gray"
+                  :size="iconSize"
+                  :name="config.defaults.editIcon"
+                  :data-test="`${dataTest}-edit`"
+                  :tooltip="currentLocale.edit"
+                  v-bind="editIconAttrs"
+                  @click="onClickEdit(element[valueKey], element[labelKey])"
+                />
+              </slot>
             </template>
           </div>
 

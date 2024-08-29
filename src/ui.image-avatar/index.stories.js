@@ -3,6 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 import UAvatar from "../ui.image-avatar";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
+import ULoader from "../ui.loader";
 
 /**
  * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
@@ -17,7 +18,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UAvatar },
+  components: { UAvatar, ULoader },
   setup() {
     const slots = getSlotNames(UAvatar.name);
 
@@ -97,3 +98,13 @@ colors.args = { enum: "color" };
  */
 export const bordered = EnumVariantTemplate.bind({});
 bordered.args = { enum: "color", bordered: true };
+
+export const slotPlaceholder = DefaultTemplate.bind({});
+slotPlaceholder.args = {
+  size: "3xl",
+  slotTemplate: `
+    <template #placeholder>
+      <ULoader loading />
+    </template>
+  `,
+};
