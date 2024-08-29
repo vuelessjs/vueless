@@ -71,7 +71,7 @@
         -->
         <slot
           name="toggle"
-          :icon-name="config.toggleIconName"
+          :icon-name="config.defaults.toggleIcon"
           :icon-size="iconSize"
           :opened="isOpen"
         >
@@ -80,7 +80,7 @@
             interactive
             color="gray"
             :size="iconSize"
-            :name="config.toggleIconName"
+            :name="config.defaults.toggleIcon"
             v-bind="toggleIconAttrs"
             :tabindex="-1"
           />
@@ -97,13 +97,13 @@
           @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="clear" :icon-name="config.clearIconName" :icon-size="iconSize">
+        <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
           <UIcon
             internal
             interactive
             color="gray"
             :size="iconSize"
-            :name="config.clearIconName"
+            :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
           />
         </slot>
@@ -182,7 +182,7 @@
               -->
               <slot
                 name="clear-multiple"
-                :icon-name="config.clearMultipleIconName"
+                :icon-name="config.defaults.clearMultipleIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -190,7 +190,7 @@
                   interactive
                   color="gray"
                   :size="iconSize"
-                  :name="config.clearMultipleIconName"
+                  :name="config.defaults.clearMultipleIcon"
                   v-bind="clearMultipleIconAttrs"
                 />
               </slot>

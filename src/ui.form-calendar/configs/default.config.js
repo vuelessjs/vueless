@@ -5,7 +5,6 @@ export default /*tw*/ {
   dayViewSwitchLabel: "flex gap-1",
   dayViewSwitchLabelMonth: "",
   dayViewSwitchLabelIcon: "",
-  dayViewSwitchLabelIconName: "keyboard_arrow_right",
   nextPrevWrapper: {
     base: "flex",
     variants: {
@@ -15,8 +14,6 @@ export default /*tw*/ {
     },
   },
   nextPrevButton: "{UButton}",
-  nextIconName: "keyboard_arrow_right",
-  prevIconName: "keyboard_arrow_left",
   dayView: "",
   weekDays: "grid grid-cols-7",
   weekDay: "flex size-8 items-center justify-center text-xs uppercase text-gray-500",
@@ -125,6 +122,9 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
+    dayViewSwitchLabelIcon: "keyboard_arrow_right",
+    nextIcon: "keyboard_arrow_right",
+    prevIcon: "keyboard_arrow_left",
     userFormat: "j F, Y",
     range: false,
     timepicker: false,

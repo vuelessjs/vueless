@@ -6,8 +6,6 @@ export default /*tw*/ {
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
   passwordIcon: "",
-  passwordVisibleIconName: "visibility-fill",
-  passwordHiddenIconName: "visibility_off-fill",
   block: {
     base: `
       w-full bg-white !opacity-100 relative flex transition
@@ -55,6 +53,8 @@ export default /*tw*/ {
     ],
   },
   defaults: {
+    passwordVisibleIcon: "visibility-fill",
+    passwordHiddenIcon: "visibility_off-fill",
     size: "md",
     type: "text",
     inputmode: "text",

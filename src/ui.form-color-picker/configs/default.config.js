@@ -12,7 +12,6 @@ export default /*tw*/ {
   },
   unselected: "relative flex",
   unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
-  unselectedIconName: "close",
   unselectedRadio: {
     component: "{URadio}",
     radio: "checked:text-white !border-gray-300",
@@ -25,6 +24,7 @@ export default /*tw*/ {
     `,
   },
   defaults: {
+    unselectedIcon: "close",
     size: "md",
     name: "colorPicker",
     disabled: false,

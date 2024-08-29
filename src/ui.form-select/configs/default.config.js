@@ -77,13 +77,10 @@ export default /*tw*/ {
   },
   toggle: "mr-3",
   toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
-  toggleIconName: "expand_more",
   clear: "",
   clearIcon: "{UIcon}",
-  clearIconName: "close_small",
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon}",
-  clearMultipleIconName: "close_small",
   clearMultipleTextAll: {
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
@@ -115,6 +112,9 @@ export default /*tw*/ {
     addMore: "Add more...",
   },
   defaults: {
+    toggleIcon: "expand_more",
+    clearIcon: "close_small",
+    clearMultipleIcon: "close_small",
     size: "md",
     labelAlign: "topInside",
     openDirection: "auto",

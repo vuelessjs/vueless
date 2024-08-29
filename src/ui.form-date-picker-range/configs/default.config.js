@@ -12,8 +12,6 @@ export default /*tw*/ {
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none
   `,
-  nextIconName: "keyboard_arrow_right",
-  prevIconName: "keyboard_arrow_left",
   menu: {
     base: "absolute z-40 my-2 w-80 overflow-hidden rounded-dynamic border border-brand-300 bg-white p-2 shadow focus:outline-none",
     variants: {
@@ -36,7 +34,6 @@ export default /*tw*/ {
   },
   periodsRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
-  periodButtonIconName: "apps",
   periodButtonActive: "!bg-gray-800/20",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
@@ -156,6 +153,9 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    nextIcon: "keyboard_arrow_right",
+    prevIcon: "keyboard_arrow_left",
+    periodButtonIcon: "apps",
     size: "md",
     variant: "button",
     openDirectionX: "auto",

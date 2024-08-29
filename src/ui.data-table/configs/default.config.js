@@ -68,13 +68,11 @@ export default /*tw*/ {
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
-  bodyCellNestedExpandIconName: "add",
   bodyCellNestedCollapseIcon: {
     component: "{UIcon}",
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
-  bodyCellNestedCollapseIconName: "remove",
   bodyCheckbox: "{UCheckbox}",
   bodyDateSeparator: "{UDivider}",
   bodyEmptyState: "{UEmpty} my-8",
@@ -96,6 +94,8 @@ export default /*tw*/ {
     noData: "There is no data in the table.",
   },
   defaults: {
+    bodyCellNestedExpandIcon: "add",
+    bodyCellNestedCollapseIcon: "remove",
     nesting: false,
     compact: false,
     selectable: false,

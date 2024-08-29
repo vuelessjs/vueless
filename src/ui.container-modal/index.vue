@@ -35,7 +35,7 @@
                       internal
                       size="xs"
                       color="gray"
-                      :name="config.backLinkIconName"
+                      :name="config.defaults.backLinkIcon"
                       v-bind="backLinkIconAttrs"
                     />
                     {{ backRoute.title }}
@@ -54,10 +54,10 @@
               <!-- @slot Use it to add something to the header right. -->
               <slot name="header-right">
                 <UIcon
-                  v-if="closeIcon"
+                  v-if="isCloseIcon"
                   internal
                   interactive
-                  :name="config.closeIconName"
+                  :name="config.defaults.closeIcon"
                   :data-test="`${dataTest}-close`"
                   v-bind="closeIconAttrs"
                   @click="onClickCloseModal"
@@ -173,9 +173,9 @@ const props = defineProps({
   /**
    * Allow closing modal by clicking on close icon.
    */
-  closeIcon: {
+  isCloseIcon: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeIcon,
+    default: getDefault(defaultConfig, UModal).isCloseIcon,
   },
 
   /**
@@ -331,7 +331,7 @@ function onKeydownEsc() {
 }
 
 function onClickCloseModal() {
-  props.closeIcon && closeModal();
+  props.isCloseIcon && closeModal();
 }
 
 function closeModal() {

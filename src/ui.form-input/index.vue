@@ -63,7 +63,11 @@
       <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="id">
         <UIcon
           v-if="isTypePassword"
-          :name="isShownPassword ? config.passwordVisibleIconName : config.passwordHiddenIconName"
+          :name="
+            isShownPassword
+              ? config.defaults.passwordVisibleIcon
+              : config.defaults.passwordHiddenIcon
+          "
           color="gray"
           interactive
           internal

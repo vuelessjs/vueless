@@ -34,7 +34,7 @@
                 internal
                 color="gray"
                 :size="iconSize"
-                :name="config.dragIconName"
+                :name="config.defaults.dragIcon"
                 v-bind="dragIconAttrs"
               />
             </slot>
@@ -72,7 +72,7 @@
                   interactive
                   color="red"
                   :size="iconSize"
-                  :name="config.deleteIconName"
+                  :name="config.defaults.deleteIcon"
                   :data-test="`${dataTest}-delete`"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
@@ -91,7 +91,7 @@
                   interactive
                   color="gray"
                   :size="iconSize"
-                  :name="config.editIconName"
+                  :name="config.defaults.editIcon"
                   :data-test="`${dataTest}-edit`"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"

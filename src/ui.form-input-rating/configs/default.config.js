@@ -12,8 +12,6 @@ export default /*tw*/ {
   },
   stars: "flex",
   star: "{UIcon}",
-  selectedIconName: "star-fill",
-  unselectedIconName: "star",
   counter: {
     variants: {
       size: {
@@ -33,6 +31,8 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    selectedIcon: "star-fill",
+    unselectedIcon: "star",
     labelAlign: "top",
     size: "md",
     stars: 5,
