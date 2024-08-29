@@ -58,8 +58,11 @@
             </div>
 
             <div v-bind="closeIconAttrs">
-              <!-- @slot Use it to add something instead of the close button. -->
-              <slot name="close-button">
+              <!--
+                @slot Use it to add something instead of the close button.
+                @binding {string} icon-name
+              -->
+              <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
                   v-if="closeButton"
                   internal
