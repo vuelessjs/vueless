@@ -108,7 +108,7 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    userFormat: "F j, Y",
+    userFormat: "j F, Y",
     size: "md",
     openDirectionX: "auto",
     openDirectionY: "auto",

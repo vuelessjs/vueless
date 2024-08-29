@@ -136,7 +136,11 @@ export const DateFormat = DefaultTemplate.bind({});
 DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", modelValue: "28.06.2024" };
 
 export const Timepicker = DefaultTemplate.bind({});
-Timepicker.args = { timepicker: true, modelValue: new Date(2024, 2, 14, 12, 24, 14) };
+Timepicker.args = {
+  timepicker: true,
+  modelValue: new Date(2024, 2, 14, 12, 24, 14),
+  userFormat: "j F, Y - H:i:S",
+};
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
