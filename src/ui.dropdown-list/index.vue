@@ -13,7 +13,7 @@
         v-for="(option, index) of options"
         :id="`${id}-${index}`"
         :key="index"
-        v-bind="optionItemAttrs"
+        v-bind="listItemAttrs"
         ref="optionsRef"
         :role="!(option && option.groupLabel) ? 'option' : null"
         :data-group-label="Boolean(option.groupLabel)"
@@ -28,14 +28,15 @@
           <!--
             @slot Use it to add something before the option.
             @binding {other} option
-          -->
-          <slot :option="option" name="before-option" />
-
-          <!--
-            @slot Use it to add something instead of the option.
-            @binding {other} option
             @binding {number} index
           -->
+          <slot name="before-option" :option="option" :index="index" />
+
+          <!--
+              @slot Use it to add something instead of the option.
+              @binding {object} option
+              @binding {number} index
+            -->
           <slot name="option" :option="option" :index="index">
             <span
               :style="getMarginForSubCategory(option.level)"
@@ -45,49 +46,52 @@
           </slot>
 
           <!--
-            @slot Use it to add something after the option.
-            @binding {other} option
-          -->
-          <slot :option="option" name="after-option" />
+              @slot Use it to add something after the option.
+              @binding {object} option
+              @binding {number} index
+            -->
+          <slot name="after-option" :option="option" :index="index" />
         </span>
 
         <!-- group title -->
-        <div v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupLabelAttrs" v-text="option.groupLabel" />
+        <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
+          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
 
           <div
             v-else-if="option.isSubGroup"
             :style="getMarginForSubCategory(option.level)"
-            v-bind="subGroupLabelAttrs"
+            v-bind="subGroupAttrs"
             v-text="option[labelKey]"
           />
-        </div>
+        </template>
       </li>
-      <slot
-        v-if="hasSlotContent($slots['empty']) || options.length === 0"
-        name="empty"
-        :empty-styles="optionClasses"
-      >
-        <span v-bind="optionAttrs()">
-          <span v-text="currentLocale.noDataToShow" />
+
+      <!--
+        @slot Use it to add something instead of empty state.
+        @binding {string} emptyStyles
+      -->
+      <slot name="empty" :empty-styles="optionClasses">
+        <span v-if="!options.length" v-bind="optionAttrs()">
+          <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </span>
       </slot>
 
       <!-- Add button -->
       <template v-if="addOption">
-        <div v-bind="addTitleWrapperAttrs" @click="onClickAddOption">
-          <div v-bind="addTitleAttrs">
+        <div v-bind="addOptionLabelWrapperAttrs" @click="onClickAddOption">
+          <div v-bind="addOptionLabelAttrs">
             {{ currentLocale.add }}
-            <span v-bind="addTitleHotkeyAttrs" v-text="addOptionKeyCombination" />
+            <span v-bind="addOptionLabelHotkeyAttrs" v-text="addOptionKeyCombination" />
           </div>
         </div>
-        <UButton round square v-bind="buttonAddAttrs" @click="onClickAddOption">
+
+        <UButton round square v-bind="addOptionButtonAttrs" @click="onClickAddOption">
           <UIcon
             internal
             color="white"
             size="xs"
-            :name="config.addIconName"
-            v-bind="addIconAttrs"
+            :name="config.defaults.addOptionIcon"
+            v-bind="addOptionIconAttrs"
           />
         </UButton>
       </template>
@@ -225,18 +229,17 @@ const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, poin
 
 const {
   config,
-  hasSlotContent,
   wrapperAttrs,
   listAttrs,
-  optionItemAttrs,
-  addTitleWrapperAttrs,
-  addTitleAttrs,
-  addTitleHotkeyAttrs,
-  buttonAddAttrs,
-  addIconAttrs,
+  listItemAttrs,
+  addOptionLabelWrapperAttrs,
+  addOptionLabelAttrs,
+  addOptionLabelHotkeyAttrs,
+  addOptionButtonAttrs,
+  addOptionIconAttrs,
   optionAttrs,
-  subGroupLabelAttrs,
-  groupLabelAttrs,
+  subGroupAttrs,
+  groupAttrs,
   optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
@@ -298,7 +301,7 @@ function getMarginForSubCategory(level) {
 function optionHighlight(index, option) {
   const classes = [];
 
-  if (index === pointer.value) classes.push(config.value.optionHighlight);
+  if (index === pointer.value) classes.push(config.value.optionHighlighted);
   if (isSelectedOption(option)) classes.push(config.value.optionSelected);
 
   return classes;

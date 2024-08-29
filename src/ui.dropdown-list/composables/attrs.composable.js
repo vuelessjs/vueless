@@ -34,21 +34,12 @@ export default function useAttrs(props) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "subGroupLabel") {
-      const subGroupLabelAttrs = attrs[`${key}Attrs`];
+    if (key === "group" || key === "subGroup") {
+      const keyAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...subGroupLabelAttrs.value,
-        class: cx([optionClasses.value, subGroupLabelAttrs.value.class]),
-      }));
-    }
-
-    if (key === "groupLabel") {
-      const groupLabelAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...groupLabelAttrs.value,
-        class: cx([optionClasses.value, groupLabelAttrs.value.class]),
+        ...keyAttrs.value,
+        class: cx([optionClasses.value, keyAttrs.value.class]),
       }));
     }
   }
