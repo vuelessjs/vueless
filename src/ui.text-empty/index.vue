@@ -4,13 +4,15 @@
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
         <div v-bind="emptyIconWrapperAttrs">
-          <UIcon
-            internal
-            :name="config.defaults.emptyIcon"
-            color="gray"
-            :size="iconSize"
-            v-bind="emptyIconAttrs"
-          />
+          <slot name="empty" :icon-name="config.defaults.emptyIcon" :icon-size="iconSize">
+            <UIcon
+              internal
+              :name="config.defaults.emptyIcon"
+              color="gray"
+              :size="iconSize"
+              v-bind="emptyIconAttrs"
+            />
+          </slot>
         </div>
       </slot>
     </div>

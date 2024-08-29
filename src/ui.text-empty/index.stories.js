@@ -4,6 +4,7 @@ import UEmpty from "../ui.text-empty";
 import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
+import UBadge from "../ui.text-badge";
 
 /**
  * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
@@ -22,7 +23,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UEmpty, UIcon, UButton },
+  components: { UEmpty, UIcon, UButton, UBadge },
   setup() {
     const slots = getSlotNames(UEmpty.name);
 
@@ -80,6 +81,15 @@ slotDefault.args = {
   slotTemplate: `
     <template #default>
       <span>Some unique <b><code>HTML</code></b> or <b><code>Components</code></b>...</span>
+    </template>
+  `,
+};
+
+export const slotEmpty = DefaultTemplate.bind({});
+slotEmpty.args = {
+  slotTemplate: `
+    <template #empty>
+      <UBadge size="lg" label="Unfortunately, something went wrong." />
     </template>
   `,
 };

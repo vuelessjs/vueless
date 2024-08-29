@@ -13,7 +13,13 @@
         @binding {string} icon-color
         @binding {string} icon-size
       -->
-      <slot v-else name="placeholder" :icon-color="componentColor" :icon-size="size">
+      <slot
+        v-else
+        name="placeholder"
+        :icon-name="icon"
+        :icon-color="componentColor"
+        :icon-size="size"
+      >
         <UIcon :name="icon" :color="componentColor" :size="size" v-bind="placeholderIconAttrs" />
       </slot>
     </template>

@@ -8,7 +8,7 @@
           @binding {string} icon-size
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-size="size" :opened="isOpened">
+        <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">
           <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
         </slot>
       </div>

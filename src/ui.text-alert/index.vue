@@ -54,7 +54,12 @@
           @binding {string} icon-size
           @binding {string} icon-color
         -->
-        <slot name="close" :icon-size="closeIconSize" :icon-color="iconColor">
+        <slot
+          name="close"
+          :icon-name="config.defaults.closeIcon"
+          :icon-size="closeIconSize"
+          :icon-color="iconColor"
+        >
           <UIcon
             internal
             :size="closeIconSize"

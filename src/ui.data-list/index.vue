@@ -29,7 +29,7 @@
               @slot Use it to add something instead of the drag icon.
               @binding {string} icon-size
             -->
-            <slot name="drag" :icon-size="iconSize">
+            <slot name="drag" :icon-name="config.defaults.dragIcon" :icon-size="iconSize">
               <UIcon
                 internal
                 color="gray"
@@ -65,7 +65,7 @@
                 @slot Use it to add something instead of the delete icon.
                 @binding {string} icon-size
               -->
-              <slot name="delete" :icon-size="iconSize">
+              <slot name="delete" :icon-name="config.defaults.deleteIcon" :icon-size="iconSize">
                 <UIcon
                   v-if="!element.isHiddenDelete"
                   internal
@@ -84,7 +84,7 @@
                 @slot Use it to add something instead of the edit icon.
                 @binding {string} icon-size
               -->
-              <slot name="edit" :icon-size="iconSize">
+              <slot name="edit" :icon-name="config.defaults.editIcon" :icon-size="iconSize">
                 <UIcon
                   v-if="!element.isHiddenEdit"
                   internal

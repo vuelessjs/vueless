@@ -31,13 +31,15 @@
                     v-bind="backLinkAttrs"
                     @click="onClickBackLink"
                   >
-                    <UIcon
-                      internal
-                      size="xs"
-                      color="gray"
-                      :name="config.defaults.backLinkIcon"
-                      v-bind="backLinkIconAttrs"
-                    />
+                    <slot name="backlink" :icon-name="config.defaults.backLinkIcon">
+                      <UIcon
+                        internal
+                        size="xs"
+                        color="gray"
+                        :name="config.defaults.backLinkIcon"
+                        v-bind="backLinkIconAttrs"
+                      />
+                    </slot>
                     {{ backRoute.title }}
                   </ULink>
 
@@ -51,8 +53,8 @@
             </div>
 
             <div v-bind="headerRightAttrs">
-              <!-- @slot Use it to add something to the header right. -->
-              <slot name="header-right">
+              <!-- @slot Use it to add something instead of the close button. -->
+              <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
                   v-if="isCloseIcon"
                   internal

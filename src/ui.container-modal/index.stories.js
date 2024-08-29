@@ -151,8 +151,8 @@ slotHeaderLeftAfter.args = {
 export const slotHeaderRight = DefaultTemplate.bind({});
 slotHeaderRight.args = {
   slotTemplate: `
-    <template #header-right>
-      <UButton size="sm" color="gray" label="some button" />
+    <template #close-button>
+      <UButton size="sm" color="gray" label="Close" />
     </template>
     ${defaultTemplate}
   `,
