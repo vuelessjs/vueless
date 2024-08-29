@@ -4,7 +4,6 @@ import UEmpty from "../ui.text-empty";
 import UButton from "../ui.button";
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";
-import UBadge from "../ui.text-badge";
 
 /**
  * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
@@ -23,7 +22,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UEmpty, UIcon, UButton, UBadge },
+  components: { UEmpty, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UEmpty.name);
 
