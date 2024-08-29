@@ -68,7 +68,7 @@ import { merge } from "lodash-es";
 
 import UInput from "../ui.form-input";
 import UCalendar from "../ui.form-calendar";
-import { VIEW } from "../ui.form-calendar/constants";
+import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants";
 
 import { getRandomId, getDefault } from "../service.ui";
 
@@ -264,8 +264,6 @@ const emit = defineEmits([
    */
   "input",
 ]);
-
-const STANDARD_USER_FORMAT = "l, j F, Y";
 
 const { tm } = useLocale();
 

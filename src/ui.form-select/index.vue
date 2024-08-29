@@ -269,12 +269,12 @@
         @mousedown.prevent.capture
         @click.prevent.capture
       >
-        <template #before-option="{ option }">
+        <template #before-option="{ option, index }">
           <!--
             @slot Use it to add something before option.
             @binding {other} option
           -->
-          <slot :option="option" name="before-option" />
+          <slot name="before-option" :option="option" :index="index" />
         </template>
 
         <template #option="{ option, index }">
@@ -286,12 +286,12 @@
           <slot name="option" :option="option" :index="index" />
         </template>
 
-        <template #after-option="{ option }">
+        <template #after-option="{ option, index }">
           <!--
             @slot Use it to add something after option.
             @binding {other} option
           -->
-          <slot :option="option" name="after-option" />
+          <slot name="after-option" :option="option" :index="index" />
         </template>
 
         <template #empty="{ emptyStyles }">

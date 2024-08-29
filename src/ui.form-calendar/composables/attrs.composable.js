@@ -29,21 +29,14 @@ export default function useAttrs(props) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "timepickerLeftInput") {
-      const timepickerLeftInputAttrs = attrs[`${key}Attrs`];
+    if (
+      ["timepickerInputHours", "timepickerInputMinutes", "timepickerInputSeconds"].includes(key)
+    ) {
+      const keyAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
-        ...timepickerLeftInputAttrs.value,
-        class: cx([config.value.timepickerInput, timepickerLeftInputAttrs.value.class]),
-      }));
-    }
-
-    if (key === "timepickerRightInput") {
-      const timepickerRightInputAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...timepickerRightInputAttrs.value,
-        class: cx([config.value.timepickerInput, timepickerRightInputAttrs.value.class]),
+        ...keyAttrs.value,
+        class: cx([config.value.timepickerInput, keyAttrs.value.class]),
       }));
     }
 
