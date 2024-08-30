@@ -35,7 +35,18 @@
     </li>
 
     <li v-for="page in pageButtons" :key="page" v-bind="listItemAttrs(page)">
-      <span v-if="!isFinite(page.number)" v-bind="ellipsisAttrs">&hellip;</span>
+      <UButton
+        v-if="!isFinite(page.number)"
+        square
+        no-ring
+        size="sm"
+        variant="thirdary"
+        disabled
+        v-bind="pageButtonAttrs"
+      >
+        <!-- @slot Use it to add something instead of the ellipsis. -->
+        <slot name="ellipsis">&hellip;</slot>
+      </UButton>
 
       <UButton
         v-else
@@ -232,14 +243,8 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const {
-  listAttrs,
-  listItemAttrs,
-  ellipsisAttrs,
-  navButtonAttrs,
-  navButtonLabelAttrs,
-  pageButtonAttrs,
-} = useAttrs(props);
+const { listAttrs, listItemAttrs, navButtonAttrs, navButtonLabelAttrs, pageButtonAttrs } =
+  useAttrs(props);
 
 const currentPage = computed({
   get: () => props.modelValue,

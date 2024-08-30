@@ -1,7 +1,6 @@
 export default /*tw*/ {
   list: "flex",
   listItem: "",
-  ellipsis: "leading-none",
   navButton: "{UButton} font-normal",
   navButtonLabel: "",
   pageButton: "{UButton} font-normal",
