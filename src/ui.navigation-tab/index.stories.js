@@ -32,8 +32,8 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-export const defaultTemplate = DefaultTemplate.bind({});
-defaultTemplate.args = {};
+export const Default = DefaultTemplate.bind({});
+Default.args = {};
 
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };

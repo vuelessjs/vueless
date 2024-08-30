@@ -22,10 +22,28 @@ export default /*tw*/ {
       },
     },
   },
+  stepperSvg: "",
+  stepperGradient: "",
   stepperCircle: "stroke-current text-{color}-100",
   stepperCount: "text-xl font-bold text-gray-900 translate-y-2 transform",
-  stepperGradient: "",
-  stepperSvg: "",
+  indicator: {
+    base: "text-{color}-600 flex justify-end w-full min-w-fit font-medium transition",
+    variants: {
+      color: {
+        white: "text-gray-200",
+        grayscale: "text-gray-900",
+      },
+      size: {
+        "2xs": "text-xs",
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-md",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
+      },
+    },
+  },
   progress: {
     base: `
       text-{color}-600 w-full block appearance-none border-none overflow-hidden
@@ -53,25 +71,7 @@ export default /*tw*/ {
       },
     },
   },
-  indicator: {
-    base: "text-{color}-600 flex justify-end w-full min-w-fit font-medium transition",
-    variants: {
-      color: {
-        white: "text-gray-200",
-        grayscale: "text-gray-900",
-      },
-      size: {
-        "2xs": "text-xs",
-        xs: "text-xs",
-        sm: "text-sm",
-        md: "text-md",
-        lg: "text-lg",
-        xl: "text-xl",
-        "2xl": "text-2xl",
-      },
-    },
-  },
-  firstStep: "text-gray-500",
+  stepFirst: "text-gray-500",
   step: {
     base: "text-{color}-600 flex justify-end w-full transition",
     variants: {

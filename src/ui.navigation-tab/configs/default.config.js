@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: {
+  tab: {
     base: "w-max text-center cursor-pointer -mb-px",
     variants: {
       size: {

@@ -1,6 +1,6 @@
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickSetValue">
-    <!-- @slot Use it to add something instead of label. -->
+  <div v-bind="tabAttrs" :data-test="dataTest" @click="onClickSetValue">
+    <!-- @slot Use it to add something instead of the label. -->
     <slot>
       {{ label }}
     </slot>
@@ -43,7 +43,6 @@ const props = defineProps({
 
   /**
    * Make tab disabled.
-   * @ignore
    */
   disabled: {
     type: Boolean,
@@ -75,7 +74,7 @@ const size = computed(() => {
   return toValue(getUTabsSize) || getDefault(defaultConfig, UTab).size;
 });
 
-const { wrapperAttrs } = useAttrs(props, { selected, size });
+const { tabAttrs } = useAttrs(props, { selected, size });
 
 async function onClickSetValue() {
   if (!props.disabled && setUTabsSelectedItem) {

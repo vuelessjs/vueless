@@ -1,5 +1,5 @@
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div :data-test="dataTest" v-bind="tabsAttrs">
     <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
@@ -103,5 +103,5 @@ provide("setUTabsSelectedItem", (value) => (selectedItem.value = value));
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("getUTabsSize", () => props.size);
 
-const { wrapperAttrs, tabAttrs } = useAttrs(props);
+const { tabsAttrs, tabAttrs } = useAttrs(props);
 </script>

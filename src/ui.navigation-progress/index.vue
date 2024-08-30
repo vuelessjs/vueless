@@ -16,7 +16,7 @@
       <progress v-bind="progressAttrs" :max="realMax" :value="value" />
     </template>
 
-    <div v-if="isSteps" v-bind="stepAttrs(!value && config.firstStep)">
+    <div v-if="isSteps" v-bind="stepAttrs(!value && config.stepFirst)">
       <template v-for="(step, index) in max" :key="index">
         <!--
           @slot Use it to add something instead of the progress step label.

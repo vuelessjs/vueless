@@ -1,15 +1,13 @@
 export default /*tw*/ {
   list: "flex",
-  item: "h-9 min-w-9 flex items-center justify-center",
-  ellipsis: "hidden md:flex",
-  itemEllipsis: "leading-none",
-  navigationButton: "{UButton} size-full rounded font-normal disabled:hover:bg-transparent",
-  navigationButtonText: "h-9 min-w-9 leading-none",
-  pageButton: "{UButton} size-full rounded font-normal disabled:hover:bg-transparent",
+  listItem: "",
+  ellipsis: "leading-none",
+  navButton: "{UButton} font-normal",
+  navButtonLabel: "",
+  pageButton: "{UButton} font-normal",
   pageButtonActive: `
-    rounded !bg-brand-900/15
-    hover:!text-brand-900 !hover:bg-brand-900/15 disabled:hover:bg-brand-900/15
-    focus:outline-none
+    !bg-brand-900/20 hover:!text-brand-900 !hover:bg-brand-900/20
+    disabled:hover:bg-brand-900/20
   `,
   defaults: {
     limit: 5,

@@ -28,13 +28,13 @@ export default function useAttrs(props) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "item") {
-      attrs.itemAttrs = computed(() => (page = 0) => {
-        const itemClass = page && !isFinite(page.number) && getAttrs("ellipsis");
+    if (key === "listItem") {
+      attrs.listItemAttrs = computed(() => (page = 0) => {
+        const listItemClass = page && !isFinite(page.number) && getAttrs("ellipsis");
 
         return {
-          ...getAttrs("item"),
-          class: cx([getAttrs("item").value.class, itemClass]),
+          ...getAttrs("listItem"),
+          class: cx([getAttrs("listItem").value.class, listItemClass]),
         };
       });
     }

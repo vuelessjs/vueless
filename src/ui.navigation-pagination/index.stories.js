@@ -47,8 +47,8 @@ hideEllipsis.args = { ellipses: false };
 export const disabled = DefaultTemplate.bind({});
 disabled.args = { disabled: true };
 
-export const hideNavigationButtons = DefaultTemplate.bind({});
-hideNavigationButtons.args = { showLast: false, showFirst: false };
+export const hideNavButtons = DefaultTemplate.bind({});
+hideNavButtons.args = { showLast: false, showFirst: false };
 
 export const setCustomNavigationLabel = DefaultTemplate.bind({});
 setCustomNavigationLabel.args = {

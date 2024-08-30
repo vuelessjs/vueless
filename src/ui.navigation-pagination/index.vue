@@ -1,42 +1,46 @@
 <template>
   <ul v-bind="listAttrs">
-    <li v-if="showFirst" v-bind="itemAttrs()">
+    <li v-if="showFirst" v-bind="listItemAttrs()">
       <UButton
-        square
+        no-ring
+        size="sm"
         variant="thirdary"
         :disabled="prevIsDisabled"
         :data-test="`${dataTest}-first`"
-        v-bind="navigationButtonAttrs"
+        v-bind="navButtonAttrs"
         @click="goToFirstPage"
       >
         <!-- @slot Use it to add something instead of the "first" label. -->
         <slot name="first">
-          <span v-bind="navigationButtonTextAttrs" v-html="firstLabel" />
+          <span v-bind="navButtonLabelAttrs" v-html="firstLabel" />
         </slot>
       </UButton>
     </li>
-    <li v-bind="itemAttrs()">
+
+    <li v-bind="listItemAttrs()">
       <UButton
-        square
+        no-ring
+        size="sm"
         variant="thirdary"
         :disabled="prevIsDisabled"
         :data-test="`${dataTest}-prev`"
-        v-bind="navigationButtonAttrs"
+        v-bind="navButtonAttrs"
         @click="goToPrevPage"
       >
         <!-- @slot Use it to add something instead of the "prev" label. -->
         <slot name="prev">
-          <span v-bind="navigationButtonTextAttrs" v-html="prevLabel" />
+          <span v-bind="navButtonLabelAttrs" v-html="prevLabel" />
         </slot>
       </UButton>
     </li>
 
-    <li v-for="page in pageButtons" :key="page" v-bind="itemAttrs(page)">
-      <span v-if="!isFinite(page.number)" v-bind="itemEllipsisAttrs" v-html="ELLIPSIS_LABEL" />
+    <li v-for="page in pageButtons" :key="page" v-bind="listItemAttrs(page)">
+      <span v-if="!isFinite(page.number)" v-bind="ellipsisAttrs">&hellip;</span>
 
       <UButton
         v-else
-        square
+        no-ring
+        size="sm"
         variant="thirdary"
         :data-test="`${dataTest}-page`"
         :disabled="disabled"
@@ -47,33 +51,36 @@
       </UButton>
     </li>
 
-    <li v-bind="itemAttrs()">
+    <li v-bind="listItemAttrs()">
       <UButton
-        square
+        no-ring
+        size="sm"
         variant="thirdary"
         :disabled="nextIsDisabled"
         :data-test="`${dataTest}-next`"
-        v-bind="navigationButtonAttrs"
+        v-bind="navButtonAttrs"
         @click="goToNextPage"
       >
         <!-- @slot Use it to add something instead of the "next" label. -->
         <slot name="next">
-          <span v-bind="navigationButtonTextAttrs" v-html="nextLabel" />
+          <span v-bind="navButtonLabelAttrs" v-html="nextLabel" />
         </slot>
       </UButton>
     </li>
-    <li v-if="showLast" v-bind="itemAttrs()">
+
+    <li v-if="showLast" v-bind="listItemAttrs()">
       <UButton
-        square
+        no-ring
+        size="sm"
         variant="thirdary"
         :disabled="nextIsDisabled"
         :data-test="`${dataTest}-last`"
-        v-bind="navigationButtonAttrs"
+        v-bind="navButtonAttrs"
         @click="goToLastPage"
       >
         <!-- @slot Use it to add something instead of the "last" label. -->
         <slot name="last">
-          <span v-bind="navigationButtonTextAttrs" v-html="lastLabel" />
+          <span v-bind="navButtonLabelAttrs" v-html="lastLabel" />
         </slot>
       </UButton>
     </li>
@@ -88,7 +95,7 @@ import UButton from "../ui.button";
 import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
-import { UPagination, ELLIPSIS_LABEL } from "./constants";
+import { UPagination } from "./constants";
 import useAttrs from "./composables/attrs.composable";
 
 /* Should be a string for correct web-types gen */
@@ -227,10 +234,10 @@ const emit = defineEmits([
 
 const {
   listAttrs,
-  itemAttrs,
-  itemEllipsisAttrs,
-  navigationButtonAttrs,
-  navigationButtonTextAttrs,
+  listItemAttrs,
+  ellipsisAttrs,
+  navButtonAttrs,
+  navButtonLabelAttrs,
   pageButtonAttrs,
 } = useAttrs(props);
 

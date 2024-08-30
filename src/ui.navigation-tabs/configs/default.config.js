@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: {
+  tabs: {
     base: "mb-6 flex",
     variants: {
       size: {
