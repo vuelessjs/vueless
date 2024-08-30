@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel} w-full",
+  inputLabel: "{ULabel} w-full",
   dropzoneWrapper: {
     base: `
       p-3 size-auto w-full bg-white transition

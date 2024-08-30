@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  radioLabel: "{ULabel}",
   radio: "{URadio}",
   list: {
     base: "flex flex-col",

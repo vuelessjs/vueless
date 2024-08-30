@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  inputLabel: "{ULabel}",
   inputWrapper: "flex relative w-full",
   rightIconSlot: "flex items-center justify-end whitespace-nowrap pr-2 gap-1 rounded-dynamic rounded-l-none",
   leftIconSlot: "flex items-center justify-end whitespace-nowrap pl-2 gap-1 rounded-dynamic rounded-r-none",

@@ -9,7 +9,7 @@
     :size="size"
     :align="labelAlign"
     centred
-    v-bind="labelAttrs"
+    v-bind="inputLabelAttrs"
   >
     <label :for="id" v-bind="blockAttrs">
       <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
@@ -353,7 +353,7 @@ const {
   config,
   inputAttrs,
   blockAttrs,
-  labelAttrs,
+  inputLabelAttrs,
   passwordIconAttrs,
   leftIconSlotAttrs,
   leftIconAttrs,

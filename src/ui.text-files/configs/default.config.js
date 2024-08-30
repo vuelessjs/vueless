@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  filesLabel: "{ULabel}",
   body: "flex flex-col gap-1",
   file: "{UFile} block",
   defaults: {

@@ -9,7 +9,7 @@
     :align="labelAlign"
     :disabled="disabled"
     centred
-    v-bind="labelAttrs"
+    v-bind="selectLabelAttrs"
     :data-test="dataTest"
     :tabindex="-1"
   >
@@ -612,7 +612,7 @@ const selectedLabel = computed(() => {
 const {
   config,
   hasSlotContent,
-  labelAttrs,
+  selectLabelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
   leftIconWrapperAttrs,

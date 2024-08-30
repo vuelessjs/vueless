@@ -7,7 +7,7 @@
     :align="labelAlign"
     :disabled="disabled"
     :data-test="dataTest"
-    v-bind="labelAttrs"
+    v-bind="switchLabelAttrs"
     @click="onClickToggle"
   >
     <label :for="id" v-bind="wrapperAttrs">
@@ -175,7 +175,7 @@ const checkedValue = computed({
 const {
   config,
   toggleIconAttrs,
-  labelAttrs,
+  switchLabelAttrs,
   inputAttrs,
   wrapperAttrs,
   circleAttrs,

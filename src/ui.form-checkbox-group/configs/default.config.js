@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  checkboxLabel: "{ULabel}",
   checkbox: "{UCheckbox}",
   list: {
     base: "flex flex-col",

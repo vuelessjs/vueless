@@ -7,7 +7,7 @@
     :size="size"
     align="topWithDesc"
     :data-test="dataTest"
-    v-bind="labelAttrs"
+    v-bind="colorPickerLabelAttrs"
   >
     <div v-bind="listAttrs">
       <div v-bind="unselectedAttrs">
@@ -167,7 +167,7 @@ const emit = defineEmits([
 
 const {
   config,
-  labelAttrs,
+  colorPickerLabelAttrs,
   listAttrs,
   radioAttrs,
   unselectedIconAttrs,

@@ -14,6 +14,23 @@
       v-bind="dropdownButtonAttrs"
       @click="onClickButton"
     >
+      <template #left>
+        <!--
+          @slot Use it to add something left.
+          @binding {boolean} isOpened
+        -->
+        <slot name="left" :is-opened="isShownOptions" />
+      </template>
+
+      <template #default>
+        <!--
+          @slot Use it to add something instead of the default label.
+          @binding {string} label
+          @binding {boolean} isOpened
+        -->
+        <slot :label="label" :is-opened="isShownOptions" />
+      </template>
+
       <template #right>
         <UIcon
           v-if="!noIcon"
@@ -24,6 +41,11 @@
           :data-test="`${dataTest}-caret`"
           v-bind="dropdownIconAttrs"
         />
+        <!--
+          @slot Use it to add something right.
+          @binding {boolean} isOpened
+        -->
+        <slot name="right" :is-opened="isShownOptions" />
       </template>
     </UButton>
 

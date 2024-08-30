@@ -8,9 +8,26 @@
       :weight="weight"
       :variant="variant"
       :data-test="`${dataTest}-badge`"
-      v-bind="badgeAttrs"
+      v-bind="dropdownBadgeAttrs"
       @click="onClickBadge"
     >
+      <!--
+        @slot Use it to add something left.
+        @binding {boolean} isOpened
+      -->
+      <template #left>
+        <slot name="left" :is-opened="isShownOptions" />
+      </template>
+
+      <template #default>
+        <!--
+          @slot Use it to add something instead of the default label.
+          @binding {string} label
+          @binding {boolean} isOpened
+        -->
+        <slot :label="label" :is-opened="isShownOptions" />
+      </template>
+
       <template #right-icon>
         <UIcon
           v-if="!noIcon"
@@ -22,6 +39,14 @@
           v-bind="dropdownIconAttrs"
         />
       </template>
+
+      <template #right>
+        <!--
+          @slot Use it to add something right.
+          @binding {boolean} isOpened
+        -->
+        <slot name="right" :is-opened="isShownOptions" />
+      </template>
     </UBadge>
 
     <UDropdownList
@@ -32,7 +57,7 @@
       :value-key="valueKey"
       :label-key="labelKey"
       :data-test="`${dataTest}-item`"
-      v-bind="listAttrs"
+      v-bind="dropdownListAttrs"
       @click="onClickList"
     />
   </div>
@@ -190,9 +215,12 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const { config, wrapperAttrs, badgeAttrs, listAttrs, dropdownIconAttrs } = useAttrs(props, {
-  isShownOptions,
-});
+const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
+  props,
+  {
+    isShownOptions,
+  },
+);
 
 const iconSize = computed(() => {
   const sizes = {

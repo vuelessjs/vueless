@@ -7,7 +7,7 @@
     :disabled="disabled"
     align="topWithDesc"
     :data-test="dataTest"
-    v-bind="labelAttrs"
+    v-bind="checkboxLabelAttrs"
   >
     <div v-bind="listAttrs">
       <slot>
@@ -147,7 +147,7 @@ const emit = defineEmits([
 
 const checkedItems = ref([]);
 
-const { labelAttrs, checkboxAttrs, listAttrs } = useAttrs(props);
+const { checkboxLabelAttrs, checkboxAttrs, listAttrs } = useAttrs(props);
 
 provide("setCheckboxGroupCheckedItems", (value) => (checkedItems.value = value));
 provide("getCheckboxGroupCheckedItems", () => checkedItems.value);

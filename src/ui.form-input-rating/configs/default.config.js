@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  inputLabel: "{ULabel}",
   wrapper: {
     base: "flex items-center text-gray-500 !leading-none",
     variants: {

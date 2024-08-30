@@ -5,7 +5,7 @@
     :size="size"
     :align="labelAlign"
     :description="description"
-    v-bind="labelAttrs"
+    v-bind="inputLabelAttrs"
     :data-test="dataTest"
   >
     <div v-bind="wrapperAttrs">
@@ -177,7 +177,7 @@ const hovered = ref(null);
 
 const {
   config,
-  labelAttrs,
+  inputLabelAttrs,
   wrapperAttrs,
   counterAttrs,
   totalAttrs,

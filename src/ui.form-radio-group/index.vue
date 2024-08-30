@@ -7,7 +7,7 @@
     :disabled="disabled"
     align="topWithDesc"
     :data-test="dataTest"
-    v-bind="labelAttrs"
+    v-bind="radioLabelAttrs"
   >
     <div v-bind="listAttrs">
       <slot>
@@ -141,7 +141,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { labelAttrs, listAttrs, radioAttrs } = useAttrs(props);
+const { radioLabelAttrs, listAttrs, radioAttrs } = useAttrs(props);
 
 const selectedItem = computed({
   get: () => props.modelValue,

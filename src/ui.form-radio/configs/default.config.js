@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  radioLabel: "{ULabel}",
   radio: {
     base: `
       border cursor-pointer transition checked:text-{color}-600

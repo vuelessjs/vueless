@@ -15,19 +15,19 @@
         :key="index"
         v-bind="listItemAttrs"
         ref="optionsRef"
-        :role="!(option && option.groupLabel) ? 'option' : null"
-        :data-group-label="Boolean(option.groupLabel)"
+        :role="!(option && option.groupLabelKey) ? 'option' : null"
+        :data-group-label="Boolean(option.groupLabelKey)"
       >
         <!-- option title -->
         <span
-          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
+          v-if="!(option && (option.groupLabelKey || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs(optionHighlight(index, option))"
           @click="select(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
             @slot Use it to add something before the option.
-            @binding {other} option
+            @binding {object} option
             @binding {number} index
           -->
           <slot name="before-option" :option="option" :index="index" />
@@ -54,8 +54,8 @@
         </span>
 
         <!-- group title -->
-        <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
+        <template v-if="option && (option.groupLabelKey || option.isSubGroup) && !option.isHidden">
+          <div v-if="option.groupLabelKey" v-bind="groupAttrs" v-text="option.groupLabelKey" />
 
           <div
             v-else-if="option.isSubGroup"
@@ -150,7 +150,7 @@ const props = defineProps({
   /**
    * Set a name of the property containing the group label.
    */
-  groupLabel: {
+  groupLabelKey: {
     type: String,
     default: "label",
   },
@@ -158,7 +158,7 @@ const props = defineProps({
   /**
    * Set a name of the property containing the group values.
    */
-  groupValues: {
+  groupValueKey: {
     type: String,
     default: "",
   },
@@ -277,7 +277,7 @@ function onClickAddOption() {
 }
 
 function select(option, key) {
-  if (props.disabled || option.groupLabel) {
+  if (props.disabled || option.groupLabelKey) {
     return;
   }
 

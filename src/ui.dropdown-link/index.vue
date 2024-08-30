@@ -11,9 +11,26 @@
         :disabled="disabled"
         :no-ring="noRing"
         :data-test="`${dataTest}-link`"
-        v-bind="linkAttrs"
+        v-bind="dropdownLinkAttrs"
         @click="onClickLink"
       >
+        <template #left>
+          <!--
+            @slot Use it to add something left.
+            @binding {boolean} isOpened
+          -->
+          <slot name="left" :is-opened="isShownOptions" />
+        </template>
+
+        <template #default>
+          <!--
+            @slot Use it to add something instead of the default label.
+            @binding {string} label
+            @binding {boolean} isOpened
+          -->
+          <slot :label="label" />
+        </template>
+
         <template #right>
           <UIcon
             v-if="!noIcon"
@@ -26,6 +43,11 @@
             v-bind="dropdownIconAttrs"
             @click="onClickLink"
           />
+          <!--
+            @slot Use it to add something right.
+            @binding {boolean} isOpened
+          -->
+          <slot name="right" :is-opened="isShownOptions" />
         </template>
       </ULink>
     </div>
@@ -38,7 +60,7 @@
       :value-key="valueKey"
       :label-key="labelKey"
       :data-test="`${dataTest}-item`"
-      v-bind="listAttrs"
+      v-bind="dropdownListAttrs"
       @click="onClickList"
     />
   </div>
@@ -211,10 +233,14 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const { config, wrapperAttrs, linkAttrs, listAttrs, dropdownIconAttrs, triggerAttrs } = useAttrs(
-  props,
-  { isShownOptions },
-);
+const {
+  config,
+  wrapperAttrs,
+  dropdownLinkAttrs,
+  dropdownListAttrs,
+  dropdownIconAttrs,
+  triggerAttrs,
+} = useAttrs(props, { isShownOptions });
 
 const iconSize = computed(() => {
   const sizes = {
