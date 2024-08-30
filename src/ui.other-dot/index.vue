@@ -1,5 +1,5 @@
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs" />
+  <div v-bind="dotAttrs" :data-test="dataTest" />
 </template>
 
 <script setup>
@@ -48,5 +48,5 @@ const props = defineProps({
   },
 });
 
-const { wrapperAttrs } = useAttrs(props);
+const { dotAttrs } = useAttrs(props);
 </script>

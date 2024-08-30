@@ -31,7 +31,7 @@ const props = defineProps({
    */
   loading: {
     type: Boolean,
-    default: false,
+    default: getDefault(defaultConfig, ULoaderRendering).loading,
   },
 
   /**
@@ -58,6 +58,6 @@ onUnmounted(() => {
 });
 
 const showLoader = computed(() => {
-  return props.loading || isLoading.value;
+  return props.loading === undefined ? isLoading.value : props.loading;
 });
 </script>

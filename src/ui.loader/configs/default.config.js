@@ -1,4 +1,10 @@
 export default /*tw*/ {
+  transition: {
+    enterFromClass: "opacity-0",
+    enterActiveClass: "transition duration-500",
+    leaveActiveClass: "transition duration-500",
+    leaveToClass: "opacity-0",
+  },
   loader: {
     base: "relative flex items-center",
     variants: {
@@ -18,21 +24,21 @@ export default /*tw*/ {
       },
       size: {
         sm: `
-          h-1.5 w-1.5
+          size-1.5
           [&:nth-child(1)]:left-1
           [&:nth-child(2)]:left-1
           [&:nth-child(3)]:left-4
           [&:nth-child(4)]:left-7
         `,
         md: `
-          h-2.5 w-2.5
+          size-2.5
           [&:nth-child(1)]:left-1.5
           [&:nth-child(2)]:left-1.5
           [&:nth-child(3)]:left-6
           [&:nth-child(4)]:left-[2.625rem]
         `,
         lg: `
-          h-4 w-4
+          size-4
           [&:nth-child(1)]:left-2
           [&:nth-child(2)]:left-2
           [&:nth-child(3)]:left-8
@@ -41,13 +47,7 @@ export default /*tw*/ {
       },
     },
   },
-  loaderTransition: {
-    moveClass: "transition duration-500",
-    enterActiveClass: "transition duration-500",
-    leaveActiveClass: "transition duration-500 absolute",
-    enterFromClass: "opacity-0",
-    leaveToClass: "opacity-0",
-  },
+
   defaults: {
     color: "brand",
     size: "md",

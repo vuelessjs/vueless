@@ -1,5 +1,5 @@
 <template>
-  <Transition v-bind="config.loaderTransition">
+  <Transition v-bind="config.transition">
     <div v-if="loading" v-bind="loaderAttrs">
       <div
         v-for="ellipse in ELLIPSES_AMOUNT"
@@ -14,7 +14,7 @@
 import { computed } from "vue";
 import { getDefault } from "../service.ui";
 
-import { ULoader } from "./constants";
+import { ULoader, ELLIPSES_AMOUNT } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
 
@@ -23,12 +23,11 @@ defineOptions({ name: "ULoader", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Loader size.
-   * @values sm, md, lg
+   * Set loader on.
    */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, ULoader).size,
+  loading: {
+    type: Boolean,
+    default: getDefault(defaultConfig, ULoader).loading,
   },
 
   /**
@@ -41,26 +40,25 @@ const props = defineProps({
   },
 
   /**
-   * Turn off/on loader.
+   * Loader size.
+   * @values sm, md, lg
    */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULoader).loading,
+  size: {
+    type: String,
+    default: getDefault(defaultConfig, ULoader).size,
   },
 });
-
-const ELLIPSES_AMOUNT = 4;
 
 const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
 
 const ellipseClasses = computed(() => [
-  "vueless-internal-loader-ellipse",
-  `vueless-internal-loader-ellipse-${props.size}`,
+  "vueless-loader-ellipse",
+  `vueless-loader-ellipse-${props.size}`,
 ]);
 </script>
 
 <style scoped lang="postcss">
-.vueless-internal-loader-ellipse {
+.vueless-loader-ellipse {
   &:nth-child(1) {
     animation: lds-ellipsis1 0.6s infinite;
   }

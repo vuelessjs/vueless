@@ -1,6 +1,6 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "rounded-full bg-{color}-500",
+  dot: {
+    base: "rounded-full bg-{color}-600",
     variants: {
       color: {
         white: "bg-white",
@@ -19,5 +19,5 @@ export default /*tw*/ {
     color: "brand",
     size: "md",
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-500` }],
+  safelist: (colors) => [{ pattern: `bg-(${colors})-600` }],
 };

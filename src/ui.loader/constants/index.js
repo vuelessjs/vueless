@@ -3,3 +3,5 @@
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
 export const ULoader = "ULoader";
+
+export const ELLIPSES_AMOUNT = 4;
