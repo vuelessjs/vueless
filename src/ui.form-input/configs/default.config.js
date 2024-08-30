@@ -59,6 +59,7 @@ export default /*tw*/ {
     type: "text",
     inputmode: "text",
     labelAlign: "topInside",
+    validationRule: "",
     readonly: false,
     disabled: false,
     noAutocomplete: false,

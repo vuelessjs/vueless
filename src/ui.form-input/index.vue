@@ -255,7 +255,8 @@ const props = defineProps({
    */
   validationRule: {
     type: [String, RegExp],
-    default: "",
+    default: getDefault(defaultConfig, UInput).validationRule,
+    validator: (value) => Object.keys(VALIDATION_RULES_REG_EX).includes(value) || value === "",
   },
 
   /**
@@ -264,8 +265,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "text",
-    validator: (value) => !Object.keys(VALIDATION_RULES_REG_EX).includes(value),
+    default: getDefault(defaultConfig, UInput).type,
   },
 
   /**
