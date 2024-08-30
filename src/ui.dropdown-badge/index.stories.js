@@ -3,7 +3,6 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 import UDropdownBadge from "../ui.dropdown-badge";
 import URow from "../ui.container-row";
 import UIcon from "../ui.image-icon";
-import ULabel from "../ui.form-label";
 
 /**
  * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
@@ -33,7 +32,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownBadge, ULabel, UIcon },
+  components: { UDropdownBadge, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownBadge.name);
 
@@ -85,9 +84,7 @@ export const defaultSlot = DefaultTemplate.bind({});
 defaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <ULabel>
-        Custom label
-      </ULabel>
+      Custom label
     </template>
   `,
 };
