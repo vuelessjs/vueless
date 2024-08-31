@@ -1,101 +1,134 @@
 <template>
-  <ul v-bind="listAttrs">
-    <li v-if="showFirst" v-bind="listItemAttrs()">
-      <UButton
-        no-ring
-        size="sm"
-        variant="thirdary"
-        :disabled="prevIsDisabled"
-        :data-test="`${dataTest}-first`"
-        v-bind="navButtonAttrs"
-        @click="goToFirstPage"
-      >
-        <!-- @slot Use it to add something instead of the "first" label. -->
-        <slot name="first">
-          <span v-bind="navButtonLabelAttrs" v-html="firstLabel" />
-        </slot>
-      </UButton>
-    </li>
+  <div v-bind="paginationAttrs">
+    <UButton
+      v-if="showFirst"
+      no-ring
+      :size="buttonSize"
+      variant="thirdary"
+      :label="firstLabel"
+      :square="!firstLabel"
+      :disabled="prevIsDisabled"
+      :data-test="`${dataTest}-first`"
+      v-bind="firstButtonAttrs"
+      @click="goToFirstPage"
+    >
+      <!-- @slot Use it to add something instead of the "first" label. -->
+      <slot name="first">
+        <UIcon
+          v-if="!firstLabel"
+          :size="iconSize"
+          :name="config.defaults.firstIcon"
+          v-bind="firstIconAttrs"
+        />
+      </slot>
+    </UButton>
 
-    <li v-bind="listItemAttrs()">
-      <UButton
-        no-ring
-        size="sm"
-        variant="thirdary"
-        :disabled="prevIsDisabled"
-        :data-test="`${dataTest}-prev`"
-        v-bind="navButtonAttrs"
-        @click="goToPrevPage"
-      >
-        <!-- @slot Use it to add something instead of the "prev" label. -->
-        <slot name="prev">
-          <span v-bind="navButtonLabelAttrs" v-html="prevLabel" />
-        </slot>
-      </UButton>
-    </li>
+    <UButton
+      no-ring
+      :size="buttonSize"
+      variant="thirdary"
+      :label="prevLabel"
+      :square="!prevLabel"
+      :disabled="prevIsDisabled"
+      :data-test="`${dataTest}-prev`"
+      v-bind="prevButtonAttrs"
+      @click="goToPrevPage"
+    >
+      <!-- @slot Use it to add something instead of the "prev" label. -->
+      <slot name="prev">
+        <UIcon
+          v-if="!prevLabel"
+          :size="iconSize"
+          :name="config.defaults.prevIcon"
+          v-bind="prevIconAttrs"
+        />
+      </slot>
+    </UButton>
 
-    <li v-for="page in pageButtons" :key="page" v-bind="listItemAttrs(page)">
+    <template v-for="page in pageButtons" :key="page">
       <UButton
         v-if="!isFinite(page.number)"
         square
         no-ring
-        size="sm"
-        variant="thirdary"
         disabled
-        v-bind="pageButtonAttrs"
+        :size="buttonSize"
+        variant="thirdary"
+        v-bind="inactiveButtonAttrs"
       >
         <!-- @slot Use it to add something instead of the ellipsis. -->
         <slot name="ellipsis">&hellip;</slot>
       </UButton>
 
       <UButton
+        v-else-if="page.isActive"
+        filled
+        no-ring
+        :size="buttonSize"
+        :variant="variant"
+        :label="page.number"
+        :disabled="disabled"
+        v-bind="activeButtonAttrs"
+        :data-test="`${dataTest}-active`"
+      />
+
+      <UButton
         v-else
         no-ring
-        size="sm"
+        :size="buttonSize"
         variant="thirdary"
-        :data-test="`${dataTest}-page`"
+        :label="page.number"
         :disabled="disabled"
-        v-bind="pageButtonAttrs(page)"
+        v-bind="inactiveButtonAttrs"
+        :data-test="`${dataTest}-inactive`"
         @click="selectPage(page.number)"
-      >
-        {{ page.number }}
-      </UButton>
-    </li>
+      />
+    </template>
 
-    <li v-bind="listItemAttrs()">
-      <UButton
-        no-ring
-        size="sm"
-        variant="thirdary"
-        :disabled="nextIsDisabled"
-        :data-test="`${dataTest}-next`"
-        v-bind="navButtonAttrs"
-        @click="goToNextPage"
-      >
-        <!-- @slot Use it to add something instead of the "next" label. -->
-        <slot name="next">
-          <span v-bind="navButtonLabelAttrs" v-html="nextLabel" />
-        </slot>
-      </UButton>
-    </li>
+    <UButton
+      no-ring
+      :size="buttonSize"
+      variant="thirdary"
+      :label="nextLabel"
+      :square="!nextLabel"
+      :disabled="nextIsDisabled"
+      v-bind="nextButtonAttrs"
+      :data-test="`${dataTest}-next`"
+      @click="goToNextPage"
+    >
+      <!-- @slot Use it to add something instead of the "next" label. -->
+      <slot name="next">
+        <UIcon
+          v-if="!nextLabel"
+          :size="iconSize"
+          :name="config.defaults.nextIcon"
+          v-bind="nextIconAttrs"
+        />
+      </slot>
+    </UButton>
 
-    <li v-if="showLast" v-bind="listItemAttrs()">
-      <UButton
-        no-ring
-        size="sm"
-        variant="thirdary"
-        :disabled="nextIsDisabled"
-        :data-test="`${dataTest}-last`"
-        v-bind="navButtonAttrs"
-        @click="goToLastPage"
-      >
-        <!-- @slot Use it to add something instead of the "last" label. -->
-        <slot name="last">
-          <span v-bind="navButtonLabelAttrs" v-html="lastLabel" />
-        </slot>
-      </UButton>
-    </li>
-  </ul>
+    <UButton
+      v-if="showLast"
+      no-ring
+      :size="buttonSize"
+      variant="thirdary"
+      :label="lastLabel"
+      :square="!lastLabel"
+      :disabled="nextIsDisabled"
+      v-bind="lastButtonAttrs"
+      :data-test="`${dataTest}-last`"
+      @click="goToLastPage"
+    >
+      <!-- @slot Use it to add something instead of the "last" label. -->
+      <slot name="last">
+        <UIcon
+          v-if="!lastLabel"
+          :size="iconSize"
+          :name="config.defaults.lastIcon"
+          v-bind="lastIconAttrs"
+        />
+      </slot>
+    </UButton>
+  </div>
 </template>
 
 <script setup>
@@ -103,6 +136,7 @@ import { computed } from "vue";
 import { range } from "lodash-es";
 
 import UButton from "../ui.button";
+import UIcon from "../ui.image-icon";
 import { getDefault } from "../service.ui";
 
 import defaultConfig from "./configs/default.config";
@@ -119,14 +153,6 @@ const props = defineProps({
   modelValue: {
     type: Number,
     default: null,
-  },
-
-  /**
-   * Disable navigation buttons.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UPagination).disabled,
   },
 
   /**
@@ -157,27 +183,21 @@ const props = defineProps({
   },
 
   /**
-   * Show ellipsis.
+   * Pagination variant.
+   * @values primary, secondary, thirdary
    */
-  ellipsis: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UPagination).ellipsis,
+  variant: {
+    type: String,
+    default: getDefault(defaultConfig, UPagination).variant,
   },
 
   /**
-   * Prev button label.
+   * Pagination size.
+   * @values sm, md, lg
    */
-  prevLabel: {
+  size: {
     type: String,
-    default: getDefault(defaultConfig, UPagination).prevLabel,
-  },
-
-  /**
-   * Next button label.
-   */
-  nextLabel: {
-    type: String,
-    default: getDefault(defaultConfig, UPagination).nextLabel,
+    default: getDefault(defaultConfig, UPagination).size,
   },
 
   /**
@@ -185,7 +205,23 @@ const props = defineProps({
    */
   firstLabel: {
     type: String,
-    default: getDefault(defaultConfig, UPagination).firstLabel,
+    default: "",
+  },
+
+  /**
+   * Prev button label.
+   */
+  prevLabel: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Next button label.
+   */
+  nextLabel: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -193,7 +229,23 @@ const props = defineProps({
    */
   lastLabel: {
     type: String,
-    default: getDefault(defaultConfig, UPagination).lastLabel,
+    default: "",
+  },
+
+  /**
+   * Disable navigation buttons.
+   */
+  disabled: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UPagination).disabled,
+  },
+
+  /**
+   * Show ellipsis.
+   */
+  ellipsis: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UPagination).ellipsis,
   },
 
   /**
@@ -243,8 +295,20 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { listAttrs, listItemAttrs, navButtonAttrs, navButtonLabelAttrs, pageButtonAttrs } =
-  useAttrs(props);
+const {
+  config,
+  paginationAttrs,
+  firstButtonAttrs,
+  lastButtonAttrs,
+  prevButtonAttrs,
+  nextButtonAttrs,
+  activeButtonAttrs,
+  inactiveButtonAttrs,
+  lastIconAttrs,
+  firstIconAttrs,
+  prevIconAttrs,
+  nextIconAttrs,
+} = useAttrs(props);
 
 const currentPage = computed({
   get: () => props.modelValue,
@@ -252,6 +316,26 @@ const currentPage = computed({
     emit("update:modelValue", value);
     emit("change", value);
   },
+});
+
+const buttonSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size];
+});
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size];
 });
 
 const totalPages = computed(() => {

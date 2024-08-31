@@ -9,6 +9,13 @@ export default function useAttrs(props) {
     defaultConfig,
     () => props.config,
   );
+
+  const paginationButtonClasses = computed(() =>
+    cva(config.value.paginationButton)({
+      ...props,
+    }),
+  );
+
   const attrs = {};
 
   for (const key in defaultConfig) {
@@ -28,26 +35,20 @@ export default function useAttrs(props) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "listItem") {
-      attrs.listItemAttrs = computed(() => (page = 0) => {
-        const listItemClass = page && !isFinite(page.number) && getAttrs("ellipsis");
+    if (
+      key === "firstButton" ||
+      key === "lastButton" ||
+      key === "prevButton" ||
+      key === "nextButton" ||
+      key === "activeButton" ||
+      key === "inactiveButton"
+    ) {
+      const keyAttrs = attrs[`${key}Attrs`];
 
-        return {
-          ...getAttrs("listItem"),
-          class: cx([getAttrs("listItem").value.class, listItemClass]),
-        };
-      });
-    }
-
-    if (key === "pageButton") {
-      attrs.pageButtonAttrs = computed(() => (page) => {
-        const pageButtonActiveClasses = page.isActive && config.value.pageButtonActive;
-
-        return {
-          ...getAttrs("pageButton"),
-          class: cx([getAttrs("pageButton").value.class, pageButtonActiveClasses]),
-        };
-      });
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...keyAttrs.value,
+        class: cx([paginationButtonClasses.value, keyAttrs.value.class]),
+      }));
     }
   }
 

@@ -10,8 +10,8 @@ export default {
   title: "Navigation / Pagination",
   component: UPagination,
   args: {
-    total: 90,
-    value: 1,
+    modelValue: 1,
+    total: 900,
   },
   argTypes: {
     ...getArgTypes(UPagination.name),
