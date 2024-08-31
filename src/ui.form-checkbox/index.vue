@@ -7,7 +7,7 @@
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
-    v-bind="labelAttrs"
+    v-bind="checkboxLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
     <input
@@ -214,10 +214,13 @@ const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
-const { config, checkboxAttrs, iconWrapperAttrs, labelAttrs, checkedIconAttrs } = useAttrs(props, {
-  checkboxColor,
-  checkboxSize,
-});
+const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } = useAttrs(
+  props,
+  {
+    checkboxColor,
+    checkboxSize,
+  },
+);
 
 const iconSize = computed(() => {
   const sizes = {

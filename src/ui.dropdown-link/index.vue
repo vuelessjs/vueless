@@ -3,29 +3,52 @@
     <div v-bind="triggerAttrs">
       <ULink
         :id="id"
-        :label="label"
         :size="size"
+        :label="label"
         :color="color"
         :dashed="dashed"
-        :underlined="underlined"
-        :disabled="disabled"
         :no-ring="noRing"
+        :disabled="disabled"
+        :underlined="underlined"
         :data-test="`${dataTest}-link`"
-        v-bind="linkAttrs"
+        v-bind="dropdownLinkAttrs"
         @click="onClickLink"
       >
+        <template #left>
+          <!--
+          @slot Use it to add something before the label.
+          @binding {boolean} isOpened
+        -->
+          <slot name="left" :opened="isShownOptions" />
+        </template>
+
+        <template #default>
+          <!--
+            @slot Use it to add something instead of the default label.
+            @binding {string} label
+            @binding {boolean} isOpened
+          -->
+          <slot :label="label" />
+        </template>
+
         <template #right>
-          <UIcon
-            v-if="!noIcon"
-            internal
-            interactive
-            :name="config.defaults.dropdownIcon"
-            :size="iconSize"
-            :color="color"
-            :data-test="`${dataTest}-caret`"
-            v-bind="dropdownIconAttrs"
-            @click="onClickLink"
-          />
+          <!--
+            @slot Use it to add something after the label.
+            @binding {boolean} isOpened
+          -->
+          <slot name="right" :opened="isShownOptions">
+            <UIcon
+              v-if="!noIcon"
+              internal
+              interactive
+              :color="color"
+              :size="iconSize"
+              :name="config.defaults.dropdownIcon"
+              :data-test="`${dataTest}-caret`"
+              v-bind="dropdownIconAttrs"
+              @click="onClickLink"
+            />
+          </slot>
         </template>
       </ULink>
     </div>
@@ -37,8 +60,8 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-test="`${dataTest}-item`"
-      v-bind="listAttrs"
+      :data-test="`${dataTest}-list`"
+      v-bind="dropdownListAttrs"
       @click="onClickList"
     />
   </div>
@@ -211,10 +234,14 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const { config, wrapperAttrs, linkAttrs, listAttrs, dropdownIconAttrs, triggerAttrs } = useAttrs(
-  props,
-  { isShownOptions },
-);
+const {
+  config,
+  wrapperAttrs,
+  dropdownLinkAttrs,
+  dropdownListAttrs,
+  dropdownIconAttrs,
+  triggerAttrs,
+} = useAttrs(props, { isShownOptions });
 
 const iconSize = computed(() => {
   const sizes = {

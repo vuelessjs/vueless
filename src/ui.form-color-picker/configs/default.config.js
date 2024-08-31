@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "",
+  colorPickerLabel: "{ULabel}",
   list: {
     base: "flex flex-wrap",
     variants: {

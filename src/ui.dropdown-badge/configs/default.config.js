@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  badge: {
+  dropdownBadge: {
     component: "{UBadge}",
     base: "cursor-pointer",
     variants: {
@@ -11,9 +11,9 @@ export default /*tw*/ {
       },
     },
   },
-  badgeActive: "group",
+  dropdownBadgeActive: "group",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
-  list: {
+  dropdownList: {
     base: "{UDropdownList} w-fit",
     variants: {
       listYPosition: {

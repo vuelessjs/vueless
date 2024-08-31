@@ -1,5 +1,5 @@
 <template>
-  <ULabel :label="label" :description="description" :size="size" v-bind="labelAttrs">
+  <ULabel :label="label" :description="description" :size="size" v-bind="filesLabelAttrs">
     <div v-bind="bodyAttrs">
       <slot>
         <UFile
@@ -105,7 +105,7 @@ const props = defineProps({
   },
 });
 
-const { labelAttrs, bodyAttrs, fileAttrs } = useAttrs(props);
+const { filesLabelAttrs, bodyAttrs, fileAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() =>
   props.fileList.map((file) => {

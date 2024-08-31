@@ -7,20 +7,43 @@
       :color="color"
       :weight="weight"
       :variant="variant"
+      v-bind="dropdownBadgeAttrs"
       :data-test="`${dataTest}-badge`"
-      v-bind="badgeAttrs"
       @click="onClickBadge"
     >
-      <template #right-icon>
-        <UIcon
-          v-if="!noIcon"
-          internal
-          :name="config.defaults.dropdownIcon"
-          :size="iconSize"
-          :color="color"
-          :data-test="`${dataTest}-caret`"
-          v-bind="dropdownIconAttrs"
-        />
+      <template #left>
+        <!--
+          @slot Use it to add something before the label.
+          @binding {boolean} isOpened
+        -->
+        <slot name="left" :opened="isShownOptions" />
+      </template>
+
+      <template #default>
+        <!--
+          @slot Use it to add something instead of the default label.
+          @binding {string} label
+          @binding {boolean} isOpened
+        -->
+        <slot :label="label" :opened="isShownOptions" />
+      </template>
+
+      <template #right>
+        <!--
+          @slot Use it to add something after the label.
+          @binding {boolean} isOpened
+        -->
+        <slot name="right" :label="label" :opened="isShownOptions">
+          <UIcon
+            v-if="!noIcon"
+            internal
+            :color="color"
+            :size="iconSize"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
+            :data-test="`${dataTest}-caret`"
+          />
+        </slot>
       </template>
     </UBadge>
 
@@ -31,8 +54,8 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-test="`${dataTest}-item`"
-      v-bind="listAttrs"
+      v-bind="dropdownListAttrs"
+      :data-test="`${dataTest}-list`"
       @click="onClickList"
     />
   </div>
@@ -190,9 +213,12 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const { config, wrapperAttrs, badgeAttrs, listAttrs, dropdownIconAttrs } = useAttrs(props, {
-  isShownOptions,
-});
+const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
+  props,
+  {
+    isShownOptions,
+  },
+);
 
 const iconSize = computed(() => {
   const sizes = {

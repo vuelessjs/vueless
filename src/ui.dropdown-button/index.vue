@@ -4,26 +4,49 @@
       :id="id"
       :label="label"
       :size="size"
-      :variant="variant"
-      :filled="filled || isShownOptions"
       :color="color"
       :round="round"
       :square="square"
+      :variant="variant"
       :disabled="disabled"
-      :data-test="`${dataTest}-button`"
+      :filled="filled || isShownOptions"
       v-bind="dropdownButtonAttrs"
+      :data-test="`${dataTest}-button`"
       @click="onClickButton"
     >
+      <template #left>
+        <!--
+          @slot Use it to add something before the label.
+          @binding {boolean} isOpened
+        -->
+        <slot name="left" :opened="isShownOptions" />
+      </template>
+
+      <template #default>
+        <!--
+          @slot Use it to add something instead of the default label.
+          @binding {string} label
+          @binding {boolean} isOpened
+        -->
+        <slot :label="label" :opened="isShownOptions" />
+      </template>
+
       <template #right>
-        <UIcon
-          v-if="!noIcon"
-          internal
-          :name="config.defaults.dropdownIcon"
-          :size="iconSize"
-          :color="iconColor"
-          :data-test="`${dataTest}-caret`"
-          v-bind="dropdownIconAttrs"
-        />
+        <!--
+          @slot Use it to add something after the label.
+          @binding {boolean} isOpened
+        -->
+        <slot name="right" :opened="isShownOptions">
+          <UIcon
+            v-if="!noIcon"
+            internal
+            :size="iconSize"
+            :color="iconColor"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
+            :data-test="`${dataTest}-caret`"
+          />
+        </slot>
       </template>
     </UButton>
 
@@ -34,9 +57,9 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-test="`${dataTest}-item`"
-      tabindex="-1"
       v-bind="dropdownListAttrs"
+      tabindex="-1"
+      :data-test="`${dataTest}-list`"
       @click="onClickList"
     />
   </div>

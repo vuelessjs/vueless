@@ -9,7 +9,7 @@
     :disabled="disabled"
     :data-test="dataTest"
     :align="labelAlign"
-    v-bind="labelAttrs"
+    v-bind="textareaLabelAttrs"
   >
     <label
       v-if="hasSlotContent($slots['left'])"
@@ -234,7 +234,7 @@ const slots = useSlots();
 
 const {
   textareaAttrs,
-  labelAttrs,
+  textareaLabelAttrs,
   textareaWrapperAttrs,
   leftSlotAttrs,
   rightSlotAttrs,

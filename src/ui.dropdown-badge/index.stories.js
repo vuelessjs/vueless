@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 
 import UDropdownBadge from "../ui.dropdown-badge";
 import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
@@ -31,7 +32,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownBadge },
+  components: { UDropdownBadge, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownBadge.name);
 
@@ -78,3 +79,38 @@ colors.args = { enum: "color" };
 
 export const withoutDropdownIcon = DefaultTemplate.bind({});
 withoutDropdownIcon.args = { noIcon: true };
+
+export const defaultSlot = DefaultTemplate.bind({});
+defaultSlot.args = {
+  slotTemplate: `
+    <template #default>
+      Custom label
+    </template>
+  `,
+};
+
+export const leftSlot = DefaultTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon
+        name="archive"
+        color="red"
+        size="sm"
+      />
+    </template>
+  `,
+};
+
+export const rightSlot = DefaultTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UIcon
+        name="archive"
+        color="red"
+        size="sm"
+      />
+    </template>
+  `,
+};

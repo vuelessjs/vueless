@@ -7,7 +7,7 @@
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
-    v-bind="labelAttrs"
+    v-bind="radioLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
     <input
@@ -188,7 +188,7 @@ const isChecked = computed(() => {
   return JSON.stringify(currentValue) === JSON.stringify(props.value);
 });
 
-const { radioAttrs, labelAttrs } = useAttrs(props, { radioColor, radioSize });
+const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
 
 const radioValue = computed(() => {
   return props.value === "" ? "on" : props.value;

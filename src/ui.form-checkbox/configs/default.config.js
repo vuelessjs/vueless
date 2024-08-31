@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  checkboxLabel: "{ULabel}",
   checkbox: {
     base: `
       border rounded bg-white cursor-pointer transition checked:text-{color}-600

@@ -27,7 +27,7 @@
         >
           <!--
             @slot Use it to add something before the option.
-            @binding {other} option
+            @binding {object} option
             @binding {number} index
           -->
           <slot name="before-option" :option="option" :index="index" />
@@ -124,7 +124,7 @@ const modelValue = defineModel({ type: [String, Number, Object], default: "" });
 
 const props = defineProps({
   /**
-   * Set options list.
+   * List options.
    */
   options: {
     type: Array,
@@ -148,23 +148,7 @@ const props = defineProps({
   },
 
   /**
-   * Set a name of the property containing the group label.
-   */
-  groupLabel: {
-    type: String,
-    default: "label",
-  },
-
-  /**
-   * Set a name of the property containing the group values.
-   */
-  groupValues: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Show add new option button to the list.
+   * Show add option button.
    */
   addOption: {
     type: Boolean,
@@ -172,7 +156,7 @@ const props = defineProps({
   },
 
   /**
-   * Disables the select.
+   * Disable the list.
    */
   disabled: {
     type: Boolean,
@@ -180,7 +164,7 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
+   * List size.
    * @values sm, md, lg
    */
   size: {
@@ -189,7 +173,7 @@ const props = defineProps({
   },
 
   /**
-   * Amount of options you can see without scroll.
+   * Number of options to show without a scroll.
    */
   visibleOptions: {
     type: Number,
@@ -206,7 +190,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,

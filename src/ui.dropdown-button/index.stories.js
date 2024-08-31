@@ -3,6 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storyboo
 import UDropdownButton from "../ui.dropdown-button";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
+import UIcon from "../ui.image-icon";
 
 /**
  * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
@@ -32,7 +33,7 @@ export default {
 };
 
 const DefaultTemplate = (args) => ({
-  components: { UDropdownButton },
+  components: { UDropdownButton, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownButton.name);
 
@@ -108,3 +109,38 @@ VariantColors.args = { text: "" };
 
 export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
 WithoutDropdownIcon.args = { enum: "variant", noIcon: true };
+
+export const defaultSlot = DefaultTemplate.bind({});
+defaultSlot.args = {
+  slotTemplate: `
+    <template #default>
+      Custom label
+    </template>
+  `,
+};
+
+export const leftSlot = DefaultTemplate.bind({});
+leftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon
+        name="archive"
+        color="red"
+        size="sm"
+      />
+    </template>
+  `,
+};
+
+export const rightSlot = DefaultTemplate.bind({});
+rightSlot.args = {
+  slotTemplate: `
+    <template #right>
+      <UIcon
+        name="archive"
+        color="red"
+        size="sm"
+      />
+    </template>
+  `,
+};

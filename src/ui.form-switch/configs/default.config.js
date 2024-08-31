@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  switchLabel: "{ULabel}",
   wrapper: {
     base: `
       flex items-center p-0.5 relative rounded-3xl cursor-pointer transition

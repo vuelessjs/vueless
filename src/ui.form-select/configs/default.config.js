@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: "{ULabel}",
+  selectLabel: "{ULabel}",
   labelWrapperTop: "group/top", // applies when an open direction is top
   labelWrapperActive: "group/active",
   wrapper: {

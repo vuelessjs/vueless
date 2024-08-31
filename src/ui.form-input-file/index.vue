@@ -7,7 +7,7 @@
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
-    v-bind="labelAttrs"
+    v-bind="inputLabelAttrs"
   >
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
@@ -240,7 +240,7 @@ const fileInputRef = ref(null);
 
 const {
   config,
-  labelAttrs,
+  inputLabelAttrs,
   chooseFileButtonAttrs,
   dropzoneWrapperAttrs,
   descriptionTopAttrs,
