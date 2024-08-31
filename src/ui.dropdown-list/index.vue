@@ -15,12 +15,12 @@
         :key="index"
         v-bind="listItemAttrs"
         ref="optionsRef"
-        :role="!(option && option.groupLabelKey) ? 'option' : null"
-        :data-group-label="Boolean(option.groupLabelKey)"
+        :role="!(option && option.groupLabel) ? 'option' : null"
+        :data-group-label="Boolean(option.groupLabel)"
       >
         <!-- option title -->
         <span
-          v-if="!(option && (option.groupLabelKey || option.isSubGroup)) && !option.isHidden"
+          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs(optionHighlight(index, option))"
           @click="select(option)"
           @mouseenter.self="pointerSet(index)"
@@ -54,8 +54,8 @@
         </span>
 
         <!-- group title -->
-        <template v-if="option && (option.groupLabelKey || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabelKey" v-bind="groupAttrs" v-text="option.groupLabelKey" />
+        <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
+          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
 
           <div
             v-else-if="option.isSubGroup"
@@ -124,7 +124,7 @@ const modelValue = defineModel({ type: [String, Number, Object], default: "" });
 
 const props = defineProps({
   /**
-   * Set options list.
+   * List options.
    */
   options: {
     type: Array,
@@ -148,23 +148,7 @@ const props = defineProps({
   },
 
   /**
-   * Set a name of the property containing the group label.
-   */
-  groupLabelKey: {
-    type: String,
-    default: "label",
-  },
-
-  /**
-   * Set a name of the property containing the group values.
-   */
-  groupValueKey: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Show add new option button to the list.
+   * Show add option button.
    */
   addOption: {
     type: Boolean,
@@ -172,7 +156,7 @@ const props = defineProps({
   },
 
   /**
-   * Disables the select.
+   * Disable the list.
    */
   disabled: {
     type: Boolean,
@@ -180,7 +164,7 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
+   * List size.
    * @values sm, md, lg
    */
   size: {
@@ -189,7 +173,7 @@ const props = defineProps({
   },
 
   /**
-   * Amount of options you can see without scroll.
+   * Number of options to show without a scroll.
    */
   visibleOptions: {
     type: Number,
@@ -206,7 +190,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,
@@ -277,7 +261,7 @@ function onClickAddOption() {
 }
 
 function select(option, key) {
-  if (props.disabled || option.groupLabelKey) {
+  if (props.disabled || option.groupLabel) {
     return;
   }
 

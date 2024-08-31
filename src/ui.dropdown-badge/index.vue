@@ -7,16 +7,16 @@
       :color="color"
       :weight="weight"
       :variant="variant"
-      :data-test="`${dataTest}-badge`"
       v-bind="dropdownBadgeAttrs"
+      :data-test="`${dataTest}-badge`"
       @click="onClickBadge"
     >
-      <!--
-        @slot Use it to add something left.
-        @binding {boolean} isOpened
-      -->
       <template #left>
-        <slot name="left" :is-opened="isShownOptions" />
+        <!--
+          @slot Use it to add something before the label.
+          @binding {boolean} isOpened
+        -->
+        <slot name="left" :opened="isShownOptions" />
       </template>
 
       <template #default>
@@ -25,27 +25,25 @@
           @binding {string} label
           @binding {boolean} isOpened
         -->
-        <slot :label="label" :is-opened="isShownOptions" />
-      </template>
-
-      <template #right-icon>
-        <UIcon
-          v-if="!noIcon"
-          internal
-          :name="config.defaults.dropdownIcon"
-          :size="iconSize"
-          :color="color"
-          :data-test="`${dataTest}-caret`"
-          v-bind="dropdownIconAttrs"
-        />
+        <slot :label="label" :opened="isShownOptions" />
       </template>
 
       <template #right>
         <!--
-          @slot Use it to add something right.
+          @slot Use it to add something after the label.
           @binding {boolean} isOpened
         -->
-        <slot name="right" :is-opened="isShownOptions" />
+        <slot name="right" :label="label" :opened="isShownOptions">
+          <UIcon
+            v-if="!noIcon"
+            internal
+            :color="color"
+            :size="iconSize"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
+            :data-test="`${dataTest}-caret`"
+          />
+        </slot>
       </template>
     </UBadge>
 
@@ -56,8 +54,8 @@
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
-      :data-test="`${dataTest}-item`"
       v-bind="dropdownListAttrs"
+      :data-test="`${dataTest}-list`"
       @click="onClickList"
     />
   </div>
