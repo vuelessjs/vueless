@@ -152,7 +152,7 @@
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
-          <template v-for="(row, rowIndex) in tableRows" :key="row.id">
+          <template v-for="(row, rowIndex) in sortedRows" :key="row.id">
             <tr
               v-if="rowIndex === firstRow && hasSlotContent($slots['before-first-row'])"
               v-bind="bodyRowBeforeAttrs"
@@ -418,6 +418,27 @@ const stickyHeaderRowRef = ref(null);
 
 const i18nGlobal = tm(UTable);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const sortedRows = computed(() => {
+  const headerKeys = props.columns.map((column) => column.key);
+
+  return props.rows.map((row) => {
+    const rowEntries = Object.entries(row);
+
+    const sortedEntries = new Array(rowEntries.length);
+
+    rowEntries.forEach((entry) => {
+      const [key] = entry;
+      const headerIndex = headerKeys.indexOf(key);
+
+      sortedEntries[headerIndex] = entry;
+    });
+
+    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
+
+    return sortedRow;
+  });
+});
 
 const isFooterSticky = computed(
   () =>
