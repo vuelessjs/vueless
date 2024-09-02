@@ -16,6 +16,7 @@
       <slot name="first">
         <UIcon
           v-if="!firstLabel"
+          internal
           :size="iconSize"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
@@ -38,6 +39,7 @@
       <slot name="prev">
         <UIcon
           v-if="!prevLabel"
+          internal
           :size="iconSize"
           :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
@@ -65,7 +67,7 @@
         no-ring
         :size="buttonSize"
         :variant="variant"
-        :label="page.number"
+        :label="String(page.number)"
         :disabled="disabled"
         v-bind="activeButtonAttrs"
         :data-test="`${dataTest}-active`"
@@ -99,6 +101,7 @@
       <slot name="next">
         <UIcon
           v-if="!nextLabel"
+          internal
           :size="iconSize"
           :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
@@ -122,6 +125,7 @@
       <slot name="last">
         <UIcon
           v-if="!lastLabel"
+          internal
           :size="iconSize"
           :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"
