@@ -38,8 +38,9 @@ export default /*tw*/ {
     color: "grayscale",
     rounded: "md",
     size: "md",
-    placeholderIcon: "image",
     bordered: false,
+    /* icons */
+    placeholderIcon: "image",
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-100` },

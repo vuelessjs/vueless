@@ -69,14 +69,15 @@ export default /*tw*/ {
     uploadFile: "Choose file",
   },
   defaults: {
-    chooseFileIcon: "attach_file",
-    clearIcon: "close",
-    removeItemIcon: "close",
     size: "md",
     labelAlign: "topInside",
     allowedFileTypes: [],
     maxFileSize: 0,
     multiple: false,
     disabled: false,
+    /* icons */
+    chooseFileIcon: "attach_file",
+    clearIcon: "close",
+    removeItemIcon: "close",
   },
 };

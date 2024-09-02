@@ -122,14 +122,15 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    dayViewSwitchLabelIcon: "keyboard_arrow_right",
-    nextIcon: "keyboard_arrow_right",
-    prevIcon: "keyboard_arrow_left",
     userFormat: "j F, Y",
     range: false,
     timepicker: false,
     dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    /* icons */
+    dayViewSwitchLabelIcon: "keyboard_arrow_right",
+    nextIcon: "keyboard_arrow_right",
+    prevIcon: "keyboard_arrow_left",
   },
 };

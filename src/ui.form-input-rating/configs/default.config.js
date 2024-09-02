@@ -31,12 +31,13 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    selectedIcon: "star-fill",
-    unselectedIcon: "star",
     labelAlign: "top",
     size: "md",
     stars: 5,
     counter: false,
     selectable: false,
+    /* icons */
+    selectedIcon: "star-fill",
+    unselectedIcon: "star",
   },
 };

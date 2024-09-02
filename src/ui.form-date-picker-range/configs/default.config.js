@@ -153,9 +153,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    nextIcon: "keyboard_arrow_right",
-    prevIcon: "keyboard_arrow_left",
-    periodButtonIcon: "apps",
     size: "md",
     variant: "button",
     openDirectionX: "auto",
@@ -165,5 +162,9 @@ export default /*tw*/ {
     dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    /* icons */
+    nextIcon: "keyboard_arrow_right",
+    prevIcon: "keyboard_arrow_left",
+    periodButtonIcon: "apps",
   },
 };

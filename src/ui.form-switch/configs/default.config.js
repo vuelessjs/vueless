@@ -57,14 +57,15 @@ export default /*tw*/ {
     active: "On",
   },
   defaults: {
-    enabledIcon: "check",
-    disabledIcon: "close",
     color: "brand",
     size: "md",
     labelAlign: "right",
     disabled: false,
     toggleIcon: false,
     toggleLabel: false,
+    /* icons */
+    enabledIcon: "check",
+    disabledIcon: "close",
   },
   safelist: (colors) => [
     { pattern: `ring-(${colors})-700` },

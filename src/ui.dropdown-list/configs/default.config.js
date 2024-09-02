@@ -64,10 +64,11 @@ export default /*tw*/ {
     size: "md",
     labelKey: "label",
     valueKey: "id",
-    addOptionIcon: "add",
     optionHeight: 40,
     visibleOptions: undefined,
     disabled: false,
     addOption: false,
+    /* icons */
+    addOptionIcon: "add",
   },
 };

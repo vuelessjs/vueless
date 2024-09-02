@@ -42,13 +42,14 @@ export default /*tw*/ {
   },
   checkedIcon: "{UIcon}",
   defaults: {
-    partiallyCheckedIcon: "remove",
-    checkedIcon: "check",
     color: "brand",
     size: "md",
     labelAlign: "right",
     partial: false,
     disabled: false,
+    /* icons */
+    partiallyCheckedIcon: "remove",
+    checkedIcon: "check",
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-600` },

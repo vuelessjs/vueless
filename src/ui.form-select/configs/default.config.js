@@ -112,9 +112,6 @@ export default /*tw*/ {
     addMore: "Add more...",
   },
   defaults: {
-    toggleIcon: "expand_more",
-    clearIcon: "close_small",
-    clearMultipleIcon: "close_small",
     size: "md",
     labelAlign: "topInside",
     openDirection: "auto",
@@ -127,5 +124,9 @@ export default /*tw*/ {
     searchable: true,
     noClear: false,
     addOption: false,
+    /* icons */
+    toggleIcon: "expand_more",
+    clearIcon: "close_small",
+    clearMultipleIcon: "close_small",
   },
 };

@@ -61,11 +61,12 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    backLinkIcon: "arrow_back",
     titleSize: "lg",
     width: "wide",
     gray: false,
     fixedRounding: false,
     mobileFooterReverse: false,
+    /* icons */
+    backLinkIcon: "arrow_back",
   },
 };
