@@ -11,17 +11,16 @@
           no-ring
           size="sm"
           variant="thirdary"
-          :right-icon="config.defaults.dayViewSwitchLabelIcon"
-          v-bind="navigationSwitchViewButtonAttrs"
+          :right-icon="isCurrentView.day && config.defaults.viewSwitchIcon"
+          v-bind="viewSwitchButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickViewSwitch"
         >
-          <span v-if="isCurrentView.day" v-bind="dayViewSwitchLabelAttrs">
-            <span v-bind="dayViewSwitchLabelMonthAttrs" v-text="viewSwitchLabel.month" />
-            <span v-text="viewSwitchLabel.year" />
-          </span>
-          <span v-if="isCurrentView.month" v-text="viewSwitchLabel.year" />
-          <span v-if="isCurrentView.year" v-text="viewSwitchLabel.yearsRange" />
+          <template v-if="isCurrentView.day">
+            {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
+          </template>
+          <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
+          <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
         </UButton>
       </Teleport>
 
@@ -321,9 +320,7 @@ const {
   config,
   wrapperAttrs,
   navigationAttrs,
-  navigationSwitchViewButtonAttrs,
-  dayViewSwitchLabelAttrs,
-  dayViewSwitchLabelMonthAttrs,
+  viewSwitchButtonAttrs,
   nextPrevButtonAttrs,
   timepickerAttrs,
   timepickerLabelAttrs,
