@@ -1,10 +1,7 @@
 export default /*tw*/ {
   wrapper: "p-3 pb-4 w-64 border border-gray-300 rounded-dynamic bg-white shadow overflow-hidden focus:outline-none",
   navigation: "mb-2 pb-2 border-b flex items-center justify-between",
-  navigationSwitchViewButton: "{UButton} -ml-3 pl-3 text-sm rounded-l-none",
-  dayViewSwitchLabel: "flex gap-1",
-  dayViewSwitchLabelMonth: "",
-  dayViewSwitchLabelIcon: "",
+  viewSwitchButton: "{UButton} -ml-3 pl-3 text-sm rounded-l-none",
   nextPrevWrapper: {
     base: "flex",
     variants: {
@@ -122,7 +119,7 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    dayViewSwitchLabelIcon: "keyboard_arrow_right",
+    viewSwitchIcon: "keyboard_arrow_down",
     nextIcon: "keyboard_arrow_right",
     prevIcon: "keyboard_arrow_left",
     userFormat: "j F, Y",

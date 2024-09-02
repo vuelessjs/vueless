@@ -65,7 +65,7 @@
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-test="`${dataTest}-${key}-cell`">
+          <div :data-test="`${dataTest}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
           </div>
         </slot>

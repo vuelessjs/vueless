@@ -64,7 +64,10 @@ export default /*tw*/ {
     component: "{UCalendar}",
     wrapper: "p-0 mt-2 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
-    navigationSwitchViewButton: "rounded-dynamic px-3",
+    viewSwitchButton: {
+      base: "rounded-dynamic px-4",
+      rightIcon: "hidden",
+    },
     day: "w-full h-10 mb-0.5",
   },
   i18n: {
