@@ -78,7 +78,7 @@
         no-ring
         :size="buttonSize"
         variant="thirdary"
-        :label="page.number"
+        :label="String(page.number)"
         :disabled="disabled"
         v-bind="inactiveButtonAttrs"
         :data-test="`${dataTest}-inactive`"
