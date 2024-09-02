@@ -166,7 +166,7 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { bodyAttrs, wrapperAttrs, leftIconAttrs, rightIconAttrs, hasSlotContent } = useAttrs(props);
+const { bodyAttrs, wrapperAttrs, leftIconAttrs, rightIconAttrs } = useAttrs(props);
 
 const wrapperRef = ref(null);
 
