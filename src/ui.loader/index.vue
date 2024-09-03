@@ -1,11 +1,14 @@
 <template>
   <Transition v-bind="config.transition">
     <div v-if="loading" v-bind="loaderAttrs">
-      <div
-        v-for="ellipse in ELLIPSES_AMOUNT"
-        :key="ellipse"
-        v-bind="ellipseAttrs(ellipseClasses)"
-      />
+      <!-- @slot Use it to add something instead of the default loader. -->
+      <slot>
+        <div
+          v-for="ellipse in ELLIPSES_AMOUNT"
+          :key="ellipse"
+          v-bind="ellipseAttrs(ellipseClasses)"
+        />
+      </slot>
     </div>
   </Transition>
 </template>
