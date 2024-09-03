@@ -152,6 +152,7 @@ export default /*tw*/ {
     variant: "primary",
     tag: "button",
     size: "md",
+    tabindex: 0,
     round: false,
     block: false,
     square: false,

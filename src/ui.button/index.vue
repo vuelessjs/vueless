@@ -5,7 +5,7 @@
     ref="buttonRef"
     :disabled="disabled"
     v-bind="buttonAttrs"
-    :tabindex="loading && '-1'"
+    :tabindex="!loading ? tabindex : -1"
     :data-test="dataTest"
   >
     <template v-if="loading">
@@ -159,6 +159,14 @@ const props = defineProps({
   rightIcon: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Controls the keyboard “Tab” focus order of elements.
+   */
+  tabindex: {
+    type: String,
+    default: getDefault(defaultConfig, UButton).tabindex,
   },
 
   /**
