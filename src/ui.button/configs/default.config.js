@@ -46,10 +46,10 @@ export default /*tw*/ {
         true: "rounded-full",
       },
       noRing: {
-        true: "focus:ring-0 focus:ring-offset-0 focus-within:ring-0 focus-within:ring-offset-0",
+        true: "!ring-0 !ring-offset-0",
       },
       loading: {
-        true: "pointer-events-none gap-0",
+        true: "pointer-events-none gap-0 !ring-0",
       },
       block: {
         true: "w-full",

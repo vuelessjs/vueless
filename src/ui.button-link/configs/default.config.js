@@ -15,10 +15,10 @@ export default /*tw*/ {
         white: "focus-within:ring-white/15",
       },
       disabled: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0 cursor-not-allowed",
+        true: "!ring-0 !ring-offset-0 cursor-not-allowed",
       },
       noRing: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0",
+        true: "!ring-0 !ring-offset-0",
       },
       block: {
         true: "w-full",
