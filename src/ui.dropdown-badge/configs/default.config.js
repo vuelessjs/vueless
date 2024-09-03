@@ -27,7 +27,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    dropdownIcon: "keyboard_arrow_down",
     color: "brand",
     size: "md",
     weight: "medium",
@@ -37,5 +36,7 @@ export default /*tw*/ {
     listYPosition: "bottom",
     listXPosition: "left",
     noIcon: false,
+    /* icons */
+    dropdownIcon: "keyboard_arrow_down",
   },
 };

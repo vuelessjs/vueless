@@ -25,7 +25,7 @@ export default /*tw*/ {
       },
     },
   },
-  optionContent: "overflow-hidden text-ellipsis",
+  optionContent: "overflow-visible text-ellipsis",
   optionSelected: "font-bold",
   optionHighlighted: "bg-brand-50",
   group: {
@@ -64,10 +64,11 @@ export default /*tw*/ {
     size: "md",
     labelKey: "label",
     valueKey: "id",
-    addOptionIcon: "add",
     optionHeight: 40,
     visibleOptions: undefined,
     disabled: false,
     addOption: false,
+    /* icons */
+    addOptionIcon: "add",
   },
 };

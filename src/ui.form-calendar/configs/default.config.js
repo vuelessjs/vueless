@@ -119,14 +119,15 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    viewSwitchIcon: "keyboard_arrow_down",
-    nextIcon: "keyboard_arrow_right",
-    prevIcon: "keyboard_arrow_left",
     userFormat: "j F, Y",
     range: false,
     timepicker: false,
     dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    /* icons */
+    viewSwitchIcon: "keyboard_arrow_down",
+    nextIcon: "keyboard_arrow_right",
+    prevIcon: "keyboard_arrow_left",
   },
 };

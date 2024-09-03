@@ -38,14 +38,15 @@ export default /*tw*/ {
     emptyDescription: "There is no data in the list.",
   },
   defaults: {
-    dragIcon: "drag_indicator",
-    deleteIcon: "delete",
-    editIcon: "edit_note",
     size: "md",
     labelKey: "label",
     valueKey: "id",
     animationDuration: 200,
     nesting: false,
     upperlined: false,
+    /* icons */
+    dragIcon: "drag_indicator",
+    deleteIcon: "delete",
+    editIcon: "edit_note",
   },
 };

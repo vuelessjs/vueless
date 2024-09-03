@@ -126,7 +126,7 @@
             size="xs"
             variant="thirdary"
             :label="locale.ownRange"
-            :left-icon="config.defaults.periodButtonIcon"
+            :left-icon="config.defaults.ownRangeIcon"
             v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
             @click="onClickOwnRange"
           />

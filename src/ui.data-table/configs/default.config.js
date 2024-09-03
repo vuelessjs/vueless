@@ -94,12 +94,13 @@ export default /*tw*/ {
     noData: "There is no data in the table.",
   },
   defaults: {
-    bodyCellNestedExpandIcon: "add",
-    bodyCellNestedCollapseIcon: "remove",
     nesting: false,
     compact: false,
     selectable: false,
     stickyHeader: false,
     stickyFooter: false,
+    /* icons */
+    expandIcon: "add",
+    collapseIcon: "remove",
   },
 };

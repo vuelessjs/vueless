@@ -18,7 +18,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    dropdownIcon: "keyboard_arrow_down",
     color: "brand",
     size: "md",
     labelKey: "label",
@@ -30,5 +29,7 @@ export default /*tw*/ {
     noRing: true,
     noIcon: false,
     disabled: false,
+    /* icons */
+    dropdownIcon: "keyboard_arrow_down",
   },
 };

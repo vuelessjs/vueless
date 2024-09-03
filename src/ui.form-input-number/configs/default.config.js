@@ -26,8 +26,9 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    size: "md",
+    /* icons */
     removeIcon: "remove",
     addIcon: "add",
-    size: "md",
   },
 };

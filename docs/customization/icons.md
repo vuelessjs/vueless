@@ -186,11 +186,11 @@ export default {
       collapseIcon: "remove",
     },
     UModal: {
-      backLinkIcon: "arrow_back",
+      backIcon: "arrow_back",
       closeIcon: "close",
     },
     UPage: {
-      backLinkIcon: "arrow_back",
+      backIcon: "arrow_back",
     },
     UDataList: {
       dragIcon: "drag_indicator",
@@ -198,8 +198,8 @@ export default {
       editIcon: "edit_note",
     },
     UTable: {
-      bodyCellNestedExpandIcon: "add",
-      bodyCellNestedCollapseIcon: "remove",
+      expandIcon: "add",
+      collapseIcon: "remove",
     },
     UDropdownBadge: {
       dropdownIcon: "keyboard_arrow_down",
@@ -214,7 +214,7 @@ export default {
       addOptionIcon: "add",
     },
     UCalendar: {
-      dayViewSwitchLabelIcon: "keyboard_arrow_right",
+      viewSwitchIcon: "keyboard_arrow_down",
       nextIcon: "keyboard_arrow_right",
       prevIcon: "keyboard_arrow_left",
     },
@@ -226,9 +226,9 @@ export default {
       unselectedIcon: "close",
     },
     UDatePickerRange: {
-      periodButtonIcon: "apps",
       nextIcon: "keyboard_arrow_right",
       prevIcon: "keyboard_arrow_left",
+      ownRangeIcon: "apps",
     },
     UInput: {
       passwordVisibleIcon: "visibility-fill",
@@ -252,13 +252,13 @@ export default {
       searchIcon: "search",
     },
     USelect: {
-      toggleIcon: "expand_more",
+      dropdownIcon: "expand_more",
       clearIcon: "close_small",
       clearMultipleIcon: "close_small",
     },
     USwitch: {
-      enabledIcon: "check",
-      disabledIcon: "close",
+      onIcon: "check",
+      offIcon: "close",
     },
     UAlert: {
       closeIcon: "close",

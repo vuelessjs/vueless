@@ -26,7 +26,7 @@
                     internal
                     size="xs"
                     color="gray"
-                    :name="config.defaults.backLinkIcon"
+                    :name="config.defaults.backIcon"
                     v-bind="backLinkIconAttrs"
                   />
                 </template>
