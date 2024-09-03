@@ -1,6 +1,6 @@
 export default /*tw*/ {
   icon: {
-    base: "flex w-fit fill-current outline-0",
+    base: "fill-current outline-0 shrink-0 grow-0",
     variants: {
       variant: {
         light: "text-{color}-400",
@@ -31,14 +31,14 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    name: "",
-    library: "@material-symbols",
-    weight: 500,
-    style: "outlined",
     color: "grayscale",
     size: "md",
     variant: "default",
     interactive: false,
+    /* icon library */
+    library: "@material-symbols",
+    style: "outlined",
+    weight: 500,
   },
   safelist: (colors) => [
     { pattern: `text-(${colors})-400` },
