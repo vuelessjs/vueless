@@ -59,6 +59,9 @@ Default.args = {};
 export const searchButton = DefaultTemplate.bind({});
 searchButton.args = { searchButtonLabel: "Search" };
 
+export const minLength = DefaultTemplate.bind({});
+minLength.args = { minLength: 4 };
+
 export const sizes = EnumVariantTemplate.bind({});
 sizes.args = { enum: "size" };
 

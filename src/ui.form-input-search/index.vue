@@ -169,6 +169,14 @@ const props = defineProps({
   },
 
   /**
+   * Minimum character length for search.
+   */
+  minLength: {
+    type: [String, Number],
+    default: getDefault(defaultConfig, UInputSearch).minLength,
+  },
+
+  /**
    * Search button label.
    */
   searchButtonLabel: {
@@ -250,7 +258,10 @@ const search = computed({
   get: () => props.modelValue,
   set: debounceMethod((value) => {
     localValue.value = value;
-    emit("update:modelValue", value);
+
+    if (localValue.value.length >= Number(props.minLength)) {
+      emit("update:modelValue", value);
+    }
   }, props.debounce),
 });
 

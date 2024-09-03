@@ -7,6 +7,7 @@ export default /*tw*/ {
     size: "md",
     labelAlign: "topInside",
     debounce: 300,
+    minLength: 0,
     disabled: false,
     readonly: false,
     searchButton: false,
