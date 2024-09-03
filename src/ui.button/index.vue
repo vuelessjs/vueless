@@ -165,7 +165,7 @@ const props = defineProps({
    * Controls the keyboard “Tab” focus order of elements.
    */
   tabindex: {
-    type: String,
+    type: [String, Number],
     default: getDefault(defaultConfig, UButton).tabindex,
   },
 
