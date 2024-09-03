@@ -81,7 +81,7 @@
             color="gray"
             :size="iconSize"
             :name="config.defaults.dropdownIcon"
-            v-bind="dropdownIconAttrs"
+            v-bind="toggleIconAttrs"
             :tabindex="-1"
           />
         </slot>
@@ -630,7 +630,7 @@ const {
   selectedLabelsAttrs,
   selectedLabelAttrs,
   dropdownListAttrs,
-  dropdownIconAttrs,
+  toggleIconAttrs,
   clearIconAttrs,
   clearMultipleIconAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });
