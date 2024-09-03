@@ -12,7 +12,7 @@ export default /*tw*/ {
       },
     },
   },
-  tab: "{UTab}",
+  tabsTab: "{UTab}",
   defaults: {
     size: "md",
     underlined: false,
