@@ -168,6 +168,6 @@ export default /*tw*/ {
     /* icons */
     nextIcon: "keyboard_arrow_right",
     prevIcon: "keyboard_arrow_left",
-    periodButtonIcon: "apps",
+    ownRangeIcon: "apps",
   },
 };

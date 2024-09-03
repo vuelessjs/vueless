@@ -71,7 +71,7 @@
         -->
         <slot
           name="toggle"
-          :icon-name="config.defaults.toggleIcon"
+          :icon-name="config.defaults.dropdownIcon"
           :icon-size="iconSize"
           :opened="isOpen"
         >
@@ -80,8 +80,8 @@
             interactive
             color="gray"
             :size="iconSize"
-            :name="config.defaults.toggleIcon"
-            v-bind="toggleIconAttrs"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
             :tabindex="-1"
           />
         </slot>
@@ -630,7 +630,7 @@ const {
   selectedLabelsAttrs,
   selectedLabelAttrs,
   dropdownListAttrs,
-  toggleIconAttrs,
+  dropdownIconAttrs,
   clearIconAttrs,
   clearMultipleIconAttrs,
 } = useAttrs(props, { isTop, isOpen, selectedLabel });

@@ -76,7 +76,7 @@ export default /*tw*/ {
     ],
   },
   toggle: "mr-3",
-  toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
+  dropdownIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
   clear: "",
   clearIcon: "{UIcon}",
   clearMultiple: "flex items-center",
@@ -125,7 +125,7 @@ export default /*tw*/ {
     noClear: false,
     addOption: false,
     /* icons */
-    toggleIcon: "expand_more",
+    dropdownIcon: "expand_more",
     clearIcon: "close_small",
     clearMultipleIcon: "close_small",
   },

@@ -26,8 +26,8 @@
                     internal
                     size="xs"
                     color="gray"
-                    :name="config.defaults.backLinkIcon"
-                    v-bind="backLinkIconAttrs"
+                    :name="config.defaults.backIcon"
+                    v-bind="backIconAttrs"
                   />
                 </template>
               </ULink>
@@ -201,7 +201,7 @@ const {
   rightRoundingAttrs,
   titleAttrs,
   backLinkAttrs,
-  backLinkIconAttrs,
+  backIconAttrs,
   headerAttrs,
   headerLeftFallbackAttrs,
   descriptionAttrs,

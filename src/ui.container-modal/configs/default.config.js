@@ -63,7 +63,7 @@ export default /*tw*/ {
     mobileBottomAlign: false,
     mobileFooterReverse: false,
     /* icons */
-    backLinkIcon: "arrow_back",
+    backIcon: "arrow_back",
     closeIcon: "close",
   },
 };

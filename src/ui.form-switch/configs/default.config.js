@@ -64,8 +64,8 @@ export default /*tw*/ {
     toggleIcon: false,
     toggleLabel: false,
     /* icons */
-    enabledIcon: "check",
-    disabledIcon: "close",
+    onIcon: "check",
+    offIcon: "close",
   },
   safelist: (colors) => [
     { pattern: `ring-(${colors})-700` },

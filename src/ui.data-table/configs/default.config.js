@@ -100,7 +100,7 @@ export default /*tw*/ {
     stickyHeader: false,
     stickyFooter: false,
     /* icons */
-    bodyCellNestedExpandIcon: "add",
-    bodyCellNestedCollapseIcon: "remove",
+    expandIcon: "add",
+    collapseIcon: "remove",
   },
 };

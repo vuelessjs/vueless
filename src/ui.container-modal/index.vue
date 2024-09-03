@@ -35,8 +35,8 @@
                       internal
                       size="xs"
                       color="gray"
-                      :name="config.defaults.backLinkIcon"
-                      v-bind="backLinkIconAttrs"
+                      :name="config.defaults.backIcon"
+                      v-bind="backIconAttrs"
                     />
                     {{ backRoute.title }}
                   </ULink>
@@ -270,7 +270,7 @@ const {
   modalAttrs,
   titleAttrs,
   backLinkAttrs,
-  backLinkIconAttrs,
+  backIconAttrs,
   closeIconAttrs,
   dividerAttrs,
   dividerSpacingAttrs,
