@@ -431,6 +431,12 @@ const sortedRows = computed(() => {
       const [key] = entry;
       const headerIndex = headerKeys.indexOf(key);
 
+      if (!~headerIndex) {
+        sortedEntries.push(entry);
+
+        return;
+      }
+
       sortedEntries[headerIndex] = entry;
     });
 
