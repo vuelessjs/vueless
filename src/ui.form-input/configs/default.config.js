@@ -53,8 +53,6 @@ export default /*tw*/ {
     ],
   },
   defaults: {
-    passwordVisibleIcon: "visibility-fill",
-    passwordHiddenIcon: "visibility_off-fill",
     size: "md",
     type: "text",
     inputmode: "text",
@@ -63,5 +61,8 @@ export default /*tw*/ {
     readonly: false,
     disabled: false,
     noAutocomplete: false,
+    /* icons */
+    passwordVisibleIcon: "visibility-fill",
+    passwordHiddenIcon: "visibility_off-fill",
   },
 };

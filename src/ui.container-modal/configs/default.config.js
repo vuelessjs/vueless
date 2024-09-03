@@ -54,8 +54,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    backLinkIcon: "arrow_back",
-    closeIcon: "close",
     width: "sm",
     inner: false,
     closeButton: true,
@@ -64,5 +62,8 @@ export default /*tw*/ {
     noDivider: false,
     mobileBottomAlign: false,
     mobileFooterReverse: false,
+    /* icons */
+    backIcon: "arrow_back",
+    closeIcon: "close",
   },
 };

@@ -42,11 +42,12 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    xPosition: "center",
+    yPosition: "top",
+    /* icons */
     successIcon: "check_circle",
     warningIcon: "warning",
     errorIcon: "error",
     closeIcon: "close",
-    xPosition: "center",
-    yPosition: "top",
   },
 };

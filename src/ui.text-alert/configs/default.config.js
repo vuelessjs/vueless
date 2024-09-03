@@ -45,13 +45,14 @@ export default /*tw*/ {
   closeButton: "{UButton}",
   closeIcon: "{UIcon}",
   defaults: {
-    closeIcon: "close",
     variant: "primary",
     color: "brand",
     size: "md",
     timeout: 0,
     bordered: false,
     closable: false,
+    /* icons */
+    closeIcon: "close",
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },

@@ -24,7 +24,6 @@ export default /*tw*/ {
     `,
   },
   defaults: {
-    unselectedIcon: "close",
     size: "md",
     name: "colorPicker",
     disabled: false,
@@ -47,6 +46,8 @@ export default /*tw*/ {
       "pink",
       "rose",
     ],
+    /* icons */
+    unselectedIcon: "close",
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-400`, variants: ["disabled"] },

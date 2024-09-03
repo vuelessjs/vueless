@@ -26,7 +26,8 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    fileIcon: "description",
     size: "md",
+    /* icons */
+    fileIcon: "description",
   },
 };
