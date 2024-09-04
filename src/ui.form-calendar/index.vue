@@ -11,7 +11,7 @@
           no-ring
           size="sm"
           variant="thirdary"
-          :right-icon="isCurrentView.day && config.defaults.viewSwitchIcon"
+          :right-icon="isCurrentView.day ? config.defaults.viewSwitchIcon : undefined"
           v-bind="viewSwitchButtonAttrs"
           @mousedown.prevent.capture
           @click="onClickViewSwitch"

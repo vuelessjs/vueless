@@ -49,7 +49,7 @@ const props = defineProps({
 
   dateFormat: {
     type: String,
-    required: true,
+    default: undefined,
   },
 
   maxDate: {
@@ -107,6 +107,8 @@ function getYear(year) {
 function getYearClasses(year) {
   const isNotSelectedDate =
     (!isSelectedMonth(year) && !isSelectedMonth(year)) || props.selectedDate === null;
+
+  console.log(isCurrentYear(year) && isNotSelectedDate);
 
   if (isCurrentYear(year) && isNotSelectedDate) {
     return [currentYearAttrs.value.class];
