@@ -10,7 +10,7 @@
         :disabled="item.disabled"
         :size="size"
         :data-test="`${dataTest}-item-${index}`"
-        v-bind="tabsTabAttrs"
+        v-bind="itemAttrs"
       />
     </slot>
   </div>
@@ -103,5 +103,5 @@ provide("setUTabsSelectedItem", (value) => (selectedItem.value = value));
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("getUTabsSize", () => props.size);
 
-const { tabsAttrs, tabsTabAttrs } = useAttrs(props);
+const { tabsAttrs, itemAttrs } = useAttrs(props);
 </script>
