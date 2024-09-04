@@ -69,6 +69,8 @@
     <MonthView
       v-if="isCurrentView.month"
       :selected-date="selectedDate"
+      :selected-date-to="selectedDateTo"
+      :range="range"
       :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
@@ -82,6 +84,8 @@
     <YearView
       v-if="isCurrentView.year"
       :selected-date="selectedDate"
+      :selected-date-to="selectedDateTo"
+      :range="range"
       :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"

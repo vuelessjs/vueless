@@ -30,7 +30,9 @@ export default function useAttrs(props) {
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
     // eslint-disable-next-line prettier/prettier
-    if (["timepickerInputHours", "timepickerInputMinutes", "timepickerInputSeconds"].includes(key)) {
+    if (
+      ["timepickerInputHours", "timepickerInputMinutes", "timepickerInputSeconds"].includes(key)
+    ) {
       const keyAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({

@@ -17,8 +17,10 @@
 
 <script setup>
 import { computed } from "vue";
+
 import { formatDate, getYearsRange, dateIsOutOfRange } from "../services/calendar.service";
 import { isSameMonth, getDateWithoutTime, isCurrentYear } from "../services/date.service";
+import { cx } from "../../service.ui";
 
 import useAttrs from "../composables/attrs.composable";
 
@@ -30,6 +32,11 @@ const props = defineProps({
   selectedDate: {
     type: [Date, null],
     required: true,
+  },
+
+  selectedDateTo: {
+    type: [Date, null],
+    default: undefined,
   },
 
   activeDate: {
@@ -52,6 +59,11 @@ const props = defineProps({
     default: undefined,
   },
 
+  range: {
+    type: Boolean,
+    default: false,
+  },
+
   maxDate: {
     type: [Date, String],
     default: undefined,
@@ -70,8 +82,16 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const { yearViewAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs, currentYearAttrs } =
-  useAttrs(props);
+const {
+  yearViewAttrs,
+  selectedYearAttrs,
+  activeYearAttrs,
+  yearAttrs,
+  currentYearAttrs,
+  inRangeYearAttrs,
+  inRangeFirstYearAttrs,
+  inRangeLastYearAttrs,
+} = useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -105,21 +125,55 @@ function getYear(year) {
 }
 
 function getYearClasses(year) {
+  const isYearInRange =
+    props.range &&
+    localSelectedDate.value &&
+    props.selectedDateTo &&
+    !dateIsOutOfRange(
+      year,
+      props.selectedDate,
+      props.selectedDateTo,
+      props.locale,
+      props.dateFormat,
+    );
+
   const isNotSelectedDate =
     (!isSelectedMonth(year) && !isSelectedMonth(year)) || props.selectedDate === null;
 
-  console.log(isCurrentYear(year) && isNotSelectedDate);
+  const isMoreThanOneYearRange =
+    props.selectedDateTo &&
+    props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() > 1;
+
+  const isFirstYear = year.getFullYear() === props.selectedDate.getFullYear();
+  const isLastYear =
+    props.selectedDateTo && year.getFullYear() === props.selectedDateTo.getFullYear();
 
   if (isCurrentYear(year) && isNotSelectedDate) {
-    return [currentYearAttrs.value.class];
+    return cx([currentYearAttrs.value.class, isYearInRange && inRangeYearAttrs.value.class]);
+  }
+
+  if (props.range && isFirstYear && isMoreThanOneYearRange) {
+    return inRangeFirstYearAttrs.value.class;
+  }
+
+  if (props.range && isLastYear && isMoreThanOneYearRange) {
+    return inRangeLastYearAttrs.value.class;
+  }
+
+  if (props.range && isFirstYear && !isMoreThanOneYearRange) {
+    return cx(inRangeYearAttrs.value.class, "rounded-dynamic");
+  }
+
+  if (isYearInRange) {
+    return inRangeYearAttrs.value.class;
   }
 
   if (isSelectedMonth(year)) {
-    return [selectedYearAttrs.value.class];
+    return selectedYearAttrs.value.class;
   }
 
-  if (isSameMonth(props.activeMonth, year)) {
-    return [activeYearAttrs.value.class];
+  if (isSameMonth(props.activeMonth, year) && !props.range) {
+    return activeYearAttrs.value.class;
   }
 }
 
