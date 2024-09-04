@@ -6,7 +6,7 @@
     :align="labelAlign"
     :disabled="disabled"
     centred
-    v-bind="labelAttrs"
+    v-bind="toggleLabelAttrs"
     :data-test="dataTest"
   >
     <div v-bind="itemsAttrs">
@@ -183,7 +183,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { labelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
+const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,

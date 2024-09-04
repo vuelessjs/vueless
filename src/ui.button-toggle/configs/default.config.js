@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  label: {
+  toggleLabel: {
     component: "{ULabel}",
     base: "flex flex-wrap",
     variants: {
@@ -29,6 +29,9 @@ export default /*tw*/ {
           [&>:last-child>*>*]:rounded-dynamic [&>:last-child>*>*]:rounded-l-none
           focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
         `,
+      },
+      block: {
+        true: "w-full flex-nowrap",
       },
     },
     compoundVariants: [
