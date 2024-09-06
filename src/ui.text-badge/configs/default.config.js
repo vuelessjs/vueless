@@ -62,6 +62,8 @@ export default /*tw*/ {
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
+    { pattern: `bg-(${colors})-600` },
+    { pattern: `border-(${colors})-100` },
     { pattern: `border-(${colors})-600` },
     { pattern: `text-(${colors})-600` },
     { pattern: `ring-(${colors})-700`, variants: ["focus"] },
