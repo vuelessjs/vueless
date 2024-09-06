@@ -150,7 +150,7 @@ MinMax.args = {
 export const DateFormat = DefaultTemplate.bind({});
 DateFormat.args = {
   dateFormat: "d.m.Y",
-  userFormat: "d.m.Y",
+  userDateFormat: "d.m.Y",
   value: { from: "28.06.2024", to: "30.06.2024" },
 };
 

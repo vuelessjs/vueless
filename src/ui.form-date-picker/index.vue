@@ -47,7 +47,9 @@
         tabindex="-1"
         :timepicker="timepicker"
         :date-format="dateFormat"
-        :user-format="userFormat"
+        :date-time-format="dateTimeFormat"
+        :user-date-format="userFormat"
+        :user-date-time-format="userDateTimeFormat"
         :max-date="maxDate"
         :min-date="minDate"
         v-bind="calendarAttrs"
@@ -218,11 +220,27 @@ const props = defineProps({
   },
 
   /**
+   * Same as date format, but used when timepicker is enabled.
+   */
+  dateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).dateTimeFormat,
+  },
+
+  /**
    * User friendly date format.
    */
-  userFormat: {
+  userDateFormat: {
     type: String,
-    default: getDefault(defaultConfig, UDatePicker).userFormat,
+    default: getDefault(defaultConfig, UDatePicker).userDateFormat,
+  },
+
+  /**
+   * Same as user format, but used when timepicker is enabled.
+   */
+  userDateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).userDateTimeFormat,
   },
 
   /**
@@ -341,7 +359,7 @@ function onBlur(event) {
 }
 
 function formatUserDate(data) {
-  if (props.userFormat !== STANDARD_USER_FORMAT) return data;
+  if (props.userFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);

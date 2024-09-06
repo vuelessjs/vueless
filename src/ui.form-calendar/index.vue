@@ -60,7 +60,7 @@
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
-      :date-format="dateFormat"
+      :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
       @input="onInputDate"
@@ -73,7 +73,7 @@
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
-      :date-format="dateFormat"
+      :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
       @input="onInput"
@@ -86,7 +86,7 @@
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
-      :date-format="dateFormat"
+      :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
       @input="onInput"
@@ -232,11 +232,27 @@ const props = defineProps({
   },
 
   /**
+   * Same as date format, but used when timepicker is enabled.
+   */
+  dateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).dateTimeFormat,
+  },
+
+  /**
    * User friendly date format.
    */
-  userFormat: {
+  userDateFormat: {
     type: String,
-    default: getDefault(defaultConfig, UCalendar).userFormat,
+    default: getDefault(defaultConfig, UCalendar).userDateFormat,
+  },
+
+  /**
+   * Same as user format, but used when timepicker is enabled.
+   */
+  userDateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).userDateTimeFormat,
   },
 
   /**
@@ -386,6 +402,18 @@ const locale = computed(() => {
   };
 });
 
+const isTimepickerEnabled = computed(() => {
+  return props.timepicker && !props.range;
+});
+
+const actualDateFormat = computed(() => {
+  return isTimepickerEnabled.value ? props.dateTimeFormat : props.dateFormat;
+});
+
+const actualUserFormat = computed(() => {
+  return isTimepickerEnabled.value ? props.userDateTimeFormat : props.userDateFormat;
+});
+
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
@@ -413,10 +441,6 @@ const userFormatLocale = computed(() => {
   };
 });
 
-const isTimepickerEnabled = computed(() => {
-  return props.timepicker && !props.range;
-});
-
 const isModelRangeType = computed(() => {
   return (
     props.modelValue !== null &&
@@ -433,22 +457,26 @@ const localValue = computed({
       const to = isModelRangeType.value ? props.modelValue.to : null;
 
       return {
-        from: parseDate(from || null, props.dateFormat, locale.value),
-        to: parseDate(to || null, props.dateFormat, locale.value),
+        from: parseDate(from || null, actualDateFormat.value, locale.value),
+        to: parseDate(to || null, actualDateFormat.value, locale.value),
       };
     }
 
     return isModelRangeType.value
-      ? parseDate(props.modelValue.from || null, props.dateFormat, locale.value)
-      : parseDate(props.modelValue || null, props.dateFormat, locale.value);
+      ? parseDate(props.modelValue.from || null, actualDateFormat.value, locale.value)
+      : parseDate(props.modelValue || null, actualDateFormat.value, locale.value);
   },
   set(value) {
     value = getCurrentValueType(value);
 
-    const parsedDate = parseDate(props.range ? value.from : value, props.dateFormat, locale.value);
+    const parsedDate = parseDate(
+      props.range ? value.from : value,
+      actualDateFormat.value,
+      locale.value,
+    );
     const parsedDateTo =
       isModelRangeType.value && props.range
-        ? parseDate(value.to, props.dateFormat, locale.value)
+        ? parseDate(value.to, actualDateFormat.value, locale.value)
         : undefined;
 
     if (parsedDate && isTimepickerEnabled.value) {
@@ -462,19 +490,19 @@ const localValue = computed({
       props.minDate,
       props.maxDate,
       locale.value,
-      props.dateFormat,
+      actualDateFormat.value,
     );
 
     if (isOutOfRange) {
       return;
     }
 
-    const newDate = props.dateFormat
-      ? formatDate(parsedDate || null, props.dateFormat, locale.value)
+    const newDate = actualDateFormat.value
+      ? formatDate(parsedDate || null, actualDateFormat.value, locale.value)
       : parsedDate;
 
-    const newDateTo = props.dateFormat
-      ? formatDate(parsedDateTo || null, props.dateFormat, locale.value)
+    const newDateTo = actualDateFormat.value
+      ? formatDate(parsedDateTo || null, actualDateFormat.value, locale.value)
       : parsedDateTo;
 
     emit("update:modelValue", props.range ? { from: newDate, to: newDateTo } : newDate);
@@ -492,23 +520,25 @@ const localValue = computed({
 const selectedDate = computed(() => {
   return parseDate(
     props.range ? localValue.value.from : localValue.value,
-    props.dateFormat,
+    actualDateFormat.value,
     locale.value,
   );
 });
 
 const selectedDateTo = computed(() => {
-  return props.range ? parseDate(localValue.value.to, props.dateFormat, locale.value) : undefined;
+  return props.range
+    ? parseDate(localValue.value.to, actualDateFormat.value, locale.value)
+    : undefined;
 });
 
 const formattedDate = computed(() => {
-  return formatDate(selectedDate.value, props.dateFormat, locale.value);
+  return formatDate(selectedDate.value, actualDateFormat.value, locale.value);
 });
 
 const userFormattedDate = computed(() => {
-  const date = formatDate(selectedDate.value, props.userFormat, userFormatLocale.value);
+  const date = formatDate(selectedDate.value, actualUserFormat.value, userFormatLocale.value);
   const dateTo = props.range
-    ? formatDate(selectedDateTo.value, props.userFormat, userFormatLocale.value)
+    ? formatDate(selectedDateTo.value, actualUserFormat.value, userFormatLocale.value)
     : undefined;
 
   return props.range ? `${date} ${SEPARATOR} ${dateTo}` : date;
@@ -699,7 +729,7 @@ function arrowKeyHandler(event) {
     props.minDate,
     props.maxDate,
     locale.value,
-    props.dateFormat,
+    actualDateFormat.value,
   );
 
   if (newActiveDate && !isOutOfRange) {

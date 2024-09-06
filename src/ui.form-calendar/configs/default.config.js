@@ -119,10 +119,12 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    userFormat: "j F, Y",
+    userDateFormat: "j F, Y",
+    userDateTimeFormat: "j F, Y - H:i:S",
     range: false,
     timepicker: false,
     dateFormat: undefined,
+    dateTimeFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
     /* icons */
