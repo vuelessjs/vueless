@@ -99,9 +99,6 @@ const {
   currentDayAttrs,
   anotherMonthDayAttrs,
   dayAttrs,
-  inRangeFirstDayAttrs,
-  inRangeLastDayAttrs,
-  inRangeDayAttrs,
 } = useAttrs(props);
 
 const localSelectedDate = computed(() => {
@@ -227,25 +224,27 @@ function getDayClasses(day) {
     (!isSelectedDay(day) && !isSelectedToDay(day)) || props.selectedDate === null;
 
   if (isToday(day) && isNotSelectedDate) {
-    return cx([isDayInRange && inRangeDayAttrs.value.class, currentDayAttrs.value.class]);
+    return cx([isDayInRange && props.config.inRangeDate, currentDayAttrs.value.class]);
   }
 
   if (props.range && isSelectedDay(day)) {
     return cx([
       isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
-      inRangeFirstDayAttrs.value.class,
+      props.config.inRangeEdgeDate,
+      props.config.inRangeFirstDate,
     ]);
   }
 
   if (props.range && isSelectedToDay(day)) {
     return cx([
       isAnotherMothDay(day, activeMonthDate.value) && anotherMonthDayAttrs.value.class,
-      inRangeLastDayAttrs.value.class,
+      props.config.inRangeEdgeDate,
+      props.config.inRangeLastDate,
     ]);
   }
 
   if (isDayInRange) {
-    return inRangeDayAttrs.value.class;
+    return props.config.inRangeDate;
   }
 
   if (isSelectedDay(day)) {

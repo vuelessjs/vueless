@@ -82,16 +82,8 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const {
-  monthViewAttrs,
-  selectedMonthAttrs,
-  activeMonthAttrs,
-  monthAttrs,
-  currentMothAttrs,
-  inRangeMonthAttrs,
-  inRangeFirstMonthAttrs,
-  inRangeLastMonthAttrs,
-} = useAttrs(props);
+const { monthViewAttrs, selectedMonthAttrs, activeMonthAttrs, monthAttrs, currentMothAttrs } =
+  useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -140,23 +132,23 @@ function getMonthClasses(month) {
     props.selectedDateTo && isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
 
   if (isCurrentMoth(month) && isNotSelectedDate) {
-    return cx([currentMothAttrs.value.class, isMonthInRange && inRangeMonthAttrs.value.class]);
+    return cx([currentMothAttrs.value.class, isMonthInRange && props.config.inRangeDate]);
   }
 
   if (props.range && isSelectedMonth(month) && isMoreThenOneMonthRange) {
-    return inRangeFirstMonthAttrs.value.class;
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeFirstDate]);
   }
 
   if (props.range && isSelectedToMonth(month) && isMoreThenOneMonthRange) {
-    return inRangeLastMonthAttrs.value.class;
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeLastDate]);
   }
 
   if (props.range && isSelectedMonth(month) && !isMoreThenOneMonthRange) {
-    return cx(inRangeMonthAttrs.value.class, "rounded-dynamic");
+    return cx([props.config.inRangeDate, "rounded-dynamic"]);
   }
 
   if (isMonthInRange) {
-    return inRangeMonthAttrs.value.class;
+    return props.config.inRangeDate;
   }
 
   if (isSelectedMonth(month)) {

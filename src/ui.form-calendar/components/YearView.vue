@@ -82,16 +82,8 @@ const props = defineProps({
 
 const emit = defineEmits(["input"]);
 
-const {
-  yearViewAttrs,
-  selectedYearAttrs,
-  activeYearAttrs,
-  yearAttrs,
-  currentYearAttrs,
-  inRangeYearAttrs,
-  inRangeFirstYearAttrs,
-  inRangeLastYearAttrs,
-} = useAttrs(props);
+const { yearViewAttrs, selectedYearAttrs, activeYearAttrs, yearAttrs, currentYearAttrs } =
+  useAttrs(props);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -149,23 +141,23 @@ function getYearClasses(year) {
     props.selectedDateTo && year.getFullYear() === props.selectedDateTo.getFullYear();
 
   if (isCurrentYear(year) && isNotSelectedDate) {
-    return cx([currentYearAttrs.value.class, isYearInRange && inRangeYearAttrs.value.class]);
+    return cx([currentYearAttrs.value.class, isYearInRange && props.config.inRangeDate]);
   }
 
   if (props.range && isFirstYear && isMoreThanOneYearRange) {
-    return inRangeFirstYearAttrs.value.class;
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeFirstDate]);
   }
 
   if (props.range && isLastYear && isMoreThanOneYearRange) {
-    return inRangeLastYearAttrs.value.class;
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeLastDate]);
   }
 
   if (props.range && isFirstYear && !isMoreThanOneYearRange) {
-    return cx(inRangeYearAttrs.value.class, "rounded-dynamic");
+    return cx([props.config.inRangeDate, "rounded-dynamic"]);
   }
 
   if (isYearInRange) {
-    return inRangeYearAttrs.value.class;
+    return props.config.inRangeDate;
   }
 
   if (isSelectedMonth(year)) {
