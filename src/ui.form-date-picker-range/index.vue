@@ -163,13 +163,13 @@
 
           <div v-bind="periodDateListAttrs(getPeriodDateListClasses())">
             <UButton
-              v-for="date in periodDateList"
+              v-for="(date, index) in periodDateList"
               :key="date.title"
               no-ring
               size="sm"
               variant="thirdary"
               :disabled="isDatePeriodOutOfRange(date)"
-              v-bind="periodDateAttrs(getPeriodDateClasses(date))"
+              v-bind="periodDateAttrs(getPeriodDateClasses(date, index))"
               :label="String(date.title)"
               @click="selectDate(date), toggleMenu()"
             />
@@ -183,6 +183,7 @@
             :error="inputRangeFromError"
             size="md"
             v-bind="rangeInputAttrs"
+            :class="cx([rangeInputAttrs.class, config.rangeInputFirst])"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
           />
@@ -193,6 +194,7 @@
             :error="inputRangeToError"
             size="md"
             v-bind="rangeInputAttrs"
+            :class="cx([rangeInputAttrs.class, config.rangeInputLast])"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
           />
@@ -229,7 +231,7 @@ import { LOCALE_TYPE } from "../ui.form-calendar/constants";
 
 import vClickOutside from "../directive.clickOutside";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault, cx } from "../service.ui";
 
 import {
   addDays,
@@ -811,8 +813,6 @@ function onClickPeriodButton(periodName) {
 
     period.value = PERIOD.year;
   }
-
-  selectDate(periodDateList.value.at(0));
 }
 
 function onClickOwnRange() {
@@ -862,7 +862,7 @@ function onClickShiftDatesList(action) {
 
   if (isPeriod.value.week) {
     activeDate.value = addMonths(activeDate.value, defaultRange);
-    periodDateList.value = getWeekDateList(activeDate.value, config.value.i18n.months.shorthand);
+    periodDateList.value = getWeekDateList(activeDate.value, locale.value.months.shorthand);
   }
 
   if (isPeriod.value.month) {
@@ -885,7 +885,64 @@ function getPeriodButtonsClasses(periodName) {
   return period.value === periodName ? config.value.periodButtonActive : "";
 }
 
-function getPeriodDateClasses(date) {
+function getPeriodDateClasses(date, index) {
+  const localStart = new Date(localValue.value.from);
+  const localEnd = new Date(localValue.value.to);
+  const isListType = isPeriod.value.quarter || isPeriod.value.week;
+  const firstInRangeClasses = cx([
+    config.value.edgePeriodDate,
+    isListType ? config.value.firstPeriodListDate : config.value.firstPeriodGridDate,
+  ]);
+  const lastInRangeClasses = cx([
+    config.value.edgePeriodDate,
+    isListType ? config.value.lastPeriodListDate : config.value.lastPeriodGridDate,
+  ]);
+
+  if (isPeriod.value.year) {
+    localStart.setMonth(0, 1);
+    localEnd.setMonth(11, 31);
+  }
+
+  localStart.setHours(0, 0, 0, 0);
+  localEnd.setHours(23, 59, 59, 999);
+
+  const startDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
+    return localStart <= periodDate.endRange && localStart >= periodDate.startRange;
+  });
+
+  const endDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
+    return localEnd >= periodDate.startRange && localEnd <= periodDate.endRange;
+  });
+
+  let isInRange = index >= startDateInRangeIndex && index <= endDateInRangeIndex;
+
+  if (!~startDateInRangeIndex || !~endDateInRangeIndex) {
+    isInRange =
+      (index >= startDateInRangeIndex && startDateInRangeIndex > -1) ||
+      (index <= endDateInRangeIndex && endDateInRangeIndex > -1);
+  }
+
+  if (
+    !~startDateInRangeIndex &&
+    periodDateList.value.at(0).startRange > localStart &&
+    !~endDateInRangeIndex &&
+    periodDateList.value.at(0).endRange < localEnd
+  ) {
+    isInRange = true;
+  }
+
+  const isSingleItem =
+    startDateInRangeIndex === endDateInRangeIndex && ~endDateInRangeIndex && ~startDateInRangeIndex;
+
+  if (isInRange) {
+    return cx([
+      config.value.periodDateInRange,
+      startDateInRangeIndex === index && firstInRangeClasses,
+      endDateInRangeIndex === index && lastInRangeClasses,
+      isSingleItem && "rounded-dynamic",
+    ]);
+  }
+
   return localValue.value.from === date.startRange ? config.value.periodDateActive : "";
 }
 

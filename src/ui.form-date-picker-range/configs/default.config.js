@@ -44,20 +44,28 @@ export default /*tw*/ {
   periodDateYearList: "grid grid-cols-3 grid-rows-1 gap-0.5",
   periodDateQuarterList: "",
   periodDate: "w-full",
+  periodDateInRange: "bg-brand-100 text-brand-900 hover:!bg-brand-200 rounded-none",
+  edgePeriodDate: "rounded-dynamic bg-brand-200 text-brand-900 hover:bg-brand-200",
+  firstPeriodGridDate: "rounded-r-none",
+  lastPeriodGridDate: "rounded-l-none",
+  firstPeriodListDate: "rounded-b-none",
+  lastPeriodListDate: "rounded-t-none",
   periodDateActive: "bg-gray-100",
-  rangeInputWrapper: "flex mt-4 -space-x-px",
+  rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
+  rangeInputFirst: "group/range-input-first",
+  rangeInputLast: "group/range-input-last",
   rangeInput: {
     component: "{UInput}",
     label: {
       component: "{ULabel}",
-      wrapper: "group/range-input-wrapper w-full hover:z-10 focus:z-10",
+      wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
     block: `
       focus-within:z-10 focus-within:ring-0
-      group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none
+      group-[]/range-input-first:rounded-r-none group-[]/range-input-last:rounded-l-none
     `,
-    input: "group-first/range-input-wrapper:rounded-r-none group-last/range-input-wrapper:rounded-l-none",
+    input: "group-[]/range-input-first:rounded-r-none group-[]/range-input-last:rounded-l-none",
   },
   inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {

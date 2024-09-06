@@ -17,8 +17,10 @@
 
 <script setup>
 import { computed } from "vue";
+
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
 import { isSameMonth, getDateWithoutTime, isCurrentMoth } from "../services/date.service";
+import { cx } from "../../service.ui";
 
 import useAttrs from "../composables/attrs.composable";
 
@@ -30,6 +32,11 @@ const props = defineProps({
   selectedDate: {
     type: [Date, null],
     required: true,
+  },
+
+  selectedDateTo: {
+    type: [Date, null],
+    default: undefined,
   },
 
   activeDate: {
@@ -49,7 +56,12 @@ const props = defineProps({
 
   dateFormat: {
     type: String,
-    required: true,
+    default: undefined,
+  },
+
+  range: {
+    type: Boolean,
+    default: false,
   },
 
   maxDate: {
@@ -101,24 +113,67 @@ function getMonth(monthNumber) {
 }
 
 function getMonthClasses(month) {
+  const isMonthInRange =
+    props.range &&
+    localSelectedDate.value &&
+    props.selectedDateTo &&
+    !dateIsOutOfRange(
+      month,
+      props.selectedDate,
+      props.selectedDateTo,
+      props.locale,
+      props.dateFormat,
+    );
+
   const isNotSelectedDate =
     (!isSelectedMonth(month) && !isSelectedMonth(month)) || props.selectedDate === null;
 
+  const isMoreThenOneMonthRange =
+    props.selectedDateTo && isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
+
   if (isCurrentMoth(month) && isNotSelectedDate) {
-    return [currentMothAttrs.value.class];
+    return cx([currentMothAttrs.value.class, isMonthInRange && props.config.inRangeDate]);
+  }
+
+  if (props.range && isSelectedMonth(month) && isMoreThenOneMonthRange) {
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeFirstDate]);
+  }
+
+  if (props.range && isSelectedToMonth(month) && isMoreThenOneMonthRange) {
+    return cx([props.config.inRangeEdgeDate, props.config.inRangeLastDate]);
+  }
+
+  if (props.range && isSelectedMonth(month) && !isMoreThenOneMonthRange) {
+    return cx([props.config.inRangeDate, "rounded-dynamic"]);
+  }
+
+  if (isMonthInRange) {
+    return props.config.inRangeDate;
   }
 
   if (isSelectedMonth(month)) {
-    return [selectedMonthAttrs.value.class];
+    return selectedMonthAttrs.value.class;
   }
 
-  if (isSameMonth(props.activeMonth, month)) {
-    return [activeMonthAttrs.value.class];
+  if (isSameMonth(props.activeMonth, month) && !props.range) {
+    return activeMonthAttrs.value.class;
   }
+}
+
+function isMoreThanOneMonthDiff(date, dateTo) {
+  const yearDiff = Math.abs(dateTo.getFullYear() - date.getFullYear());
+  const monthDiff = Math.abs(dateTo.getMonth() - date.getMonth());
+  const dayDiff = Math.abs(dateTo.getDate() - date.getDate());
+
+  return yearDiff > 0 || monthDiff > 1 || (monthDiff === 1 && dayDiff > 0);
 }
 
 function isSelectedMonth(month) {
   return isSameMonth(month, localSelectedDate.value);
+}
+
+function isSelectedToMonth(month) {
+  return isSameMonth(month, props.selectedDateTo);
 }
 
 function onClickMonth(month) {
