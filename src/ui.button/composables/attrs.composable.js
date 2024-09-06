@@ -1,6 +1,8 @@
 import { computed, useSlots } from "vue";
+
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
+
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {

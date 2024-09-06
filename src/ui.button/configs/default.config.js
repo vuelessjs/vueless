@@ -49,7 +49,7 @@ export default /*tw*/ {
         true: "!ring-0 !ring-offset-0",
       },
       loading: {
-        true: "pointer-events-none gap-0 !ring-0",
+        true: "pointer-events-none gap-0",
       },
       block: {
         true: "w-full",

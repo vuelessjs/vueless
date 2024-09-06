@@ -11,7 +11,7 @@
     <template v-if="loading">
       <!-- Label is needed to prevent changing button height -->
       <div tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :loading="loading" :size="loaderSize" :color="componentColor" v-bind="loaderAttrs" />
+      <ULoader :loading="loading" :size="loaderSize" :color="iconColor" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
@@ -21,13 +21,13 @@
         @binding {string} icon-size
         @binding {string} icon-color
       -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="componentColor">
+      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
           v-if="leftIcon"
           internal
           :name="leftIcon"
           :size="iconSize"
-          :color="componentColor"
+          :color="iconColor"
           v-bind="leftIconAttrs"
         />
       </slot>
@@ -44,14 +44,14 @@
         :label="label"
         :icon-name="icon"
         :icon-size="iconSize"
-        :icon-color="componentColor"
+        :icon-color="iconColor"
       >
         <UIcon
           v-if="icon"
           internal
           :name="icon"
           :size="iconSize"
-          :color="componentColor"
+          :color="iconColor"
           v-bind="centerIconAttrs"
         />
         <template v-else>
@@ -65,13 +65,13 @@
         @binding {string} icon-size
         @binding {string} icon-color
       -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="componentColor">
+      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
           v-if="rightIcon"
           internal
           :name="rightIcon"
           :size="iconSize"
-          :color="componentColor"
+          :color="iconColor"
           v-bind="rightIconAttrs"
         />
       </slot>
@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 
 import { getRandomId, getDefault } from "../service.ui";
 import ULoader from "../ui.loader";
@@ -284,7 +284,11 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-const componentColor = computed(() => {
+const iconColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
+});
+
+watchEffect(() => {
+  props.loading && buttonRef.value.blur();
 });
 </script>
