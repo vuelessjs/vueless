@@ -44,6 +44,11 @@ export default /*tw*/ {
   periodDateYearList: "grid grid-cols-3 grid-rows-1 gap-0.5",
   periodDateQuarterList: "",
   periodDate: "w-full",
+  periodDateInRange: "bg-brand-100 text-brand-900 hover:!bg-brand-200 rounded-none",
+  firstPeriodGridDate: "rounded-dynamic rounded-r-none bg-brand-200 text-brand-900 hover:bg-brand-200",
+  lastPeriodGridDate: "rounded-dynamic rounded-l-none bg-brand-200 text-brand-900 hover:bg-brand-200",
+  firstPeriodListDate: "rounded-dynamic rounded-b-none bg-brand-200 text-brand-900 hover:bg-brand-200",
+  lastPeriodListDate: "rounded-dynamic rounded-t-none bg-brand-200 text-brand-900 hover:bg-brand-200",
   periodDateActive: "bg-gray-100",
   rangeInputWrapper: "flex mt-4 -space-x-px",
   rangeInput: {
