@@ -140,7 +140,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button";
@@ -543,16 +543,26 @@ watch(
   },
 );
 
-onMounted(() => {
-  if (selectedDate.value && isTimepickerEnabled.value) {
-    hoursRef.value.value = String(selectedDate.value.getHours()).padStart(2, "0");
-    minutesRef.value.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
-    secondsRef.value.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
-  }
+let isInit = false;
 
-  emit("userDateChange", userFormattedDate.value);
-  emit("formattedDateChange", userFormattedDate.value);
-});
+const unwatchInit = watch(
+  () => selectedDate.value,
+  () => {
+    if (isInit) unwatchInit();
+
+    if (selectedDate.value && isTimepickerEnabled.value) {
+      hoursRef.value.value = String(selectedDate.value.getHours()).padStart(2, "0");
+      minutesRef.value.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+      secondsRef.value.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
+
+      emit("formattedDateChange", userFormattedDate.value);
+      emit("userDateChange", userFormattedDate.value);
+
+      isInit = true;
+    }
+  },
+  { deep: true },
+);
 
 function getCurrentValueType(value) {
   if (props.range && value === null) {
