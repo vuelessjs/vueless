@@ -183,6 +183,7 @@
             :error="inputRangeFromError"
             size="md"
             v-bind="rangeInputAttrs"
+            :class="cx([rangeInputAttrs.class, config.rangeInputFirst])"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
           />
@@ -193,6 +194,7 @@
             :error="inputRangeToError"
             size="md"
             v-bind="rangeInputAttrs"
+            :class="cx([rangeInputAttrs.class, config.rangeInputLast])"
             :name="rangeInputName"
             @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
           />
@@ -887,12 +889,14 @@ function getPeriodDateClasses(date, index) {
   const localStart = new Date(localValue.value.from);
   const localEnd = new Date(localValue.value.to);
   const isListType = isPeriod.value.quarter || isPeriod.value.week;
-  const firstInRangeClasses = isListType
-    ? config.value.firstPeriodListDate
-    : config.value.firstPeriodGridDate;
-  const lastInRangeClasses = isListType
-    ? config.value.lastPeriodListDate
-    : config.value.lastPeriodGridDate;
+  const firstInRangeClasses = cx([
+    config.value.edgePeriodDate,
+    isListType ? config.value.firstPeriodListDate : config.value.firstPeriodGridDate,
+  ]);
+  const lastInRangeClasses = cx([
+    config.value.edgePeriodDate,
+    isListType ? config.value.lastPeriodListDate : config.value.lastPeriodGridDate,
+  ]);
 
   if (isPeriod.value.year) {
     localStart.setMonth(0, 1);
@@ -910,30 +914,25 @@ function getPeriodDateClasses(date, index) {
     return localEnd >= periodDate.startRange && localEnd <= periodDate.endRange;
   });
 
-  const isStartDateInRangeIndex = !~startDateInRangeIndex;
-  const isEndDateInRangeIndex = !~endDateInRangeIndex;
-
   let isInRange = index >= startDateInRangeIndex && index <= endDateInRangeIndex;
 
-  if (!isStartDateInRangeIndex || !isEndDateInRangeIndex) {
+  if (!~startDateInRangeIndex || !~endDateInRangeIndex) {
     isInRange =
       (index >= startDateInRangeIndex && startDateInRangeIndex > -1) ||
       (index <= endDateInRangeIndex && endDateInRangeIndex > -1);
   }
 
   if (
-    !isStartDateInRangeIndex &&
+    !~startDateInRangeIndex &&
     periodDateList.value.at(0).startRange > localStart &&
-    !isEndDateInRangeIndex &&
+    !~endDateInRangeIndex &&
     periodDateList.value.at(0).endRange < localEnd
   ) {
     isInRange = true;
   }
 
   const isSingleItem =
-    startDateInRangeIndex === endDateInRangeIndex &&
-    isEndDateInRangeIndex &&
-    isStartDateInRangeIndex;
+    startDateInRangeIndex === endDateInRangeIndex && ~endDateInRangeIndex && ~startDateInRangeIndex;
 
   if (isInRange) {
     return cx([
