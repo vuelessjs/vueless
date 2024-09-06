@@ -242,9 +242,17 @@ const props = defineProps({
   /**
    * User friendly date format.
    */
-  userFormat: {
+  userDateFormat: {
     type: String,
-    default: getDefault(defaultConfig, UCalendar).userFormat,
+    default: getDefault(defaultConfig, UCalendar).userDateFormat,
+  },
+
+  /**
+   * Same as user format, but used when timepicker is enabled.
+   */
+  userDateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).userDateTimeFormat,
   },
 
   /**
@@ -394,6 +402,18 @@ const locale = computed(() => {
   };
 });
 
+const isTimepickerEnabled = computed(() => {
+  return props.timepicker && !props.range;
+});
+
+const actualDateFormat = computed(() => {
+  return isTimepickerEnabled.value ? props.dateTimeFormat : props.dateFormat;
+});
+
+const actualUserFormat = computed(() => {
+  return isTimepickerEnabled.value ? props.userDateTimeFormat : props.userDateFormat;
+});
+
 const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
@@ -419,14 +439,6 @@ const userFormatLocale = computed(() => {
       longhand: getSortedLocale(weekdaysLonghand, LOCALE_TYPE.day),
     },
   };
-});
-
-const isTimepickerEnabled = computed(() => {
-  return props.timepicker && !props.range;
-});
-
-const actualDateFormat = computed(() => {
-  return isTimepickerEnabled.value ? props.dateTimeFormat : props.dateFormat;
 });
 
 const isModelRangeType = computed(() => {
@@ -524,9 +536,9 @@ const formattedDate = computed(() => {
 });
 
 const userFormattedDate = computed(() => {
-  const date = formatDate(selectedDate.value, props.userFormat, userFormatLocale.value);
+  const date = formatDate(selectedDate.value, actualUserFormat.value, userFormatLocale.value);
   const dateTo = props.range
-    ? formatDate(selectedDateTo.value, props.userFormat, userFormatLocale.value)
+    ? formatDate(selectedDateTo.value, actualUserFormat.value, userFormatLocale.value)
     : undefined;
 
   return props.range ? `${date} ${SEPARATOR} ${dateTo}` : date;

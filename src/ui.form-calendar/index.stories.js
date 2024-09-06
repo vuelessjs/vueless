@@ -68,4 +68,4 @@ MinMax.args = {
 };
 
 export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "d.m.Y", userFormat: "d.m.Y", value: "28.06.2024" };
+DateFormat.args = { dateFormat: "d.m.Y", userDateFormat: "d.m.Y", value: "28.06.2024" };

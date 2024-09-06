@@ -108,7 +108,8 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    userFormat: "j F, Y",
+    userDateFormat: "j F, Y",
+    userDateTimeFormat: "j F, Y - H:i:S",
     size: "md",
     openDirectionX: "auto",
     openDirectionY: "auto",
