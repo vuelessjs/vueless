@@ -1,10 +1,12 @@
+import { computed, useSlots } from "vue";
+
 import useUI from "../../composable.ui";
 import { cva } from "../../service.ui";
 
 import defaultConfig from "../configs/default.config";
-import { computed } from "vue";
 
 export default function useAttrs(props) {
+  const slots = useSlots();
   const { config, getAttrs, hasSlotContent, getColor, setColor, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
@@ -21,6 +23,9 @@ export default function useAttrs(props) {
         value = cva(value)({
           ...props,
           color: getColor(props.color),
+          tabindex: Boolean(~props.tabindex),
+          leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
+          rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
         });
       }
 

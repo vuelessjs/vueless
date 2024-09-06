@@ -1,9 +1,9 @@
 <template>
   <div
     ref="wrapperRef"
-    tabindex="1"
     :data-test="dataTest"
-    v-bind="wrapperAttrs"
+    v-bind="badgeAttrs"
+    :tabindex="tabindex"
     @blur="onBlur"
     @focus="onFocus"
     @keydown="onKeydown"
@@ -16,20 +16,42 @@
           @binding {string} icon-size
           @binding {string} icon-color
         -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="color">
+      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
           v-if="leftIcon"
+          internal
           :name="leftIcon"
           :size="iconSize"
-          :color="color"
-          internal
+          :color="iconColor"
           v-bind="leftIconAttrs"
         />
       </slot>
 
-      <!-- @slot Use it to add something instead of text. -->
-      <slot>
-        {{ label }}
+      <!--
+        @slot Use it to add something instead of the label.
+        @binding {string} label
+        @binding {string} icon-name
+        @binding {string} icon-size
+        @binding {string} icon-color
+      -->
+      <slot
+        name="default"
+        :label="label"
+        :icon-name="icon"
+        :icon-size="iconSize"
+        :icon-color="iconColor"
+      >
+        <UIcon
+          v-if="icon"
+          internal
+          :name="icon"
+          :size="iconSize"
+          :color="iconColor"
+          v-bind="centerIconAttrs"
+        />
+        <template v-else>
+          {{ label }}
+        </template>
       </slot>
 
       <!--
@@ -38,12 +60,12 @@
           @binding {string} icon-size
           @binding {string} icon-color
         -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="color">
+      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
           v-if="rightIcon"
           :name="rightIcon"
           :size="iconSize"
-          :color="color"
+          :color="iconColor"
           internal
           v-bind="rightIconAttrs"
         />
@@ -71,7 +93,6 @@ const props = defineProps({
    */
   label: {
     type: String,
-    required: true,
     default: "",
   },
 
@@ -85,12 +106,37 @@ const props = defineProps({
   },
 
   /**
+   * Add border to the `thirdary` variant.
+   */
+  bordered: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UBadge).bordered,
+  },
+
+  /**
    * Badge size.
    * @values sm, md, lg
    */
   size: {
     type: String,
     default: getDefault(defaultConfig, UBadge).size,
+  },
+
+  /**
+   * Badge color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
+   */
+  color: {
+    type: String,
+    default: getDefault(defaultConfig, UBadge).color,
+  },
+
+  /**
+   * Icon name (appears instead of label).
+   */
+  icon: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -110,21 +156,19 @@ const props = defineProps({
   },
 
   /**
-   * Badge font weight.
-   * @values regular, medium, bold
+   * Controls the keyboard “Tab” focus order of elements.
    */
-  weight: {
-    type: String,
-    default: getDefault(defaultConfig, UBadge).weight,
+  tabindex: {
+    type: [String, Number],
+    default: getDefault(defaultConfig, UBadge).tabindex,
   },
 
   /**
-   * Badge color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
+   * Set badge corners rounded.
    */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UBadge).color,
+  round: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UBadge).round,
   },
 
   /**
@@ -166,7 +210,7 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { bodyAttrs, wrapperAttrs, leftIconAttrs, rightIconAttrs } = useAttrs(props);
+const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useAttrs(props);
 
 const wrapperRef = ref(null);
 
@@ -174,12 +218,16 @@ defineExpose({ wrapperRef });
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
+    sm: "3xs",
+    md: "2xs",
+    lg: "xs",
   };
 
   return sizes[props.size];
+});
+
+const iconColor = computed(() => {
+  return props.variant === "primary" ? "white" : props.color;
 });
 
 function onFocus() {

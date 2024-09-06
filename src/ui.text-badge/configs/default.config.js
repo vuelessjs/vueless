@@ -1,30 +1,42 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "border rounded-full inline-block py-1 !leading-none",
+  badge: {
+    base: "border rounded-dynamic inline-block py-1 !leading-none outline-none",
     variants: {
       variant: {
-        primary: "bg-{color}-50 text-{color}-600 border-transparent",
+        primary: "bg-{color}-600 text-white border-transparent",
         secondary: "border-{color}-600 text-{color}-600",
-        thirdary: "text-{color}-600 border-transparent",
+        thirdary: "bg-{color}-50 text-{color}-600 border-transparent",
       },
       size: {
         sm: "px-2 text-2xs",
         md: "px-2.5 text-xs",
         lg: "px-3 text-sm",
       },
-      weight: {
-        regular: "font-normal",
-        medium: "font-medium",
-        bold: "font-bold",
+      round: {
+        true: "rounded-full",
+      },
+      tabindex: {
+        true: "cursor-pointer focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15",
+      },
+      color: {
+        grayscale: "focus:ring-gray-700/15",
+        white: "focus:ring-gray-700/15",
       },
     },
     compoundVariants: [
-      { color: "grayscale", variant: "primary", class: "bg-gray-100 text-gray-900" },
+      { variant: "thirdary", bordered: true, class: "border-{color}-100" },
+      { color: "grayscale", variant: "primary", class: "bg-gray-900" },
       { color: "grayscale", variant: "secondary", class: "border-gray-900 text-gray-900" },
-      { color: "grayscale", variant: "thirdary", class: "text-gray-900" },
+      { color: "grayscale", variant: "thirdary", class: "bg-gray-100 text-gray-900" },
       { color: "white", variant: "primary", class: "bg-white text-gray-900" },
       { color: "white", variant: "secondary", class: "border-white text-white" },
-      { color: "white", variant: "thirdary", class: "text-white" },
+      { color: "white", variant: "thirdary", class: "text-white bg-white/15" },
+      { leftIcon: true, size: "sm", class: "pl-1.5" },
+      { leftIcon: true, size: "md", class: "pl-1.5" },
+      { leftIcon: true, size: "lg", class: "pl-2" },
+      { rightIcon: true, size: "sm", class: "pr-1.5" },
+      { rightIcon: true, size: "md", class: "pr-1.5" },
+      { rightIcon: true, size: "lg", class: "pr-2" },
     ],
   },
   body: {
@@ -32,22 +44,26 @@ export default /*tw*/ {
     variants: {
       size: {
         sm: "gap-0.5",
-        md: "gap-x-0.5",
-        lg: "gap-x-0.5",
+        md: "gap-0.5",
+        lg: "gap-0.5",
       },
     },
   },
   leftIcon: "{UIcon}",
+  centerIcon: "{UIcon}",
   rightIcon: "{UIcon}",
   defaults: {
     color: "brand",
     size: "md",
-    weight: "medium",
     variant: "primary",
+    tabindex: "-1",
+    round: false,
+    bordered: false,
   },
   safelist: (colors) => [
     { pattern: `bg-(${colors})-50` },
     { pattern: `border-(${colors})-600` },
     { pattern: `text-(${colors})-600` },
+    { pattern: `ring-(${colors})-700`, variants: ["focus"] },
   ],
 };
