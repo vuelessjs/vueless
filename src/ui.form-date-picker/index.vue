@@ -47,6 +47,7 @@
         tabindex="-1"
         :timepicker="timepicker"
         :date-format="dateFormat"
+        :date-time-format="dateTimeFormat"
         :user-format="userFormat"
         :max-date="maxDate"
         :min-date="minDate"
@@ -215,6 +216,14 @@ const props = defineProps({
   dateFormat: {
     type: String,
     default: getDefault(defaultConfig, UDatePicker).dateFormat,
+  },
+
+  /**
+   * Same as date format, but used when timepicker is enabled.
+   */
+  dateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UCalendar).dateTimeFormat,
   },
 
   /**

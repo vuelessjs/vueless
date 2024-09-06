@@ -123,6 +123,7 @@ export default /*tw*/ {
     range: false,
     timepicker: false,
     dateFormat: undefined,
+    dateTimeFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
     /* icons */

@@ -116,6 +116,7 @@ export default /*tw*/ {
     timepicker: false,
     disabled: false,
     dateFormat: undefined,
+    dateTimeFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
   },
