@@ -136,7 +136,7 @@ const props = defineProps({
   },
 
   /**
-   * Show Alert with a border.
+   * Add border to the `thirdary` variant.
    */
   bordered: {
     type: Boolean,

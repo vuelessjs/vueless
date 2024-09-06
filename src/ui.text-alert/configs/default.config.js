@@ -1,11 +1,11 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 flex flex-col rounded-dynamic",
+    base: "border p-4 flex flex-col rounded-dynamic",
     variants: {
       variant: {
-        primary: "bg-{color}-600 text-white",
-        secondary: "bg-transparent border border-{color}-600 text-{color}-600",
-        thirdary: "bg-{color}-50 text-{color}-600",
+        primary: "bg-{color}-600 text-white border-transparent",
+        secondary: "border-{color}-600 text-{color}-600",
+        thirdary: "bg-{color}-50 text-{color}-600 border-transparent",
       },
       size: {
         xs: "text-2xs",
@@ -15,7 +15,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { variant: "thirdary", bordered: true, class: "border border-{color}-100" },
+      { variant: "thirdary", bordered: true, class: "border-{color}-100" },
       { color: "white", variant: "primary", class: "text-gray-900 bg-white" },
       { color: "white", variant: "secondary", class: "text-gray-900 border-gray-200" },
       { color: "white", variant: "thirdary", class: "text-gray-900 bg-white" },
