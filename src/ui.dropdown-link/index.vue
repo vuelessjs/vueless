@@ -1,57 +1,57 @@
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
-    <div v-bind="triggerAttrs">
-      <ULink
-        :id="id"
-        :size="size"
-        :label="label"
-        :color="color"
-        :dashed="dashed"
-        :no-ring="noRing"
-        :disabled="disabled"
-        :underlined="underlined"
-        :data-test="`${dataTest}-link`"
-        v-bind="dropdownLinkAttrs"
-        @click="onClickLink"
-      >
-        <template #left>
-          <!--
+    <ULink
+      :id="id"
+      :size="size"
+      :label="label"
+      :color="color"
+      :dashed="dashed"
+      :no-ring="noRing"
+      :disabled="disabled"
+      :underlined="underlined"
+      v-bind="dropdownLinkAttrs"
+      :data-test="dataTest"
+      @click="onClickLink"
+      @keydown.enter="onClickLink"
+      @keydown.space.prevent="onClickLink"
+    >
+      <template #left>
+        <!--
           @slot Use it to add something before the label.
           @binding {boolean} isOpened
         -->
-          <slot name="left" :opened="isShownOptions" />
-        </template>
+        <slot name="left" :opened="isShownOptions" />
+      </template>
 
-        <template #default>
-          <!--
+      <template #default>
+        <!--
             @slot Use it to add something instead of the default label.
             @binding {string} label
             @binding {boolean} isOpened
           -->
-          <slot :label="label" />
-        </template>
+        <slot :label="label" />
+      </template>
 
-        <template #right>
-          <!--
+      <template #right>
+        <!--
             @slot Use it to add something after the label.
             @binding {boolean} isOpened
           -->
-          <slot name="right" :opened="isShownOptions">
-            <UIcon
-              v-if="!noIcon"
-              internal
-              interactive
-              :color="color"
-              :size="iconSize"
-              :name="config.defaults.dropdownIcon"
-              :data-test="`${dataTest}-caret`"
-              v-bind="dropdownIconAttrs"
-              @click="onClickLink"
-            />
-          </slot>
-        </template>
-      </ULink>
-    </div>
+        <slot name="right" :opened="isShownOptions">
+          <UIcon
+            v-if="!noIcon"
+            internal
+            interactive
+            :color="color"
+            :size="iconSize"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
+            :data-test="`${dataTest}-dropdown`"
+            @click="onClickLink"
+          />
+        </slot>
+      </template>
+    </ULink>
 
     <UDropdownList
       v-if="isShownOptions"
@@ -81,7 +81,6 @@ import vClickOutside from "../directive.clickOutside";
 import { UDropdownLink } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
-import { UDropdownButton } from "../ui.dropdown-button/constants/index.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDropdownLink", inheritAttrs: false });
@@ -93,6 +92,30 @@ const props = defineProps({
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Options list.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Label key in the item object of options.
+   */
+  labelKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownLink).labelKey,
+  },
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownLink).valueKey,
   },
 
   /**
@@ -154,30 +177,6 @@ const props = defineProps({
   },
 
   /**
-   * Options list.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownButton).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownButton).valueKey,
-  },
-
-  /**
    * The position of dropdown list on the y-axis.
    * @values top, bottom
    */
@@ -234,21 +233,16 @@ provide("hideDropdownOptions", hideOptions);
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 
-const {
-  config,
-  wrapperAttrs,
-  dropdownLinkAttrs,
-  dropdownListAttrs,
-  dropdownIconAttrs,
-  triggerAttrs,
-} = useAttrs(props, { isShownOptions });
+const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
+  props,
+  { isShownOptions },
+);
 
 const iconSize = computed(() => {
   const sizes = {
-    xs: "2xs",
-    sm: "xs",
-    md: "sm",
-    lg: "md",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
   };
 
   return sizes[props.size];

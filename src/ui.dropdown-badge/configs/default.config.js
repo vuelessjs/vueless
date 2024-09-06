@@ -1,20 +1,11 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  dropdownBadge: {
-    component: "{UBadge}",
-    base: "cursor-pointer",
-    variants: {
-      size: {
-        sm: "pr-1",
-        md: "pr-1.5",
-        lg: "pr-1.5",
-      },
-    },
-  },
+  dropdownBadge: "{UBadge}",
   dropdownBadgeActive: "group",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
-    base: "{UDropdownList} w-fit",
+    component: "{UDropdownList}",
+    base: "w-fit",
     variants: {
       listYPosition: {
         top: "bottom-6 mb-6",
@@ -29,12 +20,12 @@ export default /*tw*/ {
   defaults: {
     color: "brand",
     size: "md",
-    weight: "medium",
     variant: "primary",
     labelKey: "label",
     valueKey: "id",
     listYPosition: "bottom",
     listXPosition: "left",
+    round: false,
     noIcon: false,
     /* icons */
     dropdownIcon: "keyboard_arrow_down",

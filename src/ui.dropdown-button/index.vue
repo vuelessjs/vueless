@@ -11,7 +11,7 @@
       :disabled="disabled"
       :filled="filled || isShownOptions"
       v-bind="dropdownButtonAttrs"
-      :data-test="`${dataTest}-button`"
+      :data-test="dataTest"
       @click="onClickButton"
     >
       <template #left>
@@ -44,7 +44,7 @@
             :color="iconColor"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
-            :data-test="`${dataTest}-caret`"
+            :data-test="`${dataTest}-dropdown`"
           />
         </slot>
       </template>
@@ -85,19 +85,35 @@ defineOptions({ name: "UDropdownButton", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Selected value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-
-  /**
    * Button label.
    */
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Options list.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Label key in the item object of options.
+   */
+  labelKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownButton).labelKey,
+  },
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownButton).valueKey,
   },
 
   /**
@@ -165,30 +181,6 @@ const props = defineProps({
   noIcon: {
     type: Boolean,
     default: getDefault(defaultConfig, UDropdownButton).noIcon,
-  },
-
-  /**
-   * Options list.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownButton).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownButton).valueKey,
   },
 
   /**

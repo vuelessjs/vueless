@@ -5,11 +5,13 @@
       :label="label"
       :size="size"
       :color="color"
-      :weight="weight"
       :variant="variant"
       v-bind="dropdownBadgeAttrs"
-      :data-test="`${dataTest}-badge`"
+      tabindex="0"
+      :data-test="dataTest"
       @click="onClickBadge"
+      @keydown.enter="onClickBadge"
+      @keydown.space.prevent="onClickBadge"
     >
       <template #left>
         <!--
@@ -28,7 +30,7 @@
         <slot :label="label" :opened="isShownOptions" />
       </template>
 
-      <template #right>
+      <template #right="{ iconColor, iconSize }">
         <!--
           @slot Use it to add something after the label.
           @binding {boolean} isOpened
@@ -37,11 +39,11 @@
           <UIcon
             v-if="!noIcon"
             internal
-            :color="color"
+            :color="iconColor"
             :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
-            :data-test="`${dataTest}-caret`"
+            :data-test="`${dataTest}-dropdown`"
           />
         </slot>
       </template>
@@ -62,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref, watch } from "vue";
+import { provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UBadge from "../ui.text-badge";
@@ -86,6 +88,30 @@ const props = defineProps({
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Options list.
+   */
+  options: {
+    type: Array,
+    default: () => [],
+  },
+
+  /**
+   * Label key in the item object of options.
+   */
+  labelKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownBadge).labelKey,
+  },
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey: {
+    type: String,
+    default: getDefault(defaultConfig, UDropdownBadge).valueKey,
   },
 
   /**
@@ -116,12 +142,11 @@ const props = defineProps({
   },
 
   /**
-   * Badge font weight.
-   * @values regular, medium, bold
+   * Set badge corners rounded.
    */
-  weight: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).weight,
+  round: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UDropdownBadge).round,
   },
 
   /**
@@ -130,30 +155,6 @@ const props = defineProps({
   noIcon: {
     type: Boolean,
     default: getDefault(defaultConfig, UDropdownBadge).noIcon,
-  },
-
-  /**
-   * Options list.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).valueKey,
   },
 
   /**
@@ -219,16 +220,6 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
     isShownOptions,
   },
 );
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
 
 watch(selectedItem, () => {
   emit("select", selectedItem.value);

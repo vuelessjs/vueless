@@ -28,12 +28,15 @@ export default function useAttrs(props, { isShownOptions }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "badge") {
+    if (key === "dropdownBadge") {
       const badgeAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...badgeAttrs.value,
-        class: cx([badgeAttrs.value.class, isShownOptions.value && config.value.badgeActive]),
+        class: cx([
+          badgeAttrs.value.class,
+          isShownOptions.value && config.value.dropdownBadgeActive,
+        ]),
       }));
     }
   }

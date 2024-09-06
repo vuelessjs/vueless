@@ -28,12 +28,12 @@ export default function useAttrs(props, { isShownOptions }) {
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
 
-    if (key === "link") {
+    if (key === "dropdownLink") {
       const linkAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...linkAttrs.value,
-        class: cx([linkAttrs.value.class, isShownOptions.value && config.value.linkActive]),
+        class: cx([linkAttrs.value.class, isShownOptions.value && config.value.dropdownLinkActive]),
       }));
     }
   }

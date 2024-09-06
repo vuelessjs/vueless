@@ -1,6 +1,5 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  trigger: "flex items-center relative space-x-0.5",
   dropdownLink: "{ULink}",
   dropdownLinkActive: "group",
   dropdownIcon: "{UIcon} block transition duration-300 group-[]:rotate-180",
