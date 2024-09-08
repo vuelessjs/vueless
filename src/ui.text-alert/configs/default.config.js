@@ -26,10 +26,9 @@ export default /*tw*/ {
       { color: "grayscale", variant: "thirdary", bordered: true, class: "border-gray-200" },
     ],
   },
-  text: "{UText}",
   body: "flex items-start justify-between",
+  contentWrapper: "flex gap-2",
   content: "",
-  innerWrapper: "flex gap-2",
   title: {
     base: "font-bold leading-tight",
     variants: {
@@ -42,6 +41,7 @@ export default /*tw*/ {
     },
   },
   description: "",
+  text: "{UText}",
   closeButton: "{UButton}",
   closeIcon: "{UIcon}",
   defaults: {

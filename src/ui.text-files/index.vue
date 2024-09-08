@@ -1,6 +1,13 @@
 <template>
-  <ULabel :label="label" :description="description" :size="size" v-bind="filesLabelAttrs">
-    <div v-bind="bodyAttrs">
+  <ULabel
+    :label="label"
+    :description="description"
+    :size="size"
+    :align="labelAlign"
+    v-bind="filesLabelAttrs"
+  >
+    <div v-bind="itemsAttrs">
+      <!-- @slot Use it to add UFile. -->
       <slot>
         <UFile
           v-for="file in formattedFileList"
@@ -10,12 +17,12 @@
           :url="file.url"
           :image-url="file.imageUrl"
           :size="size"
-          v-bind="fileAttrs"
+          v-bind="itemAttrs"
           :data-test="`${dataTest}-item`"
         >
           <template #left="{ file: currentFile }">
             <!-- @slot Use it to add something left.
-              @binding {object} file
+             @binding {object} file
             -->
             <slot name="left" :file="currentFile" />
           </template>
@@ -47,31 +54,6 @@ defineOptions({ name: "UFiles", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set files label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set description text.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set label placement related from the default slot.
-   * @values topInside, top, left, right
-   */
-  placement: {
-    type: String,
-    default: getDefault(defaultConfig, UFiles).placement,
-  },
-
-  /**
    * List of file objects.
    */
   fileList: {
@@ -80,7 +62,32 @@ const props = defineProps({
   },
 
   /**
-   * Set size.
+   * File list label.
+   */
+  label: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * File list label placement.
+   * @values top, topWithDesc
+   */
+  labelAlign: {
+    type: String,
+    default: getDefault(defaultConfig, UFiles).labelAlign,
+  },
+
+  /**
+   * File list description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * File list size.
    * @values sm, md, lg
    */
   size: {
@@ -105,7 +112,7 @@ const props = defineProps({
   },
 });
 
-const { filesLabelAttrs, bodyAttrs, fileAttrs } = useAttrs(props);
+const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() =>
   props.fileList.map((file) => {

@@ -4,7 +4,7 @@
     <slot name="top" />
 
     <div v-bind="bodyAttrs">
-      <div v-bind="innerWrapperAttrs">
+      <div v-bind="contentWrapperAttrs">
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
 
@@ -29,8 +29,8 @@
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
-          <!-- @slot Use it to add something inside. -->
           <UText v-bind="textAttrs" :size="size">
+            <!-- @slot Use it to add something inside. -->
             <slot />
           </UText>
         </div>
@@ -119,23 +119,6 @@ const props = defineProps({
   },
 
   /**
-   * Hint size.
-   * @values xs, sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).size,
-  },
-
-  /**
-   * Hint color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).color,
-  },
-
-  /**
    * Add border to the `thirdary` variant.
    */
   bordered: {
@@ -144,7 +127,24 @@ const props = defineProps({
   },
 
   /**
-   * Hint timeout.
+   * Alert size.
+   * @values xs, sm, md, lg
+   */
+  size: {
+    type: String,
+    default: getDefault(defaultConfig, UAlert).size,
+  },
+
+  /**
+   * Alert color.
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
+  color: {
+    type: String,
+    default: getDefault(defaultConfig, UAlert).color,
+  },
+
+  /**
+   * Alert timeout.
    */
   timeout: {
     type: Number,
@@ -195,7 +195,7 @@ const {
   descriptionAttrs,
   closeButtonAttrs,
   closeIconAttrs,
-  innerWrapperAttrs,
+  contentWrapperAttrs,
   hasSlotContent,
 } = useAttrs(props);
 

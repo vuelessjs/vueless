@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: {
+  header: {
     base: "text-{color}-600",
     variants: {
       size: {
@@ -10,17 +10,12 @@ export default /*tw*/ {
         xl: "text-4xl",
         "2xl": "text-5xl",
       },
-      weight: {
-        regular: "font-normal",
-        medium: "font-medium",
-        bold: "font-bold",
-      },
       color: {
         brand: "text-brand",
         white: "text-white",
         grayscale: "text-gray-900",
       },
-      multiline: {
+      line: {
         true: "!leading-none",
       },
       underlined: {
@@ -40,10 +35,9 @@ export default /*tw*/ {
   },
   defaults: {
     color: "grayscale",
-    weight: "medium",
     size: "md",
     tag: "div",
-    multiline: false,
+    line: true,
     underlined: false,
   },
   safelist: (colors) => [{ pattern: `text-(${colors})-600` }, { pattern: `border-(${colors})-600` }],

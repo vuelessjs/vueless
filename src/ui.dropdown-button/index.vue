@@ -187,18 +187,18 @@ const props = defineProps({
    * The position of dropdown list on the y-axis.
    * @values top, bottom
    */
-  listYPosition: {
+  yPosition: {
     type: String,
-    default: getDefault(defaultConfig, UDropdownButton).listYPosition,
+    default: getDefault(defaultConfig, UDropdownButton).yPosition,
   },
 
   /**
    * The position of dropdown list on the x-axis.
    * @values left, right
    */
-  listXPosition: {
+  xPosition: {
     type: String,
-    default: getDefault(defaultConfig, UDropdownButton).listXPosition,
+    default: getDefault(defaultConfig, UDropdownButton).xPosition,
   },
 
   /**

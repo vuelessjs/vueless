@@ -6,11 +6,11 @@ export default /*tw*/ {
   dropdownList: {
     base: "{UDropdownList} w-fit",
     variants: {
-      listYPosition: {
+      yPosition: {
         top: "bottom-full mb-2",
         bottom: "top-full mt-2",
       },
-      listXPosition: {
+      xPosition: {
         left: "left-0",
         right: "right-0",
       },
@@ -22,8 +22,8 @@ export default /*tw*/ {
     variant: "primary",
     labelKey: "label",
     valueKey: "id",
-    listYPosition: "bottom",
-    listXPosition: "left",
+    yPosition: "bottom",
+    xPosition: "left",
     filled: false,
     round: false,
     square: false,

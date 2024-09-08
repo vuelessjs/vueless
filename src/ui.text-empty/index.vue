@@ -44,7 +44,7 @@ defineOptions({ name: "UEmpty", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Sets title.
+   * Empty state title.
    */
   title: {
     type: String,
@@ -52,7 +52,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets description.
+   * Empty state description.
    */
   description: {
     type: String,
@@ -60,7 +60,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component size.
+   * Empty state size.
    * @values sm, md, lg
    */
   size: {
@@ -69,7 +69,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component ui config object.
    */
   config: {
     type: Object,

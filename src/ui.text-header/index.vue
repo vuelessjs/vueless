@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" v-bind="wrapperAttrs" :data-test="dataTest">
+  <component :is="tag" v-bind="headerAttrs" :data-test="dataTest">
     <slot>{{ label }}</slot>
   </component>
 </template>
@@ -33,15 +33,6 @@ const props = defineProps({
   },
 
   /**
-   * Header weight.
-   * @values regular, medium, bold
-   */
-  weight: {
-    type: String,
-    default: getDefault(defaultConfig, UHeader).weight,
-  },
-
-  /**
    * Header color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
@@ -51,7 +42,7 @@ const props = defineProps({
   },
 
   /**
-   * Allows changing button html tag.
+   * Allows changing HTML tag.
    */
   tag: {
     type: String,
@@ -59,11 +50,11 @@ const props = defineProps({
   },
 
   /**
-   * Return default line height to the component (it may be useful for multiline headers).
+   * Removes text line height (disable for multiline headers).
    */
-  multiline: {
+  line: {
     type: Boolean,
-    default: getDefault(defaultConfig, UHeader).multiline,
+    default: getDefault(defaultConfig, UHeader).line,
   },
 
   /**
@@ -91,5 +82,5 @@ const props = defineProps({
   },
 });
 
-const { wrapperAttrs } = useAttrs(props);
+const { headerAttrs } = useAttrs(props);
 </script>

@@ -6,21 +6,27 @@
     </div>
 
     <div :data-test="dataTest" v-bind="sumAttrs">
-      <span v-if="currencySymbolPosition.left" v-bind="symbolAttrs">
-        {{ symbol + currencySpace }}
-      </span>
+      <span
+        v-if="currencySymbolPosition.left"
+        v-bind="symbolAttrs"
+        v-text="symbol + currencySpace"
+      />
 
-      <span v-if="sum">{{ typeSymbol }}</span>
+      <span v-if="sum" v-bind="mathSignAttrs" v-text="mathSign" />
 
-      <span>{{ preparedMoney.integer }}</span>
+      <span v-bind="integerAttrs" v-text="preparedMoney.integer" />
 
-      <span v-if="!integer" v-bind="pennyAttrs">
-        {{ preparedMoney.delimiter }}{{ preparedMoney.penny }}
-      </span>
+      <span
+        v-if="!integer"
+        v-bind="pennyAttrs"
+        v-text="preparedMoney.delimiter + preparedMoney.penny"
+      />
 
-      <span v-if="currencySymbolPosition.right" v-bind="symbolAttrs">
-        {{ currencySpace + symbol }}
-      </span>
+      <span
+        v-if="currencySymbolPosition.right"
+        v-bind="symbolAttrs"
+        v-text="currencySpace + symbol"
+      />
     </div>
 
     <div v-if="hasSlotContent($slots['right'])" v-bind="slotRightAttrs">
@@ -45,7 +51,7 @@ defineOptions({ name: "UMoney", inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set sum.
+   * Money value.
    */
   sum: {
     type: Number,
@@ -53,49 +59,7 @@ const props = defineProps({
   },
 
   /**
-   * Set currency symbol.
-   */
-  symbol: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Make sum planned (add brackets).
-   */
-  planned: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).planned,
-  },
-
-  /**
-   * Make sum integer.
-   */
-  integer: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).integer,
-  },
-
-  /**
-   * Set sign for sum.
-   * @values default, positive, negative
-   */
-  sign: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).sign,
-  },
-
-  /**
-   * Set align for currency symbol.
-   * @values right, left
-   */
-  symbolAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).symbolAlign,
-  },
-
-  /**
-   * Set text size of sum.
+   * Money size.
    * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl
    */
   size: {
@@ -104,21 +68,46 @@ const props = defineProps({
   },
 
   /**
-   * Set weight.
-   * @values regular, medium, bold
-   */
-  weight: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).weight,
-  },
-
-  /**
-   * The color of the text money.
+   * Money color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
   color: {
     type: String,
     default: getDefault(defaultConfig, UMoney).color,
+  },
+
+  /**
+   * Money currency symbol.
+   */
+  symbol: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Money currency symbol align.
+   * @values right, left
+   */
+  symbolAlign: {
+    type: String,
+    default: getDefault(defaultConfig, UMoney).symbolAlign,
+  },
+
+  /**
+   * Add space between currency symbol and sum.
+   */
+  symbolDivided: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UMoney).symbolDivided,
+  },
+
+  /**
+   * Money sign.
+   * @values default, positive, negative
+   */
+  sign: {
+    type: String,
+    default: getDefault(defaultConfig, UMoney).sign,
   },
 
   /**
@@ -138,7 +127,7 @@ const props = defineProps({
   },
 
   /**
-   * Set align for money block.
+   * Money align.
    * @values right, left
    */
   align: {
@@ -147,16 +136,27 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Make money sum integer.
+   */
+  integer: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UMoney).integer,
+  },
+
+  /**
+   * Make money planned (add brackets).
+   */
+  planned: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UMoney).planned,
+  },
+
+  /**
+   * Component ui config object.
    */
   config: {
     type: Object,
     default: () => ({}),
-  },
-
-  divided: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).divided,
   },
 
   /**
@@ -169,9 +169,11 @@ const props = defineProps({
 });
 
 const {
-  sumAttrs,
-  pennyAttrs,
   moneyAttrs,
+  sumAttrs,
+  mathSignAttrs,
+  integerAttrs,
+  pennyAttrs,
   slotLeftAttrs,
   symbolAttrs,
   slotRightAttrs,
@@ -186,10 +188,10 @@ const currencySymbolPosition = computed(() => {
 });
 
 const currencySpace = computed(() => {
-  return props.divided ? " " : "";
+  return props.symbolDivided ? " " : "";
 });
 
-const typeSymbol = computed(() => {
+const mathSign = computed(() => {
   let type = "";
 
   if (props.sign === MONEY_SIGN_TYPE.positive) type = "+";

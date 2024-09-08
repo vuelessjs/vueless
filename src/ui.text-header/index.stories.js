@@ -56,19 +56,16 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Weights = EnumVariantTemplate.bind({});
-Weights.args = { enum: "weight" };
-
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const Underlined = EnumVariantTemplate.bind({});
 Underlined.args = { enum: "size", underlined: true };
 
-export const Multiline = DefaultTemplate.bind({});
-Multiline.args = {
+export const Line = DefaultTemplate.bind({});
+Line.args = {
   size: "2xl",
-  multiline: true,
+  line: false,
   label: "Some very long header you ever may imagine in your whole long and beautiful life",
 };
 

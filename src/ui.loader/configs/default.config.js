@@ -47,7 +47,6 @@ export default /*tw*/ {
       },
     },
   },
-
   defaults: {
     color: "brand",
     size: "md",

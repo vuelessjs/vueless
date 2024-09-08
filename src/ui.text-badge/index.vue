@@ -156,19 +156,19 @@ const props = defineProps({
   },
 
   /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex: {
-    type: [String, Number],
-    default: getDefault(defaultConfig, UBadge).tabindex,
-  },
-
-  /**
    * Set badge corners rounded.
    */
   round: {
     type: Boolean,
     default: getDefault(defaultConfig, UBadge).round,
+  },
+
+  /**
+   * Controls the keyboard “Tab” focus order of elements.
+   */
+  tabindex: {
+    type: [String, Number],
+    default: getDefault(defaultConfig, UBadge).tabindex,
   },
 
   /**

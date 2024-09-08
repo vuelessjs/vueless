@@ -22,7 +22,6 @@ export default /*tw*/ {
   },
   emptyIcon: "{UIcon}",
   title: "{UHeader}",
-  footer: "mt-4 flex justify-center",
   description: {
     base: "text-center",
     variants: {
@@ -33,6 +32,7 @@ export default /*tw*/ {
       },
     },
   },
+  footer: "mt-4 flex justify-center",
   defaults: {
     size: "md",
     /* icons */

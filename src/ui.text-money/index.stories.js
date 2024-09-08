@@ -90,9 +90,6 @@ colors.args = {
 export const sizes = EnumVariantTemplate.bind({});
 sizes.args = { enum: "size" };
 
-export const weights = EnumVariantTemplate.bind({});
-weights.args = { enum: "weight" };
-
 export const sign = EnumVariantTemplate.bind({});
 sign.args = { enum: "sign" };
 

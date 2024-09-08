@@ -2,19 +2,13 @@ export default /*tw*/ {
   money: {
     base: "whitespace-nowrap flex items-center text-{color}-600",
     variants: {
+      color: {
+        white: "text-white",
+        grayscale: "text-gray-900",
+      },
       align: {
         left: "justify-start",
         right: "justify-end",
-      },
-      weight: {
-        regular: "font-normal",
-        medium: "font-medium",
-        bold: "font-bold",
-      },
-      color: {
-        brand: "text-brand",
-        white: "text-white",
-        grayscale: "text-gray-900",
       },
     },
   },
@@ -36,6 +30,9 @@ export default /*tw*/ {
       },
     },
   },
+  symbol: "",
+  mathSign: "",
+  integer: "",
   penny: {
     variants: {
       size: {
@@ -50,19 +47,17 @@ export default /*tw*/ {
       },
     },
   },
-  symbol: "",
   defaults: {
     color: "grayscale",
     size: "md",
     sign: "default",
-    align: "right",
+    align: "left",
     symbolAlign: "right",
-    weight: "regular",
     decimalScale: 2,
     delimiter: ",",
     planned: false,
     integer: false,
-    divided: true,
+    symbolDivided: true,
   },
   safelist: (colors) => [{ pattern: `text-(${colors})-600` }],
 };

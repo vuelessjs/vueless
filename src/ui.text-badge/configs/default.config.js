@@ -54,9 +54,9 @@ export default /*tw*/ {
   rightIcon: "{UIcon}",
   defaults: {
     color: "brand",
-    size: "md",
     variant: "primary",
     tabindex: "-1",
+    size: "md",
     round: false,
     bordered: false,
   },

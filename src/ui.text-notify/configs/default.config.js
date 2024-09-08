@@ -44,6 +44,7 @@ export default /*tw*/ {
   defaults: {
     xPosition: "center",
     yPosition: "top",
+    html: false,
     /* icons */
     successIcon: "check_circle",
     warningIcon: "warning",

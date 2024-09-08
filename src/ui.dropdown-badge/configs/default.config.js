@@ -7,11 +7,11 @@ export default /*tw*/ {
     component: "{UDropdownList}",
     base: "w-fit",
     variants: {
-      listYPosition: {
+      yPosition: {
         top: "bottom-6 mb-6",
         bottom: "top-3 mt-6",
       },
-      listXPosition: {
+      xPosition: {
         left: "left-0",
         right: "right-0",
       },
@@ -23,8 +23,8 @@ export default /*tw*/ {
     variant: "primary",
     labelKey: "label",
     valueKey: "id",
-    listYPosition: "bottom",
-    listXPosition: "left",
+    yPosition: "bottom",
+    xPosition: "left",
     round: false,
     noIcon: false,
     /* icons */

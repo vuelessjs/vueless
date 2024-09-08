@@ -1,9 +1,9 @@
 export default /*tw*/ {
   filesLabel: "{ULabel}",
-  body: "flex flex-col gap-1",
-  file: "{UFile} block",
+  items: "flex flex-col gap-1",
+  item: "{UFile} block",
   defaults: {
-    placement: "top",
     size: "md",
+    labelAlign: "top",
   },
 };

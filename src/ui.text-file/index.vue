@@ -1,10 +1,10 @@
 <template>
-  <ULink :href="url" no-ring target-blank :data-test="dataTest" v-bind="fileAttrs">
+  <ULink :href="url" no-ring v-bind="fileAttrs" :data-test="dataTest">
     <slot name="left" :file="{ id, label, url, imageUrl }" />
 
     <slot :file="{ id, label, url, imageUrl }">
-      <div v-bind="infoAttrs">
-        <img v-if="imageUrl" :src="imageUrl" v-bind="imageAttrs" />
+      <div v-bind="bodyAttrs">
+        <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
 
         <UIcon
           v-else
@@ -18,7 +18,7 @@
           @blur="onBlur"
         />
 
-        <span v-bind="labelAttrs" v-text="label" />
+        <ULink :label="label" :size="size" color="gray" dashed no-ring v-bind="fileLabelAttrs" />
       </div>
     </slot>
 
@@ -103,9 +103,12 @@ const props = defineProps({
 
 const focus = ref(false);
 
-const { config, fileAttrs, infoAttrs, fileIconAttrs, labelAttrs, imageAttrs } = useAttrs(props, {
-  focus,
-});
+const { config, fileAttrs, bodyAttrs, fileIconAttrs, fileLabelAttrs, fileImageAttrs } = useAttrs(
+  props,
+  {
+    focus,
+  },
+);
 
 const iconSize = computed(() => {
   const sizes = {

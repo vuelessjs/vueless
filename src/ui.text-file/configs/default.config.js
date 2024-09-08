@@ -1,6 +1,6 @@
 export default /*tw*/ {
   file: "{ULink}",
-  info: {
+  body: {
     base: "flex items-center",
     variants: {
       size: {
@@ -10,21 +10,9 @@ export default /*tw*/ {
       },
     },
   },
+  fileImage: "rounded-sm max-w-7",
   fileIcon: "{UIcon}",
-  image: "rounded-sm max-w-7",
-  label: {
-    base: "text-gray-700 whitespace-normal hover:underline hover:decoration-dashed hover:underline-offset-4",
-    variants: {
-      focus: {
-        true: "underline decoration-dashed underline-offset-4",
-      },
-      size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
-      },
-    },
-  },
+  fileLabel: "{ULink}",
   defaults: {
     size: "md",
     /* icons */
