@@ -24,6 +24,20 @@ export const vuelessContent = [
   ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/configs/default.config.js"] : []),
 ];
 
+// eslint-disable-next-line no-unused-vars
+export const vuelessContentNuxt = [
+  "./composables/**/*.{js,ts}",
+  "./components/**/*.{js,vue,ts}",
+  "./layouts/**/*.vue",
+  "./pages/**/*.vue",
+  "./plugins/**/*.{js,ts}",
+  "./app.vue",
+  "./error.vue",
+  "./vueless.config.{js,ts}",
+  "./node_modules/vueless/**/*.{js,ts,vue}",
+  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/configs/default.config.js"] : []),
+];
+
 /**
  * Generates preset for TailwindCSS base on Vueless config.
  * @returns {Object}
