@@ -102,6 +102,13 @@ const GroupValuesTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const LargeItemList = DefaultTemplate.bind({});
+LargeItemList.args = {
+  options: [...new Array(1000)].map((_, index) => {
+    return { id: index + 1, label: `value ${index + 1}`, badge: "badge" };
+  }),
+};
+
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
 

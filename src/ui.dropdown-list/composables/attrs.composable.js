@@ -44,15 +44,8 @@ export default function useAttrs(props) {
     }
   }
 
-  const optionAttrs = (classes = []) => {
-    const mergedClasses = cx([optionClasses.value, ...classes]);
-
-    return getAttrs("option", { classes: mergedClasses }).value;
-  };
-
   return {
     ...attrs,
-    optionAttrs,
     optionClasses,
     hasSlotContent,
     config,

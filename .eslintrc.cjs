@@ -16,6 +16,7 @@ module.exports = {
   rules: {
     "no-console": process.env.PROD ? "error" : "warn",
     "no-debugger": process.env.PROD ? "error" : "warn",
+    "no-unused-vars": process.env.PROD ? "error" : "warn",
     "arrow-parens": ["error", "always"],
     curly: ["error", "multi-line"],
     "padding-line-between-statements": [

@@ -684,6 +684,10 @@ const filteredOptions = computed(() => {
       )
     : [...props.options];
 
+  if (!normalizedSearch) {
+    return options.slice(0, props.optionsLimit || options.length);
+  }
+
   options = props.groupValueKey
     ? filterAndFlat(options, normalizedSearch, props.labelKey)
     : SelectService.filterOptions(options, normalizedSearch, props.labelKey);
