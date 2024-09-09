@@ -43,29 +43,37 @@
 
       <div v-if="value?.hasOwnProperty('secondary')">
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-test="`${dataTest}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
+          <div
+            v-bind="attrs.bodyCellPrimaryAttrs"
+            ref="cellRef"
+            :data-test="`${dataTest}-${key}-cell`"
+          >
             {{ value.primary || HYPHEN_SYMBOL }}
           </div>
 
           <div v-bind="attrs.bodyCellSecondaryAttrs">
             <template v-if="Array.isArray(value.secondary)">
-              <div v-for="(secondary, idx) in value.secondary" :key="idx">
+              <div v-for="(secondary, idx) in value.secondary" ref="cellRef" :key="idx">
                 <span v-bind="attrs.bodyCellSecondaryEmptyAttrs">
                   {{ secondary }}
                 </span>
               </div>
             </template>
 
-            <template v-else>
+            <div v-else ref="cellRef">
               {{ value.secondary }}
-            </template>
+            </div>
           </div>
         </slot>
       </div>
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div :data-test="`${dataTest}-${key}-cell`" v-bind="attrs.bodyCellPrimaryAttrs">
+          <div
+            v-bind="attrs.bodyCellPrimaryAttrs"
+            ref="cellRef"
+            :data-test="`${dataTest}-${key}-cell`"
+          >
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
           </div>
         </slot>
@@ -90,10 +98,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { HYPHEN_SYMBOL } from "../../service.ui";
 import { getFilteredRow } from "../services/table.service.js";
+
+import { useMutationObserver } from "../../composable.mutationObserver/index.js";
 
 import UIcon from "../../ui.image-icon";
 import UCheckbox from "../../ui.form-checkbox";
@@ -137,6 +147,10 @@ const emit = defineEmits(["toggleRowVisibility", "click"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
+const cellRef = ref(null);
+
+useMutationObserver(cellRef, setCellTitle, { childList: true });
+
 const toggleIconConfig = computed(() =>
   props.row?.row?.isHidden
     ? props.attrs.bodyCellNestedExpandIconAttrs
@@ -165,5 +179,22 @@ function onClickToggleRowChild(rowId) {
 
 function onClick(row) {
   emit("click", row);
+}
+
+function setCellTitle(mutations) {
+  mutations.forEach((mutation) => {
+    const { target } = mutation;
+
+    const isOverflown =
+      target.clientWidth < target.scrollWidth || target.clientHeight < target.scrollHeight;
+
+    if (isOverflown) {
+      target.setAttribute("title", target.textContent);
+    }
+
+    if (!isOverflown && target.hasAttribute("title")) {
+      target.removeAttribute("title");
+    }
+  });
 }
 </script>
