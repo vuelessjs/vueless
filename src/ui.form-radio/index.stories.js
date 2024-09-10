@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 import URadio from "../ui.form-radio";
 import UBadge from "../ui.text-badge";

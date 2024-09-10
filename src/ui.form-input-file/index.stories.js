@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 import UInputFile from "../ui.form-input-file";
 import UCol from "../ui.container-col";

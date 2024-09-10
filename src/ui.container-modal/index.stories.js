@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 import UModal from "../ui.container-modal";
 import UButton from "../ui.button/UButton.vue";

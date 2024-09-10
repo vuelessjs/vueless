@@ -7,7 +7,7 @@ import UBadge from "../ui.text-badge";
 import { useLoaderTop } from "./composables/useLoaderTop";
 import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
-import { getArgTypes, getSlotNames } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames } from "../utils/utilsStorybook";
 
 /**
  * The `ULoaderTop` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-top)

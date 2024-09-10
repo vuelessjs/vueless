@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 import UCheckboxGroup from "../ui.form-checkbox-group";
 import UCheckbox from "../ui.form-checkbox";

@@ -4,7 +4,7 @@ import UCol from "../ui.container-col";
 
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 /**
  * The `ULoaderRendering` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-rendering)

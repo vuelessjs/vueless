@@ -3,7 +3,7 @@ import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 /**
  * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)

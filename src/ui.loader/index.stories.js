@@ -3,7 +3,7 @@ import URow from "../ui.container-row";
 import UButton from "../ui.button/UButton.vue";
 import { ref } from "vue";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 /**
  * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
