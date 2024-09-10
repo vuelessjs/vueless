@@ -292,7 +292,7 @@ import {
   getFlatRows,
 } from "./services/table.service";
 
-import { PX_IN_REM } from "../service.ui";
+import { PX_IN_REM } from "../constants";
 import { UTable } from "./constants";
 import useAttrs from "./composables/attrs.composable";
 import { useLocale } from "../composable.locale";

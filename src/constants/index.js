@@ -62,6 +62,10 @@ export const SYSTEM_CONFIG_KEY = {
   component: "component",
   transition: "transition",
   safelistColors: "safelistColors",
-  iconName: "iconName",
   ...CVA_CONFIG_KEY,
 };
+
+/* Other */
+export const PX_IN_REM = 16;
+export const HYPHEN_SYMBOL = "-";
+export const NESTED_COMPONENT_REG_EXP = /\{U[^}]*}/g;

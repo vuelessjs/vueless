@@ -80,8 +80,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { globalComponentConfig, cx, getDefault } from "../service.ui";
-
+import { cx, getDefault, vuelessConfig } from "../service.ui";
 import { useLocale } from "../composable.locale";
 import useAttrs from "./composables/attrs.composable";
 
@@ -193,7 +192,7 @@ function getOffsetWidth(selector) {
 }
 
 function setPosition() {
-  const positionClasses = globalComponentConfig.UNotify?.positionClasses;
+  const positionClasses = vuelessConfig.component?.UNotify?.positionClasses;
   const pageClass = positionClasses?.page || config.value.positionClasses.page;
   const asideClass = positionClasses?.aside || config.value.positionClasses.aside;
   const pageWidth = getOffsetWidth(`${pageClass}`);

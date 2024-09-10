@@ -100,7 +100,7 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import { HYPHEN_SYMBOL } from "../../service.ui";
+import { HYPHEN_SYMBOL } from "../../constants";
 import { getFilteredRow } from "../services/table.service.js";
 
 import { useMutationObserver } from "../../composable.mutationObserver/index.js";

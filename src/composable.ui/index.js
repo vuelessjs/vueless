@@ -10,17 +10,15 @@ import {
   Fragment,
 } from "vue";
 
-import {
-  cx,
-  setColor,
-  getColor,
-  strategy,
-  nestedComponentRegEx,
-  globalComponentConfig,
-} from "../service.ui";
+import { cx, setColor, getColor, vuelessConfig } from "../service.ui/index.js";
 
-import { cloneDeep } from "../service.helper";
-import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY } from "../constants";
+import { cloneDeep } from "../service.helper/index.js";
+import {
+  STRATEGY_TYPE,
+  CVA_CONFIG_KEY,
+  SYSTEM_CONFIG_KEY,
+  NESTED_COMPONENT_REG_EXP,
+} from "../constants/index.js";
 
 /**
   Merging component configs in a given sequence (bigger number = bigger priority):
@@ -32,10 +30,11 @@ import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY } from "../constants";
 export default function useUI(defaultConfig = {}, propsConfigGetter = null, topLevelClassKey) {
   const { type, props } = getCurrentInstance();
   const componentName = type.name;
-  const globalConfig = globalComponentConfig[componentName];
+  const globalConfig = vuelessConfig?.component[componentName];
 
-  const isStrategyValid = strategy && Object.values(STRATEGY_TYPE).includes(strategy);
-  const vuelessStrategy = isStrategyValid ? strategy : STRATEGY_TYPE.merge;
+  const isStrategyValid =
+    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+  const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
 
   const [firstClassKey] = Object.keys(defaultConfig);
   const config = ref({});
@@ -199,7 +198,6 @@ function mergeConfigs({
     safelistColors,
     defaultVariants,
     compoundVariants,
-    iconName,
   } = SYSTEM_CONFIG_KEY;
 
   for (let key in composedConfig) {
@@ -235,7 +233,6 @@ function mergeConfigs({
 
         const isObject = isObjectComposedConfig || isObjectGlobalConfig || isObjectPropsConfig;
         const isEmpty = composedConfig[key] === null;
-        const isIconName = key.toLowerCase().includes(iconName.toLowerCase());
         const isI18n = key === i18n;
 
         if (key === "variants" && !isVariants) {
@@ -252,7 +249,7 @@ function mergeConfigs({
                 isReplace,
                 isVariants,
               })
-            : isReplace || isIconName || isI18n
+            : isReplace || isI18n
               ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
               : cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
       }
@@ -388,7 +385,8 @@ function getBaseClasses(value) {
 function getNestedComponent(value) {
   const classes = getBaseClasses(value);
   const component = value?.component || "";
-  const match = classes.match(nestedComponentRegEx) || component.match(nestedComponentRegEx);
+  const match =
+    classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
 
   return match ? match[1] : "";
 }
@@ -401,11 +399,7 @@ function getNestedComponent(value) {
 function isSystemKey(key) {
   const isExactKey = Object.values(SYSTEM_CONFIG_KEY).some((value) => value === key);
 
-  return (
-    isExactKey ||
-    key.toLowerCase().includes(SYSTEM_CONFIG_KEY.iconName.toLowerCase()) ||
-    key.toLowerCase().includes(SYSTEM_CONFIG_KEY.transition.toLowerCase())
-  );
+  return isExactKey || key.toLowerCase().includes(SYSTEM_CONFIG_KEY.transition.toLowerCase());
 }
 
 /**

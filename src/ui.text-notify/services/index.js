@@ -1,7 +1,7 @@
-import { globalComponentConfig, getRandomId } from "../../service.ui";
+import { getRandomId, vuelessConfig } from "../../service.ui";
 import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "../constants";
 
-const globalNotifyDuration = globalComponentConfig.UNotify?.duration;
+const globalNotifyDuration = vuelessConfig.component?.UNotify?.duration;
 const notifyClearAllEvent = new Event("notifyClearAll");
 
 let lastMessageTime = undefined;
