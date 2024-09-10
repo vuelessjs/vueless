@@ -1,10 +1,10 @@
 import ULoaderRendering from "../ui.loader-rendering";
 import UButton from "../ui.button/UButton.vue";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 /**
  * The `ULoaderRendering` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-rendering)

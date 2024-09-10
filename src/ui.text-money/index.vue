@@ -39,11 +39,11 @@
 <script setup>
 import { computed } from "vue";
 
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
-import { UMoney } from "./constants";
-import defaultConfig from "./configs/default.config";
-import { useAttrs } from "./composables/attrs.composable";
+import { UMoney } from "./constants.js";
+import defaultConfig from "./config.js";
+import { useAttrs } from "./useAttrs.js";
 import { separatedMoney, MONEY_SIGN_TYPE } from "./services/money.services";
 
 /* Should be a string for correct web-types gen */

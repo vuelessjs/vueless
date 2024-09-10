@@ -1,9 +1,9 @@
 import UDot from "../ui.other-dot";
-import URow from "../ui.container-row";
-import UCol from "../ui.container-col";
+import URow from "../ui.container-row/URow.vue";
+import UCol from "../ui.container-col/UCol.vue";
 import UBadge from "../ui.text-badge";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 /**
  * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)

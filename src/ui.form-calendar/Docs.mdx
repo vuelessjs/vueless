@@ -1,8 +1,8 @@
 import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
-import { getSource } from "../utils/utilsStorybook";
+import { getSource } from "../../utils/utilStorybook.js";
 
-import * as stories from "./index.stories";
-import defaultConfig from "./configs/default.config?raw"
+import * as stories from "./stories";
+import defaultConfig from "../config?raw"
 
 <Meta of={stories} />
 <Title of={stories} />

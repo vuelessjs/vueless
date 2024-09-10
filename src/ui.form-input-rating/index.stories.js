@@ -1,7 +1,7 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UInputRating from "../ui.form-input-rating";
-import URow from "../ui.container-row";
+import URow from "../ui.container-row/URow.vue";
 
 /**
  * The `UInputRating` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-rating)

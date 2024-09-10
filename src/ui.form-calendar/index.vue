@@ -148,7 +148,7 @@ import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
 import {
   parseDate,
@@ -166,8 +166,8 @@ import {
   getSortedLocale,
 } from "./services/date.service";
 
-import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composables/useLocale";
+import useAttrs from "./useAttrs.js";
+import { useLocale } from "../composables/useLocale.js";
 
 import {
   UCalendar,
@@ -183,9 +183,9 @@ import {
   LOCALE_TYPE,
   MAX_SECONDS,
   MIN_SECONDS,
-} from "./constants";
+} from "./constants.js";
 
-import defaultConfig from "./configs/default.config";
+import defaultConfig from "./config.js";
 
 import DayView from "./components/DayView.vue";
 import MonthView from "./components/MonthView.vue";

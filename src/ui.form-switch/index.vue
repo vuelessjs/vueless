@@ -41,14 +41,14 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import { USwitch } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composables/useLocale";
+import { USwitch } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
+import { useLocale } from "../composables/useLocale.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USwitch", inheritAttrs: false });

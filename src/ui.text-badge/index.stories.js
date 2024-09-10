@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UBadge from "../ui.text-badge";
-import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
-import UCol from "../ui.container-col";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import URow from "../ui.container-row/URow.vue";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)

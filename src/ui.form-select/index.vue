@@ -311,18 +311,18 @@
 import { ref, computed, nextTick, watch, useSlots, onMounted } from "vue";
 import { debounce, merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label";
-import UDropdownList from "../ui.dropdown-list";
-import { getRandomId, getDefault } from "../utils/utilsUI";
-import { isMac } from "../utils/utilsPlatform";
+import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { isMac } from "../utils/utilPlatform.js";
 
 import SelectService from "./services/select.service";
-import useAttrs from "./composables/attrs.composable";
-import defaultConfig from "./configs/default.config";
-import { USelect, DIRECTION, KEY_CODES } from "./constants";
+import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.js";
+import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
 
-import { useLocale } from "../composables/useLocale";
+import { useLocale } from "../composables/useLocale.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USelect", inheritAttrs: false });

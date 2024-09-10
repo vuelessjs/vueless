@@ -1,8 +1,8 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UDatePickerRange from "../ui.form-date-picker-range";
-import URow from "../ui.container-row";
-import UIcon from "../ui.image-icon";
+import URow from "../ui.container-row/URow.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
 import { addDays } from "../ui.form-calendar/services/date.service";

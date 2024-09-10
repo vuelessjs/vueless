@@ -7,14 +7,14 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/utilsUI";
-import { isMobileApp } from "../utils/utilsPlatform";
+import { getDefault } from "../utils/utilUI.js";
+import { isMobileApp } from "../utils/utilPlatform.js";
 import { clamp, queue, getRequestWithoutQuery } from "./services/loaderTop.service";
 import { useLoaderTop } from "./composables/useLoaderTop";
 
-import { ULoaderTop, MAXIMUM, SPEED } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { ULoaderTop, MAXIMUM, SPEED } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULoaderTop", inheritAttrs: false });

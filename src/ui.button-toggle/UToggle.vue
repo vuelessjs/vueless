@@ -33,11 +33,11 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
-import defaultConfig from "./config";
-import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants";
-import useAttrs from "./useAttrs";
+import defaultConfig from "./config.js";
+import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UToggle", inheritAttrs: false });

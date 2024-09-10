@@ -1,10 +1,10 @@
 import UMoney from "../ui.text-money";
-import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import URow from "../ui.container-row/URow.vue";
 import DebitIcon from "../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../ui.text-money/assets/credit.svg?component";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 

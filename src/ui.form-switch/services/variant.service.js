@@ -1,4 +1,4 @@
-import { cva } from "../../utils/utilsUI";
+import { cva } from "../../utils/utilUI.js";
 
 export default class VariantService {
   static get(config) {

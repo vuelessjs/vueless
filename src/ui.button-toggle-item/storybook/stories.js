@@ -1,7 +1,7 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
-import UIcon from "../../ui.image-icon";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 /**
  * The `UToggleItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle-item)

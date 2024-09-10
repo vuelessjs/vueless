@@ -44,15 +44,15 @@
 <script setup>
 import { computed, ref, watch, onMounted, nextTick } from "vue";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import UInput from "../ui.form-input";
+import UInput from "../ui.form-input/UInput.vue";
 import { SYMBOL_MINUS } from "../ui.text-money/constants";
 
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 import useFormatCurrency from "./composables/useFormatCurrency";
-import { UInputMoney } from "./constants";
+import { UInputMoney } from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputMoney", inheritAttrs: false });

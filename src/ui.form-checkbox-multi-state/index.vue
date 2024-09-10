@@ -15,12 +15,12 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 
-import { getDefault } from "../utils/utilsUI";
-import UCheckbox from "../ui.form-checkbox";
+import { getDefault } from "../utils/utilUI.js";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import defaultConfig from "./configs/default.config";
-import { UCheckboxMultiState } from "./constants";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import { UCheckboxMultiState } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckboxMultiState", inheritAttrs: false });

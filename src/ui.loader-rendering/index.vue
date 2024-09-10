@@ -13,13 +13,13 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
 import ULoader from "../ui.loader";
 
-import { ULoaderRendering } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { ULoaderRendering } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 import { useLoaderRendering } from "./composables/useLoaderRendering";
 
 /* Should be a string for correct web-types gen */

@@ -32,11 +32,11 @@
 import { computed, inject, onMounted, ref, watchEffect, toValue } from "vue";
 
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
-import { URadio } from "./constants";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
+import { URadio } from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "URadio", inheritAttrs: false });

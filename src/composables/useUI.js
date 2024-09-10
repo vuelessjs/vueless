@@ -10,9 +10,9 @@ import {
   Fragment,
 } from "vue";
 
-import { cx, setColor, getColor, vuelessConfig } from "../utils/utilsUI.js";
+import { cx, setColor, getColor, vuelessConfig } from "../utils/utilUI.js";
 
-import { cloneDeep, isCSR } from "../utils/utilsHelper.js";
+import { cloneDeep, isCSR } from "../utils/utilHelper.js";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,

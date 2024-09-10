@@ -140,12 +140,12 @@ import { computed } from "vue";
 import { range } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
-import UIcon from "../ui.image-icon";
-import { getDefault } from "../utils/utilsUI";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import { getDefault } from "../utils/utilUI.js";
 
-import defaultConfig from "./configs/default.config";
-import { UPagination } from "./constants";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import { UPagination } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UPagination", inheritAttrs: false });

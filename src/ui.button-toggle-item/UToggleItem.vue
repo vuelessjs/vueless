@@ -51,13 +51,13 @@
 import { computed, inject, onMounted, ref } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants";
 
-import useAttrs from "./useAttrs";
-import defaultConfig from "./config";
-import { UToggleItem } from "./constants";
+import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.js";
+import { UToggleItem } from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UToggleItem", inheritAttrs: false });

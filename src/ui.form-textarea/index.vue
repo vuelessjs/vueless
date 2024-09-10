@@ -54,11 +54,11 @@
 import { computed, onMounted, ref, watch, useSlots } from "vue";
 
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import { UTextarea } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UTextarea } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UTextarea", inheritAttrs: false });

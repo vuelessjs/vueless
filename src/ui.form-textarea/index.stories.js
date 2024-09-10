@@ -1,8 +1,8 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UTextarea from "../ui.form-textarea";
-import UIcon from "../ui.image-icon";
-import UCol from "../ui.container-col";
+import UTextarea from "../ui.form-textarea/UTextarea.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)

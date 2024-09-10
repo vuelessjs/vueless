@@ -102,14 +102,14 @@ import ULabel from "../ui.form-label";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 import { getFileMbSize } from "./services/fileForm.service";
 
-import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composables/useLocale";
+import useAttrs from "./useAttrs.js";
+import { useLocale } from "../composables/useLocale.js";
 
-import { UInputFile } from "./constants";
-import defaultConfig from "./configs/default.config";
+import { UInputFile } from "./constants.js";
+import defaultConfig from "./config.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputFile" });

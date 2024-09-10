@@ -1,7 +1,7 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UHeader from "../ui.text-header";
-import UCol from "../ui.container-col";
+import UHeader from "../ui.text-header/UHeader.vue";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)

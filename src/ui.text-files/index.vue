@@ -42,11 +42,11 @@
 <script setup>
 import UFile from "../ui.text-file";
 import ULabel from "../ui.form-label";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
-import { UFiles } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UFiles } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 import { computed } from "vue";
 
 /* Should be a string for correct web-types gen */

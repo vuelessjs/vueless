@@ -1,7 +1,7 @@
-import useUI from "../../composables/useUI";
+import useUI from "../../composables/useUI.js";
 import { computed } from "vue";
 import defaultConfig from "../configs/default.config";
-import { cva } from "../../utils/utilsUI";
+import { cva } from "../../utils/utilUI.js";
 
 export default function useAttrs(props) {
   const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(

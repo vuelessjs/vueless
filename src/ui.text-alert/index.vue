@@ -80,14 +80,14 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UText from "../ui.text-block";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
 import { UAlert } from "./constatns";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UAlert" });

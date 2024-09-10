@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import USelect from "../ui.form-select";
-import URow from "../ui.container-row";
+import URow from "../ui.container-row/URow.vue";
 import UBadge from "../ui.text-badge";
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
 /**

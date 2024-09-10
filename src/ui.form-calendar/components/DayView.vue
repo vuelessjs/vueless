@@ -21,7 +21,7 @@
 <script setup>
 import { computed } from "vue";
 
-import { cx } from "../../utils/utilsUI";
+import { cx } from "../../utils/utilUI.js";
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
 import {
   isToday,
@@ -31,7 +31,7 @@ import {
   isAnotherMothDay,
 } from "../services/date.service";
 
-import useAttrs from "../composables/attrs.composable";
+import useAttrs from "../useAttrs.js";
 
 import { DAYS_IN_WEEK, START_WEEK } from "../constants";
 

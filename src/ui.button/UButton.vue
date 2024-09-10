@@ -82,13 +82,13 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 import ULoader from "../ui.loader";
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
-import defaultConfig from "./config";
-import useAttrs from "./useAttrs";
-import { UButton } from "./constants";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
+import { UButton } from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UButton", inheritAttrs: false });

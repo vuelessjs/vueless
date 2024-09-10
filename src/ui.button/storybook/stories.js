@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UButton from "../../ui.button/UButton.vue";
-import UIcon from "../../ui.image-icon";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row";
-import UCol from "../../ui.container-col";
+import UCol from "../../ui.container-col/UCol.vue";
 
 /**
  * The `UButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)

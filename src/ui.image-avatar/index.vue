@@ -29,12 +29,12 @@
 <script setup>
 import { computed } from "vue";
 
-import UIcon from "../ui.image-icon";
-import { getDefault } from "../utils/utilsUI";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import { getDefault } from "../utils/utilUI.js";
 
-import { UAvatar } from "./constants/index";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UAvatar } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UAvatar", inheritAttrs: false });

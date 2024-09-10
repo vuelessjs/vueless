@@ -1,6 +1,12 @@
 import forms from "@tailwindcss/forms";
 import defaultTheme from "tailwindcss/defaultTheme.js";
-import { COLOR_SHADES, BRAND_COLOR, GRAY_COLOR, COOL_COLOR, DARK_MODE_SELECTOR } from "./constants";
+import {
+  COLOR_SHADES,
+  BRAND_COLOR,
+  GRAY_COLOR,
+  COOL_COLOR,
+  DARK_MODE_SELECTOR,
+} from "./constants.js";
 
 const safelist = getSafelist();
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";

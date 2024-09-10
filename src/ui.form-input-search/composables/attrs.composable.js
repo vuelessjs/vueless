@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import useUI from "../../composables/useUI";
-import { cva } from "../../utils/utilsUI";
+import useUI from "../../composables/useUI.js";
+import { cva } from "../../utils/utilUI.js";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props) {

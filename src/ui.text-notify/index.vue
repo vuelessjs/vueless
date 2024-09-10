@@ -80,14 +80,14 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { cx, getDefault, vuelessConfig } from "../utils/utilsUI";
-import { useLocale } from "../composables/useLocale";
-import useAttrs from "./composables/attrs.composable";
+import { cx, getDefault, vuelessConfig } from "../utils/utilUI.js";
+import { useLocale } from "../composables/useLocale.js";
+import useAttrs from "./useAttrs.js";
 
-import defaultConfig from "./configs/default.config";
-import { UNotify, NOTIFY_TYPE, POSITION } from "./constants";
+import defaultConfig from "./config.js";
+import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.js";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UNotify", inheritAttrs: false });

@@ -224,14 +224,14 @@
 import { computed, watch, ref, nextTick } from "vue";
 import { merge } from "lodash-es";
 
-import UInput from "../ui.form-input";
+import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
 import UCalendar from "../ui.form-calendar";
 import { LOCALE_TYPE } from "../ui.form-calendar/constants";
 
-import vClickOutside from "../directives/vClickOutside";
+import vClickOutside from "../directives/vClickOutside.js";
 
-import { getRandomId, getDefault, cx } from "../utils/utilsUI";
+import { getRandomId, getDefault, cx } from "../utils/utilUI.js";
 
 import {
   addDays,
@@ -268,19 +268,19 @@ import {
   isWrongMonthNumber,
   isWrongDayNumber,
 } from "./services/validation.service";
-import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composables/useLocale";
-import useBreakpoint from "../composables/useBreakpoint";
-import { useAutoPosition } from "../composables/useAutoPosition";
+import useAttrs from "./useAttrs.js";
+import { useLocale } from "../composables/useLocale.js";
+import useBreakpoint from "../composables/useBreakpoint.js";
+import { useAutoPosition } from "../composables/useAutoPosition.js";
 
-import defaultConfig from "./configs/default.config";
+import defaultConfig from "./config.js";
 import {
   UDatePickerRange,
   DATE_PICKER_BUTTON_TYPE,
   DATE_PICKER_INPUT_TYPE,
   PERIOD,
   INPUT_RANGE_TYPE,
-} from "./constants";
+} from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDatePickerRange", inheritAttrs: false });

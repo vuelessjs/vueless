@@ -33,14 +33,14 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
 import ULabel from "../ui.form-label";
-import UCheckbox from "../ui.form-checkbox";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import { UCheckboxGroup } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UCheckboxGroup } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckboxGroup", inheritAttrs: false });

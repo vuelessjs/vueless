@@ -66,11 +66,11 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
-import defaultConfig from "./configs/default.config";
-import { ULabel, PLACEMENT } from "./constants";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import { ULabel, PLACEMENT } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULabel", inheritAttrs: false });

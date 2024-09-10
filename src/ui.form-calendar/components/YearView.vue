@@ -20,9 +20,9 @@ import { computed } from "vue";
 
 import { formatDate, getYearsRange, dateIsOutOfRange } from "../services/calendar.service";
 import { isSameMonth, getDateWithoutTime, isCurrentYear } from "../services/date.service";
-import { cx } from "../../utils/utilsUI";
+import { cx } from "../../utils/utilUI.js";
 
-import useAttrs from "../composables/attrs.composable";
+import useAttrs from "../useAttrs.js";
 
 import { YEARS_PER_VIEW } from "../constants";
 

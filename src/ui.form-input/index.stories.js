@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UInput from "../ui.form-input";
-import UIcon from "../ui.image-icon";
+import UInput from "../ui.form-input/UInput.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UInput` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input)

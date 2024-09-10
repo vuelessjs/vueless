@@ -1,8 +1,8 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UDatePicker from "../ui.form-date-picker";
-import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import URow from "../ui.container-row/URow.vue";
 
 /**
  * The `UDatePicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker)

@@ -68,20 +68,20 @@
 import { computed, nextTick, ref } from "vue";
 import { merge } from "lodash-es";
 
-import UInput from "../ui.form-input";
+import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
 import { addDays, isSameDay } from "../ui.form-calendar/services/date.service";
 
-import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composables/useLocale";
-import { useAutoPosition } from "../composables/useAutoPosition";
+import useAttrs from "./useAttrs.js";
+import { useLocale } from "../composables/useLocale.js";
+import { useAutoPosition } from "../composables/useAutoPosition.js";
 
-import defaultConfig from "./configs/default.config";
-import { UDatePicker } from "./constants";
+import defaultConfig from "./config.js";
+import { UDatePicker } from "./constants.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDatePicker", inheritAttrs: false });

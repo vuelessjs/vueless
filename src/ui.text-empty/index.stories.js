@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UEmpty from "../ui.text-empty";
+import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UButton from "../ui.button/UButton.vue";
-import UIcon from "../ui.image-icon";
-import URow from "../ui.container-row";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import URow from "../ui.container-row/URow.vue";
 
 /**
  * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)

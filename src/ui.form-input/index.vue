@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,
@@ -115,12 +115,12 @@ const VALIDATION_RULES_REG_EX = {
 <script setup>
 import { ref, computed, onMounted, useSlots } from "vue";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label";
 
-import defaultConfig from "./configs/default.config";
-import { UInput } from "./constants";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import { UInput } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInput", inheritAttrs: false });

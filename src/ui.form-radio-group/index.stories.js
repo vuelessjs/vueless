@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import URadioGroup from "../ui.form-radio-group";
 import URadio from "../ui.form-radio";
 import UAlert from "../ui.text-alert";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)

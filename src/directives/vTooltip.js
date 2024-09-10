@@ -6,8 +6,8 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/animations/shift-away.css";
 
-import { vuelessConfig } from "../utils/utilsUI";
-import { isCSR, isSSR } from "../utils/utilsHelper";
+import { vuelessConfig } from "../utils/utilUI.js";
+import { isCSR, isSSR } from "../utils/utilHelper.js";
 
 const globalSettings = vuelessConfig?.directive?.tooltip || {};
 const defaultSettings = {

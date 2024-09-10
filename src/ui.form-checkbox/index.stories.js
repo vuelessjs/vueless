@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UCheckbox from "../ui.form-checkbox";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../ui.form-checkbox-group";
 import UBadge from "../ui.text-badge";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UCheckbox` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox)

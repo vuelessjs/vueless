@@ -44,14 +44,14 @@
 import { inject, ref, onMounted, computed, watchEffect, toValue } from "vue";
 import { isEqual } from "lodash-es";
 
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import defaultConfig from "./configs/default.config";
-import { UCheckbox } from "./constants";
-import useAttrs from "./composables/attrs.composable";
+import defaultConfig from "./config.js";
+import { UCheckbox } from "./constants.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCheckbox", inheritAttrs: false });

@@ -40,7 +40,7 @@ import { computed } from "vue";
 
 import { GRAY_COLORS } from "../../constants";
 
-import useAttrs from "../composables/attrs.composable";
+import useAttrs from "../useAttrs.js";
 
 const props = defineProps({
   progressPercent: {

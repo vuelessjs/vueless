@@ -1,9 +1,9 @@
 import ULabel from "../ui.form-label";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 import UText from "../ui.text-block";
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 /**
  * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)

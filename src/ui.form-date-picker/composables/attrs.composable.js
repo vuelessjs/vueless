@@ -1,9 +1,9 @@
-import useUI from "../../composables/useUI";
-import { cva } from "../../utils/utilsUI";
+import useUI from "../../composables/useUI.js";
+import { cva } from "../../utils/utilUI.js";
 import { computed, watchEffect } from "vue";
 
 import defaultConfig from "../configs/default.config";
-import { POSITION } from "../../composables/useAutoPosition";
+import { POSITION } from "../../composables/useAutoPosition.js";
 
 export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(

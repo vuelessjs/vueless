@@ -1,5 +1,5 @@
-import useUI from "../../composables/useUI";
-import { cva, cx } from "../../utils/utilsUI";
+import useUI from "../../composables/useUI.js";
+import { cva, cx } from "../../utils/utilUI.js";
 
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";

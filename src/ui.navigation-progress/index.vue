@@ -52,14 +52,14 @@
 <script setup>
 import { computed } from "vue";
 
-import { getDefault } from "../utils/utilsUI";
-import useAttrs from "./composables/attrs.composable";
+import { getDefault } from "../utils/utilUI.js";
+import useAttrs from "./useAttrs.js";
 
-import defaultConfig from "./configs/default.config";
-import { UProgress, VARIANT } from "./constants";
+import defaultConfig from "./config.js";
+import { UProgress, VARIANT } from "./constants.js";
 
 import StepperProgress from "./components/StepperProgress.vue";
-import UHeader from "../ui.text-header";
+import UHeader from "../ui.text-header/UHeader.vue";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UProgress", inheritAttrs: false });

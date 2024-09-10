@@ -1,6 +1,6 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 import UColorPicker from "../ui.form-color-picker";
-import UCol from "../ui.container-col";
+import UCol from "../ui.container-col/UCol.vue";
 
 /**
  * The `UColorPicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-color-picker)

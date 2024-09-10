@@ -31,13 +31,13 @@
 <script setup>
 import { computed } from "vue";
 
-import UIcon from "../ui.image-icon";
-import UHeader from "../ui.text-header";
-import { getDefault } from "../utils/utilsUI";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UHeader from "../ui.text-header/UHeader.vue";
+import { getDefault } from "../utils/utilUI.js";
 
-import { UEmpty } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UEmpty } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UEmpty", inheritAttrs: false });

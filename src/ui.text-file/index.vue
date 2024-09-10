@@ -30,13 +30,13 @@
 import { computed, ref } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";
-import UIcon from "../ui.image-icon";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getRandomId, getDefault } from "../utils/utilsUI";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import useAttrs from "./composables/attrs.composable";
-import { UFile } from "./constants";
-import defaultConfig from "./configs/default.config";
+import useAttrs from "./useAttrs.js";
+import { UFile } from "./constants.js";
+import defaultConfig from "./config.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UFile", inheritAttrs: false });

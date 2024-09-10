@@ -80,15 +80,15 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import UIcon from "../ui.image-icon";
-import UInput from "../ui.form-input";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getRandomId, getDefault } from "../utils/utilsUI";
-import { debounce as debounceMethod } from "../utils/utilsHelper";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { debounce as debounceMethod } from "../utils/utilHelper.js";
 
-import { UInputSearch } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { UInputSearch } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UInputSearch" });

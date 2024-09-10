@@ -15,11 +15,11 @@
 
 <script setup>
 import { computed } from "vue";
-import { getDefault } from "../utils/utilsUI";
+import { getDefault } from "../utils/utilUI.js";
 
-import { ULoader, ELLIPSES_AMOUNT } from "./constants";
-import defaultConfig from "./configs/default.config";
-import useAttrs from "./composables/attrs.composable";
+import { ULoader, ELLIPSES_AMOUNT } from "./constants.js";
+import defaultConfig from "./config.js";
+import useAttrs from "./useAttrs.js";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "ULoader", inheritAttrs: false });

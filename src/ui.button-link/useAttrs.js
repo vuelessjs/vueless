@@ -1,7 +1,7 @@
 import { computed, useSlots } from "vue";
-import useUI from "../composables/useUI";
-import { cva, cx } from "../utils/utilsUI";
-import defaultConfig from "./config";
+import useUI from "../composables/useUI.js";
+import { cva, cx } from "../utils/utilUI.js";
+import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { isActive, isExactActive }) {
   const slots = useSlots();
