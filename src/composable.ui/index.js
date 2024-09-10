@@ -12,7 +12,7 @@ import {
 
 import { cx, setColor, getColor, vuelessConfig } from "../service.ui/index.js";
 
-import { cloneDeep } from "../service.helper/index.js";
+import { cloneDeep, isCSR } from "../service.helper/index.js";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
@@ -57,7 +57,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     const nestedComponent = getNestedComponent(defaultConfig[configKey]);
 
     const attrs = useAttrs();
-    const isDev = import.meta.env.DEV;
+    const isDev = isCSR && import.meta.env?.DEV;
     const vuelessAttrs = ref({});
     const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 

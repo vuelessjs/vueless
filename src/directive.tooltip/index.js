@@ -1,14 +1,13 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
+// Fix for SSR
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import "tippy.js/animations/shift-away.css";
 
-/* Load Vueless config from the project root. */
-const [vuelessConfig] = Object.values(
-  import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
-);
+import { vuelessConfig } from "../service.ui/index.js";
+import { isCSR, isSSR } from "../service.helper/index.js";
 
 const globalSettings = vuelessConfig?.directive?.tooltip || {};
 const defaultSettings = {
@@ -19,21 +18,21 @@ const defaultSettings = {
 
 const mergedSettings = merge(defaultSettings, globalSettings);
 
-tippy.setDefaultProps(mergedSettings);
+isCSR && tippy.setDefaultProps(mergedSettings);
 
 export default {
   mounted(el, bindings) {
-    tippy(el, merge(mergedSettings, bindings.value || {}));
+    isCSR && tippy(el, merge(mergedSettings, bindings.value || {}));
   },
 
   updated(el, bindings) {
-    if (!el._tippy) return;
+    if (!el._tippy || isSSR) return;
 
     el._tippy.setProps(merge(mergedSettings, bindings.value || {}));
   },
 
   unmounted(el) {
-    if (!el._tippy) return;
+    if (!el._tippy || isSSR) return;
 
     el._tippy.destroy();
   },
