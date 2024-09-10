@@ -33,7 +33,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UEmpty } from "./constants";
 import defaultConfig from "./configs/default.config";

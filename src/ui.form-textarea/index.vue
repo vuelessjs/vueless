@@ -54,7 +54,7 @@
 import { computed, onMounted, ref, watch, useSlots } from "vue";
 
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import { UTextarea } from "./constants";
 import defaultConfig from "./configs/default.config";

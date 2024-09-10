@@ -51,8 +51,8 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
-import UButton from "../ui.button";
-import { getDefault } from "../service.ui";
+import UButton from "../ui.button/UButton.vue";
+import { getDefault } from "../utils/utilsUI";
 
 import defaultConfig from "./configs/default.config";
 import { UInputNumber } from "./constants";

@@ -1,8 +1,8 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UProgress from "./index.vue";
 import UCol from "../ui.container-col";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon";
 
 /**

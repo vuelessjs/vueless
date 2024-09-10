@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import USwitch from "../ui.form-switch";
 import UIcon from "../ui.image-icon";

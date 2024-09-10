@@ -13,7 +13,7 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import ULoader from "../ui.loader";
 

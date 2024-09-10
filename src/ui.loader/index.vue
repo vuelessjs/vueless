@@ -15,7 +15,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants";
 import defaultConfig from "./configs/default.config";

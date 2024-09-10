@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UDivider } from "./constants";
 import defaultConfig from "./configs/default.config";

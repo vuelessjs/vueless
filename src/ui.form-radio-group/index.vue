@@ -32,7 +32,7 @@ import { computed, provide } from "vue";
 
 import ULabel from "../ui.form-label";
 import URadio from "../ui.form-radio";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import defaultConfig from "./configs/default.config";
 import { URadioGroup } from "./constants";

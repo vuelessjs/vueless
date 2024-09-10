@@ -77,7 +77,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 import UIcon from "../ui.image-icon";
 
 import { UBadge } from "./constants";

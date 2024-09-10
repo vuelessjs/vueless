@@ -21,7 +21,7 @@
 <script setup>
 import { computed } from "vue";
 
-import { cx } from "../../service.ui";
+import { cx } from "../../utils/utilsUI";
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
 import {
   isToday,

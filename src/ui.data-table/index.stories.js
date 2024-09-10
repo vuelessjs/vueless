@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
-import { getRandomId } from "../service.ui";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
+import { getRandomId } from "../utils/utilsUI";
 
 import UTable from "../ui.data-table";
-import UButton from "../ui.button";
-import ULink from "../ui.button-link";
+import UButton from "../ui.button/UButton.vue";
+import ULink from "../ui.button-link/ULink.vue";
 import UMoney from "../ui.text-money";
 import UBadge from "../ui.text-badge";
 import URow from "../ui.container-row";

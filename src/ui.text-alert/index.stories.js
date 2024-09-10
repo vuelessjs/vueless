@@ -1,10 +1,10 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UAlert from "../ui.text-alert";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UIcon from "../ui.image-icon";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)

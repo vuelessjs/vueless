@@ -42,7 +42,7 @@
 <script setup>
 import UFile from "../ui.text-file";
 import ULabel from "../ui.form-label";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UFiles } from "./constants";
 import defaultConfig from "./configs/default.config";

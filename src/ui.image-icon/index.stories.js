@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UIcon from "../ui.image-icon";
 import URow from "../ui.container-row";

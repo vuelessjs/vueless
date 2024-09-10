@@ -1,10 +1,10 @@
 import { notify } from "./services";
 
 import UNotify from "../ui.text-notify";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UCol from "../ui.container-col";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 /**
  * The `UNotify` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-notify)

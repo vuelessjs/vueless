@@ -82,9 +82,9 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UInput from "../ui.form-input";
-import UButton from "../ui.button";
-import { getRandomId, getDefault } from "../service.ui";
-import { debounce as debounceMethod } from "../service.helper";
+import UButton from "../ui.button/UButton.vue";
+import { getRandomId, getDefault } from "../utils/utilsUI";
+import { debounce as debounceMethod } from "../utils/utilsHelper";
 
 import { UInputSearch } from "./constants";
 import defaultConfig from "./configs/default.config";

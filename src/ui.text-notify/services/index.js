@@ -1,4 +1,4 @@
-import { getRandomId, vuelessConfig } from "../../service.ui";
+import { getRandomId, vuelessConfig } from "../../utils/utilsUI";
 import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "../constants";
 
 const globalNotifyDuration = vuelessConfig.component?.UNotify?.duration;

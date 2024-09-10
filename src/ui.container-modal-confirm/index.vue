@@ -64,15 +64,15 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UModal from "../ui.container-modal";
 
 import defaultConfig from "./configs/default.config";
 import { UModalConfirm } from "./constants/index";
 import useAttrs from "./composable/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UModalConfirm", inheritAttrs: false });

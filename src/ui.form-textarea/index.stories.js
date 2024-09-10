@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UTextarea from "../ui.form-textarea";
 import UIcon from "../ui.image-icon";

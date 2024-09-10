@@ -71,12 +71,12 @@
 import { computed, provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon";
-import ULink from "../ui.button-link";
+import ULink from "../ui.button-link/ULink.vue";
 import UDropdownList from "../ui.dropdown-list";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
-import vClickOutside from "../directive.clickOutside";
+import vClickOutside from "../directives/vClickOutside";
 
 import { UDropdownLink } from "./constants";
 import defaultConfig from "./configs/default.config";

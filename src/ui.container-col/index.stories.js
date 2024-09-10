@@ -1,8 +1,8 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `UCol` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-col)

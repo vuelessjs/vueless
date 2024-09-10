@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UDatePicker from "../ui.form-date-picker";
 import UIcon from "../ui.image-icon";

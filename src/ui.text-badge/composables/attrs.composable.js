@@ -1,7 +1,7 @@
 import { computed, useSlots } from "vue";
 
-import useUI from "../../composable.ui";
-import { cva } from "../../service.ui";
+import useUI from "../../composables/useUI";
+import { cva } from "../../utils/utilsUI";
 
 import defaultConfig from "../configs/default.config";
 

@@ -41,14 +41,14 @@
 <script setup>
 import { computed, useSlots } from "vue";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 import UHeader from "../ui.text-header";
 import UDivider from "../ui.container-divider";
 
 import { UCard } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composable/attrs.composable";
-import useBreakpoint from "../composable.breakpoint";
+import useBreakpoint from "../composables/useBreakpoint";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UCard", inheritAttrs: false });

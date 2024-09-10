@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 import UDivider from "../ui.container-divider";
 import UHeader from "../ui.text-header";
 

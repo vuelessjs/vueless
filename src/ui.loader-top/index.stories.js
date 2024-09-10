@@ -1,5 +1,5 @@
 import ULoaderTop from "../ui.loader-top";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import URow from "../ui.container-row";
 import UCol from "../ui.container-col";
 import UBadge from "../ui.text-badge";
@@ -7,7 +7,7 @@ import UBadge from "../ui.text-badge";
 import { useLoaderTop } from "./composables/useLoaderTop";
 import { loaderTopOff, loaderTopOn } from "./services/loaderTop.service";
 
-import { getArgTypes, getSlotNames } from "../service.storybook";
+import { getArgTypes, getSlotNames } from "../utils/utilstorybook";
 
 /**
  * The `ULoaderTop` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-top)

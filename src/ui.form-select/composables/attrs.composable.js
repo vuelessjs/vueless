@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import useUI from "../../composables/useUI";
+import { cva, cx } from "../../utils/utilsUI";
 import defaultConfig from "../configs/default.config";
 
 export default function useAttrs(props, { isTop, isOpen, selectedLabel: selectedLabelValue }) {

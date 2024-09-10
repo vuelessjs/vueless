@@ -66,7 +66,7 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import defaultConfig from "./configs/default.config";
 import { ULabel, PLACEMENT } from "./constants";

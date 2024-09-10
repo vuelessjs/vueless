@@ -43,12 +43,12 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import { USwitch } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USwitch", inheritAttrs: false });

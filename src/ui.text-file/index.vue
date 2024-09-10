@@ -29,10 +29,10 @@
 <script setup>
 import { computed, ref } from "vue";
 
-import ULink from "../ui.button-link";
+import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import useAttrs from "./composables/attrs.composable";
 import { UFile } from "./constants";

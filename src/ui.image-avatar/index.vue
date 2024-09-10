@@ -30,7 +30,7 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UAvatar } from "./constants/index";
 import defaultConfig from "./configs/default.config";

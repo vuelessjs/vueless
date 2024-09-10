@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UGroup from "../ui.container-group";
 import UCol from "../ui.container-col";
 import UInput from "../ui.form-input";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `UGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-group)

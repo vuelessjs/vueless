@@ -141,12 +141,12 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import UEmpty from "../ui.text-empty";
 import UDivider from "../ui.container-divider";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UDataList as UDataListName } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UDataList", inheritAttrs: true });

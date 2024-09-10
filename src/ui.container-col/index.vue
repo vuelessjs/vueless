@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UCol } from "./constants";
 import defaultConfig from "./configs/default.config";

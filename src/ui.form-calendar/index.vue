@@ -147,8 +147,8 @@
 import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
-import UButton from "../ui.button";
-import { getDefault } from "../service.ui";
+import UButton from "../ui.button/UButton.vue";
+import { getDefault } from "../utils/utilsUI";
 
 import {
   parseDate,
@@ -167,7 +167,7 @@ import {
 } from "./services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 import {
   UCalendar,

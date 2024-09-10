@@ -3,7 +3,7 @@ import UCol from "../ui.container-col";
 import UText from "../ui.text-block";
 import UIcon from "../ui.image-icon";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 /**
  * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)

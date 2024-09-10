@@ -1,9 +1,9 @@
 import ULoader from "../ui.loader";
 import URow from "../ui.container-row";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import { ref } from "vue";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 /**
  * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)

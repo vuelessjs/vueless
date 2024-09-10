@@ -56,7 +56,7 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UInputRating } from "./constants";
 import defaultConfig from "./configs/default.config";

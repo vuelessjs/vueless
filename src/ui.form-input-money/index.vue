@@ -44,7 +44,7 @@
 <script setup>
 import { computed, ref, watch, onMounted, nextTick } from "vue";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import UInput from "../ui.form-input";
 import { SYMBOL_MINUS } from "../ui.text-money/constants";

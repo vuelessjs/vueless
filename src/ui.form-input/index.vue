@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,

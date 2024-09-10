@@ -20,13 +20,13 @@ import { computed } from "vue";
 
 import { formatDate, dateIsOutOfRange } from "../services/calendar.service";
 import { isSameMonth, getDateWithoutTime, isCurrentMoth } from "../services/date.service";
-import { cx } from "../../service.ui";
+import { cx } from "../../utils/utilsUI";
 
 import useAttrs from "../composables/attrs.composable";
 
 import { MONTHS_PER_VIEW } from "../constants";
 
-import UButton from "../../ui.button";
+import UButton from "../../ui.button/UButton.vue";
 
 const props = defineProps({
   selectedDate: {

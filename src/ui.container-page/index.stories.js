@@ -1,11 +1,11 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UPage from "../ui.container-page";
 import UCard from "../ui.container-card";
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
 import UTextarea from "../ui.form-textarea";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
 

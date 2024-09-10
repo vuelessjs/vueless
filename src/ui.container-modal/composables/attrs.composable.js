@@ -1,10 +1,10 @@
-import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
+import useUI from "../../composables/useUI";
+import { cva, cx } from "../../utils/utilsUI";
 
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";
 
-import useBreakpoint from "../../composable.breakpoint";
+import useBreakpoint from "../../composables/useBreakpoint";
 
 export default function useAttrs(props) {
   const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(

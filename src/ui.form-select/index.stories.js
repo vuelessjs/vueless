@@ -1,10 +1,10 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import USelect from "../ui.form-select";
 import URow from "../ui.container-row";
 import UBadge from "../ui.text-badge";
 import UIcon from "../ui.image-icon";
-import ULink from "../ui.button-link";
+import ULink from "../ui.button-link/ULink.vue";
 
 /**
  * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)

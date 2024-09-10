@@ -1,7 +1,7 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilsStorybook";
 
 import UAccordion from "../ui.container-accordion";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `UAccordion` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-accordion)

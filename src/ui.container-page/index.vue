@@ -83,13 +83,13 @@
 <script setup>
 import { computed, useSlots, onMounted } from "vue";
 
-import useBreakpoint from "../composable.breakpoint";
+import useBreakpoint from "../composables/useBreakpoint";
 
-import ULink from "../ui.button-link/index.vue";
+import ULink from "../ui.button-link/ULink.vue/index.vue";
 import UIcon from "../ui.image-icon/index.vue";
 import UHeader from "../ui.text-header/index.vue";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import defaultConfig from "./configs/default.config";
 import { UPage } from "./constants";

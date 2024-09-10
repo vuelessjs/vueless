@@ -103,7 +103,7 @@ import { computed, ref } from "vue";
 import { HYPHEN_SYMBOL } from "../../constants";
 import { getFilteredRow } from "../services/table.service.js";
 
-import { useMutationObserver } from "../../composable.mutationObserver/index.js";
+import { useMutationObserver } from "../../composables/useMutationObserver";
 
 import UIcon from "../../ui.image-icon";
 import UCheckbox from "../../ui.form-checkbox";

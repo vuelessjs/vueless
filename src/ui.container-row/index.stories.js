@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import URow from "../ui.container-row";
 import UInput from "../ui.form-input";
 import UCol from "../ui.container-col";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `URow` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-row)

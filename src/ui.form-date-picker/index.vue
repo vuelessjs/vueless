@@ -72,13 +72,13 @@ import UInput from "../ui.form-input";
 import UCalendar from "../ui.form-calendar";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import { addDays, isSameDay } from "../ui.form-calendar/services/date.service";
 
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
-import { useAutoPosition } from "../composable.autoPosition";
+import { useLocale } from "../composables/useLocale";
+import { useAutoPosition } from "../composables/useAutoPosition";
 
 import defaultConfig from "./configs/default.config";
 import { UDatePicker } from "./constants";

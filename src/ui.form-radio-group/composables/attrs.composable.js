@@ -1,7 +1,7 @@
 import { computed } from "vue";
 
-import { cva } from "../../service.ui";
-import useUI from "../../composable.ui";
+import { cva } from "../../utils/utilsUI";
+import useUI from "../../composables/useUI";
 
 import defaultConfig from "../configs/default.config";
 

@@ -11,13 +11,13 @@
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UIcon } from "./constants";
 import defaultConfig from "./configs/default.config";
 import useAttrs from "./composables/attrs.composable";
 
-import vTooltip from "../directive.tooltip";
+import vTooltip from "../directives/vTooltip";
 
 /* Should be a string for correct web-types gen */
 defineOptions({

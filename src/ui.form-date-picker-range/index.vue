@@ -225,13 +225,13 @@ import { computed, watch, ref, nextTick } from "vue";
 import { merge } from "lodash-es";
 
 import UInput from "../ui.form-input";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UCalendar from "../ui.form-calendar";
 import { LOCALE_TYPE } from "../ui.form-calendar/constants";
 
-import vClickOutside from "../directive.clickOutside";
+import vClickOutside from "../directives/vClickOutside";
 
-import { getRandomId, getDefault, cx } from "../service.ui";
+import { getRandomId, getDefault, cx } from "../utils/utilsUI";
 
 import {
   addDays,
@@ -269,9 +269,9 @@ import {
   isWrongDayNumber,
 } from "./services/validation.service";
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
-import useBreakpoint from "../composable.breakpoint";
-import { useAutoPosition } from "../composable.autoPosition";
+import { useLocale } from "../composables/useLocale";
+import useBreakpoint from "../composables/useBreakpoint";
+import { useAutoPosition } from "../composables/useAutoPosition";
 
 import defaultConfig from "./configs/default.config";
 import {

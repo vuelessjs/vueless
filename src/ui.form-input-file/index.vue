@@ -99,14 +99,14 @@ import { merge } from "lodash-es";
 
 import UText from "../ui.text-block";
 import ULabel from "../ui.form-label";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 import { getFileMbSize } from "./services/fileForm.service";
 
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 import { UInputFile } from "./constants";
 import defaultConfig from "./configs/default.config";

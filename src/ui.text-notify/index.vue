@@ -80,8 +80,8 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { cx, getDefault, vuelessConfig } from "../service.ui";
-import { useLocale } from "../composable.locale";
+import { cx, getDefault, vuelessConfig } from "../utils/utilsUI";
+import { useLocale } from "../composables/useLocale";
 import useAttrs from "./composables/attrs.composable";
 
 import defaultConfig from "./configs/default.config";

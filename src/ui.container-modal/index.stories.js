@@ -1,7 +1,7 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UModal from "../ui.container-modal";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
 import UInput from "../ui.form-input";

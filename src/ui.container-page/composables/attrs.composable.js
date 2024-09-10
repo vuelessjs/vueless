@@ -1,6 +1,6 @@
-import useUI from "../../composable.ui";
-import { cva, cx } from "../../service.ui";
-import { isMobileApp } from "../../service.platform";
+import useUI from "../../composables/useUI";
+import { cva, cx } from "../../utils/utilsUI";
+import { isMobileApp } from "../../utils/utilsPlatform";
 
 import defaultConfig from "../configs/default.config";
 import { computed } from "vue";

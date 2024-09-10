@@ -111,9 +111,9 @@
 <script setup>
 import { computed, useSlots, watch, ref } from "vue";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
-import ULink from "../ui.button-link";
+import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon";
 import UHeader from "../ui.text-header";
 import UDivider from "../ui.container-divider";

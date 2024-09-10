@@ -25,7 +25,7 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon";
 import UDivider from "../ui.container-divider";
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import { UAccordion } from "./constants/index";
 import defaultConfig from "./configs/default.config";

@@ -1,10 +1,10 @@
-import useUI from "../../composable.ui";
-import { cx, cva } from "../../service.ui";
+import useUI from "../../composables/useUI";
+import { cx, cva } from "../../utils/utilsUI";
 
 import { computed, watchEffect } from "vue";
 
 import defaultConfig from "../configs/default.config";
-import { POSITION } from "../../composable.autoPosition";
+import { POSITION } from "../../composables/useAutoPosition";
 
 export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
   const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(

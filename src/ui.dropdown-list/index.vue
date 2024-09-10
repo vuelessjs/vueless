@@ -105,14 +105,14 @@ import { computed, ref } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
-import { getRandomId, getDefault } from "../service.ui";
-import { isMac } from "../service.platform";
+import { getRandomId, getDefault } from "../utils/utilsUI";
+import { isMac } from "../utils/utilsPlatform";
 
 import usePointer from "./composables/usePointer";
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 import defaultConfig from "./configs/default.config.js";
 import { UDropdownList } from "./constants";

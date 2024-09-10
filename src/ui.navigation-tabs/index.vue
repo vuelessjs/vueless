@@ -20,7 +20,7 @@
 import { computed, provide } from "vue";
 
 import UTab from "../ui.navigation-tab";
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import { UTabs } from "./constants";
 import defaultConfig from "./configs/default.config";

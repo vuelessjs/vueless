@@ -70,9 +70,9 @@ import UIcon from "../ui.image-icon";
 import UBadge from "../ui.text-badge";
 import UDropdownList from "../ui.dropdown-list";
 
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
-import vClickOutside from "../directive.clickOutside";
+import vClickOutside from "../directives/vClickOutside";
 
 import defaultConfig from "./configs/default.config";
 import { UDropdownBadge } from "./constants";

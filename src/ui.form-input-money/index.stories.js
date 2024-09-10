@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 import UInputMoney from "../ui.form-input-money";
 import UCol from "../ui.container-col";
 import UIcon from "../ui.image-icon";
-import UButton from "../ui.button";
+import UButton from "../ui.button/UButton.vue";
 
 /**
  * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)

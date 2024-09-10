@@ -314,15 +314,15 @@ import { debounce, merge } from "lodash-es";
 import UIcon from "../ui.image-icon";
 import ULabel from "../ui.form-label";
 import UDropdownList from "../ui.dropdown-list";
-import { getRandomId, getDefault } from "../service.ui";
-import { isMac } from "../service.platform";
+import { getRandomId, getDefault } from "../utils/utilsUI";
+import { isMac } from "../utils/utilsPlatform";
 
 import SelectService from "./services/select.service";
 import useAttrs from "./composables/attrs.composable";
 import defaultConfig from "./configs/default.config";
 import { USelect, DIRECTION, KEY_CODES } from "./constants";
 
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "USelect", inheritAttrs: false });

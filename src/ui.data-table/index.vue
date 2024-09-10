@@ -280,7 +280,7 @@ import UCheckbox from "../ui.form-checkbox";
 import ULoaderTop from "../ui.loader-top";
 import TableRow from "./components/TableRow";
 
-import { getDefault } from "../service.ui";
+import { getDefault } from "../utils/utilsUI";
 
 import defaultConfig from "./configs/default.config";
 import {
@@ -295,7 +295,7 @@ import {
 import { PX_IN_REM } from "../constants";
 import { UTable } from "./constants";
 import useAttrs from "./composables/attrs.composable";
-import { useLocale } from "../composable.locale";
+import { useLocale } from "../composables/useLocale";
 
 /* Should be a string for correct web-types gen */
 defineOptions({ name: "UTable", inheritAttrs: false });

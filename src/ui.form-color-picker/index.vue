@@ -56,7 +56,7 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon";
 import URadio from "../ui.form-radio";
 import ULabel from "../ui.form-label";
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilsUI";
 
 import { UColorPicker } from "./constants";
 import defaultConfig from "./configs/default.config";

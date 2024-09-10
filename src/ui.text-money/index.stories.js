@@ -4,7 +4,7 @@ import URow from "../ui.container-row";
 import DebitIcon from "../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../ui.text-money/assets/credit.svg?component";
 
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../service.storybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../utils/utilstorybook";
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
