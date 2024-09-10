@@ -66,24 +66,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
       }));
     }
 
-    if (key === "periodButton") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodButton", { classes }).value;
-      };
-    }
-
-    if (key === "periodDateList") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodDateList", { classes }).value;
-      };
-    }
-
-    if (key === "periodDate") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodDate", { classes }).value;
-      };
-    }
-
     if (key === "calendar") {
       // This watcher rewrites default calendar locales with datepicker range locales
       // Watcher will not rewrite custom calendar locales

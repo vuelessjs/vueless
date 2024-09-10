@@ -49,7 +49,7 @@
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
         v-bind="shiftRangeButtonAttrs"
-        @click="onClickShiftRange('prev')"
+        @click="onClickShiftRange(SHIFT_ACTION.prev)"
       />
 
       <UButton
@@ -76,7 +76,7 @@
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
         v-bind="shiftRangeButtonAttrs"
-        @click="onClickShiftRange('next')"
+        @click="onClickShiftRange(SHIFT_ACTION.next)"
       />
     </div>
 
@@ -89,116 +89,39 @@
         v-bind="menuAttrs"
         @keydown.esc="deactivate"
       >
-        <div v-bind="periodsRowAttrs">
-          <UButton
-            v-for="periodButton in periods"
-            :key="periodButton.name"
-            square
-            filled
-            no-ring
-            size="xs"
-            variant="thirdary"
-            :label="periodButton.title"
-            v-bind="periodButtonAttrs(getPeriodButtonsClasses(periodButton.name))"
-            @click="onClickPeriodButton(periodButton.name)"
-          />
-        </div>
+        <PeriodDatesMenu
+          v-model:localValue="localValue"
+          v-model:activeDate="activeDate"
+          v-model:periodDateList="periodDateList"
+          v-model:period="period"
+          :config="config"
+          :is-period="isPeriod"
+          :custom-range-button="customRangeButton"
+          :locale="locale"
+          :attrs="periodDatesMenuAttrs"
+          :date-format="dateFormat"
+          :min-date="minDate"
+          :max-date="maxDate"
+          @toggle-menu="isShownMenu = !isShownMenu"
+          @close-menu="isShownMenu = false"
+          @click-prev="onClickShiftDatesList(SHIFT_ACTION.prev)"
+          @click-next="onClickShiftDatesList(SHIFT_ACTION.next)"
+        />
 
-        <div v-bind="periodsRowAttrs">
-          <UButton
-            v-if="customRangeButton.range.to && customRangeButton.range.from"
-            square
-            filled
-            no-ring
-            size="xs"
-            variant="thirdary"
-            v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.custom))"
-            @click="onClickCustomRangeButton"
-          >
-            {{ customRangeButton.label }}
-            <span v-if="customRangeButton.description" v-text="customRangeButton.description" />
-          </UButton>
-
-          <UButton
-            square
-            filled
-            no-ring
-            size="xs"
-            variant="thirdary"
-            :label="locale.ownRange"
-            :left-icon="config.defaults.ownRangeIcon"
-            v-bind="periodButtonAttrs(getPeriodButtonsClasses(PERIOD.ownRange))"
-            @click="onClickOwnRange"
-          />
-        </div>
-
-        <template v-if="!isPeriod.ownRange && !isPeriod.custom">
-          <div v-bind="rangeSwitchWrapperAttrs">
-            <UButton
-              square
-              no-ring
-              size="xs"
-              color="gray"
-              variant="thirdary"
-              :left-icon="config.defaults.prevIcon"
-              v-bind="rangeSwitchButtonAttrs"
-              @click="onClickShiftDatesList('prev')"
-            />
-
-            <div v-bind="rangeSwitchTitleAttrs">
-              {{ rangeSwitchTitle }}
-            </div>
-
-            <UButton
-              square
-              no-ring
-              size="xs"
-              color="gray"
-              variant="thirdary"
-              :left-icon="config.defaults.nextIcon"
-              v-bind="rangeSwitchButtonAttrs"
-              @click="onClickShiftDatesList('next')"
-            />
-          </div>
-
-          <div v-bind="periodDateListAttrs(getPeriodDateListClasses())">
-            <UButton
-              v-for="(date, index) in periodDateList"
-              :key="date.title"
-              no-ring
-              size="sm"
-              variant="thirdary"
-              :disabled="isDatePeriodOutOfRange(date)"
-              v-bind="periodDateAttrs(getPeriodDateClasses(date, index))"
-              :label="String(date.title)"
-              @click="selectDate(date), toggleMenu()"
-            />
-          </div>
-        </template>
-
-        <div v-if="isPeriod.ownRange" v-bind="rangeInputWrapperAttrs">
-          <UInput
-            ref="rangeInputStartRef"
-            v-model="rangeStart"
-            :error="inputRangeFromError"
-            size="md"
-            v-bind="rangeInputAttrs"
-            :class="cx([rangeInputAttrs.class, config.rangeInputFirst])"
-            :name="rangeInputName"
-            @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
-          />
-
-          <UInput
-            ref="rangeInputEndRef"
-            v-model="rangeEnd"
-            :error="inputRangeToError"
-            size="md"
-            v-bind="rangeInputAttrs"
-            :class="cx([rangeInputAttrs.class, config.rangeInputLast])"
-            :name="rangeInputName"
-            @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
-          />
-        </div>
+        <RangeInputs
+          v-if="isPeriod.ownRange"
+          v-bind="rangeInputWrapperAttrs"
+          v-model:localValue="localValue"
+          v-model:inputRangeFromError="inputRangeFromError"
+          v-model:inputRangeToError="inputRangeToError"
+          v-model:rangeStart="rangeStart"
+          v-model:rangeEnd="rangeEnd"
+          :range-input-name="rangeInputName"
+          :locale="locale"
+          :date-format="dateFormat"
+          :config="config"
+          :attrs="{ rangeInputAttrs }"
+        />
 
         <div v-if="inputRangeToError || inputRangeFromError" v-bind="inputRangeErrorAttrs">
           {{ inputRangeToError || inputRangeFromError }}
@@ -221,23 +144,21 @@
 </template>
 
 <script setup>
-import { computed, watch, ref, nextTick } from "vue";
-import { merge } from "lodash-es";
+import { computed, watch, ref, nextTick, provide } from "vue";
+import { getRandomId, getDefault } from "../service.ui";
 
-import UInput from "../ui.form-input/UInput.vue";
-import UButton from "../ui.button/UButton.vue";
-import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { LOCALE_TYPE } from "../ui.form-calendar/constants.js";
+import UInput from "../ui.form-input";
+import UCalendar from "../ui.form-calendar";
+import PeriodDatesMenu from "./components/PeriodDatesMenu.vue";
+import RangeInputs from "./components/RangeInputs.vue";
+import UButton from "../ui.button";
 
 import vClickOutside from "../directives/vClickOutside.js";
-
-import { getRandomId, getDefault, cx } from "../utils/utilUI.js";
 
 import {
   addDays,
   addMonths,
   addYears,
-  getSortedLocale,
   getEndOfMonth,
   getEndOfQuarter,
   getEndOfWeek,
@@ -247,10 +168,13 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
-  isSameMonth,
-} from "../ui.form-calendar/utilDate.js";
+} from "../ui.form-calendar/services/date.service";
 
-import { dateIsOutOfRange, formatDate, parseDate } from "../ui.form-calendar/utilCalendar.js";
+import {
+  formatDate,
+  parseDate,
+  dateIsOutOfRange,
+} from "../ui.form-calendar/services/calendar.service";
 
 import {
   getWeekDateList,
@@ -259,11 +183,10 @@ import {
   getMonthsDateList,
 } from "./utilDateRange.js";
 
-import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.js";
-import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
-import useBreakpoint from "../composables/useBreakpoint.js";
-import { useAutoPosition } from "../composables/useAutoPosition.js";
+import useAttrs from "./composables/attrs.composable";
+import { useAutoPosition } from "../composable.autoPosition";
+import { useLocale } from "./composables/useLocale.js";
+import { useUserFormat } from "./composables/useUserFormat.js";
 
 import defaultConfig from "./config.js";
 import {
@@ -271,8 +194,9 @@ import {
   DATE_PICKER_BUTTON_TYPE,
   DATE_PICKER_INPUT_TYPE,
   PERIOD,
-  INPUT_RANGE_TYPE,
-} from "./constants.js";
+  INPUT_RANGE_FORMAT,
+  SHIFT_ACTION,
+} from "./constants";
 
 defineOptions({ inheritAttrs: false });
 
@@ -442,8 +366,6 @@ const props = defineProps({
   },
 });
 
-const inputRangeFormat = "d.m.Y";
-
 const emit = defineEmits([
   /**
    * Triggers when date picker range value changes.
@@ -469,6 +391,8 @@ const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   { x: "left", y: "bottom" },
 );
 
+const { locale, userFormatLocale } = useLocale(props);
+
 const {
   config,
   wrapperAttrs,
@@ -489,28 +413,6 @@ const {
   rangeInputWrapperAttrs,
   inputRangeErrorAttrs,
 } = useAttrs(props, { isShownMenu, isTop, isRight });
-const { tm } = useLocale();
-
-const i18nGlobal = tm(UDatePickerRange);
-
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const locale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
-
-  // formatted locale
-  return {
-    ...currentLocale.value,
-    months: {
-      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(months.longhand, LOCALE_TYPE.month),
-    },
-    weekdays: {
-      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(weekdays.longhand, LOCALE_TYPE.day),
-    },
-  };
-});
 
 const calendarValue = ref(props.modelValue);
 const activeDate = ref(
@@ -524,9 +426,19 @@ const rangeEnd = ref("");
 const inputRangeFromError = ref("");
 const inputRangeToError = ref("");
 const calendarInnerValue = ref({ from: "", to: "" });
-const periodDateList = ref(null);
+const periodDateList = ref([]);
 
-const { isMobileBreakpoint } = useBreakpoint();
+provide("isDatePeriodOutOfRange", (datePeriod) => isDatePeriodOutOfRange(datePeriod));
+
+const periodDatesMenuAttrs = computed(() => ({
+  periodsRowAttrs: periodsRowAttrs.value,
+  periodButtonAttrs: periodButtonAttrs.value,
+  periodDateAttrs: periodDateAttrs.value,
+  periodDateListAttrs: periodDateListAttrs.value,
+  rangeSwitchWrapperAttrs: rangeSwitchWrapperAttrs.value,
+  rangeSwitchButtonAttrs: rangeSwitchButtonAttrs.value,
+  rangeSwitchTitleAttrs: rangeSwitchTitleAttrs.value,
+}));
 
 const localValue = computed({
   get: () => {
@@ -558,52 +470,6 @@ const localValue = computed({
 
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
 
-const userFormatLocale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
-
-  const monthsLonghand =
-    Boolean(props.config.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
-      ? months.userFormat
-      : months.longhand;
-
-  const weekdaysLonghand =
-    Boolean(props.config.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
-      ? weekdays.userFormat
-      : weekdays.longhand;
-
-  // formatted locale
-  return {
-    ...currentLocale,
-    months: {
-      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(monthsLonghand, LOCALE_TYPE.month),
-    },
-    weekdays: {
-      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(weekdaysLonghand, LOCALE_TYPE.day),
-    },
-  };
-});
-
-const periods = computed(() => [
-  {
-    name: PERIOD.week,
-    title: locale.value.week,
-  },
-  {
-    name: PERIOD.month,
-    title: locale.value.month,
-  },
-  {
-    name: PERIOD.quarter,
-    title: locale.value.quarter,
-  },
-  {
-    name: PERIOD.year,
-    title: locale.value.year,
-  },
-]);
-
 const isPeriod = computed(() => {
   return {
     week: period.value === PERIOD.week,
@@ -613,22 +479,6 @@ const isPeriod = computed(() => {
     ownRange: period.value === PERIOD.ownRange,
     custom: period.value === PERIOD.custom,
   };
-});
-
-const rangeSwitchTitle = computed(() => {
-  if (isPeriod.value.month || isPeriod.value.quarter) {
-    return String(activeDate.value.getFullYear());
-  }
-
-  if (isPeriod.value.year) {
-    return `${periodDateList.value.at(0).title} – ${periodDateList.value.at(-1).title}`;
-  }
-
-  if (isPeriod.value.week) {
-    return `${locale.value.months.longhand[activeDate.value.getMonth()]} ${activeDate.value.getFullYear()}`;
-  }
-
-  return "";
 });
 
 const isVariant = computed(() => ({
@@ -650,80 +500,7 @@ const clickOutsideOptions = computed(() => {
   };
 });
 
-const userFormatDate = computed(() => {
-  if ((!localValue.value.from && !localValue.value.to) || !localValue.value.from) return "";
-
-  let title = "";
-
-  const isDefaultTitle = isPeriod.value.week || isPeriod.value.custom || isPeriod.value.ownRange;
-
-  const from = localValue.value.from;
-  const to = localValue.value.to !== null ? localValue.value.to : null;
-
-  if (isDefaultTitle) {
-    let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
-    let startYear = from.getFullYear();
-    let endMonthName = userFormatLocale.value.months.longhand[to?.getMonth()];
-    let endYear = to?.getFullYear();
-
-    if (startMonthName === endMonthName && endMonthName === endYear) {
-      startMonthName = "";
-    }
-
-    if (startYear.year === endYear) {
-      startYear = "";
-    }
-
-    const isDatesToSameMonth = isSameMonth(from, to);
-    const isDatesToSameYear = from.getFullYear() === to.getFullYear();
-
-    let fromTitle = `${from.getDate()} ${startMonthName} ${startYear}`;
-
-    if (isDatesToSameMonth && isDatesToSameYear) {
-      fromTitle = from.getDate();
-    }
-
-    if (!isDatesToSameMonth && isDatesToSameYear) {
-      fromTitle = `${from.getDate()} ${startMonthName}`;
-    }
-
-    const toTitle = to ? `${to.getDate()} ${endMonthName} ${endYear}` : "";
-
-    title = `${fromTitle} – ${toTitle}`;
-  }
-
-  if (isPeriod.value.month) {
-    const startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
-    const startYear = from.getFullYear();
-
-    title = `${startMonthName} ${startYear}`;
-  }
-
-  if (isPeriod.value.quarter || isPeriod.value.year) {
-    const startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
-    const endMonthName = userFormatLocale.value.months.longhand[to?.getMonth()];
-    const endYear = to?.getFullYear();
-
-    const fromTitle = `${from.getDate()} ${startMonthName}`;
-    const toTitle = to ? `${to.getDate()} ${endMonthName} ${endYear}` : "";
-
-    title = `${fromTitle} – ${toTitle}`;
-  }
-
-  if (isMobileBreakpoint.value && !isPeriod.value.month && isVariant.value.button) {
-    const startDay = String(from.getDate()).padStart(2, "0");
-    const endDay = String(to?.getDate())?.padStart(2, "0");
-    const startMonth = String(from.getMonth()).padStart(2, "0");
-    const endMonth = String(to?.getMonth())?.padStart(2, "0");
-
-    const fromTitle = `${startDay}.${startMonth}`;
-    const toTitle = to ? `${endDay}.${endMonth} / ${to.getFullYear()}` : "";
-
-    title = `${fromTitle} – ${toTitle}`;
-  }
-
-  return title;
-});
+const { userFormatDate } = useUserFormat(localValue, userFormatLocale, isPeriod, isVariant);
 
 watch(
   calendarValue,
@@ -753,11 +530,11 @@ watch(
     const parsedDateTo = parseDate(props.modelValue.to, props.dateFormat, locale.value);
 
     rangeStart.value = props.modelValue.from
-      ? formatDate(parsedDateFrom, inputRangeFormat, locale.value)
+      ? formatDate(parsedDateFrom, INPUT_RANGE_FORMAT, locale.value)
       : "";
 
     rangeEnd.value = props.modelValue.to
-      ? formatDate(parsedDateTo, inputRangeFormat, locale.value)
+      ? formatDate(parsedDateTo, INPUT_RANGE_FORMAT, locale.value)
       : "";
 
     inputRangeFromError.value = "";
@@ -778,63 +555,6 @@ watch(period, () => {
   }
 });
 
-function onClickPeriodButton(periodName) {
-  const localDate = localValue.value.from !== null ? localValue.value.from : new Date();
-
-  if (periodName === PERIOD.week) {
-    periodDateList.value = getWeekDateList(localDate, locale.value.months.shorthand);
-
-    period.value = PERIOD.week;
-  }
-
-  if (periodName === PERIOD.month) {
-    periodDateList.value = getMonthsDateList(localDate, locale.value.months.longhand);
-
-    period.value = PERIOD.month;
-  }
-
-  if (periodName === PERIOD.quarter) {
-    periodDateList.value = getQuartersDateList(localDate, locale.value.quarter);
-
-    period.value = PERIOD.quarter;
-  }
-
-  if (periodName === PERIOD.year) {
-    periodDateList.value = getYearDateList(localDate);
-
-    period.value = PERIOD.year;
-  }
-}
-
-function onClickOwnRange() {
-  period.value = PERIOD.ownRange;
-}
-
-function selectDate(date) {
-  localValue.value = {
-    from: date.startRange,
-    to: date.endRange,
-  };
-}
-
-function toggleMenu() {
-  isShownMenu.value = !isShownMenu.value;
-}
-
-function onClickCustomRangeButton() {
-  selectCustomRange();
-
-  isShownMenu.value = false;
-  period.value = PERIOD.custom;
-}
-
-function selectCustomRange() {
-  localValue.value = {
-    from: props.customRangeButton.range.from,
-    to: props.customRangeButton.range.to,
-  };
-}
-
 function isDatePeriodOutOfRange(datePeriod) {
   return (
     dateIsOutOfRange(
@@ -845,104 +565,6 @@ function isDatePeriodOutOfRange(datePeriod) {
       props.dateFormat,
     ) || dateIsOutOfRange(datePeriod.endRange, props.minDate, props.maxDate, props.dateFormat)
   );
-}
-
-function onClickShiftDatesList(action) {
-  const defaultRange = action === "prev" ? -1 : 1;
-  const yearRange = action === "prev" ? -12 : 12;
-
-  if (isPeriod.value.week) {
-    activeDate.value = addMonths(activeDate.value, defaultRange);
-    periodDateList.value = getWeekDateList(activeDate.value, locale.value.months.shorthand);
-  }
-
-  if (isPeriod.value.month) {
-    activeDate.value = addYears(activeDate.value, defaultRange);
-    periodDateList.value = getMonthsDateList(activeDate.value, locale.value.months.longhand);
-  }
-
-  if (isPeriod.value.quarter) {
-    activeDate.value = addYears(activeDate.value, defaultRange);
-    periodDateList.value = getQuartersDateList(activeDate.value, locale.value.quarter);
-  }
-
-  if (isPeriod.value.year) {
-    activeDate.value = addYears(activeDate.value, yearRange);
-    periodDateList.value = getYearDateList(activeDate.value);
-  }
-}
-
-function getPeriodButtonsClasses(periodName) {
-  return period.value === periodName ? config.value.periodButtonActive : "";
-}
-
-function getPeriodDateClasses(date, index) {
-  const localStart = new Date(localValue.value.from);
-  const localEnd = new Date(localValue.value.to);
-  const isListType = isPeriod.value.quarter || isPeriod.value.week;
-  const firstInRangeClasses = cx([
-    config.value.edgePeriodDate,
-    isListType ? config.value.firstPeriodListDate : config.value.firstPeriodGridDate,
-  ]);
-  const lastInRangeClasses = cx([
-    config.value.edgePeriodDate,
-    isListType ? config.value.lastPeriodListDate : config.value.lastPeriodGridDate,
-  ]);
-
-  if (isPeriod.value.year) {
-    localStart.setMonth(0, 1);
-    localEnd.setMonth(11, 31);
-  }
-
-  localStart.setHours(0, 0, 0, 0);
-  localEnd.setHours(23, 59, 59, 999);
-
-  const startDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
-    return localStart <= periodDate.endRange && localStart >= periodDate.startRange;
-  });
-
-  const endDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
-    return localEnd >= periodDate.startRange && localEnd <= periodDate.endRange;
-  });
-
-  let isInRange = index >= startDateInRangeIndex && index <= endDateInRangeIndex;
-
-  if (!~startDateInRangeIndex || !~endDateInRangeIndex) {
-    isInRange =
-      (index >= startDateInRangeIndex && startDateInRangeIndex > -1) ||
-      (index <= endDateInRangeIndex && endDateInRangeIndex > -1);
-  }
-
-  if (
-    !~startDateInRangeIndex &&
-    periodDateList.value.at(0).startRange > localStart &&
-    !~endDateInRangeIndex &&
-    periodDateList.value.at(0).endRange < localEnd
-  ) {
-    isInRange = true;
-  }
-
-  const isSingleItem =
-    startDateInRangeIndex === endDateInRangeIndex && ~endDateInRangeIndex && ~startDateInRangeIndex;
-
-  if (isInRange) {
-    return cx([
-      config.value.periodDateInRange,
-      startDateInRangeIndex === index && firstInRangeClasses,
-      endDateInRangeIndex === index && lastInRangeClasses,
-      isSingleItem && "rounded-dynamic",
-    ]);
-  }
-
-  return localValue.value.from === date.startRange ? config.value.periodDateActive : "";
-}
-
-function getPeriodDateListClasses() {
-  if (isPeriod.value.ownRange) return [];
-  if (isPeriod.value.week) return config.value.periodDateWeekList;
-  if (isPeriod.value.month) return config.value.periodDateMonthList;
-  if (isPeriod.value.quarter) return config.value.periodDateQuarterList;
-  if (isPeriod.value.year) return config.value.periodDateYearList;
 }
 
 function activate() {
@@ -958,76 +580,6 @@ function activate() {
 
 function deactivate() {
   isShownMenu.value = false;
-}
-
-function isGraterThanTo(value) {
-  if (!value) return false;
-
-  const parsedValue = parseDate(value, inputRangeFormat, locale.value);
-  const parsedTo = parseDate(localValue.value.to, props.dateFormat, locale.value);
-
-  return parsedValue > parsedTo;
-}
-
-function isSmallerThanFrom(value) {
-  if (!value) return false;
-
-  const parsedValue = parseDate(value, inputRangeFormat, locale.value);
-  const parsedFrom = parseDate(localValue.value.from, props.dateFormat, locale.value);
-
-  return parsedValue < parsedFrom;
-}
-
-function onInputRangeInput(value, type) {
-  const isInvalidDateFormat = isWrongDateFormat(value);
-
-  let error = "";
-
-  if (isInvalidDateFormat && value) {
-    error = locale.value.dateFormatWithDot;
-  } else if (isWrongMonthNumber(value) && value) {
-    error = locale.value.notCorrectMonthNumber;
-  } else if (isWrongDayNumber(value) && value) {
-    error = locale.value.notCorrectDayNumber;
-  } else if (isGraterThanTo(value) && type === INPUT_RANGE_TYPE.start) {
-    error = locale.value.fromDateGraterThanSecond;
-  } else if (isSmallerThanFrom(value) && type === INPUT_RANGE_TYPE.end) {
-    error = locale.value.toDateSmallerThanFirst;
-  }
-
-  if (type === INPUT_RANGE_TYPE.start) {
-    inputRangeFromError.value = error;
-  }
-
-  if (type === INPUT_RANGE_TYPE.end) {
-    inputRangeToError.value = error;
-  }
-
-  if (!isInvalidDateFormat) {
-    const parsedValue = parseDate(value || new Date(), inputRangeFormat, locale.value);
-
-    const isOutOfRange = dateIsOutOfRange(
-      parsedValue,
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      props.dateFormat,
-    );
-
-    if (type === INPUT_RANGE_TYPE.start && !error && !isOutOfRange) {
-      localValue.value = {
-        from: value ? parsedValue : "",
-        to: localValue.value.to,
-      };
-    }
-
-    if (type === INPUT_RANGE_TYPE.end && !error && !isOutOfRange) {
-      localValue.value = {
-        from: localValue.value.from,
-        to: value ? parsedValue : "",
-      };
-    }
-  }
 }
 
 setDefaultPeriodForButton();
@@ -1069,6 +621,93 @@ function setDefaultPeriodForButton() {
   }
 }
 
+function onClickShiftDatesList(action) {
+  const defaultRange = action === SHIFT_ACTION.prev ? -1 : 1;
+  const yearRange = action === SHIFT_ACTION.prev ? -12 : 12;
+
+  if (isPeriod.value.week) {
+    activeDate.value = addMonths(activeDate.value, defaultRange);
+    periodDateList.value = getWeekDateList(activeDate.value, locale.value.months.shorthand);
+  }
+
+  if (isPeriod.value.month) {
+    activeDate.value = addYears(activeDate.value, defaultRange);
+    periodDateList.value = getMonthsDateList(activeDate.value, locale.value.months.longhand);
+  }
+
+  if (isPeriod.value.quarter) {
+    activeDate.value = addYears(activeDate.value, defaultRange);
+    periodDateList.value = getQuartersDateList(activeDate.value, locale.value.quarter);
+  }
+
+  if (isPeriod.value.year) {
+    activeDate.value = addYears(activeDate.value, yearRange);
+    periodDateList.value = getYearDateList(activeDate.value);
+  }
+}
+
+function shiftRangeNext(to, from, daysDifference) {
+  if (isPeriod.value.ownRange) {
+    const nextDate = {
+      to: addDays(to, daysDifference),
+      from: addDays(from, daysDifference),
+    };
+
+    if (isDatePeriodOutOfRange(nextDate)) return;
+
+    localValue.value = nextDate;
+
+    return;
+  }
+
+  let nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
+
+  if (!nextDate) {
+    onClickShiftDatesList(SHIFT_ACTION.next);
+
+    nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
+  }
+
+  if (isDatePeriodOutOfRange(nextDate)) return;
+
+  localValue.value = {
+    from: nextDate.startRange,
+    to: nextDate.endRange,
+  };
+}
+
+function shiftRangePrev(to, from, daysDifference) {
+  if (isPeriod.value.ownRange) {
+    const previousDate = {
+      to: addDays(to, daysDifference * -1),
+      from: addDays(from, daysDifference * -1),
+    };
+
+    if (isDatePeriodOutOfRange(previousDate)) return;
+
+    localValue.value = previousDate;
+  } else {
+    const reverseDatesList = [...periodDateList.value].reverse();
+
+    let previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
+
+    if (!previousDate) {
+      onClickShiftDatesList(SHIFT_ACTION.prev);
+
+      const reverseDatesList = [...periodDateList.value].reverse();
+
+      previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
+    }
+
+    if (isDatePeriodOutOfRange(previousDate)) return;
+
+    localValue.value = {
+      from: previousDate.startRange,
+      to: previousDate.endRange,
+    };
+  }
+}
+
 function onClickShiftRange(action) {
   if (isPeriod.value.custom) {
     period.value = PERIOD.ownRange;
@@ -1086,63 +725,9 @@ function onClickShiftRange(action) {
   const to = localValue.value.to ? localValue.value.to : addDays(from, 1);
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
-  if (action === "next") {
-    if (isPeriod.value.ownRange) {
-      const nextDate = {
-        to: addDays(to, daysDifference),
-        from: addDays(from, daysDifference),
-      };
-
-      if (isDatePeriodOutOfRange(nextDate)) return;
-
-      localValue.value = nextDate;
-    } else {
-      let nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
-
-      if (!nextDate) {
-        onClickShiftDatesList(action);
-
-        nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
-      }
-
-      if (isDatePeriodOutOfRange(nextDate)) return;
-
-      localValue.value = {
-        from: nextDate.startRange,
-        to: nextDate.endRange,
-      };
-    }
-  } else {
-    if (isPeriod.value.ownRange) {
-      const previousDate = {
-        to: addDays(to, daysDifference * -1),
-        from: addDays(from, daysDifference * -1),
-      };
-
-      if (isDatePeriodOutOfRange(previousDate)) return;
-
-      localValue.value = previousDate;
-    } else {
-      const reverseDatesList = [...periodDateList.value].reverse();
-
-      let previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
-
-      if (!previousDate) {
-        onClickShiftDatesList(action);
-
-        const reverseDatesList = [...periodDateList.value].reverse();
-
-        previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
-      }
-
-      if (isDatePeriodOutOfRange(previousDate)) return;
-
-      localValue.value = {
-        from: previousDate.startRange,
-        to: previousDate.endRange,
-      };
-    }
-  }
+  action === SHIFT_ACTION.next
+    ? shiftRangeNext(to, from, daysDifference)
+    : shiftRangePrev(to, from, daysDifference);
 }
 
 function onMouseoverCalendar() {
