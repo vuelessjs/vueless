@@ -72,7 +72,7 @@
         @binding {string} emptyStyles
       -->
       <slot name="empty" :empty-styles="optionClasses">
-        <span v-if="!options.length" v-bind="optionAttrs()">
+        <span v-if="!options.length" v-bind="optionAttrs">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </span>
       </slot>
@@ -98,6 +98,8 @@
       </template>
     </ul>
   </div>
+
+  <!-- {{ !options.length }} -->
 </template>
 
 <script setup>
@@ -249,6 +251,8 @@ const addOptionKeyCombination = computed(() => {
 });
 
 const wrapperHeight = computed(() => {
+  if (!optionsRef.value.length) return "auto";
+
   const maxHeight = optionsRef.value
     .slice(0, props.visibleOptions)
     .map((el) => el.getBoundingClientRect().height)

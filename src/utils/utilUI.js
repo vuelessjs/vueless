@@ -14,11 +14,12 @@ import {
  Both for server and client side renderings.
  IIFE is used to cache the results.
  */
-export const vuelessConfig = await (async () => {
+export const vuelessConfig = (() => {
   let config = {};
 
   if (isSSR) {
-    config = (await import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js`)).default;
+    // TODO: test it in SSR, maybe `await` is needed
+    config = import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js`).default;
   }
 
   if (isCSR) {
@@ -76,7 +77,7 @@ export const { cva, cx, compose } = defineConfig({
 export function getDefault(defaultConfig, name) {
   const defaults = merge(
     cloneDeep(defaultConfig.defaults),
-    vuelessConfig?.component[name]?.defaults,
+    vuelessConfig?.component ? vuelessConfig?.component[name]?.defaults : {},
   );
 
   defaults.color = getColor(defaults.color);

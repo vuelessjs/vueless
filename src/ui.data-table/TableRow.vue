@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 import { HYPHEN_SYMBOL } from "./constants.js";
 import { getFilteredRow } from "./utilTable.js";
@@ -147,7 +147,7 @@ const emit = defineEmits(["toggleRowVisibility", "click"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
-const cellRef = ref(null);
+const cellRef = ref([]);
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
@@ -158,6 +158,10 @@ const toggleIconConfig = computed(() =>
 );
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
+
+onMounted(() => {
+  cellRef.value.forEach(setElementTitle);
+});
 
 function getCellClasses(key, row, cellIndex) {
   const isNestedRow = (row.row || props.nestedLevel) && cellIndex === 0;
@@ -185,16 +189,23 @@ function setCellTitle(mutations) {
   mutations.forEach((mutation) => {
     const { target } = mutation;
 
-    const isOverflown =
-      target.clientWidth < target.scrollWidth || target.clientHeight < target.scrollHeight;
-
-    if (isOverflown) {
-      target.setAttribute("title", target.textContent);
-    }
-
-    if (!isOverflown && target.hasAttribute("title")) {
-      target.removeAttribute("title");
-    }
+    setElementTitle(target);
   });
+}
+
+function isElementOverflown(element) {
+  return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
+}
+
+function setElementTitle(element) {
+  const isOverflown = isElementOverflown(element);
+
+  if (isOverflown) {
+    element.setAttribute("title", element.textContent);
+  }
+
+  if (!isOverflown && element.hasAttribute("title")) {
+    element.removeAttribute("title");
+  }
 }
 </script>

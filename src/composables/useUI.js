@@ -30,7 +30,7 @@ import {
 export default function useUI(defaultConfig = {}, propsConfigGetter = null, topLevelClassKey) {
   const { type, props } = getCurrentInstance();
   const componentName = type.name;
-  const globalConfig = vuelessConfig?.component[componentName];
+  const globalConfig = vuelessConfig?.component ? vuelessConfig?.component[componentName] : {};
 
   const isStrategyValid =
     vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
