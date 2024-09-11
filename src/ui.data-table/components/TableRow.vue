@@ -46,7 +46,6 @@
           <div
             v-bind="attrs.bodyCellPrimaryAttrs"
             ref="cellRef"
-            :title="isElementOverflown(cellRef?.[index]) ? value.primary : ''"
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ value.primary || HYPHEN_SYMBOL }}
@@ -54,23 +53,14 @@
 
           <div v-bind="attrs.bodyCellSecondaryAttrs">
             <template v-if="Array.isArray(value.secondary)">
-              <div
-                v-for="(secondary, idx) in value.secondary"
-                ref="cellRef"
-                :key="idx"
-                :title="isElementOverflown(cellRef?.[index]) ? value.secondary : ''"
-              >
+              <div v-for="(secondary, idx) in value.secondary" ref="cellRef" :key="idx">
                 <span v-bind="attrs.bodyCellSecondaryEmptyAttrs">
                   {{ secondary }}
                 </span>
               </div>
             </template>
 
-            <div
-              v-else
-              ref="cellRef"
-              :title="isElementOverflown(cellRef?.[index]) ? value.secondary : ''"
-            >
+            <div v-else ref="cellRef">
               {{ value.secondary }}
             </div>
           </div>
@@ -82,7 +72,6 @@
           <div
             v-bind="attrs.bodyCellPrimaryAttrs"
             ref="cellRef"
-            :title="isElementOverflown(cellRef?.[index]) ? value : ''"
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
@@ -109,7 +98,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 import { HYPHEN_SYMBOL } from "../../constants";
 import { getFilteredRow } from "../services/table.service.js";
@@ -158,7 +147,7 @@ const emit = defineEmits(["toggleRowVisibility", "click"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
-const cellRef = ref(null);
+const cellRef = ref([]);
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
@@ -169,6 +158,10 @@ const toggleIconConfig = computed(() =>
 );
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
+
+onMounted(() => {
+  cellRef.value.forEach(setElementTitle);
+});
 
 function getCellClasses(key, row, cellIndex) {
   const isNestedRow = (row.row || props.nestedLevel) && cellIndex === 0;
@@ -196,21 +189,23 @@ function setCellTitle(mutations) {
   mutations.forEach((mutation) => {
     const { target } = mutation;
 
-    const isOverflown = isElementOverflown(target);
-
-    if (isOverflown) {
-      target.setAttribute("title", target.textContent);
-    }
-
-    if (!isOverflown && target.hasAttribute("title")) {
-      target.removeAttribute("title");
-    }
+    setElementTitle(target);
   });
 }
 
 function isElementOverflown(element) {
-  if (!cellRef.value) return false;
-
   return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
+}
+
+function setElementTitle(element) {
+  const isOverflown = isElementOverflown(element);
+
+  if (isOverflown) {
+    element.setAttribute("title", element.textContent);
+  }
+
+  if (!isOverflown && element.hasAttribute("title")) {
+    element.removeAttribute("title");
+  }
 }
 </script>
