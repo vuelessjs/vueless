@@ -15,8 +15,7 @@ export default /*tw*/ {
         lg: "size-6",
       },
       color: {
-        grayscale:
-          "focus:ring-gray-700/15 focus:border-gray-500 active:border-gray-800 checked:text-gray-900",
+        grayscale: "focus:ring-gray-700/15 focus:border-gray-500 active:border-gray-800 checked:text-gray-900",
       },
     },
   },

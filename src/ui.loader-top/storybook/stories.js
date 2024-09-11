@@ -17,7 +17,7 @@ export default {
   title: "Loaders and Skeletons / Loader Top",
   component: ULoaderTop,
   argTypes: {
-    ...getArgTypes(ULoaderTop.name),
+    ...getArgTypes(ULoaderTop.__name),
   },
 };
 
@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
   setup() {
     const { loaderTopOn, loaderTopOff } = useLoaderTop();
 
-    const slots = getSlotNames(ULoaderTop.name);
+    const slots = getSlotNames(ULoaderTop.__name);
 
     return { args, slots, loaderTopOn, loaderTopOff };
   },

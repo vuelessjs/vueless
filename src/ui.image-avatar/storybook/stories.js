@@ -13,14 +13,14 @@ export default {
   title: "Images & Icons / Avatar",
   component: UAvatar,
   argTypes: {
-    ...getArgTypes(UAvatar.name),
+    ...getArgTypes(UAvatar.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UAvatar, ULoader },
   setup() {
-    const slots = getSlotNames(UAvatar.name);
+    const slots = getSlotNames(UAvatar.__name);
 
     return { args, slots };
   },

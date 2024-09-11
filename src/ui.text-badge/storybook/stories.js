@@ -16,14 +16,14 @@ export default {
     label: "Badge",
   },
   argTypes: {
-    ...getArgTypes(UBadge.name),
+    ...getArgTypes(UBadge.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UBadge, UIcon },
   setup() {
-    const slots = getSlotNames(UBadge.name);
+    const slots = getSlotNames(UBadge.__name);
 
     return { args, slots };
   },

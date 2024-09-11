@@ -16,7 +16,7 @@ export default {
     label: "Label",
   },
   argTypes: {
-    ...getArgTypes(UInput.name),
+    ...getArgTypes(UInput.__name),
     modelValue: { control: { type: "text" } },
   },
 };
@@ -24,7 +24,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UInput, UIcon, UButton },
   setup() {
-    const slots = getSlotNames(UInput.name);
+    const slots = getSlotNames(UInput.__name);
 
     return { args, slots };
   },

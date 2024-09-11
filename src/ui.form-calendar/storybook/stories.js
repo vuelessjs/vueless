@@ -11,7 +11,7 @@ export default {
   component: UCalendar,
   args: {},
   argTypes: {
-    ...getArgTypes(UCalendar.name),
+    ...getArgTypes(UCalendar.__name),
   },
   parameters: {
     docs: {
@@ -25,7 +25,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UCalendar },
   setup() {
-    const slots = getSlotNames(UCalendar.name);
+    const slots = getSlotNames(UCalendar.__name);
 
     return { args, slots };
   },

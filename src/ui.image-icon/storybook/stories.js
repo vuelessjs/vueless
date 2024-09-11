@@ -14,14 +14,14 @@ export default {
     name: "close",
   },
   argTypes: {
-    ...getArgTypes(UIcon.name),
+    ...getArgTypes(UIcon.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UIcon },
   setup() {
-    const slots = getSlotNames(UIcon.name);
+    const slots = getSlotNames(UIcon.__name);
 
     return { args, slots };
   },

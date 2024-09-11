@@ -20,7 +20,7 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDropdownBadge.name),
+    ...getArgTypes(UDropdownBadge.__name),
   },
   parameters: {
     docs: {
@@ -34,7 +34,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownBadge, UIcon },
   setup() {
-    const slots = getSlotNames(UDropdownBadge.name);
+    const slots = getSlotNames(UDropdownBadge.__name);
 
     return { args, slots };
   },

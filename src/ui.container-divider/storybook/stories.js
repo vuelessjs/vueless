@@ -11,14 +11,14 @@ export default {
   title: "Containers / Divider",
   component: UDivider,
   argTypes: {
-    ...getArgTypes(UDivider.name),
+    ...getArgTypes(UDivider.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UDivider },
   setup() {
-    const slots = getSlotNames(UDivider.name);
+    const slots = getSlotNames(UDivider.__name);
 
     return { args, slots };
   },

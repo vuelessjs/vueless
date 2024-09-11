@@ -14,14 +14,14 @@ export default {
     url: "https://storybook.js.org/",
   },
   argTypes: {
-    ...getArgTypes(UFile.name),
+    ...getArgTypes(UFile.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UFile },
   setup() {
-    const slots = getSlotNames(UFile.name);
+    const slots = getSlotNames(UFile.__name);
 
     return { args, slots };
   },

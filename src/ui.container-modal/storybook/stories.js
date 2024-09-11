@@ -20,7 +20,7 @@ export default {
     modelValue: false,
   },
   argTypes: {
-    ...getArgTypes(UModal.name),
+    ...getArgTypes(UModal.__name),
   },
   parameters: {
     docs: {
@@ -47,7 +47,7 @@ const DefaultTemplate = (args) => ({
       args.modelValue = true;
     }
 
-    const slots = getSlotNames(UModal.name);
+    const slots = getSlotNames(UModal.__name);
 
     return { args, slots, onClick };
   },

@@ -1,4 +1,4 @@
-import vuelessDocsTheme from "../themes/vueless.docs.theme";
+import vuelessDocsTheme from "../themes/vueless.docs.theme.js";
 import colors from "tailwindcss/colors.js";
 
 export const docs = {

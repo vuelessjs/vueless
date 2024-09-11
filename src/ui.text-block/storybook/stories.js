@@ -11,7 +11,7 @@ export default {
   title: "Text & Content / Text",
   component: UText,
   argTypes: {
-    ...getArgTypes(UText.name),
+    ...getArgTypes(UText.__name),
   },
   args: {},
 };
@@ -27,7 +27,7 @@ const defaultTemplate = `
 const DefaultTemplate = (args) => ({
   components: { UText, URow },
   setup() {
-    const slots = getSlotNames(UText.name);
+    const slots = getSlotNames(UText.__name);
 
     return { args, slots };
   },

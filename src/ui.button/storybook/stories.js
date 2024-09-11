@@ -16,14 +16,14 @@ export default {
     label: "Button",
   },
   argTypes: {
-    ...getArgTypes(UButton.name),
+    ...getArgTypes(UButton.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UButton, UIcon },
   setup() {
-    const slots = getSlotNames(UButton.name);
+    const slots = getSlotNames(UButton.__name);
 
     return { args, slots };
   },

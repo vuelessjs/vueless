@@ -16,7 +16,7 @@ export default {
     label: "Label",
   },
   argTypes: {
-    ...getArgTypes(UInputMoney.name),
+    ...getArgTypes(UInputMoney.__name),
     modelValue: { control: { type: "number" } },
   },
 };
@@ -24,7 +24,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UInputMoney, UIcon, UButton },
   setup() {
-    const slots = getSlotNames(UInputMoney.name);
+    const slots = getSlotNames(UInputMoney.__name);
 
     return { args, slots };
   },

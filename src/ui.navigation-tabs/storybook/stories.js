@@ -18,14 +18,14 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UTabs.name),
+    ...getArgTypes(UTabs.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UTabs },
   setup() {
-    const slots = getSlotNames(UTabs.name);
+    const slots = getSlotNames(UTabs.__name);
 
     return { args, slots };
   },

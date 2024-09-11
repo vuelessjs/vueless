@@ -178,7 +178,7 @@
 
             <TableRow
               v-bind="bodyRowAttrs(getRowClasses(row))"
-              v-model:selectedRows="selectedRows"
+              v-model:selected-rows="selectedRows"
               :selectable="selectable"
               :data-test="`${dataTest}-row`"
               :row="row"
@@ -277,7 +277,7 @@ import { merge } from "lodash-es";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderTop from "../ui.loader-top";
+import ULoaderTop from "../ui.loader-top/ULoaderTop.vue";
 import TableRow from "./TableRow.vue";
 
 import { getDefault } from "../utils/utilUI.js";

@@ -33,14 +33,14 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UAccordion.name),
+    ...getArgTypes(UAccordion.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UAccordion, UButton },
   setup() {
-    const slots = getSlotNames(UAccordion.name);
+    const slots = getSlotNames(UAccordion.__name);
 
     return { args, slots };
   },

@@ -15,7 +15,7 @@ export default {
     label: "Label",
   },
   argTypes: {
-    ...getArgTypes(UTextarea.name),
+    ...getArgTypes(UTextarea.__name),
     modelValue: { control: { type: "text" } },
   },
 };
@@ -23,7 +23,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UTextarea, UIcon },
   setup() {
-    const slots = getSlotNames(UTextarea.name);
+    const slots = getSlotNames(UTextarea.__name);
 
     return { args, slots };
   },

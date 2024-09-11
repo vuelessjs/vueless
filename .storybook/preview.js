@@ -1,10 +1,10 @@
 import { setup } from "@storybook/vue3";
 
-import { backgrounds, docs, layout } from "./configs/main.config";
-import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator";
+import { backgrounds, docs, layout } from "./configs/main.config.js";
+import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
 
 // Vue plugins
-import { createVueless } from "../src";
+import { createVueless } from "../src/index.js";
 import { createRouter, createWebHistory } from "vue-router";
 
 // Tailwind styles

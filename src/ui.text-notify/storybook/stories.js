@@ -14,7 +14,7 @@ export default {
   title: "Text & Content / Notify",
   component: UNotify,
   argTypes: {
-    ...getArgTypes(UNotify.name),
+    ...getArgTypes(UNotify.__name),
   },
   parameters: {
     docs: {
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
       });
     }
 
-    const slots = getSlotNames(UNotify.name);
+    const slots = getSlotNames(UNotify.__name);
 
     return { args, slots, onClick };
   },

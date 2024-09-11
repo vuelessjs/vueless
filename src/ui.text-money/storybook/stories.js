@@ -21,14 +21,14 @@ export default {
     sign: "positive",
   },
   argTypes: {
-    ...getArgTypes(UMoney.name),
+    ...getArgTypes(UMoney.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UMoney, UIcon },
   setup() {
-    const slots = getSlotNames(UMoney.name);
+    const slots = getSlotNames(UMoney.__name);
 
     const icons = {
       Debit: DebitIcon,
@@ -49,7 +49,7 @@ const DefaultTemplate = (args) => ({
 const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UMoney, URow },
   setup() {
-    const slots = getSlotNames(UMoney.name);
+    const slots = getSlotNames(UMoney.__name);
 
     return {
       args,

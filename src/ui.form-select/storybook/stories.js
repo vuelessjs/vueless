@@ -24,7 +24,7 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(USelect.name),
+    ...getArgTypes(USelect.__name),
     modelValue: { control: { type: "text" } },
   },
   parameters: {
@@ -43,7 +43,7 @@ const DefaultTemplate = (args) => ({
       return options?.find((option) => option.id === currentValue);
     }
 
-    const slots = getSlotNames(USelect.name);
+    const slots = getSlotNames(USelect.__name);
 
     return { args, slots, getSelectedBadge };
   },

@@ -14,7 +14,7 @@ export default {
     modelValue: 1,
   },
   argTypes: {
-    ...getArgTypes(UInputNumber.name),
+    ...getArgTypes(UInputNumber.__name),
     modelValue: { control: { type: "number" } },
   },
 };
@@ -22,7 +22,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UInputNumber },
   setup() {
-    const slots = getSlotNames(UInputNumber.name);
+    const slots = getSlotNames(UInputNumber.__name);
 
     return { args, slots };
   },

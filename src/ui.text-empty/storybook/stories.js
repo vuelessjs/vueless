@@ -17,14 +17,14 @@ export default {
     description: "There is no contacts in the list.",
   },
   argTypes: {
-    ...getArgTypes(UEmpty.name),
+    ...getArgTypes(UEmpty.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UEmpty, UIcon, UButton },
   setup() {
-    const slots = getSlotNames(UEmpty.name);
+    const slots = getSlotNames(UEmpty.__name);
 
     return { args, slots };
   },

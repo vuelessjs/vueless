@@ -13,14 +13,14 @@ export default {
   title: "Form Inputs & Controls / Input Search",
   component: UInputSearch,
   argTypes: {
-    ...getArgTypes(UInputSearch.name),
+    ...getArgTypes(UInputSearch.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UInputSearch, UButton, UIcon },
   setup() {
-    const slots = getSlotNames(UInputSearch.name);
+    const slots = getSlotNames(UInputSearch.__name);
 
     return { args, slots };
   },

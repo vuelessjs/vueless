@@ -226,8 +226,8 @@ import { merge } from "lodash-es";
 
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import UCalendar from "../ui.form-calendar";
-import { LOCALE_TYPE } from "../ui.form-calendar/constants";
+import UCalendar from "../ui.form-calendar/UCalendar.vue";
+import { LOCALE_TYPE } from "../ui.form-calendar/constants.js";
 
 import vClickOutside from "../directives/vClickOutside.js";
 

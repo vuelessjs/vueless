@@ -17,14 +17,14 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UFiles.name),
+    ...getArgTypes(UFiles.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UFiles },
   setup() {
-    const slots = getSlotNames(UFiles.name);
+    const slots = getSlotNames(UFiles.__name);
 
     return { args, slots };
   },

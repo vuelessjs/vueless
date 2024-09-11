@@ -16,7 +16,7 @@ export default {
     label: "Link",
   },
   argTypes: {
-    ...getArgTypes(ULink.name),
+    ...getArgTypes(ULink.__name),
     route: { control: { type: "text" } },
   },
 };
@@ -24,7 +24,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULink, UButton, UIcon },
   setup() {
-    const slots = getSlotNames(ULink.name);
+    const slots = getSlotNames(ULink.__name);
 
     return { args, slots };
   },

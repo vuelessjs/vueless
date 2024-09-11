@@ -1,11 +1,11 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
-import UDatePickerRange from "../ui.form-date-picker-range";
-import URow from "../ui.container-row/URow.vue";
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
+import UDatePickerRange from "../UDatePickerRange.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import UButton from "../../ui.button/UButton.vue";
 
-import { addDays } from "../ui.form-calendar/services/date.service";
+import { addDays } from "../../ui.form-calendar/utilDate.js";
 
 /**
  * The `UDatePickerRange` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker-range)
@@ -21,7 +21,7 @@ export default {
     },
   },
   argTypes: {
-    ...getArgTypes(UDatePickerRange.name),
+    ...getArgTypes(UDatePickerRange.__name),
   },
   parameters: {
     docs: {
@@ -35,7 +35,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDatePickerRange, UIcon, UButton },
   setup() {
-    const slots = getSlotNames(UDatePickerRange.name);
+    const slots = getSlotNames(UDatePickerRange.__name);
 
     return { args, slots };
   },
@@ -122,23 +122,23 @@ const OpenDirectionTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = { enum: "variant" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const openDirection = OpenDirectionTemplate.bind({});
-openDirection.args = {};
+export const OpenDirection = OpenDirectionTemplate.bind({});
+OpenDirection.args = {};
 
-export const disabled = EnumVariantTemplate.bind({});
-disabled.args = { enum: "variant", disabled: true };
+export const Disabled = EnumVariantTemplate.bind({});
+Disabled.args = { enum: "variant", disabled: true };
 
-export const label = DefaultTemplate.bind({});
-label.args = { variant: "input", label: "some label" };
+export const Label = DefaultTemplate.bind({});
+Label.args = { variant: "input", label: "some label" };
 
-export const description = DefaultTemplate.bind({});
-description.args = { variant: "input", description: "some description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { variant: "input", description: "some description" };
 
-export const error = DefaultTemplate.bind({});
-error.args = { variant: "input", error: "some error" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { variant: "input", error: "some error" };
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
@@ -154,8 +154,8 @@ DateFormat.args = {
   value: { from: "28.06.2024", to: "30.06.2024" },
 };
 
-export const customRangeButton = DefaultTemplate.bind({});
-customRangeButton.args = {
+export const CustomRangeButton = DefaultTemplate.bind({});
+CustomRangeButton.args = {
   customRangeButton: {
     range: {
       from: new Date(),
@@ -167,20 +167,20 @@ customRangeButton.args = {
   value: { from: null, to: null },
 };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = {
   leftIcon: "star",
   variant: "input",
 };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = {
   rightIcon: "star",
   variant: "input",
 };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   variant: "input",
   slotTemplate: `
     <template #left-icon>
@@ -192,8 +192,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   variant: "input",
   slotTemplate: `
     <template #right-icon>
@@ -205,8 +205,8 @@ rightIconSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   variant: "input",
   slotTemplate: `
     <template #left>
@@ -215,8 +215,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   variant: "input",
   slotTemplate: `
     <template #right>

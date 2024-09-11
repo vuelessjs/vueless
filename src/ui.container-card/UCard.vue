@@ -48,7 +48,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import { UCard } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import useBreakpoint from "./composables/useBreakpoint.js";
+import useBreakpoint from "../composables/useBreakpoint.js";
 
 defineOptions({ inheritAttrs: false });
 

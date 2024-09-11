@@ -23,14 +23,14 @@ export default {
     value: ["One"],
   },
   argTypes: {
-    ...getArgTypes(UCheckboxGroup.name),
+    ...getArgTypes(UCheckboxGroup.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol },
   setup() {
-    const slots = getSlotNames(UCheckboxGroup.name);
+    const slots = getSlotNames(UCheckboxGroup.__name);
 
     return { args, slots };
   },

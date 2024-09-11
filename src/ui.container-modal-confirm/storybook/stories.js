@@ -19,7 +19,7 @@ export default {
     modelValue: false,
   },
   argTypes: {
-    ...getArgTypes(UModalConfirm.name),
+    ...getArgTypes(UModalConfirm.__name),
   },
   parameters: {
     docs: {
@@ -39,7 +39,7 @@ const DefaultTemplate = (args) => ({
       args.modelValue = true;
     }
 
-    const slots = getSlotNames(UModalConfirm.name);
+    const slots = getSlotNames(UModalConfirm.__name);
 
     return { args, slots, onClick };
   },

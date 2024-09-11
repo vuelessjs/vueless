@@ -21,7 +21,7 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   argTypes: {
-    ...getArgTypes(UToggle.name),
+    ...getArgTypes(UToggle.__name),
     modelValue: { control: { type: "text" } },
   },
 };
@@ -31,7 +31,7 @@ const DefaultTemplate = (args) => ({
   setup() {
     const value = ref("");
 
-    const slots = getSlotNames(UToggle.name);
+    const slots = getSlotNames(UToggle.__name);
 
     return { args, slots, value, OPTIONS };
   },

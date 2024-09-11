@@ -14,14 +14,14 @@ export default {
     label: "Vueless file input",
   },
   argTypes: {
-    ...getArgTypes(UInputFile.name),
+    ...getArgTypes(UInputFile.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UInputFile },
   setup() {
-    const slots = getSlotNames(UInputFile.name);
+    const slots = getSlotNames(UInputFile.__name);
 
     return { args, slots };
   },

@@ -15,14 +15,14 @@ export default {
     label: "Label",
   },
   argTypes: {
-    ...getArgTypes(UInputRating.name),
+    ...getArgTypes(UInputRating.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UInputRating },
   setup() {
-    const slots = getSlotNames(UInputRating.name);
+    const slots = getSlotNames(UInputRating.__name);
 
     return { args, slots };
   },

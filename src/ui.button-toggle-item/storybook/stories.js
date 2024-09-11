@@ -15,7 +15,7 @@ export default {
     modelValue: "",
   },
   argTypes: {
-    ...getArgTypes(UToggleItem.name),
+    ...getArgTypes(UToggleItem.__name),
     value: { control: { type: "text" } },
   },
 };
@@ -23,7 +23,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UToggleItem, UIcon },
   setup() {
-    const slots = getSlotNames(UToggleItem.name);
+    const slots = getSlotNames(UToggleItem.__name);
 
     return { args, slots };
   },

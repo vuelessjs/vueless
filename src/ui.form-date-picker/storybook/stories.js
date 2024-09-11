@@ -16,7 +16,7 @@ export default {
     modelValue: null,
   },
   argTypes: {
-    ...getArgTypes(UDatePicker.name),
+    ...getArgTypes(UDatePicker.__name),
   },
   parameters: {
     docs: {
@@ -30,7 +30,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDatePicker, UIcon },
   setup() {
-    const slots = getSlotNames(UDatePicker.name);
+    const slots = getSlotNames(UDatePicker.__name);
 
     return { args, slots };
   },

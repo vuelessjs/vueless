@@ -13,7 +13,6 @@ export default defineConfig({
       "tailwind-merge",
       "prettier2",
       "prettier2/parser-html",
-      "tailwindcss/colors.js",
       "@storybook/blocks",
       "@storybook/theming/create",
     ],

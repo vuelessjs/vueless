@@ -13,7 +13,7 @@ export default {
   title: "Containers / Row",
   component: URow,
   argTypes: {
-    ...getArgTypes(URow.name),
+    ...getArgTypes(URow.__name),
   },
 };
 
@@ -25,7 +25,7 @@ const defaultTemplate = `
 const DefaultTemplate = (args) => ({
   components: { URow, UInput, UButton },
   setup() {
-    const slots = getSlotNames(URow.name);
+    const slots = getSlotNames(URow.__name);
 
     return { args, slots };
   },

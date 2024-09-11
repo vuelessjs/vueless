@@ -14,14 +14,14 @@ export default {
     label: "Tab",
   },
   argTypes: {
-    ...getArgTypes(UTab.name),
+    ...getArgTypes(UTab.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UTab, UIcon },
   setup() {
-    const slots = getSlotNames(UTab.name);
+    const slots = getSlotNames(UTab.__name);
 
     return { args, slots };
   },

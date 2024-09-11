@@ -14,14 +14,14 @@ export default {
     total: 900,
   },
   argTypes: {
-    ...getArgTypes(UPagination.name),
+    ...getArgTypes(UPagination.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UPagination },
   setup() {
-    const slots = getSlotNames(UPagination.name);
+    const slots = getSlotNames(UPagination.__name);
 
     return { args, slots };
   },

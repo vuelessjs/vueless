@@ -18,7 +18,7 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDropdownList.name),
+    ...getArgTypes(UDropdownList.__name),
   },
   parameters: {
     docs: {
@@ -32,7 +32,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownList },
   setup() {
-    const slots = getSlotNames(UDropdownList.name);
+    const slots = getSlotNames(UDropdownList.__name);
 
     return { args, slots };
   },

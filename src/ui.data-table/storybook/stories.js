@@ -25,7 +25,7 @@ export default {
   title: "Data / Table",
   component: UTable,
   argTypes: {
-    ...getArgTypes(UTable.name),
+    ...getArgTypes(UTable.__name),
     row: {
       description:
         "The row of the table. It's not a prop (it created for ease of work with storybook).",
@@ -159,7 +159,7 @@ function getRow() {
 const DefaultTemplate = (args) => ({
   components: { UTable, UButton, ULink, UMoney, UBadge, URow },
   setup() {
-    const slots = getSlotNames(UTable.name);
+    const slots = getSlotNames(UTable.__name);
 
     return { args, slots };
   },
@@ -187,7 +187,7 @@ const DefaultTemplate = (args) => ({
 const EmptyTemplate = (args) => ({
   components: { UTable },
   setup() {
-    const slots = getSlotNames(UTable.name);
+    const slots = getSlotNames(UTable.__name);
 
     return { args, slots };
   },

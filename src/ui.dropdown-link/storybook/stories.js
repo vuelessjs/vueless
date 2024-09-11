@@ -20,7 +20,7 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDropdownLink.name),
+    ...getArgTypes(UDropdownLink.__name),
   },
   parameters: {
     docs: {
@@ -34,7 +34,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDropdownLink, UIcon },
   setup() {
-    const slots = getSlotNames(UDropdownLink.name);
+    const slots = getSlotNames(UDropdownLink.__name);
 
     return { args, slots };
   },

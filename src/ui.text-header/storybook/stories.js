@@ -14,14 +14,14 @@ export default {
     label: "Header",
   },
   argTypes: {
-    ...getArgTypes(UHeader.name),
+    ...getArgTypes(UHeader.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UHeader },
   setup() {
-    const slots = getSlotNames(UHeader.name);
+    const slots = getSlotNames(UHeader.__name);
 
     return { args, slots };
   },

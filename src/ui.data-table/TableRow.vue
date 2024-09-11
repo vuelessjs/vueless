@@ -100,7 +100,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 
-import { HYPHEN_SYMBOL } from "./constants.js";
+import { HYPHEN_SYMBOL } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
 
 import { useMutationObserver } from "../composables/useMutationObserver.js";
@@ -113,30 +113,37 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+
   columns: {
     type: Array,
     required: true,
   },
+
   tag: {
     type: String,
     default: "tr",
   },
+
   selectable: {
     type: Boolean,
     default: false,
   },
+
   nestedLevel: {
     type: Number,
     default: 0,
   },
+
   dataTest: {
     type: String,
     required: true,
   },
+
   attrs: {
     type: Object,
     required: true,
   },
+
   config: {
     type: Object,
     required: true,

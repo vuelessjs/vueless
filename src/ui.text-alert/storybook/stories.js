@@ -18,14 +18,14 @@ export default {
     description: "Default Description",
   },
   argTypes: {
-    ...getArgTypes(UAlert.name),
+    ...getArgTypes(UAlert.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UAlert, UIcon, URow, UButton },
   setup() {
-    const slots = getSlotNames(UAlert.name);
+    const slots = getSlotNames(UAlert.__name);
 
     return { args, slots };
   },

@@ -57,10 +57,8 @@ export default /*tw*/ {
     `,
     variants: {
       color: {
-        white:
-          "text-gray-300 [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100",
-        grayscale:
-          "text-gray-900 [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100",
+        white: "text-gray-300 [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100",
+        grayscale: "text-gray-900 [&::-webkit-progress-bar]:bg-gray-100 [@supports(selector(&::-moz-progress-bar))]:bg-gray-100",
       },
       size: {
         "2xs": "h-px",

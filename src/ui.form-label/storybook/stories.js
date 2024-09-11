@@ -17,7 +17,7 @@ export default {
     description: "Description",
   },
   argTypes: {
-    ...getArgTypes(ULabel.name),
+    ...getArgTypes(ULabel.__name),
   },
 };
 
@@ -26,7 +26,7 @@ const defaultTemplate = "This is plain text";
 const DefaultTemplate = (args) => ({
   components: { ULabel, UText, UIcon },
   setup() {
-    const slots = getSlotNames(ULabel.name);
+    const slots = getSlotNames(ULabel.__name);
 
     return { args, slots };
   },

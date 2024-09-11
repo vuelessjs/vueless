@@ -16,14 +16,14 @@ export default {
     loading: true,
   },
   argTypes: {
-    ...getArgTypes(ULoader.name),
+    ...getArgTypes(ULoader.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { ULoader },
   setup() {
-    const slots = getSlotNames(ULoader.name);
+    const slots = getSlotNames(ULoader.__name);
 
     return { args, slots };
   },

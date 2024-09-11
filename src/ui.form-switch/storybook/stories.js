@@ -15,14 +15,14 @@ export default {
     modelValue: false,
   },
   argTypes: {
-    ...getArgTypes(USwitch.name),
+    ...getArgTypes(USwitch.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { USwitch, UIcon },
   setup() {
-    const slots = getSlotNames(USwitch.name);
+    const slots = getSlotNames(USwitch.__name);
 
     return { args, slots };
   },

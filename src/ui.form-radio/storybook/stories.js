@@ -17,14 +17,14 @@ export default {
     color: "brand",
   },
   argTypes: {
-    ...getArgTypes(URadio.name),
+    ...getArgTypes(URadio.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { URadio, UBadge },
   setup() {
-    const slots = getSlotNames(URadio.name);
+    const slots = getSlotNames(URadio.__name);
 
     return { args, slots };
   },

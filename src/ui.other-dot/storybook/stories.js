@@ -13,14 +13,14 @@ export default {
   title: "Other / Dot",
   component: UDot,
   argTypes: {
-    ...getArgTypes(UDot.name),
+    ...getArgTypes(UDot.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UDot },
   setup() {
-    const slots = getSlotNames(UDot.name);
+    const slots = getSlotNames(UDot.__name);
 
     return { args, slots };
   },

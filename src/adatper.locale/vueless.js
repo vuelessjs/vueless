@@ -1,7 +1,7 @@
 import { shallowRef, ref } from "vue";
 import { merge } from "lodash-es";
 
-import en from "./locales/en";
+import en from "./locales/en.js";
 
 const FALLBACK_LOCALE_CODE = "en";
 

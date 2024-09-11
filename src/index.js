@@ -6,8 +6,8 @@ import { themeInit } from "./utils/utilTheme.js";
 
 export { setTitle } from "./utils/utilHelper.js";
 export { setTheme } from "./utils/utilTheme.js";
-export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n";
-export { default as defaultEnLocale } from "./adatper.locale/locales/en";
+export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
+export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
 export { useLocale } from "./composables/useLocale.js";
 export { useLoaderTop } from "./ui.loader-top/useLoaderTop.js";
 export { loaderTopOn, loaderTopOff } from "./ui.loader-top/utilLoaderTop.js";

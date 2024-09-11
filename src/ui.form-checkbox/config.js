@@ -14,8 +14,7 @@ export default /*tw*/ {
         lg: "size-6",
       },
       color: {
-        grayscale:
-          "focus:ring-gray-700/15 focus:border-gray-500 active:border-gray-800 checked:text-gray-900",
+        grayscale: "focus:ring-gray-700/15 focus:border-gray-500 active:border-gray-800 checked:text-gray-900",
       },
       error: {
         true: "focus:ring-red-700/15 border-red-300 hover:border-red-400 focus:border-red-500 bg-red-50",

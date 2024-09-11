@@ -13,14 +13,14 @@ export default {
   title: "Navigation / Progress",
   component: UProgress,
   argTypes: {
-    ...getArgTypes(UProgress.name),
+    ...getArgTypes(UProgress.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UCol, UProgress, UButton, UIcon },
   setup() {
-    const slots = getSlotNames(UProgress.name);
+    const slots = getSlotNames(UProgress.__name);
 
     args.value = args.max ? 1 : 10;
     args.iterator = args.max ? 1 : 10;

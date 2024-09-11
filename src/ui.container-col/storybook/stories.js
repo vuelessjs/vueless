@@ -13,7 +13,7 @@ export default {
   component: UCol,
   args: {},
   argTypes: {
-    ...getArgTypes(UCol.name),
+    ...getArgTypes(UCol.__name),
   },
   parameters: {
     docs: {
@@ -33,7 +33,7 @@ const defaultTemplate = `
 const DefaultTemplate = (args) => ({
   components: { UCol, UInput, UButton },
   setup() {
-    const slots = getSlotNames(UCol.name);
+    const slots = getSlotNames(UCol.__name);
 
     return { args, slots };
   },

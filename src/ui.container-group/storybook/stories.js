@@ -16,7 +16,7 @@ export default {
     title: "Form group",
   },
   argTypes: {
-    ...getArgTypes(UGroup.name),
+    ...getArgTypes(UGroup.__name),
   },
   parameters: {
     docs: {
@@ -38,7 +38,7 @@ const defaultTemplate = `
 const DefaultTemplate = (args) => ({
   components: { UGroup, UCol, UInput, UButton },
   setup() {
-    const slots = getSlotNames(UGroup.name);
+    const slots = getSlotNames(UGroup.__name);
 
     return { args, slots };
   },

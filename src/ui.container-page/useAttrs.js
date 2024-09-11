@@ -1,6 +1,6 @@
 import useUI from "../composables/useUI.js";
 import { cva, cx } from "../utils/utilUI.js";
-import { isMobileApp } from "../../utils/utilsPlatform";
+import { isMobileApp } from "../utils/utilPlatform.js";
 
 import defaultConfig from "./config.js";
 import { computed } from "vue";

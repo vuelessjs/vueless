@@ -18,14 +18,14 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UCheckboxMultiState.name),
+    ...getArgTypes(UCheckboxMultiState.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UCheckboxMultiState },
   setup() {
-    const slots = getSlotNames(UCheckboxMultiState.name);
+    const slots = getSlotNames(UCheckboxMultiState.__name);
 
     return { args, slots };
   },

@@ -38,7 +38,7 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDataList.name),
+    ...getArgTypes(UDataList.__name),
   },
 };
 
@@ -49,7 +49,7 @@ const DefaultTemplate = (args) => ({
       this.list = value;
     }
 
-    const slots = getSlotNames(UDataList.name);
+    const slots = getSlotNames(UDataList.__name);
 
     return { args, slots, onDragSort };
   },

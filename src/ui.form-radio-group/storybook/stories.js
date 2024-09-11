@@ -24,14 +24,14 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(URadioGroup.name),
+    ...getArgTypes(URadioGroup.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { URadioGroup, URadio, UAlert, UCol },
   setup() {
-    const slots = getSlotNames(URadioGroup.name);
+    const slots = getSlotNames(URadioGroup.__name);
 
     return { args, slots };
   },

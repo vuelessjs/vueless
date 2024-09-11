@@ -14,7 +14,7 @@ export default {
   title: "Loaders and Skeletons / Loader Rendering",
   component: ULoaderRendering,
   argTypes: {
-    ...getArgTypes(ULoaderRendering.name),
+    ...getArgTypes(ULoaderRendering.__name),
   },
   parameters: {
     docs: {
@@ -28,7 +28,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { ULoaderRendering },
   setup() {
-    const slots = getSlotNames(ULoaderRendering.name);
+    const slots = getSlotNames(ULoaderRendering.__name);
 
     return { args, slots };
   },

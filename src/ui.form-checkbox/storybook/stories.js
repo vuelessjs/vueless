@@ -16,7 +16,7 @@ export default {
     label: "Label",
   },
   argTypes: {
-    ...getArgTypes(UCheckbox.name),
+    ...getArgTypes(UCheckbox.__name),
     modelValue: { control: { type: "boolean" } },
   },
 };
@@ -24,7 +24,7 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UCheckbox, UBadge },
   setup() {
-    const slots = getSlotNames(UCheckbox.name);
+    const slots = getSlotNames(UCheckbox.__name);
 
     return { args, slots };
   },

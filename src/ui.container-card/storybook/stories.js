@@ -18,7 +18,7 @@ export default {
     title: "Title",
   },
   argTypes: {
-    ...getArgTypes(UCard.name),
+    ...getArgTypes(UCard.__name),
   },
 };
 
@@ -38,7 +38,7 @@ const defaultTemplate = `
 const DefaultTemplate = (args) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
   setup() {
-    const slots = getSlotNames(UCard.name);
+    const slots = getSlotNames(UCard.__name);
 
     return { args, slots };
   },

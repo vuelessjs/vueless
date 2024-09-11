@@ -15,14 +15,14 @@ export default {
     modelValue: "",
   },
   argTypes: {
-    ...getArgTypes(UColorPicker.name),
+    ...getArgTypes(UColorPicker.__name),
   },
 };
 
 const DefaultTemplate = (args) => ({
   components: { UColorPicker },
   setup() {
-    const slots = getSlotNames(UColorPicker.name);
+    const slots = getSlotNames(UColorPicker.__name);
 
     return { args, slots };
   },

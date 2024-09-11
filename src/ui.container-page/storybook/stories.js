@@ -21,7 +21,7 @@ export default {
     gray: true,
   },
   argTypes: {
-    ...getArgTypes(UPage.name),
+    ...getArgTypes(UPage.__name),
   },
 };
 
@@ -47,7 +47,7 @@ const DefaultTemplate = (args) => ({
     UHeader,
   },
   setup() {
-    const slots = getSlotNames(UPage.name);
+    const slots = getSlotNames(UPage.__name);
 
     return { args, slots };
   },

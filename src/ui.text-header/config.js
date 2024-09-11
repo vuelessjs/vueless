@@ -40,8 +40,5 @@ export default /*tw*/ {
     line: true,
     underlined: false,
   },
-  safelist: (colors) => [
-    { pattern: `text-(${colors})-600` },
-    { pattern: `border-(${colors})-600` },
-  ],
+  safelist: (colors) => [{ pattern: `text-(${colors})-600` }, { pattern: `border-(${colors})-600` }],
 };
