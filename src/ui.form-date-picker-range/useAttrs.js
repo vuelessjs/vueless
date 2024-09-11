@@ -6,7 +6,7 @@ import { computed, watchEffect } from "vue";
 import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.js";
 
-export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
+export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod }) {
   const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
     defaultConfig,
     () => props.config,
@@ -105,8 +105,147 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
     }
   }
 
+  const variantKeys = [
+    "rangeInputFirst",
+    "rangeInputLast",
+    "periodButtonActive",
+    "periodDateWeekList",
+    "periodDateMonthList",
+    "periodDateQuarterList",
+    "periodDateYearList",
+    "firstPeriodGridDate",
+    "firstPeriodListDate",
+    "lastPeriodGridDate",
+    "lastPeriodListDate",
+    "periodDateActive",
+    "periodDateInRange",
+  ];
+
+  for (const key of variantKeys) {
+    if (key === "rangeInputFirst") {
+      const rangeInputAttrs = attrs.rangeInputAttrs;
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...rangeInputAttrs.value,
+        class: cx([rangeInputAttrs.value.class, config.value.rangeInputFirst]),
+      }));
+    }
+
+    if (key === "rangeInputLast") {
+      const rangeInputAttrs = attrs.rangeInputAttrs;
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...rangeInputAttrs.value,
+        class: cx([rangeInputAttrs.value.class, config.value.rangeInputLast]),
+      }));
+    }
+
+    if (key === "periodButtonActive") {
+      const periodButtonAttrs = attrs.periodButtonAttrs;
+
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodButtonAttrs.value,
+        class: cx([periodButtonAttrs.value.class, config.value.periodButtonActive]),
+      }));
+    }
+
+    const periodDateListAttrs = attrs.periodDateListAttrs;
+
+    if (key === "periodDateWeekList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateListAttrs.value,
+        class: cx([periodDateListAttrs.value.class, config.value.periodDateWeekList]),
+      }));
+    }
+
+    if (key === "periodDateMonthList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateListAttrs.value,
+        class: cx([periodDateListAttrs.value.class, config.value.periodDateMonthList]),
+      }));
+    }
+
+    if (key === "periodDateQuarterList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateListAttrs.value,
+        class: cx([periodDateListAttrs.value.class, config.value.periodDateQuarterList]),
+      }));
+    }
+
+    if (key === "periodDateYearList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateListAttrs.value,
+        class: cx([periodDateListAttrs.value.class, config.value.periodDateYearList]),
+      }));
+    }
+
+    const periodDateAttrs = attrs.periodDateAttrs;
+
+    if (key === "periodDateActive") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateAttrs.value,
+        class: cx([periodDateAttrs.value.class, config.value.periodDateActive]),
+      }));
+    }
+
+    if (key === "periodDateInRange") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateAttrs.value,
+        class: cx([periodDateAttrs.value.class, config.value.periodDateInRange]),
+      }));
+    }
+
+    if (
+      [
+        "firstPeriodGridDate",
+        "firstPeriodListDate",
+        "lastPeriodGridDate",
+        "lastPeriodListDate",
+      ].includes(key)
+    ) {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...periodDateAttrs.value,
+        class: cx([periodDateAttrs.value.class, config.value.edgePeriodDate, config.value[key]]),
+      }));
+    }
+  }
+
+  const periodDateListAttrs = computed(() => {
+    if (isPeriod.value.week) return attrs.periodDateWeekListAttrs.value;
+    if (isPeriod.value.month) return attrs.periodDateMonthListAttrs.value;
+    if (isPeriod.value.quarter) return attrs.periodDateQuarterListAttrs.value;
+    if (isPeriod.value.year) return attrs.periodDateYearListAttrs.value;
+
+    return attrs.periodDateListAttrs.value;
+  });
+
+  const periodDatesMenuAttrs = computed(() => ({
+    periodsRowAttrs: attrs.periodsRowAttrs.value,
+    periodButtonAttrs: attrs.periodButtonAttrs.value,
+    periodButtonActiveAttrs: attrs.periodButtonActiveAttrs.value,
+    periodDateAttrs: attrs.periodDateAttrs.value,
+    periodDateActiveAttrs: attrs.periodDateActiveAttrs.value,
+    periodDateInRangeAttrs: attrs.periodDateInRangeAttrs.value,
+    periodDateListAttrs: periodDateListAttrs.value,
+    rangeSwitchWrapperAttrs: attrs.rangeSwitchWrapperAttrs.value,
+    rangeSwitchButtonAttrs: attrs.rangeSwitchButtonAttrs.value,
+    rangeSwitchTitleAttrs: attrs.rangeSwitchTitleAttrs.value,
+    lastPeriodGridDateAttrs: attrs.lastPeriodGridDateAttrs.value,
+    firstPeriodGridDateAttrs: attrs.firstPeriodGridDateAttrs.value,
+    lastPeriodListDateAttrs: attrs.lastPeriodListDateAttrs.value,
+    firstPeriodListDateAttrs: attrs.firstPeriodListDateAttrs.value,
+  }));
+
+  const rangeInputsAttrs = computed(() => ({
+    rangeInputFirstAttrs: attrs.rangeInputFirstAttrs.value,
+    rangeInputLastAttrs: attrs.rangeInputLastAttrs.value,
+  }));
+
   return {
     ...attrs,
+    periodDatesMenuAttrs,
+    rangeInputsAttrs,
+    periodDateListAttrs,
     config,
     hasSlotContent,
   };

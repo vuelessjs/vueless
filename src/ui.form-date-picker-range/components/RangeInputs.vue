@@ -5,8 +5,7 @@
       v-model="rangeStart"
       :error="inputRangeFromError"
       size="md"
-      v-bind="attrs.rangeInputAttrs"
-      :class="cx([attrs.rangeInputAttrs.class, config.rangeInputFirst])"
+      v-bind="attrs.rangeInputFirstAttrs"
       :name="rangeInputName"
       @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
     />
@@ -16,8 +15,7 @@
       v-model="rangeEnd"
       :error="inputRangeToError"
       size="md"
-      v-bind="attrs.rangeInputAttrs"
-      :class="cx([attrs.rangeInputAttrs.class, config.rangeInputLast])"
+      v-bind="attrs.rangeInputLastAttrs"
       :name="rangeInputName"
       @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
     />
@@ -31,7 +29,6 @@ import {
   isWrongDayNumber,
 } from "../services/validation.service";
 
-import { cx } from "../../service.ui";
 import { dateIsOutOfRange, parseDate } from "../../ui.form-calendar/services/calendar.service";
 
 import UInput from "../../ui.form-input";

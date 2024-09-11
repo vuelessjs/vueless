@@ -120,7 +120,7 @@
           :locale="locale"
           :date-format="dateFormat"
           :config="config"
-          :attrs="{ rangeInputAttrs }"
+          :attrs="rangeInputsAttrs"
         />
 
         <div v-if="inputRangeToError || inputRangeFromError" v-bind="inputRangeErrorAttrs">
@@ -393,26 +393,31 @@ const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
 
 const { locale, userFormatLocale } = useLocale(props);
 
+const isPeriod = computed(() => {
+  return {
+    week: period.value === PERIOD.week,
+    month: period.value === PERIOD.month,
+    quarter: period.value === PERIOD.quarter,
+    year: period.value === PERIOD.year,
+    ownRange: period.value === PERIOD.ownRange,
+    custom: period.value === PERIOD.custom,
+  };
+});
+
 const {
   config,
   wrapperAttrs,
   calendarAttrs,
   inputAttrs,
   menuAttrs,
-  periodsRowAttrs,
-  periodButtonAttrs,
-  periodDateAttrs,
-  periodDateListAttrs,
-  rangeSwitchWrapperAttrs,
-  rangeSwitchButtonAttrs,
-  rangeSwitchTitleAttrs,
   buttonWrapperAttrs,
   buttonAttrs,
   shiftRangeButtonAttrs,
-  rangeInputAttrs,
   rangeInputWrapperAttrs,
   inputRangeErrorAttrs,
-} = useAttrs(props, { isShownMenu, isTop, isRight });
+  periodDatesMenuAttrs,
+  rangeInputsAttrs,
+} = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const calendarValue = ref(props.modelValue);
 const activeDate = ref(
@@ -429,16 +434,6 @@ const calendarInnerValue = ref({ from: "", to: "" });
 const periodDateList = ref([]);
 
 provide("isDatePeriodOutOfRange", (datePeriod) => isDatePeriodOutOfRange(datePeriod));
-
-const periodDatesMenuAttrs = computed(() => ({
-  periodsRowAttrs: periodsRowAttrs.value,
-  periodButtonAttrs: periodButtonAttrs.value,
-  periodDateAttrs: periodDateAttrs.value,
-  periodDateListAttrs: periodDateListAttrs.value,
-  rangeSwitchWrapperAttrs: rangeSwitchWrapperAttrs.value,
-  rangeSwitchButtonAttrs: rangeSwitchButtonAttrs.value,
-  rangeSwitchTitleAttrs: rangeSwitchTitleAttrs.value,
-}));
 
 const localValue = computed({
   get: () => {
@@ -469,17 +464,6 @@ const localValue = computed({
 });
 
 const rangeInputName = computed(() => `rangeInput-${props.id}`);
-
-const isPeriod = computed(() => {
-  return {
-    week: period.value === PERIOD.week,
-    month: period.value === PERIOD.month,
-    quarter: period.value === PERIOD.quarter,
-    year: period.value === PERIOD.year,
-    ownRange: period.value === PERIOD.ownRange,
-    custom: period.value === PERIOD.custom,
-  };
-});
 
 const isVariant = computed(() => ({
   button: props.variant === DATE_PICKER_BUTTON_TYPE,

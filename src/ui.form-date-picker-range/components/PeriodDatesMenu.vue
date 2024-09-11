@@ -1,30 +1,41 @@
 <template>
   <div v-bind="attrs.periodsRowAttrs">
-    <UButton
-      v-for="periodButton in periods"
-      :key="periodButton.name"
-      square
-      filled
-      no-ring
-      size="xs"
-      variant="thirdary"
-      :label="periodButton.title"
-      v-bind="attrs.periodButtonAttrs"
-      :class="cx([attrs.periodButtonAttrs.class, getPeriodButtonsClasses(periodButton.name)])"
-      @click="onClickPeriodButton(periodButton.name)"
-    />
+    <template v-for="periodButton in periods" :key="periodButton.name">
+      <UButton
+        v-if="periodButton.name !== period"
+        square
+        filled
+        no-ring
+        size="xs"
+        variant="thirdary"
+        :label="periodButton.title"
+        v-bind="attrs.periodButtonAttrs"
+        @click="onClickPeriodButton(periodButton.name)"
+      />
+
+      <UButton
+        v-else
+        square
+        filled
+        no-ring
+        size="xs"
+        variant="thirdary"
+        :label="periodButton.title"
+        v-bind="attrs.periodButtonActiveAttrs"
+        @click="onClickPeriodButton(periodButton.name)"
+      />
+    </template>
   </div>
 
   <div v-bind="attrs.periodsRowAttrs">
     <UButton
-      v-if="customRangeButton.range.to && customRangeButton.range.from"
+      v-if="customRangeButton.range.to && customRangeButton.range.from && PERIOD.custom !== period"
       square
       filled
       no-ring
       size="xs"
       variant="thirdary"
       v-bind="attrs.periodButtonAttrs"
-      :class="cx([attrs.periodButtonAttrs.class, getPeriodButtonsClasses(PERIOD.custom)])"
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
@@ -32,6 +43,21 @@
     </UButton>
 
     <UButton
+      v-if="customRangeButton.range.to && customRangeButton.range.from && PERIOD.custom === period"
+      square
+      filled
+      no-ring
+      size="xs"
+      variant="thirdary"
+      v-bind="attrs.periodButtonActiveAttrs"
+      @click="onClickCustomRangeButton"
+    >
+      {{ customRangeButton.label }}
+      <span v-if="customRangeButton.description" v-text="customRangeButton.description" />
+    </UButton>
+
+    <UButton
+      v-if="PERIOD.ownRange !== period"
       square
       filled
       no-ring
@@ -40,7 +66,19 @@
       :label="locale.ownRange"
       :left-icon="config.defaults.ownRangeIcon"
       v-bind="attrs.periodButtonAttrs"
-      :class="cx([attrs.periodButtonAttrs.class, getPeriodButtonsClasses(PERIOD.ownRange)])"
+      @click="onClickOwnRange"
+    />
+
+    <UButton
+      v-else
+      square
+      filled
+      no-ring
+      size="xs"
+      variant="thirdary"
+      :label="locale.ownRange"
+      :left-icon="config.defaults.ownRangeIcon"
+      v-bind="attrs.periodButtonActiveAttrs"
       @click="onClickOwnRange"
     />
   </div>
@@ -74,30 +112,97 @@
       />
     </div>
 
-    <div
-      v-if="isDatePeriodOutOfRange"
-      v-bind="attrs.periodDateListAttrs"
-      :class="cx([attrs.periodDateListAttrs.class, getPeriodDateListClasses()])"
-    >
-      <UButton
-        v-for="(date, index) in periodDateList"
-        :key="date.title"
-        no-ring
-        size="sm"
-        variant="thirdary"
-        :disabled="isDatePeriodOutOfRange(date)"
-        v-bind="attrs.periodDateAttrs"
-        :class="cx([attrs.periodDateAttrs.class, getPeriodDateClasses(date, index)])"
-        :label="String(date.title)"
-        @click="selectDate(date), toggleMenu()"
-      />
+    <div v-if="isDatePeriodOutOfRange" v-bind="attrs.periodDateListAttrs">
+      <template v-for="(date, index) in periodDateList" :key="date.title">
+        <UButton
+          v-if="getDatePeriodState(date, index).isActive"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateActiveAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date, index).isFirstInRange && !isListType"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.firstPeriodGridDateAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date, index).isFirstInRange && isListType"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.firstPeriodListDateAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date, index).isLastInRange && !isListType"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.lastPeriodGridDateAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date, index).isLastInRange && isListType"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.lastPeriodListDateAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date, index).isInRange"
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateInRangeAttrs"
+          :label="String(date.title)"
+          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
+          @click="selectDate(date), toggleMenu()"
+        />
+
+        <UButton
+          v-else
+          no-ring
+          size="sm"
+          variant="thirdary"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateAttrs"
+          :label="String(date.title)"
+          @click="selectDate(date), toggleMenu()"
+        />
+      </template>
     </div>
   </template>
 </template>
 
 <script setup>
 import { computed, inject } from "vue";
-import { cx } from "../../service.ui";
 
 import {
   getWeekDateList,
@@ -180,6 +285,8 @@ const periods = computed(() => [
   },
 ]);
 
+const isListType = computed(() => props.isPeriod.quarter || props.isPeriod.week);
+
 const rangeSwitchTitle = computed(() => {
   if (props.isPeriod.month || props.isPeriod.quarter) {
     return String(activeDate.value.getFullYear());
@@ -253,22 +360,9 @@ function selectCustomRange() {
   };
 }
 
-function getPeriodButtonsClasses(periodName) {
-  return period.value === periodName ? props.config.periodButtonActive : "";
-}
-
-function getPeriodDateClasses(date, index) {
+function getDatePeriodState(date, index) {
   const localStart = new Date(localValue.value.from);
   const localEnd = new Date(localValue.value.to);
-  const isListType = props.isPeriod.quarter || props.isPeriod.week;
-  const firstInRangeClasses = cx([
-    props.config.edgePeriodDate,
-    isListType ? props.config.firstPeriodListDate : props.config.firstPeriodGridDate,
-  ]);
-  const lastInRangeClasses = cx([
-    props.config.edgePeriodDate,
-    isListType ? props.config.lastPeriodListDate : props.config.lastPeriodGridDate,
-  ]);
 
   if (props.isPeriod.year) {
     localStart.setMonth(0, 1);
@@ -306,23 +400,10 @@ function getPeriodDateClasses(date, index) {
   const isSingleItem =
     startDateInRangeIndex === endDateInRangeIndex && ~endDateInRangeIndex && ~startDateInRangeIndex;
 
-  if (isInRange) {
-    return cx([
-      props.config.periodDateInRange,
-      startDateInRangeIndex === index && firstInRangeClasses,
-      endDateInRangeIndex === index && lastInRangeClasses,
-      isSingleItem && "rounded-dynamic",
-    ]);
-  }
+  const isFirstInRange = startDateInRangeIndex === index;
+  const isLastInRange = endDateInRangeIndex === index;
+  const isActive = localValue.value.from === date.startRange;
 
-  return localValue.value.from === date.startRange ? props.config.periodDateActive : "";
-}
-
-function getPeriodDateListClasses() {
-  if (props.isPeriod.ownRange) return [];
-  if (props.isPeriod.week) return props.config.periodDateWeekList;
-  if (props.isPeriod.month) return props.config.periodDateMonthList;
-  if (props.isPeriod.quarter) return props.config.periodDateQuarterList;
-  if (props.isPeriod.year) return props.config.periodDateYearList;
+  return { isInRange, isSingleItem, isFirstInRange, isLastInRange, isActive };
 }
 </script>
