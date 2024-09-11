@@ -1,8 +1,8 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
-import URow from "../ui.container-row/URow.vue";
-import UIcon from "../ui.image-icon/UIcon.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 /**
  * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
