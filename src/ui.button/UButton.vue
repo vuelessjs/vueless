@@ -90,8 +90,7 @@ import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 import { UButton } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UButton", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

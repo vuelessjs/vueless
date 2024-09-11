@@ -50,8 +50,7 @@ import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 import useBreakpoint from "./composables/useBreakpoint.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UCard", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const slots = useSlots();
 

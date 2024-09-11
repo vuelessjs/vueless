@@ -1,6 +1,5 @@
 export default /*tw*/ {
-  wrapper:
-    "p-3 pb-4 w-64 border border-gray-300 rounded-dynamic bg-white shadow overflow-hidden focus:outline-none",
+  wrapper: "p-3 pb-4 w-64 border border-gray-300 rounded-dynamic bg-white shadow overflow-hidden focus:outline-none",
   navigation: "mb-2 pb-2 border-b flex items-center justify-between",
   viewSwitchButton: "{UButton} -ml-3 pl-3 text-sm rounded-l-none",
   nextPrevWrapper: {
@@ -38,8 +37,7 @@ export default /*tw*/ {
   currentYear: "border-2 border-brand-900",
   selectedYear: "bg-brand-600 hover:bg-brand-600 text-white",
   activeYear: "bg-brand-100",
-  timepicker:
-    "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
+  timepicker: "mt-2 pl-1 pt-3 text-sm flex items-center justify-between gap-2 border-t border-brand-200",
   timepickerLabel: "w-full",
   timepickerInputWrapper: "flex items-center gap-px rounded-dynamic border border-brand-300",
   timepickerInput: "w-11 border-none px-2.5 py-1.5 text-center text-sm focus:ring-brand-700/15",

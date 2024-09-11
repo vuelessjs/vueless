@@ -282,8 +282,7 @@ import {
   INPUT_RANGE_TYPE,
 } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UDatePickerRange", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

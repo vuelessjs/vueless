@@ -54,8 +54,7 @@ import useAttrs from "./useAttrs.js";
 import useFormatCurrency from "./useFormatCurrency.js";
 import { UInputMoney } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UInputMoney", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

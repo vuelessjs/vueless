@@ -74,8 +74,7 @@ import { UModalConfirm } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UModalConfirm", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

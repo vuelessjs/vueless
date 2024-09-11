@@ -19,11 +19,7 @@ import useAttrs from "./useAttrs.js";
 
 import vTooltip from "../directives/vTooltip.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({
-  name: "UIcon",
-  inheritAttrs: false,
-});
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

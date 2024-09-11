@@ -148,8 +148,7 @@ import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UDataList", inheritAttrs: true });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

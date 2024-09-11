@@ -38,8 +38,7 @@ import useAttrs from "./useAttrs.js";
 import { UFile } from "./constants.js";
 import defaultConfig from "./config.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UFile", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

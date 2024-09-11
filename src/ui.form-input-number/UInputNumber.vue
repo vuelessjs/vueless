@@ -58,8 +58,7 @@ import defaultConfig from "./config.js";
 import { UInputNumber } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UInputNumber", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

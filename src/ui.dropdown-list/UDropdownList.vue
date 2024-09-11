@@ -119,8 +119,7 @@ import { useLocale } from "../composables/useLocale.js";
 import defaultConfig from "./config.js";
 import { UDropdownList } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UDropdownList", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 // TODO: Use props and regular modal value
 const modelValue = defineModel({ type: [String, Number, Object], default: "" });

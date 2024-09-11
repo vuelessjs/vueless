@@ -53,8 +53,7 @@ import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";
 import { ULink } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "ULink", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const emit = defineEmits([
   /**

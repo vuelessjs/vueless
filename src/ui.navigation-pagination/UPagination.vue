@@ -147,8 +147,7 @@ import defaultConfig from "./config.js";
 import { UPagination } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UPagination", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

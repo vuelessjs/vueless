@@ -84,8 +84,7 @@ import { UBadge } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UBadge", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

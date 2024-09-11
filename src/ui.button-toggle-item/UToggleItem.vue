@@ -59,8 +59,7 @@ import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";
 import { UToggleItem } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UToggleItem", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

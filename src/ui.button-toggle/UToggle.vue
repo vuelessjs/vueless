@@ -39,8 +39,7 @@ import defaultConfig from "./config.js";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UToggle", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

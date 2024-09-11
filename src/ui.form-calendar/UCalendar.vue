@@ -185,7 +185,7 @@ import DayView from "./components/DayView.vue";
 import MonthView from "./components/MonthView.vue";
 import YearView from "./components/YearView.vue";
 
-defineOptions({ name: "UCalendar" });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

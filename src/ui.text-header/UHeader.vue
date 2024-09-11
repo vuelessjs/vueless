@@ -11,8 +11,7 @@ import { UHeader } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UHeader", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

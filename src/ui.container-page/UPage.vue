@@ -97,8 +97,7 @@ import useAttrs from "./useAttrs.js";
 
 const slots = useSlots();
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UPage", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

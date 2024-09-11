@@ -61,8 +61,7 @@ import { UProgress, VARIANT } from "./constants.js";
 import StepperProgress from "./StepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UProgress", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

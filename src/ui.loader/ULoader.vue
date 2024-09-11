@@ -21,8 +21,7 @@ import { ULoader, ELLIPSES_AMOUNT } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "ULoader", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

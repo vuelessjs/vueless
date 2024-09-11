@@ -89,8 +89,7 @@ import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.js";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UNotify", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

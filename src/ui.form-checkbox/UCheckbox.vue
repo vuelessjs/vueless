@@ -53,8 +53,7 @@ import defaultConfig from "./config.js";
 import { UCheckbox } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UCheckbox", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const getCheckboxGroupName = inject("getCheckboxGroupName", null);
 const getCheckboxGroupCheckedItems = inject("getCheckboxGroupCheckedItems", null);

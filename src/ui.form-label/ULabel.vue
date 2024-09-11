@@ -72,8 +72,7 @@ import defaultConfig from "./config.js";
 import { ULabel, PLACEMENT } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "ULabel", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const emit = defineEmits([
   /**

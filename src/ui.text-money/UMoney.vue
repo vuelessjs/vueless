@@ -46,8 +46,7 @@ import defaultConfig from "./config.js";
 import { useAttrs } from "./useAttrs.js";
 import { separatedMoney, MONEY_SIGN_TYPE } from "./utilMoney.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UMoney", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

@@ -16,8 +16,7 @@ import { ULoaderTop, MAXIMUM, SPEED } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "ULoaderTop", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

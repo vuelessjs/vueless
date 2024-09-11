@@ -111,8 +111,7 @@ import { useLocale } from "../composables/useLocale.js";
 import { UInputFile } from "./constants.js";
 import defaultConfig from "./config.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UInputFile" });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

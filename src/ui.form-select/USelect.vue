@@ -324,8 +324,7 @@ import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
 
 import { useLocale } from "../composables/useLocale.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "USelect", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

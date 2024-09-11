@@ -49,8 +49,7 @@ import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 import { computed } from "vue";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "UFiles", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**

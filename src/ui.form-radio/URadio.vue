@@ -38,8 +38,7 @@ import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 import { URadio } from "./constants.js";
 
-/* Should be a string for correct web-types gen */
-defineOptions({ name: "URadio", inheritAttrs: false });
+defineOptions({ inheritAttrs: false });
 
 const setRadioGroupSelectedItem = inject("setRadioGroupSelectedItem", null);
 const getRadioGroupName = inject("getRadioGroupName", null);
