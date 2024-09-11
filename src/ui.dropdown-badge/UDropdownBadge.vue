@@ -67,7 +67,7 @@
 import { provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UBadge from "../ui.text-badge";
+import UBadge from "../ui.text-badge/UBadge.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
 import { getRandomId, getDefault } from "../utils/utilUI.js";

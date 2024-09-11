@@ -1,7 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UCard from "../../ui.container-card/UCard.vue";
-import URow from "../../ui.container-row";
+import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

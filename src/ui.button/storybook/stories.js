@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilSto
 
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import URow from "../../ui.container-row";
+import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 /**

@@ -6,7 +6,7 @@ import modalConfirmConfig from "../../ui.container-modal-confirm/config.js";
 import tableConfig from "../../ui.data-table/config.js";
 import calendarConfig from "../../ui.form-calendar/config.js";
 import datepickerConfig from "../../ui.form-date-picker/config.js";
-import datepickerRangeConfig from "../../ui.form-date-picker-range/config.js";
+import datepickerRangeConfig from "../../ui.form-date-picker-range/configs/default.config.js";
 import dataListConfig from "../../ui.data-list/config.js";
 import notifyDefaultConfig from "../../ui.text-notify/config.js";
 

@@ -1,8 +1,8 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
-import URow from "../../ui.container-row";
-import UCol from "../../ui.container-col";
+import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 /**

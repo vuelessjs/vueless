@@ -3,7 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilSto
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
-import URow from "../../ui.container-row";
+import URow from "../../ui.container-row/URow.vue";
 
 /**
  * The `ULink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-link)

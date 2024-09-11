@@ -1,7 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
-import URow from "../../ui.container-row";
+import URow from "../../ui.container-row/URow.vue";
 
 /**
  * The `UDropdownList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-list)

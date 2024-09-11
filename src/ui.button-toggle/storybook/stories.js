@@ -4,7 +4,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilSto
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
-import URow from "../../ui.container-row";
+import URow from "../../ui.container-row/URow.vue";
 
 const OPTIONS = [
   { value: "11", label: "label 1" },

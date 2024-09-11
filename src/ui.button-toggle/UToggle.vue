@@ -31,7 +31,7 @@
 <script setup>
 import { computed, provide, readonly } from "vue";
 
-import ULabel from "../ui.form-label";
+import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
 import { getDefault } from "../utils/utilUI.js";
 

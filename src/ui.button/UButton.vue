@@ -83,7 +83,7 @@
 import { computed, ref, watchEffect } from "vue";
 
 import { getRandomId, getDefault } from "../utils/utilUI.js";
-import ULoader from "../ui.loader";
+import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import defaultConfig from "./config.js";
