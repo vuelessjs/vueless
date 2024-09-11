@@ -1,0 +1,67 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
+import { getSource } from "../../utils/utilStorybook.js";
+
+import * as stories from "./stories.js";
+import defaultConfig from "../config.js?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Using loader
+To control the loader state in Vue components use `useLoaderTop` composable.
+
+The loader uses queue of resources and will be shown until at least one item is present in a queue.
+
+<Source code={`
+import { useLoaderTop } from "vueless";
+
+const {
+  isLoading,
+  loaderTopOn,
+  loaderTopOff,
+  requestQueue,
+  addRequestUrl
+  removeRequestUrl
+} = useLoaderTop();
+
+// get loader state
+console.log(isLoading.value);
+
+// show loader (add resource into queue)
+loaderTopOn("/transactions");
+
+// hide loader (remove resource from queue)
+loaderTopOff("/transactions");
+
+// get current resource array
+console.log(requestQueue.value);
+
+// add resource into loader queue
+addRequestUrl("/transactions");
+addRequestUrl(["/transactions", "/products"]);
+
+// remove resource from loader queue
+removeRequestUrl("/transactions");
+removeRequestUrl(["/transactions", "/products"]);
+`} language="jsx" dark />
+
+## Using loader outside Vue components
+To control the loader state outside Vue components, use the following methods.
+
+<Source code={`
+import { loaderTopOn, loaderTopOff } from "vueless";
+
+// show loader
+loaderTopOn("/transactions");
+
+// hide loader
+loaderTopOff("/transactions");
+`} language="jsx" dark />
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />

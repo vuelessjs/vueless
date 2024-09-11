@@ -13,7 +13,10 @@ export default /*tw*/ {
     last:rounded-dynamic last:rounded-l-none
   `,
   menu: {
-    base: "absolute z-40 my-2 w-80 overflow-hidden rounded-dynamic border border-brand-300 bg-white p-2 shadow focus:outline-none",
+    base: `
+      absolute z-40 my-2 w-80 overflow-hidden rounded-dynamic
+      border border-brand-300 bg-white p-2 shadow focus:outline-none
+    `,
     variants: {
       openDirectionX: {
         left: "right-0",

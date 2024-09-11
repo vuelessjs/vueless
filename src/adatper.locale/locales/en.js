@@ -1,14 +1,14 @@
-import selectConfig from "../../ui.form-select/configs/default.config";
-import switchConfig from "../../ui.form-switch/configs/default.config";
-import inputFileConfig from "../../ui.form-input-file/configs/default.config";
-import dropdownListConfig from "../../ui.dropdown-list/configs/default.config";
-import modalConfirmConfig from "../../ui.container-modal-confirm/configs/default.config";
-import tableConfig from "../../ui.data-table/configs/default.config";
-import calendarConfig from "../../ui.form-calendar/configs/default.config";
-import datepickerConfig from "../../ui.form-date-picker/configs/default.config";
-import datepickerRangeConfig from "../../ui.form-date-picker-range/configs/default.config";
-import dataListConfig from "../../ui.data-list/configs/default.config";
-import notifyDefaultConfig from "../../ui.text-notify/configs/default.config";
+import selectConfig from "../../ui.form-select/config.js";
+import switchConfig from "../../ui.form-switch/config.js";
+import inputFileConfig from "../../ui.form-input-file/config.js";
+import dropdownListConfig from "../../ui.dropdown-list/config.js";
+import modalConfirmConfig from "../../ui.container-modal-confirm/config.js";
+import tableConfig from "../../ui.data-table/config.js";
+import calendarConfig from "../../ui.form-calendar/config.js";
+import datepickerConfig from "../../ui.form-date-picker/config.js";
+import datepickerRangeConfig from "../../ui.form-date-picker-range/configs/default.config.js";
+import dataListConfig from "../../ui.data-list/config.js";
+import notifyDefaultConfig from "../../ui.text-notify/config.js";
 
 export default {
   USelect: selectConfig.i18n,
