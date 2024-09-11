@@ -46,6 +46,7 @@
           <div
             v-bind="attrs.bodyCellPrimaryAttrs"
             ref="cellRef"
+            :title="isElementOverflown(cellRef?.[index]) ? value.primary : ''"
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ value.primary || HYPHEN_SYMBOL }}
@@ -53,14 +54,23 @@
 
           <div v-bind="attrs.bodyCellSecondaryAttrs">
             <template v-if="Array.isArray(value.secondary)">
-              <div v-for="(secondary, idx) in value.secondary" ref="cellRef" :key="idx">
+              <div
+                v-for="(secondary, idx) in value.secondary"
+                ref="cellRef"
+                :key="idx"
+                :title="isElementOverflown(cellRef?.[index]) ? value.secondary : ''"
+              >
                 <span v-bind="attrs.bodyCellSecondaryEmptyAttrs">
                   {{ secondary }}
                 </span>
               </div>
             </template>
 
-            <div v-else ref="cellRef">
+            <div
+              v-else
+              ref="cellRef"
+              :title="isElementOverflown(cellRef?.[index]) ? value.secondary : ''"
+            >
               {{ value.secondary }}
             </div>
           </div>
@@ -72,6 +82,7 @@
           <div
             v-bind="attrs.bodyCellPrimaryAttrs"
             ref="cellRef"
+            :title="isElementOverflown(cellRef?.[index]) ? value : ''"
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
@@ -185,8 +196,7 @@ function setCellTitle(mutations) {
   mutations.forEach((mutation) => {
     const { target } = mutation;
 
-    const isOverflown =
-      target.clientWidth < target.scrollWidth || target.clientHeight < target.scrollHeight;
+    const isOverflown = isElementOverflown(target);
 
     if (isOverflown) {
       target.setAttribute("title", target.textContent);
@@ -196,5 +206,11 @@ function setCellTitle(mutations) {
       target.removeAttribute("title");
     }
   });
+}
+
+function isElementOverflown(element) {
+  if (!cellRef.value) return false;
+
+  return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
 }
 </script>
