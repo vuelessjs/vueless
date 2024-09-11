@@ -41,7 +41,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["src/**/default.config.{js,ts}"],
+      files: ["src/**/config.{js,ts}"],
       rules: {
         "vue/max-len": ["error", { code: 140 }],
         "prettier/prettier": ["warn", { printWidth: 130, tabWidth: 2 }],

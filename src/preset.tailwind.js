@@ -20,8 +20,8 @@ export const vuelessContent = [
   "./src/**/*.{js,ts,jsx,tsx,vue}",
   "./vueless.config.{js,ts}",
   "./node_modules/vueless/**/*.{js,ts,vue}",
-  ...(isStrategyOverride ? ["!./src/**/ui.*/**/configs/default.config.js"] : []),
-  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/configs/default.config.js"] : []),
+  ...(isStrategyOverride ? ["!./src/**/ui.*/config.js"] : []),
+  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/config.js"] : []),
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -35,7 +35,7 @@ export const vuelessContentNuxt = [
   "./error.vue",
   "./vueless.config.{js,ts}",
   "./node_modules/vueless/**/*.{js,ts,vue}",
-  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/configs/default.config.js"] : []),
+  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/config.js"] : []),
 ];
 
 /**
