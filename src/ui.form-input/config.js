@@ -10,9 +10,8 @@ export default /*tw*/ {
     base: `
       w-full bg-white !opacity-100 relative flex transition
       rounded-dynamic border border-solid border-gray-300
-      hover:border-gray-400 hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-dynamic
-      focus-within:ring-offset-dynamicfocus-within:ring-brand-700/15
+      hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
     variants: {
       error: {

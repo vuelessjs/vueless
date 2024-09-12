@@ -4,7 +4,7 @@ export default /*tw*/ {
   rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
   textareaWrapper: {
     base: `
-      px-3 py-2 bg-white transition
+      px-3 py-2 bg-white transition w-full
       rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic
       focus-within:ring-brand-700/15 focus-within:outline-none
