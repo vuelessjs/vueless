@@ -7,7 +7,6 @@
       :color="color"
       :variant="variant"
       v-bind="dropdownBadgeAttrs"
-      tabindex="0"
       :data-test="dataTest"
       @click="onClickBadge"
       @keydown.enter="onClickBadge"
@@ -58,6 +57,7 @@
       :value-key="valueKey"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
+      tabindex="-1"
       :data-test="`${dataTest}-list`"
     />
   </div>
@@ -227,10 +227,6 @@ watch(selectedItem, () => {
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
-
-  if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value.wrapperRef.focus());
-  }
 }
 
 function hideOptions() {
