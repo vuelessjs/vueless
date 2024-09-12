@@ -6,15 +6,31 @@ import { computed, watchEffect } from "vue";
 import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.js";
 
-export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
+export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod }) {
   const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
   const attrs = {};
 
+  const variantKeys = [
+    "rangeInputFirst",
+    "rangeInputLast",
+    "periodButtonActive",
+    "periodDateWeekList",
+    "periodDateMonthList",
+    "periodDateQuarterList",
+    "periodDateYearList",
+    "firstPeriodGridDate",
+    "firstPeriodListDate",
+    "lastPeriodGridDate",
+    "lastPeriodListDate",
+    "periodDateActive",
+    "periodDateInRange",
+  ];
+
   for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+    if (isSystemKey(key) && variantKeys.includes(key)) continue;
 
     const classes = computed(() => {
       let value = config.value[key];
@@ -66,24 +82,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
       }));
     }
 
-    if (key === "periodButton") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodButton", { classes }).value;
-      };
-    }
-
-    if (key === "periodDateList") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodDateList", { classes }).value;
-      };
-    }
-
-    if (key === "periodDate") {
-      attrs[`${key}Attrs`] = (classes) => {
-        return getAttrs("periodDate", { classes }).value;
-      };
-    }
-
     if (key === "calendar") {
       // This watcher rewrites default calendar locales with datepicker range locales
       // Watcher will not rewrite custom calendar locales
@@ -123,8 +121,128 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight }) {
     }
   }
 
+  for (const key of variantKeys) {
+    if (key === "rangeInputFirst") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.rangeInputAttrs.value,
+        class: cx([attrs.rangeInputAttrs.value.class, config.value.rangeInputFirst]),
+      }));
+    }
+
+    if (key === "rangeInputLast") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.rangeInputAttrs.value,
+        class: cx([attrs.rangeInputAttrs.value.class, config.value.rangeInputLast]),
+      }));
+    }
+
+    if (key === "periodButtonActive") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodButtonAttrs.value,
+        class: cx([attrs.periodButtonAttrs.value.class, config.value.periodButtonActive]),
+      }));
+    }
+
+    if (key === "periodDateWeekList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateListAttrs.value,
+        class: cx([attrs.periodDateListAttrs.value.class, config.value.periodDateWeekList]),
+      }));
+    }
+
+    if (key === "periodDateMonthList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateListAttrs.value,
+        class: cx([attrs.periodDateListAttrs.value.class, config.value.periodDateMonthList]),
+      }));
+    }
+
+    if (key === "periodDateQuarterList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateListAttrs.value,
+        class: cx([attrs.periodDateListAttrs.value.class, config.value.periodDateQuarterList]),
+      }));
+    }
+
+    if (key === "periodDateYearList") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateListAttrs.value,
+        class: cx([attrs.periodDateListAttrs.value.class, config.value.periodDateYearList]),
+      }));
+    }
+
+    if (key === "periodDateActive") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateAttrs.value,
+        class: cx([attrs.periodDateAttrs.value.class, config.value.periodDateActive]),
+      }));
+    }
+
+    if (key === "periodDateInRange") {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateAttrs.value,
+        class: cx([attrs.periodDateAttrs.value.class, config.value.periodDateInRange]),
+      }));
+    }
+
+    if (
+      [
+        "firstPeriodGridDate",
+        "firstPeriodListDate",
+        "lastPeriodGridDate",
+        "lastPeriodListDate",
+      ].includes(key)
+    ) {
+      attrs[`${key}Attrs`] = computed(() => ({
+        ...attrs.periodDateAttrs.value,
+        class: cx([
+          attrs.periodDateAttrs.value.class,
+          config.value.edgePeriodDate,
+          config.value[key],
+        ]),
+      }));
+    }
+  }
+
+  const periodDateListAttrs = computed(() => {
+    if (isPeriod.value.week) return attrs.periodDateWeekListAttrs.value;
+    if (isPeriod.value.month) return attrs.periodDateMonthListAttrs.value;
+    if (isPeriod.value.quarter) return attrs.periodDateQuarterListAttrs.value;
+    if (isPeriod.value.year) return attrs.periodDateYearListAttrs.value;
+
+    return attrs.periodDateListAttrs.value;
+  });
+
+  console.log(attrs.customRangeDescription);
+
+  const periodDatesMenuAttrs = computed(() => ({
+    periodsRowAttrs: attrs.periodsRowAttrs.value,
+    periodButtonAttrs: attrs.periodButtonAttrs.value,
+    periodButtonActiveAttrs: attrs.periodButtonActiveAttrs.value,
+    periodDateAttrs: attrs.periodDateAttrs.value,
+    periodDateActiveAttrs: attrs.periodDateActiveAttrs.value,
+    periodDateInRangeAttrs: attrs.periodDateInRangeAttrs.value,
+    periodDateListAttrs: periodDateListAttrs.value,
+    rangeSwitchWrapperAttrs: attrs.rangeSwitchWrapperAttrs.value,
+    rangeSwitchButtonAttrs: attrs.rangeSwitchButtonAttrs.value,
+    rangeSwitchTitleAttrs: attrs.rangeSwitchTitleAttrs.value,
+    lastPeriodGridDateAttrs: attrs.lastPeriodGridDateAttrs.value,
+    firstPeriodGridDateAttrs: attrs.firstPeriodGridDateAttrs.value,
+    lastPeriodListDateAttrs: attrs.lastPeriodListDateAttrs.value,
+    firstPeriodListDateAttrs: attrs.firstPeriodListDateAttrs.value,
+    customRangeDescription: attrs.customRangeDescriptionAttrs.value,
+  }));
+
+  const rangeInputsAttrs = computed(() => ({
+    rangeInputFirstAttrs: attrs.rangeInputFirstAttrs.value,
+    rangeInputLastAttrs: attrs.rangeInputLastAttrs.value,
+  }));
+
   return {
     ...attrs,
+    periodDatesMenuAttrs,
+    rangeInputsAttrs,
+    periodDateListAttrs,
     config,
     hasSlotContent,
   };

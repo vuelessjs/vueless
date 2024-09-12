@@ -115,6 +115,8 @@ const VALIDATION_RULES_REG_EX = {
 <script setup>
 import { ref, computed, onMounted, useSlots } from "vue";
 
+import { useMutationObserver } from "../composables/useMutationObserver.js";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
@@ -447,6 +449,10 @@ function transformValue(value, exp) {
 
   return matches ? matches.join("") : "";
 }
+
+useMutationObserver(leftSlotWrapperRef, (mutations) => {
+  mutations.forEach(setLabelPosition);
+});
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop =

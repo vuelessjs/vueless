@@ -127,7 +127,7 @@ export const leftSlot = DefaultTemplate.bind({});
 leftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+      <UButton variant="thirdary" filled square noRing label="Filter" class="rounded-r-none h-full" />
     </template>
   `,
 };
@@ -136,7 +136,7 @@ export const rightSlot = DefaultTemplate.bind({});
 rightSlot.args = {
   slotTemplate: `
     <template #right>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
+      <UButton variant="thirdary" filled square noRing label="Filter" class="rounded-l-none" />
     </template>
   `,
 };
