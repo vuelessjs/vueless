@@ -31,11 +31,11 @@ export default function useAttrs(props, { selected }) {
       const checkboxAttrs = attrs[`${key}Attrs`];
 
       attrs[`${key}Attrs`] = computed(() => {
-        if (!checkboxAttrs.value.config) {
-          checkboxAttrs.value.config = {};
+        if (selected.value.icon) {
+          checkboxAttrs.value.config = checkboxAttrs.value.config || {};
+          checkboxAttrs.value.config.defaults = checkboxAttrs.value.config.defaults || {};
+          checkboxAttrs.value.config.defaults.checkedIcon = selected.value.icon;
         }
-
-        checkboxAttrs.value.config.selectedIconName = selected.value.icon;
 
         return checkboxAttrs.value;
       });
