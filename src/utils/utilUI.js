@@ -12,24 +12,22 @@ import {
 /**
  Load Vueless config from the project root.
  Both for server and client side renderings.
- IIFE is used to cache the results.
+ IIFE for SSR is used to prevent top level await issue.
  */
-export const vuelessConfig = (() => {
-  let config = {};
+export let vuelessConfig = {};
 
-  if (isSSR) {
-    // TODO: test it in SSR, maybe `await` is needed
-    config = import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js`).default;
-  }
+if (isSSR) {
+  (async () =>
+    (vuelessConfig = (
+      await import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js?${Date.now()}`)
+    ).default))();
+}
 
-  if (isCSR) {
-    config = Object.values(
-      import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
-    )[0];
-  }
-
-  return config;
-})();
+if (isCSR) {
+  vuelessConfig = Object.values(
+    import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
+  )[0];
+}
 
 /**
  Extend twMerge (tailwind merge) by vueless and user config:
