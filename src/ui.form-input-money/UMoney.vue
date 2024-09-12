@@ -139,11 +139,19 @@ const props = defineProps({
   },
 
   /**
-   * Number of signs after the comma.
+   * Minimal number of signs after the decimal separator (fractional part of a number).
    */
-  decimalScale: {
+  minFractionDigits: {
     type: Number,
-    default: getDefault(defaultConfig, UInputMoney).decimalScale,
+    default: getDefault(defaultConfig, UInputMoney).minFractionDigits,
+  },
+
+  /**
+   * Maximal number of signs after the decimal separator (fractional part of a number).
+   */
+  maxFractionDigits: {
+    type: Number,
+    default: getDefault(defaultConfig, UInputMoney).maxFractionDigits,
   },
 
   /**
@@ -235,7 +243,8 @@ const moneyInputRef = ref(null);
 const { inputAttrs } = useAttrs(props);
 
 const { formattedValue, rawValue, setValue } = useFormatCurrency(`#${props.id}`, () => ({
-  decimalScale: props.decimalScale,
+  minFractionDigits: props.minFractionDigits,
+  maxFractionDigits: props.maxFractionDigits,
   decimalSeparator: props.decimalSeparator,
   thousandsSeparator: props.thousandsSeparator,
   positiveOnly: props.positiveOnly,

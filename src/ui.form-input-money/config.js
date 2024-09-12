@@ -3,7 +3,8 @@ export default /*tw*/ {
   defaults: {
     symbol: "$",
     size: "md",
-    decimalScale: 2,
+    minFractionDigits: 0,
+    maxFractionDigits: 2,
     decimalSeparator: ",",
     thousandsSeparator: " ",
     labelAlign: "topInside",

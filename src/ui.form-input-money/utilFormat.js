@@ -18,7 +18,14 @@ export default class FormatService {
   }
 
   static getFormattedValue(value, options) {
-    const { thousandsSeparator, decimalSeparator, decimalScale, prefix, positiveOnly } = options;
+    const {
+      thousandsSeparator,
+      decimalSeparator,
+      minFractionDigits,
+      maxFractionDigits,
+      prefix,
+      positiveOnly,
+    } = options;
 
     const invalidValuesRegExp = new RegExp("[^\\d,\\d.\\s-" + decimalSeparator + "]", "g");
     const doubleValueRegExp = new RegExp("([,\\.\\s-" + decimalSeparator + "])+", "g");
@@ -44,8 +51,9 @@ export default class FormatService {
     }
 
     const intlNumber = new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: decimalScale,
+      minimumFractionDigits:
+        minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits,
+      maximumFractionDigits: maxFractionDigits,
       signDisplay: positiveOnly ? "never" : "negative",
       roundingMode: "floor",
     });
@@ -60,7 +68,7 @@ export default class FormatService {
     const formattedValue = intlNumber.formatToParts(parseFloat(rawValue) || 0).map((part) => {
       if (part.type === "group") part.value = thousandsSeparator;
       if (part.type === "decimal") part.value = decimalSeparator;
-      if (part.type === "fraction") part.value = part.value.padEnd(decimalScale, "0");
+      if (part.type === "fraction") part.value = part.value.padEnd(maxFractionDigits, "0");
 
       return part;
     });

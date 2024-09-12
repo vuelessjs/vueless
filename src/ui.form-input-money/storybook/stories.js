@@ -80,8 +80,11 @@ error.args = { error: "Some error." };
 export const description = DefaultTemplate.bind({});
 description.args = { description: "Some description." };
 
-export const decimalScale = DefaultTemplate.bind({});
-decimalScale.args = { decimalScale: 4 };
+export const minFractionDigits = DefaultTemplate.bind({});
+minFractionDigits.args = { minFractionDigits: 2, maxFractionDigits: 4 };
+
+export const maxFractionDigits = DefaultTemplate.bind({});
+maxFractionDigits.args = { maxFractionDigits: 4 };
 
 export const decimalSeparator = DefaultTemplate.bind({});
 decimalSeparator.args = { decimalSeparator: "." };
