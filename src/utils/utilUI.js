@@ -56,16 +56,29 @@ const twMerge = extendTailwindMerge(
 );
 
 /**
-  Export cva (class variance authority) methods:
-   * extended with tailwind-merge
-   * remove all Vueless nested component names ({U...} strings) from class list string.
-  https://beta.cva.style
+ Export cva (class variance authority) methods:
+  * extended with tailwind-merge
+  * remove all Vueless nested component names ({U...} strings) from class list string.
+ Learn more here: https://beta.cva.style
 */
-export const { cva, cx, compose } = defineConfig({
+export const {
+  cx,
+  compose,
+  cva: classVarianceAuthority,
+} = defineConfig({
   hooks: {
     onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
   },
 });
+
+/* This allows skipping some CVA config keys in vueless config. */
+export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
+  classVarianceAuthority({
+    base,
+    variants,
+    compoundVariants,
+    defaultVariants,
+  });
 
 /**
  Return default values for component props, icons, etc..

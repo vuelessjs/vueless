@@ -213,8 +213,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     return attrs.periodDateListAttrs.value;
   });
 
-  console.log(attrs.customRangeDescription);
-
   const periodDatesMenuAttrs = computed(() => ({
     periodsRowAttrs: attrs.periodsRowAttrs.value,
     periodButtonAttrs: attrs.periodButtonAttrs.value,
