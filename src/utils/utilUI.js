@@ -7,7 +7,7 @@ import {
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
   NESTED_COMPONENT_REG_EXP,
-} from "../constants";
+} from "../constants.js";
 
 /**
  Load Vueless config from the project root.

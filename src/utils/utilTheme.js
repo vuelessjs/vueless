@@ -14,7 +14,7 @@ import {
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
-} from "../constants";
+} from "../constants.js";
 
 export function themeInit() {
   const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
