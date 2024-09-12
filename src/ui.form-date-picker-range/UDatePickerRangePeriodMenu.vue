@@ -39,7 +39,11 @@
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
-      <span v-if="customRangeButton.description" v-text="customRangeButton.description" />
+      <span
+        v-if="customRangeButton.description"
+        v-bind="attrs.customRangeDescription"
+        v-text="customRangeButton.description"
+      />
     </UButton>
 
     <UButton
@@ -53,7 +57,11 @@
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
-      <span v-if="customRangeButton.description" v-text="customRangeButton.description" />
+      <span
+        v-if="customRangeButton.description"
+        v-bind="attrs.customRangeDescription"
+        v-text="customRangeButton.description"
+      />
     </UButton>
 
     <UButton
@@ -267,22 +275,10 @@ const period = defineModel("period", { required: true, type: String });
 const isDatePeriodOutOfRange = inject("isDatePeriodOutOfRange", null);
 
 const periods = computed(() => [
-  {
-    name: PERIOD.week,
-    title: props.locale.week,
-  },
-  {
-    name: PERIOD.month,
-    title: props.locale.month,
-  },
-  {
-    name: PERIOD.quarter,
-    title: props.locale.quarter,
-  },
-  {
-    name: PERIOD.year,
-    title: props.locale.year,
-  },
+  { name: PERIOD.week, title: props.locale.week },
+  { name: PERIOD.month, title: props.locale.month },
+  { name: PERIOD.quarter, title: props.locale.quarter },
+  { name: PERIOD.year, title: props.locale.year },
 ]);
 
 const isListType = computed(() => props.isPeriod.quarter || props.isPeriod.week);
