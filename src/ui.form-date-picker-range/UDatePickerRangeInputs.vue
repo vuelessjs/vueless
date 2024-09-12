@@ -23,17 +23,13 @@
 </template>
 
 <script setup>
-import {
-  isWrongDateFormat,
-  isWrongMonthNumber,
-  isWrongDayNumber,
-} from "../services/validation.service";
+import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.js";
 
-import { dateIsOutOfRange, parseDate } from "../../ui.form-calendar/services/calendar.service";
+import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.js";
 
-import UInput from "../../ui.form-input";
+import UInput from "../ui.form-input/UInput.vue";
 
-import { INPUT_RANGE_TYPE, INPUT_RANGE_FORMAT } from "../constants";
+import { INPUT_RANGE_TYPE, INPUT_RANGE_FORMAT } from "./constants.js";
 
 const props = defineProps({
   locale: {

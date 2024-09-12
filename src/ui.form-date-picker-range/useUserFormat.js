@@ -1,8 +1,8 @@
 import { computed } from "vue";
 
-import useBreakpoint from "../../composable.breakpoint";
+import useBreakpoint from "../composables/useBreakpoint.js";
 
-import { isSameMonth } from "../../ui.form-calendar/services/date.service";
+import { isSameMonth } from "../ui.form-calendar/utilDate.js";
 
 export function useUserFormat(localValue, userFormatLocale, isPeriod, isVariant) {
   const { isMobileBreakpoint } = useBreakpoint();

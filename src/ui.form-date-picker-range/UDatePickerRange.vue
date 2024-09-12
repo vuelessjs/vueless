@@ -89,10 +89,10 @@
         v-bind="menuAttrs"
         @keydown.esc="deactivate"
       >
-        <PeriodDatesMenu
-          v-model:localValue="localValue"
-          v-model:activeDate="activeDate"
-          v-model:periodDateList="periodDateList"
+        <UDatePickerRangePeriodMenu
+          v-model:local-value="localValue"
+          v-model:active-date="activeDate"
+          v-model:period-date-list="periodDateList"
           v-model:period="period"
           :config="config"
           :is-period="isPeriod"
@@ -108,14 +108,14 @@
           @click-next="onClickShiftDatesList(SHIFT_ACTION.next)"
         />
 
-        <RangeInputs
+        <UDatePickerRangeInputs
           v-if="isPeriod.ownRange"
           v-bind="rangeInputWrapperAttrs"
-          v-model:localValue="localValue"
-          v-model:inputRangeFromError="inputRangeFromError"
-          v-model:inputRangeToError="inputRangeToError"
-          v-model:rangeStart="rangeStart"
-          v-model:rangeEnd="rangeEnd"
+          v-model:local-value="localValue"
+          v-model:input-range-from-error="inputRangeFromError"
+          v-model:input-range-to-error="inputRangeToError"
+          v-model:range-start="rangeStart"
+          v-model:range-end="rangeEnd"
           :range-input-name="rangeInputName"
           :locale="locale"
           :date-format="dateFormat"
@@ -145,13 +145,13 @@
 
 <script setup>
 import { computed, watch, ref, nextTick, provide } from "vue";
-import { getRandomId, getDefault } from "../service.ui";
+import { getRandomId, getDefault } from "../utils/utilUI.js";
 
-import UInput from "../ui.form-input";
-import UCalendar from "../ui.form-calendar";
-import PeriodDatesMenu from "./components/PeriodDatesMenu.vue";
-import RangeInputs from "./components/RangeInputs.vue";
-import UButton from "../ui.button";
+import UInput from "../ui.form-input/UInput.vue";
+import UCalendar from "../ui.form-calendar/UCalendar.vue";
+import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";
+import UDatePickerRangeInputs from "./UDatePickerRangeInputs.vue";
+import UButton from "../ui.button/UButton.vue";
 
 import vClickOutside from "../directives/vClickOutside.js";
 
@@ -168,13 +168,9 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
-} from "../ui.form-calendar/services/date.service";
+} from "../ui.form-calendar/utilDate.js";
 
-import {
-  formatDate,
-  parseDate,
-  dateIsOutOfRange,
-} from "../ui.form-calendar/services/calendar.service";
+import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.js";
 
 import {
   getWeekDateList,
@@ -183,10 +179,10 @@ import {
   getMonthsDateList,
 } from "./utilDateRange.js";
 
-import useAttrs from "./composables/attrs.composable";
-import { useAutoPosition } from "../composable.autoPosition";
-import { useLocale } from "./composables/useLocale.js";
-import { useUserFormat } from "./composables/useUserFormat.js";
+import useAttrs from "./useAttrs.js";
+import { useAutoPosition } from "../composables/useAutoPosition.js";
+import { useLocale } from "./useLocale.js";
+import { useUserFormat } from "./useUserFormat.js";
 
 import defaultConfig from "./config.js";
 import {
@@ -196,7 +192,7 @@ import {
   PERIOD,
   INPUT_RANGE_FORMAT,
   SHIFT_ACTION,
-} from "./constants";
+} from "./constants.js";
 
 defineOptions({ inheritAttrs: false });
 

@@ -1,12 +1,12 @@
 import { computed } from "vue";
-import { useLocale as useGlobalLocale } from "../../composable.locale";
+import { useLocale as useGlobalLocale } from "../composables/useLocale.js";
 
 import { merge } from "lodash-es";
-import { getSortedLocale } from "../../ui.form-calendar/services/date.service";
+import { getSortedLocale } from "../ui.form-calendar/utilDate.js";
 
-import { LOCALE_TYPE } from "../../ui.form-calendar/constants";
-import { UDatePickerRange } from "../constants";
-import defaultConfig from "../configs/default.config";
+import { LOCALE_TYPE } from "../ui.form-calendar/constants.js";
+import { UDatePickerRange } from "./constants.js";
+import defaultConfig from "./config.js";
 
 export function useLocale(props) {
   const { tm } = useGlobalLocale();
