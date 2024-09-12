@@ -54,6 +54,7 @@ export default /*tw*/ {
   firstPeriodListDate: "rounded-b-none",
   lastPeriodListDate: "rounded-t-none",
   periodDateActive: "bg-gray-100",
+  customRangeDescription: "",
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
   rangeInputFirst: "group/range-input-first",
   rangeInputLast: "group/range-input-last",

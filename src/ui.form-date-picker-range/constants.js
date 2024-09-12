@@ -20,3 +20,10 @@ export const PERIOD = {
   ownRange: "ownRange",
   custom: "custom",
 };
+
+export const INPUT_RANGE_FORMAT = "d.m.Y";
+
+export const SHIFT_ACTION = {
+  prev: "prev",
+  next: "next",
+};
