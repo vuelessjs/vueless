@@ -1,6 +1,6 @@
 export default /*tw*/ {
   header: {
-    base: "text-{color}-600 font-medium",
+    base: "text-{color}-600 font-bold",
     variants: {
       size: {
         xs: "text-lg",
