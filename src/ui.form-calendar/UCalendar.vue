@@ -181,9 +181,9 @@ import {
 
 import defaultConfig from "./config.js";
 
-import DayView from "./components/DayView.vue";
-import MonthView from "./components/MonthView.vue";
-import YearView from "./components/YearView.vue";
+import DayView from "./UCalendarDayView.vue";
+import MonthView from "./UCalendarMonthView.vue";
+import YearView from "./UCalendarYearView.vue";
 
 defineOptions({ inheritAttrs: false });
 

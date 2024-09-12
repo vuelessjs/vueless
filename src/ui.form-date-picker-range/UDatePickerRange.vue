@@ -248,26 +248,18 @@ import {
   getStartOfYear,
   getDatesDifference,
   isSameMonth,
-} from "../ui.form-calendar/services/date.service";
+} from "../ui.form-calendar/utilDate.js";
 
-import {
-  dateIsOutOfRange,
-  formatDate,
-  parseDate,
-} from "../ui.form-calendar/services/calendar.service";
+import { dateIsOutOfRange, formatDate, parseDate } from "../ui.form-calendar/utilCalendar.js";
 
 import {
   getWeekDateList,
   getYearDateList,
   getQuartersDateList,
   getMonthsDateList,
-} from "./services/dateRange.service";
+} from "./utilDateRange.js";
 
-import {
-  isWrongDateFormat,
-  isWrongMonthNumber,
-  isWrongDayNumber,
-} from "./services/validation.service";
+import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.js";
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.js";
 import useBreakpoint from "../composables/useBreakpoint.js";
