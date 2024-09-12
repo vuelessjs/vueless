@@ -51,6 +51,7 @@
 
     <UDropdownList
       v-if="isShownOptions"
+      ref="dropdownListRef"
       v-model="selectedItem"
       :size="size"
       :options="options"
@@ -58,13 +59,12 @@
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
       :data-test="`${dataTest}-list`"
-      @click="onClickList"
     />
   </div>
 </template>
 
 <script setup>
-import { provide, ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -208,10 +208,9 @@ const emit = defineEmits([
   "select",
 ]);
 
-provide("hideDropdownOptions", hideOptions);
-
 const isShownOptions = ref(false);
 const selectedItem = ref("");
+const dropdownListRef = ref(null);
 
 const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
   props,
@@ -222,17 +221,19 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
 
 watch(selectedItem, () => {
   emit("select", selectedItem.value);
+
+  hideOptions();
 });
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
 }
 
 function hideOptions() {
   isShownOptions.value = false;
-}
-
-function onClickList() {
-  hideOptions();
 }
 </script>

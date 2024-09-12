@@ -14,9 +14,9 @@ export default {
   args: {
     label: "Dropdown",
     options: [
-      { label: "option 1", value: "1" },
-      { label: "option 2", value: "2" },
-      { label: "option 3", value: "3" },
+      { label: "option 1", id: "1" },
+      { label: "option 2", id: "2" },
+      { label: "option 3", id: "3" },
     ],
   },
   argTypes: {
