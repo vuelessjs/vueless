@@ -18,7 +18,8 @@ export default /*tw*/ {
       tabindex: {
         true: `
           cursor-pointer focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-{color}-700/15
-          focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15`,
+          focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15
+        `,
       },
       color: {
         grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
