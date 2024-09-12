@@ -10,7 +10,7 @@ export function useMutationObserver(
   onMounted(() => {
     if (!toValue(target)) return;
 
-    if (Array.isArray) {
+    if (Array.isArray(toValue(target))) {
       toValue(target).forEach((element) => {
         observer.observe(element, config);
       });
@@ -22,7 +22,7 @@ export function useMutationObserver(
   watch(
     () => toValue(target),
     () => {
-      if (Array.isArray) {
+      if (Array.isArray(toValue(target))) {
         toValue(target).forEach((element) => {
           observer.observe(element, config);
         });
