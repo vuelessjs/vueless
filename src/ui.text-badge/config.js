@@ -16,11 +16,14 @@ export default /*tw*/ {
         true: "rounded-full",
       },
       tabindex: {
-        true: "cursor-pointer focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15",
+        true: `
+          cursor-pointer focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-{color}-700/15
+          focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15
+        `,
       },
       color: {
-        grayscale: "focus:ring-gray-700/15",
-        white: "focus:ring-gray-700/15",
+        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
+        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
       },
     },
     compoundVariants: [
@@ -66,6 +69,6 @@ export default /*tw*/ {
     { pattern: `border-(${colors})-100` },
     { pattern: `border-(${colors})-600` },
     { pattern: `text-(${colors})-600` },
-    { pattern: `ring-(${colors})-700`, variants: ["focus"] },
+    { pattern: `ring-(${colors})-700`, variants: ["focus", "focus-within"] },
   ],
 };
