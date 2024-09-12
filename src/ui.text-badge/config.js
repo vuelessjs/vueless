@@ -1,10 +1,6 @@
 export default /*tw*/ {
   badge: {
-    base: `
-      border rounded-dynamic inline-block py-1 !leading-none outline-none
-      focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
-      focus-within:ring-{color}-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
-    `,
+    base: "border rounded-dynamic inline-block py-1 !leading-none outline-none",
     variants: {
       variant: {
         primary: "bg-{color}-600 text-white border-transparent",
@@ -62,8 +58,8 @@ export default /*tw*/ {
   defaults: {
     color: "brand",
     variant: "primary",
+    tabindex: "-1",
     size: "md",
-    tabindex: 0,
     round: false,
     bordered: false,
   },
