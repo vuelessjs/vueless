@@ -6,7 +6,7 @@
     v-bind="wrapperAttrs"
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
-    @keydown.enter.tab.stop.self="addPointerElement"
+    @keydown.enter.stop.self="addPointerElement"
   >
     <ul :id="`listbox-${id}`" v-bind="listAttrs" role="listbox">
       <li
