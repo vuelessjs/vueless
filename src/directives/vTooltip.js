@@ -1,34 +1,37 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
-// Fix for SSR
-import "tippy.js/dist/tippy.css";
-import "tippy.js/themes/light.css";
-import "tippy.js/animations/shift-away.css";
-
 import { vuelessConfig } from "../utils/utilUI.js";
 import { isCSR, isSSR } from "../utils/utilHelper.js";
 
-const globalSettings = vuelessConfig?.directive?.tooltip || {};
-const defaultSettings = {
-  arrow: true,
-  theme: "light",
-  animation: "shift-away",
-};
+let settings = {};
 
-const mergedSettings = merge(defaultSettings, globalSettings);
+if (isCSR) {
+  import("tippy.js/dist/tippy.css");
+  import("tippy.js/themes/light.css");
+  import("tippy.js/animations/shift-away.css");
 
-isCSR && tippy.setDefaultProps(mergedSettings);
+  const defaultSettings = {
+    arrow: true,
+    theme: "light",
+    animation: "shift-away",
+  };
+
+  settings = merge(defaultSettings, vuelessConfig?.directive?.tooltip || {});
+  tippy.setDefaultProps(settings);
+}
 
 export default {
   mounted(el, bindings) {
-    isCSR && tippy(el, merge(mergedSettings, bindings.value || {}));
+    if (isSSR) return;
+
+    tippy(el, merge(settings, bindings.value || {}));
   },
 
   updated(el, bindings) {
     if (!el._tippy || isSSR) return;
 
-    el._tippy.setProps(merge(mergedSettings, bindings.value || {}));
+    el._tippy.setProps(merge(settings, bindings.value || {}));
   },
 
   unmounted(el) {
