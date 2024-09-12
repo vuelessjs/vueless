@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import colors from "tailwindcss/colors";
+import colors from "tailwindcss/colors.js";
 import { computed } from "vue";
 
 import { GRAY_COLORS } from "../constants.js";
