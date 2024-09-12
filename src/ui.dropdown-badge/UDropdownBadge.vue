@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
