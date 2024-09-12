@@ -182,98 +182,146 @@ If you going to use `bootstrap-icons` or `heroicons` you need to replace icon na
 export default {
   component: {
     UAccordion: {
-      expandIcon: "add",
-      collapseIcon: "remove",
+      defaults: {
+        expandIcon: "add",
+        collapseIcon: "remove",
+      },
     },
     UModal: {
-      backIcon: "arrow_back",
-      closeIcon: "close",
+      defaults: {
+        backIcon: "arrow_back",
+        closeIcon: "close",
+      },
     },
     UPage: {
-      backIcon: "arrow_back",
+      defaults: {
+        backIcon: "arrow_back",
+      },
     },
     UDataList: {
-      dragIcon: "drag_indicator",
-      deleteIcon: "delete",
-      editIcon: "edit_note",
+      defaults: {
+        dragIcon: "drag_indicator",
+        deleteIcon: "delete",
+        editIcon: "edit_note",
+      },
     },
     UTable: {
-      expandIcon: "add",
-      collapseIcon: "remove",
+      defaults: {
+        expandIcon: "add",
+        collapseIcon: "remove",
+      },
     },
     UDropdownBadge: {
-      dropdownIcon: "keyboard_arrow_down",
+      defaults: {
+        dropdownIcon: "keyboard_arrow_down",
+      },
     },
     UDropdownButton: {
-      dropdownIcon: "keyboard_arrow_down",
+      defaults: {
+        dropdownIcon: "keyboard_arrow_down",
+      },
     },
     UDropdownLink: {
-      dropdownIcon: "keyboard_arrow_down",
+      defaults: {
+        dropdownIcon: "keyboard_arrow_down",
+      },
     },
     UDropdownList: {
-      addOptionIcon: "add",
+      defaults: {
+        addOptionIcon: "add",
+      },
     },
     UCalendar: {
-      viewSwitchIcon: "keyboard_arrow_down",
-      nextIcon: "keyboard_arrow_right",
-      prevIcon: "keyboard_arrow_left",
+      defaults: {
+        viewSwitchIcon: "keyboard_arrow_down",
+        nextIcon: "keyboard_arrow_right",
+        prevIcon: "keyboard_arrow_left",
+      },
     },
     UCheckbox: {
-      partiallyCheckedIcon: "remove",
-      checkedIcon: "check",
+      defaults: {
+        partiallyCheckedIcon: "remove",
+        checkedIcon: "check",
+      },
     },
     UColorPicker: {
-      unselectedIcon: "close",
+      defaults: {
+        unselectedIcon: "close",
+      },
     },
     UDatePickerRange: {
-      nextIcon: "keyboard_arrow_right",
-      prevIcon: "keyboard_arrow_left",
-      ownRangeIcon: "apps",
+      defaults: {
+        nextIcon: "keyboard_arrow_right",
+        prevIcon: "keyboard_arrow_left",
+        ownRangeIcon: "apps",
+      },
     },
     UInput: {
-      passwordVisibleIcon: "visibility-fill",
-      passwordHiddenIcon: "visibility_off-fill",
+      defaults: {
+        passwordVisibleIcon: "visibility-fill",
+        passwordHiddenIcon: "visibility_off-fill",
+      },
     },
     UInputFile: {
-      chooseFileIcon: "attach_file",
-      clearIcon: "close",
-      removeItemIcon: "close",
+      defaults: {
+        chooseFileIcon: "attach_file",
+        clearIcon: "close",
+        removeItemIcon: "close",
+      },
     },
     UInputNumber: {
-      removeIcon: "remove",
-      addIcon: "add",
+      defaults: {
+        removeIcon: "remove",
+        addIcon: "add",
+      },
     },
     UInputRating: {
-      selectedIcon: "star-fill",
-      unselectedIcon: "star",
+      defaults: {
+        selectedIcon: "star-fill",
+        unselectedIcon: "star",
+      },
     },
     UInputSearch: {
-      clearIcon: "close",
-      searchIcon: "search",
+      defaults: {
+        clearIcon: "close",
+        searchIcon: "search",
+       },
     },
     USelect: {
-      dropdownIcon: "expand_more",
-      clearIcon: "close_small",
-      clearMultipleIcon: "close_small",
+      defaults: {
+        dropdownIcon: "expand_more",
+        clearIcon: "close_small",
+        clearMultipleIcon: "close_small",
+      },
     },
     USwitch: {
-      onIcon: "check",
-      offIcon: "close",
+      defaults: {
+        onIcon: "check",
+        offIcon: "close",
+      },
     },
     UAlert: {
-      closeIcon: "close",
+      defaults: {
+        closeIcon: "close",
+      },
     },
     UEmpty: {
-      emptyIcon: "emoji_food_beverage",
+      defaults: {
+        emptyIcon: "emoji_food_beverage",
+      },
     },
     UFile: {
-      fileIcon: "description",
+      defaults: {
+        fileIcon: "description",
+      },
     },
     UNotify: {
-      successIcon: "check_circle",
-      warningIcon: "warning",
-      errorIcon: "error",
-      closeIcon: "close",
+      defaults: {
+        successIcon: "check_circle",
+        warningIcon: "warning",
+        errorIcon: "error",
+        closeIcon: "close",
+      },
     },
   },
 };
