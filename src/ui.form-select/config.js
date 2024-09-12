@@ -75,7 +75,7 @@ export default /*tw*/ {
       { labelAlign: "topInside", size: "lg", label: true, class: "-mt-4" },
     ],
   },
-  toggle: "mr-3",
+  toggle: "mr-3 absolute inset-0 left-auto",
   toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
   clear: "",
   clearIcon: "{UIcon}",
