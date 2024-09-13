@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.341",
+  "version": "0.0.342",
   "license": "MIT",
   "description": "Vue Styleless Component Framework.",
   "homepage": "https://vueless.com",
@@ -55,7 +55,7 @@
     "vite": "^5.2.13",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vue": "^3.4.27",
+    "vue": "^3.5.4",
     "vue-router": "^4.3.2"
   },
   "resolutions": {

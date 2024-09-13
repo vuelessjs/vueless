@@ -8,10 +8,10 @@
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement"
   >
-    <ul :id="`listbox-${id}`" v-bind="listAttrs" role="listbox">
+    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
         v-for="(option, index) of options"
-        :id="`${id}-${index}`"
+        :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
         ref="optionsRef"
@@ -103,13 +103,13 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 import { isMac } from "../utils/utilPlatform.js";
 
 import usePointer from "./usePointer.js";
@@ -183,12 +183,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -212,6 +211,8 @@ const optionsRef = ref([]);
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
+
+const elementId = props.id || useId();
 
 const {
   config,

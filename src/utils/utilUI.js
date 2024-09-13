@@ -124,7 +124,7 @@ export function setColor(classes, color) {
 }
 
 /**
- Generates unique #id.
+ Generates simple unique identifier.
  @param { Number } length
  @returns { String }
  */

@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :for="id"
+    :for="elementId"
     :size="size"
     :label="label"
     :error="error"
@@ -45,7 +45,7 @@
             <UButton
               filled
               no-ring
-              :for="id"
+              :for="elementId"
               tag="label"
               variant="thirdary"
               :size="buttonSize"
@@ -57,7 +57,7 @@
             />
 
             <input
-              :id="id"
+              :id="elementId"
               ref="fileInputRef"
               type="file"
               :disabled="disabled"
@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, useId } from "vue";
 import { merge } from "lodash-es";
 
 import UText from "../ui.text-block/UText.vue";
@@ -102,7 +102,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 import { getFileMbSize } from "./utilFileForm.js";
 
 import useAttrs from "./useAttrs.js";
@@ -194,12 +194,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
   /**
    * Sets component ui config object.
@@ -236,6 +235,8 @@ const { tm } = useLocale();
 
 const dropZoneRef = ref(null);
 const fileInputRef = ref(null);
+
+const elementId = props.id || useId();
 
 const {
   config,

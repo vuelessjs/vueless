@@ -1,6 +1,6 @@
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
     ref="moneyInputRef"
     v-model="formattedValue"
     :size="size"
@@ -42,9 +42,9 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted, nextTick } from "vue";
+import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import UInput from "../ui.form-input/UInput.vue";
 import { SYMBOL_MINUS } from "../ui.text-money/constants.js";
@@ -212,11 +212,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -239,6 +238,8 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
 const moneyInputRef = ref(null);
+
+const elementId = props.id || useId();
 
 const { inputAttrs } = useAttrs(props);
 
