@@ -1,8 +1,8 @@
 <template>
   <ULink :href="url" no-ring v-bind="fileAttrs" :data-test="dataTest">
-    <slot name="left" :file="{ id, label, url, imageUrl }" />
+    <slot name="left" :file="{ elementId, label, url, imageUrl }" />
 
-    <slot :file="{ id, label, url, imageUrl }">
+    <slot :file="{ elementId, label, url, imageUrl }">
       <div v-bind="bodyAttrs">
         <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
 
@@ -22,17 +22,17 @@
       </div>
     </slot>
 
-    <slot name="right" :file="{ id, label, url, imageUrl }" />
+    <slot name="right" :file="{ elementId, label, url, imageUrl }" />
   </ULink>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import useAttrs from "./useAttrs.js";
 import { UFile } from "./constants.js";
@@ -75,12 +75,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -101,6 +100,8 @@ const props = defineProps({
 });
 
 const focus = ref(false);
+
+const elementId = props.id || useId();
 
 const { config, fileAttrs, bodyAttrs, fileIconAttrs, fileLabelAttrs, fileImageAttrs } = useAttrs(
   props,

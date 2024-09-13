@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :for="id"
+    :for="elementId"
     :label="label"
     :error="error"
     :size="checkboxSize"
@@ -11,7 +11,7 @@
     :data-test="`${dataTest}-label`"
   >
     <input
-      :id="id"
+      :id="elementId"
       type="checkbox"
       :value="checkboxValue"
       :true-value="trueValue"
@@ -24,7 +24,7 @@
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="id">
+    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
       <UIcon
         internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
@@ -41,13 +41,13 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, computed, watchEffect, toValue } from "vue";
+import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
 import { UCheckbox } from "./constants.js";
@@ -170,12 +170,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -212,6 +211,8 @@ const emit = defineEmits([
 const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
+
+const elementId = props.id || useId();
 
 const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } = useAttrs(
   props,

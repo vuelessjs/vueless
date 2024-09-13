@@ -1,6 +1,6 @@
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
     ref="searchInput"
     v-model="search"
     :size="size"
@@ -78,12 +78,12 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 import { debounce as debounceMethod } from "../utils/utilHelper.js";
 
 import { UInputSearch } from "./constants.js";
@@ -201,11 +201,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   debounce: {
@@ -250,6 +249,8 @@ const emit = defineEmits([
 ]);
 
 const localValue = ref("");
+
+const elementId = props.id || useId();
 
 const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
 

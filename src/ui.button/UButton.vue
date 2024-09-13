@@ -1,7 +1,7 @@
 <template>
   <component
     :is="tag"
-    :id="id"
+    :id="elementId"
     ref="buttonRef"
     :disabled="disabled"
     v-bind="buttonAttrs"
@@ -80,9 +80,9 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, useId } from "vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
@@ -225,12 +225,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -249,6 +248,8 @@ const props = defineProps({
     default: "",
   },
 });
+
+const elementId = props.id || useId();
 
 const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
   useAttrs(props);

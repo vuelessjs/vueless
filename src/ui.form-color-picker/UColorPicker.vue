@@ -12,7 +12,7 @@
     <div v-bind="listAttrs">
       <div v-bind="unselectedAttrs">
         <URadio
-          :id="id"
+          :id="elementId"
           :name="name"
           :size="size"
           color="gray"
@@ -22,7 +22,7 @@
           @update:model-value="onUpdateValue('')"
         />
 
-        <label :for="id">
+        <label :for="elementId">
           <UIcon
             v-if="selectedItem === ''"
             internal
@@ -51,12 +51,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import { UColorPicker } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -131,12 +131,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -163,6 +162,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const elementId = props.id || useId();
 
 const {
   config,

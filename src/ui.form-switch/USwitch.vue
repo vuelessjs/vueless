@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :for="id"
+    :for="elementId"
     :size="size"
     :label="label"
     :description="description"
@@ -10,9 +10,9 @@
     v-bind="switchLabelAttrs"
     @click="onClickToggle"
   >
-    <label :for="id" v-bind="wrapperAttrs">
+    <label :for="elementId" v-bind="wrapperAttrs">
       <input
-        :id="id"
+        :id="elementId"
         v-model="checkedValue"
         type="checkbox"
         :disabled="disabled"
@@ -38,12 +38,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useId } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import { USwitch } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -129,11 +129,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -170,6 +169,8 @@ const checkedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
+
+const elementId = props.id || useId();
 
 const {
   config,
