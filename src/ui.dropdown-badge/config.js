@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownBadge: "{UBadge}",
-  dropdownBadgeActive: "group",
+  dropdownBadgeActive: "group ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
     component: "{UDropdownList}",

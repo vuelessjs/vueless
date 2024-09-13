@@ -33,7 +33,10 @@ export default function useAttrs(props, { isShownOptions }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...linkAttrs.value,
-        class: cx([linkAttrs.value.class, isShownOptions.value && config.value.dropdownLinkActive]),
+        class: cx([
+          linkAttrs.value.class,
+          isShownOptions.value ? config.value.dropdownLinkActive : {},
+        ]),
       }));
     }
   }

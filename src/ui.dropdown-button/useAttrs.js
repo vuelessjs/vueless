@@ -35,7 +35,7 @@ export default function useAttrs(props, { isShownOptions }) {
         ...dropdownButton.value,
         class: cx([
           dropdownButton.value.class,
-          isShownOptions.value && config.value.dropdownButtonActive,
+          isShownOptions.value ? config.value.dropdownButtonActive : {},
         ]),
       }));
     }

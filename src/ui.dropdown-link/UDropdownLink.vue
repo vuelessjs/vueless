@@ -55,6 +55,7 @@
 
     <UDropdownList
       v-if="isShownOptions"
+      ref="dropdownListRef"
       v-model="selectedItem"
       :size="size"
       :options="options"
@@ -68,7 +69,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref, watch } from "vue";
+import { nextTick, computed, provide, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
@@ -231,6 +232,7 @@ provide("hideDropdownOptions", hideOptions);
 
 const isShownOptions = ref(false);
 const selectedItem = ref("");
+const dropdownListRef = ref(null);
 
 const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
   props,
@@ -253,6 +255,10 @@ watch(selectedItem, () => {
 
 function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
 }
 
 function hideOptions() {

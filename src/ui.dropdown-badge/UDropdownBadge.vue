@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -227,6 +227,10 @@ watch(selectedItem, () => {
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
 }
 
 function hideOptions() {
