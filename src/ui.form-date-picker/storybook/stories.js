@@ -35,7 +35,7 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <UDatePicker v-bind="args" v-model="args.modelValue">
+    <UDatePicker open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UDatePicker>
 
@@ -57,6 +57,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UDatePicker
         v-for="(option, index) in options"
+        open-direction-y="bottom" 
         :key="index"
         v-bind="args"
         :[args.enum]="option"

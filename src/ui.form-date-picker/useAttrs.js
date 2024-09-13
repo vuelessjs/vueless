@@ -23,6 +23,8 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
           ...props,
           openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
           openDirectionX: isRight.value ? POSITION.right : POSITION.left,
+          error: Boolean(props.error),
+          description: Boolean(props.description),
         });
       }
 
