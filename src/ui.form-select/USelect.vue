@@ -1,7 +1,7 @@
 <template>
   <ULabel
     ref="labelComponentRef"
-    :for="id"
+    :for="elementId"
     :size="size"
     :label="label"
     :error="error"
@@ -17,7 +17,7 @@
       ref="wrapperRef"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
-      :aria-owns="'listbox-' + id"
+      :aria-owns="'listbox-' + elementId"
       v-bind="wrapperAttrs"
       @focus="activate"
       @blur="deactivate"
@@ -201,7 +201,7 @@
         <div v-bind="searchAttrs">
           <input
             v-show="searchable || !localValue || multiple || !isOpen"
-            :id="id"
+            :id="elementId"
             ref="searchInputRef"
             v-model="search"
             type="text"
@@ -210,7 +210,7 @@
             :placeholder="inputPlaceholder"
             :value="search"
             :disabled="disabled"
-            :aria-controls="'listbox-' + id"
+            :aria-controls="'listbox-' + elementId"
             v-bind="searchInputAttrs"
             @focus="activate"
             @blur.prevent="deactivate"
@@ -308,7 +308,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, watch, useSlots, onMounted } from "vue";
+import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
 import { debounce, merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -606,6 +606,8 @@ const isTop = computed(() => {
 const selectedLabel = computed(() => {
   return isLocalValue.value ? getOptionLabel(localValue.value) : "";
 });
+
+const elementId = props.id || useId();
 
 const {
   config,

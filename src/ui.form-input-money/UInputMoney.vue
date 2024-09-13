@@ -1,6 +1,6 @@
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
     ref="moneyInputRef"
     v-model="formattedValue"
     :size="size"
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted, nextTick } from "vue";
+import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
 import { getDefault } from "../utils/utilUI.js";
 
@@ -238,6 +238,8 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
 const moneyInputRef = ref(null);
+
+const elementId = props.id || useId();
 
 const { inputAttrs } = useAttrs(props);
 

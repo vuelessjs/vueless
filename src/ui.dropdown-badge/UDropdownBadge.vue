@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UBadge
-      :id="id"
+      :id="elementId"
       :label="label"
       :size="size"
       :color="color"
@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from "vue";
+import { nextTick, ref, watch, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -210,6 +210,8 @@ const emit = defineEmits([
 const isShownOptions = ref(false);
 const selectedItem = ref("");
 const dropdownListRef = ref(null);
+
+const elementId = props.id || useId();
 
 const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
   props,

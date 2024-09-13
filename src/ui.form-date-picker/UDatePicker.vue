@@ -1,7 +1,7 @@
 <template>
   <div v-bind="wrapperAttrs" ref="wrapperRef">
     <UInput
-      :id="id"
+      :id="elementId"
       :key="isShownCalendar"
       v-model="userFormatDate"
       :label-align="labelAlign"
@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
 import UInput from "../ui.form-input/UInput.vue";
@@ -314,6 +314,8 @@ const localValue = computed({
 });
 
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const elementId = props.id || useId();
 
 const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
   isShownCalendar,

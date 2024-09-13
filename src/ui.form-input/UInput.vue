@@ -1,7 +1,7 @@
 <template>
   <ULabel
     ref="labelComponentRef"
-    :for="id"
+    :for="elementId"
     :label="label"
     :description="description"
     :disabled="disabled"
@@ -11,7 +11,7 @@
     centred
     v-bind="inputLabelAttrs"
   >
-    <label :for="id" v-bind="blockAttrs">
+    <label :for="elementId" v-bind="blockAttrs">
       <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
@@ -40,7 +40,7 @@
 
       <span v-bind="inputWrapperAttrs">
         <input
-          :id="id"
+          :id="elementId"
           ref="inputRef"
           v-model="inputValue"
           :placeholder="placeholder"
@@ -60,7 +60,7 @@
         />
       </span>
 
-      <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="id">
+      <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="elementId">
         <UIcon
           v-if="isTypePassword"
           :name="
@@ -113,7 +113,7 @@ const VALIDATION_RULES_REG_EX = {
 </script>
 
 <script setup>
-import { ref, computed, onMounted, useSlots } from "vue";
+import { ref, computed, onMounted, useSlots, useId } from "vue";
 
 import { useMutationObserver } from "../composables/useMutationObserver.js";
 
@@ -348,6 +348,8 @@ const inputPasswordClasses = computed(() => {
     ? "tracking-widest [font-family:text-security-disc,serif] [-webkit-text-security:disc]"
     : "";
 });
+
+const elementId = props.id || useId();
 
 const {
   config,

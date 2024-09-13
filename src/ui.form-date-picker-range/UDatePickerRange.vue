@@ -2,7 +2,7 @@
   <div v-bind="wrapperAttrs" ref="wrapperRef">
     <UInput
       v-if="isVariant.input"
-      :id="id"
+      :id="elementId"
       ref="inputRef"
       v-model="userFormatDate"
       :size="size"
@@ -53,7 +53,7 @@
       />
 
       <UButton
-        :id="id"
+        :id="elementId"
         ref="buttonRef"
         square
         filled
@@ -144,7 +144,7 @@
 </template>
 
 <script setup>
-import { computed, watch, ref, nextTick, provide } from "vue";
+import { computed, watch, ref, nextTick, provide, useId } from "vue";
 import { getDefault } from "../utils/utilUI.js";
 
 import UInput from "../ui.form-input/UInput.vue";
@@ -398,6 +398,8 @@ const isPeriod = computed(() => {
     custom: period.value === PERIOD.custom,
   };
 });
+
+const elementId = props.id || useId();
 
 const {
   config,

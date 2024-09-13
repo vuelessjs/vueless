@@ -1,6 +1,6 @@
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
     ref="searchInput"
     v-model="search"
     :size="size"
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -249,6 +249,8 @@ const emit = defineEmits([
 ]);
 
 const localValue = ref("");
+
+const elementId = props.id || useId();
 
 const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
 

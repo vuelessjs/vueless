@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :for="id"
+    :for="elementId"
     :label="label"
     :error="error"
     :size="checkboxSize"
@@ -11,7 +11,7 @@
     :data-test="`${dataTest}-label`"
   >
     <input
-      :id="id"
+      :id="elementId"
       type="checkbox"
       :value="checkboxValue"
       :true-value="trueValue"
@@ -24,7 +24,7 @@
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="id">
+    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
       <UIcon
         internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, computed, watchEffect, toValue } from "vue";
+import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -211,6 +211,8 @@ const emit = defineEmits([
 const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
+
+const elementId = props.id || useId();
 
 const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } = useAttrs(
   props,

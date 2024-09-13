@@ -13,7 +13,7 @@
         </slot>
       </div>
 
-      <div :id="`description-${id}`" v-bind="descriptionAttrs" v-text="description" />
+      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
     </div>
 
     <UDivider :size="dividerSize" v-bind="dividerAttrs" />
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
@@ -93,6 +93,8 @@ const emit = defineEmits([
 ]);
 
 const isOpened = ref(false);
+
+const elementId = props.id || useId();
 
 const {
   config,

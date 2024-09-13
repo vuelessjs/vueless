@@ -8,10 +8,10 @@
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement"
   >
-    <ul :id="`listbox-${id}`" v-bind="listAttrs" role="listbox">
+    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
         v-for="(option, index) of options"
-        :id="`${id}-${index}`"
+        :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
         ref="optionsRef"
@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -211,6 +211,8 @@ const optionsRef = ref([]);
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
+
+const elementId = props.id || useId();
 
 const {
   config,

@@ -1,7 +1,7 @@
 <template>
   <ULabel
     ref="labelComponentRef"
-    :for="id"
+    :for="elementId"
     :label="label"
     :error="error"
     :description="description"
@@ -14,15 +14,15 @@
     <label
       v-if="hasSlotContent($slots['left'])"
       ref="leftSlotWrapperRef"
-      :for="id"
+      :for="elementId"
       v-bind="leftSlotAttrs"
     >
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </label>
-    <label ref="textareaWrapperRef" :for="id" v-bind="textareaWrapperAttrs">
+    <label ref="textareaWrapperRef" :for="elementId" v-bind="textareaWrapperAttrs">
       <textarea
-        :id="id"
+        :id="elementId"
         ref="textareaRef"
         v-model="localValue"
         :value="modelValue"
@@ -43,7 +43,7 @@
         @keydown.backspace="onBackspace"
       />
     </label>
-    <label v-if="hasSlotContent($slots['right'])" :for="id" v-bind="rightSlotAttrs">
+    <label v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
       <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
     </label>
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch, useSlots } from "vue";
+import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/utilUI.js";
@@ -229,6 +229,8 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
+
+const elementId = props.id || useId();
 
 const {
   textareaAttrs,

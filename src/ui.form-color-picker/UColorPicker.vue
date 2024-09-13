@@ -12,7 +12,7 @@
     <div v-bind="listAttrs">
       <div v-bind="unselectedAttrs">
         <URadio
-          :id="id"
+          :id="elementId"
           :name="name"
           :size="size"
           color="gray"
@@ -22,7 +22,7 @@
           @update:model-value="onUpdateValue('')"
         />
 
-        <label :for="id">
+        <label :for="elementId">
           <UIcon
             v-if="selectedItem === ''"
             internal
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
@@ -162,6 +162,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const elementId = props.id || useId();
 
 const {
   config,

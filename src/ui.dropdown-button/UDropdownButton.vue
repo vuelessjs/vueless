@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
-      :id="id"
+      :id="elementId"
       :label="label"
       :size="size"
       :color="color"
@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
@@ -237,6 +237,8 @@ provide("hideDropdownOptions", hideOptions);
 
 const isShownOptions = ref(false);
 const selectedItem = ref("");
+
+const elementId = props.id || useId();
 
 const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapperAttrs } =
   useAttrs(props, { isShownOptions });
