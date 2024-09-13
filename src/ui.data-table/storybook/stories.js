@@ -175,8 +175,12 @@ const DefaultTemplate = (args) => ({
     itemsData() {
       let rows = [];
 
-      for (let i = 0; i < args.numberOfRows; i++) {
-        rows.push(args.row());
+      if (typeof args.row === "function") {
+        for (let i = 0; i < args.numberOfRows; i++) {
+          rows.push(args.row());
+        }
+      } else {
+        rows.push(args.row);
       }
 
       return rows;
