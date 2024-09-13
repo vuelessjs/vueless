@@ -145,7 +145,7 @@
 
 <script setup>
 import { computed, watch, ref, nextTick, provide } from "vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
@@ -338,11 +338,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**

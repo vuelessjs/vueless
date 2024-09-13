@@ -1,7 +1,7 @@
 <template>
   <UButton
     tabindex="0"
-    :for="id"
+    :for="elementId"
     :no-ring="!getToggleSeparated()"
     color="grayscale"
     variant="secondary"
@@ -22,7 +22,7 @@
     <!-- @slot Use it to add something instead of the label. -->
     <template #default>
       <input
-        :id="id"
+        :id="elementId"
         v-model="selectedItem"
         :name="getToggleName()"
         :type="getToggleType()"
@@ -48,10 +48,10 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants.js";
 
@@ -95,12 +95,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -141,6 +140,8 @@ const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || ge
 /* eslint-enaable prettier/prettier, vue/max-len */
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
+
+const elementId = props.id || useId();
 
 const selectedItem = ref("");
 

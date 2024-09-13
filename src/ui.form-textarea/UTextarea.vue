@@ -54,7 +54,7 @@
 import { computed, onMounted, ref, watch, useSlots } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import { UTextarea } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -171,12 +171,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**

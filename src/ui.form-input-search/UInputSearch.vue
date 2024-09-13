@@ -83,7 +83,7 @@ import { computed, ref } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 import { debounce as debounceMethod } from "../utils/utilHelper.js";
 
 import { UInputSearch } from "./constants.js";
@@ -201,11 +201,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   debounce: {

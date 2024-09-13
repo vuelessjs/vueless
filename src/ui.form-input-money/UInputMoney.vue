@@ -44,7 +44,7 @@
 <script setup>
 import { computed, ref, watch, onMounted, nextTick } from "vue";
 
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import UInput from "../ui.form-input/UInput.vue";
 import { SYMBOL_MINUS } from "../ui.text-money/constants.js";
@@ -212,11 +212,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**

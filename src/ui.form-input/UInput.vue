@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,
@@ -304,11 +304,10 @@ const props = defineProps({
 
   /**
    * Unique element id.
-   * @ignore
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**

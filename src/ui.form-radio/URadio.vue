@@ -1,6 +1,6 @@
 <template>
   <ULabel
-    :for="id"
+    :for="elementId"
     :label="label"
     :error="error"
     :size="radioSize"
@@ -11,7 +11,7 @@
     :data-test="`${dataTest}-label`"
   >
     <input
-      :id="id"
+      :id="elementId"
       type="radio"
       :value="radioValue"
       :name="radioName"
@@ -29,10 +29,10 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, watchEffect, toValue } from "vue";
+import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getRandomId, getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
@@ -139,12 +139,11 @@ const props = defineProps({
   },
 
   /**
-   * Generates unique element id.
-   * @ignore
+   * Unique element id.
    */
   id: {
     type: String,
-    default: () => getRandomId(),
+    default: "",
   },
 
   /**
@@ -186,6 +185,8 @@ const isChecked = computed(() => {
 
   return JSON.stringify(currentValue) === JSON.stringify(props.value);
 });
+
+const elementId = props.id || useId();
 
 const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
 
