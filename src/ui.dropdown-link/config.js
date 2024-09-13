@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownLink: "{ULink}",
-  dropdownLinkActive: "group ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+  dropdownLinkActive: "group ring-dynamic ring-offset-4 ring-brand-700/15",
   dropdownIcon: "{UIcon} block transition duration-300 group-[]:rotate-180",
   dropdownList: {
     base: "{UDropdownList} w-fit",
