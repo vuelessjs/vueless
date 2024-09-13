@@ -1,4 +1,5 @@
 import { computed, toValue, ref } from "vue";
+import { isSSR } from "../utils/utilHelper.js";
 
 export const POSITION = {
   left: "left",
@@ -50,7 +51,7 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
   });
 
   function adjustPositionY() {
-    if (typeof window === "undefined") return;
+    if (isSSR) return;
 
     const spaceAbove = localAnchorElement.value.getBoundingClientRect().top;
     const spaceBelow = window.innerHeight - localAnchorElement.value.getBoundingClientRect().bottom;
@@ -71,7 +72,7 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
   }
 
   function adjustPositionX() {
-    if (typeof window === "undefined") return;
+    if (isSSR) return;
 
     const spaceRight = localAnchorElement.value.getBoundingClientRect().right;
     const spaceLeft = window.innerWidth - localAnchorElement.value.getBoundingClientRect().left;

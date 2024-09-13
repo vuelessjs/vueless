@@ -65,7 +65,9 @@ export function debounce(func, wait) {
  @returns {VoidFunction}
  */
 export function setTitle({ title, separator = " / ", suffix = "" }) {
-  document.title = title ? title + separator + suffix : suffix;
+  if (isCSR) {
+    document.title = title ? title + separator + suffix : suffix;
+  }
 }
 
 /**

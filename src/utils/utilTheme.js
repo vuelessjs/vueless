@@ -14,9 +14,12 @@ import {
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
-} from "../constants";
+} from "../constants.js";
+import { isSSR } from "./utilHelper.js";
 
 export function themeInit() {
+  if (isSSR) return;
+
   const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
 
   setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
@@ -27,6 +30,8 @@ export function themeInit() {
 }
 
 export function setTheme(config = {}) {
+  if (isSSR) return;
+
   const isDarkMode = setDarkMode(config);
   const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;

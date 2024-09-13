@@ -1,4 +1,5 @@
 import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
+import { isSSR } from "../utils/utilHelper.js";
 
 const BREAKPOINT_NAME = {
   xs: "xs",
@@ -48,18 +49,24 @@ export default function useBreakpoint() {
   });
 
   onMounted(() => {
+    if (isSSR) return;
+
     windowWidth.value = window.innerWidth;
 
     window.addEventListener("resize", resizeListener, { passive: true });
   });
 
   onBeforeUnmount(() => {
+    if (isSSR) return;
+
     window.removeEventListener("resize", resizeListener, { passive: true });
   });
 
   watch(windowWidth, setBreakpoint, { immediate: true });
 
   function resizeListener() {
+    if (isSSR) return;
+
     if (timeout) {
       window.cancelAnimationFrame(timeout);
     }

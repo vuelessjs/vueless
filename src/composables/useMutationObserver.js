@@ -1,10 +1,13 @@
 import { onBeforeUnmount, onMounted, toValue, watch } from "vue";
+import { isSSR } from "../utils/utilHelper.js";
 
 export function useMutationObserver(
   target,
   callBack,
   config = { childList: true, attributes: true, characterData: true },
 ) {
+  if (isSSR) return;
+
   const observer = new MutationObserver(callBack);
 
   onMounted(() => {

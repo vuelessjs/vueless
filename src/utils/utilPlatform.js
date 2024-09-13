@@ -1,9 +1,10 @@
-const isBrowser = typeof window !== "undefined";
-const isMac = isBrowser && checkIsMac();
-const isPWA = isBrowser && checkIsPWA();
-const isIOS = isBrowser && checkIsIOS();
-const isWindows = isBrowser && checkIsWindows();
-const isAndroid = isBrowser && checkIsAndroid();
+import { isCSR } from "./utilHelper.js";
+
+const isWindows = isCSR && checkIsWindows();
+const isMac = isCSR && checkIsMac();
+const isPWA = isCSR && checkIsPWA();
+const isIOS = isCSR && checkIsIOS();
+const isAndroid = isCSR && checkIsAndroid();
 const isMobileApp = isPWA || isIOS || isAndroid;
 
 function checkIsWindows() {
@@ -42,4 +43,4 @@ function getPlatform() {
   return navigator.userAgentData?.platform || navigator.platform || "unknown";
 }
 
-export { isBrowser, isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows };
+export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows };
