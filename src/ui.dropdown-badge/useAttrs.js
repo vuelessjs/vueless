@@ -35,7 +35,7 @@ export default function useAttrs(props, { isShownOptions }) {
         ...badgeAttrs.value,
         class: cx([
           badgeAttrs.value.class,
-          isShownOptions.value ? config.value.dropdownBadgeActive : {},
+          isShownOptions.value && config.value.dropdownBadgeActive,
         ]),
       }));
     }
