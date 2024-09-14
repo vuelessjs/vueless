@@ -52,13 +52,13 @@
 
     <UDropdownList
       v-if="isShownOptions"
+      ref="dropdownListRef"
       v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
-      tabindex="-1"
       :data-test="`${dataTest}-list`"
       @click="onClickList"
     />
@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref, watch, useId } from "vue";
+import { nextTick, computed, provide, ref, watch, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
@@ -237,6 +237,7 @@ provide("hideDropdownOptions", hideOptions);
 
 const isShownOptions = ref(false);
 const selectedItem = ref("");
+const dropdownListRef = ref(null);
 
 const elementId = props.id || useId();
 
@@ -266,6 +267,10 @@ watch(selectedItem, () => {
 
 function onClickButton() {
   isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
 }
 
 function hideOptions() {
