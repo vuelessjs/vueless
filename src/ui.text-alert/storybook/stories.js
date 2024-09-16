@@ -67,14 +67,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = { enum: "variant" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const colors = EnumVariantTemplate.bind({});
-colors.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const HTML = DefaultTemplate.bind({});
 HTML.args = {
@@ -89,13 +89,11 @@ HTML.args = {
   `,
 };
 
-export const closable = DefaultTemplate.bind({});
-closable.args = {
-  closable: true,
-};
+export const Closable = DefaultTemplate.bind({});
+Closable.args = { closable: true };
 
-export const paragraphs = DefaultTemplate.bind({});
-paragraphs.args = {
+export const Paragraphs = DefaultTemplate.bind({});
+Paragraphs.args = {
   slotTemplate: `
     <template #default>
       <p>
@@ -112,8 +110,8 @@ paragraphs.args = {
   `,
 };
 
-export const list = DefaultTemplate.bind({});
-list.args = {
+export const List = DefaultTemplate.bind({});
+List.args = {
   slotTemplate: `
     <URow>
       <ul>
@@ -130,8 +128,8 @@ list.args = {
   `,
 };
 
-export const slotTitleAndDescription = DefaultTemplate.bind({});
-slotTitleAndDescription.args = {
+export const SlotTitleAndDescription = DefaultTemplate.bind({});
+SlotTitleAndDescription.args = {
   slotTemplate: `
     <template #title>
       <div class="text-lg font-semibold">This is a custom title for the alert.</div>
@@ -142,8 +140,8 @@ slotTitleAndDescription.args = {
   `,
 };
 
-export const slotClose = DefaultTemplate.bind({});
-slotClose.args = {
+export const SlotClose = DefaultTemplate.bind({});
+SlotClose.args = {
   closable: true,
   slotTemplate: `
     <template #close>
@@ -157,8 +155,8 @@ slotClose.args = {
   `,
 };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -169,8 +167,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
         <UIcon
@@ -181,8 +179,8 @@ slotRight.args = {
   `,
 };
 
-export const slotTop = DefaultTemplate.bind({});
-slotTop.args = {
+export const SlotTop = DefaultTemplate.bind({});
+SlotTop.args = {
   slotTemplate: `
     <template #top>
       <UIcon
@@ -193,8 +191,8 @@ slotTop.args = {
   `,
 };
 
-export const slotBottom = DefaultTemplate.bind({});
-slotBottom.args = {
+export const SlotBottom = DefaultTemplate.bind({});
+SlotBottom.args = {
   slotTemplate: `
     <template #bottom>
       <UIcon

@@ -114,23 +114,23 @@ const OpenDirectionTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = { modelValue: new Date() };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size", label: "" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", label: "" };
 
-export const openDirection = OpenDirectionTemplate.bind({});
-openDirection.args = {};
+export const OpenDirection = OpenDirectionTemplate.bind({});
+OpenDirection.args = {};
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "some description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "some description" };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "some error" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "some error" };
 
-export const placeholder = DefaultTemplate.bind({});
-placeholder.args = { placeholder: "some placeholder" };
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = { placeholder: "some placeholder" };
 
 export const DateFormat = DefaultTemplate.bind({});
 DateFormat.args = { dateFormat: "d.m.Y", userDateFormat: "d.m.Y", modelValue: "28.06.2024" };
@@ -149,18 +149,18 @@ MinMax.args = {
   modelValue: new Date(2022, 2, 24),
 };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = {
   leftIcon: "star",
 };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = {
   rightIcon: "star",
 };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   slotTemplate: `
     <template #left-icon>
       <UIcon
@@ -171,8 +171,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon

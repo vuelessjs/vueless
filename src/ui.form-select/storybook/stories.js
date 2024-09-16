@@ -112,11 +112,11 @@ LargeItemList.args = {
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
 
-export const openDirection = EnumVariantTemplate.bind({});
-openDirection.args = { enum: "openDirection" };
+export const OpenDirection = EnumVariantTemplate.bind({});
+OpenDirection.args = { enum: "openDirection" };
 
-export const groupValue = GroupValuesTemplate.bind({});
-groupValue.args = {
+export const GroupValue = GroupValuesTemplate.bind({});
+GroupValue.args = {
   modelValue: "",
   modelValueMultiple: [],
   groupValueKey: "libs",
@@ -143,29 +143,29 @@ groupValue.args = {
   ],
 };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "some error text" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "some error text" };
 
-export const placeholder = DefaultTemplate.bind({});
-placeholder.args = { placeholder: "some placeholder text" };
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = { placeholder: "some placeholder text" };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "some description text" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "some description text" };
 
-export const optionsLimit2 = DefaultTemplate.bind({});
-optionsLimit2.args = { optionsLimit: 2 };
+export const OptionsLimit2 = DefaultTemplate.bind({});
+OptionsLimit2.args = { optionsLimit: 2 };
 
-export const noClear = DefaultTemplate.bind({});
-noClear.args = { noClear: true };
+export const NoClear = DefaultTemplate.bind({});
+NoClear.args = { noClear: true };
 
-export const addOption = DefaultTemplate.bind({});
-addOption.args = { addOption: true };
+export const AddOption = DefaultTemplate.bind({});
+AddOption.args = { addOption: true };
 
-export const optionIsHidden = DefaultTemplate.bind({});
-optionIsHidden.args = {
+export const OptionIsHidden = DefaultTemplate.bind({});
+OptionIsHidden.args = {
   options: [
     { id: 1, label: "value 1", isHidden: true },
     { id: 2, label: "value 2" },
@@ -174,15 +174,11 @@ optionIsHidden.args = {
   ],
 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = {
-  enum: "size",
-  multiple: true,
-  multipleModelValue: [],
-};
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", multiple: true, multipleModelValue: [] };
 
-export const slotToggle = DefaultTemplate.bind({});
-slotToggle.args = {
+export const SlotToggle = DefaultTemplate.bind({});
+SlotToggle.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <UIcon
@@ -193,8 +189,8 @@ slotToggle.args = {
   `,
 };
 
-export const slotClear = DefaultTemplate.bind({});
-slotClear.args = {
+export const SlotClear = DefaultTemplate.bind({});
+SlotClear.args = {
   slotTemplate: `
     <template #clear>
       <ULink label="Close" />
@@ -202,8 +198,8 @@ slotClear.args = {
   `,
 };
 
-export const slotClearMultiple = DefaultTemplate.bind({});
-slotClearMultiple.args = {
+export const SlotClearMultiple = DefaultTemplate.bind({});
+SlotClearMultiple.args = {
   multiple: true,
   modelValue: [],
   slotTemplate: `
@@ -213,8 +209,8 @@ slotClearMultiple.args = {
   `,
 };
 
-export const slotSelectedValueLabel = DefaultTemplate.bind({});
-slotSelectedValueLabel.args = {
+export const SlotSelectedValueLabel = DefaultTemplate.bind({});
+SlotSelectedValueLabel.args = {
   slotTemplate: `
     <template #selected-label>
       🤘🤘🤘
@@ -222,8 +218,8 @@ slotSelectedValueLabel.args = {
   `,
 };
 
-export const slotSelectedValueLabelAfter = DefaultTemplate.bind({});
-slotSelectedValueLabelAfter.args = {
+export const SlotSelectedValueLabelAfter = DefaultTemplate.bind({});
+SlotSelectedValueLabelAfter.args = {
   slotTemplate: `
     <template #selected-label-after>
       🤘🤘🤘
@@ -231,8 +227,8 @@ slotSelectedValueLabelAfter.args = {
   `,
 };
 
-export const slotOption = DefaultTemplate.bind({});
-slotOption.args = {
+export const SlotOption = DefaultTemplate.bind({});
+SlotOption.args = {
   slotTemplate: `
     <template #option>
       🤘🤘🤘
@@ -240,8 +236,8 @@ slotOption.args = {
   `,
 };
 
-export const slotAfterCaret = DefaultTemplate.bind({});
-slotAfterCaret.args = {
+export const SlotAfterCaret = DefaultTemplate.bind({});
+SlotAfterCaret.args = {
   slotTemplate: `
     <template #after-caret="{ scopeProps }">
       <UBadge
@@ -256,8 +252,8 @@ slotAfterCaret.args = {
   `,
 };
 
-export const slotBeforeCaret = DefaultTemplate.bind({});
-slotBeforeCaret.args = {
+export const SlotBeforeCaret = DefaultTemplate.bind({});
+SlotBeforeCaret.args = {
   slotTemplate: `
     <template #before-caret>
       🤘
@@ -265,8 +261,8 @@ slotBeforeCaret.args = {
   `,
 };
 
-export const slotBeforeOption = DefaultTemplate.bind({});
-slotBeforeOption.args = {
+export const SlotBeforeOption = DefaultTemplate.bind({});
+SlotBeforeOption.args = {
   slotTemplate: `
     <template #before-option>
       🤘
@@ -274,18 +270,14 @@ slotBeforeOption.args = {
   `,
 };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
-  leftIcon: "star",
-};
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = { leftIcon: "star" };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
-  rightIcon: "star",
-};
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = { rightIcon: "star" };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   slotTemplate: `
     <template #left-icon>
       <UIcon name="star" color="green" />
@@ -293,8 +285,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon name="star" color="green" />
@@ -302,8 +294,8 @@ rightIconSlot.args = {
   `,
 };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       🤘
@@ -311,8 +303,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       🤘

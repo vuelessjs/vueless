@@ -118,11 +118,11 @@ Options.args = {
   ],
 };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { name: "Disabled", disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { name: "Disabled", disabled: true };
 
-export const error = DefaultTemplate.bind({});
-error.args = { name: "Error", error: "some error" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { name: "Error", error: "some error" };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", name: "Colors" };

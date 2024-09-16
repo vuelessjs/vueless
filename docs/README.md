@@ -92,8 +92,8 @@ That's it! You can use Vueless in your app now ✨
 
 ### Minimal requirements
 
-* Node 16+
-* Vite 4+
-* Vue 3.4+
+* Node 20+
+* Vite 5+
+* Vue 3.5+
 * TailwindCSS 3.4+
 

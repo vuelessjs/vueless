@@ -68,11 +68,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const maxHeight = DefaultTemplate.bind({});
-maxHeight.args = { maxHeight: 80 };
+export const MaxHeight = DefaultTemplate.bind({});
+MaxHeight.args = { maxHeight: 80 };
 
-export const withoutOptions = DefaultTemplate.bind({});
-withoutOptions.args = { options: [] };
+export const WithoutOptions = DefaultTemplate.bind({});
+WithoutOptions.args = { options: [] };

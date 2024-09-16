@@ -93,8 +93,8 @@ const TypesTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const position = DefaultTemplate.bind({});
-position.args = { xPosition: "right", yPosition: "bottom" };
+export const Position = DefaultTemplate.bind({});
+Position.args = { xPosition: "right", yPosition: "bottom" };
 
-export const types = TypesTemplate.bind({});
-types.args = {};
+export const Types = TypesTemplate.bind({});
+Types.args = {};

@@ -97,14 +97,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "width", text: "" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "width", text: "" };
 
-export const backRoute = DefaultTemplate.bind({});
-backRoute.args = { backRoute: { title: "route title" } };
+export const BackRoute = DefaultTemplate.bind({});
+BackRoute.args = { backRoute: { title: "route title" } };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
       Some text
@@ -112,8 +112,8 @@ slotDefault.args = {
   `,
 };
 
-export const slotHeaderLeftBefore = DefaultTemplate.bind({});
-slotHeaderLeftBefore.args = {
+export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
+SlotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
       <UIcon
@@ -125,8 +125,8 @@ slotHeaderLeftBefore.args = {
   `,
 };
 
-export const slotHeaderLeft = DefaultTemplate.bind({});
-slotHeaderLeft.args = {
+export const SlotHeaderLeft = DefaultTemplate.bind({});
+SlotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
@@ -135,8 +135,8 @@ slotHeaderLeft.args = {
   `,
 };
 
-export const slotHeaderLeftAfter = DefaultTemplate.bind({});
-slotHeaderLeftAfter.args = {
+export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
+SlotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
       <UIcon
@@ -148,8 +148,8 @@ slotHeaderLeftAfter.args = {
   `,
 };
 
-export const slotHeaderRight = DefaultTemplate.bind({});
-slotHeaderRight.args = {
+export const SlotHeaderRight = DefaultTemplate.bind({});
+SlotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UIcon
@@ -161,8 +161,8 @@ slotHeaderRight.args = {
   `,
 };
 
-export const slotCloseButton = DefaultTemplate.bind({});
-slotCloseButton.args = {
+export const SlotCloseButton = DefaultTemplate.bind({});
+SlotCloseButton.args = {
   slotTemplate: `
     <template #close-button>
       <UButton size="sm" color="grayscale" label="Close" />
@@ -171,8 +171,8 @@ slotCloseButton.args = {
   `,
 };
 
-export const slotFooterLeft = DefaultTemplate.bind({});
-slotFooterLeft.args = {
+export const SlotFooterLeft = DefaultTemplate.bind({});
+SlotFooterLeft.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
@@ -181,8 +181,8 @@ slotFooterLeft.args = {
   `,
 };
 
-export const slotFooterRight = DefaultTemplate.bind({});
-slotFooterRight.args = {
+export const SlotFooterRight = DefaultTemplate.bind({});
+SlotFooterRight.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-right>

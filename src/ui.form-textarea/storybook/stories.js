@@ -58,35 +58,35 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const labelPlacement = EnumVariantTemplate.bind({});
-labelPlacement.args = { enum: "labelAlign" };
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
 
-export const placeholder = DefaultTemplate.bind({});
-placeholder.args = { placeholder: "some placeholder text" };
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = { placeholder: "some placeholder text" };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "some error text" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "some error text" };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "some description text" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "some description text" };
 
-export const rows1 = DefaultTemplate.bind({});
-rows1.args = { rows: "1" };
+export const Rows1 = DefaultTemplate.bind({});
+Rows1.args = { rows: "1" };
 
-export const readonly = DefaultTemplate.bind({});
-readonly.args = { readonly: true, value: "some value for read" };
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true, value: "some value for read" };
 
-export const noAutocomplete = DefaultTemplate.bind({});
-noAutocomplete.args = { noAutocomplete: true };
+export const NoAutocomplete = DefaultTemplate.bind({});
+NoAutocomplete.args = { noAutocomplete: true };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -97,8 +97,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon

@@ -86,52 +86,39 @@ Disabled.args = {
   disabled: true,
 };
 
-export const label = DefaultTemplate.bind({});
-label.args = {
+export const Label = DefaultTemplate.bind({});
+Label.args = {
   name: "Label",
   label: "Label",
   description: "description",
 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = {
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = {
   name: "sizeTemplate",
   enum: "size",
 };
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = {
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = {
   name: "sizeTemplate",
   enum: "variant",
 };
 
-export const multiple = DefaultTemplate.bind({});
-multiple.args = {
-  name: "multipleTemplate",
-  multiple: true,
-};
+export const Multiple = DefaultTemplate.bind({});
+Multiple.args = { name: "multipleTemplate", multiple: true };
 
-export const block = DefaultTemplate.bind({});
-block.args = {
-  name: "block",
-  block: true,
-};
+export const Block = DefaultTemplate.bind({});
+Block.args = { name: "block", block: true };
 
-export const separated = DefaultTemplate.bind({});
-separated.args = {
-  name: "separated",
-  separated: true,
-};
+export const Separated = DefaultTemplate.bind({});
+Separated.args = { name: "separated", separated: true };
 
-export const round = DefaultTemplate.bind({});
-round.args = {
-  name: "round",
-  round: true,
-  separated: true,
-};
+export const Round = DefaultTemplate.bind({});
+Round.args = { name: "round", round: true, separated: true };
 
-export const square = DefaultTemplate.bind({});
-square.args = {
+export const Square = DefaultTemplate.bind({});
+Square.args = {
   name: "square",
   variant: "secondary",
   square: true,
@@ -152,8 +139,8 @@ square.args = {
   `,
 };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   name: "slotDefault",
   slotTemplate: `
     <template #default>

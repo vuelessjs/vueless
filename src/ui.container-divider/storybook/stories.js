@@ -53,20 +53,20 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = { enum: "variant" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const dashed = DefaultTemplate.bind({});
-dashed.args = { dashed: true };
+export const Dashed = DefaultTemplate.bind({});
+Dashed.args = { dashed: true };
 
-export const dotted = DefaultTemplate.bind({});
-dotted.args = { dotted: true };
+export const Dotted = DefaultTemplate.bind({});
+Dotted.args = { dotted: true };
 
-export const vertical = DefaultTemplate.bind({});
-vertical.args = {
+export const Vertical = DefaultTemplate.bind({});
+Vertical.args = {
   vertical: true,
   config: {
     wrapper: {
@@ -75,17 +75,17 @@ vertical.args = {
   },
 };
 
-export const noBorder = DefaultTemplate.bind({});
-noBorder.args = { noBorder: true };
+export const NoBorder = DefaultTemplate.bind({});
+NoBorder.args = { noBorder: true };
 
-export const noTopPadding = DefaultTemplate.bind({});
-noTopPadding.args = { noTopPadding: true };
+export const NoTopPadding = DefaultTemplate.bind({});
+NoTopPadding.args = { noTopPadding: true };
 
-export const noBottomPadding = DefaultTemplate.bind({});
-noBottomPadding.args = { noBottomPadding: true };
+export const NoBottomPadding = DefaultTemplate.bind({});
+NoBottomPadding.args = { noBottomPadding: true };
 
-export const noRightPadding = DefaultTemplate.bind({});
-noRightPadding.args = {
+export const NoRightPadding = DefaultTemplate.bind({});
+NoRightPadding.args = {
   noRightPadding: true,
   vertical: true,
   config: {
@@ -95,8 +95,8 @@ noRightPadding.args = {
   },
 };
 
-export const noLeftPadding = DefaultTemplate.bind({});
-noLeftPadding.args = {
+export const NoLeftPadding = DefaultTemplate.bind({});
+NoLeftPadding.args = {
   noLeftPadding: true,
   vertical: true,
   config: {

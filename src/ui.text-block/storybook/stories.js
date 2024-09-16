@@ -63,11 +63,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const paragraphs = DefaultTemplate.bind({});
-paragraphs.args = {
+export const Paragraphs = DefaultTemplate.bind({});
+Paragraphs.args = {
   slotTemplate: `
     <template #default>
       <p>
@@ -92,8 +92,8 @@ paragraphs.args = {
   `,
 };
 
-export const list = DefaultTemplate.bind({});
-list.args = {
+export const List = DefaultTemplate.bind({});
+List.args = {
   slotTemplate: `
     <template #default>
       <URow gap="2xl">

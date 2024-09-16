@@ -66,41 +66,41 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const colors = EnumVariantTemplate.bind({});
-colors.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const types = EnumVariantTemplate.bind({});
-types.args = { enum: "type" };
+export const Types = EnumVariantTemplate.bind({});
+Types.args = { enum: "type" };
 
-export const underlined = EnumVariantTemplate.bind({});
-underlined.args = { enum: "color", underlined: true, dashed: false };
+export const Underlined = EnumVariantTemplate.bind({});
+Underlined.args = { enum: "color", underlined: true, dashed: false };
 
-export const dashed = EnumVariantTemplate.bind({});
-dashed.args = { enum: "color", dashed: true };
+export const Dashed = EnumVariantTemplate.bind({});
+Dashed.args = { enum: "color", dashed: true };
 
-export const url = DefaultTemplate.bind({});
-url.args = { url: "https://storybook.js.org/docs/react/get-started/introduction" };
+export const Url = DefaultTemplate.bind({});
+Url.args = { url: "https://storybook.js.org/docs/react/get-started/introduction" };
 
-export const route = DefaultTemplate.bind({});
-route.args = { name: "SomeRouterRouteName" };
+export const Route = DefaultTemplate.bind({});
+Route.args = { name: "SomeRouterRouteName" };
 
-export const targetBlank = DefaultTemplate.bind({});
-targetBlank.args = {
+export const TargetBlank = DefaultTemplate.bind({});
+TargetBlank.args = {
   url: "https://storybook.js.org/docs/react/get-started/introduction",
   targetBlank: true,
 };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const noRing = DefaultTemplate.bind({});
-noRing.args = { noRing: true };
+export const NoRing = DefaultTemplate.bind({});
+NoRing.args = { noRing: true };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
       <UButton label="Text" />
@@ -108,8 +108,8 @@ slotDefault.args = {
   `,
 };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon name="star" size="xs" />
@@ -117,8 +117,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon name="star" size="xs" />

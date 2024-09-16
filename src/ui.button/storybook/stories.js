@@ -82,36 +82,32 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = { enum: "variant" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const round = EnumVariantTemplate.bind({});
-round.args = { enum: "variant", round: true };
+export const Round = EnumVariantTemplate.bind({});
+Round.args = { enum: "variant", round: true };
 
-export const disabled = EnumVariantTemplate.bind({});
-disabled.args = { enum: "variant", disabled: true };
+export const Disabled = EnumVariantTemplate.bind({});
+Disabled.args = { enum: "variant", disabled: true };
 
-export const noRing = DefaultTemplate.bind({});
-noRing.args = { noRing: true };
+export const NoRing = DefaultTemplate.bind({});
+NoRing.args = { noRing: true };
 
-export const colors = ColorTemplate.bind({});
-colors.args = {};
+export const Colors = ColorTemplate.bind({});
+Colors.args = {};
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
-  leftIcon: "star",
-};
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = { leftIcon: "star" };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
-  rightIcon: "star",
-};
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = { rightIcon: "star" };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
       🤘🤘🤘
@@ -119,8 +115,8 @@ slotDefault.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -132,8 +128,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UIcon

@@ -66,23 +66,23 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const multiple = DefaultTemplate.bind({});
-multiple.args = { multiple: true };
+export const Multiple = DefaultTemplate.bind({});
+Multiple.args = { multiple: true };
 
-export const allowedFileTypes = DefaultTemplate.bind({});
-allowedFileTypes.args = { allowedFileTypes: ["png", "jpeg"], label: "Allow only png and jpeg" };
+export const AllowedFileTypes = DefaultTemplate.bind({});
+AllowedFileTypes.args = { allowedFileTypes: ["png", "jpeg"], label: "Allow only png and jpeg" };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "some error" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "some error" };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const labelAlign = EnumVariantTemplate.bind({});
-labelAlign.args = { enum: "labelAlign" };
+export const LabelAlign = EnumVariantTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       🤘

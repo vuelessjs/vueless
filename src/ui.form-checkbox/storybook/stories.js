@@ -125,8 +125,8 @@ Disabled.args = { disabled: true };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Some description" };
 
-export const slotFooter = DefaultTemplate.bind({});
-slotFooter.args = {
+export const SlotFooter = DefaultTemplate.bind({});
+SlotFooter.args = {
   slotTemplate: `
     <template #footer>
       <UBadge label="favourite" color="green" size="sm" />
