@@ -55,17 +55,17 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const colors = EnumVariantTemplate.bind({});
-colors.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const variants = EnumVariantTemplate.bind({});
-variants.args = { enum: "variant", color: "red" };
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant", color: "red" };
 
-export const tooltip = DefaultTemplate.bind({});
-tooltip.args = { tooltip: "Some text" };
+export const Tooltip = DefaultTemplate.bind({});
+Tooltip.args = { tooltip: "Some text" };
 
-export const interactive = DefaultTemplate.bind({});
-interactive.args = { interactive: true };
+export const Interactive = DefaultTemplate.bind({});
+Interactive.args = { interactive: true };

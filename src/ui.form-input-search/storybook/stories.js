@@ -56,27 +56,23 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const searchButton = DefaultTemplate.bind({});
-searchButton.args = { searchButtonLabel: "Search" };
+export const SearchButton = DefaultTemplate.bind({});
+SearchButton.args = { searchButtonLabel: "Search" };
 
-export const minLength = DefaultTemplate.bind({});
-minLength.args = { minLength: 4 };
+export const MinLength = DefaultTemplate.bind({});
+MinLength.args = { minLength: 4 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
-  leftIcon: "star",
-};
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = { leftIcon: "star" };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
-  rightIcon: "star",
-};
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = { rightIcon: "star" };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   slotTemplate: `
     <template #left-icon>
       <UIcon
@@ -87,8 +83,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon
@@ -99,8 +95,8 @@ rightIconSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
@@ -108,8 +104,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />

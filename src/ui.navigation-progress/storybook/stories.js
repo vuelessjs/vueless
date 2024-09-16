@@ -95,8 +95,8 @@ IndicatorSlot.args = {
 `,
 };
 
-export const stepSlot = DefaultTemplate.bind({});
-stepSlot.args = {
+export const StepSlot = DefaultTemplate.bind({});
+StepSlot.args = {
   max: ["Step 1", "Step 2", "Step 3"],
   slotTemplate: `
   <template #step-0>

@@ -65,14 +65,10 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  step: 1,
-  min: 1,
-  max: 100,
-};
+Default.args = { step: 1, min: 1, max: 100 };
 
-export const label = DefaultTemplate.bind({});
-label.args = {
+export const Label = DefaultTemplate.bind({});
+Label.args = {
   value: 1,
   step: 1,
   min: 1,
@@ -80,8 +76,8 @@ label.args = {
   label: "Year",
 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = {
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = {
   enum: "size",
   value: 1,
   step: 1,
@@ -89,8 +85,8 @@ sizes.args = {
   max: 100,
 };
 
-export const valueLimit = DefaultTemplate.bind({});
-valueLimit.args = {
+export const ValueLimit = DefaultTemplate.bind({});
+ValueLimit.args = {
   value: 1,
   step: 1,
   min: 5,
@@ -98,8 +94,8 @@ valueLimit.args = {
   label: "Min is 5 | Max is 10",
 };
 
-export const step = DefaultTemplate.bind({});
-step.args = {
+export const Step = DefaultTemplate.bind({});
+Step.args = {
   value: 1,
   step: 5,
   min: 1,

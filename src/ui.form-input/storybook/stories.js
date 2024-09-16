@@ -59,48 +59,44 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "some description text" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "some description text" };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "some error text" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "some error text" };
 
-export const placeholder = DefaultTemplate.bind({});
-placeholder.args = { placeholder: "some placeholder text" };
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = { placeholder: "some placeholder text" };
 
-export const readonly = DefaultTemplate.bind({});
-readonly.args = { readonly: true, value: "some value for read" };
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true, value: "some value for read" };
 
-export const noAutocomplete = DefaultTemplate.bind({});
-noAutocomplete.args = { noAutocomplete: true };
+export const NoAutocomplete = DefaultTemplate.bind({});
+NoAutocomplete.args = { noAutocomplete: true };
 
-export const typePassword = DefaultTemplate.bind({});
-typePassword.args = { type: "password" };
+export const TypePassword = DefaultTemplate.bind({});
+TypePassword.args = { type: "password" };
 
-export const labelPlacement = EnumVariantTemplate.bind({});
-labelPlacement.args = { enum: "labelAlign" };
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const validationRules = EnumVariantTemplate.bind({});
-validationRules.args = { enum: "validationRule" };
+export const ValidationRules = EnumVariantTemplate.bind({});
+ValidationRules.args = { enum: "validationRule" };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
-  leftIcon: "star",
-};
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = { leftIcon: "star" };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
-  rightIcon: "star",
-};
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = { rightIcon: "star" };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   slotTemplate: `
     <template #left-icon>
       <UIcon
@@ -111,8 +107,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon
@@ -123,8 +119,8 @@ rightIconSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UButton variant="thirdary" filled square noRing label="Filter" class="rounded-r-none h-full" />
@@ -132,8 +128,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UButton variant="thirdary" filled square noRing label="Filter" class="rounded-l-none" />

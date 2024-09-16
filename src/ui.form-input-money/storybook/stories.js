@@ -62,63 +62,59 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = { modelValue: 245000.42 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const symbol = DefaultTemplate.bind({});
-symbol.args = { symbol: "€" };
+export const Symbol = DefaultTemplate.bind({});
+Symbol.args = { symbol: "€" };
 
-export const labelAlign = EnumVariantTemplate.bind({});
-labelAlign.args = { enum: "labelAlign" };
+export const LabelAlign = EnumVariantTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
-export const placeholder = DefaultTemplate.bind({});
-placeholder.args = { placeholder: "Placeholder" };
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = { placeholder: "Placeholder" };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "Some error." };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "Some error." };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "Some description." };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Some description." };
 
-export const minFractionDigits = DefaultTemplate.bind({});
-minFractionDigits.args = { minFractionDigits: 2, maxFractionDigits: 4 };
+export const MinFractionDigits = DefaultTemplate.bind({});
+MinFractionDigits.args = { minFractionDigits: 2, maxFractionDigits: 4 };
 
-export const maxFractionDigits = DefaultTemplate.bind({});
-maxFractionDigits.args = { maxFractionDigits: 4 };
+export const MaxFractionDigits = DefaultTemplate.bind({});
+MaxFractionDigits.args = { maxFractionDigits: 4 };
 
-export const decimalSeparator = DefaultTemplate.bind({});
-decimalSeparator.args = { decimalSeparator: "." };
+export const DecimalSeparator = DefaultTemplate.bind({});
+DecimalSeparator.args = { decimalSeparator: "." };
 
-export const thousandsSeparator = DefaultTemplate.bind({});
-thousandsSeparator.args = { thousandsSeparator: "-" };
+export const ThousandsSeparator = DefaultTemplate.bind({});
+ThousandsSeparator.args = { thousandsSeparator: "-" };
 
-export const rawValuePrefix = DefaultTemplate.bind({});
-rawValuePrefix.args = { rawValuePrefix: true };
+export const RawValuePrefix = DefaultTemplate.bind({});
+RawValuePrefix.args = { rawValuePrefix: true };
 
-export const positiveOnly = DefaultTemplate.bind({});
-positiveOnly.args = { positiveOnly: true };
+export const PositiveOnly = DefaultTemplate.bind({});
+PositiveOnly.args = { positiveOnly: true };
 
-export const minus = DefaultTemplate.bind({});
-minus.args = { minus: true };
+export const Minus = DefaultTemplate.bind({});
+Minus.args = { minus: true };
 
-export const readOnly = DefaultTemplate.bind({});
-readOnly.args = { readOnly: true };
+export const ReadOnly = DefaultTemplate.bind({});
+ReadOnly.args = { readOnly: true };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const leftIcon = DefaultTemplate.bind({});
-leftIcon.args = {
-  leftIcon: "star",
-};
+export const LeftIcon = DefaultTemplate.bind({});
+LeftIcon.args = { leftIcon: "star" };
 
-export const rightIcon = DefaultTemplate.bind({});
-rightIcon.args = {
-  rightIcon: "star",
-};
+export const RightIcon = DefaultTemplate.bind({});
+RightIcon.args = { rightIcon: "star" };
 
-export const leftIconSlot = DefaultTemplate.bind({});
-leftIconSlot.args = {
+export const LeftIconSlot = DefaultTemplate.bind({});
+LeftIconSlot.args = {
   slotTemplate: `
     <template #left-icon>
       <UIcon
@@ -129,8 +125,8 @@ leftIconSlot.args = {
   `,
 };
 
-export const rightIconSlot = DefaultTemplate.bind({});
-rightIconSlot.args = {
+export const RightIconSlot = DefaultTemplate.bind({});
+RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon
@@ -141,8 +137,8 @@ rightIconSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
@@ -150,8 +146,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />

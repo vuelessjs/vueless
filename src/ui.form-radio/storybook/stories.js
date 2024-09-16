@@ -38,17 +38,17 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true, name: "radio2" };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true, name: "radio2" };
 
-export const description = DefaultTemplate.bind({});
-description.args = { name: "radio3", description: "description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { name: "radio3", description: "description" };
 
-export const checked = DefaultTemplate.bind({});
-checked.args = { checked: true, name: "radio4" };
+export const Checked = DefaultTemplate.bind({});
+Checked.args = { checked: true, name: "radio4" };
 
-export const slotFooter = DefaultTemplate.bind({});
-slotFooter.args = {
+export const SlotFooter = DefaultTemplate.bind({});
+SlotFooter.args = {
   name: "radio5",
   label: "radio",
   value: "radio",

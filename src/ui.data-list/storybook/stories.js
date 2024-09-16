@@ -63,18 +63,18 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const emptyState = DefaultTemplate.bind({});
-emptyState.args = {
+export const EmptyState = DefaultTemplate.bind({});
+EmptyState.args = {
   list: [],
   emptyTitle: "The list is empty.",
   emptyDescription: "There is no data in the list.",
 };
 
-export const nesting = DefaultTemplate.bind({});
-nesting.args = { nesting: true };
+export const Nesting = DefaultTemplate.bind({});
+Nesting.args = { nesting: true };
 
-export const slotLabel = DefaultTemplate.bind({});
-slotLabel.args = {
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
   slotTemplate: `
     <template #label="{ item }">
       <URow gap="xs" align="center">
@@ -85,8 +85,8 @@ slotLabel.args = {
   `,
 };
 
-export const slotActions = DefaultTemplate.bind({});
-slotActions.args = {
+export const SlotActions = DefaultTemplate.bind({});
+SlotActions.args = {
   slotTemplate: `
     <template #actions>
       <UIcon interactive name="star" color="red" />
@@ -94,8 +94,8 @@ slotActions.args = {
   `,
 };
 
-export const slotDrag = DefaultTemplate.bind({});
-slotDrag.args = {
+export const SlotDrag = DefaultTemplate.bind({});
+SlotDrag.args = {
   slotTemplate: `
     <template #drag>
       <UIcon interactive name="swap_vert" size="sm" />
@@ -103,8 +103,8 @@ slotDrag.args = {
   `,
 };
 
-export const slotDelete = DefaultTemplate.bind({});
-slotDelete.args = {
+export const SlotDelete = DefaultTemplate.bind({});
+SlotDelete.args = {
   slotTemplate: `
     <template #delete>
       <UButton label="Delete" size="xs" variant="secondary" color="red" />
@@ -112,8 +112,8 @@ slotDelete.args = {
   `,
 };
 
-export const slotEdit = DefaultTemplate.bind({});
-slotEdit.args = {
+export const SlotEdit = DefaultTemplate.bind({});
+SlotEdit.args = {
   slotTemplate: `
     <template #edit>
       <UButton label="Edit" size="xs" variant="secondary" color="grayscale" />

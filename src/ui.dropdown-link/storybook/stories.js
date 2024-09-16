@@ -76,17 +76,17 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const colors = EnumVariantTemplate.bind({});
-colors.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
 
-export const defaultSlot = DefaultTemplate.bind({});
-defaultSlot.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       Custom label
@@ -94,8 +94,8 @@ defaultSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -107,8 +107,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UIcon

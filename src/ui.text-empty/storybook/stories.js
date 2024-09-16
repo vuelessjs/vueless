@@ -59,11 +59,11 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size", title: "" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", title: "" };
 
-export const slotHeader = DefaultTemplate.bind({});
-slotHeader.args = {
+export const SlotHeader = DefaultTemplate.bind({});
+SlotHeader.args = {
   slotTemplate: `
     <template #header>
       <UIcon
@@ -75,8 +75,8 @@ slotHeader.args = {
   `,
 };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
       <span>Some unique <b><code>HTML</code></b> or <b><code>Components</code></b>...</span>
@@ -84,8 +84,8 @@ slotDefault.args = {
   `,
 };
 
-export const slotFooter = DefaultTemplate.bind({});
-slotFooter.args = {
+export const SlotFooter = DefaultTemplate.bind({});
+SlotFooter.args = {
   slotTemplate: `
     <template #footer>
       <UButton label="Add new one" size="sm" variant="thirdary" filled />

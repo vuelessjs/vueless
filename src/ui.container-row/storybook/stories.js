@@ -77,8 +77,8 @@ Gap.args = { enum: "gap" };
 export const Align = EnumVariantTemplate.bind({});
 Align.args = { enum: "align" };
 
-export const noMobile = DefaultTemplate.bind({});
-noMobile.args = {
+export const NoMobile = DefaultTemplate.bind({});
+NoMobile.args = {
   noMobile: true,
   slotTemplate: `
     <UInput label="Name" />
@@ -86,8 +86,8 @@ noMobile.args = {
   `,
 };
 
-export const nestedRows = DefaultTemplate.bind({});
-nestedRows.args = {
+export const NestedRows = DefaultTemplate.bind({});
+NestedRows.args = {
   slotTemplate: `
     <UInput label="Name" />
 
@@ -98,8 +98,8 @@ nestedRows.args = {
   `,
 };
 
-export const textBlocksExample = DefaultTemplate.bind({});
-textBlocksExample.args = {
+export const TextBlocksExample = DefaultTemplate.bind({});
+TextBlocksExample.args = {
   slotTemplate: `
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
