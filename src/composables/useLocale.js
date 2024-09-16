@@ -1,5 +1,5 @@
 import { inject } from "vue";
-import createVuelessAdapter from "../adatper.locale/vueless";
+import createVuelessAdapter from "../adatper.locale/vueless.js";
 
 export const LocaleSymbol = Symbol.for("vueless:locale");
 
