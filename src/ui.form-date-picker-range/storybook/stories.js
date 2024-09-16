@@ -45,7 +45,7 @@ const DefaultTemplate = (args) => ({
     };
   },
   template: `
-    <UDatePickerRange v-bind="args" v-model="value">
+    <UDatePickerRange open-direction-y="bottom" v-bind="args" v-model="value">
       ${args.slotTemplate || getSlotsFragment()}
     </UDatePickerRange>
 
@@ -68,6 +68,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
       <UDatePickerRange
         v-for="(option, index) in options"
         :key="index"
+        open-direction-y="bottom"
         v-bind="args"
         v-model="args.value"
         :[args.enum]="option"

@@ -7,7 +7,7 @@ export default /*tw*/ {
   },
   calendar: {
     component: "{UCalendar}",
-    base: "absolute z-40 my-2",
+    base: "absolute mb-3 z-40",
     variants: {
       openDirectionX: {
         left: "right-0",
@@ -17,7 +17,10 @@ export default /*tw*/ {
         top: "bottom-full mt-0",
         bottom: "top-full mb-0",
       },
+      error: { true: "-mt-3" },
+      description: { true: "-mt-3" },
     },
+    compoundVariants: [{ description: false, error: false, class: "mt-2" }],
   },
   calendarTransition: {
     enterFromClass: "opacity-0 scale-95",
