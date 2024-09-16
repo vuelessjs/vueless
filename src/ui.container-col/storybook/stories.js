@@ -47,15 +47,15 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
       <UInput placeholder="placeholder" label="Label" />
     </template>
   `,
 };
-slotDefault.parameters = {
+SlotDefault.parameters = {
   docs: {
     story: {
       iframeHeight: 240,

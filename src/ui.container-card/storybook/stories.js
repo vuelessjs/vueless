@@ -74,14 +74,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "Card description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Card description" };
 
-export const padding = EnumVariantTemplate.bind({});
-padding.args = { enum: "padding" };
+export const Padding = EnumVariantTemplate.bind({});
+Padding.args = { enum: "padding" };
 
-export const slotHeaderLeftBefore = DefaultTemplate.bind({});
-slotHeaderLeftBefore.args = {
+export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
+SlotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
       <UIcon name="star" size="sm" />
@@ -90,8 +90,8 @@ slotHeaderLeftBefore.args = {
   `,
 };
 
-export const slotHeaderLeft = DefaultTemplate.bind({});
-slotHeaderLeft.args = {
+export const SlotHeaderLeft = DefaultTemplate.bind({});
+SlotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
@@ -100,8 +100,8 @@ slotHeaderLeft.args = {
   `,
 };
 
-export const slotHeaderLeftAfter = DefaultTemplate.bind({});
-slotHeaderLeftAfter.args = {
+export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
+SlotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
       <UIcon name="star" size="sm" />
@@ -110,8 +110,8 @@ slotHeaderLeftAfter.args = {
   `,
 };
 
-export const slotHeaderRight = DefaultTemplate.bind({});
-slotHeaderRight.args = {
+export const SlotHeaderRight = DefaultTemplate.bind({});
+SlotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="Read more" />
@@ -120,8 +120,8 @@ slotHeaderRight.args = {
   `,
 };
 
-export const slotFooterLeft = DefaultTemplate.bind({});
-slotFooterLeft.args = {
+export const SlotFooterLeft = DefaultTemplate.bind({});
+SlotFooterLeft.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
@@ -130,8 +130,8 @@ slotFooterLeft.args = {
   `,
 };
 
-export const slotFooterRight = DefaultTemplate.bind({});
-slotFooterRight.args = {
+export const SlotFooterRight = DefaultTemplate.bind({});
+SlotFooterRight.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-right>

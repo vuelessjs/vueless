@@ -204,10 +204,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Nesting = DefaultTemplate.bind({});
-Nesting.args = {
-  row: getNestedRow,
-  selectable: true,
-};
+Nesting.args = { row: getNestedRow, selectable: true };
 
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
@@ -215,20 +212,16 @@ Empty.args = {};
 export const Filters = EmptyTemplate.bind({});
 Filters.args = { filters: true };
 
-export const selectable = DefaultTemplate.bind({});
-selectable.args = { selectable: true };
+export const Selectable = DefaultTemplate.bind({});
+Selectable.args = { selectable: true };
 
-export const stickyHeader = DefaultTemplate.bind({});
-stickyHeader.parameters = STICKY_PARAMETERS;
-stickyHeader.args = {
-  numberOfRows: 50,
-  selectable: true,
-  stickyHeader: true,
-};
+export const StickyHeader = DefaultTemplate.bind({});
+StickyHeader.parameters = STICKY_PARAMETERS;
+StickyHeader.args = { numberOfRows: 50, selectable: true, stickyHeader: true };
 
-export const stickyFooter = DefaultTemplate.bind({});
-stickyFooter.parameters = STICKY_PARAMETERS;
-stickyFooter.args = {
+export const StickyFooter = DefaultTemplate.bind({});
+StickyFooter.parameters = STICKY_PARAMETERS;
+StickyFooter.args = {
   numberOfRows: 50,
   selectable: true,
   stickyFooter: true,
@@ -244,8 +237,8 @@ stickyFooter.args = {
   `,
 };
 
-export const compact = DefaultTemplate.bind({});
-compact.args = { compact: true };
+export const Compact = DefaultTemplate.bind({});
+Compact.args = { compact: true };
 
 export const DateDivider = DefaultTemplate.bind({});
 DateDivider.args = { dateDivider: true };
@@ -260,8 +253,8 @@ DateDividerCustomLabel.args = {
   ],
 };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #cell-key_3="{value}">
       🤘🤘🤘
@@ -269,8 +262,8 @@ slotDefault.args = {
   `,
 };
 
-export const slotHeaderActions = DefaultTemplate.bind({});
-slotHeaderActions.args = {
+export const SlotHeaderActions = DefaultTemplate.bind({});
+SlotHeaderActions.args = {
   numberOfRows: 50,
   stickyHeader: true,
   selectable: true,
@@ -295,8 +288,8 @@ slotHeaderActions.args = {
   `,
 };
 
-export const slotBeforeFirstRow = DefaultTemplate.bind({});
-slotBeforeFirstRow.args = {
+export const SlotBeforeFirstRow = DefaultTemplate.bind({});
+SlotBeforeFirstRow.args = {
   slotTemplate: `
     <template #before-first-row>
       <p>
@@ -309,8 +302,8 @@ slotBeforeFirstRow.args = {
   `,
 };
 
-export const slotAfterLastRow = DefaultTemplate.bind({});
-slotAfterLastRow.args = {
+export const SlotAfterLastRow = DefaultTemplate.bind({});
+SlotAfterLastRow.args = {
   slotTemplate: `
     <template #after-last-row>
       <p>
@@ -323,8 +316,8 @@ slotAfterLastRow.args = {
   `,
 };
 
-export const slotFooter = DefaultTemplate.bind({});
-slotFooter.args = {
+export const SlotFooter = DefaultTemplate.bind({});
+SlotFooter.args = {
   slotTemplate: `
     <template #footer>
       <td>
@@ -339,8 +332,8 @@ slotFooter.args = {
   `,
 };
 
-export const cellSlots = DefaultTemplate.bind({});
-cellSlots.args = {
+export const CellSlots = DefaultTemplate.bind({});
+CellSlots.args = {
   columns: [
     { key: "link", label: "link" },
     { key: "money", label: "money", thClass: "text-right" },

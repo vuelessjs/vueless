@@ -110,8 +110,8 @@ VariantColors.args = { text: "" };
 export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
 WithoutDropdownIcon.args = { enum: "variant", noIcon: true };
 
-export const defaultSlot = DefaultTemplate.bind({});
-defaultSlot.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       Custom label
@@ -119,8 +119,8 @@ defaultSlot.args = {
   `,
 };
 
-export const leftSlot = DefaultTemplate.bind({});
-leftSlot.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -132,8 +132,8 @@ leftSlot.args = {
   `,
 };
 
-export const rightSlot = DefaultTemplate.bind({});
-rightSlot.args = {
+export const RightSlot = DefaultTemplate.bind({});
+RightSlot.args = {
   slotTemplate: `
     <template #right>
       <UIcon

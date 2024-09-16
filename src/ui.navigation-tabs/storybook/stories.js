@@ -60,14 +60,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const bottomLine = DefaultTemplate.bind({});
-bottomLine.args = { underlined: true };
+export const BottomLine = DefaultTemplate.bind({});
+BottomLine.args = { underlined: true };
 
-export const disabledTab = DefaultTemplate.bind({});
-disabledTab.args = {
+export const DisabledTab = DefaultTemplate.bind({});
+DisabledTab.args = {
   options: [
     { label: "Tab 1", value: 1 },
     { label: "Tab 2", value: 2, disabled: true },

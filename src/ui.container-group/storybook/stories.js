@@ -50,18 +50,16 @@ const DefaultTemplate = (args) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  title: "Some title",
-};
+Default.args = { title: "Some title" };
 
-export const upperlined = DefaultTemplate.bind({});
-upperlined.args = { upperlined: false, underlined: true };
+export const Upperlined = DefaultTemplate.bind({});
+Upperlined.args = { upperlined: false, underlined: true };
 
-export const underlined = DefaultTemplate.bind({});
-underlined.args = { upperlined: true, underlined: false };
+export const Underlined = DefaultTemplate.bind({});
+Underlined.args = { upperlined: true, underlined: false };
 
-export const nestedGroups = DefaultTemplate.bind({});
-nestedGroups.args = {
+export const NestedGroups = DefaultTemplate.bind({});
+NestedGroups.args = {
   title: "",
   slotTemplate: `
     <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
@@ -73,13 +71,13 @@ nestedGroups.args = {
   `,
 };
 
-export const slotDefault = DefaultTemplate.bind({});
-slotDefault.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <UInput placeholder="placeholder" label="Label" />
   `,
 };
-slotDefault.parameters = {
+SlotDefault.parameters = {
   docs: {
     story: {
       iframeHeight: 240,
@@ -87,8 +85,8 @@ slotDefault.parameters = {
   },
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       <UButton size="sm" label="Edit"/>
@@ -96,7 +94,7 @@ slotRight.args = {
     ${defaultTemplate}
   `,
 };
-slotRight.parameters = {
+SlotRight.parameters = {
   docs: {
     story: {
       iframeHeight: 200,

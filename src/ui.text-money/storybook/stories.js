@@ -72,44 +72,40 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const otherValues = DefaultTemplate.bind({});
-otherValues.args = {
-  sum: 10,
-  symbol: "$",
-  sign: "negative",
-};
+export const OtherValues = DefaultTemplate.bind({});
+OtherValues.args = { sum: 10, symbol: "$", sign: "negative" };
 
-export const colors = EnumVariantTemplate.bind({});
-colors.args = {
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = {
   enum: "color",
   sum: 0,
   symbol: "$",
   sign: "default",
 };
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const sign = EnumVariantTemplate.bind({});
-sign.args = { enum: "sign" };
+export const Sign = EnumVariantTemplate.bind({});
+Sign.args = { enum: "sign" };
 
-export const symbolAlign = EnumVariantTemplate.bind({});
-symbolAlign.args = { enum: "symbolAlign" };
+export const SymbolAlign = EnumVariantTemplate.bind({});
+SymbolAlign.args = { enum: "symbolAlign" };
 
-export const planned = DefaultTemplate.bind({});
-planned.args = { planned: true };
+export const Planned = DefaultTemplate.bind({});
+Planned.args = { planned: true };
 
-export const integer = DefaultTemplate.bind({});
-integer.args = { integer: true };
+export const Integer = DefaultTemplate.bind({});
+Integer.args = { integer: true };
 
-export const numeralDecimalScale3 = DefaultTemplate.bind({});
-numeralDecimalScale3.args = { numeralDecimalScale: 3 };
+export const NumeralDecimalScale3 = DefaultTemplate.bind({});
+NumeralDecimalScale3.args = { numeralDecimalScale: 3 };
 
-export const align = EnumVariantTemplate.bind({});
-align.args = { enum: "align" };
+export const Align = EnumVariantTemplate.bind({});
+Align.args = { enum: "align" };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon :src="icons.Debit" size="3xs" />
@@ -117,8 +113,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon :src="icons.Credit" size="3xs" />

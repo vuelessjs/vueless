@@ -60,29 +60,29 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const starAmount = DefaultTemplate.bind({});
-starAmount.args = { value: 4, stars: 7 };
+export const StarAmount = DefaultTemplate.bind({});
+StarAmount.args = { value: 4, stars: 7 };
 
-export const selectable = DefaultTemplate.bind({});
-selectable.args = { selectable: true };
+export const Selectable = DefaultTemplate.bind({});
+Selectable.args = { selectable: true };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "Some description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Some description" };
 
-export const error = DefaultTemplate.bind({});
-error.args = { error: "Some error" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "Some error" };
 
-export const withCounter = DefaultTemplate.bind({});
-withCounter.args = { counter: true };
+export const WithCounter = DefaultTemplate.bind({});
+WithCounter.args = { counter: true };
 
-export const withTotal = DefaultTemplate.bind({});
-withTotal.args = { total: 250 };
+export const WithTotal = DefaultTemplate.bind({});
+WithTotal.args = { total: 250 };
 
-export const slotCounter = DefaultTemplate.bind({});
-slotCounter.args = {
+export const SlotCounter = DefaultTemplate.bind({});
+SlotCounter.args = {
   slotTemplate: `
     <template #counter="{counter}">
       Rating: {{counter}}
@@ -90,8 +90,8 @@ slotCounter.args = {
   `,
 };
 
-export const slotTotal = DefaultTemplate.bind({});
-slotTotal.args = {
+export const SlotTotal = DefaultTemplate.bind({});
+SlotTotal.args = {
   total: 250,
   slotTemplate: `
     <template #total="{total}">

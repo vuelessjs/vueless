@@ -66,41 +66,41 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = { size: "3xl" };
 
-export const src = DefaultTemplate.bind({});
-src.args = {
+export const Src = DefaultTemplate.bind({});
+Src.args = {
   src: "https://avatars.githubusercontent.com/u/16276298?v=4",
   size: "3xl",
 };
 
-export const label = DefaultTemplate.bind({});
-label.args = { label: "Name Surname", size: "3xl" };
+export const Label = DefaultTemplate.bind({});
+Label.args = { label: "Name Surname", size: "3xl" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const sizes = EnumVariantTemplate.bind({});
-sizes.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const rounded = EnumVariantTemplate.bind({});
-rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
+export const Rounded = EnumVariantTemplate.bind({});
+Rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const colors = EnumVariantTemplate.bind({});
-colors.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 /**
  * Hold cursor above an avatar to see value.
  */
-export const bordered = EnumVariantTemplate.bind({});
-bordered.args = { enum: "color", bordered: true };
+export const Bordered = EnumVariantTemplate.bind({});
+Bordered.args = { enum: "color", bordered: true };
 
-export const slotPlaceholder = DefaultTemplate.bind({});
-slotPlaceholder.args = {
+export const SlotPlaceholder = DefaultTemplate.bind({});
+SlotPlaceholder.args = {
   size: "3xl",
   slotTemplate: `
     <template #placeholder>

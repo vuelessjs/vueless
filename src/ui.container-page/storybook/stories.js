@@ -61,27 +61,27 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const titleSizeSm = DefaultTemplate.bind({});
-titleSizeSm.args = { titleSize: "sm" };
+export const TitleSizeSm = DefaultTemplate.bind({});
+TitleSizeSm.args = { titleSize: "sm" };
 
-export const classes = DefaultTemplate.bind({});
-classes.args = {
+export const Classes = DefaultTemplate.bind({});
+Classes.args = {
   classes: {
     header: "text-violet-300",
   },
 };
 
-export const description = DefaultTemplate.bind({});
-description.args = { description: "Page description" };
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Page description" };
 
-export const width = DefaultTemplate.bind({});
-width.args = { width: "md", title: "Width = md" };
+export const Width = DefaultTemplate.bind({});
+Width.args = { width: "md", title: "Width = md" };
 
-export const widePage = DefaultTemplate.bind({});
-widePage.args = { widePage: true, width: "sm" };
+export const WidePage = DefaultTemplate.bind({});
+WidePage.args = { widePage: true, width: "sm" };
 
-export const backRoute = DefaultTemplate.bind({});
-backRoute.args = {
+export const BackRoute = DefaultTemplate.bind({});
+BackRoute.args = {
   backLabel: "back",
   backRoute: {
     path: "/",
@@ -89,8 +89,8 @@ backRoute.args = {
   },
 };
 
-export const slotHeaderLeftBefore = DefaultTemplate.bind({});
-slotHeaderLeftBefore.args = {
+export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
+SlotHeaderLeftBefore.args = {
   slotTemplate: `
     <template #header-left-before>
       <UIcon
@@ -102,8 +102,8 @@ slotHeaderLeftBefore.args = {
   `,
 };
 
-export const slotHeaderLeft = DefaultTemplate.bind({});
-slotHeaderLeft.args = {
+export const SlotHeaderLeft = DefaultTemplate.bind({});
+SlotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
@@ -112,8 +112,8 @@ slotHeaderLeft.args = {
   `,
 };
 
-export const slotHeaderLeftAfter = DefaultTemplate.bind({});
-slotHeaderLeftAfter.args = {
+export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
+SlotHeaderLeftAfter.args = {
   slotTemplate: `
     <template #header-left-after>
       <UIcon
@@ -125,8 +125,8 @@ slotHeaderLeftAfter.args = {
   `,
 };
 
-export const slotHeaderRight = DefaultTemplate.bind({});
-slotHeaderRight.args = {
+export const SlotHeaderRight = DefaultTemplate.bind({});
+SlotHeaderRight.args = {
   slotTemplate: `
     <template #header-right>
       <UButton size="sm" color="gray" label="button" />
@@ -135,8 +135,8 @@ slotHeaderRight.args = {
   `,
 };
 
-export const slotFooterLeft = DefaultTemplate.bind({});
-slotFooterLeft.args = {
+export const SlotFooterLeft = DefaultTemplate.bind({});
+SlotFooterLeft.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
@@ -145,8 +145,8 @@ slotFooterLeft.args = {
   `,
 };
 
-export const slotFooterRight = DefaultTemplate.bind({});
-slotFooterRight.args = {
+export const SlotFooterRight = DefaultTemplate.bind({});
+SlotFooterRight.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-right>

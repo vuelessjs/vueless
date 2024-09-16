@@ -41,11 +41,11 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const slotLeft = DefaultTemplate.bind({});
-slotLeft.args = {
+export const SlotLeft = DefaultTemplate.bind({});
+SlotLeft.args = {
   slotTemplate: `
     <template #left>
       <UIcon
@@ -56,8 +56,8 @@ slotLeft.args = {
   `,
 };
 
-export const slotRight = DefaultTemplate.bind({});
-slotRight.args = {
+export const SlotRight = DefaultTemplate.bind({});
+SlotRight.args = {
   slotTemplate: `
     <template #right>
       <UIcon

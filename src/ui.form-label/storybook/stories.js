@@ -86,8 +86,8 @@ Error.args = { error: "Error description" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const slotFooter = DefaultTemplate.bind({});
-slotFooter.args = {
+export const SlotFooter = DefaultTemplate.bind({});
+SlotFooter.args = {
   slotTemplate: `
     <template #footer>
       <UIcon name="star" color="green" />

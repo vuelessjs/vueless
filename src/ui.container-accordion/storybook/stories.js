@@ -61,8 +61,8 @@ Default.args = {};
 export const Size = DefaultTemplate.bind({});
 Size.args = { size: "sm" };
 
-export const slotToggle = DefaultTemplate.bind({});
-slotToggle.args = {
+export const SlotToggle = DefaultTemplate.bind({});
+SlotToggle.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <UButton

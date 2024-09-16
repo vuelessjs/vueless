@@ -35,23 +35,23 @@ const DefaultTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const perPage1 = DefaultTemplate.bind({});
-perPage1.args = { perPage: 1 };
+export const PerPage1 = DefaultTemplate.bind({});
+PerPage1.args = { perPage: 1 };
 
-export const limit = DefaultTemplate.bind({});
-limit.args = { limit: 3 };
+export const Limit = DefaultTemplate.bind({});
+Limit.args = { limit: 3 };
 
-export const hideEllipsis = DefaultTemplate.bind({});
-hideEllipsis.args = { ellipses: false };
+export const HideEllipsis = DefaultTemplate.bind({});
+HideEllipsis.args = { ellipses: false };
 
-export const disabled = DefaultTemplate.bind({});
-disabled.args = { disabled: true };
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
-export const hideNavButtons = DefaultTemplate.bind({});
-hideNavButtons.args = { showLast: false, showFirst: false };
+export const HideNavButtons = DefaultTemplate.bind({});
+HideNavButtons.args = { showLast: false, showFirst: false };
 
-export const setCustomNavigationLabel = DefaultTemplate.bind({});
-setCustomNavigationLabel.args = {
+export const SetCustomNavigationLabel = DefaultTemplate.bind({});
+SetCustomNavigationLabel.args = {
   prevLabel: "◀️",
   nextLabel: "▶️",
   lastLabel: "⏩",

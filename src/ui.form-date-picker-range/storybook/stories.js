@@ -168,16 +168,10 @@ CustomRangeButton.args = {
 };
 
 export const LeftIcon = DefaultTemplate.bind({});
-LeftIcon.args = {
-  leftIcon: "star",
-  variant: "input",
-};
+LeftIcon.args = { leftIcon: "star", variant: "input" };
 
 export const RightIcon = DefaultTemplate.bind({});
-RightIcon.args = {
-  rightIcon: "star",
-  variant: "input",
-};
+RightIcon.args = { rightIcon: "star", variant: "input" };
 
 export const LeftIconSlot = DefaultTemplate.bind({});
 LeftIconSlot.args = {
