@@ -38,6 +38,8 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
       if (isCVA(value)) {
         value = cva(value)({
           ...props,
+          error: Boolean(props.error),
+          description: Boolean(props.description),
         });
       }
 

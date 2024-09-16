@@ -14,7 +14,7 @@ export default /*tw*/ {
   `,
   menu: {
     base: `
-      absolute z-40 my-2 w-80 overflow-hidden rounded-dynamic
+      absolute z-40 mb-3 w-80 overflow-hidden rounded-dynamic
       border border-brand-300 bg-white p-2 shadow focus:outline-none
     `,
     variants: {
@@ -26,6 +26,14 @@ export default /*tw*/ {
         top: "bottom-full mt-0",
       },
     },
+    compoundVariants: [
+      { error: true, variant: "input", class: "-mt-3" },
+      { description: true, variant: "input", class: "-mt-3" },
+      { description: false, error: false, variant: "input", class: "mt-2" },
+      { error: true, variant: "button", class: "-mt-2" },
+      { description: true, variant: "button", class: "-mt-2" },
+      { description: false, error: false, variant: "button", class: "mt-3" },
+    ],
   },
   menuTransition: {
     enterFromClass: "opacity-0 scale-95",
@@ -74,7 +82,7 @@ export default /*tw*/ {
   inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
     component: "{UCalendar}",
-    wrapper: "p-0 mt-2 w-full border-none shadow-none",
+    wrapper: "p-0 w-full border-none shadow-none",
     navigation: "mb-0 border-none",
     viewSwitchButton: {
       base: "rounded-dynamic px-4",
