@@ -243,7 +243,7 @@ const elementId = props.id || useId();
 
 const { inputAttrs } = useAttrs(props);
 
-const { formattedValue, rawValue, setValue } = useFormatCurrency(`#${props.id}`, () => ({
+const { formattedValue, rawValue, setValue } = useFormatCurrency(`#${elementId}`, () => ({
   minFractionDigits: props.minFractionDigits,
   maxFractionDigits: props.maxFractionDigits,
   decimalSeparator: props.decimalSeparator,
