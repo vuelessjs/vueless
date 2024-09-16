@@ -16,15 +16,22 @@ const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
  * Use it to extend project Tailwind CSS `content` config.
  */
 export const vuelessContent = [
-  "./index.html",
-  "./src/**/*.{js,ts,jsx,tsx,vue}",
   "./vueless.config.{js,ts}",
   "./node_modules/vueless/**/*.{js,ts,vue}",
-  ...(isStrategyOverride ? ["!./src/**/ui.*/config.js"] : []),
+  ...(isStrategyOverride ? ["!./src/**/ui.*/config.js"] : []), // only for vueless env
   ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/config.js"] : []),
 ];
 
-// eslint-disable-next-line no-unused-vars
+/**
+ * Vue.js default Tailwind CSS `content` config.
+ * Use it to extend project Tailwind CSS `content` config.
+ */
+export const vuelessContentVue = ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}"];
+
+/**
+ * Nuxt.js default Tailwind CSS `content` config.
+ * Use it to extend project Tailwind CSS `content` config.
+ */
 export const vuelessContentNuxt = [
   "./composables/**/*.{js,ts}",
   "./components/**/*.{js,vue,ts}",
@@ -33,9 +40,6 @@ export const vuelessContentNuxt = [
   "./plugins/**/*.{js,ts}",
   "./app.vue",
   "./error.vue",
-  "./vueless.config.{js,ts}",
-  "./node_modules/vueless/**/*.{js,ts,vue}",
-  ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/**/config.js"] : []),
 ];
 
 /**
@@ -45,7 +49,7 @@ export const vuelessContentNuxt = [
 export function vuelessPreset() {
   return {
     darkMode: DARK_MODE_SELECTOR,
-    content: vuelessContent,
+    content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
     safelist,
     theme: {
       extend: {
