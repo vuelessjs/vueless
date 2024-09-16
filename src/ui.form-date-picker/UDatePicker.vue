@@ -223,7 +223,7 @@ const props = defineProps({
    */
   dateTimeFormat: {
     type: String,
-    default: getDefault(defaultConfig, UCalendar).dateTimeFormat,
+    default: getDefault(defaultConfig, UDatePicker).dateTimeFormat,
   },
 
   /**
@@ -239,7 +239,7 @@ const props = defineProps({
    */
   userDateTimeFormat: {
     type: String,
-    default: getDefault(defaultConfig, UCalendar).userDateTimeFormat,
+    default: getDefault(defaultConfig, UDatePicker).userDateTimeFormat,
   },
 
   /**
