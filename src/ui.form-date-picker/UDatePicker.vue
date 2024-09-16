@@ -48,7 +48,7 @@
         :timepicker="timepicker"
         :date-format="dateFormat"
         :date-time-format="dateTimeFormat"
-        :user-date-format="userFormat"
+        :user-date-format="userDateFormat"
         :user-date-time-format="userDateTimeFormat"
         :max-date="maxDate"
         :min-date="minDate"
@@ -359,7 +359,7 @@ function onBlur(event) {
 }
 
 function formatUserDate(data) {
-  if (props.userFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
+  if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
 
   let prefix = "";
   const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);

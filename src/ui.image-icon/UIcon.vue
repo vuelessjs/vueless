@@ -150,7 +150,7 @@ const dynamicComponent = computed(() => {
   if (!src && !name) return "";
 
   /* Static import */
-  if (src) return src.render();
+  if (src) return src.render({}, {});
 
   /* Dynamic import */
   if (!name) return "";
