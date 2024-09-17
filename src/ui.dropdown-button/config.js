@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownButton: "{UButton}",
-  dropdownButtonActive: "group ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+  dropdownButtonActive: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
     base: "{UDropdownList} w-fit",
@@ -32,4 +32,5 @@ export default /*tw*/ {
     /* icons */
     dropdownIcon: "keyboard_arrow_down",
   },
+  safelist: (colors) => [{ pattern: `ring-(${colors})-700` }],
 };

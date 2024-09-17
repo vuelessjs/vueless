@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  dropdownBadge: "{UBadge}",
-  dropdownBadgeActive: "group ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+  dropdownBadge: "{UBadge} transition",
+  dropdownBadgeActive: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
     component: "{UDropdownList}",
@@ -30,4 +30,5 @@ export default /*tw*/ {
     /* icons */
     dropdownIcon: "keyboard_arrow_down",
   },
+  safelist: (colors) => [{ pattern: `ring-(${colors})-700` }],
 };

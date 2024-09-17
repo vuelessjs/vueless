@@ -5,7 +5,7 @@ import defaultConfig from "./config.js";
 import { computed } from "vue";
 
 export default function useAttrs(props, { isShownOptions }) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getColor, setColor, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -20,10 +20,11 @@ export default function useAttrs(props, { isShownOptions }) {
       if (isCVA(value)) {
         value = cva(value)({
           ...props,
+          color: getColor(props.color),
         });
       }
 
-      return value;
+      return setColor(value, props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -35,7 +36,7 @@ export default function useAttrs(props, { isShownOptions }) {
         ...badgeAttrs.value,
         class: cx([
           badgeAttrs.value.class,
-          isShownOptions.value && config.value.dropdownBadgeActive,
+          isShownOptions.value && setColor(config.value.dropdownBadgeActive, props.color),
         ]),
       }));
     }

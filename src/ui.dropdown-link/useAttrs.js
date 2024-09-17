@@ -5,7 +5,7 @@ import defaultConfig from "./config.js";
 import { computed } from "vue";
 
 export default function useAttrs(props, { isShownOptions }) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getColor, setColor, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
     defaultConfig,
     () => props.config,
   );
@@ -18,12 +18,13 @@ export default function useAttrs(props, { isShownOptions }) {
       let value = config.value[key];
 
       if (isCVA(value)) {
-        return cva(value)({
+        value = cva(value)({
           ...props,
+          color: getColor(props.color),
         });
       }
 
-      return value;
+      return setColor(value, props.color);
     });
 
     attrs[`${key}Attrs`] = getAttrs(key, { classes });
@@ -33,7 +34,10 @@ export default function useAttrs(props, { isShownOptions }) {
 
       attrs[`${key}Attrs`] = computed(() => ({
         ...linkAttrs.value,
-        class: cx([linkAttrs.value.class, isShownOptions.value && config.value.dropdownLinkActive]),
+        class: cx([
+          linkAttrs.value.class,
+          isShownOptions.value && setColor(config.value.dropdownLinkActive, props.color),
+        ]),
       }));
     }
   }
