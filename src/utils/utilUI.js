@@ -49,7 +49,7 @@ const twMerge = extendTailwindMerge(
         },
       },
     },
-    vuelessConfig.tailwindMerge,
+    vuelessConfig?.tailwindMerge,
   ),
 );
 
