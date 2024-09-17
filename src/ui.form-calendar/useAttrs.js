@@ -12,7 +12,7 @@ export default function useAttrs(props) {
   );
   const attrs = {};
 
-  const variantKeys = [
+  const buttonVariantKeys = [
     "firstDateInRange",
     "lastDateInRange",
     "anotherMonthDate",
@@ -56,7 +56,7 @@ export default function useAttrs(props) {
   ];
 
   for (const key in defaultConfig) {
-    if (isSystemKey(key) || variantKeys.includes(key)) continue;
+    if (isSystemKey(key) || buttonVariantKeys.includes(key)) continue;
 
     const classes = computed(() => {
       let value = config.value[key];
@@ -82,7 +82,7 @@ export default function useAttrs(props) {
     }
   }
 
-  for (const key of variantKeys) {
+  for (const key of buttonVariantKeys) {
     if (key === "dayInRange") {
       attrs[`${key}Attrs`] = computed(() => ({
         ...attrs.dayAttrs.value,

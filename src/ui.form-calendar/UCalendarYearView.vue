@@ -30,6 +30,7 @@
         variant="thirdary"
         color="brand"
         no-ring
+        filled
         v-bind="firstYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -42,6 +43,7 @@
         variant="thirdary"
         color="brand"
         no-ring
+        filled
         v-bind="lastYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -75,7 +77,7 @@
 
       <UButton
         v-else-if="getYearState(year).isSelectedYear"
-        variant="thirdary"
+        variant="primary"
         color="brand"
         no-ring
         v-bind="selectedYearAttrs"
