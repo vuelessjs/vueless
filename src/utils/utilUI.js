@@ -17,16 +17,20 @@ import {
 export let vuelessConfig = {};
 
 if (isSSR) {
-  (async () =>
-    (vuelessConfig = (
-      await import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js?${Date.now()}`)
-    ).default))();
+  /* Load Vueless config from the project root in IIFE (no top-level await). */
+  (async () => {
+    try {
+      vuelessConfig = (await import(`${process.cwd()}/vueless.config.js`)).default;
+    } catch (error) {
+      vuelessConfig = {};
+    }
+  })();
 }
 
 if (isCSR) {
-  vuelessConfig = Object.values(
-    import.meta.glob("/vueless.config.js", { eager: true, import: "default" }),
-  )[0];
+  vuelessConfig =
+    Object.values(import.meta.glob("/vueless.config.js", { eager: true, import: "default" }))[0] ||
+    {};
 }
 
 /**
@@ -49,7 +53,7 @@ const twMerge = extendTailwindMerge(
         },
       },
     },
-    vuelessConfig?.tailwindMerge,
+    vuelessConfig.tailwindMerge,
   ),
 );
 
@@ -88,7 +92,7 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 export function getDefault(defaultConfig, name) {
   const defaults = merge(
     cloneDeep(defaultConfig.defaults),
-    vuelessConfig?.component ? vuelessConfig?.component[name]?.defaults : {},
+    vuelessConfig.component ? vuelessConfig.component[name]?.defaults : {},
   );
 
   defaults.color = getColor(defaults.color);

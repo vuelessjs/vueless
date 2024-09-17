@@ -31,11 +31,11 @@ export function themeInit() {
 
 export function setTheme(config = {}) {
   const isDarkMode = setDarkMode(config);
-  const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
-  const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;
-  const rounding = config?.rounding ?? vuelessConfig?.rounding ?? DEFAULT_ROUNDING;
-  let brand = config?.brand ?? vuelessConfig?.brand ?? DEFAULT_BRAND_COLOR;
-  let gray = config?.gray ?? vuelessConfig?.gray ?? DEFAULT_GRAY_COLOR;
+  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
+  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  let brand = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+  let gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const isBrandColor = BRAND_COLORS.some((color) => color === brand);
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
@@ -103,7 +103,7 @@ function setDarkMode(config) {
   let isDarkMode =
     storedDarkMode !== null
       ? !!Number(storedDarkMode)
-      : !!(config?.darkMode ?? vuelessConfig?.darkMode ?? config?.systemDarkMode);
+      : !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
 
   isDarkMode
     ? isCSR && document.documentElement.classList.add(DARK_MODE_SELECTOR)

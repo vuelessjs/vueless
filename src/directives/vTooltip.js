@@ -17,7 +17,7 @@ if (isCSR) {
     animation: "shift-away",
   };
 
-  settings = merge(defaultSettings, vuelessConfig?.directive?.tooltip || {});
+  settings = merge(defaultSettings, vuelessConfig.directive?.tooltip || {});
   tippy.setDefaultProps(settings);
 }
 
