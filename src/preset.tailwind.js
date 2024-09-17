@@ -56,7 +56,6 @@ const grayColors = getPalette(GRAY_COLOR);
 export const vuelessTailwindConfig = {
   darkMode: DARK_MODE_SELECTOR,
   content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
-  safelist,
   theme: {
     extend: {
       colors: {
@@ -94,7 +93,19 @@ export function vuelessPreset() {
   return {
     ...vuelessTailwindConfig,
     plugins: [forms],
+    safelist,
   };
+}
+
+/**
+ * Convert sting patterns to RegExp.
+ * @returns {Array} - TailwindCSS safelist.
+ */
+export function getSafelist() {
+  return JSON.parse(process.env.VUELESS_SAFELIST || "[]").map((rule) => ({
+    ...rule,
+    pattern: new RegExp(rule.pattern),
+  }));
 }
 
 /**
@@ -121,15 +132,4 @@ function getPalette(color) {
   });
 
   return palette;
-}
-
-/**
- * Convert sting patterns to RegExp.
- * @returns {Array} - TailwindCSS safelist.
- */
-function getSafelist() {
-  return JSON.parse(process.env.VUELESS_SAFELIST || "[]").map((rule) => ({
-    ...rule,
-    pattern: new RegExp(rule.pattern),
-  }));
 }
