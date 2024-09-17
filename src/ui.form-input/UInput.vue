@@ -476,6 +476,6 @@ function setLabelPosition() {
 <style lang="postcss" scoped>
 @font-face {
   font-family: text-security-disc;
-  src: url("./assets/fonts/text-security-disc.woff");
+  src: url("./assets/text-security-disc.woff");
 }
 </style>
