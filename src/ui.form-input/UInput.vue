@@ -388,7 +388,7 @@ function onInput(inputEvent) {
   let value = inputEvent.target.value;
 
   if (props.validationRule) {
-    const input = document.querySelector(`#${props.id}`);
+    const input = document.querySelector(`#${elementId}`);
 
     value = VALIDATION_RULES_REG_EX[props.validationRule]
       ? transformValue(value, VALIDATION_RULES_REG_EX[props.validationRule])
@@ -438,7 +438,7 @@ function onClickShowPassword() {
  */
 function toggleReadonlyToPreventAutocomplete(toggleState) {
   if (props.noAutocomplete && !props.readonly) {
-    const input = document.getElementById(props.id);
+    const input = document.getElementById(elementId);
 
     toggleState ? input.setAttribute("readonly", "readonly") : input.removeAttribute("readonly");
   }

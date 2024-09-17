@@ -318,7 +318,7 @@ function onMousedown() {
 
 function toggleReadonly(hasReadonly) {
   if (props.noAutocomplete && !props.readonly) {
-    const textarea = document.getElementById(props.id);
+    const textarea = document.getElementById(elementId);
 
     hasReadonly
       ? textarea.setAttribute("readonly", "readonly")

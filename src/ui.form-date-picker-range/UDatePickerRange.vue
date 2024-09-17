@@ -460,7 +460,7 @@ const localValue = computed({
   },
 });
 
-const rangeInputName = computed(() => `rangeInput-${props.id}`);
+const rangeInputName = computed(() => `rangeInput-${elementId}`);
 
 const isVariant = computed(() => ({
   button: props.variant === DATE_PICKER_BUTTON_TYPE,

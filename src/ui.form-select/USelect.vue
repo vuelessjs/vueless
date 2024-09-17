@@ -797,7 +797,7 @@ function deactivate() {
   search.value = "";
   isOpen.value = false;
 
-  nextTick(() => emit("close", localValue.value, props.id));
+  nextTick(() => emit("close", localValue.value, elementId));
 }
 
 function activate() {
@@ -815,7 +815,7 @@ function activate() {
 
   if (wrapperRef.value !== undefined && !props.searchable) wrapperRef.value.focus();
 
-  emit("open", props.id);
+  emit("open", elementId);
 }
 
 function adjustPosition() {
@@ -851,7 +851,7 @@ function removeElement(option, shouldClose = true) {
   }
 
   emit("update:modelValue", value);
-  emit("remove", option, props.id);
+  emit("remove", option, elementId);
 
   if (shouldClose) {
     deactivate();

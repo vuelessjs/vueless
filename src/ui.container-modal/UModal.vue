@@ -321,7 +321,7 @@ function preventOverlayFromScrolling(newValue) {
   if (newValue) {
     document.body.style.overflow = "hidden";
   } else {
-    document.getElementById(`${props.id}`).style.overflow = "hidden";
+    document.getElementById(`${elementId}`).style.overflow = "hidden";
     document.body.style.overflow = "auto";
   }
 }
