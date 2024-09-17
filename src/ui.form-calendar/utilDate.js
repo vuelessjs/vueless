@@ -255,7 +255,7 @@ export function isToday(date) {
   return isSameDay(date, new Date());
 }
 
-export function isCurrentMoth(date) {
+export function isCurrentMonth(date) {
   return isSameMonth(date, new Date());
 }
 
