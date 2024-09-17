@@ -1,5 +1,5 @@
 import forms from "@tailwindcss/forms";
-import defaultTheme from "tailwindcss/defaultTheme.js";
+import colors from "tailwindcss/colors.js";
 import {
   COLOR_SHADES,
   BRAND_COLOR,
@@ -8,7 +8,6 @@ import {
   DARK_MODE_SELECTOR,
 } from "./constants.js";
 
-const safelist = getSafelist();
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
 
 /**
@@ -38,9 +37,54 @@ export const vuelessContentNuxt = [
   "./layouts/**/*.vue",
   "./pages/**/*.vue",
   "./plugins/**/*.{js,ts}",
-  "./app.vue",
-  "./error.vue",
+  "./utils/**/*.{js,ts}",
+  "./App.{js,ts,vue}",
+  "./app.{js,ts,vue}",
+  "./Error.{js,ts,vue}",
+  "./error.{js,ts,vue}",
+  "./app.config.{js,ts}",
 ];
+
+/**
+ * Vueless tailwind static config.
+ * Exported to use in `@vueless/module-nuxt`.
+ */
+const safelist = getSafelist();
+const brandColors = getPalette(BRAND_COLOR);
+const grayColors = getPalette(GRAY_COLOR);
+
+export const vuelessTailwindConfig = {
+  darkMode: DARK_MODE_SELECTOR,
+  content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
+  safelist,
+  theme: {
+    extend: {
+      colors: {
+        [BRAND_COLOR]: brandColors || {},
+        [GRAY_COLOR]: grayColors || {},
+        [COOL_COLOR]: { ...(colors[GRAY_COLOR] || {}) },
+      },
+      spacing: {
+        "safe-top": "env(safe-area-inset-top)",
+        "safe-bottom": "env(safe-area-inset-bottom)",
+        "safe-left": "env(safe-area-inset-left)",
+        "safe-right": "env(safe-area-inset-right)",
+      },
+      fontSize: {
+        "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
+      },
+      ringWidth: {
+        dynamic: "var(--vl-ring)",
+      },
+      ringOffsetWidth: {
+        dynamic: "var(--vl-ring-offset)",
+      },
+      borderRadius: {
+        dynamic: "var(--vl-rounding)",
+      },
+    },
+  },
+};
 
 /**
  * Generates preset for TailwindCSS base on Vueless config.
@@ -48,36 +92,7 @@ export const vuelessContentNuxt = [
  */
 export function vuelessPreset() {
   return {
-    darkMode: DARK_MODE_SELECTOR,
-    content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
-    safelist,
-    theme: {
-      extend: {
-        colors: {
-          [BRAND_COLOR]: getPalette(BRAND_COLOR),
-          [GRAY_COLOR]: getPalette(GRAY_COLOR),
-          [COOL_COLOR]: { ...defaultTheme.colors[GRAY_COLOR] },
-        },
-        spacing: {
-          "safe-top": "env(safe-area-inset-top)",
-          "safe-bottom": "env(safe-area-inset-bottom)",
-          "safe-left": "env(safe-area-inset-left)",
-          "safe-right": "env(safe-area-inset-right)",
-        },
-        fontSize: {
-          "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
-        },
-        ringWidth: {
-          dynamic: "var(--vl-ring)",
-        },
-        ringOffsetWidth: {
-          dynamic: "var(--vl-ring-offset)",
-        },
-        borderRadius: {
-          dynamic: "var(--vl-rounding)",
-        },
-      },
-    },
+    ...vuelessTailwindConfig,
     plugins: [forms],
   };
 }
@@ -88,11 +103,7 @@ export function vuelessPreset() {
  * @returns {Function}
  */
 function twColorWithOpacity(variableName) {
-  return ({ opacityValue }) => {
-    return opacityValue !== undefined
-      ? `rgba(var(${variableName}), ${opacityValue})`
-      : `rgb(var(${variableName}))`;
-  };
+  return `rgba(var(${variableName}))`;
 }
 
 /**
