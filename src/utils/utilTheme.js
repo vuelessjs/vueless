@@ -1,6 +1,7 @@
 import colors from "tailwindcss/colors.js";
 
 import { vuelessConfig } from "./utilUI.js";
+import { isSSR, isCSR } from "./utilHelper.js";
 import {
   GRAY_COLOR,
   COOL_COLOR,
@@ -15,12 +16,11 @@ import {
   GRAY_COLORS,
   PX_IN_REM,
 } from "../constants.js";
-import { isSSR } from "./utilHelper.js";
 
 export function themeInit() {
   if (isSSR) return;
 
-  const prefersColorSchemeDark = window && window.matchMedia("(prefers-color-scheme: dark)");
+  const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
 
@@ -30,8 +30,6 @@ export function themeInit() {
 }
 
 export function setTheme(config = {}) {
-  if (isSSR) return;
-
   const isDarkMode = setDarkMode(config);
   const ring = config?.ring ?? vuelessConfig?.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig?.ringOffset ?? DEFAULT_RING_OFFSET;
@@ -79,22 +77,28 @@ export function setTheme(config = {}) {
     variables[`--vl-color-brand-${key}`] = convertHexInRgb(colors[brand][key]);
   }
 
-  const style = document.createElement("style");
   const stringVariables = Object.entries(variables)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
-  style.innerHTML = `:root {${stringVariables}`;
+  const rootVariables = `:root {${stringVariables}`;
 
-  document.head.appendChild(style);
+  if (isCSR) {
+    const style = document.createElement("style");
+
+    style.innerHTML = rootVariables;
+    document.head.appendChild(style);
+  }
+
+  return rootVariables;
 }
 
 function setDarkMode(config) {
   config?.darkMode === undefined
-    ? localStorage.removeItem(DARK_MODE_SELECTOR)
-    : localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
+    ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
+    : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
 
-  const storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
+  const storedDarkMode = isCSR ? localStorage.getItem(DARK_MODE_SELECTOR) : null;
 
   let isDarkMode =
     storedDarkMode !== null
@@ -102,8 +106,8 @@ function setDarkMode(config) {
       : !!(config?.darkMode ?? vuelessConfig?.darkMode ?? config?.systemDarkMode);
 
   isDarkMode
-    ? document.documentElement.classList.add(DARK_MODE_SELECTOR)
-    : document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+    ? isCSR && document.documentElement.classList.add(DARK_MODE_SELECTOR)
+    : isCSR && document.documentElement.classList.remove(DARK_MODE_SELECTOR);
 
   return isDarkMode;
 }
