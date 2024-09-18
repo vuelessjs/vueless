@@ -52,19 +52,19 @@
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdownListRef"
-      v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
       :data-test="`${dataTest}-list`"
+      @click-option="onClickOption"
     />
   </div>
 </template>
 
 <script setup>
-import { nextTick, ref, watch, useId } from "vue";
+import { nextTick, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -201,14 +201,13 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when dropdown option is selected.
+   * Triggers on dropdown option click.
    * @property {string} value
    */
-  "select",
+  "clickOption",
 ]);
 
 const isShownOptions = ref(false);
-const selectedItem = ref("");
 const dropdownListRef = ref(null);
 
 const elementId = props.id || useId();
@@ -220,12 +219,6 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
   },
 );
 
-watch(selectedItem, () => {
-  emit("select", selectedItem.value);
-
-  hideOptions();
-});
-
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
 
@@ -236,5 +229,11 @@ function onClickBadge() {
 
 function hideOptions() {
   isShownOptions.value = false;
+}
+
+function onClickOption(option) {
+  emit("clickOption", option);
+
+  hideOptions();
 }
 </script>
