@@ -2,7 +2,7 @@
   <UInput
     :id="elementId"
     ref="searchInput"
-    v-model="search"
+    :model-value="localValue"
     :size="size"
     :disabled="disabled"
     :readonly="readonly"
@@ -12,10 +12,11 @@
     :description="description"
     :placeholder="placeholder"
     inputmode="search"
-    :data-test="dataTest"
     :left-icon="leftIcon"
     v-bind="inputAttrs"
-    @keyup.enter="onClickSearch"
+    :data-test="dataTest"
+    @update:model-value="onUpdateModelValue"
+    @keyup.enter="onKeyupEnter"
   >
     <template #left>
       <!-- @slot Use it to add something before the text. -->
@@ -29,14 +30,14 @@
 
     <template #right-icon>
       <UIcon
-        v-if="modelValue"
+        v-if="localValue"
         internal
         interactive
         color="gray"
         :name="config.defaults.clearIcon"
-        :data-test="`${dataTest}-close`"
         :size="iconSize"
         v-bind="clearIconAttrs"
+        :data-test="`${dataTest}-clear`"
         @click="onClickClear"
       />
 
@@ -53,8 +54,8 @@
           interactive
           :size="iconSize"
           :name="rightIcon || config.defaults.searchIcon"
-          :data-test="`${dataTest}-search`"
           v-bind="searchIconAttrs"
+          :data-test="`${dataTest}-search-icon`"
           @click="onClickSearch"
         />
       </slot>
@@ -69,7 +70,7 @@
           :size="buttonSize"
           no-ring
           v-bind="buttonAttrs"
-          :data-test="`${dataTest}-right`"
+          :data-test="`${dataTest}-search-button`"
           @click="onClickSearch"
         />
       </slot>
@@ -84,7 +85,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
 import { getDefault } from "../utils/utilUI.js";
-import { debounce as debounceMethod } from "../utils/utilHelper.js";
+import { debounce as setDebounce } from "../utils/utilHelper.js";
 
 import { UInputSearch } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -208,7 +209,7 @@ const props = defineProps({
   },
 
   debounce: {
-    type: Number,
+    type: [String, Number],
     default: getDefault(defaultConfig, UInputSearch).debounce,
   },
 
@@ -254,17 +255,6 @@ const elementId = props.id || useId();
 
 const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
 
-const search = computed({
-  get: () => props.modelValue,
-  set: debounceMethod((value) => {
-    localValue.value = value;
-
-    if (localValue.value.length >= Number(props.minLength)) {
-      emit("update:modelValue", value);
-    }
-  }, props.debounce),
-});
-
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -285,13 +275,34 @@ const buttonSize = computed(() => {
   return sizes[props.size];
 });
 
-function onClickClear() {
-  search.value = "";
-  emit("clear");
+function onUpdateModelValue(value) {
+  localValue.value = value;
+
+  if (!value) {
+    emit("update:modelValue", localValue.value);
+  }
+
+  if (Number(props.minLength) && value.length >= Number(props.minLength)) {
+    setDebounce(() => emit("update:modelValue", localValue.value), Number(props.debounce))();
+  }
+}
+
+function search() {
+  if (localValue.value && localValue.value.length >= Number(props.minLength)) {
+    emit("search", localValue.value);
+  }
+}
+
+function onKeyupEnter() {
+  search();
 }
 
 function onClickSearch() {
-  if (!localValue.value) return;
-  emit("search", localValue.value);
+  search();
+}
+
+function onClickClear() {
+  localValue.value = "";
+  emit("clear");
 }
 </script>
