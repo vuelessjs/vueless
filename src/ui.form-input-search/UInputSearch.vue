@@ -282,8 +282,10 @@ function onUpdateModelValue(value) {
     emit("update:modelValue", localValue.value);
   }
 
-  if (Number(props.minLength) && value.length >= Number(props.minLength)) {
-    setDebounce(() => emit("update:modelValue", localValue.value), Number(props.debounce))();
+  if (value.length >= Number(props.minLength)) {
+    Number(props.minLength)
+      ? setDebounce(() => emit("update:modelValue", localValue.value), Number(props.debounce))()
+      : value && emit("update:modelValue", localValue.value);
   }
 }
 
