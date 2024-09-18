@@ -305,6 +305,7 @@ function onClickSearch() {
 
 function onClickClear() {
   localValue.value = "";
+  emit("update:modelValue", localValue.value);
   emit("clear");
 }
 </script>
