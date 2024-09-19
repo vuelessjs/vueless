@@ -23,7 +23,7 @@
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs"
           :class="optionHighlight(index, option)"
-          @click="select(option)"
+          @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
@@ -204,6 +204,10 @@ const emit = defineEmits([
    * Triggers when option is added.
    */
   "addOption",
+  /**
+   * Triggers on click option.
+   */
+  "clickOption",
 ]);
 
 const wrapperRef = ref(null);
@@ -299,8 +303,13 @@ function optionHighlight(index, option) {
 function addPointerElement({ key } = "Enter") {
   if (props.options.length > 0) {
     select(props.options[pointer.value], key);
+    onClickOption(props.options[pointer.value]);
   }
 
   pointerReset();
+}
+
+function onClickOption(option) {
+  emit("clickOption", option);
 }
 </script>

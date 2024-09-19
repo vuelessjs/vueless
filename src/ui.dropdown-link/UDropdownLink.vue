@@ -56,7 +56,6 @@
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdownListRef"
-      v-model="selectedItem"
       :size="size"
       :options="options"
       :value-key="valueKey"
@@ -64,12 +63,13 @@
       :data-test="`${dataTest}-list`"
       v-bind="dropdownListAttrs"
       @click="onClickList"
+      @click-option="onClickOption"
     />
   </div>
 </template>
 
 <script setup>
-import { nextTick, computed, provide, ref, watch, useId } from "vue";
+import { nextTick, computed, provide, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
@@ -221,16 +221,15 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when dropdown option is selected.
+   * Triggers on dropdown option click.
    * @property {string} value
    */
-  "select",
+  "clickOption",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
 
 const isShownOptions = ref(false);
-const selectedItem = ref("");
 const dropdownListRef = ref(null);
 
 const elementId = props.id || useId();
@@ -250,10 +249,6 @@ const iconSize = computed(() => {
   return sizes[props.size];
 });
 
-watch(selectedItem, () => {
-  emit("select", selectedItem.value);
-});
-
 function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
 
@@ -268,5 +263,9 @@ function hideOptions() {
 
 function onClickList() {
   hideOptions();
+}
+
+function onClickOption(option) {
+  emit("clickOption", option);
 }
 </script>
