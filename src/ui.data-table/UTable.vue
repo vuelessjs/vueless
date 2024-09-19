@@ -176,7 +176,7 @@
               </td>
             </tr>
 
-            <TableRow
+            <UTableRow
               v-bind="bodyRowAttrs(getRowClasses(row))"
               v-model:selected-rows="selectedRows"
               :selectable="selectable"
@@ -204,7 +204,7 @@
               >
                 <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
               </template>
-            </TableRow>
+            </UTableRow>
 
             <tr
               v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
@@ -278,7 +278,7 @@ import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderTop from "../ui.loader-top/ULoaderTop.vue";
-import TableRow from "./TableRow.vue";
+import UTableRow from "./UTableRow.vue";
 
 import { getDefault } from "../utils/utilUI.js";
 

@@ -32,7 +32,7 @@ const DefaultTemplate = (args) => ({
     return { slots, args, updateProgress };
   },
   template: `
-    <UCol align="start">
+    <UCol>
       <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment()}</UProgress>
       <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
     </UCol>
