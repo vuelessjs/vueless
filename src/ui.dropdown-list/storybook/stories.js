@@ -76,3 +76,13 @@ MaxHeight.args = { maxHeight: 80 };
 
 export const WithoutOptions = DefaultTemplate.bind({});
 WithoutOptions.args = { options: [] };
+
+export const OptionSettings = DefaultTemplate.bind({});
+OptionSettings.args = {
+  options: [
+    { label: "option 1", id: "1" },
+    { label: "option 2", id: "2", isHidden: true },
+    // eslint-disable-next-line no-console
+    { label: "option 3", id: "3", onClick: (option) => console.log("onClick option 3 ", option) },
+  ],
+};

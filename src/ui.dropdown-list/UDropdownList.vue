@@ -23,7 +23,7 @@
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs"
           :class="optionHighlight(index, option)"
-          @click="select(option), onClickOption(option)"
+          @click="select(option), onClickOption(option), option.onClick(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
@@ -98,8 +98,6 @@
       </template>
     </ul>
   </div>
-
-  <!-- {{ !options.length }} -->
 </template>
 
 <script setup>
