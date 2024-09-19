@@ -81,7 +81,7 @@
     </td>
   </tr>
 
-  <TableRow
+  <UTableRow
     v-if="row.row && !row.row.isHidden"
     v-bind="$attrs"
     v-model:selected-rows="selectedRows"
