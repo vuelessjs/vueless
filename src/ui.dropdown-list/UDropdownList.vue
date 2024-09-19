@@ -23,7 +23,7 @@
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs"
           :class="optionHighlight(index, option)"
-          @click="select(option), onClickOption(option), option.onClick(option)"
+          @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
