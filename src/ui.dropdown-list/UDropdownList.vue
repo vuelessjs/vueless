@@ -23,7 +23,7 @@
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="optionAttrs"
           :class="optionHighlight(index, option)"
-          @click="select(option), onClickOption(option), option.onClick(option)"
+          @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
@@ -307,7 +307,15 @@ function addPointerElement({ key } = "Enter") {
   pointerReset();
 }
 
-function onClickOption(option) {
+function onClickOption(rawOption) {
+  const option = { ...rawOption };
+
+  delete option.onClick;
+
+  if (typeof rawOption.onClick === "function") {
+    rawOption.onClick(option);
+  }
+
   emit("clickOption", option);
 }
 </script>
