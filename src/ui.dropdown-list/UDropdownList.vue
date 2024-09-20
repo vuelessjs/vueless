@@ -307,7 +307,15 @@ function addPointerElement({ key } = "Enter") {
   pointerReset();
 }
 
-function onClickOption(option) {
+function onClickOption(rawOption) {
+  const option = { ...rawOption };
+
+  delete option.onClick;
+
+  if (typeof rawOption.onClick === "function") {
+    rawOption.onClick(option);
+  }
+
   emit("clickOption", option);
 }
 </script>
