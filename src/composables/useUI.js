@@ -8,9 +8,10 @@ import {
   Comment,
   Text,
   Fragment,
+  computed,
 } from "vue";
 
-import { cx, setColor, getColor, vuelessConfig } from "../utils/utilUI.js";
+import { cx, cva, setColor, getColor, vuelessConfig } from "../utils/utilUI.js";
 
 import { cloneDeep, isCSR } from "../utils/utilHelper.js";
 import {
@@ -53,6 +54,90 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
     config.value = mergeClassesIntoConfig(mergedConfig, topLevelClassKey || firstClassKey, attrs);
   });
 
+  /**
+   * Get classes by given key (including CVA if config set).
+   * @param {string} key
+   * @param {Object} mutatedProps
+   * @returns {ComputedRef | String}
+   */
+  function getClasses(key, mutatedProps = {}) {
+    return computed(() => {
+      let value = config.value[key];
+
+      if (isCVA(value)) {
+        value = cva(value)({
+          ...props,
+          ...toValue(mutatedProps),
+          color: props.color ? getColor(props.color) : null,
+        });
+      }
+
+      return props.color ? setColor(value, props.color) : value;
+    });
+  }
+
+  /**
+   * Get an object where:
+   * – key: extendingKey
+   * – value: reactive string of extendingKey classes.
+   * @param {Array} extendingKeys
+   * @param {Object} mutatedProps
+   * @returns {Object}
+   */
+  function getExtendingKeysClasses(extendingKeys, mutatedProps = {}) {
+    const extendingClasses = {};
+
+    for (const key of extendingKeys) {
+      extendingClasses[key] = getClasses(key, mutatedProps);
+    }
+
+    return extendingClasses;
+  }
+
+  /**
+   * Get an object where:
+   * – key: elementKey
+   * – value: reactive object of string element attributes (with classes).
+   * @param mutatedProps
+   * @param extendingKeys
+   * @param keysToExtendConfig
+   * @returns {Object}
+   */
+  function getKeysAttrs(mutatedProps, extendingKeys = [], keysToExtendConfig = {}) {
+    const keysToExtend = Object.keys(keysToExtendConfig);
+    const keysAttrs = {};
+
+    for (const key in defaultConfig) {
+      if (isSystemKey(key) || extendingKeys.includes(key)) continue;
+
+      keysAttrs[`${key}Attrs`] = getAttrs(key, {
+        classes: getClasses(key, mutatedProps),
+      });
+
+      if (keysToExtend.includes(key)) {
+        const { general, extend } = keysToExtendConfig[key];
+        const keyAttrs = keysAttrs[`${key}Attrs`];
+
+        keysAttrs[`${key}Attrs`] = computed(() => ({
+          ...keyAttrs.value,
+          class: cx([
+            ...(Array.isArray(general) ? toValue(general) : [toValue(general)]),
+            keyAttrs.value.class,
+            ...(Array.isArray(extend) ? toValue(extend) : [toValue(extend)]),
+          ]),
+        }));
+      }
+    }
+
+    return keysAttrs;
+  }
+
+  /**
+   * Get an element attributes for a given key.
+   * @param {String} configKey
+   * @param {Object} options with classes
+   * @returns {Object} element attributes
+   */
   function getAttrs(configKey, options) {
     const nestedComponent = getNestedComponent(defaultConfig[configKey]);
 
@@ -105,9 +190,11 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
   return {
     config,
-    getAttrs,
-    getColor,
     setColor,
+    getColor,
+    getAttrs,
+    getKeysAttrs,
+    getExtendingKeysClasses,
     isCVA,
     isSystemKey,
     hasSlotContent,
