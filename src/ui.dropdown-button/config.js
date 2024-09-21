@@ -1,7 +1,15 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownButton: "{UButton}",
-  dropdownButtonActive: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+  dropdownButtonActive: {
+    base: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+    variants: {
+      color: {
+        grayscale: "ring-gray-700/15",
+        white: "ring-gray-700/15",
+      },
+    },
+  },
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
     base: "{UDropdownList} w-fit",
