@@ -7,8 +7,3 @@ export const UDropdownButton = "UDropdownButton";
 export const BUTTON_VARIANT = {
   primary: "primary",
 };
-
-export const LIST_POSITION = {
-  bottom: "bottom",
-  right: "right",
-};
