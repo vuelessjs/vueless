@@ -20,7 +20,8 @@ if (isSSR) {
   /* Load Vueless config from the project root in IIFE (no top-level await). */
   (async () => {
     try {
-      vuelessConfig = (await import(`${process.cwd()}/vueless.config.js`)).default;
+      // eslint-disable-next-line prettier/prettier
+      vuelessConfig = (await import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js`)).default;
     } catch (error) {
       vuelessConfig = {};
     }

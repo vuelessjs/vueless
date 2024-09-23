@@ -27,12 +27,12 @@ export default /*tw*/ {
       {
         selected: true,
         variant: "primary",
-        class: "!text-white bg-brand-600 border-brand-600 ",
+        class: "!text-white bg-brand-600 border-brand-600",
       },
       {
         selected: true,
         variant: "secondary",
-        class: "text-brand-600 border-brand-600  bg-brand-600/10",
+        class: "text-brand-600 border-brand-600 bg-brand-600/10",
       },
       {
         selected: true,
