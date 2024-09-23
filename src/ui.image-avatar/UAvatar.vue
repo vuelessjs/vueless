@@ -10,17 +10,23 @@
       <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
       <!--
         @slot Use it to add something instead of the avatar image placeholder.
+        @binding {string} icon-name
         @binding {string} icon-color
         @binding {string} icon-size
       -->
       <slot
         v-else
         name="placeholder"
-        :icon-name="icon"
+        :icon-name="placeholderIcon"
         :icon-color="componentColor"
         :icon-size="size"
       >
-        <UIcon :name="icon" :color="componentColor" :size="size" v-bind="placeholderIconAttrs" />
+        <UIcon
+          :name="placeholderIcon"
+          :color="componentColor"
+          :size="size"
+          v-bind="placeholderIconAttrs"
+        />
       </slot>
     </template>
   </div>
@@ -58,7 +64,7 @@ const props = defineProps({
   /**
    * Avatar icon placeholder.
    */
-  icon: {
+  placeholderIcon: {
     type: String,
     default: getDefault(defaultConfig, UAvatar).placeholderIcon,
   },
@@ -122,6 +128,8 @@ const emit = defineEmits([
   "click",
 ]);
 
+const { avatarAttrs, placeholderIconAttrs } = useAttrs(props);
+
 const labelFirstLetters = computed(() => {
   const [firstWord, secondWord] = props.label.split(" ");
 
@@ -138,9 +146,9 @@ const backgroundImage = computed(() => {
   return props.src ? `background-image: url(${src});` : "";
 });
 
-const { avatarAttrs, placeholderIconAttrs } = useAttrs(props);
-
-const componentColor = computed(() => (props.color === "white" ? "grayscale" : props.color));
+const componentColor = computed(() => {
+  return props.color === "white" ? "grayscale" : props.color;
+});
 
 function onClick(event) {
   emit("click", event);
