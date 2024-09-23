@@ -13,7 +13,6 @@ export default /*tw*/ {
   fileImage: "rounded-sm max-w-7",
   fileIcon: "{UIcon}",
   fileLabel: "{ULink}",
-  fileIconFocus: "",
   defaults: {
     size: "md",
     /* icons */
