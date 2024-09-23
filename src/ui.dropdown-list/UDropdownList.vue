@@ -21,7 +21,7 @@
         <!-- option title -->
         <span
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
-          v-bind="optionAttrs"
+          v-bind="listItemAttrs"
           :class="optionHighlight(index, option)"
           @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
@@ -71,8 +71,8 @@
         @slot Use it to add something instead of empty state.
         @binding {string} emptyStyles
       -->
-      <slot name="empty" :empty-styles="optionClasses">
-        <span v-if="!options.length" v-bind="optionAttrs">
+      <slot name="empty" :empty-styles="listItemAttrs">
+        <span v-if="!options.length" v-bind="listItemAttrs">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </span>
       </slot>
@@ -226,10 +226,8 @@ const {
   addOptionLabelHotkeyAttrs,
   addOptionButtonAttrs,
   addOptionIconAttrs,
-  optionAttrs,
   subGroupAttrs,
   groupAttrs,
-  optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
 
