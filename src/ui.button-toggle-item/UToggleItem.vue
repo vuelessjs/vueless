@@ -134,10 +134,10 @@ const getToggleSize = inject("getToggleSize", () => getDefault(defaultConfig, UT
 const getToggleRound = inject("getToggleRound", () => getDefault(defaultConfig, UToggleItem).round);
 const getToggleBlock = inject("getToggleBlock", () => getDefault(defaultConfig, UToggleItem).block);
 const getToggleSquare = inject("getToggleSquare", () => getDefault(defaultConfig, UToggleItem).square);
-const getToggleVariant = inject("getToggleVariant",() => getDefault(defaultConfig, UToggleItem).variant);
+const getToggleVariant = inject("getToggleVariant", () => getDefault(defaultConfig, UToggleItem).variant);
 const getToggleSeparated = inject("getToggleSeparated", () => true);
 const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || getDefault(defaultConfig, UToggleItem).disabled);
-/* eslint-enaable prettier/prettier, vue/max-len */
+/* eslint-enable prettier/prettier, vue/max-len */
 
 const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
 
@@ -154,19 +154,21 @@ const isSelected = computed(() => {
 const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
   isSelected,
   separated: getToggleSeparated,
-  variant: getToggleVariant
+  variant: getToggleVariant,
 });
 
 onMounted(() => {
-  selectedItem.value = getToggleType() === TYPE_RADIO
-  ? selectedValue?.value || selectedItem.value
-  : selectedValue?.value?.includes(props.value) || selectedItem.value;
+  selectedItem.value =
+    getToggleType() === TYPE_RADIO
+      ? selectedValue?.value || selectedItem.value
+      : selectedValue?.value?.includes(props.value) || selectedItem.value;
 });
 
 function onClickSetValue() {
-  selectedItem.value = getToggleType() === TYPE_RADIO
-  ? props.value
-  : selectedValue?.value?.includes(props.value) || selectedItem.value;
+  selectedItem.value =
+    getToggleType() === TYPE_RADIO
+      ? props.value
+      : selectedValue?.value?.includes(props.value) || selectedItem.value;
 
   updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);
 
