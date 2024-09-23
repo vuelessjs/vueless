@@ -47,7 +47,6 @@ import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 import { getDefault } from "../utils/utilUI.js";
 
 import UInput from "../ui.form-input/UInput.vue";
-import { SYMBOL_MINUS } from "../ui.text-money/constants.js";
 
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
@@ -179,19 +178,11 @@ const props = defineProps({
   },
 
   /**
-   * Show prefix in the raw value number.
+   * Prefix to display before input value.
    */
-  rawValuePrefix: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).rawValuePrefix,
-  },
-
-  /**
-   * Show minus sign.
-   */
-  minus: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).minus,
+  prefix: {
+    type: String,
+    default: getDefault(defaultConfig, UInputMoney).prefix,
   },
 
   /**
@@ -249,8 +240,7 @@ const { formattedValue, rawValue, setValue } = useFormatCurrency(`#${elementId}`
   decimalSeparator: props.decimalSeparator,
   thousandsSeparator: props.thousandsSeparator,
   positiveOnly: props.positiveOnly,
-  rawValuePrefix: props.rawValuePrefix,
-  prefix: props.minus ? SYMBOL_MINUS : "",
+  prefix: props.prefix,
 }));
 
 const localValue = computed({
