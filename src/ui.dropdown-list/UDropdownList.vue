@@ -71,7 +71,7 @@
         @slot Use it to add something instead of empty state.
         @binding {string} emptyStyles
       -->
-      <slot name="empty" :empty-styles="optionClasses">
+      <slot name="empty" :empty-styles="optionAttrs">
         <span v-if="!options.length" v-bind="optionAttrs">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </span>
@@ -226,6 +226,7 @@ const {
   addOptionLabelHotkeyAttrs,
   addOptionButtonAttrs,
   addOptionIconAttrs,
+  optionAttrs,
   subGroupAttrs,
   groupAttrs,
   optionContentAttrs,
