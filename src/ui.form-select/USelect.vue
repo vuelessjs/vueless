@@ -568,7 +568,7 @@ const emit = defineEmits([
   "addOption",
 
   /**
-   * Triggers when label position is changed.
+   * Triggers when the user commits the change to options or selected value explicitly.
    */
   "change",
 ]);
@@ -664,6 +664,7 @@ const dropdownValue = computed({
     }
 
     emit("update:modelValue", value);
+    emit("change", { value, options: props.options });
     deactivate();
   },
 });
@@ -727,25 +728,18 @@ const isLocalValue = computed(() => {
     : Boolean(String(localValue.value));
 });
 
-watch(search, () => onSearchChange);
-watch(
-  localValue,
-  () => {
-    setLabelPosition();
-    emit("change");
-  },
-  { deep: true },
-);
+const onSearchChange = debounce(function (query) {
+  emit("searchChange", query);
+}, 300);
+
+watch(search, onSearchChange);
+watch(localValue, setLabelPosition, { deep: true });
 
 if (props.addOption) {
   document.addEventListener("keydown", onKeydownAddOption);
 }
 
 onMounted(setLabelPosition);
-
-const onSearchChange = debounce(async function (query) {
-  emit("searchChange", query);
-}, 300);
 
 function getOptionLabel(option) {
   if (!option) return "";
@@ -762,10 +756,12 @@ function onKeydownAddOption(event) {
 
   if (isMeta && isEnter && isMac) {
     emit("addOption");
+    emit("change", { value: dropdownValue.value, options: props.options });
   }
 
   if (isEnter && isCtrl && !isMac) {
     emit("addOption");
+    emit("change", { value: dropdownValue.value, options: props.options });
   }
 }
 
@@ -851,6 +847,7 @@ function removeElement(option, shouldClose = true) {
   }
 
   emit("update:modelValue", value);
+  emit("change", { value, options: props.options });
   emit("remove", option, elementId);
 
   if (shouldClose) {
