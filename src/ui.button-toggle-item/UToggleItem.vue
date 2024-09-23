@@ -158,17 +158,15 @@ const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
 });
 
 onMounted(() => {
-  selectedItem.value =
-    getToggleType() === TYPE_RADIO
-      ? selectedValue?.value || selectedItem.value
-      : selectedValue?.value?.includes(props.value) || "";
+  selectedItem.value = getToggleType() === TYPE_RADIO
+    ? selectedValue?.value || selectedItem.value
+    : selectedValue?.value?.includes(props.value) || "";
 });
 
 function onClickSetValue() {
-  selectedItem.value =
-    getToggleType() === TYPE_RADIO
-      ? props.value
-      : selectedValue?.value?.includes(props.value) || "";
+  selectedItem.value = getToggleType() === TYPE_RADIO
+    ? props.value
+    : selectedValue?.value?.includes(props.value) || "";
 
   updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);
 
