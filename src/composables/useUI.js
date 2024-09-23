@@ -115,13 +115,13 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
       });
 
       if (keysToExtend.includes(key)) {
-        const { general, extend } = keysToExtendConfig[key];
+        const { base, extend } = keysToExtendConfig[key];
         const keyAttrs = keysAttrs[`${key}Attrs`];
 
         keysAttrs[`${key}Attrs`] = computed(() => ({
           ...keyAttrs.value,
           class: cx([
-            ...(Array.isArray(general) ? toValue(general) : [toValue(general)]),
+            ...(Array.isArray(base) ? toValue(base) : [toValue(base)]),
             keyAttrs.value.class,
             ...(Array.isArray(extend) ? toValue(extend) : [toValue(extend)]),
           ]),
