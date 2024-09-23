@@ -16,13 +16,6 @@ export default function useAttrs(props) {
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    header: {
-      extend: computed(() => [
-        props.mobileFooterReverse &&
-          isMobileBreakpoint.value &&
-          extendingKeysClasses.footerMobileReverse.value,
-      ]),
-    },
     footer: {
       extend: computed(() => [
         props.mobileFooterReverse &&
