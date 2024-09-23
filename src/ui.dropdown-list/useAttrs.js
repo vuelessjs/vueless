@@ -14,7 +14,7 @@ export default function useAttrs(props) {
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    listItem: {
+    optionContent: {
       extend: computed(() => [extendingKeysClasses.option.value]),
     },
   });
