@@ -19,11 +19,9 @@ export default /*tw*/ {
         md: "text-sm",
         lg: "text-base",
       },
-      isOpened: {
-        true: "pt-2 h-full opacity-100",
-      },
     },
   },
+  isOpened: "pt-2 h-full opacity-100",
   toggleIcon: "{UIcon}",
   divider: "{UDivider} group-last:hidden",
   defaults: {

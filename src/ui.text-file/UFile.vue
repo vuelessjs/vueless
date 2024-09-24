@@ -103,12 +103,8 @@ const focus = ref(false);
 
 const elementId = props.id || useId();
 
-const { config, fileAttrs, bodyAttrs, fileIconAttrs, fileLabelAttrs, fileImageAttrs } = useAttrs(
-  props,
-  {
-    focus,
-  },
-);
+const { config, fileAttrs, bodyAttrs, fileIconAttrs, fileLabelAttrs, fileImageAttrs } =
+  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
