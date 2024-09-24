@@ -12,7 +12,7 @@ export default function useAttrs(props) {
   const extendingKeys = ["option"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-  const keysAttrs = getKeysAttrs({}, "", {
+  const keysAttrs = getKeysAttrs({}, [], {
     group: {
       base: computed(() => [extendingKeysClasses.option.value]),
     },
