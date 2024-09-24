@@ -233,8 +233,6 @@ const {
   optionContentAttrs,
 } = useAttrs(props);
 
-console.log(optionAttrs);
-
 const { tm } = useLocale();
 
 defineExpose({
