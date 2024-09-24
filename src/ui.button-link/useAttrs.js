@@ -4,12 +4,11 @@ import useUI from "../composables/useUI.js";
 import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { isActive, isExactActive }) {
-  const slots = useSlots();
-
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
+  const slots = useSlots();
 
   const extendingKeys = ["withChild"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);

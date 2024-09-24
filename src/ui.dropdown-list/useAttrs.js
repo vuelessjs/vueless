@@ -1,15 +1,32 @@
+import { computed } from "vue";
 import useUI from "../composables/useUI.js";
 
 import defaultConfig from "./config.js";
 
 export default function useAttrs(props) {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
 
-  const keysAttrs = getKeysAttrs();
+  const extendingKeys = ["option"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+
+  const optionClasses = extendingKeysClasses.option;
+
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    group: {
+      base: computed(() => [extendingKeysClasses.option.value]),
+    },
+    subGroup: {
+      base: computed(() => [extendingKeysClasses.option.value]),
+    },
+  });
 
   return {
     config,
     ...keysAttrs,
+    optionClasses,
     hasSlotContent,
   };
 }

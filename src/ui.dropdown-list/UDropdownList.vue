@@ -71,7 +71,7 @@
         @slot Use it to add something instead of empty state.
         @binding {string} emptyStyles
       -->
-      <slot name="empty" :empty-styles="optionAttrs">
+      <slot name="empty" :empty-styles="optionClasses">
         <span v-if="!options.length" v-bind="optionAttrs">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </span>
@@ -229,8 +229,11 @@ const {
   optionAttrs,
   subGroupAttrs,
   groupAttrs,
+  optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
+
+console.log(optionAttrs);
 
 const { tm } = useLocale();
 
