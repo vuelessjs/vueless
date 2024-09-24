@@ -4,7 +4,7 @@ export default class FormatService {
   static comma = ",";
 
   static getRawValue(value, options) {
-    const { thousandsSeparator, decimalSeparator, rawValuePrefix, prefix } = options;
+    const { thousandsSeparator, decimalSeparator, prefix } = options;
 
     value = String(value).endsWith(decimalSeparator)
       ? String(value).replace(decimalSeparator, "")
@@ -14,7 +14,7 @@ export default class FormatService {
       .replaceAll(thousandsSeparator, "")
       .replace(decimalSeparator, ".");
 
-    return rawValuePrefix ? rawValueWithPrefix : rawValueWithPrefix.replace(prefix, "");
+    return rawValueWithPrefix.replace(prefix, "");
   }
 
   static getFormattedValue(value, options) {

@@ -1,64 +1,33 @@
+import { computed } from "vue";
 import useUI from "../composables/useUI.js";
-import { cva, cx } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
-import { computed } from "vue";
 
 import useBreakpoint from "../composables/useBreakpoint.js";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
   const { isMobileBreakpoint } = useBreakpoint();
-  const attrs = {};
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const extendingKeys = ["footerMobileReverse"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-    const classes = computed(() => {
-      let value = config.value[key];
-
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "header") {
-      const headerAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...headerAttrs.value,
-        class: cx([
-          headerAttrs.value.class,
-          props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
-        ]),
-      }));
-    }
-
-    if (key === "footer") {
-      const footerAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...footerAttrs.value,
-        class: cx([
-          footerAttrs.value.class,
-          props.mobileFooterReverse && isMobileBreakpoint.value && config.value.footerMobileReverse,
-        ]),
-      }));
-    }
-  }
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    footer: {
+      extend: computed(() => [
+        props.mobileFooterReverse &&
+          isMobileBreakpoint.value &&
+          extendingKeysClasses.footerMobileReverse.value,
+      ]),
+    },
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }

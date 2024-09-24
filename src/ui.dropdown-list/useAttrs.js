@@ -26,7 +26,6 @@ export default function useAttrs(props) {
   return {
     config,
     ...keysAttrs,
-    optionClasses,
     hasSlotContent,
   };
 }

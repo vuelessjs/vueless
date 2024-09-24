@@ -1,37 +1,26 @@
 import { computed } from "vue";
 import useUI from "../composables/useUI.js";
-import { cva } from "../utils/utilUI.js";
+
 import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { isOpened }) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const attrs = {};
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const extendingKeys = ["isOpened"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-    const classes = computed(() => {
-      let value = config.value[key];
-
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-          isOpened: isOpened.value,
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-  }
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    description: {
+      extend: computed(() => [isOpened.value && extendingKeysClasses.isOpened.value]),
+    },
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }

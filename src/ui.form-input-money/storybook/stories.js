@@ -92,14 +92,11 @@ DecimalSeparator.args = { decimalSeparator: "." };
 export const ThousandsSeparator = DefaultTemplate.bind({});
 ThousandsSeparator.args = { thousandsSeparator: "-" };
 
-export const RawValuePrefix = DefaultTemplate.bind({});
-RawValuePrefix.args = { rawValuePrefix: true };
-
 export const PositiveOnly = DefaultTemplate.bind({});
 PositiveOnly.args = { positiveOnly: true };
 
-export const Minus = DefaultTemplate.bind({});
-Minus.args = { minus: true };
+export const Prefix = DefaultTemplate.bind({});
+Prefix.args = { prefix: "+" };
 
 export const ReadOnly = DefaultTemplate.bind({});
 ReadOnly.args = { readOnly: true };
