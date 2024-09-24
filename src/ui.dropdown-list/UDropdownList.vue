@@ -34,10 +34,10 @@
           <slot name="before-option" :option="option" :index="index" />
 
           <!--
-              @slot Use it to add something instead of the option.
-              @binding {object} option
-              @binding {number} index
-            -->
+            @slot Use it to add something instead of the option.
+            @binding {object} option
+            @binding {number} index
+          -->
           <slot name="option" :option="option" :index="index">
             <span
               :style="getMarginForSubCategory(option.level)"
@@ -47,10 +47,10 @@
           </slot>
 
           <!--
-              @slot Use it to add something after the option.
-              @binding {object} option
-              @binding {number} index
-            -->
+            @slot Use it to add something after the option.
+            @binding {object} option
+            @binding {number} index
+          -->
           <slot name="after-option" :option="option" :index="index" />
         </span>
 
@@ -67,15 +67,12 @@
         </template>
       </li>
 
-      <!--
-        @slot Use it to add something instead of empty state.
-        @binding {string} emptyStyles
-      -->
-      <slot name="empty" :empty-styles="optionClasses">
-        <span v-if="!options.length" v-bind="optionAttrs">
+      <div v-if="!options.length" v-bind="optionAttrs">
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
-        </span>
-      </slot>
+        </slot>
+      </div>
 
       <!-- Add button -->
       <template v-if="addOption">
@@ -229,7 +226,6 @@ const {
   optionAttrs,
   subGroupAttrs,
   groupAttrs,
-  optionClasses,
   optionContentAttrs,
 } = useAttrs(props);
 
