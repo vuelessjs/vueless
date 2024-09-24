@@ -1,48 +1,38 @@
-import useUI from "../composables/useUI.js";
-import defaultConfig from "./config.js";
 import { computed } from "vue";
-import { cva, cx } from "../utils/utilUI.js";
+import useUI from "../composables/useUI.js";
+
+import defaultConfig from "./config.js";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const attrs = {};
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const extendingKeys = ["labelCrossed"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-    const classes = computed(() => {
-      let value = config.value[key];
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    label: {
+      extend: computed(() => [extendingKeysClasses.labelCrossed.value]),
+    },
+  });
 
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-        });
-      }
+  // if (key === "label") {
+  //   const labelAttrs = attrs[`${key}Attrs`];
 
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "label") {
-      const labelAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (isActive) => ({
-        ...labelAttrs,
-        class: cx([
-          labelAttrs.value.class,
-          isActive !== undefined && !isActive ? config.value.labelCrossed : "",
-        ]),
-      }));
-    }
-  }
+  //   attrs[`${key}Attrs`] = computed(() => (isActive) => ({
+  //     ...labelAttrs,
+  //     class: cx([
+  //       labelAttrs.value.class,
+  //       isActive !== undefined && !isActive ? config.value.labelCrossed : "",
+  //     ]),
+  //   }));
+  // }
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }
