@@ -16,7 +16,7 @@
       <progress v-bind="progressAttrs" :max="realMax" :value="value" />
     </template>
 
-    <div v-if="isSteps" v-bind="stepAttrs(!value && config.stepFirst)">
+    <div v-if="isSteps" v-bind="stepAttrs">
       <template v-for="(step, index) in max" :key="index">
         <!--
           @slot Use it to add something instead of the progress step label.
@@ -133,8 +133,7 @@ const props = defineProps({
   },
 });
 
-const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs, config } =
-  useAttrs(props);
+const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } = useAttrs(props);
 
 const isSteps = computed(() => Array.isArray(props.max));
 

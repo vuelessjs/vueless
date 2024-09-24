@@ -36,7 +36,7 @@ const props = defineProps({
    * Tab value.
    */
   value: {
-    type: String,
+    type: [String, Number],
     default: "",
   },
 

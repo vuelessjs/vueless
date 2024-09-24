@@ -3,18 +3,13 @@
     <div v-if="loading" v-bind="loaderAttrs">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
-        <div
-          v-for="ellipse in ELLIPSES_AMOUNT"
-          :key="ellipse"
-          v-bind="ellipseAttrs(ellipseClasses)"
-        />
+        <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />
       </slot>
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { computed } from "vue";
 import { getDefault } from "../utils/utilUI.js";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants.js";
@@ -52,11 +47,6 @@ const props = defineProps({
 });
 
 const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
-
-const ellipseClasses = computed(() => [
-  "vueless-loader-ellipse",
-  `vueless-loader-ellipse-${props.size}`,
-]);
 </script>
 
 <style scoped lang="postcss">
