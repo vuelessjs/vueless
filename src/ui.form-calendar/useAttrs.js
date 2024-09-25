@@ -9,6 +9,8 @@ export default function useAttrs(props) {
     () => props.config,
   );
 
+  const dayKey = ["day"];
+
   const extendingKeys = [
     "firstDateInRange",
     "lastDateInRange",
@@ -18,12 +20,13 @@ export default function useAttrs(props) {
     "currentDate",
     "edgeDateInRange",
     "dateInRange",
-    "day",
     "timepickerInput",
   ];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-  const keysAttrs = getKeysAttrs({}, [], {
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const extendingDayKeyClasses = getExtendingKeysClasses(dayKey);
+
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
     timepickerInputHours: {
       base: computed(() => [extendingKeysClasses.timepickerInput.value]),
     },
@@ -34,80 +37,80 @@ export default function useAttrs(props) {
       base: computed(() => [extendingKeysClasses.timepickerInput.value]),
     },
     dayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.dateInRange.value,
       ]),
     },
     selectedDay: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.selectedDate.value,
       ]),
     },
     activeDay: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.activeDate.value,
       ]),
     },
     anotherMonthDay: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.anotherMonthDate.value,
       ]),
     },
     currentDay: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.currentDate.value,
       ]),
     },
     currentDayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.dateInRange.value,
         extendingKeysClasses.currentDate.value,
       ]),
     },
     firstDayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.edgeDateInRange.value,
         extendingKeysClasses.firstDateInRange.value,
       ]),
     },
     lastDayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.edgeDateInRange.value,
         extendingKeysClasses.lastDateInRange.value,
       ]),
     },
     anotherMonthLastDayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.anotherMonthDay.value,
         extendingKeysClasses.edgeDateInRange.value,
         extendingKeysClasses.lastDateInRange.value,
       ]),
     },
     anotherMonthFirstDayInRange: {
-      extend: computed(() => [
-        extendingKeysClasses.day.value,
+      base: computed(() => [
+        extendingDayKeyClasses.day.value,
         extendingKeysClasses.anotherMonthDay.value,
         extendingKeysClasses.edgeDateInRange.value,
         extendingKeysClasses.firstDateInRange.value,
       ]),
     },
     currentMonth: {
-      extend: computed(() => [extendingKeysClasses.currentDate.value]),
+      base: computed(() => [extendingKeysClasses.currentDate.value]),
     },
     monthInRange: {
-      extend: computed(() => [extendingKeysClasses.dateInRange.value]),
+      base: computed(() => [extendingKeysClasses.dateInRange.value]),
     },
     singleMonthInRange: {
-      extend: computed(() => [extendingKeysClasses.dateInRange.value]),
+      base: computed(() => [extendingKeysClasses.dateInRange.value]),
     },
     currentMonthInRange: {
       extend: computed(() => [
@@ -128,19 +131,19 @@ export default function useAttrs(props) {
       ]),
     },
     selectedMonth: {
-      extend: computed(() => [extendingKeysClasses.selectedDate.value]),
+      base: computed(() => [extendingKeysClasses.selectedDate.value]),
     },
     activeMonth: {
-      extend: computed(() => [extendingKeysClasses.activeDate.value]),
+      base: computed(() => [extendingKeysClasses.activeDate.value]),
     },
     currentYear: {
-      extend: computed(() => [extendingKeysClasses.currentDate.value]),
+      base: computed(() => [extendingKeysClasses.currentDate.value]),
     },
     yearInRange: {
-      extend: computed(() => [extendingKeysClasses.dateInRange.value]),
+      base: computed(() => [extendingKeysClasses.dateInRange.value]),
     },
     singleYearInRange: {
-      extend: computed(() => [extendingKeysClasses.dateInRange.value]),
+      base: computed(() => [extendingKeysClasses.dateInRange.value]),
     },
     currentYearInRange: {
       extend: computed(() => [
@@ -161,10 +164,10 @@ export default function useAttrs(props) {
       ]),
     },
     selectedYear: {
-      extend: computed(() => [extendingKeysClasses.selectedDate.value]),
+      base: computed(() => [extendingKeysClasses.selectedDate.value]),
     },
     activeYear: {
-      extend: computed(() => [extendingKeysClasses.activeDate.value]),
+      base: computed(() => [extendingKeysClasses.activeDate.value]),
     },
   });
 
