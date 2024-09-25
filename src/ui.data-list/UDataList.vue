@@ -39,7 +39,7 @@
               />
             </slot>
 
-            <div v-bind="isActive(element) ? labelCrossedAttrs : labelAttrs">
+            <div v-bind="isActive(element) ? labelAttrs : labelCrossedAttrs">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
@@ -313,7 +313,7 @@ const iconSize = computed(() => {
 });
 
 function isActive(element) {
-  return element.isActive !== undefined && element.isActive;
+  return element.isActive === undefined || element.isActive;
 }
 
 function onDragMove(event) {
