@@ -9,26 +9,14 @@ export default function useAttrs(props) {
     () => props.config,
   );
 
-  const extendingKeys = ["labelCrossed"];
+  const extendingKeys = ["label"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    label: {
-      extend: computed(() => [extendingKeysClasses.labelCrossed.value]),
+  const keysAttrs = getKeysAttrs({}, [], {
+    labelCrossed: {
+      extend: computed(() => [extendingKeysClasses.label.value]),
     },
   });
-
-  // if (key === "label") {
-  //   const labelAttrs = attrs[`${key}Attrs`];
-
-  //   attrs[`${key}Attrs`] = computed(() => (isActive) => ({
-  //     ...labelAttrs,
-  //     class: cx([
-  //       labelAttrs.value.class,
-  //       isActive !== undefined && !isActive ? config.value.labelCrossed : "",
-  //     ]),
-  //   }));
-  // }
 
   return {
     config,

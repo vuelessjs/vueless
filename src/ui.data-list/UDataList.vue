@@ -39,15 +39,24 @@
               />
             </slot>
 
-            <div v-bind="labelAttrs(element.isActive)">
-              <!--
-                @slot Use it to modify label.
-                @binding {object} item
-              -->
-              <slot name="label" :item="element">
-                {{ element[labelKey] }}
-              </slot>
-            </div>
+            <template v-if="element.isActive">
+              <div v-bind="labelCrossedAttrs">
+                <!--
+                  @slot Use it to modify label.
+                  @binding {object} item
+                -->
+                <slot name="label" :item="element">
+                  {{ element[labelKey] }}
+                </slot>
+              </div>
+            </template>
+            <template v-else>
+              <div v-bind="labelAttrs">
+                <slot name="label" :item="element">
+                  {{ element[labelKey] }}
+                </slot>
+              </div>
+            </template>
 
             <template v-if="!element.isHiddenActions">
               <div
@@ -290,6 +299,7 @@ const {
   itemWrapperAttrs,
   itemAttrs,
   labelAttrs,
+  labelCrossedAttrs,
   customActionsAttrs,
   deleteIconAttrs,
   editIconAttrs,
