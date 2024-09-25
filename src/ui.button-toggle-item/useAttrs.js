@@ -1,40 +1,31 @@
 import { computed, toValue } from "vue";
 import useUI from "../composables/useUI.js";
-import { cva } from "../utils/utilUI.js";
+
 import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { isSelected, separated, variant }) {
-  const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
 
-  const attrs = {};
+  const mutatedProps = computed(() => ({
+    variant: toValue(variant),
+    separated: toValue(separated),
+  }));
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const extendingKeys = ["toggleButtonActive"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
 
-    const classes = computed(() => {
-      let value = config.value[key];
-
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-          variant: toValue(variant),
-          separated: toValue(separated),
-          selected: isSelected.value,
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-  }
+  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
+    toggleButton: {
+      extend: computed(() => [isSelected.value && extendingKeysClasses.toggleButtonActive.value]),
+    },
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }

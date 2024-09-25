@@ -19,27 +19,16 @@ export default /*tw*/ {
         `,
       },
     },
-    compoundVariants: [
-      {
-        selected: true,
-        class: "relative disabled:z-10",
+  },
+  toggleButtonActive: {
+    base: "relative disabled:z-10",
+    variants: {
+      variant: {
+        primary: "!text-white bg-brand-600 border-brand-600",
+        secondary: "text-brand-600 border-brand-600 bg-brand-600/10",
+        thirdary: "!bg-brand-600/20",
       },
-      {
-        selected: true,
-        variant: "primary",
-        class: "!text-white bg-brand-600 border-brand-600",
-      },
-      {
-        selected: true,
-        variant: "secondary",
-        class: "text-brand-600 border-brand-600 bg-brand-600/10",
-      },
-      {
-        selected: true,
-        variant: "thirdary",
-        class: "!bg-brand-600/20",
-      },
-    ],
+    },
   },
   toggleInput: "p-0 m-0 size-0 invisible absolute",
   defaults: {
