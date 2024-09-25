@@ -39,12 +39,12 @@
               />
             </slot>
 
-            <div v-bind="labelAttrs(element.isActive)">
+            <div v-bind="isActive(element) ? labelAttrs : labelCrossedAttrs">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
               -->
-              <slot name="label" :item="element">
+              <slot name="label" :item="element" :active="isActive(element)">
                 {{ element[labelKey] }}
               </slot>
             </div>
@@ -113,9 +113,9 @@
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"
           >
-            <template #label="{ item }">
-              <slot name="label" :item="item">
-                <div v-bind="labelAttrs" v-text="item[labelKey]" />
+            <template #label="{ item, active }">
+              <slot name="label" :item="item" :active="active">
+                <div v-bind="active ? labelCrossedAttrs : labelAttrs" v-text="item[labelKey]" />
               </slot>
             </template>
 
@@ -290,6 +290,7 @@ const {
   itemWrapperAttrs,
   itemAttrs,
   labelAttrs,
+  labelCrossedAttrs,
   customActionsAttrs,
   deleteIconAttrs,
   editIconAttrs,
@@ -310,6 +311,10 @@ const iconSize = computed(() => {
 
   return sizes[props.size];
 });
+
+function isActive(element) {
+  return element.isActive === undefined || element.isActive;
+}
 
 function onDragMove(event) {
   const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;
