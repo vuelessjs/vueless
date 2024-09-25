@@ -188,7 +188,7 @@ const isChecked = computed(() => {
 
 const elementId = props.id || useId();
 
-const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
+const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor });
 
 const radioValue = computed(() => {
   return props.value === "" ? "on" : props.value;
