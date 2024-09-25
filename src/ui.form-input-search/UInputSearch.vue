@@ -2,7 +2,7 @@
   <UInput
     :id="elementId"
     ref="searchInput"
-    :model-value="localValue"
+    v-model="localValue"
     :size="size"
     :disabled="disabled"
     :readonly="readonly"
@@ -15,7 +15,6 @@
     :left-icon="leftIcon"
     v-bind="inputAttrs"
     :data-test="dataTest"
-    @update:model-value="onUpdateModelValue"
     @keyup.enter="onKeyupEnter"
   >
     <template #left>
@@ -79,13 +78,13 @@
 </template>
 
 <script setup>
-import { computed, ref, useId } from "vue";
+import { computed, useId, watch } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
 import { getDefault } from "../utils/utilUI.js";
-import { debounce as setDebounce } from "../utils/utilHelper.js";
+import { createDebounce } from "../utils/utilHelper.js";
 
 import { UInputSearch } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -172,7 +171,7 @@ const props = defineProps({
    * Minimum character length for search.
    */
   minLength: {
-    type: [String, Number],
+    type: Number,
     default: getDefault(defaultConfig, UInputSearch).minLength,
   },
 
@@ -209,7 +208,7 @@ const props = defineProps({
   },
 
   debounce: {
-    type: [String, Number],
+    type: Number,
     default: getDefault(defaultConfig, UInputSearch).debounce,
   },
 
@@ -249,7 +248,18 @@ const emit = defineEmits([
   "search",
 ]);
 
-const localValue = ref("");
+let updateValueWithDebounce = createDebounce((value) => {
+  emit("update:modelValue", value);
+}, props.debounce);
+
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    if (value.length >= props.minLength) {
+      updateValueWithDebounce(value);
+    }
+  },
+});
 
 const elementId = props.id || useId();
 
@@ -275,19 +285,14 @@ const buttonSize = computed(() => {
   return sizes[props.size];
 });
 
-function onUpdateModelValue(value) {
-  localValue.value = value;
-
-  if (!value) {
-    emit("update:modelValue", localValue.value);
-  }
-
-  if (value.length >= Number(props.minLength)) {
-    Number(props.minLength)
-      ? setDebounce(() => emit("update:modelValue", localValue.value), Number(props.debounce))()
-      : value && emit("update:modelValue", localValue.value);
-  }
-}
+watch(
+  () => props.debounce,
+  () => {
+    updateValueWithDebounce = createDebounce((value) => {
+      emit("update:modelValue", value);
+    }, props.debounce);
+  },
+);
 
 function search() {
   if (localValue.value && localValue.value.length >= Number(props.minLength)) {
@@ -305,7 +310,6 @@ function onClickSearch() {
 
 function onClickClear() {
   localValue.value = "";
-  emit("update:modelValue", localValue.value);
   emit("clear");
 }
 </script>
