@@ -1,48 +1,26 @@
+import { computed } from "vue";
 import useUI from "../composables/useUI.js";
-import { cva, cx } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
-import { computed } from "vue";
 
 export default function useAttrs(props) {
-  const { config, getAttrs, getColor, setColor, isSystemKey, hasSlotContent, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
 
-  const attrs = {};
+  const extendingKeys = ["stepFirst"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
-
-    const classes = computed(() => {
-      let value = config.value[key];
-
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-          color: getColor(props.color),
-        });
-      }
-
-      return setColor(value, props.color);
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "step") {
-      const stepAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...stepAttrs,
-        class: cx([stepAttrs.value.class, classes]),
-      }));
-    }
-  }
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    step: {
+      base: computed(() => [!props.value && extendingKeysClasses.stepFirst.value]),
+    },
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }
