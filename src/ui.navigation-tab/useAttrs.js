@@ -1,39 +1,30 @@
 import useUI from "../composables/useUI.js";
-import { cva } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
 import { computed } from "vue";
 
 export default function useAttrs(props, { selected, size }) {
-  const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const attrs = {};
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const mutatedProps = computed(() => ({
+    size: size.value,
+  }));
 
-    const classes = computed(() => {
-      let value = config.value[key];
+  const extendingKeys = ["tabActive"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-          size: size.value,
-          selected: selected.value,
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-  }
+  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
+    tab: {
+      extend: computed(() => [selected.value && extendingKeysClasses.tabActive.value]),
+    },
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }
