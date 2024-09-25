@@ -39,24 +39,15 @@
               />
             </slot>
 
-            <template v-if="element.isActive">
-              <div v-bind="labelCrossedAttrs">
-                <!--
-                  @slot Use it to modify label.
-                  @binding {object} item
-                -->
-                <slot name="label" :item="element">
-                  {{ element[labelKey] }}
-                </slot>
-              </div>
-            </template>
-            <template v-else>
-              <div v-bind="labelAttrs">
-                <slot name="label" :item="element">
-                  {{ element[labelKey] }}
-                </slot>
-              </div>
-            </template>
+            <div v-bind="isActive(element) ? labelCrossedAttrs : labelAttrs">
+              <!--
+                @slot Use it to modify label.
+                @binding {object} item
+              -->
+              <slot name="label" :item="element" :active="isActive(element)">
+                {{ element[labelKey] }}
+              </slot>
+            </div>
 
             <template v-if="!element.isHiddenActions">
               <div
@@ -122,9 +113,9 @@
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"
           >
-            <template #label="{ item }">
-              <slot name="label" :item="item">
-                <div v-bind="labelAttrs" v-text="item[labelKey]" />
+            <template #label="{ item, active }">
+              <slot name="label" :item="item" :active="active">
+                <div v-bind="active ? labelCrossedAttrs : labelAttrs" v-text="item[labelKey]" />
               </slot>
             </template>
 
@@ -320,6 +311,10 @@ const iconSize = computed(() => {
 
   return sizes[props.size];
 });
+
+function isActive(element) {
+  return element.isActive !== undefined && element.isActive;
+}
 
 function onDragMove(event) {
   const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;
