@@ -62,7 +62,8 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
    */
   function getClasses(key, mutatedProps = {}) {
     return computed(() => {
-      const color = props.color || toValue(mutatedProps)?.color;
+      const color = toValue(mutatedProps)?.color || props.color;
+
       let value = config.value[key];
 
       if (isCVA(value)) {
