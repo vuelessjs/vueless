@@ -294,13 +294,14 @@
           <slot name="after-option" :option="option" :index="index" />
         </template>
 
-        <template #empty="{ emptyStyles }">
-          <span v-show="isEmpty" :class="emptyStyles" v-text="currentLocale.listIsEmpty" />
-          <span
-            v-show="options.length === 0 && !search && !isEmpty"
-            :class="emptyStyles"
-            v-text="currentLocale.noDataToShow"
-          />
+        <template #empty>
+          <template v-if="isEmpty">
+            {{ currentLocale.listIsEmpty }}
+          </template>
+
+          <template v-else>
+            {{ currentLocale.noDataToShow }}
+          </template>
         </template>
       </UDropdownList>
     </div>
