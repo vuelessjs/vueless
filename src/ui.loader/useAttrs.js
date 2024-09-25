@@ -6,9 +6,7 @@ import defaultConfig from "./config.js";
 export default function useAttrs(props) {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
-  const extendingKeys = [];
-
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+  const keysAttrs = getKeysAttrs({}, [], {
     ellipse: {
       extend: computed(() => ["vueless-loader-ellipse", `vueless-loader-ellipse-${props.size}`]),
     },

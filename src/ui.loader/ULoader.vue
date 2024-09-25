@@ -52,45 +52,45 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
 <style scoped lang="postcss">
 .vueless-loader-ellipse {
   &:nth-child(1) {
-    animation: lds-ellipsis1 0.6s infinite;
+    animation: ellipse-1 0.6s infinite;
   }
 
   &:nth-child(4) {
-    animation: lds-ellipsis3 0.6s infinite;
+    animation: ellipse-3 0.6s infinite;
   }
 
   &-sm {
     &:nth-child(2) {
-      animation: lds-ellipsis2-sm 0.6s infinite;
+      animation: ellipse-2-sm 0.6s infinite;
     }
 
     &:nth-child(3) {
-      animation: lds-ellipsis2-sm 0.6s infinite;
+      animation: ellipse-2-sm 0.6s infinite;
     }
   }
 
   &-md {
     &:nth-child(2) {
-      animation: lds-ellipsis2-md 0.6s infinite;
+      animation: ellipse-2-md 0.6s infinite;
     }
 
     &:nth-child(3) {
-      animation: lds-ellipsis2-md 0.6s infinite;
+      animation: ellipse-2-md 0.6s infinite;
     }
   }
 
   &-lg {
     &:nth-child(2) {
-      animation: lds-ellipsis2-lg 0.6s infinite;
+      animation: ellipse-2-lg 0.6s infinite;
     }
 
     &:nth-child(3) {
-      animation: lds-ellipsis2-lg 0.6s infinite;
+      animation: ellipse-2-lg 0.6s infinite;
     }
   }
 }
 
-@keyframes lds-ellipsis1 {
+@keyframes ellipse-1 {
   0% {
     transform: scale(0);
   }
@@ -99,7 +99,7 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
   }
 }
 
-@keyframes lds-ellipsis3 {
+@keyframes ellipse-3 {
   0% {
     transform: scale(1);
   }
@@ -108,7 +108,7 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
   }
 }
 
-@keyframes lds-ellipsis2-sm {
+@keyframes ellipse-2-sm {
   0% {
     transform: translate(0, 0);
   }
@@ -118,7 +118,7 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
   }
 }
 
-@keyframes lds-ellipsis2-md {
+@keyframes ellipse-2-md {
   0% {
     transform: translate(0, 0);
   }
@@ -128,7 +128,7 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
   }
 }
 
-@keyframes lds-ellipsis2-lg {
+@keyframes ellipse-2-lg {
   0% {
     transform: translate(0, 0);
   }

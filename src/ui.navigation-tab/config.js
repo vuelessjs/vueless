@@ -10,11 +10,9 @@ export default /*tw*/ {
       disabled: {
         true: "text-gray-400 cursor-not-allowed",
       },
-      selected: {
-        true: "border-b-2 text-brand-700 border-brand-700",
-      },
     },
   },
+  tabActive: "border-b-2 text-brand-700 border-brand-700",
   defaults: {
     size: "md",
     disabled: false,
