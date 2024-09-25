@@ -81,15 +81,15 @@ Underlined.args = { enum: "color", underlined: true, dashed: false };
 export const Dashed = EnumVariantTemplate.bind({});
 Dashed.args = { enum: "color", dashed: true };
 
-export const Url = DefaultTemplate.bind({});
-Url.args = { url: "https://storybook.js.org/docs/react/get-started/introduction" };
+export const Href = DefaultTemplate.bind({});
+Href.args = { href: "https://storybook.js.org/docs/react/get-started/introduction" };
 
 export const Route = DefaultTemplate.bind({});
 Route.args = { name: "SomeRouterRouteName" };
 
 export const TargetBlank = DefaultTemplate.bind({});
 TargetBlank.args = {
-  url: "https://storybook.js.org/docs/react/get-started/introduction",
+  href: "https://storybook.js.org/docs/react/get-started/introduction",
   targetBlank: true,
 };
 
