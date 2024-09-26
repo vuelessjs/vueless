@@ -32,11 +32,7 @@
           size="xs"
           internal
           interactive
-          :name="
-            row?.row?.isHidden
-              ? config.defaults.bodyCellNestedExpandIcon
-              : config.defaults.bodyCellNestedCollapseIcon
-          "
+          :name="row?.row?.isHidden ? config.defaults.expandIcon : config.defaults.collapseIcon"
           color="brand"
           v-bind="toggleIconConfig"
           @click="onClickToggleRowChild(row.row.id)"
