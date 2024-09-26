@@ -2,6 +2,7 @@ import useUI from "../composables/useUI.js";
 import { cx, cva } from "../utils/utilUI.js";
 
 import { computed, watchEffect } from "vue";
+import { merge } from "lodash-es";
 
 import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.js";
@@ -85,39 +86,12 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     }
 
     if (key === "calendar") {
-      // This watcher rewrites default calendar locales with datepicker range locales
-      // Watcher will not rewrite custom calendar locales
+      /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
       watchEffect(() => {
-        if (!attrs[`${key}Attrs`].value.config) {
-          attrs[`${key}Attrs`].value.config = {};
-        }
+        const calendarConfig = attrs[`${key}Attrs`].value.config || {};
 
-        if (attrs[`${key}Attrs`].value.config.i18n || !props.config.i18n) {
-          return;
-        }
-
-        attrs[`${key}Attrs`].value.config.i18n = {
-          ...config.value.i18n,
-          weekdays: {
-            shorthand: { ...config.value.i18n.weekdays.shorthand },
-            longhand: { ...config.value.i18n.weekdays.longhand },
-          },
-          months: {
-            shorthand: { ...config.value.i18n.months.shorthand },
-            longhand: { ...config.value.i18n.months.longhand },
-          },
-        };
-
-        if (props.config.i18n.weekdays.userFormat) {
-          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
-            ...config.value.i18n.weekdays.userFormat,
-          };
-        }
-
-        if (props.config.i18n.months.userFormat) {
-          attrs[`${key}Attrs`].value.config.i18n.userFormat = {
-            ...config.value.i18n.months.userFormat,
-          };
+        if (!calendarConfig.i18n || props.config.i18n) {
+          attrs[`${key}Attrs`].value.config.i18n = merge(calendarConfig.i18n, config.value.i18n);
         }
       });
     }
