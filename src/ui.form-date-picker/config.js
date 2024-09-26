@@ -10,8 +10,8 @@ export default /*tw*/ {
     base: "absolute mb-3 z-40",
     variants: {
       openDirectionX: {
-        left: "right-0",
-        right: "left-0",
+        left: "left-0",
+        right: "right-0",
       },
       openDirectionY: {
         top: "bottom-full mt-0",
@@ -114,7 +114,7 @@ export default /*tw*/ {
     userDateFormat: "j F, Y",
     userDateTimeFormat: "j F, Y - H:i:S",
     size: "md",
-    openDirectionX: "auto",
+    openDirectionX: "left",
     openDirectionY: "auto",
     labelAlign: "topInside",
     timepicker: false,
