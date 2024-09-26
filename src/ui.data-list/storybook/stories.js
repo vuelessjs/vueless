@@ -45,16 +45,12 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UDataList, UIcon, URow, UButton },
   setup() {
-    function onDragSort(value) {
-      this.list = value;
-    }
-
     const slots = getSlotNames(UDataList.__name);
 
-    return { args, slots, onDragSort };
+    return { args, slots };
   },
   template: `
-    <UDataList v-bind="args" @dragSort="onDragSort">
+    <UDataList v-bind="args">
       ${args.slotTemplate || getSlotsFragment()}
     </UDataList>
   `,
