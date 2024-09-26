@@ -1,8 +1,7 @@
 <template>
   <UInput
     :id="elementId"
-    ref="searchInput"
-    v-model="localValue"
+    :model-value="localValue"
     :size="size"
     :disabled="disabled"
     :readonly="readonly"
@@ -15,6 +14,7 @@
     :left-icon="leftIcon"
     v-bind="inputAttrs"
     :data-test="dataTest"
+    @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
   >
     <template #left>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { computed, useId, watch } from "vue";
+import { computed, useId, watch, ref } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -252,14 +252,7 @@ let updateValueWithDebounce = createDebounce((value) => {
   emit("update:modelValue", value);
 }, props.debounce);
 
-const localValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    if (value.length >= props.minLength) {
-      updateValueWithDebounce(value);
-    }
-  },
-});
+const localValue = ref("");
 
 const elementId = props.id || useId();
 
@@ -293,6 +286,18 @@ watch(
     }, props.debounce);
   },
 );
+
+function onUpdateValue(value) {
+  localValue.value = value;
+
+  if (!value) {
+    emit("update:modelValue", value);
+  }
+
+  if (value.length >= props.minLength) {
+    updateValueWithDebounce(value);
+  }
+}
 
 function search() {
   if (localValue.value && localValue.value.length >= Number(props.minLength)) {
