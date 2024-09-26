@@ -47,15 +47,13 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
     }
 
     if (key === "calendar") {
-      // This code merges Calendar's i18n property with DatePicker's i18n.
+      /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
       watchEffect(() => {
         const calendarConfig = attrs[`${key}Attrs`].value.config || {};
 
-        if (!attrs[`${key}Attrs`].value.config.i18n || props.config.i18n) {
-          calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
+        if (!calendarConfig.i18n || props.config.i18n) {
+          attrs[`${key}Attrs`].value.config.i18n = merge(calendarConfig.i18n, config.value.i18n);
         }
-
-        attrs[`${key}Attrs`].value.config = calendarConfig;
       });
     }
   }
