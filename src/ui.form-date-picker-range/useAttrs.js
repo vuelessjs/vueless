@@ -19,16 +19,14 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     description: Boolean(props.description),
   }));
 
-  const extendingKeys = [
-    "buttonWrapperActive",
-    "buttonActive",
-    "edgePeriodDate",
+  const extendingKeys = ["buttonWrapperActive", "buttonActive", "edgePeriodDate"];
+  const extendingKeysClasses = getExtendingKeysClasses([
+    ...extendingKeys,
     "rangeInput",
     "periodButton",
     "periodDateList",
     "periodDate",
-  ];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  ]);
 
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
     buttonWrapper: {
@@ -127,8 +125,6 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     rangeInputFirstAttrs: keysAttrs.rangeInputFirstAttrs.value,
     rangeInputLastAttrs: keysAttrs.rangeInputLastAttrs.value,
   }));
-
-  // console.log(rangeInputsAttrs.value);
 
   return {
     config,
