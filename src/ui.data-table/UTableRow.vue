@@ -3,7 +3,8 @@
     <td
       v-if="selectable"
       :style="getNestedCheckboxShift()"
-      v-bind="attrs.bodyCellAttrs(config.bodyCellCheckbox)"
+      v-bind="attrs.bodyCellAttrs"
+      :class="cx([attrs.bodyCellAttrs, config.bodyCellCheckbox])"
     >
       <UCheckbox
         v-model="selectedRows"
@@ -18,7 +19,8 @@
     <td
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
-      v-bind="attrs.bodyCellAttrs(getCellClasses(key, row, index))"
+      v-bind="attrs.bodyCellAttrs"
+      :class="getCellClasses(key, row, index)"
     >
       <div
         v-if="(row.row || nestedLevel) && index === 0"
@@ -99,6 +101,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { cx } from "../utils/utilUI.js";
 
 import { HYPHEN_SYMBOL } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
@@ -171,9 +174,10 @@ onMounted(() => {
 });
 
 function getCellClasses(key, row, cellIndex) {
-  const isNestedRow = (row.row || props.nestedLevel) && cellIndex === 0;
+  const column = props.columns.find((column) => column.key === key);
+  const isNestedRow = (row.row || props.nestedLevel > 0) && cellIndex === 0;
 
-  return [props.columns.find((column) => column.key === key)?.tdClass, isNestedRow && "flex"];
+  return cx([column?.tdClass, isNestedRow && "flex"]);
 }
 
 function getNestedShift() {

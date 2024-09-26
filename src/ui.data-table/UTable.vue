@@ -7,7 +7,7 @@
       v-bind="stickyHeaderAttrs"
     >
       <template v-if="isShownActionsHeader">
-        <div v-bind="stickyHeaderCellAttrs()">
+        <div v-bind="stickyHeaderCellAttrs">
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
@@ -32,7 +32,7 @@
       </template>
 
       <template v-else>
-        <div v-bind="stickyHeaderCellAttrs()">
+        <div v-bind="stickyHeaderCellAttrs">
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
@@ -52,7 +52,8 @@
         <div
           v-for="(column, index) in columns"
           :key="index"
-          v-bind="stickyHeaderCellAttrs(column.thClass)"
+          v-bind="stickyHeaderCellAttrs"
+          :class="cx([stickyHeaderCellAttrs.class, column.thClass])"
         >
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
             <!--
@@ -90,7 +91,7 @@
             <td
               v-if="hasSlotContent($slots['before-header'])"
               :colspan="colsCount"
-              v-bind="headerCellAttrs()"
+              v-bind="headerCellAttrs"
             >
               <!--
                 @slot Use it to add something before header row.
@@ -103,7 +104,11 @@
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
           <tr ref="headerRowRef" v-bind="headerRowAttrs">
-            <th v-if="selectable" v-bind="headerCellAttrs(config.headerCellCheckbox)">
+            <th
+              v-if="selectable"
+              v-bind="headerCellAttrs"
+              :class="cx([headerCellAttrs.class, config.headerCellCheckbox])"
+            >
               <UCheckbox
                 v-model="selectAll"
                 size="sm"
@@ -122,7 +127,8 @@
             <th
               v-for="(column, index) in normalizedColumns"
               :key="index"
-              v-bind="headerCellAttrs(column.thClass)"
+              v-bind="headerCellAttrs"
+              :class="cx([headerCellAttrs.class, column.thClass])"
             >
               <!--
                 @slot Use it to customise table column.
@@ -165,7 +171,13 @@
 
             <tr
               v-if="isShownDateSeparator(rowIndex) && row.date"
-              v-bind="bodyRowDateSeparatorAttrs(rowIndex)"
+              v-bind="bodyRowDateSeparatorAttrs"
+              :class="
+                (tableRows[rowIndex - 1]?.isChecked && tableRows[rowIndex]?.isChecked) ||
+                (rowIndex === 0 && isCheckedRowAfter)
+                  ? config.bodyRowChecked
+                  : ''
+              "
             >
               <td v-bind="bodyCellDateSeparatorAttrs(rowIndex)" :colspan="colsCount">
                 <UDivider
@@ -177,8 +189,9 @@
             </tr>
 
             <UTableRow
-              v-bind="bodyRowAttrs(getRowClasses(row))"
+              v-bind="bodyRowAttrs"
               v-model:selected-rows="selectedRows"
+              :class="getRowClasses(row)"
               :selectable="selectable"
               :data-test="`${dataTest}-row`"
               :row="row"
@@ -280,7 +293,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderTop from "../ui.loader-top/ULoaderTop.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault, cx } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
 import {
@@ -665,7 +678,9 @@ function onClickRow(row) {
 }
 
 function getRowClasses(row) {
-  return selectedRows.value.includes(row.id) ? config.value.bodyRowChecked : "";
+  if (selectedRows.value.includes(row.id)) {
+    return cx([bodyRowAttrs, config.value.bodyRowChecked]);
+  }
 }
 
 function onChangeSelectAll(selectAll) {

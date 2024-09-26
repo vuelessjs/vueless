@@ -1,200 +1,83 @@
-import useUI from "../composables/useUI.js";
-import defaultConfig from "./config.js";
-import { cva, cx } from "../utils/utilUI.js";
 import { computed } from "vue";
+import useUI from "../composables/useUI.js";
+
+import defaultConfig from "./config.js";
 
 export default function useAttrs(
   props,
   { tableRows, isShownActionsHeader, isHeaderSticky, isFooterSticky },
 ) {
-  const { config, getAttrs, hasSlotContent, isSystemKey, isCVA } = useUI(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
-  const attrs = {};
 
-  const headerCellGeneralClasses = computed(() => {
-    return cva(config.value.headerCellGeneral)({
-      ...props,
-      compact: Boolean(props.compact),
-    });
+  const mutatedProps = computed(() => ({
+    compact: Boolean(props.compact),
+  }));
+
+  const extendingKeys = [
+    "headerCellGeneral",
+    "headerCounterGeneral",
+    "stickyHeaderActions",
+    "stickyHeaderRow",
+    "bodyRowChecked",
+    "stickyFooter",
+  ];
+  const extendingKeysClasses = getExtendingKeysClasses(
+    [...extendingKeys, "bodyCell"],
+    mutatedProps,
+  );
+
+  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
+    stickyHeader: {
+      extend: computed(() => [
+        isShownActionsHeader.value && extendingKeysClasses.stickyHeaderActions.value,
+        isShownActionsHeader.value &&
+          isHeaderSticky.value &&
+          extendingKeysClasses.stickyHeaderActions.value,
+        !isShownActionsHeader.value &&
+          isHeaderSticky.value &&
+          extendingKeysClasses.stickyHeaderRow.value,
+      ]),
+    },
+    stickyHeaderCell: {
+      base: computed(() => [extendingKeysClasses.headerCellGeneral.value]),
+    },
+    headerCounter: {
+      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+    },
+    stickyHeaderCounter: {
+      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+    },
+    stickyHeaderActionsCounter: {
+      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+    },
+    headerCell: {
+      base: computed(() => [extendingKeysClasses.headerCellGeneral.value]),
+    },
+    // bodyCell: {
+    //   base: computed(() => [extendingKeysClasses.bodyCell.value]),
+    // },
+    bodyRowBeforeCell: {
+      base: computed(() => [extendingKeysClasses.bodyCell.value]),
+    },
+    bodyRowAfterCell: {
+      base: computed(() => [extendingKeysClasses.bodyCell.value]),
+    },
+    footer: {
+      extend: computed(() => [isFooterSticky.value && extendingKeysClasses.stickyFooter.value]),
+    },
+    bodyRowBefore: {
+      extend: computed(() => [
+        tableRows.value[0]?.isChecked && extendingKeysClasses.bodyRowChecked.value,
+      ]),
+    },
   });
-
-  const bodyCellClasses = computed(() => {
-    return cva(config.value.bodyCell)({
-      ...props,
-      compact: Boolean(props.compact),
-    });
-  });
-
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
-
-    const classes = computed(() => {
-      let value = config.value[key];
-
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-          compact: Boolean(props.compact),
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "stickyHeader") {
-      const stickyHeaderAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => {
-        const actionHeaderClasses = cx([
-          stickyHeaderAttrs.value.class,
-          config.value.stickyHeaderActions,
-        ]);
-
-        const actionHeaderStickyClasses = cx([
-          config.value.stickyHeaderActions,
-          stickyHeaderAttrs.value.class,
-        ]);
-
-        const stickyHeaderRowClasses = cx([
-          stickyHeaderAttrs.value.class,
-          config.value.stickyHeaderRow,
-        ]);
-
-        return {
-          ...stickyHeaderAttrs.value,
-          class: cx([
-            isShownActionsHeader.value && actionHeaderClasses,
-            isShownActionsHeader.value && isHeaderSticky.value && actionHeaderStickyClasses,
-            !isShownActionsHeader.value && isHeaderSticky.value && stickyHeaderRowClasses,
-          ]),
-        };
-      });
-    }
-
-    if (key === "stickyHeaderCell") {
-      const stickyHeaderCellAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...stickyHeaderCellAttrs,
-        class: cx([headerCellGeneralClasses.value, stickyHeaderCellAttrs.value.class, classes]),
-      }));
-    }
-
-    if (key === "headerCounter") {
-      const headerCounterAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...headerCounterAttrs.value,
-        class: cx([config.value.headerCounterGeneral, headerCounterAttrs.value.class]),
-      }));
-    }
-
-    if (key === "stickyHeaderCounter") {
-      const stickyHeaderCounterAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...stickyHeaderCounterAttrs.value,
-        class: cx([config.value.headerCounterGeneral, stickyHeaderCounterAttrs.value.class]),
-      }));
-    }
-
-    if (key === "stickyHeaderActionsCounter") {
-      const stickyHeaderActionsCounterAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...stickyHeaderActionsCounterAttrs.value,
-        class: cx([config.value.headerCounterGeneral, stickyHeaderActionsCounterAttrs.value.class]),
-      }));
-    }
-
-    if (key === "headerCell") {
-      const headerCellAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...headerCellAttrs.value,
-        class: cx([headerCellGeneralClasses.value, headerCellAttrs.value.class, classes]),
-      }));
-    }
-
-    if (key === "bodyCell") {
-      const bodyCellAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (classes) => ({
-        ...bodyCellAttrs.value,
-        class: cx([bodyCellClasses.value, bodyCellAttrs.value.class, classes]),
-      }));
-    }
-
-    if (key === "bodyRowBeforeCell") {
-      const bodyRowBeforeCellAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...bodyRowBeforeCellAttrs.value,
-        class: cx([bodyCellClasses.value, bodyRowBeforeCellAttrs.value.class]),
-      }));
-    }
-
-    if (key === "bodyRowAfterCell") {
-      const bodyRowAfterCellAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...bodyRowAfterCellAttrs.value,
-        class: cx([bodyCellClasses.value, bodyRowAfterCellAttrs.value.class]),
-      }));
-    }
-
-    if (key === "bodyRow") {
-      const bodyRowAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => (row) => ({
-        ...bodyRowAttrs.value,
-        class: cx([bodyRowAttrs.value.class, row]),
-      }));
-    }
-
-    if (key === "footer") {
-      const footerAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...footerAttrs.value,
-        class: cx([footerAttrs.value.class, isFooterSticky.value && config.value.stickyFooter]),
-      }));
-    }
-
-    if (key === "bodyRowBefore") {
-      const bodyRowBeforeAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => ({
-        ...bodyRowBeforeAttrs.value,
-        class: cx([
-          bodyRowBeforeAttrs.value.class,
-          tableRows.value[0]?.isChecked ? config.value.bodyRowChecked : "",
-        ]),
-      }));
-    }
-
-    if (key === "bodyRowDateSeparator") {
-      attrs[`${key}Attrs`] = (rowIndex) => {
-        const isCheckedRowBefore = tableRows.value[rowIndex - 1]?.isChecked;
-        const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
-
-        const activeClass =
-          (isCheckedRowBefore && isCheckedRowAfter) || (rowIndex === 0 && isCheckedRowAfter)
-            ? config.value.bodyRowChecked
-            : "";
-
-        return getAttrs("bodyRowDateSeparator", { classes: activeClass }).value;
-      };
-    }
-  }
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }
