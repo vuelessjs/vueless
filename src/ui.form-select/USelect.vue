@@ -310,11 +310,13 @@
 
 <script setup>
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
-import { createDebounce, merge } from "lodash-es";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+
+import { createDebounce } from "../utils/utilHelper.js";
 import { getDefault } from "../utils/utilUI.js";
 import { isMac } from "../utils/utilPlatform.js";
 
