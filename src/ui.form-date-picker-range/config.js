@@ -64,20 +64,25 @@ export default /*tw*/ {
   periodDateActive: "bg-gray-100",
   customRangeDescription: "",
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
-  rangeInputFirst: "group/range-input-first",
-  rangeInputLast: "group/range-input-last",
-  rangeInput: {
+  rangeInputFirst: {
     component: "{UInput}",
     label: {
       component: "{ULabel}",
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    block: `
-      focus-within:z-10 focus-within:ring-0
-      group-[]/range-input-first:rounded-r-none group-[]/range-input-last:rounded-l-none
-    `,
-    input: "group-[]/range-input-first:rounded-r-none group-[]/range-input-last:rounded-l-none",
+    block: "focus-within:z-10 focus-within:ring-0 rounded-r-none",
+    input: "rounded-r-none",
+  },
+  rangeInputLast: {
+    component: "{UInput}",
+    label: {
+      component: "{ULabel}",
+      wrapper: "w-full hover:z-10 focus:z-10",
+      description: "hidden",
+    },
+    block: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
+    input: "rounded-l-none",
   },
   inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
