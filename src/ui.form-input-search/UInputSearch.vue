@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { computed, useId, watch, ref } from "vue";
+import { computed, useId, ref, watchEffect } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -171,7 +171,7 @@ const props = defineProps({
    * Minimum character length for search.
    */
   minLength: {
-    type: Number,
+    type: [Number, String],
     default: getDefault(defaultConfig, UInputSearch).minLength,
   },
 
@@ -208,7 +208,7 @@ const props = defineProps({
   },
 
   debounce: {
-    type: Number,
+    type: [Number, String],
     default: getDefault(defaultConfig, UInputSearch).debounce,
   },
 
@@ -250,7 +250,7 @@ const emit = defineEmits([
 
 let updateValueWithDebounce = createDebounce((value) => {
   emit("update:modelValue", value);
-}, props.debounce);
+}, Number(props.debounce));
 
 const localValue = ref("");
 
@@ -278,23 +278,22 @@ const buttonSize = computed(() => {
   return sizes[props.size];
 });
 
-watch(
-  () => props.debounce,
-  () => {
-    updateValueWithDebounce = createDebounce((value) => {
-      emit("update:modelValue", value);
-    }, props.debounce);
-  },
-);
+watchEffect(() => {
+  updateValueWithDebounce = createDebounce((value) => {
+    emit("update:modelValue", value);
+  }, Number(props.debounce));
+});
 
 function onUpdateValue(value) {
   localValue.value = value;
 
   if (!value) {
-    emit("update:modelValue", value);
+    updateValueWithDebounce(value);
+
+    return;
   }
 
-  if (value.length >= props.minLength) {
+  if (value.length >= Number(props.minLength)) {
     updateValueWithDebounce(value);
   }
 }
@@ -315,6 +314,8 @@ function onClickSearch() {
 
 function onClickClear() {
   localValue.value = "";
+
+  emit("update:modelValue", "");
   emit("clear");
 }
 </script>
