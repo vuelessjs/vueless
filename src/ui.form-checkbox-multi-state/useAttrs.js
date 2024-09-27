@@ -1,50 +1,28 @@
-import useUI from "../composables/useUI.js";
-import { cva } from "../utils/utilUI.js";
-import defaultConfig from "./config.js";
 import { computed } from "vue";
+import useUI from "../composables/useUI.js";
+
+import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { selected }) {
-  const { config, getAttrs, isSystemKey, hasSlotContent, isCVA } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
-  const attrs = {};
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
-  for (const key in defaultConfig) {
-    if (isSystemKey(key)) continue;
+  const keysAttrs = getKeysAttrs();
 
-    const classes = computed(() => {
-      let value = config.value[key];
+  const { checkboxAttrs } = keysAttrs;
 
-      if (isCVA(value)) {
-        value = cva(value)({
-          ...props,
-        });
-      }
-
-      return value;
-    });
-
-    attrs[`${key}Attrs`] = getAttrs(key, { classes });
-
-    if (key === "checkbox") {
-      const checkboxAttrs = attrs[`${key}Attrs`];
-
-      attrs[`${key}Attrs`] = computed(() => {
-        if (selected.value.icon) {
-          checkboxAttrs.value.config = checkboxAttrs.value.config || {};
-          checkboxAttrs.value.config.defaults = checkboxAttrs.value.config.defaults || {};
-          checkboxAttrs.value.config.defaults.checkedIcon = selected.value.icon;
-        }
-
-        return checkboxAttrs.value;
-      });
+  keysAttrs.checkboxAttrs = computed(() => {
+    if (selected.value.icon) {
+      checkboxAttrs.value.config = checkboxAttrs.value.config || {};
+      checkboxAttrs.value.config.defaults = checkboxAttrs.value.config.defaults || {};
+      checkboxAttrs.value.config.defaults.checkedIcon = selected.value.icon;
     }
-  }
+
+    return checkboxAttrs.value;
+  });
 
   return {
-    ...attrs,
     config,
+    ...keysAttrs,
     hasSlotContent,
   };
 }
