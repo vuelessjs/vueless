@@ -16,7 +16,7 @@ export default /*tw*/ {
     variants: {
       error: {
         true: `
-          border-red-300
+          border-red-300 bg-red-50
           hover:border-red-400 hover:focus-within:border-red-500
           focus-within:border-red-500 focus-within:ring-red-700/15
         `,
