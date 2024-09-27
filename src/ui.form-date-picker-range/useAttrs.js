@@ -19,14 +19,24 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     description: Boolean(props.description),
   }));
 
-  const extendingKeys = ["buttonWrapperActive", "buttonActive", "edgePeriodDate"];
-  const extendingKeysClasses = getExtendingKeysClasses([
-    ...extendingKeys,
-    "rangeInput",
-    "periodButton",
-    "periodDateList",
-    "periodDate",
-  ]);
+  const extendingKeys = [
+    "buttonWrapperActive",
+    "buttonActive",
+    "edgePeriodDate",
+    "periodDateMonthList",
+  ];
+  const extendingKeysClasses = getExtendingKeysClasses(
+    [
+      ...extendingKeys,
+      "periodButton",
+      "periodDateList",
+      "periodDate",
+      "periodDateWeekList",
+      "periodDateQuarterList",
+      "periodDateYearList",
+    ],
+    mutatedProps,
+  );
 
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
     buttonWrapper: {
@@ -35,11 +45,13 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     button: {
       extend: computed(() => [isShownMenu.value && extendingKeysClasses.buttonActive.value]),
     },
-    rangeInputFirst: {
-      base: computed(() => [extendingKeysClasses.rangeInput.value]),
-    },
-    rangeInputLast: {
-      base: computed(() => [extendingKeysClasses.rangeInput.value]),
+    periodDateList: {
+      extend: computed(() => [
+        isPeriod.value.week && extendingKeysClasses.periodDateWeekList.value,
+        isPeriod.value.month && extendingKeysClasses.periodDateMonthList.value,
+        isPeriod.value.quarter && extendingKeysClasses.periodDateQuarterList.value,
+        isPeriod.value.year && extendingKeysClasses.periodDateYearList.value,
+      ]),
     },
     periodButtonActive: {
       base: computed(() => [extendingKeysClasses.periodButton.value]),
@@ -94,44 +106,10 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     }
   });
 
-  const periodDateListAttrs = computed(() => {
-    if (isPeriod.value.week) return keysAttrs.periodDateWeekListAttrs.value;
-    if (isPeriod.value.month) return keysAttrs.periodDateMonthListAttrs.value;
-    if (isPeriod.value.quarter) return keysAttrs.periodDateQuarterListAttrs.value;
-    if (isPeriod.value.year) return keysAttrs.periodDateYearListAttrs.value;
-
-    return keysAttrs.periodDateListAttrs.value;
-  });
-
-  const periodDatesMenuAttrs = computed(() => ({
-    periodsRowAttrs: keysAttrs.periodsRowAttrs.value,
-    periodButtonAttrs: keysAttrs.periodButtonAttrs.value,
-    periodButtonActiveAttrs: keysAttrs.periodButtonActiveAttrs.value,
-    periodDateAttrs: keysAttrs.periodDateAttrs.value,
-    periodDateActiveAttrs: keysAttrs.periodDateActiveAttrs.value,
-    periodDateInRangeAttrs: keysAttrs.periodDateInRangeAttrs.value,
-    periodDateListAttrs: periodDateListAttrs.value,
-    rangeSwitchWrapperAttrs: keysAttrs.rangeSwitchWrapperAttrs.value,
-    rangeSwitchButtonAttrs: keysAttrs.rangeSwitchButtonAttrs.value,
-    rangeSwitchTitleAttrs: keysAttrs.rangeSwitchTitleAttrs.value,
-    lastPeriodGridDateAttrs: keysAttrs.lastPeriodGridDateAttrs.value,
-    firstPeriodGridDateAttrs: keysAttrs.firstPeriodGridDateAttrs.value,
-    lastPeriodListDateAttrs: keysAttrs.lastPeriodListDateAttrs.value,
-    firstPeriodListDateAttrs: keysAttrs.firstPeriodListDateAttrs.value,
-    customRangeDescription: keysAttrs.customRangeDescriptionAttrs.value,
-  }));
-
-  const rangeInputsAttrs = computed(() => ({
-    rangeInputFirstAttrs: keysAttrs.rangeInputFirstAttrs.value,
-    rangeInputLastAttrs: keysAttrs.rangeInputLastAttrs.value,
-  }));
-
   return {
     config,
+    keysAttrs,
     ...keysAttrs,
     hasSlotContent,
-    periodDatesMenuAttrs,
-    rangeInputsAttrs,
-    periodDateListAttrs,
   };
 }
