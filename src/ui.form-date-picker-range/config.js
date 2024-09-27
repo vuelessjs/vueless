@@ -71,10 +71,7 @@ export default /*tw*/ {
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    block: `
-      focus-within:z-10 focus-within:ring-0
-      rounded-r-none
-    `,
+    block: "focus-within:z-10 focus-within:ring-0 rounded-r-none",
     input: "rounded-r-none",
   },
   rangeInputLast: {
@@ -84,10 +81,7 @@ export default /*tw*/ {
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    block: `
-      focus-within:z-10 focus-within:ring-0
-      rounded-l-none
-    `,
+    block: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
     input: "rounded-l-none",
   },
   inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
