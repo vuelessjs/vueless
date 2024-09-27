@@ -19,7 +19,7 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
   }));
 
   const extendingKeys = ["inputFocused"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
 
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
     input: {
