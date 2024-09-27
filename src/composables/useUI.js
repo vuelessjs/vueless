@@ -72,6 +72,10 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
           ...toValue(mutatedProps),
           color: color ? getColor(color) : null,
         });
+      } else if (value.component) {
+        // If the value of the key contains keys related to the nested component, it should be skipped.
+        // Probably this should be fixed later to be possible to extend key with nested component keys.
+        return "";
       }
 
       return color ? setColor(value, color) : value;
@@ -120,6 +124,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
         const { base, extend } = keysToExtendConfig[key];
         const keyAttrs = keysAttrs[`${key}Attrs`];
 
+        // TODO: if value of the key contains keys related to the nested nested component it should be skipped
         keysAttrs[`${key}Attrs`] = computed(() => ({
           ...keyAttrs.value,
           class: cx([
@@ -150,10 +155,11 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
     const commonAttrs = {
       ...(isTopLevelKey ? attrs : {}),
-      component: isDev ? attrs.component || componentName || null : null,
-      "config-key": isDev ? attrs["config-key"] || configKey || null : null,
-      "child-component": isDev && attrs.component ? nestedComponent || componentName : null,
-      "child-config-key": isDev && attrs.component ? configKey : null,
+      "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
+      "vl-key": isDev ? attrs["vl-config-key"] || configKey || null : null,
+      "vl-child-component":
+        isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
+      "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
     };
 
     // Delete value key to prevent v-model overwrite
