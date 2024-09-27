@@ -155,10 +155,11 @@ export default function useUI(defaultConfig = {}, propsConfigGetter = null, topL
 
     const commonAttrs = {
       ...(isTopLevelKey ? attrs : {}),
-      component: isDev ? attrs.component || componentName || null : null,
-      "config-key": isDev ? attrs["config-key"] || configKey || null : null,
-      "child-component": isDev && attrs.component ? nestedComponent || componentName : null,
-      "child-config-key": isDev && attrs.component ? configKey : null,
+      "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
+      "vl-key": isDev ? attrs["vl-config-key"] || configKey || null : null,
+      "vl-child-component":
+        isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
+      "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
     };
 
     // Delete value key to prevent v-model overwrite
