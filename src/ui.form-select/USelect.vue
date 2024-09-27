@@ -310,11 +310,13 @@
 
 <script setup>
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
-import { debounce, merge } from "lodash-es";
+import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+
+import { createDebounce } from "../utils/utilHelper.js";
 import { getDefault } from "../utils/utilUI.js";
 import { isMac } from "../utils/utilPlatform.js";
 
@@ -729,7 +731,7 @@ const isLocalValue = computed(() => {
     : Boolean(String(localValue.value));
 });
 
-const onSearchChange = debounce(function (query) {
+const onSearchChange = createDebounce(function (query) {
   emit("searchChange", query);
 }, 300);
 
