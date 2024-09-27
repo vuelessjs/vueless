@@ -13,7 +13,6 @@ export default function useAttrs(
   );
 
   const extendingKeys = [
-    "headerCellBase",
     "headerCounterBase",
     "stickyHeaderActions",
     "stickyHeaderRow",
@@ -21,7 +20,7 @@ export default function useAttrs(
   ];
   const extendingKeysClasses = getExtendingKeysClasses([
     ...extendingKeys,
-    "headerCell",
+    "headerCellBase",
     "bodyCellBase",
     "bodyRowChecked",
   ]);
@@ -50,14 +49,8 @@ export default function useAttrs(
     stickyHeaderActionsCounter: {
       base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
-    headerCell: {
-      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
-    },
     headerCellCheckbox: {
-      base: computed(() => [
-        extendingKeysClasses.headerCell.value,
-        extendingKeysClasses.headerCellBase.value,
-      ]),
+      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
     },
     bodyCellNestedRow: {
       base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
@@ -83,6 +76,7 @@ export default function useAttrs(
 
   return {
     config,
+    keysAttrs,
     ...keysAttrs,
     hasSlotContent,
   };

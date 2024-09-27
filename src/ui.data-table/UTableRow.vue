@@ -170,7 +170,7 @@ onMounted(() => {
 function getCellAttrs(key, row, cellIndex) {
   const isNestedRow = (row.row || props.nestedLevel > 0) && cellIndex === 0;
 
-  return isNestedRow ? bodyCellNestedRowAttrs : bodyCellBaseAttrs;
+  return isNestedRow ? bodyCellNestedRowAttrs.value : bodyCellBaseAttrs.value;
 }
 
 function getNestedShift() {

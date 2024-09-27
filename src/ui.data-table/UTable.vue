@@ -91,7 +91,7 @@
             <td
               v-if="hasSlotContent($slots['before-header'])"
               :colspan="colsCount"
-              v-bind="headerCellAttrs"
+              v-bind="headerCellBaseAttrs"
             >
               <!--
                 @slot Use it to add something before header row.
@@ -123,8 +123,8 @@
             <th
               v-for="(column, index) in normalizedColumns"
               :key="index"
-              v-bind="headerCellAttrs"
-              :class="cx([headerCellAttrs.class, column.thClass])"
+              v-bind="headerCellBaseAttrs"
+              :class="cx([headerCellBaseAttrs.class, column.thClass])"
             >
               <!--
                 @slot Use it to customise table column.
@@ -168,7 +168,7 @@
             <tr
               v-if="isShownDateSeparator(rowIndex) && row.date"
               v-bind="
-                getDateSeparatorRowAttrs(rowIndex)
+                shouldDisplayDateSeparator(rowIndex)
                   ? bodyRowDateSeparatorCheckedAttrs
                   : bodyRowDateSeparatorAttrs
               "
@@ -189,19 +189,8 @@
               :row="row"
               :columns="columns"
               :config="config"
-              :attrs="{
-                bodyCellBaseAttrs,
-                bodyCellNestedRowAttrs,
-                bodyCellSecondaryAttrs,
-                bodyCellSecondaryEmptyAttrs,
-                bodyCellNestedCollapseIconAttrs,
-                bodyCellNestedExpandIconAttrs,
-                bodyCellNestedAttrs,
-                bodyCellPrimaryAttrs,
-                bodyCheckboxAttrs,
-                bodyCellCheckboxAttrs,
-              }"
-              v-bind="getRowAttrs(row) ? bodyRowCheckedAttrs : bodyRowAttrs"
+              :attrs="keysAttrs"
+              v-bind="isRowSelected(row) ? bodyRowCheckedAttrs : bodyRowAttrs"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
             >
@@ -509,6 +498,7 @@ const isSelectedAllRows = computed(() => {
 
 const {
   config,
+  keysAttrs,
   wrapperAttrs,
   stickyHeaderCellAttrs,
   stickyHeaderAttrs,
@@ -523,16 +513,12 @@ const {
   footerAttrs,
   bodyRowDateSeparatorAttrs,
   bodyRowDateSeparatorCheckedAttrs,
-  headerCellAttrs,
+  headerCellBaseAttrs,
   headerCellCheckboxAttrs,
-  bodyCellBaseAttrs,
-  bodyCellNestedRowAttrs,
   stickyHeaderActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
   headerCounterAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellNestedExpandIconAttrs,
   bodyEmptyStateAttrs,
   bodyDateSeparatorAttrs,
   bodyCellDateSeparatorAttrs,
@@ -542,16 +528,10 @@ const {
   tableAttrs,
   headerLoaderAttrs,
   bodyAttrs,
-  bodyCellNestedAttrs,
-  bodyCellSecondaryAttrs,
-  bodyCellSecondaryEmptyAttrs,
   footerRowAttrs,
   stickyFooterRowAttrs,
   hasSlotContent,
   headerAttrs,
-  bodyCellPrimaryAttrs,
-  bodyCheckboxAttrs,
-  bodyCellCheckboxAttrs,
 } = useAttrs(props, {
   tableRows,
   isShownActionsHeader,
@@ -607,16 +587,16 @@ function getDateSeparatorLabel(separatorDate) {
     : separatorDate;
 }
 
-function getDateSeparatorRowAttrs(rowIndex) {
+function shouldDisplayDateSeparator(rowIndex) {
   const isPreviousRowChecked = tableRows.value[rowIndex - 1]?.isChecked;
   const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
   const isFirstRowAndNextChecked = rowIndex === 0 && isCheckedRowAfter;
 
-  (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked ? true : false;
+  return (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked;
 }
 
-function getRowAttrs(row) {
-  selectedRows.value.includes(row.id) ? true : false;
+function isRowSelected(row) {
+  return Boolean(selectedRows.value.includes(row.id));
 }
 
 function setFooterCellWidth(width) {

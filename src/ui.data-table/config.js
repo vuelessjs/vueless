@@ -29,7 +29,6 @@ export default /*tw*/ {
   table: "min-w-full border-none text-sm w-full table-fixed",
   header: "border-b border-gray-200",
   headerRow: "",
-  headerCell: "",
   headerCellCheckbox: "w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
