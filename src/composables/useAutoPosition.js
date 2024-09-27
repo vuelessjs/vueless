@@ -31,7 +31,7 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
       return localPosition.value.x === POSITION.left;
     }
 
-    return preferredOpenDirectionX.value === POSITION.left;
+    return preferredOpenDirectionX.value === POSITION.right;
   });
 
   const isBottom = computed(() => {
