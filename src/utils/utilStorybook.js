@@ -144,13 +144,6 @@ export function getSource(defaultConfig) {
   return defaultConfig.replace("export default /*tw*/ ", "").replace(";", "");
 }
 
-// TODO: remove it when allSlotsFragment will be replaced to getSlotsFragment
-export const allSlotsFragment = `
-  <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
-    <template v-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
-  </template>
-`;
-
 export function getSlotsFragment(defaultTemplate) {
   return `
   <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
