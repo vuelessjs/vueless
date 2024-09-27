@@ -1,9 +1,9 @@
 /**
- Deeply clone given object (same as lodash.cloneDeep).
- @param {Object} entity
- @param cache
-
- @returns {Object}
+ * Deeply clone given object (same as lodash.cloneDeep).
+ * @param {Object} entity
+ * @param cache
+ *
+ * @returns {Object}
  */
 export function cloneDeep(entity, cache = new WeakMap()) {
   // primitives
@@ -38,31 +38,29 @@ export function cloneDeep(entity, cache = new WeakMap()) {
 }
 
 /**
- Invoke function with delay (same as lodash.debounce).
- @param {Function} func
- @param {Number} wait
-
- @returns {Function}
+ * Creates a debounced function with delay (same as lodash.debounce).
+ * @param {Function} func
+ * @param {Number} ms
+ *
+ * @returns {Function}
  */
-export function debounce(func, wait) {
+export function createDebounce(func, ms) {
   let timeout;
 
-  return function (...args) {
-    const context = this;
-
+  return function () {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
 
 /**
- Change page title in runtime by provided config.
- @param {Object} config
- @param {string} config.title
- @param {string} config.separator
- @param {string} config.suffix
-
- @returns {VoidFunction}
+ * Change page title in runtime by provided config.
+ * @param {Object} config
+ * @param {string} config.title
+ * @param {string} config.separator
+ * @param {string} config.suffix
+ *
+ * @returns {VoidFunction}
  */
 export function setTitle({ title, separator = " / ", suffix = "" }) {
   if (isCSR) {
@@ -71,13 +69,13 @@ export function setTitle({ title, separator = " / ", suffix = "" }) {
 }
 
 /**
- Check is code rendering on the server side.
- @returns {boolean}
+ * Check is code rendering on the server side.
+ * @returns {boolean}
  */
 export const isSSR = typeof window === "undefined";
 
 /**
- Check is code rendering on the client side.
- @returns {boolean}
+ * Check is code rendering on the client side.
+ * @returns {boolean}
  */
 export const isCSR = typeof window !== "undefined";

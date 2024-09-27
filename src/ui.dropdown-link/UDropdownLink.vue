@@ -58,7 +58,6 @@
       ref="dropdownListRef"
       :size="size"
       :options="options"
-      :value-key="valueKey"
       :label-key="labelKey"
       :data-test="`${dataTest}-list`"
       v-bind="dropdownListAttrs"
@@ -108,14 +107,6 @@ const props = defineProps({
   labelKey: {
     type: String,
     default: getDefault(defaultConfig, UDropdownLink).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).valueKey,
   },
 
   /**

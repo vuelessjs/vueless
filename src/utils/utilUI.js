@@ -10,9 +10,9 @@ import {
 } from "../constants.js";
 
 /**
- Load Vueless config from the project root.
- Both for server and client side renderings.
- IIFE for SSR is used to prevent top level await issue.
+ * Load Vueless config from the project root.
+ * Both for server and client side renderings.
+ * IIFE for SSR is used to prevent top level await issue.
  */
 export let vuelessConfig = {};
 
@@ -35,9 +35,9 @@ if (isCSR) {
 }
 
 /**
- Extend twMerge (tailwind merge) by vueless and user config:
- All list of rules available here:
- https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+ * Extend twMerge (tailwind merge) by vueless and user config:
+ * All list of rules available here:
+ * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
  */
 const twMerge = extendTailwindMerge(
   merge(
@@ -59,11 +59,11 @@ const twMerge = extendTailwindMerge(
 );
 
 /**
- Export cva (class variance authority) methods:
-  * extended with tailwind-merge
-  * remove all Vueless nested component names ({U...} strings) from class list string.
- Learn more here: https://beta.cva.style
-*/
+ * Export cva (class variance authority) methods:
+ * – extended with tailwind-merge
+ * – remove all Vueless nested component names ({U...} strings) from class list string.
+ * Learn more here: https://beta.cva.style
+ */
 export const {
   cx,
   compose,
@@ -84,11 +84,11 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
   });
 
 /**
- Return default values for component props, icons, etc..
- @param { Object } defaultConfig
- @param { String } name
-
- @returns { Object }
+ * Return default values for component props, icons, etc..
+ * @param { Object } defaultConfig
+ * @param { String } name
+ *
+ * @returns { Object }
  */
 export function getDefault(defaultConfig, name) {
   const defaults = merge(
@@ -102,10 +102,11 @@ export function getDefault(defaultConfig, name) {
 }
 
 /**
- Return `grayscale` color if in component config it `brand` but in vueless config it `grayscale`
- Otherwise return given color.
- @param { String } color
- @returns { String }
+ * Return `grayscale` color if in component config it `brand` but in vueless config it `grayscale`
+ * Otherwise return given color.
+ * @param { String } color
+ *
+ * @returns { String }
  */
 export function getColor(color) {
   return (vuelessConfig.brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR && color === BRAND_COLOR
@@ -114,11 +115,11 @@ export function getColor(color) {
 }
 
 /**
- Replace in tailwind classes `{color}` variable into given color.
- @param { String } classes
- @param { String } color
-
- @returns { String }
+ * Replace in tailwind classes `{color}` variable into given color.
+ * @param { String } classes
+ * @param { String } color
+ *
+ * @returns { String }
  */
 export function setColor(classes, color) {
   if (typeof classes !== "string") {
@@ -129,9 +130,10 @@ export function setColor(classes, color) {
 }
 
 /**
- Generates simple unique identifier.
- @param { Number } length
- @returns { String }
+ * Generates simple unique identifier.
+ * @param { Number } length
+ *
+ * @returns { String }
  */
 export function getRandomId(length = 15) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

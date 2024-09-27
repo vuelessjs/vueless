@@ -5,7 +5,7 @@
       v-model="rangeStart"
       :error="inputRangeFromError"
       size="md"
-      v-bind="attrs.rangeInputFirstAttrs"
+      v-bind="rangeInputFirstAttrs"
       :name="rangeInputName"
       @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
     />
@@ -15,7 +15,7 @@
       v-model="rangeEnd"
       :error="inputRangeToError"
       size="md"
-      v-bind="attrs.rangeInputLastAttrs"
+      v-bind="rangeInputLastAttrs"
       :name="rangeInputName"
       @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
     />
@@ -57,6 +57,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const { rangeInputFirstAttrs, rangeInputLastAttrs } = props.attrs;
 
 const localValue = defineModel("localValue", { required: true, type: Object });
 const inputRangeFromError = defineModel("inputRangeFromError", { required: true, type: String });

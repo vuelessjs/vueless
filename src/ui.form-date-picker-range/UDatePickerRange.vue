@@ -98,7 +98,7 @@
           :is-period="isPeriod"
           :custom-range-button="customRangeButton"
           :locale="locale"
-          :attrs="periodDatesMenuAttrs"
+          :attrs="keysAttrs"
           :date-format="dateFormat"
           :min-date="minDate"
           :max-date="maxDate"
@@ -120,7 +120,7 @@
           :locale="locale"
           :date-format="dateFormat"
           :config="config"
-          :attrs="rangeInputsAttrs"
+          :attrs="keysAttrs"
         />
 
         <div v-if="inputRangeToError || inputRangeFromError" v-bind="inputRangeErrorAttrs">
@@ -403,6 +403,7 @@ const elementId = props.id || useId();
 
 const {
   config,
+  keysAttrs,
   wrapperAttrs,
   calendarAttrs,
   inputAttrs,
@@ -412,8 +413,6 @@ const {
   shiftRangeButtonAttrs,
   rangeInputWrapperAttrs,
   inputRangeErrorAttrs,
-  periodDatesMenuAttrs,
-  rangeInputsAttrs,
 } = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const calendarValue = ref(props.modelValue);
