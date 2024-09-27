@@ -114,7 +114,7 @@ export default /*tw*/ {
     userDateFormat: "j F, Y",
     userDateTimeFormat: "j F, Y - H:i:S",
     size: "md",
-    openDirectionX: "left",
+    openDirectionX: "auto",
     openDirectionY: "auto",
     labelAlign: "topInside",
     timepicker: false,

@@ -189,7 +189,7 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     variant: "button",
-    openDirectionX: "left",
+    openDirectionX: "auto",
     openDirectionY: "auto",
     timepicker: false,
     disabled: false,
