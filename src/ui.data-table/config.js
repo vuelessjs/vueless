@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative",
-  headerCellGeneral: {
+  headerCellBase: {
     base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
     variants: {
       compact: {
@@ -8,7 +8,7 @@ export default /*tw*/ {
       },
     },
   },
-  headerCounterGeneral: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
+  headerCounterBase: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
   stickyHeaderCell: "flex-none whitespace-nowrap",
@@ -49,7 +49,7 @@ export default /*tw*/ {
   bodyRowAfter: "!p-0",
   bodyRowAfterCell: "py-1",
   bodyRowDateSeparator: "",
-  bodyCell: {
+  bodyCellBase: {
     base: "p-[1.125rem] py-5 first:!p-5 truncate align-top last:p-5",
     variants: {
       compact: {
@@ -57,6 +57,7 @@ export default /*tw*/ {
       },
     },
   },
+  bodyCellNestedRow: "flex",
   bodyCellPrimary: "text-ellipsis overflow-hidden",
   bodyCellSecondary: "mt-1 text-xs text-gray-500 overflow-hidden text-ellipsis",
   bodyCellSecondaryEmpty: "inline-block",

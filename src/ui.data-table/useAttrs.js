@@ -12,24 +12,21 @@ export default function useAttrs(
     () => props.config,
   );
 
-  const mutatedProps = computed(() => ({
-    compact: Boolean(props.compact),
-  }));
-
   const extendingKeys = [
-    "headerCellGeneral",
-    "headerCounterGeneral",
+    "headerCellBase",
+    "headerCounterBase",
     "stickyHeaderActions",
     "stickyHeaderRow",
-    "bodyRowChecked",
     "stickyFooter",
   ];
-  const extendingKeysClasses = getExtendingKeysClasses(
-    [...extendingKeys, "bodyCell"],
-    mutatedProps,
-  );
+  const extendingKeysClasses = getExtendingKeysClasses([
+    ...extendingKeys,
+    "headerCell",
+    "bodyCellBase",
+    "bodyRowChecked",
+  ]);
 
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
     stickyHeader: {
       extend: computed(() => [
         isShownActionsHeader.value && extendingKeysClasses.stickyHeaderActions.value,
@@ -42,28 +39,37 @@ export default function useAttrs(
       ]),
     },
     stickyHeaderCell: {
-      base: computed(() => [extendingKeysClasses.headerCellGeneral.value]),
+      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
     },
     headerCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
     stickyHeaderCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
     stickyHeaderActionsCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterGeneral.value]),
+      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
     headerCell: {
-      base: computed(() => [extendingKeysClasses.headerCellGeneral.value]),
+      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
     },
-    // bodyCell: {
-    //   base: computed(() => [extendingKeysClasses.bodyCell.value]),
-    // },
+    headerCellCheckbox: {
+      base: computed(() => [
+        extendingKeysClasses.headerCell.value,
+        extendingKeysClasses.headerCellBase.value,
+      ]),
+    },
+    bodyCellNestedRow: {
+      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
+    },
+    bodyCellCheckbox: {
+      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
+    },
     bodyRowBeforeCell: {
-      base: computed(() => [extendingKeysClasses.bodyCell.value]),
+      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
     },
     bodyRowAfterCell: {
-      base: computed(() => [extendingKeysClasses.bodyCell.value]),
+      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
     },
     footer: {
       extend: computed(() => [isFooterSticky.value && extendingKeysClasses.stickyFooter.value]),

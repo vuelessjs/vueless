@@ -1,31 +1,26 @@
 <template>
   <tr v-bind="$attrs" @click="onClick(props.row)">
-    <td
-      v-if="selectable"
-      :style="getNestedCheckboxShift()"
-      v-bind="attrs.bodyCellAttrs"
-      :class="cx([attrs.bodyCellAttrs, config.bodyCellCheckbox])"
-    >
+    <td v-if="selectable" :style="getNestedCheckboxShift()" v-bind="bodyCellCheckboxAttrs">
       <UCheckbox
         v-model="selectedRows"
         :data-id="row.id"
         :value="row.id"
         size="sm"
         :data-test="`${dataTest}-body-checkbox`"
-        v-bind="attrs.bodyCheckboxAttrs"
+        v-bind="bodyCheckboxAttrs"
       />
     </td>
 
     <td
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
-      v-bind="attrs.bodyCellAttrs"
-      :class="getCellClasses(key, row, index)"
+      v-bind="getCellAttrs(key, row, index)"
+      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass])"
     >
       <div
         v-if="(row.row || nestedLevel) && index === 0"
         :style="getNestedShift()"
-        v-bind="attrs.bodyCellNestedAttrs"
+        v-bind="bodyCellNestedAttrs"
       >
         <UIcon
           v-if="row.row"
@@ -41,18 +36,14 @@
 
       <div v-if="value?.hasOwnProperty('secondary')">
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div
-            v-bind="attrs.bodyCellPrimaryAttrs"
-            ref="cellRef"
-            :data-test="`${dataTest}-${key}-cell`"
-          >
+          <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
             {{ value.primary || HYPHEN_SYMBOL }}
           </div>
 
-          <div v-bind="attrs.bodyCellSecondaryAttrs">
+          <div v-bind="bodyCellSecondaryAttrs">
             <template v-if="Array.isArray(value.secondary)">
               <div v-for="(secondary, idx) in value.secondary" ref="cellRef" :key="idx">
-                <span v-bind="attrs.bodyCellSecondaryEmptyAttrs">
+                <span v-bind="bodyCellSecondaryEmptyAttrs">
                   {{ secondary }}
                 </span>
               </div>
@@ -67,11 +58,7 @@
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div
-            v-bind="attrs.bodyCellPrimaryAttrs"
-            ref="cellRef"
-            :data-test="`${dataTest}-${key}-cell`"
-          >
+          <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
             {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
           </div>
         </slot>
@@ -157,10 +144,21 @@ const cellRef = ref([]);
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
+const {
+  bodyCellPrimaryAttrs,
+  bodyCellSecondaryAttrs,
+  bodyCellSecondaryEmptyAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellNestedRowAttrs,
+  bodyCellBaseAttrs,
+} = props.attrs;
+
 const toggleIconConfig = computed(() =>
-  props.row?.row?.isHidden
-    ? props.attrs.bodyCellNestedExpandIconAttrs
-    : props.attrs.bodyCellNestedCollapseIconAttrs,
+  props.row?.row?.isHidden ? bodyCellNestedExpandIconAttrs : bodyCellNestedCollapseIconAttrs,
 );
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
@@ -169,11 +167,10 @@ onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
 
-function getCellClasses(key, row, cellIndex) {
-  const column = props.columns.find((column) => column.key === key);
+function getCellAttrs(key, row, cellIndex) {
   const isNestedRow = (row.row || props.nestedLevel > 0) && cellIndex === 0;
 
-  return cx([column?.tdClass, isNestedRow && "flex"]);
+  return isNestedRow ? bodyCellNestedRowAttrs : bodyCellBaseAttrs;
 }
 
 function getNestedShift() {
