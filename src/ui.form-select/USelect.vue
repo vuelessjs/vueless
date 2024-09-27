@@ -310,7 +310,7 @@
 
 <script setup>
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
-import { debounce, merge } from "lodash-es";
+import { createDebounce, merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -729,7 +729,7 @@ const isLocalValue = computed(() => {
     : Boolean(String(localValue.value));
 });
 
-const onSearchChange = debounce(function (query) {
+const onSearchChange = createDebounce(function (query) {
   emit("searchChange", query);
 }, 300);
 

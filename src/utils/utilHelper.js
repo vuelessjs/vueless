@@ -38,20 +38,18 @@ export function cloneDeep(entity, cache = new WeakMap()) {
 }
 
 /**
- Invoke function with delay (same as lodash.debounce).
+ Creates a debounced function with delay (same as lodash.debounce).
  @param {Function} func
- @param {Number} wait
+ @param {Number} ms
 
  @returns {Function}
  */
-export function debounce(func, wait) {
+export function createDebounce(func, ms) {
   let timeout;
 
-  return function (...args) {
-    const context = this;
-
+  return function () {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
 
