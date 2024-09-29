@@ -6,7 +6,21 @@
     <div v-bind="daysAttrs">
       <template v-for="day in days" :key="day">
         <UButton
-          v-if="getDayState(day).isCurrentDay && !getDayState(day).isCurrentDayInRange"
+          v-if="getDayState(day).isSelectedDay && !props.range"
+          tabindex="-1"
+          variant="primary"
+          color="brand"
+          no-ring
+          square
+          v-bind="selectedDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
           tabindex="-1"
           variant="thirdary"
           color="brand"
@@ -20,13 +34,29 @@
         />
 
         <UButton
-          v-else-if="getDayState(day).isCurrentDayInRange"
+          v-else-if="getDayState(day).isCurrentFirstDayInRange"
           tabindex="-1"
           variant="thirdary"
           color="brand"
           no-ring
           square
-          v-bind="currentDayInRangeAttrs"
+          filled
+          v-bind="currentFirstDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentLastDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="currentLastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -49,21 +79,6 @@
         />
 
         <UButton
-          v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="anotherMonthFirstDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
           v-else-if="getDayState(day).isLastDayInRange"
           tabindex="-1"
           variant="thirdary"
@@ -72,6 +87,21 @@
           square
           filled
           v-bind="lastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="anotherMonthFirstDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -94,27 +124,13 @@
         />
 
         <UButton
-          v-else-if="getDayState(day).isSelectedDay"
-          tabindex="-1"
-          variant="primary"
-          color="brand"
-          no-ring
-          square
-          v-bind="selectedDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isActiveDay"
+          v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
           tabindex="-1"
           variant="thirdary"
           color="brand"
           no-ring
           square
-          v-bind="activeDayAttrs"
+          v-bind="currentDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -136,6 +152,20 @@
         />
 
         <UButton
+          v-else-if="getDayState(day).isActiveDay"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          v-bind="activeDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
           v-else-if="getDayState(day).isAnotherMonthDay"
           tabindex="-1"
           variant="thirdary"
@@ -150,7 +180,7 @@
         />
 
         <UButton
-          v-else
+          v-else-if="!getDayState(day).isSelectedDay"
           tabindex="-1"
           variant="thirdary"
           color="brand"
@@ -255,6 +285,8 @@ const {
   anotherMonthLastDayInRangeAttrs,
   selectedDayAttrs,
   activeDayAttrs,
+  currentLastDayInRangeAttrs,
+  currentFirstDayInRangeAttrs,
 } = useAttrs(props);
 
 const localSelectedDate = computed(() => {
@@ -376,31 +408,31 @@ function getDayState(day) {
       props.dateFormat,
     );
 
-  const isNotSelectedDate =
-    (!isSameDay(day, localSelectedDate.value) && !isSameDay(day, props.selectedDateTo)) ||
-    props.selectedDate === null;
-
-  const isCurrentDay = isToday(day) && isNotSelectedDate;
-  const isCurrentDayInRange = isCurrentDay && isDayInRange;
+  const isSelectedDay = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
+  const isCurrentDay = isToday(day);
   const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
+  const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
-  const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
   const isLastDayInRange = props.range && isSameDay(day, props.selectedDateTo);
-  const isAnotherMonthLastDayInRange = isLastDayInRange && isLastDayInRange;
-  const isSelectedDay = isSameDay(day, localSelectedDate.value);
-  const isActiveDay = isSameDay(props.activeDate, day);
+  const isCurrentFirstDayInRange = isFirstDayInRange && isCurrentDay;
+  const isCurrentLastDayInRange = isLastDayInRange && isCurrentDay;
+  const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
+  const isAnotherMonthLastDayInRange = isLastDayInRange && isAnotherMonthDay;
+  const isActiveDay = isSameDay(props.activeDate, day) && !props.range;
 
   return {
-    isCurrentDay,
-    isCurrentDayInRange,
-    isFirstDayInRange,
-    isAnotherMonthFirstDayInRange,
-    isLastDayInRange,
-    isAnotherMonthLastDayInRange,
     isDayInRange,
     isSelectedDay,
-    isActiveDay,
+    isCurrentDay,
     isAnotherMonthDay,
+    isCurrentDayInRange,
+    isFirstDayInRange,
+    isLastDayInRange,
+    isCurrentFirstDayInRange,
+    isCurrentLastDayInRange,
+    isAnotherMonthFirstDayInRange,
+    isAnotherMonthLastDayInRange,
+    isActiveDay,
   };
 }
 
