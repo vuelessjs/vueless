@@ -7,7 +7,7 @@
       v-bind="stickyHeaderAttrs"
     >
       <template v-if="isShownActionsHeader">
-        <div v-bind="stickyHeaderCellAttrs()">
+        <div v-bind="stickyHeaderCellAttrs">
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
@@ -32,7 +32,7 @@
       </template>
 
       <template v-else>
-        <div v-bind="stickyHeaderCellAttrs()">
+        <div v-bind="stickyHeaderCellAttrs">
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
@@ -52,7 +52,8 @@
         <div
           v-for="(column, index) in columns"
           :key="index"
-          v-bind="stickyHeaderCellAttrs(column.thClass)"
+          v-bind="stickyHeaderCellAttrs"
+          :class="cx([stickyHeaderCellAttrs.class, column.thClass])"
         >
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
             <!--
@@ -90,7 +91,7 @@
             <td
               v-if="hasSlotContent($slots['before-header'])"
               :colspan="colsCount"
-              v-bind="headerCellAttrs()"
+              v-bind="headerCellBaseAttrs"
             >
               <!--
                 @slot Use it to add something before header row.
@@ -103,7 +104,7 @@
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
           <tr ref="headerRowRef" v-bind="headerRowAttrs">
-            <th v-if="selectable" v-bind="headerCellAttrs(config.headerCellCheckbox)">
+            <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
                 size="sm"
@@ -122,7 +123,8 @@
             <th
               v-for="(column, index) in normalizedColumns"
               :key="index"
-              v-bind="headerCellAttrs(column.thClass)"
+              v-bind="headerCellBaseAttrs"
+              :class="cx([headerCellBaseAttrs.class, column.thClass])"
             >
               <!--
                 @slot Use it to customise table column.
@@ -165,7 +167,11 @@
 
             <tr
               v-if="isShownDateSeparator(rowIndex) && row.date"
-              v-bind="bodyRowDateSeparatorAttrs(rowIndex)"
+              v-bind="
+                shouldDisplayDateSeparator(rowIndex)
+                  ? bodyRowDateSeparatorCheckedAttrs
+                  : bodyRowDateSeparatorAttrs
+              "
             >
               <td v-bind="bodyCellDateSeparatorAttrs(rowIndex)" :colspan="colsCount">
                 <UDivider
@@ -177,23 +183,14 @@
             </tr>
 
             <UTableRow
-              v-bind="bodyRowAttrs(getRowClasses(row))"
               v-model:selected-rows="selectedRows"
               :selectable="selectable"
               :data-test="`${dataTest}-row`"
               :row="row"
               :columns="columns"
               :config="config"
-              :attrs="{
-                bodyCellAttrs,
-                bodyCellSecondaryAttrs,
-                bodyCellSecondaryEmptyAttrs,
-                bodyCellNestedCollapseIconAttrs,
-                bodyCellNestedExpandIconAttrs,
-                bodyCellNestedAttrs,
-                bodyCellPrimaryAttrs,
-                bodyCheckboxAttrs,
-              }"
+              :attrs="keysAttrs"
+              v-bind="isRowSelected(row) ? bodyRowCheckedAttrs : bodyRowAttrs"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
             >
@@ -280,7 +277,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderTop from "../ui.loader-top/ULoaderTop.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault, cx } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
 import {
@@ -421,7 +418,7 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 const sortedRows = computed(() => {
   const headerKeys = props.columns.map((column) => column.key);
 
-  return props.rows.map((row) => {
+  return tableRows.value.map((row) => {
     const rowEntries = Object.entries(row);
 
     const sortedEntries = new Array(rowEntries.length);
@@ -501,6 +498,7 @@ const isSelectedAllRows = computed(() => {
 
 const {
   config,
+  keysAttrs,
   wrapperAttrs,
   stickyHeaderCellAttrs,
   stickyHeaderAttrs,
@@ -511,16 +509,16 @@ const {
   bodyRowBeforeAttrs,
   bodyRowBeforeCellAttrs,
   bodyRowAttrs,
+  bodyRowCheckedAttrs,
   footerAttrs,
   bodyRowDateSeparatorAttrs,
-  headerCellAttrs,
-  bodyCellAttrs,
+  bodyRowDateSeparatorCheckedAttrs,
+  headerCellBaseAttrs,
+  headerCellCheckboxAttrs,
   stickyHeaderActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
   headerCounterAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellNestedExpandIconAttrs,
   bodyEmptyStateAttrs,
   bodyDateSeparatorAttrs,
   bodyCellDateSeparatorAttrs,
@@ -530,15 +528,10 @@ const {
   tableAttrs,
   headerLoaderAttrs,
   bodyAttrs,
-  bodyCellNestedAttrs,
-  bodyCellSecondaryAttrs,
-  bodyCellSecondaryEmptyAttrs,
   footerRowAttrs,
   stickyFooterRowAttrs,
   hasSlotContent,
   headerAttrs,
-  bodyCellPrimaryAttrs,
-  bodyCheckboxAttrs,
 } = useAttrs(props, {
   tableRows,
   isShownActionsHeader,
@@ -592,6 +585,18 @@ function getDateSeparatorLabel(separatorDate) {
   return Array.isArray(props.dateDivider)
     ? props.dateDivider.find((dateItem) => dateItem.date === separatorDate)?.label || separatorDate
     : separatorDate;
+}
+
+function shouldDisplayDateSeparator(rowIndex) {
+  const isPreviousRowChecked = tableRows.value[rowIndex - 1]?.isChecked;
+  const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
+  const isFirstRowAndNextChecked = rowIndex === 0 && isCheckedRowAfter;
+
+  return (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked;
+}
+
+function isRowSelected(row) {
+  return Boolean(selectedRows.value.includes(row.id));
 }
 
 function setFooterCellWidth(width) {
@@ -662,10 +667,6 @@ function isShownDateSeparator(rowIndex) {
 
 function onClickRow(row) {
   emit("clickRow", row);
-}
-
-function getRowClasses(row) {
-  return selectedRows.value.includes(row.id) ? config.value.bodyRowChecked : "";
 }
 
 function onChangeSelectAll(selectAll) {
