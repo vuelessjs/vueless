@@ -52,14 +52,6 @@ const props = defineProps({
   },
 
   /**
-   * Unique block name.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
    * Accordion size.
    * @values sm, md, lg
    */
@@ -124,6 +116,6 @@ const dividerSize = computed(() => {
 function onClickItem() {
   isOpened.value = !isOpened.value;
 
-  emit("click", props.name);
+  emit("click", elementId, isOpened.value);
 }
 </script>
