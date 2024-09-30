@@ -78,7 +78,7 @@
     "jackspeak": "2.3.6"
   },
   "engines": {
-    "node": ">=18.20"
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
