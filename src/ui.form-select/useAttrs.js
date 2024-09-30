@@ -15,7 +15,7 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   }));
 
   const extendingKeys = ["caret", "wrapperActive", "labelWrapperActive", "labelWrapperTop"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
 
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
     wrapper: {
