@@ -82,13 +82,7 @@
           <UDivider v-if="!isExistFooter || !noDivider" no-border v-bind="dividerSpacingAttrs" />
 
           <template v-if="isExistFooter">
-            <UDivider
-              v-if="!noDivider"
-              variant="dark"
-              no-bottom-padding
-              no-top-padding
-              v-bind="dividerAttrs"
-            />
+            <UDivider v-if="!noDivider" variant="dark" padding="none" v-bind="dividerAttrs" />
 
             <div v-bind="footerAttrs">
               <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">

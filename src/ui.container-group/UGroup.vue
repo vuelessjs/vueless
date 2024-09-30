@@ -1,7 +1,7 @@
 <template>
   <div v-bind="wrapperAttrs" :data-test="dataTest">
     <template v-if="title">
-      <UDivider v-if="upperlined" size="xl" no-top-padding v-bind="upperlineAttrs" />
+      <UDivider v-if="upperlined" size="xl" padding="after" v-bind="upperlineAttrs" />
 
       <div v-bind="headerAttrs">
         <!-- @slot Use it to add something left side of the header. -->

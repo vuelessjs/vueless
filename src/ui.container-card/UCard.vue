@@ -26,7 +26,7 @@
       <slot />
     </div>
 
-    <UDivider v-if="isShownFooter" no-padding v-bind="dividerAttrs" />
+    <UDivider v-if="isShownFooter" padding="none" v-bind="dividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
       <!-- @slot Use it to add something to the left side of the footer. -->
