@@ -2,7 +2,23 @@
   "name": "vueless",
   "version": "0.0.394",
   "license": "MIT",
-  "description": "Vue Styleless Component Framework.",
+  "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
+  "keywords": [
+    "vueless",
+    "vue",
+    "vue.js",
+    "vue3",
+    "ui library",
+    "component library",
+    "vue framework",
+    "design system",
+    "tailwind",
+    "tailwindcss",
+    "unstyled",
+    "styleless",
+    "headlessui",
+    "ui"
+  ],
   "homepage": "https://vueless.com",
   "author": "Johnny Grid",
   "main": "index.js",
@@ -60,6 +76,9 @@
   },
   "resolutions": {
     "jackspeak": "2.3.6"
+  },
+  "engines": {
+    "node": ">=18.20"
   },
   "repository": {
     "type": "git",
