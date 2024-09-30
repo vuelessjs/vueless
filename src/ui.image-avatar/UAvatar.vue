@@ -17,12 +17,12 @@
       <slot
         v-else
         name="placeholder"
-        :icon-name="placeholderIcon"
+        :icon-name="placeholderIcon || config.defaults.placeholderIcon"
         :icon-color="componentColor"
         :icon-size="size"
       >
         <UIcon
-          :name="placeholderIcon"
+          :name="placeholderIcon || config.defaults.placeholderIcon"
           :color="componentColor"
           :size="size"
           v-bind="placeholderIconAttrs"
@@ -54,7 +54,7 @@ const props = defineProps({
   },
 
   /**
-   * Avatar label (user name, nickname, etc.).
+   * Avatar label (username, nickname, etc.).
    */
   label: {
     type: String,
@@ -62,7 +62,7 @@ const props = defineProps({
   },
 
   /**
-   * Avatar icon placeholder.
+   * Avatar placeholder icon.
    */
   placeholderIcon: {
     type: String,
