@@ -48,7 +48,6 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import { UCard } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import useBreakpoint from "../composables/useBreakpoint.js";
 
 defineOptions({ inheritAttrs: false });
 
@@ -81,14 +80,6 @@ const props = defineProps({
   },
 
   /**
-   * Reverse left and right footer blocks (in a mobile version only).
-   */
-  mobileFooterReverse: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCard).mobileFooterReverse,
-  },
-
-  /**
    * Component ui config object.
    */
   config: {
@@ -116,8 +107,6 @@ const isShownFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
-const { isMobileBreakpoint } = useBreakpoint();
-
 const {
   hasSlotContent,
   wrapperAttrs,
@@ -129,5 +118,5 @@ const {
   descriptionAttrs,
   contentAttrs,
   footerAttrs,
-} = useAttrs(props, { isMobileBreakpoint });
+} = useAttrs(props);
 </script>
