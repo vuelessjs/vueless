@@ -17,14 +17,15 @@
       <slot
         v-else
         name="placeholder"
-        :icon-name="placeholderIcon || config.defaults.placeholderIcon"
+        :icon-name="placeholderIcon"
         :icon-color="componentColor"
         :icon-size="size"
       >
         <UIcon
-          :name="placeholderIcon || config.defaults.placeholderIcon"
-          :color="componentColor"
+          internal
           :size="size"
+          :color="componentColor"
+          :name="placeholderIcon"
           v-bind="placeholderIconAttrs"
         />
       </slot>
