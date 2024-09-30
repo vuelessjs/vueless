@@ -1,8 +1,20 @@
 <template>
   <div v-bind="yearViewAttrs">
-    <template v-for="year in years" :key="year">
+    <template v-for="(year, idx) in years" :key="year">
       <UButton
-        v-if="getYearState(year).isCurrentYear && !getYearState(year).isCurrentYearInRange"
+        v-if="getYearState(year, idx).isSelectedYear && !props.range"
+        variant="primary"
+        color="brand"
+        no-ring
+        v-bind="selectedYearAttrs"
+        :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
+        :label="formatDate(year, 'Y', props.locale)"
+        @click="onClickYear(year)"
+        @mousedown.prevent.capture
+      />
+
+      <UButton
+        v-else-if="getYearState(year, idx).isCurrentYear && !getYearState(year, idx).isYearInRange"
         variant="thirdary"
         color="brand"
         no-ring
@@ -14,11 +26,12 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isCurrentYearInRange"
+        v-else-if="getYearState(year, idx).isCurrentFirstYearInRange"
         variant="thirdary"
         color="brand"
         no-ring
-        v-bind="currentYearInRangeAttrs"
+        filled
+        v-bind="currentFirstYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
         @click="onClickYear(year)"
@@ -26,7 +39,20 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isFirstYearInRange"
+        v-else-if="getYearState(year, idx).isCurrentLastYearInRange"
+        variant="thirdary"
+        color="brand"
+        no-ring
+        filled
+        v-bind="currentLastYearInRangeAttrs"
+        :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
+        :label="formatDate(year, 'Y', props.locale)"
+        @click="onClickYear(year)"
+        @mousedown.prevent.capture
+      />
+
+      <UButton
+        v-else-if="getYearState(year, idx).isFirstYearInRange"
         variant="thirdary"
         color="brand"
         no-ring
@@ -39,7 +65,7 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isLastYearInRange"
+        v-else-if="getYearState(year, idx).isLastYearInRange"
         variant="thirdary"
         color="brand"
         no-ring
@@ -52,7 +78,36 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isSingleYearInRange"
+        v-else-if="
+          getYearState(year, idx).isCurrentYearInRange &&
+          !getYearState(year, idx).isMoreThanOneYearRange
+        "
+        variant="thirdary"
+        color="brand"
+        no-ring
+        v-bind="singleCurrentYearInRangeAttrs"
+        :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
+        :label="formatDate(year, 'Y', props.locale)"
+        @click="onClickYear(year)"
+        @mousedown.prevent.capture
+      />
+
+      <UButton
+        v-else-if="getYearState(year, idx).isCurrentYearInRange"
+        variant="thirdary"
+        color="brand"
+        no-ring
+        v-bind="currentYearInRangeAttrs"
+        :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
+        :label="formatDate(year, 'Y', props.locale) + 'sd'"
+        @click="onClickYear(year)"
+        @mousedown.prevent.capture
+      />
+
+      <UButton
+        v-else-if="
+          !getYearState(year, idx).isMoreThanOneYearRange && getYearState(year, idx).isYearInRange
+        "
         variant="thirdary"
         color="brand"
         no-ring
@@ -64,7 +119,9 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isYearInRange"
+        v-else-if="
+          getYearState(year, idx).isMoreThanOneYearRange && getYearState(year, idx).isYearInRange
+        "
         variant="thirdary"
         color="brand"
         no-ring
@@ -76,19 +133,7 @@
       />
 
       <UButton
-        v-else-if="getYearState(year).isSelectedYear"
-        variant="primary"
-        color="brand"
-        no-ring
-        v-bind="selectedYearAttrs"
-        :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(year, 'Y', props.locale)"
-        @click="onClickYear(year)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getYearState(year).isActiveYear"
+        v-else-if="getYearState(year, idx).isActiveYear"
         variant="thirdary"
         color="brand"
         no-ring
@@ -191,6 +236,9 @@ const {
   singleYearInRangeAttrs,
   selectedYearAttrs,
   activeYearAttrs,
+  singleCurrentYearInRangeAttrs,
+  currentLastYearInRangeAttrs,
+  currentFirstYearInRangeAttrs,
 } = useAttrs(props);
 
 const localSelectedDate = computed(() => {
@@ -224,51 +272,48 @@ function getYear(year) {
   return newDate;
 }
 
-function getYearState(year) {
-  const isYearInRange =
-    props.range &&
-    localSelectedDate.value &&
-    props.selectedDateTo &&
-    !dateIsOutOfRange(
-      year,
-      props.selectedDate,
-      props.selectedDateTo,
-      props.locale,
-      props.dateFormat,
-    );
+function getYearState(year, index) {
+  const startRangeIndex = years.value.findIndex((year) => {
+    return year.getFullYear() === localSelectedDate.value?.getFullYear();
+  });
 
-  const isNotSelectedDate =
-    (!isSelectedMonth(year) && !isSelectedMonth(year)) || props.selectedDate === null;
+  const endRangeIndex = years.value.findIndex((year) => {
+    return year.getFullYear() === props.selectedDateTo?.getFullYear();
+  });
 
+  const isYearInRange = index >= startRangeIndex && index <= endRangeIndex;
+  const isSelectedYear = isSameMonth(year, localSelectedDate.value) && props.selectedDate !== null;
+  const isPresentYear = isCurrentYear(year);
   const isMoreThanOneYearRange =
-    props.selectedDateTo &&
-    props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() > 1;
-
-  const isFirstYear = year.getFullYear() === props.selectedDate.getFullYear();
-  const isLastYear =
-    props.selectedDateTo && year.getFullYear() === props.selectedDateTo.getFullYear();
-
-  const isCurrentDate = isCurrentYear(year) && isNotSelectedDate;
-  const isCurrentYearInRange = isCurrentDate && isYearInRange;
-  const isFirstYearInRange = props.range && isFirstYear && isMoreThanOneYearRange;
-  const isLastYearInRange = props.range && isLastYear && isMoreThanOneYearRange;
-  const isSingleYearInRange = props.range && isFirstYear && !isMoreThanOneYearRange;
+    props.selectedDateTo?.getFullYear() - props.selectedDate?.getFullYear() >= 1;
   const isActiveYear = isSameMonth(props.activeMonth, year) && !props.range;
+  const isCurrentYearInRange = isYearInRange && isPresentYear;
+
+  const isLastYearInRange =
+    props.range &&
+    year.getFullYear() === props.selectedDateTo?.getFullYear() &&
+    isMoreThanOneYearRange;
+
+  const isFirstYearInRange =
+    props.range &&
+    year.getFullYear() === localSelectedDate.value?.getFullYear() &&
+    isMoreThanOneYearRange;
+
+  const isCurrentFirstYearInRange = props.range && isFirstYearInRange && isPresentYear;
+  const isCurrentLastYearInRange = props.range && isLastYearInRange && isPresentYear;
 
   return {
-    isCurrentYear: isCurrentDate,
-    isCurrentYearInRange,
-    isFirstYearInRange,
-    isLastYearInRange,
-    isYearInRange,
-    isSingleYearInRange,
-    isSelectedYear: isSelectedMonth(year),
+    isSelectedYear,
+    isCurrentYear: isPresentYear,
+    isMoreThanOneYearRange,
     isActiveYear,
+    isCurrentYearInRange,
+    isLastYearInRange,
+    isFirstYearInRange,
+    isCurrentFirstYearInRange,
+    isCurrentLastYearInRange,
+    isYearInRange,
   };
-}
-
-function isSelectedMonth(month) {
-  return isSameMonth(month, localSelectedDate.value);
 }
 
 function onClickYear(year) {

@@ -23,19 +23,19 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Icon SVG data source (svg as a vue component).
-   */
-  src: {
-    type: [String, Object],
-    default: "",
-  },
-
-  /**
-   * Name of the icon.
+   * Icon name.
    */
   name: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Icon source (svg as a vue component).
+   */
+  src: {
+    type: Object,
+    default: () => {},
   },
 
   /**
@@ -66,7 +66,7 @@ const props = defineProps({
   },
 
   /**
-   * Add interactive states to the icon (hover, clicked).
+   * Make the icon interactive (cursor pointer, etc.).
    */
   interactive: {
     type: Boolean,

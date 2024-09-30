@@ -10,8 +10,8 @@ export default /*tw*/ {
     base: "absolute mb-3 z-40",
     variants: {
       openDirectionX: {
-        left: "right-0",
-        right: "left-0",
+        left: "left-0 right-auto",
+        right: "right-0 left-auto",
       },
       openDirectionY: {
         top: "bottom-full mt-0",
