@@ -21,7 +21,7 @@ export default /*tw*/ {
       },
     },
   },
-  isOpened: "pt-2 h-full opacity-100",
+  descriptionShown: "pt-2 h-fit opacity-100",
   toggleIcon: "{UIcon}",
   divider: "{UDivider} group-last:hidden",
   defaults: {

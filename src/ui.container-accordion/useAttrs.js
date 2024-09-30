@@ -9,12 +9,12 @@ export default function useAttrs(props, { isOpened }) {
     () => props.config,
   );
 
-  const extendingKeys = ["isOpened"];
+  const extendingKeys = ["descriptionShown"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
     description: {
-      extend: computed(() => [isOpened.value && extendingKeysClasses.isOpened.value]),
+      extend: computed(() => [isOpened.value && extendingKeysClasses.descriptionShown.value]),
     },
   });
 
