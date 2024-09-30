@@ -80,7 +80,8 @@ const props = defineProps({
 const emit = defineEmits([
   /**
    * Triggers when the accordion item is toggled.
-   * @property {string} name
+   * @property {string} elementId
+   * @property {boolean} isOpened
    */
   "click",
 ]);
