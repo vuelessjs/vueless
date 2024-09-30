@@ -112,7 +112,7 @@ function setDarkMode(config) {
   return isDarkMode;
 }
 
-function convertHexInRgb(hex) {
+export function convertHexInRgb(hex) {
   const color = hex.replace(/#/g, "");
 
   let r, g, b;
