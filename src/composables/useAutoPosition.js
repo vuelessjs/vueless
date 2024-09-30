@@ -31,7 +31,7 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
       return localPosition.value.x === POSITION.left;
     }
 
-    return preferredOpenDirectionX.value === POSITION.right;
+    return preferredOpenDirectionX.value === POSITION.left;
   });
 
   const isBottom = computed(() => {
@@ -60,12 +60,12 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
     const hasEnoughSpaceAbove =
       spaceAbove > localTargetElement.value.getBoundingClientRect().height;
 
-    if (localPreferredPosition.value.y === POSITION.top) {
+    if (localPreferredPosition.value.y === POSITION.bottom) {
       preferredOpenDirectionY.value =
         hasEnoughSpaceBelow || spaceBelow > spaceAbove ? POSITION.bottom : POSITION.top;
     }
 
-    if (localPreferredPosition.value.y === POSITION.bottom) {
+    if (localPreferredPosition.value.y === POSITION.top) {
       preferredOpenDirectionY.value =
         hasEnoughSpaceAbove || spaceAbove > spaceBelow ? POSITION.top : POSITION.bottom;
     }
@@ -79,12 +79,12 @@ export function useAutoPosition(anchorElement, targetElement, position, preferre
     const hasEnoughSpaceLeft = spaceLeft > localTargetElement.value.getBoundingClientRect().width;
     const hasEnoughSpaceRight = spaceRight > localTargetElement.value.getBoundingClientRect().width;
 
-    if (localPreferredPosition.value.x === POSITION.left) {
+    if (localPreferredPosition.value.x === POSITION.right) {
       preferredOpenDirectionX.value =
         hasEnoughSpaceRight || spaceRight > spaceLeft ? POSITION.right : POSITION.left;
     }
 
-    if (localPreferredPosition.value.x === POSITION.right) {
+    if (localPreferredPosition.value.x === POSITION.left) {
       preferredOpenDirectionX.value =
         hasEnoughSpaceLeft || spaceLeft > spaceRight ? POSITION.left : POSITION.right;
     }
