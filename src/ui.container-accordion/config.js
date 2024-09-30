@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "group cursor-pointer",
   body: "",
-  title: {
+  label: {
     base: "flex items-center justify-between font-medium text-gray-900",
     variants: {
       size: {

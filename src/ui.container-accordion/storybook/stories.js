@@ -14,19 +14,19 @@ export default {
     accordions: [
       {
         name: "Excellence",
-        title: "Excellence by necessity",
+        label: "Excellence by necessity",
         description: `As creators and maintainers of the technologies you are using,
             our services are here to showcase the full power of our softwares.`,
       },
       {
         name: "Innovation",
-        title: "Driving innovation forward",
+        label: "Driving innovation forward",
         description: `All the people that will be involved in delivering your project are contributing
             to the technologies you are using, when they are not the creators themselves.`,
       },
       {
         name: "Collaboration",
-        title: "Fostering collaboration",
+        label: "Fostering collaboration",
         description: `By working with us, you are directly supporting the open source community,
             ensuring the ecosystem continuity and enabling Nuxt development.`,
       },
