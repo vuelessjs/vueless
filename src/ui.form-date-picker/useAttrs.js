@@ -6,10 +6,7 @@ import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.js";
 
 export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
@@ -18,14 +15,7 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
     description: Boolean(props.description),
   }));
 
-  const extendingKeys = ["inputFocused"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
-
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
-    input: {
-      extend: computed(() => [isShownCalendar.value && extendingKeysClasses.inputFocused.value]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
@@ -36,9 +26,14 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
     }
   });
 
+  const inputAttrs = computed(() =>
+    isShownCalendar.value ? keysAttrs.activeInputAttrs.value : keysAttrs.inputAttrs.value,
+  );
+
   return {
     config,
     ...keysAttrs,
+    inputAttrs,
     hasSlotContent,
   };
 }

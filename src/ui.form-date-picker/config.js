@@ -1,9 +1,9 @@
 export default /*tw*/ {
   wrapper: "relative",
   input: "{UInput}",
-  inputFocused: {
+  activeInput: {
     component: "{UInput}",
-    block: "ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+    block: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
   },
   calendar: {
     component: "{UCalendar}",
