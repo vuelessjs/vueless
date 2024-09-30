@@ -1,10 +1,7 @@
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-bind="dividerAttrs" />
-    <template v-if="label && !vertical">
-      <span v-bind="labelAttrs" v-text="label" />
-      <div v-bind="dividerAttrs" />
-    </template>
+    <span v-if="label" v-bind="labelAttrs" v-text="label" />
   </div>
 </template>
 
@@ -45,6 +42,15 @@ const props = defineProps({
   },
 
   /**
+   * Set padding around the Divider.
+   * @values none, before, after, all
+   */
+  padding: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UDivider).padding,
+  },
+
+  /**
    * Set line dashed.
    */
   dashed: {
@@ -61,7 +67,7 @@ const props = defineProps({
   },
 
   /**
-   * Set divider orientation to vertical.
+   * Set divider vertically orientated.
    */
   vertical: {
     type: Boolean,
@@ -74,46 +80,6 @@ const props = defineProps({
   noBorder: {
     type: Boolean,
     default: getDefault(defaultConfig, UDivider).noBorder,
-  },
-
-  /**
-   * Remove all paddings.
-   */
-  noPadding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noPadding,
-  },
-
-  /**
-   * Remove top padding.
-   */
-  noTopPadding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noTopPadding,
-  },
-
-  /**
-   * Remove bottom padding.
-   */
-  noBottomPadding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noBottomPadding,
-  },
-
-  /**
-   * Remove left padding.
-   */
-  noLeftPadding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noLeftPadding,
-  },
-
-  /**
-   * Remove right padding.
-   */
-  noRightPadding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noRightPadding,
   },
 
   /**
