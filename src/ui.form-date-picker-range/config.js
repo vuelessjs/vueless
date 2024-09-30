@@ -19,11 +19,12 @@ export default /*tw*/ {
     `,
     variants: {
       openDirectionX: {
-        left: "right-0",
-        right: "left-0",
+        left: "left-0 right-auto",
+        right: "right-0 left-auto",
       },
       openDirectionY: {
         top: "bottom-full mt-0",
+        bottom: "top-full mb-0",
       },
     },
     compoundVariants: [
