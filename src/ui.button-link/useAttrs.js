@@ -7,6 +7,7 @@ export default function useAttrs(props, { isActive, isExactActive }) {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
+    "link",
   );
   const slots = useSlots();
 
