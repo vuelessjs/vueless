@@ -194,12 +194,8 @@
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
             >
-              <template
-                v-for="(value, key, index) in getFilteredRow(row, columns)"
-                :key="index"
-                #[`cell-${key}`]="slotValues"
-              >
-                <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+              <template v-for="(_, name) in $slots" #[name]="slotValues">
+                <slot :name="name" v-bind="slotValues" />
               </template>
             </UTableRow>
 
@@ -282,7 +278,6 @@ import { getDefault, cx } from "../utils/utilUI.js";
 import defaultConfig from "./config.js";
 import {
   normalizeColumns,
-  getFilteredRow,
   syncRowCheck,
   toggleRowVisibility,
   switchRowCheck,

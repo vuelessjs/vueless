@@ -66,20 +66,33 @@
     </td>
   </tr>
 
-  <UTableRow
-    v-if="row.row && !row.row.isHidden"
-    v-bind="$attrs"
-    v-model:selected-rows="selectedRows"
-    :attrs="attrs"
-    :columns="columns"
-    :row="row.row"
-    :data-test="dataTest"
-    :nested-level="nestedLevel + 1"
-    :config="config"
-    :selectable="selectable"
-    @toggle-row-visibility="onClickToggleRowChild"
-    @click="onClick"
-  />
+  <template v-if="row.row && !row.row.isHidden">
+    <tr v-if="$slots['nested-content']">
+      <td :colspan="columns.length + (selectable ? 1 : 0)">
+        <div :style="getNestedShift()">
+          <slot name="nested-content" :row="row.row" />
+        </div>
+      </td>
+    </tr>
+    <UTableRow
+      v-else
+      v-bind="$attrs"
+      v-model:selected-rows="selectedRows"
+      :attrs="attrs"
+      :columns="columns"
+      :row="row.row"
+      :data-test="dataTest"
+      :nested-level="nestedLevel + 1"
+      :config="config"
+      :selectable="selectable"
+      @toggle-row-visibility="onClickToggleRowChild"
+      @click="onClick"
+    >
+      <template v-for="(_, name) in $slots" #[name]="slotValues">
+        <slot :name="name" v-bind="slotValues" />
+      </template>
+    </UTableRow>
+  </template>
 </template>
 
 <script setup>
