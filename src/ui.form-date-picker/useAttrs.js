@@ -5,7 +5,7 @@ import useUI from "../composables/useUI.js";
 import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.js";
 
-export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
+export default function useAttrs(props, { isTop, isRight }) {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
@@ -26,14 +26,9 @@ export default function useAttrs(props, { isShownCalendar, isTop, isRight }) {
     }
   });
 
-  const inputAttrs = computed(() =>
-    isShownCalendar.value ? keysAttrs.activeInputAttrs.value : keysAttrs.inputAttrs.value,
-  );
-
   return {
     config,
     ...keysAttrs,
-    inputAttrs,
     hasSlotContent,
   };
 }
