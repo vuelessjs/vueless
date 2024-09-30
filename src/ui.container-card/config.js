@@ -1,23 +1,14 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "border rounded-dynamic border-gray-200 bg-white space-y-4 md:space-y-6 w-full",
-    variants: {
-      padding: {
-        sm: "p-2 md:p-4",
-        md: "p-4 md:p-6",
-        lg: "p-6 md:p-8",
-      },
-    },
-  },
+  wrapper: "p-4 md:p-5 border rounded-dynamic border-gray-200 bg-white space-y-4 w-full",
   header: "flex justify-between",
-  headerLeft: "flex items-center space-x-4 w-full",
-  headerLeftFallback: "flex flex-col w-full",
+  headerLeft: "flex items-center gap-2 w-fit",
+  headerLeftFallback: "flex flex-col w-fit",
   title: "{UHeader}",
-  description: "mt-1.5 text-base font-normal text-gray-500",
-  content: "",
+  description: "mt-1 text-sm font-normal text-gray-500",
+  content: "text-sm",
   divider: "{UDivider}",
   footer: "flex justify-between",
   defaults: {
-    padding: "md",
+    //
   },
 };

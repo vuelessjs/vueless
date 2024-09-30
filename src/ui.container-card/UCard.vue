@@ -8,7 +8,7 @@
         <!-- @slot Use it to customise left side of the header. -->
         <slot name="header-left">
           <div v-bind="headerLeftFallbackAttrs">
-            <UHeader :label="title" size="md" v-bind="titleAttrs" />
+            <UHeader :label="title" size="xs" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </div>
         </slot>
@@ -21,12 +21,12 @@
       <slot name="header-right" />
     </div>
 
-    <!-- @slot Use it to add something inside. -->
     <div v-bind="contentAttrs">
+      <!-- @slot Use it to add something inside. -->
       <slot />
     </div>
 
-    <UDivider v-if="isShownFooter" no-top-padding no-bottom-padding v-bind="dividerAttrs" />
+    <UDivider v-if="isShownFooter" no-padding v-bind="dividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
       <!-- @slot Use it to add something to the left side of the footer. -->
@@ -41,12 +41,9 @@
 <script setup>
 import { computed, useSlots } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
 import UHeader from "../ui.text-header/UHeader.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
-import { UCard } from "./constants.js";
-import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
 defineOptions({ inheritAttrs: false });
@@ -68,15 +65,6 @@ const props = defineProps({
   description: {
     type: String,
     default: "",
-  },
-
-  /**
-   * Card padding.
-   * @values sm, md, lg
-   */
-  padding: {
-    type: String,
-    default: getDefault(defaultConfig, UCard).padding,
   },
 
   /**
