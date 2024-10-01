@@ -216,7 +216,7 @@ NestedContent.args = {
   row: getNestedRow,
   selectable: true,
   slotTemplate: `
-    <template #nested-content>
+    <template #nested-row="{ row }">
       <div class="p-4 bg-gray-100">
         <UTable
           :columns="[

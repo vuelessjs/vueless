@@ -201,8 +201,8 @@
               >
                 <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
               </template>
-              <template #nested-content>
-                <slot name="nested-content" />
+              <template #nested-row="{ row: nestedRow }">
+                <slot name="nested-row" :row="nestedRow" />
               </template>
             </UTableRow>
 

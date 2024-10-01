@@ -67,10 +67,10 @@
   </tr>
 
   <template v-if="row.row && !row.row.isHidden">
-    <tr v-if="hasSlotContent($slots['nested-content'])">
+    <tr v-if="hasSlotContent($slots['nested-row'])">
       <td :colspan="columns.length + (selectable ? 1 : 0)">
         <div :style="getNestedShift()">
-          <slot name="nested-content" :row="row.row" />
+          <slot name="nested-row" :row="row.row" />
         </div>
       </td>
     </tr>
@@ -95,8 +95,8 @@
       >
         <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
       </template>
-      <template #nested-content>
-        <slot name="nested-content" />
+      <template #nested-row="{ row: nestedRow }">
+        <slot name="nested-row" :row="nestedRow" />
       </template>
     </UTableRow>
   </template>
