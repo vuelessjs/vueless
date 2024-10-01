@@ -4,7 +4,7 @@ export default /*tw*/ {
     variants: {
       variant: {
         progress: "w-full h-auto flex flex-col gap-1.5",
-        stepper: "flex items-center justify-between",
+        stepper: "flex items-center justify-between gap-4",
       },
     },
   },
@@ -12,20 +12,27 @@ export default /*tw*/ {
     base: "",
     variants: {
       size: {
-        "2xs": "size-8",
-        xs: "size-8",
-        sm: "size-10",
-        md: "size-12",
-        lg: "size-14",
-        xl: "size-16",
-        "2xl": "size-20",
+        "2xs": "min-h-4 min-w-4 max-h-4 max-w-4",
+        xs: "min-h-8 min-w-8 max-h-8 max-w-8",
+        sm: "min-h-10 min-w-10 max-h-10 max-w-10",
+        md: "min-h-12 min-w-12 max-h-12 max-m-12",
+        lg: "min-h-14 min-w-14 max-h-14 max-w-14",
+        xl: "min-h-16 min-h-16 max-h-16 max-h-16",
+        "2xl": "min-h-20 min-w-20 max-h-20 max-w-20",
       },
     },
   },
   stepperSvg: "",
   stepperGradient: "",
-  stepperCircle: "stroke-current text-{color}-100",
-  stepperCount: "text-xl font-bold text-gray-900 translate-y-2 transform",
+  stepperCircle: {
+    base: "stroke-{color}-100 text-{color}-100",
+    variants: {
+      color: {
+        grayscale: "stroke-gray-100",
+      },
+    },
+  },
+  stepperCount: "text-md font-bold text-gray-900 translate-y-2 transform",
   indicator: {
     base: "text-{color}-600 flex justify-end w-full min-w-fit font-medium transition",
     variants: {
@@ -103,6 +110,7 @@ export default /*tw*/ {
   safelist: (colors) => [
     { pattern: `text-(${colors})-600` },
     { pattern: `text-(${colors})-100` },
+    { pattern: `stroke-(${colors})-100` },
     {
       pattern: `bg-(${colors})-50`,
       variants: ["[&::-webkit-progress-bar]", "[@supports(selector(&::-moz-progress-bar))]"],

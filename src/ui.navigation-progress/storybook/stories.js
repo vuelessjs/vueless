@@ -12,9 +12,6 @@ export default {
   id: "8040",
   title: "Navigation / Progress",
   component: UProgress,
-  args: {
-    color: "green",
-  },
   argTypes: {
     ...getArgTypes(UProgress.__name),
   },
