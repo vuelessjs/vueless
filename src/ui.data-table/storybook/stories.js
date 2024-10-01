@@ -206,6 +206,36 @@ Default.args = {};
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { row: getNestedRow, selectable: true };
 
+export const NestedContent = DefaultTemplate.bind({});
+NestedContent.args = {
+  columns: [
+    { key: "key_1", label: "title 1" },
+    { key: "key_2", label: "title 2" },
+    { key: "key_3", label: "title 3" },
+  ],
+  row: getNestedRow,
+  selectable: true,
+  slotTemplate: `
+    <template #nested-content>
+      <div class="p-4 bg-gray-100">
+        <UTable
+          :columns="[
+            { key: 'detail_1', label: 'Detail 1' },
+            { key: 'detail_2', label: 'Detail 2' },
+            { key: 'detail_3', label: 'Detail 3' },
+          ]"
+          :rows="[
+            { detail_1: 'Value 1', detail_2: 'Value 2', detail_3: 'Value 3' },
+            { detail_1: 'Value 4', detail_2: 'Value 5', detail_3: 'Value 6' },
+            { detail_1: 'Value 7', detail_2: 'Value 8', detail_3: 'Value 9' },
+          ]"
+          compact
+        />
+      </div>
+    </template>
+  `,
+};
+
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
 
@@ -328,36 +358,6 @@ SlotFooter.args = {
           ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
       </td>
-    </template>
-  `,
-};
-
-export const NestedContent = DefaultTemplate.bind({});
-NestedContent.args = {
-  columns: [
-    { key: "key_1", label: "title 1" },
-    { key: "key_2", label: "title 2" },
-    { key: "key_3", label: "title 3" },
-  ],
-  row: getNestedRow,
-  selectable: true,
-  slotTemplate: `
-    <template #nested-content="{ row }">
-      <div class="p-4 bg-gray-100">
-        <UTable
-          :columns="[
-            { key: 'detail_1', label: 'Detail 1' },
-            { key: 'detail_2', label: 'Detail 2' },
-            { key: 'detail_3', label: 'Detail 3' },
-          ]"
-          :rows="[
-            { detail_1: 'Value 1', detail_2: 'Value 2', detail_3: 'Value 3' },
-            { detail_1: 'Value 4', detail_2: 'Value 5', detail_3: 'Value 6' },
-            { detail_1: 'Value 7', detail_2: 'Value 8', detail_3: 'Value 9' },
-          ]"
-          compact
-        />
-      </div>
     </template>
   `,
 };

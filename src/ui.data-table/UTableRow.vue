@@ -67,7 +67,7 @@
   </tr>
 
   <template v-if="row.row && !row.row.isHidden">
-    <tr v-if="$slots['nested-content']">
+    <tr v-if="hasSlotContent($slots['nested-content'])">
       <td :colspan="columns.length + (selectable ? 1 : 0)">
         <div :style="getNestedShift()">
           <slot name="nested-content" :row="row.row" />
@@ -88,8 +88,15 @@
       @toggle-row-visibility="onClickToggleRowChild"
       @click="onClick"
     >
-      <template v-for="(_, name) in $slots" #[name]="slotValues">
-        <slot :name="name" v-bind="slotValues" />
+      <template
+        v-for="(value, key, index) in getFilteredRow(row, columns)"
+        :key="index"
+        #[`cell-${key}`]="slotValues"
+      >
+        <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+      </template>
+      <template #nested-content>
+        <slot name="nested-content" />
       </template>
     </UTableRow>
   </template>
@@ -98,6 +105,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { cx } from "../utils/utilUI.js";
+import useUI from "../composables/useUI.js";
 
 import { HYPHEN_SYMBOL } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
@@ -106,6 +114,8 @@ import { useMutationObserver } from "../composables/useMutationObserver.js";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+
+const { hasSlotContent } = useUI();
 
 const props = defineProps({
   row: {
