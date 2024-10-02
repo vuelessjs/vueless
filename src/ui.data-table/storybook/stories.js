@@ -209,9 +209,9 @@ Nesting.args = { row: getNestedRow, selectable: true };
 export const NestedContent = DefaultTemplate.bind({});
 NestedContent.args = {
   columns: [
-    { key: "key_1", label: "title 1" },
-    { key: "key_2", label: "title 2" },
-    { key: "key_3", label: "title 3" },
+    { key: "key_1", label: "Title 1" },
+    { key: "key_2", label: "Title 2" },
+    { key: "key_3", label: "Title 3" },
   ],
   row: (index) => {
     if (index === 0) {
@@ -223,19 +223,36 @@ NestedContent.args = {
           secondary: "Click to expand",
         },
         key_2: {
-          primary: "primary",
-          secondary: "secondary",
+          primary: "Primary content",
+          secondary: "Secondary content",
         },
         key_3: {
-          primary: "primary",
-          secondary: "secondary",
+          primary: "More info",
+          secondary: "Details below",
         },
         nestedData: {
           isChecked: false,
           isHidden: true,
-          key_1: "Custom nesting #1",
-          key_2: "Custom nesting #2",
-          key_3: "Custom nesting #3",
+          rows: [
+            {
+              id: getRandomId(),
+              key_1: "Detail 1A",
+              key_2: "Info 1B",
+              key_3: "Data 1C",
+            },
+            {
+              id: getRandomId(),
+              key_1: "Detail 2A",
+              key_2: "Info 2B",
+              key_3: "Data 2C",
+            },
+            {
+              id: getRandomId(),
+              key_1: "Detail 3A",
+              key_2: "Info 3B",
+              key_3: "Data 3C",
+            },
+          ],
         },
       };
     } else {
@@ -247,12 +264,12 @@ NestedContent.args = {
           secondary: "No nested content",
         },
         key_2: {
-          primary: "primary",
-          secondary: "secondary",
+          primary: "Standard info",
+          secondary: "Nothing special",
         },
         key_3: {
-          primary: "primary",
-          secondary: "secondary",
+          primary: "Basic data",
+          secondary: "No details",
         },
       };
     }
@@ -263,11 +280,11 @@ NestedContent.args = {
       <div class="p-4 bg-gray-100">
         <UTable
           :columns="[
-            { key: 'key_1', label: 'Detail 1' },
-            { key: 'key_2', label: 'Detail 2' },
-            { key: 'key_3', label: 'Detail 3' },
+            { key: 'key_1', label: 'Detail' },
+            { key: 'key_2', label: 'Info' },
+            { key: 'key_3', label: 'Data' },
           ]"
-          :rows="[row.nestedData]"
+          :rows="row.nestedData.rows"
           compact
         />
       </div>

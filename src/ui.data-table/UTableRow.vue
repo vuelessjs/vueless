@@ -27,11 +27,7 @@
           size="xs"
           internal
           interactive
-          :name="
-            row?.row?.isHidden || row?.nestedData?.isHidden
-              ? config.defaults.expandIcon
-              : config.defaults.collapseIcon
-          "
+          :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
           @click="onClickToggleRowChild(row.row ? row.row.id : row.id)"
@@ -182,6 +178,12 @@ const toggleIconConfig = computed(() =>
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
+const getToggleIconName = computed(() => (row) => {
+  const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
+
+  return isHidden ? props.config.defaults.expandIcon : props.config.defaults.collapseIcon;
+});
+
 onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
@@ -201,9 +203,7 @@ function getNestedCheckboxShift() {
 }
 
 function onClickToggleRowChild(rowId) {
-  const row = props.row.row || props.row.nestedData;
-
-  if (row) {
+  if (props.row.row || props.row.nestedData) {
     emit("toggleRowVisibility", rowId);
   }
 }
