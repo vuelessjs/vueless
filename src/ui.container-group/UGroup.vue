@@ -4,9 +4,9 @@
       <UDivider v-if="upperlined" size="xl" padding="after" v-bind="upperlineAttrs" />
 
       <div v-bind="headerAttrs">
-        <!-- @slot Use it to add something left side of the header. -->
-        <slot name="left">
-          <div v-bind="headerFallbackAttrs">
+        <!-- @slot Use it to add something on the left side of the header. -->
+        <slot name="header-left">
+          <div v-bind="headerLeftFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
 
@@ -17,11 +17,11 @@
           </div>
         </slot>
 
-        <!-- @slot Use it to add something right side of the header. -->
-        <slot name="right" />
+        <!-- @slot Use it to add something on the right side of the header. -->
+        <slot name="header-right" />
       </div>
 
-      <UDivider v-if="underlined" size="xl" v-bind="underlineAttrs" />
+      <UDivider size="xl" padding="after" :no-border="!underlined" v-bind="underlineAttrs" />
     </template>
 
     <div v-bind="contentAttrs">
@@ -44,7 +44,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Header title.
+   * Group title.
    */
   title: {
     type: String,
@@ -77,7 +77,7 @@ const props = defineProps({
   },
 
   /**
-   *Component config object.
+   * Component config object.
    */
   config: {
     type: Object,
@@ -96,7 +96,7 @@ const props = defineProps({
 const {
   headerAttrs,
   wrapperAttrs,
-  headerFallbackAttrs,
+  headerLeftFallbackAttrs,
   titleAttrs,
   upperlineAttrs,
   underlineAttrs,
