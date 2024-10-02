@@ -4,15 +4,15 @@ export default /*tw*/ {
     variants: {
       variant: {
         progress: "w-full h-auto flex flex-col gap-1.5",
-        stepper: "flex items-center justify-between",
+        stepper: "flex items-center justify-between gap-4",
       },
     },
   },
   stepper: {
-    base: "",
+    base: "shrink-0 grow-0",
     variants: {
       size: {
-        "2xs": "size-8",
+        "2xs": "size-6",
         xs: "size-8",
         sm: "size-10",
         md: "size-12",
@@ -24,8 +24,15 @@ export default /*tw*/ {
   },
   stepperSvg: "",
   stepperGradient: "",
-  stepperCircle: "stroke-current text-{color}-100",
-  stepperCount: "text-xl font-bold text-gray-900 translate-y-2 transform",
+  stepperCircle: {
+    base: "stroke-{color}-100 text-{color}-100",
+    variants: {
+      color: {
+        grayscale: "stroke-gray-100",
+      },
+    },
+  },
+  stepperCount: "text-md font-bold text-gray-900 translate-y-2 transform",
   indicator: {
     base: "text-{color}-600 flex justify-end w-full min-w-fit font-medium transition",
     variants: {
@@ -103,6 +110,7 @@ export default /*tw*/ {
   safelist: (colors) => [
     { pattern: `text-(${colors})-600` },
     { pattern: `text-(${colors})-100` },
+    { pattern: `stroke-(${colors})-100` },
     {
       pattern: `bg-(${colors})-50`,
       variants: ["[&::-webkit-progress-bar]", "[@supports(selector(&::-moz-progress-bar))]"],
