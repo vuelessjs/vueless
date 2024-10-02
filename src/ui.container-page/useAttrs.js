@@ -8,22 +8,16 @@ export default function useAttrs(props, { isMobileBreakpoint }) {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
+    "wrapper",
   );
 
-  const extendingKeys = ["wrapperMobile", "footerMobileReverse"];
+  const extendingKeys = ["wrapperMobile"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
     wrapper: {
       extend: computed(() => [
         isMobileBreakpoint.value && !isMobileApp && extendingKeysClasses.wrapperMobile.value,
-      ]),
-    },
-    footer: {
-      extend: computed(() => [
-        props.mobileFooterReverse &&
-          isMobileBreakpoint.value &&
-          extendingKeysClasses.footerMobileReverse.value,
       ]),
     },
   });

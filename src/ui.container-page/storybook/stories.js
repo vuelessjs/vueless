@@ -64,42 +64,19 @@ Default.args = {};
 export const TitleSizeSm = DefaultTemplate.bind({});
 TitleSizeSm.args = { titleSize: "sm" };
 
-export const Classes = DefaultTemplate.bind({});
-Classes.args = {
-  classes: {
-    header: "text-violet-300",
-  },
-};
-
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Page description" };
 
-export const Width = DefaultTemplate.bind({});
-Width.args = { width: "md", title: "Width = md" };
+export const Size = DefaultTemplate.bind({});
+Size.args = { size: "sm", title: "size = md" };
 
-export const WidePage = DefaultTemplate.bind({});
-WidePage.args = { widePage: true, width: "sm" };
-
-export const BackRoute = DefaultTemplate.bind({});
-BackRoute.args = {
+export const BackLink = DefaultTemplate.bind({});
+BackLink.args = {
   backLabel: "back",
-  backRoute: {
+  backTo: {
     path: "/",
     params: {},
   },
-};
-
-export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
-SlotHeaderLeftBefore.args = {
-  slotTemplate: `
-    <template #header-left-before>
-      <UIcon
-        name="close"
-        color="gray"
-      />
-    </template>
-    ${defaultTemplate}
-  `,
 };
 
 export const SlotHeaderLeft = DefaultTemplate.bind({});
@@ -112,14 +89,21 @@ SlotHeaderLeft.args = {
   `,
 };
 
-export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
-SlotHeaderLeftAfter.args = {
+export const SlotBeforeTitle = DefaultTemplate.bind({});
+SlotBeforeTitle.args = {
   slotTemplate: `
-    <template #header-left-after>
-      <UIcon
-        name="close"
-        color="gray"
-      />
+    <template #before-title>
+      <UIcon name="close" color="gray" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const SlotAfterTitle = DefaultTemplate.bind({});
+SlotAfterTitle.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="close" color="gray" />
     </template>
     ${defaultTemplate}
   `,
