@@ -100,8 +100,14 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const BackRoute = DefaultTemplate.bind({});
-BackRoute.args = { backRoute: { title: "route title" } };
+export const BackLink = DefaultTemplate.bind({});
+BackLink.args = {
+  backLabel: "back",
+  backTo: {
+    path: "/",
+    params: {},
+  },
+};
 
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {

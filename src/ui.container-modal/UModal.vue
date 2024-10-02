@@ -27,18 +27,20 @@
                     v-if="isShownArrowButton"
                     size="sm"
                     color="gray"
-                    :to="backRoute"
+                    :to="backTo"
+                    :label="backLabel"
                     v-bind="backLinkAttrs"
                     @click="onClickBackLink"
                   >
-                    <UIcon
-                      internal
-                      size="xs"
-                      color="gray"
-                      :name="config.defaults.backIcon"
-                      v-bind="backLinkIconAttrs"
-                    />
-                    {{ backRoute.title }}
+                    <template #left>
+                      <UIcon
+                        internal
+                        size="xs"
+                        color="gray"
+                        :name="config.defaults.backIcon"
+                        v-bind="backLinkIconAttrs"
+                      />
+                    </template>
                   </ULink>
 
                   <UHeader :label="title" size="sm" v-bind="titleAttrs" />
@@ -157,11 +159,19 @@ const props = defineProps({
   },
 
   /**
-   * Back link route.
+   * Back link vue-router route object.
    */
-  backRoute: {
+  backTo: {
     type: Object,
     default: () => ({}),
+  },
+
+  /**
+   * Back link label.
+   */
+  backLabel: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -282,16 +292,16 @@ const isShownModal = computed({
 });
 
 const isShownArrowButton = computed(() => {
-  return !!Object.keys(props.backRoute).length;
+  return !!Object.keys(props.backTo).length;
 });
 
 const isExistHeader = computed(() => {
   return (
+    props.title ||
     hasSlotContent(slots["header-left"]) ||
-    hasSlotContent(slots["header-left-before"]) ||
-    hasSlotContent(slots["header-left-after"]) ||
-    hasSlotContent(slots["header-right"]) ||
-    props.title
+    hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["after-title"]) ||
+    hasSlotContent(slots["header-right"])
   );
 });
 
