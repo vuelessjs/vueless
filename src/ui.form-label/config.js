@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex gap-2 w-auto",
+    base: "flex gap-2 w-full",
     variants: {
       align: {
         top: "flex-col",
