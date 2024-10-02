@@ -177,7 +177,7 @@ const DefaultTemplate = (args) => ({
 
       if (typeof args.row === "function") {
         for (let i = 0; i < args.numberOfRows; i++) {
-          rows.push(args.row());
+          rows.push(args.row(i));
         }
       } else {
         rows.push(args.row);
@@ -213,22 +213,61 @@ NestedContent.args = {
     { key: "key_2", label: "title 2" },
     { key: "key_3", label: "title 3" },
   ],
-  row: getNestedRow,
+  row: (index) => {
+    if (index === 0) {
+      return {
+        id: getRandomId(),
+        isChecked: false,
+        key_1: {
+          primary: "Row with nested content",
+          secondary: "Click to expand",
+        },
+        key_2: {
+          primary: "primary",
+          secondary: "secondary",
+        },
+        key_3: {
+          primary: "primary",
+          secondary: "secondary",
+        },
+        nestedData: {
+          isChecked: false,
+          isHidden: true,
+          key_1: "Custom nesting #1",
+          key_2: "Custom nesting #2",
+          key_3: "Custom nesting #3",
+        },
+      };
+    } else {
+      return {
+        id: getRandomId(),
+        isChecked: false,
+        key_1: {
+          primary: `Regular row ${index}`,
+          secondary: "No nested content",
+        },
+        key_2: {
+          primary: "primary",
+          secondary: "secondary",
+        },
+        key_3: {
+          primary: "primary",
+          secondary: "secondary",
+        },
+      };
+    }
+  },
   selectable: true,
   slotTemplate: `
-    <template #nested-row="{ row }">
+    <template #nested-content="{ row }">
       <div class="p-4 bg-gray-100">
         <UTable
           :columns="[
-            { key: 'detail_1', label: 'Detail 1' },
-            { key: 'detail_2', label: 'Detail 2' },
-            { key: 'detail_3', label: 'Detail 3' },
+            { key: 'key_1', label: 'Detail 1' },
+            { key: 'key_2', label: 'Detail 2' },
+            { key: 'key_3', label: 'Detail 3' },
           ]"
-          :rows="[
-            { detail_1: 'Value 1', detail_2: 'Value 2', detail_3: 'Value 3' },
-            { detail_1: 'Value 4', detail_2: 'Value 5', detail_3: 'Value 6' },
-            { detail_1: 'Value 7', detail_2: 'Value 8', detail_3: 'Value 9' },
-          ]"
+          :rows="[row.nestedData]"
           compact
         />
       </div>

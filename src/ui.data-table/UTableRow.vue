@@ -18,19 +18,23 @@
       :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass])"
     >
       <div
-        v-if="(row.row || nestedLevel) && index === 0"
+        v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
         :style="getNestedShift()"
         v-bind="bodyCellNestedAttrs"
       >
         <UIcon
-          v-if="row.row"
+          v-if="row.row || (row.nestedData && hasSlotContent($slots['nested-content']))"
           size="xs"
           internal
           interactive
-          :name="row?.row?.isHidden ? config.defaults.expandIcon : config.defaults.collapseIcon"
+          :name="
+            row?.row?.isHidden || row?.nestedData?.isHidden
+              ? config.defaults.expandIcon
+              : config.defaults.collapseIcon
+          "
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleRowChild(row.row.id)"
+          @click="onClickToggleRowChild(row.row ? row.row.id : row.id)"
         />
       </div>
 
@@ -66,40 +70,32 @@
     </td>
   </tr>
 
-  <template v-if="row.row && !row.row.isHidden">
-    <tr v-if="hasSlotContent($slots['nested-row'])">
+  <template
+    v-if="row.nestedData && !row.nestedData.isHidden && hasSlotContent($slots['nested-content'])"
+  >
+    <tr>
       <td :colspan="columns.length + (selectable ? 1 : 0)">
         <div :style="getNestedShift()">
-          <slot name="nested-row" :row="row.row" />
+          <slot name="nested-content" :row="row" />
         </div>
       </td>
     </tr>
-    <UTableRow
-      v-else
-      v-bind="$attrs"
-      v-model:selected-rows="selectedRows"
-      :attrs="attrs"
-      :columns="columns"
-      :row="row.row"
-      :data-test="dataTest"
-      :nested-level="nestedLevel + 1"
-      :config="config"
-      :selectable="selectable"
-      @toggle-row-visibility="onClickToggleRowChild"
-      @click="onClick"
-    >
-      <template
-        v-for="(value, key, index) in getFilteredRow(row, columns)"
-        :key="index"
-        #[`cell-${key}`]="slotValues"
-      >
-        <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
-      </template>
-      <template #nested-row="{ row: nestedRow }">
-        <slot name="nested-row" :row="nestedRow" />
-      </template>
-    </UTableRow>
   </template>
+
+  <UTableRow
+    v-if="row.row && !row.row.isHidden && !row.nestedData"
+    v-bind="$attrs"
+    v-model:selected-rows="selectedRows"
+    :attrs="attrs"
+    :columns="columns"
+    :row="row.row"
+    :data-test="dataTest"
+    :nested-level="nestedLevel + 1"
+    :config="config"
+    :selectable="selectable"
+    @toggle-row-visibility="onClickToggleRowChild"
+    @click="onClick"
+  />
 </template>
 
 <script setup>
@@ -191,7 +187,7 @@ onMounted(() => {
 });
 
 function getCellAttrs(key, row, cellIndex) {
-  const isNestedRow = (row.row || props.nestedLevel > 0) && cellIndex === 0;
+  const isNestedRow = (row.row || row.nestedData || props.nestedLevel > 0) && cellIndex === 0;
 
   return isNestedRow ? bodyCellNestedRowAttrs.value : bodyCellBaseAttrs.value;
 }
@@ -205,7 +201,11 @@ function getNestedCheckboxShift() {
 }
 
 function onClickToggleRowChild(rowId) {
-  emit("toggleRowVisibility", rowId);
+  const row = props.row.row || props.row.nestedData;
+
+  if (row) {
+    emit("toggleRowVisibility", rowId);
+  }
 }
 
 function onClick(row) {
