@@ -9,9 +9,6 @@ export default /*tw*/ {
       label: {
         true: "items-center justify-center",
       },
-      padding: {
-        none: "p-0",
-      },
     },
     compoundVariants: [
       { vertical: false, size: "xs", class: "py-2" },
@@ -28,6 +25,7 @@ export default /*tw*/ {
       { vertical: true, size: "xl", class: "px-6" },
       { vertical: true, padding: "after", class: "pl-0" },
       { vertical: true, padding: "before", class: "pr-0" },
+      { padding: "none", class: "p-0" },
     ],
   },
   divider: {
