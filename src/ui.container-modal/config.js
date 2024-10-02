@@ -24,20 +24,19 @@ export default /*tw*/ {
   backLink: "{ULink} flex items-center gap-0.5",
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
-  description: "mt-1.5 text-base font-normal text-gray-500",
+  description: "mt-1.5 text-sm font-normal text-gray-500",
   headerRight: "",
   closeIcon: "{UIcon}",
-  body: "space-y-4 px-4 md:px-8",
+  body: "space-y-4 px-4 md:px-8 text-sm",
   divider: "{UDivider}",
   dividerSpacing: "{UDivider}",
   footer: "flex justify-between px-4 md:px-8 py-8 max-md:flex-col max-md:gap-4",
   footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
   footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
-  footerMobileReverse: "flex flex-col-reverse space-y-reverse group/reversed-footer",
   modal: {
     base: "mx-auto rounded-2xl bg-white",
     variants: {
-      width: {
+      size: {
         xs: "md:w-[25rem]",
         sm: "md:w-[31.25rem]",
         md: "md:w-[37.5rem]",
@@ -54,14 +53,13 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    width: "sm",
+    size: "sm",
     inner: false,
-    closeButton: true,
-    escToClose: true,
-    clickToClose: true,
     noDivider: false,
-    mobileBottomAlign: false,
-    mobileFooterReverse: false,
+    closeOnEsc: true,
+    closeOnCross: true,
+    closeOnOverlay: true,
+    mobileStickBottom: false,
     /* icons */
     backIcon: "arrow_back",
     closeIcon: "close",

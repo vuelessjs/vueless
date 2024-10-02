@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  modal: "{UModal}",
+  confirmModal: "{UModal}",
   footerLeftFallback: "flex space-x-4",
   confirmButton: "{UButton} w-full",
   cancelButton: "{UButton} w-full",
@@ -8,9 +8,15 @@ export default /*tw*/ {
     cancel: "Cancel",
   },
   defaults: {
-    width: "sm",
+    size: "sm",
     confirmColor: "brand",
+    inner: false,
+    noDivider: false,
+    closeOnEsc: true,
+    closeOnCross: true,
+    closeOnOverlay: true,
+    mobileStickBottom: false,
     confirmDisabled: false,
-    cancelButton: true,
+    cancelHidden: false,
   },
 };
