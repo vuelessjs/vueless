@@ -46,7 +46,7 @@ const props = defineProps({
    * @values none, before, after, all
    */
   padding: {
-    type: Boolean,
+    type: String,
     default: getDefault(defaultConfig, UDivider).padding,
   },
 
