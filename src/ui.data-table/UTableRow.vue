@@ -18,19 +18,19 @@
       :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass])"
     >
       <div
-        v-if="(row.row || nestedLevel) && index === 0"
+        v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
         :style="getNestedShift()"
         v-bind="bodyCellNestedAttrs"
       >
         <UIcon
-          v-if="row.row"
+          v-if="row.row || (row.nestedData && hasSlotContent($slots['nested-content']))"
           size="xs"
           internal
           interactive
-          :name="row?.row?.isHidden ? config.defaults.expandIcon : config.defaults.collapseIcon"
+          :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleRowChild(row.row.id)"
+          @click="onClickToggleRowChild(row.row?.id || row.id)"
         />
       </div>
 
@@ -66,8 +66,20 @@
     </td>
   </tr>
 
+  <template
+    v-if="row.nestedData && !row.nestedData.isHidden && hasSlotContent($slots['nested-content'])"
+  >
+    <tr>
+      <td :colspan="columns.length + (selectable ? 1 : 0)">
+        <div :style="getNestedShift()">
+          <slot name="nested-content" :row="row" />
+        </div>
+      </td>
+    </tr>
+  </template>
+
   <UTableRow
-    v-if="row.row && !row.row.isHidden"
+    v-if="row.row && !row.row.isHidden && !row.nestedData"
     v-bind="$attrs"
     v-model:selected-rows="selectedRows"
     :attrs="attrs"
@@ -85,6 +97,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { cx } from "../utils/utilUI.js";
+import useUI from "../composables/useUI.js";
 
 import { HYPHEN_SYMBOL } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
@@ -93,6 +106,8 @@ import { useMutationObserver } from "../composables/useMutationObserver.js";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+
+const { hasSlotContent } = useUI();
 
 const props = defineProps({
   row: {
@@ -163,12 +178,18 @@ const toggleIconConfig = computed(() =>
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
+const getToggleIconName = computed(() => (row) => {
+  const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
+
+  return isHidden ? props.config.defaults.expandIcon : props.config.defaults.collapseIcon;
+});
+
 onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
 
 function getCellAttrs(key, row, cellIndex) {
-  const isNestedRow = (row.row || props.nestedLevel > 0) && cellIndex === 0;
+  const isNestedRow = (row.row || row.nestedData || props.nestedLevel > 0) && cellIndex === 0;
 
   return isNestedRow ? bodyCellNestedRowAttrs.value : bodyCellBaseAttrs.value;
 }
@@ -182,7 +203,9 @@ function getNestedCheckboxShift() {
 }
 
 function onClickToggleRowChild(rowId) {
-  emit("toggleRowVisibility", rowId);
+  if (props.row.row || props.row.nestedData) {
+    emit("toggleRowVisibility", rowId);
+  }
 }
 
 function onClick(row) {

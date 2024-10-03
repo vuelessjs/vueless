@@ -23,10 +23,22 @@ export function syncRowCheck(row, selectedRows) {
 }
 
 export function toggleRowVisibility(row, targetRowId) {
-  if (row.id === targetRowId) row.isHidden = !row.isHidden;
+  if (row.id === targetRowId) {
+    if ("isHidden" in row) {
+      row.isHidden = !row.isHidden;
+    } else if (row.nestedData && "isHidden" in row.nestedData) {
+      row.nestedData.isHidden = !row.nestedData.isHidden;
+    }
+
+    return;
+  }
 
   if (row.row) {
     toggleRowVisibility(row.row, targetRowId);
+  }
+
+  if (row.nestedData) {
+    toggleRowVisibility(row.nestedData, targetRowId);
   }
 }
 
