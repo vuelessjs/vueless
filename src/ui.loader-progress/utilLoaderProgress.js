@@ -30,16 +30,16 @@ export const queue = (() => {
   };
 })();
 
-export function loaderTopOn(resource) {
-  const loaderTopOnEvent = new CustomEvent("loaderTopOn", { detail: { resource } });
+export function loaderProgressOn(resource) {
+  const loaderProgressOnEvent = new CustomEvent("loaderProgressOn", { detail: { resource } });
 
-  window.dispatchEvent(loaderTopOnEvent);
+  window.dispatchEvent(loaderProgressOnEvent);
 }
 
-export function loaderTopOff(resource) {
-  const loaderTopOfEvent = new CustomEvent("loaderTopOff", { detail: { resource } });
+export function loaderProgressOff(resource) {
+  const loaderProgressOfEvent = new CustomEvent("loaderProgressOff", { detail: { resource } });
 
-  window.dispatchEvent(loaderTopOfEvent);
+  window.dispatchEvent(loaderProgressOfEvent);
 }
 
 export function getRequestWithoutQuery(request) {

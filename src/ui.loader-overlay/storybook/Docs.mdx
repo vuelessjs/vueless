@@ -13,34 +13,34 @@ import defaultConfig from "../config.js?raw"
 <Stories of={stories} />
 
 ## Using loader
-To control the loader state in Vue components use `useLoaderRendering` composable.
+To control the loader state in Vue components use `useLoaderOverlay` composable.
 
 <Source code={`
-import { useLoaderRendering } from "vueless";
+import { useLoaderOverlay } from "vueless";
 
-const { isLoading, loaderRenderingOn, loaderRenderingOff } = useLoaderRendering();
+const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
 
 // get loader state
 console.log(isLoading.value);
 
 // show loader
-loaderRenderingOn();
+loaderOverlayOn();
 
 // hide loader
-loaderRenderingOff();
+loaderOverlayOff();
 `} language="jsx" dark />
 
 ## Using loader outside Vue components
 To control the loader state outside Vue components, use the following methods.
 
 <Source code={`
-import { loaderRenderingOn, loaderRenderingOff } from "vueless";
+import { loaderOverlayOn, loaderOverlayOff } from "vueless";
 
 // show loader
-loaderRenderingOn();
+loaderOverlayOn();
 
 // hide loader
-loaderRenderingOff();
+loaderOverlayOff();
 `} language="jsx" dark />
 
 ## Default config

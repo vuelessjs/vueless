@@ -1,14 +1,14 @@
 import { inject, readonly, ref } from "vue";
 
-import { getRequestWithoutQuery } from "./utilLoaderTop.js";
+import { getRequestWithoutQuery } from "./utilLoaderProgress.js";
 
-export const LoaderTopSymbol = Symbol.for("vueless:loader-top");
+export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
 const isLoading = ref(false);
 const requestQueue = ref([]);
 const requestTimeout = ref(0);
 
-function loaderTopOn(url) {
+function loaderProgressOn(url) {
   addRequestUrl(url);
 
   isLoading.value = true;
@@ -16,7 +16,7 @@ function loaderTopOn(url) {
   clearTimeout(requestTimeout.value);
 }
 
-function loaderTopOff(url) {
+function loaderProgressOff(url) {
   requestQueue.value = url
     ? requestQueue.value.filter((item) => item !== getRequestWithoutQuery(url))
     : [];
@@ -44,17 +44,17 @@ function removeRequestUrl(url) {
   requestQueue.value = requestQueue.value.filter((item) => item !== getRequestWithoutQuery(url));
 }
 
-export function createLoaderTop() {
+export function createLoaderProgress() {
   return {
     isLoading: readonly(isLoading),
     requestQueue: readonly(requestQueue),
-    loaderTopOn,
-    loaderTopOff,
+    loaderProgressOn,
+    loaderProgressOff,
     addRequestUrl,
     removeRequestUrl,
   };
 }
 
-export function useLoaderTop() {
-  return inject(LoaderTopSymbol);
+export function useLoaderProgress() {
+  return inject(LoaderProgressSymbol);
 }

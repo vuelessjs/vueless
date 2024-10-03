@@ -9,10 +9,10 @@ import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "v
 
 import { getDefault } from "../utils/utilUI.js";
 import { isMobileApp } from "../utils/utilPlatform.js";
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderTop.js";
-import { useLoaderTop } from "./useLoaderTop.js";
+import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
+import { useLoaderProgress } from "./useLoaderProgress.js";
 
-import { ULoaderTop, MAXIMUM, SPEED } from "./constants.js";
+import { ULoaderProgress, MAXIMUM, SPEED } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
@@ -25,7 +25,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: getDefault(defaultConfig, ULoaderTop).color,
+    default: getDefault(defaultConfig, ULoaderProgress).color,
   },
 
   /**
@@ -43,7 +43,8 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref(null);
 
-const { requestQueue, removeRequestUrl, isLoading, loaderTopOff, loaderTopOn } = useLoaderTop();
+const { requestQueue, removeRequestUrl, isLoading, loaderProgressOff, loaderProgressOn } =
+  useLoaderProgress();
 const { stripeAttrs } = useAttrs(props, { error, isMobileApp });
 
 const isStarted = computed(() => {
@@ -67,8 +68,8 @@ watch(() => requestQueue.value.length, onChangeRequestsQueue);
 watch(isLoading, onChangeLoadingState);
 
 onMounted(() => {
-  window.addEventListener("loaderTopOn", setLoaderOnHandler);
-  window.addEventListener("loaderTopOff", setLoaderOffHandler);
+  window.addEventListener("loaderProgressOn", setLoaderOnHandler);
+  window.addEventListener("loaderProgressOff", setLoaderOffHandler);
 
   if (props.resources) {
     onChangeRequestsQueue();
@@ -80,16 +81,16 @@ onBeforeUnmount(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("loaderTopOn", setLoaderOnHandler);
-  window.removeEventListener("loaderTopOff", setLoaderOffHandler);
+  window.removeEventListener("loaderProgressOn", setLoaderOnHandler);
+  window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
 });
 
 function setLoaderOnHandler(event) {
-  loaderTopOn(event.detail.resource);
+  loaderProgressOn(event.detail.resource);
 }
 
 function setLoaderOffHandler(event) {
-  loaderTopOff(event.detail.resource);
+  loaderProgressOff(event.detail.resource);
 }
 
 function onChangeLoadingState() {

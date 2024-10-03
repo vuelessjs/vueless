@@ -20,10 +20,10 @@ import { getDefault } from "../utils/utilUI.js";
 
 import ULoader from "../ui.loader/ULoader.vue";
 
-import { ULoaderRendering } from "./constants.js";
+import { ULoaderOverlay } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import { useLoaderRendering } from "./useLoaderRendering.js";
+import { useLoaderOverlay } from "./useLoaderOverlay.js";
 
 defineOptions({ inheritAttrs: false });
 
@@ -33,7 +33,7 @@ const props = defineProps({
    */
   loading: {
     type: Boolean,
-    default: getDefault(defaultConfig, ULoaderRendering).loading,
+    default: getDefault(defaultConfig, ULoaderOverlay).loading,
   },
 
   /**
@@ -42,21 +42,21 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: getDefault(defaultConfig, ULoaderRendering).color,
+    default: getDefault(defaultConfig, ULoaderOverlay).color,
   },
 });
 
 const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);
-const { isLoading, loaderRenderingOn, loaderRenderingOff } = useLoaderRendering();
+const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
 
 onMounted(() => {
-  window.addEventListener("setRenderingStarted", loaderRenderingOn);
-  window.addEventListener("setRenderingFinished", loaderRenderingOff);
+  window.addEventListener("loaderOverlayOn", loaderOverlayOn);
+  window.addEventListener("loaderOverlayOff", loaderOverlayOff);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("setRenderingStarted", loaderRenderingOn);
-  window.removeEventListener("setRenderingFinished", loaderRenderingOff);
+  window.removeEventListener("loaderOverlayOn", loaderOverlayOn);
+  window.removeEventListener("loaderOverlayOff", loaderOverlayOff);
 });
 
 const showLoader = computed(() => {

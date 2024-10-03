@@ -77,7 +77,7 @@
         </div>
       </template>
 
-      <ULoaderTop
+      <ULoaderProgress
         v-if="resource && isHeaderSticky"
         :resources="resource"
         v-bind="stickyHeaderLoaderAttrs"
@@ -150,7 +150,7 @@
             </th>
           </tr>
 
-          <ULoaderTop v-if="resource" :resources="resource" v-bind="headerLoaderAttrs" />
+          <ULoaderProgress v-if="resource" :resources="resource" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
@@ -277,7 +277,7 @@ import { merge } from "lodash-es";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderTop from "../ui.loader-top/ULoaderTop.vue";
+import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
 import { getDefault, cx } from "../utils/utilUI.js";

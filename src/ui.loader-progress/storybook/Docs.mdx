@@ -13,30 +13,30 @@ import defaultConfig from "../config.js?raw"
 <Stories of={stories} />
 
 ## Using loader
-To control the loader state in Vue components use `useLoaderTop` composable.
+To control the loader state in Vue components use `useLoaderProgress` composable.
 
 The loader uses queue of resources and will be shown until at least one item is present in a queue.
 
 <Source code={`
-import { useLoaderTop } from "vueless";
+import { useLoaderProgress } from "vueless";
 
 const {
   isLoading,
-  loaderTopOn,
-  loaderTopOff,
+  loaderProgressOn,
+  loaderProgressOff,
   requestQueue,
   addRequestUrl
   removeRequestUrl
-} = useLoaderTop();
+} = useLoaderProgress();
 
 // get loader state
 console.log(isLoading.value);
 
 // show loader (add resource into queue)
-loaderTopOn("/transactions");
+loaderProgressOn("/transactions");
 
 // hide loader (remove resource from queue)
-loaderTopOff("/transactions");
+loaderProgressOff("/transactions");
 
 // get current resource array
 console.log(requestQueue.value);
@@ -54,13 +54,13 @@ removeRequestUrl(["/transactions", "/products"]);
 To control the loader state outside Vue components, use the following methods.
 
 <Source code={`
-import { loaderTopOn, loaderTopOff } from "vueless";
+import { loaderProgressOn, loaderProgressOff } from "vueless";
 
 // show loader
-loaderTopOn("/transactions");
+loaderProgressOn("/transactions");
 
 // hide loader
-loaderTopOff("/transactions");
+loaderProgressOff("/transactions");
 `} language="jsx" dark />
 
 ## Default config
