@@ -30,7 +30,7 @@
           :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleRowChild(row.row ? row.row.id : row.id)"
+          @click="onClickToggleRowChild(row.row?.id || row.id)"
         />
       </div>
 
