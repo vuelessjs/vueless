@@ -66,7 +66,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { UModal, UButton, URow, UInput, UTextarea },
   setup() {
     function onClick(value) {
-      args.width = value;
+      args.size = value;
       args.modelValue = true;
     }
 
@@ -98,10 +98,16 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "width", text: "" };
+Sizes.args = { enum: "size" };
 
-export const BackRoute = DefaultTemplate.bind({});
-BackRoute.args = { backRoute: { title: "route title" } };
+export const BackLink = DefaultTemplate.bind({});
+BackLink.args = {
+  backLabel: "back",
+  backTo: {
+    path: "/",
+    params: {},
+  },
+};
 
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
@@ -112,14 +118,21 @@ SlotDefault.args = {
   `,
 };
 
-export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
-SlotHeaderLeftBefore.args = {
+export const SlotBeforeTitle = DefaultTemplate.bind({});
+SlotBeforeTitle.args = {
   slotTemplate: `
-    <template #header-left-before>
-      <UIcon
-        name="star"
-        color="gray"
-      />
+    <template #before-title>
+      <UIcon name="star" color="gray" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const SlotAfterTitle = DefaultTemplate.bind({});
+SlotAfterTitle.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="star" color="gray" />
     </template>
     ${defaultTemplate}
   `,
@@ -130,19 +143,6 @@ SlotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
-
-export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
-SlotHeaderLeftAfter.args = {
-  slotTemplate: `
-    <template #header-left-after>
-      <UIcon
-        name="star"
-        color="gray"
-      />
     </template>
     ${defaultTemplate}
   `,

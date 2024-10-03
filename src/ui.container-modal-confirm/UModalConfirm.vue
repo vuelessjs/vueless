@@ -1,34 +1,53 @@
 <template>
   <UModal
+    :id="id"
     v-model="isShownModal"
-    :width="width"
+    :size="size"
     :title="title"
+    :description="description"
+    :inner="inner"
+    :close-on-esc="closeOnEsc"
+    :close-on-cross="closeOnCross"
+    :close-on-overlay="closeOnOverlay"
+    :mobile-stick-bottom="mobileStickBottom"
     no-divider
     mobile-bottom-align
     :data-test="dataTest"
-    v-bind="modalAttrs"
+    v-bind="confirmModalAttrs"
   >
-    <template #header-left-before>
-      <slot name="header-left-before" />
-    </template>
-
     <template #header-left>
+      <!-- @slot Use it to add something to the left side of the header. -->
       <slot name="header-left" />
     </template>
 
-    <template #header-left-after>
-      <slot name="header-left-after" />
+    <template #before-title>
+      <!-- @slot Use it to add something before the header title. -->
+      <slot name="before-title" />
+    </template>
+
+    <template #after-title>
+      <!-- @slot Use it to add something after the header title. -->
+      <slot name="after-title" />
     </template>
 
     <template #header-right>
+      <!-- @slot Use it to add something to the right side of the header. -->
       <slot name="header-right" />
     </template>
 
-    <template #default>
-      <slot />
+    <template #close-button="{ iconName }">
+      <!--
+        @slot Use it to add something instead of the close button.
+        @binding {string} icon-name
+      -->
+      <slot name="close-button" :icon-name="iconName" />
     </template>
 
+    <!-- @slot Use it to add something into the modal body. -->
+    <slot />
+
     <template #footer-left>
+      <!-- @slot Use it to add something to the left side of the footer. -->
       <slot v-if="hasSlotContent($slots['footer-left'])" name="footer-left" />
 
       <div v-else v-bind="footerLeftFallbackAttrs">
@@ -36,25 +55,25 @@
           :label="confirmLabel || currentLocale.confirm"
           :color="confirmColor"
           :disabled="confirmDisabled"
-          :data-test="`${dataTest}-accept`"
           v-bind="confirmButtonAttrs"
+          :data-test="`${dataTest}-confirm`"
           @click="emitConfirmAction"
         />
 
         <UButton
-          v-if="cancelButton"
+          v-if="!cancelHidden"
           :label="currentLocale.cancel"
-          variant="thirdary"
+          variant="secondary"
           color="gray"
-          filled
-          :data-test="`${dataTest}-close`"
           v-bind="cancelButtonAttrs"
+          :data-test="`${dataTest}-close`"
           @click="onCloseModal"
         />
       </div>
     </template>
 
     <template #footer-right>
+      <!-- @slot Use it to add something to the right side of the footer. -->
       <slot name="footer-right" />
     </template>
   </UModal>
@@ -78,7 +97,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Change modal state (shown / hidden).
+   * Set modal state (hidden / shown).
    */
   modelValue: {
     type: Boolean,
@@ -89,6 +108,14 @@ const props = defineProps({
    * Modal title.
    */
   title: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Modal description.
+   */
+  description: {
     type: String,
     default: "",
   },
@@ -119,24 +146,72 @@ const props = defineProps({
   },
 
   /**
-   * Show cancel button.
+   * Hide cancel button.
    */
-  cancelButton: {
+  cancelHidden: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModalConfirm).cancelButton,
+    default: getDefault(defaultConfig, UModalConfirm).cancelHidden,
   },
 
   /**
-   * Modal width.
+   * Modal size (width).
    * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
    */
-  width: {
+  size: {
     type: String,
-    default: getDefault(defaultConfig, UModalConfirm).width,
+    default: getDefault(defaultConfig, UModalConfirm).size,
   },
 
   /**
-   * Component ui config object.
+   * Allow closing modal by clicking on close cross.
+   */
+  closeOnCross: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModalConfirm).closeOnCross,
+  },
+
+  /**
+   * Allow closing modal by clicking on overlay.
+   */
+  closeOnOverlay: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModalConfirm).closeOnOverlay,
+  },
+
+  /**
+   * Allow closing modal by pressing escape (esc) on the keyboard.
+   */
+  closeOnEsc: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModalConfirm).closeOnEsc,
+  },
+
+  /**
+   * Add extra top margin for modal inside another modal.
+   */
+  inner: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModalConfirm).inner,
+  },
+
+  /**
+   * Attach small modal to the bottom of the screen (mobile version only).
+   */
+  mobileStickBottom: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModalConfirm).mobileStickBottom,
+  },
+
+  /**
+   * Unique element id.
+   */
+  id: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Component config object.
    */
   config: {
     type: Object,
@@ -175,7 +250,7 @@ const { tm } = useLocale();
 const {
   hasSlotContent,
   footerLeftFallbackAttrs,
-  modalAttrs,
+  confirmModalAttrs,
   confirmButtonAttrs,
   cancelButtonAttrs,
 } = useAttrs(props);

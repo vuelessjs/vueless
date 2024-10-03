@@ -1,7 +1,6 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UCard from "../../ui.container-card/UCard.vue";
-import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -49,36 +48,11 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
-  components: { UCard, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum].options,
-    };
-  },
-  template: `
-    <URow>
-      <UCard
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-      >
-        ${defaultTemplate}
-      </UCard>
-    </URow>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Card description" };
-
-export const Padding = EnumVariantTemplate.bind({});
-Padding.args = { enum: "padding" };
 
 export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
 SlotHeaderLeftBefore.args = {
@@ -125,7 +99,7 @@ SlotFooterLeft.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
-      <UButton label="Read more" />
+      <UButton size="sm" label="Read more" />
     </template>
   `,
 };
@@ -135,7 +109,7 @@ SlotFooterRight.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-right>
-      <UButton label="Read more" />
+      <UButton size="sm" label="Read more" />
     </template>
   `,
 };

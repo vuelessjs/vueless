@@ -59,6 +59,9 @@ Sizes.args = { enum: "size" };
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
+export const Padding = EnumVariantTemplate.bind({});
+Padding.args = { enum: "padding" };
+
 export const Dashed = DefaultTemplate.bind({});
 Dashed.args = { dashed: true };
 
@@ -68,40 +71,11 @@ Dotted.args = { dotted: true };
 export const Vertical = DefaultTemplate.bind({});
 Vertical.args = {
   vertical: true,
+  label: "label",
   config: {
-    wrapper: {
-      base: "min-h-8",
-    },
+    wrapper: "!h-32",
   },
 };
 
 export const NoBorder = DefaultTemplate.bind({});
-NoBorder.args = { noBorder: true };
-
-export const NoTopPadding = DefaultTemplate.bind({});
-NoTopPadding.args = { noTopPadding: true };
-
-export const NoBottomPadding = DefaultTemplate.bind({});
-NoBottomPadding.args = { noBottomPadding: true };
-
-export const NoRightPadding = DefaultTemplate.bind({});
-NoRightPadding.args = {
-  noRightPadding: true,
-  vertical: true,
-  config: {
-    wrapper: {
-      base: "min-h-8",
-    },
-  },
-};
-
-export const NoLeftPadding = DefaultTemplate.bind({});
-NoLeftPadding.args = {
-  noLeftPadding: true,
-  vertical: true,
-  config: {
-    wrapper: {
-      base: "min-h-8",
-    },
-  },
-};
+NoBorder.args = { label: "label", noBorder: true };

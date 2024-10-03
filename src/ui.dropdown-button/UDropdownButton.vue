@@ -200,7 +200,7 @@ const props = defineProps({
   },
 
   /**
-   * Component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,

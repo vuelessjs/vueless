@@ -26,7 +26,7 @@ const DefaultTemplate = (args) => ({
     args.iterator = args.max ? 1 : 10;
 
     function updateProgress() {
-      args.value = args.value < (args.max?.length || 100) ? args.value + args.iterator : 0;
+      args.value = args.value < (args.max?.length - 1 || 100) ? args.value + args.iterator : 0;
     }
 
     return { slots, args, updateProgress };
@@ -68,13 +68,13 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const VariantStepper = DefaultTemplate.bind({});
-VariantStepper.args = { variant: "stepper", max: ["Step 1", "Step 2", "Step 3"] };
+VariantStepper.args = { variant: "stepper", max: ["Step 0", "Step 1", "Step 2"] };
 
 export const Indicator = DefaultTemplate.bind({});
 Indicator.args = { indicator: true };
 
 export const Steps = DefaultTemplate.bind({});
-Steps.args = { max: ["Step 1", "Step 2", "Step 3"] };
+Steps.args = { max: ["Step 0", "Step 1", "Step 2"] };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
@@ -97,7 +97,7 @@ IndicatorSlot.args = {
 
 export const StepSlot = DefaultTemplate.bind({});
 StepSlot.args = {
-  max: ["Step 1", "Step 2", "Step 3"],
+  max: ["Step 0", "Step 1", "Step 2"],
   slotTemplate: `
   <template #step-0>
     💻

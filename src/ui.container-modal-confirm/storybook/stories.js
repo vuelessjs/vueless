@@ -14,7 +14,7 @@ export default {
   title: "Containers / Modal Confirm",
   component: UModalConfirm,
   args: {
-    title: "Modal Confirm title",
+    title: "Complete the transfer?",
     confirmLabel: "Confirm",
     modelValue: false,
   },
@@ -30,7 +30,10 @@ export default {
   },
 };
 
-const defaultTemplate = "Confirm the action?";
+const defaultTemplate = `
+  It looks like you going to complete the transaction before the process will finished.
+  All unsaved data will be lost.
+`;
 
 const DefaultTemplate = (args) => ({
   components: { UModalConfirm, UButton, UHeader, UIcon },
@@ -93,25 +96,32 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const WithoutCancelButton = DefaultTemplate.bind({});
-WithoutCancelButton.args = { cancelButton: false };
+WithoutCancelButton.args = { cancelHidden: false };
 
 export const DisableAcceptButton = DefaultTemplate.bind({});
 DisableAcceptButton.args = { confirmDisabled: true };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "width" };
+Sizes.args = { enum: "size" };
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "confirmColor" };
 
-export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
-SlotHeaderLeftBefore.args = {
+export const SlotBeforeTitle = DefaultTemplate.bind({});
+SlotBeforeTitle.args = {
   slotTemplate: `
-    <template #header-left-before>
-      <UIcon
-        name="star"
-        color="gray"
-      />
+    <template #before-title>
+      <UIcon name="star" color="gray" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const SlotAfterTitle = DefaultTemplate.bind({});
+SlotAfterTitle.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="star" color="gray" />
     </template>
     ${defaultTemplate}
   `,
@@ -122,19 +132,6 @@ SlotHeaderLeft.args = {
   slotTemplate: `
     <template #header-left>
       <UHeader size="lg" label="Large title" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
-
-export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
-SlotHeaderLeftAfter.args = {
-  slotTemplate: `
-    <template #header-left-after>
-      <UIcon
-        name="star"
-        color="gray"
-      />
     </template>
     ${defaultTemplate}
   `,

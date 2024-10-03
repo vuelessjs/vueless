@@ -9,49 +9,51 @@
       :id="elementId"
       ref="wrapperRef"
       tabindex="0"
-      :data-test="dataTest"
       v-bind="wrapperAttrs"
+      :data-test="dataTest"
       @keydown.self.esc="onKeydownEsc"
     >
       <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
             <div v-bind="headerLeftAttrs">
-              <!-- @slot Use it to add something before the left part of the header. -->
-              <slot name="header-left-before" />
-
-              <!-- @slot Use it to add something to the left part of the header.. -->
+              <!-- @slot Use it to add something to the left side of the header. -->
               <slot name="header-left">
+                <!-- @slot Use it to add something before the header title. -->
+                <slot name="before-title" />
+
                 <div v-bind="headerLeftFallbackAttrs">
                   <ULink
                     v-if="isShownArrowButton"
                     size="sm"
                     color="gray"
-                    :to="backRoute"
+                    :to="backTo"
+                    :label="backLabel"
                     v-bind="backLinkAttrs"
                     @click="onClickBackLink"
                   >
-                    <UIcon
-                      internal
-                      size="xs"
-                      color="gray"
-                      :name="config.defaults.backIcon"
-                      v-bind="backLinkIconAttrs"
-                    />
-                    {{ backRoute.title }}
+                    <template #left>
+                      <UIcon
+                        internal
+                        size="xs"
+                        color="gray"
+                        :name="config.defaults.backIcon"
+                        v-bind="backLinkIconAttrs"
+                      />
+                    </template>
                   </ULink>
 
-                  <UHeader :label="title" v-bind="titleAttrs" />
+                  <UHeader :label="title" size="sm" v-bind="titleAttrs" />
                   <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
                 </div>
-              </slot>
 
-              <!-- @slot Use it to add something after the left part of the header. -->
-              <slot name="header-left-after" />
+                <!-- @slot Use it to add something after the header title. -->
+                <slot name="after-title" />
+              </slot>
             </div>
 
             <div v-bind="headerRightAttrs">
-              <!-- @slot Use it to add something to the right part of the header. -->
+              <!-- @slot Use it to add something to the right side of the header. -->
               <slot name="header-right" />
             </div>
 
@@ -62,12 +64,13 @@
               -->
               <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
-                  v-if="closeButton"
+                  v-if="closeOnCross"
                   internal
                   interactive
+                  size="sm"
                   :name="config.defaults.closeIcon"
-                  :data-test="`${dataTest}-close`"
                   v-bind="closeIconAttrs"
+                  :data-test="`${dataTest}-close`"
                   @click="onClickCloseModal"
                 />
               </slot>
@@ -75,29 +78,23 @@
           </div>
 
           <div v-bind="bodyAttrs">
-            <!-- @slot Use it to add something to the modal body. -->
+            <!-- @slot Use it to add something into the modal body. -->
             <slot />
           </div>
 
           <UDivider v-if="!isExistFooter || !noDivider" no-border v-bind="dividerSpacingAttrs" />
 
           <template v-if="isExistFooter">
-            <UDivider
-              v-if="!noDivider"
-              variant="dark"
-              no-bottom-padding
-              no-top-padding
-              v-bind="dividerAttrs"
-            />
+            <UDivider v-if="!noDivider" variant="dark" padding="none" v-bind="dividerAttrs" />
 
             <div v-bind="footerAttrs">
               <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
-                <!-- @slot Use it to add something to the left part of the footer. -->
+                <!-- @slot Use it to add something to the left side of the footer. -->
                 <slot name="footer-left" />
               </div>
 
               <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
-                <!-- @slot Use it to add something to the right part of the footer. -->
+                <!-- @slot Use it to add something to the right side of the footer. -->
                 <slot name="footer-right" />
               </div>
             </div>
@@ -129,7 +126,7 @@ const wrapperRef = ref(null);
 
 const props = defineProps({
   /**
-   * Change modal state (hidden / shown).
+   * Set modal state (hidden / shown).
    */
   modelValue: {
     type: Boolean,
@@ -137,7 +134,7 @@ const props = defineProps({
   },
 
   /**
-   * Set modal title.
+   * Modal title.
    */
   title: {
     type: String,
@@ -145,7 +142,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets modal description.
+   * Modal description.
    */
   description: {
     type: String,
@@ -153,44 +150,52 @@ const props = defineProps({
   },
 
   /**
-   * Set back link route.
+   * Modal size (width).
+   * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
    */
-  backRoute: {
+  size: {
+    type: String,
+    default: getDefault(defaultConfig, UModal).size,
+  },
+
+  /**
+   * Back link vue-router route object.
+   */
+  backTo: {
     type: Object,
     default: () => ({}),
   },
 
   /**
-   * Set width for modal.
-   * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
+   * Back link label.
    */
-  width: {
+  backLabel: {
     type: String,
-    default: getDefault(defaultConfig, UModal).width,
+    default: "",
+  },
+
+  /**
+   * Allow closing modal by clicking on close cross.
+   */
+  closeOnCross: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UModal).closeOnCross,
   },
 
   /**
    * Allow closing modal by clicking on overlay.
    */
-  clickToClose: {
+  closeOnOverlay: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).clickToClose,
+    default: getDefault(defaultConfig, UModal).closeOnOverlay,
   },
 
   /**
-   * Allow closing modal by clicking on close icon.
+   * Allow closing modal by pressing escape (esc) on the keyboard.
    */
-  closeButton: {
+  closeOnEsc: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeButton,
-  },
-
-  /**
-   * Allow closing modal by pressing escape (esc) key.
-   */
-  escToClose: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).escToClose,
+    default: getDefault(defaultConfig, UModal).closeOnEsc,
   },
 
   /**
@@ -210,27 +215,11 @@ const props = defineProps({
   },
 
   /**
-   * Reverse left and right footer blocks (mobile version only).
-   */
-  mobileFooterReverse: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).mobileFooterReverse,
-  },
-
-  /**
    * Attach small modal to the bottom of the screen (mobile version only).
    */
-  mobileBottomAlign: {
+  mobileStickBottom: {
     type: Boolean,
-    default: getDefault(defaultConfig, UModal).mobileBottomAlign,
-  },
-
-  /**
-   * Set component ui config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
+    default: getDefault(defaultConfig, UModal).mobileStickBottom,
   },
 
   /**
@@ -239,6 +228,14 @@ const props = defineProps({
   id: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Component config object.
+   */
+  config: {
+    type: Object,
+    default: () => ({}),
   },
 
   /**
@@ -295,16 +292,16 @@ const isShownModal = computed({
 });
 
 const isShownArrowButton = computed(() => {
-  return !!Object.keys(props.backRoute).length;
+  return !!Object.keys(props.backTo).length;
 });
 
 const isExistHeader = computed(() => {
   return (
+    props.title ||
     hasSlotContent(slots["header-left"]) ||
-    hasSlotContent(slots["header-left-before"]) ||
-    hasSlotContent(slots["header-left-after"]) ||
-    hasSlotContent(slots["header-right"]) ||
-    props.title
+    hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["after-title"]) ||
+    hasSlotContent(slots["header-right"])
   );
 });
 
@@ -331,15 +328,15 @@ function onClickBackLink() {
 }
 
 function onClickOutside() {
-  props.clickToClose && closeModal();
+  props.closeOnOverlay && closeModal();
 }
 
 function onKeydownEsc() {
-  props.escToClose && closeModal();
+  props.closeOnEsc && closeModal();
 }
 
 function onClickCloseModal() {
-  props.closeButton && closeModal();
+  props.closeOnCross && closeModal();
 }
 
 function closeModal() {

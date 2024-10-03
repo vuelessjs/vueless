@@ -1,12 +1,13 @@
 export default /*tw*/ {
   wrapper: {
+    base: "flex",
     variants: {
       vertical: {
-        true: "h-full flex",
-        false: "w-full",
+        true: "h-full w-fit",
+        false: "w-full h-fit",
       },
       label: {
-        true: "flex items-center",
+        true: "items-center justify-center",
       },
     },
     compoundVariants: [
@@ -15,16 +16,16 @@ export default /*tw*/ {
       { vertical: false, size: "md", class: "py-4" },
       { vertical: false, size: "lg", class: "py-5" },
       { vertical: false, size: "xl", class: "py-6" },
+      { vertical: false, padding: "after", class: "pt-0" },
+      { vertical: false, padding: "before", class: "pb-0" },
       { vertical: true, size: "xs", class: "px-2" },
       { vertical: true, size: "sm", class: "px-3" },
       { vertical: true, size: "md", class: "px-4" },
       { vertical: true, size: "lg", class: "px-5" },
       { vertical: true, size: "xl", class: "px-6" },
-      { noPadding: true, class: "p-0" },
-      { noTopPadding: true, class: "pt-0" },
-      { noLeftPadding: true, class: "pl-0" },
-      { noRightPadding: true, class: "pr-0" },
-      { noBottomPadding: true, class: "pb-0" },
+      { vertical: true, padding: "after", class: "pl-0" },
+      { vertical: true, padding: "before", class: "pr-0" },
+      { padding: "none", class: "p-0" },
     ],
   },
   divider: {
@@ -35,12 +36,9 @@ export default /*tw*/ {
         default: "border-gray-200",
         dark: "border-gray-300",
       },
-      label: {
-        true: "w-full",
-      },
       vertical: {
-        true: "border-l",
-        false: "border-t",
+        true: "border-l h-full",
+        false: "border-t w-full",
       },
       dashed: {
         true: "border-dashed",
@@ -49,31 +47,30 @@ export default /*tw*/ {
         true: "border-dotted",
       },
       noBorder: {
-        true: "border-0",
+        true: "border-transparent",
       },
     },
   },
   label: {
-    base: "px-2 shrink-0 text-sm",
+    base: "absolute p-2 rounded-dynamic bg-white shrink-0 text-sm w-fit",
     variants: {
       variant: {
         light: "text-gray-400",
         default: "text-gray-500",
         dark: "text-gray-600",
       },
+      vertical: {
+        true: "transform origin-center rotate-90",
+      },
     },
   },
   defaults: {
     variant: "default",
+    padding: "all",
     size: "md",
     dashed: false,
     dotted: false,
     vertical: false,
     noBorder: false,
-    noPadding: false,
-    noTopPadding: false,
-    noBottomPadding: false,
-    noLeftPadding: false,
-    noRightPadding: false,
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div v-bind="wrapperAttrs">
-    <UDivider v-if="upperlined" size="xl" no-top-padding v-bind="dividerAttrs" />
+    <UDivider v-if="upperlined" size="xl" padding="after" v-bind="dividerAttrs" />
 
     <UEmpty
       v-if="!hideEmptyStateForNesting && !list?.length"
@@ -242,7 +242,7 @@ const props = defineProps({
   },
 
   /**
-   * Component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,

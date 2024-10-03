@@ -201,7 +201,7 @@ const props = defineProps({
     default: "",
   },
   /**
-   * Sets component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,

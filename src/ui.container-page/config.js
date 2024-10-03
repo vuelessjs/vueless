@@ -4,7 +4,7 @@ export default /*tw*/ {
   wrapper: {
     base: "min-h-screen UNotifyPage",
     variants: {
-      width: {
+      size: {
         xs: "md:w-[25rem] md:max-[500px]:!w-full",
         sm: "md:w-[31.25rem] md:max-[600px]:!w-full",
         md: "md:w-[37.5rem] md:max-[700px]:!w-full",
@@ -43,13 +43,10 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-base font-normal text-gray-500",
   headerRight: "",
+  body: "",
   footer: `mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200`,
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
-  footerRight: `
-    md:flex space-y-4 md:space-x-4 md:space-y-0 group-[]/reversed-footer:flex
-    group-[]/reversed-footer:flex-col-reverse group-[]/reversed-footer:space-y-reverse
-  `,
-  footerMobileReverse: "flex flex-col-reverse space-y-reverse group/reversed-footer",
+  footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   rightRoundingWrapper: "absolute right-4",
   rightRounding: {
     base: "fixed top-0 w-4 rounded-r-2xl bg-white h-screen",
@@ -61,11 +58,10 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    titleSize: "lg",
-    width: "wide",
+    titleSize: "md",
+    size: "wide",
     gray: false,
     fixedRounding: false,
-    mobileFooterReverse: false,
     /* icons */
     backIcon: "arrow_back",
   },

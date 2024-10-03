@@ -4,20 +4,20 @@
       <!-- @slot Use it to add something before the header. -->
       <slot name="header-before" />
 
-      <div v-if="isShownHeader" v-bind="headerAttrs">
+      <div v-if="isExistHeader" v-bind="headerAttrs">
         <div v-bind="headerLeftAttrs">
-          <!-- @slot Use it to add something before left side of the header. -->
-          <slot name="header-left-before" />
-
-          <!-- @slot Use it to customise left side of the header. -->
+          <!-- @slot Use it to add something to the left side of the header. -->
           <slot name="header-left">
+            <!-- @slot Use it to add something before the header title. -->
+            <slot name="before-title" />
+
             <div v-bind="headerLeftFallbackAttrs">
               <ULink
                 v-if="isShownArrowButton"
                 no-ring
                 size="sm"
                 color="gray"
-                :to="backRoute"
+                :to="backTo"
                 :label="backLabel"
                 v-bind="backLinkAttrs"
               >
@@ -35,14 +35,14 @@
               <UHeader :label="title" :size="titleSize" v-bind="titleAttrs" />
               <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
             </div>
-          </slot>
 
-          <!-- @slot Use it to add something after left side of the header. -->
-          <slot name="header-left-after" />
+            <!-- @slot Use it to add something after the header title. -->
+            <slot name="after-title" />
+          </slot>
         </div>
 
         <div v-bind="headerRightAttrs">
-          <!-- @slot Use it to customise right side of the header. -->
+          <!-- @slot Use it to add something to the right side of the header. -->
           <slot name="header-right" />
         </div>
       </div>
@@ -50,7 +50,7 @@
       <!-- @slot Use it to add something after the header. -->
       <slot name="header-after" />
 
-      <div>
+      <div v-bind="bodyAttrs">
         <!-- @slot Use it to add main content. -->
         <slot />
       </div>
@@ -58,13 +58,13 @@
       <!-- @slot Use it to add something before the footer. -->
       <slot name="footer-before" />
 
-      <div v-if="isShownFooterSlot" class="vueless-page-footer" v-bind="footerAttrs">
-        <div class="vueless-page-footer-left" v-bind="footerLeftAttrs">
+      <div v-if="isExistFooter" v-bind="footerAttrs">
+        <div v-bind="footerLeftAttrs">
           <!-- @slot Use it to add something to the left side of the footer. -->
           <slot name="footer-left" />
         </div>
 
-        <div class="vueless-page-footer-right" v-bind="footerRightAttrs">
+        <div v-bind="footerRightAttrs">
           <!-- @slot Use it to add something to the right side of the footer. -->
           <slot name="footer-right" />
         </div>
@@ -101,16 +101,16 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * The width of the page.
+   * Page size (width).
    * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, wide
    */
-  width: {
+  size: {
     type: String,
-    default: getDefault(defaultConfig, UPage).width,
+    default: getDefault(defaultConfig, UPage).size,
   },
 
   /**
-   * Set page title.
+   * Page title.
    */
   title: {
     type: String,
@@ -118,7 +118,7 @@ const props = defineProps({
   },
 
   /**
-   * Set page title size.
+   * Page title size.
    * @values xs, sm, md, lg, xl, 2xl
    */
   titleSize: {
@@ -137,7 +137,7 @@ const props = defineProps({
   /**
    * Back link vue-router route object.
    */
-  backRoute: {
+  backTo: {
     type: Object,
     default: () => ({}),
   },
@@ -151,19 +151,11 @@ const props = defineProps({
   },
 
   /**
-   * Set gray background color.
+   * Sets background light gray (useful if the page contains nested cards).
    */
   gray: {
     type: Boolean,
     default: getDefault(defaultConfig, UPage).gray,
-  },
-
-  /**
-   * Reverse left and right footer blocks (in a mobile version only).
-   */
-  mobileFooterReverse: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UPage).mobileFooterReverse,
   },
 
   /**
@@ -175,7 +167,7 @@ const props = defineProps({
   },
 
   /**
-   * Sets component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,
@@ -206,6 +198,7 @@ const {
   descriptionAttrs,
   headerLeftAttrs,
   headerRightAttrs,
+  bodyAttrs,
   footerAttrs,
   footerLeftAttrs,
   footerRightAttrs,
@@ -213,27 +206,22 @@ const {
   hasSlotContent,
 } = useAttrs(props, { isMobileBreakpoint });
 
-const isShownHeader = computed(() => {
-  const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
-  const isHeaderRightSlot = hasSlotContent(slots["header-right"]);
-  const isHeaderLeftBeforeSlot = hasSlotContent(slots["header-left-before"]);
-  const isHeaderLeftAfterSlot = hasSlotContent(slots["header-left-after"]);
-
+const isExistHeader = computed(() => {
   return (
     props.title ||
-    isHeaderLeftSlot ||
-    isHeaderLeftBeforeSlot ||
-    isHeaderLeftAfterSlot ||
-    isHeaderRightSlot
+    hasSlotContent(slots["header-left"]) ||
+    hasSlotContent(slots["header-right"]) ||
+    hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["after-title"])
   );
 });
 
-const isShownFooterSlot = computed(() => {
+const isExistFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
 const isShownArrowButton = computed(() => {
-  return Boolean(Object.keys(props.backRoute).length);
+  return Boolean(Object.keys(props.backTo).length);
 });
 
 onMounted(() => {
@@ -244,59 +232,3 @@ onMounted(() => {
   document.querySelector("body").classList.add(...classes);
 });
 </script>
-
-<!--style lang="postcss" scoped>
-/**
-  * TODO: Move this styles to global vueless config using tailwind group class and remove footer classes
-  *
-.vueless-page {
-  &-footer {
-    &-left:deep(.vueless-dropdown-button) {
-      @apply !block;
-    }
-
-    &-right,
-    &-left {
-      :deep(.vueless-dropdown-button) {
-        .dropdown-block,
-        .vueless-dropdown-button-list {
-          @apply max-md:w-full;
-        }
-
-        .vueless-dropdown-item {
-          @apply max-md:text-center;
-        }
-
-        .dropdown-list {
-           @apply xmb-[calc(theme("spacing.mobile-menu-height")+3rem)];
-        }
-      }
-
-      &:deep(.vueless-dropdown-tag, .vueless-dropdown-link, .vueless-dropdown-button) {
-        @apply w-full md:w-auto;
-
-        .dropdown-wrapper-list {
-          @apply mb-2 md:mb-0;
-        }
-
-        .dropdown-block {
-          @apply relative md:absolute;
-        }
-
-        .dropdown-list-right {
-          @apply w-full text-center;
-        }
-
-        .dropdown-wrapper {
-          @apply block w-full;
-
-          .vueless-svg-icon {
-            @apply right-auto;
-          }
-        }
-      }
-    }
-  }
-}
-*/
-</style-->

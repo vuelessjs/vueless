@@ -117,7 +117,7 @@ const props = defineProps({
   },
 
   /**
-   * Component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,
@@ -139,7 +139,7 @@ const isSteps = computed(() => Array.isArray(props.max));
 
 const realMax = computed(() => {
   if (isSteps.value) {
-    return props.max.length;
+    return props.max.length - 1;
   }
 
   return Number(props.max);
@@ -162,6 +162,6 @@ const progressPercent = computed(() => {
 });
 
 function isActiveStep(index) {
-  return index === props.value - 1;
+  return index === props.value;
 }
 </script>

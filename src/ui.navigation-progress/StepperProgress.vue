@@ -1,5 +1,5 @@
 <template>
-  <svg width="100%" height="100%" viewBox="0 0 40 40" v-bind="stepperSvgAttrs">
+  <svg viewBox="0 0 40 40" v-bind="stepperSvgAttrs">
     <defs>
       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%" v-bind="stepperGradientAttrs">
         <stop offset="0%" :stop-color="stepperColor" />
@@ -27,7 +27,7 @@
       stroke-dashoffset="0"
     />
     <g v-bind="stepperCountAttrs">
-      <text y="45%" transform="translate(0, 2)">
+      <text y="45%">
         <tspan x="50%" text-anchor="middle">{{ value }}</tspan>
       </text>
     </g>

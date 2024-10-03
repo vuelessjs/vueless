@@ -1,8 +1,8 @@
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickItem">
     <div v-bind="bodyAttrs">
-      <div v-bind="labelAttrs">
-        {{ label }}
+      <div v-bind="titleAttrs">
+        {{ title }}
         <!--
           @slot Use it to add something instead of the toggle icon.
           @binding {string} icon-name
@@ -36,9 +36,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Accordion label.
+   * Accordion title.
    */
-  label: {
+  title: {
     type: String,
     required: true,
   },
@@ -95,7 +95,7 @@ const {
   wrapperAttrs,
   descriptionAttrs,
   bodyAttrs,
-  labelAttrs,
+  titleAttrs,
   toggleIconAttrs,
   dividerAttrs,
 } = useAttrs(props, { isOpened });

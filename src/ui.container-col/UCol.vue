@@ -25,7 +25,7 @@ const props = defineProps({
   },
 
   /**
-   * Nested items align (flex align-items).
+   * Items horizontal align (align-items).
    * @values start, end, center, stretch, baseline
    */
   align: {
@@ -34,7 +34,16 @@ const props = defineProps({
   },
 
   /**
-   * Nested items horizontally align (flex justify-content).
+   * Items horizontal align for multi-row flex containers (align-content).
+   * @values start, end, center, around, evenly, between, normal, stretch, baseline
+   */
+  content: {
+    type: String,
+    default: getDefault(defaultConfig, UCol).content,
+  },
+
+  /**
+   * Items vertical align (justify-content).
    * @values start, end, center, around, evenly, between
    */
   justify: {
@@ -59,7 +68,7 @@ const props = defineProps({
   },
 
   /**
-   *Component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,

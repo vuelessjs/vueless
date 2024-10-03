@@ -14,7 +14,7 @@
       :size="size"
       :left-icon="leftIcon"
       :right-icon="rightIcon"
-      v-bind="inputAttrs"
+      v-bind="isShownCalendar ? activeInputAttrs : inputAttrs"
       @focus="activate"
     >
       <template #left>
@@ -251,7 +251,7 @@ const props = defineProps({
   },
 
   /**
-   * Component ui config object.
+   * Component config object.
    */
   config: {
     type: Object,
@@ -317,7 +317,7 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 
 const elementId = props.id || useId();
 
-const { config, inputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
+const { config, inputAttrs, activeInputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
   isShownCalendar,
   isTop,
   isRight,
