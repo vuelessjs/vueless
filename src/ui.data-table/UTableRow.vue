@@ -1,5 +1,5 @@
 <template>
-  <tr v-bind="$attrs" @click="onClick(props.row)">
+  <tr v-bind="$attrs" :class="rowClass" @click="onClick(props.row)">
     <td v-if="selectable" :style="getNestedCheckboxShift()" v-bind="bodyCellCheckboxAttrs">
       <UCheckbox
         v-model="selectedRows"
@@ -113,6 +113,11 @@ const props = defineProps({
   row: {
     type: Object,
     required: true,
+  },
+
+  rowClass: {
+    type: [String, Object, Array],
+    default: null,
   },
 
   columns: {

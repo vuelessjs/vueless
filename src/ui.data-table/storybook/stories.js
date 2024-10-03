@@ -203,6 +203,35 @@ const EmptyTemplate = (args) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const RowClasses = DefaultTemplate.bind({});
+RowClasses.args = {
+  columns: [
+    { key: "id", label: "ID" },
+    { key: "name", label: "Name" },
+    { key: "status", label: "Status" },
+    { key: "amount", label: "Amount" },
+  ],
+  row: (index) => ({
+    id: index + 1,
+    name: `Item ${index + 1}`,
+    status: index % 3 === 0 ? "active" : index % 3 === 1 ? "pending" : "inactive",
+    amount: Math.floor(Math.random() * 1000),
+  }),
+  rowClass: (row) => {
+    if (row.status === "active") return "bg-green-100";
+    if (row.status === "pending") return "bg-yellow-100";
+
+    return "bg-red-100";
+  },
+  slotTemplate: `
+    <template #cell-amount="{ value }">
+      <span>
+        {{ value.toFixed(2) }}
+      </span>
+    </template>
+  `,
+};
+
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { row: getNestedRow, selectable: true };
 

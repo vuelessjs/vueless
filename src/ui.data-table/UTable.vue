@@ -190,6 +190,7 @@
               :columns="columns"
               :config="config"
               :attrs="keysAttrs"
+              :row-class="getRowClass(row)"
               v-bind="isRowSelected(row) ? bodyRowCheckedAttrs : bodyRowAttrs"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -314,6 +315,14 @@ const props = defineProps({
   rows: {
     type: Array,
     required: true,
+  },
+
+  /**
+   * Function to determine the class for each row
+   */
+  rowClass: {
+    type: Function,
+    default: () => null,
   },
 
   /**
@@ -596,6 +605,10 @@ function shouldDisplayDateSeparator(rowIndex) {
   const isFirstRowAndNextChecked = rowIndex === 0 && isCheckedRowAfter;
 
   return (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked;
+}
+
+function getRowClass(row) {
+  return props.rowClass ? props.rowClass(row) : null;
 }
 
 function isRowSelected(row) {
