@@ -1,6 +1,6 @@
 <template>
   <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="progressAttrs" :style="barStyle" />
+    <div v-if="show" v-bind="stripeAttrs" :style="barStyle" />
   </Transition>
 </template>
 
@@ -20,7 +20,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * The color of the loader stripe.
+   * Loader stripe color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
    */
   color: {
@@ -44,7 +44,7 @@ const opacity = ref(1);
 const status = ref(null);
 
 const { requestQueue, removeRequestUrl, isLoading, loaderTopOff, loaderTopOn } = useLoaderTop();
-const { progressAttrs } = useAttrs(props, { error, isMobileApp });
+const { stripeAttrs } = useAttrs(props, { error, isMobileApp });
 
 const isStarted = computed(() => {
   return typeof status.value === "number";

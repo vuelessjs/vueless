@@ -1,12 +1,15 @@
 <template>
   <Transition v-bind="config.transition">
-    <div v-if="showLoader" v-bind="wrapperAttrs">
-      <ULoader
-        :loading="showLoader"
-        size="lg"
-        :color="color === 'white' ? 'grayscale' : 'white'"
-        v-bind="loaderAttrs"
-      />
+    <div v-if="showLoader" v-bind="overlayAttrs">
+      <!-- @slot Use it to add something instead of the default loader. -->
+      <slot>
+        <ULoader
+          :loading="showLoader"
+          size="lg"
+          :color="color === 'white' ? 'grayscale' : 'white'"
+          v-bind="nestedLoaderAttrs"
+        />
+      </slot>
     </div>
   </Transition>
 </template>
@@ -26,7 +29,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set loader on.
+   * Loader state (shown / hidden).
    */
   loading: {
     type: Boolean,
@@ -43,7 +46,7 @@ const props = defineProps({
   },
 });
 
-const { wrapperAttrs, loaderAttrs, config } = useAttrs(props);
+const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);
 const { isLoading, loaderRenderingOn, loaderRenderingOff } = useLoaderRendering();
 
 onMounted(() => {

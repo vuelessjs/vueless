@@ -20,7 +20,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set loader on.
+   * Loader state (shown / hidden).
    */
   loading: {
     type: Boolean,

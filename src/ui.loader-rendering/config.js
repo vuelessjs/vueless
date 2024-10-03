@@ -1,5 +1,9 @@
 export default /*tw*/ {
-  wrapper: {
+  transition: {
+    enterFromClass: "scale-110 transform",
+    leaveActiveClass: "scale-110 transform",
+  },
+  overlay: {
     base: `
       bg-{color}-600
       h-screen w-screen
@@ -14,11 +18,7 @@ export default /*tw*/ {
       },
     },
   },
-  loader: "{ULoader}",
-  transition: {
-    enterFromClass: "scale-110 transform",
-    leaveActiveClass: "scale-110 transform",
-  },
+  nestedLoader: "{ULoader}",
   defaults: {
     color: "brand",
     loading: undefined,

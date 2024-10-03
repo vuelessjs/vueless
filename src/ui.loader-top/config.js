@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  progress: {
+  stripe: {
     base: "top-0 left-0 right-0 fixed h-[3px] transition-all ease-linear bg-{color}-600",
     variants: {
       color: {
@@ -11,7 +11,6 @@ export default /*tw*/ {
       },
     },
   },
-  progressMobile: "mt-safe-top mx-3 rounded max-w-[calc(100%-1.5rem)]",
   defaults: {
     color: "brand",
   },
