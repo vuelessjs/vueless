@@ -177,7 +177,7 @@ const DefaultTemplate = (args) => ({
 
       if (typeof args.row === "function") {
         for (let i = 0; i < args.numberOfRows; i++) {
-          rows.push(args.row());
+          rows.push(args.row(i));
         }
       } else {
         rows.push(args.row);
@@ -205,6 +205,92 @@ Default.args = {};
 
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { row: getNestedRow, selectable: true };
+
+export const NestedContent = DefaultTemplate.bind({});
+NestedContent.args = {
+  columns: [
+    { key: "key_1", label: "Title 1" },
+    { key: "key_2", label: "Title 2" },
+    { key: "key_3", label: "Title 3" },
+  ],
+  row: (index) => {
+    if (index === 0) {
+      return {
+        id: getRandomId(),
+        isChecked: false,
+        key_1: {
+          primary: "Row with nested content",
+          secondary: "Click to expand",
+        },
+        key_2: {
+          primary: "Primary content",
+          secondary: "Secondary content",
+        },
+        key_3: {
+          primary: "More info",
+          secondary: "Details below",
+        },
+        nestedData: {
+          isChecked: false,
+          isHidden: true,
+          rows: [
+            {
+              id: getRandomId(),
+              key_1: "Detail 1A",
+              key_2: "Info 1B",
+              key_3: "Data 1C",
+            },
+            {
+              id: getRandomId(),
+              key_1: "Detail 2A",
+              key_2: "Info 2B",
+              key_3: "Data 2C",
+            },
+            {
+              id: getRandomId(),
+              key_1: "Detail 3A",
+              key_2: "Info 3B",
+              key_3: "Data 3C",
+            },
+          ],
+        },
+      };
+    } else {
+      return {
+        id: getRandomId(),
+        isChecked: false,
+        key_1: {
+          primary: `Regular row ${index}`,
+          secondary: "No nested content",
+        },
+        key_2: {
+          primary: "Standard info",
+          secondary: "Nothing special",
+        },
+        key_3: {
+          primary: "Basic data",
+          secondary: "No details",
+        },
+      };
+    }
+  },
+  selectable: true,
+  slotTemplate: `
+    <template #nested-content="{ row }">
+      <div class="p-4 bg-gray-100">
+        <UTable
+          :columns="[
+            { key: 'key_1', label: 'Detail' },
+            { key: 'key_2', label: 'Info' },
+            { key: 'key_3', label: 'Data' },
+          ]"
+          :rows="row.nestedData.rows"
+          compact
+        />
+      </div>
+    </template>
+  `,
+};
 
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
