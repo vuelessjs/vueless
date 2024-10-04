@@ -1,7 +1,6 @@
 <template>
   <UInput
     :id="elementId"
-    v-bind="inputAttrs"
     ref="inputRef"
     :model-value="localValue"
     :size="size"
@@ -14,6 +13,7 @@
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
+    v-bind="inputAttrs"
     :data-test="dataTest"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
