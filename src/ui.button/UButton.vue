@@ -145,7 +145,7 @@ const props = defineProps({
   },
 
   /**
-   * Left side icon name.
+   * Left icon name.
    */
   leftIcon: {
     type: String,
@@ -153,7 +153,7 @@ const props = defineProps({
   },
 
   /**
-   * Right side icon name.
+   * Right icon name.
    */
   rightIcon: {
     type: String,
