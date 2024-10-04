@@ -190,7 +190,8 @@
               :columns="columns"
               :config="config"
               :attrs="keysAttrs"
-              v-bind="isRowSelected(row) ? bodyRowCheckedAttrs : bodyRowAttrs"
+              v-bind="isRowSelected(row)"
+              :class="cx([isRowSelected(row), row.class])"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
             >
@@ -599,7 +600,7 @@ function shouldDisplayDateSeparator(rowIndex) {
 }
 
 function isRowSelected(row) {
-  return Boolean(selectedRows.value.includes(row.id));
+  return selectedRows.value.includes(row.id) ? bodyRowCheckedAttrs : bodyRowAttrs;
 }
 
 function setFooterCellWidth(width) {
