@@ -15,7 +15,7 @@
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
       v-bind="getCellAttrs(key, row, index)"
-      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass])"
+      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass, row[key]?.class])"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
@@ -34,10 +34,10 @@
         />
       </div>
 
-      <div v-if="value?.hasOwnProperty('secondary')">
+      <div v-if="isCellObject(value)">
         <slot :name="`cell-${key}`" :value="value" :row="row">
           <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
-            {{ value.primary || HYPHEN_SYMBOL }}
+            {{ getCellPrimaryContent(value) }}
           </div>
 
           <div v-bind="bodyCellSecondaryAttrs">
@@ -187,6 +187,18 @@ const getToggleIconName = computed(() => (row) => {
 onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
+
+function isCellObject(value) {
+  return typeof value === "object" && value !== null && ("primary" in value || "value" in value);
+}
+
+function getCellPrimaryContent(value) {
+  if (typeof value === "object" && value !== null) {
+    return value.primary || value.value || HYPHEN_SYMBOL;
+  }
+
+  return value || HYPHEN_SYMBOL;
+}
 
 function getCellAttrs(key, row, cellIndex) {
   const isNestedRow = (row.row || row.nestedData || props.nestedLevel > 0) && cellIndex === 0;
