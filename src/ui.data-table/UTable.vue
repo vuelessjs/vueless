@@ -25,7 +25,7 @@
         />
 
         <!--
-          @slot Use it to add action buttons instead of table row when some rows are selected.
+          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
           @binding {array} selected-rows
         -->
         <slot name="header-actions" :selected-rows="selectedRows" />
@@ -57,7 +57,7 @@
         >
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
             <!--
-              @slot Use it to customise table column.
+              @slot Use it to customise needed header cell.
               @binding {string} name
               @binding {number} column
             -->
@@ -69,7 +69,7 @@
           </template>
 
           <!--
-            @slot Use it to add something after the table column.
+            @slot Use it to add something after the needed header cell.
             @binding {string} name
             @binding {number} column
           -->
@@ -127,7 +127,7 @@
               :class="cx([headerCellBaseAttrs.class, column.thClass])"
             >
               <!--
-                @slot Use it to customise table column.
+                @slot Use it to customise needed header cell.
                 @binding {string} name
                 @binding {number} column
               -->
@@ -142,7 +142,7 @@
               </template>
 
               <!--
-                @slot Use it to add something after the table column.
+                @slot Use it to add something after the needed header cell.
                 @binding {string} name
                 @binding {number} column
               -->
@@ -302,7 +302,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Table columns.
+   * Table columns (headers).
    */
   columns: {
     type: Array,
@@ -318,15 +318,15 @@ const props = defineProps({
   },
 
   /**
-   * Show date divider label.
+   * Show date divider line between dates.
    */
   dateDivider: {
     type: [Array, Boolean],
-    default: false,
+    default: getDefault(defaultConfig, UTable).dateDivider,
   },
 
   /**
-   * Enable selecting table rows.
+   * Allow rows selecting.
    */
   selectable: {
     type: Boolean,
@@ -358,7 +358,7 @@ const props = defineProps({
   },
 
   /**
-   * Set loader resource name to activate table top loader exact for that resource.
+   * Set loader resource name to activate table progress loader exact for that resource (deprecated).
    */
   resource: {
     type: String,
@@ -390,7 +390,7 @@ const emit = defineEmits([
   "clickRow",
 
   /**
-   * Triggers when table rows are updated.
+   * Triggers when table rows are selected (updated).
    * @property {array} tableRows
    */
   "update:rows",

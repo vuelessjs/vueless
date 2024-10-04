@@ -1,13 +1,5 @@
 export default /*tw*/ {
   wrapper: "relative",
-  headerCellBase: {
-    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
-    variants: {
-      compact: {
-        true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
-      },
-    },
-  },
   headerCounterBase: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
@@ -21,7 +13,7 @@ export default /*tw*/ {
       },
     },
   },
-  stickyHeaderLoader: "{ULoader}",
+  stickyHeaderLoader: "{ULoaderProgress}",
   stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "{UCheckbox}",
   stickyHeaderActionsCounter: "-ml-2",
@@ -29,6 +21,14 @@ export default /*tw*/ {
   table: "min-w-full border-none text-sm w-full table-fixed",
   header: "border-b border-gray-200",
   headerRow: "",
+  headerCellBase: {
+    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
+    variants: {
+      compact: {
+        true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+      },
+    },
+  },
   headerCellCheckbox: "w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
@@ -39,7 +39,7 @@ export default /*tw*/ {
       },
     },
   },
-  headerLoader: "{ULoader} absolute !top-auto",
+  headerLoader: "{ULoaderProgress} absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
   bodyRowChecked: "bg-gray-100 transition",
@@ -97,6 +97,7 @@ export default /*tw*/ {
     nesting: false,
     compact: false,
     selectable: false,
+    dateDivider: false,
     stickyHeader: false,
     stickyFooter: false,
     /* icons */

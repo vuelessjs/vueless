@@ -2,12 +2,23 @@
   <div v-bind="wrapperAttrs">
     <UDivider v-if="upperlined" size="xl" padding="after" v-bind="dividerAttrs" />
 
-    <UEmpty
+    <!--
+      @slot Use it to add something instead of the drag icon.
+      @binding {string} empty-title
+      @binding {string} empty-description
+    -->
+    <slot
       v-if="!hideEmptyStateForNesting && !list?.length"
-      :title="emptyTitle || currentLocale.emptyTitle"
-      :description="emptyDescription || currentLocale.emptyDescription"
-      v-bind="emptyAttrs"
-    />
+      name="empty"
+      :empty-title="emptyTitle"
+      :empty-description="emptyDescription"
+    >
+      <UEmpty
+        :title="emptyTitle || currentLocale.emptyTitle"
+        :description="emptyDescription || currentLocale.emptyDescription"
+        v-bind="emptyAttrs"
+      />
+    </slot>
 
     <draggable
       v-else
@@ -27,6 +38,7 @@
           <div :data-test="`${dataTest}-item-${element[valueKey]}`" v-bind="itemAttrs">
             <!--
               @slot Use it to add something instead of the drag icon.
+              @binding {string} icon-name
               @binding {string} icon-size
             -->
             <slot name="drag" :icon-name="config.defaults.dragIcon" :icon-size="iconSize">
@@ -43,6 +55,7 @@
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
+                @binding {boolean} active
               -->
               <slot name="label" :item="element" :active="isActive(element)">
                 {{ element[labelKey] }}
@@ -63,6 +76,7 @@
 
               <!--
                 @slot Use it to add something instead of the delete icon.
+                @binding {string} icon-name
                 @binding {string} icon-size
               -->
               <slot name="delete" :icon-name="config.defaults.deleteIcon" :icon-size="iconSize">
@@ -82,6 +96,7 @@
 
               <!--
                 @slot Use it to add something instead of the edit icon.
+                @binding {string} icon-name
                 @binding {string} icon-size
               -->
               <slot name="edit" :icon-name="config.defaults.editIcon" :icon-size="iconSize">
@@ -114,6 +129,11 @@
             @drag-sort="onDragEnd"
           >
             <template #label="{ item, active }">
+              <!--
+                @slot Use it to modify label.
+                @binding {object} item
+                @binding {boolean} active
+              -->
               <slot name="label" :item="item" :active="active">
                 <div v-bind="active ? labelCrossedAttrs : labelAttrs" v-text="item[labelKey]" />
               </slot>
@@ -152,7 +172,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Data list array.
+   * Data item options.
    */
   list: {
     type: Array,
@@ -217,7 +237,7 @@ const props = defineProps({
   },
 
   /**
-   * Enables nesting.
+   * Enable nesting.
    */
   nesting: {
     type: Boolean,
