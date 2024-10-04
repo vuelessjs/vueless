@@ -57,14 +57,13 @@
               <slot name="header-right" />
             </div>
 
-            <div v-bind="closeIconAttrs">
+            <div v-if="closeOnCross" v-bind="closeIconAttrs">
               <!--
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
               -->
               <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
-                  v-if="closeOnCross"
                   internal
                   interactive
                   size="sm"
