@@ -1,6 +1,7 @@
 <template>
   <UInput
     :id="elementId"
+    ref="inputRef"
     :model-value="localValue"
     :size="size"
     :disabled="disabled"
@@ -253,6 +254,9 @@ let updateValueWithDebounce = createDebounce((value) => {
 }, Number(props.debounce));
 
 const localValue = ref("");
+const inputRef = ref(null);
+
+defineExpose({ inputRef });
 
 const elementId = props.id || useId();
 

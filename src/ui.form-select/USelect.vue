@@ -677,7 +677,7 @@ const isSelectedValueLabelVisible = computed(() => {
 });
 
 const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim();
+  const normalizedSearch = search.value.toLowerCase().trim() || "";
 
   let options = props.multiple
     ? SelectService.removeSelectedValues(
@@ -687,10 +687,6 @@ const filteredOptions = computed(() => {
         props.modelValue,
       )
     : [...props.options];
-
-  if (!normalizedSearch) {
-    return options.slice(0, props.optionsLimit || options.length);
-  }
 
   options = props.groupValueKey
     ? filterAndFlat(options, normalizedSearch, props.labelKey)
