@@ -51,82 +51,34 @@ function getNestedRow() {
   return {
     id: getRandomId(),
     isChecked: false,
-    key_1: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_2: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_3: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_4: {
-      primary: "primary",
-      secondary: "secondary",
-    },
+    key_1: "Click to expand",
+    key_2: "Some data",
+    key_3: "Numbers",
+    key_4: "Statistics",
     row: {
       id: getRandomId(),
       isChecked: false,
       isHidden: true,
-      key_1: {
-        primary: "Nesting",
-        secondary: "secondary",
-      },
-      key_2: {
-        primary: "Nesting",
-        secondary: "secondary",
-      },
-      key_3: {
-        primary: "Nesting",
-        secondary: "secondary",
-      },
-      key_4: {
-        primary: "Nesting",
-        secondary: "secondary",
-      },
+      key_1: "Nesting",
+      key_2: "Nesting",
+      key_3: "Nesting",
+      key_4: "Nesting",
       row: {
         id: getRandomId(),
         isChecked: false,
         isHidden: true,
-        key_1: {
-          primary: "Two level nesting",
-          secondary: "secondary",
-        },
-        key_2: {
-          primary: "Two level nesting",
-          secondary: "secondary",
-        },
-        key_3: {
-          primary: "Two level nesting",
-          secondary: "secondary",
-        },
-        key_4: {
-          primary: "Two level nesting",
-          secondary: "secondary",
-        },
+        key_1: "Second level nesting",
+        key_2: "Second level nesting",
+        key_3: "Second level nesting",
+        key_4: "Second level nesting",
         row: {
           id: getRandomId(),
           isChecked: false,
           isHidden: true,
-          key_1: {
-            primary: "Three level nesting",
-            secondary: "secondary",
-          },
-          key_2: {
-            primary: "Three level nesting",
-            secondary: "secondary",
-          },
-          key_3: {
-            primary: "Three level nesting",
-            secondary: "secondary",
-          },
-          key_4: {
-            primary: "Three level nesting",
-            secondary: "secondary",
-          },
+          key_1: "Third level nesting",
+          key_2: "Third level nesting",
+          key_3: "Third level nesting",
+          key_4: "Third level nesting",
         },
       },
     },
@@ -137,22 +89,10 @@ function getRow() {
   return {
     id: getRandomId(),
     isChecked: false,
-    key_1: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_2: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_3: {
-      primary: "primary",
-      secondary: "secondary",
-    },
-    key_4: {
-      primary: "primary",
-      secondary: "secondary",
-    },
+    key_1: "Info",
+    key_2: "Statistics",
+    key_3: "Reports",
+    key_4: "Discounts",
   };
 }
 
@@ -166,7 +106,7 @@ const DefaultTemplate = (args) => ({
   template: `
     <UTable
       v-bind="args"
-      :rows="itemsData"
+      :rows="args.rows || itemsData"
     >
       ${args.slotTemplate || getSlotsFragment()}
     </UTable>
@@ -218,18 +158,9 @@ NestedContent.args = {
       return {
         id: getRandomId(),
         isChecked: false,
-        key_1: {
-          primary: "Row with nested content",
-          secondary: "Click to expand",
-        },
-        key_2: {
-          primary: "Primary content",
-          secondary: "Secondary content",
-        },
-        key_3: {
-          primary: "More info",
-          secondary: "Details below",
-        },
+        key_1: "Row with nested content",
+        key_2: "Basic data",
+        key_3: "More info",
         nestedData: {
           isChecked: false,
           isHidden: true,
@@ -259,18 +190,9 @@ NestedContent.args = {
       return {
         id: getRandomId(),
         isChecked: false,
-        key_1: {
-          primary: `Regular row ${index}`,
-          secondary: "No nested content",
-        },
-        key_2: {
-          primary: "Standard info",
-          secondary: "Nothing special",
-        },
-        key_3: {
-          primary: "Basic data",
-          secondary: "No details",
-        },
+        key_1: `Regular row ${index}`,
+        key_2: "Standard info",
+        key_3: "Basic data",
       };
     }
   },
@@ -290,6 +212,103 @@ NestedContent.args = {
       </div>
     </template>
   `,
+};
+
+export const RowAndCellClasses = DefaultTemplate.bind({});
+RowAndCellClasses.args = {
+  rows: [
+    {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: "Info",
+      key_2: "Statistics",
+      key_3: { value: "Reports", class: "bg-red-200" },
+      key_4: "Discounts",
+    },
+    {
+      id: getRandomId(),
+      isChecked: false,
+      class: "bg-green-100",
+      key_1: "Data",
+      key_2: "Meetings",
+      key_3: "Calendar",
+      key_4: "Departments",
+    },
+    {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: "Events",
+      key_2: "Sales",
+      key_3: "Renovation",
+      key_4: "Calendar",
+    },
+  ],
+};
+
+export const PrimaryAndSecondaryContent = DefaultTemplate.bind({});
+PrimaryAndSecondaryContent.args = {
+  rows: [
+    {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_2: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_3: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_4: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+    },
+    {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_2: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_3: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_4: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+    },
+    {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_2: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_3: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+      key_4: {
+        primary: "Primary",
+        secondary: "Secondary",
+      },
+    },
+  ],
 };
 
 export const Empty = EmptyTemplate.bind({});
