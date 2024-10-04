@@ -1,15 +1,8 @@
 export default /*tw*/ {
   inputLabel: "{ULabel}",
-  inputWrapper: "flex relative w-full",
-  rightIconSlot: "flex items-center justify-end whitespace-nowrap pr-2 gap-1 rounded-dynamic rounded-l-none",
-  leftIconSlot: "flex items-center justify-end whitespace-nowrap pl-2 gap-1 rounded-dynamic rounded-r-none",
-  leftIcon: "{UIcon}",
-  rightIcon: "{UIcon}",
-  passwordIcon: "",
-  block: {
+  wrapper: {
     base: `
-      w-full bg-white !opacity-100 relative flex transition
-      rounded-dynamic border border-solid border-gray-300
+      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition
       hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
       focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
@@ -26,6 +19,11 @@ export default /*tw*/ {
       },
     },
   },
+  rightIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2 gap-1 rounded-dynamic rounded-l-none",
+  leftIconWrapper: "flex items-center justify-end whitespace-nowrap pl-2 gap-1 rounded-dynamic rounded-r-none",
+  leftIcon: "{UIcon}",
+  rightIcon: "{UIcon}",
+  passwordIcon: "{UIcon}",
   input: {
     base: `
       block w-full py-2 px-3 font-normal leading-none text-gray-900 bg-white

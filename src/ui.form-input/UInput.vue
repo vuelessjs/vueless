@@ -11,7 +11,7 @@
     centred
     v-bind="inputLabelAttrs"
   >
-    <label :for="elementId" v-bind="blockAttrs">
+    <label :for="elementId" v-bind="wrapperAttrs">
       <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
@@ -20,7 +20,7 @@
       <span
         v-if="hasSlotContent($slots['left-icon']) || leftIcon"
         ref="leftSlotWrapperRef"
-        v-bind="leftIconSlotAttrs"
+        v-bind="leftIconWrapperAttrs"
       >
         <!--
           @slot Use it to add icon before the text.
@@ -38,29 +38,27 @@
         </slot>
       </span>
 
-      <span v-bind="inputWrapperAttrs">
-        <input
-          :id="elementId"
-          ref="inputRef"
-          v-model="inputValue"
-          :placeholder="placeholder"
-          :type="inputType"
-          :readonly="readonly"
-          :disabled="disabled"
-          :maxlength="maxLength"
-          :inputmode="inputmode"
-          :data-test="dataTest"
-          v-bind="inputAttrs"
-          @focus="onFocus"
-          @blur="onBlur"
-          @input="onInput"
-          @change="onChange"
-          @mousedown="onMousedown"
-          @click="onClick"
-        />
-      </span>
+      <input
+        :id="elementId"
+        ref="inputRef"
+        v-model="inputValue"
+        :placeholder="placeholder"
+        :type="inputType"
+        :readonly="readonly"
+        :disabled="disabled"
+        :maxlength="maxLength"
+        :inputmode="inputmode"
+        :data-test="dataTest"
+        v-bind="inputAttrs"
+        @focus="onFocus"
+        @blur="onBlur"
+        @input="onInput"
+        @change="onChange"
+        @mousedown="onMousedown"
+        @click="onClick"
+      />
 
-      <label v-if="isTypePassword" v-bind="rightIconSlotAttrs" :for="elementId">
+      <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">
         <UIcon
           v-if="isTypePassword"
           :name="
@@ -71,13 +69,13 @@
           color="gray"
           interactive
           internal
-          :data-test="`${dataTest}-show-password`"
+          :data-test="`${dataTest}-password-icon`"
           v-bind="passwordIconAttrs"
           @click="onClickShowPassword"
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconSlotAttrs">
+      <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
         <!--
           @slot Use it to add icon after the text.
           @binding {string} icon-name
@@ -128,7 +126,7 @@ defineOptions({ inheritAttrs: false });
 
 const emit = defineEmits([
   /**
-   * Triggers when the input value is updated.
+   * Triggers when the input value is changes.
    * @property {string} modelValue
    * @property {number} modelValue
    */
@@ -160,8 +158,9 @@ const emit = defineEmits([
   "blur",
 
   /**
-   * Triggers when any validation rules are applied to input value.
-   * @property {string} value
+   * Triggers when the input value is changes.
+   * @property {string} modelValue
+   * @property {number} modelValue
    */
   "input",
 ]);
@@ -226,7 +225,7 @@ const props = defineProps({
   },
 
   /**
-   * Left side icon name.
+   * Left icon name.
    */
   leftIcon: {
     type: String,
@@ -234,7 +233,7 @@ const props = defineProps({
   },
 
   /**
-   * Right side icon name.
+   * Right icon name.
    */
   rightIcon: {
     type: String,
@@ -250,8 +249,8 @@ const props = defineProps({
   },
 
   /**
-   * Prevents input some characters (for ex. input numbers only).
-   * You can use predefined values or your own RegExp.
+   * Prevents some characters from input.
+   * You can use predefined values or own RegExp.
    * @values symbol, string, stringAndNumber, number, integer
    */
   validationRule: {
@@ -261,7 +260,7 @@ const props = defineProps({
   },
 
   /**
-   * Input type
+   * Input type.
    * @values text, number, tel, email, url, search, password
    */
   type: {
@@ -270,7 +269,7 @@ const props = defineProps({
   },
 
   /**
-   * Set proper keyboard on mobile devices.
+   * Set specific keyboard for mobile devices.
    * @values text, decimal, numeric, tel, email, url, search, none
    */
   inputmode: {
@@ -279,7 +278,7 @@ const props = defineProps({
   },
 
   /**
-   * Set input read-only.
+   * Make input read-only.
    */
   readonly: {
     type: Boolean,
@@ -354,14 +353,13 @@ const elementId = props.id || useId();
 const {
   config,
   inputAttrs,
-  blockAttrs,
+  wrapperAttrs,
   inputLabelAttrs,
   passwordIconAttrs,
-  leftIconSlotAttrs,
+  leftIconWrapperAttrs,
   leftIconAttrs,
-  inputWrapperAttrs,
   rightIconAttrs,
-  rightIconSlotAttrs,
+  rightIconWrapperAttrs,
   hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
 
@@ -438,9 +436,9 @@ function onClickShowPassword() {
  */
 function toggleReadonlyToPreventAutocomplete(toggleState) {
   if (props.noAutocomplete && !props.readonly) {
-    const input = document.getElementById(elementId);
-
-    toggleState ? input.setAttribute("readonly", "readonly") : input.removeAttribute("readonly");
+    toggleState
+      ? inputRef.value.setAttribute("readonly", "readonly")
+      : inputRef.value.removeAttribute("readonly");
   }
 }
 
