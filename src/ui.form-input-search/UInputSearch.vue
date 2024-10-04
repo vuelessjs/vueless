@@ -1,6 +1,8 @@
 <template>
   <UInput
     :id="elementId"
+    v-bind="inputAttrs"
+    ref="inputRef"
     :model-value="localValue"
     :size="size"
     :disabled="disabled"
@@ -12,7 +14,6 @@
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
-    v-bind="inputAttrs"
     :data-test="dataTest"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
@@ -253,6 +254,9 @@ let updateValueWithDebounce = createDebounce((value) => {
 }, Number(props.debounce));
 
 const localValue = ref("");
+const inputRef = ref(null);
+
+defineExpose({ inputRef });
 
 const elementId = props.id || useId();
 
