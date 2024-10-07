@@ -202,6 +202,7 @@
               >
                 <!--
                   @slot Use it to modify all cells with a specific key.
+                  @binding {string} name
                   @binding {string} value
                   @binding {object} row
                 -->
