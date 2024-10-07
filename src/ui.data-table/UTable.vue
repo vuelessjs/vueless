@@ -200,9 +200,19 @@
                 :key="index"
                 #[`cell-${key}`]="slotValues"
               >
+                <!--
+                  @slot Use it to customise needed table cell.
+                  @binding {string} name
+                  @binding {string} value
+                  @binding {object} row
+                -->
                 <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
               </template>
               <template #nested-content>
+                <!--
+                  @slot Use it to add nested content inside a row.
+                  @binding {object} row
+                -->
                 <slot v-if="row" name="nested-content" :row="row" />
               </template>
             </UTableRow>
