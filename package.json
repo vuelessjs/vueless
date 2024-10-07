@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.407",
+  "version": "0.0.408",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -53,7 +53,7 @@
     "@release-it/bumper": "^6.0.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
-    "@vueless/plugin-vite": "^0.0.65",
+    "@vueless/plugin-vite": "^0.0.66",
     "@vueless/storybook": "^0.0.34",
     "@vueless/web-types": "^0.0.15",
     "autoprefixer": "^10.4.19",
