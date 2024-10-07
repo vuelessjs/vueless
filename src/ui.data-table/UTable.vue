@@ -191,7 +191,7 @@
               :config="config"
               :attrs="keysAttrs"
               v-bind="getRowAttrs(row)"
-              :class="cx([getRowAttrs(row).class, getRowClasses(row)])"
+              :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
             >
