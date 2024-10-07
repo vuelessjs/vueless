@@ -15,7 +15,9 @@
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
       v-bind="getCellAttrs(key, row, index)"
-      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass, getClass(row, key)])"
+      :class="
+        cx([getCellAttrs(key, row, index).class, columns[index].tdClass, getCellClasses(row, key)])
+      "
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
@@ -188,10 +190,10 @@ onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
 
-function getClass(row, key) {
-  const cellClass = row[key]?.class;
+function getCellClasses(row, key) {
+  const cellClasses = row[key]?.class;
 
-  return typeof cellClass === "function" ? cellClass(row[key].value, row) : cellClass;
+  return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
 }
 
 function isCellObject(value) {
