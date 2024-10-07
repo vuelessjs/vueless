@@ -611,17 +611,11 @@ function shouldDisplayDateSeparator(rowIndex) {
 
 function getRowAttrs(row) {
   const baseAttrs = selectedRows.value.includes(row.id) ? bodyRowCheckedAttrs : bodyRowAttrs;
-
-  if (row && typeof row.class === "function") {
-    return {
-      ...baseAttrs,
-      class: cx([baseAttrs.class, row.class(row)]),
-    };
-  }
+  const rowClasses = typeof row?.class === "function" ? row.class(row) : row.class;
 
   return {
     ...baseAttrs,
-    class: cx([baseAttrs.class, row.class]),
+    class: cx([baseAttrs.class, rowClasses]),
   };
 }
 

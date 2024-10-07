@@ -15,7 +15,15 @@
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
       v-bind="getCellAttrs(key, row, index)"
-      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass, row[key]?.class])"
+      :class="
+        cx([
+          getCellAttrs(key, row, index).class,
+          columns[index].tdClass,
+          typeof row[key]?.class === 'function'
+            ? row[key].class(row[key].value, row)
+            : row[key]?.class,
+        ])
+      "
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
