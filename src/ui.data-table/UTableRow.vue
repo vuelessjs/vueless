@@ -15,15 +15,7 @@
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
       v-bind="getCellAttrs(key, row, index)"
-      :class="
-        cx([
-          getCellAttrs(key, row, index).class,
-          columns[index].tdClass,
-          typeof row[key]?.class === 'function'
-            ? row[key].class(row[key].value, row)
-            : row[key]?.class,
-        ])
-      "
+      :class="cx([getCellAttrs(key, row, index).class, columns[index].tdClass, getClass(row, key)])"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
@@ -195,6 +187,12 @@ const getToggleIconName = computed(() => (row) => {
 onMounted(() => {
   cellRef.value.forEach(setElementTitle);
 });
+
+function getClass(row, key) {
+  const cellClass = row[key]?.class;
+
+  return typeof cellClass === "function" ? cellClass(row[key].value, row) : cellClass;
+}
 
 function isCellObject(value) {
   return typeof value === "object" && value !== null && ("primary" in value || "value" in value);
