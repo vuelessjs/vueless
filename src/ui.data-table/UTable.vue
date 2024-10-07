@@ -201,7 +201,7 @@
                 #[`cell-${key}`]="slotValues"
               >
                 <!--
-                  @slot Use it to modify all cells with a specific key.
+                  @slot Use it to customise needed table cell.
                   @binding {string} name
                   @binding {string} value
                   @binding {object} row
