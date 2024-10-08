@@ -47,7 +47,7 @@ export default {
   },
 };
 
-function getDateSeparatorRow() {
+function getDateDividerRow() {
   return {
     id: getRandomId(),
     isChecked: false,
@@ -358,11 +358,11 @@ export const Compact = DefaultTemplate.bind({});
 Compact.args = { compact: true };
 
 export const DateDivider = DefaultTemplate.bind({});
-DateDivider.args = { dateDivider: true, row: getDateSeparatorRow };
+DateDivider.args = { dateDivider: true, row: getDateDividerRow };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
 DateDividerCustomLabel.args = {
-  row: getDateSeparatorRow,
+  row: getDateDividerRow,
   dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
 };
 

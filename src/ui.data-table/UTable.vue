@@ -165,15 +165,12 @@
               </td>
             </tr>
 
-            <tr
-              v-if="isShownDateSeparator(rowIndex) && row.rowDate"
-              v-bind="bodyRowDateSeparatorAttrs"
-            >
-              <td v-bind="bodyCellDateSeparatorAttrs" :colspan="colsCount">
+            <tr v-if="isShownDateDivider(rowIndex) && row.rowDate" v-bind="bodyRowDateDividerAttrs">
+              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
-                  :label="getDateSeparatorLabel(row.rowDate)"
-                  v-bind="bodyDateSeparatorAttrs"
+                  :label="getDateDividerLabel(row.rowDate)"
+                  v-bind="bodyDateDividerAttrs"
                 />
               </td>
             </tr>
@@ -521,7 +518,7 @@ const {
   bodyRowAttrs,
   bodyRowCheckedAttrs,
   footerAttrs,
-  bodyRowDateSeparatorAttrs,
+  bodyRowDateDividerAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
   stickyHeaderActionsCheckboxAttrs,
@@ -529,8 +526,8 @@ const {
   headerCheckboxAttrs,
   headerCounterAttrs,
   bodyEmptyStateAttrs,
-  bodyDateSeparatorAttrs,
-  bodyCellDateSeparatorAttrs,
+  bodyDateDividerAttrs,
+  bodyCellDateDividerAttrs,
   stickyHeaderActionsCounterAttrs,
   stickyHeaderCounterAttrs,
   stickyHeaderLoaderAttrs,
@@ -590,7 +587,7 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function getDateSeparatorLabel(rowDate) {
+function getDateDividerLabel(rowDate) {
   return Array.isArray(props.dateDivider)
     ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
     : rowDate;
@@ -655,7 +652,7 @@ function onKeyupEsc(event) {
   }
 }
 
-function isShownDateSeparator(rowIndex) {
+function isShownDateDivider(rowIndex) {
   const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
   const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
   const prevItem = tableRows.value[prevIndex];

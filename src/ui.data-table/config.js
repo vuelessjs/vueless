@@ -47,7 +47,7 @@ export default /*tw*/ {
   bodyRowBeforeCell: "py-1",
   bodyRowAfter: "!p-0",
   bodyRowAfterCell: "py-1",
-  bodyRowDateSeparator: "",
+  bodyRowDateDivider: "",
   bodyCellBase: {
     base: "p-[1.125rem] py-5 truncate align-top",
     variants: {
@@ -61,7 +61,7 @@ export default /*tw*/ {
   bodyCellSecondary: "mt-1 text-xs text-gray-500 overflow-hidden text-ellipsis",
   bodyCellSecondaryEmpty: "inline-block",
   bodyCellCheckbox: "first:px-4", // try to remove first
-  bodyCellDateSeparator: "",
+  bodyCellDateDivider: "",
   bodyCellNested: "mr-2 mt-0.5",
   bodyCellNestedExpandIcon: {
     component: "{UIcon}",
@@ -74,7 +74,7 @@ export default /*tw*/ {
     container: "bg-gray-200",
   },
   bodyCheckbox: "{UCheckbox} mt-[0.1rem]",
-  bodyDateSeparator: "{UDivider}",
+  bodyDateDivider: "{UDivider}",
   bodyEmptyState: "{UEmpty} my-8",
   footer: "group/footer border-t border-solid border-gray-200",
   footerRow: {
