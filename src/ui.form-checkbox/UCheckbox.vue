@@ -34,8 +34,9 @@
       />
     </label>
 
-    <template #footer>
-      <slot name="footer" />
+    <template #bottom>
+      <!-- @slot Use it to add something below the checkbox. -->
+      <slot name="bottom" />
     </template>
   </ULabel>
 </template>

@@ -331,7 +331,7 @@ const props = defineProps({
    * Show date divider line between dates.
    */
   dateDivider: {
-    type: [Array, Boolean],
+    type: [Boolean, Array],
     default: getDefault(defaultConfig, UTable).dateDivider,
   },
 

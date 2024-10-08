@@ -54,7 +54,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set switch value.
+   * Switch value.
    */
   modelValue: {
     type: Boolean,
@@ -71,7 +71,7 @@ const props = defineProps({
   },
 
   /**
-   * Set label.
+   * Switch label.
    */
   label: {
     type: String,
@@ -79,7 +79,7 @@ const props = defineProps({
   },
 
   /**
-   * Set description.
+   * Switch description.
    */
   description: {
     type: String,
@@ -87,7 +87,7 @@ const props = defineProps({
   },
 
   /**
-   * The size of the switch.
+   * Switch size.
    * @values sm, md, lg
    */
   size: {
@@ -96,7 +96,7 @@ const props = defineProps({
   },
 
   /**
-   * The color of the switch.
+   * Switch color.
    * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
   color: {
     type: String,
@@ -104,7 +104,7 @@ const props = defineProps({
   },
 
   /**
-   * Show on / off icon inside circle.
+   * Show toggle icons inside the circle.
    */
   toggleIcon: {
     type: Boolean,
@@ -112,7 +112,7 @@ const props = defineProps({
   },
 
   /**
-   * The label variant of the switch.
+   * Show toggle labels (on / off).
    */
   toggleLabel: {
     type: Boolean,
@@ -120,7 +120,7 @@ const props = defineProps({
   },
 
   /**
-   * Show on / off icon inside circle.
+   * Set switch disabled.
    */
   disabled: {
     type: Boolean,

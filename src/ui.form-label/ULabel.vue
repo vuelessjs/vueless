@@ -6,7 +6,7 @@
     @click="onClick"
   >
     <div v-bind="contentAttrs">
-      <!-- @slot Use it to wrap something into the label. -->
+      <!-- @slot Use it to add label content. -->
       <slot />
     </div>
 
@@ -45,7 +45,7 @@
     />
 
     <div v-bind="contentAttrs">
-      <!-- @slot Use it to wrap something into the label. -->
+      <!-- @slot Use it to add label content. -->
       <slot />
     </div>
 
@@ -83,7 +83,7 @@ const emit = defineEmits([
 
 const props = defineProps({
   /**
-   * Set label value.
+   * Label text.
    */
   label: {
     type: String,
@@ -91,16 +91,23 @@ const props = defineProps({
   },
 
   /**
-   * Set label size.
-   * @values sm, md, lg
+   * Label description.
    */
-  size: {
+  description: {
     type: String,
-    default: getDefault(defaultConfig, ULabel).size,
+    default: "",
   },
 
   /**
-   * Label placement.
+   * Label error message.
+   */
+  error: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Label align.
    * @values top, topInside, topWithDesc, left, right
    */
   align: {
@@ -109,36 +116,12 @@ const props = defineProps({
   },
 
   /**
-   * Centre label.
+   * Label size.
+   * @values sm, md, lg
    */
-  centred: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULabel).centred,
-  },
-
-  /**
-   * Set error message.
-   */
-  error: {
+  size: {
     type: String,
-    default: "",
-  },
-
-  /**
-   * Set description text.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set id label for.
-   * @ignore
-   */
-  for: {
-    type: String,
-    default: "",
+    default: getDefault(defaultConfig, ULabel).size,
   },
 
   /**
@@ -147,6 +130,22 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: getDefault(defaultConfig, ULabel).disabled,
+  },
+
+  /**
+   * Centre label horizontally.
+   */
+  centred: {
+    type: Boolean,
+    default: getDefault(defaultConfig, ULabel).centred,
+  },
+
+  /**
+   * Set input id for label `for` attribute.
+   */
+  for: {
+    type: String,
+    default: "",
   },
 
   /**
@@ -171,14 +170,21 @@ const wrapperRef = ref(null);
 
 const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
 
-const isHorizontalPlacement = computed(
-  () => props.align === PLACEMENT.left || props.align === PLACEMENT.right,
-);
+const isHorizontalPlacement = computed(() => {
+  return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
+});
 
-const isTopWithDescPlacement = computed(() => props.align === PLACEMENT.topWithDesc);
+const isTopWithDescPlacement = computed(() => {
+  return props.align === PLACEMENT.topWithDesc;
+});
 
-const labelElement = computed(() => labelRef.value);
-const wrapperElement = computed(() => wrapperRef.value);
+const labelElement = computed(() => {
+  return labelRef.value;
+});
+
+const wrapperElement = computed(() => {
+  return wrapperRef.value;
+});
 
 function onClick(event) {
   emit("click", event);
