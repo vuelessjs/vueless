@@ -9,13 +9,13 @@
     :description="description"
     v-bind="inputLabelAttrs"
   >
-    <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneWrapperAttrs">
+    <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
-        <!-- @slot Use it to add something at the top of the file block. -->
+        <!-- @slot Use it to add something above the component content. -->
         <slot name="top" />
       </UText>
 
-      <div v-bind="contentWrapperAttrs">
+      <div v-bind="contentAttrs">
         <!-- @slot Use it to add something before the placeholder. -->
         <slot name="left" />
 
@@ -40,7 +40,7 @@
           </template>
         </UFiles>
 
-        <div v-bind="buttonWrapperAttrs">
+        <div v-bind="buttonsAttrs">
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
               filled
@@ -86,7 +86,7 @@
       </div>
 
       <UText v-if="hasSlotContent($slots['bottom'])" :size="size" v-bind="descriptionBottomAttrs">
-        <!-- @slot Use it to add something at the bottom of the file block. -->
+        <!-- @slot Use it to add something below the component content. -->
         <slot name="bottom" />
       </UText>
     </div>
@@ -115,7 +115,15 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Set label.
+   * Input value.
+   */
+  modelValue: {
+    type: [Array, File],
+    default: null,
+  },
+
+  /**
+   * Input label.
    */
   label: {
     type: String,
@@ -123,7 +131,7 @@ const props = defineProps({
   },
 
   /**
-   * Set description.
+   * Input description.
    */
   description: {
     type: String,
@@ -131,7 +139,15 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
+   * Error message.
+   */
+  error: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Label placement.
    * @values top, topInside, topWithDesc
    */
   labelAlign: {
@@ -139,37 +155,8 @@ const props = defineProps({
     default: getDefault(defaultConfig, UInputFile).labelAlign,
   },
 
-  modelValue: {
-    type: [Array, File],
-    default: null,
-  },
-
   /**
-   * Allow selecting multiple files.
-   */
-  multiple: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputFile).multiple,
-  },
-
-  /**
-   * Set max file size in megabytes.
-   */
-  maxFileSize: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputFile).maxFileSize,
-  },
-
-  /**
-   * Set allowed file types.
-   */
-  allowedFileTypes: {
-    type: Array,
-    default: () => getDefault(defaultConfig, UInputFile).allowedFileTypes,
-  },
-
-  /**
-   * Set size.
+   * Input size.
    * @values sm, md, lg
    */
   size: {
@@ -178,11 +165,27 @@ const props = defineProps({
   },
 
   /**
-   * Set error text for component.
+   * Max file size in megabytes.
    */
-  error: {
-    type: String,
-    default: "",
+  maxFileSize: {
+    type: Number,
+    default: getDefault(defaultConfig, UInputFile).maxFileSize,
+  },
+
+  /**
+   * Allowed file types.
+   */
+  allowedFileTypes: {
+    type: Array,
+    default: () => getDefault(defaultConfig, UInputFile).allowedFileTypes,
+  },
+
+  /**
+   * Allow selecting multiple files.
+   */
+  multiple: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UInputFile).multiple,
   },
 
   /**
@@ -242,15 +245,15 @@ const {
   config,
   inputLabelAttrs,
   chooseFileButtonAttrs,
-  dropzoneWrapperAttrs,
+  dropzoneAttrs,
   descriptionTopAttrs,
   descriptionBottomAttrs,
-  contentWrapperAttrs,
+  contentAttrs,
   clearButtonAttrs,
   placeholderAttrs,
   inputAttrs,
   fileListAttrs,
-  buttonWrapperAttrs,
+  buttonsAttrs,
   removeItemButtonAttrs,
   hasSlotContent,
 } = useAttrs(props);
@@ -285,10 +288,7 @@ const accept = computed(() => {
 });
 
 const isValue = computed(() => {
-  return (
-    (Array.isArray(currentFiles.value) && currentFiles.value?.length) ||
-    (!Array.isArray(currentFiles.value) && currentFiles.value)
-  );
+  return Array.isArray(currentFiles.value) ? !!currentFiles.value?.length : !!currentFiles.value;
 });
 
 const fileList = computed(() => {
@@ -389,13 +389,13 @@ function onClickResetFiles() {
 function onDragOver(event) {
   event.preventDefault();
 
-  dropZoneRef.value.classList.add(...config.value.dropzoneWrapperHover.split(" "));
+  dropZoneRef.value.classList.add(...config.value.dropzoneHover.split(" "));
 }
 
 function onDragLeave(event) {
   event.preventDefault();
 
-  dropZoneRef.value.classList.remove(...config.value.dropzoneWrapperHover.split(" "));
+  dropZoneRef.value.classList.remove(...config.value.dropzoneHover.split(" "));
 }
 
 function onDrop(event) {

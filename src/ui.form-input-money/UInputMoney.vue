@@ -14,7 +14,7 @@
     :data-test="`${dataTest}-base-currency`"
     :left-icon="leftIcon"
     :right-icon="rightIcon"
-    v-bind="inputAttrs"
+    v-bind="moneyInputAttrs"
     @keyup="onKeyup"
     @blur="onBlur"
     @input="onInput"
@@ -72,7 +72,7 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
+   * Label placement.
    * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
@@ -232,7 +232,7 @@ const moneyInputRef = ref(null);
 
 const elementId = props.id || useId();
 
-const { inputAttrs } = useAttrs(props);
+const { moneyInputAttrs } = useAttrs(props);
 
 const { formattedValue, rawValue, setValue } = useFormatCurrency(`#${elementId}`, () => ({
   minFractionDigits: props.minFractionDigits,

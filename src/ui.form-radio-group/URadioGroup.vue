@@ -10,6 +10,7 @@
     :data-test="dataTest"
   >
     <div v-bind="listAttrs">
+      <!-- @slot Use it to add URadio directly. -->
       <slot>
         <URadio
           v-for="(option, index) in options"
@@ -128,7 +129,7 @@ const props = defineProps({
    */
   dataTest: {
     type: String,
-    default: "radio",
+    default: "",
   },
 });
 

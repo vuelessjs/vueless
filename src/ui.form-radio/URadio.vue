@@ -22,8 +22,9 @@
       @change="onChange"
     />
 
-    <template #footer>
-      <slot name="footer" />
+    <template #bottom>
+      <!-- @slot Use it to add something below the radio. -->
+      <slot name="bottom" />
     </template>
   </ULabel>
 </template>
@@ -48,7 +49,7 @@ const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = defineProps({
   /**
-   * Native value attribute.
+   * Radio value.
    */
   modelValue: {
     type: [Boolean, String, Number, Array, Object],

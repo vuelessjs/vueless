@@ -10,6 +10,7 @@
     :data-test="dataTest"
   >
     <div v-bind="listAttrs">
+      <!-- @slot Use it to add URadio directly. -->
       <slot>
         <UCheckbox
           v-for="(option, index) in options"

@@ -183,7 +183,7 @@ const props = defineProps({
   },
 
   /**
-   * Set label placement related from the default slot.
+   * Label placement.
    * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {

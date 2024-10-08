@@ -8,7 +8,7 @@ export default function useAttrs(props, { selected }) {
 
   const keysAttrs = getKeysAttrs();
 
-  const { checkboxAttrs } = keysAttrs;
+  const { multiStateCheckboxAttrs: checkboxAttrs } = keysAttrs;
 
   keysAttrs.checkboxAttrs = computed(() => {
     if (selected.value.icon) {

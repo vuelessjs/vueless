@@ -13,7 +13,7 @@
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
-    v-bind="inputAttrs"
+    v-bind="searchInputAttrs"
     :data-test="dataTest"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
@@ -69,7 +69,7 @@
           :label="searchButtonLabel"
           :size="buttonSize"
           no-ring
-          v-bind="buttonAttrs"
+          v-bind="searchButtonAttrs"
           :data-test="`${dataTest}-search-button`"
           @click="onClickSearch"
         />
@@ -109,22 +109,6 @@ const props = defineProps({
   size: {
     type: String,
     default: getDefault(defaultConfig, UInputSearch).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
   },
 
   /**
@@ -185,7 +169,31 @@ const props = defineProps({
   },
 
   /**
-   * Set input read-only.
+   * Time in milliseconds before value emit.
+   */
+  debounce: {
+    type: [Number, String],
+    default: getDefault(defaultConfig, UInputSearch).debounce,
+  },
+
+  /**
+   * Left icon name.
+   */
+  leftIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Right icon name.
+   */
+  rightIcon: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Make input read-only.
    */
   readonly: {
     type: Boolean,
@@ -193,7 +201,7 @@ const props = defineProps({
   },
 
   /**
-   * Set input disabled.
+   * Make input disabled.
    */
   disabled: {
     type: Boolean,
@@ -206,11 +214,6 @@ const props = defineProps({
   id: {
     type: String,
     default: "",
-  },
-
-  debounce: {
-    type: [Number, String],
-    default: getDefault(defaultConfig, UInputSearch).debounce,
   },
 
   /**
@@ -260,7 +263,8 @@ defineExpose({ inputRef });
 
 const elementId = props.id || useId();
 
-const { config, inputAttrs, searchIconAttrs, clearIconAttrs, buttonAttrs } = useAttrs(props);
+const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
+  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
