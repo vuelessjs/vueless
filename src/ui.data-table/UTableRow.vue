@@ -16,7 +16,11 @@
       :key="index"
       v-bind="getCellAttrs(key, row, index)"
       :class="
-        cx([getCellAttrs(key, row, index).class, columns[index].tdClass, getCellClasses(row, key)])
+        cx([
+          getCellAttrs(key, row, index).class,
+          columns[index].tdClass,
+          !row[key]?.contentClasses && getCellClasses(row, key),
+        ])
       "
     >
       <div
@@ -36,7 +40,10 @@
         />
       </div>
 
-      <div v-if="isCellObject(value)">
+      <div
+        v-if="isCellObject(value)"
+        :class="cx([bodyCellPrimaryAttrs.class, !row[key]?.class && getCellClasses(row, key)])"
+      >
         <slot :name="`cell-${key}`" :value="value" :row="row">
           <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
             {{ getCellPrimaryContent(value) }}

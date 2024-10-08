@@ -190,7 +190,7 @@
               :columns="columns"
               :config="config"
               :attrs="keysAttrs"
-              v-bind="getRowAttrs(row)"
+              v-bind="getRowAttrs(row.id)"
               :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
               @click="onClickRow"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -610,7 +610,7 @@ function shouldDisplayDateSeparator(rowIndex) {
 }
 
 function getRowAttrs(rowId) {
-  return selectedRows.value.includes(rowId) ? bodyRowCheckedAttrs : bodyRowAttrs;
+  return selectedRows.value.includes(rowId) ? bodyRowCheckedAttrs.value : bodyRowAttrs.value;
 }
 
 function getRowClasses(row) {
