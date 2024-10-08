@@ -198,7 +198,7 @@ onMounted(() => {
 });
 
 function getCellClasses(row, key) {
-  const cellClasses = row[key]?.class || "";
+  const cellClasses = row[key]?.contentClasses || row[key]?.class || "";
 
   return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
 }
