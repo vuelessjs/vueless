@@ -8,7 +8,7 @@ import UMoney from "../../ui.text-money/UMoney.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-const STICKY_PARAMETERS = {
+const SHORT_STORY_PARAMETERS = {
   docs: {
     story: {
       inline: false,
@@ -46,6 +46,18 @@ export default {
     numberOfRows: 5,
   },
 };
+
+function getDateSeparatorRow() {
+  return {
+    id: getRandomId(),
+    isChecked: false,
+    rowDate: new Date().toString(),
+    key_1: "Info",
+    key_2: "Statistics",
+    key_3: "Reports",
+    key_4: "Discounts",
+  };
+}
 
 function getNestedRow() {
   return {
@@ -321,11 +333,11 @@ export const Selectable = DefaultTemplate.bind({});
 Selectable.args = { selectable: true };
 
 export const StickyHeader = DefaultTemplate.bind({});
-StickyHeader.parameters = STICKY_PARAMETERS;
+StickyHeader.parameters = SHORT_STORY_PARAMETERS;
 StickyHeader.args = { numberOfRows: 50, selectable: true, stickyHeader: true };
 
 export const StickyFooter = DefaultTemplate.bind({});
-StickyFooter.parameters = STICKY_PARAMETERS;
+StickyFooter.parameters = SHORT_STORY_PARAMETERS;
 StickyFooter.args = {
   numberOfRows: 50,
   selectable: true,
@@ -346,16 +358,12 @@ export const Compact = DefaultTemplate.bind({});
 Compact.args = { compact: true };
 
 export const DateDivider = DefaultTemplate.bind({});
-DateDivider.args = { dateDivider: true };
+DateDivider.args = { dateDivider: true, row: getDateSeparatorRow };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
 DateDividerCustomLabel.args = {
-  dateDivider: [
-    {
-      date: new Date(1709046013 * 1000).toString(),
-      label: "Label for this date",
-    },
-  ],
+  row: getDateSeparatorRow,
+  dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
 };
 
 export const SlotDefault = DefaultTemplate.bind({});
@@ -368,6 +376,7 @@ SlotDefault.args = {
 };
 
 export const SlotHeaderActions = DefaultTemplate.bind({});
+SlotHeaderActions.parameters = SHORT_STORY_PARAMETERS;
 SlotHeaderActions.args = {
   numberOfRows: 50,
   stickyHeader: true,

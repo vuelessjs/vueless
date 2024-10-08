@@ -166,17 +166,13 @@
             </tr>
 
             <tr
-              v-if="isShownDateSeparator(rowIndex) && row.date"
-              v-bind="
-                shouldDisplayDateSeparator(rowIndex)
-                  ? bodyRowDateSeparatorCheckedAttrs
-                  : bodyRowDateSeparatorAttrs
-              "
+              v-if="isShownDateSeparator(rowIndex) && row.rowDate"
+              v-bind="bodyRowDateSeparatorAttrs"
             >
-              <td v-bind="bodyCellDateSeparatorAttrs(rowIndex)" :colspan="colsCount">
+              <td v-bind="bodyCellDateSeparatorAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
-                  :label="getDateSeparatorLabel(row.date.separatorDate)"
+                  :label="getDateSeparatorLabel(row.rowDate)"
                   v-bind="bodyDateSeparatorAttrs"
                 />
               </td>
@@ -235,7 +231,7 @@
               <!-- @slot Use it to add custom empty state. -->
               <slot name="empty-state">
                 <UEmpty
-                  size="sm"
+                  size="md"
                   :description="currentLocale.noData"
                   :data-test="`${dataTest}-empty`"
                   v-bind="bodyEmptyStateAttrs"
@@ -526,7 +522,6 @@ const {
   bodyRowCheckedAttrs,
   footerAttrs,
   bodyRowDateSeparatorAttrs,
-  bodyRowDateSeparatorCheckedAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
   stickyHeaderActionsCheckboxAttrs,
@@ -595,18 +590,10 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function getDateSeparatorLabel(separatorDate) {
+function getDateSeparatorLabel(rowDate) {
   return Array.isArray(props.dateDivider)
-    ? props.dateDivider.find((dateItem) => dateItem.date === separatorDate)?.label || separatorDate
-    : separatorDate;
-}
-
-function shouldDisplayDateSeparator(rowIndex) {
-  const isPreviousRowChecked = tableRows.value[rowIndex - 1]?.isChecked;
-  const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
-  const isFirstRowAndNextChecked = rowIndex === 0 && isCheckedRowAfter;
-
-  return (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked;
+    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
+    : rowDate;
 }
 
 function getRowAttrs(rowId) {
@@ -679,8 +666,8 @@ function isShownDateSeparator(rowIndex) {
     return hasSlotContentBeforeFirstRow.value;
   }
 
-  const isPrevSameDate = prevItem?.date?.primary === currentItem?.date?.primary;
-  const isNextSameDate = nextItem?.date?.primary === currentItem?.date?.primary;
+  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
+  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
 
   return isPrevSameDate && !isNextSameDate && props.dateDivider;
 }
@@ -720,6 +707,7 @@ function clearSelectedItems() {
 }
 
 function onToggleRowVisibility(rowId) {
+  // TODO: Use map instead of forEach to get rid of implicit array mutation.
   tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
 }
 </script>
