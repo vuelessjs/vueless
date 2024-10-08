@@ -8,7 +8,7 @@
     v-bind="inputLabelAttrs"
     :data-test="dataTest"
   >
-    <div v-bind="wrapperAttrs">
+    <div v-bind="containerAttrs">
       <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
         <!--
           @slot Use it to customise counter.
@@ -177,7 +177,7 @@ const hovered = ref(null);
 const {
   config,
   inputLabelAttrs,
-  wrapperAttrs,
+  containerAttrs,
   counterAttrs,
   totalAttrs,
   starsAttrs,

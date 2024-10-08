@@ -18,7 +18,7 @@
           color="gray"
           :checked="selectedItem === ''"
           :disabled="disabled"
-          v-bind="unselectedRadioAttrs"
+          v-bind="unselectedColorPickerRadioAttrs"
           @update:model-value="onUpdateValue('')"
         />
 
@@ -43,7 +43,7 @@
         :color="color"
         :checked="selectedItem === color"
         :disabled="disabled"
-        v-bind="radioAttrs"
+        v-bind="colorPickerRadioAttrs"
         @update:model-value="onUpdateValue(color)"
       />
     </div>
@@ -169,10 +169,10 @@ const {
   config,
   colorPickerLabelAttrs,
   listAttrs,
-  radioAttrs,
+  colorPickerRadioAttrs,
+  unselectedColorPickerRadioAttrs,
   unselectedIconAttrs,
   unselectedAttrs,
-  unselectedRadioAttrs,
 } = useAttrs(props);
 
 const selectedItem = computed({

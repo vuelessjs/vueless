@@ -6,7 +6,7 @@
       filled
       square
       round
-      :disabled="isRemoveButtonDisabled"
+      :disabled="isRemoveButtonDisabled || disabled"
       v-bind="removeButtonAttrs"
       @click="onClickRemove"
     >
@@ -22,7 +22,7 @@
 
     <div v-bind="numberAttrs">
       <div v-bind="valueAttrs" v-text="count" />
-      <div v-bind="textAttrs" v-text="label" />
+      <div v-bind="labelAttrs" v-text="label" />
     </div>
 
     <UButton
@@ -31,7 +31,7 @@
       filled
       square
       round
-      :disabled="isAddButtonDisabled"
+      :disabled="isAddButtonDisabled || disabled"
       v-bind="addButtonAttrs"
       @click="onClickAdd"
     >
@@ -102,12 +102,45 @@ const props = defineProps({
   },
 
   /**
+   * Label placement.
+   * @values top, topWithDesc, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: getDefault(defaultConfig, UInputNumber).labelAlign,
+  },
+
+  /**
+   * Input description.
+   */
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Error message.
+   */
+  error: {
+    type: String,
+    default: "",
+  },
+
+  /**
    * Input size.
    * @values sm, md, lg
    */
   size: {
     type: String,
     default: getDefault(defaultConfig, UInputNumber).size,
+  },
+
+  /**
+   * Disable the input.
+   */
+  disabled: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UInputNumber).disabled,
   },
 
   /**
@@ -138,7 +171,7 @@ const emit = defineEmits([
 const {
   config,
   valueAttrs,
-  textAttrs,
+  labelAttrs,
   removeButtonAttrs,
   removeIconAttrs,
   addButtonAttrs,

@@ -7,7 +7,7 @@
     :size="size"
     :color="color"
     :placement="placement"
-    v-bind="checkboxAttrs"
+    v-bind="multiStateCheckboxAttrs"
     @input="onClickCheckbox"
   />
 </template>
@@ -114,7 +114,7 @@ const isChecked = ref(false);
 
 const selected = computed(() => props.options[index.value]);
 
-const { checkboxAttrs } = useAttrs(props, { selected });
+const { multiStateCheckboxAttrs } = useAttrs(props, { selected });
 
 watchEffect(setIndex);
 

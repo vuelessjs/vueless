@@ -15,7 +15,7 @@ export default /*tw*/ {
       },
     },
   },
-  text: {
+  label: {
     base: "pt-1 !leading-none text-gray-500",
     variants: {
       size: {

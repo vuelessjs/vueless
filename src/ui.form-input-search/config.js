@@ -1,8 +1,8 @@
 export default /*tw*/ {
-  input: "{UInput}",
+  searchInput: "{UInput}",
   clearIcon: "{UIcon}",
   searchIcon: "{UIcon}",
-  button: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+  searchButton: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
   defaults: {
     size: "md",
     labelAlign: "topInside",
