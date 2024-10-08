@@ -73,6 +73,13 @@ export function getArgTypes(componentName) {
             defaultValue: { summary: attribute.default || "" },
           },
         };
+      } else {
+        types[attribute.name] = {
+          control: type.split("|")[0],
+          table: {
+            defaultValue: { summary: attribute.default || "" },
+          },
+        };
       }
     }
 
