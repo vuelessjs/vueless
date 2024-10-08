@@ -1,6 +1,6 @@
 export default /*tw*/ {
   inputLabel: "{ULabel} w-full",
-  dropzoneWrapper: {
+  dropzone: {
     base: `
       p-3 size-auto w-full bg-white transition
       rounded-dynamic border border-solid border-gray-300
@@ -21,9 +21,11 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-9" },
     ],
   },
+  dropzoneHover: "border-gray-400 border-dashed",
+  dropzoneError: "hover:border-red-400 border-dashed border-red-300",
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
-  contentWrapper: {
+  content: {
     base: "p-3 gap-6 flex justify-between items-start relative w-full rounded-dynamic bg-brand-50",
     variants: {
       multiple: {
@@ -47,6 +49,8 @@ export default /*tw*/ {
       },
     },
   },
+  fileList: "{UFiles} w-full",
+  buttons: "flex gap-3 items-center",
   chooseFileButton: {
     component: "{UButton}",
     variants: {
@@ -57,11 +61,7 @@ export default /*tw*/ {
   },
   clearButton: "{UButton}",
   removeItemButton: "{UButton} ml-2",
-  dropzoneWrapperHover: "border-gray-400 border-dashed",
-  dropzoneWrapperError: "hover:border-red-400 border-dashed border-red-300",
   input: "sr-only",
-  buttonWrapper: "flex gap-3 items-center",
-  fileList: "{UFiles} w-full",
   i18n: {
     sizeError: "File size is too big.",
     formatError: "Format is not supported.",
