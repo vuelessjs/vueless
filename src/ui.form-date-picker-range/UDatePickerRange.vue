@@ -29,7 +29,9 @@
 
       <template #right-icon>
         <!-- @slot Use it to add icon after the date. -->
-        <slot name="right-icon" />
+        <slot name="right-icon">
+          <UIcon name="calendar_month-fill" color="gray" />
+        </slot>
       </template>
 
       <template #right>
@@ -147,6 +149,7 @@
 import { computed, watch, ref, nextTick, provide, useId } from "vue";
 import { getDefault } from "../utils/utilUI.js";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";

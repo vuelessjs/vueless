@@ -29,7 +29,9 @@
 
       <template #right-icon>
         <!-- @slot Use it add an icon after the date. -->
-        <slot name="right-icon" />
+        <slot name="right-icon">
+          <UIcon name="calendar_month-fill" color="gray" />
+        </slot>
       </template>
 
       <template #right>
@@ -68,6 +70,7 @@
 import { computed, nextTick, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
