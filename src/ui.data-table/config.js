@@ -22,7 +22,7 @@ export default /*tw*/ {
   header: "border-b border-gray-200",
   headerRow: "",
   headerCellBase: {
-    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
+    base: "p-4 text-sm font-normal text-gray-500 text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
@@ -32,7 +32,7 @@ export default /*tw*/ {
   headerCellCheckbox: "w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
-    base: "absolute top-[1.1865rem] mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
+    base: "absolute top-4 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
     variants: {
       compact: {
         true: "top-3",
@@ -73,7 +73,7 @@ export default /*tw*/ {
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
-  bodyCheckbox: "{UCheckbox} mt-[0.1rem]",
+  bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: "{UDivider}",
   bodyEmptyState: "{UEmpty} my-8",
   footer: "group/footer border-t border-solid border-gray-200",

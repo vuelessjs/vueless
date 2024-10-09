@@ -11,7 +11,6 @@
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
-            size="sm"
             :partial="!isSelectedAllRows"
             :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderActionsCheckboxAttrs"
@@ -36,7 +35,6 @@
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
-            size="sm"
             :partial="!isSelectedAllRows"
             :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderCheckboxAttrs"
@@ -107,7 +105,6 @@
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
-                size="sm"
                 :partial="!isSelectedAllRows"
                 :data-test="`${dataTest}-select-all`"
                 v-bind="headerCheckboxAttrs"

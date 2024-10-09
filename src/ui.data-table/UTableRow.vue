@@ -5,7 +5,6 @@
         v-model="selectedRows"
         :data-id="row.id"
         :value="row.id"
-        size="sm"
         :data-test="`${dataTest}-body-checkbox`"
         v-bind="bodyCheckboxAttrs"
       />
