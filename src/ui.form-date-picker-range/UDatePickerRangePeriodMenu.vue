@@ -102,7 +102,7 @@
       <UButton
         square
         no-ring
-        size="xs"
+        size="sm"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
@@ -117,7 +117,7 @@
       <UButton
         square
         no-ring
-        size="xs"
+        size="sm"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
