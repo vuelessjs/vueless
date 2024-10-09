@@ -14,18 +14,24 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
     label: Boolean(props.label),
   }));
 
-  const extendingKeys = ["caret", "wrapperActive", "labelWrapperActive", "labelWrapperTop"];
+  const extendingKeys = [
+    "caret",
+    "searchActive",
+    "wrapperActive",
+    "selectLabelActive",
+    "selectLabelOpenDirectionTop",
+  ];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
 
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
+    selectLabel: {
+      extend: computed(() => [
+        isOpen.value && extendingKeysClasses.selectLabelActive.value,
+        isTop.value && extendingKeysClasses.selectLabelOpenDirectionTop.value,
+      ]),
+    },
     wrapper: {
       extend: computed(() => [isOpen.value && extendingKeysClasses.wrapperActive.value]),
-    },
-    label: {
-      extend: computed(() => [
-        isOpen.value && extendingKeysClasses.labelWrapperActive.value,
-        isTop.value && extendingKeysClasses.labelWrapperTop.value,
-      ]),
     },
     toggle: {
       base: computed(() => [extendingKeysClasses.caret.value]),
@@ -43,7 +49,9 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
       base: computed(() => [extendingKeysClasses.caret.value]),
     },
     search: {
-      extend: computed(() => [Boolean(selectedLabelValue.value) && !isOpen.value && "w-0"]),
+      extend: computed(() => [
+        (!selectedLabelValue.value || isOpen.value) && extendingKeysClasses.searchActive.value,
+      ]),
     },
   });
 

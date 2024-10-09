@@ -1,7 +1,7 @@
 export default /*tw*/ {
   selectLabel: "{ULabel}",
-  labelWrapperTop: "group/top", // applies when an open direction is top
-  labelWrapperActive: "group/active",
+  selectLabelActive: "group/active",
+  selectLabelOpenDirectionTop: "group/top",
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -27,7 +27,7 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
-  wrapperActive: "z-[inherit]", // applies when select active
+  wrapperActive: "z-[inherit]",
   innerWrapper: {
     base: "px-3 flex min-h-full w-full overflow-hidden justify-between",
     variants: {
@@ -81,7 +81,7 @@ export default /*tw*/ {
   clearIcon: "{UIcon}",
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon}",
-  clearMultipleTextAll: {
+  clearMultipleText: {
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
       { size: "sm", class: "text-xs" },
@@ -89,7 +89,8 @@ export default /*tw*/ {
       { size: "lg", class: "text-base" },
     ],
   },
-  search: "flex w-full",
+  search: "flex w-0",
+  searchActive: "w-full",
   searchInput: {
     base: `
         p-0 font-normal leading-none text-gray-900 relative w-full border-none bg-transparent
@@ -122,7 +123,7 @@ export default /*tw*/ {
     multiple: false,
     disabled: false,
     searchable: true,
-    noClear: false,
+    clearable: false,
     addOption: false,
     /* icons */
     dropdownIcon: "expand_more",

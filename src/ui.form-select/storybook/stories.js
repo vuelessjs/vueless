@@ -15,7 +15,7 @@ export default {
   component: USelect,
   args: {
     label: "Label",
-    modelValue: "",
+    modelValue: null,
     options: [
       { id: 1, label: "value 1", badge: "10%" },
       { id: 2, label: "value 2", badge: "20%" },
@@ -25,7 +25,7 @@ export default {
   },
   argTypes: {
     ...getArgTypes(USelect.__name),
-    modelValue: { control: { type: "text" } },
+    modelValue: { control: { type: "number" } },
   },
   parameters: {
     docs: {

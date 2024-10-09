@@ -26,12 +26,12 @@
       @keydown.enter.tab.stop.self="dropdownListRef.addPointerElement"
       @keyup.esc="deactivate"
     >
-      <!-- @slot Use it to add something after input. -->
+      <!-- @slot Use it to add something right. -->
       <slot name="right" />
 
       <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
         <!--
-            @slot Use it to add icon after option.
+            @slot Use it to add icon right.
             @binding {string} icon-name
             @binding {string} icon-size
           -->
@@ -68,6 +68,7 @@
           @slot Use it to add something instead of the toggle icon.
           @binding {string} icon-name
           @binding {string} icon-size
+          @binding {boolean} opened
         -->
         <slot
           name="toggle"
@@ -88,7 +89,7 @@
       </div>
 
       <div
-        v-if="isLocalValue && !noClear && !disabled && !multiple"
+        v-if="isLocalValue && !clearable && !disabled && !multiple"
         v-bind="clearAttrs"
         @mousedown="removeElement"
       >
@@ -127,7 +128,7 @@
           v-bind="leftIconWrapperAttrs"
         >
           <!--
-            @slot Use it to add icon before option.
+            @slot Use it to add icon left.
             @binding {string} icon-name
             @binding {string} icon-size
           -->
@@ -143,14 +144,14 @@
         </span>
 
         <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-          <!-- @slot Use it to add something before input. -->
+          <!-- @slot Use it to add something left. -->
           <slot name="left" />
         </span>
 
         <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!--
-              @slot Use it to add selected value label.
+              @slot Use it to customise selected value label.
               @binding {string} selected-label
             -->
             <slot
@@ -243,8 +244,8 @@
         </span>
 
         <div
-          v-if="isLocalValue && !noClear && !disabled && multiple"
-          v-bind="clearMultipleTextAllAttrs"
+          v-if="isLocalValue && !clearable && !disabled && multiple"
+          v-bind="clearMultipleTextAttrs"
           @mousedown.prevent.capture="removeElement(localValue)"
           @click.prevent.capture
           v-text="currentLocale.clear"
@@ -264,23 +265,24 @@
         :add-option="addOption"
         tabindex="-1"
         v-bind="dropdownListAttrs"
+        @add="onAddOption"
         @focus="activate"
-        @add-option="onAddOption"
         @mousedown.prevent.capture
         @click.prevent.capture
       >
         <template #before-option="{ option, index }">
           <!--
             @slot Use it to add something before option.
-            @binding {other} option
+            @binding {object} option
+            @binding {number} index
           -->
           <slot name="before-option" :option="option" :index="index" />
         </template>
 
         <template #option="{ option, index }">
           <!--
-            @slot Use it to add something instead of option.
-            @binding {other} option
+            @slot Use it to customise the option.
+            @binding {object} option
             @binding {number} index
           -->
           <slot name="option" :option="option" :index="index" />
@@ -289,7 +291,8 @@
         <template #after-option="{ option, index }">
           <!--
             @slot Use it to add something after option.
-            @binding {other} option
+            @binding {object} option
+            @binding {number} index
           -->
           <slot name="after-option" :option="option" :index="index" />
         </template>
@@ -472,9 +475,9 @@ const props = defineProps({
   /**
    * Allow clearing selected value.
    */
-  noClear: {
+  clearable: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).noClear,
+    default: getDefault(defaultConfig, USelect).clearable,
   },
 
   /**
@@ -536,19 +539,19 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when dropdown list is opened.
+   * Triggers when a dropdown list is opened.
    * @property {string} propsId
    */
   "open",
 
   /**
-   * Triggers when dropdown list is closed.
+   * Triggers when a dropdown list is closed.
    * @property {string} propsId
    */
   "close",
 
   /**
-   * Triggers when the input value is changed.
+   * Triggers when the search value is changed.
    */
   "searchChange",
 
@@ -566,9 +569,9 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
-   * Triggers when dropdown options list is updated.
+   * Triggers on click on add new option button in the dropdown.
    */
-  "addOption",
+  "add",
 
   /**
    * Triggers when the user commits the change to options or selected value explicitly.
@@ -626,7 +629,7 @@ const {
   afterCaretAttrs,
   toggleAttrs,
   clearAttrs,
-  clearMultipleTextAllAttrs,
+  clearMultipleTextAttrs,
   clearMultipleAttrs,
   searchAttrs,
   searchInputAttrs,
@@ -754,18 +757,18 @@ function onKeydownAddOption(event) {
   const isMeta = event.metaKey;
 
   if (isMeta && isEnter && isMac) {
-    emit("addOption");
+    emit("add");
     emit("change", { value: dropdownValue.value, options: props.options });
   }
 
   if (isEnter && isCtrl && !isMac) {
-    emit("addOption");
+    emit("add");
     emit("change", { value: dropdownValue.value, options: props.options });
   }
 }
 
 function onAddOption() {
-  emit("addOption");
+  emit("add");
 }
 
 function filterAndFlat(options, search, label) {
@@ -831,7 +834,7 @@ function adjustPosition() {
 function removeElement(option, shouldClose = true) {
   if (props.disabled) return;
 
-  if (props.noClear && !props.multiple) {
+  if (props.clearable && !props.multiple) {
     deactivate();
 
     return;
