@@ -30,7 +30,7 @@
       <template #right-icon>
         <!-- @slot Use it add an icon after the date. -->
         <slot name="right-icon">
-          <UIcon name="calendar_month-fill" color="gray" />
+          <UIcon name="calendar_month-fill" color="gray" :size="size" />
         </slot>
       </template>
 
