@@ -19,7 +19,7 @@ export default /*tw*/ {
   menu: {
     base: `
       absolute z-40 mb-3 w-80 overflow-hidden rounded-dynamic
-      border border-brand-300 bg-white p-2 shadow focus:outline-none
+      border border-gray-300 bg-white p-2 shadow focus:outline-none
     `,
     variants: {
       openDirectionX: {
@@ -76,8 +76,11 @@ export default /*tw*/ {
       wrapper: "w-full hover:z-10 focus:z-10 !rounded-none",
       description: "hidden",
     },
-    wrapper: "focus-within:z-10 focus-within:ring-0 rounded-r-none",
     input: "rounded-r-none",
+    wrapper: `
+      rounded-r-none
+      focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500
+    `,
   },
   rangeInputLast: {
     component: "{UInput}",
@@ -86,19 +89,19 @@ export default /*tw*/ {
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    wrapper: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
     input: "rounded-l-none",
+    wrapper: `
+      rounded-l-none
+      focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500
+    `,
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
     component: "{UCalendar}",
-    wrapper: "p-0 w-full border-none shadow-none rounded-none",
-    navigation: "mb-0 border-none",
-    viewSwitchButton: {
-      base: "rounded-dynamic px-4",
-      rightIcon: "hidden",
-    },
-    day: "w-full h-10 mb-0.5",
+    wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",
+    navigation: "pb-0 mb-0 border-none",
+    days: "gap-0 gap-y-0.5",
+    day: "w-full",
   },
   i18n: {
     ownRange: "Own range",

@@ -151,7 +151,7 @@
       <UButton
         v-else
         variant="thirdary"
-        color="brand"
+        color="grayscale"
         no-ring
         v-bind="monthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"

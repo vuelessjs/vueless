@@ -1,54 +1,45 @@
 <template>
   <div ref="wrapperRef" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
     <div v-bind="navigationAttrs">
-      <Teleport
-        v-if="rangeSwitchViewContainerRef"
-        :to="rangeSwitchViewContainerRef"
-        :disabled="!range"
+      <UButton
+        square
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        :left-icon="config.defaults.prevIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickPrevButton"
+      />
+
+      <UButton
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        v-bind="viewSwitchButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickViewSwitch"
       >
-        <UButton
-          square
-          no-ring
-          size="sm"
-          variant="thirdary"
-          :right-icon="isCurrentView.day ? config.defaults.viewSwitchIcon : undefined"
-          v-bind="viewSwitchButtonAttrs"
-          @mousedown.prevent.capture
-          @click="onClickViewSwitch"
-        >
-          <template v-if="isCurrentView.day">
-            {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
-          </template>
-          <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
-          <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
-        </UButton>
-      </Teleport>
+        <template v-if="isCurrentView.day">
+          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
+        </template>
+        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
+        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
+      </UButton>
 
-      <div v-bind="nextPrevWrapperAttrs">
-        <UButton
-          square
-          no-ring
-          size="sm"
-          variant="thirdary"
-          :left-icon="config.defaults.prevIcon"
-          v-bind="nextPrevButtonAttrs"
-          @mousedown.prevent.capture
-          @click="onClickPrevButton"
-        />
-
-        <div ref="rangeSwitchViewContainerRef" />
-
-        <UButton
-          square
-          no-ring
-          size="sm"
-          variant="thirdary"
-          :left-icon="config.defaults.nextIcon"
-          v-bind="nextPrevButtonAttrs"
-          @mousedown.prevent.capture
-          @click="onClickNextButton"
-        />
-      </div>
+      <UButton
+        square
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        :left-icon="config.defaults.nextIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickNextButton"
+      />
     </div>
 
     <DayView
@@ -134,6 +125,7 @@
         square
         filled
         no-ring
+        color="grayscale"
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >
@@ -343,14 +335,12 @@ const {
   timepickerInputMinutesAttrs,
   timepickerInputSecondsAttrs,
   timepickerSubmitButtonAttrs,
-  nextPrevWrapperAttrs,
 } = useAttrs(props);
 
 const wrapperRef = ref(null);
 const hoursRef = ref(null);
 const minutesRef = ref(null);
 const secondsRef = ref(null);
-const rangeSwitchViewContainerRef = ref(null);
 
 const activeDate = ref(null);
 const activeMonth = ref(null);

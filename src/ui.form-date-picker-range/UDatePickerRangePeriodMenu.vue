@@ -7,6 +7,7 @@
         filled
         no-ring
         size="xs"
+        color="grayscale"
         variant="thirdary"
         :label="periodButton.title"
         v-bind="periodButtonAttrs"
@@ -19,6 +20,7 @@
         filled
         no-ring
         size="xs"
+        color="grayscale"
         variant="thirdary"
         :label="periodButton.title"
         v-bind="periodButtonActiveAttrs"
@@ -34,6 +36,7 @@
       filled
       no-ring
       size="xs"
+      color="grayscale"
       variant="thirdary"
       v-bind="periodButtonAttrs"
       @click="onClickCustomRangeButton"
@@ -52,6 +55,7 @@
       filled
       no-ring
       size="xs"
+      color="grayscale"
       variant="thirdary"
       v-bind="periodButtonActiveAttrs"
       @click="onClickCustomRangeButton"
@@ -70,6 +74,7 @@
       filled
       no-ring
       size="xs"
+      color="grayscale"
       variant="thirdary"
       :label="locale.ownRange"
       :left-icon="config.defaults.ownRangeIcon"
@@ -83,6 +88,7 @@
       filled
       no-ring
       size="xs"
+      color="grayscale"
       variant="thirdary"
       :label="locale.ownRange"
       :left-icon="config.defaults.ownRangeIcon"
@@ -97,7 +103,7 @@
         square
         no-ring
         size="xs"
-        color="gray"
+        color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
         v-bind="rangeSwitchButtonAttrs"
@@ -112,7 +118,7 @@
         square
         no-ring
         size="xs"
-        color="gray"
+        color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
         v-bind="rangeSwitchButtonAttrs"
@@ -126,6 +132,7 @@
           v-if="getDatePeriodState(date, index).isActive"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="periodDateActiveAttrs"
@@ -138,6 +145,7 @@
           v-else-if="getDatePeriodState(date, index).isFirstInRange && !isListType"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="firstPeriodGridDateAttrs"
@@ -150,6 +158,7 @@
           v-else-if="getDatePeriodState(date, index).isFirstInRange && isListType"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="firstPeriodListDateAttrs"
@@ -162,6 +171,7 @@
           v-else-if="getDatePeriodState(date, index).isLastInRange && !isListType"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="lastPeriodGridDateAttrs"
@@ -174,6 +184,7 @@
           v-else-if="getDatePeriodState(date, index).isLastInRange && isListType"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="lastPeriodListDateAttrs"
@@ -186,6 +197,7 @@
           v-else-if="getDatePeriodState(date, index).isInRange"
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="periodDateInRangeAttrs"
@@ -198,6 +210,7 @@
           v-else
           no-ring
           size="sm"
+          color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="periodDateAttrs"

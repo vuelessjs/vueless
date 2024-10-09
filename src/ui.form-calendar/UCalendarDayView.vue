@@ -66,7 +66,7 @@
         <UButton
           v-else-if="getDayState(day).isFirstDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="primary"
           color="brand"
           no-ring
           square
@@ -81,7 +81,7 @@
         <UButton
           v-else-if="getDayState(day).isLastDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="primary"
           color="brand"
           no-ring
           square
@@ -169,7 +169,7 @@
           v-else-if="getDayState(day).isAnotherMonthDay"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="grayscale"
           no-ring
           square
           v-bind="anotherMonthDayAttrs"
@@ -183,7 +183,7 @@
           v-else-if="!getDayState(day).isSelectedDay"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="grayscale"
           no-ring
           square
           v-bind="dayAttrs"
