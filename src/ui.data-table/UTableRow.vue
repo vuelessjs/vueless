@@ -36,7 +36,10 @@
         />
       </div>
 
-      <div v-if="isCellObject(value)">
+      <div
+        v-if="isCellObject(value)"
+        :class="cx([bodyCellPrimaryAttrs.class, getCellContentClasses(row, key)])"
+      >
         <slot :name="`cell-${key}`" :value="value" :row="row">
           <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
             {{ getCellPrimaryContent(value) }}
@@ -192,6 +195,12 @@ onMounted(() => {
 
 function getCellClasses(row, key) {
   const cellClasses = row[key]?.class || "";
+
+  return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
+}
+
+function getCellContentClasses(row, key) {
+  const cellClasses = row[key]?.contentClasses || "";
 
   return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
 }
