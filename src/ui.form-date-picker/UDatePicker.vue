@@ -87,6 +87,14 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
+   * Datepicker value (JavaScript Date object or string formatted in given `dateFormat`).
+   */
+  modelValue: {
+    type: [Object, String],
+    default: null,
+  },
+
+  /**
    * Datepicker label.
    */
   label: {
@@ -95,7 +103,7 @@ const props = defineProps({
   },
 
   /**
-   * Label placement.
+   * Datepicker label placement.
    * @values top, topInside, topWithDesc, left, right
    */
   labelAlign: {
@@ -112,11 +120,28 @@ const props = defineProps({
   },
 
   /**
-   * Datepicker value in JS Date Object or String formatted in provided props.dateFormat.
+   * Datepicker description.
    */
-  modelValue: {
-    type: [Object, String],
-    default: null,
+  description: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Datepicker error message.
+   */
+  error: {
+    type: String,
+    default: "",
+  },
+
+  /**
+   * Datepicker size.
+   * @values sm, md, lg
+   */
+  size: {
+    type: String,
+    default: getDefault(defaultConfig, UDatePicker).size,
   },
 
   /**
@@ -138,7 +163,7 @@ const props = defineProps({
   },
 
   /**
-   * Min date in format date string or Date.
+   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   minDate: {
     type: [String, Date],
@@ -146,7 +171,7 @@ const props = defineProps({
   },
 
   /**
-   * Max date in format date string or Date.
+   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   maxDate: {
     type: [String, Date],
@@ -154,44 +179,35 @@ const props = defineProps({
   },
 
   /**
-   * Disable component.
+   * Date string format.
    */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).disabled,
-  },
-
-  /**
-   * Enable timepicker.
-   */
-  timepicker: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).timepicker,
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
+  dateFormat: {
     type: String,
-    default: "",
+    default: getDefault(defaultConfig, UDatePicker).dateFormat,
   },
 
   /**
-   * Datepicker description.
+   * Same as date format, but used when timepicker is enabled.
    */
-  description: {
+  dateTimeFormat: {
     type: String,
-    default: "",
+    default: getDefault(defaultConfig, UDatePicker).dateTimeFormat,
   },
 
   /**
-   * Datepicker size.
-   * @values sm, md, lg
+   * User-friendly date format (it will be shown in UI).
    */
-  size: {
+  userDateFormat: {
     type: String,
-    default: getDefault(defaultConfig, UDatePicker).size,
+    default: getDefault(defaultConfig, UDatePicker).userDateFormat,
+  },
+
+  /**
+   * Same as user format, but used when timepicker is enabled.
+   */
+  userDateTimeFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UDatePicker).userDateTimeFormat,
   },
 
   /**
@@ -211,35 +227,19 @@ const props = defineProps({
   },
 
   /**
-   * Date format.
+   * Make datepicker disabled.
    */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateFormat,
+  disabled: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UDatePicker).disabled,
   },
 
   /**
-   * Same as date format, but used when timepicker is enabled.
+   * Show timepicker.
    */
-  dateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateTimeFormat,
-  },
-
-  /**
-   * User friendly date format.
-   */
-  userDateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateFormat,
-  },
-
-  /**
-   * Same as user format, but used when timepicker is enabled.
-   */
-  userDateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateTimeFormat,
+  timepicker: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UDatePicker).timepicker,
   },
 
   /**
@@ -390,9 +390,9 @@ function onInput() {
   nextTick(() => {
     calendarRef.value?.wrapperRef?.blur();
     emit("input", {
-      userFormatDate: formatUserDate(userFormatDate.value),
       value: localValue.value,
       formattedDate: formattedDate.value,
+      userFormatDate: formatUserDate(userFormatDate.value),
     });
   });
 }

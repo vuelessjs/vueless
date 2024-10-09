@@ -15,7 +15,7 @@ export default {
   title: "Form Inputs & Controls / Date Picker Range",
   component: UDatePickerRange,
   args: {
-    value: {
+    modelValue: {
       from: new Date(2022, 1, 14),
       to: new Date(2022, 2, 20),
     },
@@ -39,18 +39,13 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots };
   },
-  data() {
-    return {
-      value: this.args.value,
-    };
-  },
   template: `
-    <UDatePickerRange open-direction-y="bottom" v-bind="args" v-model="value">
+    <UDatePickerRange open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UDatePickerRange>
 
     <div class="mt-4">
-      {{ value }}
+      {{ args.modelValue }}
     </div>
   `,
 });
@@ -70,7 +65,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
         :key="index"
         open-direction-y="bottom"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         :[args.enum]="option"
       />
     </URow>
@@ -89,7 +84,7 @@ const OpenDirectionTemplate = (args) => ({
         open-direction-y="top"
         open-direction-x="left"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         label="Top Left"
       />
       <UDatePickerRange
@@ -97,7 +92,7 @@ const OpenDirectionTemplate = (args) => ({
         open-direction-y="top"
         open-direction-x="right"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         label="Top Right"
       />
       <UDatePickerRange
@@ -105,7 +100,7 @@ const OpenDirectionTemplate = (args) => ({
         open-direction-y="bottom"
         open-direction-x="left"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         label="Bottom Left"
       />
       <UDatePickerRange
@@ -113,7 +108,7 @@ const OpenDirectionTemplate = (args) => ({
         open-direction-y="bottom"
         open-direction-x="right"
         v-bind="args"
-        v-model="args.value"
+        v-model="args.modelValue"
         label="Bottom Right"
       />
     </URow>
@@ -145,14 +140,14 @@ export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
   minDate: new Date(2022, 2, 22),
   maxDate: new Date(2022, 2, 26),
-  value: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
+  modelValue: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
 };
 
 export const DateFormat = DefaultTemplate.bind({});
 DateFormat.args = {
   dateFormat: "d.m.Y",
   userDateFormat: "d.m.Y",
-  value: { from: "28.06.2024", to: "30.06.2024" },
+  modelValue: { from: "28.06.2024", to: "30.06.2024" },
 };
 
 export const CustomRangeButton = DefaultTemplate.bind({});
@@ -165,7 +160,7 @@ CustomRangeButton.args = {
     label: "Next 2 days",
     description: "Some description",
   },
-  value: { from: null, to: null },
+  modelValue: { from: null, to: null },
 };
 
 export const LeftIcon = DefaultTemplate.bind({});

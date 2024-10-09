@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="periodsRowAttrs">
+  <div v-bind="periodRowAttrs">
     <template v-for="periodButton in periods" :key="periodButton.name">
       <UButton
         v-if="periodButton.name !== period"
@@ -27,7 +27,7 @@
     </template>
   </div>
 
-  <div v-bind="periodsRowAttrs">
+  <div v-bind="periodRowAttrs">
     <UButton
       v-if="customRangeButton.range.to && customRangeButton.range.from && PERIOD.custom !== period"
       square
@@ -276,7 +276,7 @@ const isDatePeriodOutOfRange = inject("isDatePeriodOutOfRange", null);
 
 const {
   periodButtonAttrs,
-  periodsRowAttrs,
+  periodRowAttrs,
   periodButtonActiveAttrs,
   customRangeDescription,
   rangeSwitchWrapperAttrs,

@@ -189,7 +189,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Calendar value in JS Date Object or String formatted in provided props.dateFormat.
+   * Calendar value (JavaScript Date object or string formatted in given `dateFormat`).
    */
   modelValue: {
     type: [String, Object],
@@ -197,7 +197,7 @@ const props = defineProps({
   },
 
   /**
-   * Calendar view.
+   * Calendar view variant.
    * @values day, month, year
    */
   view: {
@@ -206,7 +206,7 @@ const props = defineProps({
   },
 
   /**
-   * Enable range selection.
+   * Enable date range selection.
    */
   range: {
     type: Boolean,
@@ -214,7 +214,7 @@ const props = defineProps({
   },
 
   /**
-   * Enable timepicker.
+   * Show timepicker.
    */
   timepicker: {
     type: Boolean,
@@ -222,7 +222,7 @@ const props = defineProps({
   },
 
   /**
-   * Date format.
+   * Date string format.
    */
   dateFormat: {
     type: String,
@@ -238,7 +238,7 @@ const props = defineProps({
   },
 
   /**
-   * User friendly date format.
+   * User-friendly date format (it will be shown in UI).
    */
   userDateFormat: {
     type: String,
@@ -254,7 +254,7 @@ const props = defineProps({
   },
 
   /**
-   * Min date in JS Date Object or Date String formatted in provided props.dateFormat.
+   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   minDate: {
     type: [Date, String],
@@ -262,7 +262,7 @@ const props = defineProps({
   },
 
   /**
-   * Max date in JS Date Object or Date String formatted in provided props.dateFormat.
+   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   maxDate: {
     type: [Date, String],
@@ -316,7 +316,7 @@ const emit = defineEmits([
   "keydown",
 
   /**
-   * Triggers when the date input value is changed by the user.
+   * Triggers when the user changes the date input value.
    * @property {string} value
    */
   "userDateChange",

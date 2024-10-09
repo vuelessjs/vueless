@@ -44,7 +44,7 @@ export default /*tw*/ {
     leaveActiveClass: "transition transform ease-in duration-75",
     leaveToClass: "opacity-0 scale-95",
   },
-  periodsRow: "mb-1 flex min-w-64 gap-1",
+  periodRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
   periodButtonActive: "!bg-gray-800/20",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
@@ -85,7 +85,7 @@ export default /*tw*/ {
     block: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
     input: "rounded-l-none",
   },
-  inputRangeError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
+  rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
     component: "{UCalendar}",
     wrapper: "p-0 w-full border-none shadow-none",

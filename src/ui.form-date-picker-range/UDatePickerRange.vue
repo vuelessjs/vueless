@@ -123,7 +123,7 @@
           :attrs="keysAttrs"
         />
 
-        <div v-if="inputRangeToError || inputRangeFromError" v-bind="inputRangeErrorAttrs">
+        <div v-if="inputRangeToError || inputRangeFromError" v-bind="rangeInputErrorAttrs">
           {{ inputRangeToError || inputRangeFromError }}
         </div>
 
@@ -198,7 +198,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Datepicker value in JS Date Objects or Strings formatted in provided props.dateFormat.
+   * Datepicker value (JavaScript Date object or string formatted in given `dateFormat`).
    */
   modelValue: {
     type: Object,
@@ -248,7 +248,7 @@ const props = defineProps({
   },
 
   /**
-   * Min date in format date string or Date.
+   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   minDate: {
     type: [String, Date],
@@ -256,11 +256,19 @@ const props = defineProps({
   },
 
   /**
-   * Max date in format date string or Date.
+   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   maxDate: {
     type: [String, Date],
     default: getDefault(defaultConfig, UDatePickerRange).maxDate,
+  },
+
+  /**
+   * Date string format.
+   */
+  dateFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UDatePickerRange).dateFormat,
   },
 
   /**
@@ -289,7 +297,7 @@ const props = defineProps({
   },
 
   /**
-   * Label text for input type.
+   * Label text for an input type.
    */
   label: {
     type: String,
@@ -297,7 +305,7 @@ const props = defineProps({
   },
 
   /**
-   * Input placeholder for input type.
+   * Input placeholder for an input type.
    */
   placeholder: {
     type: String,
@@ -305,7 +313,7 @@ const props = defineProps({
   },
 
   /**
-   * Datepicker description for input type.
+   * Datepicker description for an input type.
    */
   description: {
     type: String,
@@ -313,7 +321,7 @@ const props = defineProps({
   },
 
   /**
-   * Error message for input type.
+   * Error message for an input type.
    */
   error: {
     type: String,
@@ -326,14 +334,6 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: getDefault(defaultConfig, UDatePickerRange).disabled,
-  },
-
-  /**
-   * Date format.
-   */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).dateFormat,
   },
 
   /**
@@ -364,7 +364,7 @@ const props = defineProps({
 const emit = defineEmits([
   /**
    * Triggers when date picker range value changes.
-   * @property {string} value
+   * @property {object} range
    */
   "update:modelValue",
 ]);
@@ -412,7 +412,7 @@ const {
   buttonAttrs,
   shiftRangeButtonAttrs,
   rangeInputWrapperAttrs,
-  inputRangeErrorAttrs,
+  rangeInputErrorAttrs,
 } = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const calendarValue = ref(props.modelValue);
