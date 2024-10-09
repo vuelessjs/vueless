@@ -281,7 +281,9 @@ function getMonthState(month, index) {
     return isSameMonth(month, props.selectedDateTo);
   });
 
-  const isMonthInRange = index >= startRangeIndex && index <= endRangeIndex;
+  const isMonthInRange =
+    (index >= startRangeIndex && index <= endRangeIndex) ||
+    (index >= startRangeIndex && endRangeIndex === -1);
   const isSelectedMonth =
     isSameMonth(month, localSelectedDate.value) && props.selectedDate !== null;
   const isPresentMonth = isCurrentMonth(month);

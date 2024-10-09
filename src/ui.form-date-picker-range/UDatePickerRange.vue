@@ -14,7 +14,7 @@
       readonly
       :left-icon="leftIcon"
       :right-icon="rightIcon"
-      v-bind="inputAttrs"
+      v-bind="isShownMenu ? activeInputAttrs : inputAttrs"
       @focus="activate"
     >
       <template #left>
@@ -413,6 +413,7 @@ const {
   shiftRangeButtonAttrs,
   rangeInputWrapperAttrs,
   rangeInputErrorAttrs,
+  activeInputAttrs,
 } = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const calendarValue = ref(props.modelValue);
