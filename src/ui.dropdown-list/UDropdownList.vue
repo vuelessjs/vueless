@@ -198,7 +198,7 @@ const emit = defineEmits([
   /**
    * Triggers when option is added.
    */
-  "addOption",
+  "add",
   /**
    * Triggers on click option.
    */
@@ -260,7 +260,7 @@ const wrapperHeight = computed(() => {
 });
 
 function onClickAddOption() {
-  emit("addOption");
+  emit("add");
 }
 
 function select(option, key) {
