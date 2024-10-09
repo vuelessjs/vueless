@@ -11,7 +11,6 @@
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
-            size="sm"
             :partial="!isSelectedAllRows"
             :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderActionsCheckboxAttrs"
@@ -36,7 +35,6 @@
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
-            size="sm"
             :partial="!isSelectedAllRows"
             :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderCheckboxAttrs"
@@ -107,7 +105,6 @@
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
-                size="sm"
                 :partial="!isSelectedAllRows"
                 :data-test="`${dataTest}-select-all`"
                 v-bind="headerCheckboxAttrs"
@@ -165,19 +162,12 @@
               </td>
             </tr>
 
-            <tr
-              v-if="isShownDateSeparator(rowIndex) && row.date"
-              v-bind="
-                shouldDisplayDateSeparator(rowIndex)
-                  ? bodyRowDateSeparatorCheckedAttrs
-                  : bodyRowDateSeparatorAttrs
-              "
-            >
-              <td v-bind="bodyCellDateSeparatorAttrs(rowIndex)" :colspan="colsCount">
+            <tr v-if="isShownDateDivider(rowIndex) && row.rowDate" v-bind="bodyRowDateDividerAttrs">
+              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
-                  :label="getDateSeparatorLabel(row.date.separatorDate)"
-                  v-bind="bodyDateSeparatorAttrs"
+                  :label="getDateDividerLabel(row.rowDate)"
+                  v-bind="bodyDateDividerAttrs"
                 />
               </td>
             </tr>
@@ -235,7 +225,7 @@
               <!-- @slot Use it to add custom empty state. -->
               <slot name="empty-state">
                 <UEmpty
-                  size="sm"
+                  size="md"
                   :description="currentLocale.noData"
                   :data-test="`${dataTest}-empty`"
                   v-bind="bodyEmptyStateAttrs"
@@ -525,8 +515,7 @@ const {
   bodyRowAttrs,
   bodyRowCheckedAttrs,
   footerAttrs,
-  bodyRowDateSeparatorAttrs,
-  bodyRowDateSeparatorCheckedAttrs,
+  bodyRowDateDividerAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
   stickyHeaderActionsCheckboxAttrs,
@@ -534,8 +523,8 @@ const {
   headerCheckboxAttrs,
   headerCounterAttrs,
   bodyEmptyStateAttrs,
-  bodyDateSeparatorAttrs,
-  bodyCellDateSeparatorAttrs,
+  bodyDateDividerAttrs,
+  bodyCellDateDividerAttrs,
   stickyHeaderActionsCounterAttrs,
   stickyHeaderCounterAttrs,
   stickyHeaderLoaderAttrs,
@@ -595,18 +584,10 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function getDateSeparatorLabel(separatorDate) {
+function getDateDividerLabel(rowDate) {
   return Array.isArray(props.dateDivider)
-    ? props.dateDivider.find((dateItem) => dateItem.date === separatorDate)?.label || separatorDate
-    : separatorDate;
-}
-
-function shouldDisplayDateSeparator(rowIndex) {
-  const isPreviousRowChecked = tableRows.value[rowIndex - 1]?.isChecked;
-  const isCheckedRowAfter = tableRows.value[rowIndex]?.isChecked;
-  const isFirstRowAndNextChecked = rowIndex === 0 && isCheckedRowAfter;
-
-  return (isPreviousRowChecked && isCheckedRowAfter) || isFirstRowAndNextChecked;
+    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
+    : rowDate;
 }
 
 function getRowAttrs(rowId) {
@@ -668,7 +649,7 @@ function onKeyupEsc(event) {
   }
 }
 
-function isShownDateSeparator(rowIndex) {
+function isShownDateDivider(rowIndex) {
   const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
   const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
   const prevItem = tableRows.value[prevIndex];
@@ -679,8 +660,8 @@ function isShownDateSeparator(rowIndex) {
     return hasSlotContentBeforeFirstRow.value;
   }
 
-  const isPrevSameDate = prevItem?.date?.primary === currentItem?.date?.primary;
-  const isNextSameDate = nextItem?.date?.primary === currentItem?.date?.primary;
+  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
+  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
 
   return isPrevSameDate && !isNextSameDate && props.dateDivider;
 }
@@ -720,6 +701,7 @@ function clearSelectedItems() {
 }
 
 function onToggleRowVisibility(rowId) {
+  // TODO: Use map instead of forEach to get rid of implicit array mutation.
   tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
 }
 </script>

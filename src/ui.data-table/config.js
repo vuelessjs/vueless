@@ -22,7 +22,7 @@ export default /*tw*/ {
   header: "border-b border-gray-200",
   headerRow: "",
   headerCellBase: {
-    base: "p-4 first:p-5 text-sm font-normal text-gray-500 text-left text-nowrap",
+    base: "p-4 text-sm font-normal text-gray-500 text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
@@ -32,7 +32,7 @@ export default /*tw*/ {
   headerCellCheckbox: "w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
-    base: "absolute top-5 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
+    base: "absolute top-4 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
     variants: {
       compact: {
         true: "top-3",
@@ -47,9 +47,9 @@ export default /*tw*/ {
   bodyRowBeforeCell: "py-1",
   bodyRowAfter: "!p-0",
   bodyRowAfterCell: "py-1",
-  bodyRowDateSeparator: "",
+  bodyRowDateDivider: "",
   bodyCellBase: {
-    base: "p-[1.125rem] py-5 first:!p-5 truncate align-top last:p-5",
+    base: "p-[1.125rem] py-5 truncate align-top",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:!px-3.5 first:py-3",
@@ -61,7 +61,7 @@ export default /*tw*/ {
   bodyCellSecondary: "mt-1 text-xs text-gray-500 overflow-hidden text-ellipsis",
   bodyCellSecondaryEmpty: "inline-block",
   bodyCellCheckbox: "first:px-4", // try to remove first
-  bodyCellDateSeparator: "",
+  bodyCellDateDivider: "",
   bodyCellNested: "mr-2 mt-0.5",
   bodyCellNestedExpandIcon: {
     component: "{UIcon}",
@@ -74,7 +74,7 @@ export default /*tw*/ {
     container: "bg-gray-200",
   },
   bodyCheckbox: "{UCheckbox}",
-  bodyDateSeparator: "{UDivider}",
+  bodyDateDivider: "{UDivider}",
   bodyEmptyState: "{UEmpty} my-8",
   footer: "group/footer border-t border-solid border-gray-200",
   footerRow: {
