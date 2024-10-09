@@ -123,7 +123,7 @@ export default /*tw*/ {
     multiple: false,
     disabled: false,
     searchable: true,
-    clearable: false,
+    clearable: true,
     addOption: false,
     /* icons */
     dropdownIcon: "expand_more",
