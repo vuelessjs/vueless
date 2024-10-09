@@ -1,6 +1,10 @@
 export default /*tw*/ {
   wrapper: "relative",
   input: "{UInput}",
+  activeInput: {
+    component: "{UInput}",
+    wrapper: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+  },
   buttonWrapper: `
     flex rounded-dynamic max-md:justify-between
     focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
@@ -67,28 +71,28 @@ export default /*tw*/ {
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
   rangeInputFirst: {
     component: "{UInput}",
-    label: {
+    inputLabel: {
       component: "{ULabel}",
-      wrapper: "w-full hover:z-10 focus:z-10",
+      wrapper: "w-full hover:z-10 focus:z-10 !rounded-none",
       description: "hidden",
     },
-    block: "focus-within:z-10 focus-within:ring-0 rounded-r-none",
+    wrapper: "focus-within:z-10 focus-within:ring-0 rounded-r-none",
     input: "rounded-r-none",
   },
   rangeInputLast: {
     component: "{UInput}",
-    label: {
+    inputLabel: {
       component: "{ULabel}",
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
-    block: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
+    wrapper: "focus-within:z-10 focus-within:ring-0 rounded-l-none",
     input: "rounded-l-none",
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
     component: "{UCalendar}",
-    wrapper: "p-0 w-full border-none shadow-none",
+    wrapper: "p-0 w-full border-none shadow-none rounded-none",
     navigation: "mb-0 border-none",
     viewSwitchButton: {
       base: "rounded-dynamic px-4",
