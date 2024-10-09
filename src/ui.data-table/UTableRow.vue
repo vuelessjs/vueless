@@ -1,6 +1,11 @@
 <template>
   <tr v-bind="$attrs" @click="onClick(props.row)">
-    <td v-if="selectable" :style="getNestedCheckboxShift()" v-bind="bodyCellCheckboxAttrs">
+    <td
+      v-if="selectable"
+      :style="getNestedCheckboxShift()"
+      v-bind="bodyCellCheckboxAttrs"
+      @click.stop
+    >
       <UCheckbox
         v-model="selectedRows"
         :data-id="row.id"
