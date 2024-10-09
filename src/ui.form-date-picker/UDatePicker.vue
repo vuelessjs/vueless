@@ -29,8 +29,8 @@
 
       <template #right-icon>
         <!-- @slot Use it add an icon after the date. -->
-        <slot name="right-icon">
-          <UIcon name="calendar_month-fill" color="gray" :size="size" />
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
+          <UIcon :name="config.defaults.calendarIcon" :size="size" color="gray" />
         </slot>
       </template>
 
