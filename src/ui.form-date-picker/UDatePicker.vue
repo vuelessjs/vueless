@@ -22,19 +22,23 @@
         <slot name="left" />
       </template>
 
-      <template #left-icon>
-        <!-- @slot Use it add an icon before the date. -->
-        <slot name="left-icon" />
+      <template #left-icon="{ iconName, iconSize }">
+        <!--
+          @slot Use it add an icon before the date.
+          @binding {string} iconName
+          @binding {string} iconSize
+        -->
+        <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
       </template>
 
-      <template #right-icon>
+      <template #right-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon after the date.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
         -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
-          <UIcon :name="rightIcon" :size="size" color="gray" />
+        <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
+          <UIcon :name="iconName" :size="iconSize" color="gray" />
         </slot>
       </template>
 
