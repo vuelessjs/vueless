@@ -30,7 +30,7 @@
       <template #right-icon>
         <!-- @slot Use it to add icon after the date. -->
         <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
-          <UIcon :name="config.defaults.calendarIcon" :size="size" color="gray" />
+          <UIcon :name="rightIcon" :size="size" color="gray" />
         </slot>
       </template>
 
@@ -296,7 +296,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: "",
+    default: getDefault(defaultConfig, UDatePickerRange).calendarIcon,
   },
 
   /**
