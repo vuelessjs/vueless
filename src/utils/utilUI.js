@@ -20,8 +20,13 @@ if (isSSR) {
   /* Load Vueless config from the project root in IIFE (no top-level await). */
   (async () => {
     try {
-      // eslint-disable-next-line prettier/prettier
-      vuelessConfig = (await import(/* @vite-ignore */ `${process.cwd()}/vueless.config.js`)).default;
+      const filePath = `${process.cwd()}/vueless.config`;
+
+      vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
+
+      if (!vuelessConfig) {
+        vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
+      }
     } catch (error) {
       vuelessConfig = {};
     }
@@ -30,8 +35,9 @@ if (isSSR) {
 
 if (isCSR) {
   vuelessConfig =
-    Object.values(import.meta.glob("/vueless.config.js", { eager: true, import: "default" }))[0] ||
-    {};
+    Object.values(
+      import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }),
+    )[0] || {};
 }
 
 /**

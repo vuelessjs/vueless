@@ -24,7 +24,7 @@ import {
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
  * 1. Default component config
- * 2. Custom global component config (/vueless.config.js)
+ * 2. Custom global component config (/vueless.config.{js,ts})
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
