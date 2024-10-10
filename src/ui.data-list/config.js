@@ -43,7 +43,6 @@ export default /*tw*/ {
     valueKey: "id",
     animationDuration: 200,
     nesting: false,
-    upperlined: false,
     /* icons */
     dragIcon: "drag_indicator",
     deleteIcon: "delete",

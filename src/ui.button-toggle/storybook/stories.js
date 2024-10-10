@@ -6,13 +6,6 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-const OPTIONS = [
-  { value: "11", label: "label 1" },
-  { value: "12", label: "label 2" },
-  { value: "13", label: "label 3" },
-  { value: "14", label: "label 4" },
-];
-
 /**
  * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
  */
@@ -20,6 +13,14 @@ export default {
   components: { UIcon, UToggleItem },
   title: "Buttons & Links / Toggle",
   component: UToggle,
+  args: {
+    options: [
+      { value: "11", label: "label 1" },
+      { value: "12", label: "label 2" },
+      { value: "13", label: "label 3" },
+      { value: "14", label: "label 4" },
+    ],
+  },
   argTypes: {
     ...getArgTypes(UToggle.__name),
     modelValue: { control: { type: "text" } },
@@ -29,18 +30,12 @@ export default {
 const DefaultTemplate = (args) => ({
   components: { UToggle, UIcon, UToggleItem },
   setup() {
-    const value = ref("");
-
     const slots = getSlotNames(UToggle.__name);
 
-    return { args, slots, value, OPTIONS };
+    return { args, slots };
   },
   template: `
-    <UToggle
-      v-bind="args"
-      v-model="value"
-      :options="OPTIONS"
-    >
+    <UToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment()}
     </UToggle>
   `,

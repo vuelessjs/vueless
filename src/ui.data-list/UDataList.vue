@@ -1,7 +1,5 @@
 <template>
   <div v-bind="wrapperAttrs">
-    <UDivider v-if="upperlined" size="xl" padding="after" v-bind="dividerAttrs" />
-
     <!--
       @slot Use it to add something instead of the drag icon.
       @binding {string} empty-title
@@ -38,10 +36,16 @@
           <div :data-test="`${dataTest}-item-${element[valueKey]}`" v-bind="itemAttrs">
             <!--
               @slot Use it to add something instead of the drag icon.
+              @binding {object} item
               @binding {string} icon-name
               @binding {string} icon-size
             -->
-            <slot name="drag" :icon-name="config.defaults.dragIcon" :icon-size="iconSize">
+            <slot
+              name="drag"
+              :item="element"
+              :icon-name="config.defaults.dragIcon"
+              :icon-size="iconSize"
+            >
               <UIcon
                 internal
                 color="gray"
@@ -76,10 +80,16 @@
 
               <!--
                 @slot Use it to add something instead of the delete icon.
+                @binding {object} item
                 @binding {string} icon-name
                 @binding {string} icon-size
               -->
-              <slot name="delete" :icon-name="config.defaults.deleteIcon" :icon-size="iconSize">
+              <slot
+                name="delete"
+                :item="element"
+                :icon-name="config.defaults.deleteIcon"
+                :icon-size="iconSize"
+              >
                 <UIcon
                   v-if="!element.isHiddenDelete"
                   internal
@@ -96,10 +106,16 @@
 
               <!--
                 @slot Use it to add something instead of the edit icon.
+                @binding {object} item
                 @binding {string} icon-name
                 @binding {string} icon-size
               -->
-              <slot name="edit" :icon-name="config.defaults.editIcon" :icon-size="iconSize">
+              <slot
+                name="edit"
+                :item="element"
+                :icon-name="config.defaults.editIcon"
+                :icon-size="iconSize"
+              >
                 <UIcon
                   v-if="!element.isHiddenEdit"
                   internal
@@ -245,14 +261,6 @@ const props = defineProps({
   },
 
   /**
-   * Add line divider above the list.
-   */
-  upperlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDataListName).upperlined,
-  },
-
-  /**
    * Disable empty state for nested elements if empty (internal props).
    * @ignore
    */
@@ -303,7 +311,6 @@ const emit = defineEmits([
 const {
   config,
   wrapperAttrs,
-  dividerAttrs,
   emptyAttrs,
   draggableAttrs,
   nestedAttrs,
