@@ -333,8 +333,6 @@ const inputRef = ref(null);
 const labelComponentRef = ref(null);
 const leftSlotWrapperRef = ref(null);
 
-defineExpose({ inputRef });
-
 const isTypePassword = computed(() => props.type === "password");
 
 const inputValue = computed({
@@ -469,6 +467,14 @@ function setLabelPosition() {
     labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
   }
 }
+
+defineExpose({
+  /**
+   * A reference to the input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  inputRef,
+});
 </script>
 
 <style lang="postcss" scoped>
