@@ -10,7 +10,7 @@
       <!-- @slot Use it to add UFile. -->
       <slot>
         <UFile
-          v-for="file in formattedFileList"
+          v-for="(file, index) in formattedFileList"
           :id="file.id"
           :key="file.id"
           :label="file.label"
@@ -23,15 +23,17 @@
           <template #left="{ file: currentFile }">
             <!-- @slot Use it to add something left.
               @binding {object} file
+              @binding {number} index
             -->
-            <slot name="left" :file="currentFile" />
+            <slot name="left" :file="currentFile" :index="index" />
           </template>
 
           <template #right="{ file: currentFile }">
             <!-- @slot Use it to add something right.
               @binding {object} file
+              @binding {number} index
             -->
-            <slot name="right" :file="currentFile" />
+            <slot name="right" :file="currentFile" :index="index" />
           </template>
         </UFile>
       </slot>
