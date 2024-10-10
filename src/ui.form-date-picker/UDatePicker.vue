@@ -28,8 +28,14 @@
       </template>
 
       <template #right-icon>
-        <!-- @slot Use it add an icon after the date. -->
-        <slot name="right-icon" />
+        <!--
+          @slot Use it add an icon after the date.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
+          <UIcon :name="rightIcon" :size="size" color="gray" />
+        </slot>
       </template>
 
       <template #right>
@@ -68,6 +74,7 @@
 import { computed, nextTick, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
@@ -223,7 +230,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: "",
+    default: getDefault(defaultConfig, UDatePicker).calendarIcon,
   },
 
   /**
