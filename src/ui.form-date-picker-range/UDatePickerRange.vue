@@ -28,7 +28,11 @@
       </template>
 
       <template #right-icon>
-        <!-- @slot Use it to add icon after the date. -->
+        <!--
+          @slot Use it add an icon after the date.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
         <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
           <UIcon :name="rightIcon" :size="size" color="gray" />
         </slot>
