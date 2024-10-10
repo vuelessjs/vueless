@@ -24,17 +24,21 @@ export function syncRowCheck(row, selectedRows) {
 
 export function toggleRowVisibility(row, targetRowId) {
   if (row.id === targetRowId) {
-    if ("isHidden" in row) {
+    if (Object.hasOwn(row, "isHidden")) {
       row.isHidden = !row.isHidden;
-    } else if (row.nestedData && "isHidden" in row.nestedData) {
+    } else if (row.nestedData && Object.hasOwn(row.nestedData, "isHidden")) {
       row.nestedData.isHidden = !row.nestedData.isHidden;
     }
 
     return;
   }
 
-  if (row.row) {
+  if (row.row && !Array.isArray(row.row)) {
     toggleRowVisibility(row.row, targetRowId);
+  }
+
+  if (row.row && Array.isArray(row.row)) {
+    row.row.forEach((nestedRow) => toggleRowVisibility(nestedRow, targetRowId));
   }
 
   if (row.nestedData) {

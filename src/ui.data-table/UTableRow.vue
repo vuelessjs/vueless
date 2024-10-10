@@ -36,7 +36,7 @@
           :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleRowChild(row.row?.id || row.id)"
+          @click="onClickToggleIcon"
         />
       </div>
 
@@ -88,7 +88,7 @@
   </template>
 
   <UTableRow
-    v-if="row.row && !row.row.isHidden && !row.nestedData"
+    v-if="isSingleNested && row.row && !row.row.isHidden && !row.nestedData"
     v-bind="$attrs"
     v-model:selected-rows="selectedRows"
     :attrs="attrs"
@@ -101,6 +101,25 @@
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
   />
+
+  <template v-if="!isSingleNested && row.row.length && !row.nestedData">
+    <template v-for="nestedRow in row.row" :key="nestedRow.id">
+      <UTableRow
+        v-if="!nestedRow.isHidden"
+        v-bind="$attrs"
+        v-model:selected-rows="selectedRows"
+        :attrs="attrs"
+        :columns="columns"
+        :row="nestedRow"
+        :data-test="dataTest"
+        :nested-level="nestedLevel + 1"
+        :config="config"
+        :selectable="selectable"
+        @toggle-row-visibility="onClickToggleRowChild"
+        @click="onClick"
+      />
+    </template>
+  </template>
 </template>
 
 <script setup>
@@ -187,6 +206,8 @@ const toggleIconConfig = computed(() =>
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
+const isSingleNested = computed(() => !Array.isArray(props.row.row));
+
 const getToggleIconName = computed(() => (row) => {
   const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
 
@@ -267,5 +288,15 @@ function setElementTitle(element) {
   if (!isOverflown && element.hasAttribute("title")) {
     element.removeAttribute("title");
   }
+}
+
+function onClickToggleIcon() {
+  if (isSingleNested.value) {
+    onClickToggleRowChild(props.row.row.id);
+
+    return;
+  }
+
+  props.row.row.forEach(({ id }) => onClickToggleRowChild(id));
 }
 </script>
