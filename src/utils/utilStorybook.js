@@ -125,7 +125,7 @@ export function getArgTypes(componentName) {
     expose.properties?.forEach((property) => {
       const description = property.description ? ` (${property.description})` : "";
 
-      properties.push(`${property.name}: ${property.type}${description}`);
+      properties.push(`${property.type}${description}`);
     });
 
     types[`${expose.name}Expose`] = {
