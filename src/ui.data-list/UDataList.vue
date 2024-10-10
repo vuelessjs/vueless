@@ -1,7 +1,5 @@
 <template>
   <div v-bind="wrapperAttrs">
-    <UDivider v-if="upperlined" size="xl" padding="after" v-bind="dividerAttrs" />
-
     <!--
       @slot Use it to add something instead of the drag icon.
       @binding {string} empty-title
@@ -263,14 +261,6 @@ const props = defineProps({
   },
 
   /**
-   * Add line divider above the list.
-   */
-  upperlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDataListName).upperlined,
-  },
-
-  /**
    * Disable empty state for nested elements if empty (internal props).
    * @ignore
    */
@@ -321,7 +311,6 @@ const emit = defineEmits([
 const {
   config,
   wrapperAttrs,
-  dividerAttrs,
   emptyAttrs,
   draggableAttrs,
   nestedAttrs,
