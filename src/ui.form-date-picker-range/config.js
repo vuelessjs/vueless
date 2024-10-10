@@ -202,5 +202,6 @@ export default /*tw*/ {
     nextIcon: "keyboard_arrow_right",
     prevIcon: "keyboard_arrow_left",
     ownRangeIcon: "apps",
+    calendarIcon: "calendar_month-fill",
   },
 };
