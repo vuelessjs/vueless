@@ -88,7 +88,7 @@
   </template>
 
   <UTableRow
-    v-if="isSingleNested && row.row && !row.row.isHidden && !row.nestedData"
+    v-if="isSingleNestedRow && row.row && !row.row.isHidden && !row.nestedData"
     v-bind="$attrs"
     v-model:selected-rows="selectedRows"
     :attrs="attrs"
@@ -102,7 +102,7 @@
     @click="onClick"
   />
 
-  <template v-if="!isSingleNested && row.row.length && !row.nestedData">
+  <template v-if="!isSingleNestedRow && row.row.length && !row.nestedData">
     <template v-for="nestedRow in row.row" :key="nestedRow.id">
       <UTableRow
         v-if="!nestedRow.isHidden"
@@ -206,7 +206,7 @@ const toggleIconConfig = computed(() =>
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
-const isSingleNested = computed(() => !Array.isArray(props.row.row));
+const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
 const getToggleIconName = computed(() => (row) => {
   const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
@@ -291,7 +291,7 @@ function setElementTitle(element) {
 }
 
 function onClickToggleIcon() {
-  if (isSingleNested.value) {
+  if (isSingleNestedRow.value) {
     onClickToggleRowChild(props.row.row.id);
 
     return;
