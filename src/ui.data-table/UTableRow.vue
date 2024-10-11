@@ -47,7 +47,7 @@
           :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
           :data-test="`${dataTest}-${key}-cell`"
         >
-          {{ value.content || value || HYPHEN_SYMBOL }}
+          {{ value.value || value || HYPHEN_SYMBOL }}
         </div>
       </slot>
     </td>

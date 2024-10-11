@@ -277,52 +277,6 @@ RowAndCellClasses.args = {
   ],
 };
 
-export const cellContent = DefaultTemplate.bind({});
-cellContent.args = {
-  rows: [
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: {
-        content: "Cell content",
-      },
-      key_2: {
-        content: "Cell content",
-      },
-      key_3: {
-        content: "Cell content",
-      },
-      key_4: {
-        content: "Cell content",
-      },
-    },
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: {
-        content: "Cell content",
-      },
-      key_2: {
-        content: "Cell content",
-      },
-      key_3: {
-        content: "Cell content",
-      },
-      key_4: {
-        content: "Cell content",
-      },
-    },
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: "Cell content",
-      key_2: "Cell content",
-      key_3: "Cell content",
-      key_4: "Cell content",
-    },
-  ],
-};
-
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
 
