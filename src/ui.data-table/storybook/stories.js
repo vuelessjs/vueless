@@ -67,33 +67,53 @@ function getNestedRow() {
     key_2: "Some data",
     key_3: "Numbers",
     key_4: "Statistics",
-    row: {
-      id: getRandomId(),
-      isChecked: false,
-      isHidden: true,
-      key_1: "Nesting",
-      key_2: "Nesting",
-      key_3: "Nesting",
-      key_4: "Nesting",
-      row: {
+    row: [
+      {
         id: getRandomId(),
         isChecked: false,
         isHidden: true,
-        key_1: "Second level nesting",
-        key_2: "Second level nesting",
-        key_3: "Second level nesting",
-        key_4: "Second level nesting",
+        key_1: "Nesting",
+        key_2: "Nesting",
+        key_3: "Nesting",
+        key_4: "Nesting",
         row: {
           id: getRandomId(),
           isChecked: false,
           isHidden: true,
-          key_1: "Third level nesting",
-          key_2: "Third level nesting",
-          key_3: "Third level nesting",
-          key_4: "Third level nesting",
+          key_1: "Second level nesting",
+          key_2: "Second level nesting",
+          key_3: "Second level nesting",
+          key_4: "Second level nesting",
         },
       },
-    },
+      {
+        id: getRandomId(),
+        isChecked: false,
+        isHidden: true,
+        key_1: "Nesting",
+        key_2: "Nesting",
+        key_3: "Nesting",
+        key_4: "Nesting",
+        row: {
+          id: getRandomId(),
+          isChecked: false,
+          isHidden: true,
+          key_1: "Second level nesting",
+          key_2: "Second level nesting",
+          key_3: "Second level nesting",
+          key_4: "Second level nesting",
+          row: {
+            id: getRandomId(),
+            isChecked: false,
+            isHidden: true,
+            key_1: "Third level nesting",
+            key_2: "Third level nesting",
+            key_3: "Third level nesting",
+            key_4: "Third level nesting",
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -253,72 +273,6 @@ RowAndCellClasses.args = {
       key_2: "Sales",
       key_3: "Renovation",
       key_4: "Calendar",
-    },
-  ],
-};
-
-export const PrimaryAndSecondaryContent = DefaultTemplate.bind({});
-PrimaryAndSecondaryContent.args = {
-  rows: [
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-    },
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-    },
-    {
-      id: getRandomId(),
-      isChecked: false,
-      key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
     },
   ],
 };
