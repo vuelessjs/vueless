@@ -57,9 +57,7 @@ export default /*tw*/ {
     },
   },
   bodyCellNestedRow: "flex",
-  bodyCellPrimary: "text-ellipsis overflow-hidden",
-  bodyCellSecondary: "mt-1 text-xs text-gray-500 overflow-hidden text-ellipsis",
-  bodyCellSecondaryEmpty: "inline-block",
+  bodyCellContent: "text-ellipsis overflow-hidden",
   bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 mt-0.5",

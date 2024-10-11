@@ -18,9 +18,9 @@
     <td
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
-      v-bind="getCellAttrs(key, row, index)"
+      v-bind="getCellAttrs(row, index)"
       :class="
-        cx([getCellAttrs(key, row, index).class, columns[index].tdClass, getCellClasses(row, key)])
+        cx([getCellAttrs(row, index).class, columns[index].tdClass, getCellClasses(row, key)])
       "
     >
       <div
@@ -40,38 +40,16 @@
         />
       </div>
 
-      <div
-        v-if="isCellObject(value)"
-        :class="cx([bodyCellPrimaryAttrs.class, getCellContentClasses(row, key)])"
-      >
-        <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
-            {{ getCellPrimaryContent(value) }}
-          </div>
-
-          <div v-bind="bodyCellSecondaryAttrs">
-            <template v-if="Array.isArray(value.secondary)">
-              <div v-for="(secondary, idx) in value.secondary" ref="cellRef" :key="idx">
-                <span v-bind="bodyCellSecondaryEmptyAttrs">
-                  {{ secondary }}
-                </span>
-              </div>
-            </template>
-
-            <div v-else ref="cellRef">
-              {{ value.secondary }}
-            </div>
-          </div>
-        </slot>
-      </div>
-
-      <template v-else>
-        <slot :name="`cell-${key}`" :value="value" :row="row">
-          <div v-bind="bodyCellPrimaryAttrs" ref="cellRef" :data-test="`${dataTest}-${key}-cell`">
-            {{ value || value === 0 ? value : HYPHEN_SYMBOL }}
-          </div>
-        </slot>
-      </template>
+      <slot :name="`cell-${key}`" :value="value" :row="row">
+        <div
+          v-bind="bodyCellContentAttrs"
+          ref="cellRef"
+          :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
+          :data-test="`${dataTest}-${key}-cell`"
+        >
+          {{ value.content || value || HYPHEN_SYMBOL }}
+        </div>
+      </slot>
     </td>
   </tr>
 
@@ -188,9 +166,7 @@ const cellRef = ref([]);
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
 const {
-  bodyCellPrimaryAttrs,
-  bodyCellSecondaryAttrs,
-  bodyCellSecondaryEmptyAttrs,
+  bodyCellContentAttrs,
   bodyCellCheckboxAttrs,
   bodyCheckboxAttrs,
   bodyCellNestedAttrs,
@@ -230,19 +206,7 @@ function getCellContentClasses(row, key) {
   return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
 }
 
-function isCellObject(value) {
-  return typeof value === "object" && value !== null && ("primary" in value || "value" in value);
-}
-
-function getCellPrimaryContent(value) {
-  if (typeof value === "object" && value !== null) {
-    return value.primary || value.value || HYPHEN_SYMBOL;
-  }
-
-  return value || HYPHEN_SYMBOL;
-}
-
-function getCellAttrs(key, row, cellIndex) {
+function getCellAttrs(row, cellIndex) {
   const isNestedRow = (row.row || row.nestedData || props.nestedLevel > 0) && cellIndex === 0;
 
   return isNestedRow ? bodyCellNestedRowAttrs.value : bodyCellBaseAttrs.value;

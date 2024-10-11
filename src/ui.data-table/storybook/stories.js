@@ -284,61 +284,41 @@ PrimaryAndSecondaryContent.args = {
       id: getRandomId(),
       isChecked: false,
       key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
     },
     {
       id: getRandomId(),
       isChecked: false,
       key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
       key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
+        content: "Cell content",
       },
     },
     {
       id: getRandomId(),
       isChecked: false,
-      key_1: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_2: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_3: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
-      key_4: {
-        primary: "Primary",
-        secondary: "Secondary",
-      },
+      key_1: "Cell content",
+      key_2: "Cell content",
+      key_3: "Cell content",
+      key_4: "Cell content",
     },
   ],
 };
