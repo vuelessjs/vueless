@@ -6,6 +6,10 @@ import {
   GRAY_COLOR,
   COOL_COLOR,
   DARK_MODE_SELECTOR,
+  DEFAULT_ROUNDING,
+  DEFAULT_RING,
+  DEFAULT_RING_OFFSET,
+  DEFAULT_GRAY_COLOR,
 } from "./constants.js";
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
@@ -82,6 +86,16 @@ export const vuelessTailwindConfig = {
         dynamic: "var(--vl-rounding)",
       },
     },
+    configViewer: {
+      themeReplacements: {
+        // TODO: Set colors from vueless.config.{js|ts} if it present.
+        "var(--vl-ring)": DEFAULT_RING,
+        "var(--vl-ring-offset)": DEFAULT_RING_OFFSET,
+        "var(--vl-rounding)": DEFAULT_ROUNDING,
+        ...getReplacementColors(GRAY_COLOR, DEFAULT_GRAY_COLOR),
+        ...getReplacementColors(BRAND_COLOR, DEFAULT_GRAY_COLOR),
+      },
+    },
   },
 };
 
@@ -132,4 +146,22 @@ function getPalette(color) {
   });
 
   return palette;
+}
+
+/**
+ * Prepare a color object for theme replacement to fix missing css color variables in `tailwind-config-viewer`.
+ * @param { String } color (gray | brand)
+ * @param { String } tailwindColor any tailwind color with pallet.
+ * @returns { Object } - `tailwind-config-viewer` color replacement object.
+ */
+function getReplacementColors(color, tailwindColor) {
+  let varsPalette = {
+    [twColorWithOpacity(`--vl-color-${color}-default`)]: colors[tailwindColor][600],
+  };
+
+  COLOR_SHADES.forEach((shade) => {
+    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = colors[tailwindColor][shade];
+  });
+
+  return varsPalette;
 }
