@@ -40,7 +40,7 @@
         />
       </div>
 
-      <slot :name="`cell-${key}`" :value="value" :row="row">
+      <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
         <div
           v-bind="bodyCellContentAttrs"
           ref="cellRef"

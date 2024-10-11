@@ -277,8 +277,8 @@ RowAndCellClasses.args = {
   ],
 };
 
-export const PrimaryAndSecondaryContent = DefaultTemplate.bind({});
-PrimaryAndSecondaryContent.args = {
+export const cellContent = DefaultTemplate.bind({});
+cellContent.args = {
   rows: [
     {
       id: getRandomId(),
