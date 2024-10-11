@@ -19,12 +19,7 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     description: Boolean(props.description),
   }));
 
-  const extendingKeys = [
-    "buttonWrapperActive",
-    "buttonActive",
-    "edgePeriodDate",
-    "periodDateMonthList",
-  ];
+  const extendingKeys = ["buttonWrapperActive", "buttonActive", "periodDateMonthList"];
   const extendingKeysClasses = getExtendingKeysClasses(
     [
       ...extendingKeys,
@@ -34,6 +29,8 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
       "periodDateWeekList",
       "periodDateQuarterList",
       "periodDateYearList",
+      "periodDateSelected",
+      "periodDateCurrent",
     ],
     mutatedProps,
   );
@@ -65,34 +62,20 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     periodDateYearList: {
       base: computed(() => [extendingKeysClasses.periodDateList.value]),
     },
-    periodDateActive: {
+    periodDateSelected: {
       base: computed(() => [extendingKeysClasses.periodDate.value]),
     },
-    periodDateInRange: {
-      base: computed(() => [extendingKeysClasses.periodDate.value]),
-    },
-    firstPeriodGridDate: {
+    periodDateCurrent: {
       base: computed(() => [
         extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.edgePeriodDate.value,
+        extendingKeysClasses.periodDateCurrent.value,
       ]),
     },
-    firstPeriodListDate: {
+    periodDateCurrentSelected: {
       base: computed(() => [
         extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.edgePeriodDate.value,
-      ]),
-    },
-    lastPeriodGridDate: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.edgePeriodDate.value,
-      ]),
-    },
-    lastPeriodListDate: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.edgePeriodDate.value,
+        extendingKeysClasses.periodDateSelected.value,
+        extendingKeysClasses.periodDateCurrent.value,
       ]),
     },
   });

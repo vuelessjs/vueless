@@ -127,82 +127,43 @@
     </div>
 
     <div v-if="isDatePeriodOutOfRange" v-bind="periodDateListAttrs">
-      <template v-for="(date, index) in periodDateList" :key="date.title">
+      <template v-for="date in periodDateList" :key="date.title">
         <UButton
-          v-if="getDatePeriodState(date, index).isActive"
-          no-ring
+          v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
           size="sm"
-          color="grayscale"
           variant="thirdary"
+          color="brand"
+          no-ring
+          filled
           :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateActiveAttrs"
+          v-bind="periodDateCurrentSelectedAttrs"
           :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
           @click="selectDate(date), toggleMenu()"
         />
 
         <UButton
-          v-else-if="getDatePeriodState(date, index).isFirstInRange && !isListType"
-          no-ring
+          v-else-if="getDatePeriodState(date).isSelected"
           size="sm"
-          color="grayscale"
           variant="thirdary"
+          color="brand"
+          no-ring
+          filled
           :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="firstPeriodGridDateAttrs"
+          v-bind="periodDateSelectedAttrs"
           :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
           @click="selectDate(date), toggleMenu()"
         />
 
         <UButton
-          v-else-if="getDatePeriodState(date, index).isFirstInRange && isListType"
-          no-ring
+          v-else-if="getDatePeriodState(date).isCurrentDate"
           size="sm"
-          color="grayscale"
-          variant="thirdary"
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="firstPeriodListDateAttrs"
-          :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else-if="getDatePeriodState(date, index).isLastInRange && !isListType"
+          variant="secondary"
+          color="brand"
           no-ring
-          size="sm"
-          color="grayscale"
-          variant="thirdary"
+          filled
           :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="lastPeriodGridDateAttrs"
+          v-bind="periodDateCurrentAttrs"
           :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else-if="getDatePeriodState(date, index).isLastInRange && isListType"
-          no-ring
-          size="sm"
-          color="grayscale"
-          variant="thirdary"
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="lastPeriodListDateAttrs"
-          :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else-if="getDatePeriodState(date, index).isInRange"
-          no-ring
-          size="sm"
-          color="grayscale"
-          variant="thirdary"
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateInRangeAttrs"
-          :label="String(date.title)"
-          :class="{ 'rounded-dynamic': getDatePeriodState(date, index).isSingleItem }"
           @click="selectDate(date), toggleMenu()"
         />
 
@@ -296,12 +257,9 @@ const {
   rangeSwitchButtonAttrs,
   rangeSwitchTitleAttrs,
   periodDateListAttrs,
-  periodDateActiveAttrs,
-  firstPeriodGridDateAttrs,
-  firstPeriodListDateAttrs,
-  lastPeriodGridDateAttrs,
-  lastPeriodListDateAttrs,
-  periodDateInRangeAttrs,
+  periodDateSelectedAttrs,
+  periodDateCurrentSelectedAttrs,
+  periodDateCurrentAttrs,
   periodDateAttrs,
 } = props.attrs;
 
@@ -311,8 +269,6 @@ const periods = computed(() => [
   { name: PERIOD.quarter, title: props.locale.quarter },
   { name: PERIOD.year, title: props.locale.year },
 ]);
-
-const isListType = computed(() => props.isPeriod.quarter || props.isPeriod.week);
 
 const rangeSwitchTitle = computed(() => {
   if (props.isPeriod.month || props.isPeriod.quarter) {
@@ -387,7 +343,7 @@ function selectCustomRange() {
   };
 }
 
-function getDatePeriodState(date, index) {
+function getDatePeriodState(date) {
   const localStart = new Date(localValue.value.from);
   const localEnd = new Date(localValue.value.to);
 
@@ -399,38 +355,9 @@ function getDatePeriodState(date, index) {
   localStart.setHours(0, 0, 0, 0);
   localEnd.setHours(23, 59, 59, 999);
 
-  const startDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
-    return localStart <= periodDate.endRange && localStart >= periodDate.startRange;
-  });
+  const isSelected = localStart - date.startRange === 0 && localEnd - date.endRange === 0;
+  const isCurrentDate = date.startRange <= new Date() && new Date() <= date.endRange;
 
-  const endDateInRangeIndex = periodDateList.value.findIndex((periodDate) => {
-    return localEnd >= periodDate.startRange && localEnd <= periodDate.endRange;
-  });
-
-  let isInRange = index >= startDateInRangeIndex && index <= endDateInRangeIndex;
-
-  if (!~startDateInRangeIndex || !~endDateInRangeIndex) {
-    isInRange =
-      (index >= startDateInRangeIndex && startDateInRangeIndex > -1) ||
-      (index <= endDateInRangeIndex && endDateInRangeIndex > -1);
-  }
-
-  if (
-    !~startDateInRangeIndex &&
-    periodDateList.value.at(0).startRange > localStart &&
-    !~endDateInRangeIndex &&
-    periodDateList.value.at(0).endRange < localEnd
-  ) {
-    isInRange = true;
-  }
-
-  const isSingleItem =
-    startDateInRangeIndex === endDateInRangeIndex && ~endDateInRangeIndex && ~startDateInRangeIndex;
-
-  const isFirstInRange = startDateInRangeIndex === index;
-  const isLastInRange = endDateInRangeIndex === index;
-  const isActive = localValue.value.from === date.startRange;
-
-  return { isInRange, isSingleItem, isFirstInRange, isLastInRange, isActive };
+  return { isSelected, isCurrentDate };
 }
 </script>

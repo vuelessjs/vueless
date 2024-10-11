@@ -155,12 +155,20 @@ function getPalette(color) {
  * @returns { Object } - `tailwind-config-viewer` color replacement object.
  */
 function getReplacementColors(color, tailwindColor) {
+  const customColors = {
+    ...colors,
+    [BRAND_COLOR]: brandColors || {},
+    [GRAY_COLOR]: grayColors || {},
+    [COOL_COLOR]: { ...(colors[GRAY_COLOR] || {}) },
+  };
+
   let varsPalette = {
-    [twColorWithOpacity(`--vl-color-${color}-default`)]: colors[tailwindColor][600],
+    [twColorWithOpacity(`--vl-color-${color}-default`)]: customColors[tailwindColor][600],
   };
 
   COLOR_SHADES.forEach((shade) => {
-    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = colors[tailwindColor][shade];
+    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] =
+      customColors[tailwindColor][shade];
   });
 
   return varsPalette;
