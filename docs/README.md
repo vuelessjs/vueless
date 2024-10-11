@@ -42,18 +42,7 @@ createApp(App).use(vueless).mount('#app');
 ```
 {% endcode %}
 
-3\. Create `vueless.config.js` at the root of the project.
-
-{% code title="vueless.config.js" %}
-```javascript
-export default {
-  color: {},
-  component: {},
-};
-```
-{% endcode %}
-
-4.Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
+3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
 
 <pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind.js";
 </strong>
@@ -63,7 +52,7 @@ export default {
 };
 </code></pre>
 
-5\. Add Vite plugins.
+4\. Add Vite plugins.
 
 {% code title="vite.config.js" overflow="wrap" %}
 ```javascript
@@ -79,14 +68,6 @@ export default defineConfig({
 });
 ```
 {% endcode %}
-
-6\. Migrate you project to ECMAScript modules (ESM).
-
-<pre class="language-javascript" data-title="package.json"><code class="lang-javascript"><strong>{
-</strong>  "type": "module",
-  ...
-}
-</code></pre>
 
 That's it! You can use Vueless in your app now ✨
 
