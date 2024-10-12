@@ -280,9 +280,6 @@ RowAndCellClasses.args = {
 export const Empty = EmptyTemplate.bind({});
 Empty.args = {};
 
-export const Filters = EmptyTemplate.bind({});
-Filters.args = { filters: true };
-
 export const Selectable = DefaultTemplate.bind({});
 Selectable.args = { selectable: true };
 

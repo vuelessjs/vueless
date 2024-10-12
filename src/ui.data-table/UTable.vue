@@ -56,10 +56,10 @@
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
             <!--
               @slot Use it to customise needed header cell.
-              @binding {string} name
-              @binding {number} column
+              @binding {object} column
+              @binding {number} index
             -->
-            <slot :name="`header-${column.key}`" :column="column" />
+            <slot :name="`header-${column.key}`" :column="column" :index="index" />
           </template>
 
           <template v-else>
@@ -68,10 +68,10 @@
 
           <!--
             @slot Use it to add something after the needed header cell.
-            @binding {string} name
-            @binding {number} column
+            @binding {object} column
+            @binding {number} index
           -->
-          <slot :name="`header-${column.key}-after`" :column="column" />
+          <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
         </div>
       </template>
 
@@ -125,13 +125,14 @@
             >
               <!--
                 @slot Use it to customise needed header cell.
-                @binding {string} name
-                @binding {number} column
+                @binding {object} column
+                @binding {number} index
               -->
               <slot
                 v-if="hasSlotContent($slots[`header-${column.key}`])"
                 :name="`header-${column.key}`"
                 :column="column"
+                :index="index"
               />
 
               <template v-else>
@@ -140,10 +141,10 @@
 
               <!--
                 @slot Use it to add something after the needed header cell.
-                @binding {string} name
-                @binding {number} column
+                @binding {object} column
+                @binding {number} index
               -->
-              <slot :name="`header-${column.key}-after`" :column="column" />
+              <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
             </th>
           </tr>
 
@@ -192,11 +193,16 @@
               >
                 <!--
                   @slot Use it to customise needed table cell.
-                  @binding {string} name
                   @binding {string} value
                   @binding {object} row
+                  @binding {number} index
                 -->
-                <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+                <slot
+                  :name="`cell-${key}`"
+                  :value="slotValues.value"
+                  :row="slotValues.row"
+                  :index="index"
+                />
               </template>
               <template #nested-content>
                 <!--
