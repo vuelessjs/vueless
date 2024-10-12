@@ -234,7 +234,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: getDefault(defaultConfig, UDatePicker).calendarIcon,
+    default: getDefault(defaultConfig, UDatePicker).rightIcon,
   },
 
   /**

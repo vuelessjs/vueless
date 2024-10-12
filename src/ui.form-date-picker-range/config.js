@@ -187,6 +187,7 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     variant: "button",
+    labelAlign: "topInside",
     openDirectionX: "auto",
     openDirectionY: "auto",
     timepicker: false,
@@ -194,10 +195,10 @@ export default /*tw*/ {
     dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    rightIcon: "calendar_month-fill",
     /* icons */
     nextIcon: "keyboard_arrow_right",
     prevIcon: "keyboard_arrow_left",
     ownRangeIcon: "apps",
-    calendarIcon: "calendar_month-fill",
   },
 };

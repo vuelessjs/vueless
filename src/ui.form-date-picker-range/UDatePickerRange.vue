@@ -7,6 +7,7 @@
       v-model="userFormatDate"
       :size="size"
       :label="label"
+      :label-align="labelAlign"
       :disabled="disabled"
       :placeholder="placeholder"
       :description="description"
@@ -300,7 +301,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).calendarIcon,
+    default: getDefault(defaultConfig, UDatePickerRange).rightIcon,
   },
 
   /**
@@ -309,6 +310,15 @@ const props = defineProps({
   label: {
     type: String,
     default: "",
+  },
+
+  /**
+   * Label placement.
+   * @values top, topInside, topWithDesc, left, right
+   */
+  labelAlign: {
+    type: String,
+    default: getDefault(defaultConfig, UDatePickerRange).labelAlign,
   },
 
   /**
