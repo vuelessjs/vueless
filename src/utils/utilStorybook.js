@@ -96,6 +96,8 @@ export function getArgTypes(componentName) {
     const bindings = [];
 
     slot.bindings?.forEach((binding) => {
+      if (binding.name === "name") return;
+
       const description = binding.description ? ` (${binding.description})` : "";
 
       bindings.push(`${binding.name}: ${binding.type}${description}`);
