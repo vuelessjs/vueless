@@ -406,6 +406,7 @@ CellSlots.args = {
     { key: "tags", label: "tags" },
   ],
   row: {
+    id: getRandomId(),
     link: "some link",
     money: {
       sum: 10,
@@ -416,6 +417,34 @@ CellSlots.args = {
       tags: { label: "some tag" },
       variant: "orange",
     },
+    row: [
+      {
+        id: getRandomId(),
+        link: "some link",
+        money: {
+          sum: 10,
+          currencySymbol: "$",
+        },
+        email: "some@email.ua",
+        tags: {
+          tags: { label: "some tag" },
+          variant: "orange",
+        },
+      },
+      {
+        id: getRandomId(),
+        link: "some link",
+        money: {
+          sum: 10,
+          currencySymbol: "$",
+        },
+        email: "some@email.ua",
+        tags: {
+          tags: { label: "some tag" },
+          variant: "orange",
+        },
+      },
+    ],
   },
 
   slotTemplate: `

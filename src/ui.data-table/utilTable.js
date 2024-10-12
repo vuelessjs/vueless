@@ -60,12 +60,41 @@ export function getFlatRows(tableRows) {
   function addRow(row) {
     rows.push(row);
 
-    if (row.row) {
+    if (row.row && !Array.isArray(row.row)) {
       addRow(row.row);
+    }
+
+    if (row.row && Array.isArray(row.row)) {
+      row.row.forEach(addRow);
     }
   }
 
   tableRows.forEach((row) => addRow(row));
 
   return rows;
+}
+
+export function rowsHasId(rows) {
+  const ids = new Set();
+  let totalRows = 0;
+
+  function addId(row) {
+    totalRows++;
+
+    if (typeof row.id !== "undefined") {
+      ids.add(row.id);
+    }
+
+    if (row.row && !Array.isArray(row.row)) {
+      addId(row.row);
+    }
+
+    if (row.row && Array.isArray(row.row)) {
+      row.row.forEach(addId);
+    }
+  }
+
+  rows.forEach((row) => addId(row));
+
+  return ids.size === totalRows;
 }

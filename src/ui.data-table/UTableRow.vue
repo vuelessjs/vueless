@@ -36,7 +36,7 @@
           :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleIcon"
+          @click.stop="onClickToggleIcon"
         />
       </div>
 
@@ -78,7 +78,15 @@
     :selectable="selectable"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
-  />
+  >
+    <template
+      v-for="(value, key, index) in getFilteredRow(row, columns)"
+      :key="index"
+      #[`cell-${key}`]="slotValues"
+    >
+      <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+    </template>
+  </UTableRow>
 
   <template v-if="!isSingleNestedRow && row.row.length && !row.nestedData">
     <template v-for="nestedRow in row.row" :key="nestedRow.id">
@@ -95,7 +103,15 @@
         :selectable="selectable"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
-      />
+      >
+        <template
+          v-for="(value, key, index) in getFilteredRow(row, columns)"
+          :key="index"
+          #[`cell-${key}`]="slotValues"
+        >
+          <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" />
+        </template>
+      </UTableRow>
     </template>
   </template>
 </template>
@@ -255,6 +271,12 @@ function setElementTitle(element) {
 }
 
 function onClickToggleIcon() {
+  if (props.row.nestedData) {
+    onClickToggleRowChild(props.row.id);
+
+    return;
+  }
+
   if (isSingleNestedRow.value) {
     onClickToggleRowChild(props.row.row.id);
 
