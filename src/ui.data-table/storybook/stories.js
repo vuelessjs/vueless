@@ -420,6 +420,7 @@ CellSlots.args = {
     row: [
       {
         id: getRandomId(),
+        isHidden: false,
         link: "some link",
         money: {
           sum: 10,
@@ -433,6 +434,7 @@ CellSlots.args = {
       },
       {
         id: getRandomId(),
+        isHidden: false,
         link: "some link",
         money: {
           sum: 10,
