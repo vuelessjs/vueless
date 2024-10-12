@@ -26,16 +26,7 @@ const vueless = createVueless();
 createApp(App).use(vueless).mount('#app');
 ```
 
-3. Create `vueless.config.js` at the root of the project.
-
-```javascript
-export default {
-  color: {},
-  component: {},
-};
-```
-
-4. Add TailwindCSS preset.
+3. Add TailwindCSS preset.
 
 ```javascript
 import { vuelessPreset } from "vueless/preset.tailwind";
@@ -46,7 +37,7 @@ export default {
 };
 ```
 
-5. Add Vite plugins.
+4. Add Vite plugins.
 
 ```javascript
 import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
