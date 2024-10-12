@@ -12,6 +12,7 @@
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
 import { getDefault } from "../utils/utilUI.js";
+import { isSSR } from "../utils/utilHelper.js";
 
 import { UIcon } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -168,24 +169,32 @@ const dynamicComponent = computed(() => {
     "vueless": async () => {
       return import.meta.env.PROD
         ? await getIcon([name])
-        : import(/* @vite-ignore */ `../assets/icons/${name}.svg?component`);
+        : isSSR
+          ? import(/* @vite-ignore */ `node_modules/vueless/assets/icons/${name}.svg?component`)
+          : import(/* @vite-ignore */ `../assets/icons/${name}.svg?component`);
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
         ? await getIcon([library, weight, style, name])
-        : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
+        : isSSR
+          ? import(/* @vite-ignore */ `node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
         ? await getIcon([library, name])
-        : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
+        : isSSR
+          ? import(/* @vite-ignore */ `node_modules/${library}/icons/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
     },
     "heroicons": async () => {
       const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
         ? await getIcon([library, fillType, name])
-        : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
+        : isSSR
+          ? import(/* @vite-ignore */ `node_modules/${library}/24/${fillType}/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
   };
   /* eslint-enable vue/max-len, prettier/prettier */
