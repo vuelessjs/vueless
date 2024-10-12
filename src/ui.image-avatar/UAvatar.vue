@@ -90,7 +90,7 @@ const props = defineProps({
 
   /**
    * Avatar corner rounding.
-   * @values none, sm, md, lg, full
+   * @values dynamic, none, sm, md, lg, full
    */
   rounded: {
     type: String,

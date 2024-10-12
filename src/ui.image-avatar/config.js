@@ -21,6 +21,7 @@ export default /*tw*/ {
         "3xl": "size-20 text-5xl",
       },
       rounded: {
+        dynamic: "rounded-dynamic",
         none: "rounded-none",
         sm: "rounded",
         md: "rounded-md",
@@ -36,7 +37,7 @@ export default /*tw*/ {
   placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",
-    rounded: "md",
+    rounded: "dynamic",
     size: "md",
     bordered: false,
     /* icons */
