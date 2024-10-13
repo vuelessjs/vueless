@@ -297,6 +297,7 @@ import {
   toggleRowVisibility,
   switchRowCheck,
   getFlatRows,
+  rowsHasId,
 } from "./utilTable.js";
 
 import { PX_IN_REM } from "../constants.js";
@@ -562,6 +563,16 @@ watch(
   () => {
     tableRows.value = tableRows.value.map((row) => syncRowCheck(row, selectedRows.value));
   },
+);
+watch(
+  () => props.rows,
+  () => {
+    if (!rowsHasId(props.rows)) {
+      // eslint-disable-next-line no-console
+      console.warn("[Vueless][UTable]: Each table row must have unique id.");
+    }
+  },
+  { deep: true, immediate: true },
 );
 
 onMounted(() => {

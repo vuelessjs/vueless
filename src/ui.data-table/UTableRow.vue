@@ -18,10 +18,8 @@
     <td
       v-for="(value, key, index) in getFilteredRow(row, columns)"
       :key="index"
-      v-bind="getCellAttrs(row, index)"
-      :class="
-        cx([getCellAttrs(row, index).class, columns[index].tdClass, getCellClasses(row, key)])
-      "
+      v-bind="bodyCellBaseAttrs"
+      :class="cx([columns[index].tdClass, getCellClasses(row, key)])"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
@@ -36,20 +34,33 @@
           :name="getToggleIconName(row)"
           color="brand"
           v-bind="toggleIconConfig"
-          @click="onClickToggleIcon"
+          @click.stop="onClickToggleIcon"
         />
+
+        <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
+          <div
+            v-bind="bodyCellContentAttrs"
+            ref="cellRef"
+            :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
+            :data-test="`${dataTest}-${key}-cell`"
+          >
+            {{ value.value || value || HYPHEN_SYMBOL }}
+          </div>
+        </slot>
       </div>
 
-      <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
-        <div
-          v-bind="bodyCellContentAttrs"
-          ref="cellRef"
-          :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
-          :data-test="`${dataTest}-${key}-cell`"
-        >
-          {{ value.value || value || HYPHEN_SYMBOL }}
-        </div>
-      </slot>
+      <template v-else>
+        <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
+          <div
+            v-bind="bodyCellContentAttrs"
+            ref="cellRef"
+            :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
+            :data-test="`${dataTest}-${key}-cell`"
+          >
+            {{ value.value || value || HYPHEN_SYMBOL }}
+          </div>
+        </slot>
+      </template>
     </td>
   </tr>
 
@@ -78,7 +89,15 @@
     :selectable="selectable"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
-  />
+  >
+    <template
+      v-for="(value, key, index) in getFilteredRow(row.row, columns)"
+      :key="index"
+      #[`cell-${key}`]="slotValues"
+    >
+      <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" :index="index" />
+    </template>
+  </UTableRow>
 
   <template v-if="!isSingleNestedRow && row.row.length && !row.nestedData">
     <template v-for="nestedRow in row.row" :key="nestedRow.id">
@@ -95,7 +114,20 @@
         :selectable="selectable"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
-      />
+      >
+        <template
+          v-for="(value, key, index) in getFilteredRow(nestedRow, columns)"
+          :key="index"
+          #[`cell-${key}`]="slotValues"
+        >
+          <slot
+            :name="`cell-${key}`"
+            :value="slotValues.value"
+            :row="slotValues.row"
+            :index="index"
+          />
+        </template>
+      </UTableRow>
     </template>
   </template>
 </template>
@@ -172,7 +204,6 @@ const {
   bodyCellNestedAttrs,
   bodyCellNestedExpandIconAttrs,
   bodyCellNestedCollapseIconAttrs,
-  bodyCellNestedRowAttrs,
   bodyCellBaseAttrs,
 } = props.attrs;
 
@@ -204,12 +235,6 @@ function getCellContentClasses(row, key) {
   const cellClasses = row[key]?.contentClasses || "";
 
   return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
-}
-
-function getCellAttrs(row, cellIndex) {
-  const isNestedRow = (row.row || row.nestedData || props.nestedLevel > 0) && cellIndex === 0;
-
-  return isNestedRow ? bodyCellNestedRowAttrs.value : bodyCellBaseAttrs.value;
 }
 
 function getNestedShift() {
@@ -255,6 +280,12 @@ function setElementTitle(element) {
 }
 
 function onClickToggleIcon() {
+  if (props.row.nestedData) {
+    onClickToggleRowChild(props.row.id);
+
+    return;
+  }
+
   if (isSingleNestedRow.value) {
     onClickToggleRowChild(props.row.row.id);
 

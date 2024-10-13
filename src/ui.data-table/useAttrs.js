@@ -52,9 +52,6 @@ export default function useAttrs(
     headerCellCheckbox: {
       base: computed(() => [extendingKeysClasses.headerCellBase.value]),
     },
-    bodyCellNestedRow: {
-      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
-    },
     bodyCellCheckbox: {
       base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
     },

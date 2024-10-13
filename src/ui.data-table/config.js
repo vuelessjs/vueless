@@ -56,11 +56,10 @@ export default /*tw*/ {
       },
     },
   },
-  bodyCellNestedRow: "flex",
   bodyCellContent: "text-ellipsis overflow-hidden",
   bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateDivider: "",
-  bodyCellNested: "mr-2 mt-0.5",
+  bodyCellNested: "mr-2 flex gap-0.5",
   bodyCellNestedExpandIcon: {
     component: "{UIcon}",
     wrapper: "rounded-sm",
