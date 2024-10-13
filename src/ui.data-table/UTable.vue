@@ -184,6 +184,7 @@
               v-bind="getRowAttrs(row.id)"
               :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
               @click="onClickRow"
+              @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
             >
               <template
@@ -395,6 +396,12 @@ const emit = defineEmits([
    * @property {object} row
    */
   "clickRow",
+
+  /**
+   * Triggers when the cell is clicked.
+   * @property {object} cell
+   */
+  "clickCell",
 
   /**
    * Triggers when table rows are selected (updated).
@@ -685,6 +692,10 @@ function isShownDateDivider(rowIndex) {
 
 function onClickRow(row) {
   emit("clickRow", row);
+}
+
+function onClickCell(cell, row) {
+  emit("clickCell", cell, row);
 }
 
 function onChangeSelectAll(selectAll) {
