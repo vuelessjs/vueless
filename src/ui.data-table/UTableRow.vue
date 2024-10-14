@@ -32,7 +32,10 @@
         v-bind="bodyCellNestedAttrs"
       >
         <UIcon
-          v-if="row.row || (row.nestedData && hasSlotContent($slots['nested-content']))"
+          v-if="
+            (row.row && !isNestedRowEmpty) ||
+            (row.nestedData && hasSlotContent($slots['nested-content']))
+          "
           size="xs"
           internal
           interactive
@@ -230,6 +233,18 @@ const toggleIconConfig = computed(() =>
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
+
+const isNestedRowEmpty = computed(() => {
+  if (!props.row.row) return true;
+
+  if (Array.isArray(props.row.row)) {
+    return props.row.row.some(
+      (nestedRow) => !Object.keys(getFilteredRow(nestedRow, props.columns)).length,
+    );
+  }
+
+  return !Object.keys(getFilteredRow(props.row.row, props.columns)).length;
+});
 
 const getToggleIconName = computed(() => (row) => {
   const isHiddenNestedRow = Array.isArray(row.row)
