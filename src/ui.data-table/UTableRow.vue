@@ -20,6 +20,7 @@
       :key="index"
       v-bind="bodyCellBaseAttrs"
       :class="cx([columns[index].tdClass, getCellClasses(row, key)])"
+      @click="onClickCell(value, row)"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
@@ -114,6 +115,7 @@
         :selectable="selectable"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
+        @click-cell="onClickCell"
       >
         <template
           v-for="(value, key, index) in getFilteredRow(nestedRow, columns)"
@@ -189,7 +191,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["toggleRowVisibility", "click"]);
+const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
@@ -293,5 +295,9 @@ function onClickToggleIcon() {
   }
 
   props.row.row.forEach(({ id }) => onClickToggleRowChild(id));
+}
+
+function onClickCell(cell, row) {
+  emit("click-cell", cell, row);
 }
 </script>
