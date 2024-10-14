@@ -1,5 +1,9 @@
 <template>
-  <tr v-bind="$attrs" @click="onClick(props.row)">
+  <tr
+    v-bind="{ ...$attrs, ...getRowAttrs(row.id) }"
+    :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
+    @click="onClick(props.row)"
+  >
     <td
       v-if="selectable"
       :style="getNestedCheckboxShift()"
@@ -79,8 +83,12 @@
 
   <UTableRow
     v-if="isSingleNestedRow && row.row && !row.row.isHidden && !row.nestedData"
-    v-bind="$attrs"
+    v-bind="{
+      ...$attrs,
+      ...getRowAttrs(row.row.id),
+    }"
     v-model:selected-rows="selectedRows"
+    :class="cx([getRowAttrs(row.row.id).class, getRowClasses(row.row)])"
     :attrs="attrs"
     :columns="columns"
     :row="row.row"
@@ -104,8 +112,12 @@
     <template v-for="nestedRow in row.row" :key="nestedRow.id">
       <UTableRow
         v-if="!nestedRow.isHidden"
-        v-bind="$attrs"
+        v-bind="{
+          ...$attrs,
+          ...getRowAttrs(nestedRow.id),
+        }"
         v-model:selected-rows="selectedRows"
+        :class="cx([getRowAttrs(nestedRow.id).class, getRowClasses(nestedRow)])"
         :attrs="attrs"
         :columns="columns"
         :row="nestedRow"
@@ -210,7 +222,9 @@ const {
 } = props.attrs;
 
 const toggleIconConfig = computed(() =>
-  props.row?.row?.isHidden ? bodyCellNestedExpandIconAttrs : bodyCellNestedCollapseIconAttrs,
+  props.row?.row?.isHidden
+    ? bodyCellNestedExpandIconAttrs.value
+    : bodyCellNestedCollapseIconAttrs.value,
 );
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
@@ -303,5 +317,17 @@ function onClickToggleIcon() {
 
 function onClickCell(cell, row) {
   emit("click-cell", cell, row);
+}
+
+function getRowClasses(row) {
+  const rowClasses = row?.class || "";
+
+  return typeof rowClasses === "function" ? rowClasses(row) : rowClasses;
+}
+
+function getRowAttrs(rowId) {
+  return selectedRows.value.includes(rowId)
+    ? props.attrs.bodyRowCheckedAttrs.value
+    : props.attrs.bodyRowAttrs.value;
 }
 </script>

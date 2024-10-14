@@ -181,8 +181,6 @@
               :columns="columns"
               :config="config"
               :attrs="keysAttrs"
-              v-bind="getRowAttrs(row.id)"
-              :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
               @click="onClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -526,8 +524,6 @@ const {
   bodyRowAfterCellAttrs,
   bodyRowBeforeAttrs,
   bodyRowBeforeCellAttrs,
-  bodyRowAttrs,
-  bodyRowCheckedAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
   headerCellBaseAttrs,
@@ -612,16 +608,6 @@ function getDateDividerLabel(rowDate) {
   return Array.isArray(props.dateDivider)
     ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
     : rowDate;
-}
-
-function getRowAttrs(rowId) {
-  return selectedRows.value.includes(rowId) ? bodyRowCheckedAttrs.value : bodyRowAttrs.value;
-}
-
-function getRowClasses(row) {
-  const rowClasses = row?.class || "";
-
-  return typeof rowClasses === "function" ? rowClasses(row) : rowClasses;
 }
 
 function setFooterCellWidth(width) {
