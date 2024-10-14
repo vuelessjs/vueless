@@ -218,7 +218,11 @@ const shift = computed(() => (props.row.row ? 1.5 : 2));
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
 const getToggleIconName = computed(() => (row) => {
-  const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
+  const isHiddenNestedRow = Array.isArray(row.row)
+    ? row.row.some((nestedRow) => nestedRow.isHidden)
+    : row.row?.isHidden;
+
+  const isHidden = isHiddenNestedRow || row.nestedData?.isHidden;
 
   return isHidden ? props.config.defaults.expandIcon : props.config.defaults.collapseIcon;
 });
