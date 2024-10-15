@@ -49,7 +49,7 @@
             :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
             :data-test="`${dataTest}-${key}-cell`"
           >
-            {{ value.value || value || HYPHEN_SYMBOL }}
+            {{ formatCellValue(value) }}
           </div>
         </slot>
       </div>
@@ -62,7 +62,7 @@
             :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
             :data-test="`${dataTest}-${key}-cell`"
           >
-            {{ value.value || value || HYPHEN_SYMBOL }}
+            {{ formatCellValue(value) }}
           </div>
         </slot>
       </template>
@@ -275,6 +275,22 @@ function getCellContentClasses(row, key) {
   const cellClasses = row[key]?.contentClasses || "";
 
   return typeof cellClasses === "function" ? cellClasses(row[key].value, row) : cellClasses;
+}
+
+function isEmptyValue(value) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && !Object.keys(value).length)
+  );
+}
+
+function formatCellValue(value) {
+  const nestedValue = value && typeof value === "object" && "value" in value ? value.value : value;
+
+  return isEmptyValue(nestedValue) ? HYPHEN_SYMBOL : nestedValue;
 }
 
 function getNestedShift() {
