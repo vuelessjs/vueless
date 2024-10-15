@@ -1,17 +1,21 @@
 import { setup } from "@storybook/vue3";
 
-import { backgrounds, docs, layout } from "./configs/main.config.js";
+import themeLight from "./themes/themeLight.js";
+import themeDark from "./themes/themeDark.js";
+import themeLightDocs from "./themes/themeLightDocs.js";
+import { storyDarkModeDecorator } from "./decorators/storyDarkModeDecorator.js";
 import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
+import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
 
-// Vue plugins
+/* Tailwind styles */
+import "./index.css";
+
+/* Vue plugins */
 import { createVueless } from "../src/index.js";
 import { createRouter, createWebHistory } from "vue-router";
 
-// Tailwind styles
-import "./index.pcss";
-
-// Create storybook app instance
-const storybookApp = (app) => {
+/* Setup storybook */
+setup((app) => {
   const vueless = createVueless();
   const router = createRouter({ history: createWebHistory(), routes: [] });
 
@@ -19,25 +23,35 @@ const storybookApp = (app) => {
     app.use(router);
     app.use(vueless);
   }
-};
+});
 
-// Setup storybook
-setup(storybookApp);
+/* Set storybook decorators */
+export const decorators = [
+  vue3SourceDecorator,
+  storyDarkModeDecorator(DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR),
+];
 
-// Set storybook config
-export default {
-  decorators: [vue3SourceDecorator],
-  parameters: {
-    layout,
-    docs,
-    backgrounds,
-    options: {
-      storySort: (a, b) => {
-        const idA = a.id.split("--")[0];
-        const idB = b.id.split("--")[0];
+/* Set storybook parameters */
+export const parameters = {
+  layout: "fullscreen",
+  backgrounds: { disable: true },
+  docs: {
+    theme: themeLightDocs,
+    source: { language: "html" },
+  },
+  darkMode: {
+    current: "light",
+    light: themeLight,
+    dark: themeDark,
+    classTarget: "body",
+    stylePreview: true,
+  },
+  options: {
+    storySort: (a, b) => {
+      const idA = a.id.split("--")[0];
+      const idB = b.id.split("--")[0];
 
-        return idA.localeCompare(idB, undefined, { numeric: true });
-      },
+      return idA.localeCompare(idB, undefined, { numeric: true });
     },
   },
 };

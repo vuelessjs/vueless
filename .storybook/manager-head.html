@@ -7,7 +7,60 @@ Overrides content of storybook layout HTML page <head> tag,
 
 <!-- Styles overriding -->
 <style>
- div[data-testid="tooltip"] a[id]:hover {
-   background-color: rgb(17 24 39 / 5%) !important;
- }
+  /* -------------------- Storybook config tooltip -------------------- */
+
+  div[data-testid="tooltip"] {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  div[data-testid="tooltip"] a[id]:hover,
+  div[data-testid="tooltip"] button[id]:hover {
+    background-color: rgb(17 24 39 / 5%) !important;
+  }
+
+  .dark div[data-testid="tooltip"] a[id]:hover,
+  .dark div[data-testid="tooltip"] button[id]:hover {
+    background-color: rgb(255 255 255 / 5%) !important;
+  }
+
+  /* -------------------- Storybook sidebar -------------------- */
+
+  .sidebar-header img {
+   width: 150px;
+  }
+
+  .sidebar-header a:focus {
+    border: 1px solid transparent;
+  }
+
+  /* -------------------- Storybook args -------------------- */
+
+  .dark,
+  .dark #panel-tab-content div,
+  .dark .docblock-argstable-body > tr > td {
+    background: #030712 !important;
+  }
+
+  .light,
+  .light #panel-tab-content div,
+  .light .docblock-argstable-body > tr > td {
+    background: #f9fafb !important;
+  }
+
+  .dark .docblock-argstable-head > tr {
+    background: #1e293b !important;
+  }
+
+  .dark .docblock-argstable-body tr > td textarea,
+  .dark .docblock-argstable-body tr > td select,
+  .dark .docblock-argstable-body tr > td:last-child button:not([tabindex="-1"]) {
+    background: #111827;
+    border: solid 1px #1f2937;
+    box-shadow: none;
+  }
+
+  .light .docblock-argstable-body tr > td:last-child button:not([tabindex="-1"]) {
+    background: white;
+  }
 </style>

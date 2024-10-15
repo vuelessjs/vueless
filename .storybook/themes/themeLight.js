@@ -10,7 +10,7 @@ export default create({
   brandTitle: "Vueless UI",
   brandUrl: "https://vueless.com",
   brandImage:
-    "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/logo.png",
+    "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/vueless-logo-light.svg",
   brandTarget: "_blank",
 
   // Main colors
@@ -25,7 +25,7 @@ export default create({
 
   // Text colors
   textColor: colors.gray["900"],
-  textInverseColor: colors.gray["50"],
+  textInverseColor: colors.gray["900"],
 
   // Toolbar default and active colors
   barTextColor: colors.gray["500"],
@@ -40,7 +40,7 @@ export default create({
   inputBorderRadius: 4,
 
   buttonBg: colors.gray["100"],
-  buttonBorder: colors.gray["100"],
-  booleanBg: colors.white,
-  booleanSelectedBg: colors.gray["100"],
+  buttonBorder: colors.gray["200"],
+  booleanBg: colors.gray["50"],
+  booleanSelectedBg: colors.gray["200"],
 });

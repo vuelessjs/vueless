@@ -11,37 +11,146 @@ affecting rendered component(s) below Canvas and Docs tabs.
 
 <!-- Styles overriding -->
 <style>
+  /* -------------------- General -------------------- */
+
   body {
     font-family: Roboto, sans-serif;
   }
 
-  #storybook-docs h2 {
-    margin-top: 32px !important;
-    margin-bottom: 24px !important;
-    padding-bottom: 8px !important;
-    font-weight: bold !important;
+  .dark h1, .dark h2, .dark h3  {
+    @apply text-gray-200;
   }
 
-  .docblock-argstable-body {
-    filter: none !important;
-    border-radius: 0.5rem !important;
+  /* -------------------- All docs block -------------------- */
+
+  .dark .sbdocs {
+    @apply bg-gray-950;
   }
 
-  .docblock-argstable-body tr:not([title]) > td {
-    background-color: white !important;
+  /* -------------------- Main story -------------------- */
+
+  .sb-bar,
+  .docs-story {
+    @apply bg-white;
   }
 
-  .docblock-argstable-body tr td {
-    border-radius: 0 !important;
+  .vl-dark .sb-bar,
+  .vl-dark .docs-story {
+    @apply !bg-gray-900;
+  }
+
+  .sb-bar {
+    @apply border-0;
+  }
+
+  .dark .sb-bar,
+  .dark .docs-story {
+    @apply bg-gray-100;
+  }
+
+  .dark .sb-bar {
+    @apply border-b border-gray-300;
+    box-shadow: none !important;
+  }
+
+  .vl-dark .sb-bar  {
+    @apply border-b border-gray-800;
+    box-shadow: none !important;
+  }
+
+  .sbdocs.sbdocs-preview .prismjs {
+    @apply border-t border-t-gray-700 bg-gray-800;
+  }
+
+  .vl-dark .docblock-code-toggle {
+    @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
   }
 
   .sbdocs-preview {
     box-shadow: none !important;
   }
 
-  .docblock-argstable [type='checkbox']:checked,
-  .docblock-argstable [type='radio']:checked {
-    background-color: rgb(17 24 39) !important;
+  .dark .sbdocs.sbdocs-preview,
+  .vl-dark .sbdocs.sbdocs-preview {
+    @apply border-gray-800;
+  }
+
+  /* -------------------- Args table -------------------- */
+
+  .dark .docblock-argstable,
+  .dark .docblock-argstable-head th {
+    @apply !text-gray-200;
+  }
+
+  .docblock-argstable-body {
+    @apply rounded-lg !filter-none;
+  }
+
+  .docblock-argstable-body tr td {
+    @apply !rounded-none;
+  }
+
+  .docblock-argstable-body tr:not([title]) > td {
+    @apply !bg-white;
+  }
+
+  .dark .docblock-argstable-body tr > td {
+    @apply border-b border-solid !bg-gray-900 border-s-0 border-e-0 !border-t-gray-800;
+    border-block-end: none !important;
+  }
+
+  .dark .docblock-argstable-body tr > td:first-child,
+  .dark .docblock-argstable-body tr > td:last-child {
+    @apply !border-s-gray-800 !border-e-gray-800;
+  }
+
+  .dark .docblock-argstable-body {
+    @apply border border-b-gray-800;
+  }
+
+  .dark .docblock-argstable-body tr[title] > td {
+    @apply !bg-gray-800 !text-gray-400;
+  }
+
+  .dark .docblock-argstable-body tr[title] > td svg {
+    @apply !text-gray-400;
+  }
+
+  .dark .docblock-argstable-body tr > td > div + div > span,
+  .dark .docblock-argstable-body tr > td > div + div > div > span,
+  .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
+  .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
+    @apply bg-gray-800 border-gray-700/50 text-gray-400;
+  }
+
+  .dark .docblock-argstable-body tr > td textarea,
+  .dark .docblock-argstable-body tr > td select,
+  .dark .docblock-argstable-body tr > td:nth-child(4) button {
+    @apply text-gray-200 bg-gray-800 border border-solid border-gray-700/50 hover:border-gray-600 focus:border-gray-500;
+    box-shadow: none !important;
+  }
+
+  .light .docblock-argstable-body tr > td textarea,
+  .light .docblock-argstable-body tr > td select,
+  .light .docblock-argstable-body tr > td:nth-child(4) button {
+    @apply border border-solid border-gray-300 hover:border-gray-400 focus:border-gray-500;
+    box-shadow: none !important;
+  }
+
+  .dark .docblock-argstable-body [type='checkbox'],
+  .dark .docblock-argstable-body [type='radio'] {
+    @apply !border !border-solid !border-gray-300;
+    box-shadow: none !important;
+  }
+
+  .dark .docblock-argstable-body [type='checkbox']:checked,
+  .dark .docblock-argstable-body [type='radio']:checked {
+    @apply bg-gray-700;
+  }
+
+  .docblock-argstable-body [type='checkbox']:checked,
+  .docblock-argstable-body [type='radio']:checked {
+    @apply !bg-gray-900;
   }
 
   .docblock-argstable [type='checkbox']:focus,
@@ -49,15 +158,34 @@ affecting rendered component(s) below Canvas and Docs tabs.
     @apply !ring-gray-300;
   }
 
+  /* -------------------- Code block and user markdown -------------------- */
+
+  #storybook-docs h2 {
+    @apply mt-8 mb-6 pb-2 font-bold;
+  }
+
+  .dark h2 {
+    @apply border-b-gray-800;
+  }
+
   .sbdocs-title + p code {
-    background: #fff;
+    @apply bg-white;
+  }
+
+  .docblock-source {
+    @apply !bg-gray-800 border-gray-800 !rounded-lg;
+    box-shadow: none !important;
+  }
+
+  .dark .docblock-source {
+    @apply !bg-gray-900 !border-gray-800;
+
+    button {
+      @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
+    }
   }
 
   .markdown {
-    .docblock-source {
-      margin: 0px 0 24px !important;
-    }
-
     code {
       background-color: #f3f4f6 !important;
       border-color: #d1d5db !important;
@@ -72,5 +200,15 @@ affecting rendered component(s) below Canvas and Docs tabs.
       border-bottom: none;
       color: #4b5563;
     }
+  }
+
+  /* -------------------- Storybook story preview -------------------- */
+
+  .vl-dark {
+    @apply min-h-full bg-gray-950;
+  }
+
+  .vl-light {
+    @apply min-h-full bg-white;
   }
 </style>

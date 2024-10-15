@@ -54,7 +54,7 @@ export const vue3SourceDecorator = makeDecorator({
           }
         }
 
-        return () => h("div", { style: `padding: 2rem 1.5rem 3rem 1.5rem;` }, [h(story)]);
+        return () => h("div", { class: "px-6 pt-8 pb-12" }, [h(story)]);
       },
     };
   },
