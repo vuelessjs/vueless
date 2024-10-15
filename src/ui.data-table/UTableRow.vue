@@ -278,12 +278,16 @@ function getCellContentClasses(row, key) {
 }
 
 function isEmptyValue(value) {
-  return value == null || (typeof value === "object" && !Object.keys(value).length);
+  return (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && !Object.keys(value).length)
+  );
 }
 
 function formatCellValue(value) {
-  if (isEmptyValue(value)) return HYPHEN_SYMBOL;
-
   const nestedValue = value && typeof value === "object" && "value" in value ? value.value : value;
 
   return isEmptyValue(nestedValue) ? HYPHEN_SYMBOL : nestedValue;
