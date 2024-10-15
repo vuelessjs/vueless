@@ -17,7 +17,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
-    route: { control: { type: "text" } },
   },
 };
 
@@ -85,7 +84,7 @@ export const Href = DefaultTemplate.bind({});
 Href.args = { href: "https://storybook.js.org/docs/react/get-started/introduction" };
 
 export const Route = DefaultTemplate.bind({});
-Route.args = { name: "SomeRouterRouteName" };
+Route.args = { name: "routerName" };
 
 export const TargetBlank = DefaultTemplate.bind({});
 TargetBlank.args = {
