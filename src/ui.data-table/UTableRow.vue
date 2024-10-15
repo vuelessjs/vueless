@@ -32,10 +32,7 @@
         v-bind="bodyCellNestedAttrs"
       >
         <UIcon
-          v-if="
-            (row.row && !isNestedRowEmpty) ||
-            (row.nestedData && hasSlotContent($slots['nested-content']))
-          "
+          v-if="isShownToggleIcon"
           size="xs"
           internal
           interactive
@@ -150,7 +147,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useSlots } from "vue";
 import { cx } from "../utils/utilUI.js";
 import useUI from "../composables/useUI.js";
 
@@ -211,6 +208,7 @@ const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
 const cellRef = ref([]);
+const slots = useSlots();
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
@@ -244,6 +242,13 @@ const isNestedRowEmpty = computed(() => {
   }
 
   return !Object.keys(getFilteredRow(props.row.row, props.columns)).length;
+});
+
+const isShownToggleIcon = computed(() => {
+  return (
+    (props.row.row && !isNestedRowEmpty.value) ||
+    (props.row.nestedData && hasSlotContent(slots["nested-content"]))
+  );
 });
 
 const getToggleIconName = computed(() => (row) => {
