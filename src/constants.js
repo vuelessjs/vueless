@@ -5,7 +5,8 @@ export const COOL_COLOR = "cool";
 export const GRAYSCALE_COLOR = "grayscale";
 
 /* Vueless dark mode */
-export const DARK_MODE_SELECTOR = "vl-dark-mode";
+export const DARK_MODE_SELECTOR = "vl-dark";
+export const LIGHT_MODE_SELECTOR = "vl-light";
 
 /* Vueless defaults */
 export const DEFAULT_BRAND_COLOR = GRAYSCALE_COLOR;

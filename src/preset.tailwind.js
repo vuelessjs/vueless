@@ -57,7 +57,7 @@ const brandColors = getPalette(BRAND_COLOR);
 const grayColors = getPalette(GRAY_COLOR);
 
 export const vuelessTailwindConfig = {
-  darkMode: DARK_MODE_SELECTOR,
+  darkMode: ["selector", `[class="${DARK_MODE_SELECTOR}"]`],
   content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
   theme: {
     extend: {
