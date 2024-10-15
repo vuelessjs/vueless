@@ -1,5 +1,9 @@
 <template>
-  <tr v-bind="$attrs" @click="onClick(props.row)">
+  <tr
+    v-bind="{ ...$attrs, ...getRowAttrs(row.id) }"
+    :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
+    @click="onClick(props.row)"
+  >
     <td
       v-if="selectable"
       :style="getNestedCheckboxShift()"
@@ -28,7 +32,7 @@
         v-bind="bodyCellNestedAttrs"
       >
         <UIcon
-          v-if="row.row || (row.nestedData && hasSlotContent($slots['nested-content']))"
+          v-if="isShownToggleIcon"
           size="xs"
           internal
           interactive
@@ -79,8 +83,12 @@
 
   <UTableRow
     v-if="isSingleNestedRow && row.row && !row.row.isHidden && !row.nestedData"
-    v-bind="$attrs"
+    v-bind="{
+      ...$attrs,
+      ...getRowAttrs(row.row.id),
+    }"
     v-model:selected-rows="selectedRows"
+    :class="cx([getRowAttrs(row.row.id).class, getRowClasses(row.row)])"
     :attrs="attrs"
     :columns="columns"
     :row="row.row"
@@ -104,8 +112,12 @@
     <template v-for="nestedRow in row.row" :key="nestedRow.id">
       <UTableRow
         v-if="!nestedRow.isHidden"
-        v-bind="$attrs"
+        v-bind="{
+          ...$attrs,
+          ...getRowAttrs(nestedRow.id),
+        }"
         v-model:selected-rows="selectedRows"
+        :class="cx([getRowAttrs(nestedRow.id).class, getRowClasses(nestedRow)])"
         :attrs="attrs"
         :columns="columns"
         :row="nestedRow"
@@ -135,7 +147,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useSlots } from "vue";
 import { cx } from "../utils/utilUI.js";
 import useUI from "../composables/useUI.js";
 
@@ -196,6 +208,7 @@ const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
 const cellRef = ref([]);
+const slots = useSlots();
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
 
@@ -210,15 +223,40 @@ const {
 } = props.attrs;
 
 const toggleIconConfig = computed(() =>
-  props.row?.row?.isHidden ? bodyCellNestedExpandIconAttrs : bodyCellNestedCollapseIconAttrs,
+  props.row?.row?.isHidden
+    ? bodyCellNestedExpandIconAttrs.value
+    : bodyCellNestedCollapseIconAttrs.value,
 );
 
 const shift = computed(() => (props.row.row ? 1.5 : 2));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
+const isNestedRowEmpty = computed(() => {
+  if (!props.row.row) return true;
+
+  if (Array.isArray(props.row.row)) {
+    return props.row.row.some(
+      (nestedRow) => !Object.keys(getFilteredRow(nestedRow, props.columns)).length,
+    );
+  }
+
+  return !Object.keys(getFilteredRow(props.row.row, props.columns)).length;
+});
+
+const isShownToggleIcon = computed(() => {
+  return (
+    (props.row.row && !isNestedRowEmpty.value) ||
+    (props.row.nestedData && hasSlotContent(slots["nested-content"]))
+  );
+});
+
 const getToggleIconName = computed(() => (row) => {
-  const isHidden = row.row?.isHidden || row.nestedData?.isHidden;
+  const isHiddenNestedRow = Array.isArray(row.row)
+    ? row.row.some((nestedRow) => nestedRow.isHidden)
+    : row.row?.isHidden;
+
+  const isHidden = isHiddenNestedRow || row.nestedData?.isHidden;
 
   return isHidden ? props.config.defaults.expandIcon : props.config.defaults.collapseIcon;
 });
@@ -299,5 +337,17 @@ function onClickToggleIcon() {
 
 function onClickCell(cell, row) {
   emit("click-cell", cell, row);
+}
+
+function getRowClasses(row) {
+  const rowClasses = row?.class || "";
+
+  return typeof rowClasses === "function" ? rowClasses(row) : rowClasses;
+}
+
+function getRowAttrs(rowId) {
+  return selectedRows.value.includes(rowId)
+    ? props.attrs.bodyRowCheckedAttrs.value
+    : props.attrs.bodyRowAttrs.value;
 }
 </script>
