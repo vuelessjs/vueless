@@ -72,7 +72,7 @@
   <template
     v-if="row.nestedData && !row.nestedData.isHidden && hasSlotContent($slots['nested-content'])"
   >
-    <tr>
+    <tr :class="row.nestedData.class">
       <td :colspan="columns.length + (selectable ? 1 : 0)">
         <div :style="getNestedShift()">
           <slot name="nested-content" :row="row" />
