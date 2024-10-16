@@ -17,7 +17,7 @@
       <template #left>
         <!--
           @slot Use it to add something before the label.
-          @binding {boolean} isOpened
+          @binding {boolean} opened
         -->
         <slot name="left" :opened="isShownOptions" />
       </template>
@@ -26,7 +26,7 @@
         <!--
           @slot Use it to add something instead of the default label.
           @binding {string} label
-          @binding {boolean} isOpened
+          @binding {boolean} opened
         -->
         <slot :label="label" :opened="isShownOptions" />
       </template>
@@ -34,7 +34,7 @@
       <template #right>
         <!--
           @slot Use it to add something after the label.
-          @binding {boolean} isOpened
+          @binding {boolean} opened
         -->
         <slot name="right" :opened="isShownOptions">
           <UIcon

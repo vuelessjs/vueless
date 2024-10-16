@@ -16,7 +16,7 @@
       <template #left>
         <!--
           @slot Use it to add something before the label.
-          @binding {boolean} isOpened
+          @binding {string} label
         -->
         <slot name="left" :opened="isShownOptions" />
       </template>
@@ -25,7 +25,7 @@
         <!--
           @slot Use it to add something instead of the default label.
           @binding {string} label
-          @binding {boolean} isOpened
+          @binding {boolean} opened
         -->
         <slot :label="label" :opened="isShownOptions" />
       </template>
@@ -33,9 +33,9 @@
       <template #right="{ iconColor, iconSize }">
         <!--
           @slot Use it to add something after the label.
-          @binding {boolean} isOpened
+          @binding {boolean} opened
         -->
-        <slot name="right" :label="label" :opened="isShownOptions">
+        <slot name="right" :opened="isShownOptions">
           <UIcon
             v-if="!noIcon"
             internal
