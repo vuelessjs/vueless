@@ -81,6 +81,10 @@ export const vuelessTailwindConfig = {
       ringOffsetWidth: {
         dynamic: "var(--vl-ring-offset)",
       },
+      // TODO: Add this feature
+      ringOffsetColor: {
+        dynamic: "var(--vl-ring-offset-color)",
+      },
       borderRadius: {
         dynamic: "var(--vl-rounding)",
       },
