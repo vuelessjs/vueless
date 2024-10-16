@@ -31,7 +31,7 @@ jobs:
           cache: 'npm'
       - run: sudo apt-get install -y lftp
       - run: npm ci
-      - run: npm run sb:build
+      - run: npm run build
       - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --parallel=10 ./storybook-static ./www"
 
   publish-npm:
@@ -52,7 +52,7 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
-      - run: npm run package:prepare
+      - run: npm run release:prepare
       - run: npm run release:patch
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
