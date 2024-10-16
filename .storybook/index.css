@@ -11,8 +11,46 @@ body {
   font-family: Roboto, sans-serif;
 }
 
-.dark h1, .dark h2, .dark h3  {
-  @apply text-gray-200;
+.light .sbdocs .sbdocs-content > h1,
+.light .sbdocs .sbdocs-content > h2,
+.light .sbdocs .sbdocs-content > h3,
+.light .sbdocs .sbdocs-content > p,
+.light .sbdocs .sbdocs-content > table th,
+.light .sbdocs .sbdocs-content > table td {
+  @apply !text-gray-900;
+}
+
+.dark .sbdocs .sbdocs-content > h1,
+.dark .sbdocs .sbdocs-content > h2,
+.dark .sbdocs .sbdocs-content > h3,
+.dark .sbdocs .sbdocs-content > p,
+.dark .sbdocs .sbdocs-content > table th,
+.dark .sbdocs .sbdocs-content > table td {
+  @apply !text-gray-200;
+}
+
+.light .sbdocs .sbdocs-content > table th {
+  @apply bg-gray-100 border-gray-200 text-left;
+}
+
+.light .sbdocs .sbdocs-content > table td {
+  @apply bg-white border-gray-200;
+}
+
+.light .sbdocs .sbdocs-content > table {
+  @apply rounded-lg outline outline-1 outline-gray-200 overflow-hidden;
+}
+
+.dark .sbdocs .sbdocs-content > table th {
+  @apply bg-gray-800 border-gray-700 text-left;
+}
+
+.dark .sbdocs .sbdocs-content > table td {
+  @apply bg-gray-900 border-gray-700;
+}
+
+.dark .sbdocs .sbdocs-content > table {
+  @apply rounded-lg outline outline-1 outline-gray-700 overflow-hidden;
 }
 
 /* -------------------- All docs block -------------------- */
@@ -110,8 +148,19 @@ body {
   @apply !text-gray-400;
 }
 
+.light .sbdocs .sbdocs-content code,
+.light .docblock-argstable-body tr > td > div + div > span[class],
+.light .docblock-argstable-body tr > td > div + div > div > span,
+.light .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
+.light .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
+.light .docblock-argstable-body tr > td:nth-child(3) > span[class] {
+  @apply bg-gray-100 border-gray-200 text-gray-800;
+}
+
+.dark .sbdocs .sbdocs-content code,
 .dark .docblock-argstable-body tr > td > div + div > span[class],
 .dark .docblock-argstable-body tr > td > div + div > div > span,
+.dark .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
   @apply bg-gray-800 border-gray-700/50 text-gray-400;
@@ -121,6 +170,7 @@ body {
   @apply text-gray-400;
 }
 
+.dark .docblock-argstable-body tr > td input,
 .dark .docblock-argstable-body tr > td textarea,
 .dark .docblock-argstable-body tr > td select,
 .dark .docblock-argstable-body tr > td:nth-child(4) button {
@@ -128,6 +178,7 @@ body {
   box-shadow: none !important;
 }
 
+.light .docblock-argstable-body tr > td input,
 .light .docblock-argstable-body tr > td textarea,
 .light .docblock-argstable-body tr > td select,
 .light .docblock-argstable-body tr > td:nth-child(4) button {
@@ -166,10 +217,6 @@ body {
   @apply border-b-gray-800;
 }
 
-.sbdocs-title + p code {
-  @apply bg-white;
-}
-
 .docblock-source {
   @apply !bg-gray-800 border-gray-800 !rounded-lg;
   box-shadow: none !important;
@@ -181,21 +228,6 @@ body {
 
 .dark .docblock-source button {
   @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
-}
-
-.markdown  code {
-  background-color: #f3f4f6 !important;
-  border-color: #d1d5db !important;
-}
-
-.markdown .sbdocs-a {
-  border-bottom: dashed 1px #4b5563;
-  color: #4b5563;
-}
-
-.markdown .sbdocs-a:hover {
-  border-bottom: none;
-  color: #4b5563;
 }
 
 /* -------------------- Storybook story preview -------------------- */

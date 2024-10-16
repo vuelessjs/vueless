@@ -40,7 +40,6 @@ export const parameters = {
     source: { language: "html" },
   },
   darkMode: {
-    current: "light",
     light: themeLight,
     dark: themeDark,
     classTarget: "body",
