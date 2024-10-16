@@ -15,10 +15,12 @@ export function separatedMoney(money, decimalPlaces = 2, decimalSeparator = ",")
 
   integer = integer.replace(ADD_SPACE_IN_MONEY_REG_EX, "$1 ");
 
-  if (roundedMoney === 0 && decimalPlaces !== 0) {
+  if (!roundedMoney) {
     integer = SINGLE_ZERO;
     penny = DOUBLE_ZERO;
-  } else if (decimalPlaces === 0) {
+  }
+
+  if (decimalPlaces === 0) {
     decimalSeparator = "";
     penny = "";
   }

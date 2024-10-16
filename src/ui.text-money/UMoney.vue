@@ -118,7 +118,7 @@ const props = defineProps({
   },
 
   /**
-   * Set the decimalSeparator between integer and float (penny) parts.
+   * A symbol used to separate the integer part from the fractional part of a number.
    */
   decimalSeparator: {
     type: String,
