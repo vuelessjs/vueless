@@ -24,8 +24,8 @@
       >
         <!--
           @slot Use it to add icon before the text.
-          @binding {string} iconName
-          @binding {string} iconSize
+          @binding {string} icon-name
+          @binding {string} icon-size
         -->
         <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
           <UIcon

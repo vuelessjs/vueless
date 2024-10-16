@@ -198,13 +198,13 @@ const props = defineProps({
 const emit = defineEmits([
   /**
    * Triggers when checkbox is toggled.
-   * @property {Boolean} newModelValue
+   * @property {Boolean} modelValue
    */
   "update:modelValue",
 
   /**
    * Triggers when checkbox is toggled.
-   * @property {Boolean} newModelValue
+   * @property {Boolean} modelValue
    */
   "input",
 ]);
