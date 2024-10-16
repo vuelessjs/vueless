@@ -5,11 +5,50 @@ Overrides content of storybook layout HTML page <head> tag,
 <link rel="shortcut icon" href="https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/favicons/favicon.ico">
 <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/favicons/favicon.svg" />
 
+<div id="sb-vueless-loader">
+  <img
+    id="sb-vueless-loader-logo"
+    src="https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/vueless-logo-light.svg"
+    alt="Vueless UI"
+    width="250" />
+</div>
+
+
 <style>
   /* -------------------- Prevent showing users default storybook theme styles -------------------- */
 
-  body {
+  body.dark {
+    background: #111827;
+  }
+
+  #root {
     visibility: hidden;
+  }
+
+  #sb-vueless-loader {
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background: inherit;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+  }
+
+  #sb-vueless-loader-logo {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
   }
 
   /* -------------------- Storybook config tooltip -------------------- */
@@ -76,12 +115,17 @@ Overrides content of storybook layout HTML page <head> tag,
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = prefersDarkScheme ? 'dark' : 'light';
 
+    document.getElementById("sb-vueless-loader-logo").src = prefersDarkScheme
+      ? "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/vueless-logo-dark.svg"
+      : "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/vueless-logo-light.svg";
+
     document.documentElement.classList.add(theme);
 
     window.onload = function() {
       setTimeout(() => {
-        document.body.style.visibility = 'visible';
-      }, 500);
+        document.getElementById("root").style.visibility = 'visible';
+        document.getElementById("sb-vueless-loader").style.display = 'none';
+      }, 750);
     };
   })();
 </script>
