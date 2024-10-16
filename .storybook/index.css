@@ -172,7 +172,7 @@ body {
   @apply text-gray-400;
 }
 
-.dark .docblock-argstable-body tr > td input,
+.dark .docblock-argstable-body tr > td input:not([type="checkbox"]),
 .dark .docblock-argstable-body tr > td textarea,
 .dark .docblock-argstable-body tr > td select,
 .dark .docblock-argstable-body tr > td:nth-child(4) button {
@@ -180,7 +180,7 @@ body {
   box-shadow: none !important;
 }
 
-.light .docblock-argstable-body tr > td input,
+.light .docblock-argstable-body tr > td input:not([type="checkbox"]),
 .light .docblock-argstable-body tr > td textarea,
 .light .docblock-argstable-body tr > td select,
 .light .docblock-argstable-body tr > td:nth-child(4) button {
