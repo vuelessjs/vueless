@@ -110,11 +110,15 @@ body {
   @apply !text-gray-400;
 }
 
-.dark .docblock-argstable-body tr > td > div + div > span,
+.dark .docblock-argstable-body tr > td > div + div > span[class],
 .dark .docblock-argstable-body tr > td > div + div > div > span,
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
   @apply bg-gray-800 border-gray-700/50 text-gray-400;
+}
+
+.dark .docblock-argstable-body tr > td > div + div > span:not([class]) {
+  @apply text-gray-400;
 }
 
 .dark .docblock-argstable-body tr > td textarea,

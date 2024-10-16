@@ -14,6 +14,7 @@ export default defineConfig({
       "prettier2/parser-html",
       "@storybook/blocks",
       "@storybook/theming/create",
+      "@storybook/addon-themes",
     ],
   },
 });
