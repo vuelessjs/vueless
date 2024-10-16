@@ -31,21 +31,27 @@
         :style="getNestedShift()"
         v-bind="bodyCellNestedAttrs"
       >
-        <UIcon
-          v-if="isShownToggleIcon"
-          size="xs"
-          internal
-          interactive
-          :name="getToggleIconName(row)"
-          color="brand"
-          v-bind="toggleIconConfig"
-          @click.stop="onClickToggleIcon"
-        />
-
+        <div
+          ref="toggle-wrapper"
+          v-bind="bodyCellNestedExpandIconWrapperAttrs"
+          :style="{ width: getIconWidth() }"
+        >
+          <UIcon
+            v-if="isShownToggleIcon"
+            size="xs"
+            internal
+            interactive
+            :data-row-toggle-icon="`row-toggle-icon-${row.id}`"
+            :name="getToggleIconName(row)"
+            color="brand"
+            v-bind="toggleIconConfig"
+            @click.stop="onClickToggleIcon"
+          />
+        </div>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
             v-bind="bodyCellContentAttrs"
-            ref="cellRef"
+            ref="cell"
             :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
             :data-test="`${dataTest}-${key}-cell`"
           >
@@ -58,7 +64,7 @@
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
             v-bind="bodyCellContentAttrs"
-            ref="cellRef"
+            ref="cell"
             :class="cx([bodyCellContentAttrs.class, getCellContentClasses(row, key)])"
             :data-test="`${dataTest}-${key}-cell`"
           >
@@ -147,11 +153,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, useSlots } from "vue";
+import { computed, onMounted, useSlots, useTemplateRef } from "vue";
 import { cx } from "../utils/utilUI.js";
 import useUI from "../composables/useUI.js";
 
-import { HYPHEN_SYMBOL } from "../constants.js";
+import { HYPHEN_SYMBOL, PX_IN_REM } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
 
 import { useMutationObserver } from "../composables/useMutationObserver.js";
@@ -207,7 +213,8 @@ const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
-const cellRef = ref([]);
+const cellRef = useTemplateRef("cell");
+const toggleWrapperRef = useTemplateRef("toggle-wrapper");
 const slots = useSlots();
 
 useMutationObserver(cellRef, setCellTitle, { childList: true });
@@ -220,6 +227,7 @@ const {
   bodyCellNestedExpandIconAttrs,
   bodyCellNestedCollapseIconAttrs,
   bodyCellBaseAttrs,
+  bodyCellNestedExpandIconWrapperAttrs,
 } = props.attrs;
 
 const toggleIconConfig = computed(() =>
@@ -251,7 +259,13 @@ const isShownToggleIcon = computed(() => {
   );
 });
 
-const getToggleIconName = computed(() => (row) => {
+onMounted(() => {
+  if (cellRef.value) {
+    cellRef.value.forEach(setElementTitle);
+  }
+});
+
+function getToggleIconName(row) {
   const isHiddenNestedRow = Array.isArray(row.row)
     ? row.row.some((nestedRow) => nestedRow.isHidden)
     : row.row?.isHidden;
@@ -259,11 +273,18 @@ const getToggleIconName = computed(() => (row) => {
   const isHidden = isHiddenNestedRow || row.nestedData?.isHidden;
 
   return isHidden ? props.config.defaults.expandIcon : props.config.defaults.collapseIcon;
-});
+}
 
-onMounted(() => {
-  cellRef.value.forEach(setElementTitle);
-});
+function getIconWidth() {
+  const icon = document.querySelector(`[data-row-toggle-icon='row-toggle-icon-${props.row.id}']`);
+  const currentWrapperWidth = toggleWrapperRef.value?.at(0)?.getBoundingClientRect()?.width;
+
+  if (icon) {
+    return `${icon.getBoundingClientRect().width / PX_IN_REM}rem`;
+  }
+
+  return `${currentWrapperWidth / PX_IN_REM || 1}rem`;
+}
 
 function getCellClasses(row, key) {
   const cellClasses = row[key]?.class || "";
