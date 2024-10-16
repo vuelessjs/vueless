@@ -5,8 +5,13 @@ Overrides content of storybook layout HTML page <head> tag,
 <link rel="shortcut icon" href="https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/favicons/favicon.ico">
 <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/favicons/favicon.svg" />
 
-<!-- Styles overriding -->
 <style>
+  /* -------------------- Prevent showing users default storybook theme styles -------------------- */
+
+  body {
+    visibility: hidden;
+  }
+
   /* -------------------- Storybook config tooltip -------------------- */
 
   div[data-testid="tooltip"] {
@@ -64,3 +69,19 @@ Overrides content of storybook layout HTML page <head> tag,
     background: white;
   }
 </style>
+
+<script>
+  /* This trick prevents showing users default storybook theme */
+  (() => {
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = prefersDarkScheme ? 'dark' : 'light';
+
+    document.documentElement.classList.add(theme);
+
+    window.onload = function() {
+      setTimeout(() => {
+        document.body.style.visibility = 'visible';
+      }, 500);
+    };
+  })();
+</script>
