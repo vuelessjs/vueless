@@ -54,7 +54,7 @@ export default /*tw*/ {
     align: "left",
     symbolAlign: "right",
     decimalScale: 2,
-    delimiter: ",",
+    decimalSeparator: ",",
     planned: false,
     integer: false,
     symbolDivided: true,
