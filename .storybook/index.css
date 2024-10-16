@@ -14,6 +14,7 @@ body {
 .light .sbdocs .sbdocs-content > h1,
 .light .sbdocs .sbdocs-content > h2,
 .light .sbdocs .sbdocs-content > h3,
+.light .sbdocs .sbdocs-content > .sb-anchor > h3,
 .light .sbdocs .sbdocs-content > p,
 .light .sbdocs .sbdocs-content > table th,
 .light .sbdocs .sbdocs-content > table td {
@@ -23,6 +24,7 @@ body {
 .dark .sbdocs .sbdocs-content > h1,
 .dark .sbdocs .sbdocs-content > h2,
 .dark .sbdocs .sbdocs-content > h3,
+.dark .sbdocs .sbdocs-content > .sb-anchor > h3,
 .dark .sbdocs .sbdocs-content > p,
 .dark .sbdocs .sbdocs-content > table th,
 .dark .sbdocs .sbdocs-content > table td {
