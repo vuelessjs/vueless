@@ -19,7 +19,7 @@
       <span
         v-if="!integer"
         v-bind="pennyAttrs"
-        v-text="preparedMoney.delimiter + preparedMoney.penny"
+        v-text="preparedMoney.decimalSeparator + preparedMoney.penny"
       />
 
       <span
@@ -118,11 +118,11 @@ const props = defineProps({
   },
 
   /**
-   * Set the delimiter between integer and float (penny) parts.
+   * A symbol used to separate the integer part from the fractional part of a number.
    */
-  delimiter: {
+  decimalSeparator: {
     type: String,
-    default: getDefault(defaultConfig, UMoney).delimiter,
+    default: getDefault(defaultConfig, UMoney).decimalSeparator,
   },
 
   /**
@@ -200,6 +200,6 @@ const mathSign = computed(() => {
 });
 
 const preparedMoney = computed(() => {
-  return separatedMoney(Math.abs(props.sum), props.decimalScale, props.delimiter);
+  return separatedMoney(Math.abs(props.sum), props.decimalScale, props.decimalSeparator);
 });
 </script>
