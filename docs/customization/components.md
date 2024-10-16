@@ -119,7 +119,7 @@ export default {
     /* setting default props */
     UMoney: {
       defaults: {
-        delimiter: ".",
+        decimalSeparator: ".",
         symbolAlign: "left",
         divided: false,
       },
