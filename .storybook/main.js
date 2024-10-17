@@ -6,7 +6,8 @@ export default {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "storybook-dark-mode",
-    // "@storybook/addon-themes", // TODO: uncomment when dark mode will be implemented to the components.
+    // TODO: remove the condition when the dark mode will be implemented to the components.
+    process.env.NODE_ENV === "development" && "@storybook/addon-themes",
   ],
   framework: {
     name: "@storybook/vue3-vite",

@@ -31,8 +31,26 @@ body {
   @apply !text-gray-200;
 }
 
+.sbdocs .sbdocs-content > table tr {
+  @apply border-none;
+}
+
+.sbdocs .sbdocs-content > table th,
+.sbdocs .sbdocs-content > table td {
+  @apply border-l-0 border-t-0 text-left;
+}
+
+.sbdocs .sbdocs-content > table th:last-child,
+.sbdocs .sbdocs-content > table td:last-child {
+  @apply border-r-0;
+}
+
+.sbdocs .sbdocs-content > table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
 .light .sbdocs .sbdocs-content > table th {
-  @apply bg-gray-100 border-gray-200 text-left;
+  @apply bg-gray-100 border-gray-200;
 }
 
 .light .sbdocs .sbdocs-content > table td {
@@ -44,7 +62,7 @@ body {
 }
 
 .dark .sbdocs .sbdocs-content > table th {
-  @apply bg-gray-800 border-gray-700 text-left;
+  @apply bg-gray-800 border-gray-700;
 }
 
 .dark .sbdocs .sbdocs-content > table td {
@@ -111,6 +129,16 @@ body {
 
 /* -------------------- Args table -------------------- */
 
+@media screen and (max-width: 600px) {
+  div:has(> .docblock-argstable) {
+    @apply !mb-10 overflow-x-scroll;
+  }
+
+  .docblock-argstable {
+    @apply !mb-0;
+  }
+}
+
 .dark .docblock-argstable,
 .dark .docblock-argstable-head th {
   @apply !text-gray-200;
@@ -159,54 +187,83 @@ body {
   @apply bg-gray-100 border-gray-200 text-gray-800;
 }
 
+.dark .rejt-value-node:hover .rejt-value,
 .dark .sbdocs .sbdocs-content code,
 .dark .docblock-argstable-body tr > td > div + div > span[class],
 .dark .docblock-argstable-body tr > td > div + div > div > span,
 .dark .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
-  @apply bg-gray-800 border-gray-700/50 text-gray-400;
+  @apply !bg-gray-800 !border-gray-700/50 !text-gray-400;
 }
 
 .dark .docblock-argstable-body tr > td > div + div > span:not([class]) {
   @apply text-gray-400;
 }
 
+.dark .docblock-argstable-body tr > td .rejt-edit-form,
 .dark .docblock-argstable-body tr > td input:not([type="checkbox"]),
 .dark .docblock-argstable-body tr > td textarea,
 .dark .docblock-argstable-body tr > td select,
 .dark .docblock-argstable-body tr > td:nth-child(4) button {
-  @apply text-gray-200 bg-gray-800 border border-solid border-gray-700/50 hover:border-gray-600 focus:border-gray-500;
+  @apply text-gray-200 bg-gray-800 border border-solid border-gray-700/50 hover:border-gray-600 focus:border-gray-500 text-[13px];
   box-shadow: none !important;
+  color-scheme: dark;
 }
 
+.docblock-argstable-body tr > td .rejt-add-value-node button {
+  @apply px-1.5 py-0.5 leading-none;
+}
+
+.light .docblock-argstable-body tr > td .rejt-add-value-node button[type="submit"] {
+  @apply bg-white;
+}
+
+.light .docblock-argstable-body tr > td .rejt-edit-form,
 .light .docblock-argstable-body tr > td input:not([type="checkbox"]),
 .light .docblock-argstable-body tr > td textarea,
 .light .docblock-argstable-body tr > td select,
 .light .docblock-argstable-body tr > td:nth-child(4) button {
-  @apply border border-solid border-gray-300 hover:border-gray-400 focus:border-gray-500;
+  @apply text-gray-900 border border-solid border-gray-300 hover:border-gray-400 focus:border-gray-500 text-[13px];
   box-shadow: none !important;
+}
+
+.dark .docblock-argstable-body label[aria-disabled] {
+  @apply bg-gray-800;
+}
+
+.dark .docblock-argstable-body label[aria-disabled] span {
+  @apply text-gray-200;
 }
 
 .dark .docblock-argstable-body [type='checkbox'],
 .dark .docblock-argstable-body [type='radio'] {
-  @apply !border !border-solid !border-gray-300;
+  @apply border border-solid !border-gray-700;
   box-shadow: none !important;
 }
 
 .dark .docblock-argstable-body [type='checkbox']:checked,
 .dark .docblock-argstable-body [type='radio']:checked {
-  @apply bg-gray-700;
+  @apply bg-gray-900 invert grayscale !border-gray-300;
 }
 
-.docblock-argstable-body [type='checkbox']:checked,
-.docblock-argstable-body [type='radio']:checked {
+.light .docblock-argstable-body [type='checkbox']:checked,
+.light .docblock-argstable-body [type='radio']:checked {
   @apply !bg-gray-900;
 }
 
 .docblock-argstable [type='checkbox']:focus,
 .docblock-argstable [type='radio']:focus {
   @apply !ring-gray-300;
+}
+
+.dark .rejt-name,
+.dark .rejt-collapsed-text {
+  @apply !text-gray-400;
+}
+
+.dark .rejt-value {
+  @apply !text-gray-200;
 }
 
 /* -------------------- Code block and user markdown -------------------- */
