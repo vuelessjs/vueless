@@ -310,7 +310,7 @@ function onBlur(event) {
 
 defineExpose({
   /**
-   * A reference to the link element for direct DOM manipulation.
+   * A reference to the link wrapper element for direct DOM manipulation.
    * @property {HTMLElement}
    */
   wrapperRef,
