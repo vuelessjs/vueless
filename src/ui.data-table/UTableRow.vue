@@ -41,7 +41,7 @@
             size="xs"
             internal
             interactive
-            :data-row-toggle-icon="`row-toggle-icon-${row.id}`"
+            :data-row-toggle-icon="row.id"
             :name="getToggleIconName(row)"
             color="brand"
             v-bind="toggleIconConfig"
@@ -276,7 +276,7 @@ function getToggleIconName(row) {
 }
 
 function getIconWidth() {
-  const icon = document.querySelector(`[data-row-toggle-icon='row-toggle-icon-${props.row.id}']`);
+  const icon = document.querySelector(`[data-row-toggle-icon='${props.row.id}']`);
   const currentWrapperWidth = toggleWrapperRef.value?.at(0)?.getBoundingClientRect()?.width;
 
   if (icon) {
