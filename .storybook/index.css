@@ -73,6 +73,84 @@ body {
   @apply rounded-lg outline outline-1 outline-gray-700 overflow-hidden;
 }
 
+/* -------------------- Storybook preview skeleton -------------------- */
+
+.light .sb-preparing-docs,
+.light .sb-preparing-story {
+  @apply bg-gray-50;
+}
+
+.light .sb-previewBlock {
+  @apply bg-white border-gray-200 rounded-lg;
+  box-shadow: none !important;
+}
+
+.light .sb-previewBlock_header {
+  @apply border-solid border-b !border-b-gray-200;
+  box-shadow: none !important;
+}
+
+.light .sb-previewBlock_icon {
+  @apply bg-gray-300;
+}
+
+.light .sb-argstableBlock-body {
+  @apply rounded;
+  box-shadow: rgb(0 0 0 / 5%) 0 1px 3px 1px, rgb(0 0 0 / 4%) 0 0 0 1px;
+}
+
+.light .sb-argstableBlock-body td {
+  @apply bg-white border-solid border-b !border-b-gray-200;
+}
+
+.light .sb-argstableBlock-body tr:last-child td {
+  @apply border-b-0;
+}
+
+.light .sb-argstableBlock span,
+.light .sb-argstableBlock button {
+  @apply bg-gray-200;
+}
+
+
+
+.dark .sb-preparing-docs,
+.dark .sb-preparing-story {
+  @apply bg-gray-950;
+}
+
+.dark .sb-previewBlock {
+  @apply bg-gray-900 border-gray-800 rounded-lg;
+  box-shadow: none !important;
+}
+
+.dark .sb-previewBlock_header {
+  @apply border-solid border-b !border-b-gray-800;
+  box-shadow: none !important;
+}
+
+.dark .sb-previewBlock_icon {
+  @apply bg-gray-700;
+}
+
+.dark .sb-argstableBlock-body {
+  @apply rounded;
+  box-shadow: rgb(255 255 255 / 10%) 0 1px 3px 1px, rgb(255 255 255 / 7%) 0 0 0 1px;
+}
+
+.dark .sb-argstableBlock-body td {
+  @apply bg-gray-900 border-solid border-b !border-b-gray-800;
+}
+
+.dark .sb-argstableBlock-body tr:last-child td {
+  @apply border-b-0;
+}
+
+.dark .sb-argstableBlock span,
+.dark .sb-argstableBlock button {
+  @apply bg-gray-700;
+}
+
 /* -------------------- All docs block -------------------- */
 
 .dark .sbdocs {
