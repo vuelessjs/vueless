@@ -4,7 +4,7 @@ export function normalizeColumns(columns) {
 
 export function getFilteredRow(row, columns) {
   const filteredRow = Object.entries(row).filter((item) => {
-    const isShownColumn = columns.some((column) => column.key === item[0]);
+    const isShownColumn = columns.some((column) => column.key === item[0] && !column.isHidden);
 
     if (isShownColumn) return item;
   });

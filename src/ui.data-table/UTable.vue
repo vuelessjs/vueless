@@ -118,7 +118,7 @@
             </th>
 
             <th
-              v-for="(column, index) in normalizedColumns"
+              v-for="(column, index) in visibleColumns"
               :key="index"
               v-bind="headerCellBaseAttrs"
               :class="cx([headerCellBaseAttrs.class, column.thClass])"
@@ -468,6 +468,10 @@ const isFooterSticky = computed(
 );
 
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
+
+const visibleColumns = computed(() => {
+  return normalizedColumns.value.filter((column) => !column.isHidden);
+});
 
 const colsCount = computed(() => {
   return props.columns.length + 1;
