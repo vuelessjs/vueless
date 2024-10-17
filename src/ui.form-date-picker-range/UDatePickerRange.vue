@@ -206,7 +206,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Datepicker value (JavaScript Date object or string formatted in given `dateFormat`).
+   * Datepicker range value (JavaScript Date objects or strings formatted in given `dateFormat`).
    */
   modelValue: {
     type: Object,
@@ -259,7 +259,7 @@ const props = defineProps({
    * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   minDate: {
-    type: [String, Date],
+    type: [Date, String],
     default: getDefault(defaultConfig, UDatePickerRange).minDate,
   },
 
@@ -267,7 +267,7 @@ const props = defineProps({
    * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
   maxDate: {
-    type: [String, Date],
+    type: [Date, String],
     default: getDefault(defaultConfig, UDatePickerRange).maxDate,
   },
 

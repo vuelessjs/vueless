@@ -29,43 +29,38 @@ const DefaultTemplate = (args) => ({
 
     return { args, slots };
   },
-  data() {
-    return {
-      value: this.args.value,
-    };
-  },
   template: `
-      <UCalendar v-bind="args" v-model="value">
+      <UCalendar v-bind="args" v-model="args.modelValue">
         ${args.slotTemplate || getSlotsFragment()}
       </UCalendar>
 
       <div class="mt-4">
-        {{ value }}
+        {{ args.modelValue }}
       </div>
     `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { value: new Date() };
+Default.args = {};
 
 export const Range = DefaultTemplate.bind({});
 Range.args = {
   range: true,
-  value: {
+  modelValue: {
     from: new Date(new Date().setDate(new Date().getDate() - new Date().getDay())),
     to: new Date(new Date().setDate(new Date().getDate() + (6 - new Date().getDay()))),
   },
 };
 
 export const Timepicker = DefaultTemplate.bind({});
-Timepicker.args = { value: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
+Timepicker.args = { modelValue: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
   minDate: new Date(2022, 2, 22),
   maxDate: new Date(2022, 2, 26),
-  value: new Date(2022, 2, 24),
+  modelValue: new Date(2022, 2, 24),
 };
 
 export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "d.m.Y", userDateFormat: "d.m.Y", value: "28.06.2024" };
+DateFormat.args = { dateFormat: "d.m.Y", userDateFormat: "d.m.Y", modelValue: "28.06.2024" };

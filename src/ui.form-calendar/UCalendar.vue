@@ -181,10 +181,10 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   /**
-   * Calendar value (JavaScript Date object or string formatted in given `dateFormat`).
+   * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
   modelValue: {
-    type: [String, Object],
+    type: [Date, String, Object],
     default: null,
   },
 
