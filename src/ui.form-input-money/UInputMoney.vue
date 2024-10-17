@@ -264,8 +264,6 @@ watch(
   () => String(localValue.value) !== String(rawValue.value) && setValue(localValue.value),
 );
 
-defineExpose({ input, rawValue, formattedValue });
-
 onMounted(() => {
   setValue(localValue.value);
 });
@@ -283,4 +281,24 @@ function onBlur() {
 function onInput(value) {
   nextTick(() => emit("input", value));
 }
+
+defineExpose({
+  /**
+   * Reference to the underlying input element inside UInput.
+   * @property {HTMLInputElement}
+   */
+  input,
+
+  /**
+   * The raw, unformatted value of the input.
+   * @property {String | Number}
+   */
+  rawValue,
+
+  /**
+   * The formatted value displayed in the input.
+   * @property {String}
+   */
+  formattedValue,
+});
 </script>

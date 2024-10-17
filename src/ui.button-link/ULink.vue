@@ -272,8 +272,6 @@ const { route, isActive, isExactActive } = useLink({
 
 const wrapperRef = ref(null);
 
-defineExpose({ wrapperRef });
-
 const { wrapperAttrs, linkAttrs } = useAttrs(props, { isActive, isExactActive });
 
 const targetValue = computed(() => {
@@ -309,4 +307,12 @@ function onKeydown(event) {
 function onBlur(event) {
   emit("blur", event);
 }
+
+defineExpose({
+  /**
+   * A reference to the link element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+});
 </script>

@@ -339,8 +339,6 @@ const secondsRef = ref(null);
 const activeDate = ref(null);
 const activeMonth = ref(null);
 
-defineExpose({ wrapperRef });
-
 const currentView = ref(props.view);
 
 watch(
@@ -839,4 +837,12 @@ function onTimeInput(event, type, maxValue, minValue) {
 
   input.value = String(numericValue).padStart(2, "0");
 }
+
+defineExpose({
+  /**
+   * A reference to the calendar element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+});
 </script>

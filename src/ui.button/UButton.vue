@@ -256,8 +256,6 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
 
 const buttonRef = ref(null);
 
-defineExpose({ buttonRef });
-
 const loaderSize = computed(() => {
   const sizes = {
     "2xs": "sm",
@@ -290,5 +288,13 @@ const iconColor = computed(() => {
 
 watchEffect(() => {
   props.loading && buttonRef.value.blur();
+});
+
+defineExpose({
+  /**
+   * A reference to the button element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  buttonRef,
 });
 </script>
