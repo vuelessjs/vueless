@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "relative",
+  wrapper: "relative w-full overflow-auto",
   headerCounterBase: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
   stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden rounded-none border",
   stickyHeaderRow: "border-gray-200 bg-white",
@@ -18,7 +18,7 @@ export default /*tw*/ {
   stickyHeaderActionsCheckbox: "{UCheckbox}",
   stickyHeaderActionsCounter: "-ml-2",
   tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
-  table: "min-w-full border-none text-sm w-full table-fixed",
+  table: "min-w-full border-none text-sm w-full table-auto",
   header: "border-b border-gray-200",
   headerRow: "",
   headerCellBase: {
@@ -60,6 +60,7 @@ export default /*tw*/ {
   bodyCellCheckbox: "first:px-4", // try to remove first
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex gap-0.5",
+  bodyCellNestedExpandIconWrapper: "",
   bodyCellNestedExpandIcon: {
     component: "{UIcon}",
     wrapper: "rounded-sm",

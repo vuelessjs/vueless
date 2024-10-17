@@ -15,9 +15,11 @@ import { createVueless } from "../src/index.js";
 import { createRouter, createWebHistory } from "vue-router";
 
 /* Setup storybook */
-setup((app) => {
+setup((app, storyContext) => {
   const vueless = createVueless();
   const router = createRouter({ history: createWebHistory(), routes: [] });
+
+  app.config.idPrefix = storyContext.id;
 
   if (!app._context.config.globalProperties.$route) {
     app.use(router);

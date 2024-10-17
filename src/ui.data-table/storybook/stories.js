@@ -228,7 +228,6 @@ NestedContent.args = {
       };
     }
   },
-  selectable: true,
   slotTemplate: `
     <template #nested-content="{ row }">
       <div class="p-4 bg-gray-100">

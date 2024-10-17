@@ -2,7 +2,7 @@
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div
       v-show="isHeaderSticky || isShownActionsHeader"
-      ref="stickyHeaderRowRef"
+      ref="sticky-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
     >
@@ -82,7 +82,7 @@
       />
     </div>
 
-    <div ref="tableWrapperRef" v-bind="tableWrapperAttrs">
+    <div ref="table-wrapper" v-bind="tableWrapperAttrs">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
@@ -101,7 +101,7 @@
 
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
-          <tr ref="headerRowRef" v-bind="headerRowAttrs">
+          <tr ref="header-row" v-bind="headerRowAttrs">
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
@@ -241,7 +241,7 @@
         </tbody>
 
         <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerAttrs">
-          <tr ref="footerRowRef" v-bind="footerRowAttrs">
+          <tr ref="footer-row" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 
             <!--
@@ -251,7 +251,7 @@
             <slot name="footer" :cols-count="colsCount" />
           </tr>
 
-          <tr ref="stickyFooterRowRef" :style="tableRowWidthStyle" v-bind="stickyFooterRowAttrs">
+          <tr ref="sticky-footer-row" :style="tableRowWidthStyle" v-bind="stickyFooterRowAttrs">
             <td v-if="selectable" />
 
             <!--
@@ -277,6 +277,7 @@ import {
   onMounted,
   onUpdated,
   onBeforeUnmount,
+  useTemplateRef,
 } from "vue";
 import { merge } from "lodash-es";
 
@@ -422,11 +423,11 @@ const tableWidth = ref(0);
 const tableHeight = ref(0);
 const pagePositionY = ref(0);
 
-const headerRowRef = ref(null);
-const footerRowRef = ref(null);
-const tableWrapperRef = ref(null);
-const stickyFooterRowRef = ref(null);
-const stickyHeaderRowRef = ref(null);
+const headerRowRef = useTemplateRef("header-row");
+const footerRowRef = useTemplateRef("footer-row");
+const tableWrapperRef = useTemplateRef("table-wrapper");
+const stickyFooterRowRef = useTemplateRef("sticky-footer-row");
+const stickyHeaderRowRef = useTemplateRef("sticky-header-row");
 
 const i18nGlobal = tm(UTable);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
