@@ -312,12 +312,6 @@ const emit = defineEmits([
    * @property {string} value
    */
   "userDateChange",
-
-  /**
-   * Triggers when the date format applied to the input changes.
-   * @property {string} value
-   */
-  "formattedDateChange",
 ]);
 
 const { tm } = useLocale();
@@ -519,10 +513,6 @@ const selectedDateTo = computed(() => {
     : undefined;
 });
 
-const formattedDate = computed(() => {
-  return formatDate(selectedDate.value, actualDateFormat.value, locale.value);
-});
-
 const userFormattedDate = computed(() => {
   const date = formatDate(selectedDate.value, actualUserFormat.value, userFormatLocale.value);
   const dateTo = props.range
@@ -547,10 +537,6 @@ watch(userFormattedDate, () => {
   emit("userDateChange", userFormattedDate.value);
 });
 
-watch(formattedDate, () => {
-  emit("formattedDateChange", userFormattedDate.value);
-});
-
 // This watcher force updates value when range props changed
 watch(
   () => props.range,
@@ -573,7 +559,6 @@ const unwatchInit = watch(
       minutesRef.value.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
       secondsRef.value.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
 
-      emit("formattedDateChange", userFormattedDate.value);
       emit("userDateChange", userFormattedDate.value);
 
       isInit = true;
