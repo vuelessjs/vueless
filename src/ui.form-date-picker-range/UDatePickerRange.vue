@@ -280,6 +280,14 @@ const props = defineProps({
   },
 
   /**
+   * User-friendly date format (it will be shown in UI).
+   */
+  userDateFormat: {
+    type: String,
+    default: getDefault(defaultConfig, UDatePickerRange).userDateFormat,
+  },
+
+  /**
    * Datepicker size.
    * @values sm, md, lg
    */
@@ -498,7 +506,13 @@ const clickOutsideOptions = computed(() => {
   };
 });
 
-const { userFormatDate } = useUserFormat(localValue, userFormatLocale, isPeriod, isVariant);
+const { userFormatDate } = useUserFormat(
+  localValue,
+  userFormatLocale,
+  isPeriod,
+  locale,
+  props.userDateFormat,
+);
 
 watch(
   calendarValue,

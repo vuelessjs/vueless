@@ -103,7 +103,6 @@ export default /*tw*/ {
     component: "{UCalendar}",
     wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",
     navigation: "pb-0 mb-0 border-none",
-    days: "gap-0 gap-y-0.5",
     day: "w-full",
   },
   i18n: {
@@ -192,6 +191,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    userDateFormat: "j F Y",
     size: "md",
     variant: "button",
     labelAlign: "topInside",
