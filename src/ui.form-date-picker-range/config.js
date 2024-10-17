@@ -3,7 +3,14 @@ export default /*tw*/ {
   input: "{UInput}",
   activeInput: {
     component: "{UInput}",
-    wrapper: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+    wrapper: {
+      base: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+      variants: {
+        error: {
+          true: "ring-red-500/15",
+        },
+      },
+    },
   },
   buttonWrapper: `
     flex rounded-dynamic max-md:justify-between
