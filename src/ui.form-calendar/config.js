@@ -6,7 +6,14 @@ export default /*tw*/ {
   dayView: "",
   weekDays: "grid grid-cols-7 justify-items-center gap-1",
   weekDay: "flex size-8 items-center justify-center text-xs uppercase text-gray-500",
-  days: "grid grid-cols-7 justify-items-center gap-1",
+  days: {
+    base: "grid grid-cols-7 justify-items-center gap-1",
+    variants: {
+      range: {
+        true: "gap-0 gap-y-0.5",
+      },
+    },
+  },
   dateInRange: "bg-brand/15 font-semibold !text-brand-900 hover:bg-brand/30 rounded-none",
   edgeDateInRange: "",
   firstDateInRange: "rounded-r-none",
@@ -20,9 +27,9 @@ export default /*tw*/ {
   dayInRange: "",
   currentDayInRange: "",
   anotherMonthDay: "",
-  firstDayInRange: "",
+  firstDayInRange: "font-semibold",
   anotherMonthFirstDayInRange: "",
-  lastDayInRange: "",
+  lastDayInRange: "font-semibold",
   currentLastDayInRange: "",
   currentFirstDayInRange: "",
   anotherMonthLastDayInRange: "",

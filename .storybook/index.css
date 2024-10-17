@@ -159,6 +159,10 @@ body {
 
 /* -------------------- Main story -------------------- */
 
+.sb-anchor {
+  @apply mt-2;
+}
+
 .sb-bar,
 .docs-story {
   @apply bg-white;

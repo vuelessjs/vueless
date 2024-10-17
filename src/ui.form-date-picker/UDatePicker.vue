@@ -65,7 +65,6 @@
         v-bind="calendarAttrs"
         @keydown.esc="deactivate"
         @user-date-change="onUserFormatDateChange"
-        @formatted-date-change="onFormattedDateChange"
         @input="onInput"
         @blur="onBlur"
         @submit="onSubmit"
@@ -355,10 +354,6 @@ function onUserFormatDateChange(value) {
   userFormatDate.value = formatUserDate(value) || "";
 }
 
-function onFormattedDateChange(value) {
-  formattedDate.value = value || "";
-}
-
 function onSubmit() {
   deactivate();
 }
@@ -402,7 +397,6 @@ function onInput() {
     calendarRef.value?.wrapperRef?.blur();
     emit("input", {
       value: localValue.value,
-      formattedDate: formattedDate.value,
       userFormatDate: formatUserDate(userFormatDate.value),
     });
   });
