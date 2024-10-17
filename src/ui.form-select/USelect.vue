@@ -593,15 +593,6 @@ const labelComponentRef = ref(null);
 const leftSlotWrapperRef = ref(null);
 const innerWrapperRef = ref(null);
 
-defineExpose({
-  dropdownListRef,
-  wrapperRef,
-  searchInputRef,
-  labelComponentRef,
-  leftSlotWrapperRef,
-  innerWrapperRef,
-});
-
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
   if (props.openDirection === DIRECTION.bottom) return false;
@@ -878,4 +869,42 @@ function setLabelPosition() {
     labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
   }
 }
+
+defineExpose({
+  /**
+   * A reference to the dropdown list element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  dropdownListRef,
+
+  /**
+   * A reference to the wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+
+  /**
+   * A reference to the search input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  searchInputRef,
+
+  /**
+   * A reference to the label component for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  labelComponentRef,
+
+  /**
+   * A reference to the left slot wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  leftSlotWrapperRef,
+
+  /**
+   * A reference to the inner wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  innerWrapperRef,
+});
 </script>

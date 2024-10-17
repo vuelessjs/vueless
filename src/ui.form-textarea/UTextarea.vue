@@ -282,8 +282,6 @@ const localValue = computed({
   },
 });
 
-defineExpose({ textareaRef });
-
 onMounted(() => toggleReadonly(true));
 
 function onChange() {
@@ -339,4 +337,12 @@ function setLabelPosition() {
 }
 
 onMounted(() => setLabelPosition());
+
+defineExpose({
+  /**
+   * A reference to the textarea element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  textareaRef,
+});
 </script>
