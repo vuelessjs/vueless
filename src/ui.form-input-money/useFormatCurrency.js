@@ -17,7 +17,7 @@ export default function useFormatCurrency(elementId, options) {
   );
 
   onMounted(() => {
-    inputElement = document.querySelector(elementId);
+    inputElement = document.getElementById(elementId);
     inputElement.addEventListener("input", onInput);
 
     onInput(formattedValue.value);
