@@ -1,3 +1,5 @@
+import { getRandomId } from "../utils/utilUI";
+
 export function normalizeColumns(columns) {
   return columns.map((column) => (typeof column === "string" ? { label: column } : column));
 }
@@ -15,8 +17,24 @@ export function getFilteredRow(row, columns) {
 export function syncRowCheck(row, selectedRows) {
   row.isChecked = selectedRows.includes(row.id);
 
-  if (row.row) {
+  if (row.row && !Array.isArray(row.row)) {
     row.row = syncRowCheck(row.row, selectedRows);
+  }
+
+  return row;
+}
+
+export function addRowId(row) {
+  const isRowId = typeof row.id !== "undefined" && row.id !== null && row.id !== "";
+
+  row.id = isRowId ? row.id : getRandomId();
+
+  if (row.row && !Array.isArray(row.row)) {
+    row.row = addRowId(row.row);
+  }
+
+  if (row.row && Array.isArray(row.row)) {
+    row.row = row.row.map((nestedRow) => addRowId(nestedRow));
   }
 
   return row;
@@ -72,29 +90,4 @@ export function getFlatRows(tableRows) {
   tableRows.forEach((row) => addRow(row));
 
   return rows;
-}
-
-export function rowsHasId(rows) {
-  const ids = new Set();
-  let totalRows = 0;
-
-  function addId(row) {
-    totalRows++;
-
-    if (typeof row.id !== "undefined") {
-      ids.add(row.id);
-    }
-
-    if (row.row && !Array.isArray(row.row)) {
-      addId(row.row);
-    }
-
-    if (row.row && Array.isArray(row.row)) {
-      row.row.forEach(addId);
-    }
-  }
-
-  rows.forEach((row) => addId(row));
-
-  return ids.size === totalRows;
 }
