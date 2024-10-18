@@ -25,8 +25,8 @@
       <template #left-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon before the date.
-          @binding {string} iconName
-          @binding {string} iconSize
+          @binding {string} icon-name
+          @binding {string} icon-nize
         -->
         <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
       </template>
@@ -34,8 +34,8 @@
       <template #right-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon after the date.
-          @binding {string} iconName
-          @binding {string} iconSize
+          @binding {string} icon-name
+          @binding {string} icon-size
         -->
         <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
           <UIcon :name="iconName" :size="iconSize" color="gray" />
