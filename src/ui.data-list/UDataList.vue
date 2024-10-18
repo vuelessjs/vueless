@@ -2,8 +2,8 @@
   <div v-bind="wrapperAttrs">
     <!--
       @slot Use it to add something instead of the drag icon.
-      @binding {string} empty-title
-      @binding {string} empty-description
+      @binding {string} emptyTitle
+      @binding {string} emptyDescription
     -->
     <slot
       v-if="!hideEmptyStateForNesting && !list?.length"
@@ -37,8 +37,8 @@
             <!--
               @slot Use it to add something instead of the drag icon.
               @binding {object} item
-              @binding {string} icon-name
-              @binding {string} icon-size
+              @binding {string} iconName
+              @binding {string} iconSize
             -->
             <slot
               name="drag"
@@ -81,8 +81,8 @@
               <!--
                 @slot Use it to add something instead of the delete icon.
                 @binding {object} item
-                @binding {string} icon-name
-                @binding {string} icon-size
+                @binding {string} iconName
+                @binding {string} iconSize
               -->
               <slot
                 name="delete"
@@ -107,8 +107,8 @@
               <!--
                 @slot Use it to add something instead of the edit icon.
                 @binding {object} item
-                @binding {string} icon-name
-                @binding {string} icon-size
+                @binding {string} iconName
+                @binding {string} iconSize
               -->
               <slot
                 name="edit"

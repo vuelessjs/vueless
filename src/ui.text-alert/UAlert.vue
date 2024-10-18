@@ -51,8 +51,8 @@
       >
         <!--
           @slot Use it to add something instead of the close button.
-          @binding {string} icon-size
-          @binding {string} icon-color
+          @binding {string} iconSize
+          @binding {string} iconColor
         -->
         <slot
           name="close"

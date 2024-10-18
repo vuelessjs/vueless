@@ -38,7 +38,7 @@
     <template #close-button="{ iconName }">
       <!--
         @slot Use it to add something instead of the close button.
-        @binding {string} icon-name
+        @binding {string} iconName
       -->
       <slot name="close-button" :icon-name="iconName" />
     </template>

@@ -24,8 +24,8 @@
       >
         <!--
           @slot Use it to add icon before the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
         -->
         <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
           <UIcon
@@ -78,8 +78,8 @@
       <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
         <!--
           @slot Use it to add icon after the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
         -->
         <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
           <UIcon

@@ -25,7 +25,7 @@
 
         <!--
           @slot Use it to add action buttons within the actions header, which appear when rows are selected.
-          @binding {array} selected-rows
+          @binding {array} selectedRows
         -->
         <slot name="header-actions" :selected-rows="selectedRows" />
       </template>
@@ -93,7 +93,7 @@
             >
               <!--
                 @slot Use it to add something before header row.
-                @binding {number} cols-count
+                @binding {number} colsCount
               -->
               <slot name="before-header" :cols-count="colsCount" />
             </td>
@@ -246,7 +246,7 @@
 
             <!--
               @slot Use it to add something into the table footer.
-              @binding {number} cols-count
+              @binding {number} colsCount
             -->
             <slot name="footer" :cols-count="colsCount" />
           </tr>
@@ -256,7 +256,7 @@
 
             <!--
               @slot Use it to add something into the table footer.
-              @binding {number} cols-count
+              @binding {number} colsCount
             -->
             <slot name="footer" :cols-count="colsCount" />
           </tr>

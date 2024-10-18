@@ -60,7 +60,7 @@
             <div v-if="closeOnCross" v-bind="closeIconAttrs">
               <!--
                 @slot Use it to add something instead of the close button.
-                @binding {string} icon-name
+                @binding {string} iconName
               -->
               <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon

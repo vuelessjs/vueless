@@ -10,9 +10,9 @@
       <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
       <!--
         @slot Use it to add something instead of the avatar image placeholder.
-        @binding {string} icon-name
-        @binding {string} icon-color
-        @binding {string} icon-size
+        @binding {string} iconName
+        @binding {string} iconColor
+        @binding {string} iconSize
       -->
       <slot
         v-else

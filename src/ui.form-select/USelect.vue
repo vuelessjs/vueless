@@ -32,8 +32,8 @@
       <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
         <!--
             @slot Use it to add icon right.
-            @binding {string} icon-name
-            @binding {string} icon-size
+            @binding {string} iconName
+            @binding {string} iconSize
           -->
         <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
           <UIcon
@@ -53,7 +53,7 @@
       >
         <!--
           @slot Use it to add something after caret.
-          @binding {object} scope-props
+          @binding {object} scopeProps
         -->
         <slot :scope-props="props" name="after-caret" />
       </div>
@@ -66,8 +66,8 @@
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
           @binding {boolean} opened
         -->
         <slot
@@ -95,8 +95,8 @@
       >
         <!--
           @slot Use it to add something instead of the clear icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
         -->
         <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
           <UIcon
@@ -116,7 +116,7 @@
       >
         <!--
           @slot Use it to add something before caret.
-          @binding {object} scope-props
+          @binding {object} scopeProps
         -->
         <slot :scope-props="props" name="before-caret" />
       </div>
@@ -129,8 +129,8 @@
         >
           <!--
             @slot Use it to add icon left.
-            @binding {string} icon-name
-            @binding {string} icon-size
+            @binding {string} iconName
+            @binding {string} iconSize
           -->
           <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
             <UIcon
@@ -152,7 +152,7 @@
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!--
               @slot Use it to customise selected value label.
-              @binding {string} selected-label
+              @binding {string} selectedLabel
             -->
             <slot
               name="selected-label"
@@ -165,7 +165,7 @@
 
             <!--
               @slot Use it to add something after selected value label.
-              @binding {object} scope-props
+              @binding {object} scopeProps
             -->
             <slot :scope-props="props" name="selected-label-after" />
 
@@ -178,8 +178,8 @@
             >
               <!--
                 @slot Use it to add something instead of the clear icon (when multiple prop enabled).
-                @binding {string} icon-name
-                @binding {string} icon-size
+                @binding {string} iconName
+                @binding {string} iconSize
               -->
               <slot
                 name="clear-multiple"
@@ -229,7 +229,7 @@
         >
           <!--
             @slot Use it to add selected value label.
-            @binding {string} selected-label
+            @binding {string} selectedLabel
             @binding {string} value
           -->
           <slot name="selected-label" :selected-label="selectedLabel" :value="localValue[valueKey]">
@@ -238,7 +238,7 @@
 
           <!--
             @slot Use it to add something after selected value label.
-            @binding {object} scope-props
+            @binding {object} scopeProps
           -->
           <slot :scope-props="props" name="selected-label-after" />
         </span>

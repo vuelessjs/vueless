@@ -5,8 +5,8 @@
         {{ title }}
         <!--
           @slot Use it to add something instead of the toggle icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
+          @binding {string} iconName
+          @binding {string} iconSize
           @binding {boolean} opened
         -->
         <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">

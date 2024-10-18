@@ -12,9 +12,9 @@
     <div v-bind="bodyAttrs">
       <!--
           @slot Use it to add icon before the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {string} icon-color
+          @binding {string} iconName
+          @binding {string} iconSize
+          @binding {string} iconColor
         -->
       <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
@@ -30,9 +30,9 @@
       <!--
         @slot Use it to add something instead of the label.
         @binding {string} label
-        @binding {string} icon-name
-        @binding {string} icon-size
-        @binding {string} icon-color
+        @binding {string} iconName
+        @binding {string} iconSize
+        @binding {string} iconColor
       -->
       <slot
         name="default"
@@ -56,9 +56,9 @@
 
       <!--
           @slot Use it to add icon after the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {string} icon-color
+          @binding {string} iconName
+          @binding {string} iconSize
+          @binding {string} iconColor
         -->
       <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
         <UIcon
