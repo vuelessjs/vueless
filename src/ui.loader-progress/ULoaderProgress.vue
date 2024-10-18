@@ -35,6 +35,14 @@ const props = defineProps({
     type: [String, Array],
     default: "",
   },
+
+  /**
+   * Loader state (shown / hidden).
+   */
+  loading: {
+    type: Boolean,
+    default: getDefault(defaultConfig, ULoaderProgress).loading,
+  },
 });
 
 const error = ref(false);
@@ -85,6 +93,21 @@ onUnmounted(() => {
   window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
 });
 
+watch(
+  () => props.loading,
+  () => {
+    if (props.loading) {
+      show.value = true;
+      start();
+
+      return;
+    }
+
+    done();
+  },
+  { immediate: true },
+);
+
 function setLoaderOnHandler(event) {
   loaderProgressOn(event.detail.resource);
 }
@@ -113,7 +136,7 @@ function onChangeRequestsQueue() {
 
     if (isActiveRequests && !isStarted.value) {
       start();
-    } else if (!isActiveRequests && isStarted.value && show.value) {
+    } else if (!isActiveRequests && isStarted.value && show.value && !props.loading) {
       done();
     }
   } else {
