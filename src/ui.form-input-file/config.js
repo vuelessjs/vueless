@@ -60,7 +60,6 @@ export default /*tw*/ {
     },
   },
   clearButton: "{UButton}",
-  removeItemButton: "{UButton} ml-2",
   input: "sr-only",
   i18n: {
     sizeError: "File size is too big.",
@@ -78,6 +77,5 @@ export default /*tw*/ {
     /* icons */
     chooseFileIcon: "attach_file",
     clearIcon: "close",
-    removeItemIcon: "close",
   },
 };
