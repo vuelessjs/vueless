@@ -24,15 +24,15 @@
 
     <slot name="right" :file="{ elementId, label, url, imageUrl }">
       <UButton
-        v-if="showRemoveButton"
+        v-if="removable"
         round
         filled
         square
         no-ring
         variant="thirdary"
         :size="removeButtonSize"
-        :left-icon="config.defaults.removeItemIcon"
-        v-bind="removeItemButtonAttrs"
+        :icon="config.defaults.removeIcon"
+        v-bind="removeButtonAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"
       />
@@ -98,9 +98,9 @@ const props = defineProps({
   },
 
   /**
-   * Show remove button
+   * Show remove button.
    */
-  showRemoveButton: {
+  removable: {
     type: Boolean,
     default: false,
   },
@@ -124,8 +124,8 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when file is removed.
-   * @property {string} id
+   * Triggers when remove button is clicked.
+   * @property {string} fileId
    */
   "remove",
 ]);
@@ -141,7 +141,7 @@ const {
   fileIconAttrs,
   fileLabelAttrs,
   fileImageAttrs,
-  removeItemButtonAttrs,
+  removeButtonAttrs,
 } = useAttrs(props);
 
 const iconSize = computed(() => {

@@ -17,7 +17,7 @@
           :url="file.url"
           :image-url="file.imageUrl"
           :size="size"
-          :show-remove-button="showRemoveButton"
+          :removable="removable"
           v-bind="itemAttrs"
           :data-test="`${dataTest}-item`"
           @remove="onRemoveFile"
@@ -101,7 +101,7 @@ const props = defineProps({
   /**
    * Show remove button for each file
    */
-  showRemoveButton: {
+  removable: {
     type: Boolean,
     default: false,
   },
@@ -125,8 +125,8 @@ const props = defineProps({
 
 const emit = defineEmits([
   /**
-   * Triggers when file is removed.
-   * @property {string} id
+   * Triggers when remove button is clicked.
+   * @property {string} fileId
    */
   "remove",
 ]);

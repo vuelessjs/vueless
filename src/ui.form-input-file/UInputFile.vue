@@ -25,11 +25,11 @@
           :size="size"
           v-bind="fileListAttrs"
           :file-list="fileList"
-          :show-remove-button="multiple && !disabled"
+          :removable="multiple && !disabled"
           @remove="onClickRemoveItem"
         >
           <template #right="{ file }">
-            <slot name="fileRight" :file="file" />
+            <slot name="right" :file="file" />
           </template>
         </UFiles>
 

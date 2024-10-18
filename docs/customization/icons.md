@@ -266,7 +266,7 @@ export default {
       defaults: {
         chooseFileIcon: "attach_file",
         clearIcon: "close",
-        removeItemIcon: "close",
+        removeIcon: "close",
       },
     },
     UInputNumber: {
