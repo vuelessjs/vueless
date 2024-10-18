@@ -231,16 +231,6 @@ const {
 
 const { tm } = useLocale();
 
-defineExpose({
-  pointerSet,
-  pointerBackward,
-  pointerForward,
-  pointerReset,
-  addPointerElement,
-  optionsRef,
-  wrapperRef,
-});
-
 const i18nGlobal = tm(UDropdownList);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
@@ -314,4 +304,48 @@ function onClickOption(rawOption) {
 
   emit("clickOption", option);
 }
+
+defineExpose({
+  /**
+   * Allows setting the pointer to a specific index.
+   * @property {Function}
+   */
+  pointerSet,
+
+  /**
+   * Moves the pointer to the previous option in the list.
+   * @property {Function}
+   */
+  pointerBackward,
+
+  /**
+   * Advances the pointer to the next option.
+   * @property {Function}
+   */
+  pointerForward,
+
+  /**
+   * Resets the pointer to the first option.
+   * @property {Function}
+   */
+  pointerReset,
+
+  /**
+   * Adds the current pointer element to the model value.
+   * @property {Function}
+   */
+  addPointerElement,
+
+  /**
+   * A reference to the list of elements representing the available options.
+   * @property {HTMLElement}
+   */
+  optionsRef,
+
+  /**
+   * A reference to the wrapper element containing the entire list of options.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+});
 </script>

@@ -409,8 +409,6 @@ const emit = defineEmits([
   "update:rows",
 ]);
 
-defineExpose({ clearSelectedItems });
-
 const slots = useSlots();
 const { tm } = useLocale();
 
@@ -723,4 +721,12 @@ function onToggleRowVisibility(rowId) {
   // TODO: Use map instead of forEach to get rid of implicit array mutation.
   tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
 }
+
+defineExpose({
+  /**
+   * Allows to clear selected rows.
+   * @property {Function}
+   */
+  clearSelectedItems,
+});
 </script>

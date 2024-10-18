@@ -190,5 +190,17 @@ function onClick(event) {
   emit("click", event);
 }
 
-defineExpose({ labelElement, wrapperElement });
+defineExpose({
+  /**
+   * Reference to the label element.
+   * @property {HTMLElement}
+   */
+  labelElement,
+
+  /**
+   * Reference to the wrapper element containing the label and content.
+   * @property {HTMLElement}
+   */
+  wrapperElement,
+});
 </script>

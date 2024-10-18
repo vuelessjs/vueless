@@ -25,8 +25,8 @@
       <template #left-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon before the date.
-          @binding {string} iconName
-          @binding {string} iconSize
+          @binding {string} icon-name
+          @binding {string} icon-nize
         -->
         <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
       </template>
@@ -34,8 +34,8 @@
       <template #right-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon after the date.
-          @binding {string} iconName
-          @binding {string} iconSize
+          @binding {string} icon-name
+          @binding {string} icon-size
         -->
         <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
           <UIcon :name="iconName" :size="iconSize" color="gray" />
@@ -312,12 +312,6 @@ const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   { x: "left", y: "bottom" },
 );
 
-defineExpose({
-  calendarRef,
-  userFormatDate,
-  formattedDate,
-});
-
 const localValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -401,4 +395,24 @@ function onInput() {
     });
   });
 }
+
+defineExpose({
+  /**
+   * Reference to the UCalendar component instance.
+   * @property {HTMLElement}
+   */
+  calendarRef,
+
+  /**
+   * The user-friendly formatted date string displayed in the input.
+   * @property {String}
+   */
+  userFormatDate,
+
+  /**
+   * The internal formatted date string.
+   * @property {String}
+   */
+  formattedDate,
+});
 </script>

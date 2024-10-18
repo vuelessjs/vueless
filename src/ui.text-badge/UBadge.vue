@@ -213,8 +213,6 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
 
 const wrapperRef = ref(null);
 
-defineExpose({ wrapperRef });
-
 const iconSize = computed(() => {
   const sizes = {
     sm: "3xs",
@@ -244,4 +242,12 @@ function onKeydown(event) {
 function onClick(event) {
   emit("click", event);
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+});
 </script>
