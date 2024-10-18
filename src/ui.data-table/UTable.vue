@@ -297,7 +297,7 @@ import {
   toggleRowVisibility,
   switchRowCheck,
   getFlatRows,
-  rowsHasId,
+  addRowId,
 } from "./utilTable.js";
 
 import { PX_IN_REM } from "../constants.js";
@@ -565,20 +565,13 @@ watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
 );
 watch(
-  () => selectedRows.value.length,
+  () => selectedRows.value,
   () => {
-    tableRows.value = tableRows.value.map((row) => syncRowCheck(row, selectedRows.value));
+    tableRows.value = tableRows.value
+      .map(addRowId)
+      .map((row) => syncRowCheck(row, selectedRows.value));
   },
-);
-watch(
-  () => props.rows,
-  () => {
-    if (!rowsHasId(props.rows)) {
-      // eslint-disable-next-line no-console
-      console.warn("[Vueless][UTable]: Each table row must have unique id.");
-    }
-  },
-  { deep: true, immediate: true },
+  { deep: true },
 );
 
 onMounted(() => {
@@ -621,10 +614,11 @@ function setFooterCellWidth(width) {
   const mainFooterItems = [...footerRowRef.value.children];
   const stickyFooterItems = [...stickyFooterRowRef.value.children];
 
-  stickyFooterItems.forEach((item, index) => {
-    item.style.width =
-      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
-  });
+  stickyFooterItems.map((item, index) => ({
+    ...item,
+    width:
+      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`,
+  }));
 }
 
 function setHeaderCellWidth() {
@@ -633,9 +627,10 @@ function setHeaderCellWidth() {
   const mainHeaderItems = [...(headerRowRef.value?.children || [])];
   const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])];
 
-  stickyHeaderItems.forEach((item, index) => {
-    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
-  });
+  stickyHeaderItems.map((item, index) => ({
+    ...item,
+    width: `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`,
+  }));
 }
 
 function onScroll() {
