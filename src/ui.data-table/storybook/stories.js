@@ -405,7 +405,6 @@ CellSlots.args = {
     { key: "tags", label: "tags" },
   ],
   row: {
-    id: getRandomId(),
     link: "some link",
     money: {
       sum: 10,
@@ -418,7 +417,6 @@ CellSlots.args = {
     },
     row: [
       {
-        id: getRandomId(),
         isHidden: false,
         link: "some link",
         money: {
@@ -432,7 +430,6 @@ CellSlots.args = {
         },
       },
       {
-        id: getRandomId(),
         isHidden: false,
         link: "some link",
         money: {
