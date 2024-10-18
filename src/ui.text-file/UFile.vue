@@ -22,7 +22,21 @@
       </div>
     </slot>
 
-    <slot name="right" :file="{ elementId, label, url, imageUrl }" />
+    <slot name="right" :file="{ elementId, label, url, imageUrl }">
+      <UButton
+        v-if="removable"
+        round
+        filled
+        square
+        no-ring
+        variant="thirdary"
+        :size="removeButtonSize"
+        :icon="config.defaults.removeIcon"
+        v-bind="removeButtonAttrs"
+        :data-test="`${dataTest}-remove-item`"
+        @click.stop.prevent="onRemove"
+      />
+    </slot>
   </ULink>
 </template>
 
@@ -31,6 +45,7 @@ import { computed, ref, useId } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
+import UButton from "../ui.button/UButton.vue";
 
 import { getDefault } from "../utils/utilUI.js";
 
@@ -83,6 +98,14 @@ const props = defineProps({
   },
 
   /**
+   * Show remove button.
+   */
+  removable: {
+    type: Boolean,
+    default: false,
+  },
+
+  /**
    * Component config object.
    */
   config: {
@@ -99,12 +122,27 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits([
+  /**
+   * Triggers when remove button is clicked.
+   * @property {string} fileId
+   */
+  "remove",
+]);
+
 const focus = ref(false);
 
 const elementId = props.id || useId();
 
-const { config, fileAttrs, bodyAttrs, fileIconAttrs, fileLabelAttrs, fileImageAttrs } =
-  useAttrs(props);
+const {
+  config,
+  fileAttrs,
+  bodyAttrs,
+  fileIconAttrs,
+  fileLabelAttrs,
+  fileImageAttrs,
+  removeButtonAttrs,
+} = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -115,6 +153,20 @@ const iconSize = computed(() => {
 
   return sizes[props.size];
 });
+
+const removeButtonSize = computed(() => {
+  const sizes = {
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+  };
+
+  return sizes[props.size];
+});
+
+function onRemove() {
+  emit("remove", props.id);
+}
 
 function onFocus() {
   focus.value = true;

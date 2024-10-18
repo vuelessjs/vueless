@@ -13,9 +13,11 @@ export default /*tw*/ {
   fileImage: "rounded-sm max-w-7",
   fileIcon: "{UIcon}",
   fileLabel: "{ULink}",
+  removeButton: "{UButton} ml-2",
   defaults: {
     size: "md",
     /* icons */
     fileIcon: "description",
+    removeIcon: "close",
   },
 };

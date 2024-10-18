@@ -17,8 +17,10 @@
           :url="file.url"
           :image-url="file.imageUrl"
           :size="size"
+          :removable="removable"
           v-bind="itemAttrs"
           :data-test="`${dataTest}-item`"
+          @remove="onRemoveFile"
         >
           <template #left="{ file: currentFile }">
             <!-- @slot Use it to add something left.
@@ -97,6 +99,14 @@ const props = defineProps({
   },
 
   /**
+   * Show remove button for each file
+   */
+  removable: {
+    type: Boolean,
+    default: false,
+  },
+
+  /**
    * Component config object.
    */
   config: {
@@ -113,6 +123,14 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits([
+  /**
+   * Triggers when remove button is clicked.
+   * @property {string} fileId
+   */
+  "remove",
+]);
+
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() =>
@@ -125,4 +143,8 @@ const formattedFileList = computed(() =>
     };
   }),
 );
+
+function onRemoveFile(fileId) {
+  emit("remove", fileId);
+}
 </script>
