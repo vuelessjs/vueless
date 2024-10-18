@@ -312,12 +312,6 @@ const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   { x: "left", y: "bottom" },
 );
 
-defineExpose({
-  calendarRef,
-  userFormatDate,
-  formattedDate,
-});
-
 const localValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -401,4 +395,24 @@ function onInput() {
     });
   });
 }
+
+defineExpose({
+  /**
+   * Reference to the UCalendar component instance.
+   * @property {HTMLElement}
+   */
+  calendarRef,
+
+  /**
+   * The user-friendly formatted date string displayed in the input.
+   * @property {String}
+   */
+  userFormatDate,
+
+  /**
+   * The internal formatted date string.
+   * @property {String}
+   */
+  formattedDate,
+});
 </script>
