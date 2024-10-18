@@ -29,7 +29,7 @@ createApp(App).use(vueless).mount('#app');
 3. Add TailwindCSS preset.
 
 ```javascript
-import { vuelessPreset } from "vueless/preset.tailwind";
+import { vuelessPreset } from "vueless/preset.tailwind.js";
 
 export default {
   presets: [vuelessPreset],
