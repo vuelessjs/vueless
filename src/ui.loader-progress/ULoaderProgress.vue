@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
+import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted, watchEffect } from "vue";
 
 import { getDefault } from "../utils/utilUI.js";
 import { isMobileApp } from "../utils/utilPlatform.js";
@@ -93,20 +93,16 @@ onUnmounted(() => {
   window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
 });
 
-watch(
-  () => props.loading,
-  () => {
-    if (props.loading) {
-      show.value = true;
-      start();
+watchEffect(() => {
+  if (props.loading) {
+    show.value = true;
+    start();
 
-      return;
-    }
+    return;
+  }
 
-    done();
-  },
-  { immediate: true },
-);
+  done();
+});
 
 function setLoaderOnHandler(event) {
   loaderProgressOn(event.detail.resource);
