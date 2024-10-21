@@ -150,7 +150,7 @@ const props = defineProps({
    */
   leftIcon: {
     type: String,
-    default: "star",
+    default: "",
   },
 
   /**
@@ -158,7 +158,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: "archive",
+    default: "",
   },
 
   /**
