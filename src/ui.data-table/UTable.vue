@@ -75,11 +75,7 @@
         </div>
       </template>
 
-      <ULoaderProgress
-        v-if="resource && isHeaderSticky"
-        :resources="resource"
-        v-bind="stickyHeaderLoaderAttrs"
-      />
+      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs">
@@ -148,7 +144,7 @@
             </th>
           </tr>
 
-          <ULoaderProgress v-if="resource" :resources="resource" v-bind="headerLoaderAttrs" />
+          <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
@@ -365,11 +361,11 @@ const props = defineProps({
   },
 
   /**
-   * Set loader resource name to activate table progress loader exact for that resource (deprecated).
+   * Set table loader state.
    */
-  resource: {
-    type: String,
-    default: "",
+  loading: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UTable).loading,
   },
 
   /**
