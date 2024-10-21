@@ -177,6 +177,7 @@
               :columns="columns"
               :config="config"
               :attrs="keysAttrs"
+              :empty-cell-label="emptyCellLabel"
               @click="onClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -318,6 +319,14 @@ const props = defineProps({
   rows: {
     type: Array,
     required: true,
+  },
+
+  /**
+   * Label to display for empty cell values.
+   */
+  emptyCellLabel: {
+    type: String,
+    default: getDefault(defaultConfig, UTable).emptyCellLabel,
   },
 
   /**

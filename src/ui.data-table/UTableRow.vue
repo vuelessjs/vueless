@@ -157,7 +157,7 @@ import { computed, onMounted, useSlots, useTemplateRef } from "vue";
 import { cx } from "../utils/utilUI.js";
 import useUI from "../composables/useUI.js";
 
-import { HYPHEN_SYMBOL, PX_IN_REM } from "../constants.js";
+import { PX_IN_REM } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
 
 import { useMutationObserver } from "../composables/useMutationObserver.js";
@@ -175,6 +175,11 @@ const props = defineProps({
 
   columns: {
     type: Array,
+    required: true,
+  },
+
+  emptyCellLabel: {
+    type: String,
     required: true,
   },
 
@@ -311,7 +316,7 @@ function isEmptyValue(value) {
 function formatCellValue(value) {
   const nestedValue = value && typeof value === "object" && "value" in value ? value.value : value;
 
-  return isEmptyValue(nestedValue) ? HYPHEN_SYMBOL : nestedValue;
+  return isEmptyValue(nestedValue) ? props.emptyCellLabel : nestedValue;
 }
 
 function getNestedShift() {

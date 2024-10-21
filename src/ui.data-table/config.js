@@ -92,6 +92,7 @@ export default /*tw*/ {
     noData: "There is no data in the table.",
   },
   defaults: {
+    emptyCellLabel: "—",
     nesting: false,
     compact: false,
     selectable: false,
