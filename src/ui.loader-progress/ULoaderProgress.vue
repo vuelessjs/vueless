@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
+import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted, watchEffect } from "vue";
 
 import { getDefault } from "../utils/utilUI.js";
 import { isMobileApp } from "../utils/utilPlatform.js";
@@ -34,6 +34,14 @@ const props = defineProps({
   resources: {
     type: [String, Array],
     default: "",
+  },
+
+  /**
+   * Loader state (shown / hidden).
+   */
+  loading: {
+    type: Boolean,
+    default: getDefault(defaultConfig, ULoaderProgress).loading,
   },
 });
 
@@ -85,6 +93,17 @@ onUnmounted(() => {
   window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
 });
 
+watchEffect(() => {
+  if (props.loading) {
+    show.value = true;
+    start();
+
+    return;
+  }
+
+  done();
+});
+
 function setLoaderOnHandler(event) {
   loaderProgressOn(event.detail.resource);
 }
@@ -113,7 +132,7 @@ function onChangeRequestsQueue() {
 
     if (isActiveRequests && !isStarted.value) {
       start();
-    } else if (!isActiveRequests && isStarted.value && show.value) {
+    } else if (!isActiveRequests && isStarted.value && show.value && !props.loading) {
       done();
     }
   } else {
