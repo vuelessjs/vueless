@@ -5,6 +5,7 @@
     ref="buttonRef"
     :disabled="disabled"
     v-bind="buttonAttrs"
+    :style="buttonStyle"
     :tabindex="!loading ? tabindex : -1"
     :data-test="dataTest"
   >
@@ -80,7 +81,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect, useId } from "vue";
+import { computed, ref, watchEffect, useId, watch } from "vue";
 
 import { getDefault } from "../utils/utilUI.js";
 import ULoader from "../ui.loader/ULoader.vue";
@@ -149,7 +150,7 @@ const props = defineProps({
    */
   leftIcon: {
     type: String,
-    default: "",
+    default: "star",
   },
 
   /**
@@ -157,7 +158,7 @@ const props = defineProps({
    */
   rightIcon: {
     type: String,
-    default: "",
+    default: "archive",
   },
 
   /**
@@ -255,6 +256,7 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
   useAttrs(props);
 
 const buttonRef = ref(null);
+const buttonWidth = ref(0);
 
 defineExpose({ buttonRef });
 
@@ -287,6 +289,19 @@ const iconSize = computed(() => {
 const iconColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
+
+const buttonStyle = computed(() => ({
+  width: props.loading ? `${buttonWidth.value}px` : "auto",
+}));
+
+watch(
+  () => props.loading,
+  (newValue) => {
+    if (newValue && buttonRef.value) {
+      buttonWidth.value = buttonRef.value.offsetWidth;
+    }
+  },
+);
 
 watchEffect(() => {
   props.loading && buttonRef.value.blur();
