@@ -256,6 +256,7 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
   useAttrs(props);
 
 const buttonRef = ref(null);
+const buttonStyle = ref(null);
 const buttonWidth = ref(0);
 
 const loaderSize = computed(() => {
@@ -288,17 +289,18 @@ const iconColor = computed(() => {
   return props.variant === "primary" ? "white" : props.color;
 });
 
-const buttonStyle = computed(() => ({
-  width: props.loading ? `${buttonWidth.value}px` : "auto",
-}));
-
 watch(
   () => props.loading,
   (newValue) => {
     if (newValue && buttonRef.value) {
       buttonWidth.value = buttonRef.value.offsetWidth;
     }
+
+    buttonStyle.value = {
+      width: newValue ? `${buttonWidth.value}px` : "auto",
+    };
   },
+  { immediate: true },
 );
 
 watchEffect(() => {
