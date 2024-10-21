@@ -25,9 +25,9 @@ export function syncRowCheck(row, selectedRows) {
 }
 
 export function addRowId(row) {
-  const isRowId = typeof row.id !== "undefined" && row.id !== null && row.id !== "";
+  const hasRowId = typeof row.id !== "undefined" && row.id !== null && row.id !== "";
 
-  row.id = isRowId ? row.id : getRandomId();
+  row.id = hasRowId ? row.id : getRandomId();
 
   if (row.row && !Array.isArray(row.row)) {
     row.row = addRowId(row.row);

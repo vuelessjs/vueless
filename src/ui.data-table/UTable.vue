@@ -614,11 +614,10 @@ function setFooterCellWidth(width) {
   const mainFooterItems = [...footerRowRef.value.children];
   const stickyFooterItems = [...stickyFooterRowRef.value.children];
 
-  stickyFooterItems.map((item, index) => ({
-    ...item,
-    width:
-      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`,
-  }));
+  stickyFooterItems.forEach((item, index) => {
+    item.style.width =
+      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
+  });
 }
 
 function setHeaderCellWidth() {
@@ -627,10 +626,9 @@ function setHeaderCellWidth() {
   const mainHeaderItems = [...(headerRowRef.value?.children || [])];
   const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])];
 
-  stickyHeaderItems.map((item, index) => ({
-    ...item,
-    width: `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`,
-  }));
+  stickyHeaderItems.forEach((item, index) => {
+    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
+  });
 }
 
 function onScroll() {
