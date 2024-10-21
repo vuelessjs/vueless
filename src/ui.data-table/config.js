@@ -99,6 +99,7 @@ export default /*tw*/ {
     dateDivider: false,
     stickyHeader: false,
     stickyFooter: false,
+    loading: false,
     /* icons */
     expandIcon: "add",
     collapseIcon: "remove",
