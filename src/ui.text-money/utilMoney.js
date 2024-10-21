@@ -32,7 +32,11 @@ export function separatedMoney(
     penny = DOUBLE_ZERO;
   }
 
-  if (minFractionDigits === 0 || maxFractionDigits === 0) {
+  if (penny === "") {
+    decimalSeparator = "";
+  }
+
+  if (minFractionDigits === 0 && maxFractionDigits === 0) {
     decimalSeparator = "";
     penny = "";
   } else if (penny.length < minFractionDigits) {

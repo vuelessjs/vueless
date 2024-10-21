@@ -17,7 +17,7 @@
       <span v-bind="integerAttrs" v-text="preparedMoney.integer" />
 
       <span
-        v-if="!maxFractionDigits !== 0"
+        v-if="maxFractionDigits > 0"
         v-bind="pennyAttrs"
         v-text="preparedMoney.decimalSeparator + preparedMoney.penny"
       />
