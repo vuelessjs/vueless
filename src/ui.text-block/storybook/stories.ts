@@ -1,7 +1,15 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
+
+import type { UTextProps } from "../types";
+
+interface UTextArgs extends UTextProps {
+  slotTemplate?: string;
+  enum: "size";
+}
 
 /**
  * The `UText` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-block)
@@ -14,7 +22,7 @@ export default {
     ...getArgTypes(UText.__name),
   },
   args: {},
-};
+} as Meta;
 
 const defaultTemplate = `
   <p>
@@ -24,7 +32,7 @@ const defaultTemplate = `
   </p>
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UTextArgs> = (args) => ({
   components: { UText, URow },
   setup() {
     const slots = getSlotNames(UText.__name);
@@ -38,12 +46,12 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate: StoryFn<UTextArgs> = (args, { argTypes }) => ({
   components: { UText, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options || [],
     };
   },
   template: `
@@ -88,7 +96,6 @@ Paragraphs.args = {
         rapidly changing landscape and emerge stronger and more competitive.
       </p>
     </template>
-
   `,
 };
 
@@ -102,8 +109,6 @@ List.args = {
           <li>Update your profile information</li>
           <li>Check your email for updates</li>
         </ul>
-
-
         <ol>
           <li>Create an account by signing up</li>
           <li>Verify your email address</li>
