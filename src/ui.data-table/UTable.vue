@@ -330,7 +330,7 @@ const props = defineProps({
    */
   emptyCellLabel: {
     type: String,
-    default: getDefault(defaultConfig, UTable).emptyCell,
+    default: getDefault(defaultConfig, UTable).emptyCellLabel,
   },
 
   /**
