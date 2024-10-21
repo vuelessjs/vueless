@@ -2,11 +2,10 @@ import { defineConfig } from "vite";
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
-import Eslint from "vite-plugin-eslint";
 import { Vueless } from "@vueless/plugin-vite";
 
 export default defineConfig({
-  plugins: [Vue(), Eslint(), Vueless({ mode: "storybook", env: "vueless", debug: false })],
+  plugins: [Vue(), Vueless({ mode: "storybook", env: "vueless", debug: false })],
   optimizeDeps: {
     include: [
       "cva",
