@@ -258,8 +258,6 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
 const buttonRef = ref(null);
 const buttonWidth = ref(0);
 
-defineExpose({ buttonRef });
-
 const loaderSize = computed(() => {
   const sizes = {
     "2xs": "sm",
@@ -305,5 +303,13 @@ watch(
 
 watchEffect(() => {
   props.loading && buttonRef.value.blur();
+});
+
+defineExpose({
+  /**
+   * A reference to the button element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  buttonRef,
 });
 </script>

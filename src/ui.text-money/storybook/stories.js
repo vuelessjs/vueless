@@ -16,7 +16,7 @@ export default {
   title: "Text & Content / Money",
   component: UMoney,
   args: {
-    sum: 10,
+    value: 10,
     symbol: "$",
     sign: "positive",
   },
@@ -73,12 +73,12 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const OtherValues = DefaultTemplate.bind({});
-OtherValues.args = { sum: 10, symbol: "$", sign: "negative" };
+OtherValues.args = { value: 10, symbol: "$", sign: "negative" };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = {
   enum: "color",
-  sum: 0,
+  value: 0,
   symbol: "$",
   sign: "default",
 };
@@ -95,11 +95,8 @@ SymbolAlign.args = { enum: "symbolAlign" };
 export const Planned = DefaultTemplate.bind({});
 Planned.args = { planned: true };
 
-export const Integer = DefaultTemplate.bind({});
-Integer.args = { integer: true };
-
-export const NumeralDecimalScale3 = DefaultTemplate.bind({});
-NumeralDecimalScale3.args = { numeralDecimalScale: 3 };
+export const MinFractionDigits3 = DefaultTemplate.bind({});
+MinFractionDigits3.args = { value: 25.67, minFractionDigits: 3, maxFractionDigits: 3 };
 
 export const Align = EnumVariantTemplate.bind({});
 Align.args = { enum: "align" };

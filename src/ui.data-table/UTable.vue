@@ -75,11 +75,7 @@
         </div>
       </template>
 
-      <ULoaderProgress
-        v-if="resource && isHeaderSticky"
-        :resources="resource"
-        v-bind="stickyHeaderLoaderAttrs"
-      />
+      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs">
@@ -148,7 +144,7 @@
             </th>
           </tr>
 
-          <ULoaderProgress v-if="resource" :resources="resource" v-bind="headerLoaderAttrs" />
+          <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody v-if="tableRows.length" v-bind="bodyAttrs">
@@ -297,7 +293,7 @@ import {
   toggleRowVisibility,
   switchRowCheck,
   getFlatRows,
-  rowsHasId,
+  addRowId,
 } from "./utilTable.js";
 
 import { PX_IN_REM } from "../constants.js";
@@ -365,11 +361,11 @@ const props = defineProps({
   },
 
   /**
-   * Set loader resource name to activate table progress loader exact for that resource (deprecated).
+   * Set table loader state.
    */
-  resource: {
-    type: String,
-    default: "",
+  loading: {
+    type: Boolean,
+    default: getDefault(defaultConfig, UTable).loading,
   },
 
   /**
@@ -408,8 +404,6 @@ const emit = defineEmits([
    */
   "update:rows",
 ]);
-
-defineExpose({ clearSelectedItems });
 
 const slots = useSlots();
 const { tm } = useLocale();
@@ -567,20 +561,13 @@ watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
 );
 watch(
-  () => selectedRows.value.length,
+  () => selectedRows.value,
   () => {
-    tableRows.value = tableRows.value.map((row) => syncRowCheck(row, selectedRows.value));
+    tableRows.value = tableRows.value
+      .map(addRowId)
+      .map((row) => syncRowCheck(row, selectedRows.value));
   },
-);
-watch(
-  () => props.rows,
-  () => {
-    if (!rowsHasId(props.rows)) {
-      // eslint-disable-next-line no-console
-      console.warn("[Vueless][UTable]: Each table row must have unique id.");
-    }
-  },
-  { deep: true, immediate: true },
+  { deep: true },
 );
 
 onMounted(() => {
@@ -723,4 +710,12 @@ function onToggleRowVisibility(rowId) {
   // TODO: Use map instead of forEach to get rid of implicit array mutation.
   tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
 }
+
+defineExpose({
+  /**
+   * Allows to clear selected rows.
+   * @property {Function}
+   */
+  clearSelectedItems,
+});
 </script>

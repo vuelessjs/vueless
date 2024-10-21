@@ -259,8 +259,6 @@ let updateValueWithDebounce = createDebounce((value) => {
 const localValue = ref("");
 const inputRef = ref(null);
 
-defineExpose({ inputRef });
-
 const elementId = props.id || useId();
 
 const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
@@ -326,4 +324,12 @@ function onClickClear() {
   emit("update:modelValue", "");
   emit("clear");
 }
+
+defineExpose({
+  /**
+   * A reference to the input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  inputRef,
+});
 </script>

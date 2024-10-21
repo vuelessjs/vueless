@@ -12,12 +12,12 @@
         v-text="symbol + currencySpace"
       />
 
-      <span v-if="sum" v-bind="mathSignAttrs" v-text="mathSign" />
+      <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
 
       <span v-bind="integerAttrs" v-text="preparedMoney.integer" />
 
       <span
-        v-if="!integer"
+        v-if="maxFractionDigits > 0"
         v-bind="pennyAttrs"
         v-text="preparedMoney.decimalSeparator + preparedMoney.penny"
       />
@@ -52,7 +52,7 @@ const props = defineProps({
   /**
    * Money value.
    */
-  sum: {
+  value: {
     type: Number,
     default: 0,
   },
@@ -110,11 +110,19 @@ const props = defineProps({
   },
 
   /**
-   * Set the numeral decimal scale after the comma.
+   * Minimal number of signs after the decimal separator (fractional part of a number).
    */
-  decimalScale: {
+  minFractionDigits: {
     type: Number,
-    default: getDefault(defaultConfig, UMoney).decimalScale,
+    default: getDefault(defaultConfig, UMoney).minFractionDigits,
+  },
+
+  /**
+   * Maximal number of signs after the decimal separator (fractional part of a number).
+   */
+  maxFractionDigits: {
+    type: Number,
+    default: getDefault(defaultConfig, UMoney).maxFractionDigits,
   },
 
   /**
@@ -126,20 +134,20 @@ const props = defineProps({
   },
 
   /**
+   *  A symbol used to separate the thousand parts of a number.
+   */
+  thousandsSeparator: {
+    type: String,
+    default: getDefault(defaultConfig, UMoney).thousandsSeparator,
+  },
+
+  /**
    * Money align.
    * @values right, left
    */
   align: {
     type: String,
     default: getDefault(defaultConfig, UMoney).align,
-  },
-
-  /**
-   * Make money sum integer.
-   */
-  integer: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).integer,
   },
 
   /**
@@ -200,6 +208,12 @@ const mathSign = computed(() => {
 });
 
 const preparedMoney = computed(() => {
-  return separatedMoney(Math.abs(props.sum), props.decimalScale, props.decimalSeparator);
+  return separatedMoney(
+    Math.abs(props.value),
+    props.minFractionDigits,
+    props.maxFractionDigits,
+    props.decimalSeparator,
+    props.thousandsSeparator,
+  );
 });
 </script>

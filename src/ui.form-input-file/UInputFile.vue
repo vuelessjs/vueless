@@ -21,22 +21,15 @@
 
         <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
 
-        <UFiles :size="size" v-bind="fileListAttrs" :file-list="fileList">
+        <UFiles
+          :size="size"
+          v-bind="fileListAttrs"
+          :file-list="fileList"
+          :removable="multiple && !disabled"
+          @remove="onClickRemoveItem"
+        >
           <template #right="{ file }">
-            <UButton
-              v-if="props.multiple && !disabled"
-              round
-              filled
-              square
-              no-ring
-              variant="thirdary"
-              :size="removeItemButtonSize"
-              :left-icon="config.defaults.removeItemIcon"
-              :disabled="disabled"
-              v-bind="removeItemButtonAttrs"
-              :data-test="`${dataTest}-remove-item`"
-              @click.stop.prevent="onClickRemoveItem(file.id)"
-            />
+            <slot name="right" :file="file" />
           </template>
         </UFiles>
 
@@ -254,7 +247,6 @@ const {
   inputAttrs,
   fileListAttrs,
   buttonsAttrs,
-  removeItemButtonAttrs,
   hasSlotContent,
 } = useAttrs(props);
 
@@ -297,16 +289,6 @@ const fileList = computed(() => {
   }
 
   return currentFiles.value ? [currentFiles.value] : [];
-});
-
-const removeItemButtonSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
 });
 
 const buttonSize = computed(() => {
