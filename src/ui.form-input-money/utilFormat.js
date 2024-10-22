@@ -65,16 +65,11 @@ export default class FormatService {
       rawValuePrefix: false,
     });
 
-    const formattedValue = intlNumber.formatToParts(parseFloat(rawValue) || 0).map((part) => {
-      if (part.type === "group") part.value = thousandsSeparator;
-      if (part.type === "decimal") part.value = decimalSeparator;
-      if (part.type === "fraction") part.value = part.value.padEnd(maxFractionDigits, "0");
+    const formattedValue = intlNumber
+      .format(rawValue)
+      .replaceAll(this.comma, thousandsSeparator)
+      .replaceAll(this.rawDecimalMark, decimalSeparator);
 
-      return part;
-    });
-
-    formattedValue.unshift({ value: prefix, type: "minusSign" });
-
-    return formattedValue.map((part) => part.value).join("");
+    return prefix + formattedValue;
   }
 }
