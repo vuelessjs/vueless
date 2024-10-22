@@ -37,6 +37,7 @@ const commonConfig = {
     "no-console": process.env.PROD ? "error" : "warn",
     "no-debugger": process.env.PROD ? "error" : "warn",
     "no-unused-vars": process.env.PROD ? "error" : "warn",
+    "@typescript-eslint/no-unused-expressions": ["error", { allowTernary: true, allowShortCircuit: true }],
     "arrow-parens": ["error", "always"],
     curly: ["error", "multi-line"],
     "padding-line-between-statements": [
@@ -50,7 +51,7 @@ const commonConfig = {
       { blankLine: "always", prev: "*", next: "return" },
     ],
     "tailwindcss/no-custom-classname": "off",
-    "prettier/prettier": ["warn", { printWidth: 100 }],
+    "prettier/prettier": ["warn", { printWidth: 120 }],
   },
 };
 
@@ -81,6 +82,14 @@ const vitestConfig = {
   files: ["src/**/__tests__/*"],
 };
 
+const eslintConfig = {
+  name: "eslint",
+  files: ["eslint.config.*"],
+  rules: {
+    "prettier/prettier": ["warn", { printWidth: 120 }],
+  },
+};
+
 export default [
   {
     name: "global",
@@ -92,9 +101,7 @@ export default [
   ...pluginTailwind.configs["flat/recommended"],
   ...pluginStorybook.configs["flat/recommended"].map((item) => ({
     ...item,
-    ...(item.name.includes("stories-rules")
-      ? { files: ["**/stories.{js,ts,jsx,tsx,mjs,cjs}"] }
-      : {}),
+    ...(item.name.includes("stories-rules") ? { files: ["**/stories.{js,ts,jsx,tsx,mjs,cjs}"] } : {}),
   })),
   ...vueTsEslintConfig({ supportedScriptLangs: { js: true } }),
   prettierEslintConfig,
@@ -103,4 +110,5 @@ export default [
   vueConfig,
   vuelessConfigsConfig,
   vitestConfig,
+  eslintConfig,
 ];
