@@ -1,15 +1,4 @@
-import {
-  ref,
-  watch,
-  watchEffect,
-  getCurrentInstance,
-  toValue,
-  useAttrs,
-  Comment,
-  Text,
-  Fragment,
-  computed,
-} from "vue";
+import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, Comment, Text, Fragment, computed } from "vue";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 

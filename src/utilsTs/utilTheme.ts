@@ -23,12 +23,9 @@ export function themeInit() {
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  setTheme({ systemDarkMode: prefersColorSchemeDark.matches
-  });
+  setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
 
-  prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ systemDarkMode: event.matches }),
-  );
+  prefersColorSchemeDark.addEventListener("change", (event) => setTheme({ systemDarkMode: event.matches }));
 }
 
 export function setTheme(config: VuelessConfig = {}) {
