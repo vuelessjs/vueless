@@ -30,15 +30,16 @@
     "dev:docs": "npx @vueless/web-types && node prepare.icons && storybook dev -p 6006 --docs --no-open",
     "dev": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "type-check": "vue-tsc --build --force",
+    "prepack": "vue-tsc --noEmit && vite build",
     "build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "release:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
-    "lint": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore src/ .storybook/",
-    "lint:fix": "eslint --ext .vue,.js,.ts --fix --ignore-path .eslintignore src/ .storybook/",
-    "lint:ci": "eslint --ext .vue,.js,.ts --no-fix --ignore-path .eslintignore --max-warnings=0"
+    "lint": "eslint --no-fix src/ .storybook/",
+    "lint:fix": "eslint --fix src/ .storybook/",
+    "lint:ci": "eslint --no-fix --max-warnings=0"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
