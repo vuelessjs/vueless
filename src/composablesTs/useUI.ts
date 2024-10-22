@@ -9,20 +9,14 @@ import {
   Text,
   Fragment,
   computed,
-  type ComputedRef,
 } from "vue";
 
-import type { ComponentInternalInstance } from "vue";
+import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 
 import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI";
 import { cloneDeep, isCSR } from "../utilsTs/utilHelper";
-import {
-  STRATEGY_TYPE,
-  CVA_CONFIG_KEY,
-  SYSTEM_CONFIG_KEY,
-  NESTED_COMPONENT_REG_EXP,
-} from "../constants.js";
-import type { VuelessComponentNames } from "../types";
+import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY, NESTED_COMPONENT_REG_EXP } from "../constants.js";
+import type { VueAttrs, VuelessCommonComponent, VuelessComponentNames, VuelessCVA } from "../types";
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -31,16 +25,19 @@ import type { VuelessComponentNames } from "../types";
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
-export default function useUI(defaultConfig = {}, propsConfigGetter?: void, topLevelClassKey = "") {
+export default function useUI(
+  defaultConfig?: VuelessCommonComponent,
+  propsConfigGetter?: () => typeof defaultConfig,
+  topLevelClassKey?: string,
+) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
-  const componentName: VuelessComponentNames = type.__name;
-  const globalConfig = vuelessConfig.component ? vuelessConfig.component[componentName] : {};
+  const componentName = type.__name as VuelessComponentNames;
+  const globalConfig = vuelessConfig.component && componentName ? vuelessConfig.component[componentName] : {};
 
-  const isStrategyValid =
-    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+  const isStrategyValid = vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
   const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
 
-  const [firstClassKey] = Object.keys(defaultConfig);
+  const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
   const config = ref({});
   const attrs = useAttrs();
 
@@ -64,7 +61,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter?: void, topL
     return computed(() => {
       const color = toValue(mutatedProps)?.color || props.color;
 
-      let value = config.value[key];
+      let value: VuelessCVA | string = config.value[key];
 
       if (isCVA(value)) {
         value = cva(value)({
@@ -151,8 +148,7 @@ export default function useUI(defaultConfig = {}, propsConfigGetter?: void, topL
       ...(isTopLevelKey ? attrs : {}),
       "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
       "vl-key": isDev ? attrs["vl-config-key"] || configKey || null : null,
-      "vl-child-component":
-        isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
+      "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
       "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
     };
 
@@ -210,28 +206,36 @@ export default function useUI(defaultConfig = {}, propsConfigGetter?: void, topL
  *
  * @returns {Object}
  */
-function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStrategy }) {
+function getMergedConfig({
+  defaultConfig,
+  globalConfig,
+  propsConfig,
+  vuelessStrategy,
+}): Record<string, object | string> {
   defaultConfig = cloneDeep(defaultConfig);
 
+  let mergedConfig = {};
   const strategy =
     !globalConfig && !propsConfig
       ? STRATEGY_TYPE.merge
       : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
 
   if (strategy === STRATEGY_TYPE.merge) {
-    return mergeConfigs({ defaultConfig, globalConfig, propsConfig });
+    mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
   }
 
   if (strategy === STRATEGY_TYPE.replace) {
-    return mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
+    mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
   }
 
   if (strategy === STRATEGY_TYPE.overwrite) {
     const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
     const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
 
-    return isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
+    mergedConfig = isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
   }
+
+  return mergedConfig;
 }
 
 /**
@@ -276,16 +280,8 @@ function mergeConfigs({
     }
   }
 
-  const {
-    i18n,
-    defaults,
-    strategy,
-    safelist,
-    component,
-    safelistColors,
-    defaultVariants,
-    compoundVariants,
-  } = SYSTEM_CONFIG_KEY;
+  const { i18n, defaults, strategy, safelist, component, safelistColors, defaultVariants, compoundVariants } =
+    SYSTEM_CONFIG_KEY;
 
   for (const key in composedConfig) {
     if (isGlobalConfig || isPropsConfig) {
@@ -439,17 +435,16 @@ function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, key, 
 
 /**
  * Merge component classes from "class" attribute into final config.
- * @param {Object} config
- * @param {Object} attrs
- * @param {string} topLevelClassKey
- *
- * @returns {Object}
  */
-function mergeClassesIntoConfig(config, topLevelClassKey, attrs) {
-  if (typeof config[topLevelClassKey] === "object") {
-    config[topLevelClassKey].base = cx([config[topLevelClassKey]?.base, attrs.class]);
+function mergeClassesIntoConfig(config: Record<string, object | string>, topLevelClassKey: string, attrs: VueAttrs) {
+  const configTopKey: VuelessCVA | string = config[topLevelClassKey];
+
+  if (typeof configTopKey === "object") {
+    configTopKey.base = cx([configTopKey?.base, attrs.class]);
+
+    config[topLevelClassKey] = configTopKey;
   } else {
-    config[topLevelClassKey] = cx([config[topLevelClassKey], attrs.class]);
+    config[topLevelClassKey] = cx([configTopKey, attrs.class]);
   }
 
   return config;
@@ -472,8 +467,7 @@ function getBaseClasses(value) {
 function getNestedComponent(value) {
   const classes = getBaseClasses(value);
   const component = value?.component || "";
-  const match =
-    classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
+  const match = classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
 
   return match ? match[1] : "";
 }
@@ -497,22 +491,20 @@ function isSystemKey(key) {
 function isCVA(config) {
   if (typeof config !== "object") return false;
 
-  return Object.values(CVA_CONFIG_KEY).some((value) =>
-    Object.keys(config).some((key) => key === value),
-  );
+  return Object.values(CVA_CONFIG_KEY).some((value) => Object.keys(config).some((key) => key === value));
 }
 
 /**
  * Check if slot defined, and have a content.
- * @param slot
- * @param props
- *
- * @returns {boolean}
  */
-function hasSlotContent(slot, props = {}) {
-  const asArray = (arg) => (Array.isArray(arg) ? arg : arg != null ? [arg] : []);
+export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
+  type Args = VNode | VNode[] | undefined | null;
 
-  const isVNodeEmpty = (vnode) => {
+  const asArray = (arg: Args) => {
+    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
+  };
+
+  const isVNodeEmpty = (vnode: Args) => {
     return (
       !vnode ||
       asArray(vnode).every(

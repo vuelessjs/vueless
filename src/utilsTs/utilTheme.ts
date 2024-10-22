@@ -1,7 +1,7 @@
 import colors from "tailwindcss/colors.js";
 
-import { vuelessConfig } from "./utilUI.ts";
-import { isSSR, isCSR } from "./utilHelper.ts";
+import { vuelessConfig } from "./utilUI";
+import { isSSR, isCSR } from "./utilHelper";
 import {
   GRAY_COLOR,
   COOL_COLOR,
@@ -16,26 +16,28 @@ import {
   GRAY_COLORS,
   PX_IN_REM,
 } from "../constants.js";
+import type { VuelessConfig } from "@/types";
 
 export function themeInit() {
   if (isSSR) return;
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
+  setTheme({ systemDarkMode: prefersColorSchemeDark.matches
+  });
 
   prefersColorSchemeDark.addEventListener("change", (event) =>
     setTheme({ systemDarkMode: event.matches }),
   );
 }
 
-export function setTheme(config = {}) {
-  const isDarkMode = setDarkMode(config);
-  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
-  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
-  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  let brand = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
-  let gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+export function setTheme(config: VuelessConfig = {}) {
+  const isDarkMode: boolean = setDarkMode(config);
+  const ring: number = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const ringOffset: number = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
+  const rounding: number = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  let brand: string = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+  let gray: string = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const isBrandColor = BRAND_COLORS.some((color) => color === brand);
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
@@ -93,7 +95,12 @@ export function setTheme(config = {}) {
   return rootVariables;
 }
 
-function setDarkMode(config) {
+interface VuelessDarkModeConfig {
+  darkMode?: boolean;
+  systemDarkMode?: boolean;
+}
+
+function setDarkMode(config: VuelessDarkModeConfig) {
   config?.darkMode === undefined
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
     : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
@@ -112,7 +119,7 @@ function setDarkMode(config) {
   return isDarkMode;
 }
 
-export function convertHexInRgb(hex) {
+export function convertHexInRgb(hex: string) {
   const color = hex.replace(/#/g, "");
 
   let r, g, b;
