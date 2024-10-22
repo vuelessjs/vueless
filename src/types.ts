@@ -1,3 +1,5 @@
+import { hasSlotContent } from "./composablesTs/useUI";
+
 import UTextDefaultConfig from "./ui.text-block/config";
 import UButtonDefaultConfig from "./ui.button/config";
 
@@ -91,3 +93,25 @@ export interface VuelessCommonComponent {
   safelistColors?: BrandColors;
   [key: string]: object | string | undefined;
 }
+
+export interface VuelessCVA {
+  base?: string;
+  variants?: Record<string, string | object>;
+  compoundVariants?: VuelessCVACompoundVariants[];
+  defaultVariants?: Record<string, string | number | boolean | object>;
+}
+
+export interface VuelessCVACompoundVariants {
+  class: string;
+  [key: string]: string;
+}
+
+export interface VueAttrs {
+  id?: string;
+  class?: string;
+}
+
+export type VuelessAttrs = {
+  hasSlotContent: typeof hasSlotContent;
+  [key: string]: object;
+};
