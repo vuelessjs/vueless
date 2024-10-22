@@ -23,14 +23,7 @@
         @binding {string} icon-color
       -->
       <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
-        <UIcon
-          v-if="leftIcon"
-          internal
-          :name="leftIcon"
-          :size="iconSize"
-          :color="iconColor"
-          v-bind="leftIconAttrs"
-        />
+        <UIcon v-if="leftIcon" internal :name="leftIcon" :size="iconSize" :color="iconColor" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
@@ -40,21 +33,8 @@
         @binding {string} icon-size
         @binding {string} icon-color
       -->
-      <slot
-        name="default"
-        :label="label"
-        :icon-name="icon"
-        :icon-size="iconSize"
-        :icon-color="iconColor"
-      >
-        <UIcon
-          v-if="icon"
-          internal
-          :name="icon"
-          :size="iconSize"
-          :color="iconColor"
-          v-bind="centerIconAttrs"
-        />
+      <slot name="default" :label="label" :icon-name="icon" :icon-size="iconSize" :icon-color="iconColor">
+        <UIcon v-if="icon" internal :name="icon" :size="iconSize" :color="iconColor" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -252,8 +232,7 @@ const props = defineProps({
 
 const elementId = props.id || useId();
 
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useAttrs(props);
+const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } = useAttrs(props);
 
 const buttonRef = ref(null);
 const buttonStyle = ref(null);
@@ -291,13 +270,17 @@ const iconColor = computed(() => {
 
 watch(
   () => props.loading,
-  (newValue) => {
-    if (newValue && buttonRef.value) {
+  (newValue, oldValue) => {
+    const isLoaderOn = newValue && oldValue !== undefined;
+
+    if (isLoaderOn && buttonRef.value) {
       buttonWidth.value = buttonRef.value.offsetWidth;
     }
 
     buttonStyle.value = {
-      width: newValue ? `${buttonWidth.value}px` : "auto",
+      width: isLoaderOn ? `${buttonWidth.value}px` : null,
+      paddingLeft: isLoaderOn ? "0px" : null,
+      paddingRight: isLoaderOn ? "0px" : null,
     };
   },
   { immediate: true },
