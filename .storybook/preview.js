@@ -1,5 +1,6 @@
 import { setup } from "@storybook/vue3";
 
+import { getRandomId } from "../src/utils/utilUI.js";
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
 import themeLightDocs from "./themes/themeLightDocs.js";
@@ -15,11 +16,11 @@ import { createVueless } from "../src/index.js";
 import { createRouter, createWebHistory } from "vue-router";
 
 /* Setup storybook */
-setup((app, storyContext) => {
+setup((app) => {
   const vueless = createVueless();
   const router = createRouter({ history: createWebHistory(), routes: [] });
 
-  app.config.idPrefix = storyContext.id;
+  app.config.idPrefix = getRandomId();
 
   if (!app._context.config.globalProperties.$route) {
     app.use(router);
