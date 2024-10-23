@@ -13,12 +13,10 @@ const languageOptions = {
     ...globals.node,
     ...globals.browser,
   },
-  // TODO: mayme it may be safety removed soon.
-  // ecmaVersion: "latest",
-  // sourceType: "commonjs",
-  // parserOptions: {
-  //   module: "esnext",
-  // },
+  ecmaVersion: "latest",
+  parserOptions: {
+    module: "esnext",
+  },
 };
 
 const jsConfig = {
@@ -51,14 +49,7 @@ const commonConfig = {
       { blankLine: "always", prev: "*", next: "return" },
     ],
     "tailwindcss/no-custom-classname": "off",
-    "prettier/prettier": ["warn", { printWidth: 120 }],
-  },
-};
-
-const vueConfig = {
-  name: "vue",
-  files: ["**/*.vue"],
-  rules: {
+    "prettier/prettier": ["warn", { printWidth: 100 }],
     "vue/max-len": ["error", { code: 120, template: 960, ignoreComments: true, ignoreUrls: true }],
     "vue/max-attributes-per-line": ["error", { singleline: { max: 9 }, multiline: { max: 1 } }],
     "vue/block-lang": ["error", { script: { lang: "ts" } }], // todo: remove later
@@ -93,8 +84,8 @@ const eslintConfig = {
 export default [
   {
     name: "global",
-    files: ["**/*.{ts,mts,vue}"],
-    ignores: ["**/dist/**", "**/coverage/**", "**/storybook-static/**", "**/!.storybook/**"],
+    files: ["**/*.{ts,mts,vue}", "**/.storybook/**"],
+    ignores: ["**/dist/**", "**/coverage/**", "**/storybook-static/**"],
     languageOptions,
   },
   ...pluginVue.configs["flat/recommended"],
@@ -107,7 +98,6 @@ export default [
   prettierEslintConfig,
   jsConfig,
   commonConfig,
-  vueConfig,
   vuelessConfigsConfig,
   vitestConfig,
   eslintConfig,
