@@ -291,13 +291,17 @@ const iconColor = computed(() => {
 
 watch(
   () => props.loading,
-  (newValue) => {
-    if (newValue && buttonRef.value) {
+  (newValue, oldValue) => {
+    const isLoaderOn = newValue && oldValue !== undefined;
+
+    if (isLoaderOn && buttonRef.value) {
       buttonWidth.value = buttonRef.value.offsetWidth;
     }
 
     buttonStyle.value = {
-      width: newValue ? `${buttonWidth.value}px` : "auto",
+      width: isLoaderOn ? `${buttonWidth.value}px` : null,
+      paddingLeft: isLoaderOn ? "0px" : null,
+      paddingRight: isLoaderOn ? "0px" : null,
     };
   },
   { immediate: true },
