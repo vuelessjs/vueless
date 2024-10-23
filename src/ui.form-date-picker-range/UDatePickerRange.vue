@@ -161,7 +161,7 @@ import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";
 import UDatePickerRangeInputs from "./UDatePickerRangeInputs.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import vClickOutside from "../directives/vClickOutside.js";
+import { vClickOutside } from "../directives";
 
 import {
   addDays,

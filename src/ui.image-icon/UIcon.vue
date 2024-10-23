@@ -18,7 +18,7 @@ import { UIcon } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
 
-import vTooltip from "../directives/vTooltip.js";
+import { vTooltip } from "../directives";
 
 defineOptions({ inheritAttrs: false });
 
