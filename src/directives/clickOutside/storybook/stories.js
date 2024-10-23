@@ -1,12 +1,14 @@
 import { getArgTypes } from "../../../utils/utilStorybook.js";
 
+import { ref, computed, onMounted, useTemplateRef } from "vue";
+
 import UAlert from "../../../ui.text-alert/UAlert.vue";
 import UButton from "../../../ui.button/UButton.vue";
 import UCalendar from "../../../ui.form-calendar/UCalendar.vue";
 import clickOutside from "../vClickOutside.js";
 
 /**
- * The `UDataList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-list)
+ * The `v-click-outside` directive. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/directives/clickOutside)
  */
 export default {
   id: "7022",
@@ -22,27 +24,22 @@ const DefaultTemplate = (args) => ({
   components: { UButton, UCalendar, UAlert },
   directives: { clickOutside },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      date: new Date(),
-      isShownCalendar: false,
-    };
-  },
-  computed: {
-    buttonLabel() {
-      return this.isShownCalendar ? "Close calendar" : "Open calendar";
-    },
-  },
-  methods: {
-    toggleCalendar() {
-      this.isShownCalendar = !this.isShownCalendar;
-    },
+    const date = ref(new Date());
+    const isShownCalendar = ref(false);
 
-    closeCalendar() {
-      this.isShownCalendar = false;
-    },
+    const buttonLabel = computed(() =>
+      isShownCalendar.value ? "Close calendar" : "Open calendar",
+    );
+
+    function toggleCalendar() {
+      isShownCalendar.value = !isShownCalendar.value;
+    }
+
+    function closeCalendar() {
+      isShownCalendar.value = false;
+    }
+
+    return { args, date, isShownCalendar, buttonLabel, toggleCalendar, closeCalendar };
   },
   template: `
     <UButton :label="buttonLabel" @click="toggleCalendar" v-click-outside="closeCalendar" />
@@ -61,31 +58,36 @@ const SettingsTemplate = (args) => ({
   components: { UButton, UCalendar, UAlert },
   directives: { clickOutside },
   setup() {
-    return { args };
-  },
-  data() {
-    return {
-      date: new Date(),
-      isShownCalendar: false,
-      clickOutsideOptions: {},
-    };
-  },
-  computed: {
-    buttonLabel() {
-      return this.isShownCalendar ? "Close calendar" : "Open calendar";
-    },
-  },
-  mounted() {
-    this.clickOutsideOptions = { ignore: [this.$refs.calendar] };
-  },
-  methods: {
-    toggleCalendar() {
-      this.isShownCalendar = !this.isShownCalendar;
-    },
+    const date = ref(new Date());
+    const isShownCalendar = ref(false);
+    const calendarRef = useTemplateRef("calendar");
+    const clickOutsideOptions = ref({});
 
-    closeCalendar() {
-      this.isShownCalendar = false;
-    },
+    const buttonLabel = computed(() =>
+      isShownCalendar.value ? "Close calendar" : "Open calendar",
+    );
+
+    onMounted(() => {
+      clickOutsideOptions.value = { ignore: [calendarRef] };
+    });
+
+    function toggleCalendar() {
+      isShownCalendar.value = !isShownCalendar.value;
+    }
+
+    function closeCalendar() {
+      isShownCalendar.value = false;
+    }
+
+    return {
+      args,
+      date,
+      isShownCalendar,
+      buttonLabel,
+      toggleCalendar,
+      closeCalendar,
+      clickOutsideOptions,
+    };
   },
   template: `
     <UButton :label="buttonLabel" @click="toggleCalendar" v-click-outside="[closeCalendar, clickOutsideOptions]" />
