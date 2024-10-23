@@ -17,7 +17,7 @@
     /* Path settings */
     "baseUrl": ".",
     "rootDir": "./src",
-    "outDir": "./dist",
+    //"outDir": "./dist",
 
     /* Enables all strict type-checking options. */
     "strict": true,
