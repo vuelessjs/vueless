@@ -1,10 +1,26 @@
-import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, Comment, Text, Fragment, computed } from "vue";
+import {
+  ref,
+  watch,
+  watchEffect,
+  getCurrentInstance,
+  toValue,
+  useAttrs,
+  Comment,
+  Text,
+  Fragment,
+  computed,
+} from "vue";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 
 import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI";
 import { cloneDeep, isCSR } from "../utilsTs/utilHelper";
-import { STRATEGY_TYPE, CVA_CONFIG_KEY, SYSTEM_CONFIG_KEY, NESTED_COMPONENT_REG_EXP } from "../constants.js";
+import {
+  STRATEGY_TYPE,
+  CVA_CONFIG_KEY,
+  SYSTEM_CONFIG_KEY,
+  NESTED_COMPONENT_REG_EXP,
+} from "../constants.js";
 import type { VueAttrs, VuelessCommonComponent, VuelessComponentNames, VuelessCVA } from "../types";
 
 /**
@@ -21,9 +37,11 @@ export default function useUI(
 ) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as VuelessComponentNames;
-  const globalConfig = vuelessConfig.component && componentName ? vuelessConfig.component[componentName] : {};
+  const globalConfig =
+    vuelessConfig.component && componentName ? vuelessConfig.component[componentName] : {};
 
-  const isStrategyValid = vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+  const isStrategyValid =
+    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
   const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
@@ -137,7 +155,8 @@ export default function useUI(
       ...(isTopLevelKey ? attrs : {}),
       "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
       "vl-key": isDev ? attrs["vl-config-key"] || configKey || null : null,
-      "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
+      "vl-child-component":
+        isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
       "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
     };
 
@@ -269,8 +288,16 @@ function mergeConfigs({
     }
   }
 
-  const { i18n, defaults, strategy, safelist, component, safelistColors, defaultVariants, compoundVariants } =
-    SYSTEM_CONFIG_KEY;
+  const {
+    i18n,
+    defaults,
+    strategy,
+    safelist,
+    component,
+    safelistColors,
+    defaultVariants,
+    compoundVariants,
+  } = SYSTEM_CONFIG_KEY;
 
   for (const key in composedConfig) {
     if (isGlobalConfig || isPropsConfig) {
@@ -425,7 +452,11 @@ function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, key, 
 /**
  * Merge component classes from "class" attribute into final config.
  */
-function mergeClassesIntoConfig(config: Record<string, object | string>, topLevelClassKey: string, attrs: VueAttrs) {
+function mergeClassesIntoConfig(
+  config: Record<string, object | string>,
+  topLevelClassKey: string,
+  attrs: VueAttrs,
+) {
   const configTopKey: VuelessCVA | string = config[topLevelClassKey];
 
   if (typeof configTopKey === "object") {
@@ -456,7 +487,8 @@ function getBaseClasses(value) {
 function getNestedComponent(value) {
   const classes = getBaseClasses(value);
   const component = value?.component || "";
-  const match = classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
+  const match =
+    classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
 
   return match ? match[1] : "";
 }
@@ -480,7 +512,9 @@ function isSystemKey(key) {
 function isCVA(config) {
   if (typeof config !== "object") return false;
 
-  return Object.values(CVA_CONFIG_KEY).some((value) => Object.keys(config).some((key) => key === value));
+  return Object.values(CVA_CONFIG_KEY).some((value) =>
+    Object.keys(config).some((key) => key === value),
+  );
 }
 
 /**

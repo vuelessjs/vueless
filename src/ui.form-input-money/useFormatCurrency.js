@@ -1,6 +1,6 @@
 import { onMounted, nextTick, ref, onBeforeUnmount, toValue, watch } from "vue";
 
-import FormatService from "./utilFormat";
+import FormatService from "./utilFormat.js";
 
 export default function useFormatCurrency(elementId, options) {
   let prevValue = "";

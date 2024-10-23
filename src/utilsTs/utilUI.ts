@@ -2,7 +2,12 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 import { cloneDeep, isCSR, isSSR } from "./utilHelper.js";
-import { BRAND_COLOR, GRAYSCALE_COLOR, DEFAULT_BRAND_COLOR, NESTED_COMPONENT_REG_EXP } from "../constants.js";
+import {
+  BRAND_COLOR,
+  GRAYSCALE_COLOR,
+  DEFAULT_BRAND_COLOR,
+  NESTED_COMPONENT_REG_EXP,
+} from "../constants.js";
 
 import type { VuelessConfig, VuelessCommonComponent, VuelessComponentNames } from "../types";
 
@@ -32,7 +37,9 @@ if (isSSR) {
 
 if (isCSR) {
   vuelessConfig =
-    Object.values(import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }))[0] || {};
+    Object.values(
+      import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }),
+    )[0] || {};
 }
 
 /**

@@ -366,20 +366,20 @@ function onClickDelete(value, label) {
 }
 
 function prepareSortData(list, parentId) {
-  let sortData = [];
+  const sortData = [];
 
   list.forEach((item) => {
-    let hasItemChildren = item?.children?.length;
+    const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      let childrenItem = prepareSortData(item.children, item[props.valueKey]);
+      const childrenItem = prepareSortData(item.children, item[props.valueKey]);
 
       childrenItem.forEach((item) => {
         sortData.push(item);
       });
     }
 
-    let parentItem = { ...item, parentId: 0 || parentId };
+    const parentItem = { ...item, parentId: 0 || parentId };
 
     sortData.push(parentItem);
   });

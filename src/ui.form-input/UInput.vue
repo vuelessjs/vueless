@@ -459,7 +459,7 @@ function setLabelPosition() {
     return;
   }
 
-  let leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+  const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
 
   const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
 

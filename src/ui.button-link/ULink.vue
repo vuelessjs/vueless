@@ -256,7 +256,7 @@ const props = defineProps({
 });
 
 const isPresentRoute = computed(() => {
-  for (let key in props.to) return true;
+  for (const key in props.to) return true;
 
   return false;
 });
