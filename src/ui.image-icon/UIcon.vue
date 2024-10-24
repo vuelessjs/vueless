@@ -127,6 +127,12 @@ const emit = defineEmits([
 const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
+  if (isSSR) {
+    Object.entries(
+      import.meta.glob(`/assets/.vueless/icons/**/*.svg`, { eager: true, query: "?component" }),
+    ) || [];
+  }
+
   return (
     Object.entries(
       import.meta.glob(`../assets/icons/**/*.svg`, { eager: true, query: "?component" }),
@@ -157,9 +163,12 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   function getIcon(params) {
-    const [, component] = generatedIcons.value.find(([path]) =>
-      params.every((param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(param)),
-    );
+    const [, component] =
+      generatedIcons.value.find(([path]) =>
+        params.every(
+          (param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(String(param)),
+        ),
+      ) || [];
 
     return component;
   }
