@@ -1,5 +1,14 @@
 <template>
-  <ULabel :data-test="dataTest" v-bind="inputNumberLabelAttrs">
+  <ULabel
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    :data-test="dataTest"
+    v-bind="labelAttrs"
+  >
     <UButton
       variant="thirdary"
       size="sm"
@@ -22,7 +31,6 @@
 
     <div v-bind="numberAttrs">
       <div v-bind="valueAttrs" v-text="count" />
-      <div v-bind="labelAttrs" v-text="label" />
     </div>
 
     <UButton
@@ -177,7 +185,6 @@ const {
   removeIconAttrs,
   addButtonAttrs,
   addIconAttrs,
-  inputNumberLabelAttrs,
   numberAttrs,
 } = useAttrs(props);
 
