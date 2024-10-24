@@ -1,4 +1,4 @@
-import { isCSR } from "./utilHelper.ts";
+import { isCSR } from "./utilHelper";
 
 const isWindows = isCSR && checkIsWindows();
 const isMac = isCSR && checkIsMac();
@@ -6,6 +6,13 @@ const isPWA = isCSR && checkIsPWA();
 const isIOS = isCSR && checkIsIOS();
 const isAndroid = isCSR && checkIsAndroid();
 const isMobileApp = isPWA || isIOS || isAndroid;
+
+interface ModernNavigator extends Navigator {
+  standalone: string;
+  userAgentData: {
+    platform: string;
+  };
+}
 
 function checkIsWindows() {
   return getPlatform().toUpperCase().indexOf("WINDOWS") >= 0;
@@ -16,7 +23,7 @@ function checkIsMac() {
 }
 
 function checkIsPWA() {
-  return !!navigator.standalone;
+  return !!(navigator as ModernNavigator).standalone;
 }
 
 function checkIsIOS() {
@@ -40,7 +47,7 @@ function checkIsAndroid() {
 }
 
 function getPlatform() {
-  return navigator.userAgentData?.platform || navigator.platform || "unknown";
+  return (navigator as ModernNavigator).userAgentData?.platform || navigator.platform || "unknown";
 }
 
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows };

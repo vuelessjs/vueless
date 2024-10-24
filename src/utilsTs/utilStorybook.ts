@@ -1,17 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// todo: declare interface correctly
+type WebTypesItem = Record<string, string | number | object>;
+
 /* Load Web-Types from the project root. */
-const [webTypes] = Object.values(
+const [webTypes]: any = Object.values(
   import.meta.glob("/web-types.json", { eager: true, import: "default" }),
 );
 
-const getComponentData = (componentName) => {
-  return webTypes.contributions.html.tags.find((item) => item.name === componentName);
+const getComponentData = (componentName: string) => {
+  return webTypes.contributions.html.tags.find((item: WebTypesItem) => item.name === componentName);
 };
 
-export function getSlotNames(componentName) {
+export function getSlotNames(componentName: string) {
   return getComponentData(componentName)?.slots?.map((item) => item.name);
 }
 
-export function getArgTypes(componentName) {
+export function getArgTypes(componentName: string) {
   const component = getComponentData(componentName);
 
   if (!component) return;
@@ -23,7 +28,7 @@ export function getArgTypes(componentName) {
     slotTemplate: { table: { disable: true } },
   };
 
-  component.attributes?.forEach((attribute) => {
+  component.attributes?.forEach((attribute: WebTypes) => {
     const type = attribute.value.type;
 
     if (type === "string" || type.includes("string")) {
@@ -176,11 +181,11 @@ export function getArgTypes(componentName) {
   return types;
 }
 
-export function getSource(defaultConfig) {
+export function getSource(defaultConfig: string) {
   return defaultConfig.replace("export default /*tw*/ ", "").replace(";", "");
 }
 
-export function getSlotsFragment(defaultTemplate) {
+export function getSlotsFragment(defaultTemplate: string) {
   return `
   <template v-for="(slot, index) of slots" :key="index" v-slot:[slot]>
     <template v-if="slot === 'default' && !args['defaultSlot']">${defaultTemplate || ""}</template>

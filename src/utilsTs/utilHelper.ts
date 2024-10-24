@@ -1,11 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-function-type */
+
 /**
  * Deeply clone given object (same as lodash.cloneDeep).
- * @param {Object} entity
- * @param cache
- *
- * @returns {Object}
  */
-export function cloneDeep(entity, cache = new WeakMap()) {
+export function cloneDeep(entity: Record<string, any>, cache = new WeakMap()): object {
   // primitives
   if (Object(entity) !== entity) {
     return entity;
@@ -26,7 +24,7 @@ export function cloneDeep(entity, cache = new WeakMap()) {
           : entity instanceof RegExp
             ? new RegExp(entity.source, entity.flags)
             : entity.constructor
-              ? new entity.constructor()
+              ? new (entity.constructor as { new (): typeof entity })()
               : Object.create(null);
 
   cache.set(entity, result);
@@ -39,30 +37,21 @@ export function cloneDeep(entity, cache = new WeakMap()) {
 
 /**
  * Creates a debounced function with delay (same as lodash.debounce).
- * @param {Function} func
- * @param {Number} ms
- *
- * @returns {Function}
  */
-export function createDebounce(func, ms) {
-  let timeout;
+export function createDebounce(func: Function, ms: number) {
+  let timeout: ReturnType<typeof setTimeout>;
 
-  return function () {
+  return function (...args: any) {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, arguments), ms);
+    // @ts-expect-error - this implicitly has type any because it does not have a type annotation.
+    timeout = setTimeout(() => func.apply(this as any, args), ms);
   };
 }
 
 /**
  * Change page title in runtime by provided config.
- * @param {Object} config
- * @param {string} config.title
- * @param {string} config.separator
- * @param {string} config.suffix
- *
- * @returns {VoidFunction}
  */
-export function setTitle({ title, separator = " / ", suffix = "" }) {
+export function setTitle({ title = "", separator = " / ", suffix = "" }) {
   if (isCSR) {
     document.title = title ? title + separator + suffix : suffix;
   }

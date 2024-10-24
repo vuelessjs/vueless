@@ -3,7 +3,7 @@ import { hasSlotContent } from "./composablesTs/useUI";
 import UTextDefaultConfig from "./ui.text-block/config";
 import UButtonDefaultConfig from "./ui.button/config";
 
-export interface VuelessConfig {
+export interface ThemeVuelessConfig {
   /**
    * Components brand (primary) color.
    */
@@ -33,7 +33,9 @@ export interface VuelessConfig {
    * Default dark mode state.
    */
   darkMode?: boolean;
+}
 
+export interface VuelessConfig extends ThemeVuelessConfig {
   /**
    * Component classes merge behavior.
    * – merge (default) – smartly merge provided custom classes with default config classes.
@@ -115,3 +117,59 @@ export type VuelessAttrs = {
   hasSlotContent: typeof hasSlotContent;
   [key: string]: object;
 };
+
+export interface CreateVuelessOptions {
+  i18n?: Record<string, string | object>;
+}
+
+export interface TailwindSafelist {
+  pattern: string;
+  variants?: string[];
+}
+
+export interface TailwindColorShades {
+  DEFAULT: string;
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  950: string;
+}
+
+export interface VuelessCssVariables {
+  "--vl-ring": string;
+  "--vl-ring-offset": string;
+  "--vl-rounding": string;
+  /* Gray CSS variables */
+  "--vl-color-gray-50": string;
+  "--vl-color-gray-100": string;
+  "--vl-color-gray-200": string;
+  "--vl-color-gray-300": string;
+  "--vl-color-gray-400": string;
+  "--vl-color-gray-500": string;
+  "--vl-color-gray-600": string;
+  "--vl-color-gray-700": string;
+  "--vl-color-gray-800": string;
+  "--vl-color-gray-900": string;
+  "--vl-color-gray-950": string;
+  "--vl-color-gray-default": string;
+  /* Brand CSS variables */
+  "--vl-color-brand-50": string;
+  "--vl-color-brand-100": string;
+  "--vl-color-brand-200": string;
+  "--vl-color-brand-300": string;
+  "--vl-color-brand-400": string;
+  "--vl-color-brand-500": string;
+  "--vl-color-brand-600": string;
+  "--vl-color-brand-700": string;
+  "--vl-color-brand-800": string;
+  "--vl-color-brand-900": string;
+  "--vl-color-brand-950": string;
+  "--vl-color-brand-default": string;
+}
