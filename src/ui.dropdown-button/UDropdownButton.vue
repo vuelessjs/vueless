@@ -73,7 +73,7 @@ import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
 import { getDefault } from "../utils/utilUI.js";
 
-import vClickOutside from "../directives/vClickOutside.js";
+import { vClickOutside } from "../directives";
 
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
