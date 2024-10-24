@@ -12,7 +12,7 @@ import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
 import "./index.css";
 
 /* Vue plugins */
-import { createVueless } from "../src/index.js";
+import { createVueless } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
 /* Setup storybook */

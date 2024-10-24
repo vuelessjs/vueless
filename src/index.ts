@@ -1,11 +1,14 @@
-/* eslint-disable vue/max-len, prettier/prettier */
+/* eslint-disable prettier/prettier */
 import { createLocale, LocaleSymbol } from "./composables/useLocale.js";
 import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.js";
 import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.js";
-import { themeInit } from "./utils/utilTheme.js";
+import { themeInit } from "./utilsTs/utilTheme";
+
+import type { App } from 'vue'
+import type { CreateVuelessOptions } from './types'
 
 export { setTitle } from "./utils/utilHelper.js";
-export { setTheme } from "./utils/utilTheme.js";
+export { setTheme } from "./utilsTs/utilTheme";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
 export { useLocale } from "./composables/useLocale.js";
@@ -22,14 +25,14 @@ export {
   setDelayedNotify,
   getDelayedNotify,
 } from "./ui.text-notify/utilNotify.js";
-/* eslint-enable vue/max-len, prettier/prettier */
+/* eslint-enable prettier/prettier */
 
-export function createVueless(options = {}) {
+export function createVueless(options: CreateVuelessOptions = {}) {
   const i18n = createLocale(options.i18n);
   const loaderOverlay = createLoaderOverlay();
   const loaderProgress = createLoaderProgress();
 
-  const install = (app) => {
+  const install = (app: App) => {
     app.provide(LocaleSymbol, i18n);
     app.provide(LoaderOverlaySymbol, loaderOverlay);
     app.provide(LoaderProgressSymbol, loaderProgress);
