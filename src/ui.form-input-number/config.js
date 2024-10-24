@@ -1,6 +1,9 @@
 export default /*tw*/ {
-  wrapper: "flex items-center space-x-6",
-  number: "flex items-center flex-col",
+  label: {
+    component: "{ULabel}",
+    content: "gap-6 items-center",
+  },
+  number: "",
   removeButton: "{UButton}",
   removeIcon: "{UIcon}",
   addButton: "{UButton}",
@@ -13,20 +16,18 @@ export default /*tw*/ {
         md: "text-base",
         lg: "text-lg",
       },
-    },
-  },
-  label: {
-    base: "pt-1 !leading-none text-gray-500",
-    variants: {
-      size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+      disabled: {
+        true: "focus-within:ring-0 focus-within:ring-offset-0 pointer-events-none",
       },
     },
   },
   defaults: {
     size: "md",
+    labelAlign: "topWithDesc",
+    disabled: false,
+    step: 1,
+    min: 1,
+    max: 999,
     /* icons */
     removeIcon: "remove",
     addIcon: "add",
