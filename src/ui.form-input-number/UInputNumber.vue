@@ -1,5 +1,5 @@
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <ULabel :data-test="dataTest" v-bind="inputNumberLabelAttrs">
     <UButton
       variant="thirdary"
       size="sm"
@@ -44,7 +44,7 @@
         v-bind="addIconAttrs"
       />
     </UButton>
-  </div>
+  </ULabel>
 </template>
 
 <script setup>
@@ -52,6 +52,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
@@ -74,7 +75,7 @@ const props = defineProps({
    */
   step: {
     type: Number,
-    default: 1,
+    default: getDefault(defaultConfig, UInputNumber).step,
   },
 
   /**
@@ -82,7 +83,7 @@ const props = defineProps({
    */
   min: {
     type: Number,
-    default: 1,
+    default: getDefault(defaultConfig, UInputNumber).min,
   },
 
   /**
@@ -90,7 +91,7 @@ const props = defineProps({
    */
   max: {
     type: Number,
-    default: 999,
+    default: getDefault(defaultConfig, UInputNumber).max,
   },
 
   /**
@@ -176,7 +177,7 @@ const {
   removeIconAttrs,
   addButtonAttrs,
   addIconAttrs,
-  wrapperAttrs,
+  inputNumberLabelAttrs,
   numberAttrs,
 } = useAttrs(props);
 

@@ -1,6 +1,9 @@
 export default /*tw*/ {
-  wrapper: "flex items-center space-x-6",
-  number: "flex items-center flex-col",
+  inputNumberLabel: {
+    component: "{ULabel}",
+    content: "gap-6 items-center",
+  },
+  number: "",
   removeButton: "{UButton}",
   removeIcon: "{UIcon}",
   addButton: "{UButton}",
@@ -27,6 +30,9 @@ export default /*tw*/ {
   },
   defaults: {
     size: "md",
+    step: 1,
+    min: 1,
+    max: 999,
     /* icons */
     removeIcon: "remove",
     addIcon: "add",
