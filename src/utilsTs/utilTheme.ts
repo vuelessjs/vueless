@@ -1,10 +1,10 @@
-import colors from "tailwindcss/colors.js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import resolveConfig from "tailwindcss/resolveConfig";
 
 import { vuelessConfig } from "./utilUI";
 import { isSSR, isCSR } from "./utilHelper";
 import {
-  GRAY_COLOR,
-  COOL_COLOR,
   BRAND_COLORS,
   GRAYSCALE_COLOR,
   DEFAULT_RING,
@@ -15,8 +15,46 @@ import {
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
-} from "../constants.js";
-import type { VuelessConfig } from "@/types";
+} from "../constants";
+
+import type { Config } from "tailwindcss";
+import type { ThemeVuelessConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types";
+
+interface InternalThemeVuelessConfig extends ThemeVuelessConfig {
+  systemDarkMode?: boolean;
+}
+
+/**
+ * Load Tailwind config from the project root.
+ * Both for server and client side renderings.
+ * IIFE for SSR is used to prevent top level await issue.
+ */
+let fullTailwindConfig: any;
+
+if (isSSR) {
+  /* Load Tailwind config from the project root in IIFE (no top-level await). */
+  (async () => {
+    try {
+      const filePath = `${process.cwd()}/tailwind.config`;
+
+      let tailwindConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
+
+      if (!tailwindConfig) {
+        tailwindConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
+      }
+
+      fullTailwindConfig = resolveConfig(tailwindConfig);
+    } catch {}
+  })();
+}
+
+if (isCSR) {
+  const tailwindConfig = Object.values(
+    import.meta.glob("/tailwind.config.{js,ts}", { eager: true, import: "default" }),
+  )[0] as Config;
+
+  fullTailwindConfig = resolveConfig(tailwindConfig);
+}
 
 export function themeInit() {
   if (isSSR) return;
@@ -30,14 +68,15 @@ export function themeInit() {
   );
 }
 
-export function setTheme(config: VuelessConfig = {}) {
-  const isDarkMode: boolean = setDarkMode(config);
-  const ring: number = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
-  const ringOffset: number = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
-  const rounding: number = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  let brand: string = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
-  let gray: string = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+export function setTheme(config: InternalThemeVuelessConfig = {}) {
+  const isDarkMode = setDarkMode(config);
+  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
+  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  let brand: BrandColors | GrayColors = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+  const gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
+  const colors = fullTailwindConfig.theme.colors;
   const isBrandColor = BRAND_COLORS.some((color) => color === brand);
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
 
@@ -54,15 +93,11 @@ export function setTheme(config: VuelessConfig = {}) {
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
 
-  if (gray === COOL_COLOR) {
-    gray = GRAY_COLOR;
-  }
-
   if (brand === GRAYSCALE_COLOR) {
     brand = gray;
   }
 
-  const variables = {
+  const variables: Partial<VuelessCssVariables> = {
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
@@ -71,11 +106,15 @@ export function setTheme(config: VuelessConfig = {}) {
   };
 
   for (const key in colors[gray]) {
-    variables[`--vl-color-gray-${key}`] = convertHexInRgb(colors[gray][key]);
+    variables[`--vl-color-gray-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
+      colors[gray][key],
+    );
   }
 
   for (const key in colors[brand]) {
-    variables[`--vl-color-brand-${key}`] = convertHexInRgb(colors[brand][key]);
+    variables[`--vl-color-brand-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
+      colors[brand][key],
+    );
   }
 
   const stringVariables = Object.entries(variables)
@@ -94,15 +133,10 @@ export function setTheme(config: VuelessConfig = {}) {
   return rootVariables;
 }
 
-interface VuelessDarkModeConfig {
-  darkMode?: boolean;
-  systemDarkMode?: boolean;
-}
-
-function setDarkMode(config: VuelessDarkModeConfig) {
+function setDarkMode(config: InternalThemeVuelessConfig) {
   config?.darkMode === undefined
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
-    : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(!!config?.darkMode));
+    : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());
 
   const storedDarkMode = isCSR ? localStorage.getItem(DARK_MODE_SELECTOR) : null;
 
