@@ -1,6 +1,6 @@
 {
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
+  "exclude": ["src/**/__tests__/*", "dist/**/*"],
   "compilerOptions": {
     /* General */
     "module": "ESNext",
@@ -17,15 +17,11 @@
     /* Path settings */
     "baseUrl": ".",
     "rootDir": "./src",
-    //"outDir": "./dist",
+    "outDir": "./dist",
 
     /* Enables all strict type-checking options. */
     "strict": true,
     "noImplicitThis": true,
-
-    /* Required in Vue projects */
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
 
     /* Bundlers settings */
     "moduleResolution": "bundler",
