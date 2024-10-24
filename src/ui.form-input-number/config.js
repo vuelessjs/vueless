@@ -1,6 +1,6 @@
 export default /*tw*/ {
   label: {
-    component: "{ULabel} pt-1 -top-10 !leading-none text-gray-500",
+    component: "{ULabel}",
     content: "gap-6 items-center",
   },
   number: "",
