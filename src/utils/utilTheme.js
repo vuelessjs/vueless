@@ -46,10 +46,6 @@ export function setTheme(config = {}) {
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
-  const defaultRingOffsetColor = isDarkMode
-    ? defaultRingOffsetColorDark
-    : defaultRingOffsetColorLight;
-
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   let brand = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
   let gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
@@ -69,6 +65,9 @@ export function setTheme(config = {}) {
 
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
+  const defaultRingOffsetColor = isDarkMode
+    ? defaultRingOffsetColorDark
+    : defaultRingOffsetColorLight;
 
   if (gray === COOL_COLOR) {
     gray = GRAY_COLOR;
