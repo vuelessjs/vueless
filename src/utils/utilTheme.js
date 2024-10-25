@@ -35,13 +35,21 @@ export function setTheme(config = {}) {
   const isDarkMode = setDarkMode(config);
   const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
-  const ringOffsetColor = isDarkMode
-    ? (config?.ringOffsetColorDark ??
-      vuelessConfig.ringOffsetColorDark ??
-      DEFAULT_RING_OFFSET_COLOR_DARK)
-    : (config?.ringOffsetColorLight ??
-      vuelessConfig.ringOffsetColorLight ??
-      DEFAULT_RING_OFFSET_COLOR_LIGHT);
+
+  const defaultRingOffsetColorDark =
+    config?.ringOffsetColorDark ??
+    vuelessConfig.ringOffsetColorDark ??
+    DEFAULT_RING_OFFSET_COLOR_DARK;
+
+  const defaultRingOffsetColorLight =
+    config?.ringOffsetColorLight ??
+    vuelessConfig.ringOffsetColorLight ??
+    DEFAULT_RING_OFFSET_COLOR_LIGHT;
+
+  const defaultRingOffsetColor = isDarkMode
+    ? defaultRingOffsetColorDark
+    : defaultRingOffsetColorLight;
+
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   let brand = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
   let gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
@@ -73,7 +81,7 @@ export function setTheme(config = {}) {
   const variables = {
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
-    "--vl-ring-offset-color": `rgb(${convertHexInRgb(ringOffsetColor)})`,
+    "--vl-ring-offset-color": `rgb(${convertHexInRgb(defaultRingOffsetColor)})`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-color-gray-default": convertHexInRgb(colors[gray][defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand][defaultGrayShade]),
