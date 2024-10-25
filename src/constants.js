@@ -3,6 +3,8 @@ export const BRAND_COLOR = "brand";
 export const GRAY_COLOR = "gray";
 export const COOL_COLOR = "cool";
 export const GRAYSCALE_COLOR = "grayscale";
+export const DEFAULT_RING_OFFSET_COLOR_LIGHT = "#ffffff"; // white
+export const DEFAULT_RING_OFFSET_COLOR_DARK = "#4b5563"; // gray-600
 
 /* Vueless dark mode */
 export const DARK_MODE_SELECTOR = "vl-dark";

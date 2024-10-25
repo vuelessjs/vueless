@@ -9,6 +9,7 @@ import {
   DEFAULT_ROUNDING,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
+  DEFAULT_RING_OFFSET_COLOR_LIGHT,
 } from "./constants.js";
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
@@ -81,10 +82,9 @@ export const vuelessTailwindConfig = {
       ringOffsetWidth: {
         dynamic: "var(--vl-ring-offset)",
       },
-      // TODO: Add this feature
-      // ringOffsetColor: {
-      //   dynamic: "var(--vl-ring-offset-color)",
-      // },
+      ringOffsetColor: {
+        dynamic: "var(--vl-ring-offset-color)",
+      },
       borderRadius: {
         dynamic: "var(--vl-rounding)",
       },
@@ -94,6 +94,7 @@ export const vuelessTailwindConfig = {
         // TODO: Set colors from vueless.config.{js|ts} if it present.
         "var(--vl-ring)": DEFAULT_RING,
         "var(--vl-ring-offset)": DEFAULT_RING_OFFSET,
+        "var(--vl-ring-offset-color)": DEFAULT_RING_OFFSET_COLOR_LIGHT,
         "var(--vl-rounding)": DEFAULT_ROUNDING,
         ...getReplacementColors(GRAY_COLOR, GRAY_COLOR),
         ...getReplacementColors(BRAND_COLOR, GRAY_COLOR),
