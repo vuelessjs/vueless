@@ -8,7 +8,7 @@ function removeWebTypesFromPackageJson() {
   try {
     const packageJsonPath = path.resolve(process.cwd(), "dist/package.json");
     const data = fs.readFileSync(packageJsonPath, "utf8");
-    let packageJson = JSON.parse(data);
+    const packageJson = JSON.parse(data);
 
     delete packageJson["web-types"];
 
