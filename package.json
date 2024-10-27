@@ -21,7 +21,7 @@
   ],
   "homepage": "https://vueless.com",
   "author": "Johnny Grid",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "publishConfig": {
     "access": "public"
