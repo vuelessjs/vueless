@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import resolveConfig from "tailwindcss/resolveConfig";
-
-import { vuelessConfig } from "./utilUI";
+import { fullTailwindConfig } from "./utilTailwind";
 import { isSSR, isCSR } from "./utilHelper";
+import { vuelessConfig } from "./utilUI";
 import {
   BRAND_COLORS,
   GRAYSCALE_COLOR,
@@ -17,43 +14,10 @@ import {
   PX_IN_REM,
 } from "../constants";
 
-import type { Config } from "tailwindcss";
-import type { ThemeVuelessConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types";
+import type { ThemeConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types";
 
-interface InternalThemeVuelessConfig extends ThemeVuelessConfig {
+interface InternalThemeConfig extends ThemeConfig {
   systemDarkMode?: boolean;
-}
-
-/**
- * Load Tailwind config from the project root.
- * Both for server and client side renderings.
- * IIFE for SSR is used to prevent top level await issue.
- */
-let fullTailwindConfig: any;
-
-if (isSSR) {
-  /* Load Tailwind config from the project root in IIFE (no top-level await). */
-  (async () => {
-    try {
-      const filePath = `${process.cwd()}/tailwind.config`;
-
-      let tailwindConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
-
-      if (!tailwindConfig) {
-        tailwindConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
-      }
-
-      fullTailwindConfig = resolveConfig(tailwindConfig);
-    } catch {}
-  })();
-}
-
-if (isCSR) {
-  const tailwindConfig = Object.values(
-    import.meta.glob("/tailwind.config.{js,ts}", { eager: true, import: "default" }),
-  )[0] as Config;
-
-  fullTailwindConfig = resolveConfig(tailwindConfig);
 }
 
 export function themeInit() {
@@ -68,7 +32,7 @@ export function themeInit() {
   );
 }
 
-export function setTheme(config: InternalThemeVuelessConfig = {}) {
+export function setTheme(config: InternalThemeConfig = {}) {
   const isDarkMode = setDarkMode(config);
   const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
@@ -133,7 +97,7 @@ export function setTheme(config: InternalThemeVuelessConfig = {}) {
   return rootVariables;
 }
 
-function setDarkMode(config: InternalThemeVuelessConfig) {
+function setDarkMode(config: InternalThemeConfig) {
   config?.darkMode === undefined
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
     : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());

@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-function-type */
-
 /**
  * Deeply clone given object (same as lodash.cloneDeep).
  */
-export function cloneDeep(entity: Record<string, any>, cache = new WeakMap()): object {
+export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
   // primitives
-  if (Object(entity) !== entity) {
+  if (Object(entity) !== entity || !entity) {
     return entity;
   }
 
@@ -31,20 +29,22 @@ export function cloneDeep(entity: Record<string, any>, cache = new WeakMap()): o
 
   return Object.assign(
     result,
-    ...Object.keys(entity).map((key) => ({ [key]: cloneDeep(entity[key], cache) })),
+    ...Object.keys(entity).map((key) => ({
+      [key]: cloneDeep((entity as Record<string | number, unknown>)[key], cache),
+    })),
   );
 }
 
 /**
  * Creates a debounced function with delay (same as lodash.debounce).
  */
-export function createDebounce(func: Function, ms: number) {
+export function createDebounce(func: () => void, ms: number) {
   let timeout: ReturnType<typeof setTimeout>;
 
-  return function (...args: any) {
+  return function (...args: []) {
     clearTimeout(timeout);
     // @ts-expect-error - this implicitly has type any because it does not have a type annotation.
-    timeout = setTimeout(() => func.apply(this as any, args), ms);
+    timeout = setTimeout(() => func.apply(this as unknown, args), ms);
   };
 }
 

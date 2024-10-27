@@ -1,15 +1,111 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+interface WebTypes {
+  framework: string;
+  name: string;
+  version: string;
+  contributions: Contributions;
+}
 
-// todo: declare interface correctly
-type WebTypesItem = Record<string, string | number | object>;
+interface Contributions {
+  html: HtmlContributions;
+}
+
+interface HtmlContributions {
+  "description-markup": string;
+  "types-syntax": string;
+  tags: Tag[];
+}
+
+interface Tag {
+  name: string;
+  description?: string;
+  attributes?: Attribute[];
+  events?: Event[];
+  slots?: Slot[];
+  exposes?: Expose[];
+  source?: Source;
+}
+
+interface Attribute {
+  name: string;
+  required?: boolean;
+  description?: string;
+  value: AttributeValue;
+  default?: unknown;
+}
+
+interface AttributeValue {
+  kind: string;
+  type: string;
+}
+
+interface Event {
+  name: string;
+  description?: string;
+  properties?: EventProperty[];
+}
+
+interface EventProperty {
+  type: string[];
+  name: string;
+  description?: string;
+}
+
+interface Slot {
+  name: string;
+  description?: string;
+  scoped?: boolean;
+  bindings?: SlotBinding[];
+}
+
+interface SlotBinding {
+  type: string;
+  name: string;
+  description?: string;
+}
+
+interface Expose {
+  name: string;
+  description?: string;
+  properties: ExposeProperty[];
+}
+
+interface ExposeProperty {
+  type: string;
+  description?: string;
+}
+
+interface Source {
+  module: string;
+  symbol: string;
+}
+
+interface Types {
+  [key: string]: ArgType | undefined;
+}
+
+interface ArgType {
+  control?: "text" | "number" | "boolean" | "array" | "select" | false;
+  options?: string[];
+  table?: TableConfig;
+  name?: string;
+  description?: string;
+  type?: string | null;
+  action?: string;
+}
+
+interface TableConfig {
+  disable?: boolean;
+  defaultValue?: { summary: unknown };
+  category?: "slots" | "expose" | "Storybook Events";
+}
 
 /* Load Web-Types from the project root. */
-const [webTypes]: any = Object.values(
+const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/web-types.json", { eager: true, import: "default" }),
 );
 
 const getComponentData = (componentName: string) => {
-  return webTypes.contributions.html.tags.find((item: WebTypesItem) => item.name === componentName);
+  return webTypes.contributions.html.tags.find((item: Tag) => item.name === componentName);
 };
 
 export function getSlotNames(componentName: string) {
@@ -21,14 +117,14 @@ export function getArgTypes(componentName: string) {
 
   if (!component) return;
 
-  const types = {
+  const types: Partial<Types> = {
     // Hide default template arg in docs.
     defaultTemplate: { table: { disable: true } },
     // Hide slot template arg in docs.
     slotTemplate: { table: { disable: true } },
   };
 
-  component.attributes?.forEach((attribute: WebTypes) => {
+  component.attributes?.forEach((attribute: Attribute) => {
     const type = attribute.value.type;
 
     if (type === "string" || type.includes("string")) {
@@ -80,7 +176,7 @@ export function getArgTypes(componentName: string) {
         };
       } else {
         types[attribute.name] = {
-          control: type.split("|")[0],
+          control: type.split("|")[0] as ArgType["control"],
           table: {
             defaultValue: { summary: attribute.default || "" },
           },
@@ -98,9 +194,9 @@ export function getArgTypes(componentName: string) {
   });
 
   component.slots?.forEach((slot) => {
-    const bindings = [];
+    const bindings: string[] = [];
 
-    slot.bindings?.forEach((binding) => {
+    slot.bindings?.forEach((binding: SlotBinding) => {
       if (binding.name === "name") return;
 
       const description = binding.description ? ` (${binding.description})` : "";
@@ -127,9 +223,9 @@ export function getArgTypes(componentName: string) {
   });
 
   component.exposes?.forEach((expose) => {
-    const properties = [];
+    const properties: string[] = [];
 
-    expose.properties?.forEach((property) => {
+    expose.properties?.forEach((property: ExposeProperty) => {
       const description = property.description ? ` (${property.description})` : "";
 
       properties.push(`${property.type}${description}`);
@@ -154,9 +250,9 @@ export function getArgTypes(componentName: string) {
   });
 
   component.events?.forEach((event) => {
-    const properties = [];
+    const properties: string[] = [];
 
-    event.properties?.forEach((property) => {
+    event.properties?.forEach((property: EventProperty) => {
       const description = property.description ? ` (${property.description})` : "";
 
       properties.push(`${property.name}: ${property.type}${description}`);

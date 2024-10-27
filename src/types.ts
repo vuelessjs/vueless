@@ -1,9 +1,12 @@
 import { hasSlotContent } from "./composablesTs/useUI";
 
+// TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config";
 import UButtonDefaultConfig from "./ui.button/config";
 
-export interface ThemeVuelessConfig {
+import type { ComputedRef } from "vue";
+
+export interface ThemeConfig {
   /**
    * Components brand (primary) color.
    */
@@ -35,7 +38,7 @@ export interface ThemeVuelessConfig {
   darkMode?: boolean;
 }
 
-export interface VuelessConfig extends ThemeVuelessConfig {
+export interface Config extends ThemeConfig {
   /**
    * Component classes merge behavior.
    * – merge (default) – smartly merge provided custom classes with default config classes.
@@ -47,17 +50,18 @@ export interface VuelessConfig extends ThemeVuelessConfig {
   /**
    * Component configs.
    */
-  component?: Partial<VuelessComponents>;
+  component?: Partial<Components>;
 
   /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts.
    */
-  tailwindMerge?: object;
+  tailwindMerge?: UnknownObject;
 }
 
-export type VuelessComponentNames = keyof VuelessComponents | undefined; // keys union
+export type UnknownObject = Record<string, unknown>;
+export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
 export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
 export type BrandColors =
@@ -80,43 +84,71 @@ export type BrandColors =
   | "pink"
   | "rose";
 
-export interface VuelessComponents {
+export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
 }
 
-export interface VuelessCommonComponent {
-  i18n?: object;
-  defaults?: object;
+export interface Component {
+  i18n?: UnknownObject;
+  defaults?: UnknownObject;
+  safelist?: () => TailwindSafelist[];
   strategy?: Strategies;
-  safelist?: object;
-  component?: string;
-  transition?: object;
+  transition?: Transition;
   safelistColors?: BrandColors;
-  [key: string]: object | string | undefined;
+  [key: string]: (CVA & NestedComponent) | object | string | undefined;
 }
 
-export interface VuelessCVA {
+export interface NestedComponent {
+  component: string;
+  [key: string]: Record<string, string | object> | string;
+}
+
+export interface Transition {
+  enterFromClass?: string;
+  enterActiveClass?: string;
+  enterToClass?: string;
+  leaveFromClass?: string;
+  leaveActiveClass?: string;
+  leaveToClass?: string;
+}
+
+export interface CVA {
   base?: string;
-  variants?: Record<string, string | object>;
-  compoundVariants?: VuelessCVACompoundVariants[];
-  defaultVariants?: Record<string, string | number | boolean | object>;
+  variants?: UnknownObject;
+  compoundVariants?: CVACompoundVariants[] & never[];
+  defaultVariants?: UnknownObject;
 }
 
-export interface VuelessCVACompoundVariants {
+export interface CVACompoundVariants {
   class: string;
-  [key: string]: string;
+  [key: string]: string | number | undefined | null;
 }
 
 export interface VueAttrs {
   id?: string;
   class?: string;
+  value?: string;
 }
 
-export type VuelessAttrs = {
-  hasSlotContent: typeof hasSlotContent;
-  [key: string]: object;
-};
+export interface UseAttrs {
+  hasSlotContent?: typeof hasSlotContent;
+  [key: string]: object | undefined;
+}
+
+export interface KeyAttrs extends VueAttrs {
+  "vl-component"?: string | null;
+  "vl-key"?: string | null;
+  "vl-child-component"?: string | null;
+  "vl-child-key"?: string | null;
+  config?: UnknownObject;
+  [key: string]: string | UnknownObject | undefined | null;
+}
+
+export interface KeysToExtend {
+  base?: ComputedRef;
+  extend?: ComputedRef;
+}
 
 export interface CreateVuelessOptions {
   i18n?: Record<string, string | object>;

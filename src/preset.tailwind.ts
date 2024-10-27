@@ -1,5 +1,6 @@
 import forms from "@tailwindcss/forms";
 import colors from "tailwindcss/colors.js";
+import { fullTailwindConfig } from "./utilsTs/utilTailwind";
 import {
   COLOR_SHADES,
   BRAND_COLOR,
@@ -9,17 +10,15 @@ import {
   DEFAULT_ROUNDING,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
+  DEFAULT_BRAND_COLOR,
+  DEFAULT_GRAY_COLOR,
 } from "./constants.js";
 
-import type {
-  BrandColors,
-  GrayColors,
-  TailwindColorShades,
-  TailwindSafelist,
-  VuelessCssVariables,
-} from "./types";
+import type { BrandColors, GrayColors, TailwindColorShades, TailwindSafelist } from "./types";
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
+const brandColor = (process.env.VUELESS_BRAND as BrandColors) || DEFAULT_BRAND_COLOR;
+const grayColor = (process.env.VUELESS_GRAY as GrayColors) || DEFAULT_GRAY_COLOR;
 
 /**
  * Vueless Tailwind CSS `content` config.
@@ -89,10 +88,6 @@ export const vuelessTailwindConfig = {
       ringOffsetWidth: {
         dynamic: "var(--vl-ring-offset)",
       },
-      // TODO: Add this feature
-      // ringOffsetColor: {
-      //   dynamic: "var(--vl-ring-offset-color)",
-      // },
       borderRadius: {
         dynamic: "var(--vl-rounding)",
       },
@@ -103,8 +98,8 @@ export const vuelessTailwindConfig = {
         "var(--vl-ring)": DEFAULT_RING,
         "var(--vl-ring-offset)": DEFAULT_RING_OFFSET,
         "var(--vl-rounding)": DEFAULT_ROUNDING,
-        ...getReplacementColors(GRAY_COLOR, GRAY_COLOR),
-        ...getReplacementColors(BRAND_COLOR, GRAY_COLOR),
+        ...getReplacementColors(GRAY_COLOR, grayColor),
+        ...getReplacementColors(BRAND_COLOR, brandColor),
       },
     },
   },
@@ -159,8 +154,9 @@ function getPalette(color: string) {
  * Prepare a color object for theme replacement to fix missing css color variables in `tailwind-config-viewer`.
  */
 function getReplacementColors(color: "gray" | "brand", tailwindColor: GrayColors | BrandColors) {
+  const colors = fullTailwindConfig.theme.colors;
+
   const varsPalette = {
-    // TODO: Use full config color instead of colors to be able to use custom colors
     [twColorWithOpacity(`--vl-color-${color}-default`)]: colors[tailwindColor][600],
   };
 

@@ -1,8 +1,9 @@
 import useUI from "../composablesTs/useUI";
 
 import defaultConfig from "./config";
+
+import type { UseAttrs } from "../types";
 import type { UTextProps } from "./types";
-import type { VuelessAttrs } from "../types";
 
 export default function useAttrs(props: UTextProps) {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
@@ -13,5 +14,5 @@ export default function useAttrs(props: UTextProps) {
     config,
     ...keysAttrs,
     hasSlotContent,
-  } as VuelessAttrs;
+  } as UseAttrs;
 }

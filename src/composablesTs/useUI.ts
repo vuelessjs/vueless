@@ -11,8 +11,6 @@ import {
   computed,
 } from "vue";
 
-import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
-
 import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI";
 import { cloneDeep, isCSR } from "../utilsTs/utilHelper";
 import {
@@ -21,7 +19,37 @@ import {
   SYSTEM_CONFIG_KEY,
   NESTED_COMPONENT_REG_EXP,
 } from "../constants.js";
-import type { VueAttrs, VuelessCommonComponent, VuelessComponentNames, VuelessCVA } from "../types";
+
+import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
+import type {
+  BrandColors,
+  Strategies,
+  UnknownObject,
+  VueAttrs,
+  Component,
+  NestedComponent,
+  ComponentNames,
+  CVA,
+  KeyAttrs,
+  KeysToExtend,
+  CVACompoundVariants,
+} from "../types";
+
+interface GetMergedConfig {
+  defaultConfig: Component;
+  globalConfig: Component;
+  propsConfig?: Component;
+  vuelessStrategy?: Strategies;
+}
+
+interface MergeConfigs {
+  defaultConfig: Component & CVA;
+  globalConfig: Component & CVA;
+  propsConfig?: Component & CVA;
+  config?: Component & CVA;
+  isReplace?: boolean;
+  isVariants?: boolean;
+}
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -31,21 +59,27 @@ import type { VueAttrs, VuelessCommonComponent, VuelessComponentNames, VuelessCV
  * 4. Component classes (class="...")
  */
 export default function useUI(
-  defaultConfig?: VuelessCommonComponent,
-  propsConfigGetter?: () => typeof defaultConfig,
+  defaultConfig: Component,
+  propsConfigGetter?: () => typeof defaultConfig | undefined,
   topLevelClassKey?: string,
 ) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
-  const componentName = type.__name as VuelessComponentNames;
-  const globalConfig =
-    vuelessConfig.component && componentName ? vuelessConfig.component[componentName] : {};
+  const componentName = type.__name as ComponentNames;
+  let globalConfig = {};
+
+  if (vuelessConfig.component && componentName) {
+    globalConfig = vuelessConfig.component[componentName] as UnknownObject as Component;
+  }
 
   const isStrategyValid =
     vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
-  const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
+
+  const vuelessStrategy = isStrategyValid
+    ? (vuelessConfig.strategy as Strategies)
+    : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({});
+  const config = ref({} as Component);
   const attrs = useAttrs();
 
   watchEffect(() => {
@@ -64,17 +98,18 @@ export default function useUI(
   /**
    * Get classes by given key (including CVA if config set).
    */
-  function getClasses(key: string, mutatedProps: object): ComputedRef | string {
+  function getClasses(key: string, mutatedProps: UnknownObject) {
     return computed(() => {
-      const color = toValue(mutatedProps)?.color || props.color;
+      const color = (toValue(mutatedProps)?.color as BrandColors) || props?.color;
+      const value = config.value[key] as CVA & NestedComponent;
 
-      let value: VuelessCVA | string = config.value[key];
+      let classes = "";
 
       if (isCVA(value)) {
-        value = cva(value)({
+        classes = cva(value)({
           ...props,
           ...toValue(mutatedProps),
-          color: color ? getColor(color) : null,
+          ...(color ? { color: getColor(color) } : {}),
         });
       } else if (value.component) {
         // If the value of the key contains keys related to the nested component, it should be skipped.
@@ -82,7 +117,7 @@ export default function useUI(
         return "";
       }
 
-      return color ? setColor(value, color) : value;
+      return color ? setColor(classes, color) : value;
     });
   }
 
@@ -90,12 +125,9 @@ export default function useUI(
    * Get an object where:
    * – key: extendingKey
    * – value: reactive string of extendingKey classes.
-   * @param {Array} extendingKeys
-   * @param {Object} mutatedProps
-   * @returns {Object}
    */
-  function getExtendingKeysClasses(extendingKeys, mutatedProps = {}) {
-    const extendingClasses = {};
+  function getExtendingKeysClasses(extendingKeys: string[], mutatedProps = {}) {
+    const extendingClasses: UnknownObject = {};
 
     for (const key of extendingKeys) {
       extendingClasses[key] = getClasses(key, mutatedProps);
@@ -108,14 +140,14 @@ export default function useUI(
    * Get an object where:
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
-   * @param mutatedProps
-   * @param extendingKeys
-   * @param keysToExtendConfig
-   * @returns {Object}
    */
-  function getKeysAttrs(mutatedProps = {}, extendingKeys = [], keysToExtendConfig = {}) {
+  function getKeysAttrs(
+    mutatedProps = {},
+    extendingKeys: string[] = [],
+    keysToExtendConfig: Record<string, KeysToExtend> = {},
+  ) {
     const keysToExtend = Object.keys(keysToExtendConfig);
-    const keysAttrs = {};
+    const keysAttrs: UnknownObject = {};
 
     for (const key in defaultConfig) {
       if (isSystemKey(key) || extendingKeys.includes(key)) continue;
@@ -124,7 +156,7 @@ export default function useUI(
 
       if (keysToExtend.includes(key)) {
         const { base, extend } = keysToExtendConfig[key];
-        const keyAttrs = keysAttrs[`${key}Attrs`];
+        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
 
         keysAttrs[`${key}Attrs`] = computed(() => ({
           ...keyAttrs.value,
@@ -143,18 +175,18 @@ export default function useUI(
   /**
    * Get an element attributes for a given key.
    */
-  function getAttrs(configKey: string, classes: object) {
-    const nestedComponent = getNestedComponent(defaultConfig[configKey]);
+  function getAttrs(configKey: string, classes: ComputedRef) {
+    const nestedComponent = getNestedComponent(defaultConfig[configKey] || "");
 
     const attrs = useAttrs();
     const isDev = isCSR && import.meta.env?.DEV;
     const vuelessAttrs = ref({});
     const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
-    const commonAttrs = {
+    const commonAttrs: KeyAttrs = {
       ...(isTopLevelKey ? attrs : {}),
-      "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
-      "vl-key": isDev ? attrs["vl-config-key"] || configKey || null : null,
+      "vl-component": isDev ? (attrs["vl-component"] as string) || componentName || null : null,
+      "vl-key": isDev ? (attrs["vl-config-key"] as string) || configKey || null : null,
       "vl-child-component":
         isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
       "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
@@ -171,12 +203,12 @@ export default function useUI(
     }
 
     function updateVuelessAttrs() {
-      const configKeyValue = config.value[configKey];
+      const configKeyValue = config.value[configKey] as Component | string;
       const isObject = typeof configKeyValue === "object";
 
       const configAttrs = {
         config: configKeyValue,
-        ...configKeyValue?.defaults,
+        ...(isObject ? configKeyValue.defaults : {}),
       };
 
       const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
@@ -207,22 +239,16 @@ export default function useUI(
 
 /**
  * Get merged config based on config merging strategy.
- * @param {Object} defaultConfig
- * @param {Object} globalConfig
- * @param {Object} propsConfig
- * @param {string} vuelessStrategy - vueless top level merge strategy.
- *
- * @returns {Object}
  */
 function getMergedConfig({
   defaultConfig,
   globalConfig,
   propsConfig,
   vuelessStrategy,
-}): Record<string, object | string> {
-  defaultConfig = cloneDeep(defaultConfig);
+}: GetMergedConfig) {
+  defaultConfig = cloneDeep(defaultConfig) as Component;
 
-  let mergedConfig = {};
+  let mergedConfig: Component = {};
   const strategy =
     !globalConfig && !propsConfig
       ? STRATEGY_TYPE.merge
@@ -248,14 +274,9 @@ function getMergedConfig({
 
 /**
  * Recursively merge config objects with removing tailwind classes duplicates.
- * @param {Object} defaultConfig
- * @param {Object} globalConfig
- * @param {Object} propsConfig
- * @param {Object} config - final merged config.
- * @param {boolean} isReplace - enables class replacement instead of merge.
- * @param {boolean} isVarinants - if true, prevents adding a "base" key into nested objects.
- *
- * @returns {Object}
+ * config - final merged config.
+ * isReplace - enables class replacement instead of merge.
+ * isVariants - if true, prevents adding a "base" key into nested objects.
  */
 function mergeConfigs({
   defaultConfig,
@@ -264,15 +285,15 @@ function mergeConfigs({
   config = {},
   isReplace = false,
   isVariants = false,
-}) {
-  globalConfig = cloneDeep(globalConfig || {});
-  propsConfig = cloneDeep(propsConfig || {});
+}: MergeConfigs) {
+  globalConfig = cloneDeep(globalConfig || {}) as Component;
+  propsConfig = cloneDeep(propsConfig || {}) as Component;
 
   const isGlobalConfig = Object.keys(globalConfig).length;
   const isPropsConfig = Object.keys(propsConfig).length;
 
   // Add unique keys from defaultConfig to composedConfig
-  const composedConfig = cloneDeep(defaultConfig);
+  const composedConfig = cloneDeep(defaultConfig) as Component & CVA;
 
   // Add unique keys from globalConfig to composedConfig
   for (const key in globalConfig) {
@@ -316,14 +337,17 @@ function mergeConfigs({
       } else if (key === strategy) {
         config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
       } else if (key === defaults || key === defaultVariants) {
-        config[key] = { ...defaultConfig[key], ...globalConfig[key], ...propsConfig[key] };
+        config[key] = {
+          ...(defaultConfig[key] as UnknownObject),
+          ...(globalConfig[key] as UnknownObject),
+          ...(propsConfig[key] as UnknownObject),
+        };
       } else if (key === compoundVariants) {
         config[key] = mergeCompoundVariants({
-          defaultConfig: composedConfig,
+          defaultConfig,
           globalConfig,
           propsConfig,
           isReplace,
-          key,
         });
       } else {
         const isObjectComposedConfig = typeof composedConfig[key] === "object";
@@ -362,89 +386,99 @@ function mergeConfigs({
 
 /**
  Turn simplified nested component config to regular config.
- @param {Object | String} value
- @param {Boolean} addBase
- @returns {Object}
  */
-function stringToObject(value, { addBase = false }) {
-  if (value === undefined) value = "";
+function stringToObject(
+  value: (CVA & Partial<NestedComponent>) | string | undefined,
+  { addBase = false },
+): CVA & Partial<NestedComponent> {
+  if (typeof value !== "object" && addBase) {
+    return { base: value || "" };
+  }
 
-  return typeof value !== "object" ? addBase && { base: value } : value;
+  return typeof value === "object" ? value : addBase ? { base: value || "" } : {};
+}
+
+interface MergeCompoundVariants {
+  defaultConfig: CVA;
+  globalConfig: CVA;
+  propsConfig: CVA;
+  isReplace?: boolean;
 }
 
 /**
  * Merge CVA compound variants arrays.
- * @param {Object} defaultConfig
- * @param {Object} globalConfig
- * @param {Object} propsConfig
- * @param {string} key
- * @param {boolean} isReplace - enables class replacement instead of merge.
- *
- * @returns {Array}
+ * isReplace - enables class replacement instead of merge.
  */
-function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, key, isReplace }) {
+function mergeCompoundVariants({
+  defaultConfig,
+  globalConfig,
+  propsConfig,
+  isReplace,
+}: MergeCompoundVariants) {
   if (
-    (globalConfig[key] && !Array.isArray(globalConfig[key])) ||
-    (propsConfig[key] && !Array.isArray(propsConfig[key])) ||
-    (defaultConfig[key] && !Array.isArray(defaultConfig[key]))
+    (globalConfig.compoundVariants && !Array.isArray(globalConfig.compoundVariants)) ||
+    (propsConfig.compoundVariants && !Array.isArray(propsConfig.compoundVariants)) ||
+    (defaultConfig.compoundVariants && !Array.isArray(defaultConfig.compoundVariants))
   ) {
     // eslint-disable-next-line no-console
     console.error("CompoundVariants should be an array.");
   }
 
-  const globalConfigUniqueItems = cloneDeep(globalConfig[key] || []);
-  const propsConfigUniqueItems = cloneDeep(propsConfig[key] || []);
+  const globalConfigUniqueItems = cloneDeep(
+    globalConfig.compoundVariants || [],
+  ) as CVACompoundVariants[];
+  const propsConfigUniqueItems = cloneDeep(
+    propsConfig.compoundVariants || [],
+  ) as CVACompoundVariants[];
 
-  const config = defaultConfig[key].map((defaultConfigItem) => {
-    /**
-     * Compare two objects by keys for match.
-     * @param {Object} configItem
-     * @returns {Boolean}
-     */
-    function isSameItem(configItem) {
-      const hasConfigItemKeys = Object.keys(defaultConfigItem)
-        .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
-        .every((item) => Boolean(item));
+  const config = (defaultConfig.compoundVariants as CVACompoundVariants[])?.map(
+    (defaultConfigItem) => {
+      /**
+       * Compare two objects by keys for match.
+       */
+      function isSameItem(configItem: UnknownObject) {
+        const hasConfigItemKeys = Object.keys(defaultConfigItem)
+          .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
+          .every((item) => Boolean(item));
 
-      const hasDefaultConfigItemKeys = Object.keys(configItem)
-        .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
-        .every((item) => Boolean(item));
+        const hasDefaultConfigItemKeys = Object.keys(configItem)
+          .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
+          .every((item) => Boolean(item));
 
-      return hasConfigItemKeys && hasDefaultConfigItemKeys;
-    }
-
-    /**
-     * Find the same compound variant item in custom config if exist.
-     * @param {Object} config
-     * @returns {Object|undefined}
-     */
-    function findItem(config = []) {
-      const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
-      const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
-
-      if (~globalConfigUniqueItemIndex) {
-        globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
+        return hasConfigItemKeys && hasDefaultConfigItemKeys;
       }
 
-      if (~propsConfigUniqueItemIndex) {
-        propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
-      }
+      /**
+       * Find the same compound variant item in custom config if exist.
+       */
+      function findItem(config = []): CVACompoundVariants | undefined {
+        const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
+        const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
 
-      return config.find(isSameItem);
-    }
-
-    const globalConfigItem = findItem(globalConfig[key]);
-    const propsConfigItem = findItem(propsConfig[key]);
-
-    return globalConfigItem || propsConfigItem
-      ? {
-          ...defaultConfigItem,
-          class: isReplace
-            ? propsConfigItem?.class || globalConfigItem?.class || defaultConfigItem.class
-            : cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
+        if (~globalConfigUniqueItemIndex) {
+          globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
         }
-      : defaultConfigItem;
-  });
+
+        if (~propsConfigUniqueItemIndex) {
+          propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
+        }
+
+        return config.find(isSameItem);
+      }
+
+      const globalConfigItem = findItem(globalConfig.compoundVariants);
+      const propsConfigItem = findItem(propsConfig.compoundVariants);
+
+      return globalConfigItem || propsConfigItem
+        ? {
+            ...defaultConfigItem,
+            class: isReplace
+              ? propsConfigItem?.class || globalConfigItem?.class || defaultConfigItem.class
+              : cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
+          }
+        : defaultConfigItem;
+    },
+  );
 
   return [...config, ...globalConfigUniqueItems, ...propsConfigUniqueItems];
 }
@@ -452,15 +486,11 @@ function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, key, 
 /**
  * Merge component classes from "class" attribute into final config.
  */
-function mergeClassesIntoConfig(
-  config: Record<string, object | string>,
-  topLevelClassKey: string,
-  attrs: VueAttrs,
-) {
-  const configTopKey: VuelessCVA | string = config[topLevelClassKey];
+function mergeClassesIntoConfig(config: Component, topLevelClassKey: string, attrs: VueAttrs) {
+  const configTopKey = config[topLevelClassKey];
 
   if (typeof configTopKey === "object") {
-    configTopKey.base = cx([configTopKey?.base, attrs.class]);
+    (configTopKey as CVA).base = cx([(configTopKey as CVA)?.base, attrs.class]);
 
     config[topLevelClassKey] = configTopKey;
   } else {
@@ -472,21 +502,18 @@ function mergeClassesIntoConfig(
 
 /**
  * Return base classes.
- * @param { String | Object } value
- * @returns { String }
  */
-function getBaseClasses(value) {
-  return typeof value === "object" ? value.base || "" : value || "";
+function getBaseClasses(value: string | CVA | NestedComponent) {
+  return typeof value === "object" ? (value.base as string) || "" : value || "";
 }
 
 /**
  * Check is config key contains component name and if contains return it.
- * @param { String | Object } value
- * @returns { String }
  */
-function getNestedComponent(value) {
+function getNestedComponent(value: string | NestedComponent | CVA) {
   const classes = getBaseClasses(value);
-  const component = value?.component || "";
+  const component = (value as NestedComponent)?.component as ComponentNames;
+
   const match =
     classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
 
@@ -495,10 +522,8 @@ function getNestedComponent(value) {
 
 /**
  * Check is config key not contains classes or CVA config object.
- * @param { String } key
- * @returns { Boolean }
  */
-function isSystemKey(key) {
+function isSystemKey(key: string): boolean {
   const isExactKey = Object.values(SYSTEM_CONFIG_KEY).some((value) => value === key);
 
   return isExactKey || key.toLowerCase().includes(SYSTEM_CONFIG_KEY.transition.toLowerCase());
@@ -506,10 +531,8 @@ function isSystemKey(key) {
 
 /**
  * Check is config contains default CVA keys.
- * @param { Object | String } config
- * @returns { Boolean }
  */
-function isCVA(config) {
+function isCVA(config: CVA | string): boolean {
   if (typeof config !== "object") return false;
 
   return Object.values(CVA_CONFIG_KEY).some((value) =>

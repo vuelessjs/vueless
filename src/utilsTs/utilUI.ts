@@ -9,14 +9,14 @@ import {
   NESTED_COMPONENT_REG_EXP,
 } from "../constants.js";
 
-import type { VuelessConfig, VuelessCommonComponent, VuelessComponentNames } from "../types";
+import type { BrandColors, Config, ComponentNames, Component } from "../types";
 
 /**
  * Load Vueless config from the project root.
  * Both for server and client side renderings.
  * IIFE for SSR is used to prevent top level await issue.
  */
-export let vuelessConfig: VuelessConfig = {};
+export let vuelessConfig: Config = {};
 
 if (isSSR) {
   /* Load Vueless config from the project root in IIFE (no top-level await). */
@@ -94,13 +94,15 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 /**
  * Return default values for component props, icons, etc..
  */
-export function getDefault(defaultConfig: VuelessCommonComponent, name: VuelessComponentNames) {
+export function getDefault(defaultConfig: Component, name: ComponentNames) {
   const defaults = merge(
     cloneDeep(defaultConfig.defaults),
     vuelessConfig.component ? vuelessConfig.component[name]?.defaults : {},
-  );
+  ) as Component;
 
-  defaults.color = getColor(defaults.color);
+  if (defaults.color) {
+    defaults.color = getColor(defaults.color as BrandColors);
+  }
 
   return defaults;
 }
