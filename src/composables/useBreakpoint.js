@@ -59,7 +59,7 @@ export default function useBreakpoint() {
   onBeforeUnmount(() => {
     if (isSSR) return;
 
-    window.removeEventListener("resize", resizeListener, { passive: true });
+    window.removeEventListener("resize", resizeListener);
   });
 
   watch(windowWidth, setBreakpoint, { immediate: true });

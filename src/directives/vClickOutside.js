@@ -23,8 +23,8 @@ function clickOutside(target, handler, options) {
   window.addEventListener("pointerdown", onClick, { passive: true });
 
   function removeEvents() {
-    window.removeEventListener("click", onClick, { capture, passive: true });
-    window.removeEventListener("pointerdown", onClick, { passive: true });
+    window.removeEventListener("click", onClick, capture);
+    window.removeEventListener("pointerdown", onClick);
   }
 
   return removeEvents;
