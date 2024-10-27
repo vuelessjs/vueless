@@ -1,5 +1,14 @@
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <ULabel
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    :data-test="dataTest"
+    v-bind="labelAttrs"
+  >
     <UButton
       variant="thirdary"
       size="sm"
@@ -22,7 +31,6 @@
 
     <div v-bind="numberAttrs">
       <div v-bind="valueAttrs" v-text="count" />
-      <div v-bind="labelAttrs" v-text="label" />
     </div>
 
     <UButton
@@ -44,7 +52,7 @@
         v-bind="addIconAttrs"
       />
     </UButton>
-  </div>
+  </ULabel>
 </template>
 
 <script setup>
@@ -52,6 +60,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/utilUI.js";
 
 import defaultConfig from "./config.js";
@@ -74,7 +83,7 @@ const props = defineProps({
    */
   step: {
     type: Number,
-    default: 1,
+    default: getDefault(defaultConfig, UInputNumber).step,
   },
 
   /**
@@ -82,7 +91,7 @@ const props = defineProps({
    */
   min: {
     type: Number,
-    default: 1,
+    default: getDefault(defaultConfig, UInputNumber).min,
   },
 
   /**
@@ -90,7 +99,7 @@ const props = defineProps({
    */
   max: {
     type: Number,
-    default: 999,
+    default: getDefault(defaultConfig, UInputNumber).max,
   },
 
   /**
@@ -176,7 +185,6 @@ const {
   removeIconAttrs,
   addButtonAttrs,
   addIconAttrs,
-  wrapperAttrs,
   numberAttrs,
 } = useAttrs(props);
 

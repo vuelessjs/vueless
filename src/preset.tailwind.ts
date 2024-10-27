@@ -10,6 +10,7 @@ import {
   DEFAULT_ROUNDING,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
+  DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
 } from "./constants.js";
@@ -88,6 +89,9 @@ export const vuelessTailwindConfig = {
       ringOffsetWidth: {
         dynamic: "var(--vl-ring-offset)",
       },
+      ringOffsetColor: {
+        dynamic: "var(--vl-ring-offset-color)",
+      },
       borderRadius: {
         dynamic: "var(--vl-rounding)",
       },
@@ -97,6 +101,7 @@ export const vuelessTailwindConfig = {
         // TODO: Set colors from vueless.config.{js|ts} if it present.
         "var(--vl-ring)": DEFAULT_RING,
         "var(--vl-ring-offset)": DEFAULT_RING_OFFSET,
+        "var(--vl-ring-offset-color)": DEFAULT_RING_OFFSET_COLOR_LIGHT,
         "var(--vl-rounding)": DEFAULT_ROUNDING,
         ...getReplacementColors(GRAY_COLOR, grayColor),
         ...getReplacementColors(BRAND_COLOR, brandColor),

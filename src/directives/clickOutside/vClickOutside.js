@@ -10,6 +10,7 @@ function clickOutside(target, handler, options) {
     if (
       !el ||
       el === event.target ||
+      event.composedPath().some((pathEl) => ignoreList.includes(pathEl)) ||
       event.composedPath().includes(el) ||
       ignoreList.includes(event.target)
     ) {
@@ -32,6 +33,20 @@ function clickOutside(target, handler, options) {
 
 export default {
   mounted(el, binding) {
+    const capture = !binding.modifiers.bubble;
+
+    if (typeof binding.value === "function") {
+      el._clickOutsideRemove = clickOutside(el, binding.value, { capture });
+    } else {
+      const [handler, options] = binding.value;
+
+      el._clickOutsideRemove = clickOutside(el, handler, Object.assign({ capture }, options));
+    }
+  },
+
+  updated(el, binding) {
+    el._clickOutsideRemove();
+
     const capture = !binding.modifiers.bubble;
 
     if (typeof binding.value === "function") {

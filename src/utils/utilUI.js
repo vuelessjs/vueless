@@ -55,6 +55,7 @@ const twMerge = extendTailwindMerge(
         classGroups: {
           "ring-w": [{ ring: ["dynamic"] }],
           "ring-offset-w": [{ "ring-offset": ["dynamic"] }],
+          "ring-offset-color": [{ "ring-offset": ["dynamic"] }],
           "font-size": [{ text: ["2xs"] }],
           rounded: [{ rounded: ["dynamic"] }],
         },

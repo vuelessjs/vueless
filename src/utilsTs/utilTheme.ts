@@ -9,6 +9,8 @@ import {
   DEFAULT_ROUNDING,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
+  DEFAULT_RING_OFFSET_COLOR_LIGHT,
+  DEFAULT_RING_OFFSET_COLOR_DARK,
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
@@ -34,11 +36,22 @@ export function themeInit() {
 
 export function setTheme(config: InternalThemeConfig = {}) {
   const isDarkMode = setDarkMode(config);
-  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
-  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   let brand: BrandColors | GrayColors = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
   const gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+
+  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
+
+  const defaultRingOffsetColorDark =
+    config?.ringOffsetColorDark ??
+    vuelessConfig.ringOffsetColorDark ??
+    DEFAULT_RING_OFFSET_COLOR_DARK;
+
+  const defaultRingOffsetColorLight =
+    config?.ringOffsetColorLight ??
+    vuelessConfig.ringOffsetColorLight ??
+    DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
   const colors = fullTailwindConfig.theme.colors;
   const isBrandColor = BRAND_COLORS.some((color) => color === brand);
@@ -56,15 +69,19 @@ export function setTheme(config: InternalThemeConfig = {}) {
 
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
+  const defaultRingOffsetColor = isDarkMode
+    ? defaultRingOffsetColorDark
+    : defaultRingOffsetColorLight;
 
   if (brand === GRAYSCALE_COLOR) {
     brand = gray;
   }
 
   const variables: Partial<VuelessCssVariables> = {
+    "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
-    "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
+    "--vl-ring-offset-color": `rgb(${convertHexInRgb(defaultRingOffsetColor)})`,
     "--vl-color-gray-default": convertHexInRgb(colors[gray][defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand][defaultGrayShade]),
   };
