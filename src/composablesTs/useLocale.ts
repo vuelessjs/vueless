@@ -3,7 +3,7 @@ import createVuelessAdapter from "../adatper.locale/vueless.js";
 
 export const LocaleSymbol = Symbol.for("vueless:locale");
 
-function isLocaleInstance(obj) {
+function isLocaleInstance(obj): boolean {
   return obj.name !== null;
 }
 

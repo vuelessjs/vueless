@@ -1,6 +1,8 @@
 import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
 import { isSSR } from "../utils/utilHelper.js";
 
+import type { Ref } from "vue";
+
 const BREAKPOINT_NAME = {
   xs: "xs",
   sm: "sm",
@@ -23,9 +25,9 @@ const mobileDevices = ["xs", "sm"];
 const portableDevices = ["xs", "sm", "md"];
 
 export default function useBreakpoint() {
-  let timeout;
+  let timeout: number;
 
-  const windowWidth = ref(undefined);
+  const windowWidth: Ref<number | undefined> = ref(undefined);
   const currentBreakpoint = ref(BREAKPOINT_NAME.xs);
 
   const isMobileBreakpoint = computed(() => {
@@ -59,7 +61,7 @@ export default function useBreakpoint() {
   onBeforeUnmount(() => {
     if (isSSR) return;
 
-    window.removeEventListener("resize", resizeListener, { passive: true });
+    window.removeEventListener("resize", resizeListener);
   });
 
   watch(windowWidth, setBreakpoint, { immediate: true });
@@ -76,12 +78,12 @@ export default function useBreakpoint() {
     });
   }
 
-  function setBreakpoint(newWindowWidth) {
+  function setBreakpoint(newWindowWidth: number | undefined) {
     if (newWindowWidth === undefined) return;
 
     currentBreakpoint.value = "xs";
 
-    if (newWindowWidth >= BREAKPOINT.sm && newWindowWidth < BREAKPOINT.smd) {
+    if (newWindowWidth >= BREAKPOINT.sm && newWindowWidth < BREAKPOINT.md) {
       currentBreakpoint.value = "sm";
     } else if (newWindowWidth >= BREAKPOINT.md && newWindowWidth < BREAKPOINT.lg) {
       currentBreakpoint.value = "md";

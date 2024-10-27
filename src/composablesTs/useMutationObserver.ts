@@ -1,9 +1,11 @@
 import { onBeforeUnmount, onMounted, toValue, watch } from "vue";
 import { isSSR } from "../utils/utilHelper.js";
 
+import type { Ref } from "vue";
+
 export function useMutationObserver(
-  target,
-  callBack,
+  target: Ref<HTMLElement | null>,
+  callBack: () => void,
   config = { childList: true, attributes: true, characterData: true },
 ) {
   if (isSSR) return;

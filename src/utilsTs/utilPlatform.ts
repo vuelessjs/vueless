@@ -1,18 +1,18 @@
 import { isCSR } from "./utilHelper";
 
-const isWindows = isCSR && checkIsWindows();
-const isMac = isCSR && checkIsMac();
-const isPWA = isCSR && checkIsPWA();
-const isIOS = isCSR && checkIsIOS();
-const isAndroid = isCSR && checkIsAndroid();
-const isMobileApp = isPWA || isIOS || isAndroid;
-
 interface ModernNavigator extends Navigator {
   standalone: string;
   userAgentData: {
     platform: string;
   };
 }
+
+const isWindows = isCSR && checkIsWindows();
+const isMac = isCSR && checkIsMac();
+const isPWA = isCSR && checkIsPWA();
+const isIOS = isCSR && checkIsIOS();
+const isAndroid = isCSR && checkIsAndroid();
+const isMobileApp = isPWA || isIOS || isAndroid;
 
 function checkIsWindows() {
   return getPlatform().toUpperCase().indexOf("WINDOWS") >= 0;
