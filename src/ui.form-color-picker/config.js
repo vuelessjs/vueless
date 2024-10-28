@@ -49,11 +49,4 @@ export default /*tw*/ {
     /* icons */
     unselectedIcon: "close",
   },
-  safelist: (colors) => [
-    { pattern: `bg-(${colors})-400`, variants: ["disabled"] },
-    { pattern: `bg-(${colors})-600` },
-    { pattern: `bg-(${colors})-800`, variants: ["active"] },
-    { pattern: `border-(${colors})-400`, variants: ["disabled"] },
-    { pattern: `border-(${colors})-600`, variants: ["hover"] },
-  ],
 };

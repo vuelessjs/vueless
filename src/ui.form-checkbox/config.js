@@ -51,13 +51,4 @@ export default /*tw*/ {
     partiallyCheckedIcon: "remove",
     checkedIcon: "check",
   },
-  safelist: (colors) => [
-    { pattern: `bg-(${colors})-600` },
-    { pattern: `bg-(${colors})-700`, variants: ["hover"] },
-    { pattern: `bg-(${colors})-800`, variants: ["active"] },
-    { pattern: `border-(${colors})-500`, variants: ["focus"] },
-    { pattern: `border-(${colors})-800`, variants: ["active"] },
-    { pattern: `text-(${colors})-600`, variants: ["checked"] },
-    { pattern: `ring-(${colors})-700`, variants: ["focus"] },
-  ],
 };

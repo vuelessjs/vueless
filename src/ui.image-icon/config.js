@@ -40,9 +40,4 @@ export default /*tw*/ {
     style: "outlined",
     weight: 500,
   },
-  safelist: (colors) => [
-    { pattern: `text-(${colors})-400` },
-    { pattern: `text-(${colors})-600` },
-    { pattern: `text-(${colors})-800` },
-  ],
 };
