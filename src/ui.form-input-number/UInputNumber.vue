@@ -6,8 +6,9 @@
     :error="error"
     :size="size"
     :align="labelAlign"
-    :data-test="dataTest"
+    centred
     v-bind="labelAttrs"
+    :data-test="dataTest"
   >
     <UButton
       variant="thirdary"
@@ -17,6 +18,7 @@
       round
       :disabled="isRemoveButtonDisabled || disabled"
       v-bind="removeButtonAttrs"
+      :data-test="`${dataTest}-remove`"
       @click="onClickRemove"
     >
       <UIcon
@@ -24,7 +26,6 @@
         :size="size"
         :name="config.defaults.removeIcon"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
-        :data-test="`${dataTest}-remove`"
         v-bind="removeIconAttrs"
       />
     </UButton>
@@ -41,6 +42,7 @@
       round
       :disabled="isAddButtonDisabled || disabled"
       v-bind="addButtonAttrs"
+      :data-test="`${dataTest}-add`"
       @click="onClickAdd"
     >
       <UIcon
@@ -48,7 +50,6 @@
         :size="size"
         :name="config.defaults.addIcon"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
-        :data-test="`${dataTest}-add`"
         v-bind="addIconAttrs"
       />
     </UButton>
