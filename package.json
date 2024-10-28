@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.475",
+  "version": "0.0.476-0",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -34,7 +34,7 @@
     "ts:check": "vue-tsc --build --force --noEmit",
     "ts:build": "vue-tsc --build --force --declaration --emitDeclarationOnly",
     "release:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
-    "release:beta": "release-it patch --ci --npm.publish --npm.tag=beta",
+    "release:beta": "release-it prepatch --ci --npm.publish --preRelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
