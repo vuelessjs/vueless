@@ -16,8 +16,8 @@ export function separatedMoney(
   thousandsSeparator = " ",
 ) {
   const options = {
-    minimumFractionDigits: minFractionDigits,
-    maximumFractionDigits: maxFractionDigits,
+    minimumFractionDigits: Number(minFractionDigits),
+    maximumFractionDigits: Number(maxFractionDigits),
   };
 
   const formattedMoney =
