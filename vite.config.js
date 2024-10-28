@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 
-// Plugins
+/// Plugins
 import Vue from "@vitejs/plugin-vue";
 import Eslint from "vite-plugin-eslint";
 import { Vueless } from "@vueless/plugin-vite";
