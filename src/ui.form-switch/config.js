@@ -79,10 +79,4 @@ export default /*tw*/ {
     onIcon: "check",
     offIcon: "close",
   },
-  safelist: (colors) => [
-    { pattern: `ring-(${colors})-700` },
-    { pattern: `bg-(${colors})-600` },
-    { pattern: `bg-(${colors})-700`, variants: ["hover"] },
-    { pattern: `bg-(${colors})-800`, variants: ["active"] },
-  ],
 };

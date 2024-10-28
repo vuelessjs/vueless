@@ -61,7 +61,6 @@ export const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
   defaults: "defaults",
   strategy: "strategy",
-  safelist: "safelist",
   component: "component",
   transition: "transition",
   safelistColors: "safelistColors",

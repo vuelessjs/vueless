@@ -54,11 +54,4 @@ export default /*tw*/ {
     /* icons */
     closeIcon: "close",
   },
-  safelist: (colors) => [
-    { pattern: `bg-(${colors})-50` },
-    { pattern: `bg-(${colors})-600` },
-    { pattern: `text-(${colors})-600` },
-    { pattern: `border-(${colors})-100` },
-    { pattern: `border-(${colors})-600` },
-  ],
 };

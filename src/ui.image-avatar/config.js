@@ -43,9 +43,4 @@ export default /*tw*/ {
     /* icons */
     placeholderIcon: "image",
   },
-  safelist: (colors) => [
-    { pattern: `bg-(${colors})-100` },
-    { pattern: `text-(${colors})-600` },
-    { pattern: `border-(${colors})-200` },
-  ],
 };
