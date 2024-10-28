@@ -40,5 +40,4 @@ export default /*tw*/ {
     /* icons */
     dropdownIcon: "keyboard_arrow_down",
   },
-  safelist: (colors) => [{ pattern: `ring-(${colors})-700` }],
 };

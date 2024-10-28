@@ -19,5 +19,4 @@ export default /*tw*/ {
     color: "brand",
     size: "md",
   },
-  safelist: (colors) => [{ pattern: `bg-(${colors})-600` }],
 };
