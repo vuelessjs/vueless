@@ -23,16 +23,14 @@
     </slot>
 
     <slot name="right" :file="{ elementId, label, url, imageUrl }">
-      <UButton
+      <UIcon
         v-if="removable"
-        round
-        filled
-        square
-        no-ring
-        variant="thirdary"
-        :size="removeButtonSize"
-        :icon="config.defaults.removeIcon"
-        v-bind="removeButtonAttrs"
+        internal
+        interactive
+        color="gray"
+        :size="removeIconSize"
+        :name="config.defaults.removeIcon"
+        v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"
       />
@@ -141,20 +139,20 @@ const {
   fileIconAttrs,
   fileLabelAttrs,
   fileImageAttrs,
-  removeButtonAttrs,
+  removeIconAttrs,
 } = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
+    sm: "xs",
+    md: "sm",
+    lg: "md",
   };
 
   return sizes[props.size];
 });
 
-const removeButtonSize = computed(() => {
+const removeIconSize = computed(() => {
   const sizes = {
     sm: "2xs",
     md: "xs",
