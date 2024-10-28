@@ -85,6 +85,9 @@ export const vuelessTailwindConfig = {
       fontSize: {
         "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
       },
+      borderRadius: {
+        dynamic: "var(--vl-rounding)",
+      },
       ringWidth: {
         dynamic: "var(--vl-ring)",
       },
@@ -92,10 +95,7 @@ export const vuelessTailwindConfig = {
         dynamic: "var(--vl-ring-offset)",
       },
       ringOffsetColor: {
-        dynamic: "var(--vl-ring-offset-color)",
-      },
-      borderRadius: {
-        dynamic: "var(--vl-rounding)",
+        dynamic: twColorWithOpacity("--vl-ring-offset-color"),
       },
     },
     configViewer: {

@@ -81,7 +81,7 @@ export function setTheme(config: InternalThemeConfig = {}) {
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
-    "--vl-ring-offset-color": `rgb(${convertHexInRgb(defaultRingOffsetColor)})`,
+    "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
     "--vl-color-gray-default": convertHexInRgb(colors[gray][defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand][defaultGrayShade]),
   };
