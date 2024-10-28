@@ -1,5 +1,7 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
 
+import { ref } from "vue";
+
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -41,7 +43,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <UCol>
-      <URow>
+      <URow no-mobile>
         <UButton
           v-for="(option, index) in options"
           :key="index"
@@ -57,22 +59,27 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
 const ColorTemplate = (args, { argTypes } = {}) => ({
   components: { UButton, URow, UCol },
   setup() {
+    const variants = [...argTypes.variant.options, 'thirdary'];
     return {
       args,
-      variants: argTypes.variant.options,
+      variants,
       colors: argTypes.color.options,
+      shouldBeFilled: (variant, index) => {
+        return variant === 'thirdary' && index === variants.length - 1;
+      }
     };
   },
   template: `
     <UCol>
-      <URow v-for="(variant, index) in variants" :key="index">
+      <URow v-for="(variant, variantIndex) in variants" :key="variantIndex" no-mobile>
         <UButton
-          v-for="(color, index) in colors"
+          v-for="(color, colorIndex) in colors"
           v-bind="args"
           :variant="variant"
           :color="color"
           :label="color"
-          :key="index"
+          :key="colorIndex"
+          :filled="shouldBeFilled(variant, variantIndex)"
         />
       </URow>
     </UCol>
@@ -91,6 +98,37 @@ Sizes.args = { enum: "size" };
 export const Round = EnumVariantTemplate.bind({});
 Round.args = { enum: "variant", round: true };
 
+export const Loading = (args) => ({
+  components: { UButton, URow },
+  setup() {
+    const loading = ref(false);
+
+    function toggleLoading() {
+      loading.value = !loading.value;
+    }
+
+    return { args, toggleLoading, loading };
+  },
+  template: `
+    <URow no-mobile>
+      <UButton
+        label="Loader demo"
+        :loading="loading"
+        />
+      <UButton
+        label="Toggle loading"
+        variant="secondary"
+        color="green"
+        leftIcon="play_arrow"
+        @click="toggleLoading"
+        />
+    </URow>
+  `,
+});
+
+export const Block = DefaultTemplate.bind({});
+Block.args = { block: true };
+
 export const Disabled = EnumVariantTemplate.bind({});
 Disabled.args = { enum: "variant", disabled: true };
 
@@ -100,43 +138,60 @@ NoRing.args = { noRing: true };
 export const Colors = ColorTemplate.bind({});
 Colors.args = {};
 
-export const LeftIcon = DefaultTemplate.bind({});
-LeftIcon.args = { leftIcon: "star" };
+export const Square = DefaultTemplate.bind({});
+Square.args = { square: true, icon: "filter_list" };
 
-export const RightIcon = DefaultTemplate.bind({});
-RightIcon.args = { rightIcon: "star" };
-
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
-  slotTemplate: `
-    <template #default>
-      🤘🤘🤘
-    </template>
-  `,
-};
-
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="archive"
-        color="red"
-        size="sm"
+export const IconProps = (args) => ({
+  components: { UButton, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UButton
+        leftIcon="download"
+        label="Download"
       />
-    </template>
-  `,
-};
-
-export const RightSlot = DefaultTemplate.bind({});
-RightSlot.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon
-        name="archive"
-        color="red"
-        size="sm"
+      <UButton
+        rightIcon="menu"
+        label="Menu"
       />
-    </template>
+    </URow>
   `,
-};
+});
+
+export const Slots = (args) => ({
+  components: { UButton, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UButton v-bind="args" label="Add to favorite">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            color="green"
+            size="sm"
+          />
+        </template>
+      </UButton>
+
+      <UButton v-bind="args" square>
+        <template #default>
+          🤘🤘🤘
+        </template>
+      </UButton>
+
+      <UButton v-bind="args" label="Delete">
+        <template #right>
+          <UIcon
+            name="delete"
+            color="green"
+            size="sm"
+          />
+        </template>
+      </UButton>
+    </URow>
+  `,
+});
