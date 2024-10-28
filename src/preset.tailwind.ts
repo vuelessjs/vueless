@@ -1,6 +1,5 @@
 import forms from "@tailwindcss/forms";
 import colors from "tailwindcss/colors.js";
-import { fullTailwindConfig } from "./utilsTs/utilTailwind";
 import {
   COLOR_SHADES,
   BRAND_COLOR,
@@ -13,9 +12,12 @@ import {
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
+  GRAYSCALE_COLOR,
 } from "./constants.js";
 
 import type { BrandColors, GrayColors, TailwindColorShades, TailwindSafelist } from "./types";
+
+type TailwindColors = BrandColors | GrayColors | typeof GRAY_COLOR;
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
 const brandColor = (process.env.VUELESS_BRAND as BrandColors) || DEFAULT_BRAND_COLOR;
@@ -158,15 +160,19 @@ function getPalette(color: string) {
 /**
  * Prepare a color object for theme replacement to fix missing css color variables in `tailwind-config-viewer`.
  */
-function getReplacementColors(color: "gray" | "brand", tailwindColor: GrayColors | BrandColors) {
-  const colors = fullTailwindConfig.theme.colors;
+function getReplacementColors(color: "gray" | "brand", tailwindColor: TailwindColors) {
+  if (tailwindColor === GRAYSCALE_COLOR || tailwindColor === COOL_COLOR) {
+    tailwindColor = GRAY_COLOR;
+  }
 
   const varsPalette = {
     [twColorWithOpacity(`--vl-color-${color}-default`)]: colors[tailwindColor][600],
   };
 
   COLOR_SHADES.forEach((shade) => {
-    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = colors[tailwindColor][shade];
+    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = (colors as never)[
+      tailwindColor
+    ][shade];
   });
 
   return varsPalette;

@@ -515,7 +515,7 @@ function getNestedComponent(value: string | NestedComponent | CVA) {
   const component = (value as NestedComponent)?.component as ComponentNames;
 
   const match =
-    classes.match(NESTED_COMPONENT_REG_EXP) || component.match(NESTED_COMPONENT_REG_EXP);
+    classes.match(NESTED_COMPONENT_REG_EXP) || component?.match(NESTED_COMPONENT_REG_EXP);
 
   return match ? match[1] : "";
 }
