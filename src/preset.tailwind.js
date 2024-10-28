@@ -15,13 +15,9 @@ import {
   GRAYSCALE_COLOR,
 } from "./constants.js";
 
-import type { BrandColors, GrayColors, TailwindColorShades, TailwindSafelist } from "./types";
-
-type TailwindColors = BrandColors | GrayColors | typeof GRAY_COLOR;
-
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
-const brandColor = (process.env.VUELESS_BRAND as BrandColors) || DEFAULT_BRAND_COLOR;
-const grayColor = (process.env.VUELESS_GRAY as GrayColors) || DEFAULT_GRAY_COLOR;
+const brandColor = process.env.VUELESS_BRAND || DEFAULT_BRAND_COLOR;
+const grayColor = process.env.VUELESS_GRAY || DEFAULT_GRAY_COLOR;
 
 /**
  * Vueless Tailwind CSS `content` config.
@@ -114,6 +110,7 @@ export const vuelessTailwindConfig = {
 
 /**
  * Generates preset for TailwindCSS base on Vueless config.
+ * @returns {Object}
  */
 export function vuelessPreset() {
   return {
@@ -125,9 +122,10 @@ export function vuelessPreset() {
 
 /**
  * Convert sting patterns to RegExp.
+ * @returns {Array} - TailwindCSS safelist.
  */
 export function getSafelist() {
-  return JSON.parse(process.env.VUELESS_SAFELIST || "[]").map((rule: TailwindSafelist) => ({
+  return JSON.parse(process.env.VUELESS_SAFELIST || "[]").map((rule) => ({
     ...rule,
     pattern: new RegExp(rule.pattern),
   }));
@@ -135,23 +133,25 @@ export function getSafelist() {
 
 /**
  * Transform CSS variable with RGB numbers into CSS color.
+ * @param { String } variableName
+ * @returns {Function}
  */
-function twColorWithOpacity(variableName: string) {
+function twColorWithOpacity(variableName) {
   return `rgba(var(${variableName}))`;
 }
 
 /**
  * Convert sting patterns to RegExp.
+ * @param { String } color (gray | brand)
+ * @returns { Object } - TailwindCSS color object palette.
  */
-function getPalette(color: string) {
-  const palette: Partial<TailwindColorShades> = {
+function getPalette(color) {
+  const palette = {
     DEFAULT: twColorWithOpacity(`--vl-color-${color}-default`),
   };
 
   COLOR_SHADES.forEach((shade) => {
-    palette[shade as keyof TailwindColorShades] = twColorWithOpacity(
-      `--vl-color-${color}-${shade}`,
-    );
+    palette[shade] = twColorWithOpacity(`--vl-color-${color}-${shade}`);
   });
 
   return palette;
@@ -159,8 +159,11 @@ function getPalette(color: string) {
 
 /**
  * Prepare a color object for theme replacement to fix missing css color variables in `tailwind-config-viewer`.
+ * @param { String } color (gray | brand)
+ * @param { String } tailwindColor any tailwind color with pallet.
+ * @returns { Object } - `tailwind-config-viewer` color replacement object.
  */
-function getReplacementColors(color: "gray" | "brand", tailwindColor: TailwindColors) {
+function getReplacementColors(color, tailwindColor) {
   if (tailwindColor === GRAYSCALE_COLOR || tailwindColor === COOL_COLOR) {
     tailwindColor = GRAY_COLOR;
   }
@@ -170,9 +173,7 @@ function getReplacementColors(color: "gray" | "brand", tailwindColor: TailwindCo
   };
 
   COLOR_SHADES.forEach((shade) => {
-    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = (colors as never)[
-      tailwindColor
-    ][shade];
+    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = colors[tailwindColor][shade];
   });
 
   return varsPalette;
