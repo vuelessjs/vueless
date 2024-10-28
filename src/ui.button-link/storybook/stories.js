@@ -81,7 +81,7 @@ export const Types = (args) => ({
         case 'email':
           return 'hello@vueless.com';
         case 'link':
-          return 'Vueless';
+          return 'Vueless.com';
       }
     }
 
@@ -156,12 +156,6 @@ export const UnderlineVariants = (args, { argTypes } = {}) => ({
   `,
 });
 
-export const TargetBlank = DefaultTemplate.bind({});
-TargetBlank.args = {
-  href: "https://storybook.js.org/docs/react/get-started/introduction",
-  targetBlank: true,
-};
-
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
@@ -180,7 +174,7 @@ DefaultSlot.args = {
   `,
 };
 
-export const OtherSlots = (args) => ({
+export const LeftAndRightSlots = (args) => ({
   components: { ULink, UIcon, URow },
   setup() {
     return { args };

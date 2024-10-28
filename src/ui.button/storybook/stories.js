@@ -65,7 +65,7 @@ const ColorTemplate = (args, { argTypes } = {}) => ({
       variants,
       colors: argTypes.color.options,
       shouldBeFilled: (variant, index) => {
-        return variant === 'thirdary' && index === variants.length - 1;
+        return variant === 'thirdary' && index === variants.length - 2;
       }
     };
   },
@@ -179,7 +179,11 @@ export const Slots = (args) => ({
 
       <UButton v-bind="args" square>
         <template #default>
-          🤘🤘🤘
+          <UIcon
+            name="settings"
+            color="green"
+            size="sm"
+          />
         </template>
       </UButton>
 
