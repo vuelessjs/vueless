@@ -104,15 +104,15 @@ const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/web-types.json", { eager: true, import: "default" }),
 );
 
-const getComponentData = (componentName: string) => {
+const getComponentData = (componentName: string | undefined) => {
   return webTypes.contributions.html.tags.find((item: Tag) => item.name === componentName);
 };
 
-export function getSlotNames(componentName: string) {
+export function getSlotNames(componentName: string | undefined) {
   return getComponentData(componentName)?.slots?.map((item) => item.name);
 }
 
-export function getArgTypes(componentName: string) {
+export function getArgTypes(componentName: string | undefined) {
   const component = getComponentData(componentName);
 
   if (!component) return;

@@ -1,3 +1,91 @@
+<script lang="ts" setup>
+import { ref, computed } from "vue";
+
+import { getDefault } from "../utilsTs/utilUI";
+import UIcon from "../ui.image-icon/UIcon.vue";
+
+import { UBadge } from "./constants";
+import useAttrs from "./useAttrs";
+import defaultConfig from "./config";
+
+import type { UBadgeProps } from "./types";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UBadgeProps>(), {
+  variant: getDefault(defaultConfig, UBadge).variant,
+  bordered: getDefault(defaultConfig, UBadge).bordered,
+  size: getDefault(defaultConfig, UBadge).size,
+  color: getDefault(defaultConfig, UBadge).color,
+  round: getDefault(defaultConfig, UBadge).round,
+  tabindex: getDefault(defaultConfig, UBadge).tabindex,
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the badge is focused.
+   */
+  "focus",
+
+  /**
+   * Triggers when the badge is pressed.
+   */
+  "keydown",
+
+  /**
+   * Triggers when the badge loses focus.
+   */
+  "blur",
+
+  /**
+   * Triggers when the badge is clicked.
+   */
+  "click",
+]);
+
+const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useAttrs(props);
+
+const wrapperRef = ref(null);
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "3xs",
+    md: "2xs",
+    lg: "xs",
+  };
+
+  return sizes[props.size];
+});
+
+const iconColor = computed(() => {
+  return props.variant === "primary" ? "white" : props.color;
+});
+
+function onFocus() {
+  emit("focus");
+}
+
+function onBlur(event) {
+  emit("blur", event);
+}
+
+function onKeydown(event) {
+  emit("keydown", event);
+}
+
+function onClick(event) {
+  emit("click", event);
+}
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+});
+</script>
+
 <template>
   <div
     ref="wrapperRef"
@@ -73,181 +161,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from "vue";
-
-import { getDefault } from "../utils/utilUI.js";
-import UIcon from "../ui.image-icon/UIcon.vue";
-
-import { UBadge } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-import defaultConfig from "./config.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   *  Badge label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Badge variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UBadge).variant,
-  },
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UBadge).bordered,
-  },
-
-  /**
-   * Badge size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UBadge).size,
-  },
-
-  /**
-   * Badge color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UBadge).color,
-  },
-
-  /**
-   * Icon name (appears instead of label).
-   */
-  icon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set badge corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UBadge).round,
-  },
-
-  /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex: {
-    type: [String, Number],
-    default: getDefault(defaultConfig, UBadge).tabindex,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the badge is focused.
-   */
-  "focus",
-
-  /**
-   * Triggers when the badge is pressed.
-   */
-  "keydown",
-
-  /**
-   * Triggers when the badge loses focus.
-   */
-  "blur",
-
-  /**
-   * Triggers when the badge is clicked.
-   */
-  "click",
-]);
-
-const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useAttrs(props);
-
-const wrapperRef = ref(null);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "3xs",
-    md: "2xs",
-    lg: "xs",
-  };
-
-  return sizes[props.size];
-});
-
-const iconColor = computed(() => {
-  return props.variant === "primary" ? "white" : props.color;
-});
-
-function onFocus() {
-  emit("focus");
-}
-
-function onBlur(event) {
-  emit("blur", event);
-}
-
-function onKeydown(event) {
-  emit("keydown", event);
-}
-
-function onClick(event) {
-  emit("click", event);
-}
-
-defineExpose({
-  /**
-   * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  wrapperRef,
-});
-</script>
