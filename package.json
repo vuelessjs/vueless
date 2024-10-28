@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.474",
+  "version": "0.0.475",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -27,14 +27,14 @@
     "access": "public"
   },
   "scripts": {
-    "prepare": "npx @vueless/web-types && node prepare.icons",
-    "dev:docs": "npm run prepare && storybook dev -p 6006 --docs --no-open",
-    "dev": "npm run prepare && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
-    "build": "npm run prepare && storybook build --docs",
+    "dev:docs": "npx @vueless/web-types && node prepare.icons && storybook dev -p 6006 --docs --no-open",
+    "dev": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
+    "build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force --noEmit",
     "ts:build": "vue-tsc --build --force --declaration --emitDeclarationOnly",
-    "release:prepare": "npm run prepare && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
+    "release:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
+    "release:beta": "release-it patch --ci --npm.publish --npm.tag=beta",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
