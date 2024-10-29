@@ -1,10 +1,10 @@
 import { computed, useSlots } from "vue";
-import useUI from "../composablesTs/useUI";
+import useUI from "../composablesTs/useUI.ts";
 
-import defaultConfig from "./config";
+import defaultConfig from "./config.ts";
 
-import type { UseAttrs } from "../types";
-import type { UBadgeProps } from "./types";
+import type { UseAttrs } from "../types.ts";
+import type { UBadgeProps } from "./types.ts";
 
 export default function useAttrs(props: UBadgeProps) {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
