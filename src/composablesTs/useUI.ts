@@ -94,26 +94,26 @@ export default function useUI<T>(
   /**
    * Get classes by given key (including CVA if config set).
    */
-  function getClasses(key: string, mutatedProps: UnknownObject) {
+  function getClasses(key: string, mutatedProps: UnknownObject): ComputedRef<string> {
     return computed(() => {
       const color = (toValue(mutatedProps)?.color as BrandColors) || props?.color;
-      const value = config.value[key] as CVA & NestedComponent;
+      const value = config.value[key] as (CVA & NestedComponent) | string;
 
       let classes = "";
 
-      if (isCVA(value)) {
+      if (typeof value === "object" && isCVA(value)) {
         classes = cva(value)({
           ...props,
           ...toValue(mutatedProps),
           ...(color ? { color: getColor(color) } : {}),
         });
-      } else if (value.component) {
-        // If the value of the key contains keys related to the nested component, it should be skipped.
-        // Probably this should be fixed later to be possible to extend key with nested component keys.
-        return "";
       }
 
-      return color ? setColor(classes, color) : value;
+      if (typeof value === "string") {
+        classes = value;
+      }
+
+      return color ? setColor(classes, color) : classes;
     });
   }
 
@@ -224,11 +224,8 @@ export default function useUI<T>(
     config,
     setColor,
     getColor,
-    getAttrs,
     getKeysAttrs,
     getExtendingKeysClasses,
-    isCVA,
-    isSystemKey,
     hasSlotContent,
   };
 }
@@ -528,9 +525,7 @@ function isSystemKey(key: string): boolean {
 /**
  * Check is config contains default CVA keys.
  */
-function isCVA(config: CVA | string): boolean {
-  if (typeof config !== "object") return false;
-
+function isCVA(config: UnknownObject): boolean {
   return Object.values(CVA_CONFIG_KEY).some((value) =>
     Object.keys(config).some((key) => key === value),
   );
