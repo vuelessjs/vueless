@@ -1,6 +1,6 @@
-import { fullTailwindConfig } from "./utilTailwind";
-import { isSSR, isCSR } from "./utilHelper";
-import { vuelessConfig } from "./utilUI";
+import { fullTailwindConfig } from "./utilTailwind.ts";
+import { isSSR, isCSR } from "./utilHelper.ts";
+import { vuelessConfig } from "./utilUI.ts";
 import {
   BRAND_COLORS,
   GRAYSCALE_COLOR,
@@ -14,9 +14,9 @@ import {
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
-} from "../constants";
+} from "../constants.ts";
 
-import type { ThemeConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types";
+import type { ThemeConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types.ts";
 
 interface InternalThemeConfig extends ThemeConfig {
   systemDarkMode?: boolean;

@@ -1,4 +1,4 @@
-import defaultConfig from "./config";
+import defaultConfig from "./config.ts";
 
 export interface UTextProps {
   /**

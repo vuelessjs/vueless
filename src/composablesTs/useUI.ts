@@ -11,14 +11,14 @@ import {
   computed,
 } from "vue";
 
-import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI";
-import { cloneDeep, isCSR } from "../utilsTs/utilHelper";
+import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI.ts";
+import { cloneDeep, isCSR } from "../utilsTs/utilHelper.ts";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   NESTED_COMPONENT_REG_EXP,
-} from "../constants.js";
+} from "../constants.ts";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 import type {
@@ -33,7 +33,7 @@ import type {
   KeyAttrs,
   KeysToExtend,
   CVACompoundVariants,
-} from "../types";
+} from "../types.ts";
 
 interface GetMergedConfig {
   defaultConfig: Component;
@@ -58,18 +58,14 @@ interface MergeConfigs {
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
-export default function useUI(
-  defaultConfig: Component,
-  propsConfigGetter?: () => typeof defaultConfig | undefined,
+export default function useUI<T>(
+  defaultConfig: T & Component,
+  propsConfigGetter?: () => (T & Component) | undefined,
   topLevelClassKey?: string,
 ) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as ComponentNames;
-  let globalConfig = {};
-
-  if (vuelessConfig.component && componentName) {
-    globalConfig = vuelessConfig.component[componentName] as UnknownObject as Component;
-  }
+  const globalConfig = vuelessConfig?.component?.[componentName] || {};
 
   const isStrategyValid =
     vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
@@ -79,7 +75,7 @@ export default function useUI(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({} as Component);
+  const config = ref({} as T);
   const attrs = useAttrs();
 
   watchEffect(() => {
@@ -98,26 +94,26 @@ export default function useUI(
   /**
    * Get classes by given key (including CVA if config set).
    */
-  function getClasses(key: string, mutatedProps: UnknownObject) {
+  function getClasses(key: string, mutatedProps: UnknownObject): ComputedRef<string> {
     return computed(() => {
       const color = (toValue(mutatedProps)?.color as BrandColors) || props?.color;
-      const value = config.value[key] as CVA & NestedComponent;
+      const value = config.value[key] as (CVA & NestedComponent) | string;
 
       let classes = "";
 
-      if (isCVA(value)) {
+      if (typeof value === "object" && isCVA(value)) {
         classes = cva(value)({
           ...props,
           ...toValue(mutatedProps),
           ...(color ? { color: getColor(color) } : {}),
         });
-      } else if (value.component) {
-        // If the value of the key contains keys related to the nested component, it should be skipped.
-        // Probably this should be fixed later to be possible to extend key with nested component keys.
-        return "";
       }
 
-      return color ? setColor(classes, color) : value;
+      if (typeof value === "string") {
+        classes = value;
+      }
+
+      return color ? setColor(classes, color) : classes;
     });
   }
 
@@ -228,11 +224,8 @@ export default function useUI(
     config,
     setColor,
     getColor,
-    getAttrs,
     getKeysAttrs,
     getExtendingKeysClasses,
-    isCVA,
-    isSystemKey,
     hasSlotContent,
   };
 }
@@ -532,9 +525,7 @@ function isSystemKey(key: string): boolean {
 /**
  * Check is config contains default CVA keys.
  */
-function isCVA(config: CVA | string): boolean {
-  if (typeof config !== "object") return false;
-
+function isCVA(config: UnknownObject): boolean {
   return Object.values(CVA_CONFIG_KEY).some((value) =>
     Object.keys(config).some((key) => key === value),
   );

@@ -1,10 +1,9 @@
-import { hasSlotContent } from "./composablesTs/useUI";
+import { hasSlotContent } from "./composablesTs/useUI.ts";
 
 // TODO: Import all components here
-import UTextDefaultConfig from "./ui.text-block/config";
-import UButtonDefaultConfig from "./ui.button/config";
-import UBadgeDefaultConfig from "./ui.text-badge/config";
-
+import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UButtonDefaultConfig from "./ui.button/config.ts";
+import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import type { ComputedRef } from "vue";
 
 export interface ThemeConfig {
@@ -111,6 +110,11 @@ export interface Component {
   [key: string]: (CVA & NestedComponent) | object | string | undefined;
 }
 
+export type Defaults = {
+  color?: string;
+  [key: string]: unknown;
+};
+
 export interface NestedComponent {
   component: string;
   [key: string]: Record<string, string | object> | string;
@@ -144,7 +148,7 @@ export interface VueAttrs {
 }
 
 export interface UseAttrs {
-  hasSlotContent?: typeof hasSlotContent;
+  hasSlotContent: typeof hasSlotContent;
   [key: string]: object | undefined;
 }
 

@@ -1,10 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import type { UTextProps } from "../types";
+import type { UTextProps } from "../types.ts";
 
 interface UTextArgs extends UTextProps {
   slotTemplate?: string;
@@ -32,7 +32,7 @@ const defaultTemplate = `
   </p>
 `;
 
-const DefaultTemplate: StoryFn<UTextArgs> = (args) => ({
+const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow },
   setup() {
     const slots = getSlotNames(UText.__name);
@@ -46,7 +46,7 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTextArgs> = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, URow },
   setup() {
     return {

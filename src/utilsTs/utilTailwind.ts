@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import resolveConfig from "tailwindcss/resolveConfig";
-import { isSSR, isCSR } from "./utilHelper";
+import { isSSR, isCSR } from "./utilHelper.ts";
 
 import type { Config } from "tailwindcss";
 

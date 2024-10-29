@@ -25,7 +25,7 @@ export const vue3SourceDecorator = makeDecorator({
 
         async function setSourceCode() {
           try {
-            const src = context.originalStoryFn(context.args).template;
+            const src = context.originalStoryFn(context.args, context.argTypes).template;
             const code = templateSourceCode(src, context.args, context.argTypes);
             const channel = addons.getChannel();
 
@@ -113,10 +113,14 @@ function propToSource(key, val) {
     case "string":
       return `${key}="${val}"`;
     case "object":
-      return `:${key}="${JSON.stringify(val)}"`;
+      return `:${key}="${getObjectValue(val)}"`;
     default:
       return `:${key}="${val}"`;
   }
+}
+
+function getObjectValue(value) {
+  return JSON.stringify(value).replaceAll('"', "'");
 }
 
 function kebabCase(str) {

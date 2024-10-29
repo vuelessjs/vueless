@@ -45,7 +45,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDatePicker, URow },
   setup() {
     return {
@@ -57,7 +57,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UDatePicker
         v-for="(option, index) in options"
-        open-direction-y="bottom" 
+        open-direction-y="bottom"
         :key="index"
         v-bind="args"
         :[args.enum]="option"

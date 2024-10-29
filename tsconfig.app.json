@@ -4,15 +4,17 @@
   "compilerOptions": {
     /* General */
     "module": "ESNext",
-    "target": "ES2022",
+    "target": "ESNext",
     "esModuleInterop": true,
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true, // This is important for `<script setup>`.
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "allowImportingTsExtensions": true,
     "removeComments": true,
     "skipLibCheck": true,
     "composite": true,
+    "noEmit": true,
 
     /* Path settings */
     "baseUrl": ".",

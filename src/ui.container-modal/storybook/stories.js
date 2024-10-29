@@ -62,7 +62,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea },
   setup() {
     function onClick(value) {

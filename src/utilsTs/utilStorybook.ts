@@ -105,10 +105,14 @@ const [webTypes]: WebTypes[] = Object.values(
 );
 
 const getComponentData = (componentName: string | undefined) => {
+  if (!componentName) return;
+
   return webTypes.contributions.html.tags.find((item: Tag) => item.name === componentName);
 };
 
 export function getSlotNames(componentName: string | undefined) {
+  if (!componentName) return;
+
   return getComponentData(componentName)?.slots?.map((item) => item.name);
 }
 

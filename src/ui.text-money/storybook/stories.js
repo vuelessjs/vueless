@@ -46,7 +46,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UMoney, URow },
   setup() {
     const slots = getSlotNames(UMoney.__name);

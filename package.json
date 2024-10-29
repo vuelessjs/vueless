@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.477-beta.0",
+  "version": "0.0.478-beta.3",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -31,10 +31,9 @@
     "dev": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
-    "ts:check": "vue-tsc --build --force --noEmit",
-    "ts:build": "vue-tsc --build --force --declaration --emitDeclarationOnly",
-    "release:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
-    "release:beta": "release-it prepatch --ci --npm.publish --preRelease=beta",
+    "ts:check": "vue-tsc --build --force",
+    "release:prepare": "node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && node prepare.package",
+    "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",

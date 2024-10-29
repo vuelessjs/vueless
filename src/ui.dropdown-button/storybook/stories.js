@@ -42,7 +42,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow },
   setup() {
     return {
@@ -63,7 +63,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const VariantColorsTemplate = (args, { argTypes } = {}) => ({
+const VariantColorsTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow, UCol },
   setup() {
     return {
