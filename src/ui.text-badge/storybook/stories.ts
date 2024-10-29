@@ -1,12 +1,12 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook.ts";
 
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { UBadgeProps } from "../types";
+import type { UBadgeProps } from "../types.ts";
 
 interface UBadgeArgs extends UBadgeProps {
   slotTemplate?: string;

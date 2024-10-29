@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
 
-import { getDefault } from "../utilsTs/utilUI";
+import { getDefault } from "../utilsTs/utilUI.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { UBadge } from "./constants";
-import useAttrs from "./useAttrs";
-import defaultConfig from "./config";
+import { UBadge } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+import defaultConfig from "./config.ts";
 
-import type { UBadgeProps } from "./types";
+import type { UBadgeProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
