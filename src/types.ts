@@ -73,6 +73,7 @@ export interface Config extends ThemeConfig {
 export type UnknownObject = Record<string, unknown>;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
+export type Gray = "gray";
 export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
 export type BrandColors =
   | "grayscale"
@@ -175,7 +176,6 @@ export interface TailwindSafelist {
 }
 
 export interface TailwindColorShades {
-  DEFAULT: string;
   50: string;
   100: string;
   200: string;

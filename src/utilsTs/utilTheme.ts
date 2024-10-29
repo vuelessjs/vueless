@@ -1,6 +1,9 @@
-import { fullTailwindConfig } from "./utilTailwind.ts";
-import { isSSR, isCSR } from "./utilHelper.ts";
+import { merge } from "lodash-es";
+import tailwindColors from "tailwindcss/colors.js";
+
+import { tailwindConfig } from "./utilTailwind.ts";
 import { vuelessConfig } from "./utilUI.ts";
+import { isSSR, isCSR } from "./utilHelper.ts";
 import {
   BRAND_COLORS,
   GRAYSCALE_COLOR,
@@ -14,9 +17,19 @@ import {
   DARK_MODE_SELECTOR,
   GRAY_COLORS,
   PX_IN_REM,
+  COOL_COLOR,
+  GRAY_COLOR,
 } from "../constants.ts";
 
-import type { ThemeConfig, GrayColors, BrandColors, VuelessCssVariables } from "../types.ts";
+import type {
+  ThemeConfig,
+  GrayColors,
+  BrandColors,
+  VuelessCssVariables,
+  TailwindColorShades,
+} from "../types.ts";
+
+type DefaultColors = typeof tailwindColors;
 
 interface InternalThemeConfig extends ThemeConfig {
   systemDarkMode?: boolean;
@@ -37,23 +50,26 @@ export function themeInit() {
 export function setTheme(config: InternalThemeConfig = {}) {
   const isDarkMode = setDarkMode(config);
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  let brand: BrandColors | GrayColors = config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
-  const gray = config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+
+  let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
+    config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+
+  let gray: GrayColors | typeof GRAY_COLOR =
+    config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
   const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
 
-  const defaultRingOffsetColorDark =
+  const ringOffsetColorDark =
     config?.ringOffsetColorDark ??
     vuelessConfig.ringOffsetColorDark ??
     DEFAULT_RING_OFFSET_COLOR_DARK;
 
-  const defaultRingOffsetColorLight =
+  const ringOffsetColorLight =
     config?.ringOffsetColorLight ??
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
-  const colors = fullTailwindConfig.theme.colors;
   const isBrandColor = BRAND_COLORS.some((color) => color === brand);
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
 
@@ -69,13 +85,17 @@ export function setTheme(config: InternalThemeConfig = {}) {
 
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
-  const defaultRingOffsetColor = isDarkMode
-    ? defaultRingOffsetColorDark
-    : defaultRingOffsetColorLight;
+  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
+
+  if (gray === COOL_COLOR) {
+    gray = GRAY_COLOR;
+  }
 
   if (brand === GRAYSCALE_COLOR) {
     brand = gray;
   }
+
+  const colors: DefaultColors = merge(tailwindColors, tailwindConfig?.theme?.extend?.colors || {});
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
@@ -87,14 +107,18 @@ export function setTheme(config: InternalThemeConfig = {}) {
   };
 
   for (const key in colors[gray]) {
+    const shade = key as unknown as keyof TailwindColorShades;
+
     variables[`--vl-color-gray-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[gray][key],
+      colors[gray][shade],
     );
   }
 
   for (const key in colors[brand]) {
+    const shade = key as unknown as keyof TailwindColorShades;
+
     variables[`--vl-color-brand-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[brand][key],
+      colors[brand][shade],
     );
   }
 
