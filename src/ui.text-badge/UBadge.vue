@@ -13,12 +13,12 @@ import type { UBadgeProps } from "./types";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UBadgeProps>(), {
-  variant: getDefault(defaultConfig, UBadge).variant,
-  bordered: getDefault(defaultConfig, UBadge).bordered,
-  size: getDefault(defaultConfig, UBadge).size,
-  color: getDefault(defaultConfig, UBadge).color,
-  round: getDefault(defaultConfig, UBadge).round,
-  tabindex: getDefault(defaultConfig, UBadge).tabindex,
+  variant: getDefault<UBadgeProps>(defaultConfig, UBadge).variant,
+  bordered: getDefault<UBadgeProps>(defaultConfig, UBadge).bordered,
+  size: getDefault<UBadgeProps>(defaultConfig, UBadge).size,
+  color: getDefault<UBadgeProps>(defaultConfig, UBadge).color,
+  round: getDefault<UBadgeProps>(defaultConfig, UBadge).round,
+  tabindex: getDefault<UBadgeProps>(defaultConfig, UBadge).tabindex,
 });
 
 const emit = defineEmits([
@@ -65,15 +65,15 @@ function onFocus() {
   emit("focus");
 }
 
-function onBlur(event) {
+function onBlur(event: FocusEvent) {
   emit("blur", event);
 }
 
-function onKeydown(event) {
+function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
-function onClick(event) {
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
 

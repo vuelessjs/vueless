@@ -10,7 +10,7 @@ import type { UBadgeProps } from "../types";
 
 interface UBadgeArgs extends UBadgeProps {
   slotTemplate?: string;
-  enum?: string;
+  enum: "variant" | "size";
 }
 
 /**
@@ -28,7 +28,7 @@ export default {
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UBadgeArgs> = (args) => ({
+const DefaultTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs) => ({
   components: { UBadge, UIcon },
   setup() {
     const slots = getSlotNames(UBadge.__name);
@@ -42,7 +42,7 @@ const DefaultTemplate: StoryFn<UBadgeArgs> = (args) => ({
   `,
 });
 
-const ColorsTemplate: StoryFn<UBadgeArgs> = (args, { argTypes }) => ({
+const ColorsTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
   components: { UBadge, URow, UCol },
   setup() {
     return {
@@ -67,14 +67,14 @@ const ColorsTemplate: StoryFn<UBadgeArgs> = (args, { argTypes }) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
   components: { UBadge, URow },
   setup() {
     function getText(value: string) {
       return `Badge ${value}`;
     }
 
-    return { args, options: argTypes[args.enum].options, getText };
+    return { args, options: argTypes?.[args.enum]?.options || [], getText };
   },
   template: `
     <URow>
@@ -84,7 +84,6 @@ const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args, { argTypes }) => ({
       variant="thirdary"
       filled
       >
-        fff
       </UDropdownButton>
       <UBadge
         v-for="(option, index) in options"
@@ -114,30 +113,6 @@ LeftIcon.args = { leftIcon: "star" };
 
 export const RightIcon = DefaultTemplate.bind({});
 RightIcon.args = { rightIcon: "star" };
-
-export const LeftIconSlot = DefaultTemplate.bind({});
-LeftIconSlot.args = {
-  slotTemplate: `
-    <template #left-icon>
-      <UIcon
-        name="info"
-        color="red"
-      />
-    </template>
-  `,
-};
-
-export const RightIconSlot = DefaultTemplate.bind({});
-RightIconSlot.args = {
-  slotTemplate: `
-    <template #right-icon>
-      <UIcon
-        name="info"
-        color="red"
-      />
-    </template>
-  `,
-};
 
 export const SlotLeft = DefaultTemplate.bind({});
 SlotLeft.args = {
