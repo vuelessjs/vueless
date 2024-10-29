@@ -703,7 +703,7 @@ function onChangeSelectedRows(selectedRows) {
   if (selectedRows.length) {
     canSelectAll.value = false;
 
-    isCheckedMoreOneTableItems.value ? setFooterCellWidth() : "";
+    isCheckedMoreOneTableItems.value && setFooterCellWidth();
   } else {
     nextTick(setHeaderCellWidth);
   }

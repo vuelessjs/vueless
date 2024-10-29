@@ -27,7 +27,7 @@ if (isSSR) {
       if (!vuelessConfig) {
         vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
       }
-    } catch (error) {
+    } catch {
       vuelessConfig = {};
     }
   })();

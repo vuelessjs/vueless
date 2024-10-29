@@ -164,7 +164,7 @@ const dynamicComponent = computed(() => {
     return component;
   }
 
-  /* eslint-disable vue/max-len, prettier/prettier */
+  /* eslint-disable prettier/prettier */
   const libraries = {
     "vueless": async () => {
       return import.meta.env.PROD
@@ -197,7 +197,7 @@ const dynamicComponent = computed(() => {
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
   };
-  /* eslint-enable vue/max-len, prettier/prettier */
+  /* eslint-enable prettier/prettier */
 
   return defineAsyncComponent(libraries[library]);
 });

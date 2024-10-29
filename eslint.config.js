@@ -52,7 +52,7 @@ const commonConfig = {
     "prettier/prettier": ["warn", { printWidth: 100 }],
     "vue/max-len": ["error", { code: 120, template: 960, ignoreComments: true, ignoreUrls: true }],
     "vue/max-attributes-per-line": ["error", { singleline: { max: 9 }, multiline: { max: 1 } }],
-    "vue/block-lang": ["error", { script: { lang: "ts" } }], // todo: remove later
+    "vue/block-lang": ["error", { script: { lang: "ts", allowNoLang: true } }], // todo: remove later
     "vue/padding-line-between-blocks": ["error", "always"],
     "vue/no-v-html": "off",
   },
@@ -93,6 +93,14 @@ export default [
   ...pluginStorybook.configs["flat/recommended"].map((item) => ({
     ...item,
     ...(item.name.includes("stories-rules") ? { files: ["**/stories.{js,ts,jsx,tsx,mjs,cjs}"] } : {}),
+    ...(item.name.includes("main-rules")
+      ? {
+          rules: {
+            ...item.rules,
+            "storybook/no-uninstalled-addons": "off",
+          },
+        }
+      : {}),
   })),
   ...vueTsEslintConfig({ supportedScriptLangs: { js: true } }),
   prettierEslintConfig,
