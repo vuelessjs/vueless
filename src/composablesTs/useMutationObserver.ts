@@ -1,41 +1,44 @@
-import { onBeforeUnmount, onMounted, toValue, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, toValue, watch } from "vue";
 import { isSSR } from "../utilsTs/utilHelper.ts";
 
-import type { Ref } from "vue";
+import type { TemplateRefElement } from "src/types.ts";
 
 export function useMutationObserver(
-  target: Ref<HTMLElement | null>,
-  callBack: () => void,
+  target: TemplateRefElement,
+  callback: MutationCallback,
   config = { childList: true, attributes: true, characterData: true },
 ) {
   if (isSSR) return;
 
-  const observer = new MutationObserver(callBack);
+  const observer = new MutationObserver(callback);
+  const targetValue = computed(() => toValue(target));
 
   onMounted(() => {
-    if (!toValue(target)) return;
+    if (!targetValue.value) return;
 
-    if (Array.isArray(toValue(target))) {
-      toValue(target).forEach((element) => {
+    if (Array.isArray(targetValue.value)) {
+      targetValue.value.forEach((element) => {
         observer.observe(element, config);
       });
     } else {
-      observer.observe(toValue(target), config);
+      observer.observe(targetValue.value, config);
     }
   });
 
   watch(
-    () => toValue(target),
+    targetValue,
     () => {
-      if (Array.isArray(toValue(target))) {
-        toValue(target).forEach((element) => {
+      if (!targetValue.value) return;
+
+      if (Array.isArray(targetValue.value)) {
+        targetValue.value.forEach((element) => {
           observer.observe(element, config);
         });
 
         return;
       }
 
-      observer.observe(toValue(target), config);
+      observer.observe(targetValue.value, config);
     },
     {
       deep: true,

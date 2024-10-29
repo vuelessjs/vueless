@@ -3,32 +3,34 @@ import { isSSR } from "../utilsTs/utilHelper.ts";
 
 import type { Ref } from "vue";
 
-const BREAKPOINT_NAME = {
-  xs: "xs",
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-  xl: "xl",
-  "2xl": "2xl",
-};
+enum BREAKPOINT_NAME {
+  xs = "xs",
+  sm = "sm",
+  md = "md",
+  lg = "lg",
+  xl = "xl",
+  "2xl" = "2xl",
+}
 
-const BREAKPOINT = {
-  xs: 0,
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  "2xl": 1536,
-};
+enum BREAKPOINT {
+  xs = 0,
+  sm = 640,
+  md = 768,
+  lg = 1024,
+  xl = 1280,
+  "2xl" = 1536,
+}
+
+type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 const mobileDevices = ["xs", "sm"];
 const portableDevices = ["xs", "sm", "md"];
 
 export default function useBreakpoint() {
-  let timeout: number;
+  let timeout: number | undefined;
 
-  const windowWidth: Ref<number | undefined> = ref(undefined);
-  const currentBreakpoint = ref(BREAKPOINT_NAME.xs);
+  const windowWidth = ref(0);
+  const currentBreakpoint: Ref<Breakpoint> = ref(BREAKPOINT_NAME.xs);
 
   const isMobileBreakpoint = computed(() => {
     return mobileDevices.includes(currentBreakpoint.value);
@@ -46,6 +48,7 @@ export default function useBreakpoint() {
     return portableDevices.includes(currentBreakpoint.value);
   });
 
+  // TODO: Why do we need this? Maybe we should rename it.
   const elementSize = computed(() => {
     return isMobileBreakpoint.value ? BREAKPOINT_NAME.md : BREAKPOINT_NAME.lg;
   });
@@ -78,21 +81,21 @@ export default function useBreakpoint() {
     });
   }
 
-  function setBreakpoint(newWindowWidth: number | undefined) {
+  function setBreakpoint(newWindowWidth: number) {
     if (newWindowWidth === undefined) return;
 
     currentBreakpoint.value = "xs";
 
-    if (newWindowWidth >= BREAKPOINT.sm && newWindowWidth < BREAKPOINT.md) {
-      currentBreakpoint.value = "sm";
+    if (newWindowWidth >= BREAKPOINT.sm && newWindowWidth < BREAKPOINT.sm) {
+      currentBreakpoint.value = BREAKPOINT_NAME.sm;
     } else if (newWindowWidth >= BREAKPOINT.md && newWindowWidth < BREAKPOINT.lg) {
-      currentBreakpoint.value = "md";
+      currentBreakpoint.value = BREAKPOINT_NAME.md;
     } else if (newWindowWidth >= BREAKPOINT.lg && newWindowWidth < BREAKPOINT.xl) {
-      currentBreakpoint.value = "lg";
+      currentBreakpoint.value = BREAKPOINT_NAME.lg;
     } else if (newWindowWidth >= BREAKPOINT.xl && newWindowWidth < BREAKPOINT["2xl"]) {
-      currentBreakpoint.value = "xl";
+      currentBreakpoint.value = BREAKPOINT_NAME.xl;
     } else if (newWindowWidth >= BREAKPOINT["2xl"]) {
-      currentBreakpoint.value = "2xl";
+      currentBreakpoint.value = BREAKPOINT_NAME["2xl"];
     }
   }
 

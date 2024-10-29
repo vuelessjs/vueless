@@ -4,7 +4,10 @@ import { hasSlotContent } from "./composablesTs/useUI.ts";
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
-import type { ComputedRef } from "vue";
+
+import type { ComputedRef, MaybeRef } from "vue";
+
+export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
 export interface ThemeConfig {
   /**

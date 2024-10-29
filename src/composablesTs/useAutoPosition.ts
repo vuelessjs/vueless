@@ -1,77 +1,66 @@
 import { computed, toValue, ref } from "vue";
 import { isSSR } from "../utilsTs/utilHelper.ts";
 
-import type { Ref, ComputedRef } from "vue";
+import type { ComputedRef, MaybeRef, Reactive } from "vue";
 
-interface PositionXY {
-  x: Position;
-  y: Position;
+export enum POSITION {
+  left = "left",
+  right = "right",
+  top = "top",
+  bottom = "bottom",
+  auto = "auto",
 }
 
-export enum Position {
-  Left = "left",
-  Right = "right",
-  Top = "top",
-  Bottom = "bottom",
-  Auto = "auto",
-}
-
-// TODO: Remove after full TS migration, use enum instead.
-export const POSITION = {
-  left: "left",
-  right: "right",
-  top: "top",
-  bottom: "bottom",
-  auto: "auto",
-};
+export type Direction = "left" | "right" | "top" | "bottom" | "auto";
+export type Position = { x: Direction; y: Direction };
 
 export function useAutoPosition(
-  anchorElement: Ref<HTMLElement | null>,
-  targetElement: Ref<HTMLElement | null>,
-  position: PositionXY | ComputedRef<PositionXY>,
-  preferredPosition: PositionXY | ComputedRef<PositionXY>,
+  anchorElement: MaybeRef<HTMLElement | null>,
+  targetElement: MaybeRef<HTMLElement | null>,
+  position: Reactive<Position> | ComputedRef<Position>,
+  preferredPosition: Reactive<Position> | ComputedRef<Position>,
 ) {
   const localAnchorElement = computed(() => toValue(anchorElement));
   const localTargetElement = computed(() => toValue(targetElement));
   const localPosition = computed(() => toValue(position));
   const localPreferredPosition = computed(() => toValue(preferredPosition));
 
-  const preferredOpenDirectionY = ref(localPreferredPosition.value?.y || Position.Bottom);
-  const preferredOpenDirectionX = ref(localPreferredPosition.value?.x || Position.Left);
+  const preferredOpenDirectionY = ref(localPreferredPosition.value.y || POSITION.bottom);
+  const preferredOpenDirectionX = ref(localPreferredPosition.value.x || POSITION.left);
 
   const isTop = computed(() => {
-    if (localPosition.value.y !== Position.Auto) {
-      return localPosition.value.y === Position.Top;
+    if (localPosition.value.y !== POSITION.auto) {
+      return localPosition.value.y === POSITION.top;
     }
 
-    return preferredOpenDirectionY.value === Position.Top;
+    return preferredOpenDirectionY.value === POSITION.top;
   });
 
   const isLeft = computed(() => {
-    if (localPosition.value.x !== Position.Auto) {
-      return localPosition.value.x === Position.Left;
+    if (localPosition.value.x !== POSITION.auto) {
+      return localPosition.value.x === POSITION.left;
     }
 
-    return preferredOpenDirectionX.value === Position.Left;
+    return preferredOpenDirectionX.value === POSITION.left;
   });
 
   const isBottom = computed(() => {
-    if (localPosition.value.y !== Position.Auto) {
-      return localPosition.value.y === Position.Bottom;
+    if (localPosition.value.y !== POSITION.auto) {
+      return localPosition.value.y === POSITION.bottom;
     }
 
-    return preferredOpenDirectionY.value === Position.Bottom;
+    return preferredOpenDirectionY.value === POSITION.bottom;
   });
 
   const isRight = computed(() => {
-    if (localPosition.value.x !== Position.Auto) {
-      return localPosition.value.x === Position.Right;
+    if (localPosition.value.x !== POSITION.auto) {
+      return localPosition.value.x === POSITION.right;
     }
 
-    return preferredOpenDirectionX.value === Position.Right;
+    return preferredOpenDirectionX.value === POSITION.right;
   });
 
-  function adjustPositionY(): void {
+  function adjustPositionY() {
     if (isSSR || !localAnchorElement.value || !localTargetElement.value) return;
 
     const spaceAbove = localAnchorElement.value.getBoundingClientRect().top;
@@ -81,18 +70,18 @@ export function useAutoPosition(
     const hasEnoughSpaceAbove =
       spaceAbove > localTargetElement.value.getBoundingClientRect().height;
 
-    if (localPreferredPosition.value.y === Position.Bottom) {
+    if (localPreferredPosition.value.y === POSITION.bottom) {
       preferredOpenDirectionY.value =
-        hasEnoughSpaceBelow || spaceBelow > spaceAbove ? Position.Bottom : Position.Top;
+        hasEnoughSpaceBelow || spaceBelow > spaceAbove ? POSITION.bottom : POSITION.top;
     }
 
-    if (localPreferredPosition.value.y === Position.Top) {
+    if (localPreferredPosition.value.y === POSITION.top) {
       preferredOpenDirectionY.value =
-        hasEnoughSpaceAbove || spaceAbove > spaceBelow ? Position.Top : Position.Bottom;
+        hasEnoughSpaceAbove || spaceAbove > spaceBelow ? POSITION.top : POSITION.bottom;
     }
   }
 
-  function adjustPositionX(): void {
+  function adjustPositionX() {
     if (isSSR || !localAnchorElement.value || !localTargetElement.value) return;
 
     const spaceRight = localAnchorElement.value.getBoundingClientRect().right;
@@ -100,14 +89,14 @@ export function useAutoPosition(
     const hasEnoughSpaceLeft = spaceLeft > localTargetElement.value.getBoundingClientRect().width;
     const hasEnoughSpaceRight = spaceRight > localTargetElement.value.getBoundingClientRect().width;
 
-    if (localPreferredPosition.value.x === Position.Right) {
+    if (localPreferredPosition.value.x === POSITION.right) {
       preferredOpenDirectionX.value =
-        hasEnoughSpaceRight || spaceRight > spaceLeft ? Position.Right : Position.Left;
+        hasEnoughSpaceRight || spaceRight > spaceLeft ? POSITION.right : POSITION.left;
     }
 
-    if (localPreferredPosition.value.x === Position.Left) {
+    if (localPreferredPosition.value.x === POSITION.left) {
       preferredOpenDirectionX.value =
-        hasEnoughSpaceLeft || spaceLeft > spaceRight ? Position.Left : Position.Right;
+        hasEnoughSpaceLeft || spaceLeft > spaceRight ? POSITION.left : POSITION.right;
     }
   }
 
