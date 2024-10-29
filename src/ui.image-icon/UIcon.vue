@@ -128,9 +128,11 @@ const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
   if (isSSR) {
-    Object.entries(
-      import.meta.glob(`/assets/.vueless/icons/**/*.svg`, { eager: true, query: "?component" }),
-    ) || [];
+    return (
+      Object.entries(
+        import.meta.glob(`/assets/.vueless/icons/**/*.svg`, { eager: true, query: "?component" }),
+      ) || []
+    );
   }
 
   return (

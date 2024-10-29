@@ -10,7 +10,17 @@ import {
   SYSTEM_CONFIG_KEY,
 } from "../constants.ts";
 
-import type { CVACompoundVariants, BrandColors, Config, ComponentNames, Component, Defaults, UnknownObject, CVA, NestedComponent } from "../types.ts";
+import type {
+  CVACompoundVariants,
+  BrandColors,
+  Config,
+  ComponentNames,
+  Component,
+  Defaults,
+  UnknownObject,
+  CVA,
+  NestedComponent,
+} from "../types.ts";
 
 interface MergeCompoundVariantsOptions {
   defaultConfig: CVA;
@@ -58,7 +68,6 @@ if (isCSR) {
       import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }),
     )[0] || {};
 }
-
 
 /**
  * Recursively merge config objects with removing tailwind classes duplicates.
@@ -249,7 +258,6 @@ function mergeCompoundVariants({
 
   return [...config, ...globalConfigUniqueItems, ...propsConfigUniqueItems];
 }
-
 
 /**
  Turn simplified nested component config to regular config.

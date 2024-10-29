@@ -32,7 +32,6 @@ import type {
   CVA,
   KeyAttrs,
   KeysToExtend,
-  CVACompoundVariants,
 } from "../types.ts";
 
 interface GetMergedConfigOptions {
