@@ -102,7 +102,7 @@ export interface Components {
 
 export interface Component {
   i18n?: UnknownObject;
-  defaults?: UnknownObject;
+  defaults?: Defaults;
   safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;

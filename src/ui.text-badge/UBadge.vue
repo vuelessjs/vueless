@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { useTemplateRef, computed } from "vue";
 
 import { getDefault } from "../utilsTs/utilUI.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -45,7 +45,7 @@ const emit = defineEmits([
 
 const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useAttrs(props);
 
-const wrapperRef = ref(null);
+const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
 
 const iconSize = computed(() => {
   const sizes = {
@@ -88,7 +88,7 @@ defineExpose({
 
 <template>
   <div
-    ref="wrapperRef"
+    ref="wrapper"
     :data-test="dataTest"
     v-bind="badgeAttrs"
     :tabindex="tabindex"

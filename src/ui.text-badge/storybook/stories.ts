@@ -37,7 +37,7 @@ const DefaultTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs) => ({
   },
   template: `
     <UBadge v-bind="args">
-      ${args.slotTemplate || getSlotsFragment('')}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UBadge>
   `,
 });
