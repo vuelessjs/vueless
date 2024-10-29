@@ -10,9 +10,9 @@ import type { UTextProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTextProps>(), {
-  size: getDefault(defaultConfig, UText).size,
-  align: getDefault(defaultConfig, UText).align,
-  line: getDefault(defaultConfig, UText).line,
+  size: getDefault<UTextProps>(defaultConfig, UText).size,
+  align: getDefault<UTextProps>(defaultConfig, UText).align,
+  line: getDefault<UTextProps>(defaultConfig, UText).line,
 });
 
 const { wrapperAttrs, htmlAttrs, hasSlotContent } = useAttrs(props);

@@ -101,13 +101,18 @@ export interface Components {
 
 export interface Component {
   i18n?: UnknownObject;
-  defaults?: UnknownObject;
+  defaults?: Defaults;
   safelist?: () => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
   safelistColors?: BrandColors;
   [key: string]: (CVA & NestedComponent) | object | string | undefined;
 }
+
+export type Defaults = {
+  color?: string;
+  [key: string]: unknown;
+};
 
 export interface NestedComponent {
   component: string;
@@ -142,7 +147,7 @@ export interface VueAttrs {
 }
 
 export interface UseAttrs {
-  hasSlotContent?: typeof hasSlotContent;
+  hasSlotContent: typeof hasSlotContent;
   [key: string]: object | undefined;
 }
 

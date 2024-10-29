@@ -95,11 +95,11 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 /**
  * Return default values for component props, icons, etc..
  */
-export function getDefault(defaultConfig: Component, name: ComponentNames) {
-  const defaults = merge(
-    cloneDeep(defaultConfig.defaults),
-    vuelessConfig.component ? vuelessConfig.component[name]?.defaults : {},
-  ) as Component;
+export function getDefault<T>(defaultConfig: Component, name: ComponentNames): T {
+  const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
+  const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
+
+  const defaults = merge(componentDefaults, globalDefaults) as T & Defaults;
 
   if (defaults.color) {
     defaults.color = getColor(defaults.color as BrandColors);
@@ -113,9 +113,10 @@ export function getDefault(defaultConfig: Component, name: ComponentNames) {
  * Otherwise return given color.
  */
 export function getColor(color: string) {
-  return (vuelessConfig.brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR && color === BRAND_COLOR
-    ? GRAYSCALE_COLOR
-    : color;
+  const isBrandColorGrayscale = (vuelessConfig.brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR;
+  const isComponentColorBrand = color === BRAND_COLOR;
+
+  return isBrandColorGrayscale && isComponentColorBrand ? GRAYSCALE_COLOR : color;
 }
 
 /**

@@ -58,18 +58,14 @@ interface MergeConfigs {
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
-export default function useUI(
-  defaultConfig: Component,
-  propsConfigGetter?: () => typeof defaultConfig | undefined,
+export default function useUI<T>(
+  defaultConfig: T & Component,
+  propsConfigGetter?: () => (T & Component) | undefined,
   topLevelClassKey?: string,
 ) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as ComponentNames;
-  let globalConfig = {};
-
-  if (vuelessConfig.component && componentName) {
-    globalConfig = vuelessConfig.component[componentName] as UnknownObject as Component;
-  }
+  const globalConfig = vuelessConfig?.component?.[componentName] || {};
 
   const isStrategyValid =
     vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
@@ -79,7 +75,7 @@ export default function useUI(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({} as Component);
+  const config = ref({} as T);
   const attrs = useAttrs();
 
   watchEffect(() => {

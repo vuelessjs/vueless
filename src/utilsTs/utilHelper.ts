@@ -59,12 +59,10 @@ export function setTitle({ title = "", separator = " / ", suffix = "" }) {
 
 /**
  * Check is code rendering on the server side.
- * @returns {boolean}
  */
-export const isSSR = typeof window === "undefined";
+export const isSSR: boolean = typeof window === "undefined";
 
 /**
  * Check is code rendering on the client side.
- * @returns {boolean}
  */
-export const isCSR = typeof window !== "undefined";
+export const isCSR: boolean = typeof window !== "undefined";
