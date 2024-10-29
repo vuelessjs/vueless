@@ -7,7 +7,7 @@ import { themeInit } from "./utilsTs/utilTheme.ts";
 import type { App } from 'vue'
 import type { CreateVuelessOptions } from './types.ts'
 
-export { setTitle } from "./utils/utilHelper.ts";
+export { setTitle } from "./utilsTs/utilHelper.ts";
 export { setTheme } from "./utilsTs/utilTheme.ts";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
