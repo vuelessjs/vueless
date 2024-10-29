@@ -3,7 +3,7 @@ import { hasSlotContent } from "./composablesTs/useUI.ts";
 // TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
-
+import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import type { ComputedRef } from "vue";
 
 export interface ThemeConfig {
@@ -98,12 +98,13 @@ export type BrandColors =
 export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
+  UBadge?: Partial<typeof UBadgeDefaultConfig>;
 }
 
 export interface Component {
   i18n?: UnknownObject;
   defaults?: Defaults;
-  safelist?: () => TailwindSafelist[];
+  safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
   safelistColors?: BrandColors;

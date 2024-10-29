@@ -63,7 +63,7 @@ export default /*tw*/ {
     round: false,
     bordered: false,
   },
-  safelist: (colors) => [
+  safelist: (colors: string) => [
     { pattern: `bg-(${colors})-50` },
     { pattern: `bg-(${colors})-600` },
     { pattern: `border-(${colors})-100` },

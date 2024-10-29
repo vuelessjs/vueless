@@ -1,10 +1,15 @@
 import { computed, useSlots } from "vue";
-import useUI from "../composables/useUI.js";
+import useUI from "../composablesTs/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 
-export default function useAttrs(props) {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+import type { UseAttrs } from "../types.ts";
+import type { UBadgeProps } from "./types.ts";
+
+type Config = Partial<typeof defaultConfig>;
+
+export default function useAttrs(props: UBadgeProps) {
+  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
   const slots = useSlots();
 
   const mutatedProps = computed(() => ({
@@ -19,5 +24,5 @@ export default function useAttrs(props) {
     config,
     ...keysAttrs,
     hasSlotContent,
-  };
+  } as UseAttrs;
 }
