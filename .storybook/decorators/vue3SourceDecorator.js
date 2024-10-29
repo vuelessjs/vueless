@@ -113,10 +113,14 @@ function propToSource(key, val) {
     case "string":
       return `${key}="${val}"`;
     case "object":
-      return `:${key}="${JSON.stringify(val)}"`;
+      return `:${key}="${getObjectValue(val)}"`;
     default:
       return `:${key}="${val}"`;
   }
+}
+
+function getObjectValue(value) {
+  return JSON.stringify(value).replaceAll('"', "'");
 }
 
 function kebabCase(str) {
