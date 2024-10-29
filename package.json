@@ -31,7 +31,7 @@
     "dev": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
-    "ts:check": "vue-tsc --build --force --noEmit",
+    "ts:check": "vue-tsc --build --force",
     "ts:build": "vue-tsc --build --force --declaration --emitDeclarationOnly",
     "release:prepare": "npx @vueless/web-types && node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
     "release:beta": "release-it prepatch --ci --npm.publish --preRelease=beta",
