@@ -1,9 +1,17 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import type { Meta, StoryFn } from "@storybook/vue3";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook.ts";
 
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+
+import type { UBadgeProps } from "../types.ts";
+
+interface UBadgeArgs extends UBadgeProps {
+  slotTemplate?: string;
+  enum: "variant" | "size";
+}
 
 /**
  * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)
@@ -18,9 +26,9 @@ export default {
   argTypes: {
     ...getArgTypes(UBadge.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs) => ({
   components: { UBadge, UIcon },
   setup() {
     const slots = getSlotNames(UBadge.__name);
@@ -29,18 +37,18 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UBadge v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UBadge>
   `,
 });
 
-const ColorsTemplate = (args, { argTypes }) => ({
+const ColorsTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
   components: { UBadge, URow, UCol },
   setup() {
     return {
       args,
-      variants: argTypes.variant.options,
-      colors: argTypes.color.options,
+      variants: argTypes?.variant?.options,
+      colors: argTypes?.color?.options,
     };
   },
   template: `
@@ -59,14 +67,14 @@ const ColorsTemplate = (args, { argTypes }) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
   components: { UBadge, URow },
   setup() {
-    function getText(value) {
+    function getText(value: string) {
       return `Badge ${value}`;
     }
 
-    return { args, options: argTypes[args.enum].options, getText };
+    return { args, options: argTypes?.[args.enum]?.options || [], getText };
   },
   template: `
     <URow>
@@ -76,7 +84,6 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
       variant="thirdary"
       filled
       >
-        fff
       </UDropdownButton>
       <UBadge
         v-for="(option, index) in options"
@@ -106,30 +113,6 @@ LeftIcon.args = { leftIcon: "star" };
 
 export const RightIcon = DefaultTemplate.bind({});
 RightIcon.args = { rightIcon: "star" };
-
-export const LeftIconSlot = DefaultTemplate.bind({});
-LeftIconSlot.args = {
-  slotTemplate: `
-    <template #left-icon>
-      <UIcon
-        name="info"
-        color="red"
-      />
-    </template>
-  `,
-};
-
-export const RightIconSlot = DefaultTemplate.bind({});
-RightIconSlot.args = {
-  slotTemplate: `
-    <template #right-icon>
-      <UIcon
-        name="info"
-        color="red"
-      />
-    </template>
-  `,
-};
 
 export const SlotLeft = DefaultTemplate.bind({});
 SlotLeft.args = {
