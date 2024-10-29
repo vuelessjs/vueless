@@ -1,8 +1,8 @@
-import { hasSlotContent } from "./composablesTs/useUI";
+import { hasSlotContent } from "./composablesTs/useUI.ts";
 
 // TODO: Import all components here
-import UTextDefaultConfig from "./ui.text-block/config";
-import UButtonDefaultConfig from "./ui.button/config";
+import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UButtonDefaultConfig from "./ui.button/config.ts";
 
 import type { ComputedRef } from "vue";
 

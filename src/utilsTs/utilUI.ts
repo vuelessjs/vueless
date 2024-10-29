@@ -1,15 +1,15 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { cloneDeep, isCSR, isSSR } from "./utilHelper.js";
+import { cloneDeep, isCSR, isSSR } from "./utilHelper.ts";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
   NESTED_COMPONENT_REG_EXP,
-} from "../constants.js";
+} from "../constants.ts";
 
-import type { BrandColors, Config, ComponentNames, Component } from "../types";
+import type { BrandColors, Config, ComponentNames, Component, Defaults } from "../types.ts";
 
 /**
  * Load Vueless config from the project root.

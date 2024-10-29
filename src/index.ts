@@ -2,13 +2,13 @@
 import { createLocale, LocaleSymbol } from "./composables/useLocale.js";
 import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.js";
 import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.js";
-import { themeInit } from "./utilsTs/utilTheme";
+import { themeInit } from "./utilsTs/utilTheme.ts";
 
 import type { App } from 'vue'
-import type { CreateVuelessOptions } from './types'
+import type { CreateVuelessOptions } from './types.ts'
 
-export { setTitle } from "./utils/utilHelper.js";
-export { setTheme } from "./utilsTs/utilTheme";
+export { setTitle } from "./utils/utilHelper.ts";
+export { setTheme } from "./utilsTs/utilTheme.ts";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
 export { useLocale } from "./composables/useLocale.js";

@@ -11,14 +11,14 @@ import {
   computed,
 } from "vue";
 
-import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI";
-import { cloneDeep, isCSR } from "../utilsTs/utilHelper";
+import { cx, cva, setColor, getColor, vuelessConfig } from "../utilsTs/utilUI.ts";
+import { cloneDeep, isCSR } from "../utilsTs/utilHelper.ts";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   NESTED_COMPONENT_REG_EXP,
-} from "../constants.js";
+} from "../constants.ts";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 import type {
@@ -33,7 +33,7 @@ import type {
   KeyAttrs,
   KeysToExtend,
   CVACompoundVariants,
-} from "../types";
+} from "../types.ts";
 
 interface GetMergedConfig {
   defaultConfig: Component;

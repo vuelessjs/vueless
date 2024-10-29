@@ -1,10 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import type { UTextProps } from "../types";
+import type { UTextProps } from "../types.ts";
 
 interface UTextArgs extends UTextProps {
   slotTemplate?: string;
