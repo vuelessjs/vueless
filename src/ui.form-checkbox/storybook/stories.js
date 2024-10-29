@@ -89,7 +89,7 @@ const ValueTypesTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UCheckbox, UCol },
   setup() {
     return {

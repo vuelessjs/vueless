@@ -34,7 +34,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
     return { args, options: argTypes[args.enum].options };
@@ -54,7 +54,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const ColorTemplate = (args, { argTypes } = {}) => ({
+const ColorTemplate = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
     return {

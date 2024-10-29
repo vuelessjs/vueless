@@ -32,7 +32,7 @@ const defaultTemplate = `
   </p>
 `;
 
-const DefaultTemplate: StoryFn<UTextArgs> = (args) => ({
+const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow },
   setup() {
     const slots = getSlotNames(UText.__name);
@@ -46,7 +46,7 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTextArgs> = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, URow },
   setup() {
     return {

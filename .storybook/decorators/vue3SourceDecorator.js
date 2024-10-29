@@ -25,7 +25,7 @@ export const vue3SourceDecorator = makeDecorator({
 
         async function setSourceCode() {
           try {
-            const src = context.originalStoryFn(context.args).template;
+            const src = context.originalStoryFn(context.args, context.argTypes).template;
             const code = templateSourceCode(src, context.args, context.argTypes);
             const channel = addons.getChannel();
 

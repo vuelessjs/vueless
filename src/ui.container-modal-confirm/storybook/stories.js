@@ -57,7 +57,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
     function onClick(value) {

@@ -34,7 +34,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const ColorsTemplate = (args, { argTypes } = {}) => ({
+const ColorsTemplate = (args, { argTypes }) => ({
   components: { UBadge, URow, UCol },
   setup() {
     return {
@@ -59,7 +59,7 @@ const ColorsTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UBadge, URow },
   setup() {
     function getText(value) {
@@ -70,6 +70,14 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   },
   template: `
     <URow>
+      <UDropdownButton
+        label="Dropdown"
+        :options='[{"label":"option 1"},{"label":"option 2"},{"label":"option 3"}]'
+      variant="thirdary"
+      filled
+      >
+        fff
+      </UDropdownButton>
       <UBadge
         v-for="(option, index) in options"
         :key="index"
