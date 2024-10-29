@@ -14,7 +14,7 @@ export interface UBadgeProps {
   /**
    * Add border to the `thirdary` variant.
    */
-  bordered: boolean;
+  bordered?: boolean;
 
   /**
    * Badge size.
@@ -65,12 +65,12 @@ export interface UBadgeProps {
   /**
    * Set badge corners rounded.
    */
-  round: boolean;
+  round?: boolean;
 
   /**
    * Controls the keyboard “Tab” focus order of elements.
    */
-  tabindex: string;
+  tabindex?: string;
 
   /**
    * Component config object.
