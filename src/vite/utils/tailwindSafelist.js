@@ -24,7 +24,7 @@ let vuelessConfig = {};
     if (!vuelessConfig) {
       vuelessConfig = (await import(`${filePath}.ts`)).default;
     }
-  } catch (error) {
+  } catch {
     vuelessConfig = {};
   }
 })();

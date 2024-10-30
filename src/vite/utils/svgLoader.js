@@ -50,7 +50,7 @@ export async function loadSvg(id, options) {
 
   try {
     svg = await fs.promises.readFile(svgPath, "utf-8");
-  } catch (exception) {
+  } catch {
     // define an empty svg to prevent a UI crash.
     svg = `<svg xmlns="http://www.w3.org/2000/svg"></svg>`;
     // eslint-disable-next-line no-console

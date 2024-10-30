@@ -45,7 +45,8 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
   const excludeExts = exclude.filter((excludeItem) => excludeItem.startsWith("."));
 
   const filteredFiles = fileNames.filter((fileName) => {
-    const isRightExt = fileName.endsWith(ext) && !excludeExts.some((excludeExt) => fileName.endsWith(excludeExt));
+    const isRightExt =
+      fileName.endsWith(ext) && !excludeExts.some((excludeExt) => fileName.endsWith(excludeExt));
     const isExcludeDir = excludeDirs.some((excludeDir) => fileName.includes(excludeDir));
 
     return isRightExt && !isExcludeDir;

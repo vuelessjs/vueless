@@ -2,7 +2,7 @@
  This scrypt find icon names from the UIcon props and objects across the project
  and copy SVG icons from the default icons library (@material-symbols or other from config)
  to the ".../cache" folder.
- 
+
  Those icons will be used only in the build stage.
  The script is needed to avoid all @material-symbols icons set in the project bundle.
  */
@@ -26,7 +26,7 @@ let vuelessConfig = {};
     if (!vuelessConfig) {
       vuelessConfig = (await import(`${filePath}.ts`)).default;
     }
-  } catch (error) {
+  } catch {
     vuelessConfig = {};
   }
 })();
@@ -79,9 +79,13 @@ export async function copyIcons({ mode = "", env, debug, targetFiles = [], isNux
   }
 
   if (isNuxt) {
-    await cp(path.join(process.cwd(), "node_modules/vueless/assets"), path.join(process.cwd(), "assets/.vueless"), {
-      recursive: true,
-    });
+    await cp(
+      path.join(process.cwd(), "node_modules/vueless/assets"),
+      path.join(process.cwd(), "assets/.vueless"),
+      {
+        recursive: true,
+      },
+    );
   }
 }
 
@@ -180,7 +184,7 @@ function findAndCopyIcons(files) {
 
     const require = createRequire(import.meta.url);
 
-    /* eslint-disable prettier/prettier */
+    /* eslint-disable vue/max-len, prettier/prettier */
     const libraries = {
       vueless: {
         // @material-symbols icons which used across the components.
@@ -200,9 +204,10 @@ function findAndCopyIcons(files) {
         destination: `${iconCacheDir}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
       }
     };
-    /* eslint-enable prettier/prettier */
+    /* eslint-enable vue/max-len, prettier/prettier */
 
-    const { source, destination } = libraries[isVuelessIconsMode && isVuelessEnv ? "vueless" : library];
+    const { source, destination } =
+      libraries[isVuelessIconsMode && isVuelessEnv ? "vueless" : library];
 
     if (fs.existsSync(destination) || !fs.existsSync(source)) return;
 
@@ -220,7 +225,9 @@ function findAndCopyIcons(files) {
 }
 
 function getSafelistIcons() {
-  return vuelessConfig.component ? vuelessConfig.component[ICON_COMPONENT_NAME]?.safelistIcons || [] : [];
+  return vuelessConfig.component
+    ? vuelessConfig.component[ICON_COMPONENT_NAME]?.safelistIcons || []
+    : [];
 }
 
 function getMergedConfig() {

@@ -24,7 +24,7 @@ const jsConfig = {
   files: ["**/*.{js,mjs,cjs}"],
   rules: {
     ...eslintJs.configs.recommended.rules,
-    "no-unused-vars": process.env.PROD ? "error" : "warn",
+    "no-unused-vars": "off",
   },
 };
 
@@ -35,6 +35,7 @@ const commonConfig = {
   rules: {
     "no-console": process.env.PROD ? "error" : "warn",
     "no-debugger": process.env.PROD ? "error" : "warn",
+    "@typescript-eslint/no-unused-vars": process.env.PROD ? "error" : "warn",
     "@typescript-eslint/no-unused-expressions": ["error", { allowTernary: true, allowShortCircuit: true }],
     "arrow-parens": ["error", "always"],
     curly: ["error", "multi-line"],
