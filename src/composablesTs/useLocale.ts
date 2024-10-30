@@ -1,17 +1,14 @@
 import { inject } from "vue";
-import createVuelessAdapter from "../adatper.locale/vueless.js";
+import createVuelessAdapter from "../adatper.locale/vueless.ts";
 
-export const LocaleSymbol = Symbol.for("vueless:locale");
+import type { LocaleInstance, LocaleOptions } from "../adatper.locale/vueless.ts";
+import type { InjectionKey } from "vue";
 
-function isLocaleInstance(obj): boolean {
-  return obj.name !== null;
-}
+export const LocaleSymbol: InjectionKey<LocaleInstance> = Symbol.for("vueless:locale");
 
-export function createLocale(options) {
+export function createLocale(options: LocaleOptions) {
   const i18n =
-    options?.adapter && isLocaleInstance(options?.adapter)
-      ? options?.adapter
-      : createVuelessAdapter(options);
+    options?.adapter && options?.adapter?.name ? options?.adapter : createVuelessAdapter(options);
 
   return { ...i18n };
 }

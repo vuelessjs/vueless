@@ -1,11 +1,35 @@
 import { shallowRef, ref } from "vue";
 import { merge } from "lodash-es";
 
-import en from "./locales/en.js";
+import en from "./locales/en.ts";
+
+import type { Ref } from "vue";
+import type { UnknownObject } from "../types.ts";
+
+export interface LocaleMessages {
+  [key: string]: LocaleMessages | string;
+}
+
+export interface LocaleOptions {
+  messages?: LocaleMessages;
+  locale?: string;
+  fallback?: string;
+  adapter?: LocaleInstance;
+}
+
+export interface LocaleInstance {
+  name: string;
+  messages: Ref<LocaleMessages>;
+  locale: Ref<string>;
+  fallback: Ref<string>;
+  t: (key: string, ...params: unknown[]) => string;
+  n: (value: number) => string;
+  tm: (key: string, ...params: unknown[]) => string;
+}
 
 const FALLBACK_LOCALE_CODE = "en";
 
-export default function createVuelessAdapter(options) {
+export default function createVuelessAdapter(options?: LocaleOptions): LocaleInstance {
   const current = shallowRef(options?.locale ?? FALLBACK_LOCALE_CODE);
   const fallback = shallowRef(options?.fallback ?? FALLBACK_LOCALE_CODE);
 
@@ -22,12 +46,16 @@ export default function createVuelessAdapter(options) {
   };
 }
 
-function createTranslateFunction(current, fallback, messages) {
-  return (key, ...params) => {
+function createTranslateFunction(
+  current: Ref<string>,
+  fallback: Ref<string>,
+  messages: Ref<LocaleMessages>,
+) {
+  return (key: string, ...params: unknown[]) => {
     const currentLocale = current.value && messages.value[current.value];
     const fallbackLocale = fallback.value && messages.value[fallback.value];
 
-    let str = getObjectValueByPath(currentLocale, key, null);
+    let str = getObjectValueByPath<LocaleMessages | string, unknown>(currentLocale, key, null);
 
     if (!str) {
       // eslint-disable-next-line no-console
@@ -49,16 +77,20 @@ function createTranslateFunction(current, fallback, messages) {
       str = key;
     }
 
-    return replace(str, params);
+    return replace(String(str), params);
   };
 }
 
-function createTranslateMessageFunction(current, fallback, messages) {
-  return (key) => {
+function createTranslateMessageFunction(
+  current: Ref<string>,
+  fallback: Ref<string>,
+  messages: Ref<LocaleMessages>,
+) {
+  return (key: string) => {
     const currentLocale = current.value && messages.value[current.value];
     const fallbackLocale = fallback.value && messages.value[fallback.value];
 
-    let str = getObjectValueByPath(currentLocale, key, null);
+    let str = getObjectValueByPath<LocaleMessages | string, unknown>(currentLocale, key, null);
 
     if (str === undefined) {
       // eslint-disable-next-line no-console
@@ -68,51 +100,67 @@ function createTranslateMessageFunction(current, fallback, messages) {
       str = getObjectValueByPath(fallbackLocale, key, null);
     }
 
-    return str;
+    return String(str);
   };
 }
 
-const replace = (str, params) => {
+const replace = (str: string, params: unknown[]) => {
   return str.replace(/\{(\d+)\}/g, (match, index) => {
     return String(params[+index]);
   });
 };
 
-function createNumberFunction(current, fallback) {
-  return (value, options) => {
+function createNumberFunction(current: Ref<string>, fallback: Ref<string>) {
+  return (value: number, options?: Intl.NumberFormatOptions) => {
     const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options);
 
     return numberFormat.format(value);
   };
 }
 
-export function getObjectValueByPath(obj, path, fallback) {
+export function getObjectValueByPath<T, K = unknown>(
+  obj: T,
+  path?: string,
+  fallback?: K,
+): K | undefined {
   if (obj == null || !path || typeof path !== "string") return fallback;
-  if (obj[path] !== undefined) return obj[path];
+
+  const unknownObject = obj as UnknownObject;
+
+  if (unknownObject[path] !== undefined) {
+    return unknownObject[path] as K;
+  }
+
   path = path.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
   path = path.replace(/^\./, ""); // strip a leading dot
 
   return getNestedValue(obj, path.split("."), fallback);
 }
 
-export function getNestedValue(obj, path, fallback) {
+export function getNestedValue<T, K = unknown>(
+  obj: T | null | undefined,
+  path: (string | number)[],
+  fallback?: K,
+): K | undefined {
   const last = path.length - 1;
 
   if (last < 0) {
-    return obj === undefined ? fallback : obj;
+    return obj === undefined ? fallback : (obj as unknown as K);
   }
+
+  const unknownObject = obj as Record<string | number, unknown>;
 
   for (let i = 0; i < last; i++) {
     if (obj == null) {
       return fallback;
     }
 
-    obj = obj[path[i]];
+    obj = unknownObject[path[i]] as T;
   }
 
   if (obj == null) {
     return fallback;
   }
 
-  return obj[path[last]] === undefined ? fallback : obj[path[last]];
+  return (unknownObject[path[last]] === undefined ? fallback : unknownObject[path[last]]) as K;
 }
