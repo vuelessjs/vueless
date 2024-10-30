@@ -389,10 +389,7 @@ function formatUserDate(data) {
 function onInput() {
   nextTick(() => {
     calendarRef.value?.wrapperRef?.blur();
-    emit("input", {
-      value: localValue.value,
-      userFormatDate: formatUserDate(userFormatDate.value),
-    });
+    emit("input", localValue.value);
   });
 }
 
