@@ -6,6 +6,7 @@ import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 
 import type { ComputedRef, MaybeRef } from "vue";
+import type { Props } from "tippy.js";
 
 export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
@@ -66,6 +67,11 @@ export interface Config extends ThemeConfig {
   component?: Partial<Components>;
 
   /**
+   * Directive configs.
+   */
+  directive?: Partial<Directives>;
+
+  /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts.
@@ -102,6 +108,10 @@ export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
   UBadge?: Partial<typeof UBadgeDefaultConfig>;
+}
+
+export interface Directives {
+  tooltip?: Partial<Props>;
 }
 
 export interface Component {
