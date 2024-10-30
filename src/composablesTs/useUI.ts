@@ -34,7 +34,7 @@ import type {
   KeysToExtend,
 } from "../types.ts";
 
-interface GetMergedConfigOptions {
+interface MergedConfigOptions {
   defaultConfig: Component;
   globalConfig: Component;
   propsConfig?: Component;
@@ -228,7 +228,7 @@ function getMergedConfig({
   globalConfig,
   propsConfig,
   vuelessStrategy,
-}: GetMergedConfigOptions) {
+}: MergedConfigOptions) {
   defaultConfig = cloneDeep(defaultConfig) as Component;
 
   let mergedConfig: Component = {};

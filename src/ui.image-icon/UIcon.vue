@@ -127,6 +127,10 @@ const emit = defineEmits([
 const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
+  /**
+   * Use nuxt assets folders to include icons in final build.
+   * TODO: Find another way to include icons in build
+   */
   if (isSSR) {
     return (
       Object.entries(
