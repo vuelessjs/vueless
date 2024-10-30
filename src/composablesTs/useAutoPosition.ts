@@ -3,16 +3,16 @@ import { isSSR } from "../utilsTs/utilHelper.ts";
 
 import type { ComputedRef, MaybeRef, Reactive } from "vue";
 
-export enum POSITION {
-  left = "left",
-  right = "right",
-  top = "top",
-  bottom = "bottom",
-  auto = "auto",
+export enum Direction {
+  Left = "left",
+  Right = "right",
+  Top = "top",
+  Bottom = "bottom",
+  Auto = "auto",
 }
 
-export type Direction = "left" | "right" | "top" | "bottom" | "auto";
-export type Position = { x: Direction; y: Direction };
+export type Align = `${Direction}`;
+export type Position = { x: Align; y: Align };
 
 export function useAutoPosition(
   anchorElement: MaybeRef<HTMLElement | null>,
@@ -25,39 +25,39 @@ export function useAutoPosition(
   const localPosition = computed(() => toValue(position));
   const localPreferredPosition = computed(() => toValue(preferredPosition));
 
-  const preferredOpenDirectionY = ref(localPreferredPosition.value.y || POSITION.bottom);
-  const preferredOpenDirectionX = ref(localPreferredPosition.value.x || POSITION.left);
+  const preferredOpenDirectionY = ref(localPreferredPosition.value.y || Direction.Bottom);
+  const preferredOpenDirectionX = ref(localPreferredPosition.value.x || Direction.Left);
 
   const isTop = computed(() => {
-    if (localPosition.value.y !== POSITION.auto) {
-      return localPosition.value.y === POSITION.top;
+    if (localPosition.value.y !== Direction.Auto) {
+      return localPosition.value.y === Direction.Top;
     }
 
-    return preferredOpenDirectionY.value === POSITION.top;
+    return preferredOpenDirectionY.value === Direction.Top;
   });
 
   const isLeft = computed(() => {
-    if (localPosition.value.x !== POSITION.auto) {
-      return localPosition.value.x === POSITION.left;
+    if (localPosition.value.x !== Direction.Auto) {
+      return localPosition.value.x === Direction.Left;
     }
 
-    return preferredOpenDirectionX.value === POSITION.left;
+    return preferredOpenDirectionX.value === Direction.Left;
   });
 
   const isBottom = computed(() => {
-    if (localPosition.value.y !== POSITION.auto) {
-      return localPosition.value.y === POSITION.bottom;
+    if (localPosition.value.y !== Direction.Auto) {
+      return localPosition.value.y === Direction.Bottom;
     }
 
-    return preferredOpenDirectionY.value === POSITION.bottom;
+    return preferredOpenDirectionY.value === Direction.Bottom;
   });
 
   const isRight = computed(() => {
-    if (localPosition.value.x !== POSITION.auto) {
-      return localPosition.value.x === POSITION.right;
+    if (localPosition.value.x !== Direction.Auto) {
+      return localPosition.value.x === Direction.Right;
     }
 
-    return preferredOpenDirectionX.value === POSITION.right;
+    return preferredOpenDirectionX.value === Direction.Right;
   });
 
   function adjustPositionY() {
@@ -70,14 +70,14 @@ export function useAutoPosition(
     const hasEnoughSpaceAbove =
       spaceAbove > localTargetElement.value.getBoundingClientRect().height;
 
-    if (localPreferredPosition.value.y === POSITION.bottom) {
+    if (localPreferredPosition.value.y === Direction.Bottom) {
       preferredOpenDirectionY.value =
-        hasEnoughSpaceBelow || spaceBelow > spaceAbove ? POSITION.bottom : POSITION.top;
+        hasEnoughSpaceBelow || spaceBelow > spaceAbove ? Direction.Bottom : Direction.Top;
     }
 
-    if (localPreferredPosition.value.y === POSITION.top) {
+    if (localPreferredPosition.value.y === Direction.Top) {
       preferredOpenDirectionY.value =
-        hasEnoughSpaceAbove || spaceAbove > spaceBelow ? POSITION.top : POSITION.bottom;
+        hasEnoughSpaceAbove || spaceAbove > spaceBelow ? Direction.Top : Direction.Bottom;
     }
   }
 
@@ -89,14 +89,14 @@ export function useAutoPosition(
     const hasEnoughSpaceLeft = spaceLeft > localTargetElement.value.getBoundingClientRect().width;
     const hasEnoughSpaceRight = spaceRight > localTargetElement.value.getBoundingClientRect().width;
 
-    if (localPreferredPosition.value.x === POSITION.right) {
+    if (localPreferredPosition.value.x === Direction.Right) {
       preferredOpenDirectionX.value =
-        hasEnoughSpaceRight || spaceRight > spaceLeft ? POSITION.right : POSITION.left;
+        hasEnoughSpaceRight || spaceRight > spaceLeft ? Direction.Right : Direction.Left;
     }
 
-    if (localPreferredPosition.value.x === POSITION.left) {
+    if (localPreferredPosition.value.x === Direction.Left) {
       preferredOpenDirectionX.value =
-        hasEnoughSpaceLeft || spaceLeft > spaceRight ? POSITION.left : POSITION.right;
+        hasEnoughSpaceLeft || spaceLeft > spaceRight ? Direction.Left : Direction.Right;
     }
   }
 

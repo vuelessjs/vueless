@@ -4,6 +4,7 @@ import { merge } from "lodash-es";
 import en from "./locales/en.ts";
 
 import type { Ref } from "vue";
+import type { UnknownObject } from "../types.ts";
 
 export interface LocaleMessages {
   [key: string]: LocaleMessages | string;
@@ -124,8 +125,10 @@ export function getObjectValueByPath<T, K = unknown>(
 ): K | undefined {
   if (obj == null || !path || typeof path !== "string") return fallback;
 
-  if ((obj as Record<string, unknown>)[path] !== undefined) {
-    return (obj as Record<string, unknown>)[path] as K;
+  const unknownObject = obj as UnknownObject;
+
+  if (unknownObject[path] !== undefined) {
+    return unknownObject[path] as K;
   }
 
   path = path.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
@@ -145,21 +148,19 @@ export function getNestedValue<T, K = unknown>(
     return obj === undefined ? fallback : (obj as unknown as K);
   }
 
+  const unknownObject = obj as Record<string | number, unknown>;
+
   for (let i = 0; i < last; i++) {
     if (obj == null) {
       return fallback;
     }
 
-    obj = (obj as Record<string | number, unknown>)[path[i]] as T;
+    obj = unknownObject[path[i]] as T;
   }
 
   if (obj == null) {
     return fallback;
   }
 
-  return (
-    (obj as Record<string | number, unknown>)[path[last]] === undefined
-      ? fallback
-      : (obj as Record<string | number, unknown>)[path[last]]
-  ) as K;
+  return (unknownObject[path[last]] === undefined ? fallback : unknownObject[path[last]]) as K;
 }

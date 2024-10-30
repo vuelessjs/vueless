@@ -1,7 +1,7 @@
 import { computed, onBeforeUnmount, onMounted, toValue, watch } from "vue";
 import { isSSR } from "../utilsTs/utilHelper.ts";
 
-import type { TemplateRefElement } from "src/types.ts";
+import type { TemplateRefElement } from "../types.ts";
 
 export function useMutationObserver(
   target: TemplateRefElement,
