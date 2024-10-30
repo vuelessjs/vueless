@@ -5,9 +5,6 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)
- */
 export default {
   id: "1010",
   title: "Buttons & Links / Button",
@@ -17,6 +14,14 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UButton.__name),
+  },
+  // TODO: Generate by function same like `getArgTypes(UButton.__name)`
+  parameters: {
+    docs: {
+      description: {
+        component: `The \`${UButton.__name}\` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)`,
+      },
+    },
   },
 };
 
