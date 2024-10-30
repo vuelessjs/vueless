@@ -61,5 +61,4 @@ export default /*tw*/ {
     integer: false,
     symbolDivided: true,
   },
-  safelist: (colors) => [{ pattern: `text-(${colors})-600` }],
 };

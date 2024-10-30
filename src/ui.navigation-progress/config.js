@@ -107,13 +107,4 @@ export default /*tw*/ {
     variant: "progress",
     indicator: false,
   },
-  safelist: (colors) => [
-    { pattern: `text-(${colors})-600` },
-    { pattern: `text-(${colors})-100` },
-    { pattern: `stroke-(${colors})-100` },
-    {
-      pattern: `bg-(${colors})-50`,
-      variants: ["[&::-webkit-progress-bar]", "[@supports(selector(&::-moz-progress-bar))]"],
-    },
-  ],
 };

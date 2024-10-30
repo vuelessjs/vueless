@@ -161,16 +161,4 @@ export default /*tw*/ {
     loading: false,
     disabled: false,
   },
-  safelist: (colors) => [
-    { pattern: `border-(${colors})-600` },
-    { pattern: `border-(${colors})-700`, variants: ["hover", "focus"] },
-    { pattern: `border-(${colors})-800`, variants: ["active"] },
-    { pattern: `bg-(${colors})-600` },
-    { pattern: `bg-(${colors})-700`, variants: ["hover", "focus"] },
-    { pattern: `bg-(${colors})-800`, variants: ["active"] },
-    { pattern: `text-(${colors})-600` },
-    { pattern: `text-(${colors})-700`, variants: ["hover", "focus"] },
-    { pattern: `text-(${colors})-800`, variants: ["active"] },
-    { pattern: `ring-(${colors})-700`, variants: ["focus", "focus-within"] },
-  ],
 };
