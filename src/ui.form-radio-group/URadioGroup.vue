@@ -33,7 +33,7 @@ import { computed, provide } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import URadio from "../ui.form-radio/URadio.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import defaultConfig from "./config.js";
 import { URadioGroup } from "./constants.js";

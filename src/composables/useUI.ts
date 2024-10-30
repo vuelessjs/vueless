@@ -11,8 +11,8 @@ import {
   computed,
 } from "vue";
 
-import { cx, cva, setColor, getColor, vuelessConfig, mergeConfigs } from "../utilsTs/utilUI.ts";
-import { cloneDeep, isCSR } from "../utilsTs/utilHelper.ts";
+import { cx, cva, setColor, getColor, vuelessConfig, mergeConfigs } from "../utils/utilUI.ts";
+import { cloneDeep, isCSR } from "../utils/utilHelper.ts";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,

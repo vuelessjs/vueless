@@ -38,7 +38,7 @@
 import colors from "tailwindcss/colors.js";
 import { computed } from "vue";
 
-import { GRAY_COLORS } from "../constants.js";
+import { GRAY_COLORS } from "../constants.ts";
 
 import useAttrs from "./useAttrs.js";
 

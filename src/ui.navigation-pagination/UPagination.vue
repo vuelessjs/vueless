@@ -141,7 +141,7 @@ import { range } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import defaultConfig from "./config.js";
 import { UPagination } from "./constants.js";

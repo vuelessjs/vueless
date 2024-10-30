@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,
@@ -113,7 +113,7 @@ const VALIDATION_RULES_REG_EX = {
 <script setup>
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
-import { useMutationObserver } from "../composables/useMutationObserver.js";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";

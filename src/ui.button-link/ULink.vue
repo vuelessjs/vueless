@@ -47,7 +47,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";

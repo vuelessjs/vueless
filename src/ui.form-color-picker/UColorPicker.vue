@@ -56,7 +56,7 @@ import { computed, useId } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { UColorPicker } from "./constants.js";
 import defaultConfig from "./config.js";

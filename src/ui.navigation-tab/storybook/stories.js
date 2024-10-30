@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
 
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

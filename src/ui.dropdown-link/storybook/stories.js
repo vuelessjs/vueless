@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";

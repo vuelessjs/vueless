@@ -1,12 +1,12 @@
 import { setup } from "@storybook/vue3";
 
-import { getRandomId } from "../src/utils/utilUI.js";
+import { getRandomId } from "../src/utils/utilUI.ts";
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
 import themeLightDocs from "./themes/themeLightDocs.js";
 import { storyDarkModeDecorator } from "./decorators/storyDarkModeDecorator.js";
 import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
-import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
+import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.ts";
 
 /* Tailwind styles */
 import "./index.css";

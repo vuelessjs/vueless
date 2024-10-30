@@ -1,8 +1,8 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
-import { vuelessConfig } from "../../utilsTs/utilUI.ts";
-import { isCSR, isSSR } from "../../utilsTs/utilHelper.ts";
+import { vuelessConfig } from "../../utils/utilUI.ts";
+import { isCSR, isSSR } from "../../utils/utilHelper.ts";
 
 import type { DefaultProps } from "tippy.js";
 import type {

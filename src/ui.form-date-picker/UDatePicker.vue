@@ -82,13 +82,13 @@ import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { addDays, isSameDay } from "../ui.form-calendar/utilDate.js";
 
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
-import { useAutoPosition } from "../composables/useAutoPosition.js";
+import { useLocale } from "../composables/useLocale.ts";
+import { useAutoPosition } from "../composables/useAutoPosition.ts";
 
 import defaultConfig from "./config.js";
 import { UDatePicker } from "./constants.js";

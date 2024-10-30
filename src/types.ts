@@ -1,4 +1,4 @@
-import { hasSlotContent } from "./composablesTs/useUI.ts";
+import { hasSlotContent } from "./composables/useUI.ts";
 
 // TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";

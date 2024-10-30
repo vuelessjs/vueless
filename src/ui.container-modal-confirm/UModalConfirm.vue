@@ -83,7 +83,7 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import UButton from "../ui.button/UButton.vue";
 import UModal from "../ui.container-modal/UModal.vue";
@@ -91,7 +91,7 @@ import UModal from "../ui.container-modal/UModal.vue";
 import defaultConfig from "./config.js";
 import { UModalConfirm } from "./constants.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 

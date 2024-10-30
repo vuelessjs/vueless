@@ -13,7 +13,7 @@ import {
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   GRAYSCALE_COLOR,
-} from "./constants.js";
+} from "./constants.ts";
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
 const brandColor = process.env.VUELESS_BRAND || DEFAULT_BRAND_COLOR;

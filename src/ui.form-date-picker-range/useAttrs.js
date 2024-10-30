@@ -1,10 +1,10 @@
 import { computed, watchEffect } from "vue";
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI.js";
+import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
-import { POSITION } from "../composables/useAutoPosition.js";
+import { POSITION } from "../composables/useAutoPosition.ts";
 
 export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod }) {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(

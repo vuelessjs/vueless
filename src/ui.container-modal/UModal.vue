@@ -107,7 +107,7 @@
 <script setup>
 import { computed, useSlots, watch, ref, useId } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";

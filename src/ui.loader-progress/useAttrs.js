@@ -1,4 +1,4 @@
-import useUI from "../composables/useUI.js";
+import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
 

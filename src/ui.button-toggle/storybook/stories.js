@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

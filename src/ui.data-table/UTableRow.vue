@@ -154,13 +154,13 @@
 
 <script setup>
 import { computed, onMounted, useSlots, useTemplateRef } from "vue";
-import { cx } from "../utils/utilUI.js";
-import useUI from "../composables/useUI.js";
+import { cx } from "../utils/utilUI.ts";
+import useUI from "../composables/useUI.ts";
 
-import { PX_IN_REM } from "../constants.js";
+import { PX_IN_REM } from "../constants.ts";
 import { getFilteredRow } from "./utilTable.js";
 
-import { useMutationObserver } from "../composables/useMutationObserver.js";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";

@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utilsTs/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
 
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

@@ -43,12 +43,12 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { USwitch } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 

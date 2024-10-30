@@ -319,16 +319,16 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { createDebounce } from "../utils/utilHelper.js";
-import { getDefault } from "../utils/utilUI.js";
-import { isMac } from "../utils/utilPlatform.js";
+import { createDebounce } from "../utils/utilHelper.ts";
+import { getDefault } from "../utils/utilUI.ts";
+import { isMac } from "../utils/utilPlatform.ts";
 
 import SelectService from "./utilSelect.js";
 import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";
 import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
 
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 

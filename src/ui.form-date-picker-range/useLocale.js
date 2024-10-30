@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { useLocale as useGlobalLocale } from "../composables/useLocale.js";
+import { useLocale as useGlobalLocale } from "../composables/useLocale.ts";
 
 import { merge } from "lodash-es";
 import { getSortedLocale } from "../ui.form-calendar/utilDate.js";

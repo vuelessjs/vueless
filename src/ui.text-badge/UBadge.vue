@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useTemplateRef, computed } from "vue";
 
-import { getDefault } from "../utilsTs/utilUI.ts";
+import { getDefault } from "../utils/utilUI.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import { UBadge } from "./constants.ts";

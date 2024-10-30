@@ -1,17 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { createLocale, LocaleSymbol } from "./composables/useLocale.js";
+import { createLocale, LocaleSymbol } from "./composables/useLocale.ts";
 import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.js";
 import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.js";
-import { themeInit } from "./utilsTs/utilTheme.ts";
+import { themeInit } from "./utils/utilTheme.ts";
 
 import type { App } from 'vue'
 import type { CreateVuelessOptions } from './types.ts'
 
-export { setTitle } from "./utilsTs/utilHelper.ts";
-export { setTheme } from "./utilsTs/utilTheme.ts";
+export { setTitle } from "./utils/utilHelper.ts";
+export { setTheme } from "./utils/utilTheme.ts";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
-export { useLocale } from "./composables/useLocale.js";
+export { useLocale } from "./composables/useLocale.ts";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress.js";
 export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress.js";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay.js";

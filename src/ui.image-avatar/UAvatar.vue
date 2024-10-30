@@ -37,7 +37,7 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { UAvatar } from "./constants.js";
 import defaultConfig from "./config.js";

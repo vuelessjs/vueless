@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";

@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 

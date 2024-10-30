@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { UDot } from "./constants.js";
 import defaultConfig from "./config.js";

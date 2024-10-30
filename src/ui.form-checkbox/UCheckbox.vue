@@ -48,7 +48,7 @@ import { isEqual } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import defaultConfig from "./config.js";
 import { UCheckbox } from "./constants.js";

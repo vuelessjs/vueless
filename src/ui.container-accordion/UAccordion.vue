@@ -26,7 +26,7 @@ import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import { UAccordion } from "./constants.js";
 import defaultConfig from "./config.js";

@@ -62,7 +62,7 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/utilUI.ts";
 
 import defaultConfig from "./config.js";
 import { UInputNumber } from "./constants.js";
