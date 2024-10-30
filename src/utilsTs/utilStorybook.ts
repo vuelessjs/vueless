@@ -27,6 +27,7 @@ interface Tag {
 
 interface Attribute {
   name: string;
+  enum: string[];
   required?: boolean;
   description?: string;
   value: AttributeValue;
@@ -97,6 +98,7 @@ interface TableConfig {
   disable?: boolean;
   defaultValue?: { summary: unknown };
   category?: "slots" | "expose" | "Storybook Events";
+  type?: Record<string, string | string[]>;
 }
 
 /* Load Web-Types from the project root. */
@@ -168,24 +170,23 @@ export function getArgTypes(componentName: string | undefined) {
     }
 
     if (type.includes("|")) {
-      const options = attribute.value.type.replace(/['|]/g, "").split(/\s+/);
+      types[attribute.name] = {
+        control: type.split("|")[0] as ArgType["control"],
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
 
-      if (options.length > 1) {
-        types[attribute.name] = {
-          options,
-          control: "select",
-          table: {
-            defaultValue: { summary: attribute.default || "" },
-          },
-        };
-      } else {
-        types[attribute.name] = {
-          control: type.split("|")[0] as ArgType["control"],
-          table: {
-            defaultValue: { summary: attribute.default || "" },
-          },
-        };
-      }
+    if (attribute.enum) {
+      types[attribute.name] = {
+        options: attribute.enum,
+        control: "select",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
     }
 
     if (attribute.description?.includes("@ignore")) {

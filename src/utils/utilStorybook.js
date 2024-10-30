@@ -63,30 +63,29 @@ export function getArgTypes(componentName) {
     }
 
     if (type.includes("|")) {
-      const options = attribute.value.type.replace(/['|]/g, "").split(/\s+/);
-
-      if (options.length > 1) {
-        types[attribute.name] = {
-          options,
-          control: "select",
-          table: {
-            defaultValue: { summary: attribute.default || "" },
-          },
-        };
-      } else {
-        types[attribute.name] = {
-          control: type.split("|")[0],
-          table: {
-            defaultValue: { summary: attribute.default || "" },
-          },
-        };
-      }
+      types[attribute.name] = {
+        control: type.split("|")[0],
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+        },
+      };
     }
 
     if (attribute.description?.includes("@ignore")) {
       types[attribute.name] = {
         table: {
           disable: true,
+        },
+      };
+    }
+
+    if (attribute.enum) {
+      types[attribute.name] = {
+        options: attribute.enum,
+        control: "select",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
         },
       };
     }
