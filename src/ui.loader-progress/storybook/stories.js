@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames } from "../../utils/utilStorybook.js";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -25,7 +25,6 @@ const DefaultTemplate = (args) => ({
   components: { ULoaderProgress, UButton, URow },
   setup() {
     const { loaderProgressOn, loaderProgressOff } = useLoaderProgress();
-
     const slots = getSlotNames(ULoaderProgress.__name);
 
     return { args, slots, loaderProgressOn, loaderProgressOff };
@@ -40,7 +39,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   components: { ULoaderProgress, UButton, UCol, URow, UBadge },
   setup() {
     return {
@@ -79,7 +78,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { loading: false };
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };
