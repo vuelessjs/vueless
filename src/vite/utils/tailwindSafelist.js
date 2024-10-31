@@ -1,9 +1,12 @@
 import path from "node:path";
+import { merge } from "lodash-es";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { getDefaultConfigJson, getDirFiles } from "./common.js";
 import { isEqual, omit } from "lodash-es";
-import { mergeConfigs } from "../../utils/utilUI.ts";
+import { extendTailwindMerge } from "tailwind-merge";
+import { createMergeConfigsFunction } from "../../utils/utilMergeConfigs.js";
+import { defineConfig } from "cva";
 
 import {
   BRAND_COLORS,
@@ -11,6 +14,7 @@ import {
   dynamicClassPattern,
   tailwindClassDelimiter,
 } from "../constants.js";
+import { tailwindConfigExtension, NESTED_COMPONENT_REG_EXP } from "../../constants.ts";
 
 let vuelessConfig = {};
 
@@ -28,6 +32,16 @@ let vuelessConfig = {};
     vuelessConfig = {};
   }
 })();
+
+export const { cx } = defineConfig({
+  hooks: {
+    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+  },
+});
+
+const twMerge = extendTailwindMerge(merge(tailwindConfigExtension, vuelessConfig.tailwindMerge));
+
+const mergeConfigs = createMergeConfigsFunction(cx);
 
 export function clearTailwindSafelist() {
   process.env.VUELESS_SAFELIST = "";
