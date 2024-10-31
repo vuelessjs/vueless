@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames } from "../../utils/utilStorybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -39,7 +39,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { ULoaderProgress, UButton, UCol, URow, UBadge },
   setup() {
     return {
