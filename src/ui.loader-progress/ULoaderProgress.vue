@@ -7,13 +7,13 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
-import { isMobileApp } from "../utils/utilPlatform.js";
+import { getDefault } from "../utils/utilUI.ts";
+import { isMobileApp } from "../utils/utilPlatform.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
 import { useLoaderProgress } from "./useLoaderProgress.js";
 import useAttrs from "./useAttrs.js";
 
-import { ULoaderProgress, MAXIMUM, SPEED, infinityLoading } from "./constants.js";
+import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.js";
 import defaultConfig from "./config.js";
 
 defineOptions({ inheritAttrs: false });
@@ -102,10 +102,10 @@ watch(
   () => props.loading,
   () => {
     if (props.loading) {
-      addRequestUrl(infinityLoading);
+      addRequestUrl(INFINITY_LOADING);
       isLoading.value = true;
     } else {
-      removeRequestUrl(infinityLoading);
+      removeRequestUrl(INFINITY_LOADING);
     }
   },
   { immediate: true },
@@ -121,7 +121,7 @@ function setLoaderOffHandler(event) {
 
 function onChangeRequestsQueue() {
   const isActiveRequests =
-    requestQueue.value.includes(infinityLoading) ||
+    requestQueue.value.includes(INFINITY_LOADING) ||
     resourceNamesArray.value.some((resource) => {
       return requestQueue.value.includes(resource);
     });

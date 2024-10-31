@@ -1,7 +1,7 @@
 import { inject, readonly, ref } from "vue";
 
 import { getRequestWithoutQuery } from "./utilLoaderProgress.js";
-import { infinityLoading } from "./constants.js";
+import { INFINITY_LOADING } from "./constants.js";
 
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
@@ -45,7 +45,7 @@ function removeRequestUrl(url) {
   }
 
   requestQueue.value = requestQueue.value.filter(
-    (item) => item !== getRequestWithoutQuery(url) && item !== infinityLoading,
+    (item) => item !== getRequestWithoutQuery(url) && item !== INFINITY_LOADING,
   );
 }
 
