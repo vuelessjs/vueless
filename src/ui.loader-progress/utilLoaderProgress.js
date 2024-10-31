@@ -43,7 +43,7 @@ export function loaderProgressOff(resource) {
 }
 
 export function getRequestWithoutQuery(request) {
-  const [requestWithoutQuery] = request.split("?");
+  const [requestWithoutQuery] = String(request).split("?");
 
   return requestWithoutQuery;
 }

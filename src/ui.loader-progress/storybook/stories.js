@@ -25,7 +25,6 @@ const DefaultTemplate = (args) => ({
   components: { ULoaderProgress, UButton, URow },
   setup() {
     const { loaderProgressOn, loaderProgressOff } = useLoaderProgress();
-
     const slots = getSlotNames(ULoaderProgress.__name);
 
     return { args, slots, loaderProgressOn, loaderProgressOff };
@@ -79,7 +78,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { loading: false };
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };
