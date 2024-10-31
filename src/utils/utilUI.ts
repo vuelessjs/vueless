@@ -8,7 +8,7 @@ import {
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
   NESTED_COMPONENT_REG_EXP,
-  tailwindConfigExtension,
+  TAILWIND_CONFIG_EXTENSION,
 } from "../constants.ts";
 
 import type { BrandColors, Config, ComponentNames, Component, Defaults } from "../types.ts";
@@ -49,7 +49,7 @@ if (isCSR) {
  * All list of rules available here:
  * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
  */
-const twMerge = extendTailwindMerge(merge(tailwindConfigExtension, vuelessConfig.tailwindMerge));
+const twMerge = extendTailwindMerge(merge(TAILWIND_CONFIG_EXTENSION, vuelessConfig.tailwindMerge));
 
 /**
  * Export cva (class variance authority) methods:

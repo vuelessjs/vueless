@@ -41,7 +41,7 @@ export const BRAND_COLORS = [
   "rose",
 ];
 
-export const tailwindConfigExtension = {
+export const TAILWIND_CONFIG_EXTENSION = {
   extend: {
     theme: {
       spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],

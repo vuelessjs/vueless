@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import { getDefaultConfigJson, getDirFiles } from "./common.js";
 import { isEqual, omit } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
-import { createMergeConfigsFunction } from "../../utils/utilMergeConfigs.js";
+import { createMergeConfigsFunction } from "../../utils/utilMergeConfigs.ts";
 import { defineConfig } from "cva";
 
 import {
@@ -14,7 +14,7 @@ import {
   dynamicClassPattern,
   tailwindClassDelimiter,
 } from "../constants.js";
-import { tailwindConfigExtension, NESTED_COMPONENT_REG_EXP } from "../../constants.ts";
+import { TAILWIND_CONFIG_EXTENSION, NESTED_COMPONENT_REG_EXP } from "../../constants.ts";
 
 let vuelessConfig = {};
 
@@ -33,13 +33,13 @@ let vuelessConfig = {};
   }
 })();
 
+const twMerge = extendTailwindMerge(merge(TAILWIND_CONFIG_EXTENSION, vuelessConfig.tailwindMerge));
+
 export const { cx } = defineConfig({
   hooks: {
     onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
   },
 });
-
-const twMerge = extendTailwindMerge(merge(tailwindConfigExtension, vuelessConfig.tailwindMerge));
 
 const mergeConfigs = createMergeConfigsFunction(cx);
 
