@@ -10,6 +10,7 @@ export default defineConfig({
     include: [
       "cva",
       "tailwind-merge",
+      "@tailwindcss/forms",
       "prettier2",
       "prettier2/parser-html",
       "@storybook/blocks",
