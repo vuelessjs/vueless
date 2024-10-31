@@ -41,6 +41,21 @@ export const BRAND_COLORS = [
   "rose",
 ];
 
+export const TAILWIND_CONFIG_EXTENSION = {
+  extend: {
+    theme: {
+      spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
+    },
+    classGroups: {
+      "ring-w": [{ ring: ["dynamic"] }],
+      "ring-offset-w": [{ "ring-offset": ["dynamic"] }],
+      "ring-offset-color": [{ "ring-offset": ["dynamic"] }],
+      "font-size": [{ text: ["2xs"] }],
+      rounded: [{ rounded: ["dynamic"] }],
+    },
+  },
+};
+
 /* Vueless merge class strategy types */
 export const STRATEGY_TYPE = {
   merge: "merge",
