@@ -13,24 +13,8 @@ import path from "node:path";
 import { createRequire } from "module";
 import { rm, cp } from "node:fs/promises";
 
+import { vuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getDefaultConfigJson } from "./helper.js";
-
-let vuelessConfig = {};
-
-/* Load Vueless config from the project root in IIFE (no top-level await). */
-(async () => {
-  try {
-    const filePath = `${process.cwd()}/vueless.config`;
-
-    vuelessConfig = (await import(`${filePath}.js`)).default;
-
-    if (!vuelessConfig) {
-      vuelessConfig = (await import(`${filePath}.ts`)).default;
-    }
-  } catch {
-    vuelessConfig = {};
-  }
-})();
 
 const DEFAULT_ICONS_DIR = "./src/assets/icons";
 const VUELESS_ICONS_DIR = "./src/assets/icons/cache";

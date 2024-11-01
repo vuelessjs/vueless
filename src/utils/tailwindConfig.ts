@@ -20,7 +20,9 @@ if (isSSR) {
       if (!tailwindConfig) {
         tailwindConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
       }
-    } catch {}
+    } catch {
+      tailwindConfig = {} as Config;
+    }
   })();
 }
 

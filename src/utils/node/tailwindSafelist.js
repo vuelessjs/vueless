@@ -6,6 +6,7 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { isEqual, omit } from "lodash-es";
 import { defineConfig } from "cva";
 
+import { vuelessConfig } from "./vuelessConfig.js";
 import { createMergeConfigsFunction } from "./mergeConfigs.js";
 import { getDefaultConfigJson, getDirFiles } from "./helper.js";
 import {
@@ -17,23 +18,6 @@ import {
   TAILWIND_MERGE_EXTENSION,
   NESTED_COMPONENT_REG_EXP,
 } from "../../constants.js";
-
-let vuelessConfig = {};
-
-/* Load Vueless config from the project root in IIFE (no top-level await). */
-(async () => {
-  try {
-    const filePath = `${process.cwd()}/vueless.config`;
-
-    vuelessConfig = (await import(`${filePath}.js`)).default;
-
-    if (!vuelessConfig) {
-      vuelessConfig = (await import(`${filePath}.ts`)).default;
-    }
-  } catch {
-    vuelessConfig = {};
-  }
-})();
 
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
@@ -175,9 +159,6 @@ async function getComponentSafelist(
   let defaultConfig = {};
 
   if (defaultConfigPath) {
-    // disable file caching on vueless env (for the dev purpose)
-    defaultConfigPath = isVuelessEnv ? `${defaultConfigPath}?${Date.now()}` : defaultConfigPath;
-
     const configPath = path.join(process.cwd(), defaultConfigPath);
     const defaultConfigContent = await readFile(configPath, { encoding: "utf-8" });
 
