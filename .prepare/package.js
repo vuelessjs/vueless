@@ -1,3 +1,7 @@
+/**
+ * The file has `.js` extension because it is a node script.
+ */
+
 import fs from "fs";
 import path from "path";
 

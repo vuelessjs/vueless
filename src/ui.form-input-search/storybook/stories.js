@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
 import UButton from "../../ui.button/UButton.vue";

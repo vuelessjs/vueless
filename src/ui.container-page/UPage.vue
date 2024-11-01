@@ -89,7 +89,7 @@ import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import defaultConfig from "./config.js";
 import { UPage } from "./constants.js";

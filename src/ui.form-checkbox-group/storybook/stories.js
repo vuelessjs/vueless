@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";

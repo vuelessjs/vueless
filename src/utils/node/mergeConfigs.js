@@ -1,32 +1,8 @@
-import { cloneDeep } from "./utilHelper.ts";
-import { SYSTEM_CONFIG_KEY } from "../constants.ts";
+import { cloneDeep } from "lodash-es";
 
-import type {
-  CVACompoundVariants,
-  Component,
-  UnknownObject,
-  CVA,
-  NestedComponent,
-} from "../types.ts";
-import type { CX } from "cva";
+import { SYSTEM_CONFIG_KEY } from "../../constants.js";
 
-export interface MergeCompoundVariantsOptions {
-  defaultConfig: CVA;
-  globalConfig: CVA;
-  propsConfig: CVA;
-  isReplace?: boolean;
-}
-
-export interface MergeConfigsOptions {
-  defaultConfig: Component & CVA;
-  globalConfig: Component & CVA;
-  propsConfig?: Component & CVA;
-  config?: Component & CVA;
-  isReplace?: boolean;
-  isVariants?: boolean;
-}
-
-export function createMergeConfigsFunction(cx: CX) {
+export function createMergeConfigsFunction(cx) {
   /**
    * Recursively merge config objects with removing tailwind classes duplicates.
    * config - final merged config.
@@ -40,15 +16,15 @@ export function createMergeConfigsFunction(cx: CX) {
     config = {},
     isReplace = false,
     isVariants = false,
-  }: MergeConfigsOptions) {
-    globalConfig = cloneDeep(globalConfig || {}) as Component;
-    propsConfig = cloneDeep(propsConfig || {}) as Component;
+  }) {
+    globalConfig = cloneDeep(globalConfig || {});
+    propsConfig = cloneDeep(propsConfig || {});
 
     const isGlobalConfig = Object.keys(globalConfig).length;
     const isPropsConfig = Object.keys(propsConfig).length;
 
     // Add unique keys from defaultConfig to composedConfig
-    const composedConfig = cloneDeep(defaultConfig) as Component & CVA;
+    const composedConfig = cloneDeep(defaultConfig);
 
     // Add unique keys from globalConfig to composedConfig
     for (const key in globalConfig) {
@@ -95,9 +71,9 @@ export function createMergeConfigsFunction(cx: CX) {
           config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
         } else if (key === defaults || key === defaultVariants) {
           config[key] = {
-            ...(defaultConfig[key] as UnknownObject),
-            ...(globalConfig[key] as UnknownObject),
-            ...(propsConfig[key] as UnknownObject),
+            ...defaultConfig[key],
+            ...globalConfig[key],
+            ...propsConfig[key],
           };
         } else if (key === compoundVariants) {
           config[key] = mergeCompoundVariants({
@@ -145,12 +121,7 @@ export function createMergeConfigsFunction(cx: CX) {
    * Merge CVA compound variants arrays.
    * isReplace - enables class replacement instead of merge.
    */
-  function mergeCompoundVariants({
-    defaultConfig,
-    globalConfig,
-    propsConfig,
-    isReplace,
-  }: MergeCompoundVariantsOptions) {
+  function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, isReplace }) {
     if (
       (globalConfig.compoundVariants && !Array.isArray(globalConfig.compoundVariants)) ||
       (propsConfig.compoundVariants && !Array.isArray(propsConfig.compoundVariants)) ||
@@ -160,61 +131,55 @@ export function createMergeConfigsFunction(cx: CX) {
       console.error("CompoundVariants should be an array.");
     }
 
-    const globalConfigUniqueItems = cloneDeep(
-      globalConfig.compoundVariants || [],
-    ) as CVACompoundVariants[];
-    const propsConfigUniqueItems = cloneDeep(
-      propsConfig.compoundVariants || [],
-    ) as CVACompoundVariants[];
+    const globalConfigUniqueItems = cloneDeep(globalConfig.compoundVariants || []);
+    const propsConfigUniqueItems = cloneDeep(propsConfig.compoundVariants || []);
 
-    const config = (defaultConfig.compoundVariants as CVACompoundVariants[])?.map(
-      (defaultConfigItem) => {
-        /**
-         * Compare two objects by keys for match.
-         */
-        function isSameItem(configItem: UnknownObject) {
-          const hasConfigItemKeys = Object.keys(defaultConfigItem)
-            .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
-            .every((item) => Boolean(item));
+    const config = defaultConfig.compoundVariants?.map((defaultConfigItem) => {
+      /**
+       * Compare two objects by keys for match.
+       */
+      function isSameItem(configItem) {
+        const hasConfigItemKeys = Object.keys(defaultConfigItem)
+          .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
+          .every((item) => Boolean(item));
 
-          const hasDefaultConfigItemKeys = Object.keys(configItem)
-            .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
-            .every((item) => Boolean(item));
+        const hasDefaultConfigItemKeys = Object.keys(configItem)
+          .map((key) => defaultConfigItem[key] === configItem[key] || key === "class")
+          .every((item) => Boolean(item));
 
-          return hasConfigItemKeys && hasDefaultConfigItemKeys;
+        return hasConfigItemKeys && hasDefaultConfigItemKeys;
+      }
+
+      /**
+       * Find the same compound variant item in custom config if exist.
+       */
+      function findItem(config = []) {
+        const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
+        const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
+
+        if (~globalConfigUniqueItemIndex) {
+          globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
         }
 
-        /**
-         * Find the same compound variant item in custom config if exist.
-         */
-        function findItem(config = []): CVACompoundVariants | undefined {
-          const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
-          const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
-
-          if (~globalConfigUniqueItemIndex) {
-            globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
-          }
-
-          if (~propsConfigUniqueItemIndex) {
-            propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
-          }
-
-          return config.find(isSameItem);
+        if (~propsConfigUniqueItemIndex) {
+          propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
         }
 
-        const globalConfigItem = findItem(globalConfig.compoundVariants);
-        const propsConfigItem = findItem(propsConfig.compoundVariants);
+        return config.find(isSameItem);
+      }
 
-        return globalConfigItem || propsConfigItem
-          ? {
-              ...defaultConfigItem,
-              class: isReplace
-                ? propsConfigItem?.class || globalConfigItem?.class || defaultConfigItem.class
-                : cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
-            }
-          : defaultConfigItem;
-      },
-    );
+      const globalConfigItem = findItem(globalConfig.compoundVariants);
+      const propsConfigItem = findItem(propsConfig.compoundVariants);
+
+      return globalConfigItem || propsConfigItem
+        ? {
+            ...defaultConfigItem,
+            class: isReplace
+              ? propsConfigItem?.class || globalConfigItem?.class || defaultConfigItem.class
+              : cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
+          }
+        : defaultConfigItem;
+    });
 
     return [...config, ...globalConfigUniqueItems, ...propsConfigUniqueItems];
   }
@@ -223,12 +188,9 @@ export function createMergeConfigsFunction(cx: CX) {
 }
 
 /**
-   Turn simplified nested component config to regular config.
-   */
-function stringToObject(
-  value: (CVA & Partial<NestedComponent>) | string | undefined,
-  { addBase = false },
-): CVA & Partial<NestedComponent> {
+ Turn simplified nested component config to regular config.
+ */
+function stringToObject(value, { addBase = false }) {
   if (typeof value !== "object" && addBase) {
     return { base: value || "" };
   }

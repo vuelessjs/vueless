@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

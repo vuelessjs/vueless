@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UInputRating from "../../ui.form-input-rating/UInputRating.vue";
 import URow from "../../ui.container-row/URow.vue";

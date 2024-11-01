@@ -83,7 +83,7 @@
 <script setup>
 import { computed, ref, watchEffect, useId, watch } from "vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 

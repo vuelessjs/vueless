@@ -319,9 +319,9 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { createDebounce } from "../utils/utilHelper.ts";
-import { getDefault } from "../utils/utilUI.ts";
-import { isMac } from "../utils/utilPlatform.ts";
+import { createDebounce } from "../utils/helper.ts";
+import { getDefault } from "../utils/ui.ts";
+import { isMac } from "../utils/platform.ts";
 
 import SelectService from "./utilSelect.js";
 import useAttrs from "./useAttrs.js";

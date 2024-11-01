@@ -11,14 +11,14 @@ import {
   computed,
 } from "vue";
 
-import { cx, cva, setColor, getColor, vuelessConfig, mergeConfigs } from "../utils/utilUI.ts";
-import { cloneDeep, isCSR } from "../utils/utilHelper.ts";
+import { cx, cva, setColor, getColor, vuelessConfig, mergeConfigs } from "../utils/ui.ts";
+import { cloneDeep, isCSR } from "../utils/helper.ts";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   NESTED_COMPONENT_REG_EXP,
-} from "../constants.ts";
+} from "../constants.js";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 import type {

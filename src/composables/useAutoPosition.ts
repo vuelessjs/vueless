@@ -1,5 +1,5 @@
 import { computed, toValue, ref } from "vue";
-import { isSSR } from "../utils/utilHelper.ts";
+import { isSSR } from "../utils/helper.ts";
 
 import type { ComputedRef, MaybeRef, Reactive } from "vue";
 

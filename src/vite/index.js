@@ -1,10 +1,15 @@
+/**
+ * The file has `.js` extension because it is a node script.
+ * Please do not change the extension if you do not fully understand the consequences.
+ */
+
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
-import { addWebTypesToPackageJson, getNuxtFiles, getVueSourceFile } from "./utils/common.js";
-import { createTailwindSafelist, clearTailwindSafelist } from "./utils/tailwindSafelist.js";
-import { copyIcons, removeIcons } from "./utils/iconLoader.js";
-import { loadSvg } from "./utils/svgLoader.js";
-import { componentResolver, directiveResolver } from "./utils/vuelessResolver.js";
+import { loadSvg } from "../utils/node/loaderSvg.js";
+import { copyIcons, removeIcons } from "../utils/node/loaderIcon.js";
+import { createTailwindSafelist, clearTailwindSafelist } from "../utils/node/tailwindSafelist.js";
+import { addWebTypesToPackageJson, getNuxtFiles, getVueSourceFile } from "../utils/node/helper.js";
+import { componentResolver, directiveResolver } from "../utils/node/vuelessResolver.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>

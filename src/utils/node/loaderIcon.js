@@ -9,10 +9,11 @@
 
 /* eslint-disable no-console */
 import fs from "node:fs";
-import { rm, cp } from "node:fs/promises";
 import path from "node:path";
-import { getDirFiles, getDefaultConfigJson } from "./common.js";
 import { createRequire } from "module";
+import { rm, cp } from "node:fs/promises";
+
+import { getDirFiles, getDefaultConfigJson } from "./helper.js";
 
 let vuelessConfig = {};
 

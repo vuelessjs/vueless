@@ -152,7 +152,7 @@
 
 <script setup>
 import { computed, watch, ref, nextTick, provide, useId } from "vue";
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";

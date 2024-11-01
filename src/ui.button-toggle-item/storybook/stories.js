@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

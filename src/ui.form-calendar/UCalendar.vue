@@ -140,7 +140,7 @@ import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import {
   parseDate,

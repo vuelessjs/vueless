@@ -95,7 +95,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 import { getFileMbSize } from "./utilFileForm.js";
 
 import useAttrs from "./useAttrs.js";

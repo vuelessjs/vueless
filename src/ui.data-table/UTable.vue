@@ -284,7 +284,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault, cx } from "../utils/utilUI.ts";
+import { getDefault, cx } from "../utils/ui.ts";
 
 import defaultConfig from "./config.js";
 import {
@@ -297,7 +297,7 @@ import {
   addRowId,
 } from "./utilTable.js";
 
-import { PX_IN_REM } from "../constants.ts";
+import { PX_IN_REM } from "../constants.js";
 import { UTable } from "./constants.js";
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";

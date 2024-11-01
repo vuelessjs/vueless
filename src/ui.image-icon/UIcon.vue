@@ -11,8 +11,8 @@
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
-import { getDefault } from "../utils/utilUI.ts";
-import { isSSR } from "../utils/utilHelper.ts";
+import { getDefault } from "../utils/ui.ts";
+import { isSSR } from "../utils/helper.ts";
 
 import { UIcon } from "./constants.js";
 import defaultConfig from "./config.js";

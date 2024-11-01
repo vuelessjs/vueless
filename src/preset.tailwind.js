@@ -1,3 +1,8 @@
+/**
+ * The file has `.js` extension because it is a node script.
+ * Please do not change the extension if you do not fully understand the consequences.
+ */
+
 import forms from "@tailwindcss/forms";
 import colors from "tailwindcss/colors.js";
 import {
@@ -13,7 +18,7 @@ import {
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   GRAYSCALE_COLOR,
-} from "./constants.ts";
+} from "./constants.js";
 
 const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
 const brandColor = process.env.VUELESS_BRAND || DEFAULT_BRAND_COLOR;

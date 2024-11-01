@@ -154,10 +154,10 @@
 
 <script setup>
 import { computed, onMounted, useSlots, useTemplateRef } from "vue";
-import { cx } from "../utils/utilUI.ts";
+import { cx } from "../utils/ui.ts";
 import useUI from "../composables/useUI.ts";
 
-import { PX_IN_REM } from "../constants.ts";
+import { PX_IN_REM } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
 
 import { useMutationObserver } from "../composables/useMutationObserver.ts";

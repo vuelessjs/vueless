@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3";
-import { getArgTypes } from "../../../utils/utilStorybook.ts";
+import { getArgTypes } from "../../../utils/storybook.ts";
 
 import { ref, computed, onMounted, useTemplateRef } from "vue";
 

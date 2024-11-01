@@ -1,5 +1,5 @@
 import { computed, onBeforeUnmount, onMounted, toValue, watch } from "vue";
-import { isSSR } from "../utils/utilHelper.ts";
+import { isSSR } from "../utils/helper.ts";
 
 import type { TemplateRefElement } from "../types.ts";
 

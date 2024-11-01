@@ -33,7 +33,7 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import defaultConfig from "./config.js";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.js";

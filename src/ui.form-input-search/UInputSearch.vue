@@ -84,8 +84,8 @@ import { computed, useId, ref, watchEffect } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/utilUI.ts";
-import { createDebounce } from "../utils/utilHelper.ts";
+import { getDefault } from "../utils/ui.ts";
+import { createDebounce } from "../utils/helper.ts";
 
 import { UInputSearch } from "./constants.js";
 import defaultConfig from "./config.js";

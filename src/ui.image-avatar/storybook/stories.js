@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";

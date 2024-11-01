@@ -104,8 +104,8 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/utilUI.ts";
-import { isMac } from "../utils/utilPlatform.ts";
+import { getDefault } from "../utils/ui.ts";
+import { isMac } from "../utils/platform.ts";
 
 import usePointer from "./usePointer.js";
 import useAttrs from "./useAttrs.js";

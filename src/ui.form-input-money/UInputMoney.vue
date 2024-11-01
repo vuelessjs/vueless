@@ -44,7 +44,7 @@
 <script setup>
 import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 

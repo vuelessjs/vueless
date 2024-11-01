@@ -7,8 +7,8 @@
 <script setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/utilUI.ts";
-import { isMobileApp } from "../utils/utilPlatform.ts";
+import { getDefault } from "../utils/ui.ts";
+import { isMobileApp } from "../utils/platform.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
 import { useLoaderProgress } from "./useLoaderProgress.js";
 import useAttrs from "./useAttrs.js";

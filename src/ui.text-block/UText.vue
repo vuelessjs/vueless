@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { UText } from "./constants.ts";
 import defaultConfig from "./config.ts";

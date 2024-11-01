@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UInputMoney from "../../ui.form-input-money/UInputMoney.vue";
 import UCol from "../../ui.container-col/UCol.vue";

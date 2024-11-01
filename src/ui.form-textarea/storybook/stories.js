@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

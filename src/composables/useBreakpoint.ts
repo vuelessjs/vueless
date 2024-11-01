@@ -1,5 +1,5 @@
 import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
-import { isSSR } from "../utils/utilHelper.ts";
+import { isSSR } from "../utils/helper.ts";
 
 import type { Ref } from "vue";
 

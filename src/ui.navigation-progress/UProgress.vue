@@ -52,7 +52,7 @@
 <script setup>
 import { computed } from "vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 import useAttrs from "./useAttrs.js";
 
 import defaultConfig from "./config.js";

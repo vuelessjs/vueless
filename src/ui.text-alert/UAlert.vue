@@ -83,7 +83,7 @@ import { onMounted, ref, computed } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UText from "../ui.text-block/UText.vue";
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { UAlert } from "./constants.js";
 import defaultConfig from "./config.js";

@@ -2,21 +2,7 @@ import fs from "node:fs";
 import { compileTemplate } from "vue/compiler-sfc";
 import { optimize as optimizeSvg } from "svgo";
 
-const DEFAULT_SVGO_CONFIG = {
-  plugins: [
-    {
-      name: "preset-default",
-      params: {
-        overrides: {
-          removeViewBox: false,
-          convertColors: {
-            currentColor: true,
-          },
-        },
-      },
-    },
-  ],
-};
+import { DEFAULT_SVGO_CONFIG } from "../../constants.js";
 
 export async function loadSvg(id, options) {
   const {

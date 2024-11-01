@@ -2,19 +2,21 @@ import path from "node:path";
 import { merge } from "lodash-es";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { getDefaultConfigJson, getDirFiles } from "./common.js";
-import { isEqual, omit } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
-import { createMergeConfigsFunction } from "../../utils/utilMergeConfigs.ts";
+import { isEqual, omit } from "lodash-es";
 import { defineConfig } from "cva";
 
+import { createMergeConfigsFunction } from "./mergeConfigs.js";
+import { getDefaultConfigJson, getDirFiles } from "./helper.js";
 import {
-  BRAND_COLORS,
   COMPONENTS,
-  dynamicClassPattern,
-  tailwindClassDelimiter,
-} from "../constants.js";
-import { TAILWIND_CONFIG_EXTENSION, NESTED_COMPONENT_REG_EXP } from "../../constants.ts";
+  BRAND_COLORS,
+  BRAND_COLOR,
+  DYNAMIC_COLOR_PATTERN,
+  TAILWIND_CLASS_DELIMITER,
+  TAILWIND_MERGE_EXTENSION,
+  NESTED_COMPONENT_REG_EXP,
+} from "../../constants.js";
 
 let vuelessConfig = {};
 
@@ -33,7 +35,7 @@ let vuelessConfig = {};
   }
 })();
 
-const twMerge = extendTailwindMerge(merge(TAILWIND_CONFIG_EXTENSION, vuelessConfig.tailwindMerge));
+const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
 export const { cx } = defineConfig({
   hooks: {
@@ -69,7 +71,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
-  const storybookColors = { colors: BRAND_COLORS, isComponentExists: true };
+  const storybookColors = { colors: [...BRAND_COLORS, BRAND_COLOR], isComponentExists: true };
   const safelist = [];
 
   const componentNames = Object.keys(COMPONENTS);
@@ -140,7 +142,7 @@ function getSafelistClasses(config) {
 
       if (typeof classes === "string") {
         safelistItems.push(
-          ...classes.split(" ").filter((classItem) => classItem.includes(dynamicClassPattern)),
+          ...classes.split(" ").filter((classItem) => classItem.includes(DYNAMIC_COLOR_PATTERN)),
         );
       }
     }
@@ -150,13 +152,13 @@ function getSafelistClasses(config) {
 }
 
 function getSafelistItem(safelistClass, colorString) {
-  const classes = safelistClass.split(tailwindClassDelimiter);
+  const classes = safelistClass.split(TAILWIND_CLASS_DELIMITER);
   const mainClass = classes.at(-1);
   const variantClasses = classes.slice(0, classes.length - 1);
 
-  const pattern = mainClass.replace(dynamicClassPattern, colorString);
+  const pattern = mainClass.replace(DYNAMIC_COLOR_PATTERN, colorString);
   const variants = variantClasses
-    .map((variantItem) => (variantItem ? variantItem : tailwindClassDelimiter))
+    .map((variantItem) => (variantItem ? variantItem : TAILWIND_CLASS_DELIMITER))
     .join("");
 
   return classes.length === 1 ? { pattern } : { pattern, variants: [variants].flat() };
@@ -187,11 +189,10 @@ async function getComponentSafelist(
   ]);
 
   const colorString = `(${colors.join("|")})`;
-  const componentSafelist = getSafelistClasses(mergedConfig).map((safelistClass) =>
+
+  return getSafelistClasses(mergedConfig).map((safelistClass) =>
     getSafelistItem(safelistClass, colorString),
   );
-
-  return componentSafelist;
 }
 
 async function findComponentColors(files, componentName) {
@@ -245,7 +246,9 @@ async function findComponentColors(files, componentName) {
   }
 
   return {
-    colors: Array.from(colors).filter((color) => color && BRAND_COLORS.includes(color)),
+    colors: Array.from(colors).filter(
+      (color) => color && [...BRAND_COLORS, BRAND_COLOR].includes(color),
+    ),
     isComponentExists,
   };
 }
@@ -261,7 +264,7 @@ function isDefaultComponentConfig(filePath, componentName) {
   const componentDirName = filePath.split(path.sep).at(-2);
 
   return (
-    componentDirName === COMPONENTS[componentName].folder &&
+    componentDirName === COMPONENTS[componentName] &&
     (filePath.endsWith("/config.js") || filePath.endsWith("/config.ts"))
   );
 }

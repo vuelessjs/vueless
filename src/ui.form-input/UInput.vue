@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 const VALIDATION_RULES_REG_EX = {
   integer: /\d*/g,

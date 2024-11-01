@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames } from "../../utils/storybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";

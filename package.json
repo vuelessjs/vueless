@@ -27,12 +27,12 @@
     "access": "public"
   },
   "scripts": {
-    "dev:docs": "npx @vueless/web-types && node prepare.icons && storybook dev -p 6006 --docs --no-open",
-    "dev": "npx @vueless/web-types && node prepare.icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
-    "build": "npx @vueless/web-types && node prepare.icons && storybook build --docs",
+    "dev:docs": "npx @vueless/web-types && node .prepare/icons && storybook dev -p 6006 --docs --no-open",
+    "dev": "npx @vueless/web-types && node .prepare/icons && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
+    "build": "npx @vueless/web-types && node .prepare/icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "node prepare.icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && node prepare.package",
+    "release:prepare": "node .prepare/icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && node .prepare/package",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",

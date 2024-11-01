@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { UHeader } from "./constants.js";
 import defaultConfig from "./config.js";

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
 import UButton from "../../ui.button/UButton.vue";

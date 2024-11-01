@@ -1,15 +1,15 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { cloneDeep, isCSR, isSSR } from "./utilHelper.ts";
-import { createMergeConfigsFunction } from "./utilMergeConfigs.ts";
+import { cloneDeep, isCSR, isSSR } from "./helper.ts";
+import { createMergeConfigsFunction } from "./node/mergeConfigs.js";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
   NESTED_COMPONENT_REG_EXP,
-  TAILWIND_CONFIG_EXTENSION,
-} from "../constants.ts";
+  TAILWIND_MERGE_EXTENSION,
+} from "../constants.js";
 
 import type { BrandColors, Config, ComponentNames, Component, Defaults } from "../types.ts";
 
@@ -49,7 +49,7 @@ if (isCSR) {
  * All list of rules available here:
  * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
  */
-const twMerge = extendTailwindMerge(merge(TAILWIND_CONFIG_EXTENSION, vuelessConfig.tailwindMerge));
+const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
 /**
  * Export cva (class variance authority) methods:

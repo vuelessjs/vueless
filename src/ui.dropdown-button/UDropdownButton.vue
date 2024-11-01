@@ -71,7 +71,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 

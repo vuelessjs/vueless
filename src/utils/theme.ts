@@ -1,9 +1,9 @@
 import { merge } from "lodash-es";
 import tailwindColors from "tailwindcss/colors.js";
 
-import { tailwindConfig } from "./utilTailwind.ts";
-import { vuelessConfig } from "./utilUI.ts";
-import { isSSR, isCSR } from "./utilHelper.ts";
+import { tailwindConfig } from "./tailwind.ts";
+import { vuelessConfig } from "./ui.ts";
+import { isSSR, isCSR } from "./helper.ts";
 import {
   BRAND_COLORS,
   GRAYSCALE_COLOR,
@@ -19,7 +19,7 @@ import {
   PX_IN_REM,
   COOL_COLOR,
   GRAY_COLOR,
-} from "../constants.ts";
+} from "../constants.js";
 
 import type {
   ThemeConfig,

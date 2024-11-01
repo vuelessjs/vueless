@@ -83,7 +83,7 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import UButton from "../ui.button/UButton.vue";
 import UModal from "../ui.container-modal/UModal.vue";

@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../../utils/utilStorybook.ts";
+import { getArgTypes } from "../../../utils/storybook.ts";
 
 import UIcon from "../../../ui.image-icon/UIcon.vue";
 import URow from "../../../ui.container-row/URow.vue";

@@ -34,7 +34,7 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";

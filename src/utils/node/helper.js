@@ -1,6 +1,5 @@
 import path from "path";
 import fs, { statSync } from "fs";
-
 import { readdir } from "node:fs/promises";
 
 export function addWebTypesToPackageJson(env) {

@@ -176,7 +176,7 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { UDataList as UDataListName } from "./constants.js";
 import defaultConfig from "./config.js";

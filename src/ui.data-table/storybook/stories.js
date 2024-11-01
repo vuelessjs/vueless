@@ -1,5 +1,5 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
-import { getRandomId } from "../../utils/utilUI.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import { getRandomId } from "../../utils/ui.ts";
 
 import UTable from "../../ui.data-table/UTable.vue";
 import UButton from "../../ui.button/UButton.vue";

@@ -82,7 +82,7 @@ import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 
 import { addDays, isSameDay } from "../ui.form-calendar/utilDate.js";
 

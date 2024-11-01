@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";

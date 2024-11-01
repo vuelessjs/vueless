@@ -15,7 +15,7 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 
-import { getDefault } from "../utils/utilUI.ts";
+import { getDefault } from "../utils/ui.ts";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config.js";
