@@ -16,5 +16,5 @@ export default defineConfig({
       "@storybook/blocks",
       "@storybook/theming/create",
     ],
-  }
+  },
 });

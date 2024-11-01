@@ -1,7 +1,7 @@
 import { merge } from "lodash-es";
 import tailwindColors from "tailwindcss/colors.js";
 
-import { tailwindConfig } from "./tailwind.ts";
+import { tailwindConfig } from "./tailwindConfig.ts";
 import { vuelessConfig } from "./ui.ts";
 import { isSSR, isCSR } from "./helper.ts";
 import {
@@ -70,7 +70,7 @@ export function setTheme(config: InternalThemeConfig = {}) {
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
-  const isBrandColor = BRAND_COLORS.some((color) => color === brand);
+  const isBrandColor = [...BRAND_COLORS, GRAYSCALE_COLOR].some((color) => color === brand);
   const isGrayColor = GRAY_COLORS.some((color) => color === gray);
 
   if (!isBrandColor) {

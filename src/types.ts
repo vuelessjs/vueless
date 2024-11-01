@@ -7,6 +7,7 @@ import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 
 import type { ComputedRef, MaybeRef } from "vue";
 import type { Props } from "tippy.js";
+import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
 export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
@@ -181,7 +182,7 @@ export interface KeysToExtend {
 }
 
 export interface CreateVuelessOptions {
-  i18n?: Record<string, string | object>;
+  i18n?: LocaleOptions;
 }
 
 export interface TailwindSafelist {
