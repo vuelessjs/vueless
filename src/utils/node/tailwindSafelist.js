@@ -148,10 +148,7 @@ function getSafelistItem(safelistClass, colorString) {
   return classes.length === 1 ? { pattern } : { pattern, variants: [variants].flat() };
 }
 
-async function getComponentSafelist(
-  componentName,
-  { colors, vuelessConfigFiles, isVuelessEnv = false },
-) {
+async function getComponentSafelist(componentName, { colors, vuelessConfigFiles }) {
   let defaultConfigPath = vuelessConfigFiles.find((file) =>
     isDefaultComponentConfig(file, componentName),
   );
