@@ -16,8 +16,5 @@ export default defineConfig({
       "@storybook/blocks",
       "@storybook/theming/create",
     ],
-  },
-  build: {
-    target: "es2022",
-  },
+  }
 });

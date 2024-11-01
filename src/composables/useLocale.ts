@@ -6,7 +6,7 @@ import type { InjectionKey } from "vue";
 
 export const LocaleSymbol: InjectionKey<LocaleInstance> = Symbol.for("vueless:locale");
 
-export function createLocale(options: LocaleOptions) {
+export function createLocale(options?: LocaleOptions) {
   const i18n =
     options?.adapter && options?.adapter?.name ? options?.adapter : createVuelessAdapter(options);
 

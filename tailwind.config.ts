@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { vuelessPreset } from "./src/preset.tailwind";
+import { vuelessPreset } from "./src/preset.tailwind.js";
 
 export default {
   presets: [vuelessPreset],
