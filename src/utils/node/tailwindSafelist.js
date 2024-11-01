@@ -176,7 +176,7 @@ async function getComponentSafelist(
 
   if (defaultConfigPath) {
     // disable file caching on vueless env (for the dev purpose)
-    defaultConfigPath = isVuelessEnv ? defaultConfigPath : `${defaultConfigPath}?${Date.now()}`;
+    defaultConfigPath = isVuelessEnv ? `${defaultConfigPath}?${Date.now()}` : defaultConfigPath;
 
     const configPath = path.join(process.cwd(), defaultConfigPath);
     const defaultConfigContent = await readFile(configPath, { encoding: "utf-8" });

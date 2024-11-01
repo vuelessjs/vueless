@@ -71,7 +71,7 @@ export const Vueless = function (options = {}) {
 
       if (config.command === "dev" || config.command === "serve") {
         /* remove dynamically copied icons on dev server start */
-        await removeIcons(debug);
+        await removeIcons({ debug, isNuxt });
 
         /* add web-types config to the package.json */
         addWebTypesToPackageJson(env, debug);
