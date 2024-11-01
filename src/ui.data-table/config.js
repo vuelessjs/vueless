@@ -6,7 +6,7 @@ export default /*tw*/ {
   stickyHeaderCell: "flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
-    base: "absolute top-5 left-11 bg-gradient-to-r from-white from-80%",
+    base: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
     variants: {
       compact: {
         true: "top-3",
@@ -14,9 +14,16 @@ export default /*tw*/ {
     },
   },
   stickyHeaderLoader: "{ULoaderProgress}",
-  stickyHeaderActions: "absolute rounded-t-lg border-blue-200 bg-blue-50",
+  stickyHeaderActions: "fixed rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "{UCheckbox}",
-  stickyHeaderActionsCounter: "-ml-2",
+  stickyHeaderActionsCounter: {
+    base: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
+    variants: {
+      compact: {
+        true: "top-3",
+      },
+    },
+  },
   tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
   table: "min-w-full border-none text-sm w-full table-auto",
   header: "border-b border-gray-200",
