@@ -1,3 +1,5 @@
+import { COMPONENTS } from "../constants.js";
+
 interface WebTypes {
   framework: string;
   name: string;
@@ -84,7 +86,7 @@ interface Types {
   [key: string]: ArgType | undefined;
 }
 
-interface ArgType {
+export interface ArgType {
   control?: "text" | "number" | "boolean" | "array" | "select" | false;
   options?: string[];
   table?: TableConfig;
@@ -101,6 +103,8 @@ interface TableConfig {
   type?: Record<string, string | string[]>;
 }
 
+type ComponentNames = keyof typeof COMPONENTS;
+
 /* Load Web-Types from the project root. */
 const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/node_modules/.cache/vueless/web-types.json", {
@@ -109,20 +113,20 @@ const [webTypes]: WebTypes[] = Object.values(
   }),
 );
 
-const getComponentData = (componentName: string | undefined) => {
-  if (!componentName) return;
-
+const getComponentData = (componentName: ComponentNames) => {
   return webTypes.contributions.html.tags.find((item: Tag) => item.name === componentName);
 };
 
 export function getSlotNames(componentName: string | undefined) {
   if (!componentName) return;
 
-  return getComponentData(componentName)?.slots?.map((item) => item.name);
+  return getComponentData(componentName as ComponentNames)?.slots?.map((item) => item.name);
 }
 
 export function getArgTypes(componentName: string | undefined) {
-  const component = getComponentData(componentName);
+  if (!componentName) return;
+
+  const component = getComponentData(componentName as ComponentNames);
 
   if (!component) return;
 

@@ -13,7 +13,7 @@ export default function useAttrs(props: UBadgeProps) {
   const slots = useSlots();
 
   const mutatedProps = computed(() => ({
-    tabindex: Boolean(~props.tabindex),
+    tabindex: Boolean(~Number(props.tabindex)),
     leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
     rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   }));

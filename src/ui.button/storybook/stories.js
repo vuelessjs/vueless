@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -15,13 +20,8 @@ export default {
   argTypes: {
     ...getArgTypes(UButton.__name),
   },
-  // TODO: Generate by function same like `getArgTypes(UButton.__name)`
   parameters: {
-    docs: {
-      description: {
-        component: `The \`${UButton.__name}\` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)`,
-      },
-    },
+    ...getDocsDescription(UButton.__name),
   },
 };
 
