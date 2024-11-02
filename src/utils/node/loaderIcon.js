@@ -14,21 +14,23 @@ import { createRequire } from "module";
 import { rm, cp } from "node:fs/promises";
 
 import { vuelessConfig } from "./vuelessConfig.js";
-import { getDirFiles, getDefaultConfigJson } from "./helper.js";
+import { getDirFiles, getDefaultConfigJson, merge } from "./helper.js";
+import { CACHE_PATH, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
-const DEFAULT_ICONS_DIR = "./src/assets/icons";
-const VUELESS_ICONS_DIR = "./src/assets/icons/cache";
-const PROJECT_ICONS_DIR = path.join(process.cwd(), "/node_modules/vueless/assets/icons/cache");
-const DEFAULT_CONFIG_PATH = "ui.image-icon/config.js";
-const STORYBOOK_STORY_EXTENSION = "/stories.js";
+const ICONS_DIR = "assets/icons";
+const NUXT_ASSETS_DIR = path.join(process.cwd(), "assets/.vueless/icons");
+const DEFAULT_ICONS_DIR = path.join(process.cwd(), `src/${ICONS_DIR}`);
+const CACHED_ICONS_DIR = path.join(process.cwd(), `${CACHE_PATH}/${ICONS_DIR}`);
+const ICON_CONFIG_PATH = "ui.image-icon/config.ts";
 const ICON_COMPONENT_NAME = "UIcon";
+const STORYBOOK_STORY_EXTENSIONS = ["/stories.js", "/stories.ts"];
 
 let isDebug = false;
 let isVuelessEnv = false;
 let isDefaultMode = false;
 let isStorybookMode = false;
 let isVuelessIconsMode = false;
-let iconCacheDir = PROJECT_ICONS_DIR;
+let cachedIconsDir = CACHED_ICONS_DIR;
 
 // perform icons copy magick... ✨
 export async function copyIcons({ mode = "", env, debug, targetFiles = [], isNuxt } = {}) {
@@ -38,49 +40,50 @@ export async function copyIcons({ mode = "", env, debug, targetFiles = [], isNux
   isStorybookMode = mode === "storybook";
   isVuelessIconsMode = mode === "vuelessIcons";
 
-  if (isVuelessIconsMode && isVuelessEnv) iconCacheDir = DEFAULT_ICONS_DIR;
-  if (isStorybookMode && isVuelessEnv) iconCacheDir = VUELESS_ICONS_DIR;
+  if (isVuelessIconsMode && isVuelessEnv) cachedIconsDir = DEFAULT_ICONS_DIR;
+  if (isStorybookMode && isVuelessEnv) cachedIconsDir = CACHED_ICONS_DIR;
 
   if (isStorybookMode) {
-    const storyBookFiles = await getDirFiles("src", STORYBOOK_STORY_EXTENSION);
+    const storybookStoriesJs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[0]);
+    const storybookStoriesTs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[1]);
 
-    findAndCopyIcons(storyBookFiles.flat());
+    findAndCopyIcons([...storybookStoriesJs.flat(), ...storybookStoriesTs.flat()]);
   }
 
   if (isVuelessIconsMode || isDefaultMode || isStorybookMode) {
     const vueFiles = targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue"));
 
     const jsFiles = targetFiles.map((jsFilePath) =>
-      getDirFiles(jsFilePath, ".js", { exclude: [STORYBOOK_STORY_EXTENSION] }),
+      getDirFiles(jsFilePath, ".js", { exclude: [STORYBOOK_STORY_EXTENSIONS[0]] }),
     );
 
     const tsFiles = targetFiles.map((tsFilePath) =>
-      getDirFiles(tsFilePath, ".ts", { exclude: [STORYBOOK_STORY_EXTENSION, ".d.ts"] }),
+      getDirFiles(tsFilePath, ".ts", { exclude: [STORYBOOK_STORY_EXTENSIONS[1], ".d.ts"] }),
     );
 
     const iconFiles = await Promise.all([...vueFiles, ...jsFiles, ...tsFiles]);
 
-    findAndCopyIcons([...iconFiles.flat(), "vueless.config.js", "vueless.config.ts"]);
+    findAndCopyIcons([
+      ...iconFiles.flat(),
+      `${VUELESS_CONFIG_FILE_NAME}.js`,
+      `${VUELESS_CONFIG_FILE_NAME}.ts`,
+    ]);
   }
 
   if (isNuxt) {
-    await cp(
-      path.join(process.cwd(), "node_modules/vueless/assets"),
-      path.join(process.cwd(), "assets/.vueless"),
-      {
-        recursive: true,
-      },
-    );
+    await cp(CACHED_ICONS_DIR, NUXT_ASSETS_DIR, {
+      recursive: true,
+    });
   }
 }
 
 export async function removeIcons({ debug, isNuxt }) {
-  if (!fs.existsSync(iconCacheDir)) return;
+  if (!fs.existsSync(cachedIconsDir)) return;
 
-  await rm(iconCacheDir, { recursive: true, force: true });
+  await rm(cachedIconsDir, { recursive: true, force: true });
 
   if (isNuxt) {
-    await rm(path.join(process.cwd(), "assets/.vueless"), { recursive: true, force: true });
+    await rm(NUXT_ASSETS_DIR, { recursive: true, force: true });
   }
 
   if (debug) {
@@ -174,19 +177,19 @@ function findAndCopyIcons(files) {
       vueless: {
         // @material-symbols icons which used across the components.
         source: `${process.cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-        destination: `${iconCacheDir}/${name}.svg`
+        destination: `${cachedIconsDir}/${name}.svg`
       },
       "@material-symbols": {
         source: `${process.cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-        destination: `${iconCacheDir}/${library}/svg-${weight}/${style}/${name}.svg`
+        destination: `${cachedIconsDir}/${library}/svg-${weight}/${style}/${name}.svg`
       },
       "bootstrap-icons": {
         source: `${process.cwd()}/node_modules/${library}/icons/${name}.svg`,
-        destination: `${iconCacheDir}/${library}/icons/${name}.svg`
+        destination: `${cachedIconsDir}/${library}/icons/${name}.svg`
       },
       heroicons: {
         source: `${process.cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-        destination: `${iconCacheDir}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
+        destination: `${cachedIconsDir}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
       }
     };
     /* eslint-enable vue/max-len, prettier/prettier */
@@ -216,7 +219,7 @@ function getSafelistIcons() {
 }
 
 function getMergedConfig() {
-  const defaultConfigPath = (isVuelessEnv ? "src/" : "node_modules/vueless/") + DEFAULT_CONFIG_PATH;
+  const defaultConfigPath = (isVuelessEnv ? "src/" : "node_modules/vueless/") + ICON_CONFIG_PATH;
 
   if (fs.existsSync(defaultConfigPath)) {
     const defaultConfigFile = fs.readFileSync(defaultConfigPath).toString();
@@ -226,17 +229,4 @@ function getMergedConfig() {
 
     return merge(globalConfig?.defaults || {}, defaultConfig.defaults);
   }
-}
-
-function merge(source, target) {
-  for (const [key, val] of Object.entries(source)) {
-    if (val !== null && typeof val === `object`) {
-      target[key] ??= new val.__proto__.constructor();
-      merge(val, target[key]);
-    } else {
-      target[key] = val;
-    }
-  }
-
-  return target; // we're replacing in-situ, so this is more for chaining than anything else
 }

@@ -103,7 +103,10 @@ interface TableConfig {
 
 /* Load Web-Types from the project root. */
 const [webTypes]: WebTypes[] = Object.values(
-  import.meta.glob("/web-types.json", { eager: true, import: "default" }),
+  import.meta.glob("/node_modules/.cache/vueless/web-types.json", {
+    eager: true,
+    import: "default",
+  }),
 );
 
 const getComponentData = (componentName: string | undefined) => {

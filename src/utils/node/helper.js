@@ -1,13 +1,16 @@
 import path from "path";
 import fs, { statSync } from "fs";
 import { readdir } from "node:fs/promises";
+import { WEB_TYPES_FILE_NAME_WITH_EXT } from "../../constants.js";
 
 export function addWebTypesToPackageJson(env) {
   if (env === "vueless") return;
 
-  const webTypesPath = fs.existsSync(process.cwd() + "/web-types.json")
-    ? "./web-types.json"
-    : "./node_modules/vueless/web-types.json";
+  const projectWebTypesPath = path.join(process.cwd(), WEB_TYPES_FILE_NAME_WITH_EXT);
+
+  const webTypesPath = fs.existsSync(projectWebTypesPath)
+    ? projectWebTypesPath
+    : `./node_modules/vueless/${WEB_TYPES_FILE_NAME_WITH_EXT}`;
 
   try {
     const packageJsonPath = path.resolve(process.cwd(), "package.json");
@@ -83,4 +86,17 @@ export function getDefaultConfigJson(fileContents) {
 
   // indirect eval
   return (0, eval)("(" + objectString + ")"); // Converting into JS object
+}
+
+export function merge(source, target) {
+  for (const [key, val] of Object.entries(source)) {
+    if (val !== null && typeof val === `object`) {
+      target[key] ??= new val.__proto__.constructor();
+      merge(val, target[key]);
+    } else {
+      target[key] = val;
+    }
+  }
+
+  return target; // we're replacing in-situ, so this is more for chaining than anything else
 }

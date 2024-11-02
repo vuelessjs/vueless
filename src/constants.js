@@ -190,3 +190,6 @@ export const PX_IN_REM = 16;
 export const NESTED_COMPONENT_REG_EXP = /\{U[^}]*}/g;
 export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_CLASS_DELIMITER = ":";
+export const CACHE_PATH = "node_modules/.cache/vueless";
+export const WEB_TYPES_FILE_NAME_WITH_EXT = "web-types.json";
+export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
