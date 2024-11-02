@@ -25,7 +25,7 @@ export const VuelessUnpluginComponents = (options) =>
   – Loads SVG images as a Vue components.
  */
 export const Vueless = function (options = {}) {
-  const { mode, debug, env, include } = options;
+  const { mode, debug, env, include, noWebTypesInPackageJson } = options;
 
   const isNuxt = mode === "nuxt-module";
   const srcDir = isNuxt ? process.cwd() : getVueSourceFile();
@@ -74,7 +74,7 @@ export const Vueless = function (options = {}) {
         await removeIcons({ debug, isNuxt });
 
         /* add web-types config to the package.json */
-        addWebTypesToPackageJson(env, debug);
+        addWebTypesToPackageJson({ env, debug, noWebTypesInPackageJson });
       }
     },
 

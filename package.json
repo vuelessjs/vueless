@@ -32,7 +32,7 @@
     "build": "npx @vueless/web-types && node .scripts/icons && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "node .scripts/icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && node .scripts/package",
+    "release:prepare": "npx @vueless/web-types && node .scripts/icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md node_modules/.cache/vueless/web-types.json dist/ && node .scripts/package",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
@@ -66,7 +66,7 @@
     "@vue/eslint-config-typescript": "^14.1.1",
     "@vue/tsconfig": "^0.5.1",
     "@vueless/storybook": "^0.0.37",
-    "@vueless/web-types": "^0.0.18",
+    "@vueless/web-types": "^0.0.20",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^9.12.0",
@@ -99,5 +99,5 @@
   "bugs": {
     "url": "https://github.com/vuelessjs/vueless/issues"
   },
-  "web-types": "./web-types.json"
+  "web-types": "./node_modules/.cache/vueless/web-types.json"
 }

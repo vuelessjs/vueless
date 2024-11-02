@@ -5,7 +5,7 @@
 import fs from "fs";
 import path from "path";
 
-/* Web-types needs only for the dev purpose, so it needs to be removed from the dist. */
+/* Web-types needs only for the dev purpose, so we remove it from the dist. */
 removeWebTypesFromPackageJson();
 
 function removeWebTypesFromPackageJson() {
