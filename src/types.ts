@@ -236,3 +236,87 @@ export interface VuelessCssVariables {
   "--vl-color-brand-950": string;
   "--vl-color-brand-default": string;
 }
+
+/* Web-types interfaces and types */
+
+export interface WebTypes {
+  framework: string;
+  name: string;
+  version: string;
+  contributions: Contributions;
+}
+
+export interface Contributions {
+  html: HtmlContributions;
+}
+
+export interface HtmlContributions {
+  "description-markup": string;
+  "types-syntax": string;
+  tags: Tag[];
+}
+
+export interface Tag {
+  name: string;
+  description?: string;
+  attributes?: Attribute[];
+  events?: Event[];
+  slots?: Slot[];
+  exposes?: Expose[];
+  source?: Source;
+}
+
+export interface Source {
+  module: string;
+  symbol: string;
+}
+
+export interface Attribute {
+  name: string;
+  enum: string[];
+  required?: boolean;
+  description?: string;
+  value: AttributeValue;
+  default?: unknown;
+}
+
+export interface AttributeValue {
+  kind: string;
+  type: string;
+}
+
+export interface Event {
+  name: string;
+  description?: string;
+  properties?: EventProperty[];
+}
+
+export interface EventProperty {
+  type: string[];
+  name: string;
+  description?: string;
+}
+
+export interface Slot {
+  name: string;
+  description?: string;
+  scoped?: boolean;
+  bindings?: SlotBinding[];
+}
+
+export interface SlotBinding {
+  type: string;
+  name: string;
+  description?: string;
+}
+
+export interface Expose {
+  name: string;
+  description?: string;
+  properties: ExposeProperty[];
+}
+
+export interface ExposeProperty {
+  type: string;
+  description?: string;
+}

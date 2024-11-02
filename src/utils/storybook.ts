@@ -1,86 +1,13 @@
 import { COMPONENTS } from "../constants.js";
 
-interface WebTypes {
-  framework: string;
-  name: string;
-  version: string;
-  contributions: Contributions;
-}
-
-interface Contributions {
-  html: HtmlContributions;
-}
-
-interface HtmlContributions {
-  "description-markup": string;
-  "types-syntax": string;
-  tags: Tag[];
-}
-
-interface Tag {
-  name: string;
-  description?: string;
-  attributes?: Attribute[];
-  events?: Event[];
-  slots?: Slot[];
-  exposes?: Expose[];
-  source?: Source;
-}
-
-interface Attribute {
-  name: string;
-  enum: string[];
-  required?: boolean;
-  description?: string;
-  value: AttributeValue;
-  default?: unknown;
-}
-
-interface AttributeValue {
-  kind: string;
-  type: string;
-}
-
-interface Event {
-  name: string;
-  description?: string;
-  properties?: EventProperty[];
-}
-
-interface EventProperty {
-  type: string[];
-  name: string;
-  description?: string;
-}
-
-interface Slot {
-  name: string;
-  description?: string;
-  scoped?: boolean;
-  bindings?: SlotBinding[];
-}
-
-interface SlotBinding {
-  type: string;
-  name: string;
-  description?: string;
-}
-
-interface Expose {
-  name: string;
-  description?: string;
-  properties: ExposeProperty[];
-}
-
-interface ExposeProperty {
-  type: string;
-  description?: string;
-}
-
-interface Source {
-  module: string;
-  symbol: string;
-}
+import type {
+  WebTypes,
+  Tag,
+  Attribute,
+  EventProperty,
+  SlotBinding,
+  ExposeProperty,
+} from "../types.ts";
 
 interface Types {
   [key: string]: ArgType | undefined;
