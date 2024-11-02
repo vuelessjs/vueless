@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -25,6 +30,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UBadge.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UBadge.__name),
   },
 } as Meta;
 

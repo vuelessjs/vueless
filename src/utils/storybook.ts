@@ -123,6 +123,21 @@ export function getSlotNames(componentName: string | undefined) {
   return getComponentData(componentName as ComponentNames)?.slots?.map((item) => item.name);
 }
 
+/**
+ * Create story param config to show component description with a link on GitHub.
+ */
+export function getDocsDescription(componentName: string | undefined) {
+  if (!componentName) return;
+
+  return {
+    docs: {
+      description: {
+        component: `The \`${componentName}\` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]})`,
+      },
+    },
+  };
+}
+
 export function getArgTypes(componentName: string | undefined) {
   if (!componentName) return;
 
