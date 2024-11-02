@@ -181,7 +181,7 @@ export function createMergeConfigsFunction(cx) {
         : defaultConfigItem;
     });
 
-    return [...config, ...globalConfigUniqueItems, ...propsConfigUniqueItems];
+    return [...(config || []), ...globalConfigUniqueItems, ...propsConfigUniqueItems];
   }
 
   return mergeConfigs;
