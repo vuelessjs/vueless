@@ -15,7 +15,7 @@ import { getDefault } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 
 import { UIcon } from "./constants.js";
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.js";
 
 import { vTooltip } from "../directives";
