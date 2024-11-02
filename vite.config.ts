@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
-import { Vueless } from "./src/vite";
+import { Vueless } from "./src/plugin-vite";
 
 export default defineConfig({
   plugins: [Vue(), Vueless({ mode: "storybook", env: "vueless", debug: false })],
