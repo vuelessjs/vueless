@@ -24,7 +24,9 @@ export let vuelessConfig = {};
   fs.existsSync(configPathJs) && (await buildConfig(configPathJs, configOutPath));
   fs.existsSync(configPathTs) && (await buildConfig(configPathTs, configOutPath));
 
-  vuelessConfig = (await import(configOutPath)).default;
+  if (fs.existsSync(configOutPath)) {
+    vuelessConfig = (await import(configOutPath)).default;
+  }
 })();
 
 async function buildConfig(entryPath, configOutFile) {

@@ -18,9 +18,6 @@ interface UBadgeArgs extends UBadgeProps {
   enum: "variant" | "size";
 }
 
-/**
- * The `UBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-badge)
- */
 export default {
   id: "4090",
   title: "Text & Content / Badge",
