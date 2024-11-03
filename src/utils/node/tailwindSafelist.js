@@ -13,6 +13,7 @@ import {
   COMPONENTS,
   BRAND_COLORS,
   BRAND_COLOR,
+  GRAY_COLOR,
   DYNAMIC_COLOR_PATTERN,
   TAILWIND_CLASS_DELIMITER,
   TAILWIND_MERGE_EXTENSION,
@@ -55,7 +56,10 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
-  const storybookColors = { colors: [...BRAND_COLORS, BRAND_COLOR], isComponentExists: true };
+  const storybookColors = {
+    colors: [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR],
+    isComponentExists: true,
+  };
   const safelist = [];
 
   const componentNames = Object.keys(COMPONENTS);
@@ -225,7 +229,7 @@ async function findComponentColors(files, componentName) {
 
   return {
     colors: Array.from(colors).filter(
-      (color) => color && [...BRAND_COLORS, BRAND_COLOR].includes(color),
+      (color) => color && [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR].includes(color),
     ),
     isComponentExists,
   };
