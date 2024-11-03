@@ -1,35 +1,6 @@
 import path from "path";
-import fs, { statSync } from "fs";
+import { statSync } from "fs";
 import { readdir } from "node:fs/promises";
-import { CACHE_PATH, WEB_TYPES_FILE_NAME_WITH_EXT } from "../../constants.js";
-
-export function addWebTypesToPackageJson({ env, debug, noWebTypesInPackageJson } = {}) {
-  if (env === "vueless" || noWebTypesInPackageJson) return;
-
-  const projectWebTypesPath = path.join(process.cwd(), CACHE_PATH, WEB_TYPES_FILE_NAME_WITH_EXT);
-
-  const webTypesPath = fs.existsSync(projectWebTypesPath)
-    ? `./${CACHE_PATH}/${WEB_TYPES_FILE_NAME_WITH_EXT}`
-    : `./node_modules/vueless/${WEB_TYPES_FILE_NAME_WITH_EXT}`;
-
-  try {
-    const packageJsonPath = path.resolve(process.cwd(), "package.json");
-    const data = fs.readFileSync(packageJsonPath, "utf8");
-    let packageJson = JSON.parse(data);
-
-    packageJson["web-types"] = webTypesPath;
-
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n", "utf8");
-
-    if (debug) {
-      // eslint-disable-next-line no-console
-      console.error("Web-types added to project package.json", webTypesPath);
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Error:", error);
-  }
-}
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];

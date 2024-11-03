@@ -8,7 +8,7 @@ import UnpluginVueComponents from "unplugin-vue-components/vite";
 import { loadSvg } from "./utils/node/loaderSvg.js";
 import { copyIcons, removeIcons } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
-import { addWebTypesToPackageJson, getNuxtFiles, getVueSourceFile } from "./utils/node/helper.js";
+import { getNuxtFiles, getVueSourceFile } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 
 /* Automatically importing Vueless components on demand */
@@ -72,9 +72,6 @@ export const Vueless = function (options = {}) {
       if (config.command === "dev" || config.command === "serve") {
         /* remove dynamically copied icons on dev server start */
         await removeIcons({ debug, isNuxt });
-
-        /* add web-types config to the package.json */
-        addWebTypesToPackageJson({ env, debug, noWebTypesInPackageJson });
       }
     },
 
