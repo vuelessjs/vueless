@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapperRef" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
+  <div ref="wrapper" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
     <div v-bind="navigationAttrs">
       <UButton
         square
@@ -7,7 +7,7 @@
         size="sm"
         color="grayscale"
         variant="thirdary"
-        :left-icon="config.defaults.prevIcon"
+        :left-icon="config?.defaults?.prevIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
@@ -35,7 +35,7 @@
         size="sm"
         color="grayscale"
         variant="thirdary"
-        :left-icon="config.defaults.nextIcon"
+        :left-icon="config?.defaults?.nextIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickNextButton"
@@ -53,7 +53,7 @@
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
-      :config="config"
+      :config="config || {}"
       @input="onInputDate"
     />
 
@@ -68,7 +68,7 @@
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
-      :config="config"
+      :config="config || {}"
       @input="onInput"
     />
 
@@ -83,38 +83,42 @@
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
-      :config="config"
+      :config="config || {}"
       @input="onInput"
     />
 
     <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
-      <span v-bind="timepickerLabelAttrs" v-text="locale.timeLabel" />
+      <span v-bind="timepickerLabelAttrs" v-text="currentLocale.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
         <input
-          ref="hoursRef"
+          ref="hours-input"
           placeholder="00"
           type="text"
           v-bind="timepickerInputHoursAttrs"
-          @input.prevent="onTimeInput($event, INPUT_TYPE.hours, MAX_HOURS, MIN_HOURS)"
+          @input.prevent="onTimeInput($event as InputEvent, InputType.Hours, MAX_HOURS, MIN_HOURS)"
           @keydown="onTimeKeydown"
         />
         &#8282;
         <input
-          ref="minutesRef"
+          ref="minutes-input"
           placeholder="00"
           type="text"
           v-bind="timepickerInputMinutesAttrs"
-          @input.prevent="onTimeInput($event, INPUT_TYPE.minutes, MAX_MINUTES, MIN_MINUTES)"
+          @input.prevent="
+            onTimeInput($event as InputEvent, InputType.Minutes, MAX_MINUTES, MIN_MINUTES)
+          "
           @keydown="onTimeKeydown"
         />
         &#8282;
         <input
-          ref="secondsRef"
+          ref="seconds-input"
           placeholder="00"
           type="text"
           v-bind="timepickerInputSecondsAttrs"
-          @input.prevent="onTimeInput($event, INPUT_TYPE.seconds, MAX_SECONDS, MIN_SECONDS)"
+          @input.prevent="
+            onTimeInput($event as InputEvent, InputType.Seconds, MAX_SECONDS, MIN_SECONDS)
+          "
           @keydown="onTimeKeydown"
         />
       </div>
@@ -129,18 +133,19 @@
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >
-        {{ locale.okLabel }}
+        {{ currentLocale.okLabel }}
       </UButton>
     </div>
   </div>
 </template>
 
-<script setup>
-import { computed, ref, watch } from "vue";
+<script setup lang="ts">
+import { computed, ref, watch, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
 import { getDefault } from "../utils/ui.ts";
+import { isRangeDate } from "./types.ts";
 
 import {
   parseDate,
@@ -152,167 +157,86 @@ import {
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.js";
 
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import {
   UCalendar,
-  VIEW,
-  KEY_CODE,
+  ARROW_KEYS,
   YEARS_PER_VIEW,
   MAX_HOURS,
   MIN_HOURS,
   MAX_MINUTES,
   MIN_MINUTES,
   SEPARATOR,
-  INPUT_TYPE,
-  LOCALE_TYPE,
   MAX_SECONDS,
   MIN_SECONDS,
-} from "./constants.js";
+  KeyCode,
+  LocaleType,
+  View,
+  InputType,
+} from "./constants.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
+
+import type { UCalendarProps, DateValue, RangeDate, Locale } from "./types.ts";
+import type { ComputedRef, Ref } from "vue";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
+import type { DateLocale } from "./utilFormatting.ts";
+
+type DefaultLocale = typeof defaultConfig.i18n;
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
-   */
-  modelValue: {
-    type: [Date, String, Object],
-    default: null,
-  },
-
-  /**
-   * Calendar view variant.
-   * @values day, month, year
-   */
-  view: {
-    type: String,
-    default: VIEW.day,
-  },
-
-  /**
-   * Enable date range selection.
-   */
-  range: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCalendar).range,
-  },
-
-  /**
-   * Show timepicker.
-   */
-  timepicker: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCalendar).timepicker,
-  },
-
-  /**
-   * Date string format.
-   */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UCalendar).dateFormat,
-  },
-
-  /**
-   * Same as date format, but used when timepicker is enabled.
-   */
-  dateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UCalendar).dateTimeFormat,
-  },
-
-  /**
-   * User-friendly date format (it will be shown in UI).
-   */
-  userDateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UCalendar).userDateFormat,
-  },
-
-  /**
-   * Same as user format, but used when timepicker is enabled.
-   */
-  userDateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UCalendar).userDateTimeFormat,
-  },
-
-  /**
-   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  minDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UCalendar).minDate,
-  },
-
-  /**
-   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  maxDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UCalendar).maxDate,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UCalendarProps>(), {
+  view: View.Day,
+  range: getDefault<UCalendarProps>(defaultConfig, UCalendar).range,
+  timepicker: getDefault<UCalendarProps>(defaultConfig, UCalendar).timepicker,
+  dateFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).dateFormat,
+  dateTimeFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).dateTimeFormat,
+  userDateFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateFormat,
+  userDateTimeFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateTimeFormat,
+  dataTest: "",
 });
 
-const emit = defineEmits([
+const emit = defineEmits<{
   /**
    * Triggers when date value changes.
    * @property {object} newDate
    */
-  "update:modelValue",
-
-  /**
-   * Triggers when calendar view changes.
-   * @property {string} view
-   */
-  "update:view",
+  "update:modelValue": [date: DateValue];
 
   /**
    * Triggers when date value changes.
    * @property {object} value
    */
-  "input",
+  input: [date: Date | null | RangeDate];
 
   /**
-   * Triggers when calendar date is selected by clicking "Enter".
+   * Triggers when calendar view changes.
+   * @property {string} view
    */
-  "submit",
+  "update:view": [view: View];
 
   /**
    * Triggers when arrow keys are used to change calendar date.
    */
-  "keydown",
+  keydown: [event: KeyboardEvent];
+
+  /**
+   * Triggers when calendar date is selected by clicking "Enter".
+   */
+  submit: [];
 
   /**
    * Triggers when the user changes the date input value.
    * @property {string} value
    */
-  "userDateChange",
-]);
+  userDateChange: [date: string];
+}>();
 
 const { tm } = useLocale();
 
@@ -331,13 +255,13 @@ const {
   timepickerSubmitButtonAttrs,
 } = useAttrs(props);
 
-const wrapperRef = ref(null);
-const hoursRef = ref(null);
-const minutesRef = ref(null);
-const secondsRef = ref(null);
+const wrapperRef = useTemplateRef<HTMLInputElement>("wrapper");
+const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
+const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
+const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 
-const activeDate = ref(null);
-const activeMonth = ref(null);
+const activeDate: Ref<Date | null> = ref(null);
+const activeMonth: Ref<Date | null> = ref(null);
 
 const currentView = ref(props.view);
 
@@ -352,18 +276,21 @@ watch(
 
 watch(currentView, () => {
   if (props.view !== currentView.value) {
-    emit("update:view", currentView.value);
+    emit("update:view", currentView.value as View);
   }
 });
 
 const isCurrentView = computed(() => ({
-  day: currentView.value === VIEW.day,
-  month: currentView.value === VIEW.month,
-  year: currentView.value === VIEW.year,
+  day: currentView.value === View.Day,
+  month: currentView.value === View.Month,
+  year: currentView.value === View.Year,
 }));
 
-const i18nGlobal = tm(UCalendar);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = tm<DefaultLocale>(UCalendar);
+
+const currentLocale: ComputedRef<Locale> = computed(() =>
+  merge(defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+);
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -372,15 +299,17 @@ const locale = computed(() => {
   return {
     ...currentLocale.value,
     months: {
-      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(months.longhand, LOCALE_TYPE.month),
+      shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
+      longhand: getSortedLocale(months.longhand, LocaleType.Month),
     },
     weekdays: {
-      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(weekdays.longhand, LOCALE_TYPE.day),
+      shorthand: getSortedLocale(weekdays.shorthand, LocaleType.Day),
+      longhand: getSortedLocale(weekdays.longhand, LocaleType.Day),
     },
-  };
+  } as DateLocale;
 });
+
+const isInputRefs = computed(() => Boolean(hoursRef.value && minutesRef.value && secondsRef.value));
 
 const isTimepickerEnabled = computed(() => {
   return props.timepicker && !props.range;
@@ -398,12 +327,12 @@ const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
   const monthsLonghand =
-    Boolean(props.config.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+    Boolean(props.config?.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
       ? months.userFormat
       : months.longhand;
 
   const weekdaysLonghand =
-    Boolean(props.config.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+    Boolean(props.config?.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
       ? weekdays.userFormat
       : weekdays.longhand;
 
@@ -411,30 +340,21 @@ const userFormatLocale = computed(() => {
   return {
     ...currentLocale,
     months: {
-      shorthand: getSortedLocale(months.shorthand, LOCALE_TYPE.month),
-      longhand: getSortedLocale(monthsLonghand, LOCALE_TYPE.month),
+      shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
+      longhand: getSortedLocale(monthsLonghand, LocaleType.Month),
     },
     weekdays: {
-      shorthand: getSortedLocale(weekdays.shorthand, LOCALE_TYPE.day),
-      longhand: getSortedLocale(weekdaysLonghand, LOCALE_TYPE.day),
+      shorthand: getSortedLocale(weekdays.shorthand, LocaleType.Day),
+      longhand: getSortedLocale(weekdaysLonghand, LocaleType.Day),
     },
   };
-});
-
-const isModelRangeType = computed(() => {
-  return (
-    props.modelValue !== null &&
-    !(props.modelValue instanceof Date) &&
-    typeof props.modelValue === "object"
-  );
 });
 
 const localValue = computed({
   get: () => {
     if (props.range) {
-      const from = isModelRangeType.value ? props.modelValue.from : props.modelValue || null;
-
-      const to = isModelRangeType.value ? props.modelValue.to : null;
+      const from = isRangeDate(props.modelValue) ? props.modelValue.from : props.modelValue || null;
+      const to = isRangeDate(props.modelValue) ? props.modelValue.to : null;
 
       return {
         from: parseDate(from || null, actualDateFormat.value, locale.value),
@@ -442,27 +362,29 @@ const localValue = computed({
       };
     }
 
-    return isModelRangeType.value
-      ? parseDate(props.modelValue.from || null, actualDateFormat.value, locale.value)
-      : parseDate(props.modelValue || null, actualDateFormat.value, locale.value);
+    if (!isRangeDate(props.modelValue)) {
+      return parseDate(props.modelValue || null, actualDateFormat.value, locale.value);
+    }
+
+    return parseDate(props.modelValue.from || null, actualDateFormat.value, locale.value);
   },
   set(value) {
-    value = getCurrentValueType(value);
+    const newDateValue = getCurrentValueType(value);
 
     const parsedDate = parseDate(
-      props.range ? value.from : value,
+      isRangeDate(newDateValue) ? newDateValue.from : newDateValue,
       actualDateFormat.value,
       locale.value,
     );
     const parsedDateTo =
-      isModelRangeType.value && props.range
+      isRangeDate(value) && props.range
         ? parseDate(value.to, actualDateFormat.value, locale.value)
-        : undefined;
+        : null;
 
     if (parsedDate && isTimepickerEnabled.value) {
-      parsedDate.setHours(Number(hoursRef.value.value));
-      parsedDate.setMinutes(Number(minutesRef.value.value));
-      parsedDate.setSeconds(Number(secondsRef.value.value));
+      parsedDate.setHours(Number(hoursRef.value?.value));
+      parsedDate.setMinutes(Number(minutesRef.value?.value));
+      parsedDate.setSeconds(Number(secondsRef.value?.value));
     }
 
     const isOutOfRange = dateIsOutOfRange(
@@ -485,37 +407,39 @@ const localValue = computed({
       ? formatDate(parsedDateTo || null, actualDateFormat.value, locale.value)
       : parsedDateTo;
 
-    emit("update:modelValue", props.range ? { from: newDate, to: newDateTo } : newDate);
+    const newRangeDate = { from: newDate, to: newDateTo };
 
-    if (parsedDate === null && isTimepickerEnabled.value) {
+    emit("update:modelValue", props.range ? (newRangeDate as RangeDate) : newDate);
+
+    if (parsedDate === null && isTimepickerEnabled.value && isInputRefs.value) {
       const currentDate = new Date();
 
-      hoursRef.value.value = String(currentDate.getHours()).padStart(2, "0");
-      minutesRef.value.value = String(currentDate.getMinutes()).padStart(2, "0");
-      secondsRef.value.value = String(currentDate.getSeconds()).padStart(2, "0");
+      hoursRef.value!.value = String(currentDate.getHours()).padStart(2, "0");
+      minutesRef.value!.value = String(currentDate.getMinutes()).padStart(2, "0");
+      secondsRef.value!.value = String(currentDate.getSeconds()).padStart(2, "0");
     }
   },
 });
 
 const selectedDate = computed(() => {
   return parseDate(
-    props.range ? localValue.value.from : localValue.value,
+    isRangeDate(localValue.value) ? localValue.value.from : localValue.value,
     actualDateFormat.value,
     locale.value,
   );
 });
 
 const selectedDateTo = computed(() => {
-  return props.range
+  return isRangeDate(localValue.value)
     ? parseDate(localValue.value.to, actualDateFormat.value, locale.value)
-    : undefined;
+    : null;
 });
 
 const userFormattedDate = computed(() => {
   const date = formatDate(selectedDate.value, actualUserFormat.value, userFormatLocale.value);
   const dateTo = props.range
     ? formatDate(selectedDateTo.value, actualUserFormat.value, userFormatLocale.value)
-    : undefined;
+    : null;
 
   return props.range ? `${date} ${SEPARATOR} ${dateTo}` : date;
 });
@@ -540,7 +464,7 @@ watch(
   () => props.range,
   (newValue, oldValue) => {
     if (newValue !== oldValue) {
-      localValue.value = getCurrentValueType(localValue.value);
+      localValue.value = localValue.value;
     }
   },
 );
@@ -552,10 +476,10 @@ const unwatchInit = watch(
   () => {
     if (isInit) unwatchInit();
 
-    if (selectedDate.value && isTimepickerEnabled.value) {
-      hoursRef.value.value = String(selectedDate.value.getHours()).padStart(2, "0");
-      minutesRef.value.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
-      secondsRef.value.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
+    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value) {
+      hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
+      minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+      secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
 
       emit("userDateChange", userFormattedDate.value);
 
@@ -565,23 +489,23 @@ const unwatchInit = watch(
   { deep: true },
 );
 
-function getCurrentValueType(value) {
+function getCurrentValueType(value: DateValue): DateValue {
   if (props.range && value === null) {
-    value = { from: null, to: null };
+    return { from: null, to: null };
   }
 
-  if (isModelRangeType.value && !props.range) {
-    value = value.from || value;
+  if (isRangeDate(value) && !props.range) {
+    return value.from || value;
   }
 
   if (typeof value !== "object" && value !== null && props.range) {
-    value = { from: value, to: null };
+    return { from: value, to: null };
   }
 
   return value;
 }
 
-function onInputDate(newDate) {
+function onInputDate(newDate: Date | null) {
   if (newDate === null) {
     localValue.value = newDate;
 
@@ -595,7 +519,7 @@ function onInputDate(newDate) {
 
   const date = new Date(newDate.valueOf());
 
-  if (props.range) {
+  if (props.range && isRangeDate(localValue.value)) {
     const isFullReset =
       localValue.value.to || !localValue.value.from || date <= localValue.value.from;
 
@@ -617,17 +541,17 @@ function onInputDate(newDate) {
     activeMonth.value = null;
   }
 
-  wrapperRef.value.focus();
+  wrapperRef.value?.focus();
 }
 
-function onKeydown(event) {
+function onKeydown(event: KeyboardEvent) {
   if (props.range) {
     emit("keydown", event);
 
     return;
   }
 
-  if ([KEY_CODE.left, KEY_CODE.up, KEY_CODE.right, KEY_CODE.down].includes(event.keyCode)) {
+  if (ARROW_KEYS.includes(event.code)) {
     arrowKeyHandler(event);
 
     minutesRef.value?.blur();
@@ -635,8 +559,8 @@ function onKeydown(event) {
     secondsRef.value?.blur();
   }
 
-  if (event.keyCode === KEY_CODE.enter) {
-    enterKeyHandler(event);
+  if (event.code === KeyCode.Enter) {
+    enterKeyHandler();
   }
 
   const isActiveTimeInput =
@@ -649,59 +573,61 @@ function onKeydown(event) {
   emit("keydown", event);
 }
 
-function onInput(date) {
+function onInput(date: Date | null): void {
   activeDate.value = null;
   activeMonth.value = date;
 
-  if (isCurrentView.value.month) currentView.value = VIEW.day;
-  if (isCurrentView.value.year) currentView.value = VIEW.month;
+  if (isCurrentView.value.month) currentView.value = View.Day;
+  if (isCurrentView.value.year) currentView.value = View.Month;
 }
 
-function arrowKeyHandler(event) {
+function arrowKeyHandler(event: KeyboardEvent) {
   const currentActiveDate =
     activeDate.value || activeMonth.value || selectedDate.value || getDateWithoutTime();
 
   let newActiveDate;
 
-  if (currentView.value === VIEW.day) {
-    if (event.keyCode === KEY_CODE.down) {
+  if (currentView.value === View.Day) {
+    if (event.code === KeyCode.ArrowDown) {
       newActiveDate = addDays(currentActiveDate, 7);
-    } else if (event.keyCode === KEY_CODE.left) {
+    } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addDays(currentActiveDate, -1);
-    } else if (event.keyCode === KEY_CODE.up) {
+    } else if (event.code === KeyCode.ArrowUp) {
       newActiveDate = addDays(currentActiveDate, -7);
-    } else if (event.keyCode === KEY_CODE.right) {
+    } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addDays(currentActiveDate, 1);
     }
-  } else if (currentView.value === VIEW.month) {
-    if (event.keyCode === KEY_CODE.down) {
+  } else if (currentView.value === View.Month) {
+    if (event.code === KeyCode.ArrowDown) {
       newActiveDate = addMonths(currentActiveDate, 4);
-    } else if (event.keyCode === KEY_CODE.left) {
+    } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addMonths(currentActiveDate, -1);
-    } else if (event.keyCode === KEY_CODE.up) {
+    } else if (event.code === KeyCode.ArrowUp) {
       newActiveDate = addMonths(currentActiveDate, -4);
-    } else if (event.keyCode === KEY_CODE.right) {
+    } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addMonths(currentActiveDate, 1);
     }
-  } else if (currentView.value === VIEW.year) {
-    if (event.keyCode === KEY_CODE.down) {
+  } else if (currentView.value === View.Year) {
+    if (event.code === KeyCode.ArrowDown) {
       newActiveDate = addYears(currentActiveDate, 4);
-    } else if (event.keyCode === KEY_CODE.left) {
+    } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addYears(currentActiveDate, -1);
-    } else if (event.keyCode === KEY_CODE.up) {
+    } else if (event.code === KeyCode.ArrowUp) {
       newActiveDate = addYears(currentActiveDate, -4);
-    } else if (event.keyCode === KEY_CODE.right) {
+    } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addYears(currentActiveDate, 1);
     }
   }
 
-  const isOutOfRange = dateIsOutOfRange(
-    newActiveDate,
-    props.minDate,
-    props.maxDate,
-    locale.value,
-    actualDateFormat.value,
-  );
+  const isOutOfRange =
+    newActiveDate &&
+    dateIsOutOfRange(
+      newActiveDate,
+      props.minDate,
+      props.maxDate,
+      locale.value,
+      actualDateFormat.value,
+    );
 
   if (newActiveDate && !isOutOfRange) {
     activeDate.value = newActiveDate;
@@ -709,14 +635,14 @@ function arrowKeyHandler(event) {
   }
 }
 
-function addActiveMonth(amount) {
+function addActiveMonth(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
   const newActiveMonth = addMonths(currentActiveMonth, amount);
 
   activeMonth.value = newActiveMonth;
 }
 
-function addActiveYear(amount) {
+function addActiveYear(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
   const newActiveMonth = addYears(currentActiveMonth, amount);
 
@@ -749,33 +675,33 @@ function enterKeyHandler() {
     emit("input", localValue.value);
   }
 
-  if (isCurrentView.value.month) currentView.value = VIEW.day;
-  if (isCurrentView.value.year) currentView.value = VIEW.month;
+  if (isCurrentView.value.month) currentView.value = View.Day;
+  if (isCurrentView.value.year) currentView.value = View.Month;
 }
 
 function onClickViewSwitch() {
-  const views = Object.values(VIEW);
+  const views: string[] = Object.values(View);
   const currentViewIndex = views.indexOf(currentView.value);
   const nextViewIndex = currentViewIndex + 1;
 
   activeDate.value = null;
 
-  currentView.value = views[nextViewIndex] || views.at(0);
+  currentView.value = (views[nextViewIndex] || views.at(0)) as View;
 }
 
-let lastValidHourValue = "";
-let lastValidMinuteValue = "";
-let lastValidSecondValue = "";
+let lastValidHourValue: string | number = "";
+let lastValidMinuteValue: string | number = "";
+let lastValidSecondValue: string | number = "";
 
-function onTimeKeydown(event) {
-  if ([KEY_CODE.left, KEY_CODE.up, KEY_CODE.right, KEY_CODE.down].includes(event.keyCode)) {
-    wrapperRef.value.focus();
+function onTimeKeydown(event: KeyboardEvent) {
+  if (ARROW_KEYS.includes(event.code)) {
+    wrapperRef.value?.focus();
 
     return;
   }
 
-  if (event.keyCode === KEY_CODE.enter) {
-    enterKeyHandler(event);
+  if (event.code === KeyCode.Enter) {
+    enterKeyHandler();
 
     emit("submit");
   }
@@ -785,26 +711,26 @@ function onClickSubmit() {
   emit("submit");
 }
 
-function onTimeInput(event, type, maxValue, minValue) {
-  const input = event.target;
+function onTimeInput(event: InputEvent, type: InputType, maxValue: number, minValue: number) {
+  const input = event.target as HTMLInputElement;
   const value = input.value;
   const numericValue = Number(value);
 
-  const isHours = type === INPUT_TYPE.hours;
-  const isMinutes = type === INPUT_TYPE.minutes;
-  const isSeconds = type === INPUT_TYPE.seconds;
+  const isHours = type === InputType.Hours;
+  const isMinutes = type === InputType.Minutes;
+  const isSeconds = type === InputType.Seconds;
 
-  if (!isNumeric(event.data) && event.data !== null) {
+  if (event.data !== null && !isNumeric(event.data)) {
     if (isHours) {
-      input.value = lastValidHourValue;
+      input.value = String(lastValidHourValue);
     }
 
     if (isMinutes) {
-      input.value = lastValidMinuteValue;
+      input.value = String(lastValidMinuteValue);
     }
 
     if (isSeconds) {
-      input.value = lastValidSecondValue;
+      input.value = String(lastValidSecondValue);
     }
 
     return;
@@ -831,7 +757,11 @@ function onTimeInput(event, type, maxValue, minValue) {
   if (selectedDate.value) {
     const date = new Date(selectedDate.value.valueOf());
 
-    date.setHours(lastValidHourValue, lastValidMinuteValue, lastValidSecondValue);
+    date.setHours(
+      Number(lastValidHourValue),
+      Number(lastValidMinuteValue),
+      Number(lastValidSecondValue),
+    );
     localValue.value = date;
   }
 

@@ -20,7 +20,7 @@ import {
   NESTED_COMPONENT_REG_EXP,
 } from "../constants.js";
 
-import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
+import type { ComponentInternalInstance, Slot, VNode, ComputedRef, Ref } from "vue";
 import type {
   BrandColors,
   Strategies,
@@ -39,6 +39,10 @@ interface MergedConfigOptions {
   globalConfig: Component;
   propsConfig?: Component;
   vuelessStrategy?: Strategies;
+}
+
+interface ExtendedKeyClasses {
+  [x: string]: Ref<string>;
 }
 
 /**
@@ -113,7 +117,7 @@ export default function useUI<T>(
    * – value: reactive string of extendingKey classes.
    */
   function getExtendingKeysClasses(extendingKeys: string[], mutatedProps = {}) {
-    const extendingClasses: UnknownObject = {};
+    const extendingClasses: ExtendedKeyClasses = {};
 
     for (const key of extendingKeys) {
       extendingClasses[key] = getClasses(key, mutatedProps);

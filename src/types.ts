@@ -4,8 +4,9 @@ import { hasSlotContent } from "./composables/useUI.ts";
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
+import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 
-import type { ComputedRef, MaybeRef } from "vue";
+import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
@@ -109,6 +110,7 @@ export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
   UBadge?: Partial<typeof UBadgeDefaultConfig>;
+  UCalendar?: Partial<typeof UCalendarDefaultConfig>;
 }
 
 export interface Directives {
@@ -162,9 +164,10 @@ export interface VueAttrs {
   value?: string;
 }
 
-export interface UseAttrs {
+export interface UseAttrs<TConfig> {
   hasSlotContent: typeof hasSlotContent;
-  [key: string]: object | undefined;
+  config: Ref<TConfig | undefined>;
+  [key: string]: Ref<TConfig | undefined> | typeof hasSlotContent;
 }
 
 export interface KeyAttrs extends VueAttrs {

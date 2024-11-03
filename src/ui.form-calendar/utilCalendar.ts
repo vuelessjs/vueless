@@ -1,9 +1,18 @@
-import { revFormat, formats } from "./utilFormatting.js";
-import { isSameDay, getDateFromUnixTimestamp } from "./utilDate.js";
+import { revFormat, formats } from "./utilFormatting.ts";
+import { getDateFromUnixTimestamp } from "./utilDate.ts";
 
-import { TOKEN_REG_EXP, YEARS_PER_VIEW } from "./constants.js";
+import { TOKEN_REG_EXP, YEARS_PER_VIEW } from "./constants.ts";
 
-export function getInitialActiveDate(localValue) {
+import type { DateLocale } from "./utilFormatting.ts";
+
+type UnknownFunction = (...args: unknown[]) => unknown;
+
+type Operation = {
+  fn: UnknownFunction;
+  val: string;
+};
+
+export function getInitialActiveDate<TLocale>(localValue: TLocale) {
   if (Array.isArray(localValue) && localValue.length) {
     return localValue[localValue.length - 1];
   }
@@ -15,16 +24,16 @@ export function getInitialActiveDate(localValue) {
   return new Date();
 }
 
-export function formatDate(dateObj, format = "Y-m-d H:i:S", locale) {
-  if (dateObj === null) {
+export function formatDate<TLocale>(date: Date | null, format = "Y-m-d H:i:S", locale: TLocale) {
+  if (date === null) {
     return "";
   }
 
   return format
     .split("")
     .map((char, i, arr) => {
-      if (formats[char] && arr[i - 1] !== "\\") {
-        return formats[char](dateObj, locale);
+      if (char in formats && arr[i - 1] !== "\\") {
+        return formats[char as keyof typeof formats](date, locale as DateLocale);
       }
 
       if (char !== "\\") {
@@ -36,23 +45,25 @@ export function formatDate(dateObj, format = "Y-m-d H:i:S", locale) {
     .join("");
 }
 
-export function isNumeric(char) {
+export function isNumeric(char: string | number) {
   return /^\d+$/.test(String(char));
 }
 
-export function parseDate(date, format = "Y-m-d H:i:S", locale) {
+export function parseDate<TLocale>(
+  date: Date | string | null,
+  format: string = "Y-m-d H:i:S",
+  locale: TLocale,
+) {
   if (date === null) {
     return null;
   }
-
-  const localeTokenRegex = { ...TOKEN_REG_EXP };
 
   let timeless = false;
   let parsedDate = null;
   const originalDate = date;
 
   const isDateObject = date instanceof Date;
-  const isTimestamp = typeof date !== "string" && date.toFixed !== undefined;
+  const isTimestamp = typeof date === "number";
   const isString = typeof date === "string";
 
   if (isDateObject) {
@@ -70,7 +81,7 @@ export function parseDate(date, format = "Y-m-d H:i:S", locale) {
       parsedDate = new Date();
       timeless = true;
     } else {
-      parsedDate = parseStringDate(date, format, localeTokenRegex, locale);
+      parsedDate = parseStringDate(date, format, locale);
     }
   }
 
@@ -85,7 +96,11 @@ export function parseDate(date, format = "Y-m-d H:i:S", locale) {
   return parsedDate;
 }
 
-export function parseStringDate(dateString, format = "Y-m-d H:i:S", localeTokenRegex, locale) {
+export function parseStringDate<TLocale>(
+  dateString: string,
+  format = "Y-m-d H:i:S",
+  locale: TLocale,
+) {
   const isWithinTimezone = /Z$/.test(dateString) || /GMT$/.test(dateString);
 
   if (isWithinTimezone) {
@@ -94,21 +109,21 @@ export function parseStringDate(dateString, format = "Y-m-d H:i:S", localeTokenR
     let parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
 
     let matched;
-    const ops = [];
+    const operations: Operation[] = [];
 
     for (let i = 0, matchIndex = 0, regexStr = ""; i < format.length; i += 1) {
-      const token2 = format[i];
+      const token2 = format[i] as keyof typeof TOKEN_REG_EXP | "\\";
       const isBackSlash = token2 === "\\";
       const escaped = format[i - 1] === "\\" || isBackSlash;
 
-      if (localeTokenRegex[token2] && !escaped) {
-        regexStr += localeTokenRegex[token2];
+      if (TOKEN_REG_EXP[token2 as keyof typeof TOKEN_REG_EXP] && !escaped) {
+        regexStr += TOKEN_REG_EXP[token2];
         const match = new RegExp(regexStr).exec(dateString);
 
         if (match) {
           matched = true;
-          ops[token2 !== "Y" ? "push" : "unshift"]({
-            fn: revFormat[token2],
+          operations[token2 !== "Y" ? "push" : "unshift"]({
+            fn: revFormat[token2 as keyof typeof revFormat] as UnknownFunction,
             val: match[(matchIndex += 1)],
           });
         }
@@ -116,11 +131,11 @@ export function parseStringDate(dateString, format = "Y-m-d H:i:S", localeTokenR
         regexStr += ".";
       }
 
-      ops.forEach((op) => {
+      operations.forEach((op) => {
         const { fn } = op;
         const { val } = op;
 
-        parsedDate = fn(parsedDate, String(val), locale) || parsedDate;
+        parsedDate = (fn(parsedDate, String(val), locale as DateLocale) || parsedDate) as Date;
       });
     }
 
@@ -128,40 +143,22 @@ export function parseStringDate(dateString, format = "Y-m-d H:i:S", localeTokenR
   }
 }
 
-export function dayIsPartOfTheConditions(day, condition, dateParser, dateFormat) {
-  if (!day) {
-    return false;
-  }
-
-  if (typeof condition === "function") {
-    return condition(day);
-  }
-
-  if (typeof condition === "string" || condition instanceof String) {
-    const disabledDate = dateParser(condition, dateFormat);
-
-    return isSameDay(disabledDate, day);
-  }
-
-  if (condition instanceof Date) {
-    return isSameDay(condition, day);
-  }
-
-  if (Array.isArray(condition)) {
-    return condition.some((c) => dayIsPartOfTheConditions(day, c, dateParser, dateFormat));
-  }
-
-  return false;
-}
-
-export function dateIsOutOfRange(date, min, max, locale, dateFormat = null) {
+export function dateIsOutOfRange<TLocale>(
+  date: Date,
+  min: Date | string | undefined,
+  max: Date | string | undefined,
+  locale: TLocale,
+  dateFormat: string | null = null,
+) {
   if ((!dateFormat && typeof min === "string") || (!dateFormat && typeof max === "string")) {
     throw new Error("strings needs a date format");
   }
 
-  const minDate = typeof min === "string" ? parseDate(min, dateFormat, locale) : min;
+  const minDate =
+    typeof min === "string" ? parseDate<TLocale>(min, String(dateFormat), locale) : min;
 
-  const maxDate = typeof max === "string" ? parseDate(max, dateFormat, locale) : max;
+  const maxDate =
+    typeof max === "string" ? parseDate<TLocale>(max, String(dateFormat), locale) : max;
 
   if (minDate && maxDate) {
     return date < minDate || date > maxDate;
@@ -178,7 +175,7 @@ export function dateIsOutOfRange(date, min, max, locale, dateFormat = null) {
   return false;
 }
 
-export function getYearsRange(date) {
+export function getYearsRange(date: Date) {
   const currentYear = date.getFullYear();
   const from = currentYear - Math.floor(currentYear % YEARS_PER_VIEW);
   const to = from + YEARS_PER_VIEW - 1;

@@ -163,71 +163,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-import { formatDate, dateIsOutOfRange } from "./utilCalendar.js";
-import { isSameMonth, getDateWithoutTime, isCurrentMonth } from "./utilDate.js";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
+import { isSameMonth, getDateWithoutTime, isCurrentMonth } from "./utilDate.ts";
 
 import useAttrs from "./useAttrs.js";
 
-import { MONTHS_PER_VIEW } from "./constants.js";
+import { MONTHS_PER_VIEW } from "./constants.ts";
+
+import type { UCalendarViewProps, UCalendarProps } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
-const props = defineProps({
-  selectedDate: {
-    type: [Date, null],
-    required: true,
-  },
+const props = defineProps<UCalendarViewProps>();
 
-  selectedDateTo: {
-    type: [Date, null],
-    default: undefined,
-  },
-
-  activeDate: {
-    type: [Date, null],
-    required: true,
-  },
-
-  activeMonth: {
-    type: [Date, null],
-    required: true,
-  },
-
-  locale: {
-    type: Object,
-    required: true,
-  },
-
-  dateFormat: {
-    type: String,
-    default: undefined,
-  },
-
-  range: {
-    type: Boolean,
-    default: false,
-  },
-
-  maxDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  minDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-});
-
-const emit = defineEmits(["input"]);
+const emit = defineEmits<{
+  input: [date: Date | null];
+}>();
 
 const {
   monthViewAttrs,
@@ -243,7 +197,7 @@ const {
   currentLastMonthInRangeAttrs,
   currentFirstMonthInRangeAttrs,
   singleCurrentMonthInRangeAttrs,
-} = useAttrs(props);
+} = useAttrs(props as unknown as UCalendarProps);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -257,7 +211,7 @@ const months = computed(() =>
   Array.from({ length: MONTHS_PER_VIEW }, (_, i) => i).map((monthNumber) => getMonth(monthNumber)),
 );
 
-function getMonth(monthNumber) {
+function getMonth(monthNumber: number) {
   let newDate = new Date(localActiveMonth.value.valueOf());
 
   newDate.setMonth(monthNumber);
@@ -272,13 +226,13 @@ function getMonth(monthNumber) {
   return newDate;
 }
 
-function getMonthState(month, index) {
+function getMonthState(month: Date, index: number) {
   const startRangeIndex = months.value.findIndex((month) => {
     return isSameMonth(month, localSelectedDate.value);
   });
 
   const endRangeIndex = months.value.findIndex((month) => {
-    return isSameMonth(month, props.selectedDateTo);
+    return props.selectedDateTo && isSameMonth(month, props.selectedDateTo);
   });
 
   const isMonthInRange =
@@ -290,11 +244,15 @@ function getMonthState(month, index) {
   const isMoreThanOneMonthRange =
     props.range &&
     props.selectedDateTo &&
+    props.selectedDate &&
     isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
-  const isActiveMonth = isSameMonth(props.activeMonth, month) && !props.range;
+  const isActiveMonth = props.activeMonth && isSameMonth(props.activeMonth, month) && !props.range;
   const isCurrentMonthInRange = isMonthInRange && isPresentMonth;
   const isLastMonthInRange =
-    props.range && isSameMonth(month, props.selectedDateTo) && isMoreThanOneMonthRange;
+    props.selectedDateTo &&
+    props.range &&
+    isSameMonth(month, props.selectedDateTo) &&
+    isMoreThanOneMonthRange;
   const isFirstMonthInRange =
     props.range && isSameMonth(month, localSelectedDate.value) && isMoreThanOneMonthRange;
   const isCurrentFirstMonthInRange = props.range && isFirstMonthInRange && isPresentMonth;
@@ -314,7 +272,7 @@ function getMonthState(month, index) {
   };
 }
 
-function isMoreThanOneMonthDiff(date, dateTo) {
+function isMoreThanOneMonthDiff(date: Date, dateTo: Date) {
   const yearDiff = Math.abs(dateTo.getFullYear() - date.getFullYear());
   const monthDiff = Math.abs(dateTo.getMonth() - date.getMonth());
   const dayDiff = Math.abs(dateTo.getDate() - date.getDate());
@@ -322,7 +280,7 @@ function isMoreThanOneMonthDiff(date, dateTo) {
   return yearDiff > 0 || monthDiff > 1 || (monthDiff === 1 && dayDiff > 0);
 }
 
-function onClickMonth(month) {
+function onClickMonth(month: Date) {
   emit("input", month);
 }
 </script>

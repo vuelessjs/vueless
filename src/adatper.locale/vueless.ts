@@ -24,7 +24,7 @@ export interface LocaleInstance {
   fallback: Ref<string>;
   t: (key: string, ...params: unknown[]) => string;
   n: (value: number) => string;
-  tm: (key: string, ...params: unknown[]) => string;
+  tm: <TMassages>(key: string) => Partial<TMassages>;
 }
 
 const FALLBACK_LOCALE_CODE = "en";
@@ -86,7 +86,7 @@ function createTranslateMessageFunction(
   fallback: Ref<string>,
   messages: Ref<LocaleMessages>,
 ) {
-  return (key: string) => {
+  return <TMassages>(key: string): Partial<TMassages> => {
     const currentLocale = current.value && messages.value[current.value];
     const fallbackLocale = fallback.value && messages.value[fallback.value];
 
@@ -100,7 +100,7 @@ function createTranslateMessageFunction(
       str = getObjectValueByPath(fallbackLocale, key, null);
     }
 
-    return String(str);
+    return str as TMassages;
   };
 }
 

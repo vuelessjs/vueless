@@ -197,77 +197,31 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-import { formatDate, dateIsOutOfRange } from "./utilCalendar.js";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
 import {
   isToday,
   getDateWithoutTime,
   getLastDayOfMonth,
   isSameDay,
   isAnotherMothDay,
-} from "./utilDate.js";
+} from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 
-import { DAYS_IN_WEEK, START_WEEK } from "./constants.js";
+import { DAYS_IN_WEEK, START_WEEK } from "./constants.ts";
+
+import type { UCalendarViewProps, UCalendarProps } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
-const props = defineProps({
-  selectedDate: {
-    type: [Date, null],
-    required: true,
-  },
+const props = defineProps<UCalendarViewProps>();
 
-  selectedDateTo: {
-    type: [Date, null],
-    default: undefined,
-  },
-
-  activeDate: {
-    type: [Date, null],
-    required: true,
-  },
-
-  activeMonth: {
-    type: [Date, null],
-    required: true,
-  },
-
-  locale: {
-    type: Object,
-    required: true,
-  },
-
-  dateFormat: {
-    type: String,
-    default: undefined,
-  },
-
-  range: {
-    type: Boolean,
-    default: false,
-  },
-
-  maxDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  minDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-});
-
-const emit = defineEmits(["input"]);
+const emit = defineEmits<{
+  input: [date: Date | null];
+}>();
 
 const {
   dayViewAttrs,
@@ -287,7 +241,7 @@ const {
   activeDayAttrs,
   currentLastDayInRangeAttrs,
   currentFirstDayInRangeAttrs,
-} = useAttrs(props);
+} = useAttrs(props as unknown as UCalendarProps);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -379,7 +333,7 @@ const days = computed(() => {
   return prevMonthDays.value.concat(monthDays.value, nextMonthDays.value);
 });
 
-function getWeekDayName(dayNumber) {
+function getWeekDayName(dayNumber: number) {
   const date = new Date();
 
   date.setDate((date.getDate() + (DAYS_IN_WEEK + dayNumber - date.getDay())) % DAYS_IN_WEEK);
@@ -387,7 +341,7 @@ function getWeekDayName(dayNumber) {
   return formatDate(date, "D", props.locale);
 }
 
-function getDay(date, dayNumber) {
+function getDay(date: Date, dayNumber: number) {
   const day = new Date(date.valueOf());
 
   day.setDate(dayNumber);
@@ -395,10 +349,11 @@ function getDay(date, dayNumber) {
   return day;
 }
 
-function getDayState(day) {
+function getDayState(day: Date) {
   const isDayInRange =
     props.range &&
     localSelectedDate.value &&
+    props.selectedDate &&
     props.selectedDateTo &&
     !dateIsOutOfRange(
       day,
@@ -413,12 +368,13 @@ function getDayState(day) {
   const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
   const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
-  const isLastDayInRange = props.range && isSameDay(day, props.selectedDateTo);
+  const isLastDayInRange =
+    props.selectedDateTo && props.range && isSameDay(day, props.selectedDateTo);
   const isCurrentFirstDayInRange = isFirstDayInRange && isCurrentDay;
   const isCurrentLastDayInRange = isLastDayInRange && isCurrentDay;
   const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
   const isAnotherMonthLastDayInRange = isLastDayInRange && isAnotherMonthDay;
-  const isActiveDay = isSameDay(props.activeDate, day) && !props.range;
+  const isActiveDay = props.activeDate && isSameDay(props.activeDate, day) && !props.range;
 
   return {
     isDayInRange,
@@ -436,7 +392,7 @@ function getDayState(day) {
   };
 }
 
-function onClickDay(day) {
+function onClickDay(day: Date) {
   const isSameDate = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
   const isSameDayInRange =
     isSameDay(day, localSelectedDate.value) &&

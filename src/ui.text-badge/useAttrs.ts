@@ -8,7 +8,7 @@ import type { UBadgeProps } from "./types.ts";
 
 type Config = Partial<typeof defaultConfig>;
 
-export default function useAttrs(props: UBadgeProps) {
+export default function useAttrs(props: UBadgeProps): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
   const slots = useSlots();
 
@@ -24,5 +24,5 @@ export default function useAttrs(props: UBadgeProps) {
     config,
     ...keysAttrs,
     hasSlotContent,
-  } as UseAttrs;
+  };
 }

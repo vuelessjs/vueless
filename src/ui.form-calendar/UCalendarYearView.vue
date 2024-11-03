@@ -159,71 +159,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-import { formatDate, getYearsRange, dateIsOutOfRange } from "./utilCalendar.js";
-import { isSameMonth, getDateWithoutTime, isCurrentYear } from "./utilDate.js";
+import { formatDate, getYearsRange, dateIsOutOfRange } from "./utilCalendar.ts";
+import { isSameMonth, getDateWithoutTime, isCurrentYear } from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 
 import { YEARS_PER_VIEW } from "./constants.js";
 
+import type { UCalendarProps, UCalendarViewProps } from "./types.ts";
+
 import UButton from "../ui.button/UButton.vue";
 
-const props = defineProps({
-  selectedDate: {
-    type: [Date, null],
-    required: true,
-  },
+const props = defineProps<UCalendarViewProps>();
 
-  selectedDateTo: {
-    type: [Date, null],
-    default: undefined,
-  },
-
-  activeDate: {
-    type: [Date, null],
-    required: true,
-  },
-
-  activeMonth: {
-    type: [Date, null],
-    required: true,
-  },
-
-  locale: {
-    type: Object,
-    required: true,
-  },
-
-  dateFormat: {
-    type: String,
-    default: undefined,
-  },
-
-  range: {
-    type: Boolean,
-    default: false,
-  },
-
-  maxDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  minDate: {
-    type: [Date, String],
-    default: undefined,
-  },
-
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-});
-
-const emit = defineEmits(["input"]);
+const emit = defineEmits<{
+  input: [date: Date | null];
+}>();
 
 const {
   yearViewAttrs,
@@ -239,7 +193,7 @@ const {
   singleCurrentYearInRangeAttrs,
   currentLastYearInRangeAttrs,
   currentFirstYearInRangeAttrs,
-} = useAttrs(props);
+} = useAttrs(props as unknown as UCalendarProps);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -250,14 +204,14 @@ const localActiveMonth = computed(
 );
 
 const years = computed(() => {
-  const [initialYear] = getYearsRange(localActiveMonth.value, YEARS_PER_VIEW);
+  const [initialYear] = getYearsRange(localActiveMonth.value);
 
   return Array.from({ length: YEARS_PER_VIEW }, (_, i) => i).map((year) =>
     getYear(initialYear + year),
   );
 });
 
-function getYear(year) {
+function getYear(year: number) {
   let newDate = new Date(localActiveMonth.value.valueOf());
 
   newDate.setFullYear(year);
@@ -272,7 +226,7 @@ function getYear(year) {
   return newDate;
 }
 
-function getYearState(year, index) {
+function getYearState(year: Date, index: number) {
   const startRangeIndex = years.value.findIndex((year) => {
     return year.getFullYear() === localSelectedDate.value?.getFullYear();
   });
@@ -287,8 +241,10 @@ function getYearState(year, index) {
   const isSelectedYear = isSameMonth(year, localSelectedDate.value) && props.selectedDate !== null;
   const isPresentYear = isCurrentYear(year);
   const isMoreThanOneYearRange =
-    props.selectedDateTo?.getFullYear() - props.selectedDate?.getFullYear() >= 1;
-  const isActiveYear = isSameMonth(props.activeMonth, year) && !props.range;
+    props.selectedDateTo &&
+    props.selectedDate &&
+    props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() >= 1;
+  const isActiveYear = props.activeMonth && isSameMonth(props.activeMonth, year) && !props.range;
   const isCurrentYearInRange = isYearInRange && isPresentYear;
 
   const isLastYearInRange =
@@ -318,7 +274,7 @@ function getYearState(year, index) {
   };
 }
 
-function onClickYear(year) {
+function onClickYear(year: Date) {
   emit("input", year);
 }
 </script>
