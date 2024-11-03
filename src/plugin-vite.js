@@ -84,7 +84,7 @@ export const Vueless = function (options = {}) {
     load: async (id) => await loadSvg(id, options),
 
     handleHotUpdate: async ({ file, read }) => {
-      if (!isNuxt && [".js", ".ts", ".vue"].some((ext) => file.endsWith(ext))) {
+      if (!isNuxt && [".js", ".jsx", ".ts", ".tsx", ".vue"].some((ext) => file.endsWith(ext))) {
         const fileContent = await read();
 
         if (fileContent.includes("safelist:") || fileContent.includes("color=")) {
