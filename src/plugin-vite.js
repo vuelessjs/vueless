@@ -25,7 +25,7 @@ export const VuelessUnpluginComponents = (options) =>
   – Loads SVG images as a Vue components.
  */
 export const Vueless = function (options = {}) {
-  const { mode, debug, env, include, noWebTypesInPackageJson } = options;
+  const { mode, debug, env, include } = options;
 
   const isNuxt = mode === "nuxt-module";
   const srcDir = isNuxt ? process.cwd() : getVueSourceFile();
