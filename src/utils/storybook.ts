@@ -41,7 +41,18 @@ const [webTypes]: WebTypes[] = Object.values(
 );
 
 const getComponentData = (componentName: ComponentNames) => {
-  return webTypes.contributions.html.tags.find((item: Tag) => item.name === componentName);
+  const component = webTypes?.contributions?.html?.tags?.find(
+    (item: Tag) => item.name === componentName,
+  );
+
+  if (!component) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "The component docs data is missing. Probably the `web-types.json` file is missing or have incorrect format.",
+    );
+  }
+
+  return component;
 };
 
 export function getSlotNames(componentName: string | undefined) {
