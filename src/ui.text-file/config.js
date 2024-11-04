@@ -1,5 +1,15 @@
 export default /*tw*/ {
-  file: "{ULink}",
+  file: {
+    component: "{ULink}",
+    base: "flex items-center",
+    variants: {
+      size: {
+        sm: "gap-0.5",
+        md: "gap-1",
+        lg: "gap-1.5",
+      },
+    },
+  },
   body: {
     base: "flex items-center",
     variants: {
@@ -13,7 +23,7 @@ export default /*tw*/ {
   fileImage: "rounded-sm max-w-7",
   fileIcon: "{UIcon}",
   fileLabel: "{ULink}",
-  removeButton: "{UButton} ml-2",
+  removeIcon: "{UIcon}",
   defaults: {
     size: "md",
     /* icons */

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -42,7 +42,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow },
   setup() {
     return {
@@ -63,7 +63,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const VariantColorsTemplate = (args, { argTypes } = {}) => ({
+const VariantColorsTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow, UCol },
   setup() {
     return {

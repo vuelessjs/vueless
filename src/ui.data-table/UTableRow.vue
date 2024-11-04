@@ -32,6 +32,7 @@
         v-bind="bodyCellNestedAttrs"
       >
         <div
+          v-show="isShownToggleIcon"
           ref="toggle-wrapper"
           v-bind="bodyCellNestedExpandIconWrapperAttrs"
           :style="{ width: getIconWidth() }"
@@ -154,13 +155,13 @@
 
 <script setup>
 import { computed, onMounted, useSlots, useTemplateRef } from "vue";
-import { cx } from "../utils/utilUI.js";
-import useUI from "../composables/useUI.js";
+import { cx } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
 
 import { PX_IN_REM } from "../constants.js";
 import { getFilteredRow } from "./utilTable.js";
 
-import { useMutationObserver } from "../composables/useMutationObserver.js";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
@@ -241,7 +242,7 @@ const toggleIconConfig = computed(() =>
     : bodyCellNestedCollapseIconAttrs.value,
 );
 
-const shift = computed(() => (props.row.row ? 1.5 : 2));
+const shift = computed(() => props.nestedLevel / 1.5);
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
@@ -320,11 +321,11 @@ function formatCellValue(value) {
 }
 
 function getNestedShift() {
-  return { marginLeft: `${props.nestedLevel * shift.value}rem` };
+  return { marginLeft: `${shift.value / 2.5}rem` };
 }
 
 function getNestedCheckboxShift() {
-  return { transform: `translateX(${props.nestedLevel * shift.value}rem)` };
+  return { transform: `translateX(${shift.value / 1.5}rem)` };
 }
 
 function onClickToggleRowChild(rowId) {

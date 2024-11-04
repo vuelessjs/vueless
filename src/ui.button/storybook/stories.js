@@ -1,13 +1,15 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button)
- */
 export default {
   id: "1010",
   title: "Buttons & Links / Button",
@@ -17,6 +19,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UButton.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UButton.__name),
   },
 };
 
@@ -34,7 +39,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
     return { args, options: argTypes[args.enum].options };
@@ -54,7 +59,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
   `,
 });
 
-const ColorTemplate = (args, { argTypes } = {}) => ({
+const ColorTemplate = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
     return {

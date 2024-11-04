@@ -46,7 +46,7 @@
 <script setup>
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UFiles } from "./constants.js";
 import defaultConfig from "./config.js";

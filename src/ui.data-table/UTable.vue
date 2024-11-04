@@ -284,7 +284,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault, cx } from "../utils/utilUI.js";
+import { getDefault, cx } from "../utils/ui.ts";
 
 import defaultConfig from "./config.js";
 import {
@@ -300,7 +300,7 @@ import {
 import { PX_IN_REM } from "../constants.js";
 import { UTable } from "./constants.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -703,7 +703,7 @@ function onChangeSelectedRows(selectedRows) {
   if (selectedRows.length) {
     canSelectAll.value = false;
 
-    isCheckedMoreOneTableItems.value ? setFooterCellWidth() : "";
+    isCheckedMoreOneTableItems.value && setFooterCellWidth();
   } else {
     nextTick(setHeaderCellWidth);
   }

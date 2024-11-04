@@ -140,7 +140,7 @@ import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import {
   parseDate,
@@ -153,7 +153,7 @@ import {
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.js";
 
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 import {
   UCalendar,

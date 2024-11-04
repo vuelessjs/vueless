@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import useUI from "../composables/useUI.js";
+import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
 
@@ -9,14 +9,12 @@ export default function useAttrs(props, { isShownOptions }) {
     () => props.config,
   );
 
-  const extendingKeys = ["dropdownLinkActive"];
+  const extendingKeys = ["wrapperActive"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    dropdownLink: {
-      extend: computed(() => [
-        isShownOptions.value && extendingKeysClasses.dropdownLinkActive.value,
-      ]),
+    wrapper: {
+      extend: computed(() => [isShownOptions.value && extendingKeysClasses.wrapperActive.value]),
     },
   });
 

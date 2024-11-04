@@ -1,4 +1,4 @@
-import { getRandomId } from "../utils/utilUI";
+import { getRandomId } from "../utils/ui.ts";
 
 export function normalizeColumns(columns) {
   return columns.map((column) => (typeof column === "string" ? { label: column } : column));

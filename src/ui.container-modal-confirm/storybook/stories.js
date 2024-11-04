@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -57,7 +57,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
     function onClick(value) {

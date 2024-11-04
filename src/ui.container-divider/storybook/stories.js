@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
@@ -29,7 +29,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDivider, URow },
   setup() {
     return {

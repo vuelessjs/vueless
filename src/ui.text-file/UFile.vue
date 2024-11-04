@@ -23,16 +23,14 @@
     </slot>
 
     <slot name="right" :file="{ elementId, label, url, imageUrl }">
-      <UButton
+      <UIcon
         v-if="removable"
-        round
-        filled
-        square
-        no-ring
-        variant="thirdary"
-        :size="removeButtonSize"
-        :icon="config.defaults.removeIcon"
-        v-bind="removeButtonAttrs"
+        internal
+        interactive
+        color="gray"
+        :size="removeIconSize"
+        :name="config.defaults.removeIcon"
+        v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"
       />
@@ -45,9 +43,8 @@ import { computed, ref, useId } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import useAttrs from "./useAttrs.js";
 import { UFile } from "./constants.js";
@@ -141,20 +138,20 @@ const {
   fileIconAttrs,
   fileLabelAttrs,
   fileImageAttrs,
-  removeButtonAttrs,
+  removeIconAttrs,
 } = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
+    sm: "xs",
+    md: "sm",
+    lg: "md",
   };
 
   return sizes[props.size];
 });
 
-const removeButtonSize = computed(() => {
+const removeIconSize = computed(() => {
   const sizes = {
     sm: "2xs",
     md: "xs",

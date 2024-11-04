@@ -39,7 +39,7 @@
 <script setup>
 import { computed } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UMoney } from "./constants.js";
 import defaultConfig from "./config.js";

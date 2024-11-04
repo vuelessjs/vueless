@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UDivider } from "./constants.js";
 import defaultConfig from "./config.js";

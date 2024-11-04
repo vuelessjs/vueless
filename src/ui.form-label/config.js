@@ -20,8 +20,8 @@ export default /*tw*/ {
       { align: "right", size: "sm", class: "gap-2.5" },
       { align: "right", size: "md", class: "gap-3" },
       { align: "right", size: "lg", class: "gap-3.5" },
-      { align: "left", centred: true, class: "items-center w-auto" },
-      { align: "right", centred: true, class: "items-center w-auto" },
+      { align: "left", centred: true, class: "items-center justify-end w-auto" },
+      { align: "right", centred: true, class: "items-center justify-start w-auto" },
     ],
   },
   content: {

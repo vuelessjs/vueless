@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
@@ -89,7 +89,7 @@ const ValueTypesTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UCheckbox, UCol },
   setup() {
     return {
