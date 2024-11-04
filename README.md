@@ -11,7 +11,7 @@
 1. Install `vueless` UI library packages.
 
 ```bash
-npm install vueless @vueless/plugin-vite
+npm install vueless
 ```
 
 
@@ -29,7 +29,7 @@ createApp(App).use(vueless).mount('#app');
 3. Add TailwindCSS preset.
 
 ```javascript
-import { vuelessPreset } from "vueless/preset.tailwind.js";
+import { vuelessPreset } from "vueless/preset-tailwind.js";
 
 export default {
   presets: [vuelessPreset],
@@ -40,7 +40,7 @@ export default {
 4. Add Vite plugins.
 
 ```javascript
-import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
+import { Vueless, VuelessUnpluginComponents } from "vueless/plugin-vite";
 
 export default defineConfig({
   plugins: [
