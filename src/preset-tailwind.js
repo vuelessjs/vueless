@@ -96,7 +96,7 @@ export const vuelessTailwindConfig = {
         dynamic: "var(--vl-ring-offset)",
       },
       ringOffsetColor: {
-        dynamic: twColorWithOpacity("--vl-ring-offset-color"),
+        "color-dynamic": twColorWithOpacity("--vl-ring-offset-color"),
       },
     },
     configViewer: {
