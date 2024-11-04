@@ -176,12 +176,12 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UDataList as UDataListName } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -366,20 +366,20 @@ function onClickDelete(value, label) {
 }
 
 function prepareSortData(list, parentId) {
-  let sortData = [];
+  const sortData = [];
 
   list.forEach((item) => {
-    let hasItemChildren = item?.children?.length;
+    const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      let childrenItem = prepareSortData(item.children, item[props.valueKey]);
+      const childrenItem = prepareSortData(item.children, item[props.valueKey]);
 
       childrenItem.forEach((item) => {
         sortData.push(item);
       });
     }
 
-    let parentItem = { ...item, parentId: 0 || parentId };
+    const parentItem = { ...item, parentId: 0 || parentId };
 
     sortData.push(parentItem);
   });

@@ -54,7 +54,7 @@
 import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UTextarea } from "./constants.js";
 import defaultConfig from "./config.js";

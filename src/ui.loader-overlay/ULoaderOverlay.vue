@@ -16,7 +16,7 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
 

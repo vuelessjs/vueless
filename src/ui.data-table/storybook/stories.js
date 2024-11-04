@@ -1,5 +1,5 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
-import { getRandomId } from "../../utils/utilUI.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import { getRandomId } from "../../utils/ui.ts";
 
 import UTable from "../../ui.data-table/UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -312,7 +312,9 @@ DateDivider.args = { dateDivider: true, row: getDateDividerRow };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
 DateDividerCustomLabel.args = {
-  row: getDateDividerRow,
+  rows: Array(10)
+    .fill()
+    .map(() => getDateDividerRow()),
   dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
 };
 

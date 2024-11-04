@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -45,7 +45,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDatePicker, URow },
   setup() {
     return {
@@ -57,7 +57,7 @@ const EnumVariantTemplate = (args, { argTypes } = {}) => ({
     <URow>
       <UDatePicker
         v-for="(option, index) in options"
-        open-direction-y="bottom" 
+        open-direction-y="bottom"
         :key="index"
         v-bind="args"
         :[args.enum]="option"

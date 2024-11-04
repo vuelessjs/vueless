@@ -10,7 +10,7 @@
 <script setup>
 import { computed, inject, toValue } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UTab } from "./constants.js";
 import defaultConfig from "./config.js";

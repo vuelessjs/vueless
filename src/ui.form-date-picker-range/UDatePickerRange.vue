@@ -152,7 +152,7 @@
 
 <script setup>
 import { computed, watch, ref, nextTick, provide, useId } from "vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -188,7 +188,7 @@ import {
 } from "./utilDateRange.js";
 
 import useAttrs from "./useAttrs.js";
-import { useAutoPosition } from "../composables/useAutoPosition.js";
+import { useAutoPosition } from "../composables/useAutoPosition.ts";
 import { useLocale } from "./useLocale.js";
 import { useUserFormat } from "./useUserFormat.js";
 
