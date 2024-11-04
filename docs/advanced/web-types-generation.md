@@ -1,6 +1,6 @@
 # Web Types generation
 
-To support component recognition by IDEs (WebStorm, etc..) Vueless use  [`@vueless/web-types`](https://www.npmjs.com/package/@vueless/web-types) package for Web-Types generation which in turn was be inspired by [`JetBrains/web-types`](https://github.com/JetBrains/web-types).&#x20;
+To support component recognition by IDEs (WebStorm) Vueless use  [`@vueless/web-types`](https://www.npmjs.com/package/@vueless/web-types) package for Web-Types generation which in turn was be inspired by [`JetBrains/web-types`](https://github.com/JetBrains/web-types).&#x20;
 
 Vueless UI already included latest `web-types.json` file, so you don't need to do nothing.
 
