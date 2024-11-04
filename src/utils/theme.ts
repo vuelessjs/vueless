@@ -19,6 +19,7 @@ import {
   PX_IN_REM,
   COOL_COLOR,
   GRAY_COLOR,
+  LIGHT_MODE_SELECTOR,
 } from "../constants.js";
 
 import type {
@@ -150,9 +151,15 @@ function setDarkMode(config: InternalThemeConfig) {
       ? !!Number(storedDarkMode)
       : !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
 
-  isDarkMode
-    ? isCSR && document.documentElement.classList.add(DARK_MODE_SELECTOR)
-    : isCSR && document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+  if (isCSR) {
+    if (isDarkMode) {
+      document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
+      document.documentElement.classList.add(DARK_MODE_SELECTOR);
+    } else {
+      document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+      document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
+    }
+  }
 
   return isDarkMode;
 }
