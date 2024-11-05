@@ -15,9 +15,11 @@ import {
   BRAND_COLOR,
   GRAY_COLOR,
   DYNAMIC_COLOR_PATTERN,
-  TAILWIND_CLASS_DELIMITER,
+  TAILWIND_VARIANT_DELIMITER,
   TAILWIND_MERGE_EXTENSION,
   NESTED_COMPONENT_REG_EXP,
+  TAILWIND_COLOR_OPACITY_DELIMITER,
+  TAILWIND_VARIANT_DELIMITER_REG_EXP,
 } from "../../constants.js";
 
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
@@ -140,16 +142,22 @@ function getSafelistClasses(config) {
 }
 
 function getSafelistItem(safelistClass, colorString) {
-  const classes = safelistClass.split(TAILWIND_CLASS_DELIMITER);
+  const classes = safelistClass.split(TAILWIND_VARIANT_DELIMITER_REG_EXP);
   const mainClass = classes.at(-1);
-  const variantClasses = classes.slice(0, classes.length - 1);
-
   const pattern = mainClass.replace(DYNAMIC_COLOR_PATTERN, colorString);
-  const variants = variantClasses
-    .map((variantItem) => (variantItem ? variantItem : TAILWIND_CLASS_DELIMITER))
-    .join("");
 
-  return classes.length === 1 ? { pattern } : { pattern, variants: [variants].flat() };
+  if (classes.length > 1) {
+    const variantClasses = classes.slice(0, classes.length - 1);
+
+    const variants =
+      variantClasses.length > 1
+        ? [variantClasses.join(TAILWIND_VARIANT_DELIMITER)].flat()
+        : [variantClasses.join()].flat();
+
+    return { pattern, variants };
+  } else {
+    return { pattern };
+  }
 }
 
 async function getComponentSafelist(componentName, { colors, vuelessConfigFiles }) {
@@ -288,11 +296,13 @@ function getSafelistData(safelist) {
       .match(safelistItemRegExp)
       .slice(matchGroupStart, matchGroupEnd);
 
+    const [shade] = colorShade.split(TAILWIND_COLOR_OPACITY_DELIMITER);
+
     return {
       property,
       colorPattern,
       variants: safelistItem.variants,
-      shades: new Set([colorShade]),
+      shades: new Set([shade]),
     };
   });
 }
@@ -317,7 +327,7 @@ function mergeSafelistColors(safelistData) {
       return !isSameItem && isSameProperty && isSameVariants && isIncludesColors;
     });
 
-    if (duplicateIndex === -1) {
+    if (!~duplicateIndex) {
       mergedSafelist.push(currentSafelistItem);
     } else {
       const mergedColors = [
