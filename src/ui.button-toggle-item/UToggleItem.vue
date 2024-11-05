@@ -51,7 +51,7 @@
 import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants.js";
 

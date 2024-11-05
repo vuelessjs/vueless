@@ -43,9 +43,8 @@ import { computed, ref, useId } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import useAttrs from "./useAttrs.js";
 import { UFile } from "./constants.js";

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -36,7 +36,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UCol, URow, UInput, UButton },
   setup() {
     const isGapEnum = argTypes[args.enum].name === "gap";

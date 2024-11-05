@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDataList from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";

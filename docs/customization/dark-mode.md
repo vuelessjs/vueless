@@ -9,8 +9,8 @@ You can specify dark mode globally for all Vueless components.&#x20;
 
 **Possible values:**
 
-* `true` - enable dark mode.
-* `false` - disable dark mode.
-* `undefined` - keep user system settings for the dark mode (default).
+* `true` - enable dark mode. Add class `vl-dark` to `html` tag.&#x20;
+* `false` - disable dark mode. Add class `vl-light` to `html` tag.&#x20;
+* `undefined` - keep user system settings for the dark mode (default), add class to the `html` tag related to the user mode.
 
 [^1]: 

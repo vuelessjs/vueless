@@ -104,12 +104,12 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/utilUI.js";
-import { isMac } from "../utils/utilPlatform.js";
+import { getDefault } from "../utils/ui.ts";
+import { isMac } from "../utils/platform.ts";
 
 import usePointer from "./usePointer.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.js";
 import { UDropdownList } from "./constants.js";

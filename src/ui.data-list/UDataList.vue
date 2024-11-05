@@ -176,12 +176,12 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
-import { getDefault } from "../utils/utilUI.js";
+import { getDefault } from "../utils/ui.ts";
 
 import { UDataList as UDataListName } from "./constants.js";
 import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.js";
+import { useLocale } from "../composables/useLocale.ts";
 
 defineOptions({ inheritAttrs: false });
 

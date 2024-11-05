@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -46,7 +46,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UMoney, URow },
   setup() {
     const slots = getSlotNames(UMoney.__name);

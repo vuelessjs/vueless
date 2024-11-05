@@ -11,11 +11,11 @@
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
-import { getDefault } from "../utils/utilUI.js";
-import { isSSR } from "../utils/utilHelper.js";
+import { getDefault } from "../utils/ui.ts";
+import { isSSR } from "../utils/helper.ts";
 
 import { UIcon } from "./constants.js";
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.js";
 
 import { vTooltip } from "../directives";
@@ -127,6 +127,18 @@ const emit = defineEmits([
 const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
+  /**
+   * Use nuxt assets folders to include icons in final build.
+   * TODO: Find another way to include icons in build
+   */
+  if (isSSR) {
+    return (
+      Object.entries(
+        import.meta.glob(`/assets/.vueless/icons/**/*.svg`, { eager: true, query: "?component" }),
+      ) || []
+    );
+  }
+
   return (
     Object.entries(
       import.meta.glob(`../assets/icons/**/*.svg`, { eager: true, query: "?component" }),
@@ -157,14 +169,17 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   function getIcon(params) {
-    const [, component] = generatedIcons.value.find(([path]) =>
-      params.every((param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(param)),
-    );
+    const [, component] =
+      generatedIcons.value.find(([path]) =>
+        params.every(
+          (param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(String(param)),
+        ),
+      ) || [];
 
     return component;
   }
 
-  /* eslint-disable vue/max-len, prettier/prettier */
+  /* eslint-disable prettier/prettier */
   const libraries = {
     "vueless": async () => {
       return import.meta.env.PROD
@@ -197,7 +212,7 @@ const dynamicComponent = computed(() => {
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
   };
-  /* eslint-enable vue/max-len, prettier/prettier */
+  /* eslint-enable prettier/prettier */
 
   return defineAsyncComponent(libraries[library]);
 });

@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.474",
+  "version": "0.0.482",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -27,14 +27,14 @@
     "access": "public"
   },
   "scripts": {
-    "prepare": "npx @vueless/web-types && node prepare.icons",
-    "dev:docs": "npm run prepare && storybook dev -p 6006 --docs --no-open",
-    "dev": "npm run prepare && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
-    "build": "npm run prepare && storybook build --docs",
+    "pre:start": "npx @vueless/web-types && node .scripts/icons",
+    "dev:docs": "npm run pre:start && storybook dev -p 6006 --docs --no-open",
+    "dev": "npm run pre:start && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
+    "build": "npm run pre:start && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
-    "ts:check": "vue-tsc --build --force --noEmit",
-    "ts:build": "vue-tsc --build --force --declaration --emitDeclarationOnly",
-    "release:prepare": "npm run prepare && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE web-types.json README.md dist/ && node prepare.package && npm run ts:build",
+    "ts:check": "vue-tsc --build --force",
+    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md node_modules/.cache/vueless/web-types.json dist/ && node .scripts/package",
+    "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
@@ -43,12 +43,14 @@
     "lint:ci": "eslint --no-fix --max-warnings=0"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/forms": "^0.5.9",
     "cva": "^1.0.0-beta.1",
     "lodash-es": "^4.17.21",
-    "tailwind-merge": "^2.3.0",
-    "tailwindcss": "^3.4.4",
+    "svgo": "^3.3.2",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss": "^3.4.14",
     "tippy.js": "^6.3.7",
+    "unplugin-vue-components": "^0.27.4",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
@@ -64,9 +66,8 @@
     "@vue/eslint-config-prettier": "^10.0.0",
     "@vue/eslint-config-typescript": "^14.1.1",
     "@vue/tsconfig": "^0.5.1",
-    "@vueless/plugin-vite": "^0.0.74",
     "@vueless/storybook": "^0.0.37",
-    "@vueless/web-types": "^0.0.17",
+    "@vueless/web-types": "^0.0.21",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^9.12.0",
@@ -82,6 +83,7 @@
     "vite": "^5.4.9",
     "vite-plugin-compression": "^0.5.1",
     "vue": "^3.5.4",
+    "vue-i18n": "^10.0.4",
     "vue-router": "^4.3.2",
     "vue-tsc": "^2.1.6"
   },
@@ -98,5 +100,5 @@
   "bugs": {
     "url": "https://github.com/vuelessjs/vueless/issues"
   },
-  "web-types": "./web-types.json"
+  "web-types": "./node_modules/.cache/vueless/web-types.json"
 }

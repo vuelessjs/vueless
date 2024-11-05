@@ -5,16 +5,16 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted, watchEffect } from "vue";
+import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/utilUI.js";
-import { isMobileApp } from "../utils/utilPlatform.js";
+import { getDefault } from "../utils/ui.ts";
+import { isMobileApp } from "../utils/platform.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
 import { useLoaderProgress } from "./useLoaderProgress.js";
-
-import { ULoaderProgress, MAXIMUM, SPEED } from "./constants.js";
-import defaultConfig from "./config.js";
 import useAttrs from "./useAttrs.js";
+
+import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.js";
+import defaultConfig from "./config.js";
 
 defineOptions({ inheritAttrs: false });
 
@@ -51,8 +51,14 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref(null);
 
-const { requestQueue, removeRequestUrl, isLoading, loaderProgressOff, loaderProgressOn } =
-  useLoaderProgress();
+const {
+  requestQueue,
+  removeRequestUrl,
+  isLoading,
+  loaderProgressOff,
+  loaderProgressOn,
+  addRequestUrl,
+} = useLoaderProgress();
 const { stripeAttrs } = useAttrs(props, { error, isMobileApp });
 
 const isStarted = computed(() => {
@@ -73,7 +79,6 @@ const resourceNamesArray = computed(() => {
 });
 
 watch(() => requestQueue.value.length, onChangeRequestsQueue);
-watch(isLoading, onChangeLoadingState);
 
 onMounted(() => {
   window.addEventListener("loaderProgressOn", setLoaderOnHandler);
@@ -93,16 +98,18 @@ onUnmounted(() => {
   window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
 });
 
-watchEffect(() => {
-  if (props.loading) {
-    show.value = true;
-    start();
-
-    return;
-  }
-
-  done();
-});
+watch(
+  () => props.loading,
+  () => {
+    if (props.loading) {
+      addRequestUrl(INFINITY_LOADING);
+      isLoading.value = true;
+    } else {
+      removeRequestUrl(INFINITY_LOADING);
+    }
+  },
+  { immediate: true },
+);
 
 function setLoaderOnHandler(event) {
   loaderProgressOn(event.detail.resource);
@@ -112,39 +119,17 @@ function setLoaderOffHandler(event) {
   loaderProgressOff(event.detail.resource);
 }
 
-function onChangeLoadingState() {
-  if (!props.resources && isStarted.value && show.value && !isLoading.value) {
-    done();
-  }
-}
-
 function onChangeRequestsQueue() {
-  let isActiveRequests = false;
-
-  if (props.resources) {
-    resourceNamesArray.value.forEach((resource) => {
-      if (!isActiveRequests) {
-        const activeRequest = requestQueue.value.find((request) => request === resource);
-
-        isActiveRequests = Boolean(activeRequest);
-      }
+  const isActiveRequests =
+    requestQueue.value.includes(INFINITY_LOADING) ||
+    resourceNamesArray.value.some((resource) => {
+      return requestQueue.value.includes(resource);
     });
 
-    if (isActiveRequests && !isStarted.value) {
-      start();
-    } else if (!isActiveRequests && isStarted.value && show.value && !props.loading) {
-      done();
-    }
-  } else {
-    resourceNamesArray.value.forEach((resource) => {
-      const activeRequest = requestQueue.value.find((request) => request === resource);
-
-      isActiveRequests = !activeRequest;
-    });
-
-    if (isLoading.value && isActiveRequests && !isStarted.value) {
-      start();
-    }
+  if (isActiveRequests && !isStarted.value && isLoading.value) {
+    start();
+  } else if (!isActiveRequests && isStarted.value && show.value) {
+    done();
   }
 }
 

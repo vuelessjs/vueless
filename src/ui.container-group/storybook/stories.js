@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UGroup from "../../ui.container-group/UGroup.vue";
 import UCol from "../../ui.container-col/UCol.vue";

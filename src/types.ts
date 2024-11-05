@@ -1,10 +1,15 @@
-import { hasSlotContent } from "./composablesTs/useUI";
+import { hasSlotContent } from "./composables/useUI.ts";
 
 // TODO: Import all components here
-import UTextDefaultConfig from "./ui.text-block/config";
-import UButtonDefaultConfig from "./ui.button/config";
+import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UButtonDefaultConfig from "./ui.button/config.ts";
+import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 
-import type { ComputedRef } from "vue";
+import type { ComputedRef, MaybeRef } from "vue";
+import type { Props } from "tippy.js";
+import type { LocaleOptions } from "./adatper.locale/vueless.ts";
+
+export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
 export interface ThemeConfig {
   /**
@@ -63,6 +68,11 @@ export interface Config extends ThemeConfig {
   component?: Partial<Components>;
 
   /**
+   * Directive configs.
+   */
+  directive?: Partial<Directives>;
+
+  /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts.
@@ -73,6 +83,7 @@ export interface Config extends ThemeConfig {
 export type UnknownObject = Record<string, unknown>;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
+export type Gray = "gray";
 export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
 export type BrandColors =
   | "grayscale"
@@ -97,17 +108,27 @@ export type BrandColors =
 export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
+  UBadge?: Partial<typeof UBadgeDefaultConfig>;
+}
+
+export interface Directives {
+  tooltip?: Partial<Props>;
 }
 
 export interface Component {
   i18n?: UnknownObject;
-  defaults?: UnknownObject;
-  safelist?: () => TailwindSafelist[];
+  defaults?: Defaults;
+  safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
   safelistColors?: BrandColors;
   [key: string]: (CVA & NestedComponent) | object | string | undefined;
 }
+
+export type Defaults = {
+  color?: string;
+  [key: string]: unknown;
+};
 
 export interface NestedComponent {
   component: string;
@@ -142,7 +163,7 @@ export interface VueAttrs {
 }
 
 export interface UseAttrs {
-  hasSlotContent?: typeof hasSlotContent;
+  hasSlotContent: typeof hasSlotContent;
   [key: string]: object | undefined;
 }
 
@@ -161,7 +182,7 @@ export interface KeysToExtend {
 }
 
 export interface CreateVuelessOptions {
-  i18n?: Record<string, string | object>;
+  i18n?: LocaleOptions;
 }
 
 export interface TailwindSafelist {
@@ -170,7 +191,6 @@ export interface TailwindSafelist {
 }
 
 export interface TailwindColorShades {
-  DEFAULT: string;
   50: string;
   100: string;
   200: string;
@@ -215,4 +235,88 @@ export interface VuelessCssVariables {
   "--vl-color-brand-900": string;
   "--vl-color-brand-950": string;
   "--vl-color-brand-default": string;
+}
+
+/* Web-types interfaces and types */
+
+export interface WebTypes {
+  framework: string;
+  name: string;
+  version: string;
+  contributions: Contributions;
+}
+
+export interface Contributions {
+  html: HtmlContributions;
+}
+
+export interface HtmlContributions {
+  "description-markup": string;
+  "types-syntax": string;
+  tags: Tag[];
+}
+
+export interface Tag {
+  name: string;
+  description?: string;
+  attributes?: Attribute[];
+  events?: Event[];
+  slots?: Slot[];
+  exposes?: Expose[];
+  source?: Source;
+}
+
+export interface Source {
+  module: string;
+  symbol: string;
+}
+
+export interface Attribute {
+  name: string;
+  enum: string[];
+  required?: boolean;
+  description?: string;
+  value: AttributeValue;
+  default?: unknown;
+}
+
+export interface AttributeValue {
+  kind: string;
+  type: string;
+}
+
+export interface Event {
+  name: string;
+  description?: string;
+  properties?: EventProperty[];
+}
+
+export interface EventProperty {
+  type: string[];
+  name: string;
+  description?: string;
+}
+
+export interface Slot {
+  name: string;
+  description?: string;
+  scoped?: boolean;
+  bindings?: SlotBinding[];
+}
+
+export interface SlotBinding {
+  type: string;
+  name: string;
+  description?: string;
+}
+
+export interface Expose {
+  name: string;
+  description?: string;
+  properties: ExposeProperty[];
+}
+
+export interface ExposeProperty {
+  type: string;
+  description?: string;
 }

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/utilStorybook.js";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -38,7 +38,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes } = {}) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { ULabel, UCol, UText },
   setup() {
     function getText(value, name) {
