@@ -50,7 +50,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
     return { args, options: argTypes[args.enum].options, prefixedOptions };
   },
   template: `
-    <URow>
+    <URow no-mobile>
       <ULink
         v-for="(option, index) in options"
         :key="index"
@@ -71,26 +71,93 @@ Sizes.args = { enum: "size" };
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
 
-export const Types = EnumVariantTemplate.bind({});
-Types.args = { enum: "type" };
+export const Types = (args) => ({
+  components: { ULink, URow },
+  setup() {
+    function getTypeLabel(type) {
+      switch (type) {
+        case "phone":
+          return "+1 (000) 123-4567";
+        case "email":
+          return "hello@vueless.com";
+        case "link":
+          return "Vueless.com";
+      }
+    }
 
-export const Underlined = EnumVariantTemplate.bind({});
-Underlined.args = { enum: "color", underlined: true, dashed: false };
+    function getTypeHref(type, label) {
+      switch (type) {
+        case "phone": {
+          const phoneNumber = label.replace(/\D/g, "");
 
-export const Dashed = EnumVariantTemplate.bind({});
-Dashed.args = { enum: "color", dashed: true };
+          return `+${phoneNumber}`;
+        }
 
-export const Href = DefaultTemplate.bind({});
-Href.args = { href: "https://storybook.js.org/docs/react/get-started/introduction" };
+        case "email":
+          return `${label}`;
+        case "link":
+          return "https://vueless.com/";
+        default:
+          return "#";
+      }
+    }
 
-export const Route = DefaultTemplate.bind({});
-Route.args = { name: "routerName" };
+    const options = ["phone", "email", "link"];
+    const links = options.map((type) => ({
+      type,
+      label: getTypeLabel(type),
+      href: getTypeHref(type, getTypeLabel(type)),
+    }));
 
-export const TargetBlank = DefaultTemplate.bind({});
-TargetBlank.args = {
-  href: "https://storybook.js.org/docs/react/get-started/introduction",
-  targetBlank: true,
-};
+    return { args, links };
+  },
+  template: `
+    <URow>
+      <ULink
+        v-for="(link, index) in links"
+        :key="index"
+        v-bind="args"
+        :type="link.type"
+        :label="link.label"
+        :href="link.href"
+        target-blank
+      />
+    </URow>
+  `,
+});
+
+export const UnderlineVariants = (args, { argTypes } = {}) => ({
+  components: { ULink, URow },
+  setup() {
+    const variants = [
+      { name: "Default", props: {} },
+      { name: "Underlined", props: { underlined: true } },
+      { name: "Dashed", props: { dashed: true } },
+    ];
+
+    const colors = argTypes.color.options;
+
+    return {
+      args,
+      variants,
+      colors,
+    };
+  },
+  template: `
+    <div v-for="variant in variants" :key="variant.name" class="mb-8">
+      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <URow no-mobile>
+        <ULink
+          v-for="color in colors"
+          :key="color"
+          v-bind="variant.props"
+          :color="color"
+          :label="color"
+        />
+      </URow>
+    </div>
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -98,8 +165,11 @@ Disabled.args = { disabled: true };
 export const NoRing = DefaultTemplate.bind({});
 NoRing.args = { noRing: true };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const Block = DefaultTemplate.bind({});
+Block.args = { block: true, config: { wrapper: "border-2 border-dashed border-green-500 p-2" } };
+
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <UButton label="Text" />
@@ -107,20 +177,24 @@ SlotDefault.args = {
   `,
 };
 
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon name="star" size="xs" />
-    </template>
-  `,
-};
+export const LeftAndRightSlots = (args) => ({
+  components: { ULink, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <ULink label="Download">
+        <template #left>
+          <UIcon name="download" size="xs" color="green" />
+        </template>
+      </ULink>
 
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon name="star" size="xs" />
-    </template>
+      <ULink label="Open">
+        <template #right>
+          <UIcon name="open_in_new" size="xs" color="green" />
+        </template>
+      </ULink>
+    </URow>
   `,
-};
+});
