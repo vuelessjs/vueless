@@ -1,8 +1,8 @@
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef">
+  <div v-bind="wrapperAttrs" ref="wrapper">
     <UInput
       :id="elementId"
-      :key="isShownCalendar"
+      :key="String(isShownCalendar)"
       v-model="userFormatDate"
       :label-align="labelAlign"
       :label="label"
@@ -73,18 +73,19 @@
   </div>
 </template>
 
-<script setup>
-import { computed, nextTick, ref, useId } from "vue";
+<script setup lang="ts">
+import { computed, nextTick, ref, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.ts";
+import { View, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
 
 import { getDefault } from "../utils/ui.ts";
 
-import { addDays, isSameDay } from "../ui.form-calendar/utilDate.ts";
+import { addDays, isSameDay } from "../ui.form-calendar/utilDate.js";
+import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";
@@ -93,188 +94,30 @@ import { useAutoPosition } from "../composables/useAutoPosition.ts";
 import defaultConfig from "./config.js";
 import { UDatePicker } from "./constants.js";
 
+import type { UDatePickerProps } from "./types.ts";
+
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Datepicker value (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  modelValue: {
-    type: [Date, String],
-    default: null,
-  },
-
-  /**
-   * Datepicker label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).labelAlign,
-  },
-
-  /**
-   * Datepicker placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).size,
-  },
-
-  /**
-   * Datepicker open direction on x-axis.
-   * @values auto, left, right
-   */
-  openDirectionX: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).openDirectionX,
-  },
-
-  /**
-   * Datepicker open direction on y-axis.
-   * @values auto, top, bottom
-   */
-  openDirectionY: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).openDirectionY,
-  },
-
-  /**
-   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  minDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePicker).minDate,
-  },
-
-  /**
-   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  maxDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePicker).maxDate,
-  },
-
-  /**
-   * Date string format.
-   */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateFormat,
-  },
-
-  /**
-   * Same as date format, but used when timepicker is enabled.
-   */
-  dateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateTimeFormat,
-  },
-
-  /**
-   * User-friendly date format (it will be shown in UI).
-   */
-  userDateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateFormat,
-  },
-
-  /**
-   * Same as user format, but used when timepicker is enabled.
-   */
-  userDateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateTimeFormat,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).rightIcon,
-  },
-
-  /**
-   * Make datepicker disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).disabled,
-  },
-
-  /**
-   * Show timepicker.
-   */
-  timepicker: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).timepicker,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UDatePickerProps>(), {
+  label: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).label,
+  labelAlign: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).labelAlign,
+  placeholder: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).placeholder,
+  description: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).description,
+  error: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).error,
+  size: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).size,
+  openDirectionX: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionX,
+  openDirectionY: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionY,
+  timepicker: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).timepicker,
+  dateFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).dateFormat,
+  dateTimeFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).dateTimeFormat,
+  userDateFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).userDateFormat,
+  userDateTimeFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).userDateTimeFormat,
+  leftIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).leftIcon,
+  rightIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).rightIcon,
+  disabled: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).disabled,
+  id: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).id,
+  dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -298,12 +141,12 @@ const i18nGlobal = tm(UDatePicker);
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
-const customView = ref(VIEW.day);
+const customView = ref(View.Day);
 
-const wrapperRef = ref(null);
-const calendarRef = ref(null);
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const calendarRef = useTemplateRef<InstanceType<typeof UCalendar>>("calendar");
 
-const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef);
+const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef || null);
 
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
@@ -322,7 +165,6 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 const elementId = props.id || useId();
 
 const { config, inputAttrs, activeInputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
-  isShownCalendar,
   isTop,
   isRight,
 });
@@ -334,17 +176,17 @@ function activate() {
     adjustPositionY();
     adjustPositionX();
 
-    calendarRef.value.wrapperRef.focus();
+    calendarRef.value?.wrapperRef?.focus();
   });
 }
 
 function deactivate() {
   isShownCalendar.value = false;
 
-  customView.value = VIEW.day;
+  customView.value = View.Day;
 }
 
-function onUserFormatDateChange(value) {
+function onUserFormatDateChange(value: string) {
   userFormatDate.value = formatUserDate(value) || "";
 }
 
@@ -352,13 +194,13 @@ function onSubmit() {
   deactivate();
 }
 
-function onBlur(event) {
+function onBlur(event: FocusEvent) {
   const { relatedTarget } = event;
 
-  if (!calendarRef?.value?.wrapperRef?.contains(relatedTarget)) deactivate();
+  if (!calendarRef?.value?.wrapperRef?.contains(relatedTarget as HTMLElement)) deactivate();
 }
 
-function formatUserDate(data) {
+function formatUserDate(data: string) {
   if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
 
   let prefix = "";
@@ -367,9 +209,10 @@ function formatUserDate(data) {
 
   const today = new Date();
 
-  const isToday = isSameDay(today, localValue.value);
-  const isYesterday = isSameDay(addDays(today, -1), localValue.value);
-  const isTomorrow = isSameDay(addDays(today, 1), localValue.value);
+  const parsedLocalDate = parseDate(localValue.value, props.dateFormat, currentLocale.value);
+  const isToday = parsedLocalDate && isSameDay(today, parsedLocalDate);
+  const isYesterday = parsedLocalDate && isSameDay(addDays(today, -1), parsedLocalDate);
+  const isTomorrow = parsedLocalDate && isSameDay(addDays(today, 1), parsedLocalDate);
 
   if (isToday) {
     prefix = currentLocale.value.today;

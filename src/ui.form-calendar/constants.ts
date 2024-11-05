@@ -55,12 +55,6 @@ export const LOCALE_TYPE = {
   month: "month",
 };
 
-export const VIEW = {
-  day: "day",
-  month: "month",
-  year: "year",
-};
-
 export const ARROW_KEYS: string[] = [
   KeyCode.ArrowLeft,
   KeyCode.ArrowUp,
