@@ -64,14 +64,15 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
 const ColorTemplate = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
-    const variants = [...argTypes.variant.options, 'thirdary'];
+    const variants = [...argTypes.variant.options, "thirdary"];
+
     return {
       args,
       variants,
       colors: argTypes.color.options,
       shouldBeFilled: (variant, index) => {
-        return variant === 'thirdary' && index === variants.length - 2;
-      }
+        return variant === "thirdary" && index === variants.length - 2;
+      },
     };
   },
   template: `
