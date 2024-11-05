@@ -1,144 +1,3 @@
-<template>
-  <div ref="wrapper" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
-    <div v-bind="navigationAttrs">
-      <UButton
-        square
-        no-ring
-        size="sm"
-        color="grayscale"
-        variant="thirdary"
-        :left-icon="config?.defaults?.prevIcon"
-        v-bind="nextPrevButtonAttrs"
-        @mousedown.prevent.capture
-        @click="onClickPrevButton"
-      />
-
-      <UButton
-        no-ring
-        size="sm"
-        color="grayscale"
-        variant="thirdary"
-        v-bind="viewSwitchButtonAttrs"
-        @mousedown.prevent.capture
-        @click="onClickViewSwitch"
-      >
-        <template v-if="isCurrentView.day">
-          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
-        </template>
-        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
-        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
-      </UButton>
-
-      <UButton
-        square
-        no-ring
-        size="sm"
-        color="grayscale"
-        variant="thirdary"
-        :left-icon="config?.defaults?.nextIcon"
-        v-bind="nextPrevButtonAttrs"
-        @mousedown.prevent.capture
-        @click="onClickNextButton"
-      />
-    </div>
-
-    <DayView
-      v-if="isCurrentView.day"
-      :selected-date="selectedDate"
-      :selected-date-to="selectedDateTo"
-      :range="range"
-      :active-month="activeMonth"
-      :active-date="activeDate"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :date-format="actualDateFormat"
-      :locale="locale"
-      :config="config || {}"
-      @input="onInputDate"
-    />
-
-    <MonthView
-      v-if="isCurrentView.month"
-      :selected-date="selectedDate"
-      :selected-date-to="selectedDateTo"
-      :range="range"
-      :active-month="activeMonth"
-      :active-date="activeDate"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :date-format="actualDateFormat"
-      :locale="locale"
-      :config="config || {}"
-      @input="onInput"
-    />
-
-    <YearView
-      v-if="isCurrentView.year"
-      :selected-date="selectedDate"
-      :selected-date-to="selectedDateTo"
-      :range="range"
-      :active-month="activeMonth"
-      :active-date="activeDate"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :date-format="actualDateFormat"
-      :locale="locale"
-      :config="config || {}"
-      @input="onInput"
-    />
-
-    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
-      <span v-bind="timepickerLabelAttrs" v-text="currentLocale.timeLabel" />
-
-      <div v-bind="timepickerInputWrapperAttrs">
-        <input
-          ref="hours-input"
-          placeholder="00"
-          type="text"
-          v-bind="timepickerInputHoursAttrs"
-          @input.prevent="onTimeInput($event as InputEvent, InputType.Hours, MAX_HOURS, MIN_HOURS)"
-          @keydown="onTimeKeydown"
-        />
-        &#8282;
-        <input
-          ref="minutes-input"
-          placeholder="00"
-          type="text"
-          v-bind="timepickerInputMinutesAttrs"
-          @input.prevent="
-            onTimeInput($event as InputEvent, InputType.Minutes, MAX_MINUTES, MIN_MINUTES)
-          "
-          @keydown="onTimeKeydown"
-        />
-        &#8282;
-        <input
-          ref="seconds-input"
-          placeholder="00"
-          type="text"
-          v-bind="timepickerInputSecondsAttrs"
-          @input.prevent="
-            onTimeInput($event as InputEvent, InputType.Seconds, MAX_SECONDS, MIN_SECONDS)
-          "
-          @keydown="onTimeKeydown"
-        />
-      </div>
-
-      <UButton
-        variant="thirdary"
-        size="sm"
-        square
-        filled
-        no-ring
-        color="grayscale"
-        v-bind="timepickerSubmitButtonAttrs"
-        @click="onClickSubmit"
-      >
-        {{ currentLocale.okLabel }}
-      </UButton>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, ref, watch, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
@@ -153,9 +12,9 @@ import {
   getYearsRange,
   dateIsOutOfRange,
   isNumeric,
-} from "./utilCalendar.js";
+} from "./utilCalendar.ts";
 
-import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.js";
+import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
 
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
@@ -200,6 +59,7 @@ const props = withDefaults(defineProps<UCalendarProps>(), {
   userDateFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateFormat,
   userDateTimeFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateTimeFormat,
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -706,7 +566,7 @@ function onClickSubmit() {
   emit("submit");
 }
 
-function onTimeInput(event: InputEvent, type: InputType, maxValue: number, minValue: number) {
+function onTimeInput(event: InputEvent, type: InputType) {
   const input = event.target as HTMLInputElement;
   const value = input.value;
   const numericValue = Number(value);
@@ -714,6 +574,24 @@ function onTimeInput(event: InputEvent, type: InputType, maxValue: number, minVa
   const isHours = type === InputType.Hours;
   const isMinutes = type === InputType.Minutes;
   const isSeconds = type === InputType.Seconds;
+
+  let minValue = 0;
+  let maxValue = 0;
+
+  if (isHours) {
+    minValue = MIN_HOURS;
+    maxValue = MAX_HOURS;
+  }
+
+  if (isMinutes) {
+    minValue = MIN_MINUTES;
+    maxValue = MAX_MINUTES;
+  }
+
+  if (isSeconds) {
+    minValue = MIN_SECONDS;
+    maxValue = MAX_SECONDS;
+  }
 
   if (event.data !== null && !isNumeric(event.data)) {
     if (isHours) {
@@ -771,3 +649,140 @@ defineExpose({
   wrapperRef,
 });
 </script>
+
+<template>
+  <div ref="wrapper" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
+    <div v-bind="navigationAttrs">
+      <UButton
+        square
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        :left-icon="config?.defaults?.prevIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickPrevButton"
+      />
+
+      <UButton
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        v-bind="viewSwitchButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickViewSwitch"
+      >
+        <template v-if="isCurrentView.day">
+          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
+        </template>
+        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
+        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
+      </UButton>
+
+      <UButton
+        square
+        no-ring
+        size="sm"
+        color="grayscale"
+        variant="thirdary"
+        :left-icon="config?.defaults?.nextIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickNextButton"
+      />
+    </div>
+
+    <DayView
+      v-if="isCurrentView.day"
+      :selected-date="selectedDate"
+      :selected-date-to="selectedDateTo"
+      :range="range"
+      :active-month="activeMonth"
+      :active-date="activeDate"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :date-format="actualDateFormat"
+      :locale="locale"
+      :config="config"
+      @input="onInputDate"
+    />
+
+    <MonthView
+      v-if="isCurrentView.month"
+      :selected-date="selectedDate"
+      :selected-date-to="selectedDateTo"
+      :range="range"
+      :active-month="activeMonth"
+      :active-date="activeDate"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :date-format="actualDateFormat"
+      :locale="locale"
+      :config="config"
+      @input="onInput"
+    />
+
+    <YearView
+      v-if="isCurrentView.year"
+      :selected-date="selectedDate"
+      :selected-date-to="selectedDateTo"
+      :range="range"
+      :active-month="activeMonth"
+      :active-date="activeDate"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :date-format="actualDateFormat"
+      :locale="locale"
+      :config="config"
+      @input="onInput"
+    />
+
+    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
+      <span v-bind="timepickerLabelAttrs" v-text="currentLocale.timeLabel" />
+
+      <div v-bind="timepickerInputWrapperAttrs">
+        <input
+          ref="hours-input"
+          placeholder="00"
+          type="text"
+          v-bind="timepickerInputHoursAttrs"
+          @input.prevent="onTimeInput($event as InputEvent, InputType.Hours)"
+          @keydown="onTimeKeydown"
+        />
+        &#8282;
+        <input
+          ref="minutes-input"
+          placeholder="00"
+          type="text"
+          v-bind="timepickerInputMinutesAttrs"
+          @input.prevent="onTimeInput($event as InputEvent, InputType.Minutes)"
+          @keydown="onTimeKeydown"
+        />
+        &#8282;
+        <input
+          ref="seconds-input"
+          placeholder="00"
+          type="text"
+          v-bind="timepickerInputSecondsAttrs"
+          @input.prevent="onTimeInput($event as InputEvent, InputType.Seconds)"
+          @keydown="onTimeKeydown"
+        />
+      </div>
+
+      <UButton
+        variant="thirdary"
+        size="sm"
+        square
+        filled
+        no-ring
+        color="grayscale"
+        v-bind="timepickerSubmitButtonAttrs"
+        @click="onClickSubmit"
+      >
+        {{ currentLocale.okLabel }}
+      </UButton>
+    </div>
+  </div>
+</template>

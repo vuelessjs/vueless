@@ -20,7 +20,7 @@ import {
   NESTED_COMPONENT_REG_EXP,
 } from "../constants.js";
 
-import type { ComponentInternalInstance, Slot, VNode, ComputedRef, Ref } from "vue";
+import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
 import type {
   BrandColors,
   Strategies,
@@ -32,6 +32,7 @@ import type {
   CVA,
   KeyAttrs,
   KeysToExtend,
+  ExtendedKeyClasses,
 } from "../types.ts";
 
 interface MergedConfigOptions {
@@ -39,10 +40,6 @@ interface MergedConfigOptions {
   globalConfig: Component;
   propsConfig?: Component;
   vuelessStrategy?: Strategies;
-}
-
-interface ExtendedKeyClasses {
-  [x: string]: Ref<string>;
 }
 
 /**

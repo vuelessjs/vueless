@@ -1,202 +1,3 @@
-<template>
-  <div v-bind="dayViewAttrs">
-    <div v-bind="weekDaysAttrs">
-      <span v-for="weekDay in weekdays" :key="weekDay" v-bind="weekDayAttrs" v-text="weekDay" />
-    </div>
-    <div v-bind="daysAttrs">
-      <template v-for="day in days" :key="day">
-        <UButton
-          v-if="getDayState(day).isSelectedDay && !props.range"
-          tabindex="-1"
-          variant="primary"
-          color="brand"
-          no-ring
-          square
-          v-bind="selectedDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          v-bind="currentDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentFirstDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="currentFirstDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentLastDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="currentLastDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isFirstDayInRange"
-          tabindex="-1"
-          variant="primary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="firstDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isLastDayInRange"
-          tabindex="-1"
-          variant="primary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="lastDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="anotherMonthFirstDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isAnotherMonthLastDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          filled
-          v-bind="anotherMonthLastDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          v-bind="currentDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isDayInRange"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          v-bind="dayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isActiveDay"
-          tabindex="-1"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          square
-          v-bind="activeDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isAnotherMonthDay"
-          tabindex="-1"
-          variant="thirdary"
-          color="grayscale"
-          no-ring
-          square
-          v-bind="anotherMonthDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="!getDayState(day).isSelectedDay"
-          tabindex="-1"
-          variant="thirdary"
-          color="grayscale"
-          no-ring
-          square
-          v-bind="dayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-      </template>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed } from "vue";
 
@@ -407,3 +208,202 @@ function onClickDay(day: Date) {
   emit("input", day);
 }
 </script>
+
+<template>
+  <div v-bind="dayViewAttrs">
+    <div v-bind="weekDaysAttrs">
+      <span v-for="weekDay in weekdays" :key="weekDay" v-bind="weekDayAttrs" v-text="weekDay" />
+    </div>
+    <div v-bind="daysAttrs">
+      <template v-for="day in days" :key="day">
+        <UButton
+          v-if="getDayState(day).isSelectedDay && !props.range"
+          tabindex="-1"
+          variant="primary"
+          color="brand"
+          no-ring
+          square
+          v-bind="selectedDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          v-bind="currentDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentFirstDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="currentFirstDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentLastDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="currentLastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isFirstDayInRange"
+          tabindex="-1"
+          variant="primary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="firstDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isLastDayInRange"
+          tabindex="-1"
+          variant="primary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="lastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="anotherMonthFirstDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isAnotherMonthLastDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          filled
+          v-bind="anotherMonthLastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          v-bind="currentDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          v-bind="dayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isActiveDay"
+          tabindex="-1"
+          variant="thirdary"
+          color="brand"
+          no-ring
+          square
+          v-bind="activeDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isAnotherMonthDay"
+          tabindex="-1"
+          variant="thirdary"
+          color="grayscale"
+          no-ring
+          square
+          v-bind="anotherMonthDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="!getDayState(day).isSelectedDay"
+          tabindex="-1"
+          variant="thirdary"
+          color="grayscale"
+          no-ring
+          square
+          v-bind="dayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+      </template>
+    </div>
+  </div>
+</template>

@@ -12,6 +12,10 @@ import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
 export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
+export interface ExtendedKeyClasses {
+  [key: string]: Ref<string>;
+}
+
 export interface ThemeConfig {
   /**
    * Components brand (primary) color.
