@@ -5,32 +5,32 @@
 {% tabs %}
 {% tab title="npm" %}
 ```bash
-npm install vueless @vueless/plugin-vite
+npm install vueless
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
-yarn add vueless @vueless/plugin-vite
+yarn add vueless
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
-pnpm add vueless @vueless/plugin-vite
+pnpm add vueless
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
-bun add vueless @vueless/plugin-vite
+bun add vueless
 ```
 {% endtab %}
 {% endtabs %}
 
 2\. In the file where you create the Vue application, add the following code:&#x20;
 
-{% code title="main.js" %}
+{% code title="main.{js,ts}" %}
 ```javascript
 import { createApp } from 'vue';
 import { createVueless } from "vueless";
@@ -44,7 +44,7 @@ createApp(App).use(vueless).mount('#app');
 
 3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
 
-<pre class="language-javascript" data-title="tailwind.config.js"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset.tailwind.js";
+<pre class="language-javascript" data-title="tailwind.config.{js,ts}"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset-tailwind.js";
 </strong>
 export default {
   presets: [vuelessPreset],
@@ -54,9 +54,9 @@ export default {
 
 4\. Add Vite plugins.
 
-{% code title="vite.config.js" overflow="wrap" %}
+{% code title="vite.config.{js,ts}" overflow="wrap" %}
 ```javascript
-import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
+import { Vueless, VuelessUnpluginComponents } from "vueless/plugin-vite";
 
 export default defineConfig({
   plugins: [

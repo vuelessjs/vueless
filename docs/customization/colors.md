@@ -87,27 +87,4 @@ export default {
 
 To reduce the app bundle size It's better to safelist colors for particular components.
 
-## Replacing safelist patterns
-
-In some specific cases you may need to replace [Tailwind CSS safelist config](https://tailwindcss.com/docs/content-configuration#using-regular-expressions) as well, so for that reason you can use `safelist` callback function in particular component config.
-
-{% hint style="warning" %}
-To prevent unexpected behaviour **Vueless fully replace (do not merge) custom safelist array**. So If you need to change some safelist patterns first you need to copy entire safelist array from the components default config and after add your changes there.
-{% endhint %}
-
-{% code title="vueless.config.js" %}
-```js
-export default {
-  component: {
-    UButton: {
-      safelist: (colors) => [
-        { pattern: `bg-(${colors})-500`, variants: ["hover", "focus", "active"] },
-        { pattern: `text-(${colors})-500` },
-      ],
-    }
-  }
-};
-```
-{% endcode %}
-
 [^1]: 
