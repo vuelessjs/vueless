@@ -219,9 +219,7 @@ import UButton from "../ui.button/UButton.vue";
 
 const props = defineProps<UCalendarViewProps>();
 
-const emit = defineEmits<{
-  input: [date: Date | null];
-}>();
+const emit = defineEmits(["input"]);
 
 const {
   dayViewAttrs,

@@ -202,41 +202,36 @@ const props = withDefaults(defineProps<UCalendarProps>(), {
   dataTest: "",
 });
 
-const emit = defineEmits<{
+const emit = defineEmits([
   /**
    * Triggers when date value changes.
    * @property {object} newDate
    */
-  "update:modelValue": [date: DateValue];
-
-  /**
-   * Triggers when date value changes.
-   * @property {object} value
-   */
-  input: [date: Date | null | RangeDate];
-
+  "update:modelValue",
   /**
    * Triggers when calendar view changes.
    * @property {string} view
    */
-  "update:view": [view: View];
-
+  "update:view",
   /**
-   * Triggers when arrow keys are used to change calendar date.
+   * Triggers when date value changes.
+   * @property {object} value
    */
-  keydown: [event: KeyboardEvent];
-
+  "input",
   /**
    * Triggers when calendar date is selected by clicking "Enter".
    */
-  submit: [];
-
+  "submit",
+  /**
+   * Triggers when arrow keys are used to change calendar date.
+   */
+  "keydown",
   /**
    * Triggers when the user changes the date input value.
    * @property {string} value
    */
-  userDateChange: [date: string];
-}>();
+  "userDateChange",
+]);
 
 const { tm } = useLocale();
 
