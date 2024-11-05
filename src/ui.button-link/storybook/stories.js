@@ -76,26 +76,29 @@ export const Types = (args) => ({
   setup() {
     function getTypeLabel(type) {
       switch (type) {
-        case 'phone':
-          return '+1 (000) 123-4567';
-        case 'email':
-          return 'hello@vueless.com';
-        case 'link':
-          return 'Vueless.com';
+        case "phone":
+          return "+1 (000) 123-4567";
+        case "email":
+          return "hello@vueless.com";
+        case "link":
+          return "Vueless.com";
       }
     }
 
     function getTypeHref(type, label) {
       switch (type) {
-        case 'phone':
-          const phoneNumber = label.replace(/\D/g, '');
+        case "phone": {
+          const phoneNumber = label.replace(/\D/g, "");
+
           return `+${phoneNumber}`;
-        case 'email':
+        }
+
+        case "email":
           return `${label}`;
-        case 'link':
-          return 'https://vueless.com/';
+        case "link":
+          return "https://vueless.com/";
         default:
-          return '#';
+          return "#";
       }
     }
 
@@ -103,7 +106,7 @@ export const Types = (args) => ({
     const links = options.map((type) => ({
       type,
       label: getTypeLabel(type),
-      href: getTypeHref(type, getTypeLabel(type))
+      href: getTypeHref(type, getTypeLabel(type)),
     }));
 
     return { args, links };
@@ -127,9 +130,9 @@ export const UnderlineVariants = (args, { argTypes } = {}) => ({
   components: { ULink, URow },
   setup() {
     const variants = [
-      { name: 'Default', props: {} },
-      { name: 'Underlined', props: { underlined: true } },
-      { name: 'Dashed', props: { dashed: true } }
+      { name: "Default", props: {} },
+      { name: "Underlined", props: { underlined: true } },
+      { name: "Dashed", props: { dashed: true } },
     ];
 
     const colors = argTypes.color.options;
@@ -137,7 +140,7 @@ export const UnderlineVariants = (args, { argTypes } = {}) => ({
     return {
       args,
       variants,
-      colors
+      colors,
     };
   },
   template: `
@@ -163,7 +166,7 @@ export const NoRing = DefaultTemplate.bind({});
 NoRing.args = { noRing: true };
 
 export const Block = DefaultTemplate.bind({});
-Block.args = { block: true, config: { wrapper: 'border-2 border-dashed border-green-500 p-2' } };
+Block.args = { block: true, config: { wrapper: "border-2 border-dashed border-green-500 p-2" } };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
