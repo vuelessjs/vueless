@@ -21,6 +21,35 @@ export const MAX_SECONDS = 59;
 export const MIN_SECONDS = 0;
 export const SEPARATOR = "—";
 
+export enum LocaleType {
+  Day = "day",
+  Month = "month",
+}
+
+export enum KeyCode {
+  ArrowLeft = "ArrowLeft",
+  ArrowUp = "ArrowUp",
+  ArrowRight = "ArrowRight",
+  ArrowDown = "ArrowDown",
+  Enter = "Enter",
+  Escape = "Escape",
+  Space = " Space",
+  Backspace = "Backspace",
+}
+
+export enum View {
+  Day = "day",
+  Month = "month",
+  Year = "year",
+}
+
+export enum InputType {
+  Hours,
+  Minutes,
+  Seconds,
+}
+
+// TODO: Remove redundant arrays when other components migrated to ts;
 export const LOCALE_TYPE = {
   day: "day",
   month: "month",
@@ -32,22 +61,12 @@ export const VIEW = {
   year: "year",
 };
 
-export const INPUT_TYPE = {
-  hours: "hours",
-  minutes: "minutes",
-  seconds: "seconds",
-};
-
-export const KEY_CODE = {
-  left: 37,
-  up: 38,
-  right: 39,
-  down: 40,
-  enter: 13,
-  esc: 27,
-  space: 32,
-  backspace: 8,
-};
+export const ARROW_KEYS: string[] = [
+  KeyCode.ArrowLeft,
+  KeyCode.ArrowUp,
+  KeyCode.ArrowRight,
+  KeyCode.ArrowDown,
+];
 
 export const TOKEN_REG_EXP = {
   D: "(\\w+)",

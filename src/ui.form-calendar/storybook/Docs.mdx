@@ -1,8 +1,8 @@
 import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
 import { getSource } from "../../utils/storybook.ts";
 
-import * as stories from "./stories.js";
-import defaultConfig from "../config.js?raw"
+import * as stories from "./stories.ts";
+import defaultConfig from "../config.ts?raw"
 
 <Meta of={stories} />
 <Title of={stories} />
@@ -26,7 +26,6 @@ Each character in the table below can be used in `dateFormat` and `userFormat` o
 | D     | A textual representation of a day                         | Mon through Sun                                               |
 | l     | A full textual representation of the day of the week      | Sunday through Saturday                                       |
 | j     | Day of the month without leading zeros                    | 1 to 31                                                       |
-| J     | Day of the month without leading zeros and ordinal suffix | 1st, 2nd, to 31st                                             |
 | w     | Numeric representation of the day of the week             | 0 (for Sunday) through 6 (for Saturday)                       |
 | W     | Numeric representation of the week                        | 0 (first week of the year) through 52 (last week of the year) |
 | F     | A full textual representation of a month                  | January through December                                      |

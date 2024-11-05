@@ -32,6 +32,7 @@ import type {
   CVA,
   KeyAttrs,
   KeysToExtend,
+  ExtendedKeyClasses,
 } from "../types.ts";
 
 interface MergedConfigOptions {
@@ -113,7 +114,7 @@ export default function useUI<T>(
    * – value: reactive string of extendingKey classes.
    */
   function getExtendingKeysClasses(extendingKeys: string[], mutatedProps = {}) {
-    const extendingClasses: UnknownObject = {};
+    const extendingClasses: ExtendedKeyClasses = {};
 
     for (const key of extendingKeys) {
       extendingClasses[key] = getClasses(key, mutatedProps);

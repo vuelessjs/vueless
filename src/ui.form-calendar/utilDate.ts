@@ -1,4 +1,6 @@
-import { LOCALE_TYPE, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants.js";
+import { LOCALE_TYPE, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants.ts";
+
+export type dateSettings = { weekStartsOn?: number };
 
 const daysMap = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const monthsMap = [
@@ -16,15 +18,15 @@ const monthsMap = [
   "december",
 ];
 
-export function minutesToSeconds(minutes) {
+export function minutesToSeconds(minutes: number) {
   return Math.trunc(minutes * SECONDS_IN_MINUTES);
 }
 
-export function getDaysInMonth(date) {
+export function getDaysInMonth(date: Date) {
   return new Date(new Date(date.valueOf()).setDate(0)).getDate();
 }
 
-export function getWeeksInMonth(date, settings = {}) {
+export function getWeeksInMonth(date: Date, settings: dateSettings = {}) {
   const { weekStartsOn = 0 } = settings;
 
   const monthIndex = date.getMonth() - 1;
@@ -35,7 +37,7 @@ export function getWeeksInMonth(date, settings = {}) {
   return Math.ceil((firstWeekDay + daysInMonth) / DAYS_IN_WEEK);
 }
 
-export function getEndOfYear(date) {
+export function getEndOfYear(date: Date) {
   const localDate = new Date(date.valueOf());
   const year = localDate.getFullYear() + 1;
 
@@ -45,7 +47,7 @@ export function getEndOfYear(date) {
   return localDate;
 }
 
-export function getStartOfYear(date) {
+export function getStartOfYear(date: Date) {
   const localDate = new Date(date.valueOf());
 
   localDate.setFullYear(localDate.getFullYear(), 0, 1);
@@ -54,7 +56,7 @@ export function getStartOfYear(date) {
   return localDate;
 }
 
-export function getEndOfQuarter(date) {
+export function getEndOfQuarter(date: Date) {
   const localDate = new Date(date.valueOf());
 
   const currentMonth = localDate.getMonth();
@@ -66,7 +68,7 @@ export function getEndOfQuarter(date) {
   return localDate;
 }
 
-export function getStartOfQuarter(date) {
+export function getStartOfQuarter(date: Date) {
   const localDate = new Date(date.valueOf());
 
   const currentMonth = localDate.getMonth();
@@ -78,7 +80,7 @@ export function getStartOfQuarter(date) {
   return localDate;
 }
 
-export function getStartOfMonth(date) {
+export function getStartOfMonth(date: Date) {
   const localDate = new Date(date.valueOf());
 
   localDate.setDate(1);
@@ -87,7 +89,7 @@ export function getStartOfMonth(date) {
   return localDate;
 }
 
-export function getEndOfMonth(date) {
+export function getEndOfMonth(date: Date) {
   const localDate = new Date(date.valueOf());
   const month = localDate.getMonth() + 1;
 
@@ -97,7 +99,7 @@ export function getEndOfMonth(date) {
   return localDate;
 }
 
-export function getEndOfWeek(date, settings = {}) {
+export function getEndOfWeek(date: Date, settings: dateSettings = {}) {
   const { weekStartsOn = 0 } = settings;
   const localDate = new Date(date.valueOf());
 
@@ -113,7 +115,7 @@ export function getEndOfWeek(date, settings = {}) {
   return localDate;
 }
 
-export function getStartOfWeek(date, settings = {}) {
+export function getStartOfWeek(date: Date, settings: dateSettings = {}) {
   const { weekStartsOn = 0 } = settings;
   const localDate = new Date(date.valueOf());
 
@@ -127,7 +129,7 @@ export function getStartOfWeek(date, settings = {}) {
   return localDate;
 }
 
-export function getEndOfDay(date) {
+export function getEndOfDay(date: Date) {
   const localDate = new Date(date.valueOf());
 
   localDate.setHours(23, 59, 59, 999);
@@ -135,7 +137,7 @@ export function getEndOfDay(date) {
   return localDate;
 }
 
-export function getStartOfDay(date) {
+export function getStartOfDay(date: Date) {
   const localDate = new Date(date.valueOf());
 
   localDate.setHours(0, 0, 0, 0);
@@ -143,29 +145,34 @@ export function getStartOfDay(date) {
   return localDate;
 }
 
-export function getSortedLocale(locale, type) {
+export function getSortedLocale<TLocale>(locale: TLocale, type: "month" | "day"): string[] {
   const targetMap = type === LOCALE_TYPE.month ? monthsMap : daysMap;
 
-  const sortedDays = Object.entries(locale)
-    .map((entry) => {
-      entry[0] = targetMap.indexOf(entry[0]);
+  if (typeof locale === "object" && !Array.isArray(locale)) {
+    const sortedDays = Object.entries(locale as object)
+      .map((entry) => [targetMap.indexOf(entry[0]), entry.at(1)])
+      .sort((entryA, entryB) => entryA[0] - entryB[0]);
 
-      return entry;
-    })
-    .sort((entryA, entryB) => entryA[0] - entryB[0]);
+    return sortedDays.map((entry) => entry[1]);
+  } else {
+    // eslint-disable-next-line no-console
+    console.error(
+      new TypeError(`Expected object, but got ${Array.isArray(locale) ? "array" : typeof locale}`),
+    );
 
-  return sortedDays.map((entry) => entry[1]);
+    return [];
+  }
 }
 
-export function getDateFromUnixTimestamp(timestamp) {
+export function getDateFromUnixTimestamp(timestamp: number) {
   return new Date(timestamp);
 }
 
-export function getUnixTimestampFromDate(date) {
+export function getUnixTimestampFromDate(date: Date) {
   return date.getTime();
 }
 
-export function getDatesDifference(dateOne, dateTwo, timeless = true) {
+export function getDatesDifference(dateOne: Date, dateTwo: Date, timeless = true) {
   if (timeless !== false) {
     return (
       new Date(dateOne.getTime()).setHours(0, 0, 0, 0) -
@@ -182,7 +189,7 @@ export function getDateWithoutTime(date = new Date()) {
   return date;
 }
 
-export function isSameMonth(dateOne, dateTwo) {
+export function isSameMonth(dateOne: Date, dateTwo: Date) {
   return (
     Boolean(dateOne) &&
     Boolean(dateTwo) &&
@@ -191,17 +198,17 @@ export function isSameMonth(dateOne, dateTwo) {
   );
 }
 
-export function isSameDay(dateOne, dateTwo) {
+export function isSameDay(dateOne: Date, dateTwo: Date) {
   return isSameMonth(dateOne, dateTwo) && dateOne?.getDate() === dateTwo?.getDate();
 }
 
-export function isAnotherMothDay(day, activeMonth) {
+export function isAnotherMothDay(day: Date, activeMonth: Date) {
   return (
     activeMonth.getFullYear() !== day.getFullYear() || activeMonth.getMonth() !== day.getMonth()
   );
 }
 
-export function addDays(date, amount = 1) {
+export function addDays(date: Date, amount = 1) {
   const result = new Date(date);
 
   result.setDate(result.getDate() + amount);
@@ -209,19 +216,19 @@ export function addDays(date, amount = 1) {
   return result;
 }
 
-export function addWeeks(date, amount = 1) {
+export function addWeeks(date: Date, amount = 1) {
   const days = amount * DAYS_IN_WEEK;
 
   return addDays(date, days);
 }
 
-export function addQuarters(date, amount = 1) {
+export function addQuarters(date: Date, amount = 1) {
   const months = amount * 3;
 
   return addMonths(date, months);
 }
 
-export function addMonths(date, amount = 1) {
+export function addMonths(date: Date, amount = 1) {
   let newDate = new Date(date.valueOf());
 
   newDate.setMonth(date.getMonth() + amount);
@@ -236,7 +243,7 @@ export function addMonths(date, amount = 1) {
   return newDate;
 }
 
-export function addYears(date, amount = 1) {
+export function addYears(date: Date, amount = 1) {
   let newDate = new Date(date.valueOf());
 
   newDate.setFullYear(date.getFullYear() + amount);
@@ -251,18 +258,18 @@ export function addYears(date, amount = 1) {
   return newDate;
 }
 
-export function isToday(date) {
+export function isToday(date: Date) {
   return isSameDay(date, new Date());
 }
 
-export function isCurrentMonth(date) {
+export function isCurrentMonth(date: Date) {
   return isSameMonth(date, new Date());
 }
 
-export function isCurrentYear(date) {
+export function isCurrentYear(date: Date) {
   return date.getFullYear() === new Date().getFullYear();
 }
 
-export function getLastDayOfMonth(date) {
+export function getLastDayOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }

@@ -1,6 +1,14 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
+
+import type { UCalendarProps } from "../types.ts";
+
+interface UCalendarArgs extends UCalendarProps {
+  slotTemplate?: string;
+  enum: "size";
+}
 
 /**
  * The `UCalendar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-calendar)
@@ -20,9 +28,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
   components: { UCalendar },
   setup() {
     const slots = getSlotNames(UCalendar.__name);
@@ -31,7 +39,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
       <UCalendar v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate || getSlotsFragment()}
+        ${args.slotTemplate || getSlotsFragment("")}
       </UCalendar>
 
       <div class="mt-4">
@@ -41,7 +49,7 @@ const DefaultTemplate = (args) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { modelValue: null };
 
 export const Range = DefaultTemplate.bind({});
 Range.args = {

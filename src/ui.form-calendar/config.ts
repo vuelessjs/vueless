@@ -153,8 +153,6 @@ export default /*tw*/ {
     timepicker: false,
     dateFormat: undefined,
     dateTimeFormat: undefined,
-    maxDate: undefined,
-    minDate: undefined,
     /* icons */
     viewSwitchIcon: "keyboard_arrow_down",
     nextIcon: "keyboard_arrow_right",

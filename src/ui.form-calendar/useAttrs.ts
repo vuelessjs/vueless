@@ -3,8 +3,11 @@ import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
 
-export default function useAttrs(props) {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
+import type { UseAttrs } from "../types.ts";
+import type { UCalendarProps, Config } from "./types.ts";
+
+export default function useAttrs(props: UCalendarProps): UseAttrs<Config> {
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,
     () => props.config,
   );
