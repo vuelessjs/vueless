@@ -44,7 +44,7 @@ createApp(App).use(vueless).mount('#app');
 
 3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
 
-<pre class="language-javascript" data-title="tailwind.config.{js,ts}"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset-tailwind.js";
+<pre class="language-javascript" data-title="tailwind.config.{js,ts}"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset-tailwind";
 </strong>
 export default {
   presets: [vuelessPreset],
