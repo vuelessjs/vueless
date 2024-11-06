@@ -99,6 +99,5 @@
   },
   "bugs": {
     "url": "https://github.com/vuelessjs/vueless/issues"
-  },
-  "web-types": "./node_modules/.cache/vueless/web-types.json"
+  }
 }

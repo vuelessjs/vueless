@@ -25,7 +25,6 @@ import type {
   BrandColors,
   Strategies,
   UnknownObject,
-  VueAttrs,
   Component,
   NestedComponent,
   ComponentNames,
