@@ -1,78 +1,3 @@
-<template>
-  <div v-bind="wrapperAttrs" ref="wrapper">
-    <UInput
-      :id="elementId"
-      :key="String(isShownCalendar)"
-      v-model="userFormatDate"
-      :label-align="labelAlign"
-      :label="label"
-      :placeholder="placeholder"
-      :error="error"
-      :description="description"
-      readonly
-      :disabled="disabled"
-      :size="size"
-      :left-icon="leftIcon"
-      :right-icon="rightIcon"
-      v-bind="isShownCalendar ? activeInputAttrs : inputAttrs"
-      @focus="activate"
-    >
-      <template #left>
-        <!-- @slot Use it add something before the date. -->
-        <slot name="left" />
-      </template>
-
-      <template #left-icon="{ iconName, iconSize }">
-        <!--
-          @slot Use it add an icon before the date.
-          @binding {string} icon-name
-          @binding {string} icon-nize
-        -->
-        <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
-      </template>
-
-      <template #right-icon="{ iconName, iconSize }">
-        <!--
-          @slot Use it add an icon after the date.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
-          <UIcon :name="iconName" :size="iconSize" color="gray" />
-        </slot>
-      </template>
-
-      <template #right>
-        <!-- @slot Use it add something after the date. -->
-        <slot name="right" />
-      </template>
-    </UInput>
-
-    <Transition v-bind="config.calendarTransition">
-      <UCalendar
-        v-show="isShownCalendar"
-        ref="calendarRef"
-        v-model="localValue"
-        v-model:view="customView"
-        tabindex="-1"
-        :timepicker="timepicker"
-        :date-format="dateFormat"
-        :date-time-format="dateTimeFormat"
-        :user-date-format="userDateFormat"
-        :user-date-time-format="userDateTimeFormat"
-        :max-date="maxDate"
-        :min-date="minDate"
-        v-bind="calendarAttrs"
-        @keydown.esc="deactivate"
-        @user-date-change="onUserFormatDateChange"
-        @input="onInput"
-        @blur="onBlur"
-        @submit="onSubmit"
-      />
-    </Transition>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, nextTick, ref, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
@@ -99,11 +24,7 @@ import type { UDatePickerProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDatePickerProps>(), {
-  label: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).label,
   labelAlign: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).labelAlign,
-  placeholder: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).placeholder,
-  description: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).description,
-  error: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).error,
   size: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).size,
   openDirectionX: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionX,
   openDirectionY: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionY,
@@ -115,7 +36,6 @@ const props = withDefaults(defineProps<UDatePickerProps>(), {
   leftIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).leftIcon,
   rightIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).rightIcon,
   disabled: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).disabled,
-  id: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).id,
   dataTest: "",
   config: () => ({}),
 });
@@ -256,3 +176,78 @@ defineExpose({
   formattedDate,
 });
 </script>
+
+<template>
+  <div v-bind="wrapperAttrs" ref="wrapper">
+    <UInput
+      :id="elementId"
+      :key="String(isShownCalendar)"
+      v-model="userFormatDate"
+      :label-align="labelAlign"
+      :label="label"
+      :placeholder="placeholder"
+      :error="error"
+      :description="description"
+      readonly
+      :disabled="disabled"
+      :size="size"
+      :left-icon="leftIcon"
+      :right-icon="rightIcon"
+      v-bind="isShownCalendar ? activeInputAttrs : inputAttrs"
+      @focus="activate"
+    >
+      <template #left>
+        <!-- @slot Use it add something before the date. -->
+        <slot name="left" />
+      </template>
+
+      <template #left-icon="{ iconName, iconSize }">
+        <!--
+          @slot Use it add an icon before the date.
+          @binding {string} icon-name
+          @binding {string} icon-nize
+        -->
+        <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
+      </template>
+
+      <template #right-icon="{ iconName, iconSize }">
+        <!--
+          @slot Use it add an icon after the date.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
+          <UIcon :name="iconName" :size="iconSize" color="gray" />
+        </slot>
+      </template>
+
+      <template #right>
+        <!-- @slot Use it add something after the date. -->
+        <slot name="right" />
+      </template>
+    </UInput>
+
+    <Transition v-bind="config.calendarTransition">
+      <UCalendar
+        v-show="isShownCalendar"
+        ref="calendarRef"
+        v-model="localValue"
+        v-model:view="customView"
+        tabindex="-1"
+        :timepicker="timepicker"
+        :date-format="dateFormat"
+        :date-time-format="dateTimeFormat"
+        :user-date-format="userDateFormat"
+        :user-date-time-format="userDateTimeFormat"
+        :max-date="maxDate"
+        :min-date="minDate"
+        v-bind="calendarAttrs"
+        @keydown.esc="deactivate"
+        @user-date-change="onUserFormatDateChange"
+        @input="onInput"
+        @blur="onBlur"
+        @submit="onSubmit"
+      />
+    </Transition>
+  </div>
+</template>
