@@ -4,7 +4,7 @@ import inputFileConfig from "../../ui.form-input-file/config.js";
 import dropdownListConfig from "../../ui.dropdown-list/config.js";
 import modalConfirmConfig from "../../ui.container-modal-confirm/config.js";
 import tableConfig from "../../ui.data-table/config.js";
-import calendarConfig from "../../ui.form-calendar/config.js";
+import calendarConfig from "../../ui.form-calendar/config.ts";
 import datepickerConfig from "../../ui.form-date-picker/config.js";
 import datepickerRangeConfig from "../../ui.form-date-picker-range/config.js";
 import dataListConfig from "../../ui.data-list/config.js";

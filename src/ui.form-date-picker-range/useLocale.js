@@ -4,7 +4,7 @@ import { useLocale as useGlobalLocale } from "../composables/useLocale.ts";
 import { merge } from "lodash-es";
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 
-import { LOCALE_TYPE } from "../ui.form-calendar/constants.js";
+import { LOCALE_TYPE } from "../ui.form-calendar/constants.ts";
 import { UDatePickerRange } from "./constants.js";
 import defaultConfig from "./config.js";
 

@@ -80,7 +80,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
+import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.ts";
 
 import { getDefault } from "../utils/ui.ts";
 
