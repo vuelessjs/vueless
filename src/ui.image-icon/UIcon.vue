@@ -127,21 +127,12 @@ const emit = defineEmits([
 const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
-  /**
-   * Use nuxt assets folders to include icons in final build.
-   * TODO: Find another way to include icons in build
-   */
-  if (isSSR) {
-    return (
-      Object.entries(
-        import.meta.glob(`/assets/.vueless/icons/**/*.svg`, { eager: true, query: "?component" }),
-      ) || []
-    );
-  }
-
   return (
     Object.entries(
-      import.meta.glob(`../assets/icons/**/*.svg`, { eager: true, query: "?component" }),
+      import.meta.glob(`/node_modules/.cache/vueless/assets/icons/**/*.svg`, {
+        eager: true,
+        query: "?component",
+      }),
     ) || []
   );
 });
@@ -185,8 +176,8 @@ const dynamicComponent = computed(() => {
       return import.meta.env.PROD
         ? await getIcon([name])
         : isSSR
-          ? import(/* @vite-ignore */ `node_modules/vueless/assets/icons/${name}.svg?component`)
-          : import(/* @vite-ignore */ `../assets/icons/${name}.svg?component`);
+          ? import(/* @vite-ignore */ `node_modules/.cache/vueless/assets/icons/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/node_modules/.cache/vueless/assets/icons/${name}.svg?component`);
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD

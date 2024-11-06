@@ -18,8 +18,8 @@ import { getDirFiles, getDefaultConfigJson, merge } from "./helper.js";
 import { CACHE_PATH, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
 const ICONS_DIR = "assets/icons";
-const NUXT_ASSETS_DIR = path.join(process.cwd(), "assets/.vueless/icons");
-const DEFAULT_ICONS_DIR = path.join(process.cwd(), `src/${ICONS_DIR}`);
+const DEFAULT_ICONS_DIR = path.join(process.cwd(), `node_modules/vueless/${ICONS_DIR}`);
+const DEFAULT_ICONS_LOCAL_DIR = path.join(process.cwd(), `src/${ICONS_DIR}`);
 const CACHED_ICONS_DIR = path.join(process.cwd(), `${CACHE_PATH}/${ICONS_DIR}`);
 const ICON_CONFIG_PATH = "ui.image-icon/config.ts";
 const ICON_COMPONENT_NAME = "UIcon";
@@ -33,21 +33,26 @@ let isVuelessIconsMode = false;
 let cachedIconsDir = CACHED_ICONS_DIR;
 
 // perform icons copy magick... ✨
-export async function copyIcons({ mode = "", env, debug, targetFiles = [], isNuxt } = {}) {
+export async function copyIcons({ mode = "", env, debug, targetFiles = [] } = {}) {
   isDebug = debug || false;
   isVuelessEnv = env === "vueless";
   isDefaultMode = mode === "";
   isStorybookMode = mode === "storybook";
   isVuelessIconsMode = mode === "vuelessIcons";
 
-  if (isVuelessIconsMode && isVuelessEnv) cachedIconsDir = DEFAULT_ICONS_DIR;
+  /* Copy icons which using in vueless components to the cache. */
+  isVuelessEnv
+    ? await cp(DEFAULT_ICONS_LOCAL_DIR, CACHED_ICONS_DIR, { recursive: true })
+    : await cp(DEFAULT_ICONS_DIR, CACHED_ICONS_DIR, { recursive: true });
+
+  if (isVuelessIconsMode && isVuelessEnv) cachedIconsDir = DEFAULT_ICONS_LOCAL_DIR;
   if (isStorybookMode && isVuelessEnv) cachedIconsDir = CACHED_ICONS_DIR;
 
   if (isStorybookMode) {
     const storybookStoriesJs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[0]);
     const storybookStoriesTs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[1]);
 
-    findAndCopyIcons([...storybookStoriesJs.flat(), ...storybookStoriesTs.flat()]);
+    findAndCopyIcons([...storybookStoriesJs, ...storybookStoriesTs]);
   }
 
   if (isVuelessIconsMode || isDefaultMode || isStorybookMode) {
@@ -69,22 +74,12 @@ export async function copyIcons({ mode = "", env, debug, targetFiles = [], isNux
       `${VUELESS_CONFIG_FILE_NAME}.ts`,
     ]);
   }
-
-  if (isNuxt) {
-    await cp(CACHED_ICONS_DIR, NUXT_ASSETS_DIR, {
-      recursive: true,
-    });
-  }
 }
 
-export async function removeIcons({ debug, isNuxt }) {
+export async function removeIcons({ debug }) {
   if (!fs.existsSync(cachedIconsDir)) return;
 
   await rm(cachedIconsDir, { recursive: true, force: true });
-
-  if (isNuxt) {
-    await rm(NUXT_ASSETS_DIR, { recursive: true, force: true });
-  }
 
   if (debug) {
     console.log("Dynamically copied icons was successfully removed.");
@@ -165,6 +160,13 @@ function findAndCopyIcons(files) {
 
   function copyFile(name) {
     name = name.toLowerCase();
+
+    const iconNameRegex = /^[a-z0-9_-]+$/;
+
+    /* Filter irrelevant icon name cases. */
+    if (!iconNameRegex.test(name)) {
+      return;
+    }
 
     const library = defaults.library;
     const weight = defaults.weight;

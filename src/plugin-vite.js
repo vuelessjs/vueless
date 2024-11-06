@@ -36,7 +36,7 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     /* remove dynamically copied icons */
-    await removeIcons({ debug, isNuxt });
+    await removeIcons({ debug });
 
     /* clear tailwind safelist */
     clearTailwindSafelist(debug);
@@ -63,22 +63,22 @@ export const Vueless = function (options = {}) {
       }
 
       if (config.command === "build") {
-        await removeIcons({ debug, isNuxt });
+        await removeIcons({ debug });
 
         /* dynamically copy used icons before build */
         await copyIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        await copyIcons({ mode, env, debug, targetFiles, isNuxt });
+        await copyIcons({ mode, env, debug, targetFiles });
       }
 
       if (config.command === "dev" || config.command === "serve") {
         /* remove dynamically copied icons on dev server start */
-        await removeIcons({ debug, isNuxt });
+        await removeIcons({ debug });
       }
     },
 
     /* remove dynamically copied icons after build */
     buildEnd: async () => {
-      await removeIcons({ debug, isNuxt });
+      await removeIcons({ debug });
     },
 
     /* load SVG images as a Vue components */
