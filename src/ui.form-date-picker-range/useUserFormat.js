@@ -1,7 +1,7 @@
 import { computed } from "vue";
 
-import { isSameMonth } from "../ui.form-calendar/utilDate.js";
-import { formatDate } from "../ui.form-calendar/utilCalendar.js";
+import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
+import { formatDate } from "../ui.form-calendar/utilCalendar.ts";
 
 export function useUserFormat(localValue, userFormatLocale, isPeriod, locale, userDateFormat) {
   const userFormatDate = computed(() => {

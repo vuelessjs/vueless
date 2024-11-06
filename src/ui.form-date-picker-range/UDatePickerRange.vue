@@ -176,9 +176,9 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
-} from "../ui.form-calendar/utilDate.js";
+} from "../ui.form-calendar/utilDate.ts";
 
-import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.js";
+import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.ts";
 
 import {
   getWeekDateList,

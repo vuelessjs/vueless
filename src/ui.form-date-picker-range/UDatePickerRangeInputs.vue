@@ -25,7 +25,7 @@
 <script setup>
 import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.js";
 
-import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.js";
+import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 

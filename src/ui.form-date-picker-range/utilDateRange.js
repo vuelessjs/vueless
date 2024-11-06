@@ -10,7 +10,7 @@ import {
   addQuarters,
   getEndOfYear,
   getStartOfYear,
-} from "../ui.form-calendar/utilDate.js";
+} from "../ui.form-calendar/utilDate.ts";
 
 export function getYearDateList(date) {
   const NUMBER_ADDING_YEAR = 12;
