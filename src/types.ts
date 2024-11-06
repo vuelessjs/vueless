@@ -5,6 +5,7 @@ import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
+import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -115,6 +116,7 @@ export interface Components {
   UButton?: Partial<typeof UButtonDefaultConfig>;
   UBadge?: Partial<typeof UBadgeDefaultConfig>;
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
+  UDatePicker?: Partial<typeof UDatePickerConfig>;
 }
 
 export interface Directives {

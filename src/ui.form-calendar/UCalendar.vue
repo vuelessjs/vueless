@@ -110,7 +110,7 @@ const {
   timepickerSubmitButtonAttrs,
 } = useAttrs(props);
 
-const wrapperRef = useTemplateRef<HTMLInputElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
 const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
