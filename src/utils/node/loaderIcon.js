@@ -40,10 +40,15 @@ export async function copyIcons({ mode = "", env, debug, targetFiles = [] } = {}
   isStorybookMode = mode === "storybook";
   isVuelessIconsMode = mode === "vuelessIcons";
 
+  /* Copy icons which using in vueless components to the cache (vueless env only). */
+  if (isVuelessEnv && fs.existsSync(DEFAULT_ICONS_LOCAL_DIR)) {
+    await cp(DEFAULT_ICONS_LOCAL_DIR, CACHED_ICONS_DIR, { recursive: true });
+  }
+
   /* Copy icons which using in vueless components to the cache. */
-  isVuelessEnv
-    ? await cp(DEFAULT_ICONS_LOCAL_DIR, CACHED_ICONS_DIR, { recursive: true })
-    : await cp(DEFAULT_ICONS_DIR, CACHED_ICONS_DIR, { recursive: true });
+  if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
+    await cp(DEFAULT_ICONS_DIR, CACHED_ICONS_DIR, { recursive: true });
+  }
 
   if (isVuelessIconsMode && isVuelessEnv) cachedIconsDir = DEFAULT_ICONS_LOCAL_DIR;
   if (isStorybookMode && isVuelessEnv) cachedIconsDir = CACHED_ICONS_DIR;
