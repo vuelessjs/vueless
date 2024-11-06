@@ -72,14 +72,12 @@ export default function useUI<T>(
   watchEffect(() => {
     const propsConfig = propsConfigGetter ? propsConfigGetter() : {};
 
-    const mergedConfig = getMergedConfig({
+    config.value = getMergedConfig({
       defaultConfig,
       globalConfig,
       propsConfig,
       vuelessStrategy,
     });
-
-    config.value = mergeClassesIntoConfig(mergedConfig, topLevelClassKey || firstClassKey, attrs);
   });
 
   /**
@@ -102,6 +100,10 @@ export default function useUI<T>(
 
       if (typeof value === "string") {
         classes = value;
+      }
+
+      if (key === (topLevelClassKey || firstClassKey)) {
+        classes = cx([classes, attrs.class]);
       }
 
       return color ? setColor(classes, color) : classes;
@@ -193,18 +195,11 @@ export default function useUI<T>(
       const configKeyValue = config.value[configKey] as Component | string;
       const isObject = typeof configKeyValue === "object";
 
-      const configAttrs = {
-        config: configKeyValue,
-        ...(isObject ? configKeyValue.defaults : {}),
-      };
-
-      const isTopLevelClassKey = configKey === (topLevelClassKey || firstClassKey);
-      const attrClass = isTopLevelClassKey && !nestedComponent ? attrs.class : "";
-
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([getBaseClasses(toValue(classes)), attrClass]),
-        ...((isObject && configAttrs) || {}),
+        class: toValue(classes),
+        ...(isObject ? { config: configKeyValue } : {}),
+        ...(isObject ? configKeyValue.defaults : {}),
       };
     }
 
@@ -213,8 +208,6 @@ export default function useUI<T>(
 
   return {
     config,
-    setColor,
-    getColor,
     getKeysAttrs,
     getExtendingKeysClasses,
     hasSlotContent,
@@ -254,23 +247,6 @@ function getMergedConfig({
   }
 
   return mergedConfig;
-}
-
-/**
- * Merge component classes from "class" attribute into final config.
- */
-function mergeClassesIntoConfig(config: Component, topLevelClassKey: string, attrs: VueAttrs) {
-  const configTopKey = config[topLevelClassKey];
-
-  if (typeof configTopKey === "object") {
-    (configTopKey as CVA).base = cx([(configTopKey as CVA)?.base, attrs.class]);
-
-    config[topLevelClassKey] = configTopKey;
-  } else {
-    config[topLevelClassKey] = cx([configTopKey, attrs.class]);
-  }
-
-  return config;
 }
 
 /**
