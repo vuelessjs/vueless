@@ -27,6 +27,7 @@ export const VuelessUnpluginComponents = (options) =>
 export const Vueless = function (options = {}) {
   const { mode, debug, env, include } = options;
 
+  const isVuelessEnv = env === "vueless";
   const isNuxt = mode === "nuxt-module";
   const srcDir = isNuxt ? process.cwd() : getVueSourceFile();
 
@@ -51,7 +52,7 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["tailwindcss/colors.js"],
+        include: ["tailwindcss/colors.js", ...(!isVuelessEnv ? ["vueless/preset-tailwind"] : [])],
       },
     }),
 
