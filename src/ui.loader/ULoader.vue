@@ -50,43 +50,41 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
 </script>
 
 <style scoped lang="postcss">
-.vueless-loader-ellipse {
-  &:nth-child(1) {
-    animation: ellipse-1 0.6s infinite;
+.vueless-loader-ellipse:nth-child(1) {
+  animation: ellipse-1 0.6s infinite;
+}
+
+.vueless-loader-ellipse:nth-child(4) {
+  animation: ellipse-3 0.6s infinite;
+}
+
+.vueless-loader-ellipse-sm {
+  &:nth-child(2) {
+    animation: ellipse-2-sm 0.6s infinite;
   }
 
-  &:nth-child(4) {
-    animation: ellipse-3 0.6s infinite;
+  &:nth-child(3) {
+    animation: ellipse-2-sm 0.6s infinite;
+  }
+}
+
+.vueless-loader-ellipse-md {
+  &:nth-child(2) {
+    animation: ellipse-2-md 0.6s infinite;
   }
 
-  &-sm {
-    &:nth-child(2) {
-      animation: ellipse-2-sm 0.6s infinite;
-    }
+  &:nth-child(3) {
+    animation: ellipse-2-md 0.6s infinite;
+  }
+}
 
-    &:nth-child(3) {
-      animation: ellipse-2-sm 0.6s infinite;
-    }
+.vueless-loader-ellipse-lg {
+  &:nth-child(2) {
+    animation: ellipse-2-lg 0.6s infinite;
   }
 
-  &-md {
-    &:nth-child(2) {
-      animation: ellipse-2-md 0.6s infinite;
-    }
-
-    &:nth-child(3) {
-      animation: ellipse-2-md 0.6s infinite;
-    }
-  }
-
-  &-lg {
-    &:nth-child(2) {
-      animation: ellipse-2-lg 0.6s infinite;
-    }
-
-    &:nth-child(3) {
-      animation: ellipse-2-lg 0.6s infinite;
-    }
+  &:nth-child(3) {
+    animation: ellipse-2-lg 0.6s infinite;
   }
 }
 
