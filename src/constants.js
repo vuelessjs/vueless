@@ -185,6 +185,16 @@ export const DEFAULT_SVGO_CONFIG = {
   ],
 };
 
+/* Vueless general */
+export const ICONS_DIR = "assets/icons";
+export const VUELESS_LIBRARY = "vueless";
+export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
+export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
+export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;
+export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${ICONS_DIR}`;
+export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
+export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
+
 /* Other */
 export const PX_IN_REM = 16;
 export const NESTED_COMPONENT_REG_EXP = /\{U[^}]*}/g;
@@ -192,5 +202,3 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_COLOR_OPACITY_DELIMITER = "/";
 export const TAILWIND_VARIANT_DELIMITER = ":";
 export const TAILWIND_VARIANT_DELIMITER_REG_EXP = /:(?![^[]*])/;
-export const CACHE_PATH = "node_modules/.cache/vueless";
-export const VUELESS_CONFIG_FILE_NAME = "vueless.config";

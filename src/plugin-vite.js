@@ -6,7 +6,7 @@
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
 import { loadSvg } from "./utils/node/loaderSvg.js";
-import { copyIcons, removeIcons } from "./utils/node/loaderIcon.js";
+import { cacheIcons, clearIconsCache, duplicateCache } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
 import { getNuxtFiles, getVueSourceFile } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
@@ -25,7 +25,7 @@ export const VuelessUnpluginComponents = (options) =>
   – Loads SVG images as a Vue components.
  */
 export const Vueless = function (options = {}) {
-  const { mode, debug, env, include } = options;
+  const { mode, debug, env, include, duplicatedCachePath } = options;
 
   const isVuelessEnv = env === "vueless";
   const isNuxt = mode === "nuxt-module";
@@ -36,10 +36,12 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     /* remove dynamically copied icons */
-    await removeIcons({ debug });
+    await clearIconsCache({ debug });
 
     /* clear tailwind safelist */
     clearTailwindSafelist(debug);
+
+    /* stop command line process */
     process.exit(0);
   });
 
@@ -63,22 +65,32 @@ export const Vueless = function (options = {}) {
       }
 
       if (config.command === "build") {
-        await removeIcons({ debug });
+        /* remove dynamically copied icons */
+        await clearIconsCache({ debug });
 
-        /* dynamically copy used icons before build */
-        await copyIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        await copyIcons({ mode, env, debug, targetFiles });
+        /* dynamically cache vueless built-in and project icons */
+        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+        await cacheIcons({ mode, env, debug, targetFiles });
+
+        /* duplicated entire vueless cache into the path */
+        await duplicateCache({ duplicatedCachePath });
       }
 
       if (config.command === "dev" || config.command === "serve") {
-        /* remove dynamically copied icons on dev server start */
-        await removeIcons({ debug });
+        /* remove dynamically copied icons */
+        await clearIconsCache({ debug });
+
+        /* dynamically cache vueless built-in and project icons */
+        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+
+        /* duplicated entire vueless cache into the path */
+        await duplicateCache({ duplicatedCachePath });
       }
     },
 
-    /* remove dynamically copied icons after build */
     buildEnd: async () => {
-      await removeIcons({ debug });
+      /* remove dynamically copied icons */
+      await clearIconsCache({ debug });
     },
 
     /* load SVG images as a Vue components */

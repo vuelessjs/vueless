@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import esbuild from "esbuild";
 
-import { CACHE_PATH, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
+import { VUELESS_CACHE_DIR, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
 /**
  * Load Vueless config from the project root.
@@ -13,7 +13,10 @@ export let vuelessConfig = {};
 (async () => {
   const configPathJs = path.join(process.cwd(), `${VUELESS_CONFIG_FILE_NAME}.js`);
   const configPathTs = path.join(process.cwd(), `${VUELESS_CONFIG_FILE_NAME}.ts`);
-  const configOutPath = path.join(process.cwd(), `${CACHE_PATH}/${VUELESS_CONFIG_FILE_NAME}.mjs`);
+  const configOutPath = path.join(
+    process.cwd(),
+    `${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`,
+  );
 
   if (!fs.existsSync(configPathJs) && !fs.existsSync(configPathTs)) {
     vuelessConfig = {};

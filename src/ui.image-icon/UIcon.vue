@@ -11,14 +11,14 @@
 
 <script setup>
 import { computed, defineAsyncComponent } from "vue";
+import { vTooltip } from "../directives";
 import { getDefault } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
+import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
 import { UIcon } from "./constants.js";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.js";
-
-import { vTooltip } from "../directives";
 
 defineOptions({ inheritAttrs: false });
 
@@ -140,10 +140,12 @@ const generatedIcons = computed(() => {
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const isDefaultIcon = Boolean(generatedIcons.value.find(([path]) => path.includes(props.name)));
-  const userLibrary = config.value.defaults.library;
+  const isInternalIcon = !!generatedIcons.value.find(([path]) =>
+    path.includes(VUELESS_LIBRARY + "/" + props.name),
+  );
 
-  const library = props.internal && isDefaultIcon ? "vueless" : userLibrary;
+  const userLibrary = config.value.defaults.library;
+  const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
   const weight = config.value.defaults.weight;
   const style = config.value.defaults.style;
   const isFill = props.name.endsWith(FILL_SUFFIX);
@@ -176,8 +178,8 @@ const dynamicComponent = computed(() => {
       return import.meta.env.PROD
         ? await getIcon([name])
         : isSSR
-          ? import(/* @vite-ignore */ `node_modules/.cache/vueless/assets/icons/${name}.svg?component`)
-          : import(/* @vite-ignore */ `/node_modules/.cache/vueless/assets/icons/${name}.svg?component`);
+          ? import(/* @vite-ignore */ `${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`);
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
