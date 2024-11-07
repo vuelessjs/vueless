@@ -6,7 +6,22 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.js";
 import { POSITION } from "../composables/useAutoPosition.ts";
 
-export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod }) {
+import type { Ref } from "vue";
+import type { UseAttrs } from "../types.ts";
+import type { UDatePickerRangeProps, Config, IsPeriod } from "./types.ts";
+import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
+
+export interface DatePickerRangeState {
+  isShownMenu: Ref<boolean>;
+  isTop: Ref<boolean>;
+  isRight: Ref<boolean>;
+  isPeriod: Ref<IsPeriod>;
+}
+
+export default function useAttrs(
+  props: UDatePickerRangeProps<unknown>,
+  { isShownMenu, isTop, isRight, isPeriod }: DatePickerRangeState,
+): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
@@ -35,6 +50,7 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
     mutatedProps,
   );
 
+  // TODO: Declare types for getKeysAttrs return value, this could be implemented using generic;
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
     buttonWrapper: {
       extend: computed(() => [isShownMenu.value && extendingKeysClasses.buttonWrapperActive.value]),
@@ -82,16 +98,16 @@ export default function useAttrs(props, { isShownMenu, isTop, isRight, isPeriod 
 
   /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
-    const calendarConfig = keysAttrs.calendarAttrs.value.config || {};
+    const calendarAttrs = keysAttrs.calendarAttrs as Ref<{ config: UCalendarConfig }>;
+    const calendarConfig = calendarAttrs.value.config || {};
 
-    if (!calendarConfig.i18n || props.config.i18n) {
-      keysAttrs.calendarAttrs.value.config.i18n = merge(calendarConfig.i18n, config.value.i18n);
+    if (!calendarConfig.i18n || props.config?.i18n) {
+      calendarAttrs.value.config.i18n = merge(calendarConfig.i18n, config.value.i18n);
     }
   });
 
   return {
     config,
-    keysAttrs,
     ...keysAttrs,
     hasSlotContent,
   };

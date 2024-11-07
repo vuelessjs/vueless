@@ -15,11 +15,11 @@ export function isRangeDate(value: Date | string | RangeDate | null): value is R
   return !(value instanceof Date || typeof value === "string") && value !== null;
 }
 
-export interface UCalendarProps {
+export interface UCalendarProps<TModelValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
-  modelValue: DateValue;
+  modelValue: TModelValue;
 
   /**
    * Calendar view variant.
@@ -30,6 +30,8 @@ export interface UCalendarProps {
    * Enable date range selection.
    */
   range?: boolean;
+
+  tabindex?: number;
 
   /**
    * Show timepicker.

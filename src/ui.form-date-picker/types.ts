@@ -2,11 +2,11 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UDatePickerProps {
+export interface UDatePickerProps<TModelValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
-  modelValue: Date | string;
+  modelValue: TModelValue;
 
   /**
    * Datepicker label.
