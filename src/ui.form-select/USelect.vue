@@ -209,7 +209,6 @@
             autocomplete="off"
             :spellcheck="false"
             :placeholder="inputPlaceholder"
-            :value="search"
             :disabled="disabled"
             :aria-controls="'listbox-' + elementId"
             v-bind="searchInputAttrs"
