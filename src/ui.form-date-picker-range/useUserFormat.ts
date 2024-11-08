@@ -1,9 +1,20 @@
 import { computed } from "vue";
 
 import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
-import { formatDate } from "../ui.form-calendar/utilCalendar.ts";
+import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
-export function useUserFormat(localValue, userFormatLocale, isPeriod, locale, userDateFormat) {
+import type { Ref } from "vue";
+import type { IsPeriod, SortedLocale } from "./types.ts";
+import type { RangeDate } from "../ui.form-calendar/types.ts";
+
+export function useUserFormat(
+  localValue: Ref<RangeDate>,
+  userFormatLocale: Ref<SortedLocale>,
+  dateFormat: string,
+  isPeriod: Ref<IsPeriod>,
+  locale: Ref<SortedLocale | undefined>,
+  userDateFormat: string,
+) {
   const userFormatDate = computed(() => {
     if ((!localValue.value.from && !localValue.value.to) || !localValue.value.from) return "";
 
@@ -11,13 +22,16 @@ export function useUserFormat(localValue, userFormatLocale, isPeriod, locale, us
 
     const isDefaultTitle = isPeriod.value.week || isPeriod.value.custom || isPeriod.value.ownRange;
 
-    const from = localValue.value.from;
-    const to = localValue.value.to !== null ? localValue.value.to : null;
+    const from = parseDate(localValue.value.from, dateFormat, locale.value);
+    const to =
+      localValue.value.to !== null
+        ? parseDate(localValue.value.to, dateFormat, locale.value)
+        : null;
 
-    if (isDefaultTitle) {
+    if (isDefaultTitle && from && to) {
       let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
-      let endMonthName = userFormatLocale.value.months.longhand[to?.getMonth()];
-      let endYear = to?.getFullYear();
+      const endMonthName = userFormatLocale.value.months.longhand[to.getMonth()];
+      const endYear = String(to.getFullYear());
 
       if (startMonthName === endMonthName && endMonthName === endYear) {
         startMonthName = "";

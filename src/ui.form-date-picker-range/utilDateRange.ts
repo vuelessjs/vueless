@@ -12,13 +12,19 @@ import {
   getStartOfYear,
 } from "../ui.form-calendar/utilDate.ts";
 
-export function getYearDateList(date) {
+export interface DatePeriodRange {
+  title: string | number;
+  startRange: Date;
+  endRange: Date;
+}
+
+export function getYearDateList(date: Date) {
   const NUMBER_ADDING_YEAR = 12;
 
   const year = date.getFullYear();
   const month = date.getMonth();
 
-  const years = [];
+  const years: DatePeriodRange[] = [];
 
   for (let i = 0; i < NUMBER_ADDING_YEAR; i++) {
     const currentYear = year + i;
@@ -33,13 +39,13 @@ export function getYearDateList(date) {
   return years;
 }
 
-export function getQuartersDateList(date, quarterLocales = "") {
+export function getQuartersDateList(date: Date, quarterLocales = "") {
   const QUARTER_NUMBER = 4;
   const monthIndex = 0;
   const day = 1;
   const year = date.getFullYear();
 
-  let quarters = [];
+  const quarters: DatePeriodRange[] = [];
 
   const firstQuarter = new Date(year, monthIndex, day);
 
@@ -57,7 +63,7 @@ export function getQuartersDateList(date, quarterLocales = "") {
   return quarters;
 }
 
-export function getMonthsDateList(date, monthLocales = []) {
+export function getMonthsDateList(date: Date, monthLocales: string[] = []) {
   const year = date.getFullYear();
 
   const months = monthLocales.map((item, index) => {
@@ -71,7 +77,7 @@ export function getMonthsDateList(date, monthLocales = []) {
   return months;
 }
 
-export function getWeekDateList(date, monthShortLocales = {}) {
+export function getWeekDateList(date: Date, monthShortLocales: string[] = []) {
   const month = date.getMonth();
   const year = date.getFullYear();
   const day = 1;
@@ -90,8 +96,8 @@ export function getWeekDateList(date, monthShortLocales = {}) {
     const isDayInPreviousMonth = week === 0 && firstDayOfWeek > 1;
     const isLastWeek = week + day === weeksInMonth;
 
-    let monthFirstDayOfWeek = "";
-    let monthLastDayOfWeek = endOfWeekDate.getMonth();
+    let monthFirstDayOfWeek = 0;
+    const monthLastDayOfWeek = endOfWeekDate.getMonth();
 
     if (isDayInPreviousMonth || isLastWeek) {
       monthFirstDayOfWeek = startOfWeekDate.getMonth();

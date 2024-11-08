@@ -6,7 +6,7 @@ import defaultConfig from "./config.js";
 import type { UseAttrs } from "../types.ts";
 import type { UCalendarProps, Config } from "./types.ts";
 
-export default function useAttrs(props: UCalendarProps): UseAttrs<Config> {
+export default function useAttrs(props: UCalendarProps<unknown>): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,
     () => props.config,

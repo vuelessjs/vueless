@@ -5,13 +5,15 @@ import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import { UDatePicker as UDatePickerName } from "../constants.ts";
+
 import type { UDatePickerProps } from "../types.ts";
 
-interface DefaultUDatePickerArgs extends UDatePickerProps {
+interface DefaultUDatePickerArgs extends UDatePickerProps<unknown> {
   slotTemplate?: string;
 }
 
-interface EnumUDatePickerArgs extends UDatePickerProps {
+interface EnumUDatePickerArgs extends UDatePickerProps<unknown> {
   slotTemplate?: string;
   enum: "size";
 }
@@ -28,7 +30,7 @@ export default {
     modelValue: null,
   },
   argTypes: {
-    ...getArgTypes(UDatePicker.__name),
+    ...getArgTypes(UDatePickerName),
   },
   parameters: {
     docs: {
@@ -42,7 +44,7 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
   components: { UDatePicker, UIcon },
   setup() {
-    const slots = getSlotNames(UDatePicker.__name);
+    const slots = getSlotNames(UDatePickerName);
 
     return { args, slots };
   },

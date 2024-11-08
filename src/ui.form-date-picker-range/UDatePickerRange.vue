@@ -1,157 +1,5 @@
-<template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef">
-    <UInput
-      v-if="isVariant.input"
-      :id="elementId"
-      ref="inputRef"
-      v-model="userFormatDate"
-      :size="size"
-      :label="label"
-      :label-align="labelAlign"
-      :disabled="disabled"
-      :placeholder="placeholder"
-      :description="description"
-      :error="error"
-      readonly
-      :left-icon="leftIcon"
-      :right-icon="rightIcon"
-      v-bind="isShownMenu ? activeInputAttrs : inputAttrs"
-      @focus="activate"
-    >
-      <template #left>
-        <!-- @slot Use it to add something before the date. -->
-        <slot name="left" />
-      </template>
-
-      <template #left-icon>
-        <!-- @slot Use it to add icon before the date. -->
-        <slot name="left-icon" />
-      </template>
-
-      <template #right-icon>
-        <!--
-          @slot Use it add an icon after the date.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
-          <UIcon :name="rightIcon" :size="size" color="gray" />
-        </slot>
-      </template>
-
-      <template #right>
-        <!-- @slot Use it to add something after the date. -->
-        <slot name="right" />
-      </template>
-    </UInput>
-
-    <div v-if="isVariant.button" v-bind="buttonWrapperAttrs">
-      <UButton
-        ref="buttonPrevRef"
-        square
-        filled
-        no-ring
-        :size="size"
-        :disabled="disabled"
-        variant="thirdary"
-        :left-icon="config.defaults.prevIcon"
-        v-bind="shiftRangeButtonAttrs"
-        @click="onClickShiftRange(SHIFT_ACTION.prev)"
-      />
-
-      <UButton
-        :id="elementId"
-        ref="buttonRef"
-        square
-        filled
-        no-ring
-        :size="size"
-        :disabled="disabled"
-        :label="userFormatDate"
-        variant="thirdary"
-        v-bind="buttonAttrs"
-        @click="activate"
-      />
-
-      <UButton
-        ref="buttonNextRef"
-        square
-        filled
-        no-ring
-        :size="size"
-        :disabled="disabled"
-        variant="thirdary"
-        :left-icon="config.defaults.nextIcon"
-        v-bind="shiftRangeButtonAttrs"
-        @click="onClickShiftRange(SHIFT_ACTION.next)"
-      />
-    </div>
-
-    <Transition v-bind="config.menuTransition">
-      <div
-        v-if="isShownMenu"
-        ref="menuRef"
-        v-click-outside="[deactivate, clickOutsideOptions]"
-        tabindex="-1"
-        v-bind="menuAttrs"
-        @keydown.esc="deactivate"
-      >
-        <UDatePickerRangePeriodMenu
-          v-model:local-value="localValue"
-          v-model:active-date="activeDate"
-          v-model:period-date-list="periodDateList"
-          v-model:period="period"
-          :config="config"
-          :is-period="isPeriod"
-          :custom-range-button="customRangeButton"
-          :locale="locale"
-          :attrs="keysAttrs"
-          :date-format="dateFormat"
-          :min-date="minDate"
-          :max-date="maxDate"
-          @toggle-menu="isShownMenu = !isShownMenu"
-          @close-menu="isShownMenu = false"
-          @click-prev="onClickShiftDatesList(SHIFT_ACTION.prev)"
-          @click-next="onClickShiftDatesList(SHIFT_ACTION.next)"
-        />
-
-        <UDatePickerRangeInputs
-          v-if="isPeriod.ownRange"
-          v-bind="rangeInputWrapperAttrs"
-          v-model:local-value="localValue"
-          v-model:input-range-from-error="inputRangeFromError"
-          v-model:input-range-to-error="inputRangeToError"
-          v-model:range-start="rangeStart"
-          v-model:range-end="rangeEnd"
-          :range-input-name="rangeInputName"
-          :locale="locale"
-          :date-format="dateFormat"
-          :config="config"
-          :attrs="keysAttrs"
-        />
-
-        <div v-if="inputRangeToError || inputRangeFromError" v-bind="rangeInputErrorAttrs">
-          {{ inputRangeToError || inputRangeFromError }}
-        </div>
-
-        <UCalendar
-          v-if="isPeriod.ownRange"
-          v-model="calendarValue"
-          :min-date="minDate"
-          :max-date="maxDate"
-          v-bind="calendarAttrs"
-          :date-format="dateFormat"
-          range
-          @mouseenter="onMouseoverCalendar"
-          @input="onInputCalendar"
-        />
-      </div>
-    </Transition>
-  </div>
-</template>
-
-<script setup>
-import { computed, watch, ref, nextTick, provide, useId } from "vue";
+<script setup lang="ts" generic="TModelValue extends RangeDate">
+import { computed, watch, ref, nextTick, provide, useId, useTemplateRef } from "vue";
 import { getDefault } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -185,205 +33,59 @@ import {
   getYearDateList,
   getQuartersDateList,
   getMonthsDateList,
-} from "./utilDateRange.js";
+  type DatePeriodRange,
+} from "./utilDateRange.ts";
 
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 import { useAutoPosition } from "../composables/useAutoPosition.ts";
-import { useLocale } from "./useLocale.js";
-import { useUserFormat } from "./useUserFormat.js";
+import { useLocale } from "./useLocale.ts";
+import { useUserFormat } from "./useUserFormat.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 import {
   UDatePickerRange,
   DATE_PICKER_BUTTON_TYPE,
   DATE_PICKER_INPUT_TYPE,
-  PERIOD,
   INPUT_RANGE_FORMAT,
-  SHIFT_ACTION,
-} from "./constants.js";
+  ShiftAction,
+  Period,
+} from "./constants.ts";
+
+import type { Ref, WritableComputedRef } from "vue";
+import type {
+  IsDatePeriodOutOfRange,
+  ShiftActions,
+  SortedLocale,
+  UDatePickerRangeProps,
+  UDatePickerRangeInputsAttrs,
+  UDatePickerRangePeriodMenuAttrs,
+} from "./types.ts";
+import type { RangeDate } from "../ui.form-calendar/types.ts";
+import type { ComponentExposed } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Datepicker range value (JavaScript Date objects or strings formatted in given `dateFormat`).
-   */
-  modelValue: {
-    type: Object,
-    default: () => ({
-      from: null,
-      to: null,
-    }),
-  },
-
-  /**
-   * Custom range button.
-   */
-  customRangeButton: {
-    type: Object,
-    default: () => ({
-      range: { from: null, to: null },
-      label: "",
-      description: "",
-    }),
-  },
-
-  /**
-   * Datepicker open direction on x-axis.
-   * @values auto, left, right
-   */
-  openDirectionX: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).openDirectionX,
-  },
-
-  /**
-   * Datepicker open direction on y-axis.
-   * @values auto, top, bottom
-   */
-  openDirectionY: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).openDirectionY,
-  },
-
-  /**
-   * The variant of the date picker.
-   * @values button, input
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).variant,
-  },
-
-  /**
-   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  minDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePickerRange).minDate,
-  },
-
-  /**
-   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  maxDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePickerRange).maxDate,
-  },
-
-  /**
-   * Date string format.
-   */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).dateFormat,
-  },
-
-  /**
-   * User-friendly date format (it will be shown in UI).
-   */
-  userDateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).userDateFormat,
-  },
-
-  /**
-   * Datepicker size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).rightIcon,
-  },
-
-  /**
-   * Label text for an input type.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePickerRange).labelAlign,
-  },
-
-  /**
-   * Input placeholder for an input type.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker description for an input type.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message for an input type.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Disable component.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePickerRange).disabled,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+type Props = UDatePickerRangeProps<TModelValue>;
+const props = withDefaults(defineProps<Props>(), {
+  openDirectionX: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionX,
+  openDirectionY: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionY,
+  variant: getDefault<Props>(defaultConfig, UDatePickerRange).variant,
+  dateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).dateFormat,
+  userDateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).userDateFormat,
+  size: getDefault<Props>(defaultConfig, UDatePickerRange).size,
+  leftIcon: getDefault<Props>(defaultConfig, UDatePickerRange).leftIcon,
+  rightIcon: getDefault<Props>(defaultConfig, UDatePickerRange).rightIcon,
+  labelAlign: getDefault<Props>(defaultConfig, UDatePickerRange).labelAlign,
+  label: getDefault<Props>(defaultConfig, UDatePickerRange).label,
+  disabled: getDefault<Props>(defaultConfig, UDatePickerRange).disabled,
+  customRangeButton: () => ({
+    range: { from: null, to: null },
+    label: "",
+    description: "",
+  }),
+  id: "",
+  dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -394,15 +96,17 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
+type UButtonRef = InstanceType<typeof UButton>;
+type UInputRef = InstanceType<typeof UInput>;
+
 const isShownMenu = ref(false);
-const wrapperRef = ref(null);
-const menuRef = ref(null);
-const rangeInputStartRef = ref(null);
-const rangeInputEndRef = ref(null);
-const buttonRef = ref(null);
-const buttonPrevRef = ref(null);
-const buttonNextRef = ref(null);
-const inputRef = ref(null);
+const wrapperRef = useTemplateRef("wrapper");
+const menuRef = useTemplateRef("menu");
+const buttonRef = useTemplateRef<UButtonRef>("button");
+const buttonPrevRef = useTemplateRef<UButtonRef>("button-prev");
+const buttonNextRef = useTemplateRef<UButtonRef>("button-next");
+const inputRef = useTemplateRef<UInputRef>("input");
+const rageInputs = useTemplateRef<ComponentExposed<typeof UDatePickerRangeInputs>>("range-inputs");
 
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
@@ -415,12 +119,12 @@ const { locale, userFormatLocale } = useLocale(props);
 
 const isPeriod = computed(() => {
   return {
-    week: period.value === PERIOD.week,
-    month: period.value === PERIOD.month,
-    quarter: period.value === PERIOD.quarter,
-    year: period.value === PERIOD.year,
-    ownRange: period.value === PERIOD.ownRange,
-    custom: period.value === PERIOD.custom,
+    week: period.value === Period.Week,
+    month: period.value === Period.Month,
+    quarter: period.value === Period.Quarter,
+    year: period.value === Period.Year,
+    ownRange: period.value === Period.OwnRange,
+    custom: period.value === Period.Custom,
   };
 });
 
@@ -428,7 +132,6 @@ const elementId = props.id || useId();
 
 const {
   config,
-  keysAttrs,
   wrapperAttrs,
   calendarAttrs,
   inputAttrs,
@@ -439,29 +142,65 @@ const {
   rangeInputWrapperAttrs,
   rangeInputErrorAttrs,
   activeInputAttrs,
+  rangeInputFirstAttrs,
+  rangeInputLastAttrs,
+  periodRowAttrs,
+  periodButtonAttrs,
+  periodButtonActiveAttrs,
+  periodDateAttrs,
+  periodDateCurrentAttrs,
+  periodDateSelectedAttrs,
+  periodDateCurrentSelectedAttrs,
+  periodDateListAttrs,
+  rangeSwitchButtonAttrs,
+  rangeSwitchTitleAttrs,
+  rangeSwitchWrapperAttrs,
+  customRangeDescriptionAttrs,
 } = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const calendarValue = ref(props.modelValue);
-const activeDate = ref(
+const activeDate: Ref<string | Date | null> = ref(
   props.modelValue.from !== null
-    ? parseDate(props.modelValue.from, props.dateFormat, locale.value)
+    ? parseDate<SortedLocale>(props.modelValue.from, props.dateFormat, locale.value)
     : new Date(),
 );
-const period = ref(PERIOD.ownRange);
+const period = ref(Period.OwnRange);
 const rangeStart = ref("");
 const rangeEnd = ref("");
 const inputRangeFromError = ref("");
 const inputRangeToError = ref("");
-const calendarInnerValue = ref({ from: "", to: "" });
-const periodDateList = ref([]);
+const calendarInnerValue: Ref<RangeDate> = ref({ from: "", to: "" });
+const periodDateList: Ref<DatePeriodRange[]> = ref([]);
 
-provide("isDatePeriodOutOfRange", (datePeriod) => isDatePeriodOutOfRange(datePeriod));
+provide<IsDatePeriodOutOfRange>("isDatePeriodOutOfRange", (datePeriod: DatePeriodRange) => {
+  return isDatePeriodOutOfRange(datePeriod);
+});
 
-const localValue = computed({
+const rangeInputsAttrs = computed(() => ({
+  rangeInputFirstAttrs,
+  rangeInputLastAttrs,
+}));
+
+const rangePeriodMenuAttrs = computed(() => ({
+  periodRowAttrs,
+  periodButtonAttrs,
+  periodButtonActiveAttrs,
+  periodDateAttrs,
+  periodDateCurrentAttrs,
+  periodDateSelectedAttrs,
+  periodDateCurrentSelectedAttrs,
+  periodDateListAttrs,
+  rangeSwitchButtonAttrs,
+  rangeSwitchTitleAttrs,
+  rangeSwitchWrapperAttrs,
+  customRangeDescriptionAttrs,
+}));
+
+const localValue: WritableComputedRef<RangeDate> = computed({
   get: () => {
     return {
-      from: parseDate(props.modelValue.from || null, props.dateFormat, locale.value),
-      to: parseDate(props.modelValue.to || null, props.dateFormat, locale.value),
+      from: parseDate<SortedLocale>(props.modelValue.from || null, props.dateFormat, locale.value),
+      to: parseDate<SortedLocale>(props.modelValue.to || null, props.dateFormat, locale.value),
     };
   },
   set: (value) => {
@@ -469,8 +208,12 @@ const localValue = computed({
       emit("update:modelValue", value);
     }
 
-    const parsedDateFrom = parseDate(value.from || null, props.dateFormat, locale.value);
-    const parsedDateTo = parseDate(value.to || null, props.dateFormat, locale.value);
+    const parsedDateFrom = parseDate<SortedLocale>(
+      value.from || null,
+      props.dateFormat,
+      locale.value,
+    );
+    const parsedDateTo = parseDate<SortedLocale>(value.to || null, props.dateFormat, locale.value);
 
     if (value.from && value.to && props.dateFormat) {
       const newValue = {
@@ -494,14 +237,14 @@ const isVariant = computed(() => ({
 
 const clickOutsideOptions = computed(() => {
   if (isVariant.value.input) {
-    return { ignore: [inputRef.value.inputRef] };
+    return { ignore: [inputRef.value?.inputRef] };
   }
 
   return {
     ignore: [
-      buttonRef.value.buttonRef,
-      buttonPrevRef.value.buttonRef,
-      buttonNextRef.value.buttonRef,
+      buttonRef.value?.buttonRef,
+      buttonPrevRef.value?.buttonRef,
+      buttonNextRef.value?.buttonRef,
     ],
   };
 });
@@ -509,6 +252,7 @@ const clickOutsideOptions = computed(() => {
 const { userFormatDate } = useUserFormat(
   localValue,
   userFormatLocale,
+  props.dateFormat,
   isPeriod,
   locale,
   props.userDateFormat,
@@ -563,11 +307,13 @@ watch(period, () => {
   }
 
   if (isDate && props.dateFormat) {
-    activeDate.value = isDate ? parseDate(localValue.value.from, locale.value) : new Date();
+    activeDate.value = isDate
+      ? parseDate(localValue.value.from, props.dateFormat, locale.value)
+      : new Date();
   }
 });
 
-function isDatePeriodOutOfRange(datePeriod) {
+function isDatePeriodOutOfRange(datePeriod: DatePeriodRange) {
   return (
     dateIsOutOfRange(
       datePeriod.startRange,
@@ -586,7 +332,7 @@ function activate() {
     adjustPositionY();
     adjustPositionX();
 
-    menuRef.value.focus();
+    menuRef.value?.focus();
   });
 }
 
@@ -597,8 +343,10 @@ function deactivate() {
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
-  const from = props.modelValue.from || new Date();
-  const to = props.modelValue.to || new Date();
+  const { modelValue, dateFormat } = props;
+
+  const from = parseDate<SortedLocale>(modelValue.from, dateFormat, locale.value) || new Date();
+  const to = parseDate<SortedLocale>(modelValue.to, dateFormat, locale.value) || new Date();
 
   const customFrom = props.customRangeButton.range.from || new Date();
   const customTo = props.customRangeButton.range.to || new Date();
@@ -616,113 +364,134 @@ function setDefaultPeriodForButton() {
     String(from) === String(getStartOfYear(from)) && String(to) === String(getEndOfYear(to));
   const isCustomPeriod = String(from) === String(customFrom) && String(to) === String(customTo);
 
-  if (!props.modelValue.from && !props.modelValue.to) {
-    period.value = PERIOD.ownRange;
+  if (!modelValue.from && !modelValue.to) {
+    period.value = Period.OwnRange;
   } else if (isYearPeriod) {
-    period.value = PERIOD.year;
+    period.value = Period.Year;
   } else if (isMonthPeriod) {
-    period.value = PERIOD.month;
+    period.value = Period.Month;
   } else if (isQuarterPeriod) {
-    period.value = PERIOD.quarter;
+    period.value = Period.Quarter;
   } else if (isWeekPeriod) {
-    period.value = PERIOD.week;
+    period.value = Period.Week;
   } else if (isCustomPeriod) {
-    period.value = PERIOD.custom;
+    period.value = Period.Custom;
   } else {
-    period.value = PERIOD.ownRange;
+    period.value = Period.OwnRange;
   }
 }
 
-function onClickShiftDatesList(action) {
-  const defaultRange = action === SHIFT_ACTION.prev ? -1 : 1;
-  const yearRange = action === SHIFT_ACTION.prev ? -12 : 12;
+function onClickShiftDatesList(action: ShiftActions) {
+  const defaultRange = action === ShiftAction.Prev ? -1 : 1;
+  const yearRange = action === ShiftAction.Prev ? -12 : 12;
+  const parsedActiveDate = parseDate(activeDate.value, props.dateFormat, locale.value);
 
-  if (isPeriod.value.week) {
-    activeDate.value = addMonths(activeDate.value, defaultRange);
+  if (isPeriod.value.week && parsedActiveDate) {
+    activeDate.value = addMonths(parsedActiveDate, defaultRange);
     periodDateList.value = getWeekDateList(activeDate.value, locale.value.months.shorthand);
   }
 
-  if (isPeriod.value.month) {
-    activeDate.value = addYears(activeDate.value, defaultRange);
+  if (isPeriod.value.month && parsedActiveDate) {
+    activeDate.value = addYears(parsedActiveDate, defaultRange);
     periodDateList.value = getMonthsDateList(activeDate.value, locale.value.months.longhand);
   }
 
-  if (isPeriod.value.quarter) {
-    activeDate.value = addYears(activeDate.value, defaultRange);
+  if (isPeriod.value.quarter && parsedActiveDate) {
+    activeDate.value = addYears(parsedActiveDate, defaultRange);
     periodDateList.value = getQuartersDateList(activeDate.value, locale.value.quarter);
   }
 
-  if (isPeriod.value.year) {
-    activeDate.value = addYears(activeDate.value, yearRange);
+  if (isPeriod.value.year && parsedActiveDate) {
+    activeDate.value = addYears(parsedActiveDate, yearRange);
     periodDateList.value = getYearDateList(activeDate.value);
   }
 }
 
-function shiftRangeNext(to, from, daysDifference) {
+function shiftRangeNext(to: Date, from: Date, daysDifference: number) {
   if (isPeriod.value.ownRange) {
     const nextDate = {
-      to: addDays(to, daysDifference),
-      from: addDays(from, daysDifference),
+      title: "",
+      startRange: addDays(to, daysDifference),
+      endRange: addDays(from, daysDifference),
     };
 
     if (isDatePeriodOutOfRange(nextDate)) return;
 
-    localValue.value = nextDate;
+    localValue.value = {
+      from: nextDate.startRange,
+      to: nextDate.startRange,
+    };
 
     return;
   }
 
-  let nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
+  let nextDate = periodDateList.value.find(
+    (item) => localValue.value.to && item.endRange > localValue.value.to,
+  );
 
   if (!nextDate) {
-    onClickShiftDatesList(SHIFT_ACTION.next);
+    onClickShiftDatesList(ShiftAction.Next);
 
-    nextDate = periodDateList.value.find((item) => item.endRange > localValue.value.to);
+    nextDate = periodDateList.value.find(
+      (item) => localValue.value.to && item.endRange > localValue.value.to,
+    );
   }
 
-  if (isDatePeriodOutOfRange(nextDate)) return;
+  if (nextDate && isDatePeriodOutOfRange(nextDate)) return;
 
-  localValue.value = {
-    from: nextDate.startRange,
-    to: nextDate.endRange,
-  };
+  if (nextDate) {
+    localValue.value = {
+      from: nextDate.startRange,
+      to: nextDate.endRange,
+    };
+  }
 }
 
-function shiftRangePrev(to, from, daysDifference) {
+function shiftRangePrev(to: Date, from: Date, daysDifference: number) {
   if (isPeriod.value.ownRange) {
     const previousDate = {
-      to: addDays(to, daysDifference * -1),
-      from: addDays(from, daysDifference * -1),
+      title: "",
+      startRange: addDays(to, daysDifference * -1),
+      endRange: addDays(from, daysDifference * -1),
     };
-
-    if (isDatePeriodOutOfRange(previousDate)) return;
-
-    localValue.value = previousDate;
-  } else {
-    const reverseDatesList = [...periodDateList.value].reverse();
-
-    let previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
-
-    if (!previousDate) {
-      onClickShiftDatesList(SHIFT_ACTION.prev);
-
-      const reverseDatesList = [...periodDateList.value].reverse();
-
-      previousDate = reverseDatesList.find((item) => item.endRange < localValue.value.to);
-    }
 
     if (isDatePeriodOutOfRange(previousDate)) return;
 
     localValue.value = {
       from: previousDate.startRange,
-      to: previousDate.endRange,
+      to: previousDate.startRange,
     };
+  } else {
+    const reverseDatesList = [...periodDateList.value].reverse();
+
+    let previousDate = reverseDatesList.find(
+      (item) => localValue.value.to && item.endRange < localValue.value.to,
+    );
+
+    if (!previousDate) {
+      onClickShiftDatesList(ShiftAction.Prev);
+
+      const reverseDatesList = [...periodDateList.value].reverse();
+
+      previousDate = reverseDatesList.find(
+        (item) => localValue.value.to && item.endRange < localValue.value.to,
+      );
+    }
+
+    if (previousDate && isDatePeriodOutOfRange(previousDate)) return;
+
+    if (previousDate) {
+      localValue.value = {
+        from: previousDate.startRange,
+        to: previousDate.endRange,
+      };
+    }
   }
 }
 
-function onClickShiftRange(action) {
+function onClickShiftRange(action: ShiftActions) {
   if (isPeriod.value.custom) {
-    period.value = PERIOD.ownRange;
+    period.value = Period.OwnRange;
   }
 
   const millisecondsPerSecond = 1000;
@@ -733,39 +502,208 @@ function onClickShiftRange(action) {
   const millisecondsPerDay =
     millisecondsPerSecond * secondsPerMinute * minutesPerHour * hoursPerDay;
 
-  const from = localValue.value.from;
-  const to = localValue.value.to ? localValue.value.to : addDays(from, 1);
+  const from = parseDate<SortedLocale>(localValue.value.from, props.dateFormat, locale.value);
+  let to = parseDate<SortedLocale>(localValue.value.to, props.dateFormat, locale.value);
+
+  if (!from) return;
+  to = to || addDays(from, 1);
+
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
-  action === SHIFT_ACTION.next
+  action === ShiftAction.Next
     ? shiftRangeNext(to, from, daysDifference)
     : shiftRangePrev(to, from, daysDifference);
 }
 
 function onMouseoverCalendar() {
-  const isRangeInputFocus = document.activeElement.name === rangeInputName.value;
+  const isInputActiveElement = document.activeElement instanceof HTMLInputElement;
+  const activeElement = isInputActiveElement
+    ? (document.activeElement as HTMLInputElement)
+    : undefined;
+  const isRangeInputFocus = activeElement?.name === rangeInputName.value;
 
-  if (isRangeInputFocus || !rangeInputStartRef.value || !rangeInputEndRef.value) return;
+  if (
+    isRangeInputFocus ||
+    !rageInputs.value?.rangeInputStartRef ||
+    !rageInputs.value?.rangeInputEndRef
+  ) {
+    return;
+  }
 
   const hasValues =
     calendarInnerValue.value.from && calendarInnerValue.value.to && !inputRangeToError.value;
   const hasOnlyFromValue =
     calendarInnerValue.value.from && !calendarInnerValue.value.to && !inputRangeFromError.value;
 
-  if (hasValues || !rangeStart.value) {
-    rangeInputStartRef.value.inputRef.focus();
+  if ((hasValues || !rangeStart.value) && rageInputs.value?.rangeInputStartRef?.inputRef) {
+    (rageInputs.value.rangeInputStartRef.inputRef as HTMLInputElement).focus();
 
     return;
   }
 
-  if (hasOnlyFromValue) {
-    rangeInputEndRef.value.inputRef.focus();
+  if (hasOnlyFromValue && rageInputs.value?.rangeInputEndRef?.inputRef) {
+    (rageInputs.value.rangeInputEndRef.inputRef as HTMLInputElement).focus();
 
     return;
   }
 }
 
-function onInputCalendar(value) {
+function onInputCalendar(value: RangeDate) {
   calendarInnerValue.value = value;
 }
 </script>
+
+<template>
+  <div v-bind="wrapperAttrs" ref="wrapper">
+    <UInput
+      v-if="isVariant.input"
+      :id="elementId"
+      ref="inputRef"
+      v-model="userFormatDate"
+      :size="size"
+      :label="label"
+      :label-align="labelAlign"
+      :disabled="disabled"
+      :placeholder="placeholder"
+      :description="description"
+      :error="error"
+      readonly
+      :left-icon="leftIcon"
+      :right-icon="rightIcon"
+      v-bind="isShownMenu ? activeInputAttrs : inputAttrs"
+      @focus="activate"
+    >
+      <template #left>
+        <!-- @slot Use it to add something before the date. -->
+        <slot name="left" />
+      </template>
+
+      <template #left-icon>
+        <!-- @slot Use it to add icon before the date. -->
+        <slot name="left-icon" />
+      </template>
+
+      <template #right-icon>
+        <!--
+          @slot Use it add an icon after the date.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
+          <UIcon :name="rightIcon" :size="size" color="gray" />
+        </slot>
+      </template>
+
+      <template #right>
+        <!-- @slot Use it to add something after the date. -->
+        <slot name="right" />
+      </template>
+    </UInput>
+
+    <div v-if="isVariant.button" v-bind="buttonWrapperAttrs">
+      <UButton
+        ref="button-prev"
+        square
+        filled
+        no-ring
+        :size="size"
+        :disabled="disabled"
+        variant="thirdary"
+        :left-icon="config.defaults?.prevIcon"
+        v-bind="shiftRangeButtonAttrs"
+        @click="onClickShiftRange(ShiftAction.Prev)"
+      />
+
+      <UButton
+        :id="elementId"
+        ref="button"
+        square
+        filled
+        no-ring
+        :size="size"
+        :disabled="disabled"
+        :label="userFormatDate"
+        variant="thirdary"
+        v-bind="buttonAttrs"
+        @click="activate"
+      />
+
+      <UButton
+        ref="button-next"
+        square
+        filled
+        no-ring
+        :size="size"
+        :disabled="disabled"
+        variant="thirdary"
+        :left-icon="config.defaults?.nextIcon"
+        v-bind="shiftRangeButtonAttrs"
+        @click="onClickShiftRange(ShiftAction.Next)"
+      />
+    </div>
+
+    <Transition v-bind="config.menuTransition">
+      <div
+        v-if="isShownMenu"
+        ref="menu"
+        v-click-outside="[deactivate, clickOutsideOptions]"
+        tabindex="-1"
+        v-bind="menuAttrs"
+        @keydown.esc="deactivate"
+      >
+        <UDatePickerRangePeriodMenu
+          v-model:local-value="localValue"
+          v-model:active-date="activeDate"
+          v-model:period-date-list="periodDateList"
+          v-model:period="period"
+          :config="config"
+          :is-period="isPeriod"
+          :custom-range-button="customRangeButton"
+          :locale="locale"
+          :date-format="dateFormat"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :attrs="rangePeriodMenuAttrs as unknown as UDatePickerRangePeriodMenuAttrs"
+          @toggle-menu="isShownMenu = !isShownMenu"
+          @close-menu="isShownMenu = false"
+          @click-prev="onClickShiftDatesList(ShiftAction.Prev)"
+          @click-next="onClickShiftDatesList(ShiftAction.Next)"
+        />
+
+        <UDatePickerRangeInputs
+          v-if="isPeriod.ownRange"
+          v-bind="rangeInputWrapperAttrs"
+          ref="range-inputs"
+          v-model:local-value="localValue"
+          v-model:input-range-from-error="inputRangeFromError"
+          v-model:input-range-to-error="inputRangeToError"
+          v-model:range-start="rangeStart"
+          v-model:range-end="rangeEnd"
+          :range-input-name="rangeInputName"
+          :locale="locale"
+          :max-date="maxDate"
+          :min-date="minDate"
+          :date-format="dateFormat"
+          :config="config"
+          :attrs="rangeInputsAttrs as unknown as UDatePickerRangeInputsAttrs"
+        />
+
+        <div v-if="inputRangeToError || inputRangeFromError" v-bind="rangeInputErrorAttrs">
+          {{ inputRangeToError || inputRangeFromError }}
+        </div>
+
+        <UCalendar
+          v-if="isPeriod.ownRange"
+          v-model="calendarValue"
+          :min-date="minDate"
+          :max-date="maxDate"
+          v-bind="calendarAttrs"
+          :date-format="dateFormat"
+          range
+          @mouseenter="onMouseoverCalendar"
+          @input="onInputCalendar"
+        />
+      </div>
+    </Transition>
+  </div>
+</template>

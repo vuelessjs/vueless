@@ -49,12 +49,6 @@ export enum InputType {
   Seconds,
 }
 
-// TODO: Remove redundant arrays when other components migrated to ts;
-export const LOCALE_TYPE = {
-  day: "day",
-  month: "month",
-};
-
 export const ARROW_KEYS: string[] = [
   KeyCode.ArrowLeft,
   KeyCode.ArrowUp,

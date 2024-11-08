@@ -6,24 +6,23 @@ export const UDatePickerRange = "UDatePickerRange";
 
 export const DATE_PICKER_BUTTON_TYPE = "button";
 export const DATE_PICKER_INPUT_TYPE = "input";
-
-export const INPUT_RANGE_TYPE = {
-  start: "start",
-  end: "end",
-};
-
-export const PERIOD = {
-  week: "week",
-  month: "month",
-  quarter: "quarter",
-  year: "year",
-  ownRange: "ownRange",
-  custom: "custom",
-};
-
 export const INPUT_RANGE_FORMAT = "d.m.Y";
 
-export const SHIFT_ACTION = {
-  prev: "prev",
-  next: "next",
-};
+export enum InputRangeType {
+  Start = "start",
+  End = "end",
+}
+
+export enum Period {
+  Week = "week",
+  Month = "month",
+  Quarter = "quarter",
+  Year = "year",
+  OwnRange = "ownRange",
+  Custom = "custom",
+}
+
+export enum ShiftAction {
+  Prev = "prev",
+  Next = "next",
+}

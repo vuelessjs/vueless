@@ -40,7 +40,7 @@ const {
   activeDayAttrs,
   currentLastDayInRangeAttrs,
   currentFirstDayInRangeAttrs,
-} = useAttrs(props as unknown as UCalendarProps);
+} = useAttrs(props as unknown as UCalendarProps<unknown>);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;

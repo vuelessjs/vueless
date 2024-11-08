@@ -6,6 +6,7 @@ import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
+import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -117,6 +118,7 @@ export interface Components {
   UBadge?: Partial<typeof UBadgeDefaultConfig>;
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker?: Partial<typeof UDatePickerConfig>;
+  UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
 }
 
 export interface Directives {
@@ -329,3 +331,38 @@ export interface ExposeProperty {
   type: string;
   description?: string;
 }
+/**
+ * Utility types to extract component props, slots, emit, exposed types.
+ * Original code taken from `vue-component-type-helpers` npm package.
+ * Source code: https://github.com/vuejs/language-tools/blob/master/packages/component-type-helpers/index.ts
+ */
+
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
+export type ComponentType<T> = T extends new (...args: any) => {}
+  ? 1
+  : T extends (...args: any) => any
+    ? 2
+    : 0;
+
+export type ComponentProps<T> = T extends new (...args: any) => { $props: infer P }
+  ? NonNullable<P>
+  : T extends (props: infer P, ...args: any) => any
+    ? P
+    : {};
+
+export type ComponentSlots<T> = T extends new (...args: any) => { $slots: infer S }
+  ? NonNullable<S>
+  : T extends (props: any, ctx: { slots: infer S; attrs: any; emit: any }, ...args: any) => any
+    ? NonNullable<S>
+    : {};
+
+export type ComponentEmit<T> = T extends new (...args: any) => { $emit: infer E }
+  ? NonNullable<E>
+  : {};
+
+export type ComponentExposed<T> = T extends new (...args: any) => infer E
+  ? E
+  : T extends (props: any, ctx: any, expose: (exposed: infer E) => any, ...args: any) => any
+    ? NonNullable<E>
+    : {};
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */

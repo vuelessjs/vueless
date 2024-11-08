@@ -1,4 +1,4 @@
-import { LOCALE_TYPE, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants.ts";
+import { LocaleType, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants.ts";
 
 export type dateSettings = { weekStartsOn?: number };
 
@@ -146,7 +146,7 @@ export function getStartOfDay(date: Date) {
 }
 
 export function getSortedLocale<TLocale>(locale: TLocale, type: "month" | "day"): string[] {
-  const targetMap = type === LOCALE_TYPE.month ? monthsMap : daysMap;
+  const targetMap = type === LocaleType.Month ? monthsMap : daysMap;
 
   if (typeof locale === "object" && !Array.isArray(locale)) {
     const sortedDays = Object.entries(locale as object)
