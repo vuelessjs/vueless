@@ -140,8 +140,8 @@ const generatedIcons = computed(() => {
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const isInternalIcon = !!generatedIcons.value.find(([path]) =>
-    path.includes(VUELESS_LIBRARY + "/" + props.name),
+  const isInternalIcon = Boolean(
+    generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
   );
 
   const userLibrary = config.value.defaults.library;

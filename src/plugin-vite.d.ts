@@ -7,5 +7,5 @@ export function Vueless(options?: {
   mode?: string;
   debug?: boolean;
   include?: string[];
-  duplicatedCachePath?: string;
+  mirrorCacheDir?: string;
 }): never;

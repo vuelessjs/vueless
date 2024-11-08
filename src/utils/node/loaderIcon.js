@@ -1,7 +1,7 @@
 /**
  This scrypt find icon names from the UIcon props and objects across the project
  and copy SVG icons from the default icons library (@material-symbols or other from config)
- to the `VUELESS_CACHE_DIR` folder.
+ to the `VUELESS_ICONS_CACHED_DIR` folder.
  */
 
 /* eslint-disable no-console */
@@ -13,53 +13,54 @@ import { rm, cp } from "node:fs/promises";
 import { vuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getDefaultConfigJson, merge } from "./helper.js";
 import {
+  COMPONENTS,
+  VUELESS_DIR,
+  VUELESS_LOCAL_DIR,
   VUELESS_LIBRARY,
-  VUELESS_CACHE_DIR,
   VUELESS_ICONS_DIR,
   VUELESS_ICONS_LOCAL_DIR,
   VUELESS_ICONS_CACHED_DIR,
   VUELESS_CONFIG_FILE_NAME,
+  ICONS_DIR,
 } from "../../constants.js";
 
-const DEFAULT_ICONS_DIR = path.join(process.cwd(), VUELESS_ICONS_DIR);
-const DEFAULT_ICONS_LOCAL_DIR = path.join(process.cwd(), VUELESS_ICONS_LOCAL_DIR);
-const CACHED_ICONS_DIR = path.join(process.cwd(), VUELESS_ICONS_CACHED_DIR);
-const ICON_CONFIG_PATH = "ui.image-icon/config.ts";
-const ICON_COMPONENT_NAME = "UIcon";
-const STORYBOOK_STORY_EXTENSIONS = ["/stories.js", "/stories.ts"];
+const cwd = process.cwd();
+
+const DEFAULT_ICONS_DIR = path.join(cwd, VUELESS_ICONS_DIR);
+const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd, VUELESS_ICONS_LOCAL_DIR);
+const CACHED_ICONS_DIR = path.join(cwd, VUELESS_ICONS_CACHED_DIR);
+const U_ICON = "UIcon";
 
 let isDebug = false;
 let isVuelessEnv = false;
 let isStorybookMode = false;
 let isVuelessIconsMode = false;
-let cachedIconsDir = CACHED_ICONS_DIR;
+let cacheIconsPath = CACHED_ICONS_DIR;
 
-// perform icons copy magick... ✨
-export async function cacheIcons({ mode = "", env, debug, targetFiles = [] } = {}) {
+/**
+ * Dynamically find icons across the project and cache it.
+ * Icons cache magick happens here... ✨
+ * @param {string} mode
+ * @param {string} env
+ * @param {boolean} debug
+ * @param {Array} targetFiles
+ */
+export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
   isDebug = debug || false;
   isVuelessEnv = env === "vueless";
   isStorybookMode = mode === "storybook";
   isVuelessIconsMode = mode === "vuelessIcons";
+  cacheIconsPath = CACHED_ICONS_DIR;
 
-  if (isVuelessIconsMode && isVuelessEnv) cachedIconsDir = DEFAULT_ICONS_LOCAL_DIR;
-  if (isStorybookMode && isVuelessEnv) cachedIconsDir = CACHED_ICONS_DIR;
-
-  if (isStorybookMode) {
-    const storybookStoriesJs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[0]);
-    const storybookStoriesTs = await getDirFiles("src", STORYBOOK_STORY_EXTENSIONS[1]);
-
-    findAndCopyIcons([...storybookStoriesJs, ...storybookStoriesTs]);
+  if (isVuelessIconsMode && isVuelessEnv) {
+    cacheIconsPath = DEFAULT_ICONS_LOCAL_DIR;
   }
 
+  const exclude = isStorybookMode ? [] : ["/stories.js", "/stories.ts", ".d.ts"];
+
   const vueFiles = targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue"));
-
-  const jsFiles = targetFiles.map((jsFilePath) =>
-    getDirFiles(jsFilePath, ".js", { exclude: [STORYBOOK_STORY_EXTENSIONS[0]] }),
-  );
-
-  const tsFiles = targetFiles.map((tsFilePath) =>
-    getDirFiles(tsFilePath, ".ts", { exclude: [STORYBOOK_STORY_EXTENSIONS[1], ".d.ts"] }),
-  );
+  const jsFiles = targetFiles.map((jsFilePath) => getDirFiles(jsFilePath, ".js", { exclude }));
+  const tsFiles = targetFiles.map((tsFilePath) => getDirFiles(tsFilePath, ".ts", { exclude }));
 
   const iconFiles = await Promise.all([...vueFiles, ...jsFiles, ...tsFiles]);
 
@@ -70,53 +71,81 @@ export async function cacheIcons({ mode = "", env, debug, targetFiles = [] } = {
   ]);
 
   if (isVuelessIconsMode) {
-    /* Copy icons which using in vueless components to the cache (vueless env only). */
-    if (isVuelessEnv && fs.existsSync(DEFAULT_ICONS_LOCAL_DIR)) {
-      await cp(DEFAULT_ICONS_LOCAL_DIR, CACHED_ICONS_DIR, { recursive: true });
-    }
-
-    /* Copy icons which using in vueless components to the cache. */
-    if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
-      await cp(DEFAULT_ICONS_DIR, CACHED_ICONS_DIR, { recursive: true });
-    }
+    await copyVuelessIconsIntoCache(isVuelessEnv);
   }
 }
 
-export async function clearIconsCache({ debug }) {
-  if (!fs.existsSync(cachedIconsDir)) return;
+/**
+ * Remove cached icons.
+ * @param {string} mirrorCacheDir
+ * @param {boolean} debug
+ * @returns {Promise<void>}
+ */
+export async function removeIconsCache(mirrorCacheDir, debug) {
+  if (fs.existsSync(cacheIconsPath)) {
+    await rm(cacheIconsPath, { recursive: true, force: true });
+  }
 
-  await rm(cachedIconsDir, { recursive: true, force: true });
+  if (mirrorCacheDir) {
+    const mirrorCacheIconsPath = path.join(cwd, mirrorCacheDir, ICONS_DIR);
+
+    if (fs.existsSync(mirrorCacheIconsPath)) {
+      await rm(mirrorCacheIconsPath, { recursive: true, force: true });
+    }
+  }
 
   if (debug) {
-    console.log("Dynamically copied icons was successfully removed.");
+    console.log("Icons cache was successfully removed.");
   }
 }
 
 /**
  * Copy cached icons in the provided folder by path.
- * @param duplicatedCachePath
- * @param debug
+ * @param {string} mirrorCacheDir
+ * @param {boolean} debug
  * @returns {Promise<void>}
  */
-export async function duplicateCache({ duplicatedCachePath, debug }) {
-  const cachePath = path.join(process.cwd(), VUELESS_CACHE_DIR);
+export async function copyIconsCache(mirrorCacheDir, debug) {
+  const cachePath = path.join(cwd, VUELESS_ICONS_CACHED_DIR);
 
-  if (duplicatedCachePath && fs.existsSync(cachePath)) {
-    await cp(cachePath, path.join(process.cwd(), duplicatedCachePath), { recursive: true });
+  if (mirrorCacheDir && fs.existsSync(cachePath)) {
+    await cp(cachePath, path.join(cwd, mirrorCacheDir, ICONS_DIR), { recursive: true });
   }
 
   if (debug) {
-    console.log(`Vueless cached icons was successfully copied into: ${duplicatedCachePath}.`);
+    console.log(`Vueless cached icons was successfully copied into: ${mirrorCacheDir}.`);
   }
 }
 
-function findAndCopyIcons(files) {
-  const defaults = getMergedConfig();
-  const safelistIcons = getSafelistIcons();
+/**
+ * Copy icons which using in vueless components to the cache.
+ * @param {boolean} isVuelessEnv
+ * @returns {Promise<void>}
+ */
+async function copyVuelessIconsIntoCache(isVuelessEnv) {
+  if (isVuelessEnv && fs.existsSync(DEFAULT_ICONS_LOCAL_DIR)) {
+    await cp(DEFAULT_ICONS_LOCAL_DIR, path.join(CACHED_ICONS_DIR, VUELESS_LIBRARY), {
+      recursive: true,
+    });
+  }
 
-  safelistIcons.forEach((iconName) => {
-    copyFile(iconName, false);
-    copyFile(iconName, true);
+  if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
+    await cp(DEFAULT_ICONS_DIR, path.join(CACHED_ICONS_DIR, VUELESS_LIBRARY), {
+      recursive: true,
+    });
+  }
+}
+
+/**
+ * Scan the project for icon names and copy found icons to the cache.
+ * @param {Array} files
+ */
+function findAndCopyIcons(files) {
+  const defaults = getDefaults();
+  const safelistIcons = vuelessConfig.component?.[U_ICON]?.safelistIcons;
+
+  safelistIcons?.forEach((iconName) => {
+    copyIcon(iconName, defaults);
   });
 
   files.forEach((file) => {
@@ -133,7 +162,7 @@ function findAndCopyIcons(files) {
 
         try {
           if (iconName) {
-            copyFile(iconName);
+            copyIcon(iconName, defaults);
           }
         } catch (error) {
           isDebug && console.log(error);
@@ -156,106 +185,125 @@ function findAndCopyIcons(files) {
       try {
         if (!iconName) return;
 
-        if (iconName?.includes("?")) {
+        if (iconName?.includes("?") && iconName?.includes(":")) {
           const [trueName, falseName] = getTernaryValues(iconName);
 
-          copyFile(trueName);
-          copyFile(falseName);
+          copyIcon(trueName, defaults);
+          copyIcon(falseName, defaults);
         } else {
-          copyFile(iconName);
+          copyIcon(iconName, defaults);
         }
       } catch (error) {
         isDebug && console.log(error);
       }
     }
   });
+}
 
-  function getTernaryValues(expression) {
-    const [, values] = expression
-      .replace(/\s/g, "") // newlines and spaces
-      .replace(/\?\./g, "") // conditional chaining `?.`
-      .replace(/['"]/g, "") // single and double quotes
-      .split("?");
+/**
+ * Retrieve values from ternary of strings.
+ * @param {string} expression
+ * @returns {Array} of ternary values
+ */
+function getTernaryValues(expression) {
+  const [, values] = expression
+    .replace(/\s/g, "") // newlines and spaces
+    .replace(/\?\./g, "") // conditional chaining `?.`
+    .replace(/['"]/g, "") // single and double quotes
+    .split("?");
 
-    const [trueValue, falseValue] = values.split(":");
+  const [trueValue, falseValue] = values.split(":");
 
-    return [trueValue, falseValue];
+  return [trueValue, falseValue];
+}
+
+/**
+ * Copy icon from icon package into cache folder.
+ * @param {string} name
+ * @param {object} defaults
+ */
+function copyIcon(name, defaults) {
+  name = name.toLowerCase();
+
+  const iconNameRegex = /^[a-z0-9_-]+$/;
+
+  /* Stop the scrypt if the icon name is irrelevant. */
+  if (!iconNameRegex.test(name)) {
+    return;
   }
 
-  function copyFile(name) {
-    name = name.toLowerCase();
+  const { source, destination } = getIconLibraryPaths(name, defaults);
 
-    const iconNameRegex = /^[a-z0-9_-]+$/;
+  if (fs.existsSync(destination) || !fs.existsSync(source)) {
+    return;
+  }
 
-    /* Filter irrelevant icon name cases. */
-    if (!iconNameRegex.test(name)) {
-      return;
+  const require = createRequire(import.meta.url);
+  const destDir = path.dirname(destination);
+
+  fs.mkdirSync(destDir, {
+    recursive: true,
+  });
+
+  fs.copyFile(require.resolve(source), destination, (error) => {
+    if (isDebug) {
+      error
+        ? console.error(`Error copying icon "${name}":`, error)
+        : console.log(`Icon "${name}" copied successfully!`);
     }
-
-    const library = defaults.library;
-    const weight = defaults.weight;
-    const style = defaults.style;
-
-    const require = createRequire(import.meta.url);
-
-    /* eslint-disable vue/max-len, prettier/prettier */
-    const libraries = {
-      [VUELESS_LIBRARY]: {
-        // @material-symbols icons which used across the components.
-        source: `${process.cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-        destination: `${process.cwd()}/${cachedIconsDir}/${VUELESS_LIBRARY}/${name}.svg`
-      },
-      "@material-symbols": {
-        source: `${process.cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-        destination: `${cachedIconsDir}/${library}/svg-${weight}/${style}/${name}.svg`
-      },
-      "bootstrap-icons": {
-        source: `${process.cwd()}/node_modules/${library}/icons/${name}.svg`,
-        destination: `${process.cwd()}/${cachedIconsDir}/${library}/icons/${name}.svg`
-      },
-      heroicons: {
-        source: `${process.cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-        destination: `${process.cwd()}/${cachedIconsDir}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
-      }
-    };
-    /* eslint-enable vue/max-len, prettier/prettier */
-
-    const { source, destination } =
-      libraries[isVuelessIconsMode && isVuelessEnv ? "vueless" : library];
-
-    if (fs.existsSync(destination) || !fs.existsSync(source)) return;
-
-    const destDir = path.dirname(destination);
-
-    fs.mkdirSync(destDir, { recursive: true });
-    fs.copyFile(require.resolve(source), destination, (error) => {
-      if (isDebug) {
-        error
-          ? console.error(`Error copying icon "${name}":`, error)
-          : console.log(`Icon "${name}" copied successfully!`);
-      }
-    });
-  }
+  });
 }
 
-function getSafelistIcons() {
-  return vuelessConfig.component
-    ? vuelessConfig.component[ICON_COMPONENT_NAME]?.safelistIcons || []
-    : [];
+/**
+ * Build a path to the icon source in the selected icon library and cache destination path.
+ * @param {string} name
+ * @param {object} defaults
+ * @returns {source: string, destination: string}
+ */
+function getIconLibraryPaths(name, defaults) {
+  const library = isVuelessIconsMode && isVuelessEnv ? VUELESS_LIBRARY : defaults.library;
+  const weight = defaults.weight;
+  const style = defaults.style;
+
+  /* eslint-disable prettier/prettier */
+  const libraries = {
+    [VUELESS_LIBRARY]: {
+      // @material-symbols icons which used across the components.
+      source: `${cwd}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
+      destination: `${cacheIconsPath}/${VUELESS_LIBRARY}/${name}.svg`
+    },
+    "@material-symbols": {
+      source: `${cwd}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
+      destination: `${cacheIconsPath}/${library}/svg-${weight}/${style}/${name}.svg`
+    },
+    "bootstrap-icons": {
+      source: `${cwd}/node_modules/${library}/icons/${name}.svg`,
+      destination: `${cacheIconsPath}/${library}/icons/${name}.svg`
+    },
+    "heroicons": {
+      source: `${cwd}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
+      destination: `${cacheIconsPath}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
+    }
+  };
+  /* eslint-enable prettier/prettier */
+
+  return libraries[library];
 }
 
-function getMergedConfig() {
-  let defaultConfigPath = path.join(
-    isVuelessEnv ? DEFAULT_ICONS_LOCAL_DIR : DEFAULT_ICONS_DIR,
-    ICON_CONFIG_PATH,
-  );
+/**
+ * Merge global and local defaults config for UIcon.
+ * @returns {Object}
+ */
+function getDefaults() {
+  const defaultIconsDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
+  const defaultConfigPath = path.join(cwd, defaultIconsDir, COMPONENTS[U_ICON], "config.ts");
 
   if (fs.existsSync(defaultConfigPath)) {
     const defaultConfigFile = fs.readFileSync(defaultConfigPath).toString();
 
-    const defaultConfig = getDefaultConfigJson(defaultConfigFile);
-    const globalConfig = vuelessConfig.component && vuelessConfig.component[ICON_COMPONENT_NAME];
-
-    return merge(globalConfig?.defaults || {}, defaultConfig.defaults);
+    return merge(
+      getDefaultConfigJson(defaultConfigFile)?.defaults,
+      vuelessConfig?.component?.[U_ICON]?.defaults,
+    );
   }
 }

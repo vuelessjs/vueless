@@ -5,15 +5,27 @@ import { readdir } from "node:fs/promises";
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
 
+  const ERROR_CODE = {
+    dirIsFile: "ENOTDIR",
+    noEntry: "ENOENT",
+  };
+
   try {
     fileNames = await readdir(dirPath, { recursive });
   } catch (error) {
-    if (error.code === "ENOTDIR") {
-      fileNames = [dirPath.split(path.sep).at(-1)];
-      dirPath = dirPath.split(path.sep).slice(0, -1).join(path.sep);
-    } else if (error.code === "ENOENT") {
+    if (error.code === ERROR_CODE.dirIsFile) {
+      const pathArray = dirPath.split(path.sep);
+      const fileName = pathArray.pop();
+
+      fileNames = [fileName];
+      dirPath = pathArray.join(path.sep);
+    }
+
+    if (error.code === ERROR_CODE.noEntry) {
       fileNames = [];
-    } else {
+    }
+
+    if (!error.code.includes(Object.values(ERROR_CODE))) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
@@ -52,8 +64,8 @@ export function getNuxtFiles() {
   ];
 }
 
-export function getVueSourceFile() {
-  return path.join(process.cwd(), "src");
+export function getVueFiles() {
+  return [path.join(process.cwd(), "src")];
 }
 
 export function getDefaultConfigJson(fileContents) {
@@ -64,7 +76,7 @@ export function getDefaultConfigJson(fileContents) {
   return (0, eval)("(" + objectString + ")"); // Converting into JS object
 }
 
-export function merge(source, target) {
+export function merge(source = {}, target = {}) {
   for (const [key, val] of Object.entries(source)) {
     if (val !== null && typeof val === `object`) {
       target[key] ??= new val.__proto__.constructor();

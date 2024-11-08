@@ -191,6 +191,7 @@ export const VUELESS_LIBRARY = "vueless";
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
 export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;
+export const VUELESS_LOCAL_DIR = `src`;
 export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${ICONS_DIR}`;
 export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
 export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;

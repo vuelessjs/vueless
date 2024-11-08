@@ -3,7 +3,7 @@
  */
 
 import { cacheIcons } from "../src/utils/node/loaderIcon.js";
-import { getVueSourceFile } from "../src/utils/node/helper.js";
+import { getVueFiles } from "../src/utils/node/helper.js";
 
 /* Copy SVG icons from the default icon library into the assets' folder. */
-await cacheIcons({ mode: "vuelessIcons", env: "vueless", targetFiles: [getVueSourceFile()] });
+await cacheIcons({ mode: "vuelessIcons", env: "vueless", targetFiles: getVueFiles() });
