@@ -38,7 +38,8 @@ export function createVueless(options: CreateVuelessOptions = {}) {
     app.provide(LoaderProgressSymbol, loaderProgress);
   };
 
-  themeInit();
+  /* init theme after first render */
+  setTimeout(themeInit, 0);
 
   return {
     install,

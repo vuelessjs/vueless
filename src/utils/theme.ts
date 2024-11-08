@@ -144,12 +144,26 @@ function setDarkMode(config: InternalThemeConfig) {
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
     : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());
 
-  const storedDarkMode = isCSR ? localStorage.getItem(DARK_MODE_SELECTOR) : null;
+  let storedDarkMode = null;
+  let darkModeAsClass = null;
 
-  const isDarkMode =
-    storedDarkMode !== null
-      ? !!Number(storedDarkMode)
-      : !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
+  if (isCSR) {
+    const classList = document.documentElement.classList;
+
+    storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
+    darkModeAsClass = classList.contains(DARK_MODE_SELECTOR) ? true : null;
+    darkModeAsClass = classList.contains(LIGHT_MODE_SELECTOR) ? false : null;
+  }
+
+  let isDarkMode = !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
+
+  if (storedDarkMode !== null) {
+    isDarkMode = !!Number(storedDarkMode);
+  }
+
+  if (darkModeAsClass !== null) {
+    isDarkMode = darkModeAsClass;
+  }
 
   if (isCSR) {
     if (isDarkMode) {
