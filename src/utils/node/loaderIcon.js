@@ -124,13 +124,13 @@ export async function copyIconsCache(mirrorCacheDir, debug) {
  */
 async function copyVuelessIconsIntoCache(isVuelessEnv) {
   if (isVuelessEnv && fs.existsSync(DEFAULT_ICONS_LOCAL_DIR)) {
-    await cp(DEFAULT_ICONS_LOCAL_DIR, path.join(CACHED_ICONS_DIR, VUELESS_LIBRARY), {
+    await cp(DEFAULT_ICONS_LOCAL_DIR, CACHED_ICONS_DIR, {
       recursive: true,
     });
   }
 
   if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
-    await cp(DEFAULT_ICONS_DIR, path.join(CACHED_ICONS_DIR, VUELESS_LIBRARY), {
+    await cp(DEFAULT_ICONS_DIR, CACHED_ICONS_DIR, {
       recursive: true,
     });
   }
@@ -234,7 +234,7 @@ function copyIcon(name, defaults) {
 
   const { source, destination } = getIconLibraryPaths(name, defaults);
 
-  if (fs.existsSync(destination) || !fs.existsSync(source)) {
+  if (!fs.existsSync(source) || fs.existsSync(destination)) {
     return;
   }
 
@@ -261,11 +261,11 @@ function copyIcon(name, defaults) {
  * @returns {source: string, destination: string}
  */
 function getIconLibraryPaths(name, defaults) {
-  const library = isVuelessIconsMode && isVuelessEnv ? VUELESS_LIBRARY : defaults.library;
+  const library = defaults.library;
   const weight = defaults.weight;
   const style = defaults.style;
 
-  /* eslint-disable prettier/prettier */
+  /* eslint-disable prettier/prettier, vue/max-len */
   const libraries = {
     [VUELESS_LIBRARY]: {
       // @material-symbols icons which used across the components.
@@ -282,12 +282,14 @@ function getIconLibraryPaths(name, defaults) {
     },
     "heroicons": {
       source: `${cwd}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-      destination: `${cacheIconsPath}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
+      destination: `${cacheIconsPath}/${library}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
     }
   };
-  /* eslint-enable prettier/prettier */
+  /* eslint-enable prettier/prettier, vue/max-len */
 
-  return libraries[library];
+  const libraryName = isVuelessIconsMode && isVuelessEnv ? VUELESS_LIBRARY : library;
+
+  return libraries[libraryName];
 }
 
 /**
