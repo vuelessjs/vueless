@@ -7,7 +7,7 @@ You can specify ring width and ring offset width globally for all Vueless compon
   ringOffset: 4, /* default -> 0 (pixels) */
   /* offset colors */
   ringOffsetColorLight: "#ffffff", /* default -> white */
-  ringOffsetColorDark: "#1f2937",  /* default -> gray-800 */
+  ringOffsetColorDark: "#111827",  /* default -> gray-900 */
 }<a data-footnote-ref href="#user-content-fn-1">;</a>
 </code></pre>
 
