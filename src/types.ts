@@ -332,7 +332,9 @@ export interface ExposeProperty {
   description?: string;
 }
 
-// Credits: https://www.npmjs.com/package/vue-component-type-helpers
+// Utility types to extract component props, slots, emit, exposed types.
+// Original code taken from vue-component-type-helpers package.
+// Original source code: https://github.com/vuejs/language-tools/blob/master/packages/component-type-helpers/index.ts
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
 export type ComponentType<T> = T extends new (...args: any) => {}
   ? 1
