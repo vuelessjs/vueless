@@ -25,7 +25,7 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
       fileNames = [];
     }
 
-    if (!error.code.includes(Object.values(ERROR_CODE))) {
+    if (!Object.values(ERROR_CODE).includes(error.code)) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
