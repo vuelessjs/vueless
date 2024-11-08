@@ -61,7 +61,7 @@ import type {
   UDatePickerRangePeriodMenuAttrs,
 } from "./types.ts";
 import type { RangeDate } from "../ui.form-calendar/types.ts";
-import type { ComponentExposed } from "vue-component-type-helpers";
+import type { ComponentExposed } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -343,10 +343,10 @@ function deactivate() {
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
-  const from =
-    parseDate<SortedLocale>(props.modelValue.from, props.dateFormat, locale.value) || new Date();
-  const to =
-    parseDate<SortedLocale>(props.modelValue.to, props.dateFormat, locale.value) || new Date();
+  /* eslint-disable prettier/prettier */
+  const from = parseDate<SortedLocale>(props.modelValue.from, props.dateFormat, locale.value) || new Date();
+  const to = parseDate<SortedLocale>(props.modelValue.to, props.dateFormat, locale.value) || new Date();
+  /* eslint-enable prettier/prettier */
 
   const customFrom = props.customRangeButton.range.from || new Date();
   const customTo = props.customRangeButton.range.to || new Date();

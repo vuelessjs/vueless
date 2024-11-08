@@ -153,6 +153,7 @@ export default /*tw*/ {
     timepicker: false,
     dateFormat: undefined,
     dateTimeFormat: undefined,
+    tabindex: 1,
     /* icons */
     viewSwitchIcon: "keyboard_arrow_down",
     nextIcon: "keyboard_arrow_right",

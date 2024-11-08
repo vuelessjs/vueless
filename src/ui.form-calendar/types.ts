@@ -31,7 +31,10 @@ export interface UCalendarProps<TModelValue> {
    */
   range?: boolean;
 
-  tabindex?: number;
+  /**
+   * Controls the keyboard “Tab” focus order of elements.
+   */
+  tabindex?: number | string;
 
   /**
    * Show timepicker.

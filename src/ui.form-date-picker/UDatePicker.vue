@@ -20,7 +20,7 @@ import defaultConfig from "./config.js";
 import { UDatePicker } from "./constants.js";
 
 import type { UDatePickerProps } from "./types.ts";
-import type { ComponentExposed } from "vue-component-type-helpers";
+import type { ComponentExposed } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 

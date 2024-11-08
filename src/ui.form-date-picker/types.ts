@@ -15,7 +15,6 @@ export interface UDatePickerProps<TModelValue> {
 
   /**
    * Datepicker label placement.
-   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
 
@@ -36,19 +35,16 @@ export interface UDatePickerProps<TModelValue> {
 
   /**
    * Datepicker size.
-   * @values sm, md, lg
    */
   size?: "sm" | "md" | "lg";
 
   /**
    * Datepicker open direction on x-axis.
-   * @values auto, left, right
    */
   openDirectionX?: "auto" | "left" | "right";
 
   /**
    * Datepicker open direction on y-axis.
-   * @values auto, top, bottom
    */
   openDirectionY?: "auto" | "top" | "bottom";
 

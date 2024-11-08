@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   dateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).dateTimeFormat,
   userDateFormat: getDefault<Props>(defaultConfig, UCalendar).userDateFormat,
   userDateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).userDateTimeFormat,
-  tabindex: 1,
+  tabindex: getDefault<Props>(defaultConfig, UCalendar).tabindex,
   dataTest: "",
   config: () => ({}),
 });

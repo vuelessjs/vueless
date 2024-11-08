@@ -93,19 +93,16 @@ export interface UDatePickerRangeProps<TModelValue> {
 
   /**
    * Datepicker open direction on x-axis.
-   * @values auto, left, right
    */
   openDirectionX?: "auto" | "left" | "right";
 
   /**
    * Datepicker open direction on y-axis.
-   * @values auto, top, bottom
    */
   openDirectionY?: "auto" | "top" | "bottom";
 
   /**
    * The variant of the date picker.
-   * @values button, input
    */
   variant?: "button" | "input";
 
@@ -136,7 +133,6 @@ export interface UDatePickerRangeProps<TModelValue> {
 
   /**
    * Datepicker size.
-   * @values sm, md, lg
    */
   size?: "sm" | "md" | "lg";
 
@@ -157,7 +153,6 @@ export interface UDatePickerRangeProps<TModelValue> {
 
   /**
    * Datepicker label placement.
-   * @values top, topInside, topWithDesc, left, right
    */
   labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
 
