@@ -374,7 +374,7 @@ body {
 /* -------------------- Storybook story preview -------------------- */
 
 .vl-dark {
-  @apply min-h-full bg-gray-950;
+  @apply min-h-full bg-gray-900;
 }
 
 .vl-light {
