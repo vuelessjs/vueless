@@ -3,9 +3,9 @@ export default {
   brand: "grayscale",
   gray: "cool",
   ring: 4,
-  ringOffset: 0,
+  ringOffset: 4,
   ringOffsetColorLight: "#ffffff", // white
-  ringOffsetColorDark: "#1f2937", // gray-800
+  ringOffsetColorDark: "#111827", // gray-900
   rounding: 8,
   darkMode: undefined,
   directive: {
