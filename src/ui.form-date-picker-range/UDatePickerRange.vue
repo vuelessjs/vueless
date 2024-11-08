@@ -343,10 +343,10 @@ function deactivate() {
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
-  /* eslint-disable prettier/prettier */
-  const from = parseDate<SortedLocale>(props.modelValue.from, props.dateFormat, locale.value) || new Date();
-  const to = parseDate<SortedLocale>(props.modelValue.to, props.dateFormat, locale.value) || new Date();
-  /* eslint-enable prettier/prettier */
+  const { modelValue, dateFormat } = props;
+
+  const from = parseDate<SortedLocale>(modelValue.from, dateFormat, locale.value) || new Date();
+  const to = parseDate<SortedLocale>(modelValue.to, dateFormat, locale.value) || new Date();
 
   const customFrom = props.customRangeButton.range.from || new Date();
   const customTo = props.customRangeButton.range.to || new Date();
@@ -364,7 +364,7 @@ function setDefaultPeriodForButton() {
     String(from) === String(getStartOfYear(from)) && String(to) === String(getEndOfYear(to));
   const isCustomPeriod = String(from) === String(customFrom) && String(to) === String(customTo);
 
-  if (!props.modelValue.from && !props.modelValue.to) {
+  if (!modelValue.from && !modelValue.to) {
     period.value = Period.OwnRange;
   } else if (isYearPeriod) {
     period.value = Period.Year;

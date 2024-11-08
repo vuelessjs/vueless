@@ -332,8 +332,8 @@ export interface ExposeProperty {
   description?: string;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+// Credits: https://www.npmjs.com/package/vue-component-type-helpers
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
 export type ComponentType<T> = T extends new (...args: any) => {}
   ? 1
   : T extends (...args: any) => any
@@ -361,5 +361,4 @@ export type ComponentExposed<T> = T extends new (...args: any) => infer E
   : T extends (props: any, ctx: any, expose: (exposed: infer E) => any, ...args: any) => any
     ? NonNullable<E>
     : {};
-/* eslint-enable @typescript-eslint/no-explicit-any */
-/* eslint-enable @typescript-eslint/no-empty-object-type */
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
