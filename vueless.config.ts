@@ -3,7 +3,7 @@ export default {
   brand: "grayscale",
   gray: "cool",
   ring: 4,
-  ringOffset: 4,
+  ringOffset: 0,
   ringOffsetColorLight: "#ffffff", // white
   ringOffsetColorDark: "#111827", // gray-900
   rounding: 8,
