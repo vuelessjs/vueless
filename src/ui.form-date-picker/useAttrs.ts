@@ -15,7 +15,7 @@ interface DatePickerState {
 }
 
 export default function useAttrs(
-  props: UDatePickerProps,
+  props: UDatePickerProps<unknown>,
   { isTop, isRight }: DatePickerState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);

@@ -3,9 +3,11 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
+import { UCalendar as UCalendarName } from "../constants.ts";
+
 import type { UCalendarProps } from "../types.ts";
 
-interface UCalendarArgs extends UCalendarProps {
+interface UCalendarArgs extends UCalendarProps<unknown> {
   slotTemplate?: string;
   enum: "size";
 }
@@ -19,7 +21,7 @@ export default {
   component: UCalendar,
   args: {},
   argTypes: {
-    ...getArgTypes(UCalendar.__name),
+    ...getArgTypes(UCalendarName),
   },
   parameters: {
     docs: {
@@ -33,7 +35,7 @@ export default {
 const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
   components: { UCalendar },
   setup() {
-    const slots = getSlotNames(UCalendar.__name);
+    const slots = getSlotNames(UCalendarName);
 
     return { args, slots };
   },

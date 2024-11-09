@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TModelValue extends string | Date">
 import { computed, nextTick, ref, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
@@ -20,22 +20,24 @@ import defaultConfig from "./config.js";
 import { UDatePicker } from "./constants.js";
 
 import type { UDatePickerProps } from "./types.ts";
+import type { ComponentExposed } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDatePickerProps>(), {
-  labelAlign: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).labelAlign,
-  size: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).size,
-  openDirectionX: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionX,
-  openDirectionY: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).openDirectionY,
-  timepicker: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).timepicker,
-  dateFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).dateFormat,
-  dateTimeFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).dateTimeFormat,
-  userDateFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).userDateFormat,
-  userDateTimeFormat: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).userDateTimeFormat,
-  leftIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).leftIcon,
-  rightIcon: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).rightIcon,
-  disabled: getDefault<UDatePickerProps>(defaultConfig, UDatePicker).disabled,
+type Props = UDatePickerProps<TModelValue>;
+const props = withDefaults(defineProps<Props>(), {
+  labelAlign: getDefault<Props>(defaultConfig, UDatePicker).labelAlign,
+  size: getDefault<Props>(defaultConfig, UDatePicker).size,
+  openDirectionX: getDefault<Props>(defaultConfig, UDatePicker).openDirectionX,
+  openDirectionY: getDefault<Props>(defaultConfig, UDatePicker).openDirectionY,
+  timepicker: getDefault<Props>(defaultConfig, UDatePicker).timepicker,
+  dateFormat: getDefault<Props>(defaultConfig, UDatePicker).dateFormat,
+  dateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).dateTimeFormat,
+  userDateFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateFormat,
+  userDateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateTimeFormat,
+  leftIcon: getDefault<Props>(defaultConfig, UDatePicker).leftIcon,
+  rightIcon: getDefault<Props>(defaultConfig, UDatePicker).rightIcon,
+  disabled: getDefault<Props>(defaultConfig, UDatePicker).disabled,
   dataTest: "",
   config: () => ({}),
 });
@@ -64,7 +66,7 @@ const formattedDate = ref("");
 const customView = ref(View.Day);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
-const calendarRef = useTemplateRef<InstanceType<typeof UCalendar>>("calendar");
+const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 
 const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef || null);
 
@@ -233,7 +235,7 @@ defineExpose({
         ref="calendarRef"
         v-model="localValue"
         v-model:view="customView"
-        tabindex="-1"
+        :tabindex="-1"
         :timepicker="timepicker"
         :date-format="dateFormat"
         :date-time-format="dateTimeFormat"

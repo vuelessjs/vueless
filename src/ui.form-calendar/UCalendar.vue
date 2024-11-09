@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TModelValue extends DateValue">
 import { computed, ref, watch, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
@@ -50,14 +50,16 @@ type DefaultLocale = typeof defaultConfig.i18n;
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UCalendarProps>(), {
+type Props = UCalendarProps<TModelValue>;
+const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  range: getDefault<UCalendarProps>(defaultConfig, UCalendar).range,
-  timepicker: getDefault<UCalendarProps>(defaultConfig, UCalendar).timepicker,
-  dateFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).dateFormat,
-  dateTimeFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).dateTimeFormat,
-  userDateFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateFormat,
-  userDateTimeFormat: getDefault<UCalendarProps>(defaultConfig, UCalendar).userDateTimeFormat,
+  range: getDefault<Props>(defaultConfig, UCalendar).range,
+  timepicker: getDefault<Props>(defaultConfig, UCalendar).timepicker,
+  dateFormat: getDefault<Props>(defaultConfig, UCalendar).dateFormat,
+  dateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).dateTimeFormat,
+  userDateFormat: getDefault<Props>(defaultConfig, UCalendar).userDateFormat,
+  userDateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).userDateTimeFormat,
+  tabindex: getDefault<Props>(defaultConfig, UCalendar).tabindex,
   dataTest: "",
   config: () => ({}),
 });
@@ -208,8 +210,15 @@ const userFormatLocale = computed(() => {
 const localValue = computed({
   get: () => {
     if (props.range) {
-      const from = isRangeDate(props.modelValue) ? props.modelValue.from : props.modelValue || null;
-      const to = isRangeDate(props.modelValue) ? props.modelValue.to : null;
+      const isModelValueRangeType =
+        typeof props.modelValue === "object" && !(props.modelValue instanceof Date);
+
+      const modelValue = isModelValueRangeType
+        ? (props.modelValue as RangeDate)
+        : (props.modelValue as string | Date);
+
+      const from = isRangeDate(modelValue) ? modelValue.from : modelValue || null;
+      const to = isRangeDate(modelValue) ? modelValue.to : null;
 
       return {
         from: parseDate(from || null, actualDateFormat.value, locale.value),
@@ -651,7 +660,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="wrapper" tabindex="1" v-bind="wrapperAttrs" @keydown="onKeydown">
+  <div ref="wrapper" :tabindex="tabindex" v-bind="wrapperAttrs" @keydown="onKeydown">
     <div v-bind="navigationAttrs">
       <UButton
         square
