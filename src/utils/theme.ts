@@ -139,6 +139,22 @@ export function setTheme(config: InternalThemeConfig = {}) {
   return rootVariables;
 }
 
+// todo: need to be reactive same like loader state
+export function getDarkMode() {
+  let isDarkMode = undefined;
+  let storedDarkMode = null;
+
+  if (isCSR) {
+    storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
+  }
+
+  if (storedDarkMode !== null) {
+    isDarkMode = !!Number(storedDarkMode);
+  }
+
+  return isDarkMode;
+}
+
 function setDarkMode(config: InternalThemeConfig) {
   config?.darkMode === undefined
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
