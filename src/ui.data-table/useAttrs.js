@@ -27,15 +27,23 @@ export default function useAttrs(
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
     stickyHeader: {
-      extend: computed(() => [
-        isShownActionsHeader.value && extendingKeysClasses.stickyHeaderActions.value,
-        isShownActionsHeader.value &&
-          isHeaderSticky.value &&
-          extendingKeysClasses.stickyHeaderActions.value,
-        !isShownActionsHeader.value &&
-          isHeaderSticky.value &&
-          extendingKeysClasses.stickyHeaderRow.value,
-      ]),
+      extend: computed(() => {
+        const classes = [];
+
+        if (isShownActionsHeader.value) {
+          classes.push(extendingKeysClasses.stickyHeaderActions.value);
+        }
+
+        if (isShownActionsHeader.value && isHeaderSticky.value) {
+          classes.push(extendingKeysClasses.stickyHeaderActions.value);
+        }
+
+        if (!isShownActionsHeader.value && isHeaderSticky.value) {
+          classes.push(extendingKeysClasses.stickyHeaderRow.value);
+        }
+
+        return classes;
+      }),
     },
     stickyHeaderCell: {
       base: computed(() => [extendingKeysClasses.headerCellBase.value]),

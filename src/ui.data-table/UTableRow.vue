@@ -242,7 +242,7 @@ const toggleIconConfig = computed(() =>
     : bodyCellNestedCollapseIconAttrs.value,
 );
 
-const shift = computed(() => props.nestedLevel / 1.5);
+const shift = computed(() => (props.row.row ? 1.5 : 2));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
@@ -321,11 +321,11 @@ function formatCellValue(value) {
 }
 
 function getNestedShift() {
-  return { marginLeft: `${shift.value / 2.5}rem` };
+  return { marginLeft: `${props.nestedLevel * shift.value}rem` };
 }
 
 function getNestedCheckboxShift() {
-  return { transform: `translateX(${shift.value / 1.5}rem)` };
+  return { transform: `translateX(${props.nestedLevel * shift.value}rem)` };
 }
 
 function onClickToggleRowChild(rowId) {
