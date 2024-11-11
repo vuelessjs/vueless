@@ -2,7 +2,7 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 import { cloneDeep, isCSR, isSSR } from "./helper.ts";
-import { createGetMergedConfigFunction } from "./node/mergeConfigs.js";
+import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
@@ -83,7 +83,7 @@ export const {
   },
 });
 
-export const getMergedConfig = createGetMergedConfigFunction(cx) as getMergedConfig;
+export const getMergedConfig = createGetMergedConfig(cx) as getMergedConfig;
 
 /* This allows skipping some CVA config keys in vueless config. */
 export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>

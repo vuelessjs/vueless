@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash-es";
 
 import { SYSTEM_CONFIG_KEY, STRATEGY_TYPE } from "../../constants.js";
 
-export function createMergeConfigsFunction(cx) {
+export function createMergeConfigs(cx) {
   /**
    * Recursively merge config objects with removing tailwind classes duplicates.
    * config - final merged config.
@@ -187,8 +187,8 @@ export function createMergeConfigsFunction(cx) {
   return mergeConfigs;
 }
 
-export function createGetMergedConfigFunction(cx) {
-  const mergeConfigs = createMergeConfigsFunction(cx);
+export function createGetMergedConfig(cx) {
+  const mergeConfigs = createMergeConfigs(cx);
 
   /**
    * Get merged config based on config merging strategy.
