@@ -11,8 +11,8 @@ import {
   computed,
 } from "vue";
 
-import { cx, cva, setColor, getColor, vuelessConfig, mergeConfigs } from "../utils/ui.ts";
-import { cloneDeep, isCSR } from "../utils/helper.ts";
+import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
+import { isCSR } from "../utils/helper.ts";
 import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
@@ -33,13 +33,6 @@ import type {
   KeysToExtend,
   ExtendedKeyClasses,
 } from "../types.ts";
-
-interface MergedConfigOptions {
-  defaultConfig: Component;
-  globalConfig: Component;
-  propsConfig?: Component;
-  vuelessStrategy?: Strategies;
-}
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -211,41 +204,6 @@ export default function useUI<T>(
     getExtendingKeysClasses,
     hasSlotContent,
   };
-}
-
-/**
- * Get merged config based on config merging strategy.
- */
-function getMergedConfig({
-  defaultConfig,
-  globalConfig,
-  propsConfig,
-  vuelessStrategy,
-}: MergedConfigOptions) {
-  defaultConfig = cloneDeep(defaultConfig) as Component;
-
-  let mergedConfig: Component = {};
-  const strategy =
-    !globalConfig && !propsConfig
-      ? STRATEGY_TYPE.merge
-      : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
-
-  if (strategy === STRATEGY_TYPE.merge) {
-    mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
-  }
-
-  if (strategy === STRATEGY_TYPE.replace) {
-    mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
-  }
-
-  if (strategy === STRATEGY_TYPE.overwrite) {
-    const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
-    const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
-
-    mergedConfig = isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
-  }
-
-  return mergedConfig;
 }
 
 /**

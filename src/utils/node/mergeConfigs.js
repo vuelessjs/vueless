@@ -1,8 +1,8 @@
 import { cloneDeep } from "lodash-es";
 
-import { SYSTEM_CONFIG_KEY } from "../../constants.js";
+import { SYSTEM_CONFIG_KEY, STRATEGY_TYPE } from "../../constants.js";
 
-export function createMergeConfigsFunction(cx) {
+export function createMergeConfigs(cx) {
   /**
    * Recursively merge config objects with removing tailwind classes duplicates.
    * config - final merged config.
@@ -185,6 +185,42 @@ export function createMergeConfigsFunction(cx) {
   }
 
   return mergeConfigs;
+}
+
+export function createGetMergedConfig(cx) {
+  const mergeConfigs = createMergeConfigs(cx);
+
+  /**
+   * Get merged config based on config merging strategy.
+   */
+  function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStrategy }) {
+    defaultConfig = cloneDeep(defaultConfig);
+
+    let mergedConfig = {};
+    const strategy =
+      !globalConfig && !propsConfig
+        ? STRATEGY_TYPE.merge
+        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
+
+    if (strategy === STRATEGY_TYPE.merge) {
+      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
+    }
+
+    if (strategy === STRATEGY_TYPE.replace) {
+      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
+    }
+
+    if (strategy === STRATEGY_TYPE.overwrite) {
+      const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
+      const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
+
+      mergedConfig = isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
+    }
+
+    return mergedConfig;
+  }
+
+  return getMergedConfig;
 }
 
 /**

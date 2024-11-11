@@ -3,11 +3,11 @@ import { merge } from "lodash-es";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { extendTailwindMerge } from "tailwind-merge";
-import { isEqual, omit } from "lodash-es";
+import { isEqual } from "lodash-es";
 import { defineConfig } from "cva";
 
 import { vuelessConfig } from "./vuelessConfig.js";
-import { createMergeConfigsFunction } from "./mergeConfigs.js";
+import { createGetMergedConfig } from "./mergeConfigs.js";
 import { getDefaultConfigJson, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
@@ -20,6 +20,8 @@ import {
   NESTED_COMPONENT_REG_EXP,
   TAILWIND_COLOR_OPACITY_DELIMITER,
   TAILWIND_VARIANT_DELIMITER_REG_EXP,
+  STRATEGY_TYPE,
+  SYSTEM_CONFIG_KEY,
 } from "../../constants.js";
 
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
@@ -30,7 +32,7 @@ export const { cx } = defineConfig({
   },
 });
 
-const mergeConfigs = createMergeConfigsFunction(cx);
+const getMergedConfig = createGetMergedConfig(cx);
 
 export function clearTailwindSafelist() {
   process.env.VUELESS_SAFELIST = "";
@@ -122,6 +124,8 @@ function getSafelistClasses(config) {
     if (Object.prototype.hasOwnProperty.call(config, key)) {
       const classes = config[key];
 
+      if (key === SYSTEM_CONFIG_KEY.defaults) continue;
+
       if (typeof classes === "object" && Array.isArray(classes)) {
         safelistItems.push(...classes.map(getSafelistClasses));
       }
@@ -174,9 +178,16 @@ async function getComponentSafelist(componentName, { colors, vuelessConfigFiles 
     defaultConfig = getDefaultConfigJson(defaultConfigContent);
   }
 
-  const mergedConfig = omit(mergeConfigs({ defaultConfig, globalConfig: customConfig }), [
-    "defaults",
-  ]);
+  const isStrategyValid =
+    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+
+  const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
+
+  const mergedConfig = getMergedConfig({
+    defaultConfig,
+    globalConfig: customConfig,
+    vuelessStrategy,
+  });
 
   const colorString = `(${colors.join("|")})`;
 
