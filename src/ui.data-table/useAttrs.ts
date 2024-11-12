@@ -1,12 +1,23 @@
 import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
+
+import type { Row, UTableProps, Config } from "./types.ts";
+import type { UseAttrs } from "../types.ts";
+import type { Ref } from "vue";
+
+export type UTableState = {
+  tableRows: Ref<Row[]>;
+  isShownActionsHeader: Ref<boolean>;
+  isHeaderSticky: Ref<boolean>;
+  isFooterSticky: Ref<boolean>;
+};
 
 export default function useAttrs(
-  props,
-  { tableRows, isShownActionsHeader, isHeaderSticky, isFooterSticky },
-) {
+  props: UTableProps,
+  { tableRows, isShownActionsHeader, isHeaderSticky, isFooterSticky }: UTableState,
+): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
@@ -81,7 +92,6 @@ export default function useAttrs(
 
   return {
     config,
-    keysAttrs,
     ...keysAttrs,
     hasSlotContent,
   };
