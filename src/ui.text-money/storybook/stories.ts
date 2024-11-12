@@ -1,3 +1,4 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UMoney from "../../ui.text-money/UMoney.vue";
@@ -5,6 +6,13 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
+
+import type { UMoneyProps } from "../types.ts";
+
+interface UMoneyArgs extends UMoneyProps {
+  slotTemplate?: string;
+  enum: "color" | "size" | "sign" | "symbolAlign" | "align";
+}
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
@@ -23,9 +31,9 @@ export default {
   argTypes: {
     ...getArgTypes(UMoney.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs) => ({
   components: { UMoney, UIcon },
   setup() {
     const slots = getSlotNames(UMoney.__name);
@@ -40,13 +48,13 @@ const DefaultTemplate = (args) => ({
   template: `
     <div class="${COMPONENT_CLASSES}">
       <UMoney v-bind="args">
-        ${args.slotTemplate || getSlotsFragment()}
+        ${args.slotTemplate || getSlotsFragment("")}
       </UMoney>
     </div>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }) => ({
   components: { UMoney, URow },
   setup() {
     const slots = getSlotNames(UMoney.__name);
@@ -54,7 +62,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
     return {
       args,
       slots,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

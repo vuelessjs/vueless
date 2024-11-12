@@ -83,13 +83,6 @@ const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }
   },
   template: `
     <URow>
-      <UDropdownButton
-        label="Dropdown"
-        :options='[{"label":"option 1"},{"label":"option 2"},{"label":"option 3"}]'
-      variant="thirdary"
-      filled
-      >
-      </UDropdownButton>
       <UBadge
         v-for="(option, index) in options"
         :key="index"

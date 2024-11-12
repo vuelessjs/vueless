@@ -1,3 +1,48 @@
+<script lang="ts" setup>
+import UFile from "../ui.text-file/UFile.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
+import { getDefault } from "../utils/ui.ts";
+
+import { UFiles } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+import { computed } from "vue";
+
+import type { UFilesProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UFilesProps>(), {
+  labelAlign: getDefault<UFilesProps>(defaultConfig, UFiles).labelAlign,
+  size: getDefault<UFilesProps>(defaultConfig, UFiles).size,
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when remove button is clicked.
+   * @property {string} fileId
+   */
+  "remove",
+]);
+
+const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
+
+const formattedFileList = computed(() =>
+  props.fileList.map((file) => {
+    return {
+      id: file.name,
+      label: file.name,
+      url: URL.createObjectURL(file),
+      imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
+    };
+  }),
+);
+
+function onRemoveFile(fileId) {
+  emit("remove", fileId);
+}
+</script>
+
 <template>
   <ULabel
     :label="label"
@@ -42,109 +87,3 @@
     </div>
   </ULabel>
 </template>
-
-<script setup>
-import UFile from "../ui.text-file/UFile.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import { UFiles } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import { computed } from "vue";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * List of file objects.
-   */
-  fileList: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * File list label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * File list label placement.
-   * @values top, topWithDesc
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UFiles).labelAlign,
-  },
-
-  /**
-   * File list description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * File list size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UFiles).size,
-  },
-
-  /**
-   * Show remove button for each file
-   */
-  removable: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when remove button is clicked.
-   * @property {string} fileId
-   */
-  "remove",
-]);
-
-const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
-
-const formattedFileList = computed(() =>
-  props.fileList.map((file) => {
-    return {
-      id: file.name,
-      label: file.name,
-      url: URL.createObjectURL(file),
-      imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
-    };
-  }),
-);
-
-function onRemoveFile(fileId) {
-  emit("remove", fileId);
-}
-</script>

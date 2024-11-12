@@ -1,9 +1,17 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDot from "../../ui.other-dot/UDot.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+
+import type { UDotProps } from "../types.ts";
+
+interface UDotArgs extends UDotProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
 
 /**
  * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)
@@ -15,9 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UDot.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDotArgs> = (args: UDotArgs) => ({
   components: { UDot },
   setup() {
     const slots = getSlotNames(UDot.__name);
@@ -26,17 +34,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDot v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDot>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UDotArgs> = (args: UDotArgs, { argTypes }) => ({
   components: { UCol, URow, UDot, UBadge },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

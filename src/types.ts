@@ -2,6 +2,12 @@ import { hasSlotContent } from "./composables/useUI.ts";
 
 // TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UAlertDefaultConfig from "./ui.text-alert/config.ts";
+import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
+import UFileDefaultConfig from "./ui.text-file/config.ts";
+import UFilesDefaultConfig from "./ui.text-files/config.ts";
+import UMoneyDefaultConfig from "./ui.text-money/config.ts";
+import UDotDefaultConfig from "./ui.other-dot/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
@@ -114,6 +120,12 @@ export type BrandColors =
 
 export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
+  UAlert?: Partial<typeof UAlertDefaultConfig>;
+  UEmpty?: Partial<typeof UEmptyDefaultConfig>;
+  UFile?: Partial<typeof UFileDefaultConfig>;
+  UFiles?: Partial<typeof UFilesDefaultConfig>;
+  UMoney?: Partial<typeof UMoneyDefaultConfig>;
+  UDot?: Partial<typeof UDotDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
   UBadge?: Partial<typeof UBadgeDefaultConfig>;
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;

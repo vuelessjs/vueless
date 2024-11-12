@@ -3,11 +3,11 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.ts";
 
 import type { UseAttrs } from "../types.ts";
-import type { UTextProps } from "./types.ts";
+import type { UNotifyProps } from "./types.ts";
 
 type Config = Partial<typeof defaultConfig>;
 
-export default function useAttrs(props: UTextProps): UseAttrs<Config> {
+export default function useAttrs(props: UNotifyProps): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
 
   const keysAttrs = getKeysAttrs();

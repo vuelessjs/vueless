@@ -1,3 +1,4 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UAlert from "../../ui.text-alert/UAlert.vue";
@@ -5,6 +6,13 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
+
+import type { UAlertProps } from "../types.ts";
+
+interface UAlertArgs extends UAlertProps {
+  slotTemplate?: string;
+  enum: "size" | "color" | "variant";
+}
 
 /**
  * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
@@ -20,9 +28,9 @@ export default {
   argTypes: {
     ...getArgTypes(UAlert.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs) => ({
   components: { UAlert, UIcon, URow, UButton },
   setup() {
     const slots = getSlotNames(UAlert.__name);
@@ -31,25 +39,25 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAlert v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UAlert>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs, { argTypes }) => ({
   components: { UAlert, UCol },
   setup() {
-    function getText(value) {
+    function getText(value: string) {
       return `This is Alert's ${value} size`;
     }
 
-    let prefixedOptions = argTypes[args.enum].options;
+    let prefixedOptions = argTypes?.[args.enum]?.options;
 
-    if (argTypes[args.enum].name === "size") {
-      prefixedOptions = prefixedOptions.map((option) => getText(option));
+    if (argTypes?.[args.enum]?.name === "size") {
+      prefixedOptions = prefixedOptions?.map((option) => getText(option));
     }
 
-    return { args, options: argTypes[args.enum].options, prefixedOptions };
+    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
   },
   template: `
     <UCol align="stretch">

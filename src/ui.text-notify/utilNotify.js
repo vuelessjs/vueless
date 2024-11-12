@@ -1,5 +1,5 @@
 import { getRandomId, vuelessConfig } from "../utils/ui.ts";
-import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "./constants.js";
+import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "./constants.ts";
 
 const globalNotifyDuration = vuelessConfig.component?.UNotify?.duration;
 const notifyClearAllEvent = new Event("notifyClearAll");

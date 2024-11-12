@@ -1,3 +1,4 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import { notify } from "../utilNotify.js";
@@ -5,6 +6,12 @@ import { notify } from "../utilNotify.js";
 import UNotify from "../../ui.text-notify/UNotify.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+
+import type { UNotifyProps } from "../types.ts";
+
+interface UNotifyArgs extends UNotifyProps {
+  slotTemplate?: string;
+}
 
 /**
  * The `UNotify` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-notify)
@@ -23,9 +30,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   components: { UNotify, UButton },
   setup() {
     function onClick() {
@@ -42,16 +49,16 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UNotify class="m-4" v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UNotify>
     <UButton label="Show notify" @click="onClick"/>
   `,
 });
 
-const TypesTemplate = (args) => ({
+const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   components: { UNotify, UButton, UCol },
   setup() {
-    function onClick(type) {
+    function onClick(type: string) {
       if (type === "success") {
         notify({
           type,

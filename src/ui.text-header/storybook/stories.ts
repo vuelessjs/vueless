@@ -1,7 +1,15 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+
+import type { UHeaderProps } from "../types.ts";
+
+interface UHeaderArgs extends UHeaderProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
 
 /**
  * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
@@ -16,9 +24,9 @@ export default {
   argTypes: {
     ...getArgTypes(UHeader.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
   components: { UHeader },
   setup() {
     const slots = getSlotNames(UHeader.__name);
@@ -27,17 +35,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UHeader v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UHeader>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
   components: { UHeader, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
