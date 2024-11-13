@@ -13,7 +13,6 @@ export interface UAlertProps {
 
   /**
    * Alert variant.
-   * @values primary, secondary, thirdary
    */
   variant?: "primary" | "secondary" | "thirdary";
 

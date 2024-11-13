@@ -79,7 +79,6 @@ export interface UMoneyProps {
 
   /**
    * Money align.
-   * @values right, left
    */
   align?: "right" | "left";
 
