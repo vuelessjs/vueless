@@ -510,11 +510,9 @@ function onClickShiftRange(action: ShiftActions) {
 
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
-  if (action === ShiftAction.Next) {
-    shiftRangeNext(to, from, daysDifference);
-  } else {
-    shiftRangePrev(to, from, daysDifference);
-  }
+  action === ShiftAction.Next
+    ? shiftRangeNext(to, from, daysDifference)
+    : shiftRangePrev(to, from, daysDifference);
 }
 
 function onMouseoverCalendar() {
