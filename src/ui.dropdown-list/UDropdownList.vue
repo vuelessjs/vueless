@@ -1,103 +1,4 @@
-<template>
-  <div
-    ref="wrapperRef"
-    tabindex="1"
-    :style="{ maxHeight: wrapperHeight }"
-    v-bind="wrapperAttrs"
-    @keydown.self.down.prevent="pointerForward"
-    @keydown.self.up.prevent="pointerBackward"
-    @keydown.enter.stop.self="addPointerElement"
-  >
-    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
-      <li
-        v-for="(option, index) of options"
-        :id="`${elementId}-${index}`"
-        :key="index"
-        v-bind="listItemAttrs"
-        ref="optionsRef"
-        :role="!(option && option.groupLabel) ? 'option' : null"
-        :data-group-label="Boolean(option.groupLabel)"
-      >
-        <!-- option title -->
-        <span
-          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
-          v-bind="optionAttrs"
-          :class="optionHighlight(index, option)"
-          @click="select(option), onClickOption(option)"
-          @mouseenter.self="pointerSet(index)"
-        >
-          <!--
-            @slot Use it to add something before the option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="before-option" :option="option" :index="index" />
-
-          <!--
-            @slot Use it to add something instead of the option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="option" :option="option" :index="index">
-            <span
-              :style="getMarginForSubCategory(option.level)"
-              v-bind="optionContentAttrs"
-              v-text="option[labelKey]"
-            />
-          </slot>
-
-          <!--
-            @slot Use it to add something after the option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="after-option" :option="option" :index="index" />
-        </span>
-
-        <!-- group title -->
-        <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
-
-          <div
-            v-else-if="option.isSubGroup"
-            :style="getMarginForSubCategory(option.level)"
-            v-bind="subGroupAttrs"
-            v-text="option[labelKey]"
-          />
-        </template>
-      </li>
-
-      <div v-if="!options.length" v-bind="optionAttrs">
-        <!-- @slot Use it to add something instead of empty state. -->
-        <slot name="empty">
-          <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
-        </slot>
-      </div>
-
-      <!-- Add button -->
-      <template v-if="addOption">
-        <div v-bind="addOptionLabelWrapperAttrs" @click="onClickAddOption">
-          <div v-bind="addOptionLabelAttrs">
-            {{ currentLocale.add }}
-            <span v-bind="addOptionLabelHotkeyAttrs" v-text="addOptionKeyCombination" />
-          </div>
-        </div>
-
-        <UButton round square v-bind="addOptionButtonAttrs" @click="onClickAddOption">
-          <UIcon
-            internal
-            color="white"
-            size="xs"
-            :name="config.defaults.addOptionIcon"
-            v-bind="addOptionIconAttrs"
-          />
-        </UButton>
-      </template>
-    </ul>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, ref, useId } from "vue";
 import { merge } from "lodash-es";
 
@@ -108,90 +9,25 @@ import { getDefault } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
 import usePointer from "./usePointer.js";
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import defaultConfig from "./config.js";
-import { UDropdownList } from "./constants.js";
+import defaultConfig from "./config.ts";
+import { UDropdownList } from "./constants.ts";
+
+import type { UDropdownListProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 // TODO: Use props and regular modal value
 const modelValue = defineModel({ type: [String, Number, Object], default: "" });
 
-const props = defineProps({
-  /**
-   * List options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownList).valueKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownList).valueKey,
-  },
-
-  /**
-   * Show add option button.
-   */
-  addOption: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Disable the list.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownList).disabled,
-  },
-
-  /**
-   * List size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownList).size,
-  },
-
-  /**
-   * Number of options to show without a scroll.
-   */
-  visibleOptions: {
-    type: Number,
-    default: getDefault(defaultConfig, UDropdownList).visibleOptions,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
+const props = withDefaults(defineProps<UDropdownListProps>(), {
+  labelKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).labelKey,
+  valueKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).valueKey,
+  disabled: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).disabled,
+  size: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).size,
+  visibleOptions: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).visibleOptions,
 });
 
 const emit = defineEmits([
@@ -349,3 +185,102 @@ defineExpose({
   wrapperRef,
 });
 </script>
+
+<template>
+  <div
+    ref="wrapperRef"
+    tabindex="1"
+    :style="{ maxHeight: wrapperHeight }"
+    v-bind="wrapperAttrs"
+    @keydown.self.down.prevent="pointerForward"
+    @keydown.self.up.prevent="pointerBackward"
+    @keydown.enter.stop.self="addPointerElement"
+  >
+    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
+      <li
+        v-for="(option, index) of options"
+        :id="`${elementId}-${index}`"
+        :key="index"
+        v-bind="listItemAttrs"
+        ref="optionsRef"
+        :role="!(option && option.groupLabel) ? 'option' : null"
+        :data-group-label="Boolean(option.groupLabel)"
+      >
+        <!-- option title -->
+        <span
+          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
+          v-bind="optionAttrs"
+          :class="optionHighlight(index, option)"
+          @click="select(option), onClickOption(option)"
+          @mouseenter.self="pointerSet(index)"
+        >
+          <!--
+            @slot Use it to add something before the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="before-option" :option="option" :index="index" />
+
+          <!--
+            @slot Use it to add something instead of the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="option" :option="option" :index="index">
+            <span
+              :style="getMarginForSubCategory(option.level)"
+              v-bind="optionContentAttrs"
+              v-text="option[labelKey]"
+            />
+          </slot>
+
+          <!--
+            @slot Use it to add something after the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="after-option" :option="option" :index="index" />
+        </span>
+
+        <!-- group title -->
+        <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
+          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
+
+          <div
+            v-else-if="option.isSubGroup"
+            :style="getMarginForSubCategory(option.level)"
+            v-bind="subGroupAttrs"
+            v-text="option[labelKey]"
+          />
+        </template>
+      </li>
+
+      <div v-if="!options.length" v-bind="optionAttrs">
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty">
+          <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
+        </slot>
+      </div>
+
+      <!-- Add button -->
+      <template v-if="addOption">
+        <div v-bind="addOptionLabelWrapperAttrs" @click="onClickAddOption">
+          <div v-bind="addOptionLabelAttrs">
+            {{ currentLocale.add }}
+            <span v-bind="addOptionLabelHotkeyAttrs" v-text="addOptionKeyCombination" />
+          </div>
+        </div>
+
+        <UButton round square v-bind="addOptionButtonAttrs" @click="onClickAddOption">
+          <UIcon
+            internal
+            color="white"
+            size="xs"
+            :name="config.defaults.addOptionIcon"
+            v-bind="addOptionIconAttrs"
+          />
+        </UButton>
+      </template>
+    </ul>
+  </div>
+</template>

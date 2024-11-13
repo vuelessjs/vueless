@@ -7,6 +7,10 @@ import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
+import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
+import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
+import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
+import UDropdownListConfig from "./ui.dropdown-list/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -119,6 +123,10 @@ export interface Components {
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker?: Partial<typeof UDatePickerConfig>;
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
+  UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
+  UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
+  UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
+  UDropdownList?: Partial<typeof UDropdownListConfig>;
 }
 
 export interface Directives {

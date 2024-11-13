@@ -1,8 +1,16 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDropdownBadge from "../../ui.dropdown-badge/UDropdownBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+
+import type { UDropdownBadgeProps } from "../types.ts";
+
+interface UDropdownBadgeArgs extends UDropdownBadgeProps {
+  slotTemplate?: string;
+  enum: "color" | "size";
+}
 
 /**
  * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
@@ -25,9 +33,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDropdownBadgeArgs> = (args: UDropdownBadgeArgs) => ({
   components: { UDropdownBadge, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownBadge.__name);
@@ -38,17 +46,20 @@ const DefaultTemplate = (args) => ({
     <UDropdownBadge
       v-bind="args"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownBadge>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UDropdownBadgeArgs> = (
+  args: UDropdownBadgeArgs,
+  { argTypes },
+) => ({
   components: { UDropdownBadge, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

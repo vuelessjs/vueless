@@ -1,7 +1,16 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
 import URow from "../../ui.container-row/URow.vue";
+
+import type { UDropdownListProps } from "../types.ts";
+
+interface UDropdownListArgs extends UDropdownListProps {
+  slotTemplate?: string;
+  enum: "size";
+  maxHeight: number;
+}
 
 /**
  * The `UDropdownList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-list)
@@ -27,9 +36,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDropdownListArgs> = (args: UDropdownListArgs) => ({
   components: { UDropdownList },
   setup() {
     const slots = getSlotNames(UDropdownList.__name);
@@ -38,17 +47,20 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownList>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UDropdownListArgs> = (
+  args: UDropdownListArgs,
+  { argTypes },
+) => ({
   components: { UDropdownList, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -82,7 +94,11 @@ OptionSettings.args = {
   options: [
     { label: "option 1", id: "1" },
     { label: "option 2", id: "2", isHidden: true },
-    // eslint-disable-next-line no-console
-    { label: "option 3", id: "3", onClick: (option) => console.log("onClick option 3 ", option) },
+
+    {
+      label: "option 3",
+      id: "3",
+      onClick: (option: object) => console.log("onClick option 3 ", option),
+    },
   ],
 };

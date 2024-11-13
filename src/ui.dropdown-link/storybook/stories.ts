@@ -1,8 +1,16 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+
+import type { UDropdownLinkProps } from "../types.ts";
+
+interface UDropdownLinkArgs extends UDropdownLinkProps {
+  slotTemplate?: string;
+  enum: "color" | "size";
+}
 
 /**
  * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
@@ -29,9 +37,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDropdownLinkArgs> = (args: UDropdownLinkArgs) => ({
   components: { UDropdownLink, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownLink.__name);
@@ -40,25 +48,28 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDropdownLink v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownLink>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UDropdownLinkArgs> = (
+  args: UDropdownLinkArgs,
+  { argTypes },
+) => ({
   components: { UDropdownLink, URow },
   setup() {
-    function getText(value) {
+    function getText(value: string) {
       return `Dropdown ${value}`;
     }
 
-    let prefixedOptions = argTypes[args.enum].options;
+    let prefixedOptions = argTypes?.[args.enum]?.options;
 
-    if (argTypes[args.enum].name === "size") {
-      prefixedOptions = prefixedOptions.map((option) => getText(option));
+    if (argTypes?.[args.enum]?.name === "size") {
+      prefixedOptions = prefixedOptions?.map((option) => getText(option));
     }
 
-    return { args, options: argTypes[args.enum].options, prefixedOptions };
+    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
   },
   template: `
     <URow>
