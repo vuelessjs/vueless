@@ -17,6 +17,9 @@ import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./ty
 
 const { hasSlotContent } = useUI(defaultConfig);
 
+const NESTED_ROW_SHIFT_REM = 1.5;
+const LAST_NESTED_ROW_SHIFT_REM = 2;
+
 const props = defineProps<UTableRowProps>();
 
 const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
@@ -44,7 +47,7 @@ const toggleIconConfig = computed(() => {
     : props.attrs.bodyCellNestedCollapseIconAttrs.value;
 });
 
-const shift = computed(() => (props.row.row ? 1.5 : 2));
+const shift = computed(() => (props.row.row ? NESTED_ROW_SHIFT_REM : LAST_NESTED_ROW_SHIFT_REM));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
@@ -98,10 +101,6 @@ function getIconWidth() {
 
   return `${currentWrapperWidth / PX_IN_REM || 1}rem`;
 }
-
-// function isCellData(value: unknown): value is Cell {
-//   return typeof value === "string" || (typeof value === "object" && !("id" in (value as object)));
-// }
 
 function getCellClasses(row: Row, key: string) {
   const isCellData = typeof row[key] === "object" && "class" in row[key];
