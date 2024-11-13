@@ -1,10 +1,23 @@
-import { computed, useSlots } from "vue";
+import { computed, useSlots, type Ref } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 
-export default function useAttrs(props, { isActive, isExactActive }) {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
+import type { UseAttrs } from "../types.ts";
+import type { ULinkProps } from "./types.ts";
+
+type Config = Partial<typeof defaultConfig>;
+
+type ActiveState = {
+  isActive: Ref<boolean>;
+  isExactActive: Ref<boolean>;
+};
+
+export default function useAttrs(
+  props: ULinkProps,
+  { isActive, isExactActive }: ActiveState,
+): UseAttrs<Config> {
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,
     () => props.config,
     "link",

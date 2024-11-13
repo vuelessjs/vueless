@@ -1,7 +1,14 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+
+import type { UToggleItemProps } from "../types.ts";
+
+interface UToggleItemArgs extends UToggleItemProps {
+  slotTemplate?: string;
+}
 
 /**
  * The `UToggleItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle-item)
@@ -18,9 +25,9 @@ export default {
     ...getArgTypes(UToggleItem.__name),
     value: { control: { type: "text" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UToggleItemArgs> = (args: UToggleItemArgs) => ({
   components: { UToggleItem, UIcon },
   setup() {
     const slots = getSlotNames(UToggleItem.__name);
@@ -33,7 +40,7 @@ const DefaultTemplate = (args) => ({
         v-model="args.modelValue"
         name="toggle"
       >
-        ${args.slotTemplate || getSlotsFragment()}
+        ${args.slotTemplate || getSlotsFragment("")}
     </UToggleItem>
   `,
 });

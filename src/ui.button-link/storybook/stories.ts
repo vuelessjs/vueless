@@ -1,9 +1,17 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
+
+import type { ULinkProps } from "../types.ts";
+
+interface ULinkArgs extends ULinkProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
 
 /**
  * The `ULink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-link)
@@ -18,9 +26,9 @@ export default {
   argTypes: {
     ...getArgTypes(ULink.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, UButton, UIcon },
   setup() {
     const slots = getSlotNames(ULink.__name);
@@ -28,26 +36,29 @@ const DefaultTemplate = (args) => ({
     return { args, slots };
   },
   template: `
-    <ULink v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+    <ULink v-if="args.block" v-bind="args" :config="{ wrapper: 'border-2 border-dashed border-green-500 p-2' }">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </ULink>
+    <ULink v-else v-bind="args">
+      ${args.slotTemplate || getSlotsFragment("")}
     </ULink>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) => ({
   components: { ULink, URow },
   setup() {
-    function getText(value) {
+    function getText(value: string) {
       return `Link ${value}`;
     }
 
-    let prefixedOptions = argTypes[args.enum].options;
+    let prefixedOptions = argTypes?.[args.enum]?.options;
 
-    if (argTypes[args.enum].name === "size") {
-      prefixedOptions = prefixedOptions.map((option) => getText(option));
+    if (argTypes?.[args.enum]?.name === "size") {
+      prefixedOptions = prefixedOptions?.map((option) => getText(option));
     }
 
-    return { args, options: argTypes[args.enum].options, prefixedOptions };
+    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
   },
   template: `
     <URow no-mobile>
@@ -71,10 +82,10 @@ Sizes.args = { enum: "size" };
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
 
-export const Types = (args) => ({
+export const Types: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, URow },
   setup() {
-    function getTypeLabel(type) {
+    function getTypeLabel(type: string): string {
       switch (type) {
         case "phone":
           return "+1 (000) 123-4567";
@@ -82,10 +93,12 @@ export const Types = (args) => ({
           return "hello@vueless.com";
         case "link":
           return "Vueless.com";
+        default:
+          return "Unknown";
       }
     }
 
-    function getTypeHref(type, label) {
+    function getTypeHref(type: string, label: string) {
       switch (type) {
         case "phone": {
           const phoneNumber = label.replace(/\D/g, "");
@@ -126,7 +139,7 @@ export const Types = (args) => ({
   `,
 });
 
-export const UnderlineVariants = (args, { argTypes } = {}) => ({
+export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) => ({
   components: { ULink, URow },
   setup() {
     const variants = [
@@ -135,7 +148,7 @@ export const UnderlineVariants = (args, { argTypes } = {}) => ({
       { name: "Dashed", props: { dashed: true } },
     ];
 
-    const colors = argTypes.color.options;
+    const colors = argTypes?.color?.options;
 
     return {
       args,
@@ -166,7 +179,7 @@ export const NoRing = DefaultTemplate.bind({});
 NoRing.args = { noRing: true };
 
 export const Block = DefaultTemplate.bind({});
-Block.args = { block: true, config: { wrapper: "border-2 border-dashed border-green-500 p-2" } };
+Block.args = { block: true };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
@@ -177,7 +190,7 @@ DefaultSlot.args = {
   `,
 };
 
-export const LeftAndRightSlots = (args) => ({
+export const LeftAndRightSlots: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, UIcon, URow },
   setup() {
     return { args };

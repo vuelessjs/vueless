@@ -1,3 +1,4 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import {
   getArgTypes,
   getSlotNames,
@@ -12,6 +13,17 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { UButtonProps } from "../types.ts";
+
+interface UButtonArgs extends UButtonProps {
+  slotTemplate?: string;
+  enum: "variant" | "size";
+}
+
+interface StoryArgType {
+  options?: string[];
+}
+
 export default {
   id: "1010",
   title: "Buttons & Links / Button",
@@ -25,9 +37,9 @@ export default {
   parameters: {
     ...getDocsDescription(UButton.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs) => ({
   components: { UButton, UIcon },
   setup() {
     const slots = getSlotNames(UButton.__name);
@@ -36,15 +48,15 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UButton v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UButton>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
-    return { args, options: argTypes[args.enum].options };
+    return { args, options: argTypes?.[args.enum]?.options };
   },
   template: `
     <UCol>
@@ -61,16 +73,17 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
   `,
 });
 
-const ColorTemplate = (args, { argTypes }) => ({
+const ColorTemplate: StoryFn<UButtonArgs> = (args, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
-    const variants = [...argTypes.variant.options, "thirdary"];
+    const variantOptions = (argTypes.variant as StoryArgType)?.options ?? [];
+    const variants = [...Array.from(variantOptions), "thirdary"];
 
     return {
       args,
       variants,
-      colors: argTypes.color.options,
-      shouldBeFilled: (variant, index) => {
+      colors: argTypes?.color?.options,
+      shouldBeFilled: (variant: string, index: number) => {
         return variant === "thirdary" && index === variants.length - 2;
       },
     };
@@ -104,7 +117,7 @@ Sizes.args = { enum: "size" };
 export const Round = EnumVariantTemplate.bind({});
 Round.args = { enum: "variant", round: true };
 
-export const Loading = (args) => ({
+export const Loading: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },
   setup() {
     const loading = ref(false);
@@ -147,7 +160,7 @@ Colors.args = {};
 export const Square = DefaultTemplate.bind({});
 Square.args = { square: true, icon: "filter_list" };
 
-export const IconProps = (args) => ({
+export const IconProps: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },
   setup() {
     return { args };
@@ -166,7 +179,7 @@ export const IconProps = (args) => ({
   `,
 });
 
-export const Slots = (args) => ({
+export const Slots: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, UIcon, URow },
   setup() {
     return { args };

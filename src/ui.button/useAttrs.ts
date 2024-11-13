@@ -1,10 +1,15 @@
 import { useSlots, computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 
-export default function useAttrs(props) {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+import type { UseAttrs } from "../types.ts";
+import type { UButtonProps } from "./types.ts";
+
+type Config = Partial<typeof defaultConfig>;
+
+export default function useAttrs(props: UButtonProps): UseAttrs<Config> {
+  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
   const slots = useSlots();
 
   const mutatedProps = computed(() => ({
