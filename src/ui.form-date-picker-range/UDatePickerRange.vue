@@ -411,15 +411,15 @@ function shiftRangeNext(to: Date, from: Date, daysDifference: number) {
   if (isPeriod.value.ownRange) {
     const nextDate = {
       title: "",
-      startRange: addDays(to, daysDifference),
-      endRange: addDays(from, daysDifference),
+      startRange: addDays(from, daysDifference),
+      endRange: addDays(to, daysDifference),
     };
 
     if (isDatePeriodOutOfRange(nextDate)) return;
 
     localValue.value = {
       from: nextDate.startRange,
-      to: nextDate.startRange,
+      to: nextDate.endRange,
     };
 
     return;
@@ -451,8 +451,8 @@ function shiftRangePrev(to: Date, from: Date, daysDifference: number) {
   if (isPeriod.value.ownRange) {
     const previousDate = {
       title: "",
-      startRange: addDays(to, daysDifference * -1),
-      endRange: addDays(from, daysDifference * -1),
+      startRange: addDays(from, daysDifference * -1),
+      endRange: addDays(to, daysDifference * -1),
     };
 
     if (isDatePeriodOutOfRange(previousDate)) return;
@@ -510,9 +510,11 @@ function onClickShiftRange(action: ShiftActions) {
 
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
-  action === ShiftAction.Next
-    ? shiftRangeNext(to, from, daysDifference)
-    : shiftRangePrev(to, from, daysDifference);
+  if (action === ShiftAction.Next) {
+    shiftRangeNext(to, from, daysDifference);
+  } else {
+    shiftRangePrev(to, from, daysDifference);
+  }
 }
 
 function onMouseoverCalendar() {
