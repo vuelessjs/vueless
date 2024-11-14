@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
   noIcon: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).noIcon,
   yPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).yPosition,
   xPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).xPosition,
+  dataTest: "",
 });
 
 const emit = defineEmits([

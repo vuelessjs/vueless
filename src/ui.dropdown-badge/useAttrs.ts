@@ -1,12 +1,11 @@
-import { computed, type Ref } from "vue";
+import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
 
+import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
-import type { UDropdownBadgeProps } from "./types.ts";
-
-type Config = Partial<typeof defaultConfig>;
+import type { UDropdownBadgeProps, Config } from "./types.ts";
 
 type ActiveState = {
   isShownOptions: Ref<boolean>;

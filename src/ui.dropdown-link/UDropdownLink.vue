@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<UDropdownLinkProps>(), {
   noIcon: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noIcon,
   yPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).yPosition,
   xPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).xPosition,
+  dataTest: "",
 });
 
 const emit = defineEmits([
