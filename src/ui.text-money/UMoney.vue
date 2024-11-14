@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<UMoneyProps>(), {
   thousandsSeparator: getDefault<UMoneyProps>(defaultConfig, UMoney).thousandsSeparator,
   align: getDefault<UMoneyProps>(defaultConfig, UMoney).align,
   planned: getDefault<UMoneyProps>(defaultConfig, UMoney).planned,
+  dataTest: "",
 });
 
 const {

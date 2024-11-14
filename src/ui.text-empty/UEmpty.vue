@@ -15,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UEmptyProps>(), {
   size: getDefault<UEmptyProps>(defaultConfig, UEmpty).size,
+  dataTest: "",
 });
 
 const {

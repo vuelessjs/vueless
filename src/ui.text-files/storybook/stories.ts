@@ -1,8 +1,8 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UFiles from "../../ui.text-files/UFiles.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UFilesProps } from "../types.ts";
 
 interface UFilesArgs extends UFilesProps {

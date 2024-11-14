@@ -1,4 +1,3 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UEmpty from "../../ui.text-empty/UEmpty.vue";
@@ -6,6 +5,7 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UEmptyProps } from "../types.ts";
 
 interface UEmptyArgs extends UEmptyProps {

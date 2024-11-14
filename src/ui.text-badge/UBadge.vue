@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<UBadgeProps>(), {
   color: getDefault<UBadgeProps>(defaultConfig, UBadge).color,
   round: getDefault<UBadgeProps>(defaultConfig, UBadge).round,
   tabindex: getDefault<UBadgeProps>(defaultConfig, UBadge).tabindex,
+  dataTest: "",
 });
 
 const emit = defineEmits([

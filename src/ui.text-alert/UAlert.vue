@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<UAlertProps>(), {
   color: getDefault<UAlertProps>(defaultConfig, UAlert).color,
   timeout: getDefault<UAlertProps>(defaultConfig, UAlert).timeout,
   closable: getDefault<UAlertProps>(defaultConfig, UAlert).closable,
+  dataTest: "",
 });
 
 const emit = defineEmits([

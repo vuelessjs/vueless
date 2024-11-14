@@ -1,5 +1,7 @@
 import defaultConfig from "./config.ts";
 
+export type Config = Partial<typeof defaultConfig>;
+
 export interface UMoneyProps {
   /**
    * Money value.

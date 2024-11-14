@@ -1,4 +1,3 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UMoney from "../../ui.text-money/UMoney.vue";
@@ -7,6 +6,7 @@ import URow from "../../ui.container-row/URow.vue";
 import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UMoneyProps } from "../types.ts";
 
 interface UMoneyArgs extends UMoneyProps {

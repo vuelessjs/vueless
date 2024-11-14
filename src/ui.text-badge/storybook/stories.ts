@@ -1,4 +1,3 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import {
   getArgTypes,
   getSlotNames,
@@ -11,6 +10,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UBadgeProps } from "../types.ts";
 
 interface UBadgeArgs extends UBadgeProps {

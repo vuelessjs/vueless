@@ -1,9 +1,9 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UHeaderProps } from "../types.ts";
 
 interface UHeaderArgs extends UHeaderProps {

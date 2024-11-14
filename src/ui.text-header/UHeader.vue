@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<UHeaderProps>(), {
   tag: getDefault<UHeaderProps>(defaultConfig, UHeader).tag,
   line: getDefault<UHeaderProps>(defaultConfig, UHeader).line,
   underlined: getDefault<UHeaderProps>(defaultConfig, UHeader).underlined,
+  dataTest: "",
 });
 
 const { headerAttrs } = useAttrs(props);

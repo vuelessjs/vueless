@@ -3,9 +3,7 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.ts";
 
 import type { UseAttrs } from "../types.ts";
-import type { UMoneyProps } from "./types.ts";
-
-type Config = Partial<typeof defaultConfig>;
+import type { UMoneyProps, Config } from "./types.ts";
 
 export function useAttrs(props: UMoneyProps): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);

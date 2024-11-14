@@ -1,4 +1,3 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import { notify } from "../utilNotify.js";
@@ -7,6 +6,7 @@ import UNotify from "../../ui.text-notify/UNotify.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UNotifyProps } from "../types.ts";
 
 interface UNotifyArgs extends UNotifyProps {

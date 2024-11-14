@@ -16,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFileProps>(), {
   size: getDefault<UFileProps>(defaultConfig, UFile).size,
+  dataTest: "",
 });
 
 const emit = defineEmits([

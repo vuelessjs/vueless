@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<UNotifyProps>(), {
   xPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).xPosition,
   yPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).yPosition,
   html: getDefault<UNotifyProps>(defaultConfig, UNotify).html,
+  dataTest: "",
 });
 
 const {

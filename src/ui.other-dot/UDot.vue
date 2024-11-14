@@ -12,6 +12,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<UDotProps>(), {
   color: getDefault<UDotProps>(defaultConfig, UDot).color,
   size: getDefault<UDotProps>(defaultConfig, UDot).size,
+  dataTest: "",
 });
 
 const { dotAttrs } = useAttrs(props);

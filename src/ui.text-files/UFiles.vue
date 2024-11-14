@@ -15,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<UFilesProps>(), {
   labelAlign: getDefault<UFilesProps>(defaultConfig, UFiles).labelAlign,
   size: getDefault<UFilesProps>(defaultConfig, UFiles).size,
+  dataTest: "",
 });
 
 const emit = defineEmits([
