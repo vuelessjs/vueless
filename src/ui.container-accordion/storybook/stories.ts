@@ -3,6 +3,13 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UAccordionProps } from "../types.ts";
+
+interface UAccordionArgs extends UAccordionProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UAccordion` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-accordion)
  */
@@ -35,9 +42,9 @@ export default {
   argTypes: {
     ...getArgTypes(UAccordion.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
   components: { UAccordion, UButton },
   setup() {
     const slots = getSlotNames(UAccordion.__name);
@@ -50,7 +57,7 @@ const DefaultTemplate = (args) => ({
       :key="index"
       v-bind="accordion"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UAccordion>
   `,
 });

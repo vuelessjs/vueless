@@ -1,80 +1,21 @@
-<template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickItem">
-    <div v-bind="bodyAttrs">
-      <div v-bind="titleAttrs">
-        {{ title }}
-        <!--
-          @slot Use it to add something instead of the toggle icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {boolean} opened
-        -->
-        <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">
-          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
-        </slot>
-      </div>
-
-      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
-    </div>
-
-    <UDivider :size="dividerSize" v-bind="dividerAttrs" />
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import { getDefault } from "../utils/ui.ts";
 
-import { UAccordion } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { UAccordion } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UAccordionProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Accordion title.
-   */
-  title: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Accordion description.
-   */
-  description: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Accordion size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UAccordion).size,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UAccordionProps>(), {
+  size: getDefault<UAccordionProps>(defaultConfig, UAccordion).size,
+  dataTest: "",
 });
 
 const emit = defineEmits([
@@ -120,3 +61,26 @@ function onClickItem() {
   emit("click", elementId, isOpened.value);
 }
 </script>
+
+<template>
+  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickItem">
+    <div v-bind="bodyAttrs">
+      <div v-bind="titleAttrs">
+        {{ title }}
+        <!--
+          @slot Use it to add something instead of the toggle icon.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {boolean} opened
+        -->
+        <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">
+          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
+        </slot>
+      </div>
+
+      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
+    </div>
+
+    <UDivider :size="dividerSize" v-bind="dividerAttrs" />
+  </div>
+</template>

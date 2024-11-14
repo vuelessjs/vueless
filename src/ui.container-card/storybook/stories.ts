@@ -6,6 +6,13 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UCardProps } from "../types.ts";
+
+interface UCardArgs extends UCardProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UCard` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-card)
  */
@@ -19,7 +26,7 @@ export default {
   argTypes: {
     ...getArgTypes(UCard.__name),
   },
-};
+} as Meta;
 
 const defaultTemplate = `
   <p>
@@ -34,7 +41,7 @@ const defaultTemplate = `
   </p>
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
   components: { UCard, UButton, UInput, UIcon, UHeader },
   setup() {
     const slots = getSlotNames(UCard.__name);
