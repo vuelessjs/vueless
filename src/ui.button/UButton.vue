@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<UButtonProps>(), {
   square: getDefault<UButtonProps>(defaultConfig, UButton).square,
   loading: getDefault<UButtonProps>(defaultConfig, UButton).loading,
   noRing: getDefault<UButtonProps>(defaultConfig, UButton).noRing,
+  dataTest: "",
 });
 
 const elementId = props.id || useId();
