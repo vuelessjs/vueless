@@ -4,9 +4,7 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.ts";
 
 import type { UseAttrs } from "../types.ts";
-import type { UToggleItemProps } from "./types.ts";
-
-type Config = Partial<typeof defaultConfig>;
+import type { UToggleItemProps, Config } from "./types.ts";
 
 type itemState = {
   isSelected: Ref<boolean>;

@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<UToggleProps>(), {
   block: getDefault<UToggleProps>(defaultConfig, UToggle).block,
   round: getDefault<UToggleProps>(defaultConfig, UToggle).round,
   square: getDefault<UToggleProps>(defaultConfig, UToggle).square,
+  dataTest: "",
 });
 
 const emit = defineEmits([

@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
@@ -7,6 +6,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UToggleProps } from "../types.ts";
 
 interface UToggleArgs extends UToggleProps {

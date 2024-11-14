@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<ULinkProps>(), {
   disabled: getDefault<ULinkProps>(defaultConfig, ULink).disabled,
   block: getDefault<ULinkProps>(defaultConfig, ULink).block,
   noRing: getDefault<ULinkProps>(defaultConfig, ULink).noRing,
+  dataTest: "",
 });
 
 const emit = defineEmits([

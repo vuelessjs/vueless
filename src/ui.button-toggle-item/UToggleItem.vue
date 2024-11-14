@@ -16,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UToggleItemProps>(), {
   disabled: getDefault<UToggleItemProps>(defaultConfig, UToggleItem).disabled,
+  dataTest: "",
 });
 
 const emit = defineEmits([

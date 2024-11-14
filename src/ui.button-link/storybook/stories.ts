@@ -1,4 +1,3 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import ULink from "../../ui.button-link/ULink.vue";
@@ -6,6 +5,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
 import type { ULinkProps } from "../types.ts";
 
 interface ULinkArgs extends ULinkProps {

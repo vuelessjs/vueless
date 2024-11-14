@@ -1,12 +1,11 @@
-import { computed, useSlots, type Ref } from "vue";
+import { computed, useSlots } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
 
+import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
-import type { ULinkProps } from "./types.ts";
-
-type Config = Partial<typeof defaultConfig>;
+import type { ULinkProps, Config } from "./types.ts";
 
 type ActiveState = {
   isActive: Ref<boolean>;
