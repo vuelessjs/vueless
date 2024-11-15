@@ -1,177 +1,29 @@
-<template>
-  <ULabel
-    :size="labelSize"
-    :label="label"
-    :description="description"
-    :align="labelAlign"
-    :disabled="disabled"
-    centred
-    v-bind="toggleLabelAttrs"
-    :data-test="dataTest"
-  >
-    <div v-bind="itemsAttrs">
-      <!-- @slot Use it to add UToggleItem directly. -->
-      <slot>
-        <UToggleItem
-          v-for="(item, index) in options"
-          :key="item.value"
-          :name="name"
-          :model-value="item.value"
-          :value="item.value"
-          :disabled="disabled"
-          :label="item.label"
-          :data-test="`${dataTest}-item-${index}`"
-          v-bind="itemAttrs"
-        />
-      </slot>
-    </div>
-  </ULabel>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
 import { getDefault } from "../utils/ui.ts";
 
-import defaultConfig from "./config.js";
-import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UToggleProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Selected value.
-   */
-  modelValue: {
-    type: [String, Number, Array],
-    default: "",
-  },
-
-  /**
-   * Toggle item options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Toggle variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).variant,
-  },
-
-  /**
-   * Toggle size.
-   * @values 2xs, xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).size,
-  },
-
-  /**
-   * Label placement.
-   * @values top, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).labelAlign,
-  },
-
-  /**
-   * Toggle label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Toggle description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Toggle name.
-   */
-  name: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Allow selecting a few options and return them as an array.
-   */
-  multiple: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).multiple,
-  },
-
-  /**
-   * Separate toggle items.
-   */
-  separated: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).separated,
-  },
-
-  /**
-   * Make toggle disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).disabled,
-  },
-
-  /**
-   * Make the toggle fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).block,
-  },
-
-  /**
-   * Set button corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).round,
-  },
-
-  /**
-   * Set the same paddings for the button.
-   */
-  square: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).square,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UToggleProps>(), {
+  variant: getDefault<UToggleProps>(defaultConfig, UToggle).variant,
+  size: getDefault<UToggleProps>(defaultConfig, UToggle).size,
+  labelAlign: getDefault<UToggleProps>(defaultConfig, UToggle).labelAlign,
+  multiple: getDefault<UToggleProps>(defaultConfig, UToggle).multiple,
+  separated: getDefault<UToggleProps>(defaultConfig, UToggle).separated,
+  disabled: getDefault<UToggleProps>(defaultConfig, UToggle).disabled,
+  block: getDefault<UToggleProps>(defaultConfig, UToggle).block,
+  round: getDefault<UToggleProps>(defaultConfig, UToggle).round,
+  square: getDefault<UToggleProps>(defaultConfig, UToggle).square,
+  dataTest: "",
 });
 
 const emit = defineEmits([
@@ -238,3 +90,33 @@ provide("toggleSelectedValue", {
   updateSelectedValue,
 });
 </script>
+
+<template>
+  <ULabel
+    :size="labelSize"
+    :label="label"
+    :description="description"
+    :align="labelAlign"
+    :disabled="disabled"
+    centred
+    v-bind="toggleLabelAttrs"
+    :data-test="dataTest"
+  >
+    <div v-bind="itemsAttrs">
+      <!-- @slot Use it to add UToggleItem directly. -->
+      <slot>
+        <UToggleItem
+          v-for="(item, index) in options"
+          :key="item.value"
+          :name="name"
+          :model-value="item.value"
+          :value="item.value"
+          :disabled="disabled"
+          :label="item.label"
+          :data-test="`${dataTest}-item-${index}`"
+          v-bind="itemAttrs"
+        />
+      </slot>
+    </div>
+  </ULabel>
+</template>

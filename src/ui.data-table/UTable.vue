@@ -1,3 +1,424 @@
+<script setup lang="ts">
+import {
+  ref,
+  computed,
+  watch,
+  toValue,
+  useSlots,
+  nextTick,
+  onMounted,
+  onUpdated,
+  onBeforeUnmount,
+  useTemplateRef,
+} from "vue";
+import { merge } from "lodash-es";
+
+import UEmpty from "../ui.text-empty/UEmpty.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
+import UTableRow from "./UTableRow.vue";
+
+import { getDefault, cx } from "../utils/ui.ts";
+
+import defaultConfig from "./config.ts";
+import {
+  normalizeColumns,
+  mapRowColumns,
+  syncRowCheck,
+  toggleRowVisibility,
+  switchRowCheck,
+  getFlatRows,
+  addRowId,
+} from "./utilTable.ts";
+
+import { PX_IN_REM } from "../constants.js";
+import { UTable } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+import { useLocale } from "../composables/useLocale.ts";
+
+import type { Cell, Row, RowId, UTableProps, UTableRowAttrs } from "./types.ts";
+import type { Ref, RendererElement, ComputedRef } from "vue";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UTableProps>(), {
+  emptyCellLabel: getDefault<UTableProps>(defaultConfig, UTable).emptyCellLabel,
+  dateDivider: () => getDefault<UTableProps>(defaultConfig, UTable).dateDivider || false,
+  selectable: getDefault<UTableProps>(defaultConfig, UTable).selectable,
+  compact: getDefault<UTableProps>(defaultConfig, UTable).compact,
+  stickyHeader: getDefault<UTableProps>(defaultConfig, UTable).stickyHeader,
+  stickyFooter: getDefault<UTableProps>(defaultConfig, UTable).stickyFooter,
+  loading: getDefault<UTableProps>(defaultConfig, UTable).loading,
+  dataTest: "",
+  config: () => ({}),
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the row is clicked.
+   * @property {object} row
+   */
+  "clickRow",
+
+  /**
+   * Triggers when the cell is clicked.
+   * @property {object} cell
+   */
+  "clickCell",
+
+  /**
+   * Triggers when table rows are selected (updated).
+   * @property {array} tableRows
+   */
+  "update:rows",
+]);
+
+const slots = useSlots();
+const { tm } = useLocale();
+
+const selectAll = ref(false);
+const canSelectAll = ref(true);
+const selectedRows: Ref<RowId[]> = ref([]);
+const tableRows: Ref<Row[]> = ref([]);
+const firstRow = ref(0);
+const tableWidth = ref(0);
+const tableHeight = ref(0);
+const pagePositionY = ref(0);
+
+const headerRowRef = useTemplateRef<HTMLTableRowElement>("header-row");
+const footerRowRef = useTemplateRef<HTMLTableRowElement>("footer-row");
+const tableWrapperRef = useTemplateRef<HTMLDivElement>("table-wrapper");
+const stickyFooterRowRef = useTemplateRef<HTMLTableRowElement>("sticky-footer-row");
+const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
+
+const i18nGlobal = tm(UTable);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const sortedRows: ComputedRef<Row[]> = computed(() => {
+  const headerKeys = props.columns.map((column) =>
+    typeof column === "object" ? column.key : column,
+  );
+
+  return tableRows.value.map((row) => {
+    const rowEntries = Object.entries(row);
+
+    const sortedEntries: typeof rowEntries = new Array(rowEntries.length);
+
+    rowEntries.forEach((entry) => {
+      const [key] = entry;
+      const headerIndex = headerKeys.indexOf(key);
+
+      if (!~headerIndex) {
+        sortedEntries.push(entry);
+
+        return;
+      }
+
+      sortedEntries[headerIndex] = entry;
+    });
+
+    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
+
+    return sortedRow as Row;
+  });
+});
+
+const isFooterSticky = computed(
+  () =>
+    window.innerHeight < tableHeight.value &&
+    props.stickyFooter &&
+    !isShownFooterPosition.value &&
+    isCheckedMoreOneTableItems.value,
+);
+
+const normalizedColumns = computed(() => normalizeColumns(props.columns));
+
+const visibleColumns = computed(() => {
+  return normalizedColumns.value.filter((column) => !column.isHidden);
+});
+
+const colsCount = computed(() => {
+  return normalizedColumns.value.length + 1;
+});
+
+const lastRow = computed(() => {
+  return props.rows.length - 1;
+});
+
+const isShownActionsHeader = computed(
+  () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
+);
+
+const isHeaderSticky = computed(() => {
+  const positionForFixHeader =
+    Number(headerRowRef.value?.getBoundingClientRect()?.top) + window.scrollY || 0;
+
+  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
+});
+
+const isShownFooterPosition = computed(() => {
+  const pageBottom = pagePositionY.value + window.innerHeight;
+  const positionForFixFooter =
+    Number(footerRowRef.value?.getBoundingClientRect()?.bottom) + window.scrollY;
+
+  return pageBottom >= positionForFixFooter;
+});
+
+const isCheckedMoreOneTableItems = computed(() => {
+  return tableRows.value.filter((item) => item.isChecked).length > 1;
+});
+
+const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
+
+const hasSlotContentBeforeFirstRow = computed(() => {
+  if (
+    hasSlotContent(slots["before-first-row"]) &&
+    typeof slots["before-first-row"] === "function"
+  ) {
+    return slots["before-first-row"]()?.some((item) =>
+      Boolean((item.type as RendererElement)?.render),
+    );
+  }
+
+  return false;
+});
+
+const isSelectedAllRows = computed(() => {
+  const rows = getFlatRows(tableRows.value);
+
+  return selectedRows.value.length === rows.length;
+});
+
+const {
+  config,
+  wrapperAttrs,
+  stickyHeaderCellAttrs,
+  stickyHeaderAttrs,
+  tableWrapperAttrs,
+  headerRowAttrs,
+  bodyRowAfterAttrs,
+  bodyRowAfterCellAttrs,
+  bodyRowBeforeAttrs,
+  bodyRowBeforeCellAttrs,
+  footerAttrs,
+  bodyRowDateDividerAttrs,
+  headerCellBaseAttrs,
+  headerCellCheckboxAttrs,
+  stickyHeaderActionsCheckboxAttrs,
+  stickyHeaderCheckboxAttrs,
+  headerCheckboxAttrs,
+  headerCounterAttrs,
+  bodyEmptyStateAttrs,
+  bodyDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  stickyHeaderActionsCounterAttrs,
+  stickyHeaderCounterAttrs,
+  stickyHeaderLoaderAttrs,
+  tableAttrs,
+  headerLoaderAttrs,
+  bodyAttrs,
+  footerRowAttrs,
+  stickyFooterRowAttrs,
+  hasSlotContent,
+  headerAttrs,
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedExpandIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+} = useAttrs(props, {
+  tableRows,
+  isShownActionsHeader,
+  isHeaderSticky,
+  isFooterSticky,
+});
+
+const tableRowAttrs = computed(() => ({
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedExpandIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+}));
+
+watch(selectAll, onChangeSelectAll, { deep: true });
+watch(selectedRows, onChangeSelectedRows, { deep: true });
+watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });
+watch(() => tableRows.value.length, updateSelectedRows);
+watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
+watch(isHeaderSticky, setHeaderCellWidth);
+watch(isFooterSticky, (newValue) =>
+  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
+);
+watch(
+  () => selectedRows.value,
+  () => {
+    tableRows.value = tableRows.value
+      .map(addRowId)
+      .map((row) => syncRowCheck(row, selectedRows.value));
+  },
+  { deep: true },
+);
+
+onMounted(() => {
+  tableRows.value = props.rows;
+
+  document.addEventListener("keyup", onKeyupEsc);
+  document.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onWindowResize);
+});
+
+onUpdated(() => {
+  tableHeight.value = Number(tableWrapperRef.value?.offsetHeight);
+  tableWidth.value = Number(tableWrapperRef.value?.offsetWidth);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keyup", onKeyupEsc);
+  document.removeEventListener("scroll", onScroll);
+  window.removeEventListener("resize", onWindowResize);
+});
+
+function onWindowResize() {
+  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
+
+  setHeaderCellWidth();
+  setFooterCellWidth();
+}
+
+function getDateDividerLabel(rowDate: string | Date) {
+  return Array.isArray(props.dateDivider)
+    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || String(rowDate)
+    : String(rowDate);
+}
+
+function setFooterCellWidth(zero?: null) {
+  const ZERO_WIDTH = 0;
+
+  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) return;
+
+  const mainFooterItems = [...footerRowRef.value.children] as HTMLElement[];
+  const stickyFooterItems = [...stickyFooterRowRef.value.children] as HTMLElement[];
+
+  stickyFooterItems.forEach((item, index) => {
+    item.style.width =
+      zero === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
+  });
+}
+
+function setHeaderCellWidth() {
+  if (selectedRows.value.length || !footerRowRef.value || !stickyFooterRowRef.value) return;
+
+  const mainHeaderItems = [...(headerRowRef.value?.children || [])] as HTMLElement[];
+  const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])] as HTMLDivElement[];
+
+  stickyHeaderItems.forEach((item, index) => {
+    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
+  });
+}
+
+function onScroll() {
+  pagePositionY.value = window.scrollY;
+}
+
+function synchronizeTableItemsWithProps() {
+  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
+    selectedRows.value = [];
+  }
+
+  tableRows.value = props.rows;
+}
+
+function updateSelectedRows() {
+  selectedRows.value = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
+}
+
+function onKeyupEsc(event: KeyboardEvent) {
+  if (event.code === "Escape" && props.selectable) {
+    selectedRows.value = [];
+  }
+}
+
+function isShownDateDivider(rowIndex: number) {
+  const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
+  const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
+  const prevItem = tableRows.value[prevIndex];
+  const nextItem = tableRows.value[nextIndex];
+  const currentItem = tableRows.value[rowIndex];
+
+  if (rowIndex === 0) {
+    return hasSlotContentBeforeFirstRow.value;
+  }
+
+  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
+  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
+
+  return isPrevSameDate && !isNextSameDate && props.dateDivider;
+}
+
+function onClickRow(row: Row) {
+  emit("clickRow", row);
+}
+
+function onClickCell(cell: Cell, row: Row) {
+  emit("clickCell", cell, row);
+}
+
+function onChangeSelectAll(selectAll: boolean) {
+  if (selectAll && canSelectAll.value) {
+    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
+
+    tableRows.value.forEach((row) => switchRowCheck(row, true));
+  } else if (!selectAll) {
+    selectedRows.value = [];
+
+    tableRows.value.forEach((row) => switchRowCheck(row, false));
+  }
+
+  canSelectAll.value = true;
+}
+
+function onChangeSelectedRows(selectedRows: RowId[]) {
+  if (selectedRows.length) {
+    canSelectAll.value = false;
+
+    isCheckedMoreOneTableItems.value && setFooterCellWidth();
+  } else {
+    nextTick(setHeaderCellWidth);
+  }
+
+  selectAll.value = !!selectedRows.length;
+}
+
+function clearSelectedItems() {
+  selectedRows.value = [];
+}
+
+function onToggleRowVisibility(rowId: string | number) {
+  // TODO: Use map instead of forEach to get rid of implicit array mutation.
+  tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
+}
+
+defineExpose({
+  /**
+   * Allows to clear selected rows.
+   * @property {Function}
+   */
+  clearSelectedItems,
+});
+</script>
+
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div
@@ -47,11 +468,12 @@
           />
         </div>
 
+        <!-- TODO: Remove any when key attrs are typed-->
         <div
-          v-for="(column, index) in columns"
+          v-for="(column, index) in normalizedColumns"
           :key="index"
           v-bind="stickyHeaderCellAttrs"
-          :class="cx([stickyHeaderCellAttrs.class, column.thClass])"
+          :class="cx([(stickyHeaderCellAttrs as any).class, column.thClass])"
         >
           <template v-if="hasSlotContent($slots[`header-${column.key}`])">
             <!--
@@ -117,7 +539,7 @@
               v-for="(column, index) in visibleColumns"
               :key="index"
               v-bind="headerCellBaseAttrs"
-              :class="cx([headerCellBaseAttrs.class, column.thClass])"
+              :class="cx([(headerCellBaseAttrs as any).class, column.thClass])"
             >
               <!--
                 @slot Use it to customise needed header cell.
@@ -174,16 +596,17 @@
               :selectable="selectable"
               :data-test="`${dataTest}-row`"
               :row="row"
-              :columns="columns"
+              :columns="normalizedColumns"
               :config="config"
-              :attrs="keysAttrs"
+              :attrs="tableRowAttrs as unknown as UTableRowAttrs"
+              :nested-level="0"
               :empty-cell-label="emptyCellLabel"
               @click="onClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
             >
               <template
-                v-for="(value, key, index) in getFilteredRow(row, columns)"
+                v-for="(value, key, index) in mapRowColumns(row, normalizedColumns)"
                 :key="index"
                 #[`cell-${key}`]="slotValues"
               >
@@ -262,469 +685,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import {
-  ref,
-  computed,
-  watch,
-  toValue,
-  useSlots,
-  nextTick,
-  onMounted,
-  onUpdated,
-  onBeforeUnmount,
-  useTemplateRef,
-} from "vue";
-import { merge } from "lodash-es";
-
-import UEmpty from "../ui.text-empty/UEmpty.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
-import UTableRow from "./UTableRow.vue";
-
-import { getDefault, cx } from "../utils/ui.ts";
-
-import defaultConfig from "./config.js";
-import {
-  normalizeColumns,
-  getFilteredRow,
-  syncRowCheck,
-  toggleRowVisibility,
-  switchRowCheck,
-  getFlatRows,
-  addRowId,
-} from "./utilTable.js";
-
-import { PX_IN_REM } from "../constants.js";
-import { UTable } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.ts";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Table columns (headers).
-   */
-  columns: {
-    type: Array,
-    required: true,
-  },
-
-  /**
-   * Table rows data.
-   */
-  rows: {
-    type: Array,
-    required: true,
-  },
-
-  /**
-   * Label to display for empty cell values.
-   */
-  emptyCellLabel: {
-    type: String,
-    default: getDefault(defaultConfig, UTable).emptyCellLabel,
-  },
-
-  /**
-   * Show date divider line between dates.
-   */
-  dateDivider: {
-    type: [Boolean, Array],
-    default: getDefault(defaultConfig, UTable).dateDivider,
-  },
-
-  /**
-   * Allow rows selecting.
-   */
-  selectable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).selectable,
-  },
-
-  /**
-   * Makes the table compact (fewer spacings).
-   */
-  compact: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).compact,
-  },
-
-  /**
-   * Set header sticky.
-   */
-  stickyHeader: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).stickyHeader,
-  },
-
-  /**
-   * Set footer sticky.
-   */
-  stickyFooter: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).stickyFooter,
-  },
-
-  /**
-   * Set table loader state.
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).loading,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the row is clicked.
-   * @property {object} row
-   */
-  "clickRow",
-
-  /**
-   * Triggers when the cell is clicked.
-   * @property {object} cell
-   */
-  "clickCell",
-
-  /**
-   * Triggers when table rows are selected (updated).
-   * @property {array} tableRows
-   */
-  "update:rows",
-]);
-
-const slots = useSlots();
-const { tm } = useLocale();
-
-const selectAll = ref(false);
-const canSelectAll = ref(true);
-const selectedRows = ref([]);
-const tableRows = ref([]);
-const firstRow = ref(0);
-const tableWidth = ref(0);
-const tableHeight = ref(0);
-const pagePositionY = ref(0);
-
-const headerRowRef = useTemplateRef("header-row");
-const footerRowRef = useTemplateRef("footer-row");
-const tableWrapperRef = useTemplateRef("table-wrapper");
-const stickyFooterRowRef = useTemplateRef("sticky-footer-row");
-const stickyHeaderRowRef = useTemplateRef("sticky-header-row");
-
-const i18nGlobal = tm(UTable);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const sortedRows = computed(() => {
-  const headerKeys = props.columns.map((column) => column.key);
-
-  return tableRows.value.map((row) => {
-    const rowEntries = Object.entries(row);
-
-    const sortedEntries = new Array(rowEntries.length);
-
-    rowEntries.forEach((entry) => {
-      const [key] = entry;
-      const headerIndex = headerKeys.indexOf(key);
-
-      if (!~headerIndex) {
-        sortedEntries.push(entry);
-
-        return;
-      }
-
-      sortedEntries[headerIndex] = entry;
-    });
-
-    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
-
-    return sortedRow;
-  });
-});
-
-const isFooterSticky = computed(
-  () =>
-    window.innerHeight < tableHeight.value &&
-    props.stickyFooter &&
-    !isShownFooterPosition.value &&
-    isCheckedMoreOneTableItems.value,
-);
-
-const normalizedColumns = computed(() => normalizeColumns(props.columns));
-
-const visibleColumns = computed(() => {
-  return normalizedColumns.value.filter((column) => !column.isHidden);
-});
-
-const colsCount = computed(() => {
-  return props.columns.length + 1;
-});
-
-const lastRow = computed(() => {
-  return props.rows.length - 1;
-});
-
-const isShownActionsHeader = computed(
-  () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
-);
-
-const isHeaderSticky = computed(() => {
-  const positionForFixHeader =
-    headerRowRef.value?.getBoundingClientRect().top + window.scrollY || 0;
-
-  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
-});
-
-const isShownFooterPosition = computed(() => {
-  const pageBottom = pagePositionY.value + window.innerHeight;
-  const positionForFixFooter = footerRowRef.value?.getBoundingClientRect().bottom + window.scrollY;
-
-  return pageBottom >= positionForFixFooter;
-});
-
-const isCheckedMoreOneTableItems = computed(() => {
-  return tableRows.value.filter((item) => item.isChecked).length > 1;
-});
-
-const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
-
-const hasSlotContentBeforeFirstRow = computed(() => {
-  return hasSlotContent(slots["before-first-row"])
-    ? slots["before-first-row"]()?.some((item) => !!item.type?.render)
-    : false;
-});
-
-const isSelectedAllRows = computed(() => {
-  const rows = getFlatRows(tableRows.value);
-
-  return selectedRows.value.length === rows.length;
-});
-
-const {
-  config,
-  keysAttrs,
-  wrapperAttrs,
-  stickyHeaderCellAttrs,
-  stickyHeaderAttrs,
-  tableWrapperAttrs,
-  headerRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowAfterCellAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCellAttrs,
-  footerAttrs,
-  bodyRowDateDividerAttrs,
-  headerCellBaseAttrs,
-  headerCellCheckboxAttrs,
-  stickyHeaderActionsCheckboxAttrs,
-  stickyHeaderCheckboxAttrs,
-  headerCheckboxAttrs,
-  headerCounterAttrs,
-  bodyEmptyStateAttrs,
-  bodyDateDividerAttrs,
-  bodyCellDateDividerAttrs,
-  stickyHeaderActionsCounterAttrs,
-  stickyHeaderCounterAttrs,
-  stickyHeaderLoaderAttrs,
-  tableAttrs,
-  headerLoaderAttrs,
-  bodyAttrs,
-  footerRowAttrs,
-  stickyFooterRowAttrs,
-  hasSlotContent,
-  headerAttrs,
-} = useAttrs(props, {
-  tableRows,
-  isShownActionsHeader,
-  isHeaderSticky,
-  isFooterSticky,
-});
-
-watch(selectAll, onChangeSelectAll, { deep: true });
-watch(selectedRows, onChangeSelectedRows, { deep: true });
-watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });
-watch(() => tableRows.value.length, updateSelectedRows);
-watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
-watch(isHeaderSticky, setHeaderCellWidth);
-watch(isFooterSticky, (newValue) =>
-  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
-);
-watch(
-  () => selectedRows.value,
-  () => {
-    tableRows.value = tableRows.value
-      .map(addRowId)
-      .map((row) => syncRowCheck(row, selectedRows.value));
-  },
-  { deep: true },
-);
-
-onMounted(() => {
-  tableRows.value = props.rows;
-
-  document.addEventListener("keyup", onKeyupEsc);
-  document.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onWindowResize);
-});
-
-onUpdated(() => {
-  tableHeight.value = tableWrapperRef.value?.offsetHeight;
-  tableWidth.value = tableWrapperRef.value?.offsetWidth;
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("keyup", onKeyupEsc);
-  document.removeEventListener("scroll", onScroll);
-  window.removeEventListener("resize", onWindowResize);
-});
-
-function onWindowResize() {
-  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
-
-  setHeaderCellWidth();
-  setFooterCellWidth();
-}
-
-function getDateDividerLabel(rowDate) {
-  return Array.isArray(props.dateDivider)
-    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
-    : rowDate;
-}
-
-function setFooterCellWidth(width) {
-  const ZERO_WIDTH = 0;
-
-  if (!props.stickyFooter) return;
-
-  const mainFooterItems = [...footerRowRef.value.children];
-  const stickyFooterItems = [...stickyFooterRowRef.value.children];
-
-  stickyFooterItems.forEach((item, index) => {
-    item.style.width =
-      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
-  });
-}
-
-function setHeaderCellWidth() {
-  if (selectedRows.value.length) return;
-
-  const mainHeaderItems = [...(headerRowRef.value?.children || [])];
-  const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])];
-
-  stickyHeaderItems.forEach((item, index) => {
-    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
-  });
-}
-
-function onScroll() {
-  pagePositionY.value = window.scrollY;
-}
-
-function synchronizeTableItemsWithProps() {
-  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
-    selectedRows.value = [];
-  }
-
-  tableRows.value = props.rows;
-}
-
-function updateSelectedRows() {
-  selectedRows.value = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
-}
-
-function onKeyupEsc(event) {
-  const escKeyCode = 27;
-
-  if (event.keyCode === escKeyCode && props.selectable) {
-    selectedRows.value = [];
-  }
-}
-
-function isShownDateDivider(rowIndex) {
-  const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
-  const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
-  const prevItem = tableRows.value[prevIndex];
-  const nextItem = tableRows.value[nextIndex];
-  const currentItem = tableRows.value[rowIndex];
-
-  if (rowIndex === 0) {
-    return hasSlotContentBeforeFirstRow.value;
-  }
-
-  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
-  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
-
-  return isPrevSameDate && !isNextSameDate && props.dateDivider;
-}
-
-function onClickRow(row) {
-  emit("clickRow", row);
-}
-
-function onClickCell(cell, row) {
-  emit("clickCell", cell, row);
-}
-
-function onChangeSelectAll(selectAll) {
-  if (selectAll && canSelectAll.value) {
-    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
-
-    tableRows.value.forEach((row) => switchRowCheck(row, true));
-  } else if (!selectAll) {
-    selectedRows.value = [];
-
-    tableRows.value.forEach((row) => switchRowCheck(row, false));
-  }
-
-  canSelectAll.value = true;
-}
-
-function onChangeSelectedRows(selectedRows) {
-  if (selectedRows.length) {
-    canSelectAll.value = false;
-
-    isCheckedMoreOneTableItems.value && setFooterCellWidth();
-  } else {
-    nextTick(setHeaderCellWidth);
-  }
-
-  selectAll.value = !!selectedRows.length;
-}
-
-function clearSelectedItems() {
-  selectedRows.value = [];
-}
-
-function onToggleRowVisibility(rowId) {
-  // TODO: Use map instead of forEach to get rid of implicit array mutation.
-  tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
-}
-
-defineExpose({
-  /**
-   * Allows to clear selected rows.
-   * @property {Function}
-   */
-  clearSelectedItems,
-});
-</script>
