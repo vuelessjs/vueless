@@ -131,10 +131,11 @@ export function createMergeConfigs(cx) {
       console.error("CompoundVariants should be an array.");
     }
 
-    const globalConfigUniqueItems = cloneDeep(globalConfig.compoundVariants || []);
-    const propsConfigUniqueItems = cloneDeep(propsConfig.compoundVariants || []);
+    const defaultCompoundVariants = expandCompoundVariants(defaultConfig.compoundVariants);
+    const globalCompoundVariants = expandCompoundVariants(globalConfig.compoundVariants);
+    const propsCompoundVariants = expandCompoundVariants(propsConfig.compoundVariants);
 
-    const config = defaultConfig.compoundVariants?.map((defaultConfigItem) => {
+    const config = defaultCompoundVariants?.map((defaultConfigItem) => {
       /**
        * Compare two objects by keys for match.
        */
@@ -151,25 +152,27 @@ export function createMergeConfigs(cx) {
       }
 
       /**
-       * Find the same compound variant item in custom config if exist.
+       * Find the same compound variant item in custom config if existed.
        */
       function findItem(config = []) {
-        const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
-        const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
+        config = cloneDeep(config);
+
+        const globalConfigUniqueItemIndex = globalCompoundVariants.findIndex(isSameItem);
+        const propsConfigUniqueItemIndex = propsCompoundVariants.findIndex(isSameItem);
 
         if (~globalConfigUniqueItemIndex) {
-          globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
+          globalCompoundVariants.splice(globalConfigUniqueItemIndex, 1);
         }
 
         if (~propsConfigUniqueItemIndex) {
-          propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
+          propsCompoundVariants.splice(propsConfigUniqueItemIndex, 1);
         }
 
         return config.find(isSameItem);
       }
 
-      const globalConfigItem = findItem(globalConfig.compoundVariants);
-      const propsConfigItem = findItem(propsConfig.compoundVariants);
+      const globalConfigItem = findItem(globalCompoundVariants);
+      const propsConfigItem = findItem(propsCompoundVariants);
 
       return globalConfigItem || propsConfigItem
         ? {
@@ -181,7 +184,35 @@ export function createMergeConfigs(cx) {
         : defaultConfigItem;
     });
 
-    return [...(config || []), ...globalConfigUniqueItems, ...propsConfigUniqueItems];
+    return [...(config || []), ...globalCompoundVariants, ...propsCompoundVariants];
+  }
+
+  /**
+   * Convert compound variants with arrays in values into compound variants with primitives.
+   */
+  function expandCompoundVariants(compoundVariants) {
+    compoundVariants = cloneDeep(compoundVariants || []);
+
+    function expand(compoundVariant) {
+      const keysWithArray = Object.keys(compoundVariant).filter((key) =>
+        Array.isArray(compoundVariant[key]),
+      );
+
+      if (!keysWithArray.length) {
+        return [compoundVariant];
+      }
+
+      const [firstKey] = keysWithArray;
+      const expandedArray = compoundVariant[firstKey].map((value) => ({
+        ...compoundVariant,
+        [firstKey]: value,
+      }));
+
+      // Recursively expand the remaining array keys
+      return expandedArray.flatMap((expandedCompoundVariant) => expand(expandedCompoundVariant));
+    }
+
+    return compoundVariants.flatMap(expand);
   }
 
   return mergeConfigs;
