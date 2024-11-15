@@ -68,10 +68,6 @@ export default {
 
 For managing classes variants Vueless components use [cva](https://github.com/joe-bell/cva) (Class Variance Authority) under the hood. For more details you can read related [cva docs](https://cva.style/docs/getting-started/variants).
 
-{% hint style="warning" %}
-Due to configs merge feature Vueless doesn't support **arrays** for values in `compoundVariants`.
-{% endhint %}
-
 ***
 
 ## Vueless config
