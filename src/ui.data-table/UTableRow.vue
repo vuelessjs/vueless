@@ -54,7 +54,7 @@ const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 const singleNestedRow = computed(() =>
   Array.isArray(props.row.row) ? props.row.row.at(0) : props.row.row,
 );
-const nestedRows = computed(() => props.row as unknown as Row[]);
+const nestedRows = computed(() => props.row.row as unknown as Row[]);
 
 const isNestedRowEmpty = computed(() => {
   if (!props.row.row) return true;
@@ -289,6 +289,8 @@ function getRowAttrs(rowId: string | number) {
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ formatCellValue(value) }}
+
+            {{ nestedRows }}
           </div>
         </slot>
       </template>
