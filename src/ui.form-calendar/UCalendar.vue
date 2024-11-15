@@ -40,11 +40,11 @@ import defaultConfig from "./config.ts";
 
 import type { UCalendarProps, DateValue, RangeDate, Locale } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
+import type { DateLocale } from "./utilFormatting.ts";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
-import type { DateLocale } from "./utilFormatting.ts";
 
 type DefaultLocale = typeof defaultConfig.i18n;
 
