@@ -1,3 +1,82 @@
+<script lang="ts" setup>
+import { computed, useSlots, onMounted } from "vue";
+
+import useBreakpoint from "../composables/useBreakpoint.ts";
+
+import ULink from "../ui.button-link/ULink.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UHeader from "../ui.text-header/UHeader.vue";
+
+import { getDefault } from "../utils/ui.ts";
+
+import defaultConfig from "./config.ts";
+import { UPage } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UPageProps } from "./types.ts";
+
+const slots = useSlots();
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UPageProps>(), {
+  size: getDefault<UPageProps>(defaultConfig, UPage).size,
+  titleSize: getDefault<UPageProps>(defaultConfig, UPage).titleSize,
+  gray: getDefault<UPageProps>(defaultConfig, UPage).gray,
+  fixedRounding: getDefault<UPageProps>(defaultConfig, UPage).fixedRounding,
+  dataTest: "",
+});
+
+const { isMobileBreakpoint } = useBreakpoint();
+
+const {
+  config,
+  wrapperAttrs,
+  pageAttrs,
+  rightRoundingAttrs,
+  titleAttrs,
+  backLinkAttrs,
+  backLinkIconAttrs,
+  headerAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  headerLeftAttrs,
+  headerRightAttrs,
+  bodyAttrs,
+  footerAttrs,
+  footerLeftAttrs,
+  footerRightAttrs,
+  rightRoundingWrapperAttrs,
+  hasSlotContent,
+} = useAttrs(props, { isMobileBreakpoint });
+
+const isExistHeader = computed(() => {
+  return (
+    props.title ||
+    hasSlotContent(slots["header-left"]) ||
+    hasSlotContent(slots["header-right"]) ||
+    hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["after-title"])
+  );
+});
+
+const isExistFooter = computed(() => {
+  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
+});
+
+const isShownArrowButton = computed(() => {
+  return Object.keys(props.backTo || {}).length > 0;
+});
+
+onMounted(() => {
+  const classes = props.gray
+    ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
+    : "";
+
+  document.querySelector("body").classList.add(...classes);
+});
+</script>
+
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-bind="pageAttrs">
@@ -79,156 +158,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { computed, useSlots, onMounted } from "vue";
-
-import useBreakpoint from "../composables/useBreakpoint.ts";
-
-import ULink from "../ui.button-link/ULink.vue";
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UHeader from "../ui.text-header/UHeader.vue";
-
-import { getDefault } from "../utils/ui.ts";
-
-import defaultConfig from "./config.js";
-import { UPage } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-
-const slots = useSlots();
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Page size (width).
-   * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, wide
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UPage).size,
-  },
-
-  /**
-   * Page title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Page title size.
-   * @values xs, sm, md, lg, xl, 2xl
-   */
-  titleSize: {
-    type: String,
-    default: getDefault(defaultConfig, UPage).titleSize,
-  },
-
-  /**
-   * Set page description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Back link vue-router route object.
-   */
-  backTo: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Back link label.
-   */
-  backLabel: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Sets background light gray (useful if the page contains nested cards).
-   */
-  gray: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UPage).gray,
-  },
-
-  /**
-   * Stick right page rounding.
-   */
-  fixedRounding: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UPage).fixedRounding,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const { isMobileBreakpoint } = useBreakpoint();
-
-const {
-  config,
-  wrapperAttrs,
-  pageAttrs,
-  rightRoundingAttrs,
-  titleAttrs,
-  backLinkAttrs,
-  backLinkIconAttrs,
-  headerAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  headerLeftAttrs,
-  headerRightAttrs,
-  bodyAttrs,
-  footerAttrs,
-  footerLeftAttrs,
-  footerRightAttrs,
-  rightRoundingWrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props, { isMobileBreakpoint });
-
-const isExistHeader = computed(() => {
-  return (
-    props.title ||
-    hasSlotContent(slots["header-left"]) ||
-    hasSlotContent(slots["header-right"]) ||
-    hasSlotContent(slots["before-title"]) ||
-    hasSlotContent(slots["after-title"])
-  );
-});
-
-const isExistFooter = computed(() => {
-  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
-});
-
-const isShownArrowButton = computed(() => {
-  return Boolean(Object.keys(props.backTo).length);
-});
-
-onMounted(() => {
-  const classes = props.gray
-    ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
-    : "";
-
-  document.querySelector("body").classList.add(...classes);
-});
-</script>

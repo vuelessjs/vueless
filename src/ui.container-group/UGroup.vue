@@ -1,3 +1,34 @@
+<script lang="ts" setup>
+import { getDefault } from "../utils/ui.ts";
+import UDivider from "../ui.container-divider/UDivider.vue";
+import UHeader from "../ui.text-header/UHeader.vue";
+
+import { UGroup } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UGroupProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UGroupProps>(), {
+  gap: getDefault<UGroupProps>(defaultConfig, UGroup).gap,
+  upperlined: getDefault<UGroupProps>(defaultConfig, UGroup).upperlined,
+  underlined: getDefault<UGroupProps>(defaultConfig, UGroup).underlined,
+  dataTest: "",
+});
+
+const {
+  headerAttrs,
+  wrapperAttrs,
+  headerLeftFallbackAttrs,
+  titleAttrs,
+  upperlineAttrs,
+  underlineAttrs,
+  contentAttrs,
+} = useAttrs(props);
+</script>
+
 <template>
   <div v-bind="wrapperAttrs" :data-test="dataTest">
     <template v-if="title">
@@ -30,76 +61,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { getDefault } from "../utils/ui.ts";
-import UDivider from "../ui.container-divider/UDivider.vue";
-import UHeader from "../ui.text-header/UHeader.vue";
-
-import { UGroup } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Group title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * The distance between nested elements.
-   * @values none, xs, sm, md, lg, xl
-   */
-  gap: {
-    type: String,
-    default: getDefault(defaultConfig, UGroup).gap,
-  },
-
-  /**
-   * Show line above the header.
-   */
-  upperlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UGroup).upperlined,
-  },
-
-  /**
-   * Show line under the header.
-   */
-  underlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UGroup).underlined,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const {
-  headerAttrs,
-  wrapperAttrs,
-  headerLeftFallbackAttrs,
-  titleAttrs,
-  upperlineAttrs,
-  underlineAttrs,
-  contentAttrs,
-} = useAttrs(props);
-</script>

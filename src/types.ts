@@ -11,6 +11,11 @@ import UAccordionConfig from "./ui.container-accordion/config.ts";
 import UCardConfig from "./ui.container-card/config.ts";
 import UColConfig from "./ui.container-col/config.ts";
 import UDividerConfig from "./ui.container-divider/config.ts";
+import UGroupConfig from "./ui.container-group/config.ts";
+import UModalConfig from "./ui.container-modal/config.ts";
+import UModalConfirmConfig from "./ui.container-modal-confirm/config.ts";
+import UPageConfig from "./ui.container-page/config.ts";
+import URowConfig from "./ui.container-row/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -127,6 +132,11 @@ export interface Components {
   UCard?: Partial<typeof UCardConfig>;
   UCol?: Partial<typeof UColConfig>;
   UDivider?: Partial<typeof UDividerConfig>;
+  UGroup?: Partial<typeof UGroupConfig>;
+  UModal?: Partial<typeof UModalConfig>;
+  UModalConfirm?: Partial<typeof UModalConfirmConfig>;
+  UPage?: Partial<typeof UPageConfig>;
+  URow?: Partial<typeof URowConfig>;
 }
 
 export interface Directives {

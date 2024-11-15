@@ -5,6 +5,14 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { URowProps } from "../types.ts";
+
+interface URowArgs extends URowProps {
+  slotTemplate?: string;
+  enum: "gap" | "align";
+}
+
 /**
  * The `URow` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-row)
  */
@@ -15,14 +23,14 @@ export default {
   argTypes: {
     ...getArgTypes(URow.__name),
   },
-};
+} as Meta;
 
 const defaultTemplate = `
   <UInput label="Name" />
   <UButton label="Submit" size="xs" block />
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<URowArgs> = (args: URowArgs) => ({
   components: { URow, UInput, UButton },
   setup() {
     const slots = getSlotNames(URow.__name);
@@ -36,7 +44,7 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
   components: { UCol, URow, UInput, UButton },
   setup() {
     const isGapEnum = argTypes[args.enum].name === "gap";
