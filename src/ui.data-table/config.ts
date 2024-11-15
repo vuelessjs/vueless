@@ -14,16 +14,9 @@ export default /*tw*/ {
     },
   },
   stickyHeaderLoader: "{ULoaderProgress}",
-  stickyHeaderActions: "fixed rounded-t-lg border-blue-200 bg-blue-50",
+  stickyHeaderActions: "rounded-t-lg border-blue-200 bg-blue-50",
   stickyHeaderActionsCheckbox: "{UCheckbox}",
-  stickyHeaderActionsCounter: {
-    base: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
-    variants: {
-      compact: {
-        true: "top-3",
-      },
-    },
-  },
+  stickyHeaderActionsCounter: "-ml-1.5",
   tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
   table: "min-w-full border-none text-sm w-full table-auto",
   header: "border-b border-gray-200",
@@ -39,7 +32,7 @@ export default /*tw*/ {
   headerCellCheckbox: "w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
-    base: "absolute top-4 mt-px left-11 bg-gradient-to-r from-white from-80% ml-px",
+    base: "absolute top-4 mt-px left-11 ml-px",
     variants: {
       compact: {
         true: "top-3",
