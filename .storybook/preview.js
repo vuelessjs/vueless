@@ -13,7 +13,7 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
 import "./index.css";
 
 /* Vue plugins */
-import { createVueless, setTheme } from "../src/index";
+import { createVueless } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
 /* Setup storybook */
@@ -27,24 +27,6 @@ setup((app) => {
     app.use(router);
     app.use(vueless);
   }
-
-  /**
-   * Apply dark mode when theme changed.
-   * It's better to find another solution later.
-   * Because it can't manage system mode changing.
-   */
-  setTimeout(() => {
-    let isDarkCached;
-
-    setInterval(() => {
-      const isDark = !!document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-
-      if (isDarkCached !== isDark) {
-        setTheme({ darkMode: isDark });
-        isDarkCached = isDark;
-      }
-    }, 500);
-  }, 0);
 });
 
 /* Set storybook decorators */

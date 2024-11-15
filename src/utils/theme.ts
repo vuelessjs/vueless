@@ -41,10 +41,10 @@ export function themeInit() {
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  setTheme({ systemDarkMode: prefersColorSchemeDark.matches });
+  setTheme({ systemDarkMode: prefersColorSchemeDark.matches, darkMode: vuelessConfig.darkMode });
 
   prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ systemDarkMode: event.matches }),
+    setTheme({ systemDarkMode: event.matches, darkMode: vuelessConfig.darkMode }),
   );
 }
 
@@ -139,36 +139,15 @@ export function setTheme(config: InternalThemeConfig = {}) {
   return rootVariables;
 }
 
-// todo: need to be reactive same like loader state
-export function getDarkMode() {
-  let isDarkMode = undefined;
-  let storedDarkMode = null;
-
-  if (isCSR) {
-    storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
-  }
-
-  if (storedDarkMode !== null) {
-    isDarkMode = !!Number(storedDarkMode);
-  }
-
-  return isDarkMode;
-}
-
 function setDarkMode(config: InternalThemeConfig) {
   config?.darkMode === undefined
     ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
     : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());
 
   let storedDarkMode = null;
-  let darkModeAsClass = null;
 
   if (isCSR) {
-    const classList = document.documentElement.classList;
-
     storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
-    darkModeAsClass = classList.contains(DARK_MODE_SELECTOR) ? true : null;
-    darkModeAsClass = classList.contains(LIGHT_MODE_SELECTOR) ? false : null;
   }
 
   let isDarkMode = !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
@@ -177,11 +156,9 @@ function setDarkMode(config: InternalThemeConfig) {
     isDarkMode = !!Number(storedDarkMode);
   }
 
-  if (darkModeAsClass !== null) {
-    isDarkMode = darkModeAsClass;
-  }
-
   if (isCSR) {
+    const darkModeChange = new CustomEvent("darkModeChange", { detail: isDarkMode });
+
     if (isDarkMode) {
       document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
       document.documentElement.classList.add(DARK_MODE_SELECTOR);
@@ -189,6 +166,8 @@ function setDarkMode(config: InternalThemeConfig) {
       document.documentElement.classList.remove(DARK_MODE_SELECTOR);
       document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
     }
+
+    window.dispatchEvent(darkModeChange);
   }
 
   return isDarkMode;
