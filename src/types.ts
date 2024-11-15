@@ -7,6 +7,7 @@ import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
+import UDataTableConfig from "./ui.data-table/config.ts";
 import UAccordionConfig from "./ui.container-accordion/config.ts";
 import UCardConfig from "./ui.container-card/config.ts";
 import UColConfig from "./ui.container-col/config.ts";
@@ -128,6 +129,7 @@ export interface Components {
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker?: Partial<typeof UDatePickerConfig>;
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
+  UTable?: Partial<typeof UDataTableConfig>;
   UAccordion?: Partial<typeof UAccordionConfig>;
   UCard?: Partial<typeof UCardConfig>;
   UCol?: Partial<typeof UColConfig>;
