@@ -232,7 +232,7 @@ defineExpose({
     <Transition v-bind="config.calendarTransition">
       <UCalendar
         v-show="isShownCalendar"
-        ref="calendarRef"
+        ref="calendar"
         v-model="localValue"
         v-model:view="customView"
         :tabindex="-1"

@@ -19,7 +19,7 @@ If you're using **VSCode** or **JetBrains** IDEs (WebStorm, PHPStorm, etc..) you
 
 <script setup>
 const config = /*tw*/ {
-  background: 'bg-white dark:bg-slate-900'
+  card: 'bg-white dark:bg-slate-900'
 }
 </script>
 ```

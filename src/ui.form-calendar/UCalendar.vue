@@ -40,11 +40,11 @@ import defaultConfig from "./config.ts";
 
 import type { UCalendarProps, DateValue, RangeDate, Locale } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
+import type { DateLocale } from "./utilFormatting.ts";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
-import type { DateLocale } from "./utilFormatting.ts";
 
 type DefaultLocale = typeof defaultConfig.i18n;
 
@@ -340,7 +340,7 @@ const unwatchInit = watch(
   () => {
     if (isInit) unwatchInit();
 
-    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value) {
+    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
       hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
       minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
       secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
@@ -349,8 +349,14 @@ const unwatchInit = watch(
 
       isInit = true;
     }
+
+    if (selectedDate.value) {
+      emit("userDateChange", userFormattedDate.value);
+
+      isInit = true;
+    }
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function getCurrentValueType(value: DateValue): DateValue {

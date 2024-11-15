@@ -15,6 +15,7 @@ import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
+import UDataTableConfig from "./ui.data-table/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -135,6 +136,7 @@ export interface Components {
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker?: Partial<typeof UDatePickerConfig>;
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
+  UTable?: Partial<typeof UDataTableConfig>;
 }
 
 export interface Directives {
