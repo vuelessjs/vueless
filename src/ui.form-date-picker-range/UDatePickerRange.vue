@@ -558,7 +558,7 @@ function onInputCalendar(value: RangeDate) {
     <UInput
       v-if="isVariant.input"
       :id="elementId"
-      ref="inputRef"
+      ref="input"
       v-model="userFormatDate"
       :size="size"
       :label="label"
