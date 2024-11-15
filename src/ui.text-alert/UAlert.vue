@@ -1,3 +1,88 @@
+<script lang="ts" setup>
+import { onMounted, ref, computed } from "vue";
+import { getDefault } from "../utils/ui.ts";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UButton from "../ui.button/UButton.vue";
+import UText from "../ui.text-block/UText.vue";
+
+import { UAlert } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UAlertProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UAlertProps>(), {
+  variant: getDefault<UAlertProps>(defaultConfig, UAlert).variant,
+  bordered: getDefault<UAlertProps>(defaultConfig, UAlert).bordered,
+  size: getDefault<UAlertProps>(defaultConfig, UAlert).size,
+  color: getDefault<UAlertProps>(defaultConfig, UAlert).color,
+  timeout: getDefault<UAlertProps>(defaultConfig, UAlert).timeout,
+  closable: getDefault<UAlertProps>(defaultConfig, UAlert).closable,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the alert is hidden.
+   */
+  "hidden",
+]);
+
+const isShownAlert = ref(true);
+
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  contentAttrs,
+  textAttrs,
+  titleAttrs,
+  descriptionAttrs,
+  closeButtonAttrs,
+  closeIconAttrs,
+  contentWrapperAttrs,
+  hasSlotContent,
+} = useAttrs(props);
+
+onMounted(() => {
+  if (props.timeout > 0) {
+    setTimeout(() => onClickClose(), props.timeout);
+  }
+});
+
+function onClickClose() {
+  isShownAlert.value = false;
+  emit("hidden");
+}
+
+const closeIconSize = computed(() => {
+  const sizes = {
+    xs: "3xs",
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+  };
+
+  return sizes[props.size];
+});
+
+const closeButtonColor = computed(() => {
+  if (props.color === "grayscale") return "white";
+  if (props.color === "white") return "grayscale";
+
+  return props.color;
+});
+
+const iconColor = computed(() => {
+  if (props.color === "white") return "gray";
+
+  return props.variant === "primary" ? "white" : props.color;
+});
+</script>
+
 <template>
   <div v-if="isShownAlert" :data-test="dataTest" v-bind="wrapperAttrs">
     <!-- @slot Use it to add something above the text. -->
@@ -76,160 +161,3 @@
     <slot name="bottom" />
   </div>
 </template>
-
-<script setup>
-import { onMounted, ref, computed } from "vue";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
-import UText from "../ui.text-block/UText.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import { UAlert } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Alert title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Alert description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Alert variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).variant,
-  },
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UAlert).bordered,
-  },
-
-  /**
-   * Alert size.
-   * @values xs, sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).size,
-  },
-
-  /**
-   * Alert color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).color,
-  },
-
-  /**
-   * Alert timeout.
-   */
-  timeout: {
-    type: Number,
-    default: getDefault(defaultConfig, UAlert).timeout,
-  },
-
-  /**
-   * Show close button.
-   */
-  closable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UAlert).closable,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the alert is hidden.
-   */
-  "hidden",
-]);
-
-const isShownAlert = ref(true);
-
-const {
-  config,
-  wrapperAttrs,
-  bodyAttrs,
-  contentAttrs,
-  textAttrs,
-  titleAttrs,
-  descriptionAttrs,
-  closeButtonAttrs,
-  closeIconAttrs,
-  contentWrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props);
-
-onMounted(() => {
-  if (props.timeout > 0) {
-    setTimeout(() => onClickClose(), props.timeout);
-  }
-});
-
-function onClickClose() {
-  isShownAlert.value = false;
-  emit("hidden");
-}
-
-const closeIconSize = computed(() => {
-  const sizes = {
-    xs: "3xs",
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
-
-const closeButtonColor = computed(() => {
-  if (props.color === "grayscale") return "white";
-  if (props.color === "white") return "grayscale";
-
-  return props.color;
-});
-
-const iconColor = computed(() => {
-  if (props.color === "white") return "gray";
-
-  return props.variant === "primary" ? "white" : props.color;
-});
-</script>

@@ -2,26 +2,36 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UTextProps {
+export interface UFileProps {
   /**
-   * HTML markdown or plain text.
+   * File url.
    */
-  html?: string;
+  url?: string;
 
   /**
-   * Text size.
+   * Image url.
+   */
+  imageUrl?: string;
+
+  /**
+   * File label.
+   */
+  label?: string;
+
+  /**
+   * File size.
    */
   size?: "sm" | "md" | "lg";
 
   /**
-   * Text align.
+   * Unique element id.
    */
-  align?: "left" | "center" | "right";
+  id?: string;
 
   /**
-   * Remove line height (useful for 1-line text).
+   * Show remove button.
    */
-  line?: boolean;
+  removable?: boolean;
 
   /**
    * Component config object.

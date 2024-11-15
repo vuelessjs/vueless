@@ -2,6 +2,13 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UFile from "../../ui.text-file/UFile.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UFileProps } from "../types.ts";
+
+interface UFileArgs extends UFileProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-file)
  */
@@ -16,9 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UFile.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UFileArgs> = (args: UFileArgs) => ({
   components: { UFile },
   setup() {
     const slots = getSlotNames(UFile.__name);
@@ -27,7 +34,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UFile v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UFile>
   `,
 });

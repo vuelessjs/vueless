@@ -1,12 +1,22 @@
+import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 import { getRandomId } from "../../utils/ui.ts";
 
-import UTable from "../../ui.data-table/UTable.vue";
+import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
+
+import type { Row, UTableProps } from "../types.ts";
+
+interface UTableArgs extends UTableProps {
+  slotTemplate?: string;
+  enum: "size";
+  numberOfRows: number;
+  row: Row | typeof getRow | typeof getNestedRow | typeof getNestedContentRow;
+}
 
 const SHORT_STORY_PARAMETERS = {
   docs: {
@@ -45,7 +55,7 @@ export default {
     row: getRow,
     numberOfRows: 5,
   },
-};
+} as Meta;
 
 function getDateDividerRow() {
   return {
@@ -128,7 +138,51 @@ function getRow() {
   };
 }
 
-const DefaultTemplate = (args) => ({
+function getNestedContentRow(index: number) {
+  if (index === 0) {
+    return {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: "Row with nested content",
+      key_2: "Basic data",
+      key_3: "More info",
+      nestedData: {
+        isChecked: false,
+        isHidden: true,
+        rows: [
+          {
+            id: getRandomId(),
+            key_1: "Detail 1A",
+            key_2: "Info 1B",
+            key_3: "Data 1C",
+          },
+          {
+            id: getRandomId(),
+            key_1: "Detail 2A",
+            key_2: "Info 2B",
+            key_3: "Data 2C",
+          },
+          {
+            id: getRandomId(),
+            key_1: "Detail 3A",
+            key_2: "Info 3B",
+            key_3: "Data 3C",
+          },
+        ],
+      },
+    };
+  } else {
+    return {
+      id: getRandomId(),
+      isChecked: false,
+      key_1: `Regular row ${index}`,
+      key_2: "Standard info",
+      key_3: "Basic data",
+    };
+  }
+}
+
+const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   components: { UTable, UButton, ULink, UMoney, UBadge, URow },
   setup() {
     const slots = getSlotNames(UTable.__name);
@@ -140,12 +194,12 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       :rows="args.rows || itemsData"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UTable>
   `,
   computed: {
     itemsData() {
-      let rows = [];
+      const rows = [];
 
       if (typeof args.row === "function") {
         for (let i = 0; i < args.numberOfRows; i++) {
@@ -160,7 +214,7 @@ const DefaultTemplate = (args) => ({
   },
 });
 
-const EmptyTemplate = (args) => ({
+const EmptyTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   components: { UTable },
   setup() {
     const slots = getSlotNames(UTable.__name);
@@ -185,49 +239,7 @@ NestedContent.args = {
     { key: "key_2", label: "Title 2" },
     { key: "key_3", label: "Title 3" },
   ],
-  row: (index) => {
-    if (index === 0) {
-      return {
-        id: getRandomId(),
-        isChecked: false,
-        key_1: "Row with nested content",
-        key_2: "Basic data",
-        key_3: "More info",
-        nestedData: {
-          isChecked: false,
-          isHidden: true,
-          rows: [
-            {
-              id: getRandomId(),
-              key_1: "Detail 1A",
-              key_2: "Info 1B",
-              key_3: "Data 1C",
-            },
-            {
-              id: getRandomId(),
-              key_1: "Detail 2A",
-              key_2: "Info 2B",
-              key_3: "Data 2C",
-            },
-            {
-              id: getRandomId(),
-              key_1: "Detail 3A",
-              key_2: "Info 3B",
-              key_3: "Data 3C",
-            },
-          ],
-        },
-      };
-    } else {
-      return {
-        id: getRandomId(),
-        isChecked: false,
-        key_1: `Regular row ${index}`,
-        key_2: "Standard info",
-        key_3: "Basic data",
-      };
-    }
-  },
+  row: getNestedContentRow,
   slotTemplate: `
     <template #nested-content="{ row }">
       <div class="p-4 bg-gray-100">
@@ -313,7 +325,7 @@ DateDivider.args = { dateDivider: true, row: getDateDividerRow };
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
 DateDividerCustomLabel.args = {
   rows: Array(10)
-    .fill()
+    .fill({})
     .map(() => getDateDividerRow()),
   dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
 };
@@ -407,6 +419,7 @@ CellSlots.args = {
     { key: "tags", label: "tags" },
   ],
   row: {
+    id: getRandomId(),
     link: "some link",
     money: {
       sum: 10,
@@ -419,6 +432,7 @@ CellSlots.args = {
     },
     row: [
       {
+        id: getRandomId(),
         isHidden: false,
         link: "some link",
         money: {
@@ -432,6 +446,7 @@ CellSlots.args = {
         },
       },
       {
+        id: getRandomId(),
         isHidden: false,
         link: "some link",
         money: {

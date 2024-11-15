@@ -2,26 +2,21 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UTextProps {
+export interface UEmptyProps {
   /**
-   * HTML markdown or plain text.
+   * Empty state title.
    */
-  html?: string;
+  title?: string;
 
   /**
-   * Text size.
+   * Empty state description.
+   */
+  description?: string;
+
+  /**
+   * Empty state size.
    */
   size?: "sm" | "md" | "lg";
-
-  /**
-   * Text align.
-   */
-  align?: "left" | "center" | "right";
-
-  /**
-   * Remove line height (useful for 1-line text).
-   */
-  line?: boolean;
 
   /**
    * Component config object.

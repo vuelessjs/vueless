@@ -2,14 +2,19 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UBadgeProps {
+export interface UAlertProps {
   /**
-   *  Badge label.
+   * Alert title.
    */
-  label?: string;
+  title?: string;
 
   /**
-   * Badge variant.
+   * Alert description.
+   */
+  description?: string;
+
+  /**
+   * Alert variant.
    */
   variant?: "primary" | "secondary" | "thirdary";
 
@@ -19,12 +24,12 @@ export interface UBadgeProps {
   bordered?: boolean;
 
   /**
-   * Badge size.
+   * Alert size.
    */
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
 
   /**
-   * Badge color.
+   * Alert color.
    */
   color?:
     | "brand"
@@ -50,29 +55,14 @@ export interface UBadgeProps {
     | "white";
 
   /**
-   * Icon name (appears instead of label).
+   * Alert timeout.
    */
-  icon?: string;
+  timeout?: number;
 
   /**
-   * Left icon name.
+   * Show close button.
    */
-  leftIcon?: string;
-
-  /**
-   * Right icon name.
-   */
-  rightIcon?: string;
-
-  /**
-   * Set badge corners rounded.
-   */
-  round?: boolean;
-
-  /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex?: string;
+  closable?: boolean;
 
   /**
    * Component config object.

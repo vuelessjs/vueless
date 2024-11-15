@@ -5,6 +5,14 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UEmptyProps } from "../types.ts";
+
+interface UEmptyArgs extends UEmptyProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 /**
  * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
  */
@@ -14,14 +22,14 @@ export default {
   component: UEmpty,
   args: {
     title: "No contacts",
-    description: "There is no contacts in the list.",
+    description: "There are no contacts in the list.",
   },
   argTypes: {
     ...getArgTypes(UEmpty.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
   components: { UEmpty, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UEmpty.__name);
@@ -30,17 +38,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UEmpty v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UEmpty>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs, { argTypes }) => ({
   components: { UEmpty, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

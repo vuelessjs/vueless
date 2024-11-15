@@ -1,21 +1,23 @@
 import { getRandomId } from "../utils/ui.ts";
 
-export function normalizeColumns(columns) {
-  return columns.map((column) => (typeof column === "string" ? { label: column } : column));
+import type { Column, ColumnObject, Row, RowData, RowId } from "./types.ts";
+
+export function normalizeColumns(columns: Column[]): ColumnObject[] {
+  return columns.map((column) =>
+    typeof column === "string" ? { label: column, key: column } : column,
+  );
 }
 
-export function getFilteredRow(row, columns) {
+export function mapRowColumns(row: Row, columns: ColumnObject[]): RowData {
   const filteredRow = Object.entries(row).filter((item) => {
-    const isShownColumn = columns.some((column) => column.key === item[0] && !column.isHidden);
-
-    if (isShownColumn) return item;
+    return columns.some((column) => column.key === item[0] && !column.isHidden);
   });
 
-  return Object.fromEntries(filteredRow);
+  return Object.fromEntries(filteredRow) as RowData;
 }
 
-export function syncRowCheck(row, selectedRows) {
-  row.isChecked = selectedRows.includes(row.id);
+export function syncRowCheck(row: Row, selectedRows: RowId[]) {
+  row.isChecked = selectedRows.map((rowId) => String(rowId)).includes(String(row.id));
 
   if (row.row && !Array.isArray(row.row)) {
     row.row = syncRowCheck(row.row, selectedRows);
@@ -24,7 +26,7 @@ export function syncRowCheck(row, selectedRows) {
   return row;
 }
 
-export function addRowId(row) {
+export function addRowId(row: Row) {
   const hasRowId = typeof row.id !== "undefined" && row.id !== null && row.id !== "";
 
   row.id = hasRowId ? row.id : getRandomId();
@@ -40,11 +42,11 @@ export function addRowId(row) {
   return row;
 }
 
-export function toggleRowVisibility(row, targetRowId) {
+export function toggleRowVisibility(row: Row, targetRowId: string | number) {
   if (row.id === targetRowId) {
-    if (Object.hasOwn(row, "isHidden")) {
+    if (row.hasOwnProperty("isHidden")) {
       row.isHidden = !row.isHidden;
-    } else if (row.nestedData && Object.hasOwn(row.nestedData, "isHidden")) {
+    } else if (row.nestedData && row.nestedData.hasOwnProperty("isHidden")) {
       row.nestedData.isHidden = !row.nestedData.isHidden;
     }
 
@@ -64,18 +66,22 @@ export function toggleRowVisibility(row, targetRowId) {
   }
 }
 
-export function switchRowCheck(row, isChecked) {
+export function switchRowCheck(row: Row, isChecked: boolean) {
   row.isChecked = isChecked;
 
-  if (row.row) {
+  if (row.row && !Array.isArray(row.row)) {
     switchRowCheck(row.row, isChecked);
+  }
+
+  if (row.row && Array.isArray(row.row)) {
+    row.row.map((currentRow) => switchRowCheck(currentRow, isChecked));
   }
 }
 
-export function getFlatRows(tableRows) {
-  const rows = [];
+export function getFlatRows(tableRows: Row[]) {
+  const rows: Row[] = [];
 
-  function addRow(row) {
+  function addRow(row: Row) {
     rows.push(row);
 
     if (row.row && !Array.isArray(row.row)) {

@@ -2,6 +2,14 @@ import { hasSlotContent } from "./composables/useUI.ts";
 
 // TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UAlertDefaultConfig from "./ui.text-alert/config.ts";
+import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
+import UFileDefaultConfig from "./ui.text-file/config.ts";
+import UFilesDefaultConfig from "./ui.text-files/config.ts";
+import UMoneyDefaultConfig from "./ui.text-money/config.ts";
+import UHeaderDefaultConfig from "./ui.text-header/config.ts";
+import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
+import UDotDefaultConfig from "./ui.other-dot/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import ULinkDefaultConfig from "./ui.button-link/config.ts";
 import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
@@ -10,6 +18,7 @@ import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
+import UDataTableConfig from "./ui.data-table/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -117,6 +126,14 @@ export type BrandColors =
 
 export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
+  UAlert?: Partial<typeof UAlertDefaultConfig>;
+  UEmpty?: Partial<typeof UEmptyDefaultConfig>;
+  UFile?: Partial<typeof UFileDefaultConfig>;
+  UFiles?: Partial<typeof UFilesDefaultConfig>;
+  UMoney?: Partial<typeof UMoneyDefaultConfig>;
+  UHeader?: Partial<typeof UHeaderDefaultConfig>;
+  UNotify?: Partial<typeof UNotifyDefaultConfig>;
+  UDot?: Partial<typeof UDotDefaultConfig>;
   UButton?: Partial<typeof UButtonDefaultConfig>;
   ULink?: Partial<typeof ULinkDefaultConfig>;
   UToggle?: Partial<typeof UToggleDefaultConfig>;
@@ -125,6 +142,7 @@ export interface Components {
   UCalendar?: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker?: Partial<typeof UDatePickerConfig>;
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
+  UTable?: Partial<typeof UDataTableConfig>;
 }
 
 export interface Directives {
@@ -350,19 +368,25 @@ export type ComponentType<T> = T extends new (...args: any) => {}
     ? 2
     : 0;
 
-export type ComponentProps<T> = T extends new (...args: any) => { $props: infer P }
+export type ComponentProps<T> = T extends new (...args: any) => {
+  $props: infer P;
+}
   ? NonNullable<P>
   : T extends (props: infer P, ...args: any) => any
     ? P
     : {};
 
-export type ComponentSlots<T> = T extends new (...args: any) => { $slots: infer S }
+export type ComponentSlots<T> = T extends new (...args: any) => {
+  $slots: infer S;
+}
   ? NonNullable<S>
   : T extends (props: any, ctx: { slots: infer S; attrs: any; emit: any }, ...args: any) => any
     ? NonNullable<S>
     : {};
 
-export type ComponentEmit<T> = T extends new (...args: any) => { $emit: infer E }
+export type ComponentEmit<T> = T extends new (...args: any) => {
+  $emit: infer E;
+}
   ? NonNullable<E>
   : {};
 

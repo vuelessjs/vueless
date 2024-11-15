@@ -9,7 +9,7 @@ export const SINGLE_ZERO = "0";
 export const DOUBLE_ZERO = "00";
 
 export function separatedMoney(
-  money,
+  money: number,
   minFractionDigits = 0,
   maxFractionDigits = 2,
   decimalSeparator = ",",
