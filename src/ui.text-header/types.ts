@@ -2,29 +2,19 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UBadgeProps {
+export interface UHeaderProps {
   /**
-   *  Badge label.
+   * Header label.
    */
   label?: string;
 
   /**
-   * Badge variant.
+   * Header size.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
-
-  /**
-   * Badge size.
-   */
-  size?: "sm" | "md" | "lg";
-
-  /**
-   * Badge color.
+   * Header color.
    */
   color?:
     | "brand"
@@ -50,29 +40,19 @@ export interface UBadgeProps {
     | "white";
 
   /**
-   * Icon name (appears instead of label).
+   * Allows changing HTML tag.
    */
-  icon?: string;
+  tag?: string;
 
   /**
-   * Left icon name.
+   * Removes text line height (disable for multiline headers).
    */
-  leftIcon?: string;
+  line?: boolean;
 
   /**
-   * Right icon name.
+   * Show the underline.
    */
-  rightIcon?: string;
-
-  /**
-   * Set badge corners rounded.
-   */
-  round?: boolean;
-
-  /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex?: string;
+  underlined?: boolean;
 
   /**
    * Component config object.

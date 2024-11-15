@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<UTextProps>(), {
   size: getDefault<UTextProps>(defaultConfig, UText).size,
   align: getDefault<UTextProps>(defaultConfig, UText).align,
   line: getDefault<UTextProps>(defaultConfig, UText).line,
+  dataTest: "",
 });
 
 const { wrapperAttrs, htmlAttrs, hasSlotContent } = useAttrs(props);
