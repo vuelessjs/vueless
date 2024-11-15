@@ -340,7 +340,7 @@ const unwatchInit = watch(
   () => {
     if (isInit) unwatchInit();
 
-    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value) {
+    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
       hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
       minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
       secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
@@ -349,8 +349,14 @@ const unwatchInit = watch(
 
       isInit = true;
     }
+
+    if (selectedDate.value) {
+      emit("userDateChange", userFormattedDate.value);
+
+      isInit = true;
+    }
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function getCurrentValueType(value: DateValue): DateValue {
