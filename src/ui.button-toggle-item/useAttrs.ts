@@ -1,10 +1,22 @@
-import { computed, toValue } from "vue";
+import { computed, toValue, type Ref } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 
-export default function useAttrs(props, { isSelected, separated, variant }) {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
+import type { UseAttrs } from "../types.ts";
+import type { UToggleItemProps, Config } from "./types.ts";
+
+type itemState = {
+  isSelected: Ref<boolean>;
+  separated: Ref<boolean>;
+  variant: string;
+};
+
+export default function useAttrs(
+  props: UToggleItemProps,
+  { isSelected, separated, variant }: itemState,
+): UseAttrs<Config> {
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,
     () => props.config,
   );

@@ -1,59 +1,35 @@
-<template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
-    <!-- @slot Use it to add something before the label. -->
-    <slot name="left" />
-
-    <router-link
-      v-if="isPresentRoute"
-      :to="route"
-      :target="targetValue"
-      v-bind="linkAttrs"
-      :data-test="dataTest"
-      tabindex="0"
-      @blur="onBlur"
-      @focus="onFocus"
-      @click="onClick"
-      @keydown="onKeydown"
-      @mouseover="onMouseover"
-    >
-      <!-- @slot Use it replace the label. -->
-      <slot>
-        {{ label }}
-      </slot>
-    </router-link>
-
-    <a
-      v-else
-      :href="prefixedHref"
-      :target="targetValue"
-      v-bind="linkAttrs"
-      :data-test="dataTest"
-      tabindex="0"
-      @blur="onBlur"
-      @focus="onFocus"
-      @click="onClick"
-      @keydown="onKeydown"
-      @mouseover="onMouseover"
-    >
-      <!-- @slot Use it replace the label. -->
-      <slot>{{ label }}</slot>
-    </a>
-
-    <!-- @slot Use it to add something after the label. -->
-    <slot name="right" />
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
 import { getDefault } from "../utils/ui.ts";
 
-import useAttrs from "./useAttrs.js";
-import defaultConfig from "./config.js";
-import { ULink } from "./constants.js";
+import useAttrs from "./useAttrs.ts";
+import defaultConfig from "./config.ts";
+import { ULink } from "./constants.ts";
+
+import type { ULinkProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<ULinkProps>(), {
+  size: getDefault<ULinkProps>(defaultConfig, ULink).size,
+  color: getDefault<ULinkProps>(defaultConfig, ULink).color,
+  type: getDefault<ULinkProps>(defaultConfig, ULink).type,
+  targetBlank: getDefault<ULinkProps>(defaultConfig, ULink).targetBlank,
+  ariaCurrentValue: getDefault<ULinkProps>(defaultConfig, ULink).ariaCurrentValue,
+  custom: getDefault<ULinkProps>(defaultConfig, ULink).custom,
+  replace: getDefault<ULinkProps>(defaultConfig, ULink).replace,
+  activeClass: getDefault<ULinkProps>(defaultConfig, ULink).activeClass,
+  exactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).exactActiveClass,
+  wrapperActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperActiveClass,
+  wrapperExactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperExactActiveClass,
+  underlined: getDefault<ULinkProps>(defaultConfig, ULink).underlined,
+  dashed: getDefault<ULinkProps>(defaultConfig, ULink).dashed,
+  disabled: getDefault<ULinkProps>(defaultConfig, ULink).disabled,
+  block: getDefault<ULinkProps>(defaultConfig, ULink).block,
+  noRing: getDefault<ULinkProps>(defaultConfig, ULink).noRing,
+  dataTest: "",
+});
 
 const emit = defineEmits([
   /**
@@ -81,179 +57,6 @@ const emit = defineEmits([
    */
   "keydown",
 ]);
-
-const props = defineProps({
-  /**
-   * Button label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Link href url.
-   */
-  href: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Vue-router route object.
-   */
-  to: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Link size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).size,
-  },
-
-  /**
-   * Link color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).color,
-  },
-
-  /**
-   * Link open type behaviour.
-   * @values phone, email, link
-   */
-  type: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).type,
-  },
-
-  /**
-   * Open link in the new tab.
-   */
-  targetBlank: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).targetBlank,
-  },
-
-  /**
-   * Pass value to the attribute aria-current when the link is exact active.
-   */
-  ariaCurrentValue: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).ariaCurrentValue,
-  },
-
-  /**
-   * Whether RouterLink should not wrap its content in an a tag.
-   */
-  custom: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).custom,
-  },
-
-  /**
-   * Whether RouterLink should not wrap its content in an a tag.
-   */
-  replace: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).replace,
-  },
-
-  /**
-   * Apply classes to the link when its route is active or when it matches any parent route.
-   */
-  activeClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).activeClass,
-  },
-
-  /**
-   * Apply classes to the link when its route is active.
-   */
-  exactActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).exactActiveClass,
-  },
-
-  /**
-   * Apply classes to the wrapper div when link route is active or when it matches any parent route.
-   */
-  wrapperActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).wrapperActiveClass,
-  },
-
-  /**
-   * Apply classes to the wrapper div when link route is active.
-   */
-  wrapperExactActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).wrapperExactActiveClass,
-  },
-
-  /**
-   * Show underline.
-   */
-  underlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).underlined,
-  },
-
-  /**
-   * Set link underline style as dashed.
-   */
-  dashed: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).dashed,
-  },
-
-  /**
-   * Disable the link.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).disabled,
-  },
-
-  /**
-   * Make the Button fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).block,
-  },
-
-  /**
-   * Remove outline ring on focus.
-   */
-  noRing: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).noRing,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
 
 const isPresentRoute = computed(() => {
   for (const key in props.to) return true;
@@ -316,3 +119,49 @@ defineExpose({
   wrapperRef,
 });
 </script>
+
+<template>
+  <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
+    <!-- @slot Use it to add something before the label. -->
+    <slot name="left" />
+
+    <router-link
+      v-if="isPresentRoute"
+      :to="route"
+      :target="targetValue"
+      v-bind="linkAttrs"
+      :data-test="dataTest"
+      tabindex="0"
+      @blur="onBlur"
+      @focus="onFocus"
+      @click="onClick"
+      @keydown="onKeydown"
+      @mouseover="onMouseover"
+    >
+      <!-- @slot Use it replace the label. -->
+      <slot>
+        {{ label }}
+      </slot>
+    </router-link>
+
+    <a
+      v-else
+      :href="prefixedHref"
+      :target="targetValue"
+      v-bind="linkAttrs"
+      :data-test="dataTest"
+      tabindex="0"
+      @blur="onBlur"
+      @focus="onFocus"
+      @click="onClick"
+      @keydown="onKeydown"
+      @mouseover="onMouseover"
+    >
+      <!-- @slot Use it replace the label. -->
+      <slot>{{ label }}</slot>
+    </a>
+
+    <!-- @slot Use it to add something after the label. -->
+    <slot name="right" />
+  </div>
+</template>

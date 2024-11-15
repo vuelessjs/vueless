@@ -6,6 +6,14 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UToggleProps } from "../types.ts";
+
+interface UToggleArgs extends UToggleProps {
+  slotTemplate?: string;
+  enum: "variant" | "size";
+}
+
 /**
  * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
  */
@@ -25,9 +33,9 @@ export default {
     ...getArgTypes(UToggle.__name),
     modelValue: { control: { type: "text" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   components: { UToggle, UIcon, UToggleItem },
   setup() {
     const slots = getSlotNames(UToggle.__name);
@@ -36,12 +44,12 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UToggle v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
     const value = ref("");
@@ -49,7 +57,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
     return {
       args,
       value,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

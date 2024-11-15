@@ -1,3 +1,104 @@
+<script lang="ts" setup>
+import { computed, ref, watchEffect, useId, watch } from "vue";
+
+import { getDefault } from "../utils/ui.ts";
+import ULoader from "../ui.loader/ULoader.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+import { UButton } from "./constants.ts";
+
+import type { UButtonProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UButtonProps>(), {
+  variant: getDefault<UButtonProps>(defaultConfig, UButton).variant,
+  color: getDefault<UButtonProps>(defaultConfig, UButton).color,
+  size: getDefault<UButtonProps>(defaultConfig, UButton).size,
+  tag: getDefault<UButtonProps>(defaultConfig, UButton).tag,
+  tabindex: getDefault<UButtonProps>(defaultConfig, UButton).tabindex,
+  filled: getDefault<UButtonProps>(defaultConfig, UButton).filled,
+  disabled: getDefault<UButtonProps>(defaultConfig, UButton).disabled,
+  block: getDefault<UButtonProps>(defaultConfig, UButton).block,
+  round: getDefault<UButtonProps>(defaultConfig, UButton).round,
+  square: getDefault<UButtonProps>(defaultConfig, UButton).square,
+  loading: getDefault<UButtonProps>(defaultConfig, UButton).loading,
+  noRing: getDefault<UButtonProps>(defaultConfig, UButton).noRing,
+  dataTest: "",
+});
+
+const elementId = props.id || useId();
+
+const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
+  useAttrs(props);
+
+const buttonRef = ref(null);
+const buttonStyle = ref(null);
+const buttonWidth = ref(0);
+
+const loaderSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size];
+});
+
+const iconSize = computed(() => {
+  const sizes = {
+    "2xs": "2xs",
+    xs: "xs",
+    sm: "sm",
+    md: "sm",
+    lg: "md",
+    xl: "md",
+  };
+
+  return sizes[props.size];
+});
+
+const iconColor = computed(() => {
+  return props.variant === "primary" ? "white" : props.color;
+});
+
+watch(
+  () => props.loading,
+  (newValue, oldValue) => {
+    const isLoaderOn = newValue && oldValue !== undefined;
+
+    if (isLoaderOn && buttonRef.value) {
+      buttonWidth.value = buttonRef.value.offsetWidth;
+    }
+
+    buttonStyle.value = {
+      width: isLoaderOn ? `${buttonWidth.value}px` : null,
+      paddingLeft: isLoaderOn ? "0px" : null,
+      paddingRight: isLoaderOn ? "0px" : null,
+    };
+  },
+  { immediate: true },
+);
+
+watchEffect(() => {
+  props.loading && buttonRef.value.blur();
+});
+
+defineExpose({
+  /**
+   * A reference to the button element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  buttonRef,
+});
+</script>
+
 <template>
   <component
     :is="tag"
@@ -79,243 +180,3 @@
     </template>
   </component>
 </template>
-
-<script setup>
-import { computed, ref, watchEffect, useId, watch } from "vue";
-
-import { getDefault } from "../utils/ui.ts";
-import ULoader from "../ui.loader/ULoader.vue";
-import UIcon from "../ui.image-icon/UIcon.vue";
-
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import { UButton } from "./constants.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Button variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).variant,
-  },
-
-  /**
-   * Button color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).color,
-  },
-
-  /**
-   * Button size.
-   * @values 2xs, xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).size,
-  },
-
-  /**
-   * Button label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Allows changing button html tag.
-   */
-  tag: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).tag,
-  },
-
-  /**
-   * Icon name (appears instead of label).
-   */
-  icon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex: {
-    type: [String, Number],
-    default: getDefault(defaultConfig, UButton).tabindex,
-  },
-
-  /**
-   * Fill the background for thirdary variant.
-   */
-  filled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).filled,
-  },
-
-  /**
-   * Disable the button.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).disabled,
-  },
-
-  /**
-   * Make the Button fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).block,
-  },
-
-  /**
-   * Set button corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).round,
-  },
-
-  /**
-   * Set the same paddings for the button.
-   */
-  square: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).square,
-  },
-
-  /**
-   * Enable loader.
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).loading,
-  },
-
-  /**
-   * Remove button ring on focus.
-   */
-  noRing: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).noRing,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const elementId = props.id || useId();
-
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useAttrs(props);
-
-const buttonRef = ref(null);
-const buttonStyle = ref(null);
-const buttonWidth = ref(0);
-
-const loaderSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size];
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    "2xs": "2xs",
-    xs: "xs",
-    sm: "sm",
-    md: "sm",
-    lg: "md",
-    xl: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const iconColor = computed(() => {
-  return props.variant === "primary" ? "white" : props.color;
-});
-
-watch(
-  () => props.loading,
-  (newValue, oldValue) => {
-    const isLoaderOn = newValue && oldValue !== undefined;
-
-    if (isLoaderOn && buttonRef.value) {
-      buttonWidth.value = buttonRef.value.offsetWidth;
-    }
-
-    buttonStyle.value = {
-      width: isLoaderOn ? `${buttonWidth.value}px` : null,
-      paddingLeft: isLoaderOn ? "0px" : null,
-      paddingRight: isLoaderOn ? "0px" : null,
-    };
-  },
-  { immediate: true },
-);
-
-watchEffect(() => {
-  props.loading && buttonRef.value.blur();
-});
-
-defineExpose({
-  /**
-   * A reference to the button element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  buttonRef,
-});
-</script>
