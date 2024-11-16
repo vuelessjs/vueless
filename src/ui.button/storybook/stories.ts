@@ -12,6 +12,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import { useDarkMode } from "../../composables/useDarkMode.ts";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UButtonProps } from "../types.ts";
 
@@ -182,7 +184,9 @@ export const IconProps: StoryFn<UButtonArgs> = (args) => ({
 export const Slots: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, UIcon, URow },
   setup() {
-    return { args };
+    const { isDarkMode } = useDarkMode();
+
+    return { args, isDarkMode };
   },
   template: `
     <URow no-mobile>
@@ -190,8 +194,9 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
         <template #left>
           <UIcon
             name="heart_plus"
-            color="green"
             size="sm"
+            color="green"
+            :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
       </UButton>
@@ -200,8 +205,9 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
         <template #default>
           <UIcon
             name="settings"
-            color="green"
             size="sm"
+            color="green"
+            :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
       </UButton>
@@ -210,8 +216,9 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
         <template #right>
           <UIcon
             name="delete"
-            color="green"
             size="sm"
+            color="green"
+            :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
       </UButton>

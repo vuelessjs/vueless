@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, watchEffect, useId, watch } from "vue";
 
+import { useDarkMode } from "../composables/useDarkMode.ts";
 import { getDefault } from "../utils/ui.ts";
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -31,11 +32,13 @@ const props = withDefaults(defineProps<UButtonProps>(), {
 
 const elementId = props.id || useId();
 
+const { isDarkMode } = useDarkMode();
+
 const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
   useAttrs(props);
 
 const buttonRef = ref(null);
-const buttonStyle = ref(null);
+const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
 const loaderSize = computed(() => {
@@ -65,7 +68,9 @@ const iconSize = computed(() => {
 });
 
 const iconColor = computed(() => {
-  return props.variant === "primary" ? "white" : props.color;
+  const primaryColor = isDarkMode.value ? "black" : "white";
+
+  return props.variant === "primary" ? primaryColor : props.color;
 });
 
 watch(
