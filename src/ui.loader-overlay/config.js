@@ -5,7 +5,7 @@ export default /*tw*/ {
   },
   overlay: {
     base: `
-      bg-{color}-600
+      bg-{color}-100 dark:bg-{color}-950
       h-screen w-screen
       flex justify-center items-center
       fixed left-0 top-0 z-[9999]
@@ -14,7 +14,8 @@ export default /*tw*/ {
     variants: {
       color: {
         white: "bg-white",
-        grayscale: "bg-gray-800",
+        black: "bg-gray-900",
+        grayscale: "bg-gray-100 dark:bg-gray-900",
       },
     },
   },
