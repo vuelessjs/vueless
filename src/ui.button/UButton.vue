@@ -60,8 +60,8 @@ const iconSize = computed(() => {
     xs: "xs",
     sm: "sm",
     md: "sm",
-    lg: "md",
-    xl: "md",
+    lg: "sm",
+    xl: "sm",
   };
 
   return sizes[props.size];
