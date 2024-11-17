@@ -26,7 +26,7 @@ export default /*tw*/ {
   passwordIcon: "{UIcon}",
   input: {
     base: `
-      block w-full py-2 px-3 font-normal leading-none text-gray-900 bg-white
+      block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-white
       border-none rounded-dynamic transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
       disabled:text-gray-700 disabled:bg-gray-100
