@@ -4,7 +4,7 @@ export type Config = Partial<typeof defaultConfig>;
 
 export interface UModalConfirmProps {
   /**
-   * Set modal state (hidden / shown).
+   * Modal state (shown / hidden).
    */
   modelValue?: boolean;
 

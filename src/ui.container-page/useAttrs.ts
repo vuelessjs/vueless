@@ -8,13 +8,13 @@ import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { UPageProps, Config } from "./types.ts";
 
-type MobileBreakpoint = {
+type ComponentState = {
   isMobileBreakpoint: Ref<boolean>;
 };
 
 export default function useAttrs(
   props: UPageProps,
-  { isMobileBreakpoint }: MobileBreakpoint,
+  { isMobileBreakpoint }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,

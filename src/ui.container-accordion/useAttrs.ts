@@ -7,13 +7,13 @@ import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { UAccordionProps, Config } from "./types.ts";
 
-type ActiveState = {
+type ComponentState = {
   isOpened: Ref<boolean>;
 };
 
 export default function useAttrs(
   props: UAccordionProps,
-  { isOpened }: ActiveState,
+  { isOpened }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,

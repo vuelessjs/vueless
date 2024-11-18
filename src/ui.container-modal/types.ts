@@ -1,10 +1,12 @@
 import defaultConfig from "./config.ts";
 
+import type { RouteLocationRaw } from "vue-router";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UModalProps {
   /**
-   * Set modal state (hidden / shown).
+   * Modal state (shown / hidden).
    */
   modelValue?: boolean;
 
@@ -26,10 +28,7 @@ export interface UModalProps {
   /**
    * Back link vue-router route object.
    */
-  backTo?: {
-    path?: string;
-    params?: Record<string, object>;
-  };
+  backTo?: RouteLocationRaw;
 
   /**
    * Back link label.
