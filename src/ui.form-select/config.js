@@ -103,6 +103,9 @@ export default /*tw*/ {
         md: "text-sm placeholder:text-sm",
         lg: "text-base placeholder:text-base",
       },
+      error: {
+        true: "placeholder:text-red-300",
+      },
     },
   },
   dropdownList: "{UDropdownList} group-[]/top:bottom-full group-[]/top:top-auto top-full",
