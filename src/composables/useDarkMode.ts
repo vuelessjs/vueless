@@ -1,12 +1,11 @@
-import { nextTick } from "process";
 import { DARK_MODE_SELECTOR } from "../constants.js";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 
 export function useDarkMode() {
   const isDarkMode = ref(false);
 
-  onMounted(() => {
-    nextTick(() => {
+  onMounted(async () => {
+    await nextTick(() => {
       const isDarkModeClass = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
       const isDarkModeCache = Boolean(localStorage.getItem(DARK_MODE_SELECTOR));
 
