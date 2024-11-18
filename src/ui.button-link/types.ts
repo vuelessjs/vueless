@@ -1,5 +1,7 @@
 import defaultConfig from "./config.ts";
 
+import type { RouteLocationRaw } from "vue-router";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export interface ULinkProps {
@@ -16,7 +18,7 @@ export interface ULinkProps {
   /**
    * Vue-router route object.
    */
-  to?: object;
+  to?: RouteLocationRaw;
 
   /**
    * Link size.

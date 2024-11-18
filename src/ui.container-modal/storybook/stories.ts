@@ -115,7 +115,7 @@ BackLink.args = {
   backLabel: "back",
   backTo: {
     path: "/",
-    params: {},
+    query: {},
   },
 };
 
