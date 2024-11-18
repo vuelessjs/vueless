@@ -1,3 +1,87 @@
+<script lang="ts" setup>
+import { nextTick, computed, provide, ref, useId } from "vue";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import ULink from "../ui.button-link/ULink.vue";
+import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+
+import { getDefault } from "../utils/ui.ts";
+
+import { vClickOutside } from "../directives";
+
+import { UDropdownLink } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UDropdownLinkProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UDropdownLinkProps>(), {
+  labelKey: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).labelKey,
+  color: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).color,
+  size: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).size,
+  underlined: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).underlined,
+  dashed: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).dashed,
+  disabled: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).disabled,
+  noRing: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noRing,
+  noIcon: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noIcon,
+  yPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).yPosition,
+  xPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).xPosition,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers on dropdown option click.
+   * @property {string} value
+   */
+  "clickOption",
+]);
+
+provide("hideDropdownOptions", hideOptions);
+
+const isShownOptions = ref(false);
+const dropdownListRef = ref(null);
+
+const elementId = props.id || useId();
+
+const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
+  props,
+  { isShownOptions },
+);
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "2xs",
+    md: "xs",
+    lg: "sm",
+  };
+
+  return sizes[props.size];
+});
+
+function onClickLink() {
+  isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
+}
+
+function hideOptions() {
+  isShownOptions.value = false;
+}
+
+function onClickList() {
+  hideOptions();
+}
+
+function onClickOption(option) {
+  emit("clickOption", option);
+}
+</script>
+
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <ULink
@@ -66,197 +150,3 @@
     />
   </div>
 </template>
-
-<script setup>
-import { nextTick, computed, provide, ref, useId } from "vue";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import ULink from "../ui.button-link/ULink.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
-
-import { getDefault } from "../utils/ui.ts";
-
-import { vClickOutside } from "../directives";
-
-import { UDropdownLink } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Link label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Options list.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).labelKey,
-  },
-
-  /**
-   * Link color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).color,
-  },
-
-  /**
-   * Link size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).size,
-  },
-
-  /**
-   * Add underline.
-   */
-  underlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownLink).underlined,
-  },
-
-  /**
-   * Set dashed underline style.
-   */
-  dashed: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownLink).dashed,
-  },
-
-  /**
-   * Disable the link.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownLink).disabled,
-  },
-
-  /**
-   * Hide focus ring.
-   */
-  noRing: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownLink).noRing,
-  },
-
-  /**
-   * Hide dropdown icon.
-   */
-  noIcon: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownLink).noIcon,
-  },
-
-  /**
-   * The position of dropdown list on the y-axis.
-   * @values top, bottom
-   */
-  yPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).yPosition,
-  },
-
-  /**
-   * The position of dropdown list on the x-axis.
-   * @values left, right
-   */
-  xPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownLink).xPosition,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers on dropdown option click.
-   * @property {string} value
-   */
-  "clickOption",
-]);
-
-provide("hideDropdownOptions", hideOptions);
-
-const isShownOptions = ref(false);
-const dropdownListRef = ref(null);
-
-const elementId = props.id || useId();
-
-const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
-  props,
-  { isShownOptions },
-);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
-
-function onClickLink() {
-  isShownOptions.value = !isShownOptions.value;
-
-  if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value.wrapperRef.focus());
-  }
-}
-
-function hideOptions() {
-  isShownOptions.value = false;
-}
-
-function onClickList() {
-  hideOptions();
-}
-
-function onClickOption(option) {
-  emit("clickOption", option);
-}
-</script>

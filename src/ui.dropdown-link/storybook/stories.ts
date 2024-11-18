@@ -1,22 +1,34 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
-import UDropdownBadge from "../../ui.dropdown-badge/UDropdownBadge.vue";
+import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UDropdownLinkProps } from "../types.ts";
+
+interface UDropdownLinkArgs extends UDropdownLinkProps {
+  slotTemplate?: string;
+  enum: "color" | "size";
+}
+
 /**
- * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
+ * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
  */
 export default {
-  id: "2020",
-  title: "Dropdowns / Dropdown Badge",
-  component: UDropdownBadge,
+  id: "2030",
+  title: "Dropdowns / Dropdown Link",
+  component: UDropdownLink,
   args: {
     label: "Dropdown",
-    options: [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
+    options: [
+      { label: "option 1", value: "1" },
+      { label: "option 2", value: "2" },
+      { label: "option 3", value: "3" },
+    ],
   },
   argTypes: {
-    ...getArgTypes(UDropdownBadge.__name),
+    ...getArgTypes(UDropdownLink.__name),
   },
   parameters: {
     docs: {
@@ -25,39 +37,47 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
-  components: { UDropdownBadge, UIcon },
+const DefaultTemplate: StoryFn<UDropdownLinkArgs> = (args: UDropdownLinkArgs) => ({
+  components: { UDropdownLink, UIcon },
   setup() {
-    const slots = getSlotNames(UDropdownBadge.__name);
+    const slots = getSlotNames(UDropdownLink.__name);
 
     return { args, slots };
   },
   template: `
-    <UDropdownBadge
-      v-bind="args"
-    >
-      ${args.slotTemplate || getSlotsFragment()}
-    </UDropdownBadge>
+    <UDropdownLink v-bind="args">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UDropdownLink>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
-  components: { UDropdownBadge, URow },
+const EnumVariantTemplate: StoryFn<UDropdownLinkArgs> = (
+  args: UDropdownLinkArgs,
+  { argTypes },
+) => ({
+  components: { UDropdownLink, URow },
   setup() {
-    return {
-      args,
-      options: argTypes[args.enum].options,
-    };
+    function getText(value: string) {
+      return `Dropdown ${value}`;
+    }
+
+    let prefixedOptions = argTypes?.[args.enum]?.options;
+
+    if (argTypes?.[args.enum]?.name === "size") {
+      prefixedOptions = prefixedOptions?.map((option) => getText(option));
+    }
+
+    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
   },
   template: `
     <URow>
-      <UDropdownBadge
+      <UDropdownLink
         v-for="(option, index) in options"
         v-bind="args"
         :[args.enum]="option"
-        :label="option"
+        :label="prefixedOptions[index]"
         :key="index"
       />
     </URow>

@@ -1,3 +1,73 @@
+<script lang="ts" setup>
+import { nextTick, ref, useId } from "vue";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UBadge from "../ui.text-badge/UBadge.vue";
+import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+
+import { getDefault } from "../utils/ui.ts";
+
+import { vClickOutside } from "../directives";
+
+import defaultConfig from "./config.ts";
+import { UDropdownBadge } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UDropdownBadgeProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
+  labelKey: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).labelKey,
+  variant: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).variant,
+  color: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).color,
+  size: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).size,
+  round: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).round,
+  noIcon: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).noIcon,
+  yPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).yPosition,
+  xPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).xPosition,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers on dropdown option click.
+   * @property {string} value
+   */
+  "clickOption",
+]);
+
+const isShownOptions = ref(false);
+const dropdownListRef = ref(null);
+
+const elementId = props.id || useId();
+
+const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
+  props,
+  {
+    isShownOptions,
+  },
+);
+
+function onClickBadge() {
+  isShownOptions.value = !isShownOptions.value;
+
+  if (isShownOptions.value) {
+    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+  }
+}
+
+function hideOptions() {
+  isShownOptions.value = false;
+}
+
+function onClickOption(option) {
+  emit("clickOption", option);
+
+  hideOptions();
+}
+</script>
+
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UBadge
@@ -61,170 +131,3 @@
     />
   </div>
 </template>
-
-<script setup>
-import { nextTick, ref, useId } from "vue";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UBadge from "../ui.text-badge/UBadge.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
-
-import { getDefault } from "../utils/ui.ts";
-
-import { vClickOutside } from "../directives";
-
-import defaultConfig from "./config.js";
-import { UDropdownBadge } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Badge label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Options list.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).labelKey,
-  },
-
-  /**
-   * Badge variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).variant,
-  },
-
-  /**
-   * Badge color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).color,
-  },
-
-  /**
-   * Badge size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).size,
-  },
-
-  /**
-   * Set badge corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownBadge).round,
-  },
-
-  /**
-   * Hide dropdown icon.
-   */
-  noIcon: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDropdownBadge).noIcon,
-  },
-
-  /**
-   * The position of dropdown list on the y-axis.
-   * @values top, bottom
-   */
-  yPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).yPosition,
-  },
-
-  /**
-   * The position of dropdown list on the x-axis.
-   * @values left, right
-   */
-  xPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UDropdownBadge).xPosition,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers on dropdown option click.
-   * @property {string} value
-   */
-  "clickOption",
-]);
-
-const isShownOptions = ref(false);
-const dropdownListRef = ref(null);
-
-const elementId = props.id || useId();
-
-const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
-  props,
-  {
-    isShownOptions,
-  },
-);
-
-function onClickBadge() {
-  isShownOptions.value = !isShownOptions.value;
-
-  if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value.wrapperRef.focus());
-  }
-}
-
-function hideOptions() {
-  isShownOptions.value = false;
-}
-
-function onClickOption(option) {
-  emit("clickOption", option);
-
-  hideOptions();
-}
-</script>
