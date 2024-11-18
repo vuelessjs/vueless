@@ -3,13 +3,14 @@ export default /*tw*/ {
     base: "fill-current outline-0 shrink-0 grow-0",
     variants: {
       variant: {
-        light: "text-{color}-400",
-        default: "text-{color}-600",
-        dark: "text-{color}-800",
+        light: "text-{color}-400 dark:text-{color}-200",
+        default: "text-{color}-600 dark:text-{color}-400",
+        dark: "text-{color}-800 dark:text-{color}-600",
       },
       color: {
         white: "text-white",
-        grayscale: "text-gray-900",
+        black: "text-gray-900",
+        grayscale: "text-gray-900 dark:text-white",
       },
       interactive: {
         true: "cursor-pointer",

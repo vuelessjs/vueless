@@ -420,7 +420,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div
       v-show="isHeaderSticky || isShownActionsHeader"
       ref="sticky-header-row"
@@ -432,9 +432,10 @@ defineExpose({
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
+            size="md"
             :partial="!isSelectedAllRows"
-            :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderActionsCheckboxAttrs"
+            :data-test="`${dataTest}-select-all`"
           />
         </div>
 
@@ -456,9 +457,10 @@ defineExpose({
           <UCheckbox
             v-if="selectable"
             v-model="selectAll"
+            size="md"
             :partial="!isSelectedAllRows"
-            :data-test="`${dataTest}-select-all`"
             v-bind="stickyHeaderCheckboxAttrs"
+            :data-test="`${dataTest}-select-all`"
           />
 
           <div
@@ -523,9 +525,10 @@ defineExpose({
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
+                size="md"
                 :partial="!isSelectedAllRows"
-                :data-test="`${dataTest}-select-all`"
                 v-bind="headerCheckboxAttrs"
+                :data-test="`${dataTest}-select-all`"
               />
 
               <div
@@ -594,13 +597,13 @@ defineExpose({
             <UTableRow
               v-model:selected-rows="selectedRows"
               :selectable="selectable"
-              :data-test="`${dataTest}-row`"
               :row="row"
               :columns="normalizedColumns"
               :config="config"
               :attrs="tableRowAttrs as unknown as UTableRowAttrs"
               :nested-level="0"
               :empty-cell-label="emptyCellLabel"
+              :data-test="`${dataTest}-row`"
               @click="onClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
@@ -652,8 +655,8 @@ defineExpose({
                 <UEmpty
                   size="md"
                   :description="currentLocale.noData"
-                  :data-test="`${dataTest}-empty`"
                   v-bind="bodyEmptyStateAttrs"
+                  :data-test="`${dataTest}-empty`"
                 />
               </slot>
             </td>

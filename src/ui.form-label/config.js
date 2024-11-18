@@ -72,7 +72,7 @@ export default /*tw*/ {
     ],
   },
   description: {
-    base: "font-normal text-gray-500 !leading-none",
+    base: "font-normal text-gray-500 text-left !leading-none",
     variants: {
       size: {
         sm: "text-2xs",

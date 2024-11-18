@@ -3,12 +3,7 @@
     <div v-if="showLoader" v-bind="overlayAttrs">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
-        <ULoader
-          :loading="showLoader"
-          size="lg"
-          :color="color === 'white' ? 'grayscale' : 'white'"
-          v-bind="nestedLoaderAttrs"
-        />
+        <ULoader :loading="showLoader" size="lg" :color="loaderColor" v-bind="nestedLoaderAttrs" />
       </slot>
     </div>
   </Transition>
@@ -16,7 +11,9 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted } from "vue";
+
 import { getDefault } from "../utils/ui.ts";
+import { useDarkMode } from "../composables/useDarkMode.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
 
@@ -38,7 +35,7 @@ const props = defineProps({
 
   /**
    * Loader color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
+   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, black, white
    */
   color: {
     type: String,
@@ -48,6 +45,14 @@ const props = defineProps({
 
 const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);
 const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
+const { isDarkMode } = useDarkMode();
+
+const loaderColor = computed(() => {
+  if (props.color === "white") return "black";
+  if (props.color === "black") return "white";
+
+  return isDarkMode.value ? "white" : "black";
+});
 
 onMounted(() => {
   window.addEventListener("loaderOverlayOn", loaderOverlayOn);

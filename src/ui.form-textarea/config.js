@@ -1,7 +1,7 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  leftSlot: "flex items-center justify-center h-full w-11 absolute left-0",
-  rightSlot: "flex items-center justify-center h-full w-11 absolute right-0",
+  leftSlot: "flex items-center justify-end whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-r-none",
+  rightSlot: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-l-none",
   textareaWrapper: {
     base: `
       px-3 py-2 bg-white transition w-full
@@ -29,7 +29,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      p-0 block w-full bg-transparent border-none font-normal text-gray-900
+      p-0 block w-full bg-transparent border-none !leading-none font-normal text-gray-900
       placeholder:font-normal placeholder:text-gray-400
       focus:border-none focus:outline-none focus:ring-0
     `,
@@ -41,6 +41,9 @@ export default /*tw*/ {
       },
       resizable: {
         false: "resize-none",
+      },
+      error: {
+        true: "placeholder:text-red-300",
       },
     },
   },

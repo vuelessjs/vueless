@@ -226,10 +226,11 @@ function getRowAttrs(rowId: string | number) {
     >
       <UCheckbox
         v-model="selectedRows"
-        :data-id="row.id"
+        size="md"
         :value="row.id"
-        :data-test="`${dataTest}-body-checkbox`"
         v-bind="attrs.bodyCheckboxAttrs.value"
+        :data-id="row.id"
+        :data-test="`${dataTest}-body-checkbox`"
       />
     </td>
 
@@ -266,8 +267,8 @@ function getRowAttrs(rowId: string | number) {
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
             v-if="value"
-            v-bind="attrs.bodyCellContentAttrs.value"
             ref="cell"
+            v-bind="attrs.bodyCellContentAttrs.value"
             :class="
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
             "

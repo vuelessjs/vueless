@@ -1,103 +1,31 @@
+<script lang="ts" setup>
+import { getDefault } from "../utils/ui.ts";
+
+import { UDivider } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UDividerProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UDividerProps>(), {
+  size: getDefault<UDividerProps>(defaultConfig, UDivider).size,
+  variant: getDefault<UDividerProps>(defaultConfig, UDivider).variant,
+  padding: getDefault<UDividerProps>(defaultConfig, UDivider).padding,
+  dashed: getDefault<UDividerProps>(defaultConfig, UDivider).dashed,
+  dotted: getDefault<UDividerProps>(defaultConfig, UDivider).dotted,
+  vertical: getDefault<UDividerProps>(defaultConfig, UDivider).vertical,
+  noBorder: getDefault<UDividerProps>(defaultConfig, UDivider).noBorder,
+  dataTest: "",
+});
+
+const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);
+</script>
+
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-bind="dividerAttrs" />
     <span v-if="label" v-bind="labelAttrs" v-text="label" />
   </div>
 </template>
-
-<script setup>
-import { getDefault } from "../utils/ui.ts";
-
-import { UDivider } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Divider label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Divider padding size.
-   * @values xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDivider).size,
-  },
-
-  /**
-   * Divider color.
-   * @values light, default, dark
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UDivider).variant,
-  },
-
-  /**
-   * Set padding around the Divider.
-   * @values none, before, after, all
-   */
-  padding: {
-    type: String,
-    default: getDefault(defaultConfig, UDivider).padding,
-  },
-
-  /**
-   * Set line dashed.
-   */
-  dashed: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).dashed,
-  },
-
-  /**
-   * Set line dotted.
-   */
-  dotted: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).dotted,
-  },
-
-  /**
-   * Set divider vertically orientated.
-   */
-  vertical: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).vertical,
-  },
-
-  /**
-   * Remove border (keeps only spacings).
-   */
-  noBorder: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDivider).noBorder,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);
-</script>
