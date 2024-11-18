@@ -11,9 +11,6 @@ import useAttrs from "./useAttrs.ts";
 
 import type { UAccordionProps } from "./types.ts";
 
-type AccordionSize = "sm" | "md" | "lg";
-type DividerSize = "md" | "lg" | "xl";
-
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAccordionProps>(), {
@@ -48,14 +45,14 @@ const toggleIcon = computed(() =>
   isOpened.value ? config.value?.defaults?.collapseIcon : config.value?.defaults?.expandIcon,
 );
 
-const dividerSize = computed((): DividerSize => {
-  const sizes: Record<AccordionSize, DividerSize> = {
+const dividerSize = computed(() => {
+  const sizes = {
     sm: "md",
     md: "lg",
     lg: "xl",
   };
 
-  return sizes[props.size as AccordionSize];
+  return sizes[props.size];
 });
 
 function onClickItem() {
