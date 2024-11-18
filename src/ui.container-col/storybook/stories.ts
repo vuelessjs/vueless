@@ -4,6 +4,13 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UColProps } from "../types.ts";
+
+interface UColArgs extends UColProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UCol` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-col)
  */
@@ -22,7 +29,7 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
 const defaultTemplate = `
   <UInput placeholder="Vasyl" label="Name" />
@@ -30,7 +37,7 @@ const defaultTemplate = `
   <UInput placeholder="Kyiv" label="Town" />
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UColArgs> = (args: UColArgs) => ({
   components: { UCol, UInput, UButton },
   setup() {
     const slots = getSlotNames(UCol.__name);

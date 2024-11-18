@@ -9,6 +9,13 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UPageProps } from "../types.ts";
+
+interface UPageArgs extends UPageProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UPage` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-page)
  */
@@ -23,7 +30,7 @@ export default {
   argTypes: {
     ...getArgTypes(UPage.__name),
   },
-};
+} as Meta;
 
 const defaultTemplate = `
   <UCard title="Card title">
@@ -35,7 +42,7 @@ const defaultTemplate = `
   </UCard>
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
   components: {
     UPage,
     UCard,

@@ -1,3 +1,46 @@
+<script lang="ts" setup>
+import { computed, useSlots } from "vue";
+
+import UHeader from "../ui.text-header/UHeader.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+
+import useAttrs from "./useAttrs.ts";
+
+import type { UCardProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UCardProps>(), {
+  dataTest: "",
+});
+
+const slots = useSlots();
+
+const isShownHeader = computed(() => {
+  const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
+  const isHeaderRightSlot = hasSlotContent(slots["header-left"]);
+
+  return props.title || isHeaderLeftSlot || isHeaderRightSlot;
+});
+
+const isShownFooter = computed(() => {
+  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
+});
+
+const {
+  hasSlotContent,
+  wrapperAttrs,
+  titleAttrs,
+  dividerAttrs,
+  headerAttrs,
+  headerLeftAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  contentAttrs,
+  footerAttrs,
+} = useAttrs(props);
+</script>
+
 <template>
   <div :data-test="dataTest" v-bind="wrapperAttrs">
     <div v-if="isShownHeader" v-bind="headerAttrs">
@@ -37,74 +80,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { computed, useSlots } from "vue";
-
-import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const slots = useSlots();
-
-const props = defineProps({
-  /**
-   * Card title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Card description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const isShownHeader = computed(() => {
-  const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
-  const isHeaderRightSlot = hasSlotContent(slots["header-left"]);
-
-  return props.title || isHeaderLeftSlot || isHeaderRightSlot;
-});
-
-const isShownFooter = computed(() => {
-  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
-});
-
-const {
-  hasSlotContent,
-  wrapperAttrs,
-  titleAttrs,
-  dividerAttrs,
-  headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  contentAttrs,
-  footerAttrs,
-} = useAttrs(props);
-</script>

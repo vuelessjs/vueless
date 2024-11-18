@@ -1,3 +1,132 @@
+<script lang="ts" setup>
+import { computed, useSlots, watch, ref, useId } from "vue";
+
+import { getDefault } from "../utils/ui.ts";
+
+import ULink from "../ui.button-link/ULink.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UHeader from "../ui.text-header/UHeader.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+
+import defaultConfig from "./config.ts";
+import { UModal } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UModalProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+const slots = useSlots();
+
+const wrapperRef = ref(null);
+
+const props = withDefaults(defineProps<UModalProps>(), {
+  size: getDefault<UModalProps>(defaultConfig, UModal).size,
+  closeOnCross: getDefault<UModalProps>(defaultConfig, UModal).closeOnCross,
+  closeOnOverlay: getDefault<UModalProps>(defaultConfig, UModal).closeOnOverlay,
+  closeOnEsc: getDefault<UModalProps>(defaultConfig, UModal).closeOnEsc,
+  inner: getDefault<UModalProps>(defaultConfig, UModal).inner,
+  noDivider: getDefault<UModalProps>(defaultConfig, UModal).noDivider,
+  mobileStickBottom: getDefault<UModalProps>(defaultConfig, UModal).mobileStickBottom,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the modal is toggled.
+   * @property {Boolean} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when back link in modal is clicked.
+   */
+  "back",
+]);
+
+const elementId = props.id || useId();
+
+const {
+  config,
+  modalAttrs,
+  titleAttrs,
+  backLinkAttrs,
+  backLinkIconAttrs,
+  closeIconAttrs,
+  dividerAttrs,
+  dividerSpacingAttrs,
+  overlayAttrs,
+  wrapperAttrs,
+  innerWrapperAttrs,
+  headerAttrs,
+  headerLeftAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  headerRightAttrs,
+  bodyAttrs,
+  footerLeftAttrs,
+  footerAttrs,
+  footerRightAttrs,
+  hasSlotContent,
+} = useAttrs(props);
+
+const isShownModal = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const isShownArrowButton = computed(() => {
+  return Object.keys(props.backTo || {}).length > 0;
+});
+
+const isExistHeader = computed(() => {
+  return (
+    props.title ||
+    hasSlotContent(slots["header-left"]) ||
+    hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["after-title"]) ||
+    hasSlotContent(slots["header-right"])
+  );
+});
+
+const isExistFooter = computed(() => {
+  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
+});
+
+watch(() => isShownModal.value, preventOverlayFromScrolling);
+
+function preventOverlayFromScrolling(newValue) {
+  // focus wrapper to be able to close modal on esc
+  setTimeout(() => wrapperRef.value?.focus(), 0);
+
+  if (newValue) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.getElementById(`${elementId}`).style.overflow = "hidden";
+    document.body.style.overflow = "auto";
+  }
+}
+
+function onClickBackLink() {
+  emit("back");
+}
+
+function onClickOutside() {
+  props.closeOnOverlay && closeModal();
+}
+
+function onKeydownEsc() {
+  props.closeOnEsc && closeModal();
+}
+
+function onClickCloseModal() {
+  props.closeOnCross && closeModal();
+}
+
+function closeModal() {
+  isShownModal.value = false;
+}
+</script>
+
 <template>
   <transition v-bind="config.overlayTransition">
     <div v-if="isShownModal" v-bind="overlayAttrs" />
@@ -103,242 +232,3 @@
     </div>
   </transition>
 </template>
-
-<script setup>
-import { computed, useSlots, watch, ref, useId } from "vue";
-
-import { getDefault } from "../utils/ui.ts";
-
-import ULink from "../ui.button-link/ULink.vue";
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-
-import defaultConfig from "./config.js";
-import { UModal } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-const slots = useSlots();
-
-const wrapperRef = ref(null);
-
-const props = defineProps({
-  /**
-   * Set modal state (hidden / shown).
-   */
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Modal title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Modal description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Modal size (width).
-   * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UModal).size,
-  },
-
-  /**
-   * Back link vue-router route object.
-   */
-  backTo: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Back link label.
-   */
-  backLabel: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Allow closing modal by clicking on close cross.
-   */
-  closeOnCross: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeOnCross,
-  },
-
-  /**
-   * Allow closing modal by clicking on overlay.
-   */
-  closeOnOverlay: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeOnOverlay,
-  },
-
-  /**
-   * Allow closing modal by pressing escape (esc) on the keyboard.
-   */
-  closeOnEsc: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).closeOnEsc,
-  },
-
-  /**
-   * Add extra top margin for modal inside another modal.
-   */
-  inner: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).inner,
-  },
-
-  /**
-   * Hide divider between content end footer.
-   */
-  noDivider: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).noDivider,
-  },
-
-  /**
-   * Attach small modal to the bottom of the screen (mobile version only).
-   */
-  mobileStickBottom: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UModal).mobileStickBottom,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Set data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the modal is toggled.
-   * @property {Boolean} value
-   */
-  "update:modelValue",
-
-  /**
-   * Triggers when back link in modal is clicked.
-   */
-  "back",
-]);
-
-const elementId = props.id || useId();
-
-const {
-  config,
-  modalAttrs,
-  titleAttrs,
-  backLinkAttrs,
-  backLinkIconAttrs,
-  closeIconAttrs,
-  dividerAttrs,
-  dividerSpacingAttrs,
-  overlayAttrs,
-  wrapperAttrs,
-  innerWrapperAttrs,
-  headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  headerRightAttrs,
-  bodyAttrs,
-  footerLeftAttrs,
-  footerAttrs,
-  footerRightAttrs,
-  hasSlotContent,
-} = useAttrs(props);
-
-const isShownModal = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
-
-const isShownArrowButton = computed(() => {
-  return !!Object.keys(props.backTo).length;
-});
-
-const isExistHeader = computed(() => {
-  return (
-    props.title ||
-    hasSlotContent(slots["header-left"]) ||
-    hasSlotContent(slots["before-title"]) ||
-    hasSlotContent(slots["after-title"]) ||
-    hasSlotContent(slots["header-right"])
-  );
-});
-
-const isExistFooter = computed(() => {
-  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
-});
-
-watch(() => isShownModal.value, preventOverlayFromScrolling);
-
-function preventOverlayFromScrolling(newValue) {
-  // focus wrapper to be able to close modal on esc
-  setTimeout(() => wrapperRef.value?.focus(), 0);
-
-  if (newValue) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.getElementById(`${elementId}`).style.overflow = "hidden";
-    document.body.style.overflow = "auto";
-  }
-}
-
-function onClickBackLink() {
-  emit("back");
-}
-
-function onClickOutside() {
-  props.closeOnOverlay && closeModal();
-}
-
-function onKeydownEsc() {
-  props.closeOnEsc && closeModal();
-}
-
-function onClickCloseModal() {
-  props.closeOnCross && closeModal();
-}
-
-function closeModal() {
-  isShownModal.value = false;
-}
-</script>

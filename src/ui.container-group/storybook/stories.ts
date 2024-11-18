@@ -5,6 +5,13 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UGroupProps } from "../types.ts";
+
+interface UGroupArgs extends UGroupProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-group)
  */
@@ -25,7 +32,7 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
 const defaultTemplate = `
   <UCol>
@@ -35,7 +42,7 @@ const defaultTemplate = `
   </UCol>
 `;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UGroupArgs> = (args: UGroupArgs) => ({
   components: { UGroup, UCol, UInput, UButton },
   setup() {
     const slots = getSlotNames(UGroup.__name);

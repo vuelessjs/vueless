@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UDividerProps } from "../types.ts";
+
+interface UDividerArgs extends UDividerProps {
+  slotTemplate?: string;
+  enum: "variant" | "size" | "padding";
+}
+
 /**
  * The `UDivider` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-divider)
  */
@@ -13,9 +21,9 @@ export default {
   argTypes: {
     ...getArgTypes(UDivider.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
   components: { UDivider },
   setup() {
     const slots = getSlotNames(UDivider.__name);
@@ -24,17 +32,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDivider v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDivider>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) => ({
   components: { UDivider, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
