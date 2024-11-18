@@ -22,51 +22,70 @@ import {
   LIGHT_MODE_SELECTOR,
 } from "../constants.js";
 
-import {
-  type GrayColors,
-  type BrandColors,
-  type VuelessCssVariables,
-  type TailwindColorShades,
-  type Config,
-  ColorScheme,
+import type {
+  GrayColors,
+  BrandColors,
+  VuelessCssVariables,
+  TailwindColorShades,
+  Config,
 } from "../types.ts";
+
+import { ColorMode } from "../types.ts";
 
 type DefaultColors = typeof tailwindColors;
 
 export function themeInit() {
   if (isSSR) return;
 
-  setColorScheme(vuelessConfig.colorScheme || "auto");
+  setColorMode(vuelessConfig.ColorMode || ColorMode.Auto);
   setTheme(vuelessConfig);
+
+  const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  prefersColorSchemeDark.addEventListener("change", (event) =>
+    setColorMode(event.matches ? ColorMode.Dark : ColorMode.Light),
+  );
 }
 
-function setColorScheme(scheme: `${ColorScheme}`) {
-  const isDark = scheme === ColorScheme.Dark;
-  const isLight = scheme == ColorScheme.Light;
-  const isAuto = scheme === ColorScheme.Auto;
+function setColorMode(colorMode: `${ColorMode}`) {
+  const cashedColorMode = localStorage.getItem("vl-mode") as ColorMode | null;
 
-  let newScheme = ColorScheme.Auto;
+  const isDark = colorMode === ColorMode.Dark;
+  const isLight = colorMode == ColorMode.Light;
+  const isAuto = colorMode === ColorMode.Auto;
+
+  let newColorMode = ColorMode.Auto;
 
   if (isAuto) {
     const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    newScheme = isSystemDark ? ColorScheme.Dark : ColorScheme.Light;
+    newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
   }
 
   if (isLight && !isAuto) {
-    newScheme = ColorScheme.Light;
+    newColorMode = ColorMode.Light;
   }
 
   if (isDark && !isAuto) {
-    newScheme = ColorScheme.Dark;
+    newColorMode = ColorMode.Dark;
   }
 
-  if (newScheme === ColorScheme.Dark) {
+  if (cashedColorMode !== null) {
+    newColorMode = cashedColorMode;
+  }
+
+  if (newColorMode === ColorMode.Dark) {
     document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
     document.documentElement.classList.add(DARK_MODE_SELECTOR);
   } else {
     document.documentElement.classList.remove(DARK_MODE_SELECTOR);
     document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
+  }
+
+  if (isAuto) {
+    localStorage.removeItem("vl-color-mode");
+  } else {
+    localStorage.setItem("vl-color-mode", newColorMode);
   }
 }
 

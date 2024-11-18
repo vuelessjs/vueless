@@ -39,7 +39,7 @@ import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
 export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
-export enum ColorScheme {
+export enum ColorMode {
   Dark = "dark",
   Light = "light",
   Auto = "auto",
@@ -86,9 +86,9 @@ export interface ThemeConfig {
   ringOffsetColorDark?: string;
 
   /**
-   * Default color scheme.
+   * Default color mode.
    */
-  colorScheme?: `${ColorScheme}`;
+  ColorMode?: `${ColorMode}`;
 }
 
 export interface Config extends ThemeConfig {
