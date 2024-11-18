@@ -19,14 +19,14 @@ export default /*tw*/ {
       },
     },
   },
-  rightIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2 gap-1 rounded-dynamic rounded-l-none",
-  leftIconWrapper: "flex items-center justify-end whitespace-nowrap pl-2 gap-1 rounded-dynamic rounded-r-none",
+  rightIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-l-none",
+  leftIconWrapper: "flex items-center justify-end whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-r-none",
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
   passwordIcon: "{UIcon}",
   input: {
     base: `
-      block w-full py-2 px-3 font-normal leading-none text-gray-900 bg-white
+      block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-white
       border-none rounded-dynamic transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
       disabled:text-gray-700 disabled:bg-gray-100
@@ -39,7 +39,7 @@ export default /*tw*/ {
       },
       error: {
         true: `
-        bg-red-50 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
+        bg-red-50 placeholder:text-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
         focus-within:border-red-500 focus-within:ring-red-700/15
       `,
       },

@@ -73,8 +73,9 @@ function getYearState(year: Date, index: number) {
   });
 
   const isYearInRange =
-    (index >= startRangeIndex && index <= endRangeIndex) ||
-    (index >= startRangeIndex && endRangeIndex === -1);
+    props.range &&
+    ((index >= startRangeIndex && index <= endRangeIndex) ||
+      (index >= startRangeIndex && endRangeIndex === -1));
   const isSelectedYear = isSameMonth(year, localSelectedDate.value) && props.selectedDate !== null;
   const isPresentYear = isCurrentYear(year);
   const isMoreThanOneYearRange =

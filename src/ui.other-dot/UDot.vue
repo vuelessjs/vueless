@@ -1,51 +1,23 @@
-<template>
-  <div v-bind="dotAttrs" :data-test="dataTest" />
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { getDefault } from "../utils/ui.ts";
 
-import { UDot } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { UDot } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UDotProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Dot color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UDot).color,
-  },
-
-  /**
-   * Dot size.
-   * @values xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDot).size,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UDotProps>(), {
+  color: getDefault<UDotProps>(defaultConfig, UDot).color,
+  size: getDefault<UDotProps>(defaultConfig, UDot).size,
+  dataTest: "",
 });
 
 const { dotAttrs } = useAttrs(props);
 </script>
+
+<template>
+  <div v-bind="dotAttrs" :data-test="dataTest" />
+</template>

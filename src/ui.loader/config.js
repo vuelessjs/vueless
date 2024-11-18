@@ -20,7 +20,8 @@ export default /*tw*/ {
     variants: {
       color: {
         white: "bg-white",
-        grayscale: "bg-gray-900",
+        black: "bg-gray-900",
+        grayscale: "bg-gray-900 dark:bg-white",
       },
       size: {
         sm: `

@@ -1,130 +1,25 @@
-<template>
-  <TransitionGroup
-    ref="notificationsWrapperRef"
-    :style="notifyPositionStyles"
-    tag="div"
-    v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
-  >
-    <div
-      v-for="notification in notifications"
-      :key="notification.id"
-      v-bind="bodyAttrs"
-      :class="getNotificationClasses(notification)"
-    >
-      <UIcon
-        v-if="notification.type === NOTIFY_TYPE.success"
-        color="green"
-        variant="light"
-        size="md"
-        internal
-        :name="config.defaults.successIcon"
-        v-bind="successIconAttrs"
-        data-test="type-notify"
-      />
-
-      <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.warning"
-        color="orange"
-        variant="light"
-        size="md"
-        internal
-        :name="config.defaults.warningIcon"
-        v-bind="warningIconAttrs"
-        data-test="type-notify"
-      />
-
-      <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.error"
-        data-test="type-notify"
-        color="red"
-        variant="light"
-        size="md"
-        internal
-        :name="config.defaults.errorIcon"
-        v-bind="errorIconAttrs"
-      />
-
-      <div v-bind="contentAttrs">
-        <template v-if="html">
-          <span v-bind="labelAttrs" v-html="notification.label" />
-          <span
-            v-bind="descriptionAttrs"
-            v-html="getText(notification.description, notification.type)"
-          />
-        </template>
-
-        <template v-else>
-          <span v-bind="labelAttrs" v-text="notification.label" />
-          <span
-            v-bind="descriptionAttrs"
-            v-text="getText(notification.description, notification.type)"
-          />
-        </template>
-      </div>
-
-      <UIcon
-        color="gray"
-        variant="light"
-        size="xs"
-        internal
-        interactive
-        :name="config.defaults.closeIcon"
-        v-bind="closeIconAttrs"
-        @click="onClickClose(notification)"
-      />
-    </div>
-  </TransitionGroup>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
 import { cx, getDefault, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
 
-import defaultConfig from "./config.js";
-import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.js";
+import defaultConfig from "./config.ts";
+import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
+import type { UNotifyProps } from "./types.ts";
+
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * A position on the x-axis.
-   * @values left, center, right
-   */
-  xPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UNotify).xPosition,
-  },
-
-  /**
-   * A position on the y-axis.
-   * @values top, bottom
-   */
-  yPosition: {
-    type: String,
-    default: getDefault(defaultConfig, UNotify).yPosition,
-  },
-
-  /**
-   * Use html to render you own content.
-   */
-  html: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UNotify).html,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
+const props = withDefaults(defineProps<UNotifyProps>(), {
+  xPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).xPosition,
+  yPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).yPosition,
+  html: getDefault<UNotifyProps>(defaultConfig, UNotify).html,
+  dataTest: "",
 });
 
 const {
@@ -238,3 +133,81 @@ function getNotificationClasses(notification) {
   }
 }
 </script>
+
+<template>
+  <TransitionGroup
+    ref="notificationsWrapperRef"
+    :style="notifyPositionStyles"
+    tag="div"
+    v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
+  >
+    <div
+      v-for="notification in notifications"
+      :key="notification.id"
+      v-bind="bodyAttrs"
+      :class="getNotificationClasses(notification)"
+    >
+      <UIcon
+        v-if="notification.type === NOTIFY_TYPE.success"
+        color="green"
+        variant="light"
+        size="md"
+        internal
+        :name="config.defaults.successIcon"
+        v-bind="successIconAttrs"
+        data-test="type-notify"
+      />
+
+      <UIcon
+        v-else-if="notification.type === NOTIFY_TYPE.warning"
+        color="orange"
+        variant="light"
+        size="md"
+        internal
+        :name="config.defaults.warningIcon"
+        v-bind="warningIconAttrs"
+        data-test="type-notify"
+      />
+
+      <UIcon
+        v-else-if="notification.type === NOTIFY_TYPE.error"
+        data-test="type-notify"
+        color="red"
+        variant="light"
+        size="md"
+        internal
+        :name="config.defaults.errorIcon"
+        v-bind="errorIconAttrs"
+      />
+
+      <div v-bind="contentAttrs">
+        <template v-if="html">
+          <span v-bind="labelAttrs" v-html="notification.label" />
+          <span
+            v-bind="descriptionAttrs"
+            v-html="getText(notification.description, notification.type)"
+          />
+        </template>
+
+        <template v-else>
+          <span v-bind="labelAttrs" v-text="notification.label" />
+          <span
+            v-bind="descriptionAttrs"
+            v-text="getText(notification.description, notification.type)"
+          />
+        </template>
+      </div>
+
+      <UIcon
+        color="gray"
+        variant="light"
+        size="xs"
+        internal
+        interactive
+        :name="config.defaults.closeIcon"
+        v-bind="closeIconAttrs"
+        @click="onClickClose(notification)"
+      />
+    </div>
+  </TransitionGroup>
+</template>
