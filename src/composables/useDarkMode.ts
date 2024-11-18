@@ -6,10 +6,7 @@ export function useDarkMode() {
 
   onMounted(async () => {
     await nextTick(() => {
-      const isDarkModeClass = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-      const isDarkModeCache = !!Number(localStorage.getItem(DARK_MODE_SELECTOR));
-
-      isDarkMode.value = isDarkModeCache || isDarkModeClass;
+      isDarkMode.value = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
       window.addEventListener("darkModeChange", ((event: CustomEvent) => {
         isDarkMode.value = Boolean(event.detail);

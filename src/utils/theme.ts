@@ -22,35 +22,58 @@ import {
   LIGHT_MODE_SELECTOR,
 } from "../constants.js";
 
-import type {
-  ThemeConfig,
-  GrayColors,
-  BrandColors,
-  VuelessCssVariables,
-  TailwindColorShades,
+import {
+  type GrayColors,
+  type BrandColors,
+  type VuelessCssVariables,
+  type TailwindColorShades,
+  type Config,
+  ColorScheme,
 } from "../types.ts";
 
 type DefaultColors = typeof tailwindColors;
 
-interface InternalThemeConfig extends ThemeConfig {
-  systemDarkMode?: boolean;
-}
-
 export function themeInit() {
   if (isSSR) return;
 
-  const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-  setTheme({ systemDarkMode: prefersColorSchemeDark.matches, darkMode: vuelessConfig.darkMode });
-
-  prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ systemDarkMode: event.matches, darkMode: vuelessConfig.darkMode }),
-  );
+  setColorScheme(vuelessConfig.colorScheme || "auto");
+  setTheme(vuelessConfig);
 }
 
-export function setTheme(config: InternalThemeConfig = {}) {
-  const isDarkMode = setDarkMode(config);
+function setColorScheme(scheme: `${ColorScheme}`) {
+  const isDark = scheme === ColorScheme.Dark;
+  const isLight = scheme == ColorScheme.Light;
+  const isAuto = scheme === ColorScheme.Auto;
+
+  let newScheme = ColorScheme.Auto;
+
+  if (isAuto) {
+    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    newScheme = isSystemDark ? ColorScheme.Dark : ColorScheme.Light;
+  }
+
+  if (isLight && !isAuto) {
+    newScheme = ColorScheme.Light;
+  }
+
+  if (isDark && !isAuto) {
+    newScheme = ColorScheme.Dark;
+  }
+
+  if (newScheme === ColorScheme.Dark) {
+    document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
+    document.documentElement.classList.add(DARK_MODE_SELECTOR);
+  } else {
+    document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+    document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
+  }
+}
+
+export function setTheme(config: Config = {}) {
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+
+  const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
@@ -137,40 +160,6 @@ export function setTheme(config: InternalThemeConfig = {}) {
   }
 
   return rootVariables;
-}
-
-function setDarkMode(config: InternalThemeConfig) {
-  config?.darkMode === undefined
-    ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
-    : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());
-
-  let storedDarkMode = null;
-
-  if (isCSR) {
-    storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
-  }
-
-  let isDarkMode = !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
-
-  if (storedDarkMode !== null) {
-    isDarkMode = !!Number(storedDarkMode);
-  }
-
-  if (isCSR) {
-    const darkModeChange = new CustomEvent("darkModeChange", { detail: isDarkMode });
-
-    if (isDarkMode) {
-      document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
-      document.documentElement.classList.add(DARK_MODE_SELECTOR);
-    } else {
-      document.documentElement.classList.remove(DARK_MODE_SELECTOR);
-      document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
-    }
-
-    window.dispatchEvent(darkModeChange);
-  }
-
-  return isDarkMode;
 }
 
 export function convertHexInRgb(hex: string) {
