@@ -7,13 +7,13 @@ import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { UDropdownLinkProps, Config } from "./types.ts";
 
-type ActiveState = {
+type ComponentState = {
   isShownOptions: Ref<boolean>;
 };
 
 export default function useAttrs(
   props: UDropdownLinkProps,
-  { isShownOptions }: ActiveState,
+  { isShownOptions }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,

@@ -7,14 +7,14 @@ import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { ULinkProps, Config } from "./types.ts";
 
-type ActiveState = {
+type ComponentState = {
   isActive: Ref<boolean>;
   isExactActive: Ref<boolean>;
 };
 
 export default function useAttrs(
   props: ULinkProps,
-  { isActive, isExactActive }: ActiveState,
+  { isActive, isExactActive }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
     defaultConfig,

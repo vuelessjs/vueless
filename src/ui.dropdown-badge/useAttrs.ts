@@ -7,13 +7,13 @@ import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { UDropdownBadgeProps, Config } from "./types.ts";
 
-type ActiveState = {
+type ComponentState = {
   isShownOptions: Ref<boolean>;
 };
 
 export default function useAttrs(
   props: UDropdownBadgeProps,
-  { isShownOptions }: ActiveState,
+  { isShownOptions }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,

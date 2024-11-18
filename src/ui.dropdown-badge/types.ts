@@ -1,5 +1,7 @@
 import defaultConfig from "./config.ts";
 
+import type { UnknownObject } from "../types.ts";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UDropdownBadgeProps {
@@ -11,7 +13,7 @@ export interface UDropdownBadgeProps {
   /**
    * Options list.
    */
-  options?: Array<object>;
+  options?: UnknownObject[];
 
   /**
    * Label key in the item object of options.

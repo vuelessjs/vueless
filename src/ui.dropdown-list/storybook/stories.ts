@@ -98,8 +98,7 @@ OptionSettings.args = {
     {
       label: "option 3",
       id: "3",
-      // eslint-disable-next-line no-console
-      onClick: (option: object) => console.log("onClick option 3 ", option),
+      onClick: (option: object) => alert("onClick option 3 " + JSON.stringify(option)),
     },
   ],
 };

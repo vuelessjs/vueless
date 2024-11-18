@@ -1,12 +1,14 @@
 import defaultConfig from "./config.ts";
 
+import type { UnknownObject } from "../types.ts";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UDropdownListProps {
   /**
    * List of options.
    */
-  options?: Array<object>;
+  options?: UnknownObject[];
 
   /**
    * Label key in the item object of options.
