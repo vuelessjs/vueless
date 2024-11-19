@@ -16,7 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
   value: 0,
-  max: 100,
+  max: getDefault<UProgressProps>(defaultConfig, UProgress).max as number,
   size: getDefault<UProgressProps>(defaultConfig, UProgress).size,
   color: getDefault<UProgressProps>(defaultConfig, UProgress).color,
   variant: getDefault<UProgressProps>(defaultConfig, UProgress).variant,
@@ -29,7 +29,7 @@ const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } =
 const isSteps = computed(() => Array.isArray(props.max));
 
 const realMax = computed(() => {
-  if (isSteps.value) {
+  if (Array.isArray(props.max)) {
     return props.max.length - 1;
   }
 
@@ -52,7 +52,7 @@ const progressPercent = computed(() => {
   return `${currentPercent} ${maxPercent}`;
 });
 
-function isActiveStep(index) {
+function isActiveStep(index: number) {
   return index === props.value;
 }
 </script>
@@ -91,7 +91,7 @@ function isActiveStep(index) {
           :value="value"
           :max="max"
         >
-          <UHeader v-if="isVariant.stepper" :label="step" :size="size" />
+          <UHeader v-if="isVariant.stepper" :label="String(step)" :size="size" />
           <template v-else>{{ step }}</template>
         </slot>
       </template>

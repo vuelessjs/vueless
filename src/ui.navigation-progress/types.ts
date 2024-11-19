@@ -11,7 +11,7 @@ export interface UProgressProps {
   /**
    * Progress max amount of steps.
    */
-  max?: number | number[] | string[];
+  max?: number | Array<string | number>;
 
   /**
    * Progress size.
@@ -66,10 +66,19 @@ export interface UProgressProps {
 }
 
 export interface StepperProgressProps {
+  /**
+   * Stepper progress percent value.
+   */
   progressPercent: string;
 
+  /**
+   * Stepper progress value (current step).
+   */
   value: number;
 
+  /**
+   * Stepper progress color.
+   */
   color: string;
 
   /**

@@ -15,7 +15,6 @@ export interface UIconProps {
 
   /**
    * Icon color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, black, white
    */
   color?:
     | "brand"
@@ -38,6 +37,7 @@ export interface UIconProps {
     | "fuchsia"
     | "pink"
     | "rose"
+    | "black"
     | "white";
 
   /**
