@@ -61,7 +61,7 @@ const mathSign = computed(() => {
 
 const preparedMoney = computed(() => {
   return separatedMoney(
-    Math.abs(props.value),
+    Math.abs(props.value || 0),
     props.minFractionDigits,
     props.maxFractionDigits,
     props.decimalSeparator,
