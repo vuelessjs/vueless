@@ -3,6 +3,13 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UTabProps } from "../types.ts";
+
+interface UTabArgs extends UTabProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UTab` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tab)
  */
@@ -16,9 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UTab.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UTabArgs> = (args: UTabArgs) => ({
   components: { UTab, UIcon },
   setup() {
     const slots = getSlotNames(UTab.__name);
@@ -27,7 +34,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UTab v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UTab>
   `,
 });
@@ -40,12 +47,10 @@ Disabled.args = { disabled: true };
 
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
-  label: "Tag",
   slotTemplate: `
     <template #default>
       <div class="flex items-center">
         <UIcon name="star" size="sm" />
-        {{label}}
       </div>
     </template>
   `,

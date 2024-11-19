@@ -1,120 +1,24 @@
-<template>
-  <component
-    :is="dynamicComponent"
-    v-tooltip="tooltipConfig"
-    tabindex="-1"
-    v-bind="iconAttrs"
-    :data-test="dataTest"
-    @click="onClick"
-  />
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, defineAsyncComponent } from "vue";
 import { vTooltip } from "../directives";
 import { getDefault } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
-import { UIcon } from "./constants.js";
+import { UIcon } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.js";
+import useAttrs from "./useAttrs.ts";
+
+import type { UIconProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Icon name.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Icon source (svg as a vue component).
-   */
-  src: {
-    type: Object,
-    default: () => {},
-  },
-
-  /**
-   * Icon color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, black, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UIcon).color,
-  },
-
-  /**
-   * Icon size.
-   * @values 4xs, 3xs, 2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UIcon).size,
-  },
-
-  /**
-   * Icon variant.
-   * @values light, default, dark
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UIcon).variant,
-  },
-
-  /**
-   * Make the icon interactive (cursor pointer, etc.).
-   */
-  interactive: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UIcon).interactive,
-  },
-
-  /**
-   * Add tooltip text on hover.
-   */
-  tooltip: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Tooltip settings.
-   * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
-   */
-  tooltipSettings: {
-    type: Object,
-    default: () => {},
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Mark that Icon used inside Vueless components (used to get icons from vueless library).
-   * @ignore
-   */
-  internal: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<UIconProps>(), {
+  color: getDefault<UIconProps>(defaultConfig, UIcon).color,
+  size: getDefault<UIconProps>(defaultConfig, UIcon).size,
+  variant: getDefault<UIconProps>(defaultConfig, UIcon).variant,
+  interactive: getDefault<UIconProps>(defaultConfig, UIcon).interactive,
+  dataTest: "",
 });
 
 const emit = defineEmits([
@@ -144,11 +48,11 @@ const dynamicComponent = computed(() => {
     generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
   );
 
-  const userLibrary = config.value.defaults.library;
+  const userLibrary = config.value?.defaults?.library;
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
-  const weight = config.value.defaults.weight;
-  const style = config.value.defaults.style;
-  const isFill = props.name.endsWith(FILL_SUFFIX);
+  const weight = config.value?.defaults?.weight;
+  const style = config.value?.defaults?.style;
+  const isFill = props.name?.endsWith(FILL_SUFFIX);
   const name = props.name;
   const src = props.src;
 
@@ -161,7 +65,7 @@ const dynamicComponent = computed(() => {
   /* Dynamic import */
   if (!name) return "";
 
-  function getIcon(params) {
+  function getIcon(params: Array<string | number | undefined>) {
     const [, component] =
       generatedIcons.value.find(([path]) =>
         params.every(
@@ -216,7 +120,18 @@ const tooltipConfig = computed(() => ({
   content: props.tooltip,
 }));
 
-function onClick(event) {
+function onClick(event: Event) {
   emit("click", event);
 }
 </script>
+
+<template>
+  <component
+    :is="dynamicComponent"
+    v-tooltip="tooltipConfig"
+    tabindex="-1"
+    v-bind="iconAttrs"
+    :data-test="dataTest"
+    @click="onClick"
+  />
+</template>
