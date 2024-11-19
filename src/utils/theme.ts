@@ -73,6 +73,10 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
   }
 
+  if (cashedColorMode !== null) {
+    newColorMode = cashedColorMode;
+  }
+
   if (isLight) {
     newColorMode = ColorMode.Light;
   }
@@ -81,9 +85,9 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     newColorMode = ColorMode.Dark;
   }
 
-  if (cashedColorMode !== null) {
-    newColorMode = cashedColorMode;
-  }
+  const darkModeChangeEvent = new CustomEvent("darkModeChange", {
+    detail: newColorMode === ColorMode.Dark,
+  });
 
   if (newColorMode === ColorMode.Dark) {
     document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
@@ -93,9 +97,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
   }
 
-  isAuto
-    ? localStorage.removeItem(COLOR_MODE_KEY)
-    : localStorage.setItem(COLOR_MODE_KEY, newColorMode);
+  window.dispatchEvent(darkModeChangeEvent);
+
+  if (!isAuto) {
+    localStorage.setItem(COLOR_MODE_KEY, newColorMode);
+  }
 }
 
 export function setTheme(config: Config = {}) {
@@ -103,10 +109,6 @@ export function setTheme(config: Config = {}) {
 
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-
-  const darkModeChangeEvent = new CustomEvent("darkModeChange", { detail: isDarkMode });
-
-  window.dispatchEvent(darkModeChangeEvent);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
