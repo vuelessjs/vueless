@@ -32,6 +32,9 @@ import UModalConfig from "./ui.container-modal/config.ts";
 import UModalConfirmConfig from "./ui.container-modal-confirm/config.ts";
 import UPageConfig from "./ui.container-page/config.ts";
 import URowConfig from "./ui.container-row/config.ts";
+import ULoaderConfig from "./ui.loader/config.ts";
+import ULoaderOverlayConfig from "./ui.loader-overlay/config.ts";
+import ULoaderProgressConfig from "./ui.loader-progress/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -175,6 +178,9 @@ export interface Components {
   UModalConfirm?: Partial<typeof UModalConfirmConfig>;
   UPage?: Partial<typeof UPageConfig>;
   URow?: Partial<typeof URowConfig>;
+  ULoader?: Partial<typeof ULoaderConfig>;
+  ULoaderOverlay?: Partial<typeof ULoaderOverlayConfig>;
+  ULoaderProgress?: Partial<typeof ULoaderProgressConfig>;
 }
 
 export interface Directives {

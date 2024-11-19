@@ -1,5 +1,25 @@
+<script lang="ts" setup>
+import { getDefault } from "../utils/ui.ts";
+
+import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { ULoaderProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<ULoaderProps>(), {
+  loading: getDefault<ULoaderProps>(defaultConfig, ULoader).loading,
+  color: getDefault<ULoaderProps>(defaultConfig, ULoader).color,
+  size: getDefault<ULoaderProps>(defaultConfig, ULoader).size,
+});
+
+const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
+</script>
+
 <template>
-  <Transition v-bind="config.transition">
+  <Transition v-bind="config?.transition">
     <div v-if="loading" v-bind="loaderAttrs">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
@@ -8,46 +28,6 @@
     </div>
   </Transition>
 </template>
-
-<script setup>
-import { getDefault } from "../utils/ui.ts";
-
-import { ULoader, ELLIPSES_AMOUNT } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Loader state (shown / hidden).
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULoader).loading,
-  },
-
-  /**
-   * Loader color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, black, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, ULoader).color,
-  },
-
-  /**
-   * Loader size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, ULoader).size,
-  },
-});
-
-const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
-</script>
 
 <style scoped lang="postcss">
 .vueless-loader-ellipse:nth-child(1) {
