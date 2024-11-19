@@ -1,7 +1,7 @@
 export default /*tw*/ {
   button: {
     base: `
-      flex items-center justify-center font-medium whitespace-nowrap
+      flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent outline-none transition
       disabled:cursor-not-allowed cursor-pointer
       disabled:ring-0 disabled:ring-offset-0
@@ -55,6 +55,9 @@ export default /*tw*/ {
       },
       block: {
         true: "w-full",
+      },
+      label: {
+        false: "gap-0",
       },
     },
     compoundVariants: [

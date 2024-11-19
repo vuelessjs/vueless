@@ -116,8 +116,6 @@ defineExpose({
     :data-test="dataTest"
   >
     <template v-if="loading">
-      <!-- Label is needed to prevent changing button height -->
-      <div tabindex="-1" class="invisible w-0" v-text="label" />
       <ULoader :loading="loading" :size="loaderSize" :color="iconColor" v-bind="loaderAttrs" />
     </template>
 
@@ -183,5 +181,8 @@ defineExpose({
         />
       </slot>
     </template>
+
+    <!-- This is needed to prevent changing button height -->
+    <div v-if="!label" tabindex="-1" class="invisible w-0" v-text="'invisible'" />
   </component>
 </template>
