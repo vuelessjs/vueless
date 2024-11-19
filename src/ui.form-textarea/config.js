@@ -30,7 +30,7 @@ export default /*tw*/ {
   textarea: {
     base: `
       p-0 block w-full bg-transparent border-none !leading-none font-normal text-gray-900
-      placeholder:font-normal placeholder:text-gray-400
+      placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
       focus:border-none focus:outline-none focus:ring-0
     `,
     variants: {
