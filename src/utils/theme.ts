@@ -45,7 +45,7 @@ export function themeInit() {
     ringOffset: vuelessConfig.ringOffset,
     ring: vuelessConfig.ring,
     gray: vuelessConfig.gray,
-    brand: vuelessConfig.gray,
+    brand: vuelessConfig.brand,
     rounding: vuelessConfig.rounding,
   } as Config;
 
