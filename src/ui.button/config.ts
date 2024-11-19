@@ -51,13 +51,13 @@ export default /*tw*/ {
         true: "!ring-0 !ring-offset-0",
       },
       loading: {
-        true: "pointer-events-none gap-0",
-      },
-      block: {
-        true: "w-full",
+        true: "gap-0 pointer-events-none",
       },
       label: {
         false: "gap-0",
+      },
+      block: {
+        true: "w-full",
       },
     },
     compoundVariants: [
