@@ -126,6 +126,7 @@ function onClickMonth(month: Date) {
         v-if="getMonthState(month, idx).isSelectedMonth && !props.range"
         variant="primary"
         color="brand"
+        size="md"
         no-ring
         v-bind="selectedMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -152,6 +153,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isCurrentFirstMonthInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="currentFirstMonthInRangeAttrs"
@@ -165,6 +167,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isCurrentLastMonthInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="currentLastMonthInRangeAttrs"
@@ -178,6 +181,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isFirstMonthInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="firstMonthInRangeAttrs"
@@ -191,6 +195,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isLastMonthInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="lastMonthInRangeAttrs"
@@ -207,6 +212,7 @@ function onClickMonth(month: Date) {
         "
         variant="primary"
         color="brand"
+        size="md"
         no-ring
         v-bind="singleCurrentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -219,6 +225,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isCurrentMonthInRange"
         variant="primary"
         color="brand"
+        size="md"
         no-ring
         v-bind="currentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -234,6 +241,7 @@ function onClickMonth(month: Date) {
         "
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="singleMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -249,6 +257,7 @@ function onClickMonth(month: Date) {
         "
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="monthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -261,6 +270,7 @@ function onClickMonth(month: Date) {
         v-else-if="getMonthState(month, idx).isActiveMonth"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="activeMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -273,6 +283,7 @@ function onClickMonth(month: Date) {
         v-else
         variant="thirdary"
         color="grayscale"
+        size="md"
         no-ring
         v-bind="monthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
