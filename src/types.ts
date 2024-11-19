@@ -88,7 +88,7 @@ export interface ThemeConfig {
   /**
    * Default color mode.
    */
-  ColorMode?: `${ColorMode}`;
+  colorMode?: `${ColorMode}`;
 }
 
 export interface Config extends ThemeConfig {

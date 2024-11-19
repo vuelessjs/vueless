@@ -20,6 +20,7 @@ import {
   COOL_COLOR,
   GRAY_COLOR,
   LIGHT_MODE_SELECTOR,
+  COLOR_MODE_KEY,
 } from "../constants.js";
 
 import type {
@@ -37,21 +38,31 @@ type DefaultColors = typeof tailwindColors;
 export function themeInit() {
   if (isSSR) return;
 
-  setColorMode(vuelessConfig.ColorMode || ColorMode.Auto);
-  setTheme(vuelessConfig);
+  const themeSettings = {
+    colorMode: vuelessConfig.colorMode,
+    ringOffsetColorLight: vuelessConfig.ringOffsetColorLight,
+    ringOffsetColorDark: vuelessConfig.ringOffsetColorDark,
+    ringOffset: vuelessConfig.ringOffset,
+    ring: vuelessConfig.ring,
+    gray: vuelessConfig.gray,
+    brand: vuelessConfig.gray,
+    rounding: vuelessConfig.rounding,
+  } as Config;
+
+  setTheme(themeSettings);
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   prefersColorSchemeDark.addEventListener("change", (event) =>
-    setColorMode(event.matches ? ColorMode.Dark : ColorMode.Light),
+    setTheme({ ...themeSettings, colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
   );
 }
 
-function setColorMode(colorMode: `${ColorMode}`) {
-  const cashedColorMode = localStorage.getItem("vl-mode") as ColorMode | null;
+export function setColorMode(colorMode: `${ColorMode}`) {
+  const cashedColorMode = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
 
   const isDark = colorMode === ColorMode.Dark;
-  const isLight = colorMode == ColorMode.Light;
+  const isLight = colorMode === ColorMode.Light;
   const isAuto = colorMode === ColorMode.Auto;
 
   let newColorMode = ColorMode.Auto;
@@ -62,11 +73,11 @@ function setColorMode(colorMode: `${ColorMode}`) {
     newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
   }
 
-  if (isLight && !isAuto) {
+  if (isLight) {
     newColorMode = ColorMode.Light;
   }
 
-  if (isDark && !isAuto) {
+  if (isDark) {
     newColorMode = ColorMode.Dark;
   }
 
@@ -82,16 +93,15 @@ function setColorMode(colorMode: `${ColorMode}`) {
     document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
   }
 
-  if (isAuto) {
-    localStorage.removeItem("vl-color-mode");
-  } else {
-    localStorage.setItem("vl-color-mode", newColorMode);
-  }
+  isAuto
+    ? localStorage.removeItem(COLOR_MODE_KEY)
+    : localStorage.setItem(COLOR_MODE_KEY, newColorMode);
 }
 
 export function setTheme(config: Config = {}) {
-  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  setColorMode(config.colorMode || ColorMode.Auto);
 
+  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
