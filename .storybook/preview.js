@@ -1,6 +1,6 @@
 import { setup } from "@storybook/vue3";
 
-import { getRandomId } from "../src/utils/ui.ts";
+import { getRandomId, vuelessConfig } from "../src/utils/ui.ts";
 import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
 
 import themeLight from "./themes/themeLight.js";
@@ -13,7 +13,7 @@ import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
 import "./index.css";
 
 /* Vue plugins */
-import { createVueless } from "../src/index";
+import { createVueless, setTheme } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
 let vueless;
@@ -23,6 +23,10 @@ setup((app) => {
   /* Needed to prevent recreation of vueless when storybook theme changes */
   if (!vueless) {
     vueless = createVueless();
+  } else {
+    const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+
+    setTheme({ vuelessConfig, colorMode: isDarkMode ? "dark" : "light" });
   }
 
   const router = createRouter({ history: createWebHistory(), routes: [] });

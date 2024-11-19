@@ -104,6 +104,10 @@ export function setTheme(config: Config = {}) {
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
+  const darkModeChangeEvent = new CustomEvent("darkModeChange", { detail: isDarkMode });
+
+  window.dispatchEvent(darkModeChangeEvent);
+
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
 
