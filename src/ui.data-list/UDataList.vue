@@ -24,6 +24,7 @@
       :item-key="valueKey"
       :group="{ name: group }"
       handle=".icon-drag"
+      :animation="animationDuration"
       :ghost-class="config.draggableGhost"
       :drag-class="config.draggableDrag"
       :data-test="dataTest"
@@ -49,6 +50,7 @@
               <UIcon
                 internal
                 color="gray"
+                variant="light"
                 :size="iconSize"
                 :name="config.defaults.dragIcon"
                 v-bind="dragIconAttrs"

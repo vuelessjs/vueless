@@ -221,6 +221,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="primary"
           color="brand"
+          size="md"
           no-ring
           square
           v-bind="selectedDayAttrs"
@@ -235,6 +236,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           v-bind="currentDayAttrs"
@@ -249,6 +251,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -264,6 +267,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -279,6 +283,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="primary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -294,6 +299,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="primary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -309,6 +315,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -324,6 +331,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           filled
@@ -339,6 +347,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           v-bind="currentDayInRangeAttrs"
@@ -353,6 +362,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           v-bind="dayInRangeAttrs"
@@ -367,6 +377,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="brand"
+          size="md"
           no-ring
           square
           v-bind="activeDayAttrs"
@@ -381,6 +392,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="grayscale"
+          size="md"
           no-ring
           square
           v-bind="anotherMonthDayAttrs"
@@ -395,6 +407,7 @@ function onClickDay(day: Date) {
           tabindex="-1"
           variant="thirdary"
           color="grayscale"
+          size="md"
           no-ring
           square
           v-bind="dayAttrs"

@@ -124,6 +124,7 @@ function onClickYear(year: Date) {
         v-if="getYearState(year, idx).isSelectedYear && !props.range"
         variant="primary"
         color="brand"
+        size="md"
         no-ring
         v-bind="selectedYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -136,6 +137,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isCurrentYear && !getYearState(year, idx).isYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="currentYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -148,6 +150,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isCurrentFirstYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="currentFirstYearInRangeAttrs"
@@ -161,6 +164,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isCurrentLastYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="currentLastYearInRangeAttrs"
@@ -174,6 +178,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isFirstYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="firstYearInRangeAttrs"
@@ -187,6 +192,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isLastYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         filled
         v-bind="lastYearInRangeAttrs"
@@ -203,6 +209,7 @@ function onClickYear(year: Date) {
         "
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="singleCurrentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -215,6 +222,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isCurrentYearInRange"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="currentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -229,6 +237,7 @@ function onClickYear(year: Date) {
         "
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="singleYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -243,6 +252,7 @@ function onClickYear(year: Date) {
         "
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="yearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -255,6 +265,7 @@ function onClickYear(year: Date) {
         v-else-if="getYearState(year, idx).isActiveYear"
         variant="thirdary"
         color="brand"
+        size="md"
         no-ring
         v-bind="activeYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -267,6 +278,7 @@ function onClickYear(year: Date) {
         v-else
         variant="thirdary"
         color="grayscale"
+        size="md"
         no-ring
         v-bind="yearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"

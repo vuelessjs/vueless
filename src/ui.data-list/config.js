@@ -10,7 +10,7 @@ export default /*tw*/ {
     group-last/item-wrapper:border-b-0 group-[]/nested:group-last/item-wrapper:border-b
     py-4 space-x-4 flex flex-auto items-center justify-between
   `,
-  dragIcon: "{UIcon} icon-drag cursor-move opacity-100 fill-gray-400 md:fill-gray-500",
+  dragIcon: "{UIcon} icon-drag cursor-move opacity-100",
   label: {
     base: "font-normal text-gray-900 flex-auto pt-px",
     variants: {

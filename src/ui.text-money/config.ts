@@ -17,13 +17,13 @@ export default /*tw*/ {
   sum: {
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
-        xl: "text-lg",
-        "2xl": "text-xl",
-        "3xl": "text-2xl",
-        "4xl": "text-3xl",
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
+        "3xl": "text-3xl",
       },
       planned: {
         true: "opacity-75 before:content-['('] after:content-[')']",
@@ -38,12 +38,11 @@ export default /*tw*/ {
       size: {
         xs: "text-2xs",
         sm: "text-xs",
-        md: "text-xs",
-        lg: "text-sm",
-        xl: "text-base",
-        "2xl": "text-lg",
-        "3xl": "text-xl",
-        "4xl": "text-2xl",
+        md: "text-sm",
+        lg: "text-base",
+        xl: "text-lg",
+        "2xl": "text-xl",
+        "3xl": "text-2xl",
       },
     },
   },

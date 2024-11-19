@@ -52,7 +52,7 @@ export default /*tw*/ {
     base: "p-[1.125rem] py-5 truncate align-top",
     variants: {
       compact: {
-        true: "px-4 py-3 last:px-4 last:py-3 first:!px-3.5 first:py-3",
+        true: "px-4 py-3 last:px-4 last:py-3 first:!px-4 first:py-3",
       },
     },
   },

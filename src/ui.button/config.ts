@@ -1,7 +1,7 @@
 export default /*tw*/ {
   button: {
     base: `
-      flex items-center justify-center font-medium whitespace-nowrap
+      flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent outline-none transition
       disabled:cursor-not-allowed cursor-pointer
       disabled:ring-0 disabled:ring-offset-0
@@ -15,9 +15,9 @@ export default /*tw*/ {
         "2xs": "px-2 py-1 text-xs gap-0.5",
         xs: "px-3 py-1.5 text-xs gap-1",
         sm: "px-4 py-2 text-sm gap-1.5",
-        md: "px-5 py-3 text-sm gap-1.5",
-        lg: "px-5 py-3 text-base gap-1.5",
-        xl: "px-6 py-3.5 text-base gap-2",
+        md: "px-5 py-2.5 text-sm gap-1.5",
+        lg: "px-6 py-3 text-base gap-1.5",
+        xl: "px-7 py-3.5 text-base gap-2",
       },
       variant: {
         primary: `
@@ -51,7 +51,10 @@ export default /*tw*/ {
         true: "!ring-0 !ring-offset-0",
       },
       loading: {
-        true: "pointer-events-none gap-0",
+        true: "gap-0 pointer-events-none",
+      },
+      label: {
+        false: "gap-0",
       },
       block: {
         true: "w-full",
@@ -130,18 +133,18 @@ export default /*tw*/ {
       { rightIcon: true, size: "xs", class: "pr-2" },
       { rightIcon: true, size: "sm", class: "pr-3" },
       { rightIcon: true, size: "md", class: "pr-4" },
-      { rightIcon: true, size: "lg", class: "pr-4" },
-      { rightIcon: true, size: "xl", class: "pr-5" },
+      { rightIcon: true, size: "lg", class: "pr-5" },
+      { rightIcon: true, size: "xl", class: "pr-6" },
       { leftIcon: true, size: "2xs", class: "pl-1" },
       { leftIcon: true, size: "xs", class: "pl-2" },
       { leftIcon: true, size: "sm", class: "pl-3" },
       { leftIcon: true, size: "md", class: "pl-4" },
-      { leftIcon: true, size: "lg", class: "pl-4" },
-      { leftIcon: true, size: "xl", class: "pl-5" },
+      { leftIcon: true, size: "lg", class: "pl-5" },
+      { leftIcon: true, size: "xl", class: "pl-6" },
       { square: true, size: "2xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
       { square: true, size: "sm", class: "p-2" },
-      { square: true, size: "md", class: "p-3" },
+      { square: true, size: "md", class: "p-2.5" },
       { square: true, size: "lg", class: "p-3" },
       { square: true, size: "xl", class: "p-3.5" },
     ],

@@ -13,6 +13,7 @@ export default function useAttrs(props: UButtonProps): UseAttrs<Config> {
   const mutatedProps = computed(() => ({
     leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
     rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
+    label: Boolean(props.label),
   }));
 
   const keysAttrs = getKeysAttrs(mutatedProps);

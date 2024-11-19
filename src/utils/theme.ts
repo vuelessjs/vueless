@@ -20,37 +20,89 @@ import {
   COOL_COLOR,
   GRAY_COLOR,
   LIGHT_MODE_SELECTOR,
+  COLOR_MODE_KEY,
 } from "../constants.js";
 
 import type {
-  ThemeConfig,
   GrayColors,
   BrandColors,
   VuelessCssVariables,
   TailwindColorShades,
+  Config,
 } from "../types.ts";
 
-type DefaultColors = typeof tailwindColors;
+import { ColorMode } from "../types.ts";
 
-interface InternalThemeConfig extends ThemeConfig {
-  systemDarkMode?: boolean;
-}
+type DefaultColors = typeof tailwindColors;
 
 export function themeInit() {
   if (isSSR) return;
 
+  const themeSettings = {
+    colorMode: vuelessConfig.colorMode,
+    ringOffsetColorLight: vuelessConfig.ringOffsetColorLight,
+    ringOffsetColorDark: vuelessConfig.ringOffsetColorDark,
+    ringOffset: vuelessConfig.ringOffset,
+    ring: vuelessConfig.ring,
+    gray: vuelessConfig.gray,
+    brand: vuelessConfig.brand,
+    rounding: vuelessConfig.rounding,
+  } as Config;
+
+  setTheme(themeSettings);
+
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  setTheme({ systemDarkMode: prefersColorSchemeDark.matches, darkMode: vuelessConfig.darkMode });
-
   prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ systemDarkMode: event.matches, darkMode: vuelessConfig.darkMode }),
+    setTheme({ ...themeSettings, colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
   );
 }
 
-export function setTheme(config: InternalThemeConfig = {}) {
-  const isDarkMode = setDarkMode(config);
+export function setColorMode(colorMode: `${ColorMode}`) {
+  const cashedColorMode = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
+
+  const isDark = colorMode === ColorMode.Dark;
+  const isLight = colorMode === ColorMode.Light;
+  const isAuto = colorMode === ColorMode.Auto;
+
+  let newColorMode = ColorMode.Auto;
+
+  if (isAuto) {
+    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
+  }
+
+  if (isLight) {
+    newColorMode = ColorMode.Light;
+  }
+
+  if (isDark) {
+    newColorMode = ColorMode.Dark;
+  }
+
+  if (cashedColorMode !== null) {
+    newColorMode = cashedColorMode;
+  }
+
+  if (newColorMode === ColorMode.Dark) {
+    document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
+    document.documentElement.classList.add(DARK_MODE_SELECTOR);
+  } else {
+    document.documentElement.classList.remove(DARK_MODE_SELECTOR);
+    document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
+  }
+
+  isAuto
+    ? localStorage.removeItem(COLOR_MODE_KEY)
+    : localStorage.setItem(COLOR_MODE_KEY, newColorMode);
+}
+
+export function setTheme(config: Config = {}) {
+  setColorMode(config.colorMode || ColorMode.Auto);
+
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
@@ -137,40 +189,6 @@ export function setTheme(config: InternalThemeConfig = {}) {
   }
 
   return rootVariables;
-}
-
-function setDarkMode(config: InternalThemeConfig) {
-  config?.darkMode === undefined
-    ? isCSR && localStorage.removeItem(DARK_MODE_SELECTOR)
-    : isCSR && localStorage.setItem(DARK_MODE_SELECTOR, Number(config?.darkMode).toString());
-
-  let storedDarkMode = null;
-
-  if (isCSR) {
-    storedDarkMode = localStorage.getItem(DARK_MODE_SELECTOR);
-  }
-
-  let isDarkMode = !!(config?.darkMode ?? vuelessConfig.darkMode ?? config?.systemDarkMode);
-
-  if (storedDarkMode !== null) {
-    isDarkMode = !!Number(storedDarkMode);
-  }
-
-  if (isCSR) {
-    const darkModeChange = new CustomEvent("darkModeChange", { detail: isDarkMode });
-
-    if (isDarkMode) {
-      document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
-      document.documentElement.classList.add(DARK_MODE_SELECTOR);
-    } else {
-      document.documentElement.classList.remove(DARK_MODE_SELECTOR);
-      document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
-    }
-
-    window.dispatchEvent(darkModeChange);
-  }
-
-  return isDarkMode;
 }
 
 export function convertHexInRgb(hex: string) {

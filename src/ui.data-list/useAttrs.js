@@ -1,11 +1,21 @@
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
+import { computed } from "vue";
 
 export default function useAttrs(props) {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getKeysAttrs, getExtendingKeysClasses, hasSlotContent } = useUI(
+    defaultConfig,
+    () => props.config,
+  );
 
-  const keysAttrs = getKeysAttrs();
+  const extendingKeysClasses = getExtendingKeysClasses(["label"]);
+
+  const keysAttrs = getKeysAttrs({}, [], {
+    labelCrossed: {
+      base: computed(() => [extendingKeysClasses.label.value]),
+    },
+  });
 
   return {
     config,

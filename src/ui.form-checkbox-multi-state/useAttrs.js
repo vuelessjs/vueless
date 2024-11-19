@@ -10,7 +10,7 @@ export default function useAttrs(props, { selected }) {
 
   const { multiStateCheckboxAttrs: checkboxAttrs } = keysAttrs;
 
-  keysAttrs.checkboxAttrs = computed(() => {
+  keysAttrs.multiStateCheckboxAttrs = computed(() => {
     if (selected.value.icon) {
       checkboxAttrs.value.config = checkboxAttrs.value.config || {};
       checkboxAttrs.value.config.defaults = checkboxAttrs.value.config.defaults || {};

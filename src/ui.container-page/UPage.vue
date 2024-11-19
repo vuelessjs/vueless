@@ -103,7 +103,7 @@ onMounted(() => {
                 <template #left>
                   <UIcon
                     internal
-                    size="xs"
+                    size="2xs"
                     color="gray"
                     :name="config.defaults.backIcon"
                     v-bind="backLinkIconAttrs"
