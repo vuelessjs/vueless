@@ -38,23 +38,12 @@ type DefaultColors = typeof tailwindColors;
 export function themeInit() {
   if (isSSR) return;
 
-  const themeSettings = {
-    colorMode: vuelessConfig.colorMode,
-    ringOffsetColorLight: vuelessConfig.ringOffsetColorLight,
-    ringOffsetColorDark: vuelessConfig.ringOffsetColorDark,
-    ringOffset: vuelessConfig.ringOffset,
-    ring: vuelessConfig.ring,
-    gray: vuelessConfig.gray,
-    brand: vuelessConfig.brand,
-    rounding: vuelessConfig.rounding,
-  } as Config;
-
-  setTheme(themeSettings);
+  setTheme();
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ ...themeSettings, colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
+    setTheme({ colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
   );
 }
 
@@ -89,7 +78,7 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     detail: newColorMode === ColorMode.Dark,
   });
 
-  if (!isSSR) return;
+  if (isSSR) return;
 
   if (newColorMode === ColorMode.Dark) {
     document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
@@ -107,7 +96,7 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function setTheme(config: Config = {}) {
-  setColorMode(config.colorMode || ColorMode.Auto);
+  setColorMode(config?.colorMode || vuelessConfig?.colorMode || ColorMode.Auto);
 
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
