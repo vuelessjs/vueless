@@ -11,7 +11,7 @@ export interface UProgressProps {
   /**
    * Progress max amount of steps.
    */
-  max?: number | Array<string | number>;
+  max?: number | (string | number)[];
 
   /**
    * Progress size.
