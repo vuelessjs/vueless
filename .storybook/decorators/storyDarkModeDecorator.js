@@ -16,7 +16,7 @@ export const storyDarkModeDecorator = () => {
 
     setTheme({
       // TODO: Remove this condition when all component will have dark classes
-      colorMode: process.env.NODE_ENV !== "development" ? theme : "light",
+      colorMode: process.env.NODE_ENV === "development" ? theme : "light",
     });
 
     return {
