@@ -16,17 +16,11 @@ import "./index.css";
 import { createVueless } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
-let vueless;
+const vueless = createVueless();
+const router = createRouter({ history: createWebHistory(), routes: [] });
 
 /* Setup storybook */
 setup((app) => {
-  /* Needed to prevent recreation of vueless when storybook theme changes */
-  if (!vueless) {
-    vueless = createVueless();
-  }
-
-  const router = createRouter({ history: createWebHistory(), routes: [] });
-
   app.config.idPrefix = getRandomId();
 
   if (!app._context.config.globalProperties.$route) {
