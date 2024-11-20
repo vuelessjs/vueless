@@ -21,7 +21,6 @@ const router = createRouter({ history: createWebHistory(), routes: [] });
 
 /* Setup storybook */
 setup((app) => {
-  /* Needed to prevent recreation of vueless when storybook theme changes */
   app.config.idPrefix = getRandomId();
 
   if (!app._context.config.globalProperties.$route) {

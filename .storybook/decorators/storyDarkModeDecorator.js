@@ -1,5 +1,4 @@
 import { DecoratorHelpers } from "@storybook/addon-themes";
-import { vuelessConfig } from "../../src/utils/ui.ts";
 import { setTheme } from "../../src/index.ts";
 
 const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
@@ -15,7 +14,6 @@ export const storyDarkModeDecorator = () => {
     const theme = pluckThemeFromContext(context);
 
     setTheme({
-      ...vuelessConfig,
       colorMode: theme,
     });
 

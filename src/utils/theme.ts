@@ -89,6 +89,8 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     detail: newColorMode === ColorMode.Dark,
   });
 
+  if (!isCSR) return;
+
   if (newColorMode === ColorMode.Dark) {
     document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
     document.documentElement.classList.add(DARK_MODE_SELECTOR);
