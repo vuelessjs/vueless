@@ -5,6 +5,14 @@ import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UCheckboxProps } from "../types.ts";
+
+interface UCheckboxArgs extends UCheckboxProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 /**
  * The `UCheckbox` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox)
  */
@@ -19,9 +27,9 @@ export default {
     ...getArgTypes(UCheckbox.__name),
     modelValue: { control: { type: "boolean" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
   components: { UCheckbox, UBadge },
   setup() {
     const slots = getSlotNames(UCheckbox.__name);
@@ -30,12 +38,12 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCheckbox v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UCheckbox>
   `,
 });
 
-const ValueTypesTemplate = (args) => ({
+const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
   components: { UCheckbox, UCheckboxGroup, UCol },
   setup() {
     return { args };
@@ -89,12 +97,12 @@ const ValueTypesTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs, { argTypes }) => ({
   components: { UCheckbox, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

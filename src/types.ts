@@ -32,6 +32,9 @@ import UModalConfig from "./ui.container-modal/config.ts";
 import UModalConfirmConfig from "./ui.container-modal-confirm/config.ts";
 import UPageConfig from "./ui.container-page/config.ts";
 import URowConfig from "./ui.container-row/config.ts";
+import UCheckboxConfig from "./ui.form-checkbox/config.ts";
+import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
+import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -175,6 +178,9 @@ export interface Components {
   UModalConfirm?: Partial<typeof UModalConfirmConfig>;
   UPage?: Partial<typeof UPageConfig>;
   URow?: Partial<typeof URowConfig>;
+  UCheckbox?: Partial<typeof UCheckboxConfig>;
+  UCheckboxGroup?: Partial<typeof UCheckboxGroupConfig>;
+  UCheckboxMultiState?: Partial<typeof UCheckboxMultiStateConfig>;
 }
 
 export interface Directives {

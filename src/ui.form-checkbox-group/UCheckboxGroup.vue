@@ -1,3 +1,68 @@
+<script lang="ts" setup>
+import { provide, ref, watch } from "vue";
+import { isEqual } from "lodash-es";
+
+import { getDefault } from "../utils/ui.ts";
+
+import ULabel from "../ui.form-label/ULabel.vue";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+
+import { UCheckboxGroup } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UnknownObject } from "../types.ts";
+import type { UCheckboxGroupProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UCheckboxGroupProps>(), {
+  size: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).size,
+  color: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).color,
+  disabled: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).disabled,
+  name: "",
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when checkbox value changes.
+   * @property {object} value
+   */
+  "update:modelValue",
+]);
+
+const checkedItems = ref<UnknownObject[]>([]);
+
+const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useAttrs(props);
+
+provide<(value: UnknownObject[]) => void>(
+  "setCheckboxGroupCheckedItems",
+  (value: UnknownObject[]) => {
+    checkedItems.value = value;
+  },
+);
+provide<() => UnknownObject[]>("getCheckboxGroupCheckedItems", () => checkedItems.value);
+provide<() => string>("getCheckboxGroupName", () => props.name);
+provide("getCheckboxGroupColor", () => props.color);
+provide("getCheckboxSize", () => props.size);
+
+watch(() => checkedItems.value.length, onChangeCheckedItems);
+watch(
+  () => props?.modelValue?.length,
+  (newValue, oldValue) => {
+    if (!isEqual(newValue, oldValue)) {
+      checkedItems.value = props.modelValue || [];
+    }
+  },
+  { immediate: true },
+);
+
+function onChangeCheckedItems() {
+  emit("update:modelValue", checkedItems.value);
+}
+</script>
+
 <template>
   <ULabel
     :size="size"
@@ -29,142 +94,3 @@
     </div>
   </ULabel>
 </template>
-
-<script setup>
-import { provide, ref, watch } from "vue";
-import { isEqual } from "lodash-es";
-
-import { getDefault } from "../utils/ui.ts";
-
-import ULabel from "../ui.form-label/ULabel.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-
-import { UCheckboxGroup } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Checkbox group value.
-   */
-  modelValue: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Checkbox group options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Checkbox group label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckboxGroup).size,
-  },
-
-  /**
-   * Checkbox group color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckboxGroup).color,
-  },
-
-  /**
-   * Name for each checkbox.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Make checkbox disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCheckboxGroup).disabled,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when checkbox value changes.
-   * @property {object} value
-   */
-  "update:modelValue",
-]);
-
-const checkedItems = ref([]);
-
-const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useAttrs(props);
-
-provide("setCheckboxGroupCheckedItems", (value) => (checkedItems.value = value));
-provide("getCheckboxGroupCheckedItems", () => checkedItems.value);
-provide("getCheckboxGroupName", () => props.name);
-provide("getCheckboxGroupColor", () => props.color);
-provide("getCheckboxSize", () => props.size);
-
-watch(() => checkedItems.value.length, onChangeCheckedItems);
-watch(() => props.modelValue.length, onModelValueChange, { immediate: true });
-
-function onModelValueChange(newValue, oldValue) {
-  if (!isEqual(newValue, oldValue)) {
-    checkedItems.value = props.modelValue;
-  }
-}
-
-function onChangeCheckedItems() {
-  emit("update:modelValue", checkedItems.value);
-}
-</script>
