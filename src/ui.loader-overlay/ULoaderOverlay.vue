@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<ULoaderOverlayProps>(), {
 });
 
 const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);
-const loaderOverlay = useLoaderOverlay();
+const { loaderOverlayOn, loaderOverlayOff, isLoading } = useLoaderOverlay();
 const { isDarkMode } = useDarkMode();
 
 const loaderColor = computed(() => {
@@ -32,21 +32,17 @@ const loaderColor = computed(() => {
 });
 
 onMounted(() => {
-  if (loaderOverlay) {
-    window.addEventListener("loaderOverlayOn", loaderOverlay.loaderOverlayOn);
-    window.addEventListener("loaderOverlayOff", loaderOverlay.loaderOverlayOff);
-  }
+  window.addEventListener("loaderOverlayOn", loaderOverlayOn);
+  window.addEventListener("loaderOverlayOff", loaderOverlayOff);
 });
 
 onUnmounted(() => {
-  if (loaderOverlay) {
-    window.removeEventListener("loaderOverlayOn", loaderOverlay.loaderOverlayOn);
-    window.removeEventListener("loaderOverlayOff", loaderOverlay.loaderOverlayOff);
-  }
+  window.removeEventListener("loaderOverlayOn", loaderOverlayOn);
+  window.removeEventListener("loaderOverlayOff", loaderOverlayOff);
 });
 
 const showLoader = computed(() => {
-  return props.loading === undefined ? (loaderOverlay?.isLoading.value ?? false) : props.loading;
+  return props.loading === undefined ? (isLoading.value ?? false) : props.loading;
 });
 </script>
 

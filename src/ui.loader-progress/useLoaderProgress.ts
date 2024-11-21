@@ -68,6 +68,14 @@ export function createLoaderProgress(): LoaderProgress {
   };
 }
 
-export function useLoaderProgress(): LoaderProgress | undefined {
-  return inject<LoaderProgress>(LoaderProgressSymbol);
+export function useLoaderProgress(): LoaderProgress {
+  const loaderProgress = inject<LoaderProgress>(LoaderProgressSymbol);
+
+  if (!loaderProgress) {
+    throw new Error(
+      "LoaderProgress not provided. Ensure you are using `provide` with `LoaderProgressSymbol`.",
+    );
+  }
+
+  return loaderProgress;
 }

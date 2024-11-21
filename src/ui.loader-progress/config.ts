@@ -11,6 +11,7 @@ export default /*tw*/ {
       },
     },
   },
+  mobileStyles: "",
   defaults: {
     color: "brand",
     loading: false,

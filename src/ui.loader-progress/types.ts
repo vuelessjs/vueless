@@ -32,7 +32,7 @@ export interface ULoaderProgressProps {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | Array<string>;
+  resources?: string | string[];
 
   /**
    * Loader state (shown / hidden).

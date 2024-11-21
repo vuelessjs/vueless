@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
-// import { isMobileApp } from "../utils/platform.ts";
+import { isMobileApp } from "../utils/platform.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
 import useAttrs from "./useAttrs.ts";
@@ -25,12 +25,6 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
-const loaderProgress = useLoaderProgress();
-
-if (!loaderProgress) {
-  throw new Error("LoaderProgress is not provided. Ensure it is properly injected.");
-}
-
 const {
   requestQueue,
   removeRequestUrl,
@@ -38,9 +32,9 @@ const {
   loaderProgressOff,
   loaderProgressOn,
   addRequestUrl,
-} = loaderProgress;
+} = useLoaderProgress();
 
-const { stripeAttrs } = useAttrs(props);
+const { stripeAttrs } = useAttrs(props, { isMobileApp });
 
 const isStarted = computed(() => {
   return typeof status.value === "number";

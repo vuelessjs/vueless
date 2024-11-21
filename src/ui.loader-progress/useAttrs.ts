@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
@@ -5,10 +6,27 @@ import defaultConfig from "./config.ts";
 import type { UseAttrs } from "../types.ts";
 import type { ULoaderProgressProps, Config } from "./types.ts";
 
-export default function useAttrs(props: ULoaderProgressProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+type ComponentState = {
+  isMobileApp: boolean;
+};
 
-  const keysAttrs = getKeysAttrs();
+export default function useAttrs(
+  props: ULoaderProgressProps,
+  { isMobileApp }: ComponentState,
+): UseAttrs<Config> {
+  const { config, getKeysAttrs, getExtendingKeysClasses, hasSlotContent } = useUI<Config>(
+    defaultConfig,
+    () => props.config,
+  );
+
+  const extendingKeys = ["mobileStyles"];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+
+  const keysAttrs = getKeysAttrs({}, extendingKeys, {
+    stripe: {
+      extend: computed(() => [isMobileApp && extendingKeysClasses.linkWithChild.value]),
+    },
+  });
 
   return {
     config,

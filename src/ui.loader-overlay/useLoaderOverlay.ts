@@ -11,7 +11,7 @@ interface LoaderOverlay {
   loaderOverlayOff: () => void;
 }
 
-const isLoading = ref<boolean>(true);
+const isLoading = ref(true);
 
 function loaderOverlayOn(): void {
   isLoading.value = true;
@@ -29,6 +29,14 @@ export function createLoaderOverlay(): LoaderOverlay {
   };
 }
 
-export function useLoaderOverlay(): LoaderOverlay | undefined {
-  return inject(LoaderOverlaySymbol);
+export function useLoaderOverlay(): LoaderOverlay {
+  const loaderOverlay = inject(LoaderOverlaySymbol);
+
+  if (!loaderOverlay) {
+    throw new Error(
+      "LoaderOverlay not provided. Ensure you are using `provide` with `LoaderOverlaySymbol`.",
+    );
+  }
+
+  return loaderOverlay;
 }
