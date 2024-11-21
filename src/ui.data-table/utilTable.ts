@@ -50,7 +50,7 @@ export function toggleRowVisibility(row: Row, targetRowId: string | number) {
       row.nestedData.isHidden = !row.nestedData.isHidden;
     }
 
-    return;
+    return row;
   }
 
   if (row.row && !Array.isArray(row.row)) {
@@ -64,6 +64,8 @@ export function toggleRowVisibility(row: Row, targetRowId: string | number) {
   if (row.nestedData) {
     toggleRowVisibility(row.nestedData, targetRowId);
   }
+
+  return row;
 }
 
 export function switchRowCheck(row: Row, isChecked: boolean) {
@@ -76,6 +78,8 @@ export function switchRowCheck(row: Row, isChecked: boolean) {
   if (row.row && Array.isArray(row.row)) {
     row.row.map((currentRow) => switchRowCheck(currentRow, isChecked));
   }
+
+  return row;
 }
 
 export function getFlatRows(tableRows: Row[]) {

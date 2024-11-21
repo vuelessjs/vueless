@@ -290,8 +290,6 @@ function getRowAttrs(rowId: string | number) {
             :data-test="`${dataTest}-${key}-cell`"
           >
             {{ formatCellValue(value) }}
-
-            {{ nestedRows }}
           </div>
         </slot>
       </template>
