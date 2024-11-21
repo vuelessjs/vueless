@@ -2,6 +2,13 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UPaginationProps } from "../types.ts";
+
+interface UPaginationArgs extends UPaginationProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UPagination` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-pagination)
  */
@@ -16,9 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UPagination.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs) => ({
   components: { UPagination },
   setup() {
     const slots = getSlotNames(UPagination.__name);
@@ -27,7 +34,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UPagination v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UPagination>
   `,
 });
@@ -42,7 +49,7 @@ export const Limit = DefaultTemplate.bind({});
 Limit.args = { limit: 3 };
 
 export const HideEllipsis = DefaultTemplate.bind({});
-HideEllipsis.args = { ellipses: false };
+HideEllipsis.args = { ellipsis: false };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

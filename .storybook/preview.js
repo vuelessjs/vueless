@@ -1,7 +1,6 @@
 import { setup } from "@storybook/vue3";
 
 import { getRandomId } from "../src/utils/ui.ts";
-import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
 
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
@@ -30,10 +29,7 @@ setup((app) => {
 });
 
 /* Set storybook decorators */
-export const decorators = [
-  vue3SourceDecorator,
-  storyDarkModeDecorator(DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR),
-];
+export const decorators = [vue3SourceDecorator, storyDarkModeDecorator()];
 
 /* Set storybook parameters */
 export const parameters = {

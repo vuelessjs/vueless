@@ -6,8 +6,16 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import { useLoaderProgress } from "../useLoaderProgress.js";
-import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.js";
+import { useLoaderProgress } from "../useLoaderProgress.ts";
+import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.ts";
+
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { ULoaderProgressProps } from "../types.ts";
+
+interface ULoaderProgressArgs extends ULoaderProgressProps {
+  slotTemplate?: string;
+  enum: "color";
+}
 
 /**
  * The `ULoaderProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-progress)
@@ -19,12 +27,18 @@ export default {
   argTypes: {
     ...getArgTypes(ULoaderProgress.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs) => ({
   components: { ULoaderProgress, UButton, URow },
   setup() {
-    const { loaderProgressOn, loaderProgressOff } = useLoaderProgress();
+    const loaderProgress = useLoaderProgress();
+
+    if (!loaderProgress) {
+      throw new Error("LoaderProgress is not provided. Ensure it is properly injected.");
+    }
+
+    const { loaderProgressOn, loaderProgressOff } = loaderProgress;
     const slots = getSlotNames(ULoaderProgress.__name);
 
     return { args, slots, loaderProgressOn, loaderProgressOff };
@@ -39,14 +53,17 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
+  args: ULoaderProgressArgs,
+  { argTypes },
+) => ({
   components: { ULoaderProgress, UButton, UCol, URow, UBadge },
   setup() {
     return {
       args,
       loaderProgressOff,
       loaderProgressOn,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

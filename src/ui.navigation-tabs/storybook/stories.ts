@@ -2,6 +2,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UTabsProps } from "../types.ts";
+
+interface UTabsArgs extends UTabsProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 /**
  * The `UTabs` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tabs)
  */
@@ -20,9 +28,9 @@ export default {
   argTypes: {
     ...getArgTypes(UTabs.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs) => ({
   components: { UTabs },
   setup() {
     const slots = getSlotNames(UTabs.__name);
@@ -31,17 +39,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UTabs v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UTabs>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs, { argTypes }) => ({
   components: { UTabs },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

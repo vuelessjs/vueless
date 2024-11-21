@@ -1,25 +1,27 @@
 import defaultConfig from "./config.ts";
 
+import type { UnknownObject } from "../types.ts";
+
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UGroupProps {
+export interface UTabsProps {
   /**
-   * Group title.
+   * Selected tab value.
    */
-  title?: string;
+  modelValue?: string;
 
   /**
-   * The distance between nested elements.
+   * Tab options.
    */
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  options?: UnknownObject[];
 
   /**
-   * Show line above the header.
+   * Tabs size.
    */
-  upperlined?: boolean;
+  size?: "sm" | "md" | "lg";
 
   /**
-   * Show line under the header.
+   * Add the bottom line along the entire length.
    */
   underlined?: boolean;
 

@@ -2,26 +2,21 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UGroupProps {
+export interface UTabProps {
   /**
-   * Group title.
+   * Tab label.
    */
-  title?: string;
+  label: string;
 
   /**
-   * The distance between nested elements.
+   * Tab value.
    */
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  value?: string | number;
 
   /**
-   * Show line above the header.
+   * Make tab disabled.
    */
-  upperlined?: boolean;
-
-  /**
-   * Show line under the header.
-   */
-  underlined?: boolean;
+  disabled?: boolean;
 
   /**
    * Component config object.
