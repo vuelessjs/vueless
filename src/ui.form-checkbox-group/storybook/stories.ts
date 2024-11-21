@@ -8,17 +8,12 @@ import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UCheckboxGroupProps } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { UnknownObject, UnknownArray } from "../../types.ts";
 
 interface UCheckboxGroupArgs extends UCheckboxGroupProps {
   slotTemplate?: string;
   enum: "size" | "color";
-  value?:
-    | boolean
-    | string
-    | number
-    | Array<boolean | string | number | UnknownObject>
-    | UnknownObject;
+  value?: boolean | string | number | UnknownArray | UnknownObject;
 }
 
 /**

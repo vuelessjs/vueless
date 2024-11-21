@@ -38,9 +38,11 @@ const { multiStateCheckboxAttrs } = useAttrs(props, { selected });
 watchEffect(setIndex);
 
 function setIndex() {
-  const optionIndex = props?.options?.findIndex((item) => item.value === props.modelValue);
+  const optionIndex = Array.isArray(props.options)
+    ? props.options.findIndex((item) => item.value === props.modelValue)
+    : -1;
 
-  index.value = optionIndex !== undefined && optionIndex !== -1 ? optionIndex : index.value;
+  index.value = ~optionIndex ? optionIndex : index.value;
 
   setChecked();
 }

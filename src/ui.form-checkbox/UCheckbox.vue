@@ -73,18 +73,20 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as UCheckboxProps["size"];
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
 
 const isChecked = computed(() => {
-  return isBinary.value && !isCheckboxInGroup.value
-    ? isEqual(props.modelValue, props.trueValue)
-    : Array.isArray(currentValue.value)
-      ? currentValue.value.findIndex((item) => isEqual(item, checkboxValue.value)) !== -1
-      : false;
+  if (isBinary.value && !isCheckboxInGroup.value) {
+    return isEqual(props.modelValue, props.trueValue);
+  } else if (Array.isArray(currentValue.value)) {
+    return currentValue.value.findIndex((item) => isEqual(item, checkboxValue.value)) !== -1;
+  } else {
+    return false;
+  }
 });
 
 const checkboxValue = computed(() => {

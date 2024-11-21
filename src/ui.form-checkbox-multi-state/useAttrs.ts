@@ -5,9 +5,19 @@ import defaultConfig from "./config.ts";
 import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
 import type { UCheckboxMultiStateProps, Config } from "./types.ts";
+import type { UCheckboxProps } from "../ui.form-checkbox/types.ts";
 
 type ComponentState = {
   selected: Ref<{ icon?: string }>;
+};
+
+type MultiStateCheckboxAttrs = {
+  value?: Partial<UCheckboxProps["value"]>;
+  config?: {
+    defaults?: {
+      checkedIcon?: string;
+    };
+  };
 };
 
 export default function useAttrs(
@@ -17,14 +27,7 @@ export default function useAttrs(
   const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
   const keysAttrs = getKeysAttrs();
 
-  const checkboxAttrs = keysAttrs.multiStateCheckboxAttrs as Ref<{
-    value?: boolean | string | number;
-    config?: {
-      defaults?: {
-        checkedIcon?: string;
-      };
-    };
-  }>;
+  const checkboxAttrs = keysAttrs.multiStateCheckboxAttrs as Ref<MultiStateCheckboxAttrs>;
 
   keysAttrs.multiStateCheckboxAttrs = computed(() => {
     if (selected.value.icon) {
