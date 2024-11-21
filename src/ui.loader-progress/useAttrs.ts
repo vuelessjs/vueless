@@ -19,7 +19,7 @@ export default function useAttrs(
     () => props.config,
   );
 
-  const extendingKeys = ["mobileStyles"];
+  const extendingKeys = ["stripeMobile"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {

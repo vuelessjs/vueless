@@ -11,7 +11,7 @@ export default /*tw*/ {
       },
     },
   },
-  mobileStyles: "",
+  stripeMobile: "",
   defaults: {
     color: "brand",
     loading: false,
