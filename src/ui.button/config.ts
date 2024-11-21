@@ -1,7 +1,7 @@
 export default /*tw*/ {
   button: {
     base: `
-      flex items-center justify-center font-medium whitespace-nowrap
+      flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent outline-none transition
       disabled:cursor-not-allowed cursor-pointer
       disabled:ring-0 disabled:ring-offset-0
@@ -51,7 +51,10 @@ export default /*tw*/ {
         true: "!ring-0 !ring-offset-0",
       },
       loading: {
-        true: "pointer-events-none gap-0",
+        true: "gap-0 pointer-events-none",
+      },
+      label: {
+        false: "gap-0",
       },
       block: {
         true: "w-full",

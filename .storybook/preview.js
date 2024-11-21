@@ -1,7 +1,6 @@
 import { setup } from "@storybook/vue3";
 
 import { getRandomId } from "../src/utils/ui.ts";
-import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
 
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
@@ -16,17 +15,11 @@ import "./index.css";
 import { createVueless } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
-let vueless;
+const vueless = createVueless();
+const router = createRouter({ history: createWebHistory(), routes: [] });
 
 /* Setup storybook */
 setup((app) => {
-  /* Needed to prevent recreation of vueless when storybook theme changes */
-  if (!vueless) {
-    vueless = createVueless();
-  }
-
-  const router = createRouter({ history: createWebHistory(), routes: [] });
-
   app.config.idPrefix = getRandomId();
 
   if (!app._context.config.globalProperties.$route) {
@@ -36,10 +29,7 @@ setup((app) => {
 });
 
 /* Set storybook decorators */
-export const decorators = [
-  vue3SourceDecorator,
-  storyDarkModeDecorator(DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR),
-];
+export const decorators = [vue3SourceDecorator, storyDarkModeDecorator()];
 
 /* Set storybook parameters */
 export const parameters = {
