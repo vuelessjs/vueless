@@ -10,7 +10,6 @@ export interface UGroupProps {
 
   /**
    * The distance between nested elements.
-   * @values none, xs, sm, md, lg, xl
    */
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 
