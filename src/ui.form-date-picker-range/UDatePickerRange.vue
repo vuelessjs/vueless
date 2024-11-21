@@ -458,8 +458,8 @@ function shiftRangePrev(to: Date, from: Date, daysDifference: number) {
     if (isDatePeriodOutOfRange(previousDate)) return;
 
     localValue.value = {
-      to: previousDate.startRange,
-      from: previousDate.endRange,
+      from: previousDate.startRange,
+      to: previousDate.endRange,
     };
   } else {
     const reverseDatesList = [...periodDateList.value].reverse();
