@@ -4,7 +4,14 @@ import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import { useLoaderOverlay } from "../useLoaderOverlay.js";
+import { useLoaderOverlay } from "../useLoaderOverlay.ts";
+
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { ULoaderOverlayProps } from "../types.ts";
+
+interface ULoaderOverlayArgs extends ULoaderOverlayProps {
+  slotTemplate?: string;
+}
 
 /**
  * The `ULoaderOverlay` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-overlay)
@@ -23,9 +30,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay },
   setup() {
     const slots = getSlotNames(ULoaderOverlay.__name);
@@ -34,18 +41,26 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULoaderOverlay v-bind="args" class="w-full h-full">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </ULoaderOverlay>
   `,
 });
 
-const LoadingTemplate = (args) => ({
+const LoadingTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay, UButton, UCol },
   setup() {
-    const { loaderOverlayOn, loaderOverlayOff, isLoading } = useLoaderOverlay();
+    const loaderOverlay = useLoaderOverlay();
+
+    const loaderOverlayOn = loaderOverlay?.loaderOverlayOn || (() => {});
+    const loaderOverlayOff = loaderOverlay?.loaderOverlayOff || (() => {});
+    const isLoading = loaderOverlay?.isLoading || { value: false };
 
     function toggleLoading() {
-      isLoading.value ? loaderOverlayOff() : loaderOverlayOn();
+      if (isLoading.value) {
+        loaderOverlayOff();
+      } else {
+        loaderOverlayOn();
+      }
     }
 
     return { args, loaderOverlayOn, loaderOverlayOff, isLoading, toggleLoading };

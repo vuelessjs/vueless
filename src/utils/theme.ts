@@ -38,23 +38,12 @@ type DefaultColors = typeof tailwindColors;
 export function themeInit() {
   if (isSSR) return;
 
-  const themeSettings = {
-    colorMode: vuelessConfig.colorMode,
-    ringOffsetColorLight: vuelessConfig.ringOffsetColorLight,
-    ringOffsetColorDark: vuelessConfig.ringOffsetColorDark,
-    ringOffset: vuelessConfig.ringOffset,
-    ring: vuelessConfig.ring,
-    gray: vuelessConfig.gray,
-    brand: vuelessConfig.brand,
-    rounding: vuelessConfig.rounding,
-  } as Config;
-
-  setTheme(themeSettings);
+  setTheme();
 
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   prefersColorSchemeDark.addEventListener("change", (event) =>
-    setTheme({ ...themeSettings, colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
+    setTheme({ colorMode: event.matches ? ColorMode.Dark : ColorMode.Light }),
   );
 }
 
@@ -73,6 +62,10 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
   }
 
+  if (cashedColorMode !== null) {
+    newColorMode = cashedColorMode;
+  }
+
   if (isLight) {
     newColorMode = ColorMode.Light;
   }
@@ -81,9 +74,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     newColorMode = ColorMode.Dark;
   }
 
-  if (cashedColorMode !== null) {
-    newColorMode = cashedColorMode;
-  }
+  const darkModeChangeEvent = new CustomEvent("darkModeChange", {
+    detail: newColorMode === ColorMode.Dark,
+  });
+
+  if (isSSR) return;
 
   if (newColorMode === ColorMode.Dark) {
     document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
@@ -93,13 +88,15 @@ export function setColorMode(colorMode: `${ColorMode}`) {
     document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
   }
 
-  isAuto
-    ? localStorage.removeItem(COLOR_MODE_KEY)
-    : localStorage.setItem(COLOR_MODE_KEY, newColorMode);
+  window.dispatchEvent(darkModeChangeEvent);
+
+  if (!isAuto) {
+    localStorage.setItem(COLOR_MODE_KEY, newColorMode);
+  }
 }
 
 export function setTheme(config: Config = {}) {
-  setColorMode(config.colorMode || ColorMode.Auto);
+  setColorMode(config?.colorMode || vuelessConfig?.colorMode || ColorMode.Auto);
 
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);

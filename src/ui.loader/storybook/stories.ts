@@ -5,6 +5,14 @@ import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 import { ref } from "vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { ULoaderProps } from "../types.ts";
+
+interface ULoaderArgs extends ULoaderProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
+
 /**
  * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
  */
@@ -18,9 +26,9 @@ export default {
   argTypes: {
     ...getArgTypes(ULoader.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   components: { ULoader },
   setup() {
     const slots = getSlotNames(ULoader.__name);
@@ -29,17 +37,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <ULoader v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </ULoader>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
   components: { ULoader, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -54,7 +62,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
   `,
 });
 
-const LoadingTemplate = (args) => ({
+const LoadingTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   components: { ULoader, UButton, URow },
   setup() {
     function toggleLoader() {
@@ -66,7 +74,7 @@ const LoadingTemplate = (args) => ({
     return { args, isLoading, toggleLoader };
   },
   template: `
-    <URow>
+    <URow align="center">
       <ULoader v-bind="args" :loading="isLoading" />
       <UButton @click="toggleLoader" size="sm">ToggleLoader</UButton>
     </URow>

@@ -1,55 +1,29 @@
-<template>
-  <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="stripeAttrs" :style="barStyle" />
-  </Transition>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
 import { isMobileApp } from "../utils/platform.ts";
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
-import { useLoaderProgress } from "./useLoaderProgress.js";
-import useAttrs from "./useAttrs.js";
+import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
+import { useLoaderProgress } from "./useLoaderProgress.ts";
+import useAttrs from "./useAttrs.ts";
 
-import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.js";
-import defaultConfig from "./config.js";
+import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { ULoaderProgressProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Loader stripe color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, ULoaderProgress).color,
-  },
-
-  /**
-   * API resource names (endpoint URIs).
-   */
-  resources: {
-    type: [String, Array],
-    default: "",
-  },
-
-  /**
-   * Loader state (shown / hidden).
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULoaderProgress).loading,
-  },
+const props = withDefaults(defineProps<ULoaderProgressProps>(), {
+  color: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).color,
+  loading: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).loading,
 });
 
 const error = ref(false);
 const show = ref(false);
 const progress = ref(0);
 const opacity = ref(1);
-const status = ref(null);
+const status = ref<number | null>(null);
 
 const {
   requestQueue,
@@ -59,7 +33,8 @@ const {
   loaderProgressOn,
   addRequestUrl,
 } = useLoaderProgress();
-const { stripeAttrs } = useAttrs(props, { error, isMobileApp });
+
+const { stripeAttrs } = useAttrs(props, { isMobileApp });
 
 const isStarted = computed(() => {
   return typeof status.value === "number";
@@ -73,6 +48,10 @@ const barStyle = computed(() => {
 });
 
 const resourceNamesArray = computed(() => {
+  if (!props.resources) {
+    return [];
+  }
+
   return Array.isArray(props.resources)
     ? props.resources.map(getRequestWithoutQuery)
     : [getRequestWithoutQuery(props.resources)];
@@ -81,8 +60,8 @@ const resourceNamesArray = computed(() => {
 watch(() => requestQueue.value.length, onChangeRequestsQueue);
 
 onMounted(() => {
-  window.addEventListener("loaderProgressOn", setLoaderOnHandler);
-  window.addEventListener("loaderProgressOff", setLoaderOffHandler);
+  window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
+  window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
 
   if (props.resources) {
     onChangeRequestsQueue();
@@ -94,8 +73,8 @@ onBeforeUnmount(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("loaderProgressOn", setLoaderOnHandler);
-  window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
+  window.removeEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
+  window.removeEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
 });
 
 watch(
@@ -111,11 +90,11 @@ watch(
   { immediate: true },
 );
 
-function setLoaderOnHandler(event) {
+function setLoaderOnHandler(event: CustomEvent<{ resource: string }>) {
   loaderProgressOn(event.detail.resource);
 }
 
-function setLoaderOffHandler(event) {
+function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
   loaderProgressOff(event.detail.resource);
 }
 
@@ -138,7 +117,7 @@ function beforeEnter() {
   progress.value = 0;
 }
 
-function enter(el, done) {
+function enter(el: Element, done: () => void) {
   opacity.value = 1;
   done();
 }
@@ -172,7 +151,7 @@ function start() {
   }
 }
 
-function set(amount) {
+function set(amount: number) {
   let currentProgress;
 
   if (isStarted.value) {
@@ -201,7 +180,7 @@ function set(amount) {
   });
 }
 
-function increase(amount) {
+function increase(amount?: number) {
   const currentProgress = progress.value;
 
   if (currentProgress < 100 && typeof amount !== "number") {
@@ -220,10 +199,16 @@ function increase(amount) {
     }
   }
 
-  set(clamp(currentProgress + amount, 0, MAXIMUM));
+  set(clamp(currentProgress + (amount || 0), 0, MAXIMUM));
 }
 
 function done() {
   set(100);
 }
 </script>
+
+<template>
+  <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+    <div v-if="show" v-bind="stripeAttrs" :style="barStyle" />
+  </Transition>
+</template>

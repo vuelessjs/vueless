@@ -79,7 +79,7 @@ const preparedMoney = computed(() => {
 
     <div :data-test="dataTest" v-bind="sumAttrs">
       <span
-        v-if="currencySymbolPosition.left"
+        v-if="currencySymbolPosition.left && symbol"
         v-bind="symbolAttrs"
         v-text="symbol + currencySpace"
       />
@@ -95,7 +95,7 @@ const preparedMoney = computed(() => {
       />
 
       <span
-        v-if="currencySymbolPosition.right"
+        v-if="currencySymbolPosition.right && symbol"
         v-bind="symbolAttrs"
         v-text="currencySpace + symbol"
       />

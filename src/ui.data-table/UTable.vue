@@ -422,82 +422,120 @@ defineExpose({
 <template>
   <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div
-      v-show="isHeaderSticky || isShownActionsHeader"
+      v-show="isHeaderSticky && !isShownActionsHeader"
       ref="sticky-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
     >
-      <template v-if="isShownActionsHeader">
-        <div v-bind="stickyHeaderCellAttrs">
-          <UCheckbox
-            v-if="selectable"
-            v-model="selectAll"
-            size="md"
-            :partial="!isSelectedAllRows"
-            v-bind="stickyHeaderActionsCheckboxAttrs"
-            :data-test="`${dataTest}-select-all`"
-          />
-        </div>
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="stickyHeaderCheckboxAttrs"
+          :data-test="`${dataTest}-select-all`"
+        />
 
         <div
           v-if="selectedRows.length"
-          v-bind="stickyHeaderActionsCounterAttrs"
+          v-bind="stickyHeaderCounterAttrs"
           v-text="selectedRows.length"
         />
+      </div>
 
-        <!--
-          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
-          @binding {array} selected-rows
-        -->
-        <slot name="header-actions" :selected-rows="selectedRows" />
-      </template>
-
-      <template v-else>
-        <div v-bind="stickyHeaderCellAttrs">
-          <UCheckbox
-            v-if="selectable"
-            v-model="selectAll"
-            size="md"
-            :partial="!isSelectedAllRows"
-            v-bind="stickyHeaderCheckboxAttrs"
-            :data-test="`${dataTest}-select-all`"
-          />
-
-          <div
-            v-if="selectedRows.length"
-            v-bind="stickyHeaderCounterAttrs"
-            v-text="selectedRows.length"
-          />
-        </div>
-
-        <!-- TODO: Remove any when key attrs are typed-->
-        <div
-          v-for="(column, index) in normalizedColumns"
-          :key="index"
-          v-bind="stickyHeaderCellAttrs"
-          :class="cx([(stickyHeaderCellAttrs as any).class, column.thClass])"
-        >
-          <template v-if="hasSlotContent($slots[`header-${column.key}`])">
-            <!--
+      <!-- TODO: Remove any when key attrs are typed-->
+      <div
+        v-for="(column, index) in normalizedColumns"
+        :key="index"
+        v-bind="stickyHeaderCellAttrs"
+        :class="cx([(stickyHeaderCellAttrs as any).class, column.thClass])"
+      >
+        <template v-if="hasSlotContent($slots[`header-${column.key}`])">
+          <!--
               @slot Use it to customise needed header cell.
               @binding {object} column
               @binding {number} index
             -->
-            <slot :name="`header-${column.key}`" :column="column" :index="index" />
-          </template>
+          <slot :name="`header-${column.key}`" :column="column" :index="index" />
+        </template>
 
-          <template v-else>
-            {{ column.label }}
-          </template>
+        <template v-else>
+          {{ column.label }}
+        </template>
 
-          <!--
+        <!--
             @slot Use it to add something after the needed header cell.
             @binding {object} column
             @binding {number} index
           -->
-          <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
-        </div>
-      </template>
+        <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
+      </div>
+
+      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+    </div>
+
+    <div
+      v-show="isShownActionsHeader && isHeaderSticky"
+      ref="sticky-header-row"
+      :style="tableRowWidthStyle"
+      v-bind="stickyHeaderAttrs"
+    >
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="stickyHeaderActionsCheckboxAttrs"
+          :data-test="`${dataTest}-select-all`"
+        />
+      </div>
+
+      <div
+        v-if="selectedRows.length"
+        v-bind="stickyHeaderActionsCounterAttrs"
+        v-text="selectedRows.length"
+      />
+
+      <!--
+          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+          @binding {array} selected-rows
+        -->
+      <slot name="header-actions" :selected-rows="selectedRows" />
+
+      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+    </div>
+
+    <div
+      v-show="isShownActionsHeader && !isHeaderSticky"
+      ref="sticky-header-row"
+      :style="tableRowWidthStyle"
+      v-bind="stickyHeaderAttrs"
+      class="absolute"
+    >
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="stickyHeaderActionsCheckboxAttrs"
+          :data-test="`${dataTest}-select-all`"
+        />
+      </div>
+
+      <div
+        v-if="selectedRows.length"
+        v-bind="stickyHeaderActionsCounterAttrs"
+        v-text="selectedRows.length"
+      />
+
+      <!--
+          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+          @binding {array} selected-rows
+        -->
+      <slot name="header-actions" :selected-rows="selectedRows" />
 
       <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
