@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UIconProps } from "../types.ts";
+
+interface UIconArgs extends UIconProps {
+  slotTemplate?: string;
+  enum: "color" | "size" | "variant";
+}
+
 /**
  * The `UIcon` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-icon)
  */
@@ -16,9 +24,9 @@ export default {
   argTypes: {
     ...getArgTypes(UIcon.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
   components: { UIcon },
   setup() {
     const slots = getSlotNames(UIcon.__name);
@@ -27,17 +35,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UIcon v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UIcon>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
   components: { UIcon, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

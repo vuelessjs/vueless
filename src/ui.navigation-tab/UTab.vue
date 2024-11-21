@@ -1,20 +1,13 @@
-<template>
-  <div v-bind="tabAttrs" :data-test="dataTest" @click="onClickSetValue">
-    <!-- @slot Use it to add something instead of the label. -->
-    <slot>
-      {{ label }}
-    </slot>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, inject, toValue } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
 
-import { UTab } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { UTab } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UTabProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -22,47 +15,9 @@ const setUTabsSelectedItem = inject("setUTabsSelectedItem", null);
 const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
 const getUTabsSize = inject("getUTabsSize", null);
 
-const props = defineProps({
-  /**
-   * Tab label.
-   * @ignore
-   */
-  label: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Tab value.
-   */
-  value: {
-    type: [String, Number],
-    default: "",
-  },
-
-  /**
-   * Make tab disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTab).disabled,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UTabProps>(), {
+  disabled: getDefault<UTabProps>(defaultConfig, UTab).disabled,
+  dataTest: "",
 });
 
 const selected = computed(() => {
@@ -81,3 +36,12 @@ async function onClickSetValue() {
   }
 }
 </script>
+
+<template>
+  <div v-bind="tabAttrs" :data-test="dataTest" @click="onClickSetValue">
+    <!-- @slot Use it to add something instead of the label. -->
+    <slot>
+      {{ label }}
+    </slot>
+  </div>
+</template>

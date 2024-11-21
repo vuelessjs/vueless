@@ -1,3 +1,29 @@
+<script lang="ts" setup>
+import colors from "tailwindcss/colors.js";
+import { computed } from "vue";
+
+import { GRAY_COLORS } from "../constants.js";
+
+import useAttrs from "./useAttrs.ts";
+
+import type { StepperProgressProps } from "./types.ts";
+
+const props = withDefaults(defineProps<StepperProgressProps>(), {
+  dataTest: "",
+});
+
+const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
+  useAttrs(props);
+
+const stepperColor = computed(() => {
+  return colors[props.color]
+    ? colors[props.color][500]
+    : GRAY_COLORS.includes(props.color)
+      ? colors[props.color][900]
+      : colors.zinc[900];
+});
+</script>
+
 <template>
   <svg viewBox="0 0 40 40" v-bind="stepperSvgAttrs">
     <defs>
@@ -33,50 +59,3 @@
     </g>
   </svg>
 </template>
-
-<script setup>
-import colors from "tailwindcss/colors.js";
-import { computed } from "vue";
-
-import { GRAY_COLORS } from "../constants.js";
-
-import useAttrs from "./useAttrs.js";
-
-const props = defineProps({
-  progressPercent: {
-    type: String,
-    required: true,
-  },
-
-  value: {
-    type: Number,
-    required: true,
-  },
-
-  color: {
-    type: String,
-    required: true,
-  },
-
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
-  useAttrs(props);
-
-const stepperColor = computed(() => {
-  return colors[props.color]
-    ? colors[props.color][500]
-    : GRAY_COLORS.includes(props.color)
-      ? colors[props.color][900]
-      : colors.zinc[900];
-});
-</script>

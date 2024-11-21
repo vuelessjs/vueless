@@ -35,6 +35,12 @@ import URowConfig from "./ui.container-row/config.ts";
 import ULoaderConfig from "./ui.loader/config.ts";
 import ULoaderOverlayConfig from "./ui.loader-overlay/config.ts";
 import ULoaderProgressConfig from "./ui.loader-progress/config.ts";
+import UPaginationConfig from "./ui.navigation-pagination/config.ts";
+import UProgressConfig from "./ui.navigation-progress/config.ts";
+import UTabConfig from "./ui.navigation-tab/config.ts";
+import UTabsConfig from "./ui.navigation-tabs/config.ts";
+import UAvatarConfig from "./ui.image-avatar/config.ts";
+import UIconConfig from "./ui.image-icon/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -181,6 +187,12 @@ export interface Components {
   ULoader?: Partial<typeof ULoaderConfig>;
   ULoaderOverlay?: Partial<typeof ULoaderOverlayConfig>;
   ULoaderProgress?: Partial<typeof ULoaderProgressConfig>;
+  UPagination?: Partial<typeof UPaginationConfig>;
+  UProgress?: Partial<typeof UProgressConfig>;
+  UTab?: Partial<typeof UTabConfig>;
+  UTabs?: Partial<typeof UTabsConfig>;
+  UAvatar?: Partial<typeof UAvatarConfig>;
+  UIcon?: Partial<typeof UIconConfig>;
 }
 
 export interface Directives {

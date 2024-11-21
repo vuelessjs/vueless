@@ -1,3 +1,43 @@
+<script lang="ts" setup>
+import { computed, provide } from "vue";
+
+import UTab from "../ui.navigation-tab/UTab.vue";
+import { getDefault } from "../utils/ui.ts";
+
+import { UTabs } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UTabsProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UTabsProps>(), {
+  size: getDefault<UTabsProps>(defaultConfig, UTabs).size,
+  underlined: getDefault<UTabsProps>(defaultConfig, UTabs).underlined,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the selected tab changes.
+   * @property {string} modelValue
+   */
+  "update:modelValue",
+]);
+
+const selectedItem = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
+provide("getUTabsSelectedItem", () => selectedItem.value);
+provide("getUTabsSize", () => props.size);
+
+const { tabsAttrs, itemAttrs } = useAttrs(props);
+</script>
+
 <template>
   <div :data-test="dataTest" v-bind="tabsAttrs">
     <!-- @slot Use it to add the UTab component. -->
@@ -15,92 +55,3 @@
     </slot>
   </div>
 </template>
-
-<script setup>
-import { computed, provide } from "vue";
-
-import UTab from "../ui.navigation-tab/UTab.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import { UTabs } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Selected tab value.
-   */
-  modelValue: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Tab options.
-   */
-  options: {
-    type: Array,
-    default: () => [
-      {
-        label: "",
-        value: "",
-        disabled: false,
-      },
-    ],
-  },
-
-  /**
-   * Tabs size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UTabs).size,
-  },
-
-  /**
-   * Add the bottom line along the entire length.
-   */
-  underlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTabs).underlined,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the selected tab changes.
-   * @property {string} modelValue
-   */
-  "update:modelValue",
-]);
-
-const selectedItem = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
-
-provide("setUTabsSelectedItem", (value) => (selectedItem.value = value));
-provide("getUTabsSelectedItem", () => selectedItem.value);
-provide("getUTabsSize", () => props.size);
-
-const { tabsAttrs, itemAttrs } = useAttrs(props);
-</script>

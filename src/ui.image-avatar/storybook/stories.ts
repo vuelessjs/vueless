@@ -5,6 +5,14 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UAvatarProps } from "../types.ts";
+
+interface UAvatarArgs extends UAvatarProps {
+  slotTemplate?: string;
+  enum: "size" | "rounded" | "color";
+}
+
 /**
  * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
  */
@@ -15,9 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UAvatar.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
   components: { UAvatar, ULoader },
   setup() {
     const slots = getSlotNames(UAvatar.__name);
@@ -26,17 +34,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UAvatar v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UAvatar>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
   components: { UCol, URow, UAvatar },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

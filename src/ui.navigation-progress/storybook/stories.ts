@@ -5,6 +5,16 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UProgressProps } from "../types.ts";
+
+interface UProgressArgs extends UProgressProps {
+  slotTemplate?: string;
+  enum: "color" | "size";
+  iterator?: number;
+  progress?: number;
+}
+
 /**
  * The `UProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-progress)
  */
@@ -15,9 +25,9 @@ export default {
   argTypes: {
     ...getArgTypes(UProgress.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
   components: { UCol, UProgress, UButton, UIcon },
   setup() {
     const slots = getSlotNames(UProgress.__name);
@@ -26,29 +36,31 @@ const DefaultTemplate = (args) => ({
     args.iterator = args.max ? 1 : 10;
 
     function updateProgress() {
-      args.value = args.value < (args.max?.length - 1 || 100) ? args.value + args.iterator : 0;
+      const maxValue = Array.isArray(args.max) ? args.max.length - 1 : 100;
+
+      args.value = args.value < maxValue ? args.value + (args.iterator || 0) : 0;
     }
 
     return { slots, args, updateProgress };
   },
   template: `
     <UCol>
-      <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment()}</UProgress>
+      <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment("")}</UProgress>
       <UButton label="Next →" size="sm" variant="thirdary" filled @click="updateProgress" />
     </UCol>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
   components: { UCol, UButton, UProgress },
   setup() {
     args.progress = 10;
 
     function updateProgress() {
-      args.progress = args.progress < 100 ? args.progress + 10 : 0;
+      args.progress = args.progress && args.progress < 100 ? args.progress + 10 : 0;
     }
 
-    return { args, updateProgress, options: argTypes[args.enum].options };
+    return { args, updateProgress, options: argTypes?.[args.enum]?.options };
   },
   template: `
     <UCol>
