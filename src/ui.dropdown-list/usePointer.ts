@@ -1,61 +1,62 @@
 import { ref, computed, toValue } from "vue";
-import type { Ref } from "vue";
 
-interface Option {
-  isSubGroup?: boolean;
-  groupLabel?: string;
-  [key: string]: unknown;
-}
+import type { MaybeRef } from "vue";
+import type { Option } from "./types.ts";
 
 export default function usePointer(
-  options: Option[],
-  optionElements: Ref<HTMLElement[]>,
-  listWrapperElement: Ref<HTMLElement | null>,
+  options: MaybeRef<Option[]>,
+  optionElements: MaybeRef<HTMLLIElement[] | null>,
+  listWrapperElement: MaybeRef<HTMLDivElement | null>,
 ) {
-  const pointer = ref<number | null>(null);
-  const pointerDirty = ref<boolean>(false);
+  const pointer = ref(0);
+  const pointerDirty = ref(false);
 
-  const activeElementHeight = computed<number>(() => {
-    if (pointer.value === null) return 0;
-    const element = toValue(optionElements)[pointer.value];
-    const isGroupLabel = element.dataset.groupLabel;
+  const localOptions = computed(() => toValue(options));
+  const localOptionElements = computed(() => toValue(optionElements));
+  const localListWrapperElement = computed(() => toValue(listWrapperElement));
+
+  const activeElementHeight = computed(() => {
+    const isGroupLabel = localOptionElements.value?.at(pointer.value)?.dataset?.groupLabel || "";
     const groupIndex = 2;
 
     if (isGroupLabel) {
-      return toValue(optionElements)[pointer.value - groupIndex].getBoundingClientRect().height;
+      const prevIndex = pointer.value - groupIndex;
+
+      return localOptionElements.value?.at(prevIndex)?.getBoundingClientRect()?.height || 0;
     }
 
-    return element.getBoundingClientRect().height;
+    return localOptionElements.value?.at(pointer.value)?.getBoundingClientRect()?.height || 0;
   });
 
-  const pointerPosition = computed<number>(() => {
-    return (pointer.value !== null ? pointer.value : 0) * activeElementHeight.value || 0;
+  const pointerPosition = computed(() => {
+    return pointer.value * activeElementHeight.value || 0;
   });
 
   function scrollWrapperToElement() {
-    if (!listWrapperElement.value) return;
+    if (!localListWrapperElement.value) return;
+
     const visibleElements =
-      listWrapperElement.value.getBoundingClientRect().height / activeElementHeight.value;
+      localListWrapperElement.value.getBoundingClientRect().height / activeElementHeight.value;
     const currentElement = visibleElements - 1;
     const currentPointerPosition =
       pointerPosition.value - currentElement * activeElementHeight.value;
 
-    if (listWrapperElement.value.scrollTop <= currentPointerPosition) {
-      listWrapperElement.value.scrollTop = currentPointerPosition;
+    if (localListWrapperElement.value.scrollTop <= currentPointerPosition) {
+      localListWrapperElement.value.scrollTop = currentPointerPosition;
     }
   }
 
   function pointerForward() {
-    if (pointer.value === null) pointer.value = 0;
-
-    if (pointer.value < options.length - 1) {
+    if (pointer.value < localOptions.value.length - 1) {
       pointer.value++;
 
-      const isGroup = options[pointer.value]?.isSubGroup || options[pointer.value]?.groupLabel;
+      const isGroup =
+        localOptions.value[pointer.value].isSubGroup ||
+        localOptions.value[pointer.value].groupLabel;
 
-      if (listWrapperElement.value) scrollWrapperToElement();
+      if (localListWrapperElement.value) scrollWrapperToElement();
 
-      if (options[pointer.value] && isGroup) {
+      if (localOptions.value[pointer.value] && isGroup) {
         pointerForward();
       }
     }
@@ -64,22 +65,25 @@ export default function usePointer(
   }
 
   function pointerBackward() {
-    if (pointer.value === null) pointer.value = 0;
-
     if (pointer.value > 0) {
       pointer.value--;
 
-      const isGroup = options[pointer.value]?.isSubGroup || options[pointer.value]?.groupLabel;
+      const isGroup =
+        localOptions.value[pointer.value].isSubGroup ||
+        localOptions.value[pointer.value].groupLabel;
 
-      if (listWrapperElement.value && listWrapperElement.value.scrollTop >= pointerPosition.value) {
-        listWrapperElement.value.scrollTop = pointerPosition.value;
+      if (
+        localListWrapperElement.value &&
+        localListWrapperElement.value.scrollTop >= pointerPosition.value
+      ) {
+        localListWrapperElement.value.scrollTop = pointerPosition.value;
       }
 
-      if (options[pointer.value] && isGroup) {
+      if (localOptions.value[pointer.value] && isGroup) {
         pointerBackward();
       }
     } else {
-      if (options[0]?.groupLabel) {
+      if (localOptions.value[pointer.value] && localOptions.value[0].groupLabel) {
         pointerForward();
       }
     }
@@ -95,17 +99,10 @@ export default function usePointer(
   function pointerReset() {
     pointer.value = 0;
 
-    if (listWrapperElement.value) {
-      listWrapperElement.value.scrollTop = 0;
+    if (localListWrapperElement.value) {
+      localListWrapperElement.value.scrollTop = 0;
     }
   }
 
-  return {
-    pointer,
-    pointerDirty,
-    pointerSet,
-    pointerReset,
-    pointerBackward,
-    pointerForward,
-  };
+  return { pointer, pointerDirty, pointerSet, pointerReset, pointerBackward, pointerForward };
 }

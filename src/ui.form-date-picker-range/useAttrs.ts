@@ -4,7 +4,7 @@ import { merge } from "lodash-es";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.js";
-import { POSITION } from "../composables/useAutoPosition.ts";
+import { Direction } from "../composables/useAutoPosition.ts";
 
 import type { Ref } from "vue";
 import type { UseAttrs } from "../types.ts";
@@ -28,8 +28,8 @@ export default function useAttrs(
   );
 
   const mutatedProps = computed(() => ({
-    openDirectionY: isTop.value ? POSITION.top : POSITION.bottom,
-    openDirectionX: isRight.value ? POSITION.right : POSITION.left,
+    openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
+    openDirectionX: isRight.value ? Direction.Right : Direction.Left,
     error: Boolean(props.error),
     description: Boolean(props.description),
   }));

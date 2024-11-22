@@ -4,16 +4,16 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.ts";
 
 import type { Ref } from "vue";
-import type { UseAttrs } from "../types.ts";
-import type { UDropdownBadgeProps, Config } from "./types.ts";
+import type { Config, UDropdownBadgeProps } from "./types.ts";
+import type { UseAttrs } from "src/types.ts";
 
-type ComponentState = {
+interface DropdownBadgeState {
   isShownOptions: Ref<boolean>;
-};
+}
 
 export default function useAttrs(
   props: UDropdownBadgeProps,
-  { isShownOptions }: ComponentState,
+  { isShownOptions }: DropdownBadgeState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,

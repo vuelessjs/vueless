@@ -6,10 +6,12 @@ import URow from "../../ui.container-row/URow.vue";
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UDropdownListProps } from "../types.ts";
 
-interface UDropdownListArgs extends UDropdownListProps {
+interface DefaultUDropdownListArgs extends UDropdownListProps {
   slotTemplate?: string;
-  enum: "size";
-  maxHeight: number;
+}
+
+interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
+  enum: keyof Pick<UDropdownListProps, "size">;
 }
 
 /**
@@ -38,7 +40,7 @@ export default {
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UDropdownListArgs> = (args: UDropdownListArgs) => ({
+const DefaultTemplate: StoryFn<DefaultUDropdownListArgs> = (args: DefaultUDropdownListArgs) => ({
   components: { UDropdownList },
   setup() {
     const slots = getSlotNames(UDropdownList.__name);
@@ -52,15 +54,15 @@ const DefaultTemplate: StoryFn<UDropdownListArgs> = (args: UDropdownListArgs) =>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDropdownListArgs> = (
-  args: UDropdownListArgs,
+const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
+  args: EnumUDropdownListArgs,
   { argTypes },
 ) => ({
   components: { UDropdownList, URow },
   setup() {
     return {
       args,
-      options: argTypes?.[args.enum]?.options,
+      options: argTypes[args.enum]?.options,
     };
   },
   template: `
@@ -83,8 +85,8 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const MaxHeight = DefaultTemplate.bind({});
-MaxHeight.args = { maxHeight: 80 };
+export const VisibleOptions = DefaultTemplate.bind({});
+VisibleOptions.args = { visibleOptions: 3 };
 
 export const WithoutOptions = DefaultTemplate.bind({});
 WithoutOptions.args = { options: [] };
@@ -98,7 +100,7 @@ OptionSettings.args = {
     {
       label: "option 3",
       id: "3",
-      onClick: (option: object) => alert("onClick option 3 " + JSON.stringify(option)),
+      onClick: (option) => alert("onClick option 3 " + JSON.stringify(option)),
     },
   ],
 };

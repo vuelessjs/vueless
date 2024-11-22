@@ -3,7 +3,6 @@ import {
   ref,
   computed,
   watch,
-  toValue,
   useSlots,
   nextTick,
   onMounted,
@@ -39,6 +38,7 @@ import { useLocale } from "../composables/useLocale.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
+import { isEqual } from "lodash-es";
 
 defineOptions({ inheritAttrs: false });
 
@@ -254,7 +254,15 @@ const tableRowAttrs = computed(() => ({
 
 watch(selectAll, onChangeSelectAll, { deep: true });
 watch(selectedRows, onChangeSelectedRows, { deep: true });
-watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });
+watch(
+  tableRows,
+  () => {
+    if (!isEqual(tableRows.value, props.rows)) {
+      emit("update:rows", tableRows.value);
+    }
+  },
+  { deep: true },
+);
 watch(() => tableRows.value.length, updateSelectedRows);
 watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
 watch(isHeaderSticky, setHeaderCellWidth);
@@ -337,7 +345,9 @@ function synchronizeTableItemsWithProps() {
     selectedRows.value = [];
   }
 
-  tableRows.value = props.rows;
+  if (!isEqual(tableRows.value, props.rows)) {
+    tableRows.value = props.rows;
+  }
 }
 
 function updateSelectedRows() {
@@ -379,11 +389,11 @@ function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
     selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
 
-    tableRows.value.forEach((row) => switchRowCheck(row, true));
+    tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, true));
   } else if (!selectAll) {
     selectedRows.value = [];
 
-    tableRows.value.forEach((row) => switchRowCheck(row, false));
+    tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, false));
   }
 
   canSelectAll.value = true;
@@ -406,8 +416,7 @@ function clearSelectedItems() {
 }
 
 function onToggleRowVisibility(rowId: string | number) {
-  // TODO: Use map instead of forEach to get rid of implicit array mutation.
-  tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
+  tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
 }
 
 defineExpose({

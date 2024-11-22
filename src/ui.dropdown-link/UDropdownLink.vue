@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { nextTick, computed, provide, ref, useId } from "vue";
+<script setup lang="ts">
+import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
@@ -14,21 +14,25 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UDropdownLinkProps } from "./types.ts";
+import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownLinkProps>(), {
+  label: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).label,
+  options: () => [],
   labelKey: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).labelKey,
   color: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).color,
   size: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).size,
   underlined: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).underlined,
   dashed: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).dashed,
-  disabled: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).disabled,
   noRing: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noRing,
   noIcon: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noIcon,
   yPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).yPosition,
   xPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).xPosition,
+  id: "",
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -41,8 +45,10 @@ const emit = defineEmits([
 
 provide("hideDropdownOptions", hideOptions);
 
+type UDropdownListRef = InstanceType<typeof UDropdownList>;
+
 const isShownOptions = ref(false);
-const dropdownListRef = ref(null);
+const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
 
@@ -51,6 +57,7 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
   { isShownOptions },
 );
 
+type IconSize = "sm" | "2xs" | "xs";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xs",
@@ -58,14 +65,14 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+    nextTick(() => dropdownListRef.value?.wrapperRef?.focus());
   }
 }
 
@@ -77,7 +84,7 @@ function onClickList() {
   hideOptions();
 }
 
-function onClickOption(option) {
+function onClickOption(option: Option) {
   emit("clickOption", option);
 }
 </script>
@@ -128,7 +135,7 @@ function onClickOption(option) {
             interactive
             :color="color"
             :size="iconSize"
-            :name="config.defaults.dropdownIcon"
+            :name="config.defaults?.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
             @click="onClickLink"
@@ -139,7 +146,7 @@ function onClickOption(option) {
 
     <UDropdownList
       v-if="isShownOptions"
-      ref="dropdownListRef"
+      ref="dropdown-list"
       :size="size"
       :options="options"
       :label-key="labelKey"

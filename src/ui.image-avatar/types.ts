@@ -1,5 +1,7 @@
 import defaultConfig from "./config.ts";
 
+import type { Color } from "../types.ts";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UAvatarProps {
@@ -26,28 +28,7 @@ export interface UAvatarProps {
   /**
    * Avatar color.
    */
-  color?:
-    | "brand"
-    | "grayscale"
-    | "gray"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "white";
+  color?: `${Color}`;
 
   /**
    * Avatar corner rounding.
