@@ -96,7 +96,11 @@ OptionSettings.args = {
   options: [
     { label: "option 1", id: "1" },
     { label: "option 2", id: "2", isHidden: true },
-    // eslint-disable-next-line no-console
-    { label: "option 3", id: "3", onClick: (option) => console.log("onClick option 3 ", option) },
+
+    {
+      label: "option 3",
+      id: "3",
+      onClick: (option) => alert("onClick option 3 " + JSON.stringify(option)),
+    },
   ],
 };
