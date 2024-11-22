@@ -7,9 +7,12 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UDropdownLinkProps } from "../types.ts";
 
-interface UDropdownLinkArgs extends UDropdownLinkProps {
+interface DefaultUDropdownLinkArgs extends UDropdownLinkProps {
   slotTemplate?: string;
-  enum: "color" | "size";
+}
+
+interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
+  enum: keyof Pick<UDropdownLinkProps, "size" | "color">;
 }
 
 /**
@@ -39,7 +42,7 @@ export default {
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UDropdownLinkArgs> = (args: UDropdownLinkArgs) => ({
+const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
   components: { UDropdownLink, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownLink.__name);
@@ -53,23 +56,23 @@ const DefaultTemplate: StoryFn<UDropdownLinkArgs> = (args: UDropdownLinkArgs) =>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDropdownLinkArgs> = (
-  args: UDropdownLinkArgs,
+const EnumVariantTemplate: StoryFn<EnumUDropdownLinkArgs> = (
+  args: EnumUDropdownLinkArgs,
   { argTypes },
 ) => ({
   components: { UDropdownLink, URow },
   setup() {
-    function getText(value: string) {
+    function getText(value: unknown) {
       return `Dropdown ${value}`;
     }
 
-    let prefixedOptions = argTypes?.[args.enum]?.options;
+    let prefixedOptions = argTypes[args.enum]?.options || [];
 
-    if (argTypes?.[args.enum]?.name === "size") {
-      prefixedOptions = prefixedOptions?.map((option) => getText(option));
+    if (argTypes[args.enum]?.name === "size") {
+      prefixedOptions = prefixedOptions.map((option) => getText(option));
     }
 
-    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
+    return { args, options: argTypes[args.enum]?.options, prefixedOptions };
   },
   template: `
     <URow>

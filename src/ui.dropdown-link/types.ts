@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
+import type { Option } from "../ui.dropdown-list/types";
+import type { Direction } from "../composables/useAutoPosition";
+import type { Color } from "../types";
 
 export type Config = Partial<typeof defaultConfig>;
 
@@ -13,7 +15,7 @@ export interface UDropdownLinkProps {
   /**
    * Options list.
    */
-  options?: UnknownObject[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.
@@ -23,28 +25,7 @@ export interface UDropdownLinkProps {
   /**
    * Link color.
    */
-  color?:
-    | "brand"
-    | "grayscale"
-    | "gray"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "white";
+  color?: `${Color}`;
 
   /**
    * Link size.
@@ -79,12 +60,12 @@ export interface UDropdownLinkProps {
   /**
    * The position of dropdown list on the y-axis.
    */
-  yPosition?: "top" | "bottom";
+  yPosition?: Direction.Top | Direction.Bottom;
 
   /**
    * The position of dropdown list on the x-axis.
    */
-  xPosition?: "left" | "right";
+  xPosition?: Direction.Left | Direction.Right;
 
   /**
    * Unique element id.
@@ -94,7 +75,7 @@ export interface UDropdownLinkProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.

@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { nextTick, ref, useId } from "vue";
+<script setup lang="ts">
+import { nextTick, ref, useId, useTemplateRef } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -14,10 +14,13 @@ import { UDropdownBadge } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UDropdownBadgeProps } from "./types.ts";
+import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
+  label: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).label,
+  options: () => [],
   labelKey: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).labelKey,
   variant: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).variant,
   color: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).color,
@@ -26,7 +29,9 @@ const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
   noIcon: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).noIcon,
   yPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).yPosition,
   xPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).xPosition,
+  id: "",
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -37,8 +42,10 @@ const emit = defineEmits([
   "clickOption",
 ]);
 
+type UDropdownListRef = InstanceType<typeof UDropdownList>;
+
 const isShownOptions = ref(false);
-const dropdownListRef = ref(null);
+const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
 
@@ -53,7 +60,7 @@ function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value.wrapperRef.focus());
+    nextTick(() => dropdownListRef.value?.wrapperRef?.focus());
   }
 }
 
@@ -61,7 +68,7 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
-function onClickOption(option) {
+function onClickOption(option: Option) {
   emit("clickOption", option);
 
   hideOptions();
@@ -100,7 +107,7 @@ function onClickOption(option) {
         <slot :label="label" :opened="isShownOptions" />
       </template>
 
-      <template #right="{ iconColor, iconSize }">
+      <template #right="{ iconColor }">
         <!--
           @slot Use it to add something after the label.
           @binding {boolean} opened
@@ -110,8 +117,8 @@ function onClickOption(option) {
             v-if="!noIcon"
             internal
             :color="iconColor"
-            :size="iconSize"
-            :name="config.defaults.dropdownIcon"
+            :size="size"
+            :name="config.defaults?.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
           />
@@ -121,7 +128,7 @@ function onClickOption(option) {
 
     <UDropdownList
       v-if="isShownOptions"
-      ref="dropdownListRef"
+      ref="dropdown-list"
       :size="size"
       :options="options"
       :label-key="labelKey"

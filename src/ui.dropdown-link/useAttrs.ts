@@ -1,21 +1,20 @@
-import { computed } from "vue";
+import { computed, type Ref } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
 
-import type { Ref } from "vue";
+import type { Config, UDropdownLinkProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
-import type { UDropdownLinkProps, Config } from "./types.ts";
 
-type ComponentState = {
+interface DropdownLinkState {
   isShownOptions: Ref<boolean>;
-};
+}
 
 export default function useAttrs(
   props: UDropdownLinkProps,
-  { isShownOptions }: ComponentState,
+  { isShownOptions }: DropdownLinkState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );
