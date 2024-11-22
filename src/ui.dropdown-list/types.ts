@@ -13,7 +13,7 @@ export interface BaseOption {
 }
 
 export interface Option extends BaseOption {
-  [key: string]: string | number | boolean | number | UnknownObject | OnClickOption | undefined;
+  [key: string]: string | number | boolean | UnknownObject | OnClickOption | undefined;
 }
 
 export interface UDropdownListProps {

@@ -17,7 +17,7 @@ export interface UIconProps {
   /**
    * Icon color.
    */
-  color?: `${Color}`;
+  color?: `${Color}` | "black";
 
   /**
    * Icon size.

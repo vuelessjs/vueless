@@ -13,7 +13,7 @@ export interface ULoaderOverlayProps {
   /**
    * Loader color.
    */
-  color?: `${Color}`;
+  color?: `${Color}` | "black";
 
   /**
    * Component config object.

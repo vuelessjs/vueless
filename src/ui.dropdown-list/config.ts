@@ -29,7 +29,7 @@ export default /*tw*/ {
   optionSelected: "font-bold",
   optionHighlighted: "bg-brand-50",
   group: {
-    base: `pointer-events-none bg-transparent font-medium leading-none uppercase text-gray-400 pt-4 pb-1
+    base: `pointer-events-none bg-transparent font-medium !leading-none uppercase text-gray-400 pt-4 pb-1
       group-first/item:pt-2`,
     variants: {
       size: {
@@ -40,7 +40,7 @@ export default /*tw*/ {
     },
   },
   subGroup: {
-    base: "pointer-events-none bg-transparent font-medium leading-none uppercase text-gray-400 pt-2",
+    base: "pointer-events-none bg-transparent font-medium !leading-none uppercase text-gray-400 pt-2",
     variants: {
       size: {
         sm: "text-2xs",

@@ -115,7 +115,7 @@ function isSelectedOption(option: Option) {
   return modelValue.value === option[props.valueKey];
 }
 
-function getMarginForSubCategory(level: number) {
+function getMarginForSubCategory(level: number = 0) {
   const baseMargin = 1;
 
   if (level > 1) {
@@ -240,7 +240,7 @@ defineExpose({
           -->
           <slot name="option" :option="option" :index="index">
             <span
-              :style="getMarginForSubCategory(option.level || 0)"
+              :style="getMarginForSubCategory(option.level)"
               v-bind="optionContentAttrs"
               v-text="option[labelKey]"
             />
@@ -260,7 +260,7 @@ defineExpose({
 
           <div
             v-else-if="option.isSubGroup"
-            :style="getMarginForSubCategory(option.level || 0)"
+            :style="getMarginForSubCategory(option.level)"
             v-bind="subGroupAttrs"
             v-text="option[labelKey]"
           />

@@ -61,15 +61,32 @@ const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
 });
 
-type IconSize = "sm" | "md";
+type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 const iconSize = computed(() => {
   const sizes = {
+    "2xs": "xs",
+    xs: "xs",
     sm: "sm",
     md: "sm",
     lg: "md",
+    xl: "md",
   };
 
   return sizes[props.size] as IconSize;
+});
+
+type DropdownSize = "sm" | "md" | "lg";
+const dropdownSize = computed(() => {
+  const sizes = {
+    "2xs": "sm",
+    xs: "sm",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "lg",
+  };
+
+  return sizes[props.size] as DropdownSize;
 });
 
 function onClickOption(option: Option) {
@@ -148,7 +165,7 @@ function onClickList() {
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
-      :size="size"
+      :size="dropdownSize"
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"

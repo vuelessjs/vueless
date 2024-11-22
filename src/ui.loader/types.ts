@@ -13,7 +13,7 @@ export interface ULoaderProps {
   /**
    * Loader color.
    */
-  color?: `${Color}`;
+  color?: `${Color}` | "black";
 
   /**
    * Loader size.

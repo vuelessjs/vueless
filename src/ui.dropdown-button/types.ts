@@ -40,7 +40,7 @@ export interface UDropdownButtonProps {
   /**
    * Button size.
    */
-  size?: "sm" | "md" | "lg";
+  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
    * Set button corners rounded.
