@@ -4,6 +4,17 @@ import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UDropdownLinkProps } from "../types.ts";
+
+interface DefaultUDropdownLinkArgs extends UDropdownLinkProps {
+  slotTemplate?: string;
+}
+
+interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
+  enum: keyof UDropdownLinkProps;
+}
+
 /**
  * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
  */
@@ -29,9 +40,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
   components: { UDropdownLink, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownLink.__name);
@@ -40,25 +51,28 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDropdownLink v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownLink>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<EnumUDropdownLinkArgs> = (
+  args: EnumUDropdownLinkArgs,
+  { argTypes },
+) => ({
   components: { UDropdownLink, URow },
   setup() {
-    function getText(value) {
+    function getText(value: unknown) {
       return `Dropdown ${value}`;
     }
 
-    let prefixedOptions = argTypes[args.enum].options;
+    let prefixedOptions = argTypes[args.enum]?.options || [];
 
-    if (argTypes[args.enum].name === "size") {
+    if (argTypes[args.enum]?.name === "size") {
       prefixedOptions = prefixedOptions.map((option) => getText(option));
     }
 
-    return { args, options: argTypes[args.enum].options, prefixedOptions };
+    return { args, options: argTypes[args.enum]?.options, prefixedOptions };
   },
   template: `
     <URow>

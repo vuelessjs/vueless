@@ -21,7 +21,7 @@ import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
 import UDataTableConfig from "./ui.data-table/config.ts";
 // import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
 // import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
-// import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
+import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
 import UDropdownListConfig from "./ui.dropdown-list/config.ts";
 import UAccordionConfig from "./ui.container-accordion/config.ts";
 import UCardConfig from "./ui.container-card/config.ts";
@@ -52,6 +52,30 @@ export enum ColorMode {
   Dark = "dark",
   Light = "light",
   Auto = "auto",
+}
+
+export enum Color {
+  Brand = "brand",
+  Grayscale = "grayscale",
+  Gray = "gray",
+  Red = "red",
+  Orange = "orange",
+  Amber = "amber",
+  Yellow = "yellow",
+  Lime = "lime",
+  Green = "green",
+  Emerald = "emerald",
+  Teal = "teal",
+  Cyan = "cyan",
+  Sky = "sky",
+  Blue = "blue",
+  Indigo = "indigo",
+  Violet = "violet",
+  Purple = "purple",
+  Fuchsia = "fuchsia",
+  Pink = "pink",
+  Rose = "rose",
+  White = "white",
 }
 
 export interface ExtendedKeyClasses {
@@ -173,7 +197,7 @@ export interface Components {
   UTable?: Partial<typeof UDataTableConfig>;
   // UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
   // UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
-  // UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
+  UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
   UDropdownList?: Partial<typeof UDropdownListConfig>;
   UAccordion?: Partial<typeof UAccordionConfig>;
   UCard?: Partial<typeof UCardConfig>;

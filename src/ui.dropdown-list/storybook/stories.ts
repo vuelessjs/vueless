@@ -10,7 +10,7 @@ interface DefaultUDropdownListArgs extends UDropdownListProps {
   slotTemplate?: string;
 }
 
-interface EnumUDatePickerRangeArgs extends UDropdownListProps {
+interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
   enum: keyof UDropdownListProps;
 }
 
@@ -54,8 +54,8 @@ const DefaultTemplate: StoryFn<DefaultUDropdownListArgs> = (args: DefaultUDropdo
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
-  args: EnumUDatePickerRangeArgs,
+const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
+  args: EnumUDropdownListArgs,
   { argTypes },
 ) => ({
   components: { UDropdownList, URow },

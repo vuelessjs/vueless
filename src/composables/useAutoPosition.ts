@@ -14,15 +14,6 @@ export enum Direction {
 export type Align = `${Direction}`;
 export type Position = { x: Align; y: Align };
 
-// TODO: Remove it after ui.form-date-picker-range and ui.form-date-picker ts migration (use enum there instead).
-export const POSITION = {
-  left: "left",
-  right: "right",
-  top: "top",
-  bottom: "bottom",
-  auto: "auto",
-};
-
 export function useAutoPosition(
   anchorElement: MaybeRef<HTMLElement | null>,
   targetElement: MaybeRef<HTMLElement | null>,
