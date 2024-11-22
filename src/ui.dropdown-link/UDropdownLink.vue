@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, computed, provide, ref, useId, type ComputedRef, useTemplateRef } from "vue";
+import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
@@ -58,14 +58,14 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
 );
 
 type IconSize = "sm" | "2xs" | "xs";
-const iconSize: ComputedRef<IconSize> = computed(() => {
+const iconSize = computed(() => {
   const sizes = {
     sm: "2xs",
     md: "xs",
     lg: "sm",
   };
 
-  return sizes[props.size] as IconSize;
+  return (sizes[props.size] || "md") as IconSize;
 });
 
 function onClickLink() {

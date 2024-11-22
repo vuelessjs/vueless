@@ -20,7 +20,7 @@ import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
 import UDataTableConfig from "./ui.data-table/config.ts";
 // import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
-// import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
+import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
 import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
 import UDropdownListConfig from "./ui.dropdown-list/config.ts";
 import UAccordionConfig from "./ui.container-accordion/config.ts";
@@ -196,7 +196,7 @@ export interface Components {
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
   UTable?: Partial<typeof UDataTableConfig>;
   // UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
-  // UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
+  UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
   UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
   UDropdownList?: Partial<typeof UDropdownListConfig>;
   UAccordion?: Partial<typeof UAccordionConfig>;
