@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 

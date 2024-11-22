@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { getDefault } from "../utils/ui.ts";
 

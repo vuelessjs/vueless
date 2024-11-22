@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, provide } from "vue";
 
 import UTab from "../ui.navigation-tab/UTab.vue";

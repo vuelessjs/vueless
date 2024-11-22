@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import colors from "tailwindcss/colors.js";
 import { computed } from "vue";
 

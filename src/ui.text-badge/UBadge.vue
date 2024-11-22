@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useTemplateRef, computed } from "vue";
 
 import { getDefault } from "../utils/ui.ts";

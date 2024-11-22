@@ -23,5 +23,5 @@ export interface ULoaderProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 }

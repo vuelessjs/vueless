@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";

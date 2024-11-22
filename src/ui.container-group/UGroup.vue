@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { getDefault } from "../utils/ui.ts";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UHeader from "../ui.text-header/UHeader.vue";

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/ui.ts";

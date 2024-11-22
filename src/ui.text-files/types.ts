@@ -36,7 +36,7 @@ export interface UFilesProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.

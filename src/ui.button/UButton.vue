@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, ref, watchEffect, useId, watch } from "vue";
 
 import { useDarkMode } from "../composables/useDarkMode.ts";

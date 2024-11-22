@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, ref, useId } from "vue";
 
 import ULink from "../ui.button-link/ULink.vue";

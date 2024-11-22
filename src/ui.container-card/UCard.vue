@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, useSlots } from "vue";
 
 import UHeader from "../ui.text-header/UHeader.vue";

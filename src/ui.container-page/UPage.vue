@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, useSlots, onMounted } from "vue";
 
 import useBreakpoint from "../composables/useBreakpoint.ts";

@@ -104,7 +104,7 @@ export interface ULinkProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.

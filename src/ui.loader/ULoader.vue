@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { getDefault } from "../utils/ui.ts";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";

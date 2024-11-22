@@ -18,5 +18,5 @@ export interface ULoaderOverlayProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 }

@@ -21,5 +21,5 @@ export interface UNotifyProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 }

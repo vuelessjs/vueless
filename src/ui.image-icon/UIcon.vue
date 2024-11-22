@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
 import { vTooltip } from "../directives";
 import { getDefault } from "../utils/ui.ts";

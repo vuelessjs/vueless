@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";

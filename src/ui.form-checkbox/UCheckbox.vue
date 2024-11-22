@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
 

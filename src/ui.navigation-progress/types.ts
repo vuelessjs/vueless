@@ -38,7 +38,7 @@ export interface UProgressProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.
@@ -65,7 +65,7 @@ export interface StepperProgressProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.
