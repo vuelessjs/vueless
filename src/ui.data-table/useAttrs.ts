@@ -25,6 +25,7 @@ export default function useAttrs(
 
   const extendingKeys = [
     "headerCounterBase",
+    "headerActions",
     "stickyHeaderActions",
     "stickyHeaderRow",
     "stickyFooter",
@@ -42,7 +43,7 @@ export default function useAttrs(
         const classes = [];
 
         if (isShownActionsHeader.value) {
-          classes.push(extendingKeysClasses.stickyHeaderActions.value);
+          classes.push(extendingKeysClasses.headerActions.value);
         }
 
         if (isShownActionsHeader.value && isHeaderSticky.value) {
@@ -65,7 +66,7 @@ export default function useAttrs(
     stickyHeaderCounter: {
       base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
-    stickyHeaderActionsCounter: {
+    headerActionsCounter: {
       base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
     },
     headerCellCheckbox: {

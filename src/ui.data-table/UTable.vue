@@ -205,14 +205,14 @@ const {
   bodyRowDateDividerAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
-  stickyHeaderActionsCheckboxAttrs,
+  headerActionsCheckboxAttrs,
   stickyHeaderCheckboxAttrs,
   headerCheckboxAttrs,
   headerCounterAttrs,
   bodyEmptyStateAttrs,
   bodyDateDividerAttrs,
   bodyCellDateDividerAttrs,
-  stickyHeaderActionsCounterAttrs,
+  headerActionsCounterAttrs,
   stickyHeaderCounterAttrs,
   stickyHeaderLoaderAttrs,
   tableAttrs,
@@ -496,14 +496,14 @@ defineExpose({
           v-model="selectAll"
           size="md"
           :partial="!isSelectedAllRows"
-          v-bind="stickyHeaderActionsCheckboxAttrs"
+          v-bind="headerActionsCheckboxAttrs"
           :data-test="`${dataTest}-select-all`"
         />
       </div>
 
       <div
         v-if="selectedRows.length"
-        v-bind="stickyHeaderActionsCounterAttrs"
+        v-bind="headerActionsCounterAttrs"
         v-text="selectedRows.length"
       />
 
@@ -529,14 +529,14 @@ defineExpose({
           v-model="selectAll"
           size="md"
           :partial="!isSelectedAllRows"
-          v-bind="stickyHeaderActionsCheckboxAttrs"
+          v-bind="headerActionsCheckboxAttrs"
           :data-test="`${dataTest}-select-all`"
         />
       </div>
 
       <div
         v-if="selectedRows.length"
-        v-bind="stickyHeaderActionsCounterAttrs"
+        v-bind="headerActionsCounterAttrs"
         v-text="selectedRows.length"
       />
 
