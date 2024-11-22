@@ -9,9 +9,9 @@ import { getDefault } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 
-import defaultConfig from "./config.js";
-import { UDropdownBadge } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { UDropdownBadge } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
 
 import type { UDropdownBadgeProps } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";

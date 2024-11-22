@@ -65,7 +65,7 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return (sizes[props.size] || "md") as IconSize;
+  return sizes[props.size] as IconSize;
 });
 
 function onClickLink() {

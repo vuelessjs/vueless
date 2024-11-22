@@ -13,7 +13,7 @@ interface DefaultUDropdownButtonArgs extends UDropdownButtonProps {
 }
 
 interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
-  enum: keyof UDropdownButtonProps;
+  enum: keyof Pick<UDropdownButtonProps, "size" | "variant">;
 }
 
 /**

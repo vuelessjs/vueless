@@ -25,22 +25,22 @@ export interface UDropdownBadgeProps {
   /**
    * Badge variant.
    */
-  variant: "primary" | "secondary" | "thirdary";
+  variant?: "primary" | "secondary" | "thirdary";
 
   /**
    * Badge color.
    */
-  color: `${Color}`;
+  color?: `${Color}`;
 
   /**
    * Badge size.
    */
-  size: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
 
   /**
    * Set badge corners rounded.
    */
-  round: boolean;
+  round?: boolean;
 
   /**
    * Hide dropdown icon.

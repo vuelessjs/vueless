@@ -12,7 +12,7 @@ interface DefaultUDropdownLinkArgs extends UDropdownLinkProps {
 }
 
 interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
-  enum: keyof UDropdownLinkProps;
+  enum: keyof Pick<UDropdownLinkProps, "size" | "color">;
 }
 
 /**

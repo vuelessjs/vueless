@@ -12,7 +12,7 @@ interface DefaultUDropdownBadgeArgs extends UDropdownBadgeProps {
 }
 
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
-  enum: keyof UDropdownBadgeProps;
+  enum: keyof Pick<UDropdownBadgeProps, "color" | "size">;
 }
 
 /**

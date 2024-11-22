@@ -61,18 +61,15 @@ const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
 });
 
-type IconSize = "xs" | "sm" | "md";
+type IconSize = "sm" | "md";
 const iconSize = computed(() => {
   const sizes = {
-    "2xs": "xs",
-    xs: "xs",
     sm: "sm",
     md: "sm",
     lg: "md",
-    xl: "md",
   };
 
-  return (sizes[props.size] || "md") as IconSize;
+  return sizes[props.size] as IconSize;
 });
 
 function onClickOption(option: Option) {

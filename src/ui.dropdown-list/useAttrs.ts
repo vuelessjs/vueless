@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 
 import type { Config, UDropdownListProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
