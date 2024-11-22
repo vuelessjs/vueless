@@ -44,9 +44,9 @@ export default /*tw*/ {
       `,
     variants: {
       size: {
-        sm: "text-xs min-h-4",
-        md: "text-sm min-h-5",
-        lg: "text-base min-h-6",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
       },
       disabled: {
         true: "text-gray-700",
