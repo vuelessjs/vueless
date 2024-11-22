@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<UDropdownButtonProps>(), {
   dataTest: "",
   config: () => ({}),
 });
+
 const emit = defineEmits([
   /**
    * Triggers on dropdown option click.

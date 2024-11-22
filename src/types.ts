@@ -19,7 +19,7 @@ import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
 import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
 import UDataTableConfig from "./ui.data-table/config.ts";
-// import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
+import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
 import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
 import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
 import UDropdownListConfig from "./ui.dropdown-list/config.ts";
@@ -195,7 +195,7 @@ export interface Components {
   UDatePicker?: Partial<typeof UDatePickerConfig>;
   UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
   UTable?: Partial<typeof UDataTableConfig>;
-  // UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
+  UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
   UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
   UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
   UDropdownList?: Partial<typeof UDropdownListConfig>;
