@@ -73,7 +73,7 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size] as UCheckboxProps["size"];
+  return sizes[props.size];
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
