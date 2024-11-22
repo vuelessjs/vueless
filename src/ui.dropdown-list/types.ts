@@ -1,14 +1,26 @@
+import type { UnknownObject } from "../types.ts";
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
-
 export type Config = Partial<typeof defaultConfig>;
+export type OnClickOption = (option: Omit<Option, "onClick">) => void;
+
+export interface BaseOption {
+  isSubGroup?: boolean;
+  groupLabel?: boolean;
+  level?: number;
+  isHidden?: boolean;
+  onClick?: OnClickOption;
+}
+
+export interface Option extends BaseOption {
+  [key: string]: string | number | boolean | number | UnknownObject | OnClickOption | undefined;
+}
 
 export interface UDropdownListProps {
   /**
-   * List of options.
+   * List options.
    */
-  options?: UnknownObject[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.
@@ -26,11 +38,6 @@ export interface UDropdownListProps {
   addOption?: boolean;
 
   /**
-   * Disable the list.
-   */
-  disabled?: boolean;
-
-  /**
    * List size.
    */
   size?: "sm" | "md" | "lg";
@@ -38,7 +45,12 @@ export interface UDropdownListProps {
   /**
    * Number of options to show without a scroll.
    */
-  visibleOptions?: number;
+  visibleOptions?: undefined | number;
+
+  /**
+   * Disable the list.
+   */
+  disabled?: boolean;
 
   /**
    * Unique element id.
@@ -48,5 +60,10 @@ export interface UDropdownListProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: Config;
+
+  /**
+   * Data-test attribute for automated testing.
+   */
+  dataTest?: string;
 }

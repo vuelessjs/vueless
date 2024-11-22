@@ -1,21 +1,10 @@
 import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config.js";
 
-import type { Ref } from "vue";
-import type { UseAttrs } from "../types.ts";
-import type { UDropdownButtonProps, Config } from "./types.ts";
-
-type ComponentState = {
-  isShownOptions: Ref<boolean>;
-};
-
-export default function useAttrs(
-  props: UDropdownButtonProps,
-  { isShownOptions }: ComponentState,
-): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
+export default function useAttrs(props, { isShownOptions }) {
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );

@@ -1,13 +1,13 @@
 import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config.js";
 
+import type { Config, UDropdownListProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
-import type { UDropdownListProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UDropdownListProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
+  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
     defaultConfig,
     () => props.config,
   );

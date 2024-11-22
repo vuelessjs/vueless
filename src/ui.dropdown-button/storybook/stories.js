@@ -5,14 +5,6 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDropdownButtonProps } from "../types.ts";
-
-interface UDropdownButtonArgs extends UDropdownButtonProps {
-  slotTemplate?: string;
-  enum: "variant" | "size";
-}
-
 /**
  * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
  */
@@ -34,9 +26,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
 
-const DefaultTemplate: StoryFn<UDropdownButtonArgs> = (args: UDropdownButtonArgs) => ({
+const DefaultTemplate = (args) => ({
   components: { UDropdownButton, UIcon },
   setup() {
     const slots = getSlotNames(UDropdownButton.__name);
@@ -45,20 +37,17 @@ const DefaultTemplate: StoryFn<UDropdownButtonArgs> = (args: UDropdownButtonArgs
   },
   template: `
     <UDropdownButton v-bind="args">
-      ${args.slotTemplate || getSlotsFragment("")}
+      ${args.slotTemplate || getSlotsFragment()}
     </UDropdownButton>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDropdownButtonArgs> = (
-  args: UDropdownButtonArgs,
-  { argTypes },
-) => ({
+const EnumVariantTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow },
   setup() {
     return {
       args,
-      options: argTypes?.[args.enum]?.options,
+      options: argTypes[args.enum].options,
     };
   },
   template: `
@@ -74,16 +63,13 @@ const EnumVariantTemplate: StoryFn<UDropdownButtonArgs> = (
   `,
 });
 
-const VariantColorsTemplate: StoryFn<UDropdownButtonArgs> = (
-  args: UDropdownButtonArgs,
-  { argTypes },
-) => ({
+const VariantColorsTemplate = (args, { argTypes }) => ({
   components: { UDropdownButton, URow, UCol },
   setup() {
     return {
       args,
-      variants: argTypes?.variant?.options,
-      colors: argTypes?.color?.options,
+      variants: argTypes.variant.options,
+      colors: argTypes.color.options,
     };
   },
   template: `
@@ -109,13 +95,13 @@ export const Filled = DefaultTemplate.bind({});
 Filled.args = { variant: "thirdary", filled: true };
 
 export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+Variants.args = { enum: "variant", text: "" };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+Sizes.args = { enum: "size", text: "" };
 
 export const VariantColors = VariantColorsTemplate.bind({});
-VariantColors.args = {};
+VariantColors.args = { text: "" };
 
 export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
 WithoutDropdownIcon.args = { enum: "variant", noIcon: true };

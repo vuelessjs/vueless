@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { computed, ref, useId } from "vue";
+<script setup lang="ts">
+import { computed, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -8,26 +8,32 @@ import UButton from "../ui.button/UButton.vue";
 import { getDefault } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
-import usePointer from "./usePointer.js";
+import usePointer from "./usePointer.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
 import { UDropdownList } from "./constants.ts";
 
-import type { UDropdownListProps } from "./types.ts";
+import type { Option, UDropdownListProps } from "./types.ts";
+import type { UnknownObject } from "src/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 // TODO: Use props and regular modal value
-const modelValue = defineModel({ type: [String, Number, Object], default: "" });
+const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
 const props = withDefaults(defineProps<UDropdownListProps>(), {
+  options: () => [],
   labelKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).labelKey,
   valueKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).valueKey,
-  disabled: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).disabled,
+  addOption: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).addOption,
   size: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).size,
   visibleOptions: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).visibleOptions,
+  disabled: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).disabled,
+  id: "",
+  dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -41,8 +47,8 @@ const emit = defineEmits([
   "clickOption",
 ]);
 
-const wrapperRef = ref(null);
-const optionsRef = ref([]);
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const optionsRef = useTemplateRef<HTMLLIElement[]>("option");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -68,14 +74,14 @@ const {
 const { tm } = useLocale();
 
 const i18nGlobal = tm(UDropdownList);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props?.config?.i18n));
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
 const wrapperHeight = computed(() => {
-  if (!optionsRef.value.length) return "auto";
+  if (!optionsRef.value?.length) return "auto";
 
   const maxHeight = optionsRef.value
     .slice(0, props.visibleOptions)
@@ -89,21 +95,27 @@ function onClickAddOption() {
   emit("add");
 }
 
-function select(option, key) {
+function isMetaKey(key: string) {
+  return ["isSubGroup", "groupLabel", "level", "isHidden", "onClick"].includes(key);
+}
+
+function select(option: Option, keyCode?: string) {
   if (props.disabled || option.groupLabel) {
     return;
   }
 
-  if (key === "Tab" && !pointerDirty.value) return;
+  if (keyCode === "Tab" && !pointerDirty.value) return;
 
-  modelValue.value = option[props.valueKey];
+  if (props.valueKey in option && !isMetaKey(props.valueKey)) {
+    modelValue.value = option[props.valueKey] as string | number | UnknownObject;
+  }
 }
 
-function isSelectedOption(option) {
+function isSelectedOption(option: Option) {
   return modelValue.value === option[props.valueKey];
 }
 
-function getMarginForSubCategory(level) {
+function getMarginForSubCategory(level: number) {
   const baseMargin = 1;
 
   if (level > 1) {
@@ -111,25 +123,25 @@ function getMarginForSubCategory(level) {
   }
 }
 
-function optionHighlight(index, option) {
+function optionHighlight(index: number, option: Option) {
   const classes = [];
 
-  if (index === pointer.value) classes.push(config.value.optionHighlighted);
-  if (isSelectedOption(option)) classes.push(config.value.optionSelected);
+  if (index === pointer.value) classes.push(config.value?.optionHighlighted);
+  if (isSelectedOption(option)) classes.push(config.value?.optionSelected);
 
   return classes;
 }
 
-function addPointerElement({ key } = "Enter") {
+function addPointerElement(keyCode: string) {
   if (props.options.length > 0) {
-    select(props.options[pointer.value], key);
+    select(props.options[pointer.value], keyCode);
     onClickOption(props.options[pointer.value]);
   }
 
   pointerReset();
 }
 
-function onClickOption(rawOption) {
+function onClickOption(rawOption: Option) {
   const option = { ...rawOption };
 
   delete option.onClick;
@@ -188,13 +200,13 @@ defineExpose({
 
 <template>
   <div
-    ref="wrapperRef"
+    ref="wrapper"
     tabindex="1"
     :style="{ maxHeight: wrapperHeight }"
     v-bind="wrapperAttrs"
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
-    @keydown.enter.stop.self="addPointerElement"
+    @keydown.enter.stop.self="addPointerElement('Enter')"
   >
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
@@ -202,8 +214,8 @@ defineExpose({
         :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
-        ref="optionsRef"
-        :role="!(option && option.groupLabel) ? 'option' : null"
+        ref="option"
+        :role="!(option && option.groupLabel) ? 'option' : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <!-- option title -->
@@ -228,7 +240,7 @@ defineExpose({
           -->
           <slot name="option" :option="option" :index="index">
             <span
-              :style="getMarginForSubCategory(option.level)"
+              :style="getMarginForSubCategory(option.level || 0)"
               v-bind="optionContentAttrs"
               v-text="option[labelKey]"
             />
@@ -248,7 +260,7 @@ defineExpose({
 
           <div
             v-else-if="option.isSubGroup"
-            :style="getMarginForSubCategory(option.level)"
+            :style="getMarginForSubCategory(option.level || 0)"
             v-bind="subGroupAttrs"
             v-text="option[labelKey]"
           />
@@ -276,7 +288,7 @@ defineExpose({
             internal
             color="white"
             size="xs"
-            :name="config.defaults.addOptionIcon"
+            :name="config.defaults?.addOptionIcon"
             v-bind="addOptionIconAttrs"
           />
         </UButton>

@@ -123,6 +123,7 @@ GroupValue.args = {
   groupLabelKey: "language",
   labelKey: "name",
   valueKey: "name",
+  // TODO: Implement recursion nesting and add ability to use group (nested) options with default options.
   options: [
     {
       language: "Javascript",
