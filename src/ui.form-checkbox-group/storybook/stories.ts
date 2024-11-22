@@ -6,6 +6,16 @@ import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UCheckboxGroupProps } from "../types.ts";
+import type { UnknownObject, UnknownArray } from "../../types.ts";
+
+interface UCheckboxGroupArgs extends UCheckboxGroupProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+  value?: boolean | string | number | UnknownArray | UnknownObject;
+}
+
 /**
  * The `UCheckboxGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-group)
  */
@@ -25,9 +35,9 @@ export default {
   argTypes: {
     ...getArgTypes(UCheckboxGroup.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) => ({
   components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol },
   setup() {
     const slots = getSlotNames(UCheckboxGroup.__name);
@@ -42,7 +52,7 @@ const DefaultTemplate = (args) => ({
   template: `
     <UCol>
       <UCheckboxGroup v-bind="args" v-model="value">
-        ${args.slotTemplate || getSlotsFragment()}
+        ${args.slotTemplate || getSlotsFragment("")}
       </UCheckboxGroup>
 
       <URow>
@@ -54,7 +64,10 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UCheckboxGroupArgs> = (
+  args: UCheckboxGroupArgs,
+  { argTypes },
+) => ({
   components: { UCheckboxGroup, UCol },
   setup() {
     return { args };
@@ -62,7 +75,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
   data() {
     return {
       value: args.value,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -100,7 +113,7 @@ Default.args = {
     },
     {
       name: "Default",
-      label: "Object",
+      label: "Array",
       value: ["Array", 1],
     },
   ],

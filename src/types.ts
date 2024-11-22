@@ -41,6 +41,9 @@ import UTabConfig from "./ui.navigation-tab/config.ts";
 import UTabsConfig from "./ui.navigation-tabs/config.ts";
 import UAvatarConfig from "./ui.image-avatar/config.ts";
 import UIconConfig from "./ui.image-icon/config.ts";
+import UCheckboxConfig from "./ui.form-checkbox/config.ts";
+import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
+import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -152,6 +155,7 @@ export interface Config extends ThemeConfig {
 }
 
 export type UnknownObject = Record<string, unknown>;
+export type UnknownArray = Array<unknown>;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
 export type Gray = "gray";
@@ -217,6 +221,9 @@ export interface Components {
   UTabs?: Partial<typeof UTabsConfig>;
   UAvatar?: Partial<typeof UAvatarConfig>;
   UIcon?: Partial<typeof UIconConfig>;
+  UCheckbox?: Partial<typeof UCheckboxConfig>;
+  UCheckboxGroup?: Partial<typeof UCheckboxGroupConfig>;
+  UCheckboxMultiState?: Partial<typeof UCheckboxMultiStateConfig>;
 }
 
 export interface Directives {

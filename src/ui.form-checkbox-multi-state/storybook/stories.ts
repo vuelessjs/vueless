@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UCheckboxMultiState from "../../ui.form-checkbox-multi-state/UCheckboxMultiState.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UCheckboxMultiStateProps } from "../types.ts";
+
+interface UCheckboxMultiStateArgs extends UCheckboxMultiStateProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 /**
  * The `UCheckboxMultiState` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-multi-state)
  */
@@ -20,9 +28,9 @@ export default {
   argTypes: {
     ...getArgTypes(UCheckboxMultiState.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UCheckboxMultiStateArgs> = (args: UCheckboxMultiStateArgs) => ({
   components: { UCheckboxMultiState },
   setup() {
     const slots = getSlotNames(UCheckboxMultiState.__name);
@@ -31,17 +39,20 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UCheckboxMultiState v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UCheckboxMultiState>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UCheckboxMultiStateArgs> = (
+  args: UCheckboxMultiStateArgs,
+  { argTypes },
+) => ({
   components: { UCheckboxMultiState, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
