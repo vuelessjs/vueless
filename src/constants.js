@@ -124,6 +124,7 @@ export const COMPONENTS = {
   UCol: "ui.container-col",
   URow: "ui.container-row",
   UGroup: "ui.container-group",
+  UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
