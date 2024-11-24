@@ -9,11 +9,6 @@ export interface UGroupProps {
   title?: string;
 
   /**
-   * The distance between nested elements.
-   */
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-
-  /**
    * Show line above the header.
    */
   upperlined?: boolean;

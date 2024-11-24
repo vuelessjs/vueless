@@ -12,7 +12,6 @@ import type { UGroupProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UGroupProps>(), {
-  gap: getDefault<UGroupProps>(defaultConfig, UGroup).gap,
   upperlined: getDefault<UGroupProps>(defaultConfig, UGroup).upperlined,
   underlined: getDefault<UGroupProps>(defaultConfig, UGroup).underlined,
   dataTest: "",
