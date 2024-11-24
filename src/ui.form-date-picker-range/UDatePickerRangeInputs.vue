@@ -9,7 +9,7 @@ import UInput from "../ui.form-input/UInput.vue";
 import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants.ts";
 
 import type { UDatePickerRangeInputsProps } from "./types.ts";
-import type { RangeDate } from "src/ui.form-calendar/types.ts";
+import type { RangeDate } from "../ui.form-calendar/types.ts";
 
 type UInputRef = InstanceType<typeof UInput>;
 

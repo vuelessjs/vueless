@@ -5,7 +5,7 @@ import defaultConfig from "./config.ts";
 
 import type { Ref } from "vue";
 import type { Config, UDropdownButtonProps } from "./types.ts";
-import type { UseAttrs } from "src/types.ts";
+import type { UseAttrs } from "../types.ts";
 
 interface DropdownButtonState {
   isShownOptions: Ref<boolean>;

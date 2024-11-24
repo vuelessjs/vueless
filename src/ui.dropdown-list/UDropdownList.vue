@@ -16,7 +16,7 @@ import defaultConfig from "./config.ts";
 import { UDropdownList } from "./constants.ts";
 
 import type { Option, UDropdownListProps } from "./types.ts";
-import type { UnknownObject } from "src/types.ts";
+import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 

@@ -1,14 +1,33 @@
 import defaultConfig from "./config.ts";
 
-import type { Color } from "../types.ts";
-
 export type Config = Partial<typeof defaultConfig>;
 
 export interface ULoaderProgressProps {
   /**
    * Loader stripe color.
    */
-  color?: `${Color}`;
+  color?:
+    | "grayscale"
+    | "red"
+    | "orange"
+    | "amber"
+    | "yellow"
+    | "lime"
+    | "green"
+    | "emerald"
+    | "teal"
+    | "cyan"
+    | "sky"
+    | "blue"
+    | "indigo"
+    | "violet"
+    | "purple"
+    | "fuchsia"
+    | "pink"
+    | "rose"
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * API resource names (endpoint URIs).

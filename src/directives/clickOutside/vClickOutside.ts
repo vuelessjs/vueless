@@ -8,7 +8,7 @@ import type {
   ClickOutsideTargetElement,
   DirectiveBindingCallback,
   DirectiveBindingOptions,
-} from "./types";
+} from "./types.ts";
 
 function clickOutside(
   target: MaybeRef<HTMLElement | null>,

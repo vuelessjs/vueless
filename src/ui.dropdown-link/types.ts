@@ -1,8 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { Option } from "../ui.dropdown-list/types";
-import type { Direction } from "../composables/useAutoPosition";
-import type { Color } from "../types";
+import type { Option } from "../ui.dropdown-list/types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
@@ -25,7 +23,28 @@ export interface UDropdownLinkProps {
   /**
    * Link color.
    */
-  color?: `${Color}`;
+  color?:
+    | "grayscale"
+    | "red"
+    | "orange"
+    | "amber"
+    | "yellow"
+    | "lime"
+    | "green"
+    | "emerald"
+    | "teal"
+    | "cyan"
+    | "sky"
+    | "blue"
+    | "indigo"
+    | "violet"
+    | "purple"
+    | "fuchsia"
+    | "pink"
+    | "rose"
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * Link size.
@@ -58,14 +77,14 @@ export interface UDropdownLinkProps {
   noIcon?: boolean;
 
   /**
-   * The position of dropdown list on the y-axis.
-   */
-  yPosition?: Direction.Top | Direction.Bottom;
-
-  /**
    * The position of dropdown list on the x-axis.
    */
-  xPosition?: Direction.Left | Direction.Right;
+  xPosition?: "left" | "right";
+
+  /**
+   * The position of dropdown list on the y-axis.
+   */
+  yPosition?: "top" | "bottom";
 
   /**
    * Unique element id.

@@ -1,7 +1,5 @@
 import defaultConfig from "./config.ts";
 
-import type { Color } from "../types.ts";
-
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UBadgeProps {
@@ -28,7 +26,28 @@ export interface UBadgeProps {
   /**
    * Badge color.
    */
-  color?: `${Color}`;
+  color?:
+    | "grayscale"
+    | "red"
+    | "orange"
+    | "amber"
+    | "yellow"
+    | "lime"
+    | "green"
+    | "emerald"
+    | "teal"
+    | "cyan"
+    | "sky"
+    | "blue"
+    | "indigo"
+    | "violet"
+    | "purple"
+    | "fuchsia"
+    | "pink"
+    | "rose"
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * Icon name (appears instead of label).

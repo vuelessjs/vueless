@@ -1,6 +1,5 @@
 import { hasSlotContent } from "./composables/useUI.ts";
 
-// TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UAlertDefaultConfig from "./ui.text-alert/config.ts";
 import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
@@ -55,30 +54,6 @@ export enum ColorMode {
   Dark = "dark",
   Light = "light",
   Auto = "auto",
-}
-
-export enum Color {
-  Brand = "brand",
-  Grayscale = "grayscale",
-  Gray = "gray",
-  Red = "red",
-  Orange = "orange",
-  Amber = "amber",
-  Yellow = "yellow",
-  Lime = "lime",
-  Green = "green",
-  Emerald = "emerald",
-  Teal = "teal",
-  Cyan = "cyan",
-  Sky = "sky",
-  Blue = "blue",
-  Indigo = "indigo",
-  Violet = "violet",
-  Purple = "purple",
-  Fuchsia = "fuchsia",
-  Pink = "pink",
-  Rose = "rose",
-  White = "white",
 }
 
 export interface ExtendedKeyClasses {

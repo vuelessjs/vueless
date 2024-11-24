@@ -1,7 +1,5 @@
 import defaultConfig from "./config.ts";
 
-import type { Color } from "../types.ts";
-
 export type Config = Partial<typeof defaultConfig>;
 
 export interface UProgressProps {
@@ -23,7 +21,28 @@ export interface UProgressProps {
   /**
    * Progress color.
    */
-  color?: `${Color}`;
+  color?:
+    | "grayscale"
+    | "red"
+    | "orange"
+    | "amber"
+    | "yellow"
+    | "lime"
+    | "green"
+    | "emerald"
+    | "teal"
+    | "cyan"
+    | "sky"
+    | "blue"
+    | "indigo"
+    | "violet"
+    | "purple"
+    | "fuchsia"
+    | "pink"
+    | "rose"
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * Progress variant.

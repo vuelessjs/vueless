@@ -1,7 +1,6 @@
 import defaultConfig from "./config.ts";
 
 import type { RouteLocationRaw } from "vue-router";
-import type { Color } from "src/types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
@@ -29,7 +28,28 @@ export interface ULinkProps {
   /**
    * Link color.
    */
-  color?: `${Color}`;
+  color?:
+    | "grayscale"
+    | "red"
+    | "orange"
+    | "amber"
+    | "yellow"
+    | "lime"
+    | "green"
+    | "emerald"
+    | "teal"
+    | "cyan"
+    | "sky"
+    | "blue"
+    | "indigo"
+    | "violet"
+    | "purple"
+    | "fuchsia"
+    | "pink"
+    | "rose"
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * Link open type behaviour.
