@@ -91,6 +91,8 @@ const footerRowRef = useTemplateRef<HTMLTableRowElement>("footer-row");
 const tableWrapperRef = useTemplateRef<HTMLDivElement>("table-wrapper");
 const stickyFooterRowRef = useTemplateRef<HTMLTableRowElement>("sticky-footer-row");
 const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
+const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
+const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
 const i18nGlobal = tm(UTable);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -326,10 +328,21 @@ function setFooterCellWidth(zero?: null) {
 }
 
 function setHeaderCellWidth() {
-  if (selectedRows.value.length || !footerRowRef.value || !stickyFooterRowRef.value) return;
+  if (
+    !headerRowRef.value ||
+    !stickyHeaderRowRef.value ||
+    !stickyActionHeaderRowRef.value ||
+    !actionHeaderRowRef.value
+  ) {
+    return;
+  }
 
-  const mainHeaderItems = [...(headerRowRef.value?.children || [])] as HTMLElement[];
-  const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])] as HTMLDivElement[];
+  const mainHeaderItems = [...headerRowRef.value.children] as HTMLElement[];
+  const stickyHeaderItems = [
+    ...stickyHeaderRowRef.value.children,
+    ...stickyActionHeaderRowRef.value.children,
+    ...actionHeaderRowRef.value.children,
+  ] as HTMLElement[];
 
   stickyHeaderItems.forEach((item, index) => {
     item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
@@ -486,7 +499,7 @@ defineExpose({
 
     <div
       v-show="isShownActionsHeader && isHeaderSticky"
-      ref="sticky-header-row"
+      ref="sticky-action-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
     >
@@ -518,7 +531,7 @@ defineExpose({
 
     <div
       v-show="isShownActionsHeader && !isHeaderSticky"
-      ref="sticky-header-row"
+      ref="action-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
       class="absolute"
