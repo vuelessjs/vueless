@@ -331,6 +331,7 @@ function getRowAttrs(rowId: string | number) {
     :empty-cell-label="emptyCellLabel"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
+    @dblclick="onDoubleClick"
   >
     <template
       v-for="(value, key, index) in mapRowColumns(singleNestedRow, columns)"
