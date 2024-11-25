@@ -28,9 +28,8 @@ export default /*tw*/ {
   optionContent: "overflow-visible text-ellipsis",
   optionSelected: "font-bold",
   optionHighlighted: "bg-brand-50",
-  group: {
-    base: `pointer-events-none bg-transparent font-medium !leading-none uppercase text-gray-400 pt-4 pb-1
-      group-first/item:pt-2`,
+  groupBase: {
+    base: "px-2 pb-2.5 font-medium !leading-none text-gray-400 overflow-hidden text-ellipsis",
     variants: {
       size: {
         sm: "text-2xs",
@@ -39,16 +38,12 @@ export default /*tw*/ {
       },
     },
   },
-  subGroup: {
-    base: "pointer-events-none bg-transparent font-medium !leading-none uppercase text-gray-400 pt-2",
-    variants: {
-      size: {
-        sm: "text-2xs",
-        md: "text-xs",
-        lg: "text-sm",
-      },
-    },
-  },
+  group: `
+    border-t border-gray-100 group-first/item:border-none
+    mt-1.5 group-first/item:mt-0
+    pt-4 group-first/item:pt-2
+  `,
+  subGroup: "pt-2",
   addOptionLabelWrapper: "-mb-[1.375rem] active:bg-brand-100",
   addOptionLabel: "leading-none font-medium",
   addOptionLabelHotkey: "text-gray-500",

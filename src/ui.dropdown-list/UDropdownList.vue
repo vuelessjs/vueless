@@ -147,7 +147,7 @@ function isSelectedOption(option: Option) {
 }
 
 function getMarginForSubCategory(level: number = 0) {
-  const baseMargin = 1;
+  const baseMargin = 0.5;
 
   if (level > 1) {
     return `margin-left: ${baseMargin * (level - 1)}rem`;
