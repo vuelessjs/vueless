@@ -221,6 +221,7 @@ function getRowAttrs(rowId: string | number) {
     v-bind="{ ...$attrs, ...getRowAttrs(row.id) }"
     :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
     @click="onClick(props.row)"
+    @dblclick="onDoubleClick(props.row)"
   >
     <td
       v-if="selectable"
