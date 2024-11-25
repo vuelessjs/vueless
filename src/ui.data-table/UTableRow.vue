@@ -22,7 +22,7 @@ const LAST_NESTED_ROW_SHIFT_REM = 2;
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
+const emit = defineEmits(["toggleRowVisibility", "click", "doubleClick", "click-cell"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
@@ -153,6 +153,10 @@ function onClickToggleRowChild(rowId: string | number) {
 
 function onClick(row: Row) {
   emit("click", row);
+}
+
+function onDoubleClick(row: Row) {
+  emit("doubleClick", row);
 }
 
 function setCellTitle(mutations: MutationRecord[]) {
@@ -356,6 +360,7 @@ function getRowAttrs(rowId: string | number) {
         :empty-cell-label="emptyCellLabel"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
+        @dblclick="onDoubleClick"
         @click-cell="onClickCell"
       >
         <template
