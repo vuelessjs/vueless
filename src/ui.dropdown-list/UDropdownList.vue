@@ -80,7 +80,7 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
-const wrapperHeight = computed(() => {
+const wrapperMaxHeight = computed(() => {
   if (!optionsRef.value?.length) return "auto";
 
   const maxHeight = optionsRef.value
@@ -88,7 +88,7 @@ const wrapperHeight = computed(() => {
     .map((el) => el.getBoundingClientRect().height)
     .reduce((acc, cur) => acc + cur, 0);
 
-  return props.visibleOptions === undefined ? "auto" : `${maxHeight + 10}px`;
+  return !props.visibleOptions ? "auto" : `${maxHeight + 10}px`;
 });
 
 function onClickAddOption() {
@@ -202,7 +202,7 @@ defineExpose({
   <div
     ref="wrapper"
     tabindex="1"
-    :style="{ maxHeight: wrapperHeight }"
+    :style="{ maxHeight: wrapperMaxHeight }"
     v-bind="wrapperAttrs"
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
@@ -267,21 +267,30 @@ defineExpose({
         </template>
       </li>
 
-      <div v-if="!options.length" v-bind="optionAttrs">
+      <li
+        v-if="!options.length"
+        ref="option"
+        v-bind="optionAttrs"
+        @mouseenter.self="pointerSet(options.length + 1)"
+      >
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
           <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
         </slot>
-      </div>
+      </li>
 
       <!-- Add button -->
       <template v-if="addOption">
-        <div v-bind="addOptionLabelWrapperAttrs" @click="onClickAddOption">
-          <div v-bind="addOptionLabelAttrs">
+        <li
+          v-bind="addOptionLabelWrapperAttrs"
+          @click="onClickAddOption"
+          @mouseenter.self="pointerSet(options.length + 1)"
+        >
+          <span v-bind="addOptionLabelAttrs">
             {{ currentLocale.add }}
             <span v-bind="addOptionLabelHotkeyAttrs" v-text="addOptionKeyCombination" />
-          </div>
-        </div>
+          </span>
+        </li>
 
         <UButton round square v-bind="addOptionButtonAttrs" @click="onClickAddOption">
           <UIcon

@@ -16,6 +16,9 @@ export default function useAttrs(props: UDropdownListProps): UseAttrs<Config> {
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, [], {
+    addOptionLabelWrapper: {
+      base: computed(() => [extendingKeysClasses.option.value]),
+    },
     group: {
       base: computed(() => [extendingKeysClasses.option.value]),
     },

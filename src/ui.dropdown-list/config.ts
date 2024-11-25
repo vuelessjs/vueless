@@ -49,13 +49,10 @@ export default /*tw*/ {
       },
     },
   },
-  addOptionLabelWrapper: `
-    flex items-center justify-between cursor-pointer p-3 hover:bg-brand-50
-    active:bg-brand-100 active:font-medium -mb-6
-  `,
-  addOptionLabel: "text-sm font-medium text-gray-900",
+  addOptionLabelWrapper: "-mb-[1.375rem] active:bg-brand-100",
+  addOptionLabel: "text-sm leading-none font-medium text-gray-900",
   addOptionLabelHotkey: "text-gray-500",
-  addOptionButton: "{UButton} sticky left-[calc(100%-2.3rem)] bottom-2.5 p-1",
+  addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
   i18n: {
     noDataToShow: "No data to show.",
@@ -65,7 +62,6 @@ export default /*tw*/ {
     size: "md",
     labelKey: "label",
     valueKey: "id",
-    optionHeight: 40,
     visibleOptions: undefined,
     disabled: false,
     addOption: false,
