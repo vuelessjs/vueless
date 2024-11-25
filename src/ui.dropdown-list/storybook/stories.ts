@@ -91,12 +91,29 @@ VisibleOptions.args = { visibleOptions: 3 };
 export const WithoutOptions = DefaultTemplate.bind({});
 WithoutOptions.args = { options: [] };
 
+export const GroupedOptions = DefaultTemplate.bind({});
+GroupedOptions.args = {
+  labelKey: "name",
+  valueKey: "name",
+  options: [
+    { groupLabel: "Javascript" },
+    { name: "Vue.js" },
+    { name: "Adonis" },
+    { groupLabel: "Ruby" },
+    { name: "Frameworks", isSubGroup: true, level: 2 },
+    { name: "Rails", level: 2 },
+    { name: "Sinatra", level: 2 },
+    { groupLabel: "Other" },
+    { name: "Laravel" },
+    { name: "Phoenix" },
+  ],
+};
+
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
   options: [
     { label: "option 1", id: "1" },
     { label: "option 2", id: "2", isHidden: true },
-
     {
       label: "option 3",
       id: "3",
