@@ -85,7 +85,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 watch(
-  () => props.options,
+  () => [props.options, props.size],
   () => {
     nextTick(() => {
       const options = [
@@ -100,7 +100,20 @@ watch(
 
       const maxHeight = options
         .slice(0, props.visibleOptions)
-        .map((el) => el.getBoundingClientRect().height)
+        .map((el) => {
+          const elHeight = el.getBoundingClientRect().height;
+
+          const styles = window.getComputedStyle(el);
+          const marginTop = parseFloat(styles.marginTop || "0");
+          const marginBottom = parseFloat(styles.marginBottom || "0");
+
+          const [childDiv] = el.getElementsByTagName("div");
+          const childStyles = childDiv && window.getComputedStyle(childDiv);
+          const childMarginTop = parseFloat(childStyles?.marginTop || "0");
+          const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
+
+          return elHeight + marginTop + marginBottom + childMarginTop + childMarginBottom;
+        })
         .reduce((acc, cur) => acc + cur, 0);
 
       wrapperMaxHeight.value = `${maxHeight + 10}px`;
