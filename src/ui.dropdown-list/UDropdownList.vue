@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId, useTemplateRef } from "vue";
+import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -49,6 +49,10 @@ const emit = defineEmits([
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const optionsRef = useTemplateRef<HTMLLIElement[]>("option");
+const emptyOptionRef = useTemplateRef<HTMLLIElement>("empty-option");
+const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
+
+const wrapperMaxHeight = ref("");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -80,16 +84,30 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
-const wrapperMaxHeight = computed(() => {
-  if (!optionsRef.value?.length) return "auto";
+watch(
+  () => props.options,
+  () => {
+    nextTick(() => {
+      const options = [
+        ...(optionsRef.value || []),
+        ...(addOptionRef.value ? [addOptionRef.value] : []),
+        ...(emptyOptionRef.value ? [emptyOptionRef.value] : []),
+      ];
 
-  const maxHeight = optionsRef.value
-    .slice(0, props.visibleOptions)
-    .map((el) => el.getBoundingClientRect().height)
-    .reduce((acc, cur) => acc + cur, 0);
+      if (props.visibleOptions) {
+        options.slice(0, props.visibleOptions);
+      }
 
-  return !props.visibleOptions ? "auto" : `${maxHeight + 10}px`;
-});
+      const maxHeight = options
+        .slice(0, props.visibleOptions)
+        .map((el) => el.getBoundingClientRect().height)
+        .reduce((acc, cur) => acc + cur, 0);
+
+      wrapperMaxHeight.value = `${maxHeight + 10}px`;
+    });
+  },
+  { immediate: true },
+);
 
 function onClickAddOption() {
   emit("add");
@@ -269,9 +287,10 @@ defineExpose({
 
       <li
         v-if="!options.length"
-        ref="option"
+        :id="`${elementId}-empty`"
+        ref="empty-option"
+        role="option"
         v-bind="optionAttrs"
-        @mouseenter.self="pointerSet(options.length + 1)"
       >
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
@@ -282,6 +301,9 @@ defineExpose({
       <!-- Add button -->
       <template v-if="addOption">
         <li
+          :id="`${elementId}-addOption`"
+          ref="add-option"
+          role="option"
           v-bind="addOptionLabelWrapperAttrs"
           @click="onClickAddOption"
           @mouseenter.self="pointerSet(options.length + 1)"

@@ -5,13 +5,13 @@ export default /*tw*/ {
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-none
   `,
-  list: "m-1 inline-block list-none align-top w-full p-0 bg-white opacity-1 hover:transition",
+  list: "m-1 p-0 inline-block list-none align-top w-full",
   listItem: "group/item block",
   option: {
     base: `
       rounded px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none normal-case text-gray-900
-      hover:bg-brand-50
+      hover:bg-brand-50 active:bg-brand-100
       overflow-hidden text-ellipsis
     `,
     variants: {
@@ -50,7 +50,7 @@ export default /*tw*/ {
     },
   },
   addOptionLabelWrapper: "-mb-[1.375rem] active:bg-brand-100",
-  addOptionLabel: "text-sm leading-none font-medium text-gray-900",
+  addOptionLabel: "leading-none font-medium",
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
