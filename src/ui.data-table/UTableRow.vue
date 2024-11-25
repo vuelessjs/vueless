@@ -103,7 +103,7 @@ function getIconWidth() {
 }
 
 function getCellClasses(row: Row, key: string) {
-  const isCellData = typeof row[key] === "object" && "class" in row[key];
+  const isCellData = typeof row[key] === "object" && row[key] !== null && "class" in row[key];
   const cell = row[key] as CellObject;
   const cellClasses = isCellData ? cell?.class : undefined;
 
