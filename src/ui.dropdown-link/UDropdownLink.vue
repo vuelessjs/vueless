@@ -19,8 +19,8 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownLinkProps>(), {
-  label: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).label,
   options: () => [],
+  label: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).label,
   labelKey: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).labelKey,
   color: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).color,
   size: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).size,

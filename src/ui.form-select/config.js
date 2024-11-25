@@ -71,8 +71,8 @@ export default /*tw*/ {
     base: "flex items-center mt-0",
     compoundVariants: [
       { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "md", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-4" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-4" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-[1.125rem]" },
     ],
   },
   toggle: "mr-3",
