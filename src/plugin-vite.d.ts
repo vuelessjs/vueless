@@ -1,12 +1,16 @@
+import Vueless from "Vueless";
+
 declare module "unplugin-vue-components" {
-  export function VuelessUnpluginComponents(options?: unknown): import("vite").Plugin<unknown> & {
+  function VuelessUnpluginComponents(options?: unknown): import("vite").Plugin<unknown> & {
     api: import("unplugin-vue-components/types.js").PublicPluginAPI;
   };
+  export default VuelessUnpluginComponents;
 }
 
 declare module "Vueless" {
   import { Plugin } from "vite";
   import { Config } from "svgo";
+
   function Vueless(options?: {
     env?: string;
     mode?: string;
