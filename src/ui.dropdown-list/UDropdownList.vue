@@ -116,7 +116,19 @@ watch(
         })
         .reduce((acc, cur) => acc + cur, 0);
 
-      wrapperMaxHeight.value = `${maxHeight + 10}px`;
+      const wrapperStyle = getComputedStyle(wrapperRef.value as Element);
+      const wrapperPaddingTop = parseFloat(wrapperStyle.paddingTop || "0");
+      const wrapperPaddingBottom = parseFloat(wrapperStyle.paddingBottom || "0");
+      const wrapperBorderTop = parseFloat(wrapperStyle.borderTopWidth || "0");
+      const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
+
+      wrapperMaxHeight.value = `${
+        maxHeight +
+        wrapperPaddingTop +
+        wrapperPaddingBottom +
+        wrapperBorderTop +
+        wrapperBorderBottom
+      }px`;
     });
   },
   { immediate: true },
