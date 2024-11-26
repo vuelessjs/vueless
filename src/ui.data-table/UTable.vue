@@ -675,7 +675,7 @@ defineExpose({
               :empty-cell-label="emptyCellLabel"
               :data-test="`${dataTest}-row`"
               @click="onClickRow"
-              @double-click="onDoubleClickRow"
+              @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
             >

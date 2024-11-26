@@ -22,7 +22,7 @@ const LAST_NESTED_ROW_SHIFT_REM = 2;
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleRowVisibility", "click", "doubleClick", "click-cell"]);
+const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
@@ -156,7 +156,7 @@ function onClick(row: Row) {
 }
 
 function onDoubleClick(row: Row) {
-  emit("doubleClick", row);
+  emit("dblclick", row);
 }
 
 function setCellTitle(mutations: MutationRecord[]) {
@@ -200,7 +200,7 @@ function onClickToggleIcon() {
 }
 
 function onClickCell(cell: unknown | string | number, row: Row) {
-  emit("click-cell", cell, row);
+  emit("clickCell", cell, row);
 }
 
 function getRowClasses(row: Row) {
