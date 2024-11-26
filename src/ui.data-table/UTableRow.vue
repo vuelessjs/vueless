@@ -22,7 +22,7 @@ const LAST_NESTED_ROW_SHIFT_REM = 2;
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleRowVisibility", "click", "click-cell"]);
+const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
@@ -103,7 +103,7 @@ function getIconWidth() {
 }
 
 function getCellClasses(row: Row, key: string) {
-  const isCellData = typeof row[key] === "object" && "class" in row[key];
+  const isCellData = typeof row[key] === "object" && row[key] !== null && "class" in row[key];
   const cell = row[key] as CellObject;
   const cellClasses = isCellData ? cell?.class : undefined;
 
@@ -155,6 +155,10 @@ function onClick(row: Row) {
   emit("click", row);
 }
 
+function onDoubleClick(row: Row) {
+  emit("dblclick", row);
+}
+
 function setCellTitle(mutations: MutationRecord[]) {
   mutations.forEach((mutation) => {
     const { target } = mutation;
@@ -196,7 +200,7 @@ function onClickToggleIcon() {
 }
 
 function onClickCell(cell: unknown | string | number, row: Row) {
-  emit("click-cell", cell, row);
+  emit("clickCell", cell, row);
 }
 
 function getRowClasses(row: Row) {
@@ -217,6 +221,7 @@ function getRowAttrs(rowId: string | number) {
     v-bind="{ ...$attrs, ...getRowAttrs(row.id) }"
     :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
     @click="onClick(props.row)"
+    @dblclick="onDoubleClick(props.row)"
   >
     <td
       v-if="selectable"
@@ -326,6 +331,7 @@ function getRowAttrs(rowId: string | number) {
     :empty-cell-label="emptyCellLabel"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
+    @dblclick="onDoubleClick"
   >
     <template
       v-for="(value, key, index) in mapRowColumns(singleNestedRow, columns)"
@@ -356,6 +362,7 @@ function getRowAttrs(rowId: string | number) {
         :empty-cell-label="emptyCellLabel"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
+        @dblclick="onDoubleClick"
         @click-cell="onClickCell"
       >
         <template

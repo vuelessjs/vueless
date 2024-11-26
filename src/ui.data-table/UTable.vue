@@ -62,6 +62,12 @@ const emit = defineEmits([
   "clickRow",
 
   /**
+   * Triggers when the row is double-clicked.
+   * @property {object} row
+   */
+  "doubleClickRow",
+
+  /**
    * Triggers when the cell is clicked.
    * @property {object} cell
    */
@@ -394,6 +400,10 @@ function onClickRow(row: Row) {
   emit("clickRow", row);
 }
 
+function onDoubleClickRow(row: Row) {
+  emit("doubleClickRow", row);
+}
+
 function onClickCell(cell: Cell, row: Row) {
   emit("clickCell", cell, row);
 }
@@ -665,6 +675,7 @@ defineExpose({
               :empty-cell-label="emptyCellLabel"
               :data-test="`${dataTest}-row`"
               @click="onClickRow"
+              @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
               @toggle-row-visibility="onToggleRowVisibility"
             >
