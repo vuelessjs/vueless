@@ -1,6 +1,25 @@
 import defaultConfig from "./config.ts";
 
+import type { Ref } from "vue";
+
+type UpdateSelectedValueFn = (value: string | number, checked: boolean) => void;
+
 export type Config = Partial<typeof defaultConfig>;
+
+export interface ToggleInjectValues {
+  type?: string;
+  size?: string;
+  round?: boolean;
+  block?: boolean;
+  square?: boolean;
+  variant?: string;
+  disabled?: boolean;
+}
+
+export interface ToggleContextType {
+  selectedValue: Ref<string>;
+  updateSelectedValue: UpdateSelectedValueFn;
+}
 
 export interface UToggleItemProps {
   /**

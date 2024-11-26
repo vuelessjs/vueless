@@ -37,10 +37,11 @@ const { isDarkMode } = useDarkMode();
 const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
   useAttrs(props);
 
-const buttonRef = ref(null);
+const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
+type LoaderSize = "sm" | "md" | "lg";
 const loaderSize = computed(() => {
   const sizes = {
     "2xs": "sm",
@@ -51,20 +52,21 @@ const loaderSize = computed(() => {
     xl: "lg",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as LoaderSize;
 });
 
+type IconSize = "2xs" | "xs" | "sm" | "md";
 const iconSize = computed(() => {
   const sizes = {
     "2xs": "2xs",
     xs: "xs",
     sm: "sm",
     md: "sm",
-    lg: "sm",
-    xl: "sm",
+    lg: "md",
+    xl: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const iconColor = computed(() => {
@@ -92,7 +94,9 @@ watch(
 );
 
 watchEffect(() => {
-  props.loading && buttonRef.value.blur();
+  if (props.loading && buttonRef.value) {
+    buttonRef.value.blur();
+  }
 });
 
 defineExpose({

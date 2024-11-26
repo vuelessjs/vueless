@@ -66,6 +66,7 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
   },
 );
 
+type IconSize = "2xs" | "xs" | "sm";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xs",
@@ -73,7 +74,7 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));

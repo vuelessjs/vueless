@@ -58,7 +58,7 @@ const type = computed(() => {
   return props.multiple ? TYPE_CHECKBOX : TYPE_RADIO;
 });
 
-function updateSelectedValue(value, checked) {
+function updateSelectedValue(value: string | number, checked: boolean) {
   if (type.value === TYPE_RADIO) {
     selectedValue.value = value;
 
@@ -66,12 +66,16 @@ function updateSelectedValue(value, checked) {
   }
 
   if (checked) {
-    const items = selectedValue.value || [];
+    const currentValue = selectedValue.value;
+    const items = Array.isArray(currentValue) ? [...currentValue, value] : [value];
 
-    items.push(value);
     selectedValue.value = items;
   } else {
-    selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
+    const currentValue = selectedValue.value;
+
+    if (Array.isArray(currentValue)) {
+      selectedValue.value = currentValue.filter((item) => String(item) !== String(value));
+    }
   }
 }
 

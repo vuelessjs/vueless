@@ -41,6 +41,7 @@ const {
   removeIconAttrs,
 } = useAttrs(props);
 
+type IconSize = "xs" | "sm" | "md";
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -48,9 +49,22 @@ const iconSize = computed(() => {
     lg: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
+type RemoveIconSize =
+  | "4xs"
+  | "3xs"
+  | "2xs"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl";
 const removeIconSize = computed(() => {
   const sizes = {
     sm: "2xs",
@@ -58,7 +72,7 @@ const removeIconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as RemoveIconSize;
 });
 
 function onRemove() {
@@ -88,7 +102,7 @@ function onBlur() {
           interactive
           color="gray"
           :size="iconSize"
-          :name="config.defaults.fileIcon"
+          :name="config?.defaults?.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
@@ -105,7 +119,7 @@ function onBlur() {
         interactive
         color="gray"
         :size="removeIconSize"
-        :name="config.defaults.removeIcon"
+        :name="config?.defaults?.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"

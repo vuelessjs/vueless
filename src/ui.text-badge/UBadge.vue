@@ -48,6 +48,7 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
 
 const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
 
+type IconSize = "3xs" | "2xs" | "xs";
 const iconSize = computed(() => {
   const sizes = {
     sm: "3xs",
@@ -55,7 +56,7 @@ const iconSize = computed(() => {
     lg: "xs",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const iconColor = computed(() => {

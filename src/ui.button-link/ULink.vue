@@ -59,19 +59,31 @@ const emit = defineEmits([
 ]);
 
 const isPresentRoute = computed(() => {
-  for (const key in props.to) return true;
-
-  return false;
+  return (
+    props.to !== undefined &&
+    props.to !== null &&
+    (typeof props.to === "string" ? props.to.trim() !== "" : true)
+  );
 });
 
-const { route, isActive, isExactActive } = useLink({
+const safeTo = computed(() => {
+  if (props.to === undefined || props.to === null) {
+    return "/";
+  }
+
+  return props.to;
+});
+
+const useLinkOptions = {
   activeClass: props.activeClass,
   ariaCurrentValue: props.ariaCurrentValue,
   exactActiveClass: props.exactActiveClass,
   custom: props.custom,
   replace: props.replace,
-  to: isPresentRoute.value ? props.to : "/",
-});
+  to: safeTo.value,
+};
+
+const { route, isActive, isExactActive } = useLink(useLinkOptions);
 
 const wrapperRef = ref(null);
 
@@ -88,26 +100,26 @@ const prefixedHref = computed(() => {
     link: "",
   };
 
-  return props.href ? `${types[props.type]}${props.href}` : null;
+  return props.href ? `${types[props.type]}${props.href}` : undefined;
 });
 
-function onClick(event) {
+function onClick(event: Event) {
   emit("click", event);
 }
 
-function onMouseover(event) {
+function onMouseover(event: Event) {
   emit("mouseover", event);
 }
 
-function onFocus(event) {
+function onFocus(event: Event) {
   emit("focus", event);
 }
 
-function onKeydown(event) {
+function onKeydown(event: Event) {
   emit("keydown", event);
 }
 
-function onBlur(event) {
+function onBlur(event: Event) {
   emit("blur", event);
 }
 

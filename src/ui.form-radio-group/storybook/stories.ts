@@ -5,6 +5,14 @@ import URadio from "../../ui.form-radio/URadio.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { URadioGroupProps } from "../types.ts";
+
+interface URadioGroupArgs extends URadioGroupProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
+
 /**
  * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)
  */
@@ -26,9 +34,9 @@ export default {
   argTypes: {
     ...getArgTypes(URadioGroup.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
   components: { URadioGroup, URadio, UAlert, UCol },
   setup() {
     const slots = getSlotNames(URadioGroup.__name);
@@ -43,7 +51,7 @@ const DefaultTemplate = (args) => ({
           :key="index"
           v-bind="radio"
         >
-          ${args.slotTemplate || getSlotsFragment()}
+          ${args.slotTemplate || getSlotsFragment("")}
         </URadio>
       </URadioGroup>
 
@@ -54,12 +62,12 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs, { argTypes }) => ({
   components: { URadioGroup, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
