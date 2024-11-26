@@ -56,6 +56,8 @@
         @change="onChange"
         @mousedown="onMousedown"
         @click="onClick"
+        @paste="onPaste"
+        @copy="onCopy"
       />
 
       <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">
@@ -157,6 +159,16 @@ const emit = defineEmits([
    * Triggers when the input loses focus.
    */
   "blur",
+
+  /**
+   * Triggers when content pasted to the input.
+   */
+  "paste",
+
+  /**
+   * Triggers when content copied from the input.
+   */
+  "copy",
 
   /**
    * Triggers when the input value is changes.
@@ -422,6 +434,14 @@ function onMousedown(event) {
   toggleReadonlyToPreventAutocomplete(false);
 
   emit("mousedown", event);
+}
+
+function onPaste(event) {
+  emit("paste", event);
+}
+
+function onCopy(event) {
+  emit("copy", event);
 }
 
 function onClickShowPassword() {

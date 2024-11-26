@@ -130,14 +130,13 @@ export function parseStringDate<TLocale>(
       } else if (!isBackSlash) {
         regexStr += ".";
       }
-
-      operations.forEach((op) => {
-        const { fn } = op;
-        const { val } = op;
-
-        parsedDate = (fn(parsedDate, String(val), locale as DateLocale) || parsedDate) as Date;
-      });
     }
+
+    operations.forEach((operation) => {
+      const { fn, val } = operation;
+
+      parsedDate = (fn(parsedDate, String(val), locale as DateLocale) || parsedDate) as Date;
+    });
 
     return matched ? parsedDate : undefined;
   }

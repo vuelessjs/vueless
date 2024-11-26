@@ -22,7 +22,11 @@ export const monthToStr = (monthNumber: number, shorthand: boolean, locale: Date
 export const revFormat = {
   D: doNothing,
   F(dateObj: Date, monthName: string, locale: DateLocale) {
-    dateObj.setMonth(locale.months.longhand.indexOf(monthName));
+    const monthIndex = locale.months.longhand.findIndex((longMonth) => {
+      return longMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
+    });
+
+    dateObj.setMonth(monthIndex);
   },
   G: (dateObj: Date, hour: number | string) => {
     dateObj.setHours(parseFloat(String(hour)));
@@ -33,8 +37,12 @@ export const revFormat = {
   J: (dateObj: Date, day: number | string) => {
     dateObj.setDate(parseFloat(String(day)));
   },
-  M(dateObj: Date, shortMonth: string, locale: DateLocale) {
-    dateObj.setMonth(locale.months.shorthand.indexOf(shortMonth));
+  M(dateObj: Date, monthName: string, locale: DateLocale) {
+    const monthIndex = locale.months.shorthand.findIndex((shortMonth) => {
+      return shortMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
+    });
+
+    dateObj.setMonth(monthIndex);
   },
   S: (dateObj: Date, seconds: number | string) => {
     dateObj.setSeconds(parseFloat(String(seconds)));

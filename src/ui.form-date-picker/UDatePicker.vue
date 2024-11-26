@@ -5,12 +5,17 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { View, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
+import {
+  View,
+  STANDARD_USER_FORMAT,
+  LocaleType,
+  ARROW_KEYS,
+} from "../ui.form-calendar/constants.js";
 
 import { getDefault } from "../utils/ui.ts";
 
-import { addDays, isSameDay } from "../ui.form-calendar/utilDate.js";
-import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
+import { addDays, getSortedLocale, isSameDay } from "../ui.form-calendar/utilDate.js";
+import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";
@@ -19,8 +24,11 @@ import { useAutoPosition } from "../composables/useAutoPosition.ts";
 import defaultConfig from "./config.js";
 import { UDatePicker } from "./constants.js";
 
+import { vClickOutside } from "../directives/index.js";
+
 import type { UDatePickerProps } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
+import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -65,6 +73,7 @@ const userFormatDate = ref("");
 const formattedDate = ref("");
 const customView = ref(View.Day);
 
+const inputRef = useTemplateRef<typeof UInput>("input");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 
@@ -84,6 +93,25 @@ const localValue = computed({
 
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
+const clickOutsideOptions = computed(() => ({ ignore: [inputRef.value?.inputRef] }));
+
+const locale = computed(() => {
+  const { months, weekdays } = currentLocale.value;
+
+  // formatted locale
+  return {
+    ...currentLocale.value,
+    months: {
+      shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
+      longhand: getSortedLocale(months.longhand, LocaleType.Month),
+    },
+    weekdays: {
+      shorthand: getSortedLocale(weekdays.shorthand, LocaleType.Day),
+      longhand: getSortedLocale(weekdays.longhand, LocaleType.Day),
+    },
+  } as DateLocale;
+});
+
 const elementId = props.id || useId();
 
 const { config, datepickerInputAttrs, datepickerInputActiveAttrs, calendarAttrs, wrapperAttrs } =
@@ -98,8 +126,6 @@ function activate() {
   nextTick(() => {
     adjustPositionY();
     adjustPositionX();
-
-    calendarRef.value?.wrapperRef?.focus();
   });
 }
 
@@ -117,12 +143,6 @@ function onSubmit() {
   deactivate();
 }
 
-function onBlur(event: FocusEvent) {
-  const { relatedTarget } = event;
-
-  if (!calendarRef?.value?.wrapperRef?.contains(relatedTarget as HTMLElement)) deactivate();
-}
-
 function formatUserDate(data: string) {
   if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
 
@@ -132,7 +152,7 @@ function formatUserDate(data: string) {
 
   const today = new Date();
 
-  const parsedLocalDate = parseDate(localValue.value, props.dateFormat, currentLocale.value);
+  const parsedLocalDate = parseDate(localValue.value, props.dateFormat, locale.value);
   const isToday = parsedLocalDate && isSameDay(today, parsedLocalDate);
   const isYesterday = parsedLocalDate && isSameDay(addDays(today, -1), parsedLocalDate);
   const isTomorrow = parsedLocalDate && isSameDay(addDays(today, 1), parsedLocalDate);
@@ -154,9 +174,73 @@ function formatUserDate(data: string) {
 
 function onInput() {
   nextTick(() => {
-    calendarRef.value?.wrapperRef?.blur();
+    deactivate();
     emit("input", localValue.value);
   });
+}
+
+function onTextInput() {
+  if (inputRef.value?.inputRef) {
+    inputRef.value.inputRef.value = userFormatDate.value;
+  }
+}
+
+function onPaste(event: ClipboardEvent) {
+  try {
+    const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
+    let parsedDate = parseDate(
+      pasteContent,
+      props.timepicker ? props.userDateTimeFormat : props.userDateFormat,
+      locale.value,
+    );
+
+    if (props.userDateFormat === STANDARD_USER_FORMAT && !props.timepicker) {
+      if (pasteContent.includes(currentLocale.value.today)) {
+        parsedDate = new Date();
+      }
+
+      if (pasteContent.includes(currentLocale.value.tomorrow)) {
+        parsedDate = addDays(new Date(), 1);
+      }
+
+      if (pasteContent.includes(currentLocale.value.yesterday)) {
+        parsedDate = addDays(new Date(), -1);
+      }
+    }
+
+    if (parsedDate) {
+      localValue.value = (
+        props.dateFormat ? formatDate(parsedDate, props.dateFormat, locale.value) : parsedDate
+      ) as TModelValue;
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+}
+
+function onCopy(event: ClipboardEvent) {
+  const target = event.target as HTMLInputElement;
+
+  const cursorStart = target.selectionStart || 0;
+  const cursorEnd = target.selectionEnd || 0;
+
+  try {
+    if (cursorStart !== cursorEnd) {
+      navigator.clipboard.writeText(target.value.substring(cursorStart, cursorEnd));
+    } else {
+      navigator.clipboard.writeText(target.value);
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+}
+
+function onTextInputKeyDown(event: KeyboardEvent) {
+  if (ARROW_KEYS.includes(event.code)) {
+    calendarRef.value?.wrapperRef?.focus();
+  }
 }
 
 defineExpose({
@@ -184,20 +268,25 @@ defineExpose({
   <div v-bind="wrapperAttrs" ref="wrapper">
     <UInput
       :id="elementId"
-      :key="String(isShownCalendar)"
-      v-model="userFormatDate"
+      :key="String(localValue)"
+      ref="input"
+      :model-value="userFormatDate"
       :label-align="labelAlign"
       :label="label"
       :placeholder="placeholder"
       :error="error"
       :description="description"
-      readonly
       :disabled="disabled"
       :size="size"
       :left-icon="leftIcon"
       :right-icon="rightIcon"
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
+      @input="onTextInput"
       @focus="activate"
+      @paste="onPaste"
+      @copy="onCopy"
+      @keydown.esc="deactivate"
+      @keydown="onTextInputKeyDown"
     >
       <template #left>
         <!-- @slot Use it add something before the date. -->
@@ -236,6 +325,7 @@ defineExpose({
         ref="calendar"
         v-model="localValue"
         v-model:view="customView"
+        v-click-outside="[deactivate, clickOutsideOptions]"
         :tabindex="-1"
         :timepicker="timepicker"
         :date-format="dateFormat"
@@ -248,7 +338,6 @@ defineExpose({
         @keydown.esc="deactivate"
         @user-date-change="onUserFormatDateChange"
         @input="onInput"
-        @blur="onBlur"
         @submit="onSubmit"
       />
     </Transition>
