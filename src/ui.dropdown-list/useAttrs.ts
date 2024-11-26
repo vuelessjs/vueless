@@ -12,7 +12,7 @@ export default function useAttrs(props: UDropdownListProps): UseAttrs<Config> {
     () => props.config,
   );
 
-  const extendingKeys = ["option"];
+  const extendingKeys = ["option", "groupBase"];
   const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, [], {
@@ -20,10 +20,10 @@ export default function useAttrs(props: UDropdownListProps): UseAttrs<Config> {
       base: computed(() => [extendingKeysClasses.option.value]),
     },
     group: {
-      base: computed(() => [extendingKeysClasses.option.value]),
+      base: computed(() => [extendingKeysClasses.groupBase.value]),
     },
     subGroup: {
-      base: computed(() => [extendingKeysClasses.option.value]),
+      base: computed(() => [extendingKeysClasses.groupBase.value]),
     },
   });
 

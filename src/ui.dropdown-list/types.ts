@@ -6,7 +6,7 @@ export type OnClickOption = (option: Omit<Option, "onClick">) => void;
 
 export interface BaseOption {
   isSubGroup?: boolean;
-  groupLabel?: boolean;
+  groupLabel?: string;
   level?: number;
   isHidden?: boolean;
   onClick?: OnClickOption;

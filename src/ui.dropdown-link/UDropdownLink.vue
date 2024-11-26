@@ -20,7 +20,6 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownLinkProps>(), {
   options: () => [],
-  label: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).label,
   labelKey: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).labelKey,
   color: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).color,
   size: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).size,

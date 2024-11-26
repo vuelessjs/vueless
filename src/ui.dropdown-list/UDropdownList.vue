@@ -85,7 +85,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 watch(
-  () => props.options,
+  () => [props.options, props.size],
   () => {
     nextTick(() => {
       const options = [
@@ -100,10 +100,35 @@ watch(
 
       const maxHeight = options
         .slice(0, props.visibleOptions)
-        .map((el) => el.getBoundingClientRect().height)
+        .map((el) => {
+          const elHeight = el.getBoundingClientRect().height;
+
+          const styles = window.getComputedStyle(el);
+          const marginTop = parseFloat(styles.marginTop || "0");
+          const marginBottom = parseFloat(styles.marginBottom || "0");
+
+          const [childDiv] = el.getElementsByTagName("div");
+          const childStyles = childDiv && window.getComputedStyle(childDiv);
+          const childMarginTop = parseFloat(childStyles?.marginTop || "0");
+          const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
+
+          return elHeight + marginTop + marginBottom + childMarginTop + childMarginBottom;
+        })
         .reduce((acc, cur) => acc + cur, 0);
 
-      wrapperMaxHeight.value = `${maxHeight + 10}px`;
+      const wrapperStyle = getComputedStyle(wrapperRef.value as Element);
+      const wrapperPaddingTop = parseFloat(wrapperStyle.paddingTop || "0");
+      const wrapperPaddingBottom = parseFloat(wrapperStyle.paddingBottom || "0");
+      const wrapperBorderTop = parseFloat(wrapperStyle.borderTopWidth || "0");
+      const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
+
+      wrapperMaxHeight.value = `${
+        maxHeight +
+        wrapperPaddingTop +
+        wrapperPaddingBottom +
+        wrapperBorderTop +
+        wrapperBorderBottom
+      }px`;
     });
   },
   { immediate: true },
@@ -134,7 +159,7 @@ function isSelectedOption(option: Option) {
 }
 
 function getMarginForSubCategory(level: number = 0) {
-  const baseMargin = 1;
+  const baseMargin = 0.5;
 
   if (level > 1) {
     return `margin-left: ${baseMargin * (level - 1)}rem`;

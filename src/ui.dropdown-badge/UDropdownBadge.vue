@@ -19,7 +19,6 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
-  label: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).label,
   options: () => [],
   labelKey: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).labelKey,
   variant: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).variant,
