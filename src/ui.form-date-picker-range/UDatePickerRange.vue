@@ -134,14 +134,14 @@ const {
   config,
   wrapperAttrs,
   calendarAttrs,
-  inputAttrs,
+  datepickerInputAttrs,
   menuAttrs,
   buttonWrapperAttrs,
   buttonAttrs,
   shiftRangeButtonAttrs,
   rangeInputWrapperAttrs,
   rangeInputErrorAttrs,
-  activeInputAttrs,
+  datepickerActiveInputAttrs,
   rangeInputFirstAttrs,
   rangeInputLastAttrs,
   periodRowAttrs,
@@ -570,7 +570,7 @@ function onInputCalendar(value: RangeDate) {
       readonly
       :left-icon="leftIcon"
       :right-icon="rightIcon"
-      v-bind="isShownMenu ? activeInputAttrs : inputAttrs"
+      v-bind="isShownMenu ? datepickerActiveInputAttrs : datepickerInputAttrs"
       @focus="activate"
     >
       <template #left>

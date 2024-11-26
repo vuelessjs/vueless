@@ -86,10 +86,11 @@ const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props
 
 const elementId = props.id || useId();
 
-const { config, inputAttrs, activeInputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
-  isTop,
-  isRight,
-});
+const { config, datepickerInputAttrs, datepickerInputActiveAttrs, calendarAttrs, wrapperAttrs } =
+  useAttrs(props, {
+    isTop,
+    isRight,
+  });
 
 function activate() {
   isShownCalendar.value = true;
@@ -195,7 +196,7 @@ defineExpose({
       :size="size"
       :left-icon="leftIcon"
       :right-icon="rightIcon"
-      v-bind="isShownCalendar ? activeInputAttrs : inputAttrs"
+      v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @focus="activate"
     >
       <template #left>
