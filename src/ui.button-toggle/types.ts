@@ -16,7 +16,7 @@ export interface UToggleProps {
   /**
    * Toggle item options.
    */
-  options?: Array<UToggleOption>;
+  options?: UToggleOption[];
 
   /**
    * Toggle variant.

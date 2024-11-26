@@ -30,12 +30,12 @@ const emit = defineEmits([
 ]);
 
 /* eslint-disable prettier/prettier */
-const getToggleName = inject("getToggleName", () => "toggle");
+const getToggleName = inject<() => string>("getToggleName", () => "toggle");
 const getToggleType = inject<() => string>("getToggleType", () =>
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
 );
-const getToggleSize = inject<() => string>("getToggleSize", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md"
+const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size as ButtonSize || "md" as ButtonSize
 );
 const getToggleRound = inject<() => boolean>("getToggleRound", () =>
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
@@ -109,7 +109,7 @@ function onClickSetValue() {
     color="grayscale"
     variant="secondary"
     :label="label"
-    :size="getToggleSize() as ButtonSize"
+    :size="getToggleSize()"
     :round="getToggleRound()"
     :block="getToggleBlock()"
     :square="getToggleSquare()"

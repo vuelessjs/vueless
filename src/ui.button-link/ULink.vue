@@ -103,23 +103,23 @@ const prefixedHref = computed(() => {
   return props.href ? `${types[props.type]}${props.href}` : undefined;
 });
 
-function onClick(event: Event) {
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
-function onMouseover(event: Event) {
+function onMouseover(event: MouseEvent) {
   emit("mouseover", event);
 }
 
-function onFocus(event: Event) {
+function onFocus(event: FocusEvent) {
   emit("focus", event);
 }
 
-function onKeydown(event: Event) {
+function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
-function onBlur(event: Event) {
+function onBlur(event: FocusEvent) {
   emit("blur", event);
 }
 

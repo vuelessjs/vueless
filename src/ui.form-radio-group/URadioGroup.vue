@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<URadioGroupProps>(), {
   size: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).size,
   color: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).color,
   disabled: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).disabled,
+  modelValue: "",
   dataTest: "",
 });
 

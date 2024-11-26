@@ -40,7 +40,7 @@ const emit = defineEmits([
 ]);
 
 const localValue = ref<string | null>("");
-const radioName = ref<string>("");
+const radioName = ref("");
 const radioColor = ref(toValue(getRadioGroupColor) || props.color);
 const radioSize = ref(toValue(getRadioGroupSize) || props.size);
 
@@ -73,7 +73,7 @@ watchEffect(() => {
   emit("update:modelValue", props.value);
 });
 
-function onChange(event: Event) {
+function onChange(event: CustomEvent) {
   const valueToSet = props.value ?? "";
   const target = event.target as HTMLInputElement;
 

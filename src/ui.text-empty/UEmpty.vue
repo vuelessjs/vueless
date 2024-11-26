@@ -29,6 +29,7 @@ const {
   emptyIconAttrs,
 } = useAttrs(props);
 
+type IconSize = "2xl" | "3xl" | "4xl";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xl",
@@ -36,9 +37,10 @@ const iconSize = computed(() => {
     lg: "4xl",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
+type TitleSize = "xs" | "sm" | "md";
 const titleSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -46,7 +48,7 @@ const titleSize = computed(() => {
     lg: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as TitleSize;
 });
 </script>
 
@@ -58,7 +60,7 @@ const titleSize = computed(() => {
         <div v-bind="emptyIconWrapperAttrs">
           <UIcon
             internal
-            :name="config.defaults.emptyIcon"
+            :name="config?.defaults?.emptyIcon"
             color="gray"
             :size="iconSize"
             v-bind="emptyIconAttrs"

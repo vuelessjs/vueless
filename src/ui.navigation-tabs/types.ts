@@ -1,8 +1,18 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
+import type { UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
+
+export type SetUTabsSelectedItem = (
+  value: string | number | boolean | UnknownArray | UnknownObject,
+) => void;
+
+interface UTabsOption {
+  value: string | number;
+  label: string;
+  disabled: boolean;
+}
 
 export interface UTabsProps {
   /**
@@ -13,7 +23,7 @@ export interface UTabsProps {
   /**
    * Tab options.
    */
-  options?: UnknownObject[];
+  options?: UTabsOption[];
 
   /**
    * Tabs size.

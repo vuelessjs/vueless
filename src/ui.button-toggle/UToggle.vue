@@ -66,15 +66,12 @@ function updateSelectedValue(value: string | number, checked: boolean) {
   }
 
   if (checked) {
-    const currentValue = selectedValue.value;
-    const items = Array.isArray(currentValue) ? [...currentValue, value] : [value];
-
-    selectedValue.value = items;
+    selectedValue.value = Array.isArray(selectedValue.value)
+      ? [...selectedValue.value, value]
+      : [value];
   } else {
-    const currentValue = selectedValue.value;
-
-    if (Array.isArray(currentValue)) {
-      selectedValue.value = currentValue.filter((item) => String(item) !== String(value));
+    if (Array.isArray(selectedValue.value)) {
+      selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
     }
   }
 }

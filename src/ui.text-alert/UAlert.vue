@@ -58,6 +58,19 @@ function onClickClose() {
   emit("hidden");
 }
 
+type TextSize = "sm" | "md" | "lg";
+const textSize = computed(() => {
+  const sizes = {
+    xs: "sm",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  };
+
+  return sizes[props.size] as TextSize;
+});
+
+type CloseIconSize = "3xs" | "2xs" | "xs" | "sm";
 const closeIconSize = computed(() => {
   const sizes = {
     xs: "3xs",
@@ -66,7 +79,7 @@ const closeIconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as CloseIconSize;
 });
 
 const closeButtonColor = computed(() => {
@@ -114,7 +127,7 @@ const iconColor = computed(() => {
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
-          <UText v-bind="textAttrs" :size="size">
+          <UText v-bind="textAttrs" :size="textSize">
             <!-- @slot Use it to add something inside. -->
             <slot />
           </UText>
@@ -141,7 +154,7 @@ const iconColor = computed(() => {
         -->
         <slot
           name="close"
-          :icon-name="config.defaults.closeIcon"
+          :icon-name="config?.defaults?.closeIcon"
           :icon-size="closeIconSize"
           :icon-color="iconColor"
         >
@@ -149,7 +162,7 @@ const iconColor = computed(() => {
             internal
             :size="closeIconSize"
             :color="iconColor"
-            :name="config.defaults.closeIcon"
+            :name="config?.defaults?.closeIcon"
             :data-test="`${dataTest}-button`"
             v-bind="closeIconAttrs"
           />
