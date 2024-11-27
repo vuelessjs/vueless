@@ -1,3 +1,5 @@
+import { TOKEN_REG_EXP } from "./constants";
+
 export interface DateLocale {
   weekdays: {
     shorthand: string[];

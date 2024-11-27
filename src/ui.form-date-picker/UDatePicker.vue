@@ -10,6 +10,7 @@ import {
   STANDARD_USER_FORMAT,
   LocaleType,
   ARROW_KEYS,
+  TOKEN_REG_EXP,
 } from "../ui.form-calendar/constants.js";
 
 import { getDefault } from "../utils/ui.ts";
@@ -28,7 +29,7 @@ import { vClickOutside } from "../directives/index.js";
 
 import type { UDatePickerProps } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
-import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
+import { countTokens, type DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -143,12 +144,13 @@ function onSubmit() {
   deactivate();
 }
 
-function formatUserDate(data: string) {
-  if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
+function formatUserDate(date: string) {
+  if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return date;
 
   let prefix = "";
-  const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
-  const formattedDateWithoutDay = formattedDate.split(",").slice(1).join("").trim();
+
+  const formattedDate = date.charAt(0).toUpperCase() + date.toLowerCase().slice(1);
+  const formattedDateWithoutDay = formattedDate.split(" ").slice(1).join(" ").trim();
 
   const today = new Date();
 
@@ -188,11 +190,19 @@ function onTextInput() {
 function onPaste(event: ClipboardEvent) {
   try {
     const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
-    let parsedDate = parseDate(
-      pasteContent,
-      props.timepicker ? props.userDateTimeFormat : props.userDateFormat,
-      locale.value,
-    );
+    const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
+    const tokensAmount = userFormat
+      .split("")
+      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+    const pastedTokensAmount = pasteContent
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(" ").length;
+
+    if (pastedTokensAmount !== tokensAmount) return;
+
+    let parsedDate = parseDate(pasteContent, userFormat, locale.value);
 
     if (props.userDateFormat === STANDARD_USER_FORMAT && !props.timepicker) {
       if (pasteContent.includes(currentLocale.value.today)) {
