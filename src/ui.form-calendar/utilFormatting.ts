@@ -1,5 +1,3 @@
-import { TOKEN_REG_EXP } from "./constants";
-
 export interface DateLocale {
   weekdays: {
     shorthand: string[];
@@ -23,7 +21,7 @@ export const monthToStr = (monthNumber: number, shorthand: boolean, locale: Date
 
 export const revFormat = {
   D: doNothing,
-  F(dateObj: Date, monthName: string, locale: DateLocale) {
+  F: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.longhand.findIndex((longMonth) => {
       return longMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
     });
@@ -39,7 +37,7 @@ export const revFormat = {
   J: (dateObj: Date, day: number | string) => {
     dateObj.setDate(parseFloat(String(day)));
   },
-  M(dateObj: Date, monthName: string, locale: DateLocale) {
+  M: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.shorthand.findIndex((shortMonth) => {
       return shortMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
     });
@@ -51,7 +49,7 @@ export const revFormat = {
   },
   U: (_: unknown, unixSeconds: string | number) => new Date(parseFloat(String(unixSeconds)) * 1000),
 
-  W(dateObj: Date, weekNum: number | string) {
+  W: (dateObj: Date, weekNum: number | string) => {
     const weekNumber = parseInt(String(weekNum), 10);
     const date = new Date(dateObj.getFullYear(), 0, 2 + (weekNumber - 1) * 7, 0, 0, 0, 0);
 
@@ -99,17 +97,17 @@ export const formats = {
   Z: (date: Date) => date.toISOString(),
 
   // weekday name, short, e.g. Thu
-  D(date: Date, locale: DateLocale) {
+  D: (date: Date, locale: DateLocale) => {
     return locale.weekdays.shorthand[formats.w(date)];
   },
 
   // full month name e.g. January
-  F(date: Date, locale: DateLocale) {
+  F: (date: Date, locale: DateLocale) => {
     return monthToStr(formats.n(date) - 1, false, locale);
   },
 
   // padded hour 1-12
-  G(date: Date) {
+  G: (date: Date) => {
     return pad(formats.h(date));
   },
 
@@ -117,7 +115,7 @@ export const formats = {
   H: (date: Date) => pad(date.getHours()),
 
   // shorthand month e.g. Jan, Sep, Oct, etc
-  M(date: Date, locale: DateLocale) {
+  M: (date: Date, locale: DateLocale) => {
     return monthToStr(date.getMonth(), true, locale);
   },
 
@@ -127,7 +125,7 @@ export const formats = {
   // unix timestamp
   U: (date: Date) => date.getTime() / 1000,
 
-  W(date: Date) {
+  W: (date: Date) => {
     // return options.getWeek(date);
     const localDate = new Date(date.getTime());
 
@@ -164,7 +162,7 @@ export const formats = {
   j: (date: Date) => date.getDate(),
 
   // weekday name, full, e.g. Thursday
-  l(date: Date, locale: DateLocale) {
+  l: (date: Date, locale: DateLocale) => {
     return locale.weekdays.longhand[date.getDay()];
   },
 

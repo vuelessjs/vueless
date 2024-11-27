@@ -11,25 +11,25 @@ import {
   LocaleType,
   ARROW_KEYS,
   TOKEN_REG_EXP,
-} from "../ui.form-calendar/constants.js";
+} from "../ui.form-calendar/constants.ts";
 
 import { getDefault } from "../utils/ui.ts";
 
-import { addDays, getSortedLocale, isSameDay } from "../ui.form-calendar/utilDate.js";
+import { addDays, getSortedLocale, isSameDay } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";
 import { useAutoPosition } from "../composables/useAutoPosition.ts";
 
-import defaultConfig from "./config.js";
-import { UDatePicker } from "./constants.js";
+import defaultConfig from "./config.ts";
+import { UDatePicker } from "./constants.ts";
 
-import { vClickOutside } from "../directives/index.js";
+import { vClickOutside } from "../directives";
 
 import type { UDatePickerProps } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
-import { countTokens, type DateLocale } from "../ui.form-calendar/utilFormatting.ts";
+import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -191,9 +191,13 @@ function onPaste(event: ClipboardEvent) {
   try {
     const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
     const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
+
+    // Amount of tokens used in format string without decimeters.
     const tokensAmount = userFormat
       .split("")
       .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+
+    // Amount of substring that satisfies format tokens.
     const pastedTokensAmount = pasteContent
       .replace(/[^a-zA-Z0-9]/g, " ")
       .replace(/\s+/g, " ")

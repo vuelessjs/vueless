@@ -3,7 +3,7 @@ import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 
-import defaultConfig from "./config.js";
+import defaultConfig from "./config.ts";
 import { Direction } from "../composables/useAutoPosition.ts";
 
 import type { Ref } from "vue";
