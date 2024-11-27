@@ -29,7 +29,6 @@ export interface UCheckboxMultiStateProps {
    * Checkbox color.
    */
   color?:
-    | "brand"
     | "grayscale"
     | "red"
     | "orange"
@@ -47,7 +46,9 @@ export interface UCheckboxMultiStateProps {
     | "purple"
     | "fuchsia"
     | "pink"
-    | "rose";
+    | "rose"
+    | "gray"
+    | "brand";
 
   /**
    * Label placement.

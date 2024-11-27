@@ -2,6 +2,11 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export interface UToggleOption {
+  value: string | number;
+  label: string;
+}
+
 export interface UToggleProps {
   /**
    * Selected value.
@@ -11,7 +16,7 @@ export interface UToggleProps {
   /**
    * Toggle item options.
    */
-  options?: Array<string | number>;
+  options?: UToggleOption[];
 
   /**
    * Toggle variant.

@@ -7,11 +7,12 @@ import { UTab } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UTabProps } from "./types.ts";
+import type { UTabProps, UTabSize } from "./types.ts";
+import type { SetUTabsSelectedItem } from "../ui.navigation-tabs/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const setUTabsSelectedItem = inject("setUTabsSelectedItem", null);
+const setUTabsSelectedItem = inject<SetUTabsSelectedItem | null>("setUTabsSelectedItem", null);
 const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
 const getUTabsSize = inject("getUTabsSize", null);
 
@@ -25,14 +26,14 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || getDefault(defaultConfig, UTab).size;
+  return toValue(getUTabsSize) || getDefault<UTabSize>(defaultConfig, UTab).size;
 });
 
 const { tabAttrs } = useAttrs(props, { selected, size });
 
 async function onClickSetValue() {
   if (!props.disabled && setUTabsSelectedItem) {
-    setUTabsSelectedItem(props.value);
+    setUTabsSelectedItem(props.value ?? "");
   }
 }
 </script>

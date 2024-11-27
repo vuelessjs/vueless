@@ -13,7 +13,7 @@ import { UDropdownLink } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UDropdownLinkProps } from "./types.ts";
+import type { UDropdownLinkProps, IconSize } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -56,7 +56,6 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
   { isShownOptions },
 );
 
-type IconSize = "sm" | "2xs" | "xs";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xs",

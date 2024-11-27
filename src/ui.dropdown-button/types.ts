@@ -4,6 +4,9 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
+export type DropdownSize = "sm" | "md" | "lg";
+
 export interface UDropdownButtonProps {
   /**
    * Button label.

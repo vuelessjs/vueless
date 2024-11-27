@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import URadio from "../../ui.form-radio/URadio.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { URadioProps } from "../types.ts";
+
+interface URadioArgs extends URadioProps {
+  slotTemplate?: string;
+  enum: "variant" | "size";
+}
+
 /**
  * The `URadio` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio)
  */
@@ -19,9 +27,9 @@ export default {
   argTypes: {
     ...getArgTypes(URadio.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<URadioArgs> = (args: URadioArgs) => ({
   components: { URadio, UBadge },
   setup() {
     const slots = getSlotNames(URadio.__name);
@@ -30,7 +38,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <URadio v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </URadio>
   `,
 });

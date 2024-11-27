@@ -52,7 +52,7 @@ const componentColor = computed(() => {
   return props.color === "white" ? "grayscale" : props.color;
 });
 
-function onClick(event: Event) {
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
 </script>
