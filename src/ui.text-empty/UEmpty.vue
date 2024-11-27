@@ -9,13 +9,14 @@ import { UEmpty } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UEmptyProps } from "./types.ts";
+import type { UEmptyProps, IconSize, TitleSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UEmptyProps>(), {
   size: getDefault<UEmptyProps>(defaultConfig, UEmpty).size,
   dataTest: "",
+  config: () => ({}),
 });
 
 const {
@@ -29,7 +30,6 @@ const {
   emptyIconAttrs,
 } = useAttrs(props);
 
-type IconSize = "2xl" | "3xl" | "4xl";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xl",
@@ -40,7 +40,6 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-type TitleSize = "xs" | "sm" | "md";
 const titleSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -60,7 +59,7 @@ const titleSize = computed(() => {
         <div v-bind="emptyIconWrapperAttrs">
           <UIcon
             internal
-            :name="config?.defaults?.emptyIcon"
+            :name="config.defaults?.emptyIcon"
             color="gray"
             :size="iconSize"
             v-bind="emptyIconAttrs"

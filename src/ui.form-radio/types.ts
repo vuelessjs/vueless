@@ -4,6 +4,8 @@ import type { UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type LocalValueType = string | number | boolean | UnknownObject | null;
+
 export interface URadioProps {
   /**
    * Radio value.
@@ -49,9 +51,7 @@ export interface URadioProps {
    * Radio color.
    */
   color?:
-    | "brand"
     | "grayscale"
-    | "gray"
     | "red"
     | "orange"
     | "amber"
@@ -68,7 +68,9 @@ export interface URadioProps {
     | "purple"
     | "fuchsia"
     | "pink"
-    | "rose";
+    | "rose"
+    | "gray"
+    | "brand";
 
   /**
    * Set radio disabled.

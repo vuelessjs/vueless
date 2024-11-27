@@ -13,7 +13,7 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { UDropdownButton, BUTTON_VARIANT } from "./constants.ts";
 
-import type { UDropdownButtonProps } from "./types.ts";
+import type { UDropdownButtonProps, IconSize, DropdownSize } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -60,7 +60,6 @@ const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
 });
 
-type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 const iconSize = computed(() => {
   const sizes = {
     "2xs": "xs",
@@ -74,7 +73,6 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-type DropdownSize = "sm" | "md" | "lg";
 const dropdownSize = computed(() => {
   const sizes = {
     "2xs": "sm",

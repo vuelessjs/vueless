@@ -4,6 +4,8 @@ import type { UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type IconSize = "2xs" | "xs" | "sm";
+
 export interface UCheckboxProps {
   /**
    * Checkbox value.
@@ -54,7 +56,6 @@ export interface UCheckboxProps {
    * Checkbox color.
    */
   color?:
-    | "brand"
     | "grayscale"
     | "red"
     | "orange"
@@ -72,7 +73,9 @@ export interface UCheckboxProps {
     | "purple"
     | "fuchsia"
     | "pink"
-    | "rose";
+    | "rose"
+    | "gray"
+    | "brand";
 
   /**
    * Checkbox size.

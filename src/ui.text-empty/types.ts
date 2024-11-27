@@ -2,6 +2,9 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type IconSize = "2xl" | "3xl" | "4xl";
+export type TitleSize = "xs" | "sm" | "md";
+
 export interface UEmptyProps {
   /**
    * Empty state title.

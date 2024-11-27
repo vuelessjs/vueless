@@ -10,13 +10,14 @@ import useAttrs from "./useAttrs.ts";
 import { UFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UFileProps } from "./types.ts";
+import type { UFileProps, IconSize, RemoveIconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFileProps>(), {
   size: getDefault<UFileProps>(defaultConfig, UFile).size,
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -41,7 +42,6 @@ const {
   removeIconAttrs,
 } = useAttrs(props);
 
-type IconSize = "xs" | "sm" | "md";
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -52,7 +52,6 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-type RemoveIconSize = "2xs" | "xs" | "sm";
 const removeIconSize = computed(() => {
   const sizes = {
     sm: "2xs",
@@ -90,7 +89,7 @@ function onBlur() {
           interactive
           color="gray"
           :size="iconSize"
-          :name="config?.defaults?.fileIcon"
+          :name="config.defaults?.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
@@ -107,7 +106,7 @@ function onBlur() {
         interactive
         color="gray"
         :size="removeIconSize"
-        :name="config?.defaults?.removeIcon"
+        :name="config.defaults?.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"

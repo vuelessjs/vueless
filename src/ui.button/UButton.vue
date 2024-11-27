@@ -10,7 +10,7 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { UButton } from "./constants.ts";
 
-import type { UButtonProps } from "./types.ts";
+import type { UButtonProps, LoaderSize, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -41,7 +41,6 @@ const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
-type LoaderSize = "sm" | "md" | "lg";
 const loaderSize = computed(() => {
   const sizes = {
     "2xs": "sm",
@@ -55,15 +54,14 @@ const loaderSize = computed(() => {
   return sizes[props.size] as LoaderSize;
 });
 
-type IconSize = "2xs" | "xs" | "sm" | "md";
 const iconSize = computed(() => {
   const sizes = {
     "2xs": "2xs",
     xs: "xs",
     sm: "sm",
     md: "sm",
-    lg: "md",
-    xl: "md",
+    lg: "sm",
+    xl: "sm",
   };
 
   return sizes[props.size] as IconSize;
@@ -94,9 +92,7 @@ watch(
 );
 
 watchEffect(() => {
-  if (props.loading && buttonRef.value) {
-    buttonRef.value.blur();
-  }
+  props.loading && buttonRef?.value?.blur();
 });
 
 defineExpose({

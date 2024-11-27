@@ -35,7 +35,7 @@ const getToggleType = inject<() => string>("getToggleType", () =>
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
 );
 const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size as ButtonSize || "md" as ButtonSize
+  (getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md") as ButtonSize
 );
 const getToggleRound = inject<() => boolean>("getToggleRound", () =>
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
@@ -46,10 +46,10 @@ const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).square || false
 );
-const getToggleVariant = inject<() => string>("getToggleVariant", () =>
+const getToggleVariant = inject<string>("getToggleVariant",
   getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).variant || "secondary"
 );
-const getToggleSeparated = inject<() => boolean>("getToggleSeparated", () => true);
+const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
 const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
   props.disabled || getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).disabled || false
 );
@@ -72,28 +72,26 @@ const isSelected = computed(() => {
 
 const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
   isSelected,
-  separated: getToggleSeparated(),
-  variant: getToggleVariant(),
+  separated: getToggleSeparated,
+  variant: getToggleVariant,
 });
 
 onMounted(() => {
   const propValueString = props.value?.toString() ?? "";
 
-  if (getToggleType() === TYPE_RADIO) {
-    selectedItem.value = selectedValue?.value ?? "";
-  } else {
-    selectedItem.value = selectedValue?.value?.includes(propValueString) ? true : false;
-  }
+  selectedItem.value =
+    getToggleType() === TYPE_RADIO
+      ? (selectedValue?.value ?? "")
+      : Boolean(selectedValue?.value?.includes(propValueString));
 });
 
 function onClickSetValue() {
   const propValueString = props.value?.toString() ?? "";
 
-  if (getToggleType() === TYPE_RADIO) {
-    selectedItem.value = propValueString;
-  } else {
-    selectedItem.value = selectedValue?.value?.includes(propValueString) ? true : false;
-  }
+  selectedItem.value =
+    getToggleType() === TYPE_RADIO
+      ? propValueString
+      : Boolean(selectedValue?.value?.includes(propValueString));
 
   updateSelectedValue && updateSelectedValue(propValueString, !selectedItem.value);
 
@@ -105,7 +103,7 @@ function onClickSetValue() {
   <UButton
     tabindex="0"
     :for="elementId"
-    :no-ring="!getToggleSeparated()"
+    :no-ring="!getToggleSeparated"
     color="grayscale"
     variant="secondary"
     :label="label"

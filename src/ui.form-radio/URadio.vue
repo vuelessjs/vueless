@@ -8,12 +8,12 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { URadio } from "./constants.ts";
 
-import type { URadioProps } from "./types.ts";
+import type { URadioProps, LocalValueType } from "./types.ts";
 import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const setRadioGroupSelectedItem = inject<SetRadioGroupSelectedItem | null>(
+const setRadioGroupSelectedItem = inject<SetRadioGroupSelectedItem>(
   "setRadioGroupSelectedItem",
   null,
 );
@@ -39,7 +39,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const localValue = ref<string | null>("");
+const localValue = ref<LocalValueType>("");
 const radioName = ref("");
 const radioColor = ref(toValue(getRadioGroupColor) || props.color);
 const radioSize = ref(toValue(getRadioGroupSize) || props.size);
@@ -74,11 +74,10 @@ watchEffect(() => {
 });
 
 function onChange(event: CustomEvent) {
-  const valueToSet = props.value ?? "";
   const target = event.target as HTMLInputElement;
 
   if (setRadioGroupSelectedItem) {
-    setRadioGroupSelectedItem(valueToSet);
+    setRadioGroupSelectedItem(props.value ?? "");
   }
 
   emit("update:modelValue", target.value);

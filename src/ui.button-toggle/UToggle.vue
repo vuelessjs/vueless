@@ -65,14 +65,12 @@ function updateSelectedValue(value: string | number, checked: boolean) {
     return;
   }
 
-  if (checked) {
-    selectedValue.value = Array.isArray(selectedValue.value)
+  if (Array.isArray(selectedValue.value)) {
+    selectedValue.value = checked
       ? [...selectedValue.value, value]
-      : [value];
+      : selectedValue.value.filter((item) => String(item) !== String(value));
   } else {
-    if (Array.isArray(selectedValue.value)) {
-      selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
-    }
+    selectedValue.value = [value];
   }
 }
 

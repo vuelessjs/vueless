@@ -59,15 +59,11 @@ const emit = defineEmits([
 ]);
 
 const isPresentRoute = computed(() => {
-  return (
-    props.to !== undefined &&
-    props.to !== null &&
-    (typeof props.to === "string" ? props.to.trim() !== "" : true)
-  );
+  return typeof props.to === "string" || typeof props.to === "object";
 });
 
 const safeTo = computed(() => {
-  if (props.to === undefined || props.to === null) {
+  if (!props.to) {
     return "/";
   }
 

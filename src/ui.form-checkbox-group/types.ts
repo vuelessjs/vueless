@@ -40,9 +40,7 @@ export interface UCheckboxGroupProps {
    * Checkbox group color.
    */
   color?:
-    | "brand"
     | "grayscale"
-    | "gray"
     | "red"
     | "orange"
     | "amber"
@@ -59,7 +57,9 @@ export interface UCheckboxGroupProps {
     | "purple"
     | "fuchsia"
     | "pink"
-    | "rose";
+    | "rose"
+    | "gray"
+    | "brand";
 
   /**
    * Name for each checkbox.

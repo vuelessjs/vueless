@@ -10,9 +10,9 @@ export interface URadioGroupOption {
   description: string;
 }
 
-export type SetRadioGroupSelectedItem = (
-  value: string | number | boolean | UnknownArray | UnknownObject,
-) => void;
+export type SetRadioGroupSelectedItem =
+  | ((value: string | number | boolean | UnknownArray | UnknownObject) => void)
+  | null;
 
 export interface URadioGroupProps {
   /**
@@ -49,9 +49,7 @@ export interface URadioGroupProps {
    * Radio group color.
    */
   color?:
-    | "brand"
     | "grayscale"
-    | "gray"
     | "red"
     | "orange"
     | "amber"
@@ -68,7 +66,9 @@ export interface URadioGroupProps {
     | "purple"
     | "fuchsia"
     | "pink"
-    | "rose";
+    | "rose"
+    | "gray"
+    | "brand";
 
   /**
    * Unique radio group name (sets for each radio).

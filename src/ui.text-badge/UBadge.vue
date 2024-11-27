@@ -8,7 +8,7 @@ import { UBadge } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 
-import type { UBadgeProps } from "./types.ts";
+import type { UBadgeProps, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -48,7 +48,6 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
 
 const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
 
-type IconSize = "3xs" | "2xs" | "xs";
 const iconSize = computed(() => {
   const sizes = {
     sm: "3xs",

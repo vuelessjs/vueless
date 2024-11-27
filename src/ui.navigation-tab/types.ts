@@ -2,6 +2,10 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export interface UTabSize {
+  size: string;
+}
+
 export interface UTabProps {
   /**
    * Tab label.

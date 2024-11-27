@@ -10,7 +10,7 @@ import { UAlert } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UAlertProps } from "./types.ts";
+import type { UAlertProps, TextSize, CloseIconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<UAlertProps>(), {
   timeout: getDefault<UAlertProps>(defaultConfig, UAlert).timeout,
   closable: getDefault<UAlertProps>(defaultConfig, UAlert).closable,
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -58,7 +59,6 @@ function onClickClose() {
   emit("hidden");
 }
 
-type TextSize = "sm" | "md" | "lg";
 const textSize = computed(() => {
   const sizes = {
     xs: "sm",
@@ -70,7 +70,6 @@ const textSize = computed(() => {
   return sizes[props.size] as TextSize;
 });
 
-type CloseIconSize = "3xs" | "2xs" | "xs" | "sm";
 const closeIconSize = computed(() => {
   const sizes = {
     xs: "3xs",
@@ -162,7 +161,7 @@ const iconColor = computed(() => {
             internal
             :size="closeIconSize"
             :color="iconColor"
-            :name="config?.defaults?.closeIcon"
+            :name="config.defaults?.closeIcon"
             :data-test="`${dataTest}-button`"
             v-bind="closeIconAttrs"
           />

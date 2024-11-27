@@ -12,7 +12,7 @@ import { UCheckbox } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxProps } from "./types.ts";
+import type { UCheckboxProps, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -66,7 +66,6 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
   },
 );
 
-type IconSize = "2xs" | "xs" | "sm";
 const iconSize = computed(() => {
   const sizes = {
     sm: "2xs",

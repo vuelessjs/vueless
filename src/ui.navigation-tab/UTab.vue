@@ -7,7 +7,7 @@ import { UTab } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UTabProps } from "./types.ts";
+import type { UTabProps, UTabSize } from "./types.ts";
 import type { SetUTabsSelectedItem } from "../ui.navigation-tabs/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -26,16 +26,14 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || getDefault<{ size: string }>(defaultConfig, UTab).size;
+  return toValue(getUTabsSize) || getDefault<UTabSize>(defaultConfig, UTab).size;
 });
 
 const { tabAttrs } = useAttrs(props, { selected, size });
 
 async function onClickSetValue() {
-  const valueToSet = props.value ?? "";
-
   if (!props.disabled && setUTabsSelectedItem) {
-    setUTabsSelectedItem(valueToSet);
+    setUTabsSelectedItem(props.value ?? "");
   }
 }
 </script>
