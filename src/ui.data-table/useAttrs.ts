@@ -78,9 +78,6 @@ export default function useAttrs(
     bodyRowBeforeCell: {
       base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
     },
-    bodyRowAfterCell: {
-      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
-    },
     footer: {
       extend: computed(() => [isFooterSticky.value && extendingKeysClasses.stickyFooter.value]),
     },
