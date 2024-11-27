@@ -206,7 +206,6 @@ const {
   tableWrapperAttrs,
   headerRowAttrs,
   bodyRowAfterAttrs,
-  bodyRowAfterCellAttrs,
   bodyRowBeforeAttrs,
   bodyRowBeforeCellAttrs,
   footerAttrs,
@@ -576,17 +575,11 @@ defineExpose({
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
-            <td
-              v-if="hasSlotContent($slots['before-header'])"
-              :colspan="colsCount"
-              v-bind="headerCellBaseAttrs"
-            >
-              <!--
+            <!--
                 @slot Use it to add something before header row.
                 @binding {number} cols-count
               -->
-              <slot name="before-header" :cols-count="colsCount" />
-            </td>
+            <slot name="before-header" :cols-count="colsCount" />
           </tr>
 
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
@@ -710,10 +703,8 @@ defineExpose({
               v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
               v-bind="bodyRowAfterAttrs"
             >
-              <td :colspan="colsCount" v-bind="bodyRowAfterCellAttrs">
-                <!-- @slot Use it to add something after last row. -->
-                <slot name="after-last-row" />
-              </td>
+              <!-- @slot Use it to add something after last row. -->
+              <slot name="after-last-row" :cols-count="colsCount" />
             </tr>
           </template>
         </tbody>
