@@ -102,7 +102,7 @@ function setPosition() {
   const asideWidth = getOffsetWidth(`${asideClass}`);
   const notifyWidth = notificationsWrapperRef.value?.$el.offsetWidth || 0;
 
-  const styles = {
+  const styles: Record<string, string> = {
     left: "auto",
     top: "auto",
     right: "auto",
@@ -114,9 +114,7 @@ function setPosition() {
   if (props.xPosition === POSITION.center) {
     styles.left = `calc(50% - ${notifyWidth / 2}px)`;
   } else {
-    const xPos = props.xPosition as "left" | "right";
-
-    styles[xPos] = "0px";
+    styles[props.xPosition] = "0px";
   }
 
   if (pageWidth && props.xPosition !== POSITION.right) {

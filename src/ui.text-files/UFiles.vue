@@ -46,7 +46,7 @@ const formattedFileList = computed(() =>
   }),
 );
 
-function onRemoveFile(fileId: number) {
+function onRemoveFile(fileId: string | number) {
   emit("remove", fileId);
 }
 </script>
