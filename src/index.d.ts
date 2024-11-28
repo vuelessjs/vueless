@@ -1,7 +1,9 @@
 import type { App } from "vue";
 import type { CreateVuelessOptions } from "./types.ts";
-export { setTitle } from "./utils/helper.ts";
 export { setTheme } from "./utils/theme.ts";
+export { cx, cva, compose } from "./utils/ui.ts";
+export { isSSR, isCSR, getRandomId, setTitle, createDebounce } from "./utils/helper.ts";
+export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform.ts";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.js";
 export { default as defaultEnLocale } from "./adatper.locale/locales/en.js";
 export { useLocale } from "./composables/useLocale.ts";
