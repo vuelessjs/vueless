@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";

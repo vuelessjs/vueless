@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<UPageProps>(), {
   gray: getDefault<UPageProps>(defaultConfig, UPage).gray,
   fixedRounding: getDefault<UPageProps>(defaultConfig, UPage).fixedRounding,
   dataTest: "",
+  config: () => ({}),
 });
 
 const { isMobileBreakpoint } = useBreakpoint();
@@ -69,11 +70,16 @@ const isShownArrowButton = computed(() => {
 });
 
 onMounted(() => {
-  const classes = props.gray
-    ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
-    : "";
+  const classes =
+    props.gray && config.value?.htmlBody
+      ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
+      : "";
 
-  document.querySelector("body").classList.add(...classes);
+  const body = document.querySelector("body");
+
+  if (body) {
+    body.classList.add(...classes);
+  }
 });
 </script>
 
@@ -105,7 +111,7 @@ onMounted(() => {
                     internal
                     size="2xs"
                     color="gray"
-                    :name="config.defaults.backIcon"
+                    :name="config.defaults?.backIcon"
                     v-bind="backLinkIconAttrs"
                   />
                 </template>

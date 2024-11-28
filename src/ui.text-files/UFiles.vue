@@ -29,7 +29,14 @@ const emit = defineEmits([
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() =>
-  props.fileList.map((file) => {
+  props.fileList?.map((file) => {
+    if (!(file instanceof File)) {
+      // eslint-disable-next-line no-console
+      console.error("Invalid file object");
+
+      return null;
+    }
+
     return {
       id: file.name,
       label: file.name,
@@ -39,7 +46,7 @@ const formattedFileList = computed(() =>
   }),
 );
 
-function onRemoveFile(fileId) {
+function onRemoveFile(fileId: number) {
   emit("remove", fileId);
 }
 </script>
@@ -57,11 +64,11 @@ function onRemoveFile(fileId) {
       <slot>
         <UFile
           v-for="(file, index) in formattedFileList"
-          :id="file.id"
-          :key="file.id"
-          :label="file.label"
-          :url="file.url"
-          :image-url="file.imageUrl"
+          :id="file?.id"
+          :key="file?.id"
+          :label="file?.label"
+          :url="file?.url"
+          :image-url="file?.imageUrl"
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"

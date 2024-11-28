@@ -15,9 +15,6 @@ import useAttrs from "./useAttrs.ts";
 import type { UModalProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
-const slots = useSlots();
-
-const wrapperRef = ref(null);
 
 const props = withDefaults(defineProps<UModalProps>(), {
   size: getDefault<UModalProps>(defaultConfig, UModal).size,
@@ -28,6 +25,7 @@ const props = withDefaults(defineProps<UModalProps>(), {
   noDivider: getDefault<UModalProps>(defaultConfig, UModal).noDivider,
   mobileStickBottom: getDefault<UModalProps>(defaultConfig, UModal).mobileStickBottom,
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -69,6 +67,10 @@ const {
   hasSlotContent,
 } = useAttrs(props);
 
+const slots = useSlots();
+
+const wrapperRef = ref<HTMLElement | null>(null);
+
 const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -94,14 +96,19 @@ const isExistFooter = computed(() => {
 
 watch(() => isShownModal.value, preventOverlayFromScrolling);
 
-function preventOverlayFromScrolling(newValue) {
+function preventOverlayFromScrolling(newValue: boolean) {
   // focus wrapper to be able to close modal on esc
   setTimeout(() => wrapperRef.value?.focus(), 0);
 
   if (newValue) {
     document.body.style.overflow = "hidden";
   } else {
-    document.getElementById(`${elementId}`).style.overflow = "hidden";
+    const element = document.getElementById(`${elementId}`);
+
+    if (element) {
+      element.style.overflow = "hidden";
+    }
+
     document.body.style.overflow = "auto";
   }
 }
@@ -166,7 +173,7 @@ function closeModal() {
                         internal
                         size="xs"
                         color="gray"
-                        :name="config.defaults.backIcon"
+                        :name="config.defaults?.backIcon"
                         v-bind="backLinkIconAttrs"
                       />
                     </template>
@@ -191,12 +198,12 @@ function closeModal() {
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
               -->
-              <slot name="close-button" :icon-name="config.defaults.closeIcon">
+              <slot name="close-button" :icon-name="config.defaults?.closeIcon">
                 <UIcon
                   internal
                   interactive
                   size="sm"
-                  :name="config.defaults.closeIcon"
+                  :name="config.defaults?.closeIcon"
                   v-bind="closeIconAttrs"
                   :data-test="`${dataTest}-close`"
                   @click="onClickCloseModal"

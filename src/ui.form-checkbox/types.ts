@@ -6,6 +6,13 @@ export type Config = Partial<typeof defaultConfig>;
 
 export type IconSize = "2xs" | "xs" | "sm";
 
+export interface UCheckboxOption {
+  value?: unknown;
+  label?: string;
+  icon?: string;
+  description?: string;
+}
+
 export interface UCheckboxProps {
   /**
    * Checkbox value.

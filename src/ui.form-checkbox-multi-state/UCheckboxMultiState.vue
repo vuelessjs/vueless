@@ -9,6 +9,7 @@ import { UCheckboxMultiState } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UCheckboxMultiStateProps } from "./types.ts";
+import type { UCheckboxOption } from "../ui.form-checkbox/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -31,7 +32,9 @@ const emit = defineEmits([
 const index = ref(0);
 const isChecked = ref(false);
 
-const selected = computed(() => props?.options?.[index.value] || { icon: undefined });
+const selected = computed<UCheckboxOption>(() => {
+  return props.options?.[index.value] || { icon: undefined };
+});
 
 const { multiStateCheckboxAttrs } = useAttrs(props, { selected });
 

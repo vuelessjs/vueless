@@ -10,7 +10,7 @@ import { UProgress, VARIANT } from "./constants.ts";
 import StepperProgress from "./StepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { UProgressProps } from "./types.ts";
+import type { UProgressProps, HeaderSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -25,6 +25,20 @@ const props = withDefaults(defineProps<UProgressProps>(), {
 });
 
 const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } = useAttrs(props);
+
+const headerSize = computed(() => {
+  const sizes = {
+    "2xs": "xs",
+    xs: "xs",
+    sm: "sm",
+    md: "sm",
+    lg: "lg",
+    xl: "xl",
+    "2xl": "2xl",
+  };
+
+  return sizes[props.size] as HeaderSize;
+});
 
 const isSteps = computed(() => Array.isArray(props.max));
 
@@ -91,7 +105,7 @@ function isActiveStep(index: number) {
           :value="value"
           :max="max"
         >
-          <UHeader v-if="isVariant.stepper" :label="String(step)" :size="size" />
+          <UHeader v-if="isVariant.stepper" :label="String(step)" :size="headerSize" />
           <template v-else>{{ step }}</template>
         </slot>
       </template>

@@ -9,7 +9,7 @@ import { UAccordion } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UAccordionProps } from "./types.ts";
+import type { UAccordionProps, DividerSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -52,7 +52,7 @@ const dividerSize = computed(() => {
     lg: "xl",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as DividerSize;
 });
 
 function onClickItem() {

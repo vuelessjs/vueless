@@ -5,6 +5,11 @@ export type Config = Partial<typeof defaultConfig>;
 export type IconSize = "xs" | "sm" | "md";
 export type RemoveIconSize = "2xs" | "xs" | "sm";
 
+export interface UFileItem {
+  name: string;
+  type: string;
+}
+
 export interface UFileProps {
   /**
    * File url.
