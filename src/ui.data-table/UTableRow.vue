@@ -199,8 +199,8 @@ function onClickToggleIcon() {
   (props.row.row as Row[]).forEach(({ id }) => onClickToggleRowChild(id));
 }
 
-function onClickCell(cell: unknown | string | number, row: Row) {
-  emit("clickCell", cell, row);
+function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
+  emit("clickCell", cell, row, key);
 }
 
 function getRowClasses(row: Row) {
@@ -244,7 +244,7 @@ function getRowAttrs(rowId: string | number) {
       :key="index"
       v-bind="attrs.bodyCellBaseAttrs.value"
       :class="cx([columns[index].tdClass, getCellClasses(row, String(key))])"
-      @click="onClickCell(value, row)"
+      @click="onClickCell(value, row, key)"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
