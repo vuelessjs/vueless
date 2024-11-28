@@ -9,14 +9,14 @@ import type { UseAttrs } from "../types.ts";
 import type { UDatePickerProps, Config } from "./types.ts";
 import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
 
-interface DatePickerState {
+interface ComponentState {
   isTop: Ref<boolean>;
   isRight: Ref<boolean>;
 }
 
 export default function useAttrs(
   props: UDatePickerProps<unknown>,
-  { isTop, isRight }: DatePickerState,
+  { isTop, isRight }: ComponentState,
 ): UseAttrs<Config> {
   const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
