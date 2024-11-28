@@ -23,6 +23,26 @@ export default /*tw*/ {
       disabled:border-{color}-400 disabled:bg-{color}-400
     `,
   },
+  // TODO: Add dynamic colors parsing from the config
+  safelistColors: [
+    "red",
+    "orange",
+    "amber",
+    "yellow",
+    "lime",
+    "green",
+    "emerald",
+    "teal",
+    "cyan",
+    "sky",
+    "blue",
+    "indigo",
+    "violet",
+    "purple",
+    "fuchsia",
+    "pink",
+    "rose",
+  ],
   defaults: {
     size: "md",
     name: "colorPicker",
