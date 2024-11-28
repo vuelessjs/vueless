@@ -1,13 +1,4 @@
-import Vueless from "Vueless";
-
-declare module "unplugin-vue-components" {
-  function VuelessUnpluginComponents(options?: unknown): import("vite").Plugin<unknown> & {
-    api: import("unplugin-vue-components/types.js").PublicPluginAPI;
-  };
-  export default VuelessUnpluginComponents;
-}
-
-declare module "Vueless" {
+declare module "vueless/plugin-vite" {
   import { Plugin } from "vite";
   import { Config } from "svgo";
 
@@ -21,7 +12,12 @@ declare module "Vueless" {
     svgo?: boolean;
     defaultImport?: "url" | "raw" | "component";
   }): Plugin;
-  export default Vueless;
+
+  function VuelessUnpluginComponents(options?: unknown): import("vite").Plugin<unknown> & {
+    api: import("unplugin-vue-components/types.js").PublicPluginAPI;
+  };
+
+  export { Vueless, VuelessUnpluginComponents };
 }
 
 declare module "*.svg?component" {
