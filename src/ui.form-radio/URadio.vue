@@ -73,7 +73,7 @@ watchEffect(() => {
   emit("update:modelValue", props.value);
 });
 
-function onChange(event: CustomEvent) {
+function onChange(event: Event) {
   const target = event.target as HTMLInputElement;
 
   if (setRadioGroupSelectedItem) {
