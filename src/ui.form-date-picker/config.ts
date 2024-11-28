@@ -123,6 +123,7 @@ export default /*tw*/ {
     dateTimeFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    /* icons */
     rightIcon: "calendar_month-fill",
   },
 };
