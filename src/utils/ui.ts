@@ -127,19 +127,3 @@ export function getColor(color: string) {
 export function setColor(classes: string, color: string) {
   return classes?.replace(/{color}/g, color);
 }
-
-/**
- * Generates simple unique identifier.
- */
-export function getRandomId(length = 15) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  const charactersLength = characters.length;
-
-  let id = "";
-
-  while (id.length < length) {
-    id += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return id;
-}

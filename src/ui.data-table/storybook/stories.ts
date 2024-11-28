@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
-import { getRandomId } from "../../utils/ui.ts";
+import { getRandomId } from "../../utils/helper.ts";
 
 import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";

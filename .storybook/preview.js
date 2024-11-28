@@ -1,6 +1,6 @@
 import { setup } from "@storybook/vue3";
 
-import { getRandomId } from "../src/utils/ui.ts";
+import { getRandomId } from "../src";
 
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
