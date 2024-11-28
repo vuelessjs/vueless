@@ -4,11 +4,11 @@ import type { UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export type IconSize = "2xs" | "xs" | "sm";
+export type LocalValueType = string | number | boolean | UnknownObject | null;
 
-export interface UCheckboxProps {
+export interface URadioProps {
   /**
-   * Checkbox value.
+   * Radio value.
    */
   modelValue?: boolean | string | number | UnknownArray | UnknownObject;
 
@@ -18,27 +18,17 @@ export interface UCheckboxProps {
   value?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
-   * Own value for checkbox checked state.
-   */
-  trueValue?: boolean | string | number | UnknownArray | UnknownObject;
-
-  /**
-   * Own value for checkbox unchecked state.
-   */
-  falseValue?: boolean | string | number | UnknownArray | UnknownObject;
-
-  /**
-   * Checkbox name.
-   */
-  name?: string;
-
-  /**
-   * Checkbox label.
+   * Radio label.
    */
   label?: string;
 
   /**
-   * Checkbox label description.
+   * Label placement.
+   */
+  labelAlign?: "left" | "right";
+
+  /**
+   * Radio description.
    */
   description?: string;
 
@@ -48,12 +38,17 @@ export interface UCheckboxProps {
   error?: string;
 
   /**
-   * Label placement.
+   * Radio name.
    */
-  labelAlign?: "left" | "right";
+  name?: string;
 
   /**
-   * Checkbox color.
+   * Radio size.
+   */
+  size?: "sm" | "md" | "lg";
+
+  /**
+   * Radio color.
    */
   color?:
     | "grayscale"
@@ -78,19 +73,14 @@ export interface UCheckboxProps {
     | "brand";
 
   /**
-   * Checkbox size.
-   */
-  size?: "sm" | "md" | "lg";
-
-  /**
-   * Make checkbox disabled.
+   * Set radio disabled.
    */
   disabled?: boolean;
 
   /**
-   * Make checkbox partially checked (change the checked tick to a minus).
+   * Set radio checked.
    */
-  partial?: boolean;
+  checked?: boolean;
 
   /**
    * Unique element id.

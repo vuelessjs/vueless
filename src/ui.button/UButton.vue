@@ -10,7 +10,7 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { UButton } from "./constants.ts";
 
-import type { UButtonProps } from "./types.ts";
+import type { UButtonProps, LoaderSize, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -37,7 +37,7 @@ const { isDarkMode } = useDarkMode();
 const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
   useAttrs(props);
 
-const buttonRef = ref(null);
+const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
@@ -51,7 +51,7 @@ const loaderSize = computed(() => {
     xl: "lg",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as LoaderSize;
 });
 
 const iconSize = computed(() => {
@@ -64,7 +64,7 @@ const iconSize = computed(() => {
     xl: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const iconColor = computed(() => {
@@ -92,7 +92,7 @@ watch(
 );
 
 watchEffect(() => {
-  props.loading && buttonRef.value.blur();
+  props.loading && buttonRef?.value?.blur();
 });
 
 defineExpose({

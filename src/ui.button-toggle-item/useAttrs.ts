@@ -8,7 +8,7 @@ import type { UToggleItemProps, Config } from "./types.ts";
 
 type itemState = {
   isSelected: Ref<boolean>;
-  separated: Ref<boolean>;
+  separated: boolean;
   variant: string;
 };
 

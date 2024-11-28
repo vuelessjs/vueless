@@ -2,6 +2,9 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type LoaderSize = "sm" | "md" | "lg";
+export type IconSize = "2xs" | "xs" | "sm" | "md";
+
 export interface UButtonProps {
   /**
    * Button variant.

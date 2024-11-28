@@ -47,7 +47,6 @@ export default /*tw*/ {
   bodyRowBefore: "!p-0",
   bodyRowBeforeCell: "py-1",
   bodyRowAfter: "!p-0",
-  bodyRowAfterCell: "py-1",
   bodyRowDateDivider: "",
   bodyCellBase: {
     base: "p-[1.125rem] py-5 truncate align-top",

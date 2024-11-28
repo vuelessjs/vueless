@@ -27,9 +27,7 @@ export interface UModalConfirmProps {
    * Confirm button color.
    */
   confirmColor?:
-    | "brand"
     | "grayscale"
-    | "gray"
     | "red"
     | "orange"
     | "amber"
@@ -47,7 +45,9 @@ export interface UModalConfirmProps {
     | "fuchsia"
     | "pink"
     | "rose"
-    | "white";
+    | "gray"
+    | "white"
+    | "brand";
 
   /**
    * Set the disabled accept-button.

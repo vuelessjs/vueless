@@ -1,43 +1,52 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
-import type { UCheckboxProps } from "../ui.form-checkbox/types.ts";
+import type { UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
-export interface UCheckboxGroupProps {
+export interface URadioGroupOption {
+  value: string | number;
+  label: string;
+  description: string;
+}
+
+export type SetRadioGroupSelectedItem =
+  | ((value: string | number | boolean | UnknownArray | UnknownObject) => void)
+  | null;
+
+export interface URadioGroupProps {
   /**
-   * Checkbox group value.
+   * Radio group selected value.
    */
-  modelValue?: UnknownObject[];
+  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
-   * Checkbox group options.
+   * Radio group options.
    */
-  options?: UCheckboxProps[];
+  options?: Array<URadioGroupOption>;
 
   /**
-   * Checkbox group label.
+   * Radio group label.
    */
   label?: string;
 
   /**
-   * Checkbox group description.
+   * Radio group description.
    */
   description?: string;
 
   /**
-   * Checkbox group error message.
+   * Radio group error message.
    */
   error?: string;
 
   /**
-   * Checkbox group size.
+   * Radio size.
    */
   size?: "sm" | "md" | "lg";
 
   /**
-   * Checkbox group color.
+   * Radio group color.
    */
   color?:
     | "grayscale"
@@ -62,12 +71,12 @@ export interface UCheckboxGroupProps {
     | "brand";
 
   /**
-   * Name for each checkbox.
+   * Unique radio group name (sets for each radio).
    */
-  name?: string;
+  name: string;
 
   /**
-   * Make checkbox disabled.
+   * Disable the input.
    */
   disabled?: boolean;
 

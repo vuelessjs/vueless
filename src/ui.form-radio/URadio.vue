@@ -1,3 +1,89 @@
+<script lang="ts" setup>
+import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
+
+import ULabel from "../ui.form-label/ULabel.vue";
+import { getDefault } from "../utils/ui.ts";
+
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+import { URadio } from "./constants.ts";
+
+import type { URadioProps, LocalValueType } from "./types.ts";
+import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const setRadioGroupSelectedItem = inject<SetRadioGroupSelectedItem>(
+  "setRadioGroupSelectedItem",
+  null,
+);
+const getRadioGroupName = inject("getRadioGroupName", null);
+const getRadioGroupColor = inject("getRadioGroupColor", null);
+const getRadioGroupSize = inject("getRadioGroupSize", null);
+const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
+
+const props = withDefaults(defineProps<URadioProps>(), {
+  labelAlign: getDefault<URadioProps>(defaultConfig, URadio).labelAlign,
+  size: getDefault<URadioProps>(defaultConfig, URadio).size,
+  color: getDefault<URadioProps>(defaultConfig, URadio).color,
+  disabled: getDefault<URadioProps>(defaultConfig, URadio).disabled,
+  checked: getDefault<URadioProps>(defaultConfig, URadio).checked,
+  dataTest: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the value attribute changes.
+   * @property {string} value
+   */
+  "update:modelValue",
+]);
+
+const localValue = ref<LocalValueType>("");
+const radioName = ref("");
+const radioColor = ref(toValue(getRadioGroupColor) || props.color);
+const radioSize = ref(toValue(getRadioGroupSize) || props.size);
+
+const isChecked = computed(() => {
+  const currentValue = props.modelValue ?? localValue.value;
+
+  if (typeof currentValue !== "object") {
+    return currentValue === props.value;
+  }
+
+  return JSON.stringify(currentValue) === JSON.stringify(props.value);
+});
+
+const elementId = props.id || useId();
+
+const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
+
+const radioValue = computed(() => {
+  return props.value === "" ? "on" : props.value;
+});
+
+onMounted(() => {
+  radioName.value = props.name || toValue(getRadioGroupName) || "";
+});
+
+watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color));
+watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
+watchEffect(() => {
+  localValue.value = toValue(getRadioGroupSelectedItem) || null;
+  emit("update:modelValue", props.value);
+});
+
+function onChange(event: CustomEvent) {
+  const target = event.target as HTMLInputElement;
+
+  if (setRadioGroupSelectedItem) {
+    setRadioGroupSelectedItem(props.value ?? "");
+  }
+
+  emit("update:modelValue", target.value);
+}
+</script>
+
 <template>
   <ULabel
     :for="elementId"
@@ -28,187 +114,3 @@
     </template>
   </ULabel>
 </template>
-
-<script setup>
-import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
-
-import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import { URadio } from "./constants.js";
-
-defineOptions({ inheritAttrs: false });
-
-const setRadioGroupSelectedItem = inject("setRadioGroupSelectedItem", null);
-const getRadioGroupName = inject("getRadioGroupName", null);
-const getRadioGroupColor = inject("getRadioGroupColor", null);
-const getRadioGroupSize = inject("getRadioGroupSize", null);
-const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
-
-const props = defineProps({
-  /**
-   * Radio value.
-   */
-  modelValue: {
-    type: [Boolean, String, Number, Array, Object],
-    default: null,
-  },
-
-  /**
-   * Native value attribute.
-   */
-  value: {
-    type: [Boolean, String, Number, Array, Object],
-    default: "",
-  },
-
-  /**
-   * Radio label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, URadio).labelAlign,
-  },
-
-  /**
-   * Radio description.
-   */
-  description: {
-    type: [String, Object],
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Radio name.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Radio size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, URadio).size,
-  },
-
-  /**
-   * Radio color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, URadio).color,
-  },
-
-  /**
-   * Set radio disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, URadio).disabled,
-  },
-
-  /**
-   * Set radio checked.
-   */
-  checked: {
-    type: Boolean,
-    default: getDefault(defaultConfig, URadio).checked,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the value attribute changes.
-   * @property {string} value
-   */
-  "update:modelValue",
-]);
-
-const localValue = ref("");
-const radioName = ref(null);
-const radioColor = ref(toValue(getRadioGroupColor) || props.color);
-const radioSize = ref(toValue(getRadioGroupSize) || props.size);
-
-const isChecked = computed(() => {
-  const currentValue = props.modelValue ?? localValue.value;
-
-  if (typeof currentValue !== "object") {
-    return currentValue === props.value;
-  }
-
-  return JSON.stringify(currentValue) === JSON.stringify(props.value);
-});
-
-const elementId = props.id || useId();
-
-const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
-
-const radioValue = computed(() => {
-  return props.value === "" ? "on" : props.value;
-});
-
-onMounted(() => {
-  radioName.value = props.name || toValue(getRadioGroupName);
-});
-
-watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color));
-watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
-watchEffect(() => {
-  localValue.value = toValue(getRadioGroupSelectedItem) || null;
-  emit("update:modelValue", props.value);
-});
-
-function onChange(event) {
-  setRadioGroupSelectedItem && setRadioGroupSelectedItem(props.value);
-
-  emit("update:modelValue", event.target.value);
-}
-</script>

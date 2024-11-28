@@ -8,7 +8,7 @@ import { UBadge } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 
-import type { UBadgeProps } from "./types.ts";
+import type { UBadgeProps, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -55,7 +55,7 @@ const iconSize = computed(() => {
     lg: "xs",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const iconColor = computed(() => {

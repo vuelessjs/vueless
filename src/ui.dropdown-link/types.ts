@@ -4,6 +4,8 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type IconSize = "sm" | "2xs" | "xs";
+
 export interface UDropdownLinkProps {
   /**
    * Link label.

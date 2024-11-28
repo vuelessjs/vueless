@@ -12,7 +12,7 @@ import { UCheckbox } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxProps } from "./types.ts";
+import type { UCheckboxProps, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -73,7 +73,7 @@ const iconSize = computed(() => {
     lg: "sm",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));

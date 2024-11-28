@@ -10,7 +10,9 @@ import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { UToggleItem } from "./constants.ts";
 
-import type { UToggleItemProps } from "./types.ts";
+import type { UToggleItemProps, ToggleInjectValues, ToggleContextType } from "./types.ts";
+
+type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
 defineOptions({ inheritAttrs: false });
 
@@ -27,23 +29,40 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-/* eslint-disable prettier/prettier, vue/max-len */
-const getToggleName = inject("getToggleName", () => "toggle");
-const getToggleType = inject("getToggleType", () => getDefault(defaultConfig, UToggleItem).type);
-const getToggleSize = inject("getToggleSize", () => getDefault(defaultConfig, UToggleItem).size);
-const getToggleRound = inject("getToggleRound", () => getDefault(defaultConfig, UToggleItem).round);
-const getToggleBlock = inject("getToggleBlock", () => getDefault(defaultConfig, UToggleItem).block);
-const getToggleSquare = inject("getToggleSquare", () => getDefault(defaultConfig, UToggleItem).square);
-const getToggleVariant = inject("getToggleVariant", () => getDefault(defaultConfig, UToggleItem).variant);
-const getToggleSeparated = inject("getToggleSeparated", () => true);
-const getToggleDisabled = inject("getToggleDisabled", () => props.disabled || getDefault(defaultConfig, UToggleItem).disabled);
-/* eslint-enable prettier/prettier, vue/max-len */
+/* eslint-disable prettier/prettier */
+const getToggleName = inject<() => string>("getToggleName", () => "toggle");
+const getToggleType = inject<() => string>("getToggleType", () =>
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
+);
+const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
+  (getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md") as ButtonSize
+);
+const getToggleRound = inject<() => boolean>("getToggleRound", () =>
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
+);
+const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).block || false
+);
+const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).square || false
+);
+const getToggleVariant = inject<string>("getToggleVariant",
+  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).variant || "secondary"
+);
+const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
+const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
+  props.disabled || getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).disabled || false
+);
+/* eslint-enable prettier/prettier */
 
-const { selectedValue, updateSelectedValue } = inject("toggleSelectedValue", {});
+const { selectedValue, updateSelectedValue } = inject<ToggleContextType>("toggleSelectedValue", {
+  selectedValue: ref(""),
+  updateSelectedValue: () => {},
+});
 
 const elementId = props.id || useId();
 
-const selectedItem = ref("");
+const selectedItem = ref<string | boolean>("");
 
 const isSelected = computed(() => {
   return Array.isArray(selectedValue?.value)
@@ -58,19 +77,23 @@ const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
 });
 
 onMounted(() => {
+  const propValueString = props.value?.toString() ?? "";
+
   selectedItem.value =
     getToggleType() === TYPE_RADIO
-      ? selectedValue?.value || selectedItem.value
-      : selectedValue?.value?.includes(props.value) || "";
+      ? (selectedValue?.value ?? "")
+      : Boolean(selectedValue?.value?.includes(propValueString));
 });
 
 function onClickSetValue() {
+  const propValueString = props.value?.toString() ?? "";
+
   selectedItem.value =
     getToggleType() === TYPE_RADIO
-      ? props.value
-      : selectedValue?.value?.includes(props.value) || "";
+      ? propValueString
+      : Boolean(selectedValue?.value?.includes(propValueString));
 
-  updateSelectedValue && updateSelectedValue(props.value, !selectedItem.value);
+  updateSelectedValue && updateSelectedValue(propValueString, !selectedItem.value);
 
   emit("update:modelValue", props.value);
 }
@@ -80,7 +103,7 @@ function onClickSetValue() {
   <UButton
     tabindex="0"
     :for="elementId"
-    :no-ring="!getToggleSeparated()"
+    :no-ring="!getToggleSeparated"
     color="grayscale"
     variant="secondary"
     :label="label"
