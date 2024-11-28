@@ -74,7 +74,7 @@ const userFormatDate = ref("");
 const formattedDate = ref("");
 const customView = ref(View.Day);
 
-const inputRef = useTemplateRef<typeof UInput>("input");
+const datepickerInputRef = useTemplateRef<typeof UInput>("input");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 
@@ -94,7 +94,7 @@ const localValue = computed({
 
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-const clickOutsideOptions = computed(() => ({ ignore: [inputRef.value?.inputRef] }));
+const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));
 
 const locale = computed(() => {
   const { months, weekdays } = currentLocale.value;
@@ -182,8 +182,8 @@ function onInput() {
 }
 
 function onTextInput() {
-  if (inputRef.value?.inputRef) {
-    inputRef.value.inputRef.value = userFormatDate.value;
+  if (datepickerInputRef.value?.inputRef) {
+    datepickerInputRef.value.inputRef.value = userFormatDate.value;
   }
 }
 
