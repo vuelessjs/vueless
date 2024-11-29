@@ -128,13 +128,15 @@ export default function useUI<T>(
     extendingKeys: string[] = [],
     keysToExtendConfig: Record<string, KeysToExtend> = {},
   ) {
-    const keysToExtend = Object.keys(keysToExtendConfig);
     const keysAttrs: UnknownObject = {};
 
-    for (const key in defaultConfig) {
+    // TODO: should be removed after migration of all components to the new api.
+    for (const key in config.value) {
       if (isSystemKey(key) || extendingKeys.includes(key)) continue;
 
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
+
+      const keysToExtend = Object.keys(keysToExtendConfig);
 
       if (keysToExtend.includes(key)) {
         const { base, extend } = keysToExtendConfig[key];
@@ -151,6 +153,33 @@ export default function useUI<T>(
       }
     }
 
+    for (const key in config.value) {
+      if (isSystemKey(key)) continue;
+
+      const baseClasses = getBaseClasses(config.value[key]);
+      const extendsMatches = baseClasses.match(EXTENDS_PATTERN_REG_EXP);
+
+      if (extendsMatches) {
+        keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
+
+        // retrieves extends keys from patterns:
+        // Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
+        const extendsKeys = extendsMatches.map((pattern) => pattern.slice(2, -1));
+        const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
+        const extendsClasses = Object.values(classes).map((item) => toValue(item));
+
+        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
+
+        keysAttrs[`${key}Attrs`] = computed(() => ({
+          ...keyAttrs.value,
+          class: cx([
+            ...extendsClasses,
+            keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
+          ]),
+        }));
+      }
+    }
+
     return keysAttrs;
   }
 
@@ -158,7 +187,7 @@ export default function useUI<T>(
    * Get an element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef) {
-    const nestedComponent = getNestedComponent(defaultConfig[configKey] || "");
+    const nestedComponent = getNestedComponent(config.value[configKey] || "");
 
     const attrs = useAttrs();
     const isDev = isCSR && import.meta.env?.DEV;
