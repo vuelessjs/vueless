@@ -1,9 +1,11 @@
+import type { FormatOptions } from "./types.ts";
+
 export default class FormatService {
   static isNumberValueRegExp = /^[\d,.\s-]+$/;
   static rawDecimalMark = ".";
   static comma = ",";
 
-  static getRawValue(value, options) {
+  static getRawValue(value: string | number, options: FormatOptions) {
     const { thousandsSeparator, decimalSeparator, prefix } = options;
 
     value = String(value).endsWith(decimalSeparator)
@@ -17,7 +19,7 @@ export default class FormatService {
     return rawValueWithPrefix.replace(prefix, "");
   }
 
-  static getFormattedValue(value, options) {
+  static getFormattedValue(value: string, options: FormatOptions) {
     const {
       thousandsSeparator,
       decimalSeparator,
@@ -35,7 +37,9 @@ export default class FormatService {
       .replaceAll(this.comma, decimalSeparator)
       .split(decimalSeparator)
       .slice(0, 2)
-      .map((value, index) => (index ? value.replaceAll(thousandsSeparator, "") : value))
+      .map((value: string, index: number) =>
+        index ? value.replaceAll(thousandsSeparator, "") : value,
+      )
       .join(decimalSeparator);
 
     value = String(value)
