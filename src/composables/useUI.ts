@@ -17,7 +17,8 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  NESTED_COMPONENT_REG_EXP,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
+  EXTENDS_PATTERN_REG_EXP,
 } from "../constants.js";
 
 import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
@@ -221,7 +222,8 @@ function getNestedComponent(value: string | NestedComponent | CVA) {
   const component = (value as NestedComponent)?.component as ComponentNames;
 
   const match =
-    classes.match(NESTED_COMPONENT_REG_EXP) || component?.match(NESTED_COMPONENT_REG_EXP);
+    classes.match(NESTED_COMPONENT_PATTERN_REG_EXP) ||
+    component?.match(NESTED_COMPONENT_PATTERN_REG_EXP);
 
   return match ? match[1] : "";
 }

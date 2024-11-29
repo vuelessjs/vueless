@@ -200,7 +200,8 @@ export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 
 /* Other */
 export const PX_IN_REM = 16;
-export const NESTED_COMPONENT_REG_EXP = /\{U[^}]*}/g;
+export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{U[^}]*}/g;
+export const EXTENDS_PATTERN_REG_EXP = /\{>[^}]*}/g;
 export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_COLOR_OPACITY_DELIMITER = "/";
 export const TAILWIND_VARIANT_DELIMITER = ":";

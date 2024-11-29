@@ -7,8 +7,8 @@ import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
-  NESTED_COMPONENT_REG_EXP,
   TAILWIND_MERGE_EXTENSION,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
 import type {
@@ -79,7 +79,8 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+    onComplete: (classNames) =>
+      twMerge(classNames).replaceAll(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
 
