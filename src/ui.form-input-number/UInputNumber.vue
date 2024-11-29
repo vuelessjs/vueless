@@ -1,62 +1,4 @@
-<template>
-  <ULabel
-    :label="label"
-    :description="description"
-    :disabled="disabled"
-    :error="error"
-    :size="size"
-    :align="labelAlign"
-    centred
-    v-bind="labelAttrs"
-    :data-test="dataTest"
-  >
-    <UButton
-      variant="thirdary"
-      size="sm"
-      filled
-      square
-      round
-      :disabled="isRemoveButtonDisabled || disabled"
-      v-bind="removeButtonAttrs"
-      :data-test="`${dataTest}-remove`"
-      @click="onClickRemove"
-    >
-      <UIcon
-        internal
-        :size="size"
-        :name="config.defaults.removeIcon"
-        :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
-        v-bind="removeIconAttrs"
-      />
-    </UButton>
-
-    <div v-bind="numberAttrs">
-      <div v-bind="valueAttrs" v-text="count" />
-    </div>
-
-    <UButton
-      variant="thirdary"
-      size="sm"
-      filled
-      square
-      round
-      :disabled="isAddButtonDisabled || disabled"
-      v-bind="addButtonAttrs"
-      :data-test="`${dataTest}-add`"
-      @click="onClickAdd"
-    >
-      <UIcon
-        internal
-        :size="size"
-        :name="config.defaults.addIcon"
-        :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
-        v-bind="addIconAttrs"
-      />
-    </UButton>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -64,110 +6,23 @@ import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/ui.ts";
 
-import defaultConfig from "./config.js";
-import { UInputNumber } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { UInputNumber } from "./constants.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UInputNumberProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Input value.
-   */
-  modelValue: {
-    type: Number,
-    required: true,
-  },
-
-  /**
-   * Input step.
-   */
-  step: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputNumber).step,
-  },
-
-  /**
-   * Input min value.
-   */
-  min: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputNumber).min,
-  },
-
-  /**
-   * Input max value.
-   */
-  max: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputNumber).max,
-  },
-
-  /**
-   * Input label below number.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInputNumber).labelAlign,
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInputNumber).size,
-  },
-
-  /**
-   * Disable the input.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputNumber).disabled,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UInputNumberProps>(), {
+  step: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).step,
+  min: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).min,
+  max: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).max,
+  labelAlign: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).labelAlign,
+  size: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).size,
+  disabled: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).disabled,
+  dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -209,3 +64,61 @@ function onClickAdd() {
   count.value = newCount <= props.max ? newCount : count.value;
 }
 </script>
+
+<template>
+  <ULabel
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    centred
+    v-bind="labelAttrs"
+    :data-test="dataTest"
+  >
+    <UButton
+      variant="thirdary"
+      size="sm"
+      filled
+      square
+      round
+      :disabled="isRemoveButtonDisabled || disabled"
+      v-bind="removeButtonAttrs"
+      :data-test="`${dataTest}-remove`"
+      @click="onClickRemove"
+    >
+      <UIcon
+        internal
+        :size="size"
+        :name="config.defaults?.removeIcon"
+        :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
+        v-bind="removeIconAttrs"
+      />
+    </UButton>
+
+    <div v-bind="numberAttrs">
+      <div v-bind="valueAttrs" v-text="count" />
+    </div>
+
+    <UButton
+      variant="thirdary"
+      size="sm"
+      filled
+      square
+      round
+      :disabled="isAddButtonDisabled || disabled"
+      v-bind="addButtonAttrs"
+      :data-test="`${dataTest}-add`"
+      @click="onClickAdd"
+    >
+      <UIcon
+        internal
+        :size="size"
+        :name="config.defaults?.addIcon"
+        :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
+        v-bind="addIconAttrs"
+      />
+    </UButton>
+  </ULabel>
+</template>

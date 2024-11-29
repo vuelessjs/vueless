@@ -1,10 +1,12 @@
 import { onMounted, nextTick, ref, onBeforeUnmount, toValue, watch } from "vue";
 
-import FormatService from "./utilFormat.js";
+import FormatService from "./utilFormat.ts";
 
-export default function useFormatCurrency(elementId, options) {
+import type { FormatOptions } from "./types.ts";
+
+export default function useFormatCurrency(elementId: string, options: () => FormatOptions) {
   let prevValue = "";
-  let inputElement = null;
+  let inputElement: HTMLInputElement | null = null;
 
   const formattedValue = ref("");
   const rawValue = ref("");
@@ -17,18 +19,22 @@ export default function useFormatCurrency(elementId, options) {
   );
 
   onMounted(() => {
-    inputElement = document.getElementById(elementId);
-    inputElement.addEventListener("input", onInput);
+    inputElement = document.getElementById(elementId) as HTMLInputElement;
 
-    onInput(formattedValue.value);
+    if (inputElement) {
+      inputElement.addEventListener("input", onInput as EventListener);
+      onInput({ target: inputElement } as unknown as InputEvent);
+    }
   });
 
   onBeforeUnmount(() => {
-    inputElement.removeEventListener("input", onInput);
+    if (inputElement) {
+      inputElement.removeEventListener("input", onInput as EventListener);
+    }
   });
 
   // Use to set input value manually
-  function setValue(value) {
+  function setValue(value: string | number) {
     const localFormattedValue = FormatService.getFormattedValue(value, toValue(options));
 
     formattedValue.value = localFormattedValue;
@@ -37,10 +43,13 @@ export default function useFormatCurrency(elementId, options) {
     prevValue = formattedValue.value;
   }
 
+  // TODO: Discuss whether InputEvent is needed here, as it leads to problem with EventListener type
   async function onInput(event) {
     if (!event.target) return;
 
     await nextTick(async () => {
+      if (!inputElement) return;
+
       let cursorStart = inputElement.selectionStart;
       let cursorEnd = inputElement.selectionEnd;
 
@@ -51,7 +60,7 @@ export default function useFormatCurrency(elementId, options) {
 
       const currentValueOffsetLength = localFormattedValue
         .split("")
-        .filter((value) => value === toValue(options).thousandsSeparator).length;
+        .filter((value: string) => value === toValue(options).thousandsSeparator).length;
 
       const prevValueOffsetLength = prevValue
         .split("")
@@ -66,12 +75,14 @@ export default function useFormatCurrency(elementId, options) {
       await nextTick(() => {
         if (localFormattedValue.length === cursorEnd) return;
 
-        if (hasValueInputValue && prefixLength) {
+        if (hasValueInputValue && prefixLength && cursorStart && cursorEnd) {
           cursorStart += prefixLength;
           cursorEnd += prefixLength;
         }
 
-        inputElement.setSelectionRange(cursorStart + offset, cursorEnd + offset);
+        if (inputElement && cursorStart && cursorEnd) {
+          inputElement.setSelectionRange(cursorStart + offset, cursorEnd + offset);
+        }
       });
 
       prevValue = formattedValue.value;

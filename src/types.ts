@@ -45,6 +45,13 @@ import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
 import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
 import URadioConfig from "./ui.form-radio/config.ts";
 import URadioGroupConfig from "./ui.form-radio-group/config.ts";
+import UColorPickerConfig from "./ui.form-color-picker/config.ts";
+import UInputConfig from "./ui.form-input/config.ts";
+import UInputNumberConfig from "./ui.form-input-number/config.ts";
+import UInputRatingConfig from "./ui.form-input-rating/config.ts";
+import UInputSearchConfig from "./ui.form-input-search/config.ts";
+import UInputFileConfig from "./ui.form-input-file/config.ts";
+import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
@@ -203,6 +210,13 @@ export interface Components {
   UCheckboxMultiState?: Partial<typeof UCheckboxMultiStateConfig>;
   URadio?: Partial<typeof URadioConfig>;
   URadioGroup?: Partial<typeof URadioGroupConfig>;
+  UColorPicker?: Partial<typeof UColorPickerConfig>;
+  UInput?: Partial<typeof UInputConfig>;
+  UInputNumber?: Partial<typeof UInputNumberConfig>;
+  UInputRating?: Partial<typeof UInputRatingConfig>;
+  UInputSearch?: Partial<typeof UInputSearchConfig>;
+  UInputFile?: Partial<typeof UInputFileConfig>;
+  UInputMoney?: Partial<typeof UInputMoneyConfig>;
 }
 
 export interface Directives {

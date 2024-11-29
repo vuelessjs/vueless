@@ -5,6 +5,14 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputMoneyProps } from "../types.ts";
+
+interface UInputMoneyArgs extends UInputMoneyProps {
+  slotTemplate?: string;
+  enum: "labelAlign" | "size";
+}
+
 /**
  * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
  */
@@ -19,9 +27,9 @@ export default {
     ...getArgTypes(UInputMoney.__name),
     modelValue: { control: { type: "number" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputMoneyArgs> = (args: UInputMoneyArgs) => ({
   components: { UInputMoney, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInputMoney.__name);
@@ -33,17 +41,17 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.modelValue"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInputMoney>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputMoneyArgs> = (args: UInputMoneyArgs, { argTypes }) => ({
   components: { UInputMoney, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -99,7 +107,7 @@ export const Prefix = DefaultTemplate.bind({});
 Prefix.args = { prefix: "+" };
 
 export const ReadOnly = DefaultTemplate.bind({});
-ReadOnly.args = { readOnly: true };
+ReadOnly.args = { readonly: true };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

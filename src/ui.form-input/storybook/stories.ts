@@ -5,6 +5,14 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputProps } from "../types.ts";
+
+interface UInputArgs extends UInputProps {
+  slotTemplate?: string;
+  enum: "labelAlign" | "size" | "validationRule";
+}
+
 /**
  * The `UInput` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input)
  */
@@ -19,9 +27,9 @@ export default {
     ...getArgTypes(UInput.__name),
     modelValue: { control: { type: "text" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   components: { UInput, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInput.__name);
@@ -30,17 +38,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInput v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInput>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -72,7 +80,7 @@ export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { placeholder: "some placeholder text" };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, value: "some value for read" };
+Readonly.args = { readonly: true, modelValue: "some value for read" };
 
 export const NoAutocomplete = DefaultTemplate.bind({});
 NoAutocomplete.args = { noAutocomplete: true };

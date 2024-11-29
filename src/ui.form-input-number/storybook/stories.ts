@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputNumberProps } from "../types.ts";
+
+interface UInputNumberArgs extends UInputNumberProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 /**
  * The `UInputNumber` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-number)
  */
@@ -17,9 +25,9 @@ export default {
     ...getArgTypes(UInputNumber.__name),
     modelValue: { control: { type: "number" } },
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs) => ({
   components: { UInputNumber },
   setup() {
     const slots = getSlotNames(UInputNumber.__name);
@@ -28,17 +36,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputNumber v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInputNumber>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTypes }) => ({
   components: { UInputNumber, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   data() {
@@ -69,7 +77,7 @@ Default.args = { step: 1, min: 1, max: 100 };
 
 export const Label = DefaultTemplate.bind({});
 Label.args = {
-  value: 1,
+  modelValue: 1,
   step: 1,
   min: 1,
   max: 100,
@@ -79,7 +87,7 @@ Label.args = {
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = {
   enum: "size",
-  value: 1,
+  modelValue: 1,
   step: 1,
   min: 1,
   max: 100,
@@ -87,7 +95,7 @@ Sizes.args = {
 
 export const ValueLimit = DefaultTemplate.bind({});
 ValueLimit.args = {
-  value: 1,
+  modelValue: 1,
   step: 1,
   min: 5,
   max: 10,
@@ -96,7 +104,7 @@ ValueLimit.args = {
 
 export const Step = DefaultTemplate.bind({});
 Step.args = {
-  value: 1,
+  modelValue: 1,
   step: 5,
   min: 1,
   max: 100,

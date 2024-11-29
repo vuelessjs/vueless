@@ -1,3 +1,79 @@
+<script setup lang="ts">
+import { computed, ref } from "vue";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
+import { getDefault } from "../utils/ui.ts";
+
+import { UInputRating } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+
+import type { UInputRatingProps, IconSize } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UInputRatingProps>(), {
+  stars: getDefault<UInputRatingProps>(defaultConfig, UInputRating).stars,
+  size: getDefault<UInputRatingProps>(defaultConfig, UInputRating).size,
+  labelAlign: getDefault<UInputRatingProps>(defaultConfig, UInputRating).labelAlign,
+  counter: getDefault<UInputRatingProps>(defaultConfig, UInputRating).counter,
+  selectable: getDefault<UInputRatingProps>(defaultConfig, UInputRating).selectable,
+  modelValue: 0,
+  dataTest: "",
+  config: () => ({}),
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the rating value changes.
+   * @property {number} modelValue
+   */
+  "update:modelValue",
+]);
+
+const hovered = ref<number | null>(null);
+
+const {
+  config,
+  inputLabelAttrs,
+  containerAttrs,
+  counterAttrs,
+  totalAttrs,
+  starsAttrs,
+  starAttrs,
+  hasSlotContent,
+} = useAttrs(props);
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size] as IconSize;
+});
+
+const counterValue = computed(() => {
+  return hovered.value || props.modelValue;
+});
+
+function onClickStar(newValue: number) {
+  if (props.selectable) {
+    const selected = newValue !== props.modelValue ? newValue : 0;
+
+    hovered.value = null;
+
+    emit("update:modelValue", selected);
+  }
+}
+
+function onMouseHover(overStar: number | null = null) {
+  if (props.selectable) hovered.value = overStar;
+}
+</script>
+
 <template>
   <ULabel
     :label="label"
@@ -29,7 +105,7 @@
           :size="iconSize"
           :interactive="selectable"
           :name="
-            star <= counterValue ? config.defaults.selectedIcon : config.defaults.unselectedIcon
+            star <= counterValue ? config.defaults?.selectedIcon : config.defaults?.unselectedIcon
           "
           v-bind="starAttrs"
           :data-test="`${dataTest}-rating-star-${star}`"
@@ -50,166 +126,3 @@
     </div>
   </ULabel>
 </template>
-
-<script setup>
-import { computed, ref } from "vue";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import { UInputRating } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Rating value.
-   */
-  modelValue: {
-    type: Number,
-    default: 0,
-  },
-
-  /**
-   * Rating number of stars.
-   */
-  stars: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputRating).stars,
-  },
-
-  /**
-   * Rating size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInputRating).size,
-  },
-
-  /**
-   * Rating label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Rating label placement.
-   * @values top, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInputRating).labelAlign,
-  },
-
-  /**
-   * Rating error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Rating description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Rating total.
-   */
-  total: {
-    type: Number,
-    default: 0,
-  },
-
-  /**
-   * Show rating counter.
-   */
-  counter: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputRating).counter,
-  },
-
-  /**
-   * Make rating selectable.
-   */
-  selectable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputRating).selectable,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the rating value changes.
-   * @property {number} modelValue
-   */
-  "update:modelValue",
-]);
-
-const hovered = ref(null);
-
-const {
-  config,
-  inputLabelAttrs,
-  containerAttrs,
-  counterAttrs,
-  totalAttrs,
-  starsAttrs,
-  starAttrs,
-  hasSlotContent,
-} = useAttrs(props);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const counterValue = computed(() => {
-  return hovered.value || props.modelValue;
-});
-
-function onClickStar(newValue) {
-  if (props.selectable) {
-    const selected = newValue !== props.modelValue ? newValue : 0;
-
-    hovered.value = null;
-
-    emit("update:modelValue", selected);
-  }
-}
-
-function onMouseHover(overStar) {
-  if (props.selectable) hovered.value = overStar;
-}
-</script>

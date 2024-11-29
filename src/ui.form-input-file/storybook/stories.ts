@@ -3,6 +3,14 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputFileProps } from "../types.ts";
+
+interface UInputFileArgs extends UInputFileProps {
+  slotTemplate?: string;
+  enum: "labelAlign" | "size";
+}
+
 /**
  * The `UInputFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-file)
  */
@@ -16,9 +24,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInputFile.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
   components: { UInputFile },
   setup() {
     const slots = getSlotNames(UInputFile.__name);
@@ -37,17 +45,17 @@ const DefaultTemplate = (args) => ({
       v-model="files"
       v-model:error="error"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInputFile>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes }) => ({
   components: { UInputFile, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
