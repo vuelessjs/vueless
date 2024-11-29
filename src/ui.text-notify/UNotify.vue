@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { cx, getDefault, vuelessConfig } from "../utils/ui.ts";
+import { getDefault, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import useAttrs from "./useAttrs.ts";
 
@@ -29,6 +29,16 @@ const props = withDefaults(defineProps<UNotifyProps>(), {
   config: () => ({}),
 });
 
+const { tm } = useLocale();
+
+const notifications = ref<Notification[]>([]);
+const notifyPositionStyles = ref({});
+
+const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
+
+const i18nGlobal = tm(UNotify);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
 const {
   config,
   wrapperAttrs,
@@ -40,17 +50,7 @@ const {
   warningIconAttrs,
   errorIconAttrs,
   closeIconAttrs,
-} = useAttrs(props);
-
-const { tm } = useLocale();
-
-const notifications = ref<Notification[]>([]);
-const notifyPositionStyles = ref({});
-
-const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
-
-const i18nGlobal = tm(UNotify);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+} = useAttrs(props, { notifications });
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });
@@ -127,20 +127,6 @@ function setPosition() {
 function getText(notificationText: string, type: NotificationType): string {
   return notificationText || currentLocale.value[type]?.default;
 }
-
-function getNotificationClasses(notification: Notification) {
-  if (notification.type === NOTIFY_TYPE.success) {
-    return cx([bodyAttrs.value.class, config.value?.bodySuccess]);
-  }
-
-  if (notification.type === NOTIFY_TYPE.warning) {
-    return cx([bodyAttrs.value.class, config.value?.bodyWarning]);
-  }
-
-  if (notification.type === NOTIFY_TYPE.error) {
-    return cx([bodyAttrs.value.class, config.value?.bodyError]);
-  }
-}
 </script>
 
 <template>
@@ -150,12 +136,7 @@ function getNotificationClasses(notification: Notification) {
     tag="div"
     v-bind="{ ...config?.transitionGroup, ...wrapperAttrs }"
   >
-    <div
-      v-for="notification in notifications"
-      :key="notification.id"
-      v-bind="bodyAttrs"
-      :class="getNotificationClasses(notification)"
-    >
+    <div v-for="notification in notifications" :key="notification.id" v-bind="bodyAttrs">
       <UIcon
         v-if="notification.type === NOTIFY_TYPE.success"
         color="green"

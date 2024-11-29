@@ -109,11 +109,11 @@ const pageButtons = computed(() => {
 });
 
 const prevIsDisabled = computed(() => {
-  return props.disabled || currentPage.value == null || currentPage.value <= 1;
+  return props.disabled || !currentPage.value || currentPage.value <= 1;
 });
 
 const nextIsDisabled = computed(() => {
-  return props.disabled || currentPage.value == null || currentPage.value >= totalPages.value;
+  return props.disabled || !currentPage.value || currentPage.value >= totalPages.value;
 });
 
 function selectPage(page: number) {
@@ -121,14 +121,13 @@ function selectPage(page: number) {
 }
 
 function goToPrevPage() {
-  currentPage.value = currentPage.value == null ? 1 : Math.max(currentPage.value - 1, 1);
+  currentPage.value = !currentPage.value ? 1 : Math.max(currentPage.value - 1, 1);
 }
 
 function goToNextPage() {
-  currentPage.value =
-    currentPage.value == null
-      ? totalPages.value
-      : Math.min(currentPage.value + 1, totalPages.value);
+  currentPage.value = !currentPage.value
+    ? totalPages.value
+    : Math.min(currentPage.value + 1, totalPages.value);
 }
 
 function goToFirstPage() {
