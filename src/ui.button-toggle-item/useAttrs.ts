@@ -16,24 +16,16 @@ export default function useAttrs(
   props: UToggleItemProps,
   { isSelected, separated, variant }: itemState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     variant: toValue(variant),
     separated: toValue(separated),
+    /* component state, not a props */
+    selected: isSelected.value,
   }));
 
-  const extendingKeys = ["toggleButtonActive"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
-
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
-    toggleButton: {
-      extend: computed(() => [isSelected.value && extendingKeysClasses.toggleButtonActive.value]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   return {
     config,

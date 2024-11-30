@@ -4,40 +4,18 @@ import useUI from "../composables/useUI.ts";
 import defaultConfig from "./config.js";
 
 export default function useAttrs(props, { isTop, isOpen, selectedLabel: selectedLabelValue }) {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     error: Boolean(props.error),
     label: Boolean(props.label),
+    /* component state, not a props */
+    selected: Boolean(selectedLabelValue.value),
+    opened: isOpen.value,
+    openedTop: isTop.value,
   }));
 
-  const extendingKeys = [
-    "searchActive",
-    "wrapperActive",
-    "selectLabelActive",
-    "selectLabelOpenDirectionTop",
-  ];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
-
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
-    selectLabel: {
-      extend: computed(() => [
-        isOpen.value && extendingKeysClasses.selectLabelActive.value,
-        isTop.value && extendingKeysClasses.selectLabelOpenDirectionTop.value,
-      ]),
-    },
-    wrapper: {
-      extend: computed(() => [isOpen.value && extendingKeysClasses.wrapperActive.value]),
-    },
-    search: {
-      extend: computed(() => [
-        (!selectedLabelValue.value || isOpen.value) && extendingKeysClasses.searchActive.value,
-      ]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   return {
     config,

@@ -16,23 +16,15 @@ export default function useAttrs(
   props: UTabProps,
   { selected, size }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     size: size.value,
+    /* component state, not a props */
+    selected: selected.value,
   }));
 
-  const extendingKeys = ["tabActive"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
-
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
-    tab: {
-      extend: computed(() => [selected.value && extendingKeysClasses.tabActive.value]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   return {
     config,

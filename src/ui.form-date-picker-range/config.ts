@@ -12,13 +12,21 @@ export default /*tw*/ {
       },
     },
   },
-  buttonWrapper: `
-    flex rounded-dynamic max-md:justify-between
-    focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
-  `,
-  button: "{UButton} shrink-0 grow rounded-none",
-  buttonActive: "",
-  buttonWrapperActive: "ring-dynamic ring-offset-dynamic ring-brand-700/15",
+  buttonWrapper: {
+    base: `
+      flex rounded-dynamic max-md:justify-between
+      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
+    `,
+    variants: {
+      opened: {
+        true: "ring-dynamic ring-offset-dynamic ring-brand-700/15",
+      },
+    },
+  },
+  button: {
+    component: "{UButton}",
+    base: "shrink-0 grow rounded-none",
+  },
   shiftRangeButton: `
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none
@@ -61,11 +69,17 @@ export default /*tw*/ {
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-sm",
-  periodDateList: "",
-  periodDateMonthList: "{>periodDateList} grid grid-cols-3 grid-rows-1 gap-0.5",
-  periodDateWeekList: "{>periodDateList}",
-  periodDateYearList: "{>periodDateList} grid grid-cols-3 grid-rows-1 gap-0.5",
-  periodDateQuarterList: "{>periodDateList}",
+  periodDateList: {
+    base: "grid grid-rows-1 gap-0.5",
+    variants: {
+      month: {
+        true: "grid-cols-3",
+      },
+      year: {
+        true: "grid-cols-3",
+      },
+    },
+  },
   periodDate: "w-full",
   periodDateSelected: "{>periodDate}",
   periodDateCurrent: "{>periodDate} border-2 border-brand-600",

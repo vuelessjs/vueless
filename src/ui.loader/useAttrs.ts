@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
@@ -13,11 +12,7 @@ export default function useAttrs(props: ULoaderProps): UseAttrs<Config> {
     "loader",
   );
 
-  const keysAttrs = getKeysAttrs({}, [], {
-    ellipse: {
-      extend: computed(() => ["vueless-loader-ellipse", `vueless-loader-ellipse-${props.size}`]),
-    },
-  });
+  const keysAttrs = getKeysAttrs();
 
   return {
     config,

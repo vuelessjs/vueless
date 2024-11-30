@@ -130,34 +130,6 @@ const isPeriod = computed(() => {
 
 const elementId = props.id || useId();
 
-const {
-  config,
-  wrapperAttrs,
-  calendarAttrs,
-  datepickerInputAttrs,
-  menuAttrs,
-  buttonWrapperAttrs,
-  buttonAttrs,
-  shiftRangeButtonAttrs,
-  rangeInputWrapperAttrs,
-  rangeInputErrorAttrs,
-  datepickerActiveInputAttrs,
-  rangeInputFirstAttrs,
-  rangeInputLastAttrs,
-  periodRowAttrs,
-  periodButtonAttrs,
-  periodButtonActiveAttrs,
-  periodDateAttrs,
-  periodDateCurrentAttrs,
-  periodDateSelectedAttrs,
-  periodDateCurrentSelectedAttrs,
-  periodDateListAttrs,
-  rangeSwitchButtonAttrs,
-  rangeSwitchTitleAttrs,
-  rangeSwitchWrapperAttrs,
-  customRangeDescriptionAttrs,
-} = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
-
 const calendarValue = ref(props.modelValue);
 const activeDate: Ref<string | Date | null> = ref(
   props.modelValue.from !== null
@@ -248,6 +220,34 @@ const clickOutsideOptions = computed(() => {
     ],
   };
 });
+
+const {
+  config,
+  wrapperAttrs,
+  calendarAttrs,
+  datepickerInputAttrs,
+  menuAttrs,
+  buttonWrapperAttrs,
+  buttonAttrs,
+  shiftRangeButtonAttrs,
+  rangeInputWrapperAttrs,
+  rangeInputErrorAttrs,
+  datepickerActiveInputAttrs,
+  rangeInputFirstAttrs,
+  rangeInputLastAttrs,
+  periodRowAttrs,
+  periodButtonAttrs,
+  periodButtonActiveAttrs,
+  periodDateAttrs,
+  periodDateCurrentAttrs,
+  periodDateSelectedAttrs,
+  periodDateCurrentSelectedAttrs,
+  periodDateListAttrs,
+  rangeSwitchButtonAttrs,
+  rangeSwitchTitleAttrs,
+  rangeSwitchWrapperAttrs,
+  customRangeDescriptionAttrs,
+} = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
 
 const { userFormatDate } = useUserFormat(
   localValue,
