@@ -34,21 +34,15 @@ export default function useAttrs(
     description: Boolean(props.description),
   }));
 
-  const extendingKeys = ["buttonWrapperActive", "buttonActive", "periodDateMonthList"];
-  const extendingKeysClasses = getExtendingKeysClasses(
-    [
-      ...extendingKeys,
-      "periodButton",
-      "periodDateList",
-      "periodDate",
-      "periodDateWeekList",
-      "periodDateQuarterList",
-      "periodDateYearList",
-      "periodDateSelected",
-      "periodDateCurrent",
-    ],
-    mutatedProps,
-  );
+  const extendingKeys = [
+    "buttonWrapperActive",
+    "buttonActive",
+    "periodDateWeekList",
+    "periodDateMonthList",
+    "periodDateQuarterList",
+    "periodDateYearList",
+  ];
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys, mutatedProps);
 
   // TODO: Declare types for getKeysAttrs return value, this could be implemented using generic;
   const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
@@ -64,34 +58,6 @@ export default function useAttrs(
         isPeriod.value.month && extendingKeysClasses.periodDateMonthList.value,
         isPeriod.value.quarter && extendingKeysClasses.periodDateQuarterList.value,
         isPeriod.value.year && extendingKeysClasses.periodDateYearList.value,
-      ]),
-    },
-    periodButtonActive: {
-      base: computed(() => [extendingKeysClasses.periodButton.value]),
-    },
-    periodDateWeekList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateQuarterList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateYearList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateSelected: {
-      base: computed(() => [extendingKeysClasses.periodDate.value]),
-    },
-    periodDateCurrent: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.periodDateCurrent.value,
-      ]),
-    },
-    periodDateCurrentSelected: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.periodDateSelected.value,
-        extendingKeysClasses.periodDateCurrent.value,
       ]),
     },
   });

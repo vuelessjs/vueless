@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
@@ -7,25 +6,9 @@ import type { Config, UDropdownListProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
 
 export default function useAttrs(props: UDropdownListProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
-  const extendingKeys = ["option", "groupBase"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
-
-  const keysAttrs = getKeysAttrs({}, [], {
-    addOptionLabelWrapper: {
-      base: computed(() => [extendingKeysClasses.option.value]),
-    },
-    group: {
-      base: computed(() => [extendingKeysClasses.groupBase.value]),
-    },
-    subGroup: {
-      base: computed(() => [extendingKeysClasses.groupBase.value]),
-    },
-  });
+  const keysAttrs = getKeysAttrs();
 
   return {
     config,

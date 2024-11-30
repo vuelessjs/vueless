@@ -30,12 +30,7 @@ export default function useAttrs(
     "stickyHeaderRow",
     "stickyFooter",
   ];
-  const extendingKeysClasses = getExtendingKeysClasses([
-    ...extendingKeys,
-    "headerCellBase",
-    "bodyCellBase",
-    "bodyRowChecked",
-  ]);
+  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
 
   const keysAttrs = getKeysAttrs({}, extendingKeys, {
     stickyHeader: {
@@ -56,27 +51,6 @@ export default function useAttrs(
 
         return classes;
       }),
-    },
-    stickyHeaderCell: {
-      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
-    },
-    headerCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
-    },
-    stickyHeaderCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
-    },
-    headerActionsCounter: {
-      base: computed(() => [extendingKeysClasses.headerCounterBase.value]),
-    },
-    headerCellCheckbox: {
-      base: computed(() => [extendingKeysClasses.headerCellBase.value]),
-    },
-    bodyCellCheckbox: {
-      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
-    },
-    bodyRowBeforeCell: {
-      base: computed(() => [extendingKeysClasses.bodyCellBase.value]),
     },
     footer: {
       extend: computed(() => [isFooterSticky.value && extendingKeysClasses.stickyFooter.value]),

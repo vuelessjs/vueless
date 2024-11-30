@@ -21,7 +21,7 @@ export default /*tw*/ {
       },
     },
   },
-  labelCrossed: "line-through",
+  labelCrossed: "{>label} line-through",
   customActions: `
     space-x-5 opacity-50 md:flex md:items-center md:opacity-0
     group-hover/item:md:block group-hover/item:opacity-100

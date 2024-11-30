@@ -15,7 +15,6 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
   }));
 
   const extendingKeys = [
-    "caret",
     "searchActive",
     "wrapperActive",
     "selectLabelActive",
@@ -32,21 +31,6 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
     },
     wrapper: {
       extend: computed(() => [isOpen.value && extendingKeysClasses.wrapperActive.value]),
-    },
-    toggle: {
-      base: computed(() => [extendingKeysClasses.caret.value]),
-    },
-    clear: {
-      base: computed(() => [extendingKeysClasses.caret.value]),
-    },
-    beforeCaret: {
-      base: computed(() => [extendingKeysClasses.caret.value]),
-    },
-    afterCaret: {
-      base: computed(() => [extendingKeysClasses.caret.value]),
-    },
-    rightIconWrapper: {
-      base: computed(() => [extendingKeysClasses.caret.value]),
     },
     search: {
       extend: computed(() => [
