@@ -1,32 +1,28 @@
-import { computed, type Ref } from "vue";
+import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
 
+import type { Ref } from "vue";
 import type { Config, UDropdownLinkProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
 
-interface DropdownLinkState {
+interface ComponentState {
   isShownOptions: Ref<boolean>;
 }
 
 export default function useAttrs(
   props: UDropdownLinkProps,
-  { isShownOptions }: DropdownLinkState,
+  { isShownOptions }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
-  const extendingKeys = ["wrapperActive"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const mutatedProps = computed(() => ({
+    /* component state, not a props */
+    opened: isShownOptions.value,
+  }));
 
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    wrapper: {
-      extend: computed(() => [isShownOptions.value && extendingKeysClasses.wrapperActive.value]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   return {
     config,

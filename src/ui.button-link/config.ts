@@ -17,6 +17,9 @@ export default /*tw*/ {
       disabled: {
         true: "!ring-0 !ring-offset-0 cursor-not-allowed",
       },
+      defaultSlot: {
+        true: "flex items-center focus-within:ring-0 focus-within:ring-offset-0",
+      },
       noRing: {
         true: "!ring-0 !ring-offset-0",
       },
@@ -59,9 +62,11 @@ export default /*tw*/ {
       disabled: {
         true: "text-gray-400 pointer-events-none",
       },
+      defaultSlot: {
+        true: "flex items-center no-underline hover:no-underline",
+      },
     },
   },
-  linkWithChild: "flex items-center no-underline hover:no-underline focus-within:ring-0 focus-within:ring-offset-0",
   defaults: {
     color: "brand",
     type: "link",

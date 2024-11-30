@@ -48,7 +48,7 @@ const {
   footerRightAttrs,
   rightRoundingWrapperAttrs,
   hasSlotContent,
-} = useAttrs(props, { isMobileBreakpoint });
+} = useAttrs(props);
 
 const isExistHeader = computed(() => {
   return (
@@ -71,7 +71,7 @@ const isShownArrowButton = computed(() => {
 onMounted(() => {
   const classes = props.gray
     ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
-    : "";
+    : [];
 
   document.querySelector("body").classList.add(...classes);
 });

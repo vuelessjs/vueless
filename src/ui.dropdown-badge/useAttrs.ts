@@ -7,29 +7,22 @@ import type { Ref } from "vue";
 import type { Config, UDropdownBadgeProps } from "./types.ts";
 import type { UseAttrs } from "../types.ts";
 
-interface DropdownBadgeState {
+interface ComponentState {
   isShownOptions: Ref<boolean>;
 }
 
 export default function useAttrs(
   props: UDropdownBadgeProps,
-  { isShownOptions }: DropdownBadgeState,
+  { isShownOptions }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
 
-  const extendingKeys = ["dropdownBadgeActive"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const mutatedProps = computed(() => ({
+    /* component state, not a props */
+    opened: isShownOptions.value,
+  }));
 
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    dropdownBadge: {
-      extend: computed(() => [
-        isShownOptions.value && extendingKeysClasses.dropdownBadgeActive.value,
-      ]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   return {
     config,
