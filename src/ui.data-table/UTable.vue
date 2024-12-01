@@ -10,7 +10,7 @@ import {
   onBeforeUnmount,
   useTemplateRef,
 } from "vue";
-import { merge } from "lodash-es";
+import { merge, isEqual } from "lodash-es";
 
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
@@ -19,6 +19,9 @@ import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
 import { getDefault, cx } from "../utils/ui.ts";
+import { useLocale } from "../composables/useLocale.ts";
+import { hasSlotContent } from "../composables/useUI.ts";
+import { PX_IN_REM } from "../constants.js";
 
 import defaultConfig from "./config.ts";
 import {
@@ -31,14 +34,11 @@ import {
   addRowId,
 } from "./utilTable.ts";
 
-import { PX_IN_REM } from "../constants.js";
 import { UTable } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
-import { useLocale } from "../composables/useLocale.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
-import { isEqual } from "lodash-es";
 
 defineOptions({ inheritAttrs: false });
 
@@ -207,6 +207,7 @@ const {
   headerRowAttrs,
   bodyRowAfterAttrs,
   bodyRowBeforeAttrs,
+  bodyRowBeforeCheckedAttrs,
   bodyRowBeforeCellAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
@@ -227,7 +228,6 @@ const {
   bodyAttrs,
   footerRowAttrs,
   stickyFooterRowAttrs,
-  hasSlotContent,
   headerAttrs,
   bodyCellContentAttrs,
   bodyCellCheckboxAttrs,
@@ -639,7 +639,7 @@ defineExpose({
           <template v-for="(row, rowIndex) in sortedRows" :key="row.id">
             <tr
               v-if="rowIndex === firstRow && hasSlotContent($slots['before-first-row'])"
-              v-bind="bodyRowBeforeAttrs"
+              v-bind="tableRows[0]?.isChecked ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
             >
               <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
                 <!-- @slot Use it to add something before first row. -->
