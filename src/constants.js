@@ -154,7 +154,11 @@ export const COMPONENTS = {
   UDot: "ui.other-dot",
 };
 
-/* Extending Tailwind Merge by vueless custom tailwind classes. */
+/**
+ * Extending Tailwind Merge by vueless custom tailwind classes.
+ * All lists of rules available here:
+ * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+ */
 export const TAILWIND_MERGE_EXTENSION = {
   extend: {
     theme: {
@@ -166,6 +170,20 @@ export const TAILWIND_MERGE_EXTENSION = {
       "ring-offset-color": [{ "ring-offset": ["color-dynamic"] }],
       "font-size": [{ text: ["2xs"] }],
       rounded: [{ rounded: ["dynamic"] }],
+      "rounded-s": [{ "rounded-s": ["dynamic"] }],
+      "rounded-e": [{ "rounded-e": ["dynamic"] }],
+      "rounded-t": [{ "rounded-t": ["dynamic"] }],
+      "rounded-r": [{ "rounded-r": ["dynamic"] }],
+      "rounded-b": [{ "rounded-b": ["dynamic"] }],
+      "rounded-l": [{ "rounded-l": ["dynamic"] }],
+      "rounded-ss": [{ "rounded-ss": ["dynamic"] }],
+      "rounded-se": [{ "rounded-se": ["dynamic"] }],
+      "rounded-ee": [{ "rounded-ee": ["dynamic"] }],
+      "rounded-es": [{ "rounded-es": ["dynamic"] }],
+      "rounded-tl": [{ "rounded-tl": ["dynamic"] }],
+      "rounded-tr": [{ "rounded-tr": ["dynamic"] }],
+      "rounded-br": [{ "rounded-br": ["dynamic"] }],
+      "rounded-bl": [{ "rounded-bl": ["dynamic"] }],
     },
   },
 };
