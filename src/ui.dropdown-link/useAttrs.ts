@@ -15,7 +15,7 @@ export default function useAttrs(
   props: UDropdownLinkProps,
   { isShownOptions }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     /* component state, not a props */
@@ -24,9 +24,5 @@ export default function useAttrs(
 
   const keysAttrs = getKeysAttrs(mutatedProps);
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

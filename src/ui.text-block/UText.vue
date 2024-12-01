@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import { UText } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<UTextProps>(), {
   dataTest: "",
 });
 
-const { wrapperAttrs, htmlAttrs, hasSlotContent } = useAttrs(props);
+const { wrapperAttrs, htmlAttrs } = useAttrs(props);
 </script>
 
 <template>

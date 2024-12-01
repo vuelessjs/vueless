@@ -1,3 +1,7 @@
+import { Comment, Text, Fragment } from "vue";
+
+import type { Slot, VNode } from "vue";
+
 /**
  * Deeply clone given object (same as lodash.cloneDeep).
  */
@@ -46,6 +50,31 @@ export function createDebounce(func: () => void, ms: number) {
     // @ts-expect-error - this implicitly has type any because it does not have a type annotation.
     timeout = setTimeout(() => func.apply(this as unknown, args), ms);
   };
+}
+
+/**
+ * Check if Vue slot defined, and have a content.
+ */
+export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
+  type Args = VNode | VNode[] | undefined | null;
+
+  const asArray = (arg: Args) => {
+    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
+  };
+
+  const isVNodeEmpty = (vnode: Args) => {
+    return (
+      !vnode ||
+      asArray(vnode).every(
+        (vnode) =>
+          vnode.type === Comment ||
+          (vnode.type === Text && !vnode.children?.length) ||
+          (vnode.type === Fragment && !vnode.children?.length),
+      )
+    );
+  };
+
+  return !isVNodeEmpty(slot?.(props));
 }
 
 /**

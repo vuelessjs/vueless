@@ -318,7 +318,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { createDebounce } from "../utils/helper.ts";
+import { createDebounce, hasSlotContent } from "../utils/helper.ts";
 import { getDefault } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
@@ -696,7 +696,6 @@ const isEmpty = computed(() => {
 
 const {
   config,
-  hasSlotContent,
   selectLabelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,

@@ -15,7 +15,7 @@ export default function useAttrs(
   props: UCheckboxMultiStateProps,
   { selected }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
   const keysAttrs = getKeysAttrs();
 
   const checkboxAttrs = keysAttrs.multiStateCheckboxAttrs as Ref<{
@@ -33,9 +33,5 @@ export default function useAttrs(
     return checkboxAttrs.value;
   });
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

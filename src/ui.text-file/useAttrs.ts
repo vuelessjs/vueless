@@ -6,13 +6,9 @@ import type { UseAttrs } from "../types.ts";
 import type { UFileProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UFileProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
   const keysAttrs = getKeysAttrs();
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

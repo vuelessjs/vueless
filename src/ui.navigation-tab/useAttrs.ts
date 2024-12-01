@@ -16,7 +16,7 @@ export default function useAttrs(
   props: UTabProps,
   { selected, size }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     size: size.value,
@@ -26,9 +26,5 @@ export default function useAttrs(
 
   const keysAttrs = getKeysAttrs(mutatedProps);
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

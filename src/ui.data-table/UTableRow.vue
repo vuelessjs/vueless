@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, useSlots, useTemplateRef } from "vue";
 import { cx } from "../utils/ui.ts";
-import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import { PX_IN_REM } from "../constants.js";
 import { mapRowColumns } from "./utilTable.ts";
@@ -11,11 +11,7 @@ import { useMutationObserver } from "../composables/useMutationObserver.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import defaultConfig from "./config.ts";
-
 import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./types.ts";
-
-const { hasSlotContent } = useUI(defaultConfig);
 
 const NESTED_ROW_SHIFT_REM = 1.5;
 const LAST_NESTED_ROW_SHIFT_REM = 2;

@@ -113,6 +113,7 @@ const VALIDATION_RULES_REG_EX = {
 <script setup>
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
+import { hasSlotContent } from "../utils/helper.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -358,7 +359,6 @@ const {
   leftIconAttrs,
   rightIconAttrs,
   rightIconWrapperAttrs,
-  hasSlotContent,
 } = useAttrs(props, { isTypePassword, inputPasswordClasses });
 
 const iconSize = computed(() => {

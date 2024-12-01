@@ -1,15 +1,4 @@
-import {
-  ref,
-  watch,
-  watchEffect,
-  getCurrentInstance,
-  toValue,
-  useAttrs,
-  Comment,
-  Text,
-  Fragment,
-  computed,
-} from "vue";
+import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 
 import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
@@ -21,7 +10,7 @@ import {
   EXTENDS_PATTERN_REG_EXP,
 } from "../constants.js";
 
-import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
+import type { ComponentInternalInstance, ComputedRef } from "vue";
 import type {
   BrandColors,
   Strategies,
@@ -119,7 +108,7 @@ export default function useUI<T>(
   }
 
   /**
-   * Get an object where:
+   * Returns an object where:
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
    */
@@ -201,12 +190,7 @@ export default function useUI<T>(
     return vuelessAttrs;
   }
 
-  return {
-    config,
-    getKeysAttrs,
-    getExtendingKeysClasses,
-    hasSlotContent,
-  };
+  return { config, getKeysAttrs };
 }
 
 /**
@@ -246,29 +230,4 @@ function isCVA(config: UnknownObject): boolean {
   return Object.values(CVA_CONFIG_KEY).some((value) =>
     Object.keys(config).some((key) => key === value),
   );
-}
-
-/**
- * Check if slot defined, and have a content.
- */
-export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
-  type Args = VNode | VNode[] | undefined | null;
-
-  const asArray = (arg: Args) => {
-    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
-  };
-
-  const isVNodeEmpty = (vnode: Args) => {
-    return (
-      !vnode ||
-      asArray(vnode).every(
-        (vnode) =>
-          vnode.type === Comment ||
-          (vnode.type === Text && !vnode.children?.length) ||
-          (vnode.type === Fragment && !vnode.children?.length),
-      )
-    );
-  };
-
-  return !isVNodeEmpty(slot?.(props));
 }

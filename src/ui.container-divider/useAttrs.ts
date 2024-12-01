@@ -7,7 +7,7 @@ import type { UseAttrs } from "../types.ts";
 import type { UDividerProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UDividerProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     label: Boolean(props.label),
@@ -15,9 +15,5 @@ export default function useAttrs(props: UDividerProps): UseAttrs<Config> {
 
   const keysAttrs = getKeysAttrs(mutatedProps);
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

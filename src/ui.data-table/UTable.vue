@@ -19,8 +19,8 @@ import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
 import { getDefault, cx } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
-import { hasSlotContent } from "../composables/useUI.ts";
 import { PX_IN_REM } from "../constants.js";
 
 import defaultConfig from "./config.ts";

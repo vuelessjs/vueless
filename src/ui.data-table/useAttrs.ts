@@ -29,8 +29,5 @@ export default function useAttrs(
 
   const keysAttrs = getKeysAttrs(mutatedProps);
 
-  return {
-    config,
-    ...keysAttrs,
-  };
+  return { config, ...keysAttrs };
 }

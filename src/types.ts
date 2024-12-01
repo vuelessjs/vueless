@@ -1,5 +1,3 @@
-import { hasSlotContent } from "./composables/useUI.ts";
-
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UAlertDefaultConfig from "./ui.text-alert/config.ts";
 import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
@@ -46,7 +44,7 @@ import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts"
 import URadioConfig from "./ui.form-radio/config.ts";
 import URadioGroupConfig from "./ui.form-radio-group/config.ts";
 
-import type { ComputedRef, MaybeRef, Ref } from "vue";
+import type { MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
@@ -258,7 +256,7 @@ export interface VueAttrs {
 
 export interface UseAttrs<TConfig> {
   config: Ref<TConfig | undefined>;
-  [key: string]: Ref<TConfig | undefined> | typeof hasSlotContent;
+  [key: string]: Ref<TConfig | undefined>;
 }
 
 export interface KeyAttrs extends VueAttrs {

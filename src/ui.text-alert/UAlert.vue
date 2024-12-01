@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
+
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
@@ -45,7 +47,6 @@ const {
   closeButtonAttrs,
   closeIconAttrs,
   contentWrapperAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 onMounted(() => {

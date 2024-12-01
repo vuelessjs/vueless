@@ -22,7 +22,7 @@ export default function useAttrs(
   props: UDatePickerRangeProps<unknown>,
   { isShownMenu, isTop, isRight, isPeriod }: DatePickerRangeState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
@@ -50,9 +50,5 @@ export default function useAttrs(
     }
   });
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }
