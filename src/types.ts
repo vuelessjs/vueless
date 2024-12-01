@@ -44,7 +44,7 @@ import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts"
 import URadioConfig from "./ui.form-radio/config.ts";
 import URadioGroupConfig from "./ui.form-radio-group/config.ts";
 
-import type { MaybeRef, Ref } from "vue";
+import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
@@ -225,6 +225,19 @@ export type Defaults = {
 export interface NestedComponent {
   component: string;
   [key: string]: Record<string, string | object> | string;
+}
+
+export type ComponentConfig<T> = [T & Component] extends [Ref]
+  ? Ref<T & Component>
+  : Ref<UnwrapRef<T & Component>, T & Component>;
+
+export interface UseUI<T> {
+  config: ComponentConfig<T>;
+  getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs;
+  [key: string]:
+    | ComputedRef<KeyAttrs>
+    | ComponentConfig<T>
+    | ((mutatedProps?: ComputedRef) => KeysAttrs);
 }
 
 export interface Transition {

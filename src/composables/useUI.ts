@@ -19,9 +19,10 @@ import type {
   NestedComponent,
   ComponentNames,
   CVA,
+  UseUI,
   KeyAttrs,
-  ExtendedKeyClasses,
   KeysAttrs,
+  ExtendedKeyClasses,
 } from "../types.ts";
 
 /**
@@ -35,7 +36,8 @@ export default function useUI<T>(
   defaultConfig: T & Component,
   propsConfigGetter?: () => (T & Component) | undefined,
   topLevelClassKey?: string,
-) {
+  mutatedProps?: ComputedRef,
+): UseUI<T> {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as ComponentNames;
   const globalConfig = vuelessConfig?.component?.[componentName] || {};
@@ -48,7 +50,7 @@ export default function useUI<T>(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({} as T);
+  const config = ref({} as T & Component);
   const attrs = useAttrs();
 
   watchEffect(() => {
@@ -191,7 +193,7 @@ export default function useUI<T>(
     return vuelessAttrs;
   }
 
-  return { config, getKeysAttrs };
+  return { config, getKeysAttrs, ...getKeysAttrs(mutatedProps) };
 }
 
 /**
