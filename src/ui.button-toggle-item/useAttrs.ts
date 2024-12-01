@@ -25,7 +25,5 @@ export default function useAttrs(
     selected: isSelected.value,
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

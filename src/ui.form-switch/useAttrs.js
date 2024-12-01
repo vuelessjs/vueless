@@ -10,7 +10,5 @@ export default function useAttrs(props, { checked }) {
     checked: Boolean(checked.value),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

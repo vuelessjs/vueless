@@ -22,7 +22,5 @@ export default function useAttrs(
     opened: isOpened.value,
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

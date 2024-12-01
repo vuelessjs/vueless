@@ -16,7 +16,5 @@ export default function useAttrs(props: ULinkProps): UseAttrs<Config> {
     defaultSlot: hasSlotContent(slots["default"]),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

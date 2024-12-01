@@ -8,7 +8,5 @@ import type { ULoaderProps, Config } from "./types.ts";
 export default function useAttrs(props: ULoaderProps): UseAttrs<Config> {
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config, "loader");
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

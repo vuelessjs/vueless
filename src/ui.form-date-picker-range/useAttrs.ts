@@ -38,7 +38,6 @@ export default function useAttrs(
   }));
 
   // TODO: Declare types for getKeysAttrs return value, this could be implemented using generic;
-  const keysAttrs = getKeysAttrs(mutatedProps);
 
   /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
@@ -50,5 +49,5 @@ export default function useAttrs(
     }
   });
 
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

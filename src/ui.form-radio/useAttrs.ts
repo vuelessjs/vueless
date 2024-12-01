@@ -25,7 +25,5 @@ export default function useAttrs(
     error: Boolean(props.error),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

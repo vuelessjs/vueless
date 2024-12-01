@@ -8,7 +8,5 @@ import type { UGroupProps, Config } from "./types.ts";
 export default function useAttrs(props: UGroupProps): UseAttrs<Config> {
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

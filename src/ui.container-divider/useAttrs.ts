@@ -13,7 +13,5 @@ export default function useAttrs(props: UDividerProps): UseAttrs<Config> {
     label: Boolean(props.label),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

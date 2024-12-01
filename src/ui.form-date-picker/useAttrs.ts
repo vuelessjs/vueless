@@ -27,8 +27,6 @@ export default function useAttrs(
     description: Boolean(props.description),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
   /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
     const calendarAttrs = keysAttrs.calendarAttrs as Ref<{ config: UCalendarConfig }>;
@@ -39,5 +37,5 @@ export default function useAttrs(
     }
   });
 
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

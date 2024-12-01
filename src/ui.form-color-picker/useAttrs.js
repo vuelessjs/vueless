@@ -5,7 +5,5 @@ import defaultConfig from "./config.js";
 export default function useAttrs(props) {
   const { config, getKeysAttrs } = useUI(defaultConfig, () => props.config);
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

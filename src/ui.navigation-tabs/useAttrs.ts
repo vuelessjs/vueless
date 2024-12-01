@@ -8,7 +8,5 @@ import type { UTabsProps, Config } from "./types.ts";
 export default function useAttrs(props: UTabsProps): UseAttrs<Config> {
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

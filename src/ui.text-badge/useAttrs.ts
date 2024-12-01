@@ -17,7 +17,5 @@ export default function useAttrs(props: UBadgeProps): UseAttrs<Config> {
     rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

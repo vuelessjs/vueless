@@ -13,7 +13,5 @@ export default function useAttrs(props: UProgressProps): UseAttrs<Config> {
     value: Boolean(props.value),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

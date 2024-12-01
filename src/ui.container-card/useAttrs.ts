@@ -8,7 +8,5 @@ import type { UCardProps, Config } from "./types.ts";
 export default function useAttrs(props: UCardProps): UseAttrs<Config> {
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

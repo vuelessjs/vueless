@@ -15,7 +15,5 @@ export default function useAttrs(props, { isTop, isOpen, selectedLabel: selected
     openedTop: isTop.value,
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

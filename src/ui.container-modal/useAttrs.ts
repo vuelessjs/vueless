@@ -8,7 +8,5 @@ import type { UModalProps, Config } from "./types.ts";
 export default function useAttrs(props: UModalProps): UseAttrs<Config> {
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config, "wrapper");
 
-  const keysAttrs = getKeysAttrs();
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs() };
 }

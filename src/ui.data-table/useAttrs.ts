@@ -27,7 +27,5 @@ export default function useAttrs(
     stickedFooter: isFooterSticky.value,
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
-  return { config, ...keysAttrs };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }
