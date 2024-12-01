@@ -106,16 +106,18 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
-
 const mutatedProps = computed(() => ({
   leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   label: Boolean(props.label),
 }));
 
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  getKeysAttrs(mutatedProps);
+const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } = useUI<Config>(
+  defaultConfig,
+  () => props.config,
+  "",
+  mutatedProps,
+);
 </script>
 
 <template>
