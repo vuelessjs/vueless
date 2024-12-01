@@ -254,6 +254,8 @@ export interface VueAttrs {
   value?: string;
 }
 
+export type KeysAttrs = Record<string, Ref<UnknownObject | undefined>>;
+
 export interface UseAttrs<TConfig> {
   config: Ref<TConfig | undefined>;
   [key: string]: Ref<TConfig | undefined>;

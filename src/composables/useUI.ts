@@ -21,6 +21,7 @@ import type {
   CVA,
   KeyAttrs,
   ExtendedKeyClasses,
+  KeysAttrs,
 } from "../types.ts";
 
 /**
@@ -112,8 +113,8 @@ export default function useUI<T>(
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
    */
-  function getKeysAttrs(mutatedProps = {}) {
-    const keysAttrs: UnknownObject = {};
+  function getKeysAttrs(mutatedProps = {}): KeysAttrs {
+    const keysAttrs: KeysAttrs = {};
 
     for (const key in config.value) {
       if (isSystemKey(key)) continue;

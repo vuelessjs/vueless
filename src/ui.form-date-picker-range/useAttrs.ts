@@ -37,7 +37,7 @@ export default function useAttrs(
     year: isPeriod.value.year,
   }));
 
-  // TODO: Declare types for getKeysAttrs return value, this could be implemented using generic;
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
@@ -49,5 +49,5 @@ export default function useAttrs(
     }
   });
 
-  return { config, ...getKeysAttrs(mutatedProps) };
+  return { config, ...keysAttrs };
 }
