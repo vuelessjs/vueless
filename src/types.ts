@@ -257,7 +257,6 @@ export interface VueAttrs {
 }
 
 export interface UseAttrs<TConfig> {
-  hasSlotContent: typeof hasSlotContent;
   config: Ref<TConfig | undefined>;
   [key: string]: Ref<TConfig | undefined> | typeof hasSlotContent;
 }
@@ -269,11 +268,6 @@ export interface KeyAttrs extends VueAttrs {
   "vl-child-key"?: string | null;
   config?: UnknownObject;
   [key: string]: string | UnknownObject | undefined | null;
-}
-
-export interface KeysToExtend {
-  base?: ComputedRef;
-  extend?: ComputedRef;
 }
 
 export interface CreateVuelessOptions {

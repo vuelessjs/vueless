@@ -31,7 +31,6 @@ import type {
   ComponentNames,
   CVA,
   KeyAttrs,
-  KeysToExtend,
   ExtendedKeyClasses,
 } from "../types.ts";
 
@@ -78,6 +77,7 @@ export default function useUI<T>(
    */
   function getClasses(key: string, mutatedProps: UnknownObject): ComputedRef<string> {
     return computed(() => {
+      const mutatedPropsValue = toValue(mutatedProps);
       const color = (toValue(mutatedProps)?.color as BrandColors) || props?.color;
       const value = config.value[key] as (CVA & NestedComponent) | string;
 
@@ -86,7 +86,7 @@ export default function useUI<T>(
       if (typeof value === "object" && isCVA(value)) {
         classes = cva(value)({
           ...props,
-          ...toValue(mutatedProps),
+          ...mutatedPropsValue,
           ...(color ? { color: getColor(color) } : {}),
         });
       }
@@ -123,45 +123,18 @@ export default function useUI<T>(
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
    */
-  function getKeysAttrs(
-    mutatedProps = {},
-    extendingKeys: string[] = [],
-    keysToExtendConfig: Record<string, KeysToExtend> = {},
-  ) {
+  function getKeysAttrs(mutatedProps = {}) {
     const keysAttrs: UnknownObject = {};
-
-    // TODO: should be removed after migration of all components to the new api.
-    for (const key in config.value) {
-      if (isSystemKey(key) || extendingKeys.includes(key)) continue;
-
-      keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
-
-      const keysToExtend = Object.keys(keysToExtendConfig);
-
-      if (keysToExtend.includes(key)) {
-        const { base, extend } = keysToExtendConfig[key];
-        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
-
-        keysAttrs[`${key}Attrs`] = computed(() => ({
-          ...keyAttrs.value,
-          class: cx([
-            ...(Array.isArray(base) ? toValue(base) : [toValue(base)]),
-            keyAttrs.value.class,
-            ...(Array.isArray(extend) ? toValue(extend) : [toValue(extend)]),
-          ]),
-        }));
-      }
-    }
 
     for (const key in config.value) {
       if (isSystemKey(key)) continue;
+
+      keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
 
       const baseClasses = getBaseClasses(config.value[key]);
       const extendsMatches = baseClasses.match(EXTENDS_PATTERN_REG_EXP);
 
       if (extendsMatches) {
-        keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
-
         // retrieves extends keys from patterns:
         // Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
         const extendsKeys = extendsMatches.map((pattern) => pattern.slice(2, -1));
