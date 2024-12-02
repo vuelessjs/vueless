@@ -16,7 +16,7 @@ export default /*tw*/ {
     },
   },
   ellipse: {
-    base: "absolute rounded-full bg-{color}-600 ease-[cubic-bezier(0,1,1,0)]",
+    base: "absolute rounded-full bg-{color}-600 ease-[cubic-bezier(0,1,1,0)] vueless-loader-ellipse",
     variants: {
       color: {
         white: "bg-white",
@@ -30,6 +30,7 @@ export default /*tw*/ {
           [&:nth-child(2)]:left-1
           [&:nth-child(3)]:left-4
           [&:nth-child(4)]:left-7
+          vueless-loader-ellipse-sm
         `,
         md: `
           size-2.5
@@ -37,6 +38,7 @@ export default /*tw*/ {
           [&:nth-child(2)]:left-1.5
           [&:nth-child(3)]:left-6
           [&:nth-child(4)]:left-[2.625rem]
+          vueless-loader-ellipse-md
         `,
         lg: `
           size-4
@@ -44,6 +46,7 @@ export default /*tw*/ {
           [&:nth-child(2)]:left-2
           [&:nth-child(3)]:left-8
           [&:nth-child(4)]:left-14
+          vueless-loader-ellipse-lg
         `,
       },
     },

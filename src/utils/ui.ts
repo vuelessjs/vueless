@@ -7,8 +7,8 @@ import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
-  NESTED_COMPONENT_REG_EXP,
   TAILWIND_MERGE_EXTENSION,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
 import type {
@@ -62,8 +62,6 @@ if (isCSR) {
 
 /**
  * Extend twMerge (tailwind merge) by vueless and user config:
- * All list of rules available here:
- * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
  */
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
@@ -79,7 +77,8 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+    onComplete: (classNames) =>
+      twMerge(classNames).replaceAll(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
 

@@ -7,23 +7,11 @@ import type { UseAttrs } from "../types.ts";
 import type { UProgressProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UProgressProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const extendingKeys = ["stepFirst"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const mutatedProps = computed(() => ({
+    value: Boolean(props.value),
+  }));
 
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    step: {
-      base: computed(() => [!props.value && extendingKeysClasses.stepFirst.value]),
-    },
-  });
-
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

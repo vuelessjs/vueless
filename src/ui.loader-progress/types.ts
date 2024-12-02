@@ -35,6 +35,11 @@ export interface ULoaderProgressProps {
   resources?: string | string[];
 
   /**
+   * Progress size.
+   */
+  size?: "xs" | "sm" | "md" | "lg";
+
+  /**
    * Loader state (shown / hidden).
    */
   loading?: boolean;

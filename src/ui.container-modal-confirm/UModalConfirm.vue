@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { merge } from "lodash-es";
 
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import UButton from "../ui.button/UButton.vue";
 import UModal from "../ui.container-modal/UModal.vue";
@@ -49,13 +50,8 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const {
-  hasSlotContent,
-  footerLeftFallbackAttrs,
-  confirmModalAttrs,
-  confirmButtonAttrs,
-  cancelButtonAttrs,
-} = useAttrs(props);
+const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
+  useAttrs(props);
 
 const isShownModal = computed({
   get: () => props.modelValue,

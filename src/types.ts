@@ -1,5 +1,3 @@
-import { hasSlotContent } from "./composables/useUI.ts";
-
 import UTextDefaultConfig from "./ui.text-block/config.ts";
 import UAlertDefaultConfig from "./ui.text-alert/config.ts";
 import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
@@ -53,7 +51,7 @@ import UInputSearchConfig from "./ui.form-input-search/config.ts";
 import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 
-import type { ComputedRef, MaybeRef, Ref } from "vue";
+import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
@@ -243,6 +241,19 @@ export interface NestedComponent {
   [key: string]: Record<string, string | object> | string;
 }
 
+export type ComponentConfig<T> = [T & Component] extends [Ref]
+  ? Ref<T & Component>
+  : Ref<UnwrapRef<T & Component>, T & Component>;
+
+export interface UseUI<T> {
+  config: ComponentConfig<T>;
+  getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs;
+  [key: string]:
+    | ComputedRef<KeyAttrs>
+    | ComponentConfig<T>
+    | ((mutatedProps?: ComputedRef) => KeysAttrs);
+}
+
 export interface Transition {
   enterFromClass?: string;
   enterActiveClass?: string;
@@ -270,10 +281,11 @@ export interface VueAttrs {
   value?: string;
 }
 
+export type KeysAttrs = Record<string, Ref<UnknownObject | undefined>>;
+
 export interface UseAttrs<TConfig> {
-  hasSlotContent: typeof hasSlotContent;
   config: Ref<TConfig | undefined>;
-  [key: string]: Ref<TConfig | undefined> | typeof hasSlotContent;
+  [key: string]: Ref<TConfig | undefined>;
 }
 
 export interface KeyAttrs extends VueAttrs {
@@ -283,11 +295,6 @@ export interface KeyAttrs extends VueAttrs {
   "vl-child-key"?: string | null;
   config?: UnknownObject;
   [key: string]: string | UnknownObject | undefined | null;
-}
-
-export interface KeysToExtend {
-  base?: ComputedRef;
-  extend?: ComputedRef;
 }
 
 export interface CreateVuelessOptions {

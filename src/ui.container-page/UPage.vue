@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, useSlots, onMounted } from "vue";
 
+import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import useBreakpoint from "../composables/useBreakpoint.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
-
-import { getDefault } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UPage } from "./constants.ts";
@@ -47,8 +47,7 @@ const {
   footerLeftAttrs,
   footerRightAttrs,
   rightRoundingWrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props, { isMobileBreakpoint });
+} = useAttrs(props);
 
 const isExistHeader = computed(() => {
   return (
@@ -71,7 +70,7 @@ const isShownArrowButton = computed(() => {
 onMounted(() => {
   const classes = props.gray
     ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
-    : "";
+    : [];
 
   document.querySelector("body").classList.add(...classes);
 });

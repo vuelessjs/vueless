@@ -17,7 +17,7 @@ import {
   DYNAMIC_COLOR_PATTERN,
   TAILWIND_VARIANT_DELIMITER,
   TAILWIND_MERGE_EXTENSION,
-  NESTED_COMPONENT_REG_EXP,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
   TAILWIND_COLOR_OPACITY_DELIMITER,
   TAILWIND_VARIANT_DELIMITER_REG_EXP,
   STRATEGY_TYPE,
@@ -28,7 +28,7 @@ const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfi
 
 export const { cx } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
 

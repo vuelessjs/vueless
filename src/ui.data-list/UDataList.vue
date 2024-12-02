@@ -176,9 +176,11 @@ import { computed } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
+import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { UDataList as UDataListName } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -323,7 +325,6 @@ const {
   deleteIconAttrs,
   editIconAttrs,
   dragIconAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 const { tm } = useLocale();
 

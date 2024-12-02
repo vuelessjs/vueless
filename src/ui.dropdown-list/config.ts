@@ -39,12 +39,13 @@ export default /*tw*/ {
     },
   },
   group: `
+    {>groupBase}
     border-t border-gray-100 group-first/item:border-none
     mt-1.5 group-first/item:mt-0
     pt-4 group-first/item:pt-2
   `,
-  subGroup: "pt-2",
-  addOptionLabelWrapper: "-mb-[1.375rem] active:bg-brand-100",
+  subGroup: "{>groupBase} pt-2",
+  addOptionLabelWrapper: "{>option} -mb-[1.375rem] active:bg-brand-100",
   addOptionLabel: "leading-none font-medium",
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",

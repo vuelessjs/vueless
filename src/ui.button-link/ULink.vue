@@ -83,7 +83,17 @@ const { route, isActive, isExactActive } = useLink(useLinkOptions);
 
 const wrapperRef = ref(null);
 
-const { wrapperAttrs, linkAttrs } = useAttrs(props, { isActive, isExactActive });
+const { wrapperAttrs, linkAttrs } = useAttrs(props);
+
+const wrapperActiveClasses = computed(() => [
+  isActive.value && props.wrapperActiveClass,
+  isExactActive.value && props.wrapperExactActiveClass,
+]);
+
+const linkActiveClasses = computed(() => [
+  isActive.value && props.activeClass,
+  isExactActive.value && props.exactActiveClass,
+]);
 
 const targetValue = computed(() => {
   return props.targetBlank ? "_blank" : "_self";
@@ -129,7 +139,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
+  <div v-bind="wrapperAttrs" ref="wrapperRef" :class="wrapperActiveClasses" tabindex="-1">
     <!-- @slot Use it to add something before the label. -->
     <slot name="left" />
 
@@ -138,6 +148,7 @@ defineExpose({
       :to="route"
       :target="targetValue"
       v-bind="linkAttrs"
+      :class="linkActiveClasses"
       :data-test="dataTest"
       tabindex="0"
       @blur="onBlur"
@@ -157,6 +168,7 @@ defineExpose({
       :href="prefixedHref"
       :target="targetValue"
       v-bind="linkAttrs"
+      :class="linkActiveClasses"
       :data-test="dataTest"
       tabindex="0"
       @blur="onBlur"

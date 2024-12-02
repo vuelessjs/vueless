@@ -15,23 +15,12 @@ export default function useAttrs(
   props: UAccordionProps,
   { isOpened }: ComponentState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI<Config>(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const extendingKeys = ["descriptionShown"];
-  const extendingKeysClasses = getExtendingKeysClasses(extendingKeys);
+  const mutatedProps = computed(() => ({
+    /* component state, not a props */
+    opened: isOpened.value,
+  }));
 
-  const keysAttrs = getKeysAttrs({}, extendingKeys, {
-    description: {
-      extend: computed(() => [isOpened.value && extendingKeysClasses.descriptionShown.value]),
-    },
-  });
-
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...getKeysAttrs(mutatedProps) };
 }

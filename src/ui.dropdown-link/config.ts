@@ -1,6 +1,12 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block",
-  wrapperActive: "group",
+  wrapper: {
+    base: "relative inline-block",
+    variants: {
+      opened: {
+        true: "group",
+      },
+    },
+  },
   dropdownLink: "{ULink}",
   dropdownIcon: "{UIcon} block transition duration-300 group-[]:rotate-180",
   dropdownList: {

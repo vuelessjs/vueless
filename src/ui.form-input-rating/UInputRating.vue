@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefault } from "../utils/ui.ts";
 
 import { UInputRating } from "./constants.ts";
@@ -42,7 +43,6 @@ const {
   totalAttrs,
   starsAttrs,
   starAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 const iconSize = computed(() => {
