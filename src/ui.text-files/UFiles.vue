@@ -43,8 +43,8 @@ const formattedFileList = computed(() => {
       }
 
       return {
-        id: file instanceof File ? file.name : "unknown",
-        label: file instanceof File ? file.name : "unknown",
+        id: file instanceof File ? file.name : file instanceof Blob ? file.type : "",
+        label: file instanceof File ? file.name : file instanceof Blob ? file.type : "",
         url: URL.createObjectURL(file),
         imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
       };
