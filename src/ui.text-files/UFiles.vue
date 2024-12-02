@@ -28,23 +28,29 @@ const emit = defineEmits([
 
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
-const formattedFileList = computed(() =>
-  props.fileList?.map((file) => {
-    if (!(file instanceof File)) {
-      // eslint-disable-next-line no-console
-      console.error("Invalid file object");
+const formattedFileList = computed(() => {
+  const fileArray = Array.isArray(props.fileList)
+    ? props.fileList
+    : Array.from(props.fileList || []);
 
-      return null;
-    }
+  return fileArray
+    .map((file) => {
+      if (!(file instanceof File) && !(file instanceof Blob)) {
+        // eslint-disable-next-line no-console
+        console.error("Invalid file object");
 
-    return {
-      id: file.name,
-      label: file.name,
-      url: URL.createObjectURL(file),
-      imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
-    };
-  }),
-);
+        return null;
+      }
+
+      return {
+        id: file instanceof File ? file.name : "unknown",
+        label: file instanceof File ? file.name : "unknown",
+        url: URL.createObjectURL(file),
+        imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
+      };
+    })
+    .filter(Boolean);
+});
 
 function onRemoveFile(fileId: string | number) {
   emit("remove", fileId);
@@ -64,11 +70,11 @@ function onRemoveFile(fileId: string | number) {
       <slot>
         <UFile
           v-for="(file, index) in formattedFileList"
-          :id="file.id"
-          :key="file.id"
-          :label="file.label"
-          :url="file.url"
-          :image-url="file.imageUrl"
+          :id="file?.id"
+          :key="file?.id"
+          :label="file?.label"
+          :url="file?.url"
+          :image-url="file?.imageUrl"
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"
