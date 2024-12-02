@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
 
+import { hasSlotContent } from "../utils/helper.ts";
+
 import UHeader from "../ui.text-header/UHeader.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
@@ -28,7 +30,6 @@ const isShownFooter = computed(() => {
 });
 
 const {
-  hasSlotContent,
   wrapperAttrs,
   titleAttrs,
   dividerAttrs,

@@ -318,7 +318,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { createDebounce } from "../utils/helper.ts";
+import { createDebounce, hasSlotContent } from "../utils/helper.ts";
 import { getDefault } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
@@ -599,37 +599,7 @@ const isTop = computed(() => {
   return preferredOpenDirection.value === DIRECTION.top;
 });
 
-const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value) : "";
-});
-
 const elementId = props.id || useId();
-
-const {
-  config,
-  hasSlotContent,
-  selectLabelAttrs,
-  wrapperAttrs,
-  innerWrapperAttrs,
-  leftIconWrapperAttrs,
-  rightIconWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
-  beforeCaretAttrs,
-  afterCaretAttrs,
-  toggleAttrs,
-  clearAttrs,
-  clearMultipleTextAttrs,
-  clearMultipleAttrs,
-  searchAttrs,
-  searchInputAttrs,
-  selectedLabelsAttrs,
-  selectedLabelAttrs,
-  dropdownListAttrs,
-  toggleIconAttrs,
-  clearIconAttrs,
-  clearMultipleIconAttrs,
-} = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const i18nGlobal = tm(USelect);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -705,13 +675,6 @@ const localValue = computed(() => {
     : [];
 });
 
-const isEmpty = computed(() => {
-  return (
-    (filteredOptions.value.length === 0 && search) ||
-    (props.multiple && localValue.value.length === props.options.length)
-  );
-});
-
 const isLocalValue = computed(() => {
   if (props.multiple) return Boolean(localValue.value.length);
 
@@ -719,6 +682,42 @@ const isLocalValue = computed(() => {
     ? Boolean(localValue.value)
     : Boolean(String(localValue.value));
 });
+
+const selectedLabel = computed(() => {
+  return isLocalValue.value ? getOptionLabel(localValue.value) : "";
+});
+
+const isEmpty = computed(() => {
+  return (
+    (filteredOptions.value.length === 0 && search) ||
+    (props.multiple && localValue.value.length === props.options.length)
+  );
+});
+
+const {
+  config,
+  selectLabelAttrs,
+  wrapperAttrs,
+  innerWrapperAttrs,
+  leftIconWrapperAttrs,
+  rightIconWrapperAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  beforeCaretAttrs,
+  afterCaretAttrs,
+  toggleAttrs,
+  clearAttrs,
+  clearMultipleTextAttrs,
+  clearMultipleAttrs,
+  searchAttrs,
+  searchInputAttrs,
+  selectedLabelsAttrs,
+  selectedLabelAttrs,
+  dropdownListAttrs,
+  toggleIconAttrs,
+  clearIconAttrs,
+  clearMultipleIconAttrs,
+} = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const onSearchChange = createDebounce(function (query) {
   emit("searchChange", query);

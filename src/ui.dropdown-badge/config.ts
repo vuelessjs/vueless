@@ -1,7 +1,15 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  dropdownBadge: "{UBadge} transition",
-  dropdownBadgeActive: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+  dropdownBadge: {
+    component: "{UBadge}",
+    base: "transition",
+    variants: {
+      opened: {
+        true: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+      },
+    },
+    compoundVariants: [{ opened: true, color: ["grayscale", "white"], class: "ring-gray-700/15" }],
+  },
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
     component: "{UDropdownList}",

@@ -1,12 +1,22 @@
 export default /*tw*/ {
   wrapper: "relative w-full overflow-auto",
   headerCounterBase: "mr-1.5 pr-1.5 font-medium text-sm text-gray-900",
-  stickyHeader: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
-  stickyHeaderRow: "border-gray-200 bg-white",
-  stickyHeaderCell: "flex-none whitespace-nowrap",
+  stickyHeader: {
+    base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
+    variants: {
+      actionsHeader: {
+        true: "rounded-t-dynamic border-blue-200 bg-blue-50",
+      },
+    },
+    compoundVariants: [
+      { stickedHeader: true, actionsHeader: true, class: "rounded-none" },
+      { stickedHeader: true, actionsHeader: false, class: "border-gray-200 bg-white" },
+    ],
+  },
+  stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
-    base: "absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
+    base: "{>headerCounterBase} absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
     variants: {
       compact: {
         true: "top-3",
@@ -14,10 +24,8 @@ export default /*tw*/ {
     },
   },
   stickyHeaderLoader: "{ULoaderProgress}",
-  stickyHeaderActions: "rounded-none",
-  headerActions: "rounded-t-dynamic border-blue-200 bg-blue-50",
   headerActionsCheckbox: "{UCheckbox}",
-  headerActionsCounter: "-ml-1.5",
+  headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
   table: "min-w-full border-none text-sm w-full table-auto",
   header: "border-b border-gray-200",
@@ -30,10 +38,10 @@ export default /*tw*/ {
       },
     },
   },
-  headerCellCheckbox: "w-10",
+  headerCellCheckbox: "{>headerCellBase} w-10",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
-    base: "absolute top-4 mt-px left-11 ml-px",
+    base: "{>headerCounterBase} absolute top-4 mt-px left-11 ml-px",
     variants: {
       compact: {
         true: "top-3",
@@ -45,7 +53,8 @@ export default /*tw*/ {
   bodyRow: "hover:bg-gray-50",
   bodyRowChecked: "bg-gray-100 transition",
   bodyRowBefore: "!p-0",
-  bodyRowBeforeCell: "py-1",
+  bodyRowBeforeChecked: "{>bodyRowChecked} !p-0",
+  bodyRowBeforeCell: "{>bodyCellBase} py-1",
   bodyRowAfter: "!p-0",
   bodyRowDateDivider: "",
   bodyCellBase: {
@@ -57,7 +66,7 @@ export default /*tw*/ {
     },
   },
   bodyCellContent: "text-ellipsis overflow-hidden",
-  bodyCellCheckbox: "first:px-4", // try to remove first
+  bodyCellCheckbox: "{>bodyCellBase} first:px-4", // try to remove first
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex gap-0.5",
   bodyCellNestedExpandIconWrapper: "",
@@ -74,7 +83,14 @@ export default /*tw*/ {
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: "{UDivider}",
   bodyEmptyState: "{UEmpty} my-8",
-  footer: "group/footer border-t border-solid border-gray-200",
+  footer: {
+    base: "group/footer border-t border-solid border-gray-200",
+    variants: {
+      stickedFooter: {
+        true: "relative group/footer-fixed",
+      },
+    },
+  },
   footerRow: {
     base: "[&_td]:p-[1.125rem] [&_td]:py-5 first:[&_td]:p-5",
     variants: {
@@ -83,7 +99,6 @@ export default /*tw*/ {
       },
     },
   },
-  stickyFooter: "relative group/footer-fixed",
   stickyFooterRow: `
     fixed bottom-0 -ml-px border border-b border-gray-200 bg-white
     collapse group-[]/footer-fixed:[visibility:inherit]

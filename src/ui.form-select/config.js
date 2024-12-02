@@ -1,7 +1,15 @@
 export default /*tw*/ {
-  selectLabel: "{ULabel}",
-  selectLabelActive: "group/active",
-  selectLabelOpenDirectionTop: "group/top",
+  selectLabel: {
+    component: "{ULabel}",
+    variants: {
+      opened: {
+        true: "group/active",
+      },
+      openedTop: {
+        true: "group/top",
+      },
+    },
+  },
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -20,6 +28,9 @@ export default /*tw*/ {
       disabled: {
         true: "bg-gray-100 pointer-events-none",
       },
+      opened: {
+        true: "z-[inherit]",
+      },
     },
     compoundVariants: [
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
@@ -27,7 +38,6 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
-  wrapperActive: "z-[inherit]",
   innerWrapper: {
     base: "px-3 flex min-h-full w-full overflow-hidden justify-between",
     variants: {
@@ -62,11 +72,11 @@ export default /*tw*/ {
     ],
   },
   leftIconWrapper: "pr-1.5",
-  rightIconWrapper: "pr-3",
+  rightIconWrapper: "{>caret} pr-3",
   leftIcon: "{UIcon}",
   rightIcon: "{UIcon}",
-  beforeCaret: "",
-  afterCaret: "mr-3",
+  beforeCaret: "{>caret}",
+  afterCaret: "{>caret} mr-3",
   caret: {
     base: "flex items-center mt-0",
     compoundVariants: [
@@ -75,9 +85,9 @@ export default /*tw*/ {
       { labelAlign: "topInside", size: "lg", label: true, class: "-mt-[1.125rem]" },
     ],
   },
-  toggle: "mr-3",
+  toggle: "{>caret} mr-3",
   toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
-  clear: "",
+  clear: "{>caret}",
   clearIcon: "{UIcon}",
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon}",
@@ -89,8 +99,17 @@ export default /*tw*/ {
       { size: "lg", class: "text-base" },
     ],
   },
-  search: "flex w-0",
-  searchActive: "w-full",
+  search: {
+    base: "flex w-0",
+    variants: {
+      selected: {
+        false: "w-full",
+      },
+      opened: {
+        true: "w-full",
+      },
+    },
+  },
   searchInput: {
     base: `
         p-0 font-normal !leading-none text-gray-900 relative w-full border-none bg-transparent

@@ -789,7 +789,6 @@ defineExpose({
       <UButton
         variant="thirdary"
         size="sm"
-        square
         filled
         no-ring
         color="grayscale"

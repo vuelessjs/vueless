@@ -6,13 +6,7 @@ import type { UseAttrs } from "../types.ts";
 import type { UAvatarProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UAvatarProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
-  const keysAttrs = getKeysAttrs();
-
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...getKeysAttrs() };
 }

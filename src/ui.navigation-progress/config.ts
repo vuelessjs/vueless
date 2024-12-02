@@ -78,7 +78,6 @@ export default /*tw*/ {
       },
     },
   },
-  stepFirst: "text-gray-500",
   step: {
     base: "text-{color}-600 flex justify-end w-full transition",
     variants: {
@@ -98,6 +97,9 @@ export default /*tw*/ {
         lg: "text-lg",
         xl: "text-xl",
         "2xl": "text-2xl",
+      },
+      value: {
+        false: "text-gray-500",
       },
     },
   },

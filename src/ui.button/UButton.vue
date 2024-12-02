@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect, useId, watch } from "vue";
+import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { useDarkMode } from "../composables/useDarkMode.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefault } from "../utils/ui.ts";
+
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { UButton } from "./constants.ts";
 
-import type { UButtonProps, LoaderSize, IconSize } from "./types.ts";
+import type { UButtonProps, LoaderSize, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -30,12 +32,9 @@ const props = withDefaults(defineProps<UButtonProps>(), {
   dataTest: "",
 });
 
+const slots = useSlots();
 const elementId = props.id || useId();
-
 const { isDarkMode } = useDarkMode();
-
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useAttrs(props);
 
 const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
@@ -102,6 +101,23 @@ defineExpose({
    */
   buttonRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
+  rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
+  label: Boolean(props.label),
+}));
+
+const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } = useUI<Config>(
+  defaultConfig,
+  () => props.config,
+  "",
+  mutatedProps,
+);
 </script>
 
 <template>

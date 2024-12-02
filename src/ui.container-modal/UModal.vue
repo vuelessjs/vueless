@@ -2,6 +2,7 @@
 import { computed, useSlots, watch, ref, useId } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -66,7 +67,6 @@ const {
   footerLeftAttrs,
   footerAttrs,
   footerRightAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 const isShownModal = computed({

@@ -22,79 +22,22 @@ export default function useAttrs(
   props: UDatePickerRangeProps<unknown>,
   { isShownMenu, isTop, isRight, isPeriod }: DatePickerRangeState,
 ): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent, getExtendingKeysClasses } = useUI(
-    defaultConfig,
-    () => props.config,
-  );
+  const { config, getKeysAttrs } = useUI(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
     openDirectionX: isRight.value ? Direction.Right : Direction.Left,
     error: Boolean(props.error),
     description: Boolean(props.description),
+    /* component state, not a props */
+    opened: isShownMenu.value,
+    week: isPeriod.value.week,
+    month: isPeriod.value.month,
+    quarter: isPeriod.value.quarter,
+    year: isPeriod.value.year,
   }));
 
-  const extendingKeys = ["buttonWrapperActive", "buttonActive", "periodDateMonthList"];
-  const extendingKeysClasses = getExtendingKeysClasses(
-    [
-      ...extendingKeys,
-      "periodButton",
-      "periodDateList",
-      "periodDate",
-      "periodDateWeekList",
-      "periodDateQuarterList",
-      "periodDateYearList",
-      "periodDateSelected",
-      "periodDateCurrent",
-    ],
-    mutatedProps,
-  );
-
-  // TODO: Declare types for getKeysAttrs return value, this could be implemented using generic;
-  const keysAttrs = getKeysAttrs(mutatedProps, extendingKeys, {
-    buttonWrapper: {
-      extend: computed(() => [isShownMenu.value && extendingKeysClasses.buttonWrapperActive.value]),
-    },
-    button: {
-      extend: computed(() => [isShownMenu.value && extendingKeysClasses.buttonActive.value]),
-    },
-    periodDateList: {
-      extend: computed(() => [
-        isPeriod.value.week && extendingKeysClasses.periodDateWeekList.value,
-        isPeriod.value.month && extendingKeysClasses.periodDateMonthList.value,
-        isPeriod.value.quarter && extendingKeysClasses.periodDateQuarterList.value,
-        isPeriod.value.year && extendingKeysClasses.periodDateYearList.value,
-      ]),
-    },
-    periodButtonActive: {
-      base: computed(() => [extendingKeysClasses.periodButton.value]),
-    },
-    periodDateWeekList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateQuarterList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateYearList: {
-      base: computed(() => [extendingKeysClasses.periodDateList.value]),
-    },
-    periodDateSelected: {
-      base: computed(() => [extendingKeysClasses.periodDate.value]),
-    },
-    periodDateCurrent: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.periodDateCurrent.value,
-      ]),
-    },
-    periodDateCurrentSelected: {
-      base: computed(() => [
-        extendingKeysClasses.periodDate.value,
-        extendingKeysClasses.periodDateSelected.value,
-        extendingKeysClasses.periodDateCurrent.value,
-      ]),
-    },
-  });
+  const keysAttrs = getKeysAttrs(mutatedProps);
 
   /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
   watchEffect(() => {
@@ -106,9 +49,5 @@ export default function useAttrs(
     }
   });
 
-  return {
-    config,
-    ...keysAttrs,
-    hasSlotContent,
-  };
+  return { config, ...keysAttrs };
 }

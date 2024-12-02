@@ -96,11 +96,11 @@ import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
 import { getDefault } from "../utils/ui.ts";
-import { getFileMbSize } from "./utilFileForm.js";
-
-import useAttrs from "./useAttrs.js";
+import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
+import useAttrs from "./useAttrs.js";
+import { getFileMbSize } from "./utilFileForm.js";
 import { UInputFile } from "./constants.js";
 import defaultConfig from "./config.js";
 
@@ -247,7 +247,6 @@ const {
   inputAttrs,
   fileListAttrs,
   buttonsAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 const i18nGlobal = tm(UInputFile);

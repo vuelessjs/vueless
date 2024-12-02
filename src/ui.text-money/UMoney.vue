@@ -2,6 +2,7 @@
 import { computed } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import { UMoney } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -36,7 +37,6 @@ const {
   slotLeftAttrs,
   symbolAttrs,
   slotRightAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 const currencySymbolPosition = computed(() => {
