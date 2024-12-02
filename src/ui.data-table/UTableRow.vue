@@ -13,8 +13,10 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./types.ts";
 
-const NESTED_ROW_SHIFT_REM = 1.5;
-const LAST_NESTED_ROW_SHIFT_REM = 2;
+const { hasSlotContent } = useUI(defaultConfig);
+
+const NESTED_ROW_SHIFT_REM = 1;
+const LAST_NESTED_ROW_SHIFT_REM = 1.1;
 
 const props = defineProps<UTableRowProps>();
 
@@ -42,8 +44,6 @@ const toggleIconConfig = computed(() => {
     ? props.attrs.bodyCellNestedExpandIconAttrs.value
     : props.attrs.bodyCellNestedCollapseIconAttrs.value;
 });
-
-const shift = computed(() => (props.row.row ? NESTED_ROW_SHIFT_REM : LAST_NESTED_ROW_SHIFT_REM));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
@@ -134,11 +134,11 @@ function formatCellValue(value: Cell) {
 }
 
 function getNestedShift() {
-  return { marginLeft: `${props.nestedLevel * shift.value}rem` };
+  return { marginLeft: `${props.nestedLevel * NESTED_ROW_SHIFT_REM}rem` };
 }
 
 function getNestedCheckboxShift() {
-  return { transform: `translateX(${props.nestedLevel * shift.value}rem)` };
+  return { transform: `translateX(${props.nestedLevel * LAST_NESTED_ROW_SHIFT_REM}rem)` };
 }
 
 function onClickToggleRowChild(rowId: string | number) {
