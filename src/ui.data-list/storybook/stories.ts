@@ -5,6 +5,13 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UDataListProps } from "../types.ts";
+
+interface UDataListArgs extends UDataListProps {
+  slotTemplate?: string;
+}
+
 /**
  * The `UDataList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-list)
  */
@@ -40,9 +47,9 @@ export default {
   argTypes: {
     ...getArgTypes(UDataList.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
   components: { UDataList, UIcon, URow, UButton },
   setup() {
     const slots = getSlotNames(UDataList.__name);
@@ -51,7 +58,7 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UDataList v-bind="args">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UDataList>
   `,
 });

@@ -1,3 +1,148 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import draggable from "vuedraggable";
+import { merge } from "lodash-es";
+
+import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UEmpty from "../ui.text-empty/UEmpty.vue";
+
+import { UDataList as UDataListName } from "./constants.ts";
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+import { useLocale } from "../composables/useLocale.ts";
+
+import type { UDataListProps, IconSize, DragMoveEvent, ListItem } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UDataListProps>(), {
+  size: getDefault<UDataListProps>(defaultConfig, UDataListName).size,
+  labelKey: getDefault<UDataListProps>(defaultConfig, UDataListName).labelKey,
+  valueKey: getDefault<UDataListProps>(defaultConfig, UDataListName).valueKey,
+  animationDuration: getDefault<UDataListProps>(defaultConfig, UDataListName).animationDuration,
+  nesting: getDefault<UDataListProps>(defaultConfig, UDataListName).nesting,
+  hideEmptyStateForNesting: false,
+  dataTest: "",
+  config: () => ({}),
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when item is sorted (after drag).
+   * @property {array} sortData
+   */
+  "dragSort",
+
+  /**
+   * Triggers when edit button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickEdit",
+
+  /**
+   * Triggers when delete button is clicked.
+   * @property {number} value
+   * @property {string} label
+   */
+  "clickDelete",
+]);
+
+defineSlots<{
+  edit: { element: object };
+  delete: { element: object };
+  drag: { element: object };
+  empty: {
+    emptyTitle: string;
+    emptyDescription: string;
+  };
+  label: { item: ListItem; active: boolean };
+  actions: { item: ListItem };
+}>();
+
+const {
+  config,
+  wrapperAttrs,
+  emptyAttrs,
+  draggableAttrs,
+  nestedAttrs,
+  itemWrapperAttrs,
+  itemAttrs,
+  labelAttrs,
+  labelCrossedAttrs,
+  customActionsAttrs,
+  deleteIconAttrs,
+  editIconAttrs,
+  dragIconAttrs,
+} = useAttrs(props);
+const { tm } = useLocale();
+
+const i18nGlobal = tm(UDataListName);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size] as IconSize;
+});
+
+function isActive(element: { isActive: boolean }) {
+  return element.isActive === undefined || element.isActive;
+}
+
+function onDragMove(event: DragMoveEvent): boolean | void {
+  const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;
+  const isNestingAction = !event.relatedContext?.element?.isDisabledNesting;
+
+  if (isDisabledNestingItem && isNestingAction) {
+    return false;
+  }
+}
+
+function onDragEnd() {
+  const sortData = prepareSortData(props.list || []);
+
+  emit("dragSort", sortData);
+}
+
+function onClickEdit(value: number, label: string) {
+  emit("clickEdit", value, label);
+}
+
+function onClickDelete(value: number, label: string) {
+  emit("clickDelete", value, label);
+}
+
+function prepareSortData(list: Array<ListItem>, parentId?: number) {
+  const sortData: Array<ListItem> = [];
+
+  list.forEach((item: ListItem) => {
+    const hasItemChildren = item?.children?.length;
+
+    if (hasItemChildren) {
+      const childrenItem = prepareSortData(item.children || [], item[props.valueKey] as number);
+
+      childrenItem.forEach((item) => {
+        sortData.push(item);
+      });
+    }
+
+    const parentItem = { ...item, parentId: 0 || parentId };
+
+    sortData.push(parentItem);
+  });
+
+  return sortData;
+}
+</script>
+
 <template>
   <div v-bind="wrapperAttrs">
     <!--
@@ -44,7 +189,7 @@
             <slot
               name="drag"
               :item="element"
-              :icon-name="config.defaults.dragIcon"
+              :icon-name="config.defaults?.dragIcon"
               :icon-size="iconSize"
             >
               <UIcon
@@ -52,7 +197,7 @@
                 color="gray"
                 variant="light"
                 :size="iconSize"
-                :name="config.defaults.dragIcon"
+                :name="config.defaults?.dragIcon"
                 v-bind="dragIconAttrs"
               />
             </slot>
@@ -89,7 +234,7 @@
               <slot
                 name="delete"
                 :item="element"
-                :icon-name="config.defaults.deleteIcon"
+                :icon-name="config.defaults?.deleteIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -98,7 +243,7 @@
                   interactive
                   color="red"
                   :size="iconSize"
-                  :name="config.defaults.deleteIcon"
+                  :name="config.defaults?.deleteIcon"
                   :data-test="`${dataTest}-delete`"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
@@ -115,7 +260,7 @@
               <slot
                 name="edit"
                 :item="element"
-                :icon-name="config.defaults.editIcon"
+                :icon-name="config.defaults?.editIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -124,7 +269,7 @@
                   interactive
                   color="gray"
                   :size="iconSize"
-                  :name="config.defaults.editIcon"
+                  :name="config.defaults?.editIcon"
                   :data-test="`${dataTest}-edit`"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"
@@ -170,223 +315,3 @@
     </draggable>
   </div>
 </template>
-
-<script setup>
-import { computed } from "vue";
-import draggable from "vuedraggable";
-import { merge } from "lodash-es";
-
-import { getDefault } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UEmpty from "../ui.text-empty/UEmpty.vue";
-
-import { UDataList as UDataListName } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.ts";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Data item options.
-   */
-  list: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Group name.
-   */
-  group: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Data list size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDataListName).size,
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDataListName).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefault(defaultConfig, UDataListName).valueKey,
-  },
-
-  /**
-   * Empty state title.
-   */
-  emptyTitle: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Empty state description.
-   */
-  emptyDescription: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Drag animation duration.
-   */
-  animationDuration: {
-    type: Number,
-    default: getDefault(defaultConfig, UDataListName).animationDuration,
-  },
-
-  /**
-   * Enable nesting.
-   */
-  nesting: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDataListName).nesting,
-  },
-
-  /**
-   * Disable empty state for nested elements if empty (internal props).
-   * @ignore
-   */
-  hideEmptyStateForNesting: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when item is sorted (after drag).
-   * @property {array} sortData
-   */
-  "dragSort",
-
-  /**
-   * Triggers when edit button is clicked.
-   * @property {number} value
-   * @property {string} label
-   */
-  "clickEdit",
-
-  /**
-   * Triggers when delete button is clicked.
-   * @property {number} value
-   * @property {string} label
-   */
-  "clickDelete",
-]);
-
-const {
-  config,
-  wrapperAttrs,
-  emptyAttrs,
-  draggableAttrs,
-  nestedAttrs,
-  itemWrapperAttrs,
-  itemAttrs,
-  labelAttrs,
-  labelCrossedAttrs,
-  customActionsAttrs,
-  deleteIconAttrs,
-  editIconAttrs,
-  dragIconAttrs,
-} = useAttrs(props);
-const { tm } = useLocale();
-
-const i18nGlobal = tm(UDataListName);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
-
-function isActive(element) {
-  return element.isActive === undefined || element.isActive;
-}
-
-function onDragMove(event) {
-  const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;
-  const isNestingAction = !event.relatedContext.element?.isDisabledNesting;
-
-  if (isDisabledNestingItem && isNestingAction) {
-    return false;
-  }
-}
-
-function onDragEnd() {
-  const sortData = prepareSortData(props.list);
-
-  emit("dragSort", sortData);
-}
-
-function onClickEdit(value, label) {
-  emit("clickEdit", value, label);
-}
-
-function onClickDelete(value, label) {
-  emit("clickDelete", value, label);
-}
-
-function prepareSortData(list, parentId) {
-  const sortData = [];
-
-  list.forEach((item) => {
-    const hasItemChildren = item?.children?.length;
-
-    if (hasItemChildren) {
-      const childrenItem = prepareSortData(item.children, item[props.valueKey]);
-
-      childrenItem.forEach((item) => {
-        sortData.push(item);
-      });
-    }
-
-    const parentItem = { ...item, parentId: 0 || parentId };
-
-    sortData.push(parentItem);
-  });
-
-  return sortData;
-}
-</script>

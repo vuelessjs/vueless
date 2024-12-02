@@ -46,6 +46,7 @@ import URadioGroupConfig from "./ui.form-radio-group/config.ts";
 import USwitchConfig from "./ui.form-switch/config.ts";
 import UTextareaConfig from "./ui.form-textarea/config.ts";
 import ULabelConfig from "./ui.form-label/config.ts";
+import UDataListConfig from "./ui.data-list/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
 import type { Props } from "tippy.js";
@@ -207,6 +208,7 @@ export interface Components {
   USwitch?: Partial<typeof USwitchConfig>;
   UTextarea?: Partial<typeof UTextareaConfig>;
   ULabel?: Partial<typeof ULabelConfig>;
+  UDataList?: Partial<typeof UDataListConfig>;
 }
 
 export interface Directives {
