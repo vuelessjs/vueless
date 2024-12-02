@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDot from "../../ui.other-dot/UDot.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -22,6 +27,9 @@ export default {
   component: UDot,
   argTypes: {
     ...getArgTypes(UDot.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UDot.__name),
   },
 } as Meta;
 

@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -22,6 +27,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UTab.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UTab.__name),
   },
 } as Meta;
 

@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
@@ -26,6 +31,9 @@ export default {
   argTypes: {
     ...getArgTypes(UCheckbox.__name),
     modelValue: { control: { type: "boolean" } },
+  },
+  parameters: {
+    ...getDocsDescription(UCheckbox.__name),
   },
 } as Meta;
 

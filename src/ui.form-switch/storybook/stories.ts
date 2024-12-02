@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -23,6 +28,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(USwitch.__name),
+  },
+  parameters: {
+    ...getDocsDescription(USwitch.__name),
   },
 } as Meta;
 

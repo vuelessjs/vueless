@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -20,6 +25,9 @@ export default {
   component: UText,
   argTypes: {
     ...getArgTypes(UText.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UText.__name),
   },
   args: {},
 } as Meta;

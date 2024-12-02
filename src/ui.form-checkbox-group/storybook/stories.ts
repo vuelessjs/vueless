@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
@@ -34,6 +39,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxGroup.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UCheckboxGroup.__name),
   },
 } as Meta;
 

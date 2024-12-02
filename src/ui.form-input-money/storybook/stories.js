@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputMoney from "../../ui.form-input-money/UInputMoney.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -18,6 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInputMoney.__name),
     modelValue: { control: { type: "number" } },
+  },
+  parameters: {
+    ...getDocsDescription(UInputMoney.__name),
   },
 };
 

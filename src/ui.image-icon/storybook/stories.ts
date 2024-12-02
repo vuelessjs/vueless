@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -23,6 +28,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UIcon.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UIcon.__name),
   },
 } as Meta;
 

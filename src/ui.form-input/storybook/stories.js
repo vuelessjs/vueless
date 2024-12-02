@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -18,6 +23,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInput.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UInput.__name),
   },
 };
 

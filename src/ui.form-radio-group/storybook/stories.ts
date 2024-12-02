@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
@@ -33,6 +38,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(URadioGroup.__name),
+  },
+  parameters: {
+    ...getDocsDescription(URadioGroup.__name),
   },
 } as Meta;
 

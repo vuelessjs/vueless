@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -42,6 +47,9 @@ export default {
       story: {
         height: "620px",
       },
+    },
+    parameters: {
+      ...getDocsDescription(UDatePickerRangeName),
     },
   },
 } as Meta;

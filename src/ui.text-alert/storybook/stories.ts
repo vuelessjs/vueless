@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -27,6 +32,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UAlert.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UAlert.__name),
   },
 } as Meta;
 

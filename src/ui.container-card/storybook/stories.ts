@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCard from "../../ui.container-card/UCard.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -25,6 +30,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCard.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UCard.__name),
   },
 } as Meta;
 

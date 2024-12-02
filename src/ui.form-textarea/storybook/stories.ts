@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -25,6 +30,9 @@ export default {
   argTypes: {
     ...getArgTypes(UTextarea.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UTextarea.__name),
   },
 } as Meta;
 

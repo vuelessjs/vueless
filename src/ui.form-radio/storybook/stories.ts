@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URadio from "../../ui.form-radio/URadio.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
@@ -26,6 +31,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(URadio.__name),
+  },
+  parameters: {
+    ...getDocsDescription(URadio.__name),
   },
 } as Meta;
 

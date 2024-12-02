@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDataList from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -39,6 +44,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UDataList.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UDataList.__name),
   },
 };
 

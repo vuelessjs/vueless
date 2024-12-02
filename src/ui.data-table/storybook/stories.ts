@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 import { getRandomId } from "../../utils/helper.ts";
 
 import UTable from "../UTable.vue";
@@ -54,6 +59,9 @@ export default {
     ],
     row: getRow,
     numberOfRows: 5,
+  },
+  parameters: {
+    ...getDocsDescription(UTable.__name),
   },
 } as Meta;
 

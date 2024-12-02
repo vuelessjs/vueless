@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import { notify } from "../utilNotify.js";
 
@@ -29,6 +34,7 @@ export default {
         height: "280px",
       },
     },
+    ...getDocsDescription(UNotify.__name),
   },
 } as Meta;
 

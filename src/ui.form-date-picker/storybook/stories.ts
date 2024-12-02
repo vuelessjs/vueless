@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -38,6 +43,7 @@ export default {
         height: "480px",
       },
     },
+    ...getDocsDescription(UDatePickerName),
   },
 } as Meta;
 

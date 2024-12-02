@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
@@ -29,6 +34,7 @@ export default {
         height: "380px",
       },
     },
+    ...getDocsDescription(UCalendarName),
   },
 } as Meta;
 

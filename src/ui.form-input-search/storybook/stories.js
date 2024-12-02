@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -14,6 +19,9 @@ export default {
   component: UInputSearch,
   argTypes: {
     ...getArgTypes(UInputSearch.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UInputSearch.__name),
   },
 };
 

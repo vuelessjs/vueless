@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/storybook.ts";
+import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -26,6 +26,9 @@ export default {
   component: ULoaderProgress,
   argTypes: {
     ...getArgTypes(ULoaderProgress.__name),
+  },
+  parameters: {
+    ...getDocsDescription(ULoaderProgress.__name),
   },
 } as Meta;
 

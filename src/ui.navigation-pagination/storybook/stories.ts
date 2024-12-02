@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
 
@@ -22,6 +27,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UPagination.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UPagination.__name),
   },
 } as Meta;
 

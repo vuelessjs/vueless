@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputRating from "../../ui.form-input-rating/UInputRating.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -16,6 +21,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UInputRating.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UInputRating.__name),
   },
 };
 

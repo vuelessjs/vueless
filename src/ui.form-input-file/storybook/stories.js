@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -15,6 +20,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UInputFile.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UInputFile.__name),
   },
 };
 

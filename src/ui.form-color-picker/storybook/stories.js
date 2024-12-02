@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -16,6 +21,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UColorPicker.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UColorPicker.__name),
   },
 };
 

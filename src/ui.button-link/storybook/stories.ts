@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -25,6 +30,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
+  },
+  parameters: {
+    ...getDocsDescription(ULink.__name),
   },
 } as Meta;
 

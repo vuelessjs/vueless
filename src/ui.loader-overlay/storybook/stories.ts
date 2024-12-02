@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -29,6 +34,7 @@ export default {
         height: "420px",
       },
     },
+    ...getDocsDescription(ULoaderOverlay.__name),
   },
 } as Meta;
 

@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/storybook.ts";
+import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
 
 import UGroups from "../../ui.container-groups/UGroups.vue";
 import UGroup from "../../ui.container-group/UGroup.vue";
@@ -29,6 +29,7 @@ export default {
         iframeHeight: 360,
       },
     },
+    ...getDocsDescription(UGroups.__name),
   },
 } as Meta;
 

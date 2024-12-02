@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UFiles from "../../ui.text-files/UFiles.vue";
 
@@ -25,6 +30,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UFiles.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UFiles.__name),
   },
 } as Meta;
 

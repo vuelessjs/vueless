@@ -1,5 +1,10 @@
 import { ref } from "vue";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -32,6 +37,9 @@ export default {
   argTypes: {
     ...getArgTypes(UToggle.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UToggle.__name),
   },
 } as Meta;
 

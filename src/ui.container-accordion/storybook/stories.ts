@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -41,6 +46,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UAccordion.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UAccordion.__name),
   },
 } as Meta;
 

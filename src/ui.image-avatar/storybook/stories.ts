@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -22,6 +27,9 @@ export default {
   component: UAvatar,
   argTypes: {
     ...getArgTypes(UAvatar.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UAvatar.__name),
   },
 } as Meta;
 

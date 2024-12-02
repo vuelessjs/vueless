@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -28,6 +33,7 @@ export default {
         iframeHeight: 360,
       },
     },
+    ...getDocsDescription(UCol.__name),
   },
 } as Meta;
 

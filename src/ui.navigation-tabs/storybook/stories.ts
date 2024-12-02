@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 
@@ -27,6 +32,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UTabs.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UTabs.__name),
   },
 } as Meta;
 

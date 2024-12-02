@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -35,6 +40,7 @@ export default {
         height: "360px",
       },
     },
+    ...getDocsDescription(UModalConfirm.__name),
   },
 } as Meta;
 

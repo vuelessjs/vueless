@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -36,6 +41,7 @@ export default {
         height: "200px",
       },
     },
+    ...getDocsDescription(UDropdownButton.__name),
   },
 } as Meta;
 
