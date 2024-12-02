@@ -52,7 +52,7 @@ const titleSize = computed(() => {
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div v-bind="headerAttrs">
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">

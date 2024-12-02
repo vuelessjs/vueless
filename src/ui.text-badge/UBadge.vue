@@ -90,8 +90,8 @@ defineExpose({
 <template>
   <div
     ref="wrapper"
-    :data-test="dataTest"
     v-bind="badgeAttrs"
+    :data-test="dataTest"
     :tabindex="tabindex"
     @blur="onBlur"
     @focus="onFocus"

@@ -148,8 +148,8 @@ function onClickOption(option: Option) {
       :size="size"
       :options="options"
       :label-key="labelKey"
-      :data-test="`${dataTest}-list`"
       v-bind="dropdownListAttrs"
+      :data-test="`${dataTest}-list`"
       @click="onClickList"
       @click-option="onClickOption"
     />

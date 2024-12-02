@@ -43,7 +43,7 @@ const {
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div v-if="isShownHeader" v-bind="headerAttrs">
       <div v-bind="headerLeftAttrs">
         <!-- @slot Use it to add something before left side of the header. -->
