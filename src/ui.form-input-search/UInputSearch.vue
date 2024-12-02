@@ -77,7 +77,6 @@ const buttonSize = computed(() => {
   return sizes[props.size] as ButtonSize;
 });
 
-// TODO: Discuss "createDebounce" function modifying, as it doesn't accept parameters now
 watchEffect(() => {
   updateValueWithDebounce = createDebounce((value) => {
     emit("update:modelValue", value);

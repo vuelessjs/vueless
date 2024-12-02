@@ -1,6 +1,6 @@
 import { onMounted, nextTick, ref, onBeforeUnmount, toValue, watch } from "vue";
 
-import FormatService from "./utilFormat.ts";
+import { getRawValue, getFormattedValue } from "./utilFormat.ts";
 
 import type { FormatOptions } from "./types.ts";
 
@@ -22,29 +22,28 @@ export default function useFormatCurrency(elementId: string, options: () => Form
     inputElement = document.getElementById(elementId) as HTMLInputElement;
 
     if (inputElement) {
-      inputElement.addEventListener("input", onInput as EventListener);
+      inputElement.addEventListener("input", onInput);
       onInput({ target: inputElement } as unknown as InputEvent);
     }
   });
 
   onBeforeUnmount(() => {
     if (inputElement) {
-      inputElement.removeEventListener("input", onInput as EventListener);
+      inputElement.removeEventListener("input", onInput);
     }
   });
 
   // Use to set input value manually
   function setValue(value: string | number) {
-    const localFormattedValue = FormatService.getFormattedValue(value, toValue(options));
+    const localFormattedValue = getFormattedValue(value, toValue(options));
 
     formattedValue.value = localFormattedValue;
-    rawValue.value = FormatService.getRawValue(localFormattedValue, toValue(options));
+    rawValue.value = getRawValue(localFormattedValue, toValue(options));
 
     prevValue = formattedValue.value;
   }
 
-  // TODO: Discuss whether InputEvent is needed here, as it leads to problem with EventListener type
-  async function onInput(event) {
+  async function onInput(event: Event) {
     if (!event.target) return;
 
     await nextTick(async () => {
@@ -54,9 +53,9 @@ export default function useFormatCurrency(elementId: string, options: () => Form
       let cursorEnd = inputElement.selectionEnd;
 
       const hasValueInputValue = cursorEnd === 1 && cursorStart === 1;
-      const value = event.target ? event.target.value : "";
+      const value = (event.target as HTMLInputElement).value || "";
 
-      const localFormattedValue = FormatService.getFormattedValue(value, toValue(options));
+      const localFormattedValue = getFormattedValue(value, toValue(options));
 
       const currentValueOffsetLength = localFormattedValue
         .split("")
@@ -70,7 +69,7 @@ export default function useFormatCurrency(elementId: string, options: () => Form
       const offset = currentValueOffsetLength - prevValueOffsetLength;
 
       formattedValue.value = localFormattedValue || toValue(options).prefix;
-      rawValue.value = FormatService.getRawValue(localFormattedValue, toValue(options));
+      rawValue.value = getRawValue(localFormattedValue, toValue(options));
 
       await nextTick(() => {
         if (localFormattedValue.length === cursorEnd) return;
