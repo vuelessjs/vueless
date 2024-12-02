@@ -64,11 +64,11 @@ function onRemoveFile(fileId: string | number) {
       <slot>
         <UFile
           v-for="(file, index) in formattedFileList"
-          :id="file?.id"
-          :key="file?.id"
-          :label="file?.label"
-          :url="file?.url"
-          :image-url="file?.imageUrl"
+          :id="file.id"
+          :key="file.id"
+          :label="file.label"
+          :url="file.url"
+          :image-url="file.imageUrl"
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"

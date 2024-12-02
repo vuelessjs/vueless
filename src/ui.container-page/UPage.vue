@@ -75,10 +75,8 @@ onMounted(() => {
       ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
       : "";
 
-  const body = document.querySelector("body");
-
-  if (body) {
-    body.classList.add(...classes);
+  if (document.body) {
+    document.body.classList.add(...classes);
   }
 });
 </script>
