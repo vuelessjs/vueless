@@ -215,15 +215,11 @@ function getExtendsKeys(values: string = ""): string[] {
 }
 
 /**
- * Check is config key contains component name and if contains return it.
+ * Check is config key contains component name and returns it.
  */
 function getNestedComponent(value: string | NestedComponent | CVA) {
   const classes = getBaseClasses(value);
-  const component = (value as NestedComponent)?.component as ComponentNames;
-
-  const match =
-    classes.match(NESTED_COMPONENT_PATTERN_REG_EXP) ||
-    component?.match(NESTED_COMPONENT_PATTERN_REG_EXP);
+  const match = classes.match(NESTED_COMPONENT_PATTERN_REG_EXP);
 
   return match ? match[1] : "";
 }
