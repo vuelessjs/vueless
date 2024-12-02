@@ -15,7 +15,7 @@ import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UDataListProps, IconSize, DragMoveEvent, ListItem, ElementObject } from "./types.ts";
+import type { UDataListProps, IconSize, DragMoveEvent, DataListItem } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -60,8 +60,8 @@ defineSlots<{
     emptyTitle: string;
     emptyDescription: string;
   };
-  label: { item: ListItem; active: boolean };
-  actions: { item: ListItem };
+  label: { item: DataListItem; active: boolean };
+  actions: { item: DataListItem };
 }>();
 
 const {
@@ -94,7 +94,7 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-function isActive(element: ElementObject) {
+function isActive(element: DataListItem) {
   return element.isActive === undefined || element.isActive;
 }
 
@@ -121,14 +121,14 @@ function onClickDelete(value: number, label: string) {
   emit("clickDelete", value, label);
 }
 
-function prepareSortData(list: ListItem[] = [], parentId?: number) {
-  const sortData: ListItem[] = [];
+function prepareSortData(list: DataListItem[] = [], parentId?: number) {
+  const sortData: DataListItem[] = [];
 
-  list.forEach((item: ListItem) => {
+  list.forEach((item: DataListItem) => {
     const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      const childrenItem = prepareSortData(item.children, item[props.valueKey] as number);
+      const childrenItem = prepareSortData(item.children, item[props.valueKey]);
 
       childrenItem.forEach((item) => sortData.push(item));
     }

@@ -11,26 +11,21 @@ export interface DragMoveEvent extends DragEvent {
   relatedContext: typeof DraggableContext | null;
 }
 
-export interface ListItem {
-  children?: ListItem[];
-  [key: string]: unknown;
-}
-
-export interface ElementObject {
-  isActive: boolean;
-  isHiddenActions: boolean;
-  isHiddenCustomActions: boolean;
-  isHiddenDelete: boolean;
-  isHiddenEdit: boolean;
-  isDisabledNesting: boolean;
-  children: ListItem[];
+export interface DataListItem {
+  isActive?: boolean;
+  isHiddenActions?: boolean;
+  isHiddenCustomActions?: boolean;
+  isHiddenDelete?: boolean;
+  isHiddenEdit?: boolean;
+  isDisabledNesting?: boolean;
+  children?: DataListItem[];
 }
 
 export interface UDataListProps {
   /**
    * Data item options.
    */
-  list?: ListItem[];
+  list?: DataListItem[];
 
   /**
    * Group name.
