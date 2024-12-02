@@ -14,7 +14,8 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UDataListProps, IconSize, DragMoveEvent, ListItem } from "./types.ts";
+import type { UnknownObject } from "../types.ts";
+import type { UDataListProps, IconSize, DragMoveEvent, ListItem, ElementObject } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -52,9 +53,9 @@ const emit = defineEmits([
 ]);
 
 defineSlots<{
-  edit: { element: object };
-  delete: { element: object };
-  drag: { element: object };
+  edit: { element: UnknownObject };
+  delete: { element: UnknownObject };
+  drag: { element: UnknownObject };
   empty: {
     emptyTitle: string;
     emptyDescription: string;
@@ -93,7 +94,7 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-function isActive(element: { isActive: boolean }) {
+function isActive(element: ElementObject) {
   return element.isActive === undefined || element.isActive;
 }
 
@@ -107,7 +108,7 @@ function onDragMove(event: DragMoveEvent): boolean | void {
 }
 
 function onDragEnd() {
-  const sortData = prepareSortData(props.list || []);
+  const sortData = prepareSortData(props.list);
 
   emit("dragSort", sortData);
 }
@@ -120,18 +121,16 @@ function onClickDelete(value: number, label: string) {
   emit("clickDelete", value, label);
 }
 
-function prepareSortData(list: Array<ListItem>, parentId?: number) {
-  const sortData: Array<ListItem> = [];
+function prepareSortData(list: ListItem[] = [], parentId?: number) {
+  const sortData: ListItem[] = [];
 
   list.forEach((item: ListItem) => {
     const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      const childrenItem = prepareSortData(item.children || [], item[props.valueKey] as number);
+      const childrenItem = prepareSortData(item.children, item[props.valueKey] as number);
 
-      childrenItem.forEach((item) => {
-        sortData.push(item);
-      });
+      childrenItem.forEach((item) => sortData.push(item));
     }
 
     const parentItem = { ...item, parentId: 0 || parentId };

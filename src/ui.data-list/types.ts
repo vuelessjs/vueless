@@ -12,15 +12,25 @@ export interface DragMoveEvent extends DragEvent {
 }
 
 export interface ListItem {
-  children?: Array<ListItem>;
+  children?: ListItem[];
   [key: string]: unknown;
+}
+
+export interface ElementObject {
+  isActive: boolean;
+  isHiddenActions: boolean;
+  isHiddenCustomActions: boolean;
+  isHiddenDelete: boolean;
+  isHiddenEdit: boolean;
+  isDisabledNesting: boolean;
+  children: ListItem[];
 }
 
 export interface UDataListProps {
   /**
    * Data item options.
    */
-  list?: Array<ListItem>;
+  list?: ListItem[];
 
   /**
    * Group name.
