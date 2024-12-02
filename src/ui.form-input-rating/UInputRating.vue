@@ -35,15 +35,8 @@ const emit = defineEmits([
 
 const hovered = ref<number | null>(null);
 
-const {
-  config,
-  inputLabelAttrs,
-  containerAttrs,
-  counterAttrs,
-  totalAttrs,
-  starsAttrs,
-  starAttrs,
-} = useAttrs(props);
+const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {

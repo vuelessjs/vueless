@@ -6,13 +6,10 @@ import type { UseAttrs } from "../types.ts";
 import type { UInputSearchProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UInputSearchProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
-
-  const keysAttrs = getKeysAttrs();
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
   return {
     config,
-    ...keysAttrs,
-    hasSlotContent,
+    ...getKeysAttrs(),
   };
 }
