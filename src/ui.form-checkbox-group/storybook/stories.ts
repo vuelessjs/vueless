@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
@@ -16,9 +21,6 @@ interface UCheckboxGroupArgs extends UCheckboxGroupProps {
   value?: boolean | string | number | UnknownArray | UnknownObject;
 }
 
-/**
- * The `UCheckboxGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-group)
- */
 export default {
   id: "3110",
   title: "Form Inputs & Controls / Checkbox Group",
@@ -34,6 +36,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxGroup.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UCheckboxGroup.__name),
   },
 } as Meta;
 

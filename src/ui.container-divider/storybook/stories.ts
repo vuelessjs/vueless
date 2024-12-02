@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
@@ -11,15 +16,15 @@ interface UDividerArgs extends UDividerProps {
   enum: "variant" | "size" | "padding";
 }
 
-/**
- * The `UDivider` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-divider)
- */
 export default {
   id: "5010",
   title: "Containers / Divider",
   component: UDivider,
   argTypes: {
     ...getArgTypes(UDivider.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UDivider.__name),
   },
 } as Meta;
 

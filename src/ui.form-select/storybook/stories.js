@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import USelect from "../../ui.form-select/USelect.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -6,9 +11,6 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 
-/**
- * The `USelect` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-select)
- */
 export default {
   id: "3080",
   title: "Form Inputs & Controls / Select",
@@ -33,6 +35,7 @@ export default {
         height: "280px",
       },
     },
+    ...getDocsDescription(USelect.__name),
   },
 };
 

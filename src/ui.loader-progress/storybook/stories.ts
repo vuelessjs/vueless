@@ -1,4 +1,4 @@
-import { getArgTypes, getSlotNames } from "../../utils/storybook.ts";
+import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -17,15 +17,15 @@ interface ULoaderProgressArgs extends ULoaderProgressProps {
   enum: "color";
 }
 
-/**
- * The `ULoaderProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-progress)
- */
 export default {
   id: "9020",
   title: "Loaders and Skeletons / Loader Progress",
   component: ULoaderProgress,
   argTypes: {
     ...getArgTypes(ULoaderProgress.__name),
+  },
+  parameters: {
+    ...getDocsDescription(ULoaderProgress.__name),
   },
 } as Meta;
 

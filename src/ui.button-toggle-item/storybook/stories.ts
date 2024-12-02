@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -10,9 +15,6 @@ interface UToggleItemArgs extends UToggleItemProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UToggleItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle-item)
- */
 export default {
   title: "Buttons & Links / Toggle Item",
   component: UToggleItem,
@@ -24,6 +26,9 @@ export default {
   argTypes: {
     ...getArgTypes(UToggleItem.__name),
     value: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UToggleItem.__name),
   },
 } as Meta;
 

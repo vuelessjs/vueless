@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 import { getRandomId } from "../../utils/helper.ts";
 
 import UTable from "../UTable.vue";
@@ -27,9 +32,6 @@ const SHORT_STORY_PARAMETERS = {
   },
 };
 
-/**
- * The `UTable` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-table)
- */
 export default {
   id: "7010",
   title: "Data / Table",
@@ -54,6 +56,9 @@ export default {
     ],
     row: getRow,
     numberOfRows: 5,
+  },
+  parameters: {
+    ...getDocsDescription(UTable.__name),
   },
 } as Meta;
 

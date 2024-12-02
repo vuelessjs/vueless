@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UGroup from "../../ui.container-group/UGroup.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -12,9 +17,6 @@ interface UGroupArgs extends UGroupProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-group)
- */
 export default {
   id: "5030",
   title: "Containers / Group",
@@ -31,6 +33,7 @@ export default {
         iframeHeight: 360,
       },
     },
+    ...getDocsDescription(UGroup.__name),
   },
 } as Meta;
 

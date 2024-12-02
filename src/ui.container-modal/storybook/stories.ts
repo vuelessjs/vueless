@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -16,9 +21,6 @@ interface UModalArgs extends UModalProps {
   enum: "size";
 }
 
-/**
- * The `UModal` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-modal)
- */
 export default {
   id: "5070",
   title: "Containers / Modal",
@@ -36,6 +38,7 @@ export default {
         height: "500px",
       },
     },
+    ...getDocsDescription(UModal.__name),
   },
 } as Meta;
 

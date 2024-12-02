@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCard from "../../ui.container-card/UCard.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -13,9 +18,6 @@ interface UCardArgs extends UCardProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UCard` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-card)
- */
 export default {
   id: "5060",
   title: "Containers / Card",
@@ -25,6 +27,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCard.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UCard.__name),
   },
 } as Meta;
 
