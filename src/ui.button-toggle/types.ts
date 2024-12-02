@@ -2,6 +2,8 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type LabelSize = "sm" | "md" | "lg";
+
 export interface UToggleOption {
   value: string | number;
   label: string;

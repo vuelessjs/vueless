@@ -24,7 +24,7 @@ const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div v-bind="dividerAttrs" />
     <span v-if="label" v-bind="labelAttrs" v-text="label" />
   </div>

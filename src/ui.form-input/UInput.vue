@@ -48,8 +48,8 @@
         :disabled="disabled"
         :maxlength="maxLength"
         :inputmode="inputmode"
-        :data-test="dataTest"
         v-bind="inputAttrs"
+        :data-test="dataTest"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -69,8 +69,8 @@
           color="gray"
           interactive
           internal
-          :data-test="`${dataTest}-password-icon`"
           v-bind="passwordIconAttrs"
+          :data-test="`${dataTest}-password-icon`"
           @click="onClickShowPassword"
         />
       </label>
