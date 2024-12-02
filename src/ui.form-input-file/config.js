@@ -52,7 +52,7 @@ export default /*tw*/ {
   fileList: "{UFiles} w-full",
   buttons: "flex gap-3 items-center",
   chooseFileButton: {
-    component: "{UButton}",
+    base: "{UButton}",
     variants: {
       disabled: {
         true: "opacity-75",

@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: "relative",
   datepickerInput: "{UInput}",
   datepickerInputActive: {
-    component: "{UInput}",
+    base: "{UInput}",
     wrapper: {
       base: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
       variants: {
@@ -23,10 +23,7 @@ export default /*tw*/ {
       },
     },
   },
-  button: {
-    component: "{UButton}",
-    base: "shrink-0 grow rounded-none",
-  },
+  button: "{UButton} shrink-0 grow rounded-none",
   shiftRangeButton: `
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none
@@ -87,9 +84,9 @@ export default /*tw*/ {
   customRangeDescription: "",
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
   rangeInputFirst: {
-    component: "{UInput}",
+    base: "{UInput}",
     inputLabel: {
-      component: "{ULabel}",
+      base: "{ULabel}",
       wrapper: "w-full hover:z-10 focus:z-10 !rounded-none",
       description: "hidden",
     },
@@ -100,9 +97,9 @@ export default /*tw*/ {
     `,
   },
   rangeInputLast: {
-    component: "{UInput}",
+    base: "{UInput}",
     inputLabel: {
-      component: "{ULabel}",
+      base: "{ULabel}",
       wrapper: "w-full hover:z-10 focus:z-10",
       description: "hidden",
     },
@@ -114,7 +111,7 @@ export default /*tw*/ {
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   calendar: {
-    component: "{UCalendar}",
+    base: "{UCalendar}",
     wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",
     navigation: "pb-0 mb-0 border-none",
     day: "w-full",

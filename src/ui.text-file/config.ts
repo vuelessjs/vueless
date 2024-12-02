@@ -1,7 +1,6 @@
 export default /*tw*/ {
   file: {
-    component: "{ULink}",
-    base: "flex items-center",
+    base: "{ULink} flex items-center",
     variants: {
       size: {
         sm: "gap-0.5",

@@ -45,7 +45,6 @@ export function createMergeConfigs(cx) {
       defaults,
       strategy,
       safelist,
-      component,
       safelistColors,
       defaultVariants,
       compoundVariants,
@@ -57,15 +56,6 @@ export function createMergeConfigs(cx) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
-          }
-        } else if (key === component) {
-          config[key] = propsConfig[key] || defaultConfig[key];
-
-          if (globalConfig[key]) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Passing '${key}' key in 'config' prop or by global config is not allowed.`,
-            );
           }
         } else if (key === strategy) {
           config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];

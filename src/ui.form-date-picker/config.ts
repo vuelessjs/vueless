@@ -1,13 +1,16 @@
 export default /*tw*/ {
   wrapper: "relative",
-  datepickerInput: "{UInput}",
+  datepickerInput: {
+    base: "{UInput}",
+    wrapper: "p-10 m-10",
+  },
   datepickerInputActive: {
-    component: "{UInput}",
+    extends: "{>datepickerInput}",
+    base: "{UInput}",
     wrapper: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
   },
   calendar: {
-    component: "{UCalendar}",
-    base: "absolute mb-3 z-40",
+    base: "{UCalendar} absolute mb-3 z-40",
     variants: {
       openDirectionX: {
         left: "left-0 right-auto",
