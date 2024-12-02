@@ -63,7 +63,7 @@ function onClickItem() {
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs" @click="onClickItem">
+  <div v-bind="wrapperAttrs" :data-test="dataTest" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}

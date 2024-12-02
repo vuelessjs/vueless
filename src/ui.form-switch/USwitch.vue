@@ -98,8 +98,8 @@ function onKeydownSpace() {
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    :data-test="dataTest"
     v-bind="switchLabelAttrs"
+    :data-test="dataTest"
     @click="onClickToggle"
   >
     <label :for="elementId" v-bind="wrapperAttrs">
