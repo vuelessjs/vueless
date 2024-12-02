@@ -24,7 +24,7 @@ export function createMergeConfigs(cx) {
     const isPropsConfig = Object.keys(propsConfig).length;
 
     // Add unique keys from defaultConfig to composedConfig
-    const composedConfig = cloneDeep(defaultConfig);
+    const composedConfig = cloneDeep(stringToObject(defaultConfig, { addBase: true }));
 
     // Add unique keys from globalConfig to composedConfig
     for (const key in globalConfig) {
