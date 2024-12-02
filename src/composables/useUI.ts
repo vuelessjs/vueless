@@ -124,13 +124,23 @@ export default function useUI<T>(
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
 
       const baseClasses = getBaseClasses(config.value[key]);
-      const extendsMatches = baseClasses.match(EXTENDS_PATTERN_REG_EXP);
+      const extendsInBase = getExtendsKeys(baseClasses);
+      const extendsInKey = getExtendsKeys(config.value[key]?.extends);
 
-      if (extendsMatches) {
-        // retrieves extends keys from patterns:
-        // Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
-        const extendsKeys = extendsMatches.map((pattern) => pattern.slice(2, -1));
-        const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
+      if (extendsInKey.length) {
+        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
+
+        keysAttrs[`${key}Attrs`] = computed(() => ({
+          ...keyAttrs.value,
+          config: getMergedConfig({
+            defaultConfig: config.value[extendsInKey[0]],
+            globalConfig: keyAttrs.value.config as Component,
+          }),
+        }));
+      }
+
+      if (extendsInBase.length) {
+        const classes = getExtendingKeysClasses(extendsInBase, mutatedProps);
         const extendsClasses = Object.values(classes).map((item) => toValue(item));
 
         const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
@@ -201,6 +211,16 @@ export default function useUI<T>(
  */
 function getBaseClasses(value: string | CVA | NestedComponent) {
   return typeof value === "object" ? (value.base as string) || "" : value || "";
+}
+
+/**
+ * Retrieves extends keys from patterns:
+ * Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
+ */
+function getExtendsKeys(values: string = ""): string[] {
+  const matches = values.match(EXTENDS_PATTERN_REG_EXP);
+
+  return matches ? matches?.map((pattern) => pattern.slice(2, -1)) : [];
 }
 
 /**

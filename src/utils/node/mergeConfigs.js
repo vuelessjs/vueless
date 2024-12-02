@@ -221,7 +221,7 @@ export function createGetMergedConfig(cx) {
     const strategy =
       !globalConfig && !propsConfig
         ? STRATEGY_TYPE.merge
-        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
+        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy || STRATEGY_TYPE.merge;
 
     if (strategy === STRATEGY_TYPE.merge) {
       mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
