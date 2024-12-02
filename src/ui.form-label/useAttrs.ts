@@ -7,17 +7,14 @@ import type { UseAttrs } from "../types.ts";
 import type { ULabelProps, Config } from "./types.ts";
 
 export default function useAttrs(props: ULabelProps): UseAttrs<Config> {
-  const { config, getKeysAttrs, hasSlotContent } = useUI<Config>(defaultConfig, () => props.config);
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
   const mutatedProps = computed(() => ({
     error: Boolean(props.error),
   }));
 
-  const keysAttrs = getKeysAttrs(mutatedProps);
-
   return {
     config,
-    ...keysAttrs,
-    hasSlotContent,
+    ...getKeysAttrs(mutatedProps),
   };
 }
