@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -11,9 +16,6 @@ interface UColArgs extends UColProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UCol` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-col)
- */
 export default {
   id: "5015",
   title: "Containers / Col",
@@ -28,6 +30,7 @@ export default {
         iframeHeight: 360,
       },
     },
+    ...getDocsDescription(UCol.__name),
   },
 } as Meta;
 

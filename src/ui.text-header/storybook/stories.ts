@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -11,9 +16,6 @@ interface UHeaderArgs extends UHeaderProps {
   enum: "size" | "color";
 }
 
-/**
- * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
- */
 export default {
   id: "4010",
   title: "Text & Content / Header",
@@ -23,6 +25,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UHeader.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UHeader.__name),
   },
 } as Meta;
 

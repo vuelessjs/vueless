@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UPage from "../../ui.container-page/UPage.vue";
 import UCard from "../../ui.container-card/UCard.vue";
@@ -16,9 +21,6 @@ interface UPageArgs extends UPageProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UPage` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-page)
- */
 export default {
   id: "5090",
   title: "Containers / Page",
@@ -29,6 +31,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UPage.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UPage.__name),
   },
 } as Meta;
 
@@ -82,7 +87,6 @@ BackLink.args = {
   backLabel: "back",
   backTo: {
     path: "/",
-    params: {},
   },
 };
 

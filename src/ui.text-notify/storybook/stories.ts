@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import { notify } from "../utilNotify.js";
 
@@ -13,9 +18,6 @@ interface UNotifyArgs extends UNotifyProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UNotify` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-notify)
- */
 export default {
   id: "4035",
   title: "Text & Content / Notify",
@@ -29,6 +31,7 @@ export default {
         height: "280px",
       },
     },
+    ...getDocsDescription(UNotify.__name),
   },
 } as Meta;
 

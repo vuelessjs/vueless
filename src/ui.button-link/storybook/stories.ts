@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -13,9 +18,6 @@ interface ULinkArgs extends ULinkProps {
   enum: "size" | "color";
 }
 
-/**
- * The `ULink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-link)
- */
 export default {
   id: "1060",
   title: "Buttons & Links / Link",
@@ -25,6 +27,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
+  },
+  parameters: {
+    ...getDocsDescription(ULink.__name),
   },
 } as Meta;
 

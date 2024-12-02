@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -18,9 +23,6 @@ interface EnumUDatePickerArgs extends UDatePickerProps<unknown> {
   enum: "size";
 }
 
-/**
- * The `UDatePicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker)
- */
 export default {
   id: "3170",
   title: "Form Inputs & Controls / Date Picker",
@@ -38,6 +40,7 @@ export default {
         height: "480px",
       },
     },
+    ...getDocsDescription(UDatePickerName),
   },
 } as Meta;
 

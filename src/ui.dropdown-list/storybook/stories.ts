@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -14,9 +19,6 @@ interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
   enum: keyof Pick<UDropdownListProps, "size">;
 }
 
-/**
- * The `UDropdownList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-list)
- */
 export default {
   id: "2050",
   title: "Dropdowns / Dropdown List",
@@ -37,6 +39,7 @@ export default {
         height: "180px",
       },
     },
+    ...getDocsDescription(UDropdownList.__name),
   },
 } as Meta;
 
