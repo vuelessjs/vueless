@@ -21,9 +21,6 @@ interface UPageArgs extends UPageProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UPage` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-page)
- */
 export default {
   id: "5090",
   title: "Containers / Page",

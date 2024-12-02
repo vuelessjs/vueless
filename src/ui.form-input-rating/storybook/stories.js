@@ -8,9 +8,6 @@ import {
 import UInputRating from "../../ui.form-input-rating/UInputRating.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-/**
- * The `UInputRating` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-rating)
- */
 export default {
   id: "3060",
   title: "Form Inputs & Controls / Input Rating",

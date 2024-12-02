@@ -21,9 +21,6 @@ interface UMoneyArgs extends UMoneyProps {
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
-/**
- * The `UMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-money)
- */
 export default {
   id: "4040",
   title: "Text & Content / Money",

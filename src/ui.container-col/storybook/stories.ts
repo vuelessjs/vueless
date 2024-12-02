@@ -16,9 +16,6 @@ interface UColArgs extends UColProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UCol` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-col)
- */
 export default {
   id: "5015",
   title: "Containers / Col",

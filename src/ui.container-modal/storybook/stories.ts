@@ -21,9 +21,6 @@ interface UModalArgs extends UModalProps {
   enum: "size";
 }
 
-/**
- * The `UModal` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-modal)
- */
 export default {
   id: "5070",
   title: "Containers / Modal",

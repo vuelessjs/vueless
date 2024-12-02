@@ -19,9 +19,6 @@ interface UToggleArgs extends UToggleProps {
   enum: "variant" | "size";
 }
 
-/**
- * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
- */
 export default {
   components: { UIcon, UToggleItem },
   title: "Buttons & Links / Toggle",

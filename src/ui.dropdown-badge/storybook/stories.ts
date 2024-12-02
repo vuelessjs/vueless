@@ -20,9 +20,6 @@ interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
   enum: keyof Pick<UDropdownBadgeProps, "color" | "size">;
 }
 
-/**
- * The `UDropdownBadge` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-badge)
- */
 export default {
   id: "2020",
   title: "Dropdowns / Dropdown Badge",

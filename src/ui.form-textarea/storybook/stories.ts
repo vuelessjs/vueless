@@ -17,9 +17,6 @@ interface UTextareaArgs extends UTextareaProps {
   enum: "size" | "labelAlign";
 }
 
-/**
- * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)
- */
 export default {
   id: "3070",
   title: "Form Inputs & Controls / Textarea",

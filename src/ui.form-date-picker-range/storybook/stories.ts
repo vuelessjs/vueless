@@ -26,9 +26,6 @@ interface EnumUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
   enum: "size" | "variant";
 }
 
-/**
- * The `UDatePickerRange` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-date-picker-range)
- */
 export default {
   id: "3180",
   title: "Form Inputs & Controls / Date Picker Range",

@@ -19,9 +19,6 @@ interface UAlertArgs extends UAlertProps {
   enum: "size" | "color" | "variant";
 }
 
-/**
- * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
- */
 export default {
   id: "4030",
   title: "Text & Content / Alert",

@@ -20,9 +20,6 @@ interface UProgressArgs extends UProgressProps {
   progress?: number;
 }
 
-/**
- * The `UProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-progress)
- */
 export default {
   id: "8040",
   title: "Navigation / Progress",

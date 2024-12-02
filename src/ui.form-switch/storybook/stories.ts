@@ -16,9 +16,7 @@ interface USwitchArgs extends USwitchProps {
   slotTemplate?: string;
   enum: "size" | "color";
 }
-/**
- * The `USwitch` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-switch)
- */
+
 export default {
   id: "3130",
   title: "Form Inputs & Controls / Switch",

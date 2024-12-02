@@ -17,9 +17,6 @@ interface ULoaderProgressArgs extends ULoaderProgressProps {
   enum: "color";
 }
 
-/**
- * The `ULoaderProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-progress)
- */
 export default {
   id: "9020",
   title: "Loaders and Skeletons / Loader Progress",

@@ -16,9 +16,6 @@ interface UTextArgs extends UTextProps {
   enum: "size";
 }
 
-/**
- * The `UText` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-block)
- */
 export default {
   id: "4020",
   title: "Text & Content / Text",

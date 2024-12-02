@@ -20,9 +20,6 @@ interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
   enum: keyof Pick<UDropdownLinkProps, "size" | "color">;
 }
 
-/**
- * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
- */
 export default {
   id: "2030",
   title: "Dropdowns / Dropdown Link",

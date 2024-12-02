@@ -10,9 +10,6 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-/**
- * The `UInputSearch` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-search)
- */
 export default {
   id: "3040",
   title: "Form Inputs & Controls / Input Search",

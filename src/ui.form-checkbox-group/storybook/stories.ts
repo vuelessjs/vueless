@@ -21,9 +21,6 @@ interface UCheckboxGroupArgs extends UCheckboxGroupProps {
   value?: boolean | string | number | UnknownArray | UnknownObject;
 }
 
-/**
- * The `UCheckboxGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-group)
- */
 export default {
   id: "3110",
   title: "Form Inputs & Controls / Checkbox Group",

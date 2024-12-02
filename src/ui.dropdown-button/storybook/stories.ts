@@ -21,9 +21,6 @@ interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
   enum: keyof Pick<UDropdownButtonProps, "size" | "variant">;
 }
 
-/**
- * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
- */
 export default {
   id: "2010",
   title: "Dropdowns / Dropdown Button",

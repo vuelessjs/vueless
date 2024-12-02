@@ -16,9 +16,6 @@ interface UHeaderArgs extends UHeaderProps {
   enum: "size" | "color";
 }
 
-/**
- * The `UHeader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-header)
- */
 export default {
   id: "4010",
   title: "Text & Content / Header",

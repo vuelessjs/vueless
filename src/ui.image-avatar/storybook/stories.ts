@@ -18,9 +18,6 @@ interface UAvatarArgs extends UAvatarProps {
   enum: "size" | "rounded" | "color";
 }
 
-/**
- * The `UAvatar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-avatar)
- */
 export default {
   id: "6030",
   title: "Images & Icons / Avatar",

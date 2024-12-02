@@ -18,9 +18,6 @@ interface UDotArgs extends UDotProps {
   enum: "size" | "color";
 }
 
-/**
- * The `UDot` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.other-dot)
- */
 export default {
   id: "100010",
   title: "Other / Dot",

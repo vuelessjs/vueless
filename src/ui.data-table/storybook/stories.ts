@@ -32,9 +32,6 @@ const SHORT_STORY_PARAMETERS = {
   },
 };
 
-/**
- * The `UTable` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-table)
- */
 export default {
   id: "7010",
   title: "Data / Table",

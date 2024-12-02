@@ -18,9 +18,6 @@ interface ULoaderArgs extends ULoaderProps {
   enum: "size" | "color";
 }
 
-/**
- * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
- */
 export default {
   id: "9010",
   title: "Loaders and Skeletons / Loader",

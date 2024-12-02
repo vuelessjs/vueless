@@ -19,9 +19,6 @@ interface UModalConfirmArgs extends UModalConfirmProps {
   enum: "size" | "confirmColor";
 }
 
-/**
- * The `UModalConfirm` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-modal-confirm)
- */
 export default {
   id: "5080",
   title: "Containers / Modal Confirm",

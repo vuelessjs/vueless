@@ -18,9 +18,6 @@ interface ULabelArgs extends ULabelProps {
   enum: "align" | "size";
 }
 
-/**
- * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)
- */
 export default {
   id: "3240",
   title: "Form Inputs & Controls / Label",

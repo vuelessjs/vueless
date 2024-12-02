@@ -14,9 +14,6 @@ interface UPaginationArgs extends UPaginationProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UPagination` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-pagination)
- */
 export default {
   id: "8050",
   title: "Navigation / Pagination",

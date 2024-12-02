@@ -18,9 +18,6 @@ interface URowArgs extends URowProps {
   enum: "gap" | "align";
 }
 
-/**
- * The `URow` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-row)
- */
 export default {
   id: "5020",
   title: "Containers / Row",

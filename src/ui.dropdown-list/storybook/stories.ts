@@ -19,9 +19,6 @@ interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
   enum: keyof Pick<UDropdownListProps, "size">;
 }
 
-/**
- * The `UDropdownList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-list)
- */
 export default {
   id: "2050",
   title: "Dropdowns / Dropdown List",

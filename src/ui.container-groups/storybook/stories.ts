@@ -12,9 +12,6 @@ interface UGroupsArgs extends UGroupsProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UGroups` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-groups)
- */
 export default {
   id: "5035",
   title: "Containers / Groups",

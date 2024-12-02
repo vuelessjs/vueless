@@ -18,9 +18,6 @@ interface UCardArgs extends UCardProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UCard` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-card)
- */
 export default {
   id: "5060",
   title: "Containers / Card",

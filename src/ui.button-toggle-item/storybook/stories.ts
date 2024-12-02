@@ -15,9 +15,6 @@ interface UToggleItemArgs extends UToggleItemProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UToggleItem` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle-item)
- */
 export default {
   title: "Buttons & Links / Toggle Item",
   component: UToggleItem,

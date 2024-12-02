@@ -18,9 +18,6 @@ interface UEmptyArgs extends UEmptyProps {
   enum: "size";
 }
 
-/**
- * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
- */
 export default {
   id: "4080",
   title: "Text & Content / Empty",

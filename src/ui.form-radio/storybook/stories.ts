@@ -16,9 +16,6 @@ interface URadioArgs extends URadioProps {
   enum: "variant" | "size";
 }
 
-/**
- * The `URadio` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio)
- */
 export default {
   id: "3140",
   title: "Form Inputs & Controls / Radio",

@@ -15,9 +15,6 @@ interface UTabsArgs extends UTabsProps {
   enum: "size";
 }
 
-/**
- * The `UTabs` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tabs)
- */
 export default {
   id: "8020",
   title: "Navigation / Tabs",

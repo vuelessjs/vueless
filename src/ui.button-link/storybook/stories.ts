@@ -18,9 +18,6 @@ interface ULinkArgs extends ULinkProps {
   enum: "size" | "color";
 }
 
-/**
- * The `ULink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-link)
- */
 export default {
   id: "1060",
   title: "Buttons & Links / Link",

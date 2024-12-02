@@ -8,9 +8,6 @@ import {
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UInputNumber` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-number)
- */
 export default {
   id: "3050",
   title: "Form Inputs & Controls / Input Number",

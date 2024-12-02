@@ -15,9 +15,6 @@ interface UTabArgs extends UTabProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UTab` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tab)
- */
 export default {
   id: "8010",
   title: "Navigation / Tab",

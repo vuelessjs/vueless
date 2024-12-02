@@ -8,9 +8,6 @@ import {
 import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UColorPicker` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-color-picker)
- */
 export default {
   id: "3210",
   title: "Form Inputs & Controls / Color Picker",

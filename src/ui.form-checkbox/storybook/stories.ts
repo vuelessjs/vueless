@@ -18,9 +18,6 @@ interface UCheckboxArgs extends UCheckboxProps {
   enum: "size";
 }
 
-/**
- * The `UCheckbox` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox)
- */
 export default {
   id: "3100",
   title: "Form Inputs & Controls / Checkbox",

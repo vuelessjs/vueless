@@ -16,9 +16,6 @@ interface UDividerArgs extends UDividerProps {
   enum: "variant" | "size" | "padding";
 }
 
-/**
- * The `UDivider` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-divider)
- */
 export default {
   id: "5010",
   title: "Containers / Divider",

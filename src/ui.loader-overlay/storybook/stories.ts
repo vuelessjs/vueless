@@ -18,9 +18,6 @@ interface ULoaderOverlayArgs extends ULoaderOverlayProps {
   slotTemplate?: string;
 }
 
-/**
- * The `ULoaderOverlay` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-overlay)
- */
 export default {
   id: "9030",
   title: "Loaders and Skeletons / Loader Overlay",

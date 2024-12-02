@@ -14,9 +14,6 @@ interface UFilesArgs extends UFilesProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UFiles` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-files)
- */
 export default {
   id: "4060",
   title: "Text & Content / Files",

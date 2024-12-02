@@ -16,9 +16,6 @@ interface UIconArgs extends UIconProps {
   enum: "color" | "size" | "variant";
 }
 
-/**
- * The `UIcon` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-icon)
- */
 export default {
   id: "6010",
   title: "Images & Icons / Icon",
