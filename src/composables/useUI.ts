@@ -124,23 +124,10 @@ export default function useUI<T>(
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
 
       const baseClasses = getBaseClasses(config.value[key]);
-      const extendsInBase = getExtendsKeys(baseClasses);
-      const extendsInKey = getExtendsKeys(config.value[key]?.extends);
+      const extendsKeys = getExtendsKeys(baseClasses);
 
-      if (extendsInKey.length) {
-        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
-
-        keysAttrs[`${key}Attrs`] = computed(() => ({
-          ...keyAttrs.value,
-          config: getMergedConfig({
-            defaultConfig: config.value[extendsInKey[0]],
-            globalConfig: keyAttrs.value.config as Component,
-          }),
-        }));
-      }
-
-      if (extendsInBase.length) {
-        const classes = getExtendingKeysClasses(extendsInBase, mutatedProps);
+      if (extendsKeys.length) {
+        const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
         const extendsClasses = Object.values(classes).map((item) => toValue(item));
 
         const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
@@ -151,6 +138,10 @@ export default function useUI<T>(
             ...extendsClasses,
             keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
           ]),
+          config: getMergedConfig({
+            defaultConfig: config.value[extendsKeys[0]],
+            globalConfig: keyAttrs.value.config as Component,
+          }),
         }));
       }
     }
