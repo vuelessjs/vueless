@@ -1,7 +1,7 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  leftSlot: "flex items-center justify-end whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-r-none",
-  rightSlot: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-l-none",
+  leftSlot: "flex items-center justify-center whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-r-none",
+  rightSlot: "flex items-center justify-center whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-l-none",
   textareaWrapper: {
     base: `
       px-3 py-2 bg-white transition w-full

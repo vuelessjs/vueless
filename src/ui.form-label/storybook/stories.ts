@@ -5,6 +5,14 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { ULabelProps } from "../types.ts";
+
+interface ULabelArgs extends ULabelProps {
+  slotTemplate?: string;
+  enum: "align" | "size";
+}
+
 /**
  * The `ULabel` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-label)
  */
@@ -19,11 +27,11 @@ export default {
   argTypes: {
     ...getArgTypes(ULabel.__name),
   },
-};
+} as Meta;
 
 const defaultTemplate = "This is plain text";
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
   components: { ULabel, UText, UIcon },
   setup() {
     const slots = getSlotNames(ULabel.__name);
@@ -38,19 +46,26 @@ const DefaultTemplate = (args) => ({
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }) => ({
   components: { ULabel, UCol, UText },
   setup() {
-    function getText(value, name) {
+    function getText(value: string, name: string) {
       return name === "size" ? `This is ${value} size.` : `This is ${value} label placement.`;
     }
 
-    const { name, options } = argTypes[args.enum];
-    const prefixedOptions = options.map((option) => getText(option, name));
+    let prefixedOptions;
+
+    const enumArgType = argTypes?.[args.enum];
+
+    if (enumArgType && "name" in enumArgType && "options" in enumArgType) {
+      const { name, options } = enumArgType;
+
+      prefixedOptions = options?.map((option: string) => getText(option, name));
+    }
 
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
       prefixedOptions,
     };
   },
