@@ -13,8 +13,10 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./types.ts";
 
-const NESTED_ROW_SHIFT_REM = 1.5;
-const LAST_NESTED_ROW_SHIFT_REM = 2;
+const { hasSlotContent } = useUI(defaultConfig);
+
+const NESTED_ROW_SHIFT_REM = 1;
+const LAST_NESTED_ROW_SHIFT_REM = 1.1;
 
 const props = defineProps<UTableRowProps>();
 
@@ -42,8 +44,6 @@ const toggleIconConfig = computed(() => {
     ? props.attrs.bodyCellNestedExpandIconAttrs.value
     : props.attrs.bodyCellNestedCollapseIconAttrs.value;
 });
-
-const shift = computed(() => (props.row.row ? NESTED_ROW_SHIFT_REM : LAST_NESTED_ROW_SHIFT_REM));
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
@@ -134,11 +134,11 @@ function formatCellValue(value: Cell) {
 }
 
 function getNestedShift() {
-  return { marginLeft: `${props.nestedLevel * shift.value}rem` };
+  return { marginLeft: `${props.nestedLevel * NESTED_ROW_SHIFT_REM}rem` };
 }
 
 function getNestedCheckboxShift() {
-  return { transform: `translateX(${props.nestedLevel * shift.value}rem)` };
+  return { transform: `translateX(${props.nestedLevel * LAST_NESTED_ROW_SHIFT_REM}rem)` };
 }
 
 function onClickToggleRowChild(rowId: string | number) {
@@ -195,8 +195,8 @@ function onClickToggleIcon() {
   (props.row.row as Row[]).forEach(({ id }) => onClickToggleRowChild(id));
 }
 
-function onClickCell(cell: unknown | string | number, row: Row) {
-  emit("clickCell", cell, row);
+function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
+  emit("clickCell", cell, row, key);
 }
 
 function getRowClasses(row: Row) {
@@ -240,7 +240,7 @@ function getRowAttrs(rowId: string | number) {
       :key="index"
       v-bind="attrs.bodyCellBaseAttrs.value"
       :class="cx([columns[index].tdClass, getCellClasses(row, String(key))])"
-      @click="onClickCell(value, row)"
+      @click="onClickCell(value, row, key)"
     >
       <div
         v-if="(row.row || nestedLevel || row.nestedData) && index === 0"

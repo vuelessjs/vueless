@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import ULoader from "../../ui.loader/ULoader.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -13,9 +18,6 @@ interface ULoaderArgs extends ULoaderProps {
   enum: "size" | "color";
 }
 
-/**
- * The `ULoader` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader)
- */
 export default {
   id: "9010",
   title: "Loaders and Skeletons / Loader",
@@ -25,6 +27,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(ULoader.__name),
+  },
+  parameters: {
+    ...getDocsDescription(ULoader.__name),
   },
 } as Meta;
 

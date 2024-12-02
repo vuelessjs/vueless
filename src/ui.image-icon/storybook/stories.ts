@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -11,9 +16,6 @@ interface UIconArgs extends UIconProps {
   enum: "color" | "size" | "variant";
 }
 
-/**
- * The `UIcon` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.image-icon)
- */
 export default {
   id: "6010",
   title: "Images & Icons / Icon",
@@ -23,6 +25,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UIcon.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UIcon.__name),
   },
 } as Meta;
 

@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UProgress from "../../ui.navigation-progress/UProgress.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -15,15 +20,15 @@ interface UProgressArgs extends UProgressProps {
   progress?: number;
 }
 
-/**
- * The `UProgress` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-progress)
- */
 export default {
   id: "8040",
   title: "Navigation / Progress",
   component: UProgress,
   argTypes: {
     ...getArgTypes(UProgress.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UProgress.__name),
   },
 } as Meta;
 

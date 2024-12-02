@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -10,9 +15,6 @@ interface UTabArgs extends UTabProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UTab` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tab)
- */
 export default {
   id: "8010",
   title: "Navigation / Tab",
@@ -22,6 +24,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UTab.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UTab.__name),
   },
 } as Meta;
 

@@ -77,7 +77,7 @@ const preparedMoney = computed(() => {
       <slot name="left" />
     </div>
 
-    <div :data-test="dataTest" v-bind="sumAttrs">
+    <div v-bind="sumAttrs" :data-test="dataTest">
       <span
         v-if="currencySymbolPosition.left && symbol"
         v-bind="symbolAttrs"

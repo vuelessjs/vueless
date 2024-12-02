@@ -1,12 +1,22 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-/**
- * The `USwitch` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-switch)
- */
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { USwitchProps } from "../types.ts";
+
+interface USwitchArgs extends USwitchProps {
+  slotTemplate?: string;
+  enum: "size" | "color";
+}
+
 export default {
   id: "3130",
   title: "Form Inputs & Controls / Switch",
@@ -17,9 +27,12 @@ export default {
   argTypes: {
     ...getArgTypes(USwitch.__name),
   },
-};
+  parameters: {
+    ...getDocsDescription(USwitch.__name),
+  },
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
   components: { USwitch, UIcon },
   setup() {
     const slots = getSlotNames(USwitch.__name);
@@ -28,17 +41,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <USwitch v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </USwitch>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes }) => ({
   components: { USwitch, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

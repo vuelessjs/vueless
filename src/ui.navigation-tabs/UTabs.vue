@@ -39,7 +39,7 @@ const { tabsAttrs, itemAttrs } = useAttrs(props);
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="tabsAttrs">
+  <div v-bind="tabsAttrs" :data-test="dataTest">
     <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
@@ -49,8 +49,8 @@ const { tabsAttrs, itemAttrs } = useAttrs(props);
         :value="item.value"
         :disabled="item.disabled"
         :size="size"
-        :data-test="`${dataTest}-item-${index}`"
         v-bind="itemAttrs"
+        :data-test="`${dataTest}-item-${index}`"
       />
     </slot>
   </div>

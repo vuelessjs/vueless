@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
@@ -13,9 +18,6 @@ interface URadioGroupArgs extends URadioGroupProps {
   enum: "size" | "color";
 }
 
-/**
- * The `URadioGroup` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio-group)
- */
 export default {
   id: "3160",
   title: "Form Inputs & Controls / Radio Group",
@@ -33,6 +35,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(URadioGroup.__name),
+  },
+  parameters: {
+    ...getDocsDescription(URadioGroup.__name),
   },
 } as Meta;
 

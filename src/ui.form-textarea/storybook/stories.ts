@@ -1,12 +1,22 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)
- */
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UTextareaProps } from "../types.ts";
+
+interface UTextareaArgs extends UTextareaProps {
+  slotTemplate?: string;
+  enum: "size" | "labelAlign";
+}
+
 export default {
   id: "3070",
   title: "Form Inputs & Controls / Textarea",
@@ -18,9 +28,12 @@ export default {
     ...getArgTypes(UTextarea.__name),
     modelValue: { control: { type: "text" } },
   },
-};
+  parameters: {
+    ...getDocsDescription(UTextarea.__name),
+  },
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
   components: { UTextarea, UIcon },
   setup() {
     const slots = getSlotNames(UTextarea.__name);
@@ -29,17 +42,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UTextarea v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UTextarea>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes }) => ({
   components: { UTextarea, UCol },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -77,7 +90,7 @@ export const Rows1 = DefaultTemplate.bind({});
 Rows1.args = { rows: "1" };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, value: "some value for read" };
+Readonly.args = { readonly: true, modelValue: "some value for read" };
 
 export const NoAutocomplete = DefaultTemplate.bind({});
 NoAutocomplete.args = { noAutocomplete: true };
