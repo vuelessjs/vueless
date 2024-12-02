@@ -2,7 +2,6 @@ export default /*tw*/ {
   wrapper: "relative",
   datepickerInput: {
     base: "{UInput}",
-    wrapper: "p-10 m-10",
   },
   datepickerInputActive: {
     extends: "{>datepickerInput}",
