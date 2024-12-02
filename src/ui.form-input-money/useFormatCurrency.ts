@@ -4,7 +4,7 @@ import { getRawValue, getFormattedValue } from "./utilFormat.ts";
 
 import type { FormatOptions } from "./types.ts";
 
-export default function useFormatCurrency(elementId: string, options: () => FormatOptions) {
+export default function useFormatCurrency(elementId: string = "", options: () => FormatOptions) {
   let prevValue = "";
   let inputElement: HTMLInputElement | null = null;
 
@@ -23,7 +23,7 @@ export default function useFormatCurrency(elementId: string, options: () => Form
 
     if (inputElement) {
       inputElement.addEventListener("input", onInput);
-      onInput({ target: inputElement } as unknown as InputEvent);
+      onInput(formattedValue.value as unknown as InputEvent);
     }
   });
 
@@ -53,7 +53,8 @@ export default function useFormatCurrency(elementId: string, options: () => Form
       let cursorEnd = inputElement.selectionEnd;
 
       const hasValueInputValue = cursorEnd === 1 && cursorStart === 1;
-      const value = (event.target as HTMLInputElement).value || "";
+      const input = event.target as HTMLInputElement;
+      const value = input.value || "";
 
       const localFormattedValue = getFormattedValue(value, toValue(options));
 
@@ -72,14 +73,14 @@ export default function useFormatCurrency(elementId: string, options: () => Form
       rawValue.value = getRawValue(localFormattedValue, toValue(options));
 
       await nextTick(() => {
-        if (localFormattedValue.length === cursorEnd) return;
+        if (localFormattedValue.length === cursorEnd || !cursorStart || !cursorEnd) return;
 
-        if (hasValueInputValue && prefixLength && cursorStart && cursorEnd) {
+        if (hasValueInputValue && prefixLength) {
           cursorStart += prefixLength;
           cursorEnd += prefixLength;
         }
 
-        if (inputElement && cursorStart && cursorEnd) {
+        if (inputElement) {
           inputElement.setSelectionRange(cursorStart + offset, cursorEnd + offset);
         }
       });

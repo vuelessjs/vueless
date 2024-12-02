@@ -38,7 +38,7 @@ const elementId = props.id || useId();
 
 const { moneyInputAttrs } = useAttrs(props);
 
-const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId || "", () => ({
+const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
   minFractionDigits: props.minFractionDigits,
   maxFractionDigits: props.maxFractionDigits,
   decimalSeparator: props.decimalSeparator,
@@ -65,10 +65,11 @@ const input = computed(() => {
 
 watch(
   () => props.modelValue,
-  () =>
-    String(localValue.value) !== String(rawValue.value) &&
-    localValue.value &&
-    setValue(localValue.value),
+  () => {
+    if (String(localValue.value) !== String(rawValue.value)) {
+      setValue(localValue.value);
+    }
+  },
 );
 
 onMounted(() => {

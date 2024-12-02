@@ -121,6 +121,12 @@ const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
 });
 
+const passwordIcon = computed(() => {
+  return isShownPassword.value
+    ? config.value?.defaults?.passwordVisibleIcon || ""
+    : config.value?.defaults?.passwordHiddenIcon || "";
+});
+
 onMounted(() => {
   toggleReadonlyToPreventAutocomplete(true);
   setLabelPosition();
@@ -293,11 +299,7 @@ defineExpose({
       <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">
         <UIcon
           v-if="isTypePassword"
-          :name="
-            isShownPassword
-              ? config.defaults?.passwordVisibleIcon
-              : config.defaults?.passwordHiddenIcon
-          "
+          :name="passwordIcon"
           color="gray"
           interactive
           internal

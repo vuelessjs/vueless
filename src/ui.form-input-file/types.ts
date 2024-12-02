@@ -8,7 +8,7 @@ export interface UInputFileProps {
   /**
    * Input value.
    */
-  modelValue?: File[] | File;
+  modelValue?: File[] | File | Blob;
 
   /**
    * Input label.

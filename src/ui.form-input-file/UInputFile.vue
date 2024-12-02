@@ -71,7 +71,7 @@ const {
 const i18nGlobal = tm(UInputFile);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-const currentFiles = computed<File | File[] | null>({
+const currentFiles = computed<File | Blob | File[] | null>({
   get: () => props.modelValue,
   set: (newValue) => {
     const fallbackValue = props.multiple ? [] : null;
@@ -136,18 +136,30 @@ onBeforeUnmount(() => {
 watch(
   () => props.multiple,
   () => {
-    if (!props.multiple && Array.isArray(currentFiles.value)) {
-      currentFiles.value = currentFiles.value[0];
-    }
-
-    if (props.multiple && !Array.isArray(currentFiles.value)) {
-      currentFiles.value = currentFiles.value ? [currentFiles.value] : [];
+    if (props.multiple) {
+      if (currentFiles.value) {
+        if (Array.isArray(currentFiles.value)) {
+          currentFiles.value = currentFiles.value.filter(
+            (file): file is File => file instanceof File,
+          );
+        } else if (currentFiles.value instanceof File) {
+          currentFiles.value = [currentFiles.value];
+        } else {
+          currentFiles.value = [];
+        }
+      } else {
+        currentFiles.value = [];
+      }
     }
   },
 );
 
 function removeDuplicates(files: File[]) {
-  return files.filter((file) => !fileList.value.find((item) => item.name === file.name));
+  return files.filter(
+    (file) =>
+      file instanceof File &&
+      !fileList.value.some((item) => item instanceof File && item.name === file.name),
+  );
 }
 
 function validate(file: File) {
@@ -182,16 +194,20 @@ function onChangeFile(event: Event) {
       return;
     }
 
-    currentFiles.value = props.multiple
-      ? [
-          ...(Array.isArray(currentFiles.value)
-            ? currentFiles.value
-            : currentFiles.value
-              ? [currentFiles.value]
-              : []),
-          ...removeDuplicates(Array.from(target.files)),
-        ]
-      : target.files[0];
+    if (props.multiple) {
+      if (!Array.isArray(currentFiles.value)) {
+        currentFiles.value = currentFiles.value instanceof File ? [currentFiles.value] : [];
+      }
+
+      currentFiles.value = [
+        ...currentFiles.value,
+        ...removeDuplicates(
+          Array.from(target.files).filter((file): file is File => file instanceof File),
+        ),
+      ];
+    } else {
+      currentFiles.value = file instanceof File ? file : null;
+    }
 
     if (fileInputRef.value) fileInputRef.value.value = "";
   }
@@ -228,13 +244,13 @@ function onDrop(event: DragEvent) {
     targetFiles = [...event.dataTransfer.items]
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile())
-      .filter((file): file is File => file !== null);
+      .filter((file): file is File => !file);
   } else if (event.dataTransfer && event.dataTransfer.files) {
     targetFiles = [...event.dataTransfer.files];
   }
 
   if (targetFiles.length) {
-    targetFiles.filter((file): file is File => file !== null).forEach(validate);
+    targetFiles.filter((file): file is File => !file).forEach(validate);
   }
 
   nextTick(() => {
@@ -244,7 +260,7 @@ function onDrop(event: DragEvent) {
       return;
     }
 
-    const validFiles = targetFiles.filter((file): file is File => file !== null);
+    const validFiles = targetFiles.filter((file): file is File => !file);
 
     currentFiles.value = props.multiple
       ? [
