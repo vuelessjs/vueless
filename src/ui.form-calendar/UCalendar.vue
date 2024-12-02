@@ -195,7 +195,7 @@ const userFormatLocale = computed(() => {
 
   // formatted locale
   return {
-    ...currentLocale,
+    ...currentLocale.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(monthsLonghand, LocaleType.Month),

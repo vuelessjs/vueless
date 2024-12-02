@@ -1,3 +1,5 @@
+import { addDays, isSameDay } from "./utilDate";
+
 export interface DateLocale {
   weekdays: {
     shorthand: string[];
@@ -9,6 +11,9 @@ export interface DateLocale {
     longhand: string[];
     userFormat?: unknown;
   };
+  today: string;
+  tomorrow: string;
+  yesterday: string;
 }
 
 const pad = (number: number, length = 2) => `000${number}`.slice(length * -1);
@@ -21,6 +26,7 @@ export const monthToStr = (monthNumber: number, shorthand: boolean, locale: Date
 
 export const revFormat = {
   D: doNothing,
+
   F: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.longhand.findIndex((longMonth) => {
       return longMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
@@ -28,15 +34,19 @@ export const revFormat = {
 
     dateObj.setMonth(monthIndex);
   },
+
   G: (dateObj: Date, hour: number | string) => {
     dateObj.setHours(parseFloat(String(hour)));
   },
+
   H: (dateObj: Date, hour: number | string) => {
     dateObj.setHours(parseFloat(String(hour)));
   },
+
   J: (dateObj: Date, day: number | string) => {
     dateObj.setDate(parseFloat(String(day)));
   },
+
   M: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.shorthand.findIndex((shortMonth) => {
       return shortMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
@@ -47,6 +57,7 @@ export const revFormat = {
   S: (dateObj: Date, seconds: number | string) => {
     dateObj.setSeconds(parseFloat(String(seconds)));
   },
+
   U: (_: unknown, unixSeconds: string | number) => new Date(parseFloat(String(unixSeconds)) * 1000),
 
   W: (dateObj: Date, weekNum: number | string) => {
@@ -57,6 +68,7 @@ export const revFormat = {
 
     return date;
   },
+
   Y: (dateObj: Date, year: number | string) => {
     dateObj.setFullYear(parseFloat(String(year)));
   },
@@ -65,31 +77,42 @@ export const revFormat = {
   d: (dateObj: Date, day: number | string) => {
     dateObj.setDate(parseFloat(String(day)));
   },
+
   h: (dateObj: Date, hour: number | string) => {
     dateObj.setHours(parseFloat(String(hour)));
   },
+
   i: (dateObj: Date, minutes: number | string) => {
     dateObj.setMinutes(parseFloat(String(minutes)));
   },
+
   j: (dateObj: Date, day: number | string) => {
     dateObj.setDate(parseFloat(String(day)));
   },
+
   l: doNothing,
+
   m: (dateObj: Date, month: number | string) => {
     dateObj.setMonth(parseFloat(String(month)) - 1);
   },
+
   n: (dateObj: Date, month: number | string) => {
     dateObj.setMonth(parseFloat(String(month)) - 1);
   },
+
   s: (dateObj: Date, seconds: number | string) => {
     dateObj.setSeconds(parseFloat(String(seconds)));
   },
+
   u: (_: unknown, unixMillSeconds: number | string) =>
     new Date(parseFloat(String(unixMillSeconds))),
   w: doNothing,
+
   y: (dateObj: Date, year: number | string) => {
     dateObj.setFullYear(2000 + parseFloat(String(year)));
   },
+
+  r: doNothing,
 };
 
 export const formats = {
@@ -183,4 +206,25 @@ export const formats = {
 
   // last two digits of year e.g. 16 for 2016
   y: (date: Date) => String(date.getFullYear()).substring(2),
+
+  r: (date: Date, locale: DateLocale) => {
+    const today = new Date();
+    const isToday = isSameDay(today, date);
+    const isYesterday = isSameDay(addDays(today, -1), date);
+    const isTomorrow = isSameDay(addDays(today, 1), date);
+
+    if (isToday) {
+      return `${locale.today}`;
+    }
+
+    if (isYesterday) {
+      return `${locale.yesterday}`;
+    }
+
+    if (isTomorrow) {
+      return `${locale.tomorrow}`;
+    }
+
+    return "";
+  },
 };

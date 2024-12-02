@@ -7,15 +7,14 @@ import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import {
   View,
-  STANDARD_USER_FORMAT,
   LocaleType,
   ARROW_KEYS,
-  TOKEN_REG_EXP,
+  // TOKEN_REG_EXP,
 } from "../ui.form-calendar/constants.ts";
 
 import { getDefault } from "../utils/ui.ts";
 
-import { addDays, getSortedLocale, isSameDay } from "../ui.form-calendar/utilDate.ts";
+import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import useAttrs from "./useAttrs.js";
@@ -137,41 +136,11 @@ function deactivate() {
 }
 
 function onUserFormatDateChange(value: string) {
-  userFormatDate.value = formatUserDate(value) || "";
+  userFormatDate.value = value.trim();
 }
 
 function onSubmit() {
   deactivate();
-}
-
-function formatUserDate(date: string) {
-  if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return date;
-
-  let prefix = "";
-
-  const formattedDate = date.charAt(0).toUpperCase() + date.toLowerCase().slice(1);
-  const formattedDateWithoutDay = formattedDate.split(" ").slice(1).join(" ").trim();
-
-  const today = new Date();
-
-  const parsedLocalDate = parseDate(localValue.value, props.dateFormat, locale.value);
-  const isToday = parsedLocalDate && isSameDay(today, parsedLocalDate);
-  const isYesterday = parsedLocalDate && isSameDay(addDays(today, -1), parsedLocalDate);
-  const isTomorrow = parsedLocalDate && isSameDay(addDays(today, 1), parsedLocalDate);
-
-  if (isToday) {
-    prefix = currentLocale.value.today;
-  }
-
-  if (isYesterday) {
-    prefix = currentLocale.value.yesterday;
-  }
-
-  if (isTomorrow) {
-    prefix = currentLocale.value.tomorrow;
-  }
-
-  return prefix ? `${prefix}, ${formattedDateWithoutDay}` : formattedDate;
 }
 
 function onInput() {
@@ -192,35 +161,21 @@ function onPaste(event: ClipboardEvent) {
     const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
     const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
 
-    // Amount of tokens used in format string without decimeters.
-    const tokensAmount = userFormat
-      .split("")
-      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+    // // Amount of tokens used in format string without decimeters.
+    // const tokensAmount = userFormat
+    //   .split("")
+    //   .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
 
-    // Amount of substring that satisfies format tokens.
-    const pastedTokensAmount = pasteContent
-      .replace(/[^a-zA-Z0-9]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim()
-      .split(" ").length;
+    // // Amount of substring that satisfies format tokens.
+    // const pastedTokensAmount = pasteContent
+    //   .replace(/[^a-zA-Z0-9]/g, " ")
+    //   .replace(/\s+/g, " ")
+    //   .trim()
+    //   .split(" ").length;
 
-    if (pastedTokensAmount !== tokensAmount) return;
+    // if (pastedTokensAmount !== tokensAmount) return;
 
-    let parsedDate = parseDate(pasteContent, userFormat, locale.value);
-
-    if (props.userDateFormat === STANDARD_USER_FORMAT && !props.timepicker) {
-      if (pasteContent.includes(currentLocale.value.today)) {
-        parsedDate = new Date();
-      }
-
-      if (pasteContent.includes(currentLocale.value.tomorrow)) {
-        parsedDate = addDays(new Date(), 1);
-      }
-
-      if (pasteContent.includes(currentLocale.value.yesterday)) {
-        parsedDate = addDays(new Date(), -1);
-      }
-    }
+    const parsedDate = parseDate(pasteContent, userFormat, locale.value);
 
     if (parsedDate) {
       localValue.value = (

@@ -4,8 +4,6 @@
  */
 export const UCalendar = "UCalendar";
 
-export const STANDARD_USER_FORMAT = "j F, Y";
-
 export const YEARS_PER_VIEW = 12;
 export const MONTHS_PER_VIEW = 12;
 export const START_WEEK = 1;
