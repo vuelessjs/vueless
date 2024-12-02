@@ -1,4 +1,4 @@
-import { getRandomId } from "../utils/ui.ts";
+import { getRandomId } from "../utils/helper.ts";
 
 import type { Column, ColumnObject, Row, RowData, RowId } from "./types.ts";
 

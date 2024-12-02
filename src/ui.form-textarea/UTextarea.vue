@@ -53,8 +53,10 @@
 <script setup>
 import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
-import ULabel from "../ui.form-label/ULabel.vue";
 import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+
+import ULabel from "../ui.form-label/ULabel.vue";
 
 import { UTextarea } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -232,14 +234,8 @@ const slots = useSlots();
 
 const elementId = props.id || useId();
 
-const {
-  textareaAttrs,
-  textareaLabelAttrs,
-  textareaWrapperAttrs,
-  leftSlotAttrs,
-  rightSlotAttrs,
-  hasSlotContent,
-} = useAttrs(props);
+const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
+  useAttrs(props);
 
 const textareaRef = ref(null);
 const labelComponentRef = ref(null);

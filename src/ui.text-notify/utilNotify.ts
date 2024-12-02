@@ -1,4 +1,5 @@
-import { getRandomId, vuelessConfig } from "../utils/ui.ts";
+import { vuelessConfig } from "../utils/ui.ts";
+import { getRandomId } from "../utils/helper.ts";
 import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "./constants.ts";
 
 interface NotifyConfig {

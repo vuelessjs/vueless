@@ -54,9 +54,11 @@
 <script setup>
 import { computed, ref } from "vue";
 
+import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { UInputRating } from "./constants.js";
 import defaultConfig from "./config.js";
@@ -174,16 +176,8 @@ const emit = defineEmits([
 
 const hovered = ref(null);
 
-const {
-  config,
-  inputLabelAttrs,
-  containerAttrs,
-  counterAttrs,
-  totalAttrs,
-  starsAttrs,
-  starAttrs,
-  hasSlotContent,
-} = useAttrs(props);
+const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {

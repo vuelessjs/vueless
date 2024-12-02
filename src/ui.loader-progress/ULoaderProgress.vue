@@ -2,7 +2,6 @@
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
 import { getDefault } from "../utils/ui.ts";
-import { isMobileApp } from "../utils/platform.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
 import useAttrs from "./useAttrs.ts";
@@ -16,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderProgressProps>(), {
   color: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).color,
+  size: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).size,
   loading: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).loading,
 });
 
@@ -34,7 +34,7 @@ const {
   addRequestUrl,
 } = useLoaderProgress();
 
-const { stripeAttrs } = useAttrs(props, { isMobileApp });
+const { stripeAttrs } = useAttrs(props);
 
 const isStarted = computed(() => {
   return typeof status.value === "number";

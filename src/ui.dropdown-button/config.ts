@@ -1,14 +1,14 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  dropdownButton: "{UButton}",
-  dropdownButtonActive: {
-    base: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+  dropdownButton: {
+    component: "{UButton}",
     variants: {
-      color: {
-        grayscale: "ring-gray-700/15",
-        white: "ring-gray-700/15",
+      opened: {
+        true: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+        false: "reactive-fix", // todo: remove it later
       },
     },
+    compoundVariants: [{ opened: true, color: ["grayscale", "white"], class: "ring-gray-700/15" }],
   },
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {

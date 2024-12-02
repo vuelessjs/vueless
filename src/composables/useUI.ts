@@ -1,15 +1,4 @@
-import {
-  ref,
-  watch,
-  watchEffect,
-  getCurrentInstance,
-  toValue,
-  useAttrs,
-  Comment,
-  Text,
-  Fragment,
-  computed,
-} from "vue";
+import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 
 import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
@@ -17,10 +6,11 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  NESTED_COMPONENT_REG_EXP,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
+  EXTENDS_PATTERN_REG_EXP,
 } from "../constants.js";
 
-import type { ComponentInternalInstance, Slot, VNode, ComputedRef } from "vue";
+import type { ComponentInternalInstance, ComputedRef } from "vue";
 import type {
   BrandColors,
   Strategies,
@@ -29,8 +19,9 @@ import type {
   NestedComponent,
   ComponentNames,
   CVA,
+  UseUI,
   KeyAttrs,
-  KeysToExtend,
+  KeysAttrs,
   ExtendedKeyClasses,
 } from "../types.ts";
 
@@ -45,7 +36,8 @@ export default function useUI<T>(
   defaultConfig: T & Component,
   propsConfigGetter?: () => (T & Component) | undefined,
   topLevelClassKey?: string,
-) {
+  mutatedProps?: ComputedRef,
+): UseUI<T> {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as ComponentNames;
   const globalConfig = vuelessConfig?.component?.[componentName] || {};
@@ -58,7 +50,7 @@ export default function useUI<T>(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({} as T);
+  const config = ref({} as T & Component);
   const attrs = useAttrs();
 
   watchEffect(() => {
@@ -77,6 +69,7 @@ export default function useUI<T>(
    */
   function getClasses(key: string, mutatedProps: UnknownObject): ComputedRef<string> {
     return computed(() => {
+      const mutatedPropsValue = toValue(mutatedProps);
       const color = (toValue(mutatedProps)?.color as BrandColors) || props?.color;
       const value = config.value[key] as (CVA & NestedComponent) | string;
 
@@ -85,7 +78,7 @@ export default function useUI<T>(
       if (typeof value === "object" && isCVA(value)) {
         classes = cva(value)({
           ...props,
-          ...toValue(mutatedProps),
+          ...mutatedPropsValue,
           ...(color ? { color: getColor(color) } : {}),
         });
       }
@@ -118,33 +111,35 @@ export default function useUI<T>(
   }
 
   /**
-   * Get an object where:
+   * Returns an object where:
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
    */
-  function getKeysAttrs(
-    mutatedProps = {},
-    extendingKeys: string[] = [],
-    keysToExtendConfig: Record<string, KeysToExtend> = {},
-  ) {
-    const keysToExtend = Object.keys(keysToExtendConfig);
-    const keysAttrs: UnknownObject = {};
+  function getKeysAttrs(mutatedProps = {}): KeysAttrs {
+    const keysAttrs: KeysAttrs = {};
 
-    for (const key in defaultConfig) {
-      if (isSystemKey(key) || extendingKeys.includes(key)) continue;
+    for (const key in config.value) {
+      if (isSystemKey(key)) continue;
 
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
 
-      if (keysToExtend.includes(key)) {
-        const { base, extend } = keysToExtendConfig[key];
+      const baseClasses = getBaseClasses(config.value[key]);
+      const extendsMatches = baseClasses.match(EXTENDS_PATTERN_REG_EXP);
+
+      if (extendsMatches) {
+        // retrieves extends keys from patterns:
+        // Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
+        const extendsKeys = extendsMatches.map((pattern) => pattern.slice(2, -1));
+        const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
+        const extendsClasses = Object.values(classes).map((item) => toValue(item));
+
         const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
 
         keysAttrs[`${key}Attrs`] = computed(() => ({
           ...keyAttrs.value,
           class: cx([
-            ...(Array.isArray(base) ? toValue(base) : [toValue(base)]),
-            keyAttrs.value.class,
-            ...(Array.isArray(extend) ? toValue(extend) : [toValue(extend)]),
+            ...extendsClasses,
+            keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
           ]),
         }));
       }
@@ -157,7 +152,7 @@ export default function useUI<T>(
    * Get an element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef) {
-    const nestedComponent = getNestedComponent(defaultConfig[configKey] || "");
+    const nestedComponent = getNestedComponent(config.value[configKey] || "");
 
     const attrs = useAttrs();
     const isDev = isCSR && import.meta.env?.DEV;
@@ -198,12 +193,7 @@ export default function useUI<T>(
     return vuelessAttrs;
   }
 
-  return {
-    config,
-    getKeysAttrs,
-    getExtendingKeysClasses,
-    hasSlotContent,
-  };
+  return { config, getKeysAttrs, ...getKeysAttrs(mutatedProps) };
 }
 
 /**
@@ -221,7 +211,8 @@ function getNestedComponent(value: string | NestedComponent | CVA) {
   const component = (value as NestedComponent)?.component as ComponentNames;
 
   const match =
-    classes.match(NESTED_COMPONENT_REG_EXP) || component?.match(NESTED_COMPONENT_REG_EXP);
+    classes.match(NESTED_COMPONENT_PATTERN_REG_EXP) ||
+    component?.match(NESTED_COMPONENT_PATTERN_REG_EXP);
 
   return match ? match[1] : "";
 }
@@ -242,29 +233,4 @@ function isCVA(config: UnknownObject): boolean {
   return Object.values(CVA_CONFIG_KEY).some((value) =>
     Object.keys(config).some((key) => key === value),
   );
-}
-
-/**
- * Check if slot defined, and have a content.
- */
-export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
-  type Args = VNode | VNode[] | undefined | null;
-
-  const asArray = (arg: Args) => {
-    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
-  };
-
-  const isVNodeEmpty = (vnode: Args) => {
-    return (
-      !vnode ||
-      asArray(vnode).every(
-        (vnode) =>
-          vnode.type === Comment ||
-          (vnode.type === Text && !vnode.children?.length) ||
-          (vnode.type === Fragment && !vnode.children?.length),
-      )
-    );
-  };
-
-  return !isVNodeEmpty(slot?.(props));
 }
