@@ -83,17 +83,17 @@ defineExpose({
       <label
         v-if="label"
         :for="props.for"
-        :data-test="`${dataTest}-label`"
         v-bind="labelAttrs"
+        :data-test="`${dataTest}-label`"
         v-text="label"
       />
 
-      <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
+      <div v-if="error" v-bind="descriptionAttrs" :data-test="`${dataTest}-error`" v-text="error" />
 
       <div
         v-if="description && !error"
-        :data-test="`${dataTest}-description`"
         v-bind="descriptionAttrs"
+        :data-test="`${dataTest}-description`"
         v-text="description"
       />
 
@@ -107,8 +107,8 @@ defineExpose({
       v-if="label"
       ref="labelRef"
       :for="props.for"
-      :data-test="`${dataTest}-label`"
       v-bind="labelAttrs"
+      :data-test="`${dataTest}-label`"
       v-text="label"
     />
 
@@ -117,12 +117,12 @@ defineExpose({
       <slot />
     </div>
 
-    <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
+    <div v-if="error" v-bind="descriptionAttrs" :data-test="`${dataTest}-error`" v-text="error" />
 
     <div
       v-if="description && !error"
-      :data-test="`${dataTest}-description`"
       v-bind="descriptionAttrs"
+      :data-test="`${dataTest}-description`"
       v-text="description"
     />
 

@@ -195,9 +195,9 @@ defineExpose({
     :description="description"
     :size="size"
     :disabled="disabled"
-    :data-test="dataTest"
     :align="labelAlign"
     v-bind="textareaLabelAttrs"
+    :data-test="dataTest"
   >
     <label
       v-if="hasSlotContent($slots['left'])"
@@ -218,8 +218,8 @@ defineExpose({
         :disabled="disabled"
         :rows="currentRows"
         :inputmode="inputmode"
-        :data-test="dataTest"
         v-bind="textareaAttrs"
+        :data-test="dataTest"
         @focus="onFocus"
         @blur="onBlur"
         @change="onChange"

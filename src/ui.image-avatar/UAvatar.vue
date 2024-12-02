@@ -61,8 +61,8 @@ function onClick(event: MouseEvent) {
   <div
     :title="label"
     :style="backgroundImage"
-    :data-test="dataTest"
     v-bind="avatarAttrs"
+    :data-test="dataTest"
     @click="onClick"
   >
     <template v-if="!backgroundImage">

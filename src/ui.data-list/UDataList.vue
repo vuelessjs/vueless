@@ -27,14 +27,14 @@
       :animation="animationDuration"
       :ghost-class="config.draggableGhost"
       :drag-class="config.draggableDrag"
-      :data-test="dataTest"
       v-bind="draggableAttrs"
+      :data-test="dataTest"
       :move="onDragMove"
       @end="onDragEnd"
     >
       <template #item="{ element }">
-        <div :id="element[valueKey]" :data-test="`${dataTest}-item`" v-bind="itemWrapperAttrs">
-          <div :data-test="`${dataTest}-item-${element[valueKey]}`" v-bind="itemAttrs">
+        <div :id="element[valueKey]" v-bind="itemWrapperAttrs" :data-test="`${dataTest}-item`">
+          <div v-bind="itemAttrs" :data-test="`${dataTest}-item-${element[valueKey]}`">
             <!--
               @slot Use it to add something instead of the drag icon.
               @binding {object} item
@@ -99,9 +99,9 @@
                   color="red"
                   :size="iconSize"
                   :name="config.defaults.deleteIcon"
-                  :data-test="`${dataTest}-delete`"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
+                  :data-test="`${dataTest}-delete`"
                   @click="onClickDelete(element[valueKey], element[labelKey])"
                 />
               </slot>
@@ -125,9 +125,9 @@
                   color="gray"
                   :size="iconSize"
                   :name="config.defaults.editIcon"
-                  :data-test="`${dataTest}-edit`"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"
+                  :data-test="`${dataTest}-edit`"
                   @click="onClickEdit(element[valueKey], element[labelKey])"
                 />
               </slot>
@@ -140,8 +140,8 @@
             hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
-            :data-test="`${dataTest}-table`"
             v-bind="nestedAttrs"
+            :data-test="`${dataTest}-table`"
             @click-delete="onClickDelete"
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"

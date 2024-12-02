@@ -77,7 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="dataTest">
     <div v-bind="pageAttrs">
       <!-- @slot Use it to add something before the header. -->
       <slot name="header-before" />
