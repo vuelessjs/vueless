@@ -66,7 +66,7 @@ export default /*tw*/ {
     },
   },
   bodyCellContent: "text-ellipsis overflow-hidden",
-  bodyCellCheckbox: "{>bodyCellBase} pr-2", // try to remove first
+  bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex gap-0.5",
   bodyCellNestedExpandIconWrapper: "",

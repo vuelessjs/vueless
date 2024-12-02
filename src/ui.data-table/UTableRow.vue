@@ -45,8 +45,6 @@ const toggleIconConfig = computed(() => {
     : props.attrs.bodyCellNestedCollapseIconAttrs.value;
 });
 
-// const shift = computed(() => (props.row.row ? NESTED_ROW_SHIFT_REM : LAST_NESTED_ROW_SHIFT_REM));
-
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
 
 const singleNestedRow = computed(() =>
