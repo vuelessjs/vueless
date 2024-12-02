@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
+import { getDefault } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -69,6 +71,14 @@ const emit = defineEmits([
   "input",
 ]);
 
+const VALIDATION_RULES_REG_EX = {
+  integer: /\d*/g,
+  number: /\d*\.?\d*/g,
+  string: /[a-zA-Z]+/g,
+  stringAndNumber: /[a-zA-Z0-9]+/g,
+  symbol: /\D/g,
+};
+
 const slots = useSlots();
 
 const isShownPassword = ref(false);
@@ -95,7 +105,6 @@ const {
   leftIconAttrs,
   rightIconAttrs,
   rightIconWrapperAttrs,
-  hasSlotContent,
 } = useAttrs(props);
 
 const iconSize = computed(() => {
@@ -320,18 +329,6 @@ defineExpose({
     </label>
   </ULabel>
 </template>
-
-<script lang="ts">
-import { getDefault } from "../utils/ui.ts";
-
-const VALIDATION_RULES_REG_EX = {
-  integer: /\d*/g,
-  number: /\d*\.?\d*/g,
-  string: /[a-zA-Z]+/g,
-  stringAndNumber: /[a-zA-Z0-9]+/g,
-  symbol: /\D/g,
-};
-</script>
 
 <style lang="postcss" scoped>
 @font-face {
