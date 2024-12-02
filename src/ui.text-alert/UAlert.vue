@@ -97,7 +97,7 @@ const iconColor = computed(() => {
 </script>
 
 <template>
-  <div v-if="isShownAlert" :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-if="isShownAlert" v-bind="wrapperAttrs" :data-test="dataTest">
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
@@ -163,8 +163,8 @@ const iconColor = computed(() => {
             :size="closeIconSize"
             :color="iconColor"
             :name="config.defaults?.closeIcon"
-            :data-test="`${dataTest}-button`"
             v-bind="closeIconAttrs"
+            :data-test="`${dataTest}-button`"
           />
         </slot>
       </UButton>

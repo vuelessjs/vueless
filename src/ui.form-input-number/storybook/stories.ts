@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -11,9 +16,6 @@ interface UInputNumberArgs extends UInputNumberProps {
   enum: "size";
 }
 
-/**
- * The `UInputNumber` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-number)
- */
 export default {
   id: "3050",
   title: "Form Inputs & Controls / Input Number",
@@ -24,6 +26,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInputNumber.__name),
     modelValue: { control: { type: "number" } },
+  },
+  parameters: {
+    ...getDocsDescription(UInputNumber.__name),
   },
 } as Meta;
 

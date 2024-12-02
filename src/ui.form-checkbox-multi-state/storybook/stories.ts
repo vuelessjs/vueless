@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCheckboxMultiState from "../../ui.form-checkbox-multi-state/UCheckboxMultiState.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -11,9 +16,6 @@ interface UCheckboxMultiStateArgs extends UCheckboxMultiStateProps {
   enum: "size";
 }
 
-/**
- * The `UCheckboxMultiState` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-checkbox-multi-state)
- */
 export default {
   id: "3120",
   title: "Form Inputs & Controls / Checkbox Multistate",
@@ -27,6 +29,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckboxMultiState.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UCheckboxMultiState.__name),
   },
 } as Meta;
 

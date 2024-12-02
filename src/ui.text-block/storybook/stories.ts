@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -11,15 +16,15 @@ interface UTextArgs extends UTextProps {
   enum: "size";
 }
 
-/**
- * The `UText` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-block)
- */
 export default {
   id: "4020",
   title: "Text & Content / Text",
   component: UText,
   argTypes: {
     ...getArgTypes(UText.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UText.__name),
   },
   args: {},
 } as Meta;

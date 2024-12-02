@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
@@ -12,9 +17,6 @@ interface UCalendarArgs extends UCalendarProps<unknown> {
   enum: "size";
 }
 
-/**
- * The `UCalendar` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-calendar)
- */
 export default {
   id: "3165",
   title: "Form Inputs & Controls / Calendar",
@@ -29,6 +31,7 @@ export default {
         height: "380px",
       },
     },
+    ...getDocsDescription(UCalendarName),
   },
 } as Meta;
 

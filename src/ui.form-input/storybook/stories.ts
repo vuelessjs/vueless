@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -13,9 +18,6 @@ interface UInputArgs extends UInputProps {
   enum: "labelAlign" | "size" | "validationRule";
 }
 
-/**
- * The `UInput` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input)
- */
 export default {
   id: "3010",
   title: "Form Inputs & Controls / Input",
@@ -26,6 +28,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInput.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UInput.__name),
   },
 } as Meta;
 

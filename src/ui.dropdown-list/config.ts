@@ -26,7 +26,7 @@ export default /*tw*/ {
     },
   },
   optionContent: "overflow-visible text-ellipsis",
-  optionSelected: "font-bold",
+  optionSelected: "font-bold bg-brand-100",
   optionHighlighted: "bg-brand-50",
   groupBase: {
     base: "px-2 pb-2.5 font-medium !leading-none text-gray-400 overflow-hidden text-ellipsis",

@@ -73,8 +73,8 @@ function onUpdateValue(value: string) {
     :error="error"
     :size="size"
     align="topWithDesc"
-    :data-test="dataTest"
     v-bind="colorPickerLabelAttrs"
+    :data-test="dataTest"
   >
     <div v-bind="listAttrs">
       <div v-bind="unselectedAttrs">

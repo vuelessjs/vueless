@@ -1,13 +1,15 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDataList from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-/**
- * The `UDataList` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.data-list)
- */
 export default {
   id: "7020",
   title: "Data / Data List",
@@ -39,6 +41,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UDataList.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UDataList.__name),
   },
 };
 

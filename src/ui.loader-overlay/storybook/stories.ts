@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -13,9 +18,6 @@ interface ULoaderOverlayArgs extends ULoaderOverlayProps {
   slotTemplate?: string;
 }
 
-/**
- * The `ULoaderOverlay` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.loader-overlay)
- */
 export default {
   id: "9030",
   title: "Loaders and Skeletons / Loader Overlay",
@@ -29,6 +31,7 @@ export default {
         height: "420px",
       },
     },
+    ...getDocsDescription(ULoaderOverlay.__name),
   },
 } as Meta;
 

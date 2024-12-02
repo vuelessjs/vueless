@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -12,9 +17,6 @@ interface UTextareaArgs extends UTextareaProps {
   enum: "size" | "labelAlign";
 }
 
-/**
- * The `UTextarea` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-textarea)
- */
 export default {
   id: "3070",
   title: "Form Inputs & Controls / Textarea",
@@ -25,6 +27,9 @@ export default {
   argTypes: {
     ...getArgTypes(UTextarea.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UTextarea.__name),
   },
 } as Meta;
 

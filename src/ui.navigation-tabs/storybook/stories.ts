@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 
@@ -10,9 +15,6 @@ interface UTabsArgs extends UTabsProps {
   enum: "size";
 }
 
-/**
- * The `UTabs` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-tabs)
- */
 export default {
   id: "8020",
   title: "Navigation / Tabs",
@@ -27,6 +29,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UTabs.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UTabs.__name),
   },
 } as Meta;
 

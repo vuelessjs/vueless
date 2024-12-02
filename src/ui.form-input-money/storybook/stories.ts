@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputMoney from "../../ui.form-input-money/UInputMoney.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -13,9 +18,6 @@ interface UInputMoneyArgs extends UInputMoneyProps {
   enum: "labelAlign" | "size";
 }
 
-/**
- * The `UInputMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-money)
- */
 export default {
   id: "3030",
   title: "Form Inputs & Controls / Input Money",
@@ -26,6 +28,9 @@ export default {
   argTypes: {
     ...getArgTypes(UInputMoney.__name),
     modelValue: { control: { type: "number" } },
+  },
+  parameters: {
+    ...getDocsDescription(UInputMoney.__name),
   },
 } as Meta;
 

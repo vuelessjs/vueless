@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UEmpty from "../../ui.text-empty/UEmpty.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -13,9 +18,6 @@ interface UEmptyArgs extends UEmptyProps {
   enum: "size";
 }
 
-/**
- * The `UEmpty` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-empty)
- */
 export default {
   id: "4080",
   title: "Text & Content / Empty",
@@ -26,6 +28,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UEmpty.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UEmpty.__name),
   },
 } as Meta;
 

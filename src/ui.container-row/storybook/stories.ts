@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -13,15 +18,15 @@ interface URowArgs extends URowProps {
   enum: "gap" | "align";
 }
 
-/**
- * The `URow` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.container-row)
- */
 export default {
   id: "5020",
   title: "Containers / Row",
   component: URow,
   argTypes: {
     ...getArgTypes(URow.__name),
+  },
+  parameters: {
+    ...getDocsDescription(URow.__name),
   },
 } as Meta;
 
@@ -47,11 +52,11 @@ const DefaultTemplate: StoryFn<URowArgs> = (args: URowArgs) => ({
 const EnumVariantTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
   components: { UCol, URow, UInput, UButton },
   setup() {
-    const isGapEnum = argTypes[args.enum].name === "gap";
+    const isGapEnum = argTypes?.[args.enum]?.name === "gap";
 
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
       isGapEnum,
     };
   },

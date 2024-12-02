@@ -403,8 +403,8 @@ function onDoubleClickRow(row: Row) {
   emit("doubleClickRow", row);
 }
 
-function onClickCell(cell: Cell, row: Row) {
-  emit("clickCell", cell, row);
+function onClickCell(cell: Cell, row: Row, key: string | number) {
+  emit("clickCell", cell, row, key);
 }
 
 function onChangeSelectAll(selectAll: boolean) {

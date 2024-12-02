@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -14,9 +19,6 @@ interface UAlertArgs extends UAlertProps {
   enum: "size" | "color" | "variant";
 }
 
-/**
- * The `UAlert` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-alert)
- */
 export default {
   id: "4030",
   title: "Text & Content / Alert",
@@ -27,6 +29,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UAlert.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UAlert.__name),
   },
 } as Meta;
 

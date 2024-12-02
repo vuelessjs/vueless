@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import URadio from "../../ui.form-radio/URadio.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
@@ -11,9 +16,6 @@ interface URadioArgs extends URadioProps {
   enum: "variant" | "size";
 }
 
-/**
- * The `URadio` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-radio)
- */
 export default {
   id: "3140",
   title: "Form Inputs & Controls / Radio",
@@ -26,6 +28,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(URadio.__name),
+  },
+  parameters: {
+    ...getDocsDescription(URadio.__name),
   },
 } as Meta;
 
