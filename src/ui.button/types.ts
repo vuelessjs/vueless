@@ -116,7 +116,7 @@ export interface UButtonProps {
   /**
    * Component config object.
    */
-  config?: () => Config;
+  config?: Config;
 
   /**
    * Data-test attribute for automated testing.

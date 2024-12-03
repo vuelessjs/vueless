@@ -131,7 +131,7 @@ export function getDefaults<T>(defaultConfig: Component, name: ComponentNames) {
   return {
     ...defaults,
     dataTest: "",
-    config: () => {},
+    config: () => ({}),
   };
 }
 
