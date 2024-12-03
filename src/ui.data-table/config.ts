@@ -71,12 +71,12 @@ export default /*tw*/ {
   bodyCellNested: "mr-2 flex gap-0.5",
   bodyCellNestedExpandIconWrapper: "",
   bodyCellNestedExpandIcon: {
-    component: "{UIcon}",
+    base: "{UIcon}",
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedCollapseIcon: {
-    component: "{UIcon}",
+    base: "{UIcon}",
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },

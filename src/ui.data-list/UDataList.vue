@@ -300,7 +300,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
                 @binding {boolean} active
               -->
               <slot name="label" :item="item" :active="active">
-                <div v-bind="active ? labelCrossedAttrs : labelAttrs" v-text="item[labelKey]" />
+                <div v-bind="active ? labelAttrs : labelCrossedAttrs" v-text="item[labelKey]" />
               </slot>
             </template>
 
