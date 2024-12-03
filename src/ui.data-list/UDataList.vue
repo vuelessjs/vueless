@@ -130,7 +130,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
     if (hasItemChildren) {
       const childrenItem = prepareSortData(
         item.children,
-        item[props.valueKey as keyof DataListItem] as string | number | null,
+        item[props.valueKey] as string | number | null,
       );
 
       childrenItem.forEach((item) => sortData.push(item));
