@@ -138,9 +138,7 @@ watch(() => props.multiple, normalizeFilesForMultipleMode);
 function normalizeFilesForMultipleMode() {
   if (!props.multiple) return;
 
-  if (Array.isArray(currentFiles.value)) {
-    currentFiles.value = currentFiles.value;
-  } else {
+  if (!Array.isArray(currentFiles.value)) {
     currentFiles.value = currentFiles.value ? [currentFiles.value] : [];
   }
 }
