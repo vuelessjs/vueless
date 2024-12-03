@@ -94,9 +94,11 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
   });
 
 /**
+ * @deprecated
+ * TODO: remove if after all components migration into getDefaults()
  * Return default values for component props, icons, etc..
  */
-export function getDefault<T>(defaultConfig: Component, name: ComponentNames): T {
+export function getDefault<T>(defaultConfig: Component, name: ComponentNames) {
   const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
   const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
 
@@ -106,7 +108,31 @@ export function getDefault<T>(defaultConfig: Component, name: ComponentNames): T
     defaults.color = getColor(defaults.color as BrandColors);
   }
 
-  return defaults;
+  return {
+    ...defaults,
+    dataTest: "",
+    config: () => {},
+  };
+}
+
+/**
+ * Return default values for component props, icons, etc..
+ */
+export function getDefaults<T>(defaultConfig: Component, name: ComponentNames) {
+  const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
+  const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
+
+  const defaults = merge(componentDefaults, globalDefaults) as T & Defaults;
+
+  if (defaults.color) {
+    defaults.color = getColor(defaults.color as BrandColors);
+  }
+
+  return {
+    ...defaults,
+    dataTest: "",
+    config: () => {},
+  };
 }
 
 /**

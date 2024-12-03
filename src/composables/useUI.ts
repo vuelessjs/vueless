@@ -34,7 +34,7 @@ import type {
  */
 export default function useUI<T>(
   defaultConfig: T & Component,
-  propsConfigGetter?: () => (T & Component) | undefined,
+  propsConfigGetter?: () => () => T & Component,
   topLevelClassKey?: string,
   mutatedProps?: ComputedRef,
 ): UseUI<T> {
