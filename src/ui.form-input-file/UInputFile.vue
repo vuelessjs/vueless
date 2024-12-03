@@ -71,7 +71,7 @@ const {
 const i18nGlobal = tm(UInputFile);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-const currentFiles = computed<File | Blob | File[] | null>({
+const currentFiles = computed<File | File[] | null>({
   get: () => props.modelValue,
   set: (newValue) => {
     const fallbackValue = props.multiple ? [] : null;
@@ -133,26 +133,17 @@ onBeforeUnmount(() => {
   }
 });
 
-watch(
-  () => props.multiple,
-  () => {
-    if (props.multiple) {
-      if (currentFiles.value) {
-        if (Array.isArray(currentFiles.value)) {
-          currentFiles.value = currentFiles.value.filter(
-            (file): file is File => file instanceof File,
-          );
-        } else if (currentFiles.value instanceof File) {
-          currentFiles.value = [currentFiles.value];
-        } else {
-          currentFiles.value = [];
-        }
-      } else {
-        currentFiles.value = [];
-      }
-    }
-  },
-);
+watch(() => props.multiple, normalizeFilesForMultipleMode);
+
+function normalizeFilesForMultipleMode() {
+  if (!props.multiple) return;
+
+  if (Array.isArray(currentFiles.value)) {
+    currentFiles.value = currentFiles.value;
+  } else {
+    currentFiles.value = currentFiles.value ? [currentFiles.value] : [];
+  }
+}
 
 function removeDuplicates(files: File[]) {
   return files.filter(
@@ -273,7 +264,7 @@ function onDrop(event: DragEvent) {
 
 function onClickRemoveItem(id: string | number) {
   if (Array.isArray(currentFiles.value)) {
-    currentFiles.value = currentFiles.value.filter((file: File) => file.name !== id);
+    currentFiles.value = currentFiles.value.filter((file) => file.name !== id);
   }
 }
 </script>
