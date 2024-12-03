@@ -298,6 +298,8 @@ defineExpose({
         @change="onChange"
         @mousedown="onMousedown"
         @click="onClick"
+        @paste="onPaste"
+        @copy="onCopy"
       />
 
       <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">

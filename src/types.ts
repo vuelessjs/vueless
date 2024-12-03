@@ -53,6 +53,7 @@ import UInputRatingConfig from "./ui.form-input-rating/config.ts";
 import UInputSearchConfig from "./ui.form-input-search/config.ts";
 import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
+import UDataListConfig from "./ui.data-list/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
 import type { Props } from "tippy.js";
@@ -141,6 +142,7 @@ export interface Config extends ThemeConfig {
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = Array<unknown>;
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
 export type Gray = "gray";
@@ -221,6 +223,7 @@ export interface Components {
   UInputSearch?: Partial<typeof UInputSearchConfig>;
   UInputFile?: Partial<typeof UInputFileConfig>;
   UInputMoney?: Partial<typeof UInputMoneyConfig>;
+  UDataList?: Partial<typeof UDataListConfig>;
 }
 
 export interface Directives {

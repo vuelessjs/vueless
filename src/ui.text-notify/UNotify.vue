@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { cx, getDefault, vuelessConfig } from "../utils/ui.ts";
+import { getDefault, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import useAttrs from "./useAttrs.ts";
 
@@ -11,7 +11,13 @@ import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { UNotifyProps } from "./types.ts";
+import type {
+  UNotifyProps,
+  Notification,
+  NotifyEvent,
+  NotificationsWrapperRef,
+  NotificationType,
+} from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -20,7 +26,18 @@ const props = withDefaults(defineProps<UNotifyProps>(), {
   yPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).yPosition,
   html: getDefault<UNotifyProps>(defaultConfig, UNotify).html,
   dataTest: "",
+  config: () => ({}),
 });
+
+const { tm } = useLocale();
+
+const notifications = ref<Notification[]>([]);
+const notifyPositionStyles = ref({});
+
+const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
+
+const i18nGlobal = tm(UNotify);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const {
   config,
@@ -33,17 +50,7 @@ const {
   warningIconAttrs,
   errorIconAttrs,
   closeIconAttrs,
-} = useAttrs(props);
-
-const { tm } = useLocale();
-
-const notifications = ref([]);
-const notifyPositionStyles = ref({});
-
-const notificationsWrapperRef = ref(null);
-
-const i18nGlobal = tm(UNotify);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+} = useAttrs(props, { notifications });
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });
@@ -61,11 +68,11 @@ onBeforeUnmount(() => {
   window.removeEventListener("notifyClearAll", onClearAll);
 });
 
-function onNotifyStart(event) {
+function onNotifyStart(event: NotifyEvent) {
   notifications.value.push({ ...event.detail });
 }
 
-function onNotifyEnd(event) {
+function onNotifyEnd(event: NotifyEvent) {
   notifications.value = notifications.value.filter(
     (notification) => notification.id !== event.detail.id,
   );
@@ -75,25 +82,27 @@ function onClearAll() {
   notifications.value = [];
 }
 
-function onClickClose(targetNotification) {
+function onClickClose(targetNotification: Notification) {
   notifications.value = notifications.value.filter(
     (notification) => notification.id !== targetNotification.id,
   );
 }
 
-function getOffsetWidth(selector) {
-  return document.querySelector(selector)?.offsetWidth || 0;
+function getOffsetWidth(selector: string): number {
+  const element = document.querySelector(selector);
+
+  return element ? (element as HTMLElement).offsetWidth : 0;
 }
 
 function setPosition() {
   const positionClasses = vuelessConfig.component?.UNotify?.positionClasses;
-  const pageClass = positionClasses?.page || config.value.positionClasses.page;
-  const asideClass = positionClasses?.aside || config.value.positionClasses.aside;
+  const pageClass = positionClasses?.page || config.value?.positionClasses?.page;
+  const asideClass = positionClasses?.aside || config.value?.positionClasses?.aside;
   const pageWidth = getOffsetWidth(`${pageClass}`);
   const asideWidth = getOffsetWidth(`${asideClass}`);
-  const notifyWidth = notificationsWrapperRef.value.$el?.offsetWidth || 0;
+  const notifyWidth = notificationsWrapperRef.value?.$el.offsetWidth || 0;
 
-  const styles = {
+  const styles: Record<string, string> = {
     left: "auto",
     top: "auto",
     right: "auto",
@@ -115,22 +124,8 @@ function setPosition() {
   notifyPositionStyles.value = styles;
 }
 
-function getText(notificationText, type) {
+function getText(notificationText: string, type: NotificationType): string {
   return notificationText || currentLocale.value[type]?.default;
-}
-
-function getNotificationClasses(notification) {
-  if (notification.type === NOTIFY_TYPE.success) {
-    return cx([bodyAttrs.value.class, config.value.bodySuccess]);
-  }
-
-  if (notification.type === NOTIFY_TYPE.warning) {
-    return cx([bodyAttrs.value.class, config.value.bodyWarning]);
-  }
-
-  if (notification.type === NOTIFY_TYPE.error) {
-    return cx([bodyAttrs.value.class, config.value.bodyError]);
-  }
 }
 </script>
 
@@ -139,21 +134,16 @@ function getNotificationClasses(notification) {
     ref="notificationsWrapperRef"
     :style="notifyPositionStyles"
     tag="div"
-    v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
+    v-bind="{ ...config?.transitionGroup, ...wrapperAttrs }"
   >
-    <div
-      v-for="notification in notifications"
-      :key="notification.id"
-      v-bind="bodyAttrs"
-      :class="getNotificationClasses(notification)"
-    >
+    <div v-for="notification in notifications" :key="notification.id" v-bind="bodyAttrs">
       <UIcon
         v-if="notification.type === NOTIFY_TYPE.success"
         color="green"
         variant="light"
         size="md"
         internal
-        :name="config.defaults.successIcon"
+        :name="config.defaults?.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
       />
@@ -164,7 +154,7 @@ function getNotificationClasses(notification) {
         variant="light"
         size="md"
         internal
-        :name="config.defaults.warningIcon"
+        :name="config.defaults?.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
       />
@@ -176,7 +166,7 @@ function getNotificationClasses(notification) {
         variant="light"
         size="md"
         internal
-        :name="config.defaults.errorIcon"
+        :name="config.defaults?.errorIcon"
         v-bind="errorIconAttrs"
       />
 
@@ -204,7 +194,7 @@ function getNotificationClasses(notification) {
         size="xs"
         internal
         interactive
-        :name="config.defaults.closeIcon"
+        :name="config.defaults?.closeIcon"
         v-bind="closeIconAttrs"
         @click="onClickClose(notification)"
       />

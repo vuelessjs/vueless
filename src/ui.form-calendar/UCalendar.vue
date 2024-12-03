@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef } from "vue";
+import { computed, ref, watch, useTemplateRef, onMounted } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
@@ -195,7 +195,7 @@ const userFormatLocale = computed(() => {
 
   // formatted locale
   return {
-    ...currentLocale,
+    ...currentLocale.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(monthsLonghand, LocaleType.Month),
@@ -333,31 +333,19 @@ watch(
   },
 );
 
-let isInit = false;
+onMounted(() => {
+  if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
+    hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
+    minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+    secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
 
-const unwatchInit = watch(
-  () => selectedDate.value,
-  () => {
-    if (isInit) unwatchInit();
+    emit("userDateChange", userFormattedDate.value);
+  }
 
-    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
-      hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
-      minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
-      secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
-
-      emit("userDateChange", userFormattedDate.value);
-
-      isInit = true;
-    }
-
-    if (selectedDate.value) {
-      emit("userDateChange", userFormattedDate.value);
-
-      isInit = true;
-    }
-  },
-  { deep: true, immediate: true },
-);
+  if (selectedDate.value) {
+    emit("userDateChange", userFormattedDate.value);
+  }
+});
 
 function getCurrentValueType(value: DateValue): DateValue {
   if (props.range && value === null) {
@@ -543,6 +531,7 @@ function enterKeyHandler() {
     activeMonth.value = null;
 
     emit("input", localValue.value);
+    emit("submit");
   }
 
   if (isCurrentView.value.month) currentView.value = View.Day;

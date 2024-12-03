@@ -79,7 +79,7 @@ function onChangeCheckedItems() {
       <slot>
         <UCheckbox
           v-for="(option, index) in options"
-          :key="option.value"
+          :key="option.id"
           :model-value="modelValue"
           :value="option.value"
           :true-value="option.trueValue"

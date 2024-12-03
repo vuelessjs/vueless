@@ -70,6 +70,9 @@ export default /*tw*/ {
   timepickerInputSeconds: "{>timepickerInput} rounded-r-dynamic",
   timepickerSubmitButton: "{UButton} py-2 border-0",
   i18n: {
+    today: "Today,",
+    yesterday: "Yesterday,",
+    tomorrow: "Tomorrow,",
     weekdays: {
       shorthand: {
         sunday: "Sun",

@@ -2,6 +2,9 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type ButtonSize = "xs" | "sm" | "md";
+export type IconSize = "xs" | "sm" | "md";
+
 export interface UPaginationProps {
   /**
    * Current page number.

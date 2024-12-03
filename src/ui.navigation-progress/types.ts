@@ -2,6 +2,8 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type HeaderSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+
 export interface UProgressProps {
   /**
    * Progress value (current step).
