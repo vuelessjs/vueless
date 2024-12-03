@@ -6,7 +6,7 @@ export interface UFilesProps {
   /**
    * List of file objects.
    */
-  fileList?: (File | Blob)[] | FileList;
+  fileList: File[];
 
   /**
    * File list label.

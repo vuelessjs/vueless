@@ -7,6 +7,7 @@ import { UFiles } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { computed } from "vue";
+import { getRandomId } from "../utils/helper.ts";
 
 import type { UFilesProps } from "./types.ts";
 
@@ -15,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<UFilesProps>(), {
   labelAlign: getDefault<UFilesProps>(defaultConfig, UFiles).labelAlign,
   size: getDefault<UFilesProps>(defaultConfig, UFiles).size,
+  fileList: () => [],
   dataTest: "",
 });
 
@@ -29,30 +31,16 @@ const emit = defineEmits([
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() => {
-  const fileArray = Array.isArray(props.fileList)
-    ? props.fileList
-    : Array.from(props.fileList || []);
-
-  return fileArray
-    .map((file) => {
-      if (!(file instanceof File) && !(file instanceof Blob)) {
-        // eslint-disable-next-line no-console
-        console.error("Invalid file object");
-
-        return null;
-      }
-
-      const fileName = file instanceof File ? file.name : "";
-      const fileType = file instanceof Blob ? file.type : "";
-
+  return props.fileList.map((file) => {
+    if (file instanceof File) {
       return {
-        id: fileName || fileType,
-        label: fileName || fileType,
+        id: getRandomId(),
+        label: file.name || "",
         url: URL.createObjectURL(file),
         imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
       };
-    })
-    .filter(Boolean);
+    }
+  });
 });
 
 function onRemoveFile(fileId: string | number) {
