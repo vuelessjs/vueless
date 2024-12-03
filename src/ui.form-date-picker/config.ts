@@ -37,9 +37,9 @@ export default /*tw*/ {
     leaveToClass: "opacity-0 scale-95",
   },
   i18n: {
-    today: "Today",
-    yesterday: "Yesterday",
-    tomorrow: "Tomorrow",
+    today: "Today,",
+    yesterday: "Yesterday,",
+    tomorrow: "Tomorrow,",
     weekdays: {
       shorthand: {
         sunday: "Sun",
@@ -117,8 +117,8 @@ export default /*tw*/ {
     okLabel: "Ok",
   },
   defaults: {
-    userDateFormat: "j F, Y",
-    userDateTimeFormat: "j F, Y - H:i:S",
+    userDateFormat: "r j F, Y",
+    userDateTimeFormat: "r j F, Y - H:i:S",
     size: "md",
     openDirectionX: "auto",
     openDirectionY: "auto",

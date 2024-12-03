@@ -49,7 +49,7 @@ export function isNumeric(char: string | number) {
   return /^\d+$/.test(String(char));
 }
 
-export function parseDate<TLocale>(
+export function parseDate<TLocale extends DateLocale>(
   date: Date | string | null,
   format: string = "Y-m-d H:i:S",
   locale: TLocale,
@@ -96,7 +96,7 @@ export function parseDate<TLocale>(
   return parsedDate;
 }
 
-export function parseStringDate<TLocale>(
+export function parseStringDate<TLocale extends DateLocale>(
   dateString: string,
   format = "Y-m-d H:i:S",
   locale: TLocale,
@@ -107,6 +107,14 @@ export function parseStringDate<TLocale>(
     return new Date(dateString);
   } else {
     let parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
+
+    const isRelativeDay = [locale.tomorrow, locale.today, locale.tomorrow].some((word) => {
+      return dateString.toLowerCase().includes(word.toLowerCase());
+    });
+
+    if (!isRelativeDay) {
+      format = format.replaceAll("r", "").trim();
+    }
 
     let matched;
     const operations: Operation[] = [];
@@ -130,20 +138,19 @@ export function parseStringDate<TLocale>(
       } else if (!isBackSlash) {
         regexStr += ".";
       }
-
-      operations.forEach((op) => {
-        const { fn } = op;
-        const { val } = op;
-
-        parsedDate = (fn(parsedDate, String(val), locale as DateLocale) || parsedDate) as Date;
-      });
     }
+
+    operations.forEach((operation) => {
+      const { fn, val } = operation;
+
+      parsedDate = (fn(parsedDate, String(val), locale as DateLocale) || parsedDate) as Date;
+    });
 
     return matched ? parsedDate : undefined;
   }
 }
 
-export function dateIsOutOfRange<TLocale>(
+export function dateIsOutOfRange<TLocale extends DateLocale>(
   date: Date,
   min: Date | string | undefined,
   max: Date | string | undefined,

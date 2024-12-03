@@ -4,7 +4,7 @@ import { useLocale as useGlobalLocale } from "../composables/useLocale.ts";
 
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { LocaleType } from "../ui.form-calendar/constants.ts";
-import { UDatePickerRange } from "./constants.js";
+import { UDatePickerRange } from "./constants.ts";
 
 import defaultConfig from "./config.ts";
 
