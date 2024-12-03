@@ -29,7 +29,7 @@ export const revFormat = {
 
   F: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.longhand.findIndex((longMonth) => {
-      return longMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
+      return longMonth.toLowerCase().trim() === monthName.toLowerCase().trim();
     });
 
     dateObj.setMonth(monthIndex);
@@ -49,7 +49,7 @@ export const revFormat = {
 
   M: (dateObj: Date, monthName: string, locale: DateLocale) => {
     const monthIndex = locale.months.shorthand.findIndex((shortMonth) => {
-      return shortMonth.toLocaleLowerCase().trim() === monthName.toLocaleLowerCase().trim();
+      return shortMonth.toLowerCase().trim() === monthName.toLowerCase().trim();
     });
 
     dateObj.setMonth(monthIndex);

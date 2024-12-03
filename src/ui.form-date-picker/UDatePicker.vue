@@ -5,12 +5,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import {
-  View,
-  LocaleType,
-  ARROW_KEYS,
-  // TOKEN_REG_EXP,
-} from "../ui.form-calendar/constants.ts";
+import { View, LocaleType, ARROW_KEYS, TOKEN_REG_EXP } from "../ui.form-calendar/constants.ts";
 
 import { getDefault } from "../utils/ui.ts";
 
@@ -160,20 +155,33 @@ function onPaste(event: ClipboardEvent) {
   try {
     const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
     const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
+    const relativeTokensAmount = Number(userFormat.match(/(?<!\\)r/g)?.length);
 
-    // // Amount of tokens used in format string without decimeters.
-    // const tokensAmount = userFormat
-    //   .split("")
-    //   .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+    // Amount of tokens used in format string without decimeters.
+    const tokensAmount = userFormat
+      .split("")
+      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
 
-    // // Amount of substring that satisfies format tokens.
-    // const pastedTokensAmount = pasteContent
-    //   .replace(/[^a-zA-Z0-9]/g, " ")
-    //   .replace(/\s+/g, " ")
-    //   .trim()
-    //   .split(" ").length;
+    // Amount of substring that satisfies format tokens.
+    let pastedTokensAmount = pasteContent
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(" ").length;
 
-    // if (pastedTokensAmount !== tokensAmount) return;
+    const isPastedRelativeDay = [
+      locale.value.tomorrow,
+      locale.value.today,
+      locale.value.tomorrow,
+    ].some((word) => {
+      return pasteContent.includes(word);
+    });
+
+    if (isPastedRelativeDay) {
+      pastedTokensAmount -= relativeTokensAmount;
+    }
+
+    if (pastedTokensAmount !== tokensAmount) return;
 
     const parsedDate = parseDate(pasteContent, userFormat, locale.value);
 
