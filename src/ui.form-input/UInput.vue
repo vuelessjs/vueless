@@ -93,6 +93,10 @@ const inputValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
+const applyPasswordClasses = computed(() => {
+  return Boolean(inputValue.value && !isShownPassword.value && isTypePassword.value);
+});
+
 const elementId = props.id || useId();
 
 const {
@@ -105,7 +109,7 @@ const {
   leftIconAttrs,
   rightIconAttrs,
   rightIconWrapperAttrs,
-} = useAttrs(props);
+} = useAttrs(props, { applyPasswordClasses });
 
 const iconSize = computed(() => {
   const sizes = {
