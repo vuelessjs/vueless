@@ -121,19 +121,22 @@ function onClickDelete(value: number, label: string) {
   emit("clickDelete", value, label);
 }
 
-function prepareSortData(list: DataListItem[] = [], parentId?: number) {
+function prepareSortData(list: DataListItem[] = [], parentValue: string | number | null = null) {
   const sortData: DataListItem[] = [];
 
   list.forEach((item: DataListItem) => {
     const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
-      const childrenItem = prepareSortData(item.children, item[props.valueKey]);
+      const childrenItem = prepareSortData(
+        item.children,
+        item[props.valueKey as keyof DataListItem] as string | number | null,
+      );
 
       childrenItem.forEach((item) => sortData.push(item));
     }
 
-    const parentItem = { ...item, parentId: 0 || parentId };
+    const parentItem = { ...item, parentValue };
 
     sortData.push(parentItem);
   });

@@ -2,6 +2,8 @@ import defaultConfig from "./config.ts";
 
 import DraggableContext from "vuedraggable";
 
+import type { UnknownType } from "../types.ts";
+
 export type Config = Partial<typeof defaultConfig>;
 
 export type IconSize = "xs" | "sm" | "md";
@@ -19,6 +21,7 @@ export interface DataListItem {
   isHiddenEdit?: boolean;
   isDisabledNesting?: boolean;
   children?: DataListItem[];
+  [key: string]: UnknownType | DataListItem[];
 }
 
 export interface UDataListProps {

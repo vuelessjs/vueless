@@ -135,6 +135,7 @@ export interface Config extends ThemeConfig {
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = Array<unknown>;
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
 export type Gray = "gray";
