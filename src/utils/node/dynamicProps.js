@@ -45,10 +45,9 @@ async function updateTypeScriptFile(filePath, params) {
           ...propDefinition.split("\n"),
         );
       } else {
-        // Add the new property before the closing bracket of the interface
         const closingBracketIndex = lines.findIndex((line) => line.trim() === "}");
 
-        lines.splice(closingBracketIndex, 0, ...propDefinition.split("\n"));
+        lines.splice(closingBracketIndex, 0, "", ...propDefinition.split("\n"));
       }
     }
 
