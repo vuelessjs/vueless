@@ -10,7 +10,7 @@ import defaultConfig from "./config.ts";
 import { UPagination } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UPaginationProps } from "./types.ts";
+import type { UPaginationProps, ButtonSize, IconSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<UPaginationProps>(), {
   showFirst: getDefault<UPaginationProps>(defaultConfig, UPagination).showFirst,
   showLast: getDefault<UPaginationProps>(defaultConfig, UPagination).showLast,
   dataTest: "",
+  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -70,7 +71,7 @@ const buttonSize = computed(() => {
     lg: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as ButtonSize;
 });
 
 const iconSize = computed(() => {
@@ -80,11 +81,11 @@ const iconSize = computed(() => {
     lg: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const totalPages = computed(() => {
-  return props.perPage > 0 ? Math.ceil(props.total / props.perPage) : 0;
+  return props.perPage > 0 && props.total ? Math.ceil(props.total / props.perPage) : 0;
 });
 
 const pageButtons = computed(() => {
@@ -108,11 +109,11 @@ const pageButtons = computed(() => {
 });
 
 const prevIsDisabled = computed(() => {
-  return props.disabled || currentPage.value === null || currentPage.value <= 1;
+  return props.disabled || !currentPage.value || currentPage.value <= 1;
 });
 
 const nextIsDisabled = computed(() => {
-  return props.disabled || currentPage.value === null || currentPage.value >= totalPages.value;
+  return props.disabled || !currentPage.value || currentPage.value >= totalPages.value;
 });
 
 function selectPage(page: number) {
@@ -120,14 +121,13 @@ function selectPage(page: number) {
 }
 
 function goToPrevPage() {
-  currentPage.value = currentPage.value === null ? 1 : Math.max(currentPage.value - 1, 1);
+  currentPage.value = !currentPage.value ? 1 : Math.max(currentPage.value - 1, 1);
 }
 
 function goToNextPage() {
-  currentPage.value =
-    currentPage.value === null
-      ? totalPages.value
-      : Math.min(currentPage.value + 1, totalPages.value);
+  currentPage.value = !currentPage.value
+    ? totalPages.value
+    : Math.min(currentPage.value + 1, totalPages.value);
 }
 
 function goToFirstPage() {
@@ -159,7 +159,7 @@ function goToLastPage() {
           v-if="!firstLabel"
           internal
           :size="iconSize"
-          :name="config.defaults.firstIcon"
+          :name="config.defaults?.firstIcon"
           v-bind="firstIconAttrs"
         />
       </slot>
@@ -182,7 +182,7 @@ function goToLastPage() {
           v-if="!prevLabel"
           internal
           :size="iconSize"
-          :name="config.defaults.prevIcon"
+          :name="config.defaults?.prevIcon"
           v-bind="prevIconAttrs"
         />
       </slot>
@@ -244,7 +244,7 @@ function goToLastPage() {
           v-if="!nextLabel"
           internal
           :size="iconSize"
-          :name="config.defaults.nextIcon"
+          :name="config.defaults?.nextIcon"
           v-bind="nextIconAttrs"
         />
       </slot>
@@ -268,7 +268,7 @@ function goToLastPage() {
           v-if="!lastLabel"
           internal
           :size="iconSize"
-          :name="config.defaults.lastIcon"
+          :name="config.defaults?.lastIcon"
           v-bind="lastIconAttrs"
         />
       </slot>

@@ -7,6 +7,7 @@ import { UFiles } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { computed } from "vue";
+import { getRandomId } from "../utils/helper.ts";
 
 import type { UFilesProps } from "./types.ts";
 
@@ -15,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<UFilesProps>(), {
   labelAlign: getDefault<UFilesProps>(defaultConfig, UFiles).labelAlign,
   size: getDefault<UFilesProps>(defaultConfig, UFiles).size,
+  fileList: () => [],
   dataTest: "",
 });
 
@@ -28,18 +30,20 @@ const emit = defineEmits([
 
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
-const formattedFileList = computed(() =>
-  props.fileList.map((file) => {
-    return {
-      id: file.name,
-      label: file.name,
-      url: URL.createObjectURL(file),
-      imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
-    };
-  }),
-);
+const formattedFileList = computed(() => {
+  return props.fileList.map((file) => {
+    if (file instanceof File) {
+      return {
+        id: getRandomId(),
+        label: file.name || "",
+        url: URL.createObjectURL(file),
+        imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
+      };
+    }
+  });
+});
 
-function onRemoveFile(fileId) {
+function onRemoveFile(fileId: string | number) {
   emit("remove", fileId);
 }
 </script>
@@ -57,11 +61,11 @@ function onRemoveFile(fileId) {
       <slot>
         <UFile
           v-for="(file, index) in formattedFileList"
-          :id="file.id"
-          :key="file.id"
-          :label="file.label"
-          :url="file.url"
-          :image-url="file.imageUrl"
+          :id="file?.id"
+          :key="file?.id"
+          :label="file?.label"
+          :url="file?.url"
+          :image-url="file?.imageUrl"
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"

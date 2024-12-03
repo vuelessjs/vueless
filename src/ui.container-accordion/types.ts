@@ -2,6 +2,7 @@ import defaultConfig from "./config.ts";
 
 export type Config = Partial<typeof defaultConfig>;
 
+export type DividerSize = "md" | "lg" | "xl";
 export interface UAccordionProps {
   /**
    * Accordion title.
