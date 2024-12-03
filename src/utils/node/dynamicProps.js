@@ -53,6 +53,7 @@ async function updateTypeScriptFile(filePath, params) {
 
     await fs.writeFile(filePath, lines.join("\n"), "utf-8");
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error updating file:", error.message);
   }
 }
