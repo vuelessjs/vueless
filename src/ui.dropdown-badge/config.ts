@@ -1,8 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownBadge: {
-    component: "{UBadge}",
-    base: "transition",
+    base: "{UBadge} transition",
     variants: {
       opened: {
         true: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
@@ -12,8 +11,7 @@ export default /*tw*/ {
   },
   dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
   dropdownList: {
-    component: "{UDropdownList}",
-    base: "w-fit",
+    base: "{UDropdownList} w-fit",
     variants: {
       yPosition: {
         top: "bottom-6 mb-6",

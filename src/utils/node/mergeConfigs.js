@@ -24,7 +24,7 @@ export function createMergeConfigs(cx) {
     const isPropsConfig = Object.keys(propsConfig).length;
 
     // Add unique keys from defaultConfig to composedConfig
-    const composedConfig = cloneDeep(defaultConfig);
+    const composedConfig = cloneDeep(stringToObject(defaultConfig, { addBase: true }));
 
     // Add unique keys from globalConfig to composedConfig
     for (const key in globalConfig) {
@@ -45,7 +45,6 @@ export function createMergeConfigs(cx) {
       defaults,
       strategy,
       safelist,
-      component,
       safelistColors,
       defaultVariants,
       compoundVariants,
@@ -57,15 +56,6 @@ export function createMergeConfigs(cx) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
-          }
-        } else if (key === component) {
-          config[key] = propsConfig[key] || defaultConfig[key];
-
-          if (globalConfig[key]) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Passing '${key}' key in 'config' prop or by global config is not allowed.`,
-            );
           }
         } else if (key === strategy) {
           config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
@@ -231,7 +221,7 @@ export function createGetMergedConfig(cx) {
     const strategy =
       !globalConfig && !propsConfig
         ? STRATEGY_TYPE.merge
-        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy;
+        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy || STRATEGY_TYPE.merge;
 
     if (strategy === STRATEGY_TYPE.merge) {
       mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });

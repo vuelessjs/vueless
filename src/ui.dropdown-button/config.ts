@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownButton: {
-    component: "{UButton}",
+    base: "{UButton}",
     variants: {
       opened: {
         true: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",

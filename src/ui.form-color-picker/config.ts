@@ -13,11 +13,11 @@ export default /*tw*/ {
   unselected: "relative flex",
   unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
   unselectedColorPickerRadio: {
-    component: "{URadio}",
+    base: "{URadio}",
     radio: "checked:text-white !border-gray-300",
   },
   colorPickerRadio: {
-    component: "{URadio}",
+    base: "{URadio}",
     radio: `
       bg-{color}-600 border-{color}-600 hover:border-{color}-600 active:bg-{color}-800
       disabled:border-{color}-400 disabled:bg-{color}-400

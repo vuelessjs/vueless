@@ -4,7 +4,7 @@ import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
 import useUI from "../composables/useUI.ts";
 import { useDarkMode } from "../composables/useDarkMode.ts";
 import { hasSlotContent } from "../utils/helper.ts";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -17,19 +17,7 @@ import type { UButtonProps, LoaderSize, IconSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UButtonProps>(), {
-  variant: getDefault<UButtonProps>(defaultConfig, UButton).variant,
-  color: getDefault<UButtonProps>(defaultConfig, UButton).color,
-  size: getDefault<UButtonProps>(defaultConfig, UButton).size,
-  tag: getDefault<UButtonProps>(defaultConfig, UButton).tag,
-  tabindex: getDefault<UButtonProps>(defaultConfig, UButton).tabindex,
-  filled: getDefault<UButtonProps>(defaultConfig, UButton).filled,
-  disabled: getDefault<UButtonProps>(defaultConfig, UButton).disabled,
-  block: getDefault<UButtonProps>(defaultConfig, UButton).block,
-  round: getDefault<UButtonProps>(defaultConfig, UButton).round,
-  square: getDefault<UButtonProps>(defaultConfig, UButton).square,
-  loading: getDefault<UButtonProps>(defaultConfig, UButton).loading,
-  noRing: getDefault<UButtonProps>(defaultConfig, UButton).noRing,
-  dataTest: "",
+  ...getDefaults<UButtonProps>(defaultConfig, UButton),
 });
 
 const slots = useSlots();

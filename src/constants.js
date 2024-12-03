@@ -67,7 +67,6 @@ export const SYSTEM_CONFIG_KEY = {
   defaults: "defaults",
   strategy: "strategy",
   safelist: "safelist",
-  component: "component",
   transition: "transition",
   safelistColors: "safelistColors",
   ...CVA_CONFIG_KEY,
