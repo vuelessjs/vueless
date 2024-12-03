@@ -9,7 +9,7 @@ import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UToggleProps } from "./types.ts";
+import type { UToggleProps, LabelSize } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -51,7 +51,7 @@ const labelSize = computed(() => {
     xl: "lg",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as LabelSize;
 });
 
 const type = computed(() => {
@@ -112,8 +112,8 @@ provide("toggleSelectedValue", {
           :value="item.value"
           :disabled="disabled"
           :label="item.label"
-          :data-test="`${dataTest}-item-${index}`"
           v-bind="itemAttrs"
+          :data-test="`${dataTest}-item-${index}`"
         />
       </slot>
     </div>

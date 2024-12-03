@@ -1,6 +1,6 @@
 export default /*tw*/ {
   selectLabel: {
-    component: "{ULabel}",
+    base: "{ULabel}",
     variants: {
       opened: {
         true: "group/active",

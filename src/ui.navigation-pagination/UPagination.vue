@@ -149,8 +149,8 @@ function goToLastPage() {
       :label="firstLabel"
       :square="!firstLabel"
       :disabled="prevIsDisabled"
-      :data-test="`${dataTest}-first`"
       v-bind="firstButtonAttrs"
+      :data-test="`${dataTest}-first`"
       @click="goToFirstPage"
     >
       <!-- @slot Use it to add something instead of the "first" label. -->
@@ -172,8 +172,8 @@ function goToLastPage() {
       :label="prevLabel"
       :square="!prevLabel"
       :disabled="prevIsDisabled"
-      :data-test="`${dataTest}-prev`"
       v-bind="prevButtonAttrs"
+      :data-test="`${dataTest}-prev`"
       @click="goToPrevPage"
     >
       <!-- @slot Use it to add something instead of the "prev" label. -->

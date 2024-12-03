@@ -43,6 +43,10 @@ import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
 import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
 import URadioConfig from "./ui.form-radio/config.ts";
 import URadioGroupConfig from "./ui.form-radio-group/config.ts";
+import USwitchConfig from "./ui.form-switch/config.ts";
+import UTextareaConfig from "./ui.form-textarea/config.ts";
+import ULabelConfig from "./ui.form-label/config.ts";
+import UDataListConfig from "./ui.data-list/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
 import type { Props } from "tippy.js";
@@ -131,6 +135,7 @@ export interface Config extends ThemeConfig {
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = Array<unknown>;
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
 export type Gray = "gray";
@@ -201,6 +206,10 @@ export interface Components {
   UCheckboxMultiState?: Partial<typeof UCheckboxMultiStateConfig>;
   URadio?: Partial<typeof URadioConfig>;
   URadioGroup?: Partial<typeof URadioGroupConfig>;
+  USwitch?: Partial<typeof USwitchConfig>;
+  UTextarea?: Partial<typeof UTextareaConfig>;
+  ULabel?: Partial<typeof ULabelConfig>;
+  UDataList?: Partial<typeof UDataListConfig>;
 }
 
 export interface Directives {

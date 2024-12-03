@@ -34,7 +34,7 @@ import type {
  */
 export default function useUI<T>(
   defaultConfig: T & Component,
-  propsConfigGetter?: () => (T & Component) | undefined,
+  propsConfigGetter?: () => T & Component,
   topLevelClassKey?: string,
   mutatedProps?: ComputedRef,
 ): UseUI<T> {
@@ -124,12 +124,9 @@ export default function useUI<T>(
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
 
       const baseClasses = getBaseClasses(config.value[key]);
-      const extendsMatches = baseClasses.match(EXTENDS_PATTERN_REG_EXP);
+      const extendsKeys = getExtendsKeys(baseClasses);
 
-      if (extendsMatches) {
-        // retrieves extends keys from patterns:
-        // Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
-        const extendsKeys = extendsMatches.map((pattern) => pattern.slice(2, -1));
+      if (extendsKeys.length) {
         const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
         const extendsClasses = Object.values(classes).map((item) => toValue(item));
 
@@ -141,6 +138,10 @@ export default function useUI<T>(
             ...extendsClasses,
             keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
           ]),
+          config: getMergedConfig({
+            defaultConfig: config.value[extendsKeys[0]],
+            globalConfig: keyAttrs.value.config as Component,
+          }),
         }));
       }
     }
@@ -204,15 +205,21 @@ function getBaseClasses(value: string | CVA | NestedComponent) {
 }
 
 /**
- * Check is config key contains component name and if contains return it.
+ * Retrieves extends keys from patterns:
+ * Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
+ */
+function getExtendsKeys(values: string = ""): string[] {
+  const matches = values.match(EXTENDS_PATTERN_REG_EXP);
+
+  return matches ? matches?.map((pattern) => pattern.slice(2, -1)) : [];
+}
+
+/**
+ * Check is config key contains component name and returns it.
  */
 function getNestedComponent(value: string | NestedComponent | CVA) {
   const classes = getBaseClasses(value);
-  const component = (value as NestedComponent)?.component as ComponentNames;
-
-  const match =
-    classes.match(NESTED_COMPONENT_PATTERN_REG_EXP) ||
-    component?.match(NESTED_COMPONENT_PATTERN_REG_EXP);
+  const match = classes.match(NESTED_COMPONENT_PATTERN_REG_EXP);
 
   return match ? match[1] : "";
 }

@@ -38,7 +38,7 @@ export default /*tw*/ {
       },
     },
   },
-  headerCellCheckbox: "{>headerCellBase} w-10",
+  headerCellCheckbox: "{>headerCellBase} w-10 pr-2",
   headerCheckbox: "{UCheckbox}",
   headerCounter: {
     base: "{>headerCounterBase} absolute top-4 mt-px left-11 ml-px",
@@ -66,17 +66,17 @@ export default /*tw*/ {
     },
   },
   bodyCellContent: "text-ellipsis overflow-hidden",
-  bodyCellCheckbox: "{>bodyCellBase} first:px-4", // try to remove first
+  bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex gap-0.5",
   bodyCellNestedExpandIconWrapper: "",
   bodyCellNestedExpandIcon: {
-    component: "{UIcon}",
+    base: "{UIcon}",
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },
   bodyCellNestedCollapseIcon: {
-    component: "{UIcon}",
+    base: "{UIcon}",
     wrapper: "rounded-sm",
     container: "bg-gray-200",
   },

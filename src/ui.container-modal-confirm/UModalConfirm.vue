@@ -90,8 +90,8 @@ function emitConfirmAction() {
     :mobile-stick-bottom="mobileStickBottom"
     no-divider
     mobile-bottom-align
-    :data-test="dataTest"
     v-bind="confirmModalAttrs"
+    :data-test="dataTest"
   >
     <template #header-left>
       <!-- @slot Use it to add something to the left side of the header. -->

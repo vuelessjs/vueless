@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -15,9 +20,6 @@ interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
   enum: keyof Pick<UDropdownLinkProps, "size" | "color">;
 }
 
-/**
- * The `UDropdownLink` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-link)
- */
 export default {
   id: "2030",
   title: "Dropdowns / Dropdown Link",
@@ -39,6 +41,7 @@ export default {
         height: "200px",
       },
     },
+    ...getDocsDescription(UDropdownLink.__name),
   },
 } as Meta;
 

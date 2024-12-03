@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -16,9 +21,6 @@ interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
   enum: keyof Pick<UDropdownButtonProps, "size" | "variant">;
 }
 
-/**
- * The `UDropdownButton` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.dropdown-button)
- */
 export default {
   id: "2010",
   title: "Dropdowns / Dropdown Button",
@@ -36,6 +38,7 @@ export default {
         height: "200px",
       },
     },
+    ...getDocsDescription(UDropdownButton.__name),
   },
 } as Meta;
 

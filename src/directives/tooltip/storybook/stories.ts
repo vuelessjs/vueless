@@ -1,5 +1,4 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../../utils/storybook.ts";
 
 import UIcon from "../../../ui.image-icon/UIcon.vue";
 import URow from "../../../ui.container-row/URow.vue";
@@ -8,7 +7,7 @@ import tooltip from "../vTooltip.ts";
 import type { Props } from "tippy.js";
 
 interface VTooltipArgs {
-  tooltip: Partial<Props> | string;
+  tooltipOptions: Partial<Props> | string;
 }
 
 interface VTooltipEnumArgs extends VTooltipArgs {
@@ -22,11 +21,8 @@ interface VTooltipEnumArgs extends VTooltipArgs {
 export default {
   id: "7021",
   title: "Directives / Tooltip",
-  component: UIcon,
   args: {},
-  argTypes: {
-    ...getArgTypes(UIcon.__name),
-  },
+  argTypes: {},
 } as Meta;
 
 const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
@@ -36,7 +32,7 @@ const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
     return { args };
   },
   template: `
-    <UIcon interactive name="sentiment_satisfied" v-tooltip="args.tooltip" >
+    <UIcon interactive name="sentiment_satisfied" v-tooltip="args.tooltipOptions" />
   `,
 });
 
@@ -52,21 +48,30 @@ const EnumTemplate: StoryFn<VTooltipEnumArgs> = (args: VTooltipEnumArgs) => ({
         v-for="option in args.options"
         interactive
         name="sentiment_satisfied"
-        v-tooltip="{ content: option, ...args.tooltip, [args.enum]: option }"
-      >
+        v-tooltip="{ content: option, ...args.tooltipOptions, [args.enum]: option }"
+      />
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { tooltip: "Tooltip" };
+Default.args = { tooltipOptions: "Tooltip" };
 
 export const Settings = DefaultTemplate.bind({});
-Settings.args = { tooltip: { content: "Tooltip", placement: "right" } };
+Settings.args = { tooltipOptions: { content: "Tooltip", placement: "right" } };
+
+Settings.parameters = {
+  docs: {
+    source: {
+      // Do not break this line, this will lead to wrong formatting.
+      code: `<UIcon interactive name="sentiment_satisfied" v-tooltip="{ content: 'Tooltip', placement: 'right' }">`,
+    },
+  },
+};
 
 export const Placement = EnumTemplate.bind({});
 Placement.args = {
-  tooltip: {},
+  tooltipOptions: {},
   enum: "placement",
   options: [
     "top",
@@ -85,4 +90,12 @@ Placement.args = {
     "auto-start",
     "auto-end",
   ],
+};
+
+Placement.parameters = {
+  docs: {
+    source: {
+      code: `<UIcon interactive name="sentiment_satisfied" v-tooltip="{ content: 'top', placement: 'top' }">`,
+    },
+  },
 };

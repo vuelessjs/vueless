@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
 
@@ -9,9 +14,6 @@ interface UPaginationArgs extends UPaginationProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UPagination` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.navigation-pagination)
- */
 export default {
   id: "8050",
   title: "Navigation / Pagination",
@@ -22,6 +24,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UPagination.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UPagination.__name),
   },
 } as Meta;
 

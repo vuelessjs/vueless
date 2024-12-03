@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UFile from "../../ui.text-file/UFile.vue";
 
@@ -9,9 +14,6 @@ interface UFileArgs extends UFileProps {
   slotTemplate?: string;
 }
 
-/**
- * The `UFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-file)
- */
 export default {
   id: "4050",
   title: "Text & Content / File",
@@ -22,6 +24,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UFile.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UFile.__name),
   },
 } as Meta;
 

@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: "w-full",
   upperline: "{UDivider}",
   underline: {
-    component: "{UDivider}",
+    base: "{UDivider}",
     variants: {
       underlined: {
         true: "pt-1.5",

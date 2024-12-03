@@ -1,7 +1,7 @@
 export default /*tw*/ {
   toggleButton: {
-    component: "{UButton}",
     base: `
+      {UButton}
       border-gray-300 font-normal
       hover:text-brand-600 hover:border-brand-600 hover:relative hover:z-10
       focus:text-brand-600 focus:border-brand-600 focus:relative focus:z-10 focus:ring-brand-700/15

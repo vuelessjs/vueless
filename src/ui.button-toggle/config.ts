@@ -1,7 +1,6 @@
 export default /*tw*/ {
   toggleLabel: {
-    component: "{ULabel}",
-    base: "flex flex-wrap",
+    base: "{ULabel} flex flex-wrap",
     variants: {
       block: {
         true: "w-full",

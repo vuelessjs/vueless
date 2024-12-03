@@ -1,11 +1,13 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-/**
- * The `UInputFile` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.form-input-file)
- */
 export default {
   id: "30232",
   title: "Form Inputs & Controls / Input File",
@@ -15,6 +17,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UInputFile.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UInputFile.__name),
   },
 };
 

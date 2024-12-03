@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -16,9 +21,6 @@ interface UMoneyArgs extends UMoneyProps {
 
 const COMPONENT_CLASSES = "flex justify-center w-1/6";
 
-/**
- * The `UMoney` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.text-money)
- */
 export default {
   id: "4040",
   title: "Text & Content / Money",
@@ -30,6 +32,9 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UMoney.__name),
+  },
+  parameters: {
+    ...getDocsDescription(UMoney.__name),
   },
 } as Meta;
 

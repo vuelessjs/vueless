@@ -1,5 +1,10 @@
 import { ref } from "vue";
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -14,9 +19,6 @@ interface UToggleArgs extends UToggleProps {
   enum: "variant" | "size";
 }
 
-/**
- * The `UToggle` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/ui.button-toggle)
- */
 export default {
   components: { UIcon, UToggleItem },
   title: "Buttons & Links / Toggle",
@@ -32,6 +34,9 @@ export default {
   argTypes: {
     ...getArgTypes(UToggle.__name),
     modelValue: { control: { type: "text" } },
+  },
+  parameters: {
+    ...getDocsDescription(UToggle.__name),
   },
 } as Meta;
 
