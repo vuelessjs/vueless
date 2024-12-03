@@ -42,9 +42,12 @@ const formattedFileList = computed(() => {
         return null;
       }
 
+      const fileName = file instanceof File ? file.name : "";
+      const fileType = file instanceof Blob ? file.type : "";
+
       return {
-        id: file instanceof File ? file.name : file instanceof Blob ? file.type : "",
-        label: file instanceof File ? file.name : file instanceof Blob ? file.type : "",
+        id: fileName || fileType,
+        label: fileName || fileType,
         url: URL.createObjectURL(file),
         imageUrl: file.type.includes("image") ? URL.createObjectURL(file) : undefined,
       };
