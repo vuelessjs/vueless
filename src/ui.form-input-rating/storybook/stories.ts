@@ -8,6 +8,14 @@ import {
 import UInputRating from "../../ui.form-input-rating/UInputRating.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputRatingProps } from "../types.ts";
+
+interface UInputRatingArgs extends UInputRatingProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 export default {
   id: "3060",
   title: "Form Inputs & Controls / Input Rating",
@@ -22,9 +30,9 @@ export default {
   parameters: {
     ...getDocsDescription(UInputRating.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => ({
   components: { UInputRating },
   setup() {
     const slots = getSlotNames(UInputRating.__name);
@@ -36,17 +44,17 @@ const DefaultTemplate = (args) => ({
       v-bind="args"
       v-model="args.modelValue"
     >
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInputRating>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, { argTypes }) => ({
   components: { UInputRating, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -69,7 +77,7 @@ export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const StarAmount = DefaultTemplate.bind({});
-StarAmount.args = { value: 4, stars: 7 };
+StarAmount.args = { modelValue: 4, stars: 7 };
 
 export const Selectable = DefaultTemplate.bind({});
 Selectable.args = { selectable: true };

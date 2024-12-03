@@ -8,6 +8,14 @@ import {
 import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UColorPickerProps } from "../types.ts";
+
+interface UColorPickerArgs extends UColorPickerProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 export default {
   id: "3210",
   title: "Form Inputs & Controls / Color Picker",
@@ -22,9 +30,9 @@ export default {
   parameters: {
     ...getDocsDescription(UColorPicker.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => ({
   components: { UColorPicker },
   setup() {
     const slots = getSlotNames(UColorPicker.__name);
@@ -33,17 +41,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UColorPicker v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UColorPicker>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, { argTypes }) => ({
   components: { UCol, UColorPicker },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

@@ -46,6 +46,13 @@ import URadioGroupConfig from "./ui.form-radio-group/config.ts";
 import USwitchConfig from "./ui.form-switch/config.ts";
 import UTextareaConfig from "./ui.form-textarea/config.ts";
 import ULabelConfig from "./ui.form-label/config.ts";
+import UColorPickerConfig from "./ui.form-color-picker/config.ts";
+import UInputConfig from "./ui.form-input/config.ts";
+import UInputNumberConfig from "./ui.form-input-number/config.ts";
+import UInputRatingConfig from "./ui.form-input-rating/config.ts";
+import UInputSearchConfig from "./ui.form-input-search/config.ts";
+import UInputFileConfig from "./ui.form-input-file/config.ts";
+import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
@@ -209,6 +216,13 @@ export interface Components {
   USwitch?: Partial<typeof USwitchConfig>;
   UTextarea?: Partial<typeof UTextareaConfig>;
   ULabel?: Partial<typeof ULabelConfig>;
+  UColorPicker?: Partial<typeof UColorPickerConfig>;
+  UInput?: Partial<typeof UInputConfig>;
+  UInputNumber?: Partial<typeof UInputNumberConfig>;
+  UInputRating?: Partial<typeof UInputRatingConfig>;
+  UInputSearch?: Partial<typeof UInputSearchConfig>;
+  UInputFile?: Partial<typeof UInputFileConfig>;
+  UInputMoney?: Partial<typeof UInputMoneyConfig>;
   UDataList?: Partial<typeof UDataListConfig>;
 }
 

@@ -43,6 +43,9 @@ export default /*tw*/ {
         focus-within:border-red-500 focus-within:ring-red-700/15
       `,
       },
+      typePassword: {
+        true: "tracking-widest [font-family:text-security-disc,serif] [-webkit-text-security:disc]",
+      },
     },
     compoundVariants: [
       { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },

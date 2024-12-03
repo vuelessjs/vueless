@@ -4,7 +4,7 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
-    // "lib": ["ES2021.String"],
+    "lib": ["ESNext"],
     "types": ["node", "jsdom"]
   }
 }

@@ -1,3 +1,118 @@
+<script setup lang="ts">
+import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
+
+import { getDefault } from "../utils/ui.ts";
+
+import UInput from "../ui.form-input/UInput.vue";
+
+import defaultConfig from "./config.ts";
+import useAttrs from "./useAttrs.ts";
+import useFormatCurrency from "./useFormatCurrency.ts";
+import { UInputMoney } from "./constants.ts";
+
+import type { UInputMoneyProps } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UInputMoneyProps>(), {
+  labelAlign: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).labelAlign,
+  symbol: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).symbol,
+  size: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).size,
+  minFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).minFractionDigits,
+  maxFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).maxFractionDigits,
+  decimalSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).decimalSeparator,
+  thousandsSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).thousandsSeparator,
+  positiveOnly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).positiveOnly,
+  prefix: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).prefix,
+  readonly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).readonly,
+  disabled: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).disabled,
+  modelValue: "",
+  dataTest: "",
+});
+
+const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
+
+const moneyInputRef = ref<{ inputRef: HTMLInputElement } | null>(null);
+
+const elementId = props.id || useId();
+
+const { moneyInputAttrs } = useAttrs(props);
+
+const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
+  minFractionDigits: props.minFractionDigits,
+  maxFractionDigits: props.maxFractionDigits,
+  decimalSeparator: props.decimalSeparator,
+  thousandsSeparator: props.thousandsSeparator,
+  positiveOnly: props.positiveOnly,
+  prefix: props.prefix,
+}));
+
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const localLabel = computed(() => {
+  const comma = props.symbol && props.label ? "," : "";
+  const symbol = props.label ? props.symbol : "";
+
+  return `${props.label}${comma} ${symbol}`.trim();
+});
+
+const input = computed(() => {
+  return moneyInputRef.value?.inputRef || null;
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (String(localValue.value) !== String(rawValue.value)) {
+      setValue(localValue.value);
+    }
+  },
+);
+
+onMounted(() => {
+  if (localValue.value) {
+    setValue(localValue.value);
+  }
+});
+
+function onKeyup(event: KeyboardEvent) {
+  localValue.value = rawValue.value || "";
+
+  nextTick(() => emit("keyup", event));
+}
+
+function onBlur() {
+  nextTick(() => emit("blur"));
+}
+
+function onInput(value: InputEvent) {
+  nextTick(() => emit("input", value));
+}
+
+defineExpose({
+  /**
+   * Reference to the underlying input element inside UInput.
+   * @property {HTMLInputElement}
+   */
+  input,
+
+  /**
+   * The raw, unformatted value of the input.
+   * @property {String | Number}
+   */
+  rawValue,
+
+  /**
+   * The formatted value displayed in the input.
+   * @property {String}
+   */
+  formattedValue,
+});
+</script>
+
 <template>
   <UInput
     :id="elementId"
@@ -40,265 +155,3 @@
     </template>
   </UInput>
 </template>
-
-<script setup>
-import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
-
-import { getDefault } from "../utils/ui.ts";
-
-import UInput from "../ui.form-input/UInput.vue";
-
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import useFormatCurrency from "./useFormatCurrency.js";
-import { UInputMoney } from "./constants.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Input value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-  /**
-   * Input label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).labelAlign,
-  },
-
-  /**
-   * Currency symbol.
-   */
-  symbol: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).symbol,
-  },
-
-  /**
-   * Input placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Minimal number of signs after the decimal separator (fractional part of a number).
-   */
-  minFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputMoney).minFractionDigits,
-  },
-
-  /**
-   * Maximal number of signs after the decimal separator (fractional part of a number).
-   */
-  maxFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputMoney).maxFractionDigits,
-  },
-
-  /**
-   * A symbol used to separate the integer part from the fractional part of a number.
-   */
-  decimalSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).decimalSeparator,
-  },
-
-  /**
-   *  A symbol used to separate the thousand parts of a number.
-   */
-  thousandsSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).thousandsSeparator,
-  },
-
-  /**
-   * Allow only positive values.
-   */
-  positiveOnly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).positiveOnly,
-  },
-
-  /**
-   * Prefix to display before input value.
-   */
-  prefix: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).prefix,
-  },
-
-  /**
-   * Set input read-only.
-   */
-  readonly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).readonly,
-  },
-
-  /**
-   * Disable the input.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).disabled,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
-
-const moneyInputRef = ref(null);
-
-const elementId = props.id || useId();
-
-const { moneyInputAttrs } = useAttrs(props);
-
-const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
-  minFractionDigits: props.minFractionDigits,
-  maxFractionDigits: props.maxFractionDigits,
-  decimalSeparator: props.decimalSeparator,
-  thousandsSeparator: props.thousandsSeparator,
-  positiveOnly: props.positiveOnly,
-  prefix: props.prefix,
-}));
-
-const localValue = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
-
-const localLabel = computed(() => {
-  const comma = props.symbol && props.label ? "," : "";
-  const symbol = props.label ? props.symbol : "";
-
-  return `${props.label}${comma} ${symbol}`.trim();
-});
-
-const input = computed(() => {
-  return moneyInputRef.value.inputRef;
-});
-
-watch(
-  () => props.modelValue,
-  () => String(localValue.value) !== String(rawValue.value) && setValue(localValue.value),
-);
-
-onMounted(() => {
-  setValue(localValue.value);
-});
-
-function onKeyup(event) {
-  localValue.value = rawValue.value || "";
-
-  nextTick(() => emit("keyup", event));
-}
-
-function onBlur() {
-  nextTick(() => emit("blur"));
-}
-
-function onInput(value) {
-  nextTick(() => emit("input", value));
-}
-
-defineExpose({
-  /**
-   * Reference to the underlying input element inside UInput.
-   * @property {HTMLInputElement}
-   */
-  input,
-
-  /**
-   * The raw, unformatted value of the input.
-   * @property {String | Number}
-   */
-  rawValue,
-
-  /**
-   * The formatted value displayed in the input.
-   * @property {String}
-   */
-  formattedValue,
-});
-</script>

@@ -10,6 +10,14 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { UInputSearchProps } from "../types.ts";
+
+interface UInputSearchArgs extends UInputSearchProps {
+  slotTemplate?: string;
+  enum: "size";
+}
+
 export default {
   id: "3040",
   title: "Form Inputs & Controls / Input Search",
@@ -20,9 +28,9 @@ export default {
   parameters: {
     ...getDocsDescription(UInputSearch.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
   components: { UInputSearch, UButton, UIcon },
   setup() {
     const slots = getSlotNames(UInputSearch.__name);
@@ -31,17 +39,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <UInputSearch v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UInputSearch>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTypes }) => ({
   components: { UInputSearch, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
