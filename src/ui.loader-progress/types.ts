@@ -1,6 +1,7 @@
 import defaultConfig from "./config.ts";
+import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface ULoaderProgressProps {
   /**
@@ -32,7 +33,7 @@ export interface ULoaderProgressProps {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | string[];
+  resources?: string | (() => string[]);
 
   /**
    * Progress size.

@@ -1,7 +1,7 @@
-import type { UnknownObject } from "../types.ts";
 import defaultConfig from "./config.ts";
+import type { Component, UnknownObject } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 export type OnClickOption = (option: Omit<Option, "onClick">) => void;
 
 export interface BaseOption {
@@ -20,7 +20,7 @@ export interface UDropdownListProps {
   /**
    * List options.
    */
-  options?: Option[];
+  options?: () => Option[];
 
   /**
    * Label key in the item object of options.

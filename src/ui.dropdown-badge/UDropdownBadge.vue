@@ -5,7 +5,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 
@@ -19,18 +19,7 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
-  options: () => [],
-  labelKey: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).labelKey,
-  variant: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).variant,
-  color: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).color,
-  size: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).size,
-  round: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).round,
-  noIcon: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).noIcon,
-  yPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).yPosition,
-  xPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).xPosition,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDropdownBadgeProps>(defaultConfig, UDropdownBadge),
 });
 
 const emit = defineEmits([

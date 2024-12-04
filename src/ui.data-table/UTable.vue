@@ -18,7 +18,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault, cx } from "../utils/ui.ts";
+import { getDefaults, cx } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import { PX_IN_REM } from "../constants.js";
@@ -43,15 +43,7 @@ import type { Ref, RendererElement, ComputedRef } from "vue";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTableProps>(), {
-  emptyCellLabel: getDefault<UTableProps>(defaultConfig, UTable).emptyCellLabel,
-  dateDivider: () => getDefault<UTableProps>(defaultConfig, UTable).dateDivider || false,
-  selectable: getDefault<UTableProps>(defaultConfig, UTable).selectable,
-  compact: getDefault<UTableProps>(defaultConfig, UTable).compact,
-  stickyHeader: getDefault<UTableProps>(defaultConfig, UTable).stickyHeader,
-  stickyFooter: getDefault<UTableProps>(defaultConfig, UTable).stickyFooter,
-  loading: getDefault<UTableProps>(defaultConfig, UTable).loading,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UTableProps>(defaultConfig, UTable),
 });
 
 const emit = defineEmits([
@@ -104,9 +96,9 @@ const i18nGlobal = tm(UTable);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const sortedRows: ComputedRef<Row[]> = computed(() => {
-  const headerKeys = props.columns.map((column) =>
-    typeof column === "object" ? column.key : column,
-  );
+  const headerKeys = props
+    .columns()
+    .map((column) => (typeof column === "object" ? column.key : column));
 
   return tableRows.value.map((row) => {
     const rowEntries = Object.entries(row);
@@ -140,7 +132,7 @@ const isFooterSticky = computed(
     isCheckedMoreOneTableItems.value,
 );
 
-const normalizedColumns = computed(() => normalizeColumns(props.columns));
+const normalizedColumns = computed(() => normalizeColumns(props.columns()));
 
 const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => !column.isHidden);
@@ -287,7 +279,7 @@ watch(
 );
 
 onMounted(() => {
-  tableRows.value = props.rows;
+  tableRows.value = props.rows();
 
   document.addEventListener("keyup", onKeyupEsc);
   document.addEventListener("scroll", onScroll, { passive: true });
@@ -364,7 +356,7 @@ function synchronizeTableItemsWithProps() {
   }
 
   if (!isEqual(tableRows.value, props.rows)) {
-    tableRows.value = props.rows;
+    tableRows.value = props.rows();
   }
 }
 

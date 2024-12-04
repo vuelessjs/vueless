@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { useDarkMode } from "../composables/useDarkMode.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
@@ -16,8 +16,7 @@ import type { ULoaderOverlayProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderOverlayProps>(), {
-  loading: getDefault<ULoaderOverlayProps>(defaultConfig, ULoaderOverlay).loading,
-  color: getDefault<ULoaderOverlayProps>(defaultConfig, ULoaderOverlay).color,
+  ...getDefaults<ULoaderOverlayProps>(defaultConfig, ULoaderOverlay),
 });
 
 const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);

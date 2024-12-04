@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UFiles } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -14,10 +14,7 @@ import type { UFilesProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFilesProps>(), {
-  labelAlign: getDefault<UFilesProps>(defaultConfig, UFiles).labelAlign,
-  size: getDefault<UFilesProps>(defaultConfig, UFiles).size,
-  fileList: () => [],
-  dataTest: "",
+  ...getDefaults<UFilesProps>(defaultConfig, UFiles),
 });
 
 const emit = defineEmits([
@@ -31,7 +28,7 @@ const emit = defineEmits([
 const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const formattedFileList = computed(() => {
-  return props.fileList.map((file) => {
+  return props.fileList().map((file) => {
     if (file instanceof File) {
       return {
         id: getRandomId(),

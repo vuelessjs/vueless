@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config.ts";
@@ -14,11 +14,7 @@ import type { UCheckboxOption } from "../ui.form-checkbox/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCheckboxMultiStateProps>(), {
-  size: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).size,
-  color: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).color,
-  placement: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).placement,
-  disabled: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).disabled,
-  dataTest: "",
+  ...getDefaults<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState),
 });
 
 const emit = defineEmits([
@@ -33,7 +29,7 @@ const index = ref(0);
 const isChecked = ref(false);
 
 const selected = computed<UCheckboxOption>(() => {
-  return props.options?.[index.value] || { icon: undefined };
+  return props.options()[index.value] || { icon: undefined };
 });
 
 const { multiStateCheckboxAttrs } = useAttrs(props, { selected });
@@ -51,7 +47,7 @@ function setIndex() {
 }
 
 function setChecked() {
-  setTimeout(() => (isChecked.value = !!props?.options?.[index.value].icon), 0);
+  setTimeout(() => (isChecked.value = !!props?.options()[index.value].icon), 0);
 }
 
 function onClickCheckbox() {

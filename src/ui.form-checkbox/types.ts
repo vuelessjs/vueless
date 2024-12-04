@@ -1,8 +1,8 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { Component, UnknownObject, UnknownArray } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export type IconSize = "2xs" | "xs" | "sm";
 
@@ -17,22 +17,22 @@ export interface UCheckboxProps {
   /**
    * Checkbox value.
    */
-  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
+  modelValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Native value attribute.
    */
-  value?: boolean | string | number | UnknownArray | UnknownObject;
+  value?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Own value for checkbox checked state.
    */
-  trueValue?: boolean | string | number | UnknownArray | UnknownObject;
+  trueValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Own value for checkbox unchecked state.
    */
-  falseValue?: boolean | string | number | UnknownArray | UnknownObject;
+  falseValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Checkbox name.

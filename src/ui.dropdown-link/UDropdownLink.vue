@@ -5,7 +5,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 
@@ -19,19 +19,7 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownLinkProps>(), {
-  options: () => [],
-  labelKey: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).labelKey,
-  color: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).color,
-  size: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).size,
-  underlined: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).underlined,
-  dashed: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).dashed,
-  noRing: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noRing,
-  noIcon: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).noIcon,
-  yPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).yPosition,
-  xPosition: getDefault<UDropdownLinkProps>(defaultConfig, UDropdownLink).xPosition,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDropdownLinkProps>(defaultConfig, UDropdownLink),
 });
 
 const emit = defineEmits([

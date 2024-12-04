@@ -236,7 +236,7 @@ export interface Component {
   safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
-  safelistColors?: BrandColors;
+  safelistColors?: BrandColors[];
   [key: string]: (CVA & NestedComponent) | object | string | undefined;
 }
 
@@ -256,17 +256,17 @@ export type ComponentConfig<T> = Partial<{
 }> &
   Component;
 
-export type ComponentConfigRef<T> = [T & Component] extends [Ref]
-  ? Ref<T & Component>
-  : Ref<UnwrapRef<T & Component>, T & Component>;
+export type ComponentConfigRef<T> = [ComponentConfig<T>] extends [Ref]
+  ? Ref<ComponentConfig<T>>
+  : Ref<UnwrapRef<ComponentConfig<T>>, ComponentConfig<T>>;
 
 export interface UseUI<T> {
   config: ComponentConfigRef<T>;
-  getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs;
+  getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs<T>;
   [key: string]:
-    | ComputedRef<KeyAttrs>
+    | ComputedRef<KeyAttrs<T>>
     | ComponentConfigRef<T>
-    | ((mutatedProps?: ComputedRef) => KeysAttrs);
+    | ((mutatedProps?: ComputedRef) => KeysAttrs<T>);
 }
 
 export interface Transition {
@@ -296,20 +296,20 @@ export interface VueAttrs {
   value?: string;
 }
 
-export type KeysAttrs = Record<string, Ref<UnknownObject | undefined>>;
-
-export interface UseAttrs<TConfig> {
-  config: Ref<TConfig | undefined>;
-  [key: string]: Ref<TConfig | undefined>;
-}
-
-export interface KeyAttrs extends VueAttrs {
+export interface KeyAttrs<T> extends VueAttrs {
   "vl-component"?: string | null;
   "vl-key"?: string | null;
   "vl-child-component"?: string | null;
   "vl-child-key"?: string | null;
-  config?: UnknownObject;
-  [key: string]: string | UnknownObject | undefined | null;
+  config?: ComponentConfig<T>;
+  [key: string]: string | ComponentConfig<T> | undefined | null;
+}
+
+export type KeysAttrs<T> = Record<string, Ref<KeyAttrs<T> | undefined>>;
+
+export interface UseAttrs<TConfig> {
+  config: Ref<TConfig | undefined>;
+  [key: string]: Ref<TConfig | undefined>;
 }
 
 export interface CreateVuelessOptions {

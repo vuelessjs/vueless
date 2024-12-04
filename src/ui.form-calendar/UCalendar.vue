@@ -3,7 +3,7 @@ import { computed, ref, watch, useTemplateRef, onMounted } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isRangeDate } from "./types.ts";
 
 import {
@@ -53,15 +53,7 @@ defineOptions({ inheritAttrs: false });
 type Props = UCalendarProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  range: getDefault<Props>(defaultConfig, UCalendar).range,
-  timepicker: getDefault<Props>(defaultConfig, UCalendar).timepicker,
-  dateFormat: getDefault<Props>(defaultConfig, UCalendar).dateFormat,
-  dateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).dateTimeFormat,
-  userDateFormat: getDefault<Props>(defaultConfig, UCalendar).userDateFormat,
-  userDateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).userDateTimeFormat,
-  tabindex: getDefault<Props>(defaultConfig, UCalendar).tabindex,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UCalendarProps>(defaultConfig, UCalendar),
 });
 
 const emit = defineEmits([

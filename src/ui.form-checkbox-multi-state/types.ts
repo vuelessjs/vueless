@@ -13,7 +13,7 @@ export interface UCheckboxMultiStateProps {
   /**
    * Checkbox state options.
    */
-  options?: UnknownObject[];
+  options?: () => UnknownObject[];
 
   /**
    * Checkbox name.

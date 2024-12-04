@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { RouterLink, useLink } from "vue-router";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
@@ -12,23 +12,7 @@ import type { ULinkProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULinkProps>(), {
-  size: getDefault<ULinkProps>(defaultConfig, ULink).size,
-  color: getDefault<ULinkProps>(defaultConfig, ULink).color,
-  type: getDefault<ULinkProps>(defaultConfig, ULink).type,
-  targetBlank: getDefault<ULinkProps>(defaultConfig, ULink).targetBlank,
-  ariaCurrentValue: getDefault<ULinkProps>(defaultConfig, ULink).ariaCurrentValue,
-  custom: getDefault<ULinkProps>(defaultConfig, ULink).custom,
-  replace: getDefault<ULinkProps>(defaultConfig, ULink).replace,
-  activeClass: getDefault<ULinkProps>(defaultConfig, ULink).activeClass,
-  exactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).exactActiveClass,
-  wrapperActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperActiveClass,
-  wrapperExactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperExactActiveClass,
-  underlined: getDefault<ULinkProps>(defaultConfig, ULink).underlined,
-  dashed: getDefault<ULinkProps>(defaultConfig, ULink).dashed,
-  disabled: getDefault<ULinkProps>(defaultConfig, ULink).disabled,
-  block: getDefault<ULinkProps>(defaultConfig, ULink).block,
-  noRing: getDefault<ULinkProps>(defaultConfig, ULink).noRing,
-  dataTest: "",
+  ...getDefaults<ULinkProps>(defaultConfig, ULink),
 });
 
 const emit = defineEmits([
@@ -67,7 +51,7 @@ const safeTo = computed(() => {
     return "/";
   }
 
-  return props.to;
+  return typeof props.to === "function" ? props.to() : props.to;
 });
 
 const useLinkOptions = {

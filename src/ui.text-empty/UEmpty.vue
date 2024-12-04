@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UEmpty } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -14,9 +14,7 @@ import type { UEmptyProps, IconSize, TitleSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UEmptyProps>(), {
-  size: getDefault<UEmptyProps>(defaultConfig, UEmpty).size,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UEmptyProps>(defaultConfig, UEmpty),
 });
 
 const {

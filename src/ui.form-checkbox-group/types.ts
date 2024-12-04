@@ -9,12 +9,12 @@ export interface UCheckboxGroupProps {
   /**
    * Checkbox group value.
    */
-  modelValue?: UnknownObject[];
+  modelValue?: () => UnknownObject[];
 
   /**
    * Checkbox group options.
    */
-  options?: UCheckboxProps[];
+  options?: () => UCheckboxProps[];
 
   /**
    * Checkbox group label.

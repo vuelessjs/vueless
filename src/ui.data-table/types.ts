@@ -1,7 +1,9 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
 import type { Ref } from "vue";
+import type { Component, UnknownObject } from "../types.ts";
+
+export type Config = Partial<typeof defaultConfig> & Component;
 
 type RowKeys =
   | number
@@ -53,7 +55,6 @@ export interface ColumnObject {
 }
 
 export type Column = ColumnObject | string;
-export type Config = Partial<typeof defaultConfig>;
 
 export interface RowScopedProps {
   value: unknown | string | number;
@@ -64,12 +65,12 @@ export interface UTableProps {
   /**
    * Table columns (headers).
    */
-  columns: Column[];
+  columns: () => Column[];
 
   /**
    * Table rows data.
    */
-  rows: Row[];
+  rows: () => Row[];
 
   /**
    * Label to display for empty cell values.
@@ -79,7 +80,7 @@ export interface UTableProps {
   /**
    * Show date divider line between dates.
    */
-  dateDivider?: boolean | DateDivider[];
+  dateDivider?: boolean | (() => DateDivider[]);
 
   /**
    * Allow rows selecting.

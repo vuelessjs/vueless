@@ -2,7 +2,7 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
@@ -17,11 +17,7 @@ import type { UCheckboxGroupProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCheckboxGroupProps>(), {
-  size: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).size,
-  color: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).color,
-  disabled: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).disabled,
-  name: "",
-  dataTest: "",
+  ...getDefaults<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup),
 });
 
 const emit = defineEmits([
@@ -52,7 +48,7 @@ watch(
   () => props?.modelValue?.length,
   (newValue, oldValue) => {
     if (!isEqual(newValue, oldValue)) {
-      checkedItems.value = props.modelValue || [];
+      checkedItems.value = props.modelValue();
     }
   },
   { immediate: true },
@@ -78,7 +74,7 @@ function onChangeCheckedItems() {
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <UCheckbox
-          v-for="(option, index) in options"
+          v-for="(option, index) in options()"
           :key="option.id"
           :model-value="modelValue"
           :value="option.value"

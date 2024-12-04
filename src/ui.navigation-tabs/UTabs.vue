@@ -2,7 +2,7 @@
 import { computed, provide } from "vue";
 
 import UTab from "../ui.navigation-tab/UTab.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UTabs } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -13,9 +13,7 @@ import type { UTabsProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTabsProps>(), {
-  size: getDefault<UTabsProps>(defaultConfig, UTabs).size,
-  underlined: getDefault<UTabsProps>(defaultConfig, UTabs).underlined,
-  dataTest: "",
+  ...getDefaults<UTabsProps>(defaultConfig, UTabs),
 });
 
 const emit = defineEmits([
@@ -43,7 +41,7 @@ const { tabsAttrs, itemAttrs } = useAttrs(props);
     <!-- @slot Use it to add the UTab component. -->
     <slot>
       <UTab
-        v-for="(item, index) in options"
+        v-for="(item, index) in options()"
         :key="item.value"
         :label="item.label"
         :value="item.value"

@@ -1,6 +1,7 @@
 import defaultConfig from "./config.ts";
+import type { Component, UnknownObject } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UIconProps {
   /**
@@ -11,7 +12,7 @@ export interface UIconProps {
   /**
    * Icon source (svg as a vue component).
    */
-  src?: object;
+  src?: () => UnknownObject;
 
   /**
    * Icon color.
@@ -64,7 +65,7 @@ export interface UIconProps {
    * Tooltip settings.
    * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
    */
-  tooltipSettings?: object;
+  tooltipSettings?: () => UnknownObject;
 
   /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).

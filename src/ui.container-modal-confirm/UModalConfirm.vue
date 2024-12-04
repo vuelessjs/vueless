@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import UButton from "../ui.button/UButton.vue";
@@ -18,16 +18,7 @@ import type { UModalConfirmProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UModalConfirmProps>(), {
-  confirmColor: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).confirmColor,
-  confirmDisabled: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).confirmDisabled,
-  cancelHidden: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).cancelHidden,
-  size: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).size,
-  closeOnCross: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnCross,
-  closeOnOverlay: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnOverlay,
-  closeOnEsc: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnEsc,
-  inner: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).inner,
-  mobileStickBottom: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).mobileStickBottom,
-  dataTest: "",
+  ...getDefaults<UModalConfirmProps>(defaultConfig, UModalConfirm),
 });
 
 const emit = defineEmits([

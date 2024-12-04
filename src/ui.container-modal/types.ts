@@ -1,8 +1,9 @@
 import defaultConfig from "./config.ts";
+import type { Component } from "../types.ts";
 
 import type { RouteLocationRaw } from "vue-router";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UModalProps {
   /**
@@ -28,7 +29,7 @@ export interface UModalProps {
   /**
    * Back link vue-router route object.
    */
-  backTo?: RouteLocationRaw;
+  backTo?: () => RouteLocationRaw;
 
   /**
    * Back link label.

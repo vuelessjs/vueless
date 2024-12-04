@@ -15,7 +15,6 @@ import type {
   BrandColors,
   Strategies,
   UnknownObject,
-  Component,
   NestedComponent,
   ComponentNames,
   CVA,
@@ -23,6 +22,7 @@ import type {
   KeyAttrs,
   KeysAttrs,
   ExtendedKeyClasses,
+  ComponentConfig,
 } from "../types.ts";
 
 /**
@@ -33,14 +33,14 @@ import type {
  * 4. Component classes (class="...")
  */
 export default function useUI<T>(
-  defaultConfig: T & Component,
-  propsConfigGetter?: () => T & Component,
+  defaultConfig: ComponentConfig<T>,
+  propsConfigGetter?: () => ComponentConfig<T>,
   topLevelClassKey?: string,
   mutatedProps?: ComputedRef,
 ): UseUI<T> {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
   const componentName = type.__name as ComponentNames;
-  const globalConfig = vuelessConfig?.component?.[componentName] || {};
+  const globalConfig = (vuelessConfig?.component?.[componentName] as ComponentConfig<T>) || {};
 
   const isStrategyValid =
     vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
@@ -50,7 +50,7 @@ export default function useUI<T>(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = defaultConfig ? Object.keys(defaultConfig)[0] : "";
-  const config = ref({} as T & Component);
+  const config = ref({} as ComponentConfig<T>);
   const attrs = useAttrs();
 
   watchEffect(() => {
@@ -115,8 +115,8 @@ export default function useUI<T>(
    * – key: elementKey
    * – value: reactive object of string element attributes (with classes).
    */
-  function getKeysAttrs(mutatedProps = {}): KeysAttrs {
-    const keysAttrs: KeysAttrs = {};
+  function getKeysAttrs(mutatedProps = {}): KeysAttrs<T> {
+    const keysAttrs: KeysAttrs<T> = {};
 
     for (const key in config.value) {
       if (isSystemKey(key)) continue;
@@ -130,7 +130,7 @@ export default function useUI<T>(
         const classes = getExtendingKeysClasses(extendsKeys, mutatedProps);
         const extendsClasses = Object.values(classes).map((item) => toValue(item));
 
-        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs>;
+        const keyAttrs = keysAttrs[`${key}Attrs`] as ComputedRef<KeyAttrs<T>>;
 
         keysAttrs[`${key}Attrs`] = computed(() => ({
           ...keyAttrs.value,
@@ -140,9 +140,9 @@ export default function useUI<T>(
           ]),
           config: getMergedConfig({
             defaultConfig: config.value[extendsKeys[0]],
-            globalConfig: keyAttrs.value.config as Component,
+            globalConfig: keyAttrs.value.config as ComponentConfig<T>,
           }),
-        }));
+        })) as ComputedRef<KeyAttrs<T>>;
       }
     }
 
@@ -160,7 +160,7 @@ export default function useUI<T>(
     const vuelessAttrs = ref({});
     const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
-    const commonAttrs: KeyAttrs = {
+    const commonAttrs: KeyAttrs<T> = {
       ...(isTopLevelKey ? attrs : {}),
       "vl-component": isDev ? (attrs["vl-component"] as string) || componentName || null : null,
       "vl-key": isDev ? (attrs["vl-config-key"] as string) || configKey || null : null,
@@ -180,7 +180,7 @@ export default function useUI<T>(
     }
 
     function updateVuelessAttrs() {
-      const configKeyValue = config.value[configKey] as Component | string;
+      const configKeyValue = config.value[configKey] as ComponentConfig<T>;
       const isObject = typeof configKeyValue === "object";
 
       vuelessAttrs.value = {

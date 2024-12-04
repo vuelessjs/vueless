@@ -3,19 +3,18 @@ import { computed, ref, useId } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UAccordion } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UAccordionProps, DividerSize } from "./types.ts";
+import type { UAccordionProps, DividerSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAccordionProps>(), {
-  size: getDefault<UAccordionProps>(defaultConfig, UAccordion).size,
-  dataTest: "",
+  ...getDefaults<UAccordionProps, Config>(defaultConfig, UAccordion),
 });
 
 const emit = defineEmits([

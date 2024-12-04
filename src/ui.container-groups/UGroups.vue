@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UGroups } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -10,8 +10,7 @@ import type { UGroupsProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UGroupsProps>(), {
-  gap: getDefault<UGroupsProps>(defaultConfig, UGroups).gap,
-  dataTest: "",
+  ...getDefaults<UGroupsProps>(defaultConfig, UGroups),
 });
 
 const { wrapperAttrs } = useAttrs(props);

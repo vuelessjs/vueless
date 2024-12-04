@@ -1,6 +1,7 @@
 import defaultConfig from "./config.ts";
+import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export type LabelSize = "sm" | "md" | "lg";
 
@@ -13,12 +14,12 @@ export interface UToggleProps {
   /**
    * Selected value.
    */
-  modelValue?: string | number | Array<string | number>;
+  modelValue?: string | number | (() => (string | number)[]);
 
   /**
    * Toggle item options.
    */
-  options?: UToggleOption[];
+  options?: () => UToggleOption[];
 
   /**
    * Toggle variant.

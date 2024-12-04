@@ -27,7 +27,7 @@ export default {
   component: UDropdownButton,
   args: {
     label: "Dropdown",
-    options: [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
+    options: () => [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
   },
   argTypes: {
     ...getArgTypes(UDropdownButton.__name),

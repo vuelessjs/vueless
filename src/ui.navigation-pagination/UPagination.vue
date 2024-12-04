@@ -4,7 +4,7 @@ import { range } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UPagination } from "./constants.ts";
@@ -15,16 +15,7 @@ import type { UPaginationProps, ButtonSize, IconSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UPaginationProps>(), {
-  perPage: getDefault<UPaginationProps>(defaultConfig, UPagination).perPage,
-  limit: getDefault<UPaginationProps>(defaultConfig, UPagination).limit,
-  variant: getDefault<UPaginationProps>(defaultConfig, UPagination).variant,
-  size: getDefault<UPaginationProps>(defaultConfig, UPagination).size,
-  disabled: getDefault<UPaginationProps>(defaultConfig, UPagination).disabled,
-  ellipsis: getDefault<UPaginationProps>(defaultConfig, UPagination).ellipsis,
-  showFirst: getDefault<UPaginationProps>(defaultConfig, UPagination).showFirst,
-  showLast: getDefault<UPaginationProps>(defaultConfig, UPagination).showLast,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UPaginationProps>(defaultConfig, UPagination),
 });
 
 const emit = defineEmits([

@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault, vuelessConfig } from "../utils/ui.ts";
+import { getDefaults, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import useAttrs from "./useAttrs.ts";
 
@@ -22,11 +22,7 @@ import type {
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UNotifyProps>(), {
-  xPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).xPosition,
-  yPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).yPosition,
-  html: getDefault<UNotifyProps>(defaultConfig, UNotify).html,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UNotifyProps>(defaultConfig, UNotify),
 });
 
 const { tm } = useLocale();

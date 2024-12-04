@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { UMoney } from "./constants.ts";
@@ -14,18 +14,7 @@ import type { UMoneyProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UMoneyProps>(), {
-  size: getDefault<UMoneyProps>(defaultConfig, UMoney).size,
-  color: getDefault<UMoneyProps>(defaultConfig, UMoney).color,
-  symbolAlign: getDefault<UMoneyProps>(defaultConfig, UMoney).symbolAlign,
-  symbolDivided: getDefault<UMoneyProps>(defaultConfig, UMoney).symbolDivided,
-  sign: getDefault<UMoneyProps>(defaultConfig, UMoney).sign,
-  minFractionDigits: getDefault<UMoneyProps>(defaultConfig, UMoney).minFractionDigits,
-  maxFractionDigits: getDefault<UMoneyProps>(defaultConfig, UMoney).maxFractionDigits,
-  decimalSeparator: getDefault<UMoneyProps>(defaultConfig, UMoney).decimalSeparator,
-  thousandsSeparator: getDefault<UMoneyProps>(defaultConfig, UMoney).thousandsSeparator,
-  align: getDefault<UMoneyProps>(defaultConfig, UMoney).align,
-  planned: getDefault<UMoneyProps>(defaultConfig, UMoney).planned,
-  dataTest: "",
+  ...getDefaults<UMoneyProps>(defaultConfig, UMoney),
 });
 
 const {

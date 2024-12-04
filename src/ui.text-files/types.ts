@@ -1,12 +1,13 @@
 import defaultConfig from "./config.ts";
+import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UFilesProps {
   /**
    * List of file objects.
    */
-  fileList: File[];
+  fileList: () => File[];
 
   /**
    * File list label.
