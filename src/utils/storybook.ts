@@ -14,7 +14,7 @@ interface Types {
 }
 
 export interface ArgType {
-  control?: "text" | "number" | "boolean" | "array" | "select" | false;
+  control?: "text" | "date" | "number" | "boolean" | "array" | "select" | false;
   options?: string[];
   table?: TableConfig;
   name?: string;
@@ -93,6 +93,26 @@ export function getArgTypes(componentName: string | undefined) {
   component.attributes?.forEach((attribute: Attribute) => {
     const type = attribute.value.type;
 
+    if (type.includes("|")) {
+      types[attribute.name] = {
+        control: type.split("|")[0].toLowerCase() as ArgType["control"],
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
+
+    if (attribute.enum) {
+      types[attribute.name] = {
+        options: attribute.enum,
+        control: "select",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    }
+
     if (type === "string" || type.includes("string")) {
       types[attribute.name] = {
         control: "text",
@@ -111,6 +131,32 @@ export function getArgTypes(componentName: string | undefined) {
       };
     }
 
+    if (type === "Date" || attribute.enum?.includes("Date")) {
+      types[attribute.name] = {
+        control: "date",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: {
+            summary: ["Date", "string"].join(" | "),
+          },
+        },
+      };
+    }
+
+    if (type === "TModelValue") {
+      types[attribute.name] = {
+        control: "date",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: {
+            summary: ["string", "Date", "from: string, to: string", "from: Date, to: Date"].join(
+              " | ",
+            ),
+          },
+        },
+      };
+    }
+
     if (type === "boolean") {
       types[attribute.name] = {
         control: "boolean",
@@ -125,26 +171,6 @@ export function getArgTypes(componentName: string | undefined) {
         control: "array",
         table: {
           defaultValue: { summary: attribute.default || [] },
-        },
-      };
-    }
-
-    if (type.includes("|")) {
-      types[attribute.name] = {
-        control: type.split("|")[0] as ArgType["control"],
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-        },
-      };
-    }
-
-    if (attribute.enum) {
-      types[attribute.name] = {
-        options: attribute.enum,
-        control: "select",
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-          type: { summary: attribute.enum.join(" | ") },
         },
       };
     }
