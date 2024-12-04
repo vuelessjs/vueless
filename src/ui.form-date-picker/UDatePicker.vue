@@ -29,7 +29,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<UDatePickerProps, Config>(defaultConfig, UDatePicker),
+  ...getDefaults<Props, Config>(defaultConfig, UDatePicker),
 });
 
 const emit = defineEmits([

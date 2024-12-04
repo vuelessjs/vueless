@@ -20,7 +20,7 @@ export interface UCalendarProps<TModelValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
-  modelValue: TModelValue;
+  modelValue: () => TModelValue;
 
   /**
    * Calendar view variant.
@@ -65,12 +65,12 @@ export interface UCalendarProps<TModelValue> {
   /**
    * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  minDate?: string | Date | undefined;
+  minDate?: () => string | Date | undefined;
 
   /**
    * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  maxDate?: string | Date | undefined;
+  maxDate?: () => string | Date | undefined;
 
   /**
    * Component config object.

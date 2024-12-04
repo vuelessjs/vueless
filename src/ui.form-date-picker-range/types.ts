@@ -84,12 +84,12 @@ export interface UDatePickerRangeProps<TModelValue> {
   /**
    * Datepicker range value (JavaScript Date objects or strings formatted in given `dateFormat`).
    */
-  modelValue: TModelValue;
+  modelValue: () => TModelValue;
 
   /**
    * Custom range button.
    */
-  customRangeButton?: CustomRangeButton;
+  customRangeButton?: () => CustomRangeButton;
 
   /**
    * Datepicker open direction on x-axis.
@@ -109,12 +109,12 @@ export interface UDatePickerRangeProps<TModelValue> {
   /**
    * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  minDate?: string | Date | undefined;
+  minDate?: () => string | Date | undefined;
 
   /**
    * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  maxDate?: string | Date | undefined;
+  maxDate?: () => string | Date | undefined;
 
   /**
    * Date string format.
