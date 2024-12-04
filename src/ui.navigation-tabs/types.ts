@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { Component, UnknownObject, UnknownArray } from "../types.ts";
+import type { ComponentConfig, UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = ComponentConfig<typeof defaultConfig>;
 
