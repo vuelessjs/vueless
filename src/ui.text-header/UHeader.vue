@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UHeader } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -10,12 +10,7 @@ import type { UHeaderProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UHeaderProps>(), {
-  size: getDefault<UHeaderProps>(defaultConfig, UHeader).size,
-  color: getDefault<UHeaderProps>(defaultConfig, UHeader).color,
-  tag: getDefault<UHeaderProps>(defaultConfig, UHeader).tag,
-  line: getDefault<UHeaderProps>(defaultConfig, UHeader).line,
-  underlined: getDefault<UHeaderProps>(defaultConfig, UHeader).underlined,
-  dataTest: "",
+  ...getDefaults<UHeaderProps>(defaultConfig, UHeader),
 });
 
 const { headerAttrs } = useAttrs(props);

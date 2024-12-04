@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants.ts";
 
@@ -17,8 +17,7 @@ type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UToggleItemProps>(), {
-  disabled: getDefault<UToggleItemProps>(defaultConfig, UToggleItem).disabled,
-  dataTest: "",
+  ...getDefaults<UToggleItemProps>(defaultConfig, UToggleItem),
 });
 
 const emit = defineEmits([
@@ -32,26 +31,26 @@ const emit = defineEmits([
 /* eslint-disable prettier/prettier */
 const getToggleName = inject<() => string>("getToggleName", () => "toggle");
 const getToggleType = inject<() => string>("getToggleType", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
+  getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
 );
 const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
-  (getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md") as ButtonSize
+  (getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md") as ButtonSize
 );
 const getToggleRound = inject<() => boolean>("getToggleRound", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
+  getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
 );
 const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).block || false
+  getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).block || false
 );
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).square || false
+  getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).square || false
 );
 const getToggleVariant = inject<string>("getToggleVariant",
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).variant || "secondary"
+  getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).variant || "secondary"
 );
 const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
 const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
-  props.disabled || getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).disabled || false
+  props.disabled || getDefaults<ToggleInjectValues>(defaultConfig, UToggleItem).disabled || false
 );
 /* eslint-enable prettier/prettier */
 

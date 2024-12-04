@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
@@ -12,9 +12,7 @@ import type { UGroupProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UGroupProps>(), {
-  upperlined: getDefault<UGroupProps>(defaultConfig, UGroup).upperlined,
-  underlined: getDefault<UGroupProps>(defaultConfig, UGroup).underlined,
-  dataTest: "",
+  ...getDefaults<UGroupProps>(defaultConfig, UGroup),
 });
 
 const {

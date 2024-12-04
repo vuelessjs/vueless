@@ -1,8 +1,9 @@
 import defaultConfig from "./config.ts";
 
 import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UDropdownBadgeProps {
   /**
@@ -13,7 +14,7 @@ export interface UDropdownBadgeProps {
   /**
    * Options list.
    */
-  options?: Option[];
+  options?: () => Option[];
 
   /**
    * Label key in the item object of options.

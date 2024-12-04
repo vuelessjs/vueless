@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useSlots, onMounted } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import useBreakpoint from "../composables/useBreakpoint.ts";
 
@@ -20,12 +20,7 @@ const slots = useSlots();
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UPageProps>(), {
-  size: getDefault<UPageProps>(defaultConfig, UPage).size,
-  titleSize: getDefault<UPageProps>(defaultConfig, UPage).titleSize,
-  gray: getDefault<UPageProps>(defaultConfig, UPage).gray,
-  fixedRounding: getDefault<UPageProps>(defaultConfig, UPage).fixedRounding,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UPageProps>(defaultConfig, UPage),
 });
 
 const { isMobileBreakpoint } = useBreakpoint();

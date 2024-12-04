@@ -26,7 +26,7 @@ export default {
   component: UDropdownLink,
   args: {
     label: "Dropdown",
-    options: [
+    options: () => [
       { label: "option 1", value: "1" },
       { label: "option 2", value: "2" },
       { label: "option 3", value: "3" },

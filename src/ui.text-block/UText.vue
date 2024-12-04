@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { UText } from "./constants.ts";
@@ -11,10 +11,7 @@ import type { UTextProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTextProps>(), {
-  size: getDefault<UTextProps>(defaultConfig, UText).size,
-  align: getDefault<UTextProps>(defaultConfig, UText).align,
-  line: getDefault<UTextProps>(defaultConfig, UText).line,
-  dataTest: "",
+  ...getDefaults<UTextProps>(defaultConfig, UText),
 });
 
 const { wrapperAttrs, htmlAttrs } = useAttrs(props);

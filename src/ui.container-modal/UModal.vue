@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useSlots, watch, ref, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
@@ -18,15 +18,7 @@ import type { UModalProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UModalProps>(), {
-  size: getDefault<UModalProps>(defaultConfig, UModal).size,
-  closeOnCross: getDefault<UModalProps>(defaultConfig, UModal).closeOnCross,
-  closeOnOverlay: getDefault<UModalProps>(defaultConfig, UModal).closeOnOverlay,
-  closeOnEsc: getDefault<UModalProps>(defaultConfig, UModal).closeOnEsc,
-  inner: getDefault<UModalProps>(defaultConfig, UModal).inner,
-  noDivider: getDefault<UModalProps>(defaultConfig, UModal).noDivider,
-  mobileStickBottom: getDefault<UModalProps>(defaultConfig, UModal).mobileStickBottom,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UModalProps>(defaultConfig, UModal),
 });
 
 const emit = defineEmits([

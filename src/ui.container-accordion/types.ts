@@ -1,6 +1,7 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export type DividerSize = "md" | "lg" | "xl";
 export interface UAccordionProps {

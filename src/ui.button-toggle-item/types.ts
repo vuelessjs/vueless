@@ -1,10 +1,11 @@
 import defaultConfig from "./config.ts";
 
 import type { Ref } from "vue";
+import type { Component } from "../types.ts";
 
 type UpdateSelectedValue = (value: string | number, checked: boolean) => void;
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface ToggleInjectValues {
   type?: string;
@@ -25,7 +26,7 @@ export interface UToggleItemProps {
   /**
    * Selected value.
    */
-  modelValue?: string | number | Array<string | number>;
+  modelValue?: string | number | (() => (string | number)[]);
 
   /**
    * Value for checkbox state.

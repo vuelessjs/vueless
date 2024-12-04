@@ -18,6 +18,7 @@ import type {
   Component,
   Defaults,
   Strategies,
+  ComponentConfig,
 } from "../types.ts";
 
 interface MergedConfigOptions {
@@ -118,7 +119,7 @@ export function getDefault<T>(defaultConfig: Component, name: ComponentNames) {
 /**
  * Return default values for component props, icons, etc..
  */
-export function getDefaults<T>(defaultConfig: Component, name: ComponentNames) {
+export function getDefaults<T, K>(defaultConfig: ComponentConfig<K>, name: ComponentNames) {
   const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
   const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
 

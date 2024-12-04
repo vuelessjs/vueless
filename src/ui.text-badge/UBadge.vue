@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef, computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import { UBadge } from "./constants.ts";
@@ -13,13 +13,7 @@ import type { UBadgeProps, IconSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UBadgeProps>(), {
-  variant: getDefault<UBadgeProps>(defaultConfig, UBadge).variant,
-  bordered: getDefault<UBadgeProps>(defaultConfig, UBadge).bordered,
-  size: getDefault<UBadgeProps>(defaultConfig, UBadge).size,
-  color: getDefault<UBadgeProps>(defaultConfig, UBadge).color,
-  round: getDefault<UBadgeProps>(defaultConfig, UBadge).round,
-  tabindex: getDefault<UBadgeProps>(defaultConfig, UBadge).tabindex,
-  dataTest: "",
+  ...getDefaults<UBadgeProps>(defaultConfig, UBadge),
 });
 
 const emit = defineEmits([

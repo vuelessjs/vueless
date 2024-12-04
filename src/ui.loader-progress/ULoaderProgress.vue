@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
 import useAttrs from "./useAttrs.ts";
@@ -14,9 +14,7 @@ import type { ULoaderProgressProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderProgressProps>(), {
-  color: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).color,
-  size: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).size,
-  loading: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).loading,
+  ...getDefaults<ULoaderProgressProps>(defaultConfig, ULoaderProgress),
 });
 
 const error = ref(false);
@@ -52,9 +50,17 @@ const resourceNamesArray = computed(() => {
     return [];
   }
 
-  return Array.isArray(props.resources)
-    ? props.resources.map(getRequestWithoutQuery)
-    : [getRequestWithoutQuery(props.resources)];
+  if (Array.isArray(props.resources)) {
+    return props.resources.map((resource) => getRequestWithoutQuery(resource));
+  }
+
+  if (typeof props.resources === "function") {
+    const resourceResult = props.resources();
+
+    return resourceResult.map((resource) => getRequestWithoutQuery(resource));
+  }
+
+  return [getRequestWithoutQuery(props.resources)];
 });
 
 watch(() => requestQueue.value.length, onChangeRequestsQueue);

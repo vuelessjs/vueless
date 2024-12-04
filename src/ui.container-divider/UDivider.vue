@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UDivider } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -10,14 +10,7 @@ import type { UDividerProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDividerProps>(), {
-  size: getDefault<UDividerProps>(defaultConfig, UDivider).size,
-  variant: getDefault<UDividerProps>(defaultConfig, UDivider).variant,
-  padding: getDefault<UDividerProps>(defaultConfig, UDivider).padding,
-  dashed: getDefault<UDividerProps>(defaultConfig, UDivider).dashed,
-  dotted: getDefault<UDividerProps>(defaultConfig, UDivider).dotted,
-  vertical: getDefault<UDividerProps>(defaultConfig, UDivider).vertical,
-  noBorder: getDefault<UDividerProps>(defaultConfig, UDivider).noBorder,
-  dataTest: "",
+  ...getDefaults<UDividerProps>(defaultConfig, UDivider),
 });
 
 const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);

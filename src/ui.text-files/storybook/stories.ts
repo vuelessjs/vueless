@@ -20,7 +20,7 @@ export default {
   component: UFiles,
   args: {
     label: "Label",
-    fileList: [
+    fileList: () => [
       new File(["foo"], "foo.txt", { type: "text/plain" }),
       new File(["bar"], "foo.txt", { type: "text/plain" }),
     ],

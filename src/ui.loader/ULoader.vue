@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -10,9 +10,7 @@ import type { ULoaderProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderProps>(), {
-  loading: getDefault<ULoaderProps>(defaultConfig, ULoader).loading,
-  color: getDefault<ULoaderProps>(defaultConfig, ULoader).color,
-  size: getDefault<ULoaderProps>(defaultConfig, ULoader).size,
+  ...getDefaults<ULoaderProps>(defaultConfig, ULoader),
 });
 
 const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
@@ -20,7 +18,7 @@ const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
 
 <template>
   <Transition v-bind="config?.transition">
-    <div v-if="loading" v-bind="loaderAttrs">
+    <div v-if="loading" v-bind="loaderAttrs" :data-test="dataTest">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
         <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />

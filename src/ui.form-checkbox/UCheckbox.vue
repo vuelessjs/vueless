@@ -5,7 +5,7 @@ import { isEqual } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UCheckbox } from "./constants.ts";
@@ -26,16 +26,7 @@ const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
 const props = withDefaults(defineProps<UCheckboxProps>(), {
-  labelAlign: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).labelAlign,
-  color: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).color,
-  size: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).size,
-  disabled: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).disabled,
-  partial: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).partial,
-  name: "",
-  value: "",
-  trueValue: true,
-  falseValue: false,
-  dataTest: "",
+  ...getDefaults<UCheckboxProps>(defaultConfig, UCheckbox),
 });
 
 const emit = defineEmits([

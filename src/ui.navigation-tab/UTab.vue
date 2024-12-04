@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, toValue } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UTab } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -17,8 +17,7 @@ const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
 const getUTabsSize = inject("getUTabsSize", null);
 
 const props = withDefaults(defineProps<UTabProps>(), {
-  disabled: getDefault<UTabProps>(defaultConfig, UTab).disabled,
-  dataTest: "",
+  ...getDefaults<UTabProps>(defaultConfig, UTab),
 });
 
 const selected = computed(() => {
@@ -26,7 +25,7 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || getDefault<UTabSize>(defaultConfig, UTab).size;
+  return toValue(getUTabsSize) || getDefaults<UTabSize>(defaultConfig, UTab).size;
 });
 
 const { tabAttrs } = useAttrs(props, { selected, size });

@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { Component } from "../types.ts";
+
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UModalConfirmProps {
   /**

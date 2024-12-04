@@ -5,7 +5,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
 import usePointer from "./usePointer.ts";
@@ -24,16 +24,7 @@ defineOptions({ inheritAttrs: false });
 const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
 const props = withDefaults(defineProps<UDropdownListProps>(), {
-  options: () => [],
-  labelKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).labelKey,
-  valueKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).valueKey,
-  addOption: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).addOption,
-  size: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).size,
-  visibleOptions: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).visibleOptions,
-  disabled: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).disabled,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDropdownListProps>(defaultConfig, UDropdownList),
 });
 
 const emit = defineEmits([
@@ -55,7 +46,7 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 const wrapperMaxHeight = ref("");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
-  usePointer(props.options, optionsRef, wrapperRef);
+  usePointer(props.options(), optionsRef, wrapperRef);
 
 const elementId = props.id || useId();
 
@@ -177,8 +168,8 @@ function optionHighlight(index: number, option: Option) {
 
 function addPointerElement(keyCode: string) {
   if (props.options.length > 0) {
-    select(props.options[pointer.value], keyCode);
-    onClickOption(props.options[pointer.value]);
+    select(props.options()[pointer.value], keyCode);
+    onClickOption(props.options()[pointer.value]);
   }
 
   pointerReset();
@@ -253,7 +244,7 @@ defineExpose({
   >
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
-        v-for="(option, index) of options"
+        v-for="(option, index) of options()"
         :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
@@ -311,7 +302,7 @@ defineExpose({
       </li>
 
       <li
-        v-if="!options.length"
+        v-if="!options().length"
         :id="`${elementId}-empty`"
         ref="empty-option"
         role="option"

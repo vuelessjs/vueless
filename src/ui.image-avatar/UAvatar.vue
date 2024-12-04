@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UAvatar } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -13,12 +13,7 @@ import type { UAvatarProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAvatarProps>(), {
-  placeholderIcon: getDefault<UAvatarProps>(defaultConfig, UAvatar).placeholderIcon,
-  size: getDefault<UAvatarProps>(defaultConfig, UAvatar).size,
-  color: getDefault<UAvatarProps>(defaultConfig, UAvatar).color,
-  rounded: getDefault<UAvatarProps>(defaultConfig, UAvatar).rounded,
-  bordered: getDefault<UAvatarProps>(defaultConfig, UAvatar).bordered,
-  dataTest: "",
+  ...getDefaults<UAvatarProps>(defaultConfig, UAvatar),
 });
 
 const emit = defineEmits([

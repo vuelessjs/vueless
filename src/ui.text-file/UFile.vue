@@ -4,7 +4,7 @@ import { computed, ref, useId } from "vue";
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import useAttrs from "./useAttrs.ts";
 import { UFile } from "./constants.ts";
@@ -15,9 +15,7 @@ import type { UFileProps, IconSize, RemoveIconSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFileProps>(), {
-  size: getDefault<UFileProps>(defaultConfig, UFile).size,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UFileProps>(defaultConfig, UFile),
 });
 
 const emit = defineEmits([

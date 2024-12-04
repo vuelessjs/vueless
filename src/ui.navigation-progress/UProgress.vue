@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import useAttrs from "./useAttrs.ts";
 
 import defaultConfig from "./config.ts";
@@ -15,13 +15,7 @@ import type { UProgressProps, HeaderSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
-  value: 0,
-  max: getDefault<UProgressProps>(defaultConfig, UProgress).max as number,
-  size: getDefault<UProgressProps>(defaultConfig, UProgress).size,
-  color: getDefault<UProgressProps>(defaultConfig, UProgress).color,
-  variant: getDefault<UProgressProps>(defaultConfig, UProgress).variant,
-  indicator: getDefault<UProgressProps>(defaultConfig, UProgress).indicator,
-  dataTest: "",
+  ...getDefaults<UProgressProps>(defaultConfig, UProgress),
 });
 
 const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } = useAttrs(props);

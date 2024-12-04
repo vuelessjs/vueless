@@ -1,8 +1,9 @@
 import defaultConfig from "./config.ts";
 
 import type { RouteLocationRaw } from "vue-router";
+import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = Partial<typeof defaultConfig> & Component;
 
 export interface UPageProps {
   /**
@@ -28,7 +29,7 @@ export interface UPageProps {
   /**
    * Back link vue-router route object.
    */
-  backTo?: RouteLocationRaw;
+  backTo?: () => RouteLocationRaw;
 
   /**
    * Back link label.

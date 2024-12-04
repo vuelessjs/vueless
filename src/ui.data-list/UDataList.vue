@@ -3,7 +3,7 @@ import { computed } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -15,19 +15,12 @@ import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UDataListProps, IconSize, DragMoveEvent, DataListItem } from "./types.ts";
+import type { UDataListProps, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDataListProps>(), {
-  size: getDefault<UDataListProps>(defaultConfig, UDataListName).size,
-  labelKey: getDefault<UDataListProps>(defaultConfig, UDataListName).labelKey,
-  valueKey: getDefault<UDataListProps>(defaultConfig, UDataListName).valueKey,
-  animationDuration: getDefault<UDataListProps>(defaultConfig, UDataListName).animationDuration,
-  nesting: getDefault<UDataListProps>(defaultConfig, UDataListName).nesting,
-  hideEmptyStateForNesting: false,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDataListProps, Config>(defaultConfig, UDataListName),
 });
 
 const emit = defineEmits([
@@ -108,7 +101,7 @@ function onDragMove(event: DragMoveEvent): boolean | void {
 }
 
 function onDragEnd() {
-  const sortData = prepareSortData(props.list);
+  const sortData = prepareSortData(typeof props.list === "function" ? props.list() : props.list);
 
   emit("dragSort", sortData);
 }

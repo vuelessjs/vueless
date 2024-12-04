@@ -24,7 +24,7 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
-    options: [
+    options: () => [
       { value: "11", label: "label 1" },
       { value: "12", label: "label 2" },
       { value: "13", label: "label 3" },
@@ -74,7 +74,7 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
         v-model="value"
         :[args.enum]="option"
         :label="option"
-        :options="[
+        :options="() => [
           { value: option + 1, label: option },
           { value: option + 2, label: option },
         ]"

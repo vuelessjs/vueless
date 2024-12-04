@@ -5,7 +5,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 
@@ -19,21 +19,7 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownButtonProps>(), {
-  options: () => [],
-  labelKey: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).labelKey,
-  variant: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).variant,
-  color: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).color,
-  filled: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).filled,
-  size: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).size,
-  round: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).round,
-  square: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).square,
-  disabled: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).disabled,
-  noIcon: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).noIcon,
-  yPosition: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).yPosition,
-  xPosition: getDefault<UDropdownButtonProps>(defaultConfig, UDropdownButton).xPosition,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDropdownButtonProps>(defaultConfig, UDropdownButton),
 });
 
 const emit = defineEmits([

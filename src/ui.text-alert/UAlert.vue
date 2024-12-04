@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -17,14 +17,7 @@ import type { UAlertProps, TextSize, CloseIconSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAlertProps>(), {
-  variant: getDefault<UAlertProps>(defaultConfig, UAlert).variant,
-  bordered: getDefault<UAlertProps>(defaultConfig, UAlert).bordered,
-  size: getDefault<UAlertProps>(defaultConfig, UAlert).size,
-  color: getDefault<UAlertProps>(defaultConfig, UAlert).color,
-  timeout: getDefault<UAlertProps>(defaultConfig, UAlert).timeout,
-  closable: getDefault<UAlertProps>(defaultConfig, UAlert).closable,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UAlertProps>(defaultConfig, UAlert),
 });
 
 const emit = defineEmits([

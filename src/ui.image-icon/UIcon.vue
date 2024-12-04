@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
 import { vTooltip } from "../directives";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
@@ -14,11 +14,7 @@ import type { UIconProps } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UIconProps>(), {
-  color: getDefault<UIconProps>(defaultConfig, UIcon).color,
-  size: getDefault<UIconProps>(defaultConfig, UIcon).size,
-  variant: getDefault<UIconProps>(defaultConfig, UIcon).variant,
-  interactive: getDefault<UIconProps>(defaultConfig, UIcon).interactive,
-  dataTest: "",
+  ...getDefaults<UIconProps>(defaultConfig, UIcon),
 });
 
 const emit = defineEmits([

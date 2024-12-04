@@ -3,7 +3,7 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
@@ -14,16 +14,7 @@ import type { UToggleProps, LabelSize } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UToggleProps>(), {
-  variant: getDefault<UToggleProps>(defaultConfig, UToggle).variant,
-  size: getDefault<UToggleProps>(defaultConfig, UToggle).size,
-  labelAlign: getDefault<UToggleProps>(defaultConfig, UToggle).labelAlign,
-  multiple: getDefault<UToggleProps>(defaultConfig, UToggle).multiple,
-  separated: getDefault<UToggleProps>(defaultConfig, UToggle).separated,
-  disabled: getDefault<UToggleProps>(defaultConfig, UToggle).disabled,
-  block: getDefault<UToggleProps>(defaultConfig, UToggle).block,
-  round: getDefault<UToggleProps>(defaultConfig, UToggle).round,
-  square: getDefault<UToggleProps>(defaultConfig, UToggle).square,
-  dataTest: "",
+  ...getDefaults<UToggleProps>(defaultConfig, UToggle),
 });
 
 const emit = defineEmits([
@@ -37,8 +28,14 @@ const emit = defineEmits([
 const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  get: () => {
+    return typeof props.modelValue === "function" ? props.modelValue() : props.modelValue;
+  },
+  set: (value) => {
+    typeof props.modelValue === "function"
+      ? emit("update:modelValue", () => value)
+      : emit("update:modelValue", value);
+  },
 });
 
 const labelSize = computed(() => {
@@ -105,7 +102,7 @@ provide("toggleSelectedValue", {
       <!-- @slot Use it to add UToggleItem directly. -->
       <slot>
         <UToggleItem
-          v-for="(item, index) in options"
+          v-for="(item, index) in options()"
           :key="item.value"
           :name="name"
           :model-value="item.value"

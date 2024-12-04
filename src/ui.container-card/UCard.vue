@@ -2,18 +2,22 @@
 import { computed, useSlots } from "vue";
 
 import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UHeader from "../ui.text-header/UHeader.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
 import useAttrs from "./useAttrs.ts";
 
+import defaultConfig from "./config.ts";
+import { UCard } from "./constants.ts";
+
 import type { UCardProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCardProps>(), {
-  dataTest: "",
+  ...getDefaults<UCardProps>(defaultConfig, UCard),
 });
 
 const slots = useSlots();
