@@ -10,12 +10,12 @@ import defaultConfig from "./config.ts";
 import { UPagination } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UPaginationProps, ButtonSize, IconSize } from "./types.ts";
+import type { UPaginationProps, ButtonSize, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UPaginationProps>(), {
-  ...getDefaults<UPaginationProps>(defaultConfig, UPagination),
+  ...getDefaults<UPaginationProps, Config>(defaultConfig, UPagination),
 });
 
 const emit = defineEmits([

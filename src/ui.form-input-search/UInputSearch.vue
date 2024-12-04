@@ -4,26 +4,19 @@ import { computed, useId, ref, watchEffect } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { createDebounce } from "../utils/helper.ts";
 
 import { UInputSearch } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UInputSearchProps, IconSize, ButtonSize } from "./types.ts";
+import type { UInputSearchProps, IconSize, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputSearchProps>(), {
-  size: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).size,
-  labelAlign: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).labelAlign,
-  minLength: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).minLength,
-  debounce: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).debounce,
-  readonly: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).readonly,
-  disabled: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputSearchProps, Config>(defaultConfig, UInputSearch),
 });
 
 const emit = defineEmits([
@@ -83,7 +76,7 @@ watchEffect(() => {
   }, Number(props.debounce));
 });
 
-function onUpdateValue(value) {
+function onUpdateValue(value: string) {
   localValue.value = value;
 
   if (!value) {

@@ -100,12 +100,12 @@ export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   modelValue: "Custom string value",
-  options: [
+  options: () => [
     { label: "Boolean", value: false },
     { label: "String", value: "Custom string value" },
     { label: "Number", value: 4 },
-    { label: "Object", value: { key: "Custom object value" } },
-    { label: "Array", value: ["Custom array value", 2] },
+    { label: "Object", value: () => ({ key: "Custom object value" }) },
+    { label: "Array", value: () => ["Custom array value", 2] },
   ],
 };
 

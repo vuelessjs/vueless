@@ -10,12 +10,12 @@ import useAttrs from "./useAttrs.ts";
 import { UFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UFileProps, IconSize, RemoveIconSize } from "./types.ts";
+import type { UFileProps, IconSize, RemoveIconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFileProps>(), {
-  ...getDefaults<UFileProps>(defaultConfig, UFile),
+  ...getDefaults<UFileProps, Config>(defaultConfig, UFile),
 });
 
 const emit = defineEmits([

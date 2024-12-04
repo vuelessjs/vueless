@@ -7,12 +7,12 @@ import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { ULink } from "./constants.ts";
 
-import type { ULinkProps } from "./types.ts";
+import type { ULinkProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULinkProps>(), {
-  ...getDefaults<ULinkProps>(defaultConfig, ULink),
+  ...getDefaults<ULinkProps, Config>(defaultConfig, ULink),
 });
 
 const emit = defineEmits([

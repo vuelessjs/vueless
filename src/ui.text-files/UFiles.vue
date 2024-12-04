@@ -9,12 +9,12 @@ import useAttrs from "./useAttrs.ts";
 import { computed } from "vue";
 import { getRandomId } from "../utils/helper.ts";
 
-import type { UFilesProps } from "./types.ts";
+import type { UFilesProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UFilesProps>(), {
-  ...getDefaults<UFilesProps>(defaultConfig, UFiles),
+  ...getDefaults<UFilesProps, Config>(defaultConfig, UFiles),
 });
 
 const emit = defineEmits([

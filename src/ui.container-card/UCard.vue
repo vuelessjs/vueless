@@ -12,12 +12,12 @@ import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { UCard } from "./constants.ts";
 
-import type { UCardProps } from "./types.ts";
+import type { UCardProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCardProps>(), {
-  ...getDefaults<UCardProps>(defaultConfig, UCard),
+  ...getDefaults<UCardProps, Config>(defaultConfig, UCard),
 });
 
 const slots = useSlots();

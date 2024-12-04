@@ -1,9 +1,9 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
+import type { UnknownObject, ComponentConfig } from "../types.ts";
 import type { UCheckboxProps } from "../ui.form-checkbox/types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export interface UCheckboxGroupProps {
   /**

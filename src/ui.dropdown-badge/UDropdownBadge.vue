@@ -13,13 +13,13 @@ import defaultConfig from "./config.ts";
 import { UDropdownBadge } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UDropdownBadgeProps } from "./types.ts";
+import type { UDropdownBadgeProps, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
-  ...getDefaults<UDropdownBadgeProps>(defaultConfig, UDropdownBadge),
+  ...getDefaults<UDropdownBadgeProps, Config>(defaultConfig, UDropdownBadge),
 });
 
 const emit = defineEmits([

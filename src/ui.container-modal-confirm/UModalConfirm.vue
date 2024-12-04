@@ -13,12 +13,12 @@ import { UModalConfirm } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UModalConfirmProps } from "./types.ts";
+import type { UModalConfirmProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UModalConfirmProps>(), {
-  ...getDefaults<UModalConfirmProps>(defaultConfig, UModalConfirm),
+  ...getDefaults<UModalConfirmProps, Config>(defaultConfig, UModalConfirm),
 });
 
 const emit = defineEmits([

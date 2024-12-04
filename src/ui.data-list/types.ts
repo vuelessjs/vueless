@@ -2,9 +2,9 @@ import defaultConfig from "./config.ts";
 
 import DraggableContext from "vuedraggable";
 
-import type { Component, UnknownType } from "../types.ts";
+import type { ComponentConfig, UnknownType } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig> & Component;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export type IconSize = "xs" | "sm" | "md";
 

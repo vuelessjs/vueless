@@ -1,21 +1,21 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
-export type LocalValueType = string | number | boolean | UnknownObject | null;
+export type LocalValueType = string | number | boolean | UnknownObject | UnknownArray | null;
 
 export interface URadioProps {
   /**
    * Radio value.
    */
-  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
+  modelValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Native value attribute.
    */
-  value?: boolean | string | number | UnknownArray | UnknownObject;
+  value?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Radio label.

@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { ULabel, PLACEMENT } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { ULabelProps } from "./types.ts";
+import type { ULabelProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULabelProps>(), {
-  align: getDefault<ULabelProps>(defaultConfig, ULabel).align,
-  size: getDefault<ULabelProps>(defaultConfig, ULabel).size,
-  disabled: getDefault<ULabelProps>(defaultConfig, ULabel).disabled,
-  centred: getDefault<ULabelProps>(defaultConfig, ULabel).centred,
-  dataTest: "",
+  ...getDefaults<ULabelProps, Config>(defaultConfig, ULabel),
 });
 
 const emit = defineEmits([

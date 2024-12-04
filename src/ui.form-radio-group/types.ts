@@ -1,29 +1,29 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export interface URadioGroupOption {
-  value: string | number;
+  value: string | number | boolean | (() => UnknownArray) | (() => UnknownObject);
   label: string;
-  description: string;
+  description?: string;
 }
 
 export type SetRadioGroupSelectedItem =
-  | ((value: string | number | boolean | UnknownArray | UnknownObject) => void)
+  | ((value: string | number | boolean | (() => UnknownArray) | (() => UnknownObject)) => void)
   | null;
 
 export interface URadioGroupProps {
   /**
    * Radio group selected value.
    */
-  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
+  modelValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
 
   /**
    * Radio group options.
    */
-  options?: Array<URadioGroupOption>;
+  options?: () => URadioGroupOption[];
 
   /**
    * Radio group label.

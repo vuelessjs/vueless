@@ -5,12 +5,12 @@ import { UDivider } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UDividerProps } from "./types.ts";
+import type { UDividerProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDividerProps>(), {
-  ...getDefaults<UDividerProps>(defaultConfig, UDivider),
+  ...getDefaults<UDividerProps, Config>(defaultConfig, UDivider),
 });
 
 const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);

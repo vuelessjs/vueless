@@ -17,12 +17,13 @@ import type {
   NotifyEvent,
   NotificationsWrapperRef,
   NotificationType,
+  Config,
 } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UNotifyProps>(), {
-  ...getDefaults<UNotifyProps>(defaultConfig, UNotify),
+  ...getDefaults<UNotifyProps, Config>(defaultConfig, UNotify),
 });
 
 const { tm } = useLocale();

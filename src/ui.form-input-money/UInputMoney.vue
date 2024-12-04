@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 
@@ -10,24 +10,12 @@ import useAttrs from "./useAttrs.ts";
 import useFormatCurrency from "./useFormatCurrency.ts";
 import { UInputMoney } from "./constants.ts";
 
-import type { UInputMoneyProps } from "./types.ts";
+import type { UInputMoneyProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputMoneyProps>(), {
-  labelAlign: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).labelAlign,
-  symbol: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).symbol,
-  size: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).size,
-  minFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).minFractionDigits,
-  maxFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).maxFractionDigits,
-  decimalSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).decimalSeparator,
-  thousandsSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).thousandsSeparator,
-  positiveOnly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).positiveOnly,
-  prefix: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).prefix,
-  readonly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).readonly,
-  disabled: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).disabled,
-  modelValue: "",
-  dataTest: "",
+  ...getDefaults<UInputMoneyProps, Config>(defaultConfig, UInputMoney),
 });
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);

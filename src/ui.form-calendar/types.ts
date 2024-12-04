@@ -1,5 +1,6 @@
 import defaultConfig from "./config.ts";
 
+import type { ComponentConfig } from "../types.ts";
 import type { DateLocale } from "./utilFormatting.ts";
 
 export type RangeDate =
@@ -9,7 +10,7 @@ export type RangeDate =
 export type DateValue = Date | string | RangeDate | null;
 
 export type Locale = typeof defaultConfig.i18n;
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export function isRangeDate(value: Date | string | RangeDate | null): value is RangeDate {
   return !(value instanceof Date || typeof value === "string") && value !== null;

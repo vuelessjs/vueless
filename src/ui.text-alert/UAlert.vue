@@ -12,12 +12,12 @@ import { UAlert } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UAlertProps, TextSize, CloseIconSize } from "./types.ts";
+import type { UAlertProps, TextSize, CloseIconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAlertProps>(), {
-  ...getDefaults<UAlertProps>(defaultConfig, UAlert),
+  ...getDefaults<UAlertProps, Config>(defaultConfig, UAlert),
 });
 
 const emit = defineEmits([

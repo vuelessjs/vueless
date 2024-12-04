@@ -4,25 +4,18 @@ import { computed, ref } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import { hasSlotContent } from "../utils/helper.ts";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UInputRating } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UInputRatingProps, IconSize } from "./types.ts";
+import type { UInputRatingProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputRatingProps>(), {
-  stars: getDefault<UInputRatingProps>(defaultConfig, UInputRating).stars,
-  size: getDefault<UInputRatingProps>(defaultConfig, UInputRating).size,
-  labelAlign: getDefault<UInputRatingProps>(defaultConfig, UInputRating).labelAlign,
-  counter: getDefault<UInputRatingProps>(defaultConfig, UInputRating).counter,
-  selectable: getDefault<UInputRatingProps>(defaultConfig, UInputRating).selectable,
-  modelValue: 0,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputRatingProps, Config>(defaultConfig, UInputRating),
 });
 
 const emit = defineEmits([

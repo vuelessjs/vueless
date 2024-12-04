@@ -8,12 +8,12 @@ import { UAvatar } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UAvatarProps } from "./types.ts";
+import type { UAvatarProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAvatarProps>(), {
-  ...getDefaults<UAvatarProps>(defaultConfig, UAvatar),
+  ...getDefaults<UAvatarProps, Config>(defaultConfig, UAvatar),
 });
 
 const emit = defineEmits([

@@ -38,7 +38,7 @@ import {
 
 import defaultConfig from "./config.ts";
 
-import type { UCalendarProps, DateValue, RangeDate, Locale } from "./types.ts";
+import type { UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 
@@ -53,7 +53,7 @@ defineOptions({ inheritAttrs: false });
 type Props = UCalendarProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  ...getDefaults<UCalendarProps>(defaultConfig, UCalendar),
+  ...getDefaults<UCalendarProps, Config>(defaultConfig, UCalendar),
 });
 
 const emit = defineEmits([

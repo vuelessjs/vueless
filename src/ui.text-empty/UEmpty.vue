@@ -9,12 +9,12 @@ import { UEmpty } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UEmptyProps, IconSize, TitleSize } from "./types.ts";
+import type { UEmptyProps, IconSize, TitleSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UEmptyProps>(), {
-  ...getDefaults<UEmptyProps>(defaultConfig, UEmpty),
+  ...getDefaults<UEmptyProps, Config>(defaultConfig, UEmpty),
 });
 
 const {

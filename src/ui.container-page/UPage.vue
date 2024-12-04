@@ -13,14 +13,14 @@ import defaultConfig from "./config.ts";
 import { UPage } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UPageProps } from "./types.ts";
+import type { UPageProps, Config } from "./types.ts";
 
 const slots = useSlots();
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UPageProps>(), {
-  ...getDefaults<UPageProps>(defaultConfig, UPage),
+  ...getDefaults<UPageProps, Config>(defaultConfig, UPage),
 });
 
 const { isMobileBreakpoint } = useBreakpoint();

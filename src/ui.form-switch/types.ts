@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export type IconSize = "2xs" | "xs" | "sm";
 

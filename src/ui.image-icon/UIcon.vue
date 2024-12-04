@@ -9,12 +9,12 @@ import { UIcon } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UIconProps } from "./types.ts";
+import type { UIconProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UIconProps>(), {
-  ...getDefaults<UIconProps>(defaultConfig, UIcon),
+  ...getDefaults<UIconProps, Config>(defaultConfig, UIcon),
 });
 
 const emit = defineEmits([
@@ -83,14 +83,19 @@ const dynamicComponent = computed(() => {
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, weight, style, name])
+        ? await getIcon([
+          library as string | undefined,
+          weight as string | undefined,
+          style as string | undefined,
+          name as string | undefined
+        ])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, name])
+        ? await getIcon([library as string | undefined, name])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/icons/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
@@ -99,7 +104,7 @@ const dynamicComponent = computed(() => {
       const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
-        ? await getIcon([library, fillType, name])
+        ? await getIcon([library as string | undefined, fillType, name])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/24/${fillType}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);

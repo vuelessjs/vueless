@@ -4,25 +4,18 @@ import { computed } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UInputNumber } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UInputNumberProps } from "./types.ts";
+import type { UInputNumberProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputNumberProps>(), {
-  step: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).step,
-  min: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).min,
-  max: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).max,
-  labelAlign: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).labelAlign,
-  size: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).size,
-  disabled: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputNumberProps, Config>(defaultConfig, UInputNumber),
 });
 
 const emit = defineEmits([
