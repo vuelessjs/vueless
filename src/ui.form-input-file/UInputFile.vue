@@ -7,7 +7,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getFileMbSize } from "./utilFileForm.ts";
 
@@ -17,19 +17,12 @@ import { useLocale } from "../composables/useLocale.ts";
 import { UInputFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UInputFileProps, ButtonSize } from "./types.ts";
+import type { UInputFileProps, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputFileProps>(), {
-  labelAlign: getDefault<UInputFileProps>(defaultConfig, UInputFile).labelAlign,
-  size: getDefault<UInputFileProps>(defaultConfig, UInputFile).size,
-  maxFileSize: getDefault<UInputFileProps>(defaultConfig, UInputFile).maxFileSize,
-  allowedFileTypes: getDefault<UInputFileProps>(defaultConfig, UInputFile).allowedFileTypes,
-  multiple: getDefault<UInputFileProps>(defaultConfig, UInputFile).multiple,
-  disabled: getDefault<UInputFileProps>(defaultConfig, UInputFile).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputFileProps, Config>(defaultConfig, UInputFile),
 });
 
 const emit = defineEmits([
@@ -72,7 +65,9 @@ const i18nGlobal = tm(UInputFile);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const currentFiles = computed<File | File[] | null>({
-  get: () => props.modelValue,
+  get: () => {
+    return typeof props.modelValue === "function" ? props.modelValue() : props.modelValue;
+  },
   set: (newValue) => {
     const fallbackValue = props.multiple ? [] : null;
 
@@ -86,11 +81,11 @@ const currentError = computed({
 });
 
 const extensionNames = computed(() => {
-  return props.allowedFileTypes.map((type) => type.replace(".", ""));
+  return props.allowedFileTypes().map((type) => type.replace(".", ""));
 });
 
 const allowedFileTypeFormats = computed(() => {
-  return props.allowedFileTypes.map((type) => (type.startsWith(".") ? type : `.${type}`));
+  return props.allowedFileTypes().map((type) => (type.startsWith(".") ? type : `.${type}`));
 });
 
 const accept = computed(() => {

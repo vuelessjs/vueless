@@ -9,12 +9,12 @@ import useAttrs from "./useAttrs.ts";
 import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { ULoaderProgressProps } from "./types.ts";
+import type { ULoaderProgressProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderProgressProps>(), {
-  ...getDefaults<ULoaderProgressProps>(defaultConfig, ULoaderProgress),
+  ...getDefaults<ULoaderProgressProps, Config>(defaultConfig, ULoaderProgress),
 });
 
 const error = ref(false);

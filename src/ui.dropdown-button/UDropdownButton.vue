@@ -13,13 +13,13 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { UDropdownButton, BUTTON_VARIANT } from "./constants.ts";
 
-import type { UDropdownButtonProps, IconSize, DropdownSize } from "./types.ts";
+import type { UDropdownButtonProps, IconSize, DropdownSize, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDropdownButtonProps>(), {
-  ...getDefaults<UDropdownButtonProps>(defaultConfig, UDropdownButton),
+  ...getDefaults<UDropdownButtonProps, Config>(defaultConfig, UDropdownButton),
 });
 
 const emit = defineEmits([

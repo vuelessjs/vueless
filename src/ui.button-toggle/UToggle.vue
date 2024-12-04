@@ -9,12 +9,12 @@ import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UToggleProps, LabelSize } from "./types.ts";
+import type { UToggleProps, LabelSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UToggleProps>(), {
-  ...getDefaults<UToggleProps>(defaultConfig, UToggle),
+  ...getDefaults<UToggleProps, Config>(defaultConfig, UToggle),
 });
 
 const emit = defineEmits([

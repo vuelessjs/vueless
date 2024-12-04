@@ -13,12 +13,12 @@ import defaultConfig from "./config.ts";
 import { UModal } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UModalProps } from "./types.ts";
+import type { UModalProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UModalProps>(), {
-  ...getDefaults<UModalProps>(defaultConfig, UModal),
+  ...getDefaults<UModalProps, Config>(defaultConfig, UModal),
 });
 
 const emit = defineEmits([

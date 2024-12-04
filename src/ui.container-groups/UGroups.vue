@@ -5,12 +5,12 @@ import { UGroups } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UGroupsProps } from "./types.ts";
+import type { UGroupsProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UGroupsProps>(), {
-  ...getDefaults<UGroupsProps>(defaultConfig, UGroups),
+  ...getDefaults<UGroupsProps, Config>(defaultConfig, UGroups),
 });
 
 const { wrapperAttrs } = useAttrs(props);

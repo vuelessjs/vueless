@@ -7,7 +7,7 @@ import { UTab } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UTabProps, UTabSize } from "./types.ts";
+import type { UTabProps, UTabSize, Config } from "./types.ts";
 import type { SetUTabsSelectedItem } from "../ui.navigation-tabs/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -17,7 +17,7 @@ const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
 const getUTabsSize = inject("getUTabsSize", null);
 
 const props = withDefaults(defineProps<UTabProps>(), {
-  ...getDefaults<UTabProps>(defaultConfig, UTab),
+  ...getDefaults<UTabProps, Config>(defaultConfig, UTab),
 });
 
 const selected = computed(() => {
@@ -25,7 +25,7 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || getDefaults<UTabSize>(defaultConfig, UTab).size;
+  return toValue(getUTabsSize) || getDefaults<UTabSize, Config>(defaultConfig, UTab).size;
 });
 
 const { tabAttrs } = useAttrs(props, { selected, size });

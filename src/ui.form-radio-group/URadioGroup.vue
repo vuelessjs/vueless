@@ -3,22 +3,18 @@ import { computed, provide } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import URadio from "../ui.form-radio/URadio.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { URadioGroup } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { URadioGroupProps, SetRadioGroupSelectedItem } from "./types.ts";
+import type { URadioGroupProps, SetRadioGroupSelectedItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<URadioGroupProps>(), {
-  size: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).size,
-  color: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).color,
-  disabled: getDefault<URadioGroupProps>(defaultConfig, URadioGroup).disabled,
-  modelValue: "",
-  dataTest: "",
+  ...getDefaults<URadioGroupProps, Config>(defaultConfig, URadioGroup),
 });
 
 const emit = defineEmits([
@@ -60,8 +56,8 @@ provide("getRadioGroupSize", () => props.size);
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <URadio
-          v-for="(option, index) in options"
-          :key="option.value"
+          v-for="(option, index) in options()"
+          :key="index"
           :model-value="selectedItem"
           :value="option.value"
           :label="option.label"

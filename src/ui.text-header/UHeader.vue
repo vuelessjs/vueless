@@ -5,12 +5,12 @@ import { UHeader } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UHeaderProps } from "./types.ts";
+import type { UHeaderProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UHeaderProps>(), {
-  ...getDefaults<UHeaderProps>(defaultConfig, UHeader),
+  ...getDefaults<UHeaderProps, Config>(defaultConfig, UHeader),
 });
 
 const { headerAttrs } = useAttrs(props);

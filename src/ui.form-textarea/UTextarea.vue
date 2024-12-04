@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
@@ -12,20 +12,12 @@ import { UTextarea } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UTextareaProps } from "./types.ts";
+import type { UTextareaProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTextareaProps>(), {
-  size: getDefault<UTextareaProps>(defaultConfig, UTextarea).size,
-  labelAlign: getDefault<UTextareaProps>(defaultConfig, UTextarea).labelAlign,
-  resizable: getDefault<UTextareaProps>(defaultConfig, UTextarea).resizable,
-  readonly: getDefault<UTextareaProps>(defaultConfig, UTextarea).readonly,
-  disabled: getDefault<UTextareaProps>(defaultConfig, UTextarea).disabled,
-  inputmode: getDefault<UTextareaProps>(defaultConfig, UTextarea).inputmode,
-  noAutocomplete: getDefault<UTextareaProps>(defaultConfig, UTextarea).noAutocomplete,
-  modelValue: "",
-  dataTest: "",
+  ...getDefaults<UTextareaProps, Config>(defaultConfig, UTextarea),
 });
 
 const emit = defineEmits([

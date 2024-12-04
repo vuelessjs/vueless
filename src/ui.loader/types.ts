@@ -1,7 +1,8 @@
 import defaultConfig from "./config.ts";
-import type { Component } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig> & Component;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export interface ULoaderProps {
   /**

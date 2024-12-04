@@ -2,13 +2,13 @@
 import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { URadio } from "./constants.ts";
 
-import type { URadioProps, LocalValueType } from "./types.ts";
+import type { URadioProps, LocalValueType, Config } from "./types.ts";
 import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -23,12 +23,7 @@ const getRadioGroupSize = inject("getRadioGroupSize", null);
 const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = withDefaults(defineProps<URadioProps>(), {
-  labelAlign: getDefault<URadioProps>(defaultConfig, URadio).labelAlign,
-  size: getDefault<URadioProps>(defaultConfig, URadio).size,
-  color: getDefault<URadioProps>(defaultConfig, URadio).color,
-  disabled: getDefault<URadioProps>(defaultConfig, URadio).disabled,
-  checked: getDefault<URadioProps>(defaultConfig, URadio).checked,
-  dataTest: "",
+  ...getDefaults<URadioProps, Config>(defaultConfig, URadio),
 });
 
 const emit = defineEmits([

@@ -5,12 +5,12 @@ import { UDot } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UDotProps } from "./types.ts";
+import type { UDotProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UDotProps>(), {
-  ...getDefaults<UDotProps>(defaultConfig, UDot),
+  ...getDefaults<UDotProps, Config>(defaultConfig, UDot),
 });
 
 const { dotAttrs } = useAttrs(props);

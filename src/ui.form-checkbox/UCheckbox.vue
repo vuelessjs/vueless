@@ -12,7 +12,7 @@ import { UCheckbox } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxProps, IconSize } from "./types.ts";
+import type { UCheckboxProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,7 +26,7 @@ const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
 const props = withDefaults(defineProps<UCheckboxProps>(), {
-  ...getDefaults<UCheckboxProps>(defaultConfig, UCheckbox),
+  ...getDefaults<UCheckboxProps, Config>(defaultConfig, UCheckbox),
 });
 
 const emit = defineEmits([

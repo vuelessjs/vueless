@@ -6,12 +6,12 @@ import { UText } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UTextProps } from "./types.ts";
+import type { UTextProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTextProps>(), {
-  ...getDefaults<UTextProps>(defaultConfig, UText),
+  ...getDefaults<UTextProps, Config>(defaultConfig, UText),
 });
 
 const { wrapperAttrs, htmlAttrs } = useAttrs(props);

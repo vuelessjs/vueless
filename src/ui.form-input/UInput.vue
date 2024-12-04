@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
@@ -12,22 +12,12 @@ import defaultConfig from "./config.ts";
 import { UInput } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UInputProps, IconSize } from "./types.ts";
+import type { UInputProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputProps>(), {
-  labelAlign: getDefault<UInputProps>(defaultConfig, UInput).labelAlign,
-  size: getDefault<UInputProps>(defaultConfig, UInput).size,
-  validationRule: getDefault<UInputProps>(defaultConfig, UInput).validationRule,
-  type: getDefault<UInputProps>(defaultConfig, UInput).type,
-  inputmode: getDefault<UInputProps>(defaultConfig, UInput).inputmode,
-  readonly: getDefault<UInputProps>(defaultConfig, UInput).readonly,
-  disabled: getDefault<UInputProps>(defaultConfig, UInput).disabled,
-  noAutocomplete: getDefault<UInputProps>(defaultConfig, UInput).noAutocomplete,
-  modelValue: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputProps, Config>(defaultConfig, UInput),
 });
 
 const emit = defineEmits([

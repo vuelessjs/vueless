@@ -1,9 +1,9 @@
 import defaultConfig from "./config.ts";
 
 import type { Ref } from "vue";
-import type { Component, UnknownObject } from "../types.ts";
+import type { ComponentConfig, UnknownObject } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig> & Component;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 type RowKeys =
   | number

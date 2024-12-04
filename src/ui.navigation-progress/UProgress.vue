@@ -10,12 +10,12 @@ import { UProgress, VARIANT } from "./constants.ts";
 import StepperProgress from "./StepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { UProgressProps, HeaderSize } from "./types.ts";
+import type { UProgressProps, HeaderSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
-  ...getDefaults<UProgressProps>(defaultConfig, UProgress),
+  ...getDefaults<UProgressProps, Config>(defaultConfig, UProgress),
 });
 
 const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } = useAttrs(props);

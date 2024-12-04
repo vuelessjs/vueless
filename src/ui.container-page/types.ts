@@ -1,9 +1,9 @@
 import defaultConfig from "./config.ts";
 
 import type { RouteLocationRaw } from "vue-router";
-import type { Component } from "../types.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig> & Component;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export interface UPageProps {
   /**

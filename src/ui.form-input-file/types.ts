@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export type ButtonSize = "xs" | "sm" | "md";
 
@@ -8,7 +10,7 @@ export interface UInputFileProps {
   /**
    * Input value.
    */
-  modelValue?: File | File[];
+  modelValue?: File | (() => File[]);
 
   /**
    * Input label.
@@ -43,7 +45,7 @@ export interface UInputFileProps {
   /**
    * Allowed file types.
    */
-  allowedFileTypes?: string[];
+  allowedFileTypes?: () => string[];
 
   /**
    * Allow selecting multiple files.

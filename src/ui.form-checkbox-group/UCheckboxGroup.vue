@@ -12,12 +12,12 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxGroupProps } from "./types.ts";
+import type { UCheckboxGroupProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCheckboxGroupProps>(), {
-  ...getDefaults<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup),
+  ...getDefaults<UCheckboxGroupProps, Config>(defaultConfig, UCheckboxGroup),
 });
 
 const emit = defineEmits([

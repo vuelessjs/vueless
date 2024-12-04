@@ -7,7 +7,7 @@ import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
 import { View, LocaleType, ARROW_KEYS, TOKEN_REG_EXP } from "../ui.form-calendar/constants.ts";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
@@ -21,7 +21,7 @@ import { UDatePicker } from "./constants.ts";
 
 import { vClickOutside } from "../directives";
 
-import type { UDatePickerProps } from "./types.ts";
+import type { UDatePickerProps, Config } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
 import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
@@ -29,20 +29,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  labelAlign: getDefault<Props>(defaultConfig, UDatePicker).labelAlign,
-  size: getDefault<Props>(defaultConfig, UDatePicker).size,
-  openDirectionX: getDefault<Props>(defaultConfig, UDatePicker).openDirectionX,
-  openDirectionY: getDefault<Props>(defaultConfig, UDatePicker).openDirectionY,
-  timepicker: getDefault<Props>(defaultConfig, UDatePicker).timepicker,
-  dateFormat: getDefault<Props>(defaultConfig, UDatePicker).dateFormat,
-  dateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).dateTimeFormat,
-  userDateFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateFormat,
-  userDateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateTimeFormat,
-  leftIcon: getDefault<Props>(defaultConfig, UDatePicker).leftIcon,
-  rightIcon: getDefault<Props>(defaultConfig, UDatePicker).rightIcon,
-  disabled: getDefault<Props>(defaultConfig, UDatePicker).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDatePickerProps, Config>(defaultConfig, UDatePicker),
 });
 
 const emit = defineEmits([

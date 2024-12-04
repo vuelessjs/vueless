@@ -1,8 +1,8 @@
 import defaultConfig from "./config.ts";
 
-import type { BrandColors } from "../types.ts";
+import type { BrandColors, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = ComponentConfig<typeof defaultConfig>;
 
 export type IconSize = "3xs" | "2xs" | "xs" | "sm" | "md";
 

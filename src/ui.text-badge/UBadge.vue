@@ -8,12 +8,12 @@ import { UBadge } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 
-import type { UBadgeProps, IconSize } from "./types.ts";
+import type { UBadgeProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UBadgeProps>(), {
-  ...getDefaults<UBadgeProps>(defaultConfig, UBadge),
+  ...getDefaults<UBadgeProps, Config>(defaultConfig, UBadge),
 });
 
 const emit = defineEmits([

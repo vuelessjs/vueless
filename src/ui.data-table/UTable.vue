@@ -37,13 +37,13 @@ import {
 import { UTable } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { Cell, Row, RowId, UTableProps, UTableRowAttrs } from "./types.ts";
+import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTableProps>(), {
-  ...getDefaults<UTableProps>(defaultConfig, UTable),
+  ...getDefaults<UTableProps, Config>(defaultConfig, UTable),
 });
 
 const emit = defineEmits([

@@ -9,12 +9,12 @@ import defaultConfig from "./config.ts";
 import { useAttrs } from "./useAttrs.ts";
 import { separatedMoney, MONEY_SIGN_TYPE } from "./utilMoney.ts";
 
-import type { UMoneyProps } from "./types.ts";
+import type { UMoneyProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UMoneyProps>(), {
-  ...getDefaults<UMoneyProps>(defaultConfig, UMoney),
+  ...getDefaults<UMoneyProps, Config>(defaultConfig, UMoney),
 });
 
 const {

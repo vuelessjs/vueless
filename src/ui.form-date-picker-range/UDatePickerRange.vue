@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TModelValue extends RangeDate">
 import { computed, watch, ref, nextTick, provide, useId, useTemplateRef } from "vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -59,6 +59,7 @@ import type {
   UDatePickerRangeProps,
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
+  Config,
 } from "./types.ts";
 import type { RangeDate } from "../ui.form-calendar/types.ts";
 import type { ComponentExposed } from "../types.ts";
@@ -67,25 +68,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerRangeProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  openDirectionX: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionX,
-  openDirectionY: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionY,
-  variant: getDefault<Props>(defaultConfig, UDatePickerRange).variant,
-  dateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).dateFormat,
-  userDateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).userDateFormat,
-  size: getDefault<Props>(defaultConfig, UDatePickerRange).size,
-  leftIcon: getDefault<Props>(defaultConfig, UDatePickerRange).leftIcon,
-  rightIcon: getDefault<Props>(defaultConfig, UDatePickerRange).rightIcon,
-  labelAlign: getDefault<Props>(defaultConfig, UDatePickerRange).labelAlign,
-  label: getDefault<Props>(defaultConfig, UDatePickerRange).label,
-  disabled: getDefault<Props>(defaultConfig, UDatePickerRange).disabled,
-  customRangeButton: () => ({
-    range: { from: null, to: null },
-    label: "",
-    description: "",
-  }),
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UDatePickerRangeProps, Config>(defaultConfig, UDatePickerRange),
 });
 
 const emit = defineEmits([

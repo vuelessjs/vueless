@@ -4,23 +4,18 @@ import { computed, useId } from "vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UColorPicker } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UColorPickerProps, IconSize } from "./types.ts";
+import type { UColorPickerProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UColorPickerProps>(), {
-  name: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).name,
-  size: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).size,
-  colorOptions: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).colorOptions,
-  disabled: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UColorPickerProps, Config>(defaultConfig, UColorPicker),
 });
 
 const emit = defineEmits([

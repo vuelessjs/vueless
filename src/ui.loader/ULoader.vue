@@ -5,12 +5,12 @@ import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { ULoaderProps } from "./types.ts";
+import type { ULoaderProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderProps>(), {
-  ...getDefaults<ULoaderProps>(defaultConfig, ULoader),
+  ...getDefaults<ULoaderProps, Config>(defaultConfig, ULoader),
 });
 
 const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);

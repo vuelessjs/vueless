@@ -17,7 +17,7 @@ import type { UButtonProps, LoaderSize, IconSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UButtonProps>(), {
-  ...getDefaults<UButtonProps>(defaultConfig, UButton),
+  ...getDefaults<UButtonProps, Config>(defaultConfig, UButton),
 });
 
 const slots = useSlots();

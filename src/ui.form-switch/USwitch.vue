@@ -4,27 +4,19 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { USwitch } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { USwitchProps, IconSize } from "./types.ts";
+import type { USwitchProps, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<USwitchProps>(), {
-  labelAlign: getDefault<USwitchProps>(defaultConfig, USwitch).labelAlign,
-  size: getDefault<USwitchProps>(defaultConfig, USwitch).size,
-  color: getDefault<USwitchProps>(defaultConfig, USwitch).color,
-  toggleIcon: getDefault<USwitchProps>(defaultConfig, USwitch).toggleIcon,
-  toggleLabel: getDefault<USwitchProps>(defaultConfig, USwitch).toggleLabel,
-  disabled: getDefault<USwitchProps>(defaultConfig, USwitch).disabled,
-  modelValue: false,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<USwitchProps, Config>(defaultConfig, USwitch),
 });
 
 const emit = defineEmits([

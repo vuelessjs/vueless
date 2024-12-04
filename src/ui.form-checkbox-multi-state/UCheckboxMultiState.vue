@@ -8,13 +8,13 @@ import defaultConfig from "./config.ts";
 import { UCheckboxMultiState } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UCheckboxMultiStateProps } from "./types.ts";
+import type { UCheckboxMultiStateProps, Config } from "./types.ts";
 import type { UCheckboxOption } from "../ui.form-checkbox/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UCheckboxMultiStateProps>(), {
-  ...getDefaults<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState),
+  ...getDefaults<UCheckboxMultiStateProps, Config>(defaultConfig, UCheckboxMultiState),
 });
 
 const emit = defineEmits([

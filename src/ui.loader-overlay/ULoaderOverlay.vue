@@ -11,12 +11,12 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLoaderOverlay } from "./useLoaderOverlay.ts";
 
-import type { ULoaderOverlayProps } from "./types.ts";
+import type { ULoaderOverlayProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<ULoaderOverlayProps>(), {
-  ...getDefaults<ULoaderOverlayProps>(defaultConfig, ULoaderOverlay),
+  ...getDefaults<ULoaderOverlayProps, Config>(defaultConfig, ULoaderOverlay),
 });
 
 const { overlayAttrs, nestedLoaderAttrs, config } = useAttrs(props);

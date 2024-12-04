@@ -15,7 +15,7 @@ import { useLocale } from "../composables/useLocale.ts";
 import defaultConfig from "./config.ts";
 import { UDropdownList } from "./constants.ts";
 
-import type { Option, UDropdownListProps } from "./types.ts";
+import type { Option, UDropdownListProps, Config } from "./types.ts";
 import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -24,7 +24,7 @@ defineOptions({ inheritAttrs: false });
 const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
 const props = withDefaults(defineProps<UDropdownListProps>(), {
-  ...getDefaults<UDropdownListProps>(defaultConfig, UDropdownList),
+  ...getDefaults<UDropdownListProps, Config>(defaultConfig, UDropdownList),
 });
 
 const emit = defineEmits([
