@@ -250,16 +250,22 @@ export interface NestedComponent {
   [key: string]: Record<string, string | object> | string;
 }
 
-export type ComponentConfig<T> = [T & Component] extends [Ref]
+/* Make all config keys optional and allow to have string and object values. */
+export type ComponentConfig<T> = Partial<{
+  [K in keyof T]: T[K] | string;
+}> &
+  Component;
+
+export type ComponentConfigRef<T> = [T & Component] extends [Ref]
   ? Ref<T & Component>
   : Ref<UnwrapRef<T & Component>, T & Component>;
 
 export interface UseUI<T> {
-  config: ComponentConfig<T>;
+  config: ComponentConfigRef<T>;
   getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs;
   [key: string]:
     | ComputedRef<KeyAttrs>
-    | ComponentConfig<T>
+    | ComponentConfigRef<T>
     | ((mutatedProps?: ComputedRef) => KeysAttrs);
 }
 
@@ -445,6 +451,7 @@ export interface ExposeProperty {
   type: string;
   description?: string;
 }
+
 /**
  * Utility types to extract component props, slots, emit, exposed types.
  * Original code taken from `vue-component-type-helpers` npm package.
