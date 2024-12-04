@@ -2,12 +2,16 @@ import fs from "fs/promises";
 import { existsSync } from "fs";
 import path from "node:path";
 
+import { vuelessConfig } from "./vuelessConfig.js";
+
+import { COMPONENTS } from "../../constants.js";
+
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
 
-export async function cacheComponentTypes(filePath) {
+async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
   const sourceFile = path.join(filePath, "types.ts");
   const destFile = path.join(cacheDir, "types.ts");
@@ -22,7 +26,7 @@ export async function cacheComponentTypes(filePath) {
   }
 }
 
-export async function clearComponentTypesCache(filePath) {
+async function clearComponentTypesCache(filePath) {
   await fs.rm(path.join(filePath, ".cache"), { force: true, recursive: true });
 }
 
@@ -41,7 +45,7 @@ export async function restoreComponentTypes(filePath) {
  * @param {string} filePath - The path to the TypeScript file.
  * @param {Array} props - Array of prop objects to add or update.
  */
-export async function modifyComponentTypes(filePath, props) {
+async function modifyComponentTypes(filePath, props) {
   try {
     const targetFile = path.join(filePath, "types.ts");
 
@@ -111,5 +115,27 @@ export async function modifyComponentTypes(filePath, props) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error updating file:", error.message);
+  }
+}
+
+export async function setCustomPropTypes(srcDir) {
+  for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
+    const customProps =
+      componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
+
+    if (customProps) {
+      await cacheComponentTypes(path.join(srcDir, componentDir));
+      await modifyComponentTypes(
+        path.join(srcDir, componentDir),
+        vuelessConfig.component[componentName].props,
+      );
+    }
+  }
+}
+
+export async function removeCustomPropTypes(srcDir) {
+  for await (const componentDir of Object.values(COMPONENTS)) {
+    await restoreComponentTypes(path.join(srcDir, componentDir));
+    await clearComponentTypesCache(path.join(srcDir, componentDir));
   }
 }

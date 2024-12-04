@@ -10,15 +10,9 @@ import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loade
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
 import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
-import { vuelessConfig } from "./utils/node/vuelessConfig.js";
-import {
-  modifyComponentTypes,
-  cacheComponentTypes,
-  clearComponentTypesCache,
-  restoreComponentTypes,
-} from "./utils/node/dynamicProps.js";
+import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 
-import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "./constants.js";
+import { VUELESS_DIR, VUELESS_LOCAL_DIR } from "./constants.js";
 import path from "path";
 
 /* Automatically importing Vueless components on demand */
@@ -42,21 +36,12 @@ export const Vueless = function (options = {}) {
 
   const targetFiles = [...(include || []), ...(isNuxt ? getNuxtFiles() : getVueFiles())];
 
-  const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
-  const SRC_DIR = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+  const vuelessSrc = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : vuelessSrc;
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    await Promise.all(
-      Object.values(COMPONENTS).map((componentDir) => {
-        return restoreComponentTypes(path.join(SRC_DIR, componentDir));
-      }),
-    );
-
-    for await (const componentDir of Object.values(COMPONENTS)) {
-      await restoreComponentTypes(path.join(SRC_DIR, componentDir));
-      await clearComponentTypesCache(path.join(SRC_DIR, componentDir));
-    }
+    await removeCustomPropTypes();
 
     /* remove cached icons */
     await removeIconsCache(mirrorCacheDir, debug);
@@ -107,19 +92,7 @@ export const Vueless = function (options = {}) {
         /* copy vueless cache folder */
         await copyIconsCache(mirrorCacheDir, debug);
 
-        for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-          const customProps =
-            componentName in vuelessConfig.component &&
-            vuelessConfig.component[componentName].props;
-
-          if (customProps) {
-            await cacheComponentTypes(path.join(SRC_DIR, componentDir));
-            await modifyComponentTypes(
-              path.join(SRC_DIR, componentDir),
-              vuelessConfig.component[componentName].props,
-            );
-          }
-        }
+        await setCustomPropTypes(srcDir);
       }
     },
 
