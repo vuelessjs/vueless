@@ -143,7 +143,7 @@ const colsCount = computed(() => {
 });
 
 const lastRow = computed(() => {
-  return props.rows.length - 1;
+  return props.rows().length - 1;
 });
 
 const isShownActionsHeader = computed(
@@ -256,14 +256,14 @@ watch(selectedRows, onChangeSelectedRows, { deep: true });
 watch(
   tableRows,
   () => {
-    if (!isEqual(tableRows.value, props.rows)) {
+    if (!isEqual(tableRows.value, props.rows())) {
       emit("update:rows", tableRows.value);
     }
   },
   { deep: true },
 );
 watch(() => tableRows.value.length, updateSelectedRows);
-watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
+watch(() => props.rows(), synchronizeTableItemsWithProps, { deep: true });
 watch(isHeaderSticky, setHeaderCellWidth);
 watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
@@ -351,11 +351,11 @@ function onScroll() {
 }
 
 function synchronizeTableItemsWithProps() {
-  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
+  if (!props.rows().length || props.rows().length !== tableRows.value.length) {
     selectedRows.value = [];
   }
 
-  if (!isEqual(tableRows.value, props.rows)) {
+  if (!isEqual(tableRows.value, props.rows())) {
     tableRows.value = props.rows();
   }
 }

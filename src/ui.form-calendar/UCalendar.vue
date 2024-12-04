@@ -53,7 +53,7 @@ defineOptions({ inheritAttrs: false });
 type Props = UCalendarProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  ...getDefaults<UCalendarProps, Config>(defaultConfig, UCalendar),
+  ...getDefaults<Props, Config>(defaultConfig, UCalendar),
 });
 
 const emit = defineEmits([
@@ -218,7 +218,7 @@ const localValue = computed({
       };
     }
 
-    if (!isRangeDate(props.modelValue)) {
+    if (!isRangeDate(props.modelValue())) {
       return parseDate(props.modelValue || null, actualDateFormat.value, locale.value);
     }
 
@@ -245,8 +245,8 @@ const localValue = computed({
 
     const isOutOfRange = dateIsOutOfRange(
       parsedDate || new Date(),
-      props.minDate,
-      props.maxDate,
+      props.minDate(),
+      props.maxDate(),
       locale.value,
       actualDateFormat.value,
     );
@@ -473,8 +473,8 @@ function arrowKeyHandler(event: KeyboardEvent) {
     newActiveDate &&
     dateIsOutOfRange(
       newActiveDate,
-      props.minDate,
-      props.maxDate,
+      props.minDate(),
+      props.maxDate(),
       locale.value,
       actualDateFormat.value,
     );
