@@ -245,7 +245,7 @@ defineExpose({
   <div v-bind="wrapperAttrs" ref="wrapper">
     <UInput
       :id="elementId"
-      :key="String(localValue)"
+      :key="String(userDateFormat)"
       ref="input"
       :model-value="userFormatDate"
       :label-align="labelAlign"
