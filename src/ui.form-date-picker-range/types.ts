@@ -109,17 +109,17 @@ export interface UDatePickerRangeProps<TModelValue> {
   /**
    * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  minDate?: string | Date | undefined;
+  minDate?: string | Date;
 
   /**
    * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  maxDate?: string | Date | undefined;
+  maxDate?: string | Date;
 
   /**
    * Date string format.
    */
-  dateFormat?: string | undefined;
+  dateFormat?: string;
 
   /**
    * Same as date format, but used when timepicker is enabled.

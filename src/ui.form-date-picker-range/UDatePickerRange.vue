@@ -73,10 +73,8 @@ const props = withDefaults(defineProps<Props>(), {
   dateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).dateFormat,
   userDateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).userDateFormat,
   size: getDefault<Props>(defaultConfig, UDatePickerRange).size,
-  leftIcon: getDefault<Props>(defaultConfig, UDatePickerRange).leftIcon,
   rightIcon: getDefault<Props>(defaultConfig, UDatePickerRange).rightIcon,
   labelAlign: getDefault<Props>(defaultConfig, UDatePickerRange).labelAlign,
-  label: getDefault<Props>(defaultConfig, UDatePickerRange).label,
   disabled: getDefault<Props>(defaultConfig, UDatePickerRange).disabled,
   customRangeButton: () => ({
     range: { from: null, to: null },

@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   dateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).dateTimeFormat,
   userDateFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateFormat,
   userDateTimeFormat: getDefault<Props>(defaultConfig, UDatePicker).userDateTimeFormat,
-  leftIcon: getDefault<Props>(defaultConfig, UDatePicker).leftIcon,
   rightIcon: getDefault<Props>(defaultConfig, UDatePicker).rightIcon,
   disabled: getDefault<Props>(defaultConfig, UDatePicker).disabled,
   dataTest: "",
