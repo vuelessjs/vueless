@@ -160,7 +160,6 @@ export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = {
   timepicker: true,
   modelValue: new Date(2024, 2, 14, 12, 24, 14),
-  userDateFormat: "j F, Y - H:i:S",
 };
 
 export const MinMax = DefaultTemplate.bind({});
