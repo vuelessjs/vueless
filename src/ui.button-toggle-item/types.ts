@@ -26,7 +26,7 @@ export interface UToggleItemProps {
   /**
    * Selected value.
    */
-  modelValue?: string | number | (() => (string | number)[]);
+  modelValue?: string | number | (string | number)[];
 
   /**
    * Value for checkbox state.

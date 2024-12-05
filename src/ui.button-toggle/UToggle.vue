@@ -31,11 +31,7 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,
-  set: (value) => {
-    typeof props.modelValue === "function"
-      ? emit("update:modelValue", () => value)
-      : emit("update:modelValue", value);
-  },
+  set: (value) => emit("update:modelValue", value),
 });
 
 const labelSize = computed(() => {

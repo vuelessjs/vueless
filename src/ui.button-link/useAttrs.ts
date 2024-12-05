@@ -8,13 +8,13 @@ import type { UseAttrs } from "../types.ts";
 import type { Config } from "./types.ts";
 
 export default function useAttrs(): UseAttrs<Config> {
+  const slots = useSlots();
   const mutatedProps = computed(() => ({
     /* component state, not a props */
     defaultSlot: hasSlotContent(slots["default"]),
   }));
 
   const { config, getKeysAttrs } = useUI<Config>(defaultConfig, mutatedProps, "link");
-  const slots = useSlots();
 
   return { config, ...getKeysAttrs(mutatedProps) };
 }

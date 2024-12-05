@@ -18,6 +18,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UToggleItemProps>(), {
   ...getDefaults<UToggleItemProps, Config>(defaultConfig, UToggleItem),
+  modelValue: "",
 });
 
 const emit = defineEmits([

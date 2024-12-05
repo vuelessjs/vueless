@@ -19,7 +19,7 @@ export interface ULinkProps {
   /**
    * Vue-router route object.
    */
-  to?: () => RouteLocationRaw;
+  to?: RouteLocationRaw;
 
   /**
    * Link size.
@@ -53,7 +53,7 @@ export interface ULinkProps {
     | "brand";
 
   /**
-   * Link open type behaviour.
+   * Link open type behavior.
    */
   type?: "phone" | "email" | "link";
 
@@ -68,12 +68,12 @@ export interface ULinkProps {
   ariaCurrentValue?: string;
 
   /**
-   * Whether RouterLink should not wrap its content in an a tag.
+   * Whether RouterLink should not wrap its content in a tag.
    */
   custom?: boolean;
 
   /**
-   * Whether RouterLink should not wrap its content in an a tag.
+   * Whether RouterLink should not wrap its content in a tag.
    */
   replace?: boolean;
 
