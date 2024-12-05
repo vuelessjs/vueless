@@ -11,16 +11,16 @@ export interface UToggleOption {
   label: string;
 }
 
-export interface UToggleProps {
+export interface Props {
   /**
    * Selected value.
    */
-  modelValue?: string | number | (() => (string | number)[]);
+  modelValue?: string | number | (string | number)[];
 
   /**
    * Toggle item options.
    */
-  options?: () => UToggleOption[];
+  options?: UToggleOption[];
 
   /**
    * Toggle variant.

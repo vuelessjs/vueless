@@ -6,7 +6,7 @@ import type { UseAttrs } from "../types.ts";
 import type { UModalProps, Config } from "./types.ts";
 
 export default function useAttrs(props: UModalProps): UseAttrs<Config> {
-  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, () => props.config, "wrapper");
+  const { config, getKeysAttrs } = useUI<Config>(defaultConfig, undefined, "wrapper");
 
   return { config, ...getKeysAttrs() };
 }
