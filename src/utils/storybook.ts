@@ -14,7 +14,7 @@ interface Types {
 }
 
 export interface ArgType {
-  control?: "text" | "date" | "number" | "boolean" | "array" | "select" | false;
+  control?: "text" | "date" | "number" | "boolean" | "array" | "select" | "object" | false;
   options?: string[];
   table?: TableConfig;
   name?: string;
@@ -106,6 +106,16 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         options: attribute.enum,
         control: "select",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    }
+
+    if (attribute.enum?.length === 1) {
+      types[attribute.name] = {
+        control: "object",
         table: {
           defaultValue: { summary: attribute.default || "" },
           type: { summary: attribute.enum.join(" | ") },
