@@ -6,7 +6,7 @@ import type { UnknownObject, ComponentConfig } from "../types.ts";
 import type { DatePeriodRange } from "./utilDateRange.ts";
 
 export type Locale = typeof defaultConfig.i18n;
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 export type IsDatePeriodOutOfRange = (datePeriod: DatePeriodRange) => boolean;
 export type ShiftActions = `${ShiftAction}`;
 
@@ -184,7 +184,7 @@ export interface UDatePickerRangeProps<TModelValue> {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

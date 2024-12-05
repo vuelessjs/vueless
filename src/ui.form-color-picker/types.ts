@@ -2,7 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { BrandColors, ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "3xs" | "2xs" | "xs" | "sm" | "md";
 
@@ -55,7 +55,7 @@ export interface UColorPickerProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

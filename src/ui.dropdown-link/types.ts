@@ -3,7 +3,7 @@ import defaultConfig from "./config.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 import type { ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "sm" | "2xs" | "xs";
 
@@ -97,7 +97,7 @@ export interface UDropdownLinkProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

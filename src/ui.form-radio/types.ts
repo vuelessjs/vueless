@@ -2,7 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type LocalValueType = string | number | boolean | UnknownObject | UnknownArray | null;
 
@@ -90,7 +90,7 @@ export interface URadioProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

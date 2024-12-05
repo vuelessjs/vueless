@@ -2,7 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export interface URadioGroupOption {
   value: string | number | boolean | (() => UnknownArray) | (() => UnknownObject);
@@ -83,7 +83,7 @@ export interface URadioGroupProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

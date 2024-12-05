@@ -1,7 +1,7 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig, UnknownObject } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 export type OnClickOption = (option: Omit<Option, "onClick">) => void;
 
 export interface BaseOption {
@@ -60,7 +60,7 @@ export interface UDropdownListProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
