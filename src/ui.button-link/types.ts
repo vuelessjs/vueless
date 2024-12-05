@@ -19,7 +19,7 @@ export interface ULinkProps {
   /**
    * Vue-router route object.
    */
-  to?: RouteLocationRaw;
+  to?: () => RouteLocationRaw;
 
   /**
    * Link size.
