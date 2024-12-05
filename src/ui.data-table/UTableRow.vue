@@ -13,8 +13,6 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./types.ts";
 
-const { hasSlotContent } = useUI(defaultConfig);
-
 const NESTED_ROW_SHIFT_REM = 1;
 const LAST_NESTED_ROW_SHIFT_REM = 1.1;
 

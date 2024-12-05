@@ -1,4 +1,4 @@
-import { addDays, isSameDay } from "./utilDate";
+import { addDays, isSameDay } from "./utilDate.ts";
 
 export interface DateLocale {
   weekdays: {

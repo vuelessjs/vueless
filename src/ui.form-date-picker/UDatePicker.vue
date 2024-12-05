@@ -256,8 +256,8 @@ defineExpose({
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @input="onTextInput"
       @focus="activate"
-      @paste="onPaste"
       @copy="onCopy"
+      @paste="onPaste"
       @keydown.esc="deactivate"
       @keydown="onTextInputKeyDown"
     >
