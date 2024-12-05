@@ -3,17 +3,27 @@ import { getDefaults } from "../utils/ui.ts";
 
 import { UDivider } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UDividerProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
+import useUI from "../composables/useUI.ts";
+import { computed } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDividerProps>(), {
-  ...getDefaults<UDividerProps, Config>(defaultConfig, UDivider),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDivider),
 });
 
-const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);
+const mutatedProps = computed(() => ({
+  label: Boolean(props.label),
+}));
+
+const { wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(
+  defaultConfig,
+  () => props.config,
+  "",
+  mutatedProps,
+);
 </script>
 
 <template>

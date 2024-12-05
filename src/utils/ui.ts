@@ -18,17 +18,16 @@ import type {
   Component,
   Defaults,
   Strategies,
-  ComponentConfig,
 } from "../types.ts";
 
 interface MergedConfigOptions {
-  defaultConfig: Component;
-  globalConfig: Component;
-  propsConfig?: Component;
+  defaultConfig: unknown;
+  globalConfig: unknown;
+  propsConfig?: unknown;
   vuelessStrategy?: Strategies;
 }
 
-type getMergedConfig = (options: MergedConfigOptions) => Component;
+type GetMergedConfig = (options: MergedConfigOptions) => unknown;
 
 /**
  * Load Vueless config from the project root.
@@ -83,7 +82,7 @@ export const {
   },
 });
 
-export const getMergedConfig = createGetMergedConfig(cx) as getMergedConfig;
+export const getMergedConfig = createGetMergedConfig(cx) as GetMergedConfig;
 
 /* This allows skipping some CVA config keys in vueless config. */
 export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
@@ -112,18 +111,18 @@ export function getDefault<T>(defaultConfig: Component, name: ComponentNames) {
   return {
     ...defaults,
     dataTest: "",
-    config: () => {},
+    config: () => ({}),
   };
 }
 
 /**
  * Return default values for component props, icons, etc..
  */
-export function getDefaults<T, K>(defaultConfig: ComponentConfig<K>, name: ComponentNames) {
-  const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
+export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
+  const componentDefaults = cloneDeep((defaultConfig as Component).defaults) || {};
   const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
 
-  const defaults = merge(componentDefaults, globalDefaults) as T & Defaults;
+  const defaults = merge(componentDefaults, globalDefaults) as Props & Defaults;
 
   if (defaults.color) {
     defaults.color = getColor(defaults.color as BrandColors);

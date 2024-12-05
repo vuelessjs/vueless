@@ -9,9 +9,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UIconProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UIconArgs extends UIconProps {
+interface UIconArgs extends Props {
   slotTemplate?: string;
   enum: "color" | "size" | "variant";
 }
