@@ -33,9 +33,8 @@ import type {
  */
 export default function useUI<T>(
   defaultConfig: T,
-  propsConfigGetter?: () => ComponentConfig<T> | undefined,
-  topLevelClassKey?: string,
   mutatedProps?: MutatedProps,
+  topLevelClassKey?: string,
 ) {
   const { type, props } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -51,13 +50,10 @@ export default function useUI<T>(
   const attrs = useAttrs();
 
   watchEffect(() => {
-    // TODO: Try to remove getter, possibly should work because of watchEffect
-    const propsConfig = propsConfigGetter ? propsConfigGetter() : {};
-
     config.value = getMergedConfig({
       defaultConfig,
       globalConfig,
-      propsConfig,
+      propsConfig: props.config,
       vuelessStrategy,
     }) as ComponentConfig<T>;
   });
