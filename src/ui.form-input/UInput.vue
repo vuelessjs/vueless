@@ -74,6 +74,7 @@ const emit = defineEmits([
    * Triggers when content pasted to the input.
    */
   "paste",
+
   /**
    * Triggers when content copied from the input.
    */
