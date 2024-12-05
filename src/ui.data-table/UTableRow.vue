@@ -150,6 +150,12 @@ function onClick(row: Row) {
 }
 
 function onDoubleClick(row: Row) {
+  const selection = window.getSelection();
+
+  if (selection) {
+    selection.removeAllRanges();
+  }
+
   emit("dblclick", row);
 }
 
