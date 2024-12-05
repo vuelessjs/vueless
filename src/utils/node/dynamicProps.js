@@ -4,12 +4,14 @@ import path from "node:path";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 
-import { COMPONENTS } from "../../constants.js";
+import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
+
+const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
 
 async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
@@ -118,7 +120,9 @@ async function modifyComponentTypes(filePath, props) {
   }
 }
 
-export async function setCustomPropTypes(srcDir) {
+export async function setCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     const customProps =
       componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
@@ -133,7 +137,9 @@ export async function setCustomPropTypes(srcDir) {
   }
 }
 
-export async function removeCustomPropTypes(srcDir) {
+export async function removeCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+
   for await (const componentDir of Object.values(COMPONENTS)) {
     await restoreComponentTypes(path.join(srcDir, componentDir));
     await clearComponentTypesCache(path.join(srcDir, componentDir));

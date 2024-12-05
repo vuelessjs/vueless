@@ -12,9 +12,6 @@ import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 
-import { VUELESS_DIR, VUELESS_LOCAL_DIR } from "./constants.js";
-import path from "path";
-
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
   UnpluginVueComponents({
@@ -36,12 +33,9 @@ export const Vueless = function (options = {}) {
 
   const targetFiles = [...(include || []), ...(isNuxt ? getNuxtFiles() : getVueFiles())];
 
-  const vuelessSrc = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : vuelessSrc;
-
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    await removeCustomPropTypes();
+    await removeCustomPropTypes(isVuelessEnv);
 
     /* remove cached icons */
     await removeIconsCache(mirrorCacheDir, debug);
@@ -92,7 +86,7 @@ export const Vueless = function (options = {}) {
         /* copy vueless cache folder */
         await copyIconsCache(mirrorCacheDir, debug);
 
-        await setCustomPropTypes(srcDir);
+        await setCustomPropTypes(isVuelessEnv);
       }
     },
 
