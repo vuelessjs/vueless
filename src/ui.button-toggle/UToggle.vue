@@ -9,12 +9,14 @@ import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 import useAttrs from "./useAttrs.ts";
 
-import type { UToggleProps, LabelSize, Config } from "./types.ts";
+import type { Props, LabelSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UToggleProps>(), {
-  ...getDefaults<UToggleProps, Config>(defaultConfig, UToggle),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UToggle),
+  options: () => [],
+  modelValue: "",
 });
 
 const emit = defineEmits([
@@ -28,9 +30,7 @@ const emit = defineEmits([
 const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
-  get: () => {
-    return typeof props.modelValue === "function" ? props.modelValue() : props.modelValue;
-  },
+  get: () => props.modelValue,
   set: (value) => {
     typeof props.modelValue === "function"
       ? emit("update:modelValue", () => value)
@@ -102,7 +102,7 @@ provide("toggleSelectedValue", {
       <!-- @slot Use it to add UToggleItem directly. -->
       <slot>
         <UToggleItem
-          v-for="(item, index) in options()"
+          v-for="(item, index) in options"
           :key="item.value"
           :name="name"
           :model-value="item.value"

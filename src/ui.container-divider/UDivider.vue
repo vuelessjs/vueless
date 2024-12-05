@@ -18,12 +18,7 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(
-  defaultConfig,
-  () => props.config,
-  "",
-  mutatedProps,
-);
+const { wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

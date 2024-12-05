@@ -64,7 +64,7 @@ const {
   titleAttrs,
   toggleIconAttrs,
   dividerAttrs,
-} = useUI<Config>(defaultConfig, () => props.config, "", mutatedProps);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
