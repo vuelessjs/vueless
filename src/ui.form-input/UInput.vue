@@ -71,14 +71,14 @@ const emit = defineEmits([
   "input",
 
   /**
-   * Triggers when content pasted to the input.
-   */
-  "paste",
-
-  /**
    * Triggers when content copied from the input.
    */
   "copy",
+
+  /**
+   * Triggers when content pasted to the input.
+   */
+  "paste",
 ]);
 
 const VALIDATION_RULES_REG_EX = {
