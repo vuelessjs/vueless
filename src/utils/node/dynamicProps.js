@@ -53,15 +53,13 @@ function getMultiLineUnionValues(lines, propIndex, propEndIndex) {
 }
 
 function getInlineUnionValues(lines, propIndex, propEndIndex) {
-  return lines
+  const types = lines
     .slice(propIndex)
     .slice(0, propEndIndex + 1)
     .at(0)
-    .replace(unionSymbolsRegExp, "")
-    .trim()
-    .split(" ")
-    .slice(1) // remove property name
-    .filter((value) => Boolean(value)); // remove empty values
+    .match(/"([^"]+)"/g);
+
+  return types ? types.map((value) => value.replace(/"/g, "")) : [];
 }
 
 /**
@@ -94,6 +92,7 @@ async function modifyComponentTypes(filePath, props) {
       const propTypes = propEndIndex
         ? getMultiLineUnionValues(lines, propIndex, propEndIndex)
         : getInlineUnionValues(lines, propIndex, propEndIndex);
+
       const defaultUnionType = propTypes.map((value) => `"${value}"`).join(" | ");
 
       /* Prepare prop params. */
