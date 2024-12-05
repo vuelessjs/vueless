@@ -13,6 +13,10 @@ const CUSTOM_PROP = "@custom";
 
 const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
 
+const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
+const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
+const WORD_IN_QUOTE_REG_EXP = /([^"]+)/;
+
 async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
   const sourceFile = path.join(filePath, "types.ts");
@@ -42,6 +46,23 @@ export async function restoreComponentTypes(filePath) {
   }
 }
 
+function getMultiLineUnionValues(lines, propIndex, propEndIndex) {
+  return lines
+    .slice(propIndex)
+    .slice(1, propEndIndex + 1)
+    .map((item) => item.replace(UNION_SYMBOLS_REG_EXP, "").trim());
+}
+
+function getInlineUnionValues(lines, propIndex, propEndIndex) {
+  const types = lines
+    .slice(propIndex)
+    .slice(0, propEndIndex + 1)
+    .at(0)
+    .match(WORD_IN_QUOTE_REG_EXP);
+
+  return types ? types.map((value) => value.replace(/"/g, "")) : [];
+}
+
 /**
  * Updates or add a prop types dynamically.
  * @param {string} filePath - The path to the TypeScript file.
@@ -52,20 +73,32 @@ async function modifyComponentTypes(filePath, props) {
     const targetFile = path.join(filePath, "types.ts");
 
     /* Read `types.ts` and split it by lines. */
-    const content = await fs.readFile(targetFile, "utf-8");
-    const lines = content.split("\n");
+    let fileContent = await fs.readFile(targetFile, "utf-8");
+    const propsInterface = fileContent.match(PROPS_INTERFACE_REG_EXP)?.at(0)?.trim();
+
+    /* Remove props interface and double returns from fileContent */
+    fileContent = fileContent.replace(propsInterface, "").replace(/\n\s*\n/g, "\n");
+
+    const lines = propsInterface.split("\n");
 
     for (const prop of props) {
-      let { name, type, values = [], description, required, ignore } = prop;
+      const { name, type, values = [], description, required, ignore } = prop;
 
       if (!name) return;
 
       /* Find line with prop. */
       const propRegex = new RegExp(`^\\s*${name}[?:]?\\s*:`);
       const propIndex = lines.findIndex((line) => propRegex.test(line));
+      const propEndIndex = lines.slice(propIndex).findIndex((line) => line.endsWith(";"));
+      const propTypes = propEndIndex
+        ? getMultiLineUnionValues(lines, propIndex, propEndIndex)
+        : getInlineUnionValues(lines, propIndex, propEndIndex);
+
+      const defaultUnionType = propTypes.map((value) => `"${value}"`).join(" | ");
 
       /* Prepare prop params. */
       const uniqueValues = [...new Set(values)];
+      const isAssignableValue = uniqueValues.every((value) => propTypes.includes(value));
       const unionType = uniqueValues.map((value) => `"${value}"`).join(" | ");
       const userOptionalMark = required ? "" : OPTIONAL_MARK;
       const defaultOptionalMark = lines[propIndex]?.includes(OPTIONAL_MARK) ? OPTIONAL_MARK : "";
@@ -84,8 +117,16 @@ async function modifyComponentTypes(filePath, props) {
 
       /* Check if the prop type already exists. */
       if (~propIndex) {
-        if (unionType.length) {
+        if (unionType.length && isAssignableValue) {
+          // Remove multiline union types;
+          lines.splice(propIndex + 1, propEndIndex);
+
           lines.splice(propIndex, 1, `  ${name}${defaultOptionalMark}: ${propType};`);
+        }
+
+        if (unionType.length && !isAssignableValue) {
+          // eslint-disable-next-line no-console
+          console.warn(`${unionType} is not assignable to type ${defaultUnionType}.`);
         }
 
         const isCustomProp = lines[propIndex - 2].includes(CUSTOM_PROP);
@@ -111,6 +152,8 @@ async function modifyComponentTypes(filePath, props) {
 
       lines.splice(closingBracketIndex, 0, ...propDefinition);
     }
+
+    lines.unshift(fileContent);
 
     /* Update `types.ts` file. */
     await fs.writeFile(targetFile, lines.join("\n"), "utf-8");
