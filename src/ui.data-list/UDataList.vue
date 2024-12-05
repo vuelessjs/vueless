@@ -14,7 +14,6 @@ import defaultConfig from "./config.ts";
 import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UnknownObject } from "../types.ts";
 import type { UDataListProps, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -44,18 +43,6 @@ const emit = defineEmits([
    */
   "clickDelete",
 ]);
-
-defineSlots<{
-  edit: { element: UnknownObject };
-  delete: { element: UnknownObject };
-  drag: { element: UnknownObject };
-  empty: {
-    emptyTitle: string;
-    emptyDescription: string;
-  };
-  label: { item: DataListItem; active: boolean };
-  actions: { item: DataListItem };
-}>();
 
 const {
   config,
@@ -286,23 +273,26 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"
           >
-            <template #label="{ item, active }">
+            <template #label="slotProps: { item: DataListItem; active: boolean }">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
                 @binding {boolean} active
               -->
-              <slot name="label" :item="item" :active="active">
-                <div v-bind="active ? labelAttrs : labelCrossedAttrs" v-text="item[labelKey]" />
+              <slot name="label" :item="slotProps.item" :active="slotProps.active">
+                <div
+                  v-bind="slotProps.active ? labelAttrs : labelCrossedAttrs"
+                  v-text="slotProps.item[labelKey]"
+                />
               </slot>
             </template>
 
-            <template #actions="{ item }">
+            <template #actions="slotProps: { item: DataListItem }">
               <!--
                 @slot Use it to add custom actions.
                 @binding {object} item
               -->
-              <slot name="actions" :item="item" />
+              <slot name="actions" :item="slotProps.item" />
             </template>
           </UDataList>
         </div>
