@@ -3,7 +3,7 @@ import defaultConfig from "./config.ts";
 import type { Ref } from "vue";
 import type { ComponentConfig, UnknownObject } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 type RowKeys =
   | number
@@ -110,7 +110,7 @@ export interface UTableProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

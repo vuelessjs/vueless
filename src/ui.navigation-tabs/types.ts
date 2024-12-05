@@ -2,7 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { ComponentConfig, UnknownObject, UnknownArray } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type SetUTabsSelectedItem = (
   value: string | number | boolean | UnknownArray | UnknownObject,
@@ -38,7 +38,7 @@ export interface UTabsProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

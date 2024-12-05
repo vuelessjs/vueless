@@ -5,7 +5,7 @@ import type { ComponentConfig } from "../types.ts";
 
 type UpdateSelectedValue = (value: string | number, checked: boolean) => void;
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export interface ToggleInjectValues {
   type?: string;
@@ -51,7 +51,7 @@ export interface UToggleItemProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

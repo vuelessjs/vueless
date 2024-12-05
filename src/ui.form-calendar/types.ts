@@ -10,7 +10,7 @@ export type RangeDate =
 export type DateValue = Date | string | RangeDate | null;
 
 export type Locale = typeof defaultConfig.i18n;
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export function isRangeDate(value: Date | string | RangeDate | null): value is RangeDate {
   return !(value instanceof Date || typeof value === "string") && value !== null;
@@ -75,7 +75,7 @@ export interface UCalendarProps<TModelValue> {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

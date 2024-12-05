@@ -1,7 +1,7 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type NotificationType = "success" | "warning" | "error";
 
@@ -46,5 +46,5 @@ export interface UNotifyProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 }

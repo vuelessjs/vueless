@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 
@@ -94,7 +94,7 @@ export interface UInputProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

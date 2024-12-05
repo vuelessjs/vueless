@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types.ts";
 
 import type { RouteLocationRaw } from "vue-router";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export interface ULinkProps {
   /**
@@ -125,7 +125,7 @@ export interface ULinkProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

@@ -2,7 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 export type ButtonSize = "xs" | "md" | "lg";
@@ -86,7 +86,7 @@ export interface UInputSearchProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

@@ -1,7 +1,7 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type LoaderSize = "sm" | "md" | "lg";
 export type IconSize = "2xs" | "xs" | "sm" | "md";
@@ -116,7 +116,7 @@ export interface UButtonProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

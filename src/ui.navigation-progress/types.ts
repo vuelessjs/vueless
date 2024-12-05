@@ -1,7 +1,7 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type HeaderSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -60,7 +60,7 @@ export interface UProgressProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
@@ -87,7 +87,7 @@ export interface StepperProgressProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
