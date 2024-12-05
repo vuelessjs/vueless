@@ -8,7 +8,7 @@ export type Config = typeof defaultConfig;
 export type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 export type DropdownSize = "sm" | "md" | "lg";
 
-export interface UDropdownButtonProps {
+export interface Props {
   /**
    * Button label.
    */
@@ -17,7 +17,7 @@ export interface UDropdownButtonProps {
   /**
    * Options list.
    */
-  options?: () => Option[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.

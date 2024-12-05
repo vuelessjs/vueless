@@ -68,7 +68,7 @@ export interface Props {
    * Tooltip settings.
    * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
    */
-  tooltipSettings?: () => UnknownObject;
+  tooltipSettings?: UnknownObject;
 
   /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).

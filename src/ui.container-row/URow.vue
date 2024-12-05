@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import { URow } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { URowProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<URowProps>(), {
-  ...getDefaults<URowProps, Config>(defaultConfig, URow),
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, URow),
 });
 
-const { wrapperAttrs } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

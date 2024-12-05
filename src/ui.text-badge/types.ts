@@ -5,7 +5,7 @@ export type Config = typeof defaultConfig;
 
 export type IconSize = "3xs" | "2xs" | "xs";
 
-export interface UBadgeProps {
+export interface Props {
   /**
    *  Badge label.
    */

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
@@ -10,14 +11,13 @@ import ULabel from "../ui.form-label/ULabel.vue";
 
 import defaultConfig from "./config.ts";
 import { UInput } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputProps>(), {
-  ...getDefaults<UInputProps, Config>(defaultConfig, UInput),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInput),
 });
 
 const emit = defineEmits([
@@ -99,18 +99,6 @@ const applyPasswordClasses = computed(() => {
 
 const elementId = props.id || useId();
 
-const {
-  config,
-  inputAttrs,
-  wrapperAttrs,
-  inputLabelAttrs,
-  passwordIconAttrs,
-  leftIconWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
-  rightIconWrapperAttrs,
-} = useAttrs(props, { applyPasswordClasses });
-
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -127,8 +115,8 @@ const inputType = computed(() => {
 
 const passwordIcon = computed(() => {
   return isShownPassword.value
-    ? config.value?.defaults?.passwordVisibleIcon || ""
-    : config.value?.defaults?.passwordHiddenIcon || "";
+    ? config.value.defaults.passwordVisibleIcon || ""
+    : config.value.defaults.passwordHiddenIcon || "";
 });
 
 onMounted(() => {
@@ -246,6 +234,29 @@ defineExpose({
    */
   inputRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+  /* component state, not a props */
+  typePassword: applyPasswordClasses.value,
+}));
+
+const {
+  config,
+  inputAttrs,
+  wrapperAttrs,
+  inputLabelAttrs,
+  passwordIconAttrs,
+  leftIconWrapperAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  rightIconWrapperAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

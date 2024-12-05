@@ -22,7 +22,7 @@ export interface ToggleContextType {
   updateSelectedValue: UpdateSelectedValue;
 }
 
-export interface UToggleItemProps {
+export interface Props {
   /**
    * Selected value.
    */

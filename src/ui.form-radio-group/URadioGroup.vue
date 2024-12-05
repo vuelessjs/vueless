@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { computed, provide } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import ULabel from "../ui.form-label/ULabel.vue";
 import URadio from "../ui.form-radio/URadio.vue";
-import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { URadioGroup } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { URadioGroupProps, SetRadioGroupSelectedItem, Config } from "./types.ts";
+import type { Props, SetRadioGroupSelectedItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<URadioGroupProps>(), {
-  ...getDefaults<URadioGroupProps, Config>(defaultConfig, URadioGroup),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, URadioGroup),
+  modelValue: () => [],
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -24,8 +27,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useAttrs(props);
 
 const selectedItem = computed({
   get: () => props.modelValue,
@@ -39,6 +40,12 @@ provide("getRadioGroupSelectedItem", () => selectedItem.value);
 provide("getRadioGroupName", () => props.name);
 provide("getRadioGroupColor", () => props.color);
 provide("getRadioGroupSize", () => props.size);
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -56,7 +63,7 @@ provide("getRadioGroupSize", () => props.size);
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <URadio
-          v-for="(option, index) in options()"
+          v-for="(option, index) in options"
           :key="index"
           :model-value="selectedItem"
           :value="option.value"

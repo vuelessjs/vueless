@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UInputNumber } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { UInputNumberProps, Config } from "./types.ts";
 
@@ -25,17 +26,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const {
-  config,
-  valueAttrs,
-  labelAttrs,
-  removeButtonAttrs,
-  removeIconAttrs,
-  addButtonAttrs,
-  addIconAttrs,
-  numberAttrs,
-} = useAttrs(props);
 
 const count = computed({
   get: () => props.modelValue,
@@ -56,6 +46,21 @@ function onClickAdd() {
 
   count.value = newCount <= props.max ? newCount : count.value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  valueAttrs,
+  labelAttrs,
+  removeButtonAttrs,
+  removeIconAttrs,
+  addButtonAttrs,
+  addIconAttrs,
+  numberAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

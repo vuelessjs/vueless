@@ -4,7 +4,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface URowProps {
+export interface Props {
   /**
    * The distance between nested elements.
    */

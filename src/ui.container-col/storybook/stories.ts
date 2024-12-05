@@ -10,9 +10,9 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UColProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UColArgs extends UColProps {
+interface UColArgs extends Props {
   slotTemplate?: string;
 }
 

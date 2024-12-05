@@ -2,20 +2,20 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { merge } from "lodash-es";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
-
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UButton from "../ui.button/UButton.vue";
+
 import usePointer from "./usePointer.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
 import { UDropdownList } from "./constants.ts";
 
-import type { Option, UDropdownListProps, Config } from "./types.ts";
+import type { Option, Props, Config } from "./types.ts";
 import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -23,8 +23,9 @@ defineOptions({ inheritAttrs: false });
 // TODO: Use props and regular modal value
 const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
-const props = withDefaults(defineProps<UDropdownListProps>(), {
-  ...getDefaults<UDropdownListProps, Config>(defaultConfig, UDropdownList),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDropdownList),
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -46,25 +47,9 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 const wrapperMaxHeight = ref("");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
-  usePointer(props.options(), optionsRef, wrapperRef);
+  usePointer(props.options, optionsRef, wrapperRef);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  wrapperAttrs,
-  listAttrs,
-  listItemAttrs,
-  addOptionLabelWrapperAttrs,
-  addOptionLabelAttrs,
-  addOptionLabelHotkeyAttrs,
-  addOptionButtonAttrs,
-  addOptionIconAttrs,
-  optionAttrs,
-  subGroupAttrs,
-  groupAttrs,
-  optionContentAttrs,
-} = useAttrs(props);
 
 const { tm } = useLocale();
 
@@ -168,8 +153,8 @@ function optionHighlight(index: number, option: Option) {
 
 function addPointerElement(keyCode: string) {
   if (props.options.length > 0) {
-    select(props.options()[pointer.value], keyCode);
-    onClickOption(props.options()[pointer.value]);
+    select(props.options[pointer.value], keyCode);
+    onClickOption(props.options[pointer.value]);
   }
 
   pointerReset();
@@ -230,6 +215,26 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  listAttrs,
+  listItemAttrs,
+  addOptionLabelWrapperAttrs,
+  addOptionLabelAttrs,
+  addOptionLabelHotkeyAttrs,
+  addOptionButtonAttrs,
+  addOptionIconAttrs,
+  optionAttrs,
+  subGroupAttrs,
+  groupAttrs,
+  optionContentAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -244,7 +249,7 @@ defineExpose({
   >
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
-        v-for="(option, index) of options()"
+        v-for="(option, index) of options"
         :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
@@ -302,7 +307,7 @@ defineExpose({
       </li>
 
       <li
-        v-if="!options().length"
+        v-if="!options.length"
         :id="`${elementId}-empty`"
         ref="empty-option"
         role="option"

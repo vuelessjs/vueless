@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import { UDivider } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
-import useUI from "../composables/useUI.ts";
-import { computed } from "vue";
 
 defineOptions({ inheritAttrs: false });
 

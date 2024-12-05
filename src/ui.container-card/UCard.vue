@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import UHeader from "../ui.text-header/UHeader.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
-import useAttrs from "./useAttrs.ts";
-
 import defaultConfig from "./config.ts";
 import { UCard } from "./constants.ts";
 
-import type { UCardProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UCardProps>(), {
-  ...getDefaults<UCardProps, Config>(defaultConfig, UCard),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCard),
 });
 
 const slots = useSlots();
@@ -33,6 +32,10 @@ const isShownFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
 const {
   wrapperAttrs,
   titleAttrs,
@@ -43,7 +46,7 @@ const {
   descriptionAttrs,
   contentAttrs,
   footerAttrs,
-} = useAttrs(props);
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

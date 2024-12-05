@@ -6,7 +6,7 @@ export type Config = typeof defaultConfig;
 
 export type IconSize = "2xs" | "xs" | "sm";
 
-export interface USwitchProps {
+export interface Props {
   /**
    * Switch value.
    */

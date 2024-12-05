@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
@@ -10,15 +11,14 @@ import UModal from "../ui.container-modal/UModal.vue";
 
 import defaultConfig from "./config.ts";
 import { UModalConfirm } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UModalConfirmProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UModalConfirmProps>(), {
-  ...getDefaults<UModalConfirmProps, Config>(defaultConfig, UModalConfirm),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UModalConfirm),
 });
 
 const emit = defineEmits([
@@ -41,9 +41,6 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
-  useAttrs(props);
-
 const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -65,6 +62,16 @@ function emitConfirmAction() {
   emit("confirm");
   closeModal();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
+  useUI<Config>(
+    defaultConfig,
+    computed(() => ({})),
+  );
 </script>
 
 <template>

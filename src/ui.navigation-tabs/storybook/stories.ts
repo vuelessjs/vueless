@@ -8,9 +8,9 @@ import {
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UTabsProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UTabsArgs extends UTabsProps {
+interface UTabsArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
@@ -21,7 +21,7 @@ export default {
   component: UTabs,
   args: {
     modelValue: "1",
-    options: () => [
+    options: [
       { label: "Tab 1", value: "1" },
       { label: "Tab 2", value: "2" },
       { label: "Tab 3", value: "3" },
@@ -81,7 +81,7 @@ BottomLine.args = { underlined: true };
 
 export const DisabledTab = DefaultTemplate.bind({});
 DisabledTab.args = {
-  options: () => [
+  options: [
     { label: "Tab 1", value: 1, disabled: false },
     { label: "Tab 2", value: 2, disabled: true },
     { label: "Tab 3", value: 3, disabled: false },

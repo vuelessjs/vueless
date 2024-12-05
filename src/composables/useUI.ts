@@ -61,10 +61,10 @@ export default function useUI<T>(
   /**
    * Get classes by given key (including CVA if config set).
    */
-  function getClasses(key: string, mutatedProps: MutatedProps) {
+  function getClasses(key: string, mutatedProps?: MutatedProps) {
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
-      const color = (toValue(mutatedProps).color || props.color) as BrandColors;
+      const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
       const value = (config.value as ComponentConfig<T>)[key];
 
       let classes = "";
@@ -96,10 +96,6 @@ export default function useUI<T>(
    */
   function getKeysAttrs(mutatedProps?: MutatedProps) {
     const keysAttrs: KeysAttrs = {};
-
-    if (!mutatedProps) {
-      return keysAttrs;
-    }
 
     for (const key in config.value) {
       if (isSystemKey(key)) continue;

@@ -1,20 +1,24 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefaults } from "../utils/ui.ts";
 
 import { UFiles } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
-import { computed } from "vue";
+
 import { getRandomId } from "../utils/helper.ts";
 
-import type { UFilesProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UFilesProps>(), {
-  ...getDefaults<UFilesProps, Config>(defaultConfig, UFiles),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UFiles),
+  fileList: () => [],
 });
 
 const emit = defineEmits([
@@ -25,10 +29,8 @@ const emit = defineEmits([
   "remove",
 ]);
 
-const { filesLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
-
 const formattedFileList = computed(() => {
-  return props.fileList().map((file) => {
+  return props.fileList.map((file) => {
     if (file instanceof File) {
       return {
         id: getRandomId(),
@@ -43,6 +45,12 @@ const formattedFileList = computed(() => {
 function onRemoveFile(fileId: string | number) {
   emit("remove", fileId);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

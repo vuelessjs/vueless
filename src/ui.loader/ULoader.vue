@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { ULoaderProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULoaderProps>(), {
-  ...getDefaults<ULoaderProps, Config>(defaultConfig, ULoader),
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULoader),
 });
 
-const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { loaderAttrs, ellipseAttrs, config } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

@@ -14,7 +14,7 @@ interface UTabsOption {
   disabled: boolean;
 }
 
-export interface UTabsProps {
+export interface Props {
   /**
    * Selected tab value.
    */
@@ -23,7 +23,7 @@ export interface UTabsProps {
   /**
    * Tab options.
    */
-  options?: () => UTabsOption[];
+  options?: UTabsOption[];
 
   /**
    * Tabs size.

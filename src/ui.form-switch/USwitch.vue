@@ -2,21 +2,22 @@
 import { computed, useId } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefaults } from "../utils/ui.ts";
 
 import { USwitch } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { USwitchProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<USwitchProps>(), {
-  ...getDefaults<USwitchProps, Config>(defaultConfig, USwitch),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, USwitch),
 });
 
 const emit = defineEmits([
@@ -38,16 +39,6 @@ const checkedValue = computed({
 });
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  toggleIconAttrs,
-  switchLabelAttrs,
-  inputAttrs,
-  wrapperAttrs,
-  circleAttrs,
-  toggleLabelAttrs,
-} = useAttrs(props, { checked: checkedValue });
 
 const switchLabel = computed(() => {
   return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
@@ -80,6 +71,24 @@ function onClickToggle() {
 function onKeydownSpace() {
   toggle();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  checked: Boolean(checkedValue.value),
+}));
+
+const {
+  config,
+  toggleIconAttrs,
+  switchLabelAttrs,
+  inputAttrs,
+  wrapperAttrs,
+  circleAttrs,
+  toggleLabelAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

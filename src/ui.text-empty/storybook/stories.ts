@@ -11,9 +11,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UEmptyProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UEmptyArgs extends UEmptyProps {
+interface UEmptyArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

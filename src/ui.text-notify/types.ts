@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-export interface UNotifyProps {
+export interface Props {
   /**
    * A position on the x-axis.
    */

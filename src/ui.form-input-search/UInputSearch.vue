@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { computed, useId, ref, watchEffect } from "vue";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UInput from "../ui.form-input/UInput.vue";
-import UButton from "../ui.button/UButton.vue";
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { createDebounce } from "../utils/helper.ts";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UInput from "../ui.form-input/UInput.vue";
+import UButton from "../ui.button/UButton.vue";
+
 import { UInputSearch } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputSearchProps, IconSize, ButtonSize, Config } from "./types.ts";
+import type { Props, IconSize, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputSearchProps>(), {
-  ...getDefaults<UInputSearchProps, Config>(defaultConfig, UInputSearch),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputSearch),
 });
 
 const emit = defineEmits([
@@ -46,9 +47,6 @@ const localValue = ref("");
 const inputRef = ref(null);
 
 const elementId = props.id || useId();
-
-const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
-  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -118,6 +116,14 @@ defineExpose({
    */
   inputRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+
+const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

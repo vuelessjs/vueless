@@ -15,9 +15,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UPageProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UPageArgs extends UPageProps {
+interface UPageArgs extends Props {
   slotTemplate?: string;
 }
 

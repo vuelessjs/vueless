@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, useId } from "vue";
+import { computed, inject, onMounted, ref, useId, toValue } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
+
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants.ts";
 
-import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { UToggleItem } from "./constants.ts";
 
-import type { UToggleItemProps, ToggleInjectValues, ToggleContextType, Config } from "./types.ts";
+import type { Props, ToggleInjectValues, ToggleContextType, Config } from "./types.ts";
 
 type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UToggleItemProps>(), {
-  ...getDefaults<UToggleItemProps, Config>(defaultConfig, UToggleItem),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UToggleItem),
   modelValue: "",
 });
 
@@ -70,12 +71,6 @@ const isSelected = computed(() => {
     : selectedValue?.value === props.value;
 });
 
-const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
-  isSelected,
-  separated: getToggleSeparated,
-  variant: getToggleVariant,
-});
-
 onMounted(() => {
   const propValueString = props.value?.toString() ?? "";
 
@@ -97,6 +92,19 @@ function onClickSetValue() {
 
   emit("update:modelValue", props.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  variant: toValue(getToggleVariant),
+  separated: toValue(getToggleSeparated),
+  /* component state, not a props */
+  selected: isSelected.value,
+}));
+
+const { toggleButtonAttrs, toggleInputAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

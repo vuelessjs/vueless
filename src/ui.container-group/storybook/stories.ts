@@ -11,9 +11,9 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UGroupProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UGroupArgs extends UGroupProps {
+interface UGroupArgs extends Props {
   slotTemplate?: string;
 }
 

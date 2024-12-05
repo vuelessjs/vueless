@@ -12,9 +12,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import { useLoaderOverlay } from "../useLoaderOverlay.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { ULoaderOverlayProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface ULoaderOverlayArgs extends ULoaderOverlayProps {
+interface ULoaderOverlayArgs extends Props {
   slotTemplate?: string;
 }
 

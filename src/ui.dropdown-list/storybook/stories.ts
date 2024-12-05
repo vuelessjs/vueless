@@ -9,14 +9,14 @@ import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Option, UDropdownListProps } from "../types.ts";
+import type { Option, Props } from "../types.ts";
 
-interface DefaultUDropdownListArgs extends UDropdownListProps {
+interface DefaultUDropdownListArgs extends Props {
   slotTemplate?: string;
 }
 
 interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
-  enum: keyof Pick<UDropdownListProps, "size">;
+  enum: keyof Pick<Props, "size">;
 }
 
 export default {
@@ -92,13 +92,13 @@ export const VisibleOptions = DefaultTemplate.bind({});
 VisibleOptions.args = { visibleOptions: 3 };
 
 export const WithoutOptions = DefaultTemplate.bind({});
-WithoutOptions.args = { options: () => [] };
+WithoutOptions.args = { options: [] };
 
 export const GroupedOptions = DefaultTemplate.bind({});
 GroupedOptions.args = {
   labelKey: "name",
   valueKey: "name",
-  options: () => [
+  options: [
     { groupLabel: "Javascript" },
     { name: "Vue.js" },
     { name: "Adonis" },
@@ -114,7 +114,7 @@ GroupedOptions.args = {
 
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
-  options: () => [
+  options: [
     { label: "option 1", id: "1" },
     { label: "option 2", id: "2", isHidden: true },
     {

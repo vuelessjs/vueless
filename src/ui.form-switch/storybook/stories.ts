@@ -10,9 +10,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { USwitchProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface USwitchArgs extends USwitchProps {
+interface USwitchArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
 }

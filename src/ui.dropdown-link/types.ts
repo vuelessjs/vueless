@@ -7,7 +7,7 @@ export type Config = typeof defaultConfig;
 
 export type IconSize = "sm" | "2xs" | "xs";
 
-export interface UDropdownLinkProps {
+export interface Props {
   /**
    * Link label.
    */
@@ -16,7 +16,7 @@ export interface UDropdownLinkProps {
   /**
    * Options list.
    */
-  options?: () => Option[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.

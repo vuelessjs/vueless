@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
@@ -10,14 +11,13 @@ import ULabel from "../ui.form-label/ULabel.vue";
 
 import { UTextarea } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UTextareaProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UTextareaProps>(), {
-  ...getDefaults<UTextareaProps, Config>(defaultConfig, UTextarea),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UTextarea),
 });
 
 const emit = defineEmits([
@@ -56,9 +56,6 @@ const emit = defineEmits([
 const slots = useSlots();
 
 const elementId = props.id || useId();
-
-const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
-  useAttrs(props);
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const labelComponentRef = ref<{ labelElement: HTMLElement | null } | null>(null);
@@ -176,6 +173,18 @@ defineExpose({
    */
   textareaRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+}));
+
+const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

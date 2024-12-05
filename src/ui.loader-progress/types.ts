@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface ULoaderProgressProps {
+export interface Props {
   /**
    * Loader stripe color.
    */
@@ -33,7 +33,7 @@ export interface ULoaderProgressProps {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | (() => string[]);
+  resources?: string | string[];
 
   /**
    * Progress size.

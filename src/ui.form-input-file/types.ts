@@ -6,11 +6,11 @@ export type Config = typeof defaultConfig;
 
 export type ButtonSize = "xs" | "sm" | "md";
 
-export interface UInputFileProps {
+export interface Props {
   /**
    * Input value.
    */
-  modelValue?: () => File[];
+  modelValue?: File[];
 
   /**
    * Input label.
@@ -45,7 +45,7 @@ export interface UInputFileProps {
   /**
    * Allowed file types.
    */
-  allowedFileTypes?: () => string[];
+  allowedFileTypes?: string[];
 
   /**
    * Allow selecting multiple files.

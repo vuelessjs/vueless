@@ -10,9 +10,9 @@ import { useLoaderProgress } from "../useLoaderProgress.ts";
 import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { ULoaderProgressProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface ULoaderProgressArgs extends ULoaderProgressProps {
+interface ULoaderProgressArgs extends Props {
   slotTemplate?: string;
   enum: "color";
 }

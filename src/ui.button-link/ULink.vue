@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 import { RouterLink, useLink } from "vue-router";
+
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
-import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { ULink } from "./constants.ts";
 
-import type { ULinkProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULinkProps>(), {
-  ...getDefaults<ULinkProps, Config>(defaultConfig, ULink),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULink),
+  to: undefined,
 });
 
 const emit = defineEmits([
@@ -42,6 +45,8 @@ const emit = defineEmits([
   "keydown",
 ]);
 
+const slots = useSlots();
+
 const isPresentRoute = computed(() => {
   return typeof props.to === "string" || typeof props.to === "object";
 });
@@ -51,7 +56,7 @@ const safeTo = computed(() => {
     return "/";
   }
 
-  return typeof props.to === "function" ? props.to() : props.to;
+  return props.to;
 });
 
 const useLinkOptions = {
@@ -66,8 +71,6 @@ const useLinkOptions = {
 const { route, isActive, isExactActive } = useLink(useLinkOptions);
 
 const wrapperRef = ref(null);
-
-const { wrapperAttrs, linkAttrs } = useAttrs(props);
 
 const wrapperActiveClasses = computed(() => [
   isActive.value && props.wrapperActiveClass,
@@ -120,6 +123,17 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  defaultSlot: hasSlotContent(slots["default"]),
+}));
+
+const { wrapperAttrs, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

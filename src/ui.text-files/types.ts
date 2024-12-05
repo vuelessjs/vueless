@@ -3,11 +3,11 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UFilesProps {
+export interface Props {
   /**
    * List of file objects.
    */
-  fileList: () => File[];
+  fileList: File[];
 
   /**
    * File list label.

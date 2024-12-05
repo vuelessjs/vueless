@@ -1,10 +1,12 @@
 import defaultConfig from "./config.ts";
 
+import type { ComponentConfig } from "../types.ts";
+
 export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 
-export interface UInputProps {
+export interface Props {
   /**
    * Input value.
    */

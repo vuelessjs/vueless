@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { useTemplateRef, computed } from "vue";
+import { useTemplateRef, computed, useSlots } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import { UBadge } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 
-import type { UBadgeProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UBadgeProps>(), {
-  ...getDefaults<UBadgeProps, Config>(defaultConfig, UBadge),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UBadge),
 });
 
 const emit = defineEmits([
@@ -38,7 +40,7 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useAttrs(props);
+const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
 
@@ -79,6 +81,21 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  tabindex: Boolean(~Number(props.tabindex)),
+  leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
+  rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
+}));
+
+const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>

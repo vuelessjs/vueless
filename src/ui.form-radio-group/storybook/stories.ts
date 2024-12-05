@@ -11,9 +11,9 @@ import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { URadioGroupProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface URadioGroupArgs extends URadioGroupProps {
+interface URadioGroupArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
 }
@@ -100,12 +100,12 @@ export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   modelValue: "Custom string value",
-  options: () => [
+  options: [
     { label: "Boolean", value: false },
     { label: "String", value: "Custom string value" },
     { label: "Number", value: 4 },
-    { label: "Object", value: () => ({ key: "Custom object value" }) },
-    { label: "Array", value: () => ["Custom array value", 2] },
+    { label: "Object", value: { key: "Custom object value" } },
+    { label: "Array", value: ["Custom array value", 2] },
   ],
 };
 

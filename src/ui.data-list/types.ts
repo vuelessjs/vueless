@@ -24,11 +24,11 @@ export interface DataListItem {
   [key: string]: UnknownType | DataListItem[];
 }
 
-export interface UDataListProps {
+export interface Props {
   /**
    * Data item options.
    */
-  list?: () => DataListItem[];
+  list?: DataListItem[];
 
   /**
    * Group name.

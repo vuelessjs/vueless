@@ -9,9 +9,9 @@ import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UToggleItemProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UToggleItemArgs extends UToggleItemProps {
+interface UToggleItemArgs extends Props {
   slotTemplate?: string;
 }
 

@@ -4,7 +4,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface ULoaderProps {
+export interface Props {
   /**
    * Loader state (shown / hidden).
    */

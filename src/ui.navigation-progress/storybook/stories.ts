@@ -85,13 +85,13 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const VariantStepper = DefaultTemplate.bind({});
-VariantStepper.args = { variant: "stepper", max: () => ["Step 0", "Step 1", "Step 2"] };
+VariantStepper.args = { variant: "stepper", max: ["Step 0", "Step 1", "Step 2"] };
 
 export const Indicator = DefaultTemplate.bind({});
 Indicator.args = { indicator: true };
 
 export const Steps = DefaultTemplate.bind({});
-Steps.args = { max: () => ["Step 0", "Step 1", "Step 2"] };
+Steps.args = { max: ["Step 0", "Step 1", "Step 2"] };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
@@ -114,7 +114,7 @@ IndicatorSlot.args = {
 
 export const StepSlot = DefaultTemplate.bind({});
 StepSlot.args = {
-  max: () => ["Step 0", "Step 1", "Step 2"],
+  max: ["Step 0", "Step 1", "Step 2"],
   slotTemplate: `
   <template #step-0>
     💻

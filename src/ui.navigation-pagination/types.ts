@@ -6,7 +6,7 @@ export type Config = typeof defaultConfig;
 export type ButtonSize = "xs" | "sm" | "md";
 export type IconSize = "xs" | "sm" | "md";
 
-export interface UPaginationProps {
+export interface Props {
   /**
    * Current page number.
    */

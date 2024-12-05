@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
@@ -10,14 +11,13 @@ import UText from "../ui.text-block/UText.vue";
 
 import { UAlert } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UAlertProps, TextSize, CloseIconSize, Config } from "./types.ts";
+import type { Props, TextSize, CloseIconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UAlertProps>(), {
-  ...getDefaults<UAlertProps, Config>(defaultConfig, UAlert),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UAlert),
 });
 
 const emit = defineEmits([
@@ -28,19 +28,6 @@ const emit = defineEmits([
 ]);
 
 const isShownAlert = ref(true);
-
-const {
-  config,
-  wrapperAttrs,
-  bodyAttrs,
-  contentAttrs,
-  textAttrs,
-  titleAttrs,
-  descriptionAttrs,
-  closeButtonAttrs,
-  closeIconAttrs,
-  contentWrapperAttrs,
-} = useAttrs(props);
 
 onMounted(() => {
   if (props.timeout > 0) {
@@ -87,6 +74,23 @@ const iconColor = computed(() => {
 
   return props.variant === "primary" ? "white" : props.color;
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  contentAttrs,
+  textAttrs,
+  titleAttrs,
+  descriptionAttrs,
+  closeButtonAttrs,
+  closeIconAttrs,
+  contentWrapperAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

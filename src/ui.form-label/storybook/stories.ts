@@ -11,9 +11,9 @@ import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { ULabelProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface ULabelArgs extends ULabelProps {
+interface ULabelArgs extends Props {
   slotTemplate?: string;
   enum: "align" | "size";
 }

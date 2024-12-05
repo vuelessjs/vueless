@@ -3,6 +3,7 @@ import { computed } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
@@ -11,15 +12,15 @@ import UEmpty from "../ui.text-empty/UEmpty.vue";
 
 import { UDataList as UDataListName } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UDataListProps, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
+import type { Props, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDataListProps>(), {
-  ...getDefaults<UDataListProps, Config>(defaultConfig, UDataListName),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDataListName),
+  list: () => [],
 });
 
 const emit = defineEmits([
@@ -44,21 +45,6 @@ const emit = defineEmits([
   "clickDelete",
 ]);
 
-const {
-  config,
-  wrapperAttrs,
-  emptyAttrs,
-  draggableAttrs,
-  nestedAttrs,
-  itemWrapperAttrs,
-  itemAttrs,
-  labelAttrs,
-  labelCrossedAttrs,
-  customActionsAttrs,
-  deleteIconAttrs,
-  editIconAttrs,
-  dragIconAttrs,
-} = useAttrs(props);
 const { tm } = useLocale();
 
 const i18nGlobal = tm(UDataListName);
@@ -88,7 +74,7 @@ function onDragMove(event: DragMoveEvent): boolean | void {
 }
 
 function onDragEnd() {
-  const sortData = prepareSortData(typeof props.list === "function" ? props.list() : props.list);
+  const sortData = prepareSortData(props.list);
 
   emit("dragSort", sortData);
 }
@@ -123,6 +109,26 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
 
   return sortData;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  emptyAttrs,
+  draggableAttrs,
+  nestedAttrs,
+  itemWrapperAttrs,
+  itemAttrs,
+  labelAttrs,
+  labelCrossedAttrs,
+  customActionsAttrs,
+  deleteIconAttrs,
+  editIconAttrs,
+  dragIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

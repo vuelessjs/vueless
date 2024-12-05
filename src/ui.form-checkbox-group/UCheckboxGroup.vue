@@ -2,6 +2,7 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -9,15 +10,16 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import { UCheckboxGroup } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxGroupProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UCheckboxGroupProps>(), {
-  ...getDefaults<UCheckboxGroupProps, Config>(defaultConfig, UCheckboxGroup),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCheckboxGroup),
+  modelValue: () => [],
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -29,8 +31,6 @@ const emit = defineEmits([
 ]);
 
 const checkedItems = ref<UnknownObject[]>([]);
-
-const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useAttrs(props);
 
 provide<(value: UnknownObject[]) => void>(
   "setCheckboxGroupCheckedItems",
@@ -48,7 +48,7 @@ watch(
   () => props?.modelValue?.length,
   (newValue, oldValue) => {
     if (!isEqual(newValue, oldValue)) {
-      checkedItems.value = props.modelValue();
+      checkedItems.value = props.modelValue;
     }
   },
   { immediate: true },
@@ -57,6 +57,12 @@ watch(
 function onChangeCheckedItems() {
   emit("update:modelValue", checkedItems.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -74,7 +80,7 @@ function onChangeCheckedItems() {
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <UCheckbox
-          v-for="(option, index) in options()"
+          v-for="(option, index) in options"
           :key="option.id"
           :model-value="modelValue"
           :value="option.value"

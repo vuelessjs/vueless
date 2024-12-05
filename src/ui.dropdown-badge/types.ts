@@ -5,7 +5,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UDropdownBadgeProps {
+export interface Props {
   /**
    * Badge label.
    */
@@ -14,7 +14,7 @@ export interface UDropdownBadgeProps {
   /**
    * Options list.
    */
-  options?: () => Option[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.

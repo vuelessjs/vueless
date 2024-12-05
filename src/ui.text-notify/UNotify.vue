@@ -2,9 +2,9 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
-import useAttrs from "./useAttrs.ts";
 
 import defaultConfig from "./config.ts";
 import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
@@ -12,7 +12,7 @@ import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import type {
-  UNotifyProps,
+  Props,
   Notification,
   NotifyEvent,
   NotificationsWrapperRef,
@@ -22,8 +22,8 @@ import type {
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UNotifyProps>(), {
-  ...getDefaults<UNotifyProps, Config>(defaultConfig, UNotify),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UNotify),
 });
 
 const { tm } = useLocale();
@@ -35,19 +35,6 @@ const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
 const i18nGlobal = tm(UNotify);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const {
-  config,
-  wrapperAttrs,
-  bodyAttrs,
-  contentAttrs,
-  labelAttrs,
-  descriptionAttrs,
-  successIconAttrs,
-  warningIconAttrs,
-  errorIconAttrs,
-  closeIconAttrs,
-} = useAttrs(props, { notifications });
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });
@@ -124,6 +111,33 @@ function setPosition() {
 function getText(notificationText: string, type: NotificationType): string {
   return notificationText || currentLocale.value[type]?.default;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  bodySuccess: notifications.value.some(
+    (notification) => notification.type === NOTIFY_TYPE.success,
+  ),
+  bodyWarning: notifications.value.some(
+    (notification) => notification.type === NOTIFY_TYPE.warning,
+  ),
+  bodyError: notifications.value.some((notification) => notification.type === NOTIFY_TYPE.error),
+}));
+
+const {
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  contentAttrs,
+  labelAttrs,
+  descriptionAttrs,
+  successIconAttrs,
+  warningIconAttrs,
+  errorIconAttrs,
+  closeIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

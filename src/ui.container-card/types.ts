@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UCardProps {
+export interface Props {
   /**
    * Card title.
    */

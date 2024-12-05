@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import useAttrs from "./useAttrs.ts";
 
 import defaultConfig from "./config.ts";
 import { UProgress, VARIANT } from "./constants.ts";
@@ -16,9 +16,8 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
   ...getDefaults<UProgressProps, Config>(defaultConfig, UProgress),
+  max: 100,
 });
-
-const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } = useAttrs(props);
 
 const headerSize = computed(() => {
   const sizes = {
@@ -63,6 +62,13 @@ const progressPercent = computed(() => {
 function isActiveStep(index: number) {
   return index === props.value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

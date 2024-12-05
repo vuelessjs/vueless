@@ -5,7 +5,7 @@ import type { RouteLocationRaw } from "vue-router";
 
 export type Config = typeof defaultConfig;
 
-export interface ULinkProps {
+export interface Props {
   /**
    * Button label.
    */
@@ -19,7 +19,7 @@ export interface ULinkProps {
   /**
    * Vue-router route object.
    */
-  to?: () => RouteLocationRaw;
+  to?: RouteLocationRaw;
 
   /**
    * Link size.

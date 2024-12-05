@@ -16,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UIcon),
+  tooltipSettings: () => ({}),
 });
 
 const emit = defineEmits([
@@ -24,8 +25,6 @@ const emit = defineEmits([
    */
   "click",
 ]);
-
-const { config, iconAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
 const generatedIcons = computed(() => {
   return (
@@ -87,10 +86,10 @@ const dynamicComponent = computed(() => {
     "@material-symbols": async () => {
       return import.meta.env.PROD
         ? await getIcon([
-          library as string | undefined,
-          weight as string | undefined,
-          style as string | undefined,
-          name as string | undefined
+          library,
+          weight,
+          style,
+          name
         ])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`)
@@ -98,7 +97,7 @@ const dynamicComponent = computed(() => {
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library as string | undefined, name])
+        ? await getIcon([library, name])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/icons/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
@@ -107,7 +106,7 @@ const dynamicComponent = computed(() => {
       const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
-        ? await getIcon([library as string | undefined, fillType, name])
+        ? await getIcon([library, fillType, name])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/24/${fillType}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
@@ -127,6 +126,12 @@ const tooltipConfig = computed(() => ({
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { config, iconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

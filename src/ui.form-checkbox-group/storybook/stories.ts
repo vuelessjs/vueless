@@ -12,10 +12,10 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UCheckboxGroupProps } from "../types.ts";
+import type { Props } from "../types.ts";
 import type { UnknownObject, UnknownArray } from "../../types.ts";
 
-interface UCheckboxGroupArgs extends UCheckboxGroupProps {
+interface UCheckboxGroupArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
   value?: boolean | string | number | UnknownArray | UnknownObject;
@@ -107,19 +107,19 @@ Default.args = {
       <UCheckbox v-bind="radio"/>
     </template>
   `,
-  options: () => [
+  options: [
     { name: "Default", label: "String", value: "One" },
     { name: "Default", label: "Boolean", value: false },
     {
       name: "Default",
       label: "Object",
 
-      value: () => ({ key: "value" }),
+      value: { key: "value" },
     },
     {
       name: "Default",
       label: "Array",
-      value: () => ["Array", 1],
+      value: ["Array", 1],
     },
   ],
 };
@@ -127,12 +127,12 @@ Default.args = {
 export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
-  options: () => [
+  options: [
     { name: "Options", label: "Boolean", value: false },
     { name: "Options", label: "String", value: "One" },
     { name: "Options", label: "Number", value: 3 },
-    { name: "Options", label: "Object", value: () => ({ key: "value" }) },
-    { name: "Options", label: "Array", value: () => ["Array", 1] },
+    { name: "Options", label: "Object", value: { key: "value" } },
+    { name: "Options", label: "Array", value: ["Array", 1] },
   ],
 };
 

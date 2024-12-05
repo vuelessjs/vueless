@@ -10,14 +10,14 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDropdownBadgeProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDropdownBadgeArgs extends UDropdownBadgeProps {
+interface DefaultUDropdownBadgeArgs extends Props {
   slotTemplate?: string;
 }
 
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
-  enum: keyof Pick<UDropdownBadgeProps, "color" | "size">;
+  enum: keyof Pick<Props, "color" | "size">;
 }
 
 export default {
@@ -26,7 +26,7 @@ export default {
   component: UDropdownBadge,
   args: {
     label: "Dropdown",
-    options: () => [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
+    options: [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
   },
   argTypes: {
     ...getArgTypes(UDropdownBadge.__name),

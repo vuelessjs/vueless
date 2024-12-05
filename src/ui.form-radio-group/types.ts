@@ -5,25 +5,25 @@ import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 export type Config = typeof defaultConfig;
 
 export interface URadioGroupOption {
-  value: string | number | boolean | (() => UnknownArray) | (() => UnknownObject);
+  value: string | number | boolean | UnknownArray | UnknownObject;
   label: string;
   description?: string;
 }
 
 export type SetRadioGroupSelectedItem =
-  | ((value: string | number | boolean | (() => UnknownArray) | (() => UnknownObject)) => void)
+  | ((value: string | number | boolean | UnknownArray | UnknownObject) => void)
   | null;
 
-export interface URadioGroupProps {
+export interface Props {
   /**
    * Radio group selected value.
    */
-  modelValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
+  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
    * Radio group options.
    */
-  options?: () => URadioGroupOption[];
+  options?: URadioGroupOption[];
 
   /**
    * Radio group label.

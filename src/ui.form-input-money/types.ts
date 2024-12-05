@@ -13,7 +13,7 @@ export interface FormatOptions {
   prefix: string;
 }
 
-export interface UInputMoneyProps {
+export interface Props {
   /**
    * Input value.
    */

@@ -2,27 +2,29 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, useId } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getFileMbSize } from "./utilFileForm.ts";
+
 import UText from "../ui.text-block/UText.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getFileMbSize } from "./utilFileForm.ts";
-
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import { UInputFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UInputFileProps, ButtonSize, Config } from "./types.ts";
+import type { Props, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputFileProps>(), {
-  ...getDefaults<UInputFileProps, Config>(defaultConfig, UInputFile),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputFile),
+  modelValue: () => [],
+  allowedFileTypes: () => [],
 });
 
 const emit = defineEmits([
@@ -46,28 +48,11 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const elementId = props.id || useId();
 
-const {
-  config,
-  inputLabelAttrs,
-  chooseFileButtonAttrs,
-  dropzoneAttrs,
-  descriptionTopAttrs,
-  descriptionBottomAttrs,
-  contentAttrs,
-  clearButtonAttrs,
-  placeholderAttrs,
-  inputAttrs,
-  fileListAttrs,
-  buttonsAttrs,
-} = useAttrs(props);
-
 const i18nGlobal = tm(UInputFile);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const currentFiles = computed<File | File[] | null>({
-  get: () => {
-    return typeof props.modelValue === "function" ? props.modelValue() : props.modelValue;
-  },
+  get: () => props.modelValue,
   set: (newValue) => {
     const fallbackValue = props.multiple ? [] : null;
 
@@ -81,11 +66,11 @@ const currentError = computed({
 });
 
 const extensionNames = computed(() => {
-  return props.allowedFileTypes().map((type) => type.replace(".", ""));
+  return props.allowedFileTypes.map((type) => type.replace(".", ""));
 });
 
 const allowedFileTypeFormats = computed(() => {
-  return props.allowedFileTypes().map((type) => (type.startsWith(".") ? type : `.${type}`));
+  return props.allowedFileTypes.map((type) => (type.startsWith(".") ? type : `.${type}`));
 });
 
 const accept = computed(() => {
@@ -260,6 +245,30 @@ function onClickRemoveItem(id: string | number) {
     currentFiles.value = currentFiles.value.filter((file) => file.name !== id);
   }
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+}));
+
+const {
+  config,
+  inputLabelAttrs,
+  chooseFileButtonAttrs,
+  dropzoneAttrs,
+  descriptionTopAttrs,
+  descriptionBottomAttrs,
+  contentAttrs,
+  clearButtonAttrs,
+  placeholderAttrs,
+  inputAttrs,
+  fileListAttrs,
+  buttonsAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

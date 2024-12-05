@@ -16,11 +16,11 @@ export interface Option extends BaseOption {
   [key: string]: string | number | boolean | UnknownObject | OnClickOption | undefined;
 }
 
-export interface UDropdownListProps {
+export interface Props {
   /**
    * List options.
    */
-  options?: () => Option[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.

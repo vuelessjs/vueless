@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UTextProps {
+export interface Props {
   /**
    * HTML markdown or plain text.
    */

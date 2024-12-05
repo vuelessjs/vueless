@@ -3,11 +3,12 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
+
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { Props, LabelSize, Config } from "./types.ts";
 
@@ -27,15 +28,9 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
-
 const selectedValue = computed({
   get: () => props.modelValue,
-  set: (value) => {
-    typeof props.modelValue === "function"
-      ? emit("update:modelValue", () => value)
-      : emit("update:modelValue", value);
-  },
+  set: (value) => emit("update:modelValue", value),
 });
 
 const labelSize = computed(() => {
@@ -85,6 +80,12 @@ provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
   updateSelectedValue,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

@@ -7,7 +7,7 @@ export type Config = typeof defaultConfig;
 export type IconSize = "xs" | "sm" | "md";
 export type ButtonSize = "xs" | "md" | "lg";
 
-export interface UInputSearchProps {
+export interface Props {
   /**
    * Search input value.
    */

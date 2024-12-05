@@ -6,9 +6,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UGroupsProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UGroupsArgs extends UGroupsProps {
+interface UGroupsArgs extends Props {
   slotTemplate?: string;
 }
 

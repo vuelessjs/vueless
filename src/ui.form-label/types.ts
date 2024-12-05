@@ -4,7 +4,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface ULabelProps {
+export interface Props {
   /**
    * Label text.
    */
@@ -18,7 +18,7 @@ export interface ULabelProps {
   /**
    * Label error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Label align.

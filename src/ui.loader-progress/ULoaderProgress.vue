@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
+
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
-import useAttrs from "./useAttrs.ts";
 
 import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { ULoaderProgressProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULoaderProgressProps>(), {
-  ...getDefaults<ULoaderProgressProps, Config>(defaultConfig, ULoaderProgress),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULoaderProgress),
+  resources: () => [],
 });
 
 const error = ref(false);
@@ -32,8 +34,6 @@ const {
   addRequestUrl,
 } = useLoaderProgress();
 
-const { stripeAttrs } = useAttrs(props);
-
 const isStarted = computed(() => {
   return typeof status.value === "number";
 });
@@ -50,17 +50,9 @@ const resourceNamesArray = computed(() => {
     return [];
   }
 
-  if (Array.isArray(props.resources)) {
-    return props.resources.map((resource) => getRequestWithoutQuery(resource));
-  }
-
-  if (typeof props.resources === "function") {
-    const resourceResult = props.resources();
-
-    return resourceResult.map((resource) => getRequestWithoutQuery(resource));
-  }
-
-  return [getRequestWithoutQuery(props.resources)];
+  return Array.isArray(props.resources)
+    ? props.resources.map(getRequestWithoutQuery)
+    : [getRequestWithoutQuery(props.resources)];
 });
 
 watch(() => requestQueue.value.length, onChangeRequestsQueue);
@@ -107,7 +99,7 @@ function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
 function onChangeRequestsQueue() {
   const isActiveRequests =
     requestQueue.value.includes(INFINITY_LOADING) ||
-    resourceNamesArray.value.some((resource) => {
+    resourceNamesArray.value.some((resource: string) => {
       return requestQueue.value.includes(resource);
     });
 
@@ -211,6 +203,12 @@ function increase(amount?: number) {
 function done() {
   set(100);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { stripeAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

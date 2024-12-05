@@ -74,7 +74,7 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
         v-model="value"
         :[args.enum]="option"
         :label="option"
-        :options="() => [
+        :options="[
           { value: option + 1, label: option },
           { value: option + 2, label: option },
         ]"

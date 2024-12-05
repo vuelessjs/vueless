@@ -7,7 +7,7 @@ export interface UTabSize {
   size: string;
 }
 
-export interface UTabProps {
+export interface Props {
   /**
    * Tab label.
    */

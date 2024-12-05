@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
+import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
+import UIcon from "../ui.image-icon/UIcon.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
+
 import { UInputRating } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputRatingProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputRatingProps>(), {
-  ...getDefaults<UInputRatingProps, Config>(defaultConfig, UInputRating),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputRating),
 });
 
 const emit = defineEmits([
@@ -27,9 +28,6 @@ const emit = defineEmits([
 ]);
 
 const hovered = ref<number | null>(null);
-
-const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
-  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -58,6 +56,13 @@ function onClickStar(newValue: number) {
 function onMouseHover(overStar: number | null = null) {
   if (props.selectable) hovered.value = overStar;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

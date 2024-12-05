@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import { UHeader } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UHeaderProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UHeaderProps>(), {
-  ...getDefaults<UHeaderProps, Config>(defaultConfig, UHeader),
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UHeader),
 });
 
-const { headerAttrs } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { headerAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

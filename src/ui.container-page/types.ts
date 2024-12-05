@@ -5,7 +5,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UPageProps {
+export interface Props {
   /**
    * Page size (width).
    */
@@ -29,7 +29,7 @@ export interface UPageProps {
   /**
    * Back link vue-router route object.
    */
-  backTo?: () => RouteLocationRaw;
+  backTo?: RouteLocationRaw;
 
   /**
    * Back link label.

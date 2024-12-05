@@ -11,9 +11,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { URowProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface URowArgs extends URowProps {
+interface URowArgs extends Props {
   slotTemplate?: string;
   enum: "gap" | "align";
 }

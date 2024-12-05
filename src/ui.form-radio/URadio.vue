@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
 
-import ULabel from "../ui.form-label/ULabel.vue";
+import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
+import ULabel from "../ui.form-label/ULabel.vue";
+
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { URadio } from "./constants.ts";
 
-import type { URadioProps, LocalValueType, Config } from "./types.ts";
+import type { Props, LocalValueType, Config } from "./types.ts";
 import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -22,8 +23,10 @@ const getRadioGroupColor = inject("getRadioGroupColor", null);
 const getRadioGroupSize = inject("getRadioGroupSize", null);
 const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
-const props = withDefaults(defineProps<URadioProps>(), {
-  ...getDefaults<URadioProps, Config>(defaultConfig, URadio),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, URadio),
+  modelValue: () => ({}),
+  value: () => ({}),
 });
 
 const emit = defineEmits([
@@ -51,8 +54,6 @@ const isChecked = computed(() => {
 
 const elementId = props.id || useId();
 
-const { radioAttrs, radioLabelAttrs } = useAttrs(props, { radioColor, radioSize });
-
 const radioValue = computed(() => {
   return props.value === "" ? "on" : props.value;
 });
@@ -77,6 +78,19 @@ function onChange(event: Event) {
 
   emit("update:modelValue", target.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  color: radioColor.value,
+  size: radioSize.value,
+  label: Boolean(props.label),
+  error: Boolean(props.error),
+}));
+
+const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
-
-import { getDefaults } from "../utils/ui.ts";
 
 import { vClickOutside } from "../directives";
 
 import { UDropdownLink } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UDropdownLinkProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDropdownLinkProps>(), {
-  ...getDefaults<UDropdownLinkProps, Config>(defaultConfig, UDropdownLink),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDropdownLink),
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -38,11 +39,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
-  props,
-  { isShownOptions },
-);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -73,6 +69,18 @@ function onClickList() {
 function onClickOption(option: Option) {
   emit("clickOption", option);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  opened: isShownOptions.value,
+}));
+
+const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

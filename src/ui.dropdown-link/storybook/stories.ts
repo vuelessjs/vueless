@@ -10,14 +10,14 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDropdownLinkProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDropdownLinkArgs extends UDropdownLinkProps {
+interface DefaultUDropdownLinkArgs extends Props {
   slotTemplate?: string;
 }
 
 interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
-  enum: keyof Pick<UDropdownLinkProps, "size" | "color">;
+  enum: keyof Pick<Props, "size" | "color">;
 }
 
 export default {
@@ -26,7 +26,7 @@ export default {
   component: UDropdownLink,
   args: {
     label: "Dropdown",
-    options: () => [
+    options: [
       { label: "option 1", value: "1" },
       { label: "option 2", value: "2" },
       { label: "option 3", value: "3" },

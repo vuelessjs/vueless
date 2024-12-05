@@ -9,9 +9,9 @@ import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UHeaderProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UHeaderArgs extends UHeaderProps {
+interface UHeaderArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
 }

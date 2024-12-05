@@ -6,7 +6,7 @@ export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 
-export interface UInputRatingProps {
+export interface Props {
   /**
    * Rating value.
    */

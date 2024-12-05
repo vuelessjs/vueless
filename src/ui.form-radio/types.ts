@@ -6,16 +6,16 @@ export type Config = typeof defaultConfig;
 
 export type LocalValueType = string | number | boolean | UnknownObject | UnknownArray | null;
 
-export interface URadioProps {
+export interface Props {
   /**
    * Radio value.
    */
-  modelValue?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
+  modelValue?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
    * Native value attribute.
    */
-  value?: boolean | string | number | (() => UnknownArray) | (() => UnknownObject);
+  value?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
    * Radio label.

@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefaults } from "../utils/ui.ts";
-
 import { vClickOutside } from "../directives";
 
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { UDropdownButton, BUTTON_VARIANT } from "./constants.ts";
 
-import type { UDropdownButtonProps, IconSize, DropdownSize, Config } from "./types.ts";
+import type { Props, IconSize, DropdownSize, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDropdownButtonProps>(), {
-  ...getDefaults<UDropdownButtonProps, Config>(defaultConfig, UDropdownButton),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDropdownButton),
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -38,9 +39,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapperAttrs } =
-  useAttrs(props, { isShownOptions });
 
 const iconColor = computed(() => {
   return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
@@ -91,6 +89,18 @@ function hideOptions() {
 function onClickList() {
   hideOptions();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  opened: isShownOptions.value,
+}));
+
+const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapperAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
