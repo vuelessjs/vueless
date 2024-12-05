@@ -1,9 +1,12 @@
 import defaultConfig from "./config.ts";
+
+import type { DefineComponent, SVGAttributes } from "vue";
+
 import type { ComponentConfig, UnknownObject } from "../types.ts";
 
-export type Config = ComponentConfig<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface UIconProps {
+export interface Props {
   /**
    * Icon name.
    */
@@ -12,7 +15,7 @@ export interface UIconProps {
   /**
    * Icon source (svg as a vue component).
    */
-  src?: () => UnknownObject;
+  src?: DefineComponent<SVGAttributes>;
 
   /**
    * Icon color.
@@ -75,7 +78,7 @@ export interface UIconProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

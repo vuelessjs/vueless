@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
+
+import useUI from "../composables/useUI.ts";
 import { vTooltip } from "../directives";
 import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
@@ -7,14 +9,13 @@ import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
 import { UIcon } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UIconProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UIconProps>(), {
-  ...getDefaults<UIconProps, Config>(defaultConfig, UIcon),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UIcon),
 });
 
 const emit = defineEmits([
@@ -24,7 +25,7 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { config, iconAttrs } = useAttrs(props);
+const { config, iconAttrs } = useUI<Config>(defaultConfig, () => props.config);
 
 const generatedIcons = computed(() => {
   return (
@@ -56,7 +57,9 @@ const dynamicComponent = computed(() => {
   if (!src && !name) return "";
 
   /* Static import */
-  if (src) return src.render({}, {});
+  if (src?.render) {
+    return src.render({}, {});
+  }
 
   /* Dynamic import */
   if (!name) return "";

@@ -55,7 +55,7 @@ import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 
-import type { ComputedRef, MaybeRef, Ref, UnwrapRef } from "vue";
+import type { ComputedRef, MaybeRef, Ref } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
@@ -65,10 +65,6 @@ export enum ColorMode {
   Dark = "dark",
   Light = "light",
   Auto = "auto",
-}
-
-export interface ExtendedKeyClasses {
-  [key: string]: Ref<string>;
 }
 
 export interface ThemeConfig {
@@ -141,10 +137,12 @@ export interface Config extends ThemeConfig {
 }
 
 export type UnknownObject = Record<string, unknown>;
-export type UnknownArray = Array<unknown>;
+export type UnknownArray = unknown[];
 export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
+
 export type ComponentNames = keyof Components; // keys union
 export type Strategies = "merge" | "replace" | "override";
+
 export type Gray = "gray";
 export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
 export type BrandColors =
@@ -166,6 +164,10 @@ export type BrandColors =
   | "fuchsia"
   | "pink"
   | "rose";
+
+export interface Directives {
+  tooltip?: Partial<Props>;
+}
 
 export interface Components {
   UText?: Partial<typeof UTextDefaultConfig>;
@@ -226,29 +228,14 @@ export interface Components {
   UDataList?: Partial<typeof UDataListConfig>;
 }
 
-export interface Directives {
-  tooltip?: Partial<Props>;
-}
-
-export interface Component {
+export type Component = {
   i18n?: UnknownObject;
   defaults?: Defaults;
   safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
   safelistColors?: BrandColors[];
-  [key: string]: (CVA & NestedComponent) | object | string | undefined;
-}
-
-export type Defaults = {
-  color?: string;
-  [key: string]: unknown;
-};
-
-export interface NestedComponent {
-  component: string;
-  [key: string]: Record<string, string | object> | string;
-}
+} & (CVA & NestedComponent);
 
 /* Make all config keys optional and allow to have string and object values. */
 export type ComponentConfig<T> = Partial<{
@@ -256,18 +243,14 @@ export type ComponentConfig<T> = Partial<{
 }> &
   Component;
 
-export type ComponentConfigRef<T> = [ComponentConfig<T>] extends [Ref]
-  ? Ref<ComponentConfig<T>>
-  : Ref<UnwrapRef<ComponentConfig<T>>, ComponentConfig<T>>;
-
-export interface UseUI<T> {
-  config: ComponentConfigRef<T>;
-  getKeysAttrs: (mutatedProps?: ComputedRef) => KeysAttrs<T>;
-  [key: string]:
-    | ComputedRef<KeyAttrs<T>>
-    | ComponentConfigRef<T>
-    | ((mutatedProps?: ComputedRef) => KeysAttrs<T>);
+export interface NestedComponent {
+  [key: string]: Record<string, string | UnknownObject> | string;
 }
+
+export type Defaults = {
+  color?: string;
+  [key: string]: unknown;
+};
 
 export interface Transition {
   enterFromClass?: string;
@@ -290,27 +273,34 @@ export interface CVACompoundVariants {
   [key: string]: string | number | undefined | null;
 }
 
+export type MutatedProps = ComputedRef<UnknownObject>;
+
+export type UseUI<T> = {
+  config: Ref<T & ComponentConfig<T>>;
+  getKeysAttrs: (mutatedProps?: MutatedProps) => KeysAttrs;
+} & KeysAttrs;
+
+export type KeysAttrs = Record<string, Ref<KeyAttrs> | ComputedRef<KeyAttrs>>;
+
+export interface KeyAttrs extends VueAttrs {
+  "vl-component"?: string | null;
+  "vl-key"?: string | null;
+  "vl-child-component"?: string | null;
+  "vl-child-key"?: string | null;
+  [key: string]: string | undefined | null;
+}
+
 export interface VueAttrs {
   id?: string;
   class?: string;
   value?: string;
 }
 
-export interface KeyAttrs<T> extends VueAttrs {
-  "vl-component"?: string | null;
-  "vl-key"?: string | null;
-  "vl-child-component"?: string | null;
-  "vl-child-key"?: string | null;
-  config?: ComponentConfig<T>;
-  [key: string]: string | ComponentConfig<T> | undefined | null;
-}
-
-export type KeysAttrs<T> = Record<string, Ref<KeyAttrs<T> | undefined>>;
-
-export interface UseAttrs<TConfig> {
-  config: Ref<TConfig | undefined>;
-  [key: string]: Ref<TConfig | undefined>;
-}
+// TODO: Remove it later.
+export type UseAttrs<T> = {
+  config: Ref<ComponentConfig<T>>;
+  getKeysAttrs?: (mutatedProps?: MutatedProps) => KeysAttrs;
+} & KeysAttrs;
 
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
