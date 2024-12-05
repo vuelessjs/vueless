@@ -12,7 +12,6 @@ import defaultConfig from "./config.ts";
 
 import type { Props, DividerSize, Config } from "./types.ts";
 
-
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
