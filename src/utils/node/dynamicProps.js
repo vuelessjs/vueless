@@ -1,19 +1,58 @@
 import fs from "fs/promises";
+import { existsSync } from "fs";
+import path from "node:path";
+
+import { vuelessConfig } from "./vuelessConfig.js";
+
+import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
 
+const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
+
+async function cacheComponentTypes(filePath) {
+  const cacheDir = path.join(filePath, ".cache");
+  const sourceFile = path.join(filePath, "types.ts");
+  const destFile = path.join(cacheDir, "types.ts");
+
+  if (existsSync(cacheDir)) {
+    return;
+  }
+
+  if (existsSync(sourceFile)) {
+    await fs.mkdir(cacheDir);
+    await fs.cp(sourceFile, destFile);
+  }
+}
+
+async function clearComponentTypesCache(filePath) {
+  await fs.rm(path.join(filePath, ".cache"), { force: true, recursive: true });
+}
+
+export async function restoreComponentTypes(filePath) {
+  const cacheDir = path.join(filePath, ".cache");
+  const sourceFile = path.join(cacheDir, "types.ts");
+  const destFile = path.join(filePath, "types.ts");
+
+  if (existsSync(sourceFile)) {
+    await fs.cp(sourceFile, destFile);
+  }
+}
+
 /**
  * Updates or add a prop types dynamically.
  * @param {string} filePath - The path to the TypeScript file.
  * @param {Array} props - Array of prop objects to add or update.
  */
-async function updateTypeScriptFile(filePath, props) {
+async function modifyComponentTypes(filePath, props) {
   try {
+    const targetFile = path.join(filePath, "types.ts");
+
     /* Read `types.ts` and split it by lines. */
-    const content = await fs.readFile(filePath, "utf-8");
+    const content = await fs.readFile(targetFile, "utf-8");
     const lines = content.split("\n");
 
     for (const prop of props) {
@@ -74,31 +113,35 @@ async function updateTypeScriptFile(filePath, props) {
     }
 
     /* Update `types.ts` file. */
-    await fs.writeFile(filePath, lines.join("\n"), "utf-8");
+    await fs.writeFile(targetFile, lines.join("\n"), "utf-8");
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error updating file:", error.message);
   }
 }
 
-// Example usage
-const filePath = "/Users/ivan.hridniev/PhpstormProjects/vuelessjs/vueless/src/ui.button/types.ts";
+export async function setCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
 
-const params = [
-  {
-    name: "featured",
-    type: "boolean",
-    required: true,
-    description: "Some featured prop.",
-  },
-  {
-    name: "size",
-    values: ["sm", "md", "lg"],
-  },
-  {
-    name: "color",
-    ignore: true,
-  },
-];
+  for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
+    const customProps =
+      componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
 
-updateTypeScriptFile(filePath, params);
+    if (customProps) {
+      await cacheComponentTypes(path.join(srcDir, componentDir));
+      await modifyComponentTypes(
+        path.join(srcDir, componentDir),
+        vuelessConfig.component[componentName].props,
+      );
+    }
+  }
+}
+
+export async function removeCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+
+  for await (const componentDir of Object.values(COMPONENTS)) {
+    await restoreComponentTypes(path.join(srcDir, componentDir));
+    await clearComponentTypesCache(path.join(srcDir, componentDir));
+  }
+}
