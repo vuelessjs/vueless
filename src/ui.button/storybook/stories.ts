@@ -15,9 +15,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import { useDarkMode } from "../../composables/useDarkMode.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UButtonProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UButtonArgs extends UButtonProps {
+interface UButtonArgs extends Props {
   slotTemplate?: string;
   enum: "variant" | "size";
 }

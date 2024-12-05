@@ -13,6 +13,24 @@ export default {
   },
   component: /*tw*/ {
     // component configs
+    UButton: {
+      props: [
+        {
+          name: "featured",
+          type: "boolean",
+          required: true,
+          description: "Some featured prop.",
+        },
+        {
+          name: "size",
+          values: ["sm", "md", "lg"],
+        },
+        {
+          name: "color",
+          ignore: true,
+        },
+      ],
+    },
   },
   tailwindMerge: {},
 };
