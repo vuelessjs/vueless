@@ -157,7 +157,11 @@ function onPaste(event: ClipboardEvent) {
     const relativeTokensAmount = Number(userFormat.match(/(?<!\\)r/g)?.length);
 
     // Amount of tokens used in format string without decimeters.
-    const tokensAmount = userFormat
+    const dateFormatTokensAmount = props.userDateFormat
+      .split("")
+      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+
+    const timeFormatTokensAmount = props.userDateTimeFormat
       .split("")
       .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
 
@@ -180,13 +184,18 @@ function onPaste(event: ClipboardEvent) {
       pastedTokensAmount -= relativeTokensAmount;
     }
 
-    if (pastedTokensAmount !== tokensAmount) return;
+    if (
+      pastedTokensAmount !== dateFormatTokensAmount &&
+      pastedTokensAmount !== timeFormatTokensAmount
+    ) {
+      return;
+    }
 
     const parsedDate = parseDate(pasteContent, userFormat, locale.value);
 
     if (parsedDate) {
       localValue.value = (
-        props.dateFormat ? formatDate(parsedDate, props.dateFormat, locale.value) : parsedDate
+        props.dateFormat ? formatDate(parsedDate, userFormat, locale.value) : parsedDate
       ) as TModelValue;
     }
   } catch (error) {
