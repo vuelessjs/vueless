@@ -13,8 +13,9 @@ const CUSTOM_PROP = "@custom";
 
 const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
 
-const propsInterfaceRegExp = /export\s+interface\s+Props\s*{([^}]*)}/s;
-const unionSymbolsRegExp = /[?|:"|;]/g;
+const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
+const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
+const WORD_IN_QUOTE_REG_EXP = /([^"]+)/;
 
 async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
@@ -49,7 +50,7 @@ function getMultiLineUnionValues(lines, propIndex, propEndIndex) {
   return lines
     .slice(propIndex)
     .slice(1, propEndIndex + 1)
-    .map((item) => item.replace(unionSymbolsRegExp, "").trim());
+    .map((item) => item.replace(UNION_SYMBOLS_REG_EXP, "").trim());
 }
 
 function getInlineUnionValues(lines, propIndex, propEndIndex) {
@@ -57,7 +58,7 @@ function getInlineUnionValues(lines, propIndex, propEndIndex) {
     .slice(propIndex)
     .slice(0, propEndIndex + 1)
     .at(0)
-    .match(/"([^"]+)"/g);
+    .match(WORD_IN_QUOTE_REG_EXP);
 
   return types ? types.map((value) => value.replace(/"/g, "")) : [];
 }
@@ -73,9 +74,9 @@ async function modifyComponentTypes(filePath, props) {
 
     /* Read `types.ts` and split it by lines. */
     let fileContent = await fs.readFile(targetFile, "utf-8");
-    const propsInterface = fileContent.match(propsInterfaceRegExp)?.at(0)?.trim();
+    const propsInterface = fileContent.match(PROPS_INTERFACE_REG_EXP)?.at(0)?.trim();
 
-    // Remove props interface and double returns from fileContent
+    /* Remove props interface and double returns from fileContent */
     fileContent = fileContent.replace(propsInterface, "").replace(/\n\s*\n/g, "\n");
 
     const lines = propsInterface.split("\n");
