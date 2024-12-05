@@ -112,7 +112,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
             internal
             :color="iconColor"
             :size="size"
-            :name="config.defaults?.dropdownIcon"
+            :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
           />

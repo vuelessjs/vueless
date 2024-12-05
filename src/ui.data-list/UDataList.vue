@@ -177,7 +177,7 @@ const {
             <slot
               name="drag"
               :item="element"
-              :icon-name="config.defaults?.dragIcon"
+              :icon-name="config.defaults.dragIcon"
               :icon-size="iconSize"
             >
               <UIcon
@@ -185,7 +185,7 @@ const {
                 color="gray"
                 variant="light"
                 :size="iconSize"
-                :name="config.defaults?.dragIcon"
+                :name="config.defaults.dragIcon"
                 v-bind="dragIconAttrs"
               />
             </slot>
@@ -222,7 +222,7 @@ const {
               <slot
                 name="delete"
                 :item="element"
-                :icon-name="config.defaults?.deleteIcon"
+                :icon-name="config.defaults.deleteIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -231,7 +231,7 @@ const {
                   interactive
                   color="red"
                   :size="iconSize"
-                  :name="config.defaults?.deleteIcon"
+                  :name="config.defaults.deleteIcon"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
                   :data-test="`${dataTest}-delete`"
@@ -248,7 +248,7 @@ const {
               <slot
                 name="edit"
                 :item="element"
-                :icon-name="config.defaults?.editIcon"
+                :icon-name="config.defaults.editIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -257,7 +257,7 @@ const {
                   interactive
                   color="gray"
                   :size="iconSize"
-                  :name="config.defaults?.editIcon"
+                  :name="config.defaults.editIcon"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"
                   :data-test="`${dataTest}-edit`"

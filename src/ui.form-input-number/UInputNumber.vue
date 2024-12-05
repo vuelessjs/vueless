@@ -89,7 +89,7 @@ const {
       <UIcon
         internal
         :size="size"
-        :name="config.defaults?.removeIcon"
+        :name="config.defaults.removeIcon"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
         v-bind="removeIconAttrs"
       />
@@ -113,7 +113,7 @@ const {
       <UIcon
         internal
         :size="size"
-        :name="config.defaults?.addIcon"
+        :name="config.defaults.addIcon"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
         v-bind="addIconAttrs"
       />

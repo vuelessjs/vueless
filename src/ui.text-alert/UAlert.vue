@@ -151,7 +151,7 @@ const {
         -->
         <slot
           name="close"
-          :icon-name="config?.defaults?.closeIcon"
+          :icon-name="config.defaults.closeIcon"
           :icon-size="closeIconSize"
           :icon-color="iconColor"
         >
@@ -159,7 +159,7 @@ const {
             internal
             :size="closeIconSize"
             :color="iconColor"
-            :name="config.defaults?.closeIcon"
+            :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
             :data-test="`${dataTest}-button`"
           />

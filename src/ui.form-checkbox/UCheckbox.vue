@@ -161,7 +161,7 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
     <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
       <UIcon
         internal
-        :name="partial ? config?.defaults?.partiallyCheckedIcon : config?.defaults?.checkedIcon"
+        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
         :size="iconSize"
         color="white"
         v-bind="checkedIconAttrs"

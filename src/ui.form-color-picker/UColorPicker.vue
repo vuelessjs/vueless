@@ -95,7 +95,7 @@ const {
             internal
             :size="iconSize"
             color="gray"
-            :name="config.defaults?.unselectedIcon"
+            :name="config.defaults.unselectedIcon"
             v-bind="unselectedIconAttrs"
           />
         </label>

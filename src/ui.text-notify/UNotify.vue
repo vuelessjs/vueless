@@ -154,7 +154,7 @@ const {
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.successIcon"
+        :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
       />
@@ -165,7 +165,7 @@ const {
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.warningIcon"
+        :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
       />
@@ -177,7 +177,7 @@ const {
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.errorIcon"
+        :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
 
@@ -205,7 +205,7 @@ const {
         size="xs"
         internal
         interactive
-        :name="config.defaults?.closeIcon"
+        :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"
         @click="onClickClose(notification)"
       />

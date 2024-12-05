@@ -162,7 +162,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
         internal
         interactive
         color="gray"
-        :name="config.defaults?.clearIcon"
+        :name="config.defaults.clearIcon"
         :size="iconSize"
         v-bind="clearIconAttrs"
         :data-test="`${dataTest}-clear`"
@@ -172,7 +172,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <!-- @slot Use it to add icon after the text. -->
       <slot
         name="right-icon"
-        :icon-name="config.defaults?.searchIcon"
+        :icon-name="config.defaults.searchIcon"
         :icon-size="iconSize"
         :search-button-label="searchButtonLabel"
       >
@@ -181,7 +181,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
           internal
           interactive
           :size="iconSize"
-          :name="rightIcon || config.defaults?.searchIcon"
+          :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="`${dataTest}-search-icon`"
           @click="onClickSearch"

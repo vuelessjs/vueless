@@ -155,7 +155,7 @@ const {
           v-if="!firstLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.firstIcon"
+          :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
       </slot>
@@ -178,7 +178,7 @@ const {
           v-if="!prevLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.prevIcon"
+          :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
         />
       </slot>
@@ -240,7 +240,7 @@ const {
           v-if="!nextLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.nextIcon"
+          :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
         />
       </slot>
@@ -264,7 +264,7 @@ const {
           v-if="!lastLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.lastIcon"
+          :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"
         />
       </slot>

@@ -118,7 +118,7 @@ const {
         <UIcon
           v-if="toggleIcon"
           internal
-          :name="checkedValue ? config.defaults?.onIcon : config.defaults?.offIcon"
+          :name="checkedValue ? config.defaults.onIcon : config.defaults.offIcon"
           :color="iconColor"
           :size="iconSize"
           v-bind="toggleIconAttrs"

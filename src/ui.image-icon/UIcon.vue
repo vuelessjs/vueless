@@ -44,10 +44,10 @@ const dynamicComponent = computed(() => {
     generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
   );
 
-  const userLibrary = config.value?.defaults?.library;
+  const userLibrary = config.value.defaults.library;
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
-  const weight = config.value?.defaults?.weight;
-  const style = config.value?.defaults?.style;
+  const weight = config.value.defaults.weight;
+  const style = config.value.defaults.style;
   const isFill = props.name?.endsWith(FILL_SUFFIX);
   const name = props.name;
   const src = props.src;

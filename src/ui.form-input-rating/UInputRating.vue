@@ -96,7 +96,7 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
           :size="iconSize"
           :interactive="selectable"
           :name="
-            star <= counterValue ? config.defaults?.selectedIcon : config.defaults?.unselectedIcon
+            star <= counterValue ? config.defaults.selectedIcon : config.defaults.unselectedIcon
           "
           v-bind="starAttrs"
           :data-test="`${dataTest}-rating-star-${star}`"

@@ -340,7 +340,7 @@ const {
             internal
             color="white"
             size="xs"
-            :name="config.defaults?.addOptionIcon"
+            :name="config.defaults.addOptionIcon"
             v-bind="addOptionIconAttrs"
           />
         </UButton>

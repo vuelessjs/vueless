@@ -129,7 +129,7 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
             interactive
             :color="color"
             :size="iconSize"
-            :name="config.defaults?.dropdownIcon"
+            :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
             @click="onClickLink"

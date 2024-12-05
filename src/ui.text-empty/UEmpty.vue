@@ -62,7 +62,7 @@ const {
         <div v-bind="emptyIconWrapperAttrs">
           <UIcon
             internal
-            :name="config.defaults?.emptyIcon"
+            :name="config.defaults.emptyIcon"
             color="gray"
             :size="iconSize"
             v-bind="emptyIconAttrs"

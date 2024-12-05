@@ -91,7 +91,7 @@ const {
           interactive
           color="gray"
           :size="iconSize"
-          :name="config.defaults?.fileIcon"
+          :name="config.defaults.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
@@ -108,7 +108,7 @@ const {
         interactive
         color="gray"
         :size="removeIconSize"
-        :name="config.defaults?.removeIcon"
+        :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"
