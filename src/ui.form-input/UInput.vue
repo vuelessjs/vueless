@@ -69,6 +69,15 @@ const emit = defineEmits([
    * @property {number} modelValue
    */
   "input",
+
+  /**
+   * Triggers when content pasted to the input.
+   */
+  "paste",
+  /**
+   * Triggers when content copied from the input.
+   */
+  "copy",
 ]);
 
 const VALIDATION_RULES_REG_EX = {
@@ -184,6 +193,14 @@ function onMousedown(event: MouseEvent) {
   toggleReadonlyToPreventAutocomplete(false);
 
   emit("mousedown", event);
+}
+
+function onPaste(event: ClipboardEvent) {
+  emit("paste", event);
+}
+
+function onCopy(event: ClipboardEvent) {
+  emit("copy", event);
 }
 
 function onClickShowPassword() {

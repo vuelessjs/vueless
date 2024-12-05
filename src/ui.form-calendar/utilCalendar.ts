@@ -109,7 +109,7 @@ export function parseStringDate<TLocale extends DateLocale>(
     let parsedDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
 
     const isRelativeDay = [locale.tomorrow, locale.today, locale.tomorrow].some((word) => {
-      return dateString.toLowerCase().includes(word.toLowerCase());
+      return word && dateString.toLowerCase().includes(word.toLowerCase());
     });
 
     if (!isRelativeDay) {
