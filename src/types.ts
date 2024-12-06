@@ -296,12 +296,6 @@ export interface VueAttrs {
   value?: string;
 }
 
-// TODO: Remove it later.
-export type UseAttrs<T> = {
-  config: Ref<ComponentConfig<T>>;
-  getKeysAttrs?: (mutatedProps?: MutatedProps) => KeysAttrs;
-} & KeysAttrs;
-
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
 }
