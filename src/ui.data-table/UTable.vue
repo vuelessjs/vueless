@@ -18,6 +18,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
+import useUI from "../composables/useUI.ts";
 import { getDefaults, cx } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
@@ -35,7 +36,6 @@ import {
 } from "./utilTable.ts";
 
 import { UTable } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
@@ -44,6 +44,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTableProps>(), {
   ...getDefaults<UTableProps, Config>(defaultConfig, UTable),
+  columns: () => [],
+  rows: () => [],
+  dateDivider: () => [],
 });
 
 const emit = defineEmits([
@@ -96,9 +99,9 @@ const i18nGlobal = tm(UTable);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const sortedRows: ComputedRef<Row[]> = computed(() => {
-  const headerKeys = props
-    .columns()
-    .map((column) => (typeof column === "object" ? column.key : column));
+  const headerKeys = props.columns.map((column) =>
+    typeof column === "object" ? column.key : column,
+  );
 
   return tableRows.value.map((row) => {
     const rowEntries = Object.entries(row);
@@ -132,7 +135,7 @@ const isFooterSticky = computed(
     isCheckedMoreOneTableItems.value,
 );
 
-const normalizedColumns = computed(() => normalizeColumns(props.columns()));
+const normalizedColumns = computed(() => normalizeColumns(props.columns));
 
 const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => !column.isHidden);
@@ -143,7 +146,7 @@ const colsCount = computed(() => {
 });
 
 const lastRow = computed(() => {
-  return props.rows().length - 1;
+  return props.rows.length - 1;
 });
 
 const isShownActionsHeader = computed(
@@ -190,54 +193,6 @@ const isSelectedAllRows = computed(() => {
   return selectedRows.value.length === rows.length;
 });
 
-const {
-  config,
-  wrapperAttrs,
-  stickyHeaderCellAttrs,
-  stickyHeaderAttrs,
-  tableWrapperAttrs,
-  headerRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCheckedAttrs,
-  bodyRowBeforeCellAttrs,
-  footerAttrs,
-  bodyRowDateDividerAttrs,
-  headerCellBaseAttrs,
-  headerCellCheckboxAttrs,
-  headerActionsCheckboxAttrs,
-  stickyHeaderCheckboxAttrs,
-  headerCheckboxAttrs,
-  headerCounterAttrs,
-  bodyEmptyStateAttrs,
-  bodyDateDividerAttrs,
-  bodyCellDateDividerAttrs,
-  headerActionsCounterAttrs,
-  stickyHeaderCounterAttrs,
-  stickyHeaderLoaderAttrs,
-  tableAttrs,
-  headerLoaderAttrs,
-  bodyAttrs,
-  footerRowAttrs,
-  stickyFooterRowAttrs,
-  headerAttrs,
-  bodyCellContentAttrs,
-  bodyCellCheckboxAttrs,
-  bodyCheckboxAttrs,
-  bodyCellNestedAttrs,
-  bodyCellNestedExpandIconAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellBaseAttrs,
-  bodyCellNestedExpandIconWrapperAttrs,
-  bodyRowCheckedAttrs,
-  bodyRowAttrs,
-} = useAttrs(props, {
-  tableRows,
-  isShownActionsHeader,
-  isHeaderSticky,
-  isFooterSticky,
-});
-
 const tableRowAttrs = computed(() => ({
   bodyCellContentAttrs,
   bodyCellCheckboxAttrs,
@@ -256,14 +211,14 @@ watch(selectedRows, onChangeSelectedRows, { deep: true });
 watch(
   tableRows,
   () => {
-    if (!isEqual(tableRows.value, props.rows())) {
+    if (!isEqual(tableRows.value, props.rows)) {
       emit("update:rows", tableRows.value);
     }
   },
   { deep: true },
 );
 watch(() => tableRows.value.length, updateSelectedRows);
-watch(() => props.rows(), synchronizeTableItemsWithProps, { deep: true });
+watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
 watch(isHeaderSticky, setHeaderCellWidth);
 watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
@@ -279,7 +234,7 @@ watch(
 );
 
 onMounted(() => {
-  tableRows.value = props.rows();
+  tableRows.value = props.rows;
 
   document.addEventListener("keyup", onKeyupEsc);
   document.addEventListener("scroll", onScroll, { passive: true });
@@ -351,12 +306,12 @@ function onScroll() {
 }
 
 function synchronizeTableItemsWithProps() {
-  if (!props.rows().length || props.rows().length !== tableRows.value.length) {
+  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
     selectedRows.value = [];
   }
 
-  if (!isEqual(tableRows.value, props.rows())) {
-    tableRows.value = props.rows();
+  if (!isEqual(tableRows.value, props.rows)) {
+    tableRows.value = props.rows;
   }
 }
 
@@ -440,6 +395,60 @@ defineExpose({
    */
   clearSelectedItems,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  actionsHeader: isShownActionsHeader.value,
+  stickedHeader: isHeaderSticky.value,
+  stickedFooter: isFooterSticky.value,
+}));
+
+const {
+  config,
+  wrapperAttrs,
+  stickyHeaderCellAttrs,
+  stickyHeaderAttrs,
+  tableWrapperAttrs,
+  headerRowAttrs,
+  bodyRowAfterAttrs,
+  bodyRowBeforeAttrs,
+  bodyRowBeforeCheckedAttrs,
+  bodyRowBeforeCellAttrs,
+  footerAttrs,
+  bodyRowDateDividerAttrs,
+  headerCellBaseAttrs,
+  headerCellCheckboxAttrs,
+  headerActionsCheckboxAttrs,
+  stickyHeaderCheckboxAttrs,
+  headerCheckboxAttrs,
+  headerCounterAttrs,
+  bodyEmptyStateAttrs,
+  bodyDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  headerActionsCounterAttrs,
+  stickyHeaderCounterAttrs,
+  stickyHeaderLoaderAttrs,
+  tableAttrs,
+  headerLoaderAttrs,
+  bodyAttrs,
+  footerRowAttrs,
+  stickyFooterRowAttrs,
+  headerAttrs,
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedExpandIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

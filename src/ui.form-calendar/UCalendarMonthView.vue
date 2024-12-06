@@ -1,36 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+
 import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
 import { isSameMonth, getDateWithoutTime, isCurrentMonth } from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.ts";
-
+import defaultConfig from "./config.ts";
 import { MONTHS_PER_VIEW } from "./constants.ts";
 
-import type { UCalendarViewProps, UCalendarProps } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
 const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
-
-const {
-  monthViewAttrs,
-  monthAttrs,
-  currentMonthAttrs,
-  currentMonthInRangeAttrs,
-  lastMonthInRangeAttrs,
-  firstMonthInRangeAttrs,
-  singleMonthInRangeAttrs,
-  monthInRangeAttrs,
-  selectedMonthAttrs,
-  activeMonthAttrs,
-  currentLastMonthInRangeAttrs,
-  currentFirstMonthInRangeAttrs,
-  singleCurrentMonthInRangeAttrs,
-} = useAttrs(props as unknown as UCalendarProps<unknown>);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -117,6 +102,26 @@ function isMoreThanOneMonthDiff(date: Date, dateTo: Date) {
 function onClickMonth(month: Date) {
   emit("input", month);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  monthViewAttrs,
+  monthAttrs,
+  currentMonthAttrs,
+  currentMonthInRangeAttrs,
+  lastMonthInRangeAttrs,
+  firstMonthInRangeAttrs,
+  singleMonthInRangeAttrs,
+  monthInRangeAttrs,
+  selectedMonthAttrs,
+  activeMonthAttrs,
+  currentLastMonthInRangeAttrs,
+  currentFirstMonthInRangeAttrs,
+  singleCurrentMonthInRangeAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

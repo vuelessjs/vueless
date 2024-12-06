@@ -2,6 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { ComponentConfig } from "../types.ts";
 
+export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;
 
 export interface UDatePickerProps<TModelValue> {

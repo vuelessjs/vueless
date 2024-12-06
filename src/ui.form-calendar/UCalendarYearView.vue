@@ -1,36 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+
 import { formatDate, getYearsRange, dateIsOutOfRange } from "./utilCalendar.ts";
 import { isSameMonth, getDateWithoutTime, isCurrentYear } from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.ts";
-
+import defaultConfig from "./config.ts";
 import { YEARS_PER_VIEW } from "./constants.ts";
 
-import type { UCalendarProps, UCalendarViewProps } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
 const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
-
-const {
-  yearViewAttrs,
-  yearAttrs,
-  currentYearAttrs,
-  currentYearInRangeAttrs,
-  firstYearInRangeAttrs,
-  lastYearInRangeAttrs,
-  yearInRangeAttrs,
-  singleYearInRangeAttrs,
-  selectedYearAttrs,
-  activeYearAttrs,
-  singleCurrentYearInRangeAttrs,
-  currentLastYearInRangeAttrs,
-  currentFirstYearInRangeAttrs,
-} = useAttrs(props as unknown as UCalendarProps<unknown>);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -115,6 +100,26 @@ function getYearState(year: Date, index: number) {
 function onClickYear(year: Date) {
   emit("input", year);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  yearViewAttrs,
+  yearAttrs,
+  currentYearAttrs,
+  currentYearInRangeAttrs,
+  firstYearInRangeAttrs,
+  lastYearInRangeAttrs,
+  yearInRangeAttrs,
+  singleYearInRangeAttrs,
+  selectedYearAttrs,
+  activeYearAttrs,
+  singleCurrentYearInRangeAttrs,
+  currentLastYearInRangeAttrs,
+  currentFirstYearInRangeAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

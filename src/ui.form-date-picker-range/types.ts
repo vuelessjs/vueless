@@ -19,6 +19,9 @@ export interface SortedLocale extends Omit<Locale, "weekdays" | "months"> {
     shorthand: string[];
     longhand: string[];
   };
+  today: string;
+  tomorrow: string;
+  yesterday: string;
 }
 
 export interface IsPeriod {

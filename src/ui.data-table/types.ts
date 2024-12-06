@@ -65,12 +65,12 @@ export interface UTableProps {
   /**
    * Table columns (headers).
    */
-  columns: () => Column[];
+  columns: Column[];
 
   /**
    * Table rows data.
    */
-  rows: () => Row[];
+  rows: Row[];
 
   /**
    * Label to display for empty cell values.
@@ -80,7 +80,7 @@ export interface UTableProps {
   /**
    * Show date divider line between dates.
    */
-  dateDivider?: boolean | (() => DateDivider[]);
+  dateDivider?: boolean | DateDivider[];
 
   /**
    * Allow rows selecting.

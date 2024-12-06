@@ -10,9 +10,9 @@ import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
 import { UCalendar as UCalendarName } from "../constants.ts";
 
-import type { UCalendarProps } from "../types.ts";
+import type { DateValue, UCalendarProps } from "../types.ts";
 
-interface UCalendarArgs extends UCalendarProps<unknown> {
+interface UCalendarArgs extends UCalendarProps<DateValue> {
   slotTemplate?: string;
   enum: "size";
 }

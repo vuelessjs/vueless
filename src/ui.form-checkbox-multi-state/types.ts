@@ -4,7 +4,7 @@ import type { UnknownObject, ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UCheckboxMultiStateProps {
+export interface Props {
   /**
    * Checkbox value.
    */
@@ -13,7 +13,7 @@ export interface UCheckboxMultiStateProps {
   /**
    * Checkbox state options.
    */
-  options?: () => UnknownObject[];
+  options?: UnknownObject[];
 
   /**
    * Checkbox name.

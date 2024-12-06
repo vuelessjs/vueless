@@ -42,13 +42,12 @@ export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
 /**
  * Creates a debounced function with delay (same as lodash.debounce).
  */
-export function createDebounce(func: () => void, ms: number) {
+export function createDebounce<T extends unknown[]>(func: (...args: T) => void, ms: number) {
   let timeout: ReturnType<typeof setTimeout>;
 
-  return function (...args: []) {
+  return function (...args: T) {
     clearTimeout(timeout);
-    // @ts-expect-error - this implicitly has type any because it does not have a type annotation.
-    timeout = setTimeout(() => func.apply(this as unknown, args), ms);
+    timeout = setTimeout(() => func(...args), ms);
   };
 }
 

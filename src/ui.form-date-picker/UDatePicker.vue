@@ -1,6 +1,8 @@
 <script setup lang="ts" generic="TModelValue extends string | Date">
-import { computed, nextTick, ref, useId, useTemplateRef } from "vue";
+import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
 import { merge } from "lodash-es";
+
+import useUI from "../composables/useUI.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -12,17 +14,18 @@ import { getDefaults } from "../utils/ui.ts";
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
-import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";
-import { useAutoPosition } from "../composables/useAutoPosition.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
 
 import defaultConfig from "./config.ts";
 import { UDatePicker } from "./constants.ts";
 
 import { vClickOutside } from "../directives";
 
-import type { UDatePickerProps, Config } from "./types.ts";
+import type { ComputedRef } from "vue";
+import type { UDatePickerProps, Config, Locale } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
+import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
 import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -30,6 +33,9 @@ defineOptions({ inheritAttrs: false });
 type Props = UDatePickerProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UDatePicker),
+  modelValue: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 });
 
 const emit = defineEmits([
@@ -73,7 +79,9 @@ const localValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale: ComputedRef<Locale> = computed(() =>
+  merge(defaultConfig.i18n, i18nGlobal, props.config.i18n),
+);
 
 const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));
 
@@ -95,12 +103,6 @@ const locale = computed(() => {
 });
 
 const elementId = props.id || useId();
-
-const { config, datepickerInputAttrs, datepickerInputActiveAttrs, calendarAttrs, wrapperAttrs } =
-  useAttrs(props, {
-    isTop,
-    isRight,
-  });
 
 function activate() {
   isShownCalendar.value = true;
@@ -234,6 +236,29 @@ defineExpose({
    * @property {String}
    */
   formattedDate,
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
+  openDirectionX: isRight.value ? Direction.Right : Direction.Left,
+  error: Boolean(props.error),
+  description: Boolean(props.description),
+}));
+
+const { config, datepickerInputAttrs, datepickerInputActiveAttrs, calendarAttrs, wrapperAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
+
+/* Merging DatePicker's i18n translations into Calendar's i18n translations. */
+watchEffect(() => {
+  const calendarConfig = calendarAttrs.value.config as unknown as UCalendarConfig;
+
+  if (!calendarConfig?.i18n || props.config?.i18n) {
+    calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
+  }
 });
 </script>
 
