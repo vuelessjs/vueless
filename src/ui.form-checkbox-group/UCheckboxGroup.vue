@@ -31,7 +31,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const checkedItems = ref<UnknownObject[]>([]);
+const checkedItems = ref([] as UnknownObject[]);
 
 provide<(value: UnknownObject[]) => void>(
   "setCheckboxGroupCheckedItems",
@@ -82,7 +82,7 @@ const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(default
       <slot>
         <UCheckbox
           v-for="(option, index) in options"
-          :key="option.id"
+          :key="index"
           :model-value="modelValue"
           :value="option.value"
           :true-value="option.trueValue"

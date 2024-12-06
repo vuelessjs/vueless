@@ -11,7 +11,7 @@ export type SetUTabsSelectedItem = (
 interface UTabsOption {
   value: string | number;
   label: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export interface Props {

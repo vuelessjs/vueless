@@ -239,7 +239,7 @@ export type Component = {
 
 /* Make all config keys optional and allow to have string and object values. */
 export type ComponentConfig<T> = Partial<{
-  [K in keyof T]: T[K] | string;
+  [K in keyof T]: T[K] | string | UnknownObject;
 }> &
   Component;
 

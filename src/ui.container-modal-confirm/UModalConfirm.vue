@@ -70,10 +70,7 @@ function emitConfirmAction() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
-  useUI<Config>(
-    defaultConfig,
-    computed(() => ({})),
-  );
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

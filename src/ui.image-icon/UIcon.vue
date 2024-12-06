@@ -85,12 +85,7 @@ const dynamicComponent = computed(() => {
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
-        ? await getIcon([
-          library,
-          weight,
-          style,
-          name
-        ])
+        ? await getIcon([library, weight, style, name])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
+import { cloneDeep } from "../utils/helper.ts";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -10,7 +11,8 @@ import defaultConfig from "./config.ts";
 import { UCheckboxMultiState } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { UCheckboxOption } from "../ui.form-checkbox/types.ts";
+import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
+import type { ComponentConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -67,12 +69,13 @@ function onClickCheckbox() {
 const { multiStateCheckboxAttrs: checkboxAttrs } = useUI<Config>(defaultConfig);
 
 const multiStateCheckboxAttrs = computed(() => {
-  const clonedCheckboxAttrs = JSON.parse(JSON.stringify(checkboxAttrs.value || {}));
-
-  clonedCheckboxAttrs.config = clonedCheckboxAttrs.config || {};
-  clonedCheckboxAttrs.config.defaults = clonedCheckboxAttrs.config.defaults || {};
+  const clonedCheckboxAttrs = cloneDeep(checkboxAttrs.value) as {
+    config: ComponentConfig<UCheckboxConfig>;
+  };
 
   if (selected.value.icon) {
+    clonedCheckboxAttrs.config.defaults = clonedCheckboxAttrs.config.defaults || {};
+
     clonedCheckboxAttrs.config.defaults.checkedIcon = selected.value.icon;
   }
 

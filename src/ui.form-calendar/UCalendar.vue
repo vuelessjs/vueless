@@ -56,8 +56,8 @@ const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
   ...getDefaults<Props, Config>(defaultConfig, UCalendar),
   modelValue: undefined,
-  minDate: undefined,
-  maxDate: undefined,
+  minDate: "",
+  maxDate: "",
 });
 
 const emit = defineEmits([

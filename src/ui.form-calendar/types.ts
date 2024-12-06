@@ -13,9 +13,7 @@ export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;
 
 export function isRangeDate(value: Date | string | RangeDate | null): value is RangeDate {
-  return (
-    !(value instanceof Date || typeof value === "string") && value !== null && value !== undefined
-  );
+  return typeof value === "object" && value !== null && "to" in value && "from" in value;
 }
 
 export interface UCalendarProps<TModelValue extends DateValue> {

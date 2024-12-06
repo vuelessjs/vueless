@@ -1,3 +1,4 @@
+import type { UnknownObject } from "../types.ts";
 import { Comment, Text, Fragment } from "vue";
 
 import type { Slot, VNode } from "vue";
@@ -5,7 +6,7 @@ import type { Slot, VNode } from "vue";
 /**
  * Deeply clone given object (same as lodash.cloneDeep).
  */
-export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
+export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown | UnknownObject {
   // primitives
   if (Object(entity) !== entity || !entity) {
     return entity;
@@ -45,9 +46,9 @@ export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
 export function createDebounce<T extends unknown[]>(func: (...args: T) => void, ms: number) {
   let timeout: ReturnType<typeof setTimeout>;
 
-  return function (...args: T) {
+  return function (this: unknown, ...args: T) {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), ms);
+    timeout = setTimeout(() => func.apply(this, args), ms);
   };
 }
 

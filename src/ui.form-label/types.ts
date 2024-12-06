@@ -18,7 +18,7 @@ export interface Props {
   /**
    * Label error message.
    */
-  error?: string | boolean;
+  error?: string;
 
   /**
    * Label align.

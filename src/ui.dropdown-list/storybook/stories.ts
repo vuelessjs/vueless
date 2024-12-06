@@ -24,7 +24,7 @@ export default {
   title: "Dropdowns / Dropdown List",
   component: UDropdownList,
   args: {
-    options: () => [
+    options: [
       { label: "option 1", id: "1" },
       { label: "option 2", id: "2" },
       { label: "option 3", id: "3" },

@@ -14,13 +14,14 @@ import defaultConfig from "./config.ts";
 import { UModal } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
+import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UModal),
   modelValue: false,
-  backTo: undefined,
+  backTo: "",
   backLabel: "",
 });
 
@@ -134,11 +135,11 @@ const {
 </script>
 
 <template>
-  <transition v-bind="config.overlayTransition">
+  <transition v-bind="config.overlayTransition as UnknownObject">
     <div v-if="isShownModal" v-bind="overlayAttrs" />
   </transition>
 
-  <transition v-bind="config.wrapperTransition">
+  <transition v-bind="config.wrapperTransition as UnknownObject">
     <div
       v-if="isShownModal"
       :id="elementId"

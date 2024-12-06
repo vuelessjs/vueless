@@ -44,6 +44,14 @@ const counterValue = computed(() => {
   return hovered.value || props.modelValue;
 });
 
+const starIcon = computed(() => {
+  return (star: number): string => {
+    return star <= counterValue.value
+      ? config.value.defaults.selectedIcon
+      : config.value.defaults.unselectedIcon;
+  };
+});
+
 function onClickStar(newValue: number) {
   if (props.selectable) {
     const selected = newValue !== props.modelValue ? newValue : 0;
@@ -96,9 +104,7 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
           :color="error ? 'red' : 'brand'"
           :size="iconSize"
           :interactive="selectable"
-          :name="
-            star <= counterValue ? config.defaults.selectedIcon : config.defaults.unselectedIcon
-          "
+          :name="starIcon(star)"
           v-bind="starAttrs"
           :data-test="`${dataTest}-rating-star-${star}`"
           @click="onClickStar(star)"

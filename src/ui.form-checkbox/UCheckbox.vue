@@ -12,7 +12,7 @@ import defaultConfig from "./config.ts";
 import { UCheckbox } from "./constants.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { CheckboxProps, IconSize, Config } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -25,8 +25,8 @@ const setCheckboxGroupCheckedItems = inject<((value: UnknownObject[]) => void) |
 const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
-const props = withDefaults(defineProps<CheckboxProps>(), {
-  ...getDefaults<CheckboxProps, Config>(defaultConfig, UCheckbox),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCheckbox),
   modelValue: false,
   value: "",
   trueValue: true,

@@ -60,6 +60,10 @@ const iconColor = computed(() => {
   return checkedValue.value ? props.color : "grayscale";
 });
 
+const toggleIconName = computed(() => {
+  return checkedValue.value ? config.value.defaults.onIcon : config.value.defaults.offIcon;
+});
+
 function toggle() {
   if (!props.disabled) {
     checkedValue.value = !checkedValue.value;
@@ -120,7 +124,7 @@ const {
         <UIcon
           v-if="toggleIcon"
           internal
-          :name="checkedValue ? config.defaults.onIcon : config.defaults.offIcon"
+          :name="toggleIconName"
           :color="iconColor"
           :size="iconSize"
           v-bind="toggleIconAttrs"

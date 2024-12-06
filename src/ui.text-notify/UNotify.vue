@@ -19,6 +19,7 @@ import type {
   NotificationType,
   Config,
 } from "./types.ts";
+import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -145,7 +146,7 @@ const {
     ref="notificationsWrapperRef"
     :style="notifyPositionStyles"
     tag="div"
-    v-bind="{ ...config?.transitionGroup, ...wrapperAttrs }"
+    v-bind="{ ...(config?.transitionGroup as UnknownObject), ...wrapperAttrs }"
   >
     <div v-for="notification in notifications" :key="notification.id" v-bind="bodyAttrs">
       <UIcon

@@ -7,13 +7,15 @@ export type Config = typeof defaultConfig;
 export type IconSize = "2xs" | "xs" | "sm";
 
 export interface UCheckboxOption {
-  value?: unknown;
+  value?: string | number | boolean | UnknownObject | UnknownArray;
+  falseValue?: string | number | boolean | UnknownObject | UnknownArray | undefined;
+  trueValue?: string | number | boolean | UnknownObject | UnknownArray | undefined;
   label?: string;
   icon?: string;
   description?: string;
 }
 
-export interface CheckboxProps {
+export interface Props {
   /**
    * Checkbox value.
    */

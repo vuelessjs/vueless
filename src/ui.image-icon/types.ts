@@ -2,7 +2,8 @@ import defaultConfig from "./config.ts";
 
 import type { DefineComponent, SVGAttributes } from "vue";
 
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import type { ComponentConfig } from "../types.ts";
+import type { Props as TippyProps } from "tippy.js";
 
 export type Config = typeof defaultConfig;
 
@@ -68,7 +69,7 @@ export interface Props {
    * Tooltip settings.
    * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
    */
-  tooltipSettings?: UnknownObject;
+  tooltipSettings?: TippyProps;
 
   /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).
