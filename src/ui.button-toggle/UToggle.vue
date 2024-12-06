@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UToggle),
   options: () => [],
   modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([

@@ -18,6 +18,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UTextarea),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([

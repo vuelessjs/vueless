@@ -19,6 +19,8 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UModalConfirm),
+  modelValue: false,
+  confirmLabel: "",
 });
 
 const emit = defineEmits([

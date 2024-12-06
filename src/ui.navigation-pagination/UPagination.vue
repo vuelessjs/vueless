@@ -17,6 +17,11 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UPagination),
+  modelValue: 1,
+  firstLabel: "",
+  prevLabel: "",
+  nextLabel: "",
+  lastLabel: "",
 });
 
 const emit = defineEmits([

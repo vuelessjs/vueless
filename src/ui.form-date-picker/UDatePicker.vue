@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([

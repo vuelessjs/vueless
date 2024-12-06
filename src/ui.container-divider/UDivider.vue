@@ -13,6 +13,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UDivider),
+  label: "",
 });
 
 const mutatedProps = computed(() => ({

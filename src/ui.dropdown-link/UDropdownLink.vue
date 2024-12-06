@@ -21,6 +21,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UDropdownLink),
   options: () => [],
+  label: "",
 });
 
 const emit = defineEmits([

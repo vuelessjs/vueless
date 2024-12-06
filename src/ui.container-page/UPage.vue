@@ -22,6 +22,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UPage),
   backTo: undefined,
+  backLabel: "",
 });
 
 const { isMobileBreakpoint } = useBreakpoint();

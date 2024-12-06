@@ -17,6 +17,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputNumberProps>(), {
   ...getDefaults<UInputNumberProps, Config>(defaultConfig, UInputNumber),
+  label: "",
 });
 
 const emit = defineEmits([

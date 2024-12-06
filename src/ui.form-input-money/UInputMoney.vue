@@ -16,6 +16,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UInputMoney),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);

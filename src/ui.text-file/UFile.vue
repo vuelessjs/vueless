@@ -16,6 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UFile),
+  label: "",
 });
 
 const emit = defineEmits([

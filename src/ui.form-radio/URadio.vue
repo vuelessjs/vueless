@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, URadio),
   modelValue: () => ({}),
   value: () => ({}),
+  label: "",
 });
 
 const emit = defineEmits([

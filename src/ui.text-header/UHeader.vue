@@ -11,6 +11,7 @@ defineOptions({ inheritAttrs: false });
 
 withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UHeader),
+  label: "",
 });
 
 /**

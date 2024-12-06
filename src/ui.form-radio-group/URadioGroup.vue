@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, URadioGroup),
   modelValue: () => [],
   options: () => [],
+  label: "",
 });
 
 const emit = defineEmits([

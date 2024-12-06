@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UCheckboxGroup),
   modelValue: () => [],
   options: () => [],
+  label: "",
 });
 
 const emit = defineEmits([

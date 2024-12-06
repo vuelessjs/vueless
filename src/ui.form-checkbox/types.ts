@@ -13,7 +13,7 @@ export interface UCheckboxOption {
   description?: string;
 }
 
-export interface Props {
+export interface CheckboxProps {
   /**
    * Checkbox value.
    */

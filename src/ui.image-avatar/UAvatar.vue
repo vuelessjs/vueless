@@ -15,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAvatarProps>(), {
   ...getDefaults<UAvatarProps, Config>(defaultConfig, UAvatar),
+  label: "",
 });
 
 const emit = defineEmits([

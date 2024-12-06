@@ -19,7 +19,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UModal),
+  modelValue: false,
   backTo: undefined,
+  backLabel: "",
 });
 
 const emit = defineEmits([

@@ -19,6 +19,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UFiles),
   fileList: () => [],
+  label: "",
 });
 
 const emit = defineEmits([

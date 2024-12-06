@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UInputFile),
   modelValue: () => [],
   allowedFileTypes: () => [],
+  label: "",
 });
 
 const emit = defineEmits([

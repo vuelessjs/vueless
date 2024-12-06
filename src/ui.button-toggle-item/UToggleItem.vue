@@ -20,6 +20,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UToggleItem),
   modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([

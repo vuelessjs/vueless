@@ -17,6 +17,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UInputRating),
+  label: "",
 });
 
 const emit = defineEmits([
