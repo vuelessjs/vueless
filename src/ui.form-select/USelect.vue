@@ -894,6 +894,7 @@ const mutatedProps = computed(() => ({
   openedTop: isTop.value,
 }));
 
+// eslint-disable-next-line vue/no-dupe-keys
 const {
   config,
   selectLabelAttrs,
