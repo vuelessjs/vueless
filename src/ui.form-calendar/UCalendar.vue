@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef, onMounted } from "vue";
+import { computed, ref, watch, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import UButton from "../ui.button/UButton.vue";
@@ -333,19 +333,23 @@ watch(
   },
 );
 
-onMounted(() => {
-  if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
-    hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
-    minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
-    secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
+watch(
+  selectedDate,
+  () => {
+    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
+      hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
+      minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+      secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
 
-    emit("userDateChange", userFormattedDate.value);
-  }
+      emit("userDateChange", userFormattedDate.value);
+    }
 
-  if (selectedDate.value) {
-    emit("userDateChange", userFormattedDate.value);
-  }
-});
+    if (selectedDate.value) {
+      emit("userDateChange", userFormattedDate.value);
+    }
+  },
+  { immediate: true },
+);
 
 function getCurrentValueType(value: DateValue): DateValue {
   if (props.range && value === null) {
