@@ -59,7 +59,7 @@ export function parseDate<TLocale extends DateLocale>(
   }
 
   let timeless = false;
-  let parsedDate = null;
+  let parsedDate: Date | null = null;
   const originalDate = date;
 
   const isDateObject = date instanceof Date;
@@ -81,7 +81,7 @@ export function parseDate<TLocale extends DateLocale>(
       parsedDate = new Date();
       timeless = true;
     } else {
-      parsedDate = parseStringDate(date, format, locale);
+      parsedDate = parseStringDate(date, format, locale) || null;
     }
   }
 
