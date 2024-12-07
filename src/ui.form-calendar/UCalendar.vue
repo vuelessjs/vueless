@@ -56,14 +56,14 @@ const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
   ...getDefaults<Props, Config>(defaultConfig, UCalendar),
   modelValue: undefined,
-  minDate: "",
-  maxDate: "",
+  minDate: undefined,
+  maxDate: undefined,
 });
 
 const emit = defineEmits([
   /**
    * Triggers when date value changes.
-   * @property {object} newDate
+   * @property {object} modelValue
    */
   "update:modelValue",
   /**

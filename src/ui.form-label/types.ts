@@ -11,6 +11,11 @@ export interface Props {
   label?: string;
 
   /**
+   * Set input id for label `for` attribute.
+   */
+  for?: string;
+
+  /**
    * Label description.
    */
   description?: string;
@@ -39,11 +44,6 @@ export interface Props {
    * Centre label horizontally.
    */
   centred?: boolean;
-
-  /**
-   * Set input id for label `for` attribute.
-   */
-  for?: string;
 
   /**
    * Component config object.

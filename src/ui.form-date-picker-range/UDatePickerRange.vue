@@ -72,12 +72,12 @@ defineOptions({ inheritAttrs: false });
 type Props = UDatePickerRangeProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UDatePickerRange),
-  modelValue: undefined,
   customRangeButton: () => ({ range: { from: null, to: null } }),
-  minDate: "",
-  maxDate: "",
-  label: "",
+  modelValue: undefined,
+  minDate: undefined,
+  maxDate: undefined,
   placeholder: "",
+  label: "",
 });
 
 const emit = defineEmits([

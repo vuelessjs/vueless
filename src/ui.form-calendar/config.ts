@@ -152,11 +152,11 @@ export default /*tw*/ {
   defaults: {
     userDateFormat: "j F, Y",
     userDateTimeFormat: "j F, Y - H:i:S",
-    range: false,
-    timepicker: false,
     dateFormat: undefined,
     dateTimeFormat: undefined,
     tabindex: 1,
+    range: false,
+    timepicker: false,
     /* icons */
     viewSwitchIcon: "keyboard_arrow_down",
     nextIcon: "keyboard_arrow_right",

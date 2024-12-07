@@ -89,9 +89,9 @@ export interface UCalendarViewProps {
   activeDate: Date | null;
   activeMonth: Date | null;
   locale: DateLocale;
-  dateFormat: string | undefined;
+  dateFormat?: string;
   range: boolean;
-  maxDate: Date | string | undefined;
-  minDate: Date | string | undefined;
+  maxDate?: Date | string;
+  minDate?: Date | string;
   config: Config;
 }

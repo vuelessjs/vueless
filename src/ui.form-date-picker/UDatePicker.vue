@@ -34,10 +34,10 @@ type Props = UDatePickerProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UDatePicker),
   modelValue: undefined,
-  minDate: "",
-  maxDate: "",
-  label: "",
+  minDate: undefined,
+  maxDate: undefined,
   placeholder: "",
+  label: "",
 });
 
 const emit = defineEmits([
