@@ -7,19 +7,12 @@ import { getDefaults, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
-import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
+import { UNotify, NotificationType, NotificationPosition } from "./constants.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type {
-  Props,
-  Notification,
-  NotifyEvent,
-  NotificationsWrapperRef,
-  NotificationType,
-  Config,
-} from "./types.ts";
-import type { UnknownObject } from "../types.ts";
+import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
+import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -96,41 +89,47 @@ function setPosition() {
 
   styles[props.yPosition] = "0px";
 
-  if (props.xPosition === POSITION.center) {
+  if (props.xPosition === NotificationPosition.Center) {
     styles.left = `calc(50% - ${notifyWidth / 2}px)`;
   } else {
     styles[props.xPosition] = "0px";
   }
 
-  if (pageWidth && props.xPosition !== POSITION.right) {
+  if (pageWidth && props.xPosition !== NotificationPosition.Right) {
     styles.left = `${asideWidth + pageWidth / 2 - notifyWidth / 2}px`;
   }
 
   notifyPositionStyles.value = styles;
 }
 
-function getText(notificationText: string, type: NotificationType): string {
+function getText(notificationText: string, type: Notification["type"]): string {
   return notificationText || currentLocale.value[type]?.default;
+}
+
+function getBodyAttrs(type: Notification["type"]) {
+  if (type === NotificationType.Success) {
+    return bodySuccessAttrs.value;
+  }
+
+  if (type === NotificationType.Warning) {
+    return bodyWarningAttrs.value;
+  }
+
+  if (type === NotificationType.Error) {
+    return bodyErrorAttrs.value;
+  }
 }
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const mutatedProps = computed(() => ({
-  bodySuccess: notifications.value.some(
-    (notification) => notification.type === NOTIFY_TYPE.success,
-  ),
-  bodyWarning: notifications.value.some(
-    (notification) => notification.type === NOTIFY_TYPE.warning,
-  ),
-  bodyError: notifications.value.some((notification) => notification.type === NOTIFY_TYPE.error),
-}));
-
 const {
   config,
   wrapperAttrs,
-  bodyAttrs,
+  bodySuccessAttrs,
+  bodyWarningAttrs,
+  bodyErrorAttrs,
   contentAttrs,
   labelAttrs,
   descriptionAttrs,
@@ -138,7 +137,7 @@ const {
   warningIconAttrs,
   errorIconAttrs,
   closeIconAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps);
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -146,11 +145,16 @@ const {
     ref="notificationsWrapperRef"
     :style="notifyPositionStyles"
     tag="div"
-    v-bind="{ ...(config?.transitionGroup as UnknownObject), ...wrapperAttrs }"
+    v-bind="{ ...(config?.transitionGroup as Transition), ...wrapperAttrs }"
+    :data-test="dataTest"
   >
-    <div v-for="notification in notifications" :key="notification.id" v-bind="bodyAttrs">
+    <div
+      v-for="notification in notifications"
+      :key="notification.id"
+      v-bind="getBodyAttrs(notification.type)"
+    >
       <UIcon
-        v-if="notification.type === NOTIFY_TYPE.success"
+        v-if="notification.type === NotificationType.Success"
         color="green"
         variant="light"
         size="md"
@@ -161,7 +165,7 @@ const {
       />
 
       <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.warning"
+        v-else-if="notification.type === NotificationType.Warning"
         color="orange"
         variant="light"
         size="md"
@@ -172,7 +176,7 @@ const {
       />
 
       <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.error"
+        v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
         color="red"
         variant="light"
@@ -208,6 +212,7 @@ const {
         interactive
         :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"
+        :data-test="`${dataTest}-close`"
         @click="onClickClose(notification)"
       />
     </div>
