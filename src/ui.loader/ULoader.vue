@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { ULoader, ELLIPSES_AMOUNT } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { ULoaderProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULoaderProps>(), {
-  loading: getDefault<ULoaderProps>(defaultConfig, ULoader).loading,
-  color: getDefault<ULoaderProps>(defaultConfig, ULoader).color,
-  size: getDefault<ULoaderProps>(defaultConfig, ULoader).size,
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULoader),
 });
 
-const { loaderAttrs, ellipseAttrs, config } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { loaderAttrs, ellipseAttrs, config } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <Transition v-bind="config?.transition">
-    <div v-if="loading" v-bind="loaderAttrs">
+    <div v-if="loading" v-bind="loaderAttrs" :data-test="dataTest">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
         <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />

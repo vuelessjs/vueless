@@ -9,9 +9,9 @@ import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UTabProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UTabArgs extends UTabProps {
+interface UTabArgs extends Props {
   slotTemplate?: string;
 }
 

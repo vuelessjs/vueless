@@ -11,9 +11,9 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UCheckboxProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UCheckboxArgs extends UCheckboxProps {
+interface UCheckboxArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

@@ -1,10 +1,11 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
 import type { RouteLocationRaw } from "vue-router";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface ULinkProps {
+export interface Props {
   /**
    * Button label.
    */
@@ -52,7 +53,7 @@ export interface ULinkProps {
     | "brand";
 
   /**
-   * Link open type behaviour.
+   * Link open type behavior.
    */
   type?: "phone" | "email" | "link";
 
@@ -67,12 +68,12 @@ export interface ULinkProps {
   ariaCurrentValue?: string;
 
   /**
-   * Whether RouterLink should not wrap its content in an a tag.
+   * Whether RouterLink should not wrap its content in a tag.
    */
   custom?: boolean;
 
   /**
-   * Whether RouterLink should not wrap its content in an a tag.
+   * Whether RouterLink should not wrap its content in a tag.
    */
   replace?: boolean;
 
@@ -124,7 +125,7 @@ export interface ULinkProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

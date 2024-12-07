@@ -2,26 +2,25 @@
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import { UCheckboxGroup } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxGroupProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UCheckboxGroupProps>(), {
-  size: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).size,
-  color: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).color,
-  disabled: getDefault<UCheckboxGroupProps>(defaultConfig, UCheckboxGroup).disabled,
-  name: "",
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCheckboxGroup),
+  modelValue: () => [],
+  options: () => [],
+  label: "",
 });
 
 const emit = defineEmits([
@@ -32,9 +31,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const checkedItems = ref<UnknownObject[]>([]);
-
-const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useAttrs(props);
+const checkedItems = ref([] as UnknownObject[]);
 
 provide<(value: UnknownObject[]) => void>(
   "setCheckboxGroupCheckedItems",
@@ -52,7 +49,7 @@ watch(
   () => props?.modelValue?.length,
   (newValue, oldValue) => {
     if (!isEqual(newValue, oldValue)) {
-      checkedItems.value = props.modelValue || [];
+      checkedItems.value = props.modelValue;
     }
   },
   { immediate: true },
@@ -61,6 +58,12 @@ watch(
 function onChangeCheckedItems() {
   emit("update:modelValue", checkedItems.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -79,7 +82,7 @@ function onChangeCheckedItems() {
       <slot>
         <UCheckbox
           v-for="(option, index) in options"
-          :key="option.id"
+          :key="index"
           :model-value="modelValue"
           :value="option.value"
           :true-value="option.trueValue"

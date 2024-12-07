@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { computed, useId, ref, watchEffect } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { createDebounce } from "../utils/helper.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
-import { createDebounce } from "../utils/helper.ts";
 
 import { UInputSearch } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputSearchProps, IconSize, ButtonSize } from "./types.ts";
+import type { Props, IconSize, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputSearchProps>(), {
-  size: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).size,
-  labelAlign: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).labelAlign,
-  minLength: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).minLength,
-  debounce: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).debounce,
-  readonly: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).readonly,
-  disabled: getDefault<UInputSearchProps>(defaultConfig, UInputSearch).disabled,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputSearch),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([
@@ -54,9 +51,6 @@ const inputRef = ref(null);
 
 const elementId = props.id || useId();
 
-const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
-  useAttrs(props);
-
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -83,7 +77,7 @@ watchEffect(() => {
   }, Number(props.debounce));
 });
 
-function onUpdateValue(value) {
+function onUpdateValue(value: string) {
   localValue.value = value;
 
   if (!value) {
@@ -125,6 +119,14 @@ defineExpose({
    */
   inputRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+
+const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -163,7 +165,7 @@ defineExpose({
         internal
         interactive
         color="gray"
-        :name="config.defaults?.clearIcon"
+        :name="config.defaults.clearIcon"
         :size="iconSize"
         v-bind="clearIconAttrs"
         :data-test="`${dataTest}-clear`"
@@ -173,7 +175,7 @@ defineExpose({
       <!-- @slot Use it to add icon after the text. -->
       <slot
         name="right-icon"
-        :icon-name="config.defaults?.searchIcon"
+        :icon-name="config.defaults.searchIcon"
         :icon-size="iconSize"
         :search-button-label="searchButtonLabel"
       >
@@ -182,7 +184,7 @@ defineExpose({
           internal
           interactive
           :size="iconSize"
-          :name="rightIcon || config.defaults?.searchIcon"
+          :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="`${dataTest}-search-icon`"
           @click="onClickSearch"

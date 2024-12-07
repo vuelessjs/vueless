@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+
 import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
 import {
   isToday,
@@ -10,37 +12,16 @@ import {
   isAnotherMothDay,
 } from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.ts";
-
+import defaultConfig from "./config.ts";
 import { DAYS_IN_WEEK, START_WEEK } from "./constants.ts";
 
-import type { UCalendarViewProps, UCalendarProps } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
 const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
-
-const {
-  dayViewAttrs,
-  weekDaysAttrs,
-  weekDayAttrs,
-  daysAttrs,
-  dayAttrs,
-  currentDayAttrs,
-  dayInRangeAttrs,
-  currentDayInRangeAttrs,
-  anotherMonthDayAttrs,
-  firstDayInRangeAttrs,
-  anotherMonthFirstDayInRangeAttrs,
-  lastDayInRangeAttrs,
-  anotherMonthLastDayInRangeAttrs,
-  selectedDayAttrs,
-  activeDayAttrs,
-  currentLastDayInRangeAttrs,
-  currentFirstDayInRangeAttrs,
-} = useAttrs(props as unknown as UCalendarProps<unknown>);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -207,6 +188,30 @@ function onClickDay(day: Date) {
 
   emit("input", day);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  dayViewAttrs,
+  weekDaysAttrs,
+  weekDayAttrs,
+  daysAttrs,
+  dayAttrs,
+  currentDayAttrs,
+  dayInRangeAttrs,
+  currentDayInRangeAttrs,
+  anotherMonthDayAttrs,
+  firstDayInRangeAttrs,
+  anotherMonthFirstDayInRangeAttrs,
+  lastDayInRangeAttrs,
+  anotherMonthLastDayInRangeAttrs,
+  selectedDayAttrs,
+  activeDayAttrs,
+  currentLastDayInRangeAttrs,
+  currentFirstDayInRangeAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

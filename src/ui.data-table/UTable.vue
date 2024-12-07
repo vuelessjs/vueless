@@ -18,7 +18,8 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
-import { getDefault, cx } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults, cx } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import { PX_IN_REM } from "../constants.js";
@@ -35,23 +36,17 @@ import {
 } from "./utilTable.ts";
 
 import { UTable } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { Cell, Row, RowId, UTableProps, UTableRowAttrs } from "./types.ts";
+import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTableProps>(), {
-  emptyCellLabel: getDefault<UTableProps>(defaultConfig, UTable).emptyCellLabel,
-  dateDivider: () => getDefault<UTableProps>(defaultConfig, UTable).dateDivider || false,
-  selectable: getDefault<UTableProps>(defaultConfig, UTable).selectable,
-  compact: getDefault<UTableProps>(defaultConfig, UTable).compact,
-  stickyHeader: getDefault<UTableProps>(defaultConfig, UTable).stickyHeader,
-  stickyFooter: getDefault<UTableProps>(defaultConfig, UTable).stickyFooter,
-  loading: getDefault<UTableProps>(defaultConfig, UTable).loading,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UTableProps, Config>(defaultConfig, UTable),
+  columns: () => [],
+  rows: () => [],
+  dateDivider: () => [],
 });
 
 const emit = defineEmits([
@@ -196,54 +191,6 @@ const isSelectedAllRows = computed(() => {
   const rows = getFlatRows(tableRows.value);
 
   return selectedRows.value.length === rows.length;
-});
-
-const {
-  config,
-  wrapperAttrs,
-  stickyHeaderCellAttrs,
-  stickyHeaderAttrs,
-  tableWrapperAttrs,
-  headerRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCheckedAttrs,
-  bodyRowBeforeCellAttrs,
-  footerAttrs,
-  bodyRowDateDividerAttrs,
-  headerCellBaseAttrs,
-  headerCellCheckboxAttrs,
-  headerActionsCheckboxAttrs,
-  stickyHeaderCheckboxAttrs,
-  headerCheckboxAttrs,
-  headerCounterAttrs,
-  bodyEmptyStateAttrs,
-  bodyDateDividerAttrs,
-  bodyCellDateDividerAttrs,
-  headerActionsCounterAttrs,
-  stickyHeaderCounterAttrs,
-  stickyHeaderLoaderAttrs,
-  tableAttrs,
-  headerLoaderAttrs,
-  bodyAttrs,
-  footerRowAttrs,
-  stickyFooterRowAttrs,
-  headerAttrs,
-  bodyCellContentAttrs,
-  bodyCellCheckboxAttrs,
-  bodyCheckboxAttrs,
-  bodyCellNestedAttrs,
-  bodyCellNestedExpandIconAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellBaseAttrs,
-  bodyCellNestedExpandIconWrapperAttrs,
-  bodyRowCheckedAttrs,
-  bodyRowAttrs,
-} = useAttrs(props, {
-  tableRows,
-  isShownActionsHeader,
-  isHeaderSticky,
-  isFooterSticky,
 });
 
 const tableRowAttrs = computed(() => ({
@@ -448,6 +395,60 @@ defineExpose({
    */
   clearSelectedItems,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  actionsHeader: isShownActionsHeader.value,
+  stickedHeader: isHeaderSticky.value,
+  stickedFooter: isFooterSticky.value,
+}));
+
+const {
+  config,
+  wrapperAttrs,
+  stickyHeaderCellAttrs,
+  stickyHeaderAttrs,
+  tableWrapperAttrs,
+  headerRowAttrs,
+  bodyRowAfterAttrs,
+  bodyRowBeforeAttrs,
+  bodyRowBeforeCheckedAttrs,
+  bodyRowBeforeCellAttrs,
+  footerAttrs,
+  bodyRowDateDividerAttrs,
+  headerCellBaseAttrs,
+  headerCellCheckboxAttrs,
+  headerActionsCheckboxAttrs,
+  stickyHeaderCheckboxAttrs,
+  headerCheckboxAttrs,
+  headerCounterAttrs,
+  bodyEmptyStateAttrs,
+  bodyDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  headerActionsCounterAttrs,
+  stickyHeaderCounterAttrs,
+  stickyHeaderLoaderAttrs,
+  tableAttrs,
+  headerLoaderAttrs,
+  bodyAttrs,
+  footerRowAttrs,
+  stickyFooterRowAttrs,
+  headerAttrs,
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedExpandIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

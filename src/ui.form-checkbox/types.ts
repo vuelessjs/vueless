@@ -1,19 +1,21 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { ComponentConfig, UnknownObject, UnknownArray } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "2xs" | "xs" | "sm";
 
 export interface UCheckboxOption {
-  value?: unknown;
+  value?: string | number | boolean | UnknownObject | UnknownArray;
+  falseValue?: string | number | boolean | UnknownObject | UnknownArray;
+  trueValue?: string | number | boolean | UnknownObject | UnknownArray;
   label?: string;
   icon?: string;
   description?: string;
 }
 
-export interface UCheckboxProps {
+export interface Props {
   /**
    * Checkbox value.
    */
@@ -107,7 +109,7 @@ export interface UCheckboxProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

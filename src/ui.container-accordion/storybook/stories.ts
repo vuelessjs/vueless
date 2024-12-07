@@ -9,9 +9,9 @@ import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UAccordionProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UAccordionArgs extends UAccordionProps {
+interface UAccordionArgs extends Props {
   slotTemplate?: string;
 }
 

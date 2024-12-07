@@ -11,14 +11,14 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDropdownButtonProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDropdownButtonArgs extends UDropdownButtonProps {
+interface DefaultUDropdownButtonArgs extends Props {
   slotTemplate?: string;
 }
 
 interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
-  enum: keyof Pick<UDropdownButtonProps, "size" | "variant">;
+  enum: keyof Pick<Props, "size" | "variant">;
 }
 
 export default {

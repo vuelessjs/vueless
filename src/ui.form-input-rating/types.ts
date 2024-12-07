@@ -1,10 +1,12 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 
-export interface UInputRatingProps {
+export interface Props {
   /**
    * Rating value.
    */
@@ -58,7 +60,7 @@ export interface UInputRatingProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

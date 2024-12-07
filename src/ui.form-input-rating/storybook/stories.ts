@@ -9,9 +9,9 @@ import UInputRating from "../../ui.form-input-rating/UInputRating.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UInputRatingProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UInputRatingArgs extends UInputRatingProps {
+interface UInputRatingArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

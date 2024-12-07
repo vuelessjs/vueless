@@ -14,9 +14,9 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UModalProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UModalArgs extends UModalProps {
+interface UModalArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
@@ -118,7 +118,6 @@ BackLink.args = {
   backLabel: "back",
   backTo: {
     path: "/",
-    query: {},
   },
 };
 

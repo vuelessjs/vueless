@@ -9,9 +9,9 @@ import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UColorPickerProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UColorPickerArgs extends UColorPickerProps {
+interface UColorPickerArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

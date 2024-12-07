@@ -1,9 +1,10 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
-
+export type Config = typeof defaultConfig;
 export type DividerSize = "md" | "lg" | "xl";
-export interface UAccordionProps {
+
+export interface Props {
   /**
    * Accordion title.
    */
@@ -27,7 +28,7 @@ export interface UAccordionProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

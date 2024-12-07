@@ -11,9 +11,9 @@ import UButton from "../../ui.button/UButton.vue";
 import { ref } from "vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { ULoaderProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface ULoaderArgs extends ULoaderProps {
+interface ULoaderArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
 }

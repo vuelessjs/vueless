@@ -72,6 +72,9 @@ export const SYSTEM_CONFIG_KEY = {
   ...CVA_CONFIG_KEY,
 };
 
+/* Vueless system non-props defaults */
+export const SYSTEM_NON_PROPS_DEFAULTS = ["library", "style", "weight"];
+
 /* Component to folder mapping. */
 export const COMPONENTS = {
   /* Buttons & Links */

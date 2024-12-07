@@ -12,12 +12,13 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import defaultConfig from "./config.ts";
 import { UButton } from "./constants.ts";
 
-import type { UButtonProps, LoaderSize, IconSize, Config } from "./types.ts";
+import type { Props, LoaderSize, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UButtonProps>(), {
-  ...getDefaults<UButtonProps>(defaultConfig, UButton),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UButton),
+  label: "",
 });
 
 const slots = useSlots();
@@ -102,8 +103,6 @@ const mutatedProps = computed(() => ({
 
 const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } = useUI<Config>(
   defaultConfig,
-  () => props.config,
-  "",
   mutatedProps,
 );
 </script>

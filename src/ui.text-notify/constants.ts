@@ -3,27 +3,25 @@
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
 export const UNotify = "UNotify";
-
 export const LOCAL_STORAGE_ID = "vueless:notify";
-
-export const NOTIFY_TYPE = {
-  success: "success",
-  warning: "warning",
-  error: "error",
-};
-
-export const POSITION = {
-  left: "left",
-  right: "right",
-  top: "top",
-  bottom: "bottom",
-  center: "center",
-};
-
-export const DURATION = {
-  short: 4000,
-  medium: 8000,
-  long: 12000,
-};
-
 export const DELAY_BETWEEN_CLONES = 1000;
+
+export enum NotificationType {
+  Success = "success",
+  Warning = "warning",
+  Error = "error",
+}
+
+export enum NotificationPosition {
+  Left = "left",
+  Right = "right",
+  Top = "top",
+  Bottom = "bottom",
+  Center = "center",
+}
+
+export enum NotificationDuration {
+  Short = 4000,
+  Medium = 8000,
+  Long = 12000,
+}

@@ -8,9 +8,9 @@ import {
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UPaginationProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UPaginationArgs extends UPaginationProps {
+interface UPaginationArgs extends Props {
   slotTemplate?: string;
 }
 

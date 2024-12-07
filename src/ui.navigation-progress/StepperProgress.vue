@@ -1,27 +1,40 @@
 <script setup lang="ts">
-import colors from "tailwindcss/colors.js";
 import { computed } from "vue";
+import colors from "tailwindcss/colors.js";
 
+import useUI from "../composables/useUI.ts";
+
+import defaultConfig from "./config.ts";
 import { GRAY_COLORS } from "../constants.js";
 
-import useAttrs from "./useAttrs.ts";
-
-import type { StepperProgressProps } from "./types.ts";
+import type { StepperProgressProps, Config } from "./types.ts";
 
 const props = withDefaults(defineProps<StepperProgressProps>(), {
   dataTest: "",
 });
 
-const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
-  useAttrs(props);
-
 const stepperColor = computed(() => {
-  return colors[props.color]
-    ? colors[props.color][500]
-    : GRAY_COLORS.includes(props.color)
-      ? colors[props.color][900]
-      : colors.zinc[900];
+  const isValidColor = (color: string): color is keyof typeof colors => color in colors;
+
+  const isGrayColor = (color: string): color is keyof typeof colors => GRAY_COLORS.includes(color);
+
+  if (isValidColor(props.color)) {
+    return colors[props.color][500];
+  }
+
+  if (isGrayColor(props.color)) {
+    return colors[props.color][900];
+  }
+
+  return colors.zinc[900];
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, useSlots, watch, ref, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
@@ -11,22 +12,17 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
 import { UModal } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UModalProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
+import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UModalProps>(), {
-  size: getDefault<UModalProps>(defaultConfig, UModal).size,
-  closeOnCross: getDefault<UModalProps>(defaultConfig, UModal).closeOnCross,
-  closeOnOverlay: getDefault<UModalProps>(defaultConfig, UModal).closeOnOverlay,
-  closeOnEsc: getDefault<UModalProps>(defaultConfig, UModal).closeOnEsc,
-  inner: getDefault<UModalProps>(defaultConfig, UModal).inner,
-  noDivider: getDefault<UModalProps>(defaultConfig, UModal).noDivider,
-  mobileStickBottom: getDefault<UModalProps>(defaultConfig, UModal).mobileStickBottom,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UModal),
+  modelValue: false,
+  backTo: "",
+  backLabel: "",
 });
 
 const emit = defineEmits([
@@ -43,29 +39,6 @@ const emit = defineEmits([
 ]);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  modalAttrs,
-  titleAttrs,
-  backLinkAttrs,
-  backLinkIconAttrs,
-  closeIconAttrs,
-  dividerAttrs,
-  dividerSpacingAttrs,
-  overlayAttrs,
-  wrapperAttrs,
-  innerWrapperAttrs,
-  headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  headerRightAttrs,
-  bodyAttrs,
-  footerLeftAttrs,
-  footerAttrs,
-  footerRightAttrs,
-} = useAttrs(props);
 
 const slots = useSlots();
 
@@ -132,14 +105,41 @@ function onClickCloseModal() {
 function closeModal() {
   isShownModal.value = false;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  modalAttrs,
+  titleAttrs,
+  backLinkAttrs,
+  backLinkIconAttrs,
+  closeIconAttrs,
+  dividerAttrs,
+  dividerSpacingAttrs,
+  overlayAttrs,
+  wrapperAttrs,
+  innerWrapperAttrs,
+  headerAttrs,
+  headerLeftAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  headerRightAttrs,
+  bodyAttrs,
+  footerLeftAttrs,
+  footerAttrs,
+  footerRightAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <transition v-bind="config.overlayTransition">
+  <Transition v-bind="config.overlayTransition as Transition">
     <div v-if="isShownModal" v-bind="overlayAttrs" />
-  </transition>
+  </Transition>
 
-  <transition v-bind="config.wrapperTransition">
+  <Transition v-bind="config.wrapperTransition as Transition">
     <div
       v-if="isShownModal"
       :id="elementId"
@@ -173,7 +173,7 @@ function closeModal() {
                         internal
                         size="xs"
                         color="gray"
-                        :name="config.defaults?.backIcon"
+                        :name="config.defaults.backIcon"
                         v-bind="backLinkIconAttrs"
                       />
                     </template>
@@ -198,12 +198,12 @@ function closeModal() {
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
               -->
-              <slot name="close-button" :icon-name="config.defaults?.closeIcon">
+              <slot name="close-button" :icon-name="config.defaults.closeIcon">
                 <UIcon
                   internal
                   interactive
                   size="sm"
-                  :name="config.defaults?.closeIcon"
+                  :name="config.defaults.closeIcon"
                   v-bind="closeIconAttrs"
                   :data-test="`${dataTest}-close`"
                   @click="onClickCloseModal"
@@ -237,5 +237,5 @@ function closeModal() {
         </div>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>

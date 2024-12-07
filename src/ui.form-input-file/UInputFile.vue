@@ -2,34 +2,30 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, useId } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getFileMbSize } from "./utilFileForm.ts";
+
 import UText from "../ui.text-block/UText.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { getDefault } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getFileMbSize } from "./utilFileForm.ts";
-
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import { UInputFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UInputFileProps, ButtonSize } from "./types.ts";
+import type { Props, ButtonSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputFileProps>(), {
-  labelAlign: getDefault<UInputFileProps>(defaultConfig, UInputFile).labelAlign,
-  size: getDefault<UInputFileProps>(defaultConfig, UInputFile).size,
-  maxFileSize: getDefault<UInputFileProps>(defaultConfig, UInputFile).maxFileSize,
-  allowedFileTypes: getDefault<UInputFileProps>(defaultConfig, UInputFile).allowedFileTypes,
-  multiple: getDefault<UInputFileProps>(defaultConfig, UInputFile).multiple,
-  disabled: getDefault<UInputFileProps>(defaultConfig, UInputFile).disabled,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputFile),
+  modelValue: () => [],
+  allowedFileTypes: () => [],
+  label: "",
 });
 
 const emit = defineEmits([
@@ -52,21 +48,6 @@ const dropZoneRef = ref<HTMLDivElement | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  inputLabelAttrs,
-  chooseFileButtonAttrs,
-  dropzoneAttrs,
-  descriptionTopAttrs,
-  descriptionBottomAttrs,
-  contentAttrs,
-  clearButtonAttrs,
-  placeholderAttrs,
-  inputAttrs,
-  fileListAttrs,
-  buttonsAttrs,
-} = useAttrs(props);
 
 const i18nGlobal = tm(UInputFile);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -265,6 +246,30 @@ function onClickRemoveItem(id: string | number) {
     currentFiles.value = currentFiles.value.filter((file) => file.name !== id);
   }
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+}));
+
+const {
+  config,
+  inputLabelAttrs,
+  chooseFileButtonAttrs,
+  dropzoneAttrs,
+  descriptionTopAttrs,
+  descriptionBottomAttrs,
+  contentAttrs,
+  clearButtonAttrs,
+  placeholderAttrs,
+  inputAttrs,
+  fileListAttrs,
+  buttonsAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -311,7 +316,7 @@ function onClickRemoveItem(id: string | number) {
               tag="label"
               variant="thirdary"
               :size="buttonSize"
-              :right-icon="config.defaults?.chooseFileIcon"
+              :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
               v-bind="chooseFileButtonAttrs"
@@ -339,7 +344,7 @@ function onClickRemoveItem(id: string | number) {
             variant="thirdary"
             :size="buttonSize"
             :disabled="disabled"
-            :left-icon="config.defaults?.clearIcon"
+            :left-icon="config.defaults.clearIcon"
             v-bind="clearButtonAttrs"
             :data-test="`${dataTest}-clear`"
             @click="onClickResetFiles"

@@ -1,8 +1,9 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface ULoaderOverlayProps {
+export interface Props {
   /**
    * Loader state (shown / hidden).
    */
@@ -38,5 +39,5 @@ export interface ULoaderOverlayProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 }

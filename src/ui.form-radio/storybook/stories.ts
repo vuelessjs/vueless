@@ -9,9 +9,9 @@ import URadio from "../../ui.form-radio/URadio.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { URadioProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface URadioArgs extends URadioProps {
+interface URadioArgs extends Props {
   slotTemplate?: string;
   enum: "variant" | "size";
 }

@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
-import useAttrs from "./useAttrs.ts";
 
 import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { ULoaderProgressProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULoaderProgressProps>(), {
-  color: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).color,
-  size: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).size,
-  loading: getDefault<ULoaderProgressProps>(defaultConfig, ULoaderProgress).loading,
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULoaderProgress),
+  resources: () => [],
 });
 
 const error = ref(false);
@@ -33,8 +33,6 @@ const {
   loaderProgressOn,
   addRequestUrl,
 } = useLoaderProgress();
-
-const { stripeAttrs } = useAttrs(props);
 
 const isStarted = computed(() => {
   return typeof status.value === "number";
@@ -101,7 +99,7 @@ function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
 function onChangeRequestsQueue() {
   const isActiveRequests =
     requestQueue.value.includes(INFINITY_LOADING) ||
-    resourceNamesArray.value.some((resource) => {
+    resourceNamesArray.value.some((resource: string) => {
       return requestQueue.value.includes(resource);
     });
 
@@ -205,6 +203,12 @@ function increase(amount?: number) {
 function done() {
   set(100);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { stripeAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

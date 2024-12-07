@@ -12,9 +12,9 @@ import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UMoneyProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UMoneyArgs extends UMoneyProps {
+interface UMoneyArgs extends Props {
   slotTemplate?: string;
   enum: "color" | "size" | "sign" | "symbolAlign" | "align";
 }

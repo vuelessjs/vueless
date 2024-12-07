@@ -12,9 +12,9 @@ import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UNotifyProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UNotifyArgs extends UNotifyProps {
+interface UNotifyArgs extends Props {
   slotTemplate?: string;
 }
 

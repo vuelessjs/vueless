@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { computed, ref, useId } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getDefault } from "../utils/ui.ts";
-
-import useAttrs from "./useAttrs.ts";
 import { UFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UFileProps, IconSize, RemoveIconSize } from "./types.ts";
+import type { Props, IconSize, RemoveIconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UFileProps>(), {
-  size: getDefault<UFileProps>(defaultConfig, UFile).size,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UFile),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -31,16 +30,6 @@ const emit = defineEmits([
 const focus = ref(false);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  fileAttrs,
-  bodyAttrs,
-  fileIconAttrs,
-  fileLabelAttrs,
-  fileImageAttrs,
-  removeIconAttrs,
-} = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -73,6 +62,20 @@ function onFocus() {
 function onBlur() {
   focus.value = false;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  fileAttrs,
+  bodyAttrs,
+  fileIconAttrs,
+  fileLabelAttrs,
+  fileImageAttrs,
+  removeIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -89,7 +92,7 @@ function onBlur() {
           interactive
           color="gray"
           :size="iconSize"
-          :name="config.defaults?.fileIcon"
+          :name="config.defaults.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
@@ -106,7 +109,7 @@ function onBlur() {
         interactive
         color="gray"
         :size="removeIconSize"
-        :name="config.defaults?.removeIcon"
+        :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"
         @click.stop.prevent="onRemove"

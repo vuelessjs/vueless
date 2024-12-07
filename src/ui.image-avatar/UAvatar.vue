@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { UAvatar } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UAvatarProps } from "./types.ts";
+import type { UAvatarProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAvatarProps>(), {
-  placeholderIcon: getDefault<UAvatarProps>(defaultConfig, UAvatar).placeholderIcon,
-  size: getDefault<UAvatarProps>(defaultConfig, UAvatar).size,
-  color: getDefault<UAvatarProps>(defaultConfig, UAvatar).color,
-  rounded: getDefault<UAvatarProps>(defaultConfig, UAvatar).rounded,
-  bordered: getDefault<UAvatarProps>(defaultConfig, UAvatar).bordered,
-  dataTest: "",
+  ...getDefaults<UAvatarProps, Config>(defaultConfig, UAvatar),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -27,8 +24,6 @@ const emit = defineEmits([
    */
   "click",
 ]);
-
-const { avatarAttrs, placeholderIconAttrs } = useAttrs(props);
 
 const labelFirstLetters = computed(() => {
   if (!props.label) return "";
@@ -55,6 +50,12 @@ const componentColor = computed(() => {
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

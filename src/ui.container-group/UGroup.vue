@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import { UGroup } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UGroupProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UGroupProps>(), {
-  upperlined: getDefault<UGroupProps>(defaultConfig, UGroup).upperlined,
-  underlined: getDefault<UGroupProps>(defaultConfig, UGroup).underlined,
-  dataTest: "",
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UGroup),
 });
 
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
 const {
   headerAttrs,
   wrapperAttrs,
@@ -25,7 +27,7 @@ const {
   upperlineAttrs,
   underlineAttrs,
   contentAttrs,
-} = useAttrs(props);
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

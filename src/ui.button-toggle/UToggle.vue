@@ -3,27 +3,22 @@ import { computed, provide, readonly } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
-import { getDefault } from "../utils/ui.ts";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UToggleProps, LabelSize } from "./types.ts";
+import type { Props, LabelSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UToggleProps>(), {
-  variant: getDefault<UToggleProps>(defaultConfig, UToggle).variant,
-  size: getDefault<UToggleProps>(defaultConfig, UToggle).size,
-  labelAlign: getDefault<UToggleProps>(defaultConfig, UToggle).labelAlign,
-  multiple: getDefault<UToggleProps>(defaultConfig, UToggle).multiple,
-  separated: getDefault<UToggleProps>(defaultConfig, UToggle).separated,
-  disabled: getDefault<UToggleProps>(defaultConfig, UToggle).disabled,
-  block: getDefault<UToggleProps>(defaultConfig, UToggle).block,
-  round: getDefault<UToggleProps>(defaultConfig, UToggle).round,
-  square: getDefault<UToggleProps>(defaultConfig, UToggle).square,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UToggle),
+  options: () => [],
+  modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -33,8 +28,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,
@@ -88,6 +81,12 @@ provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
   updateSelectedValue,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

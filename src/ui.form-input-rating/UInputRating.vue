@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefault } from "../utils/ui.ts";
 
 import { UInputRating } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputRatingProps, IconSize } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputRatingProps>(), {
-  stars: getDefault<UInputRatingProps>(defaultConfig, UInputRating).stars,
-  size: getDefault<UInputRatingProps>(defaultConfig, UInputRating).size,
-  labelAlign: getDefault<UInputRatingProps>(defaultConfig, UInputRating).labelAlign,
-  counter: getDefault<UInputRatingProps>(defaultConfig, UInputRating).counter,
-  selectable: getDefault<UInputRatingProps>(defaultConfig, UInputRating).selectable,
-  modelValue: 0,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputRating),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -34,9 +29,6 @@ const emit = defineEmits([
 ]);
 
 const hovered = ref<number | null>(null);
-
-const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
-  useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -52,6 +44,14 @@ const counterValue = computed(() => {
   return hovered.value || props.modelValue;
 });
 
+const starIcon = computed(() => {
+  return (star: number): string => {
+    return star <= counterValue.value
+      ? config.value.defaults.selectedIcon
+      : config.value.defaults.unselectedIcon;
+  };
+});
+
 function onClickStar(newValue: number) {
   if (props.selectable) {
     const selected = newValue !== props.modelValue ? newValue : 0;
@@ -65,6 +65,13 @@ function onClickStar(newValue: number) {
 function onMouseHover(overStar: number | null = null) {
   if (props.selectable) hovered.value = overStar;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -97,9 +104,7 @@ function onMouseHover(overStar: number | null = null) {
           :color="error ? 'red' : 'brand'"
           :size="iconSize"
           :interactive="selectable"
-          :name="
-            star <= counterValue ? config.defaults?.selectedIcon : config.defaults?.unselectedIcon
-          "
+          :name="starIcon(star)"
           v-bind="starAttrs"
           :data-test="`${dataTest}-rating-star-${star}`"
           @click="onClickStar(star)"

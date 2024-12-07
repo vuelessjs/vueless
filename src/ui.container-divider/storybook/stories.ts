@@ -9,9 +9,9 @@ import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDividerProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UDividerArgs extends UDividerProps {
+interface UDividerArgs extends Props {
   slotTemplate?: string;
   enum: "variant" | "size" | "padding";
 }

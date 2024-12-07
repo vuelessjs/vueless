@@ -2,7 +2,8 @@
 import { computed } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import UButton from "../ui.button/UButton.vue";
@@ -10,24 +11,16 @@ import UModal from "../ui.container-modal/UModal.vue";
 
 import defaultConfig from "./config.ts";
 import { UModalConfirm } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UModalConfirmProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UModalConfirmProps>(), {
-  confirmColor: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).confirmColor,
-  confirmDisabled: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).confirmDisabled,
-  cancelHidden: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).cancelHidden,
-  size: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).size,
-  closeOnCross: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnCross,
-  closeOnOverlay: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnOverlay,
-  closeOnEsc: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).closeOnEsc,
-  inner: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).inner,
-  mobileStickBottom: getDefault<UModalConfirmProps>(defaultConfig, UModalConfirm).mobileStickBottom,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UModalConfirm),
+  modelValue: false,
+  confirmLabel: "",
 });
 
 const emit = defineEmits([
@@ -50,9 +43,6 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
-  useAttrs(props);
-
 const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -74,6 +64,13 @@ function emitConfirmAction() {
   emit("confirm");
   closeModal();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>

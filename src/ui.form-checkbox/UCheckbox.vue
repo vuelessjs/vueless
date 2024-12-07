@@ -2,17 +2,17 @@
 import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { getDefault } from "../utils/ui.ts";
-
 import defaultConfig from "./config.ts";
 import { UCheckbox } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { UCheckboxProps, IconSize } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -25,17 +25,13 @@ const setCheckboxGroupCheckedItems = inject<((value: UnknownObject[]) => void) |
 const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
-const props = withDefaults(defineProps<UCheckboxProps>(), {
-  labelAlign: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).labelAlign,
-  color: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).color,
-  size: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).size,
-  disabled: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).disabled,
-  partial: getDefault<UCheckboxProps>(defaultConfig, UCheckbox).partial,
-  name: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCheckbox),
+  modelValue: false,
   value: "",
   trueValue: true,
   falseValue: false,
-  dataTest: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -57,14 +53,6 @@ const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
 const elementId = props.id || useId();
-
-const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } = useAttrs(
-  props,
-  {
-    checkboxColor,
-    checkboxSize,
-  },
-);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -129,6 +117,20 @@ function onChange() {
   emit("update:modelValue", newModelValue);
   emit("input", newModelValue);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  color: checkboxColor.value,
+  size: checkboxSize.value,
+  label: Boolean(props.label),
+  error: Boolean(props.error),
+}));
+
+const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -160,7 +162,7 @@ function onChange() {
     <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
       <UIcon
         internal
-        :name="partial ? config?.defaults?.partiallyCheckedIcon : config?.defaults?.checkedIcon"
+        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
         :size="iconSize"
         color="white"
         v-bind="checkedIconAttrs"

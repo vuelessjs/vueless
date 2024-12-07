@@ -1,8 +1,10 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
 
-export interface UColProps {
+export type Config = typeof defaultConfig;
+
+export interface Props {
   /**
    * The distance between nested elements.
    */
@@ -45,7 +47,7 @@ export interface UColProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

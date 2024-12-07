@@ -1,24 +1,22 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
+
+import useUI from "../composables/useUI.ts";
 import { vTooltip } from "../directives";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
 import { UIcon } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UIconProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UIconProps>(), {
-  color: getDefault<UIconProps>(defaultConfig, UIcon).color,
-  size: getDefault<UIconProps>(defaultConfig, UIcon).size,
-  variant: getDefault<UIconProps>(defaultConfig, UIcon).variant,
-  interactive: getDefault<UIconProps>(defaultConfig, UIcon).interactive,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UIcon),
+  tooltipSettings: () => ({}),
 });
 
 const emit = defineEmits([
@@ -27,8 +25,6 @@ const emit = defineEmits([
    */
   "click",
 ]);
-
-const { config, iconAttrs } = useAttrs(props);
 
 const generatedIcons = computed(() => {
   return (
@@ -48,10 +44,10 @@ const dynamicComponent = computed(() => {
     generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
   );
 
-  const userLibrary = config.value?.defaults?.library;
+  const userLibrary = config.value.defaults.library;
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
-  const weight = config.value?.defaults?.weight;
-  const style = config.value?.defaults?.style;
+  const weight = config.value.defaults.weight;
+  const style = config.value.defaults.style;
   const isFill = props.name?.endsWith(FILL_SUFFIX);
   const name = props.name;
   const src = props.src;
@@ -60,7 +56,9 @@ const dynamicComponent = computed(() => {
   if (!src && !name) return "";
 
   /* Static import */
-  if (src) return src.render({}, {});
+  if (src?.render) {
+    return src.render({}, {});
+  }
 
   /* Dynamic import */
   if (!name) return "";
@@ -123,6 +121,12 @@ const tooltipConfig = computed(() => ({
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { config, iconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

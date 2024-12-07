@@ -1,33 +1,24 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import useFormatCurrency from "./useFormatCurrency.ts";
 import { UInputMoney } from "./constants.ts";
 
-import type { UInputMoneyProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputMoneyProps>(), {
-  labelAlign: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).labelAlign,
-  symbol: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).symbol,
-  size: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).size,
-  minFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).minFractionDigits,
-  maxFractionDigits: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).maxFractionDigits,
-  decimalSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).decimalSeparator,
-  thousandsSeparator: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).thousandsSeparator,
-  positiveOnly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).positiveOnly,
-  prefix: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).prefix,
-  readonly: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).readonly,
-  disabled: getDefault<UInputMoneyProps>(defaultConfig, UInputMoney).disabled,
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UInputMoney),
   modelValue: "",
-  dataTest: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
@@ -35,8 +26,6 @@ const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 const moneyInputRef = ref<{ inputRef: HTMLInputElement } | null>(null);
 
 const elementId = props.id || useId();
-
-const { moneyInputAttrs } = useAttrs(props);
 
 const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
   minFractionDigits: props.minFractionDigits,
@@ -111,6 +100,12 @@ defineExpose({
    */
   formattedValue,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { moneyInputAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

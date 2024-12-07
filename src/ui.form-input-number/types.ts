@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = typeof defaultConfig;
 
 export interface UInputNumberProps {
   /**
@@ -56,7 +58,7 @@ export interface UInputNumberProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

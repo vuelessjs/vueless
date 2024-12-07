@@ -12,9 +12,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UAlertProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UAlertArgs extends UAlertProps {
+interface UAlertArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color" | "variant";
 }

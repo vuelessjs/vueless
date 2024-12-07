@@ -1,6 +1,8 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = typeof defaultConfig;
 
 export interface FormatOptions {
   minFractionDigits: number;
@@ -11,7 +13,7 @@ export interface FormatOptions {
   prefix: string;
 }
 
-export interface UInputMoneyProps {
+export interface Props {
   /**
    * Input value.
    */
@@ -109,7 +111,7 @@ export interface UInputMoneyProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

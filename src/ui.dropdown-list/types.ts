@@ -1,7 +1,7 @@
-import type { UnknownObject } from "../types.ts";
 import defaultConfig from "./config.ts";
+import type { ComponentConfig, UnknownObject } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 export type OnClickOption = (option: Omit<Option, "onClick">) => void;
 
 export interface BaseOption {
@@ -16,7 +16,7 @@ export interface Option extends BaseOption {
   [key: string]: string | number | boolean | UnknownObject | OnClickOption | undefined;
 }
 
-export interface UDropdownListProps {
+export interface Props {
   /**
    * List options.
    */
@@ -60,7 +60,7 @@ export interface UDropdownListProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

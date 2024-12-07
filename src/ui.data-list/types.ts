@@ -2,9 +2,9 @@ import defaultConfig from "./config.ts";
 
 import DraggableContext from "vuedraggable";
 
-import type { UnknownType } from "../types.ts";
+import type { ComponentConfig, UnknownType } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 
@@ -24,7 +24,7 @@ export interface DataListItem {
   [key: string]: UnknownType | DataListItem[];
 }
 
-export interface UDataListProps {
+export interface Props {
   /**
    * Data item options.
    */
@@ -79,7 +79,7 @@ export interface UDataListProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

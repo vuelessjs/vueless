@@ -1,8 +1,9 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface UMoneyProps {
+export interface Props {
   /**
    * Money value.
    */
@@ -92,7 +93,7 @@ export interface UMoneyProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

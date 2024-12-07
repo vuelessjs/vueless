@@ -9,9 +9,9 @@ import UCheckboxMultiState from "../../ui.form-checkbox-multi-state/UCheckboxMul
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UCheckboxMultiStateProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UCheckboxMultiStateArgs extends UCheckboxMultiStateProps {
+interface UCheckboxMultiStateArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

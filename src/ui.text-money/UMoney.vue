@@ -1,43 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { UMoney } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useAttrs } from "./useAttrs.ts";
 import { separatedMoney, MONEY_SIGN_TYPE } from "./utilMoney.ts";
 
-import type { UMoneyProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UMoneyProps>(), {
-  size: getDefault<UMoneyProps>(defaultConfig, UMoney).size,
-  color: getDefault<UMoneyProps>(defaultConfig, UMoney).color,
-  symbolAlign: getDefault<UMoneyProps>(defaultConfig, UMoney).symbolAlign,
-  symbolDivided: getDefault<UMoneyProps>(defaultConfig, UMoney).symbolDivided,
-  sign: getDefault<UMoneyProps>(defaultConfig, UMoney).sign,
-  minFractionDigits: getDefault<UMoneyProps>(defaultConfig, UMoney).minFractionDigits,
-  maxFractionDigits: getDefault<UMoneyProps>(defaultConfig, UMoney).maxFractionDigits,
-  decimalSeparator: getDefault<UMoneyProps>(defaultConfig, UMoney).decimalSeparator,
-  thousandsSeparator: getDefault<UMoneyProps>(defaultConfig, UMoney).thousandsSeparator,
-  align: getDefault<UMoneyProps>(defaultConfig, UMoney).align,
-  planned: getDefault<UMoneyProps>(defaultConfig, UMoney).planned,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UMoney),
 });
-
-const {
-  moneyAttrs,
-  sumAttrs,
-  mathSignAttrs,
-  integerAttrs,
-  pennyAttrs,
-  slotLeftAttrs,
-  symbolAttrs,
-  slotRightAttrs,
-} = useAttrs(props);
 
 const currencySymbolPosition = computed(() => {
   return {
@@ -68,6 +46,21 @@ const preparedMoney = computed(() => {
     props.thousandsSeparator,
   );
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  moneyAttrs,
+  sumAttrs,
+  mathSignAttrs,
+  integerAttrs,
+  pennyAttrs,
+  slotLeftAttrs,
+  symbolAttrs,
+  slotRightAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>

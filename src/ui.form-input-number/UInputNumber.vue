@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UInputNumber } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UInputNumberProps } from "./types.ts";
+import type { UInputNumberProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputNumberProps>(), {
-  step: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).step,
-  min: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).min,
-  max: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).max,
-  labelAlign: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).labelAlign,
-  size: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).size,
-  disabled: getDefault<UInputNumberProps>(defaultConfig, UInputNumber).disabled,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<UInputNumberProps, Config>(defaultConfig, UInputNumber),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -32,17 +27,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const {
-  config,
-  valueAttrs,
-  labelAttrs,
-  removeButtonAttrs,
-  removeIconAttrs,
-  addButtonAttrs,
-  addIconAttrs,
-  numberAttrs,
-} = useAttrs(props);
 
 const count = computed({
   get: () => props.modelValue,
@@ -63,6 +47,21 @@ function onClickAdd() {
 
   count.value = newCount <= props.max ? newCount : count.value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  valueAttrs,
+  labelAttrs,
+  removeButtonAttrs,
+  removeIconAttrs,
+  addButtonAttrs,
+  addIconAttrs,
+  numberAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -91,7 +90,7 @@ function onClickAdd() {
       <UIcon
         internal
         :size="size"
-        :name="config.defaults?.removeIcon"
+        :name="config.defaults.removeIcon"
         :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
         v-bind="removeIconAttrs"
       />
@@ -115,7 +114,7 @@ function onClickAdd() {
       <UIcon
         internal
         :size="size"
-        :name="config.defaults?.addIcon"
+        :name="config.defaults.addIcon"
         :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
         v-bind="addIconAttrs"
       />

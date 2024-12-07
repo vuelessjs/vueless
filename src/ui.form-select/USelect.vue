@@ -318,12 +318,12 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
+import useUI from "../composables/useUI.ts";
 import { createDebounce, hasSlotContent } from "../utils/helper.ts";
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
 import SelectService from "./utilSelect.js";
-import useAttrs from "./useAttrs.js";
 import defaultConfig from "./config.js";
 import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
 
@@ -362,7 +362,7 @@ const props = defineProps({
    */
   labelAlign: {
     type: String,
-    default: getDefault(defaultConfig, USelect).labelAlign,
+    default: getDefaults(defaultConfig, USelect).labelAlign,
   },
 
   /**
@@ -395,7 +395,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: getDefault(defaultConfig, USelect).size,
+    default: getDefaults(defaultConfig, USelect).size,
   },
 
   /**
@@ -420,7 +420,7 @@ const props = defineProps({
    */
   openDirection: {
     type: String,
-    default: getDefault(defaultConfig, USelect).openDirection,
+    default: getDefaults(defaultConfig, USelect).openDirection,
   },
 
   /**
@@ -428,7 +428,7 @@ const props = defineProps({
    */
   labelKey: {
     type: String,
-    default: getDefault(defaultConfig, USelect).labelKey,
+    default: getDefaults(defaultConfig, USelect).labelKey,
   },
 
   /**
@@ -436,7 +436,7 @@ const props = defineProps({
    */
   valueKey: {
     type: String,
-    default: getDefault(defaultConfig, USelect).valueKey,
+    default: getDefaults(defaultConfig, USelect).valueKey,
   },
 
   /**
@@ -460,7 +460,7 @@ const props = defineProps({
    */
   optionsLimit: {
     type: Number,
-    default: getDefault(defaultConfig, USelect).optionsLimit,
+    default: getDefaults(defaultConfig, USelect).optionsLimit,
   },
 
   /**
@@ -468,7 +468,7 @@ const props = defineProps({
    */
   visibleOptions: {
     type: Number,
-    default: getDefault(defaultConfig, USelect).visibleOptions,
+    default: getDefaults(defaultConfig, USelect).visibleOptions,
   },
 
   /**
@@ -476,7 +476,7 @@ const props = defineProps({
    */
   clearable: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).clearable,
+    default: getDefaults(defaultConfig, USelect).clearable,
   },
 
   /**
@@ -484,7 +484,7 @@ const props = defineProps({
    */
   multiple: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).multiple,
+    default: getDefaults(defaultConfig, USelect).multiple,
   },
 
   /**
@@ -492,7 +492,7 @@ const props = defineProps({
    */
   searchable: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).searchable,
+    default: getDefaults(defaultConfig, USelect).searchable,
   },
 
   /**
@@ -500,7 +500,7 @@ const props = defineProps({
    */
   disabled: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).disabled,
+    default: getDefaults(defaultConfig, USelect).disabled,
   },
 
   /**
@@ -508,7 +508,7 @@ const props = defineProps({
    */
   addOption: {
     type: Boolean,
-    default: getDefault(defaultConfig, USelect).addOption,
+    default: getDefaults(defaultConfig, USelect).addOption,
   },
 
   /**
@@ -693,31 +693,6 @@ const isEmpty = computed(() => {
     (props.multiple && localValue.value.length === props.options.length)
   );
 });
-
-const {
-  config,
-  selectLabelAttrs,
-  wrapperAttrs,
-  innerWrapperAttrs,
-  leftIconWrapperAttrs,
-  rightIconWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
-  beforeCaretAttrs,
-  afterCaretAttrs,
-  toggleAttrs,
-  clearAttrs,
-  clearMultipleTextAttrs,
-  clearMultipleAttrs,
-  searchAttrs,
-  searchInputAttrs,
-  selectedLabelsAttrs,
-  selectedLabelAttrs,
-  dropdownListAttrs,
-  toggleIconAttrs,
-  clearIconAttrs,
-  clearMultipleIconAttrs,
-} = useAttrs(props, { isTop, isOpen, selectedLabel });
 
 const onSearchChange = createDebounce(function (query) {
   emit("searchChange", query);
@@ -905,4 +880,43 @@ defineExpose({
    */
   innerWrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+  /* component state, not a props */
+  selected: Boolean(selectedLabel.value),
+  opened: isOpen.value,
+  openedTop: isTop.value,
+}));
+
+// eslint-disable-next-line vue/no-dupe-keys
+const {
+  config,
+  selectLabelAttrs,
+  wrapperAttrs,
+  innerWrapperAttrs,
+  leftIconWrapperAttrs,
+  rightIconWrapperAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  beforeCaretAttrs,
+  afterCaretAttrs,
+  toggleAttrs,
+  clearAttrs,
+  clearMultipleTextAttrs,
+  clearMultipleAttrs,
+  searchAttrs,
+  searchInputAttrs,
+  selectedLabelsAttrs,
+  selectedLabelAttrs,
+  dropdownListAttrs,
+  toggleIconAttrs,
+  clearIconAttrs,
+  clearMultipleIconAttrs,
+} = useUI(defaultConfig, mutatedProps);
 </script>

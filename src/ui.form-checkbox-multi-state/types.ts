@@ -1,10 +1,10 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
+import type { UnknownObject, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface UCheckboxMultiStateProps {
+export interface Props {
   /**
    * Checkbox value.
    */
@@ -63,7 +63,7 @@ export interface UCheckboxMultiStateProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

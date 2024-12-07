@@ -1,8 +1,8 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
+import { NotificationType } from "./constants.ts";
 
-export type Config = Partial<typeof defaultConfig>;
-
-export type NotificationType = "success" | "warning" | "error";
+export type Config = typeof defaultConfig;
 
 export type Notification = {
   id: string;
@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-export interface UNotifyProps {
+export interface Props {
   /**
    * A position on the x-axis.
    */
@@ -45,5 +45,10 @@ export interface UNotifyProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
+
+  /**
+   * Data-test attribute for automated testing.
+   */
+  dataTest?: string;
 }

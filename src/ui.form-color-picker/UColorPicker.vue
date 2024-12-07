@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { computed, useId } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { UColorPicker } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UColorPickerProps, IconSize } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UColorPickerProps>(), {
-  name: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).name,
-  size: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).size,
-  colorOptions: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).colorOptions,
-  disabled: getDefault<UColorPickerProps>(defaultConfig, UColorPicker).disabled,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UColorPicker),
+  modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -32,16 +30,6 @@ const emit = defineEmits([
 ]);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  colorPickerLabelAttrs,
-  listAttrs,
-  colorPickerRadioAttrs,
-  unselectedColorPickerRadioAttrs,
-  unselectedIconAttrs,
-  unselectedAttrs,
-} = useAttrs(props);
 
 const selectedItem = computed({
   get: () => props.modelValue,
@@ -63,6 +51,20 @@ const iconSize = computed(() => {
 function onUpdateValue(value: string) {
   selectedItem.value = value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  colorPickerLabelAttrs,
+  listAttrs,
+  colorPickerRadioAttrs,
+  unselectedColorPickerRadioAttrs,
+  unselectedIconAttrs,
+  unselectedAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -95,7 +97,7 @@ function onUpdateValue(value: string) {
             internal
             :size="iconSize"
             color="gray"
-            :name="config.defaults?.unselectedIcon"
+            :name="config.defaults.unselectedIcon"
             v-bind="unselectedIconAttrs"
           />
         </label>

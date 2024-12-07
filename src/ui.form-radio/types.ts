@@ -1,12 +1,12 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { UnknownObject, UnknownArray, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export type LocalValueType = string | number | boolean | UnknownObject | null;
+export type LocalValueType = string | number | boolean | UnknownObject | UnknownArray | null;
 
-export interface URadioProps {
+export interface Props {
   /**
    * Radio value.
    */
@@ -90,7 +90,7 @@ export interface URadioProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

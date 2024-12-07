@@ -12,9 +12,11 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UModalConfirmProps } from "../types.ts";
+import type { Props } from "../types.ts";
+import type { BrandColors } from "../../types.ts";
 
-interface UModalConfirmArgs extends UModalConfirmProps {
+interface UModalConfirmArgs extends Props {
+  width: string;
   slotTemplate?: string;
   enum: "size" | "confirmColor";
 }
@@ -74,9 +76,9 @@ const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
 ) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
-    function onClick(value) {
-      argTypes[args.enum].name === "confirmColor"
-        ? (args.confirmColor = value)
+    function onClick(value: string) {
+      argTypes?.[args.enum]?.name === "confirmColor"
+        ? (args.confirmColor = value as BrandColors)
         : (args.width = value);
 
       args.modelValue = true;
@@ -85,7 +87,7 @@ const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
     return {
       args,
       onClick,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `

@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { UText } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UTextProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UTextProps>(), {
-  size: getDefault<UTextProps>(defaultConfig, UText).size,
-  align: getDefault<UTextProps>(defaultConfig, UText).align,
-  line: getDefault<UTextProps>(defaultConfig, UText).line,
-  dataTest: "",
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UText),
 });
 
-const { wrapperAttrs, htmlAttrs } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
