@@ -8,6 +8,7 @@ import {
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
   TAILWIND_MERGE_EXTENSION,
+  SYSTEM_NON_PROPS_DEFAULTS,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
@@ -126,6 +127,15 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
 
   if (defaults.color) {
     defaults.color = getColor(defaults.color as BrandColors);
+  }
+
+  /* Remove non a props defaults. */
+  for (const key in defaults) {
+    const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon)/.test(key);
+
+    if (SYSTEM_NON_PROPS_DEFAULTS.includes(key) || isNonPropIcon) {
+      delete defaults[key];
+    }
   }
 
   return {
