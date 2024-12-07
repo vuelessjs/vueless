@@ -8,8 +8,8 @@ export type IconSize = "2xs" | "xs" | "sm";
 
 export interface UCheckboxOption {
   value?: string | number | boolean | UnknownObject | UnknownArray;
-  falseValue?: string | number | boolean | UnknownObject | UnknownArray | undefined;
-  trueValue?: string | number | boolean | UnknownObject | UnknownArray | undefined;
+  falseValue?: string | number | boolean | UnknownObject | UnknownArray;
+  trueValue?: string | number | boolean | UnknownObject | UnknownArray;
   label?: string;
   icon?: string;
   description?: string;

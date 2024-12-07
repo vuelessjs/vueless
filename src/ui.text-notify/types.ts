@@ -1,9 +1,8 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
+import { NotificationType } from "./constants.ts";
 
 export type Config = typeof defaultConfig;
-
-export type NotificationType = "success" | "warning" | "error";
 
 export type Notification = {
   id: string;
@@ -47,4 +46,9 @@ export interface Props {
    * Component config object.
    */
   config?: ComponentConfig<Config>;
+
+  /**
+   * Data-test attribute for automated testing.
+   */
+  dataTest?: string;
 }

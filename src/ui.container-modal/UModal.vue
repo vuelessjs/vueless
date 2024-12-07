@@ -14,7 +14,7 @@ import defaultConfig from "./config.ts";
 import { UModal } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { UnknownObject } from "../types.ts";
+import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -135,11 +135,11 @@ const {
 </script>
 
 <template>
-  <transition v-bind="config.overlayTransition as UnknownObject">
+  <Transition v-bind="config.overlayTransition as Transition">
     <div v-if="isShownModal" v-bind="overlayAttrs" />
-  </transition>
+  </Transition>
 
-  <transition v-bind="config.wrapperTransition as UnknownObject">
+  <Transition v-bind="config.wrapperTransition as Transition">
     <div
       v-if="isShownModal"
       :id="elementId"
@@ -237,5 +237,5 @@ const {
         </div>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>

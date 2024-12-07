@@ -282,6 +282,7 @@ export type UseUI<T> = {
 
 export type KeysAttrs = Record<string, Ref<KeyAttrs> | ComputedRef<KeyAttrs>>;
 
+// TODO: Add `config` key and resolve issue with `UseUI`.
 export interface KeyAttrs extends VueAttrs {
   "vl-component"?: string | null;
   "vl-key"?: string | null;

@@ -24,7 +24,7 @@ import { vClickOutside } from "../directives";
 
 import type { ComputedRef } from "vue";
 import type { UDatePickerProps, Config, Locale } from "./types.ts";
-import type { ComponentExposed, UnknownObject } from "../types.ts";
+import type { ComponentExposed, Transition } from "../types.ts";
 import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
 import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
@@ -319,7 +319,7 @@ watchEffect(() => {
       </template>
     </UInput>
 
-    <Transition v-bind="config.calendarTransition as UnknownObject">
+    <Transition v-bind="config.calendarTransition as Transition">
       <UCalendar
         v-show="isShownCalendar"
         ref="calendar"
