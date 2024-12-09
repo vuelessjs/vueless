@@ -27,9 +27,7 @@ function clickOutside(
   function onClick(event: MouseEvent) {
     if (!isElement(event.target)) return;
 
-    const targetElements = event
-      .composedPath()
-      .filter((element) => element instanceof HTMLElement || element instanceof SVGElement);
+    const targetElements = event.composedPath().filter((element) => isElement(element));
 
     if (
       !el ||
