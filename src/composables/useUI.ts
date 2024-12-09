@@ -22,6 +22,7 @@ import type {
   UnknownObject,
   ComponentNames,
   ComponentConfig,
+  KeyAttrsWithConfig,
 } from "../types.ts";
 
 /**
@@ -95,7 +96,7 @@ export default function useUI<T>(
    * – value: reactive object of string element attributes (with classes).
    */
   function getKeysAttrs(mutatedProps?: MutatedProps) {
-    const keysAttrs: KeysAttrs = {};
+    const keysAttrs: KeysAttrs<T> = {};
 
     for (const key in config.value) {
       if (isSystemKey(key)) continue;
@@ -120,7 +121,7 @@ export default function useUI<T>(
             defaultConfig: config.value[extendsKeys[0]],
             globalConfig: keyAttrs.value.config,
           }),
-        })) as ComputedRef<KeyAttrs>;
+        })) as ComputedRef<KeyAttrsWithConfig<T>>;
       }
     }
 

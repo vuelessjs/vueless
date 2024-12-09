@@ -277,12 +277,18 @@ export type MutatedProps = ComputedRef<UnknownObject>;
 
 export type UseUI<T> = {
   config: Ref<T & ComponentConfig<T>>;
-  getKeysAttrs: (mutatedProps?: MutatedProps) => KeysAttrs;
-} & KeysAttrs;
+  getKeysAttrs: (mutatedProps?: MutatedProps) => KeysAttrs<T>;
+} & KeysAttrs<T>;
 
-export type KeysAttrs = Record<string, Ref<KeyAttrs> | ComputedRef<KeyAttrs>>;
+export type KeysAttrs<T> = Record<
+  string,
+  Ref<KeyAttrsWithConfig<T>> | ComputedRef<KeyAttrsWithConfig<T>>
+>;
 
-// TODO: Add `config` key and resolve issue with `UseUI`.
+export type KeyAttrsWithConfig<T> = {
+  config?: ComponentConfig<T>;
+} & KeyAttrs;
+
 export interface KeyAttrs extends VueAttrs {
   "vl-component"?: string | null;
   "vl-key"?: string | null;

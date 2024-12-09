@@ -10,13 +10,15 @@ import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 import { UIcon } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, Config } from "./types.ts";
+import type { AsyncComponentLoader } from "vue";
+import type { Props, Config, IconLibraries } from "./types.ts";
+import type { Props as TippyProps, Instance as TippyInstance } from "tippy.js";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UIcon),
-  tooltipSettings: () => ({}),
+  tooltipSettings: () => ({}) as TippyProps,
 });
 
 const emit = defineEmits([
@@ -44,7 +46,8 @@ const dynamicComponent = computed(() => {
     generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
   );
 
-  const userLibrary = config.value.defaults.library;
+  const userLibrary = config.value.defaults.library as IconLibraries;
+
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
   const weight = config.value.defaults.weight;
   const style = config.value.defaults.style;
@@ -63,7 +66,7 @@ const dynamicComponent = computed(() => {
   /* Dynamic import */
   if (!name) return "";
 
-  function getIcon(params: Array<string | number | undefined>) {
+  function getIcon(params: (string | number)[]) {
     const [, component] =
       generatedIcons.value.find(([path]) =>
         params.every(
@@ -109,13 +112,19 @@ const dynamicComponent = computed(() => {
   };
   /* eslint-enable prettier/prettier */
 
-  return defineAsyncComponent(libraries[library]);
+  return defineAsyncComponent(libraries[library] as AsyncComponentLoader);
 });
 
 const tooltipConfig = computed(() => ({
-  onShow: () => !!props.tooltip,
   ...props.tooltipSettings,
   content: props.tooltip,
+  onShow: (instance: TippyInstance) => {
+    const userOnShow = props.tooltipSettings?.onShow;
+
+    userOnShow && userOnShow(instance);
+
+    return !!props.tooltip;
+  },
 }));
 
 function onClick(event: MouseEvent) {
