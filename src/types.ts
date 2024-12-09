@@ -55,11 +55,9 @@ import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 
-import type { ComputedRef, MaybeRef, Ref, ComponentInternalInstance } from "vue";
+import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
-
-export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
 export enum ColorMode {
   Dark = "dark",

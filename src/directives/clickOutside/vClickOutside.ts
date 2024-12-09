@@ -21,9 +21,11 @@ function clickOutside(
   const el = unref(target);
 
   function onClick(event: MouseEvent) {
-    if (!(event.target instanceof HTMLElement)) return;
+    if (!(event.target instanceof HTMLElement) && !(event.target instanceof SVGElement)) return;
 
-    const targetElements = event.composedPath().filter((element) => element instanceof HTMLElement);
+    const targetElements = event
+      .composedPath()
+      .filter((element) => element instanceof HTMLElement || element instanceof SVGElement);
 
     if (
       !el ||

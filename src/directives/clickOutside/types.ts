@@ -1,12 +1,11 @@
-import type { DirectiveBinding } from "vue";
-import type { TemplateRefElement } from "../../types.ts";
+import type { DirectiveBinding, MaybeRef } from "vue";
 
 export type RemoveEvents = () => void;
 export type ClickCallback = (event: MouseEvent) => void;
 
 export interface ClickOutsideOptions {
   capture?: boolean;
-  ignore?: TemplateRefElement[];
+  ignore?: MaybeRef<Element | Element[] | null>[];
 }
 
 export interface DirectiveBindingCallback extends DirectiveBinding {
