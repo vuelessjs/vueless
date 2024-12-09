@@ -15,7 +15,7 @@ const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
 
 const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
-const WORD_IN_QUOTE_REG_EXP = /([^"]+)/;
+const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
 async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
