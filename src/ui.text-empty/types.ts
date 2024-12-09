@@ -1,11 +1,12 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "2xl" | "3xl" | "4xl";
 export type TitleSize = "xs" | "sm" | "md";
 
-export interface UEmptyProps {
+export interface Props {
   /**
    * Empty state title.
    */
@@ -24,7 +25,7 @@ export interface UEmptyProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

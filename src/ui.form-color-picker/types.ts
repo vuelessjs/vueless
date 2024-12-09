@@ -1,12 +1,12 @@
 import defaultConfig from "./config.ts";
 
-import type { BrandColors } from "../types.ts";
+import type { BrandColors, ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "3xs" | "2xs" | "xs" | "sm" | "md";
 
-export interface UColorPickerProps {
+export interface Props {
   /**
    * Color picker selected value.
    */
@@ -40,7 +40,7 @@ export interface UColorPickerProps {
   /**
    * Color picker color list.
    */
-  colorOptions?: Array<BrandColors>;
+  colorOptions?: BrandColors;
 
   /**
    * Set color picker disabled.
@@ -55,7 +55,7 @@ export interface UColorPickerProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

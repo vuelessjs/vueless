@@ -11,9 +11,9 @@ import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { URadioGroupProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface URadioGroupArgs extends URadioGroupProps {
+interface URadioGroupArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
 }

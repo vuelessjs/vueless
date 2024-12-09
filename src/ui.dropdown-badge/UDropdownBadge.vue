@@ -1,36 +1,27 @@
 <script setup lang="ts">
-import { nextTick, ref, useId, useTemplateRef } from "vue";
+import { ref, computed, nextTick, useId, useTemplateRef } from "vue";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
-import { getDefault } from "../utils/ui.ts";
-
 import { vClickOutside } from "../directives";
 
 import defaultConfig from "./config.ts";
 import { UDropdownBadge } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UDropdownBadgeProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDropdownBadgeProps>(), {
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDropdownBadge),
   options: () => [],
-  labelKey: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).labelKey,
-  variant: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).variant,
-  color: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).color,
-  size: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).size,
-  round: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).round,
-  noIcon: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).noIcon,
-  yPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).yPosition,
-  xPosition: getDefault<UDropdownBadgeProps>(defaultConfig, UDropdownBadge).xPosition,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -47,13 +38,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } = useAttrs(
-  props,
-  {
-    isShownOptions,
-  },
-);
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
@@ -72,6 +56,18 @@ function onClickOption(option: Option) {
 
   hideOptions();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  opened: isShownOptions.value,
+}));
+
+const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -117,7 +113,7 @@ function onClickOption(option: Option) {
             internal
             :color="iconColor"
             :size="size"
-            :name="config.defaults?.dropdownIcon"
+            :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
           />

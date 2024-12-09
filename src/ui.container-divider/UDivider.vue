@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import { computed } from "vue";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UDivider } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UDividerProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDividerProps>(), {
-  size: getDefault<UDividerProps>(defaultConfig, UDivider).size,
-  variant: getDefault<UDividerProps>(defaultConfig, UDivider).variant,
-  padding: getDefault<UDividerProps>(defaultConfig, UDivider).padding,
-  dashed: getDefault<UDividerProps>(defaultConfig, UDivider).dashed,
-  dotted: getDefault<UDividerProps>(defaultConfig, UDivider).dotted,
-  vertical: getDefault<UDividerProps>(defaultConfig, UDivider).vertical,
-  noBorder: getDefault<UDividerProps>(defaultConfig, UDivider).noBorder,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDivider),
+  label: "",
 });
 
-const { wrapperAttrs, dividerAttrs, labelAttrs } = useAttrs(props);
+const mutatedProps = computed(() => ({
+  label: Boolean(props.label),
+}));
+
+const { wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

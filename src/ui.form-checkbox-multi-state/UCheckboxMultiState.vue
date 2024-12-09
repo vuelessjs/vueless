@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
+import { cloneDeep } from "../utils/helper.ts";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config.ts";
 import { UCheckboxMultiState } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UCheckboxMultiStateProps } from "./types.ts";
-import type { UCheckboxOption } from "../ui.form-checkbox/types.ts";
+import type { Props, Config } from "./types.ts";
+import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
+import type { ComponentConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UCheckboxMultiStateProps>(), {
-  size: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).size,
-  color: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).color,
-  placement: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).placement,
-  disabled: getDefault<UCheckboxMultiStateProps>(defaultConfig, UCheckboxMultiState).disabled,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCheckboxMultiState),
+  modelValue: false,
+  options: () => [],
 });
 
 const emit = defineEmits([
@@ -33,10 +34,8 @@ const index = ref(0);
 const isChecked = ref(false);
 
 const selected = computed<UCheckboxOption>(() => {
-  return props.options?.[index.value] || { icon: undefined };
+  return props.options[index.value] || { icon: undefined };
 });
-
-const { multiStateCheckboxAttrs } = useAttrs(props, { selected });
 
 watchEffect(setIndex);
 
@@ -51,7 +50,7 @@ function setIndex() {
 }
 
 function setChecked() {
-  setTimeout(() => (isChecked.value = !!props?.options?.[index.value].icon), 0);
+  setTimeout(() => (isChecked.value = !!props?.options[index.value].icon), 0);
 }
 
 function onClickCheckbox() {
@@ -62,6 +61,26 @@ function onClickCheckbox() {
 
   emit("update:modelValue", selected?.value?.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { multiStateCheckboxAttrs: checkboxAttrs } = useUI<Config>(defaultConfig);
+
+const multiStateCheckboxAttrs = computed(() => {
+  const clonedCheckboxAttrs = cloneDeep(checkboxAttrs.value) as {
+    config: ComponentConfig<UCheckboxConfig>;
+  };
+
+  if (selected.value.icon) {
+    clonedCheckboxAttrs.config.defaults = clonedCheckboxAttrs.config.defaults || {};
+
+    clonedCheckboxAttrs.config.defaults.checkedIcon = selected.value.icon;
+  }
+
+  return clonedCheckboxAttrs;
+});
 </script>
 
 <template>

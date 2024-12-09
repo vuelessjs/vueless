@@ -1,14 +1,16 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
+
+export type Config = typeof defaultConfig;
 
 export type ButtonSize = "xs" | "sm" | "md";
 
-export interface UInputFileProps {
+export interface Props {
   /**
    * Input value.
    */
-  modelValue?: File | File[];
+  modelValue?: File[];
 
   /**
    * Input label.
@@ -63,7 +65,7 @@ export interface UInputFileProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

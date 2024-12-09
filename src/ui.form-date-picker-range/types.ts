@@ -1,12 +1,12 @@
 import defaultConfig from "./config.ts";
 import { ShiftAction } from "./constants.ts";
 
-import type { UnknownObject } from "../types.ts";
-import type { DatePeriodRange } from "./utilDateRange.ts";
 import type { Ref } from "vue";
+import type { UnknownObject, ComponentConfig } from "../types.ts";
+import type { DatePeriodRange } from "./utilDateRange.ts";
 
 export type Locale = typeof defaultConfig.i18n;
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 export type IsDatePeriodOutOfRange = (datePeriod: DatePeriodRange) => boolean;
 export type ShiftActions = `${ShiftAction}`;
 
@@ -19,6 +19,9 @@ export interface SortedLocale extends Omit<Locale, "weekdays" | "months"> {
     shorthand: string[];
     longhand: string[];
   };
+  today: string;
+  tomorrow: string;
+  yesterday: string;
 }
 
 export interface IsPeriod {
@@ -184,7 +187,7 @@ export interface UDatePickerRangeProps<TModelValue> {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

@@ -8,9 +8,9 @@ import {
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UTabsProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UTabsArgs extends UTabsProps {
+interface UTabsArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }

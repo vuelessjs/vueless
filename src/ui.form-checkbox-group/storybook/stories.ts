@@ -12,10 +12,10 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UCheckboxGroupProps } from "../types.ts";
+import type { Props } from "../types.ts";
 import type { UnknownObject, UnknownArray } from "../../types.ts";
 
-interface UCheckboxGroupArgs extends UCheckboxGroupProps {
+interface UCheckboxGroupArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "color";
   value?: boolean | string | number | UnknownArray | UnknownObject;

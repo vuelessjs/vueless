@@ -1,7 +1,9 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject } from "../types.ts";
 import type { Ref } from "vue";
+import type { ComponentConfig, UnknownObject } from "../types.ts";
+
+export type Config = typeof defaultConfig;
 
 type RowKeys =
   | number
@@ -53,7 +55,6 @@ export interface ColumnObject {
 }
 
 export type Column = ColumnObject | string;
-export type Config = Partial<typeof defaultConfig>;
 
 export interface RowScopedProps {
   value: unknown | string | number;
@@ -109,7 +110,7 @@ export interface UTableProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

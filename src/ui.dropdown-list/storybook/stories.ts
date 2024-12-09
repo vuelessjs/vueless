@@ -9,14 +9,14 @@ import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDropdownListProps } from "../types.ts";
+import type { Option, Props } from "../types.ts";
 
-interface DefaultUDropdownListArgs extends UDropdownListProps {
+interface DefaultUDropdownListArgs extends Props {
   slotTemplate?: string;
 }
 
 interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
-  enum: keyof Pick<UDropdownListProps, "size">;
+  enum: keyof Pick<Props, "size">;
 }
 
 export default {
@@ -120,7 +120,7 @@ OptionSettings.args = {
     {
       label: "option 3",
       id: "3",
-      onClick: (option) => alert("onClick option 3 " + JSON.stringify(option)),
+      onClick: (option: Option) => alert("onClick option 3 " + JSON.stringify(option)),
     },
   ],
 };

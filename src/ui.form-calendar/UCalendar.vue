@@ -2,9 +2,11 @@
 import { computed, ref, watch, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
-import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { isRangeDate } from "./types.ts";
+
+import UButton from "../ui.button/UButton.vue";
 
 import {
   parseDate,
@@ -16,7 +18,6 @@ import {
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
 
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import {
@@ -38,7 +39,7 @@ import {
 
 import defaultConfig from "./config.ts";
 
-import type { UCalendarProps, DateValue, RangeDate, Locale } from "./types.ts";
+import type { UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 
@@ -53,21 +54,16 @@ defineOptions({ inheritAttrs: false });
 type Props = UCalendarProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  range: getDefault<Props>(defaultConfig, UCalendar).range,
-  timepicker: getDefault<Props>(defaultConfig, UCalendar).timepicker,
-  dateFormat: getDefault<Props>(defaultConfig, UCalendar).dateFormat,
-  dateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).dateTimeFormat,
-  userDateFormat: getDefault<Props>(defaultConfig, UCalendar).userDateFormat,
-  userDateTimeFormat: getDefault<Props>(defaultConfig, UCalendar).userDateTimeFormat,
-  tabindex: getDefault<Props>(defaultConfig, UCalendar).tabindex,
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<Props, Config>(defaultConfig, UCalendar),
+  modelValue: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 });
 
 const emit = defineEmits([
   /**
    * Triggers when date value changes.
-   * @property {object} newDate
+   * @property {object} modelValue
    */
   "update:modelValue",
   /**
@@ -96,21 +92,6 @@ const emit = defineEmits([
 ]);
 
 const { tm } = useLocale();
-
-const {
-  config,
-  wrapperAttrs,
-  navigationAttrs,
-  viewSwitchButtonAttrs,
-  nextPrevButtonAttrs,
-  timepickerAttrs,
-  timepickerLabelAttrs,
-  timepickerInputWrapperAttrs,
-  timepickerInputHoursAttrs,
-  timepickerInputMinutesAttrs,
-  timepickerInputSecondsAttrs,
-  timepickerSubmitButtonAttrs,
-} = useAttrs(props);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
@@ -184,12 +165,12 @@ const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
   const monthsLonghand =
-    Boolean(props.config?.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+    Boolean(currentLocale.value.months.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
       ? months.userFormat
       : months.longhand;
 
   const weekdaysLonghand =
-    Boolean(props.config?.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+    Boolean(currentLocale.value.weekdays.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
       ? weekdays.userFormat
       : weekdays.longhand;
 
@@ -211,7 +192,9 @@ const localValue = computed({
   get: () => {
     if (props.range) {
       const isModelValueRangeType =
-        typeof props.modelValue === "object" && !(props.modelValue instanceof Date);
+        props.modelValue &&
+        typeof props.modelValue === "object" &&
+        !(props.modelValue instanceof Date);
 
       const modelValue = isModelValueRangeType
         ? (props.modelValue as RangeDate)
@@ -656,6 +639,25 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  navigationAttrs,
+  viewSwitchButtonAttrs,
+  nextPrevButtonAttrs,
+  timepickerAttrs,
+  timepickerLabelAttrs,
+  timepickerInputWrapperAttrs,
+  timepickerInputHoursAttrs,
+  timepickerInputMinutesAttrs,
+  timepickerInputSecondsAttrs,
+  timepickerSubmitButtonAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -667,7 +669,7 @@ defineExpose({
         size="sm"
         color="grayscale"
         variant="thirdary"
-        :left-icon="config?.defaults?.prevIcon"
+        :left-icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
@@ -695,7 +697,7 @@ defineExpose({
         size="sm"
         color="grayscale"
         variant="thirdary"
-        :left-icon="config?.defaults?.nextIcon"
+        :left-icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickNextButton"

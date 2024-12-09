@@ -2,29 +2,26 @@
 import { computed } from "vue";
 import { range } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { UPagination } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UPaginationProps, ButtonSize, IconSize } from "./types.ts";
+import type { Props, ButtonSize, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UPaginationProps>(), {
-  perPage: getDefault<UPaginationProps>(defaultConfig, UPagination).perPage,
-  limit: getDefault<UPaginationProps>(defaultConfig, UPagination).limit,
-  variant: getDefault<UPaginationProps>(defaultConfig, UPagination).variant,
-  size: getDefault<UPaginationProps>(defaultConfig, UPagination).size,
-  disabled: getDefault<UPaginationProps>(defaultConfig, UPagination).disabled,
-  ellipsis: getDefault<UPaginationProps>(defaultConfig, UPagination).ellipsis,
-  showFirst: getDefault<UPaginationProps>(defaultConfig, UPagination).showFirst,
-  showLast: getDefault<UPaginationProps>(defaultConfig, UPagination).showLast,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UPagination),
+  modelValue: 1,
+  firstLabel: "",
+  prevLabel: "",
+  nextLabel: "",
+  lastLabel: "",
 });
 
 const emit = defineEmits([
@@ -40,21 +37,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const {
-  config,
-  paginationAttrs,
-  firstButtonAttrs,
-  lastButtonAttrs,
-  prevButtonAttrs,
-  nextButtonAttrs,
-  activeButtonAttrs,
-  inactiveButtonAttrs,
-  lastIconAttrs,
-  firstIconAttrs,
-  prevIconAttrs,
-  nextIconAttrs,
-} = useAttrs(props);
 
 const currentPage = computed({
   get: () => props.modelValue,
@@ -137,6 +119,25 @@ function goToFirstPage() {
 function goToLastPage() {
   currentPage.value = totalPages.value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  paginationAttrs,
+  firstButtonAttrs,
+  lastButtonAttrs,
+  prevButtonAttrs,
+  nextButtonAttrs,
+  activeButtonAttrs,
+  inactiveButtonAttrs,
+  lastIconAttrs,
+  firstIconAttrs,
+  prevIconAttrs,
+  nextIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -159,7 +160,7 @@ function goToLastPage() {
           v-if="!firstLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.firstIcon"
+          :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
       </slot>
@@ -182,7 +183,7 @@ function goToLastPage() {
           v-if="!prevLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.prevIcon"
+          :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
         />
       </slot>
@@ -244,7 +245,7 @@ function goToLastPage() {
           v-if="!nextLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.nextIcon"
+          :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
         />
       </slot>
@@ -268,7 +269,7 @@ function goToLastPage() {
           v-if="!lastLabel"
           internal
           :size="iconSize"
-          :name="config.defaults?.lastIcon"
+          :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"
         />
       </slot>

@@ -8,9 +8,9 @@ import {
 import UFiles from "../../ui.text-files/UFiles.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UFilesProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UFilesArgs extends UFilesProps {
+interface UFilesArgs extends Props {
   slotTemplate?: string;
 }
 

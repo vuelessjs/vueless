@@ -99,7 +99,6 @@ export default /*tw*/ {
   defaults: {
     align: "top",
     size: "md",
-    error: false,
     centred: false,
     disabled: false,
   },

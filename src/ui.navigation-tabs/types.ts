@@ -1,8 +1,8 @@
 import defaultConfig from "./config.ts";
 
-import type { UnknownObject, UnknownArray } from "../types.ts";
+import type { ComponentConfig, UnknownObject, UnknownArray } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type SetUTabsSelectedItem = (
   value: string | number | boolean | UnknownArray | UnknownObject,
@@ -11,10 +11,10 @@ export type SetUTabsSelectedItem = (
 interface UTabsOption {
   value: string | number;
   label: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
-export interface UTabsProps {
+export interface Props {
   /**
    * Selected tab value.
    */
@@ -38,7 +38,7 @@ export interface UTabsProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

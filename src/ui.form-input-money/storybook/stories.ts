@@ -11,9 +11,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UInputMoneyProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UInputMoneyArgs extends UInputMoneyProps {
+interface UInputMoneyArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
 }

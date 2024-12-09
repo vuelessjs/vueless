@@ -9,9 +9,9 @@ import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UInputFileProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UInputFileArgs extends UInputFileProps {
+interface UInputFileArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
 }

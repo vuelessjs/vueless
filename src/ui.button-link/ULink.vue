@@ -1,34 +1,22 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 import { RouterLink, useLink } from "vue-router";
-import { getDefault } from "../utils/ui.ts";
 
-import useAttrs from "./useAttrs.ts";
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import defaultConfig from "./config.ts";
 import { ULink } from "./constants.ts";
 
-import type { ULinkProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULinkProps>(), {
-  size: getDefault<ULinkProps>(defaultConfig, ULink).size,
-  color: getDefault<ULinkProps>(defaultConfig, ULink).color,
-  type: getDefault<ULinkProps>(defaultConfig, ULink).type,
-  targetBlank: getDefault<ULinkProps>(defaultConfig, ULink).targetBlank,
-  ariaCurrentValue: getDefault<ULinkProps>(defaultConfig, ULink).ariaCurrentValue,
-  custom: getDefault<ULinkProps>(defaultConfig, ULink).custom,
-  replace: getDefault<ULinkProps>(defaultConfig, ULink).replace,
-  activeClass: getDefault<ULinkProps>(defaultConfig, ULink).activeClass,
-  exactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).exactActiveClass,
-  wrapperActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperActiveClass,
-  wrapperExactActiveClass: getDefault<ULinkProps>(defaultConfig, ULink).wrapperExactActiveClass,
-  underlined: getDefault<ULinkProps>(defaultConfig, ULink).underlined,
-  dashed: getDefault<ULinkProps>(defaultConfig, ULink).dashed,
-  disabled: getDefault<ULinkProps>(defaultConfig, ULink).disabled,
-  block: getDefault<ULinkProps>(defaultConfig, ULink).block,
-  noRing: getDefault<ULinkProps>(defaultConfig, ULink).noRing,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULink),
+  label: "",
+  to: undefined,
 });
 
 const emit = defineEmits([
@@ -58,6 +46,8 @@ const emit = defineEmits([
   "keydown",
 ]);
 
+const slots = useSlots();
+
 const isPresentRoute = computed(() => {
   return typeof props.to === "string" || typeof props.to === "object";
 });
@@ -82,8 +72,6 @@ const useLinkOptions = {
 const { route, isActive, isExactActive } = useLink(useLinkOptions);
 
 const wrapperRef = ref(null);
-
-const { wrapperAttrs, linkAttrs } = useAttrs(props);
 
 const wrapperActiveClasses = computed(() => [
   isActive.value && props.wrapperActiveClass,
@@ -136,6 +124,17 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  defaultSlot: hasSlotContent(slots["default"]),
+}));
+
+const { wrapperAttrs, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

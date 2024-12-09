@@ -1,12 +1,13 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export interface UTabSize {
   size: string;
 }
 
-export interface UTabProps {
+export interface Props {
   /**
    * Tab label.
    */
@@ -25,7 +26,7 @@ export interface UTabProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

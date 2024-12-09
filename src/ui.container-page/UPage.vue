@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, useSlots, onMounted } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import useBreakpoint from "../composables/useBreakpoint.ts";
 
@@ -11,44 +12,20 @@ import UHeader from "../ui.text-header/UHeader.vue";
 
 import defaultConfig from "./config.ts";
 import { UPage } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UPageProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 const slots = useSlots();
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UPageProps>(), {
-  size: getDefault<UPageProps>(defaultConfig, UPage).size,
-  titleSize: getDefault<UPageProps>(defaultConfig, UPage).titleSize,
-  gray: getDefault<UPageProps>(defaultConfig, UPage).gray,
-  fixedRounding: getDefault<UPageProps>(defaultConfig, UPage).fixedRounding,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UPage),
+  backTo: "",
+  backLabel: "",
 });
 
 const { isMobileBreakpoint } = useBreakpoint();
-
-const {
-  config,
-  wrapperAttrs,
-  pageAttrs,
-  rightRoundingAttrs,
-  titleAttrs,
-  backLinkAttrs,
-  backLinkIconAttrs,
-  headerAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  headerLeftAttrs,
-  headerRightAttrs,
-  bodyAttrs,
-  footerAttrs,
-  footerLeftAttrs,
-  footerRightAttrs,
-  rightRoundingWrapperAttrs,
-} = useAttrs(props);
 
 const isExistHeader = computed(() => {
   return (
@@ -78,6 +55,30 @@ onMounted(() => {
     document.body.classList.add(...classes);
   }
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  pageAttrs,
+  rightRoundingAttrs,
+  titleAttrs,
+  backLinkAttrs,
+  backLinkIconAttrs,
+  headerAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  headerLeftAttrs,
+  headerRightAttrs,
+  bodyAttrs,
+  footerAttrs,
+  footerLeftAttrs,
+  footerRightAttrs,
+  rightRoundingWrapperAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -108,7 +109,7 @@ onMounted(() => {
                     internal
                     size="2xs"
                     color="gray"
-                    :name="config.defaults?.backIcon"
+                    :name="config.defaults.backIcon"
                     v-bind="backLinkIconAttrs"
                   />
                 </template>

@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, useId } from "vue";
+import { computed, inject, onMounted, ref, useId, toValue } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { TYPE_RADIO } from "../ui.button-toggle/constants.ts";
 
-import useAttrs from "./useAttrs.ts";
 import defaultConfig from "./config.ts";
 import { UToggleItem } from "./constants.ts";
 
-import type { UToggleItemProps, ToggleInjectValues, ToggleContextType } from "./types.ts";
+import type { Props, ToggleInjectValues, ToggleContextType, Config } from "./types.ts";
 
 type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UToggleItemProps>(), {
-  disabled: getDefault<UToggleItemProps>(defaultConfig, UToggleItem).disabled,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UToggleItem),
+  modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -32,26 +34,26 @@ const emit = defineEmits([
 /* eslint-disable prettier/prettier */
 const getToggleName = inject<() => string>("getToggleName", () => "toggle");
 const getToggleType = inject<() => string>("getToggleType", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).type || TYPE_RADIO
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).type || TYPE_RADIO
 );
 const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
-  (getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).size || "md") as ButtonSize
+  (getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).size || "md") as ButtonSize
 );
 const getToggleRound = inject<() => boolean>("getToggleRound", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).round || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).round || false
 );
 const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).block || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).block || false
 );
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).square || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).square || false
 );
 const getToggleVariant = inject<string>("getToggleVariant",
-  getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).variant || "secondary"
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).variant || "secondary"
 );
 const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
 const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
-  props.disabled || getDefault<ToggleInjectValues>(defaultConfig, UToggleItem).disabled || false
+  props.disabled || getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).disabled || false
 );
 /* eslint-enable prettier/prettier */
 
@@ -68,12 +70,6 @@ const isSelected = computed(() => {
   return Array.isArray(selectedValue?.value)
     ? selectedValue?.value?.includes(props.value)
     : selectedValue?.value === props.value;
-});
-
-const { toggleButtonAttrs, toggleInputAttrs } = useAttrs(props, {
-  isSelected,
-  separated: getToggleSeparated,
-  variant: getToggleVariant,
 });
 
 onMounted(() => {
@@ -97,6 +93,19 @@ function onClickSetValue() {
 
   emit("update:modelValue", props.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  variant: toValue(getToggleVariant),
+  separated: toValue(getToggleSeparated),
+  /* component state, not a props */
+  selected: isSelected.value,
+}));
+
+const { toggleButtonAttrs, toggleInputAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

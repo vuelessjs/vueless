@@ -10,9 +10,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UTextareaProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UTextareaArgs extends UTextareaProps {
+interface UTextareaArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
 }

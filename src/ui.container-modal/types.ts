@@ -1,10 +1,12 @@
 import defaultConfig from "./config.ts";
 
+import type { ComponentConfig } from "../types.ts";
+
 import type { RouteLocationRaw } from "vue-router";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
-export interface UModalProps {
+export interface Props {
   /**
    * Modal state (shown / hidden).
    */
@@ -73,7 +75,7 @@ export interface UModalProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

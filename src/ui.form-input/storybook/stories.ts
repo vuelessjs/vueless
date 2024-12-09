@@ -11,9 +11,9 @@ import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UInputProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UInputArgs extends UInputProps {
+interface UInputArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size" | "validationRule";
 }

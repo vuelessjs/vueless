@@ -11,9 +11,9 @@ import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UDataListProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UDataListArgs extends UDataListProps {
+interface UDataListArgs extends Props {
   slotTemplate?: string;
 }
 

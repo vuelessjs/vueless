@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UCol } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UColProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UColProps>(), {
-  gap: getDefault<UColProps>(defaultConfig, UCol).gap,
-  align: getDefault<UColProps>(defaultConfig, UCol).align,
-  content: getDefault<UColProps>(defaultConfig, UCol).content,
-  justify: getDefault<UColProps>(defaultConfig, UCol).justify,
-  reverse: getDefault<UColProps>(defaultConfig, UCol).reverse,
-  wrap: getDefault<UColProps>(defaultConfig, UCol).wrap,
-  dataTest: "",
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UCol),
 });
 
-const { wrapperAttrs } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+
+const { wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

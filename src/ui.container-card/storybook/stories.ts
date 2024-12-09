@@ -12,9 +12,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UCardProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UCardArgs extends UCardProps {
+interface UCardArgs extends Props {
   slotTemplate?: string;
 }
 

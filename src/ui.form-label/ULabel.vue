@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
 import { ULabel, PLACEMENT } from "./constants.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { ULabelProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<ULabelProps>(), {
-  align: getDefault<ULabelProps>(defaultConfig, ULabel).align,
-  size: getDefault<ULabelProps>(defaultConfig, ULabel).size,
-  disabled: getDefault<ULabelProps>(defaultConfig, ULabel).disabled,
-  centred: getDefault<ULabelProps>(defaultConfig, ULabel).centred,
-  dataTest: "",
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, ULabel),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -28,8 +25,6 @@ const emit = defineEmits([
 
 const labelRef = ref(null);
 const wrapperRef = ref(null);
-
-const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
 
 const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
@@ -64,6 +59,19 @@ defineExpose({
    */
   wrapperElement,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+}));
+
+const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>

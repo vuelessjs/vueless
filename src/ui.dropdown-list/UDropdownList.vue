@@ -2,20 +2,20 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { isMac } from "../utils/platform.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { getDefault } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-
 import usePointer from "./usePointer.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
 import { UDropdownList } from "./constants.ts";
 
-import type { Option, UDropdownListProps } from "./types.ts";
+import type { Option, Props, Config } from "./types.ts";
 import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -23,17 +23,9 @@ defineOptions({ inheritAttrs: false });
 // TODO: Use props and regular modal value
 const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
-const props = withDefaults(defineProps<UDropdownListProps>(), {
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDropdownList),
   options: () => [],
-  labelKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).labelKey,
-  valueKey: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).valueKey,
-  addOption: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).addOption,
-  size: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).size,
-  visibleOptions: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).visibleOptions,
-  disabled: getDefault<UDropdownListProps>(defaultConfig, UDropdownList).disabled,
-  id: "",
-  dataTest: "",
-  config: () => ({}),
 });
 
 const emit = defineEmits([
@@ -58,22 +50,6 @@ const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, poin
   usePointer(props.options, optionsRef, wrapperRef);
 
 const elementId = props.id || useId();
-
-const {
-  config,
-  wrapperAttrs,
-  listAttrs,
-  listItemAttrs,
-  addOptionLabelWrapperAttrs,
-  addOptionLabelAttrs,
-  addOptionLabelHotkeyAttrs,
-  addOptionButtonAttrs,
-  addOptionIconAttrs,
-  optionAttrs,
-  subGroupAttrs,
-  groupAttrs,
-  optionContentAttrs,
-} = useAttrs(props);
 
 const { tm } = useLocale();
 
@@ -239,6 +215,26 @@ defineExpose({
    */
   wrapperRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  listAttrs,
+  listItemAttrs,
+  addOptionLabelWrapperAttrs,
+  addOptionLabelAttrs,
+  addOptionLabelHotkeyAttrs,
+  addOptionButtonAttrs,
+  addOptionIconAttrs,
+  optionAttrs,
+  subGroupAttrs,
+  groupAttrs,
+  optionContentAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -344,7 +340,7 @@ defineExpose({
             internal
             color="white"
             size="xs"
-            :name="config.defaults?.addOptionIcon"
+            :name="config.defaults.addOptionIcon"
             v-bind="addOptionIconAttrs"
           />
         </UButton>

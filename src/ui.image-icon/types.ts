@@ -1,8 +1,15 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { DefineComponent, SVGAttributes } from "vue";
 
-export interface UIconProps {
+import type { ComponentConfig } from "../types.ts";
+import type { Props as TippyProps } from "tippy.js";
+
+export type Config = typeof defaultConfig;
+
+export type IconLibraries = "vueless" | "@material-symbols" | "bootstrap-icons" | "heroicons";
+
+export interface Props {
   /**
    * Icon name.
    */
@@ -11,7 +18,7 @@ export interface UIconProps {
   /**
    * Icon source (svg as a vue component).
    */
-  src?: object;
+  src?: DefineComponent<SVGAttributes>;
 
   /**
    * Icon color.
@@ -64,7 +71,7 @@ export interface UIconProps {
    * Tooltip settings.
    * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
    */
-  tooltipSettings?: object;
+  tooltipSettings?: TippyProps;
 
   /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).
@@ -74,7 +81,7 @@ export interface UIconProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

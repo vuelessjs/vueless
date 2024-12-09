@@ -3,7 +3,8 @@ import { computed } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -11,23 +12,15 @@ import UEmpty from "../ui.text-empty/UEmpty.vue";
 
 import { UDataList as UDataListName } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { UnknownObject } from "../types.ts";
-import type { UDataListProps, IconSize, DragMoveEvent, DataListItem } from "./types.ts";
+import type { Props, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDataListProps>(), {
-  size: getDefault<UDataListProps>(defaultConfig, UDataListName).size,
-  labelKey: getDefault<UDataListProps>(defaultConfig, UDataListName).labelKey,
-  valueKey: getDefault<UDataListProps>(defaultConfig, UDataListName).valueKey,
-  animationDuration: getDefault<UDataListProps>(defaultConfig, UDataListName).animationDuration,
-  nesting: getDefault<UDataListProps>(defaultConfig, UDataListName).nesting,
-  hideEmptyStateForNesting: false,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDataListName),
+  list: () => [],
 });
 
 const emit = defineEmits([
@@ -52,33 +45,6 @@ const emit = defineEmits([
   "clickDelete",
 ]);
 
-defineSlots<{
-  edit: { element: UnknownObject };
-  delete: { element: UnknownObject };
-  drag: { element: UnknownObject };
-  empty: {
-    emptyTitle: string;
-    emptyDescription: string;
-  };
-  label: { item: DataListItem; active: boolean };
-  actions: { item: DataListItem };
-}>();
-
-const {
-  config,
-  wrapperAttrs,
-  emptyAttrs,
-  draggableAttrs,
-  nestedAttrs,
-  itemWrapperAttrs,
-  itemAttrs,
-  labelAttrs,
-  labelCrossedAttrs,
-  customActionsAttrs,
-  deleteIconAttrs,
-  editIconAttrs,
-  dragIconAttrs,
-} = useAttrs(props);
 const { tm } = useLocale();
 
 const i18nGlobal = tm(UDataListName);
@@ -143,6 +109,26 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
 
   return sortData;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  emptyAttrs,
+  draggableAttrs,
+  nestedAttrs,
+  itemWrapperAttrs,
+  itemAttrs,
+  labelAttrs,
+  labelCrossedAttrs,
+  customActionsAttrs,
+  deleteIconAttrs,
+  editIconAttrs,
+  dragIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -191,7 +177,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
             <slot
               name="drag"
               :item="element"
-              :icon-name="config.defaults?.dragIcon"
+              :icon-name="config.defaults.dragIcon"
               :icon-size="iconSize"
             >
               <UIcon
@@ -199,7 +185,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
                 color="gray"
                 variant="light"
                 :size="iconSize"
-                :name="config.defaults?.dragIcon"
+                :name="config.defaults.dragIcon"
                 v-bind="dragIconAttrs"
               />
             </slot>
@@ -236,7 +222,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
               <slot
                 name="delete"
                 :item="element"
-                :icon-name="config.defaults?.deleteIcon"
+                :icon-name="config.defaults.deleteIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -245,7 +231,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
                   interactive
                   color="red"
                   :size="iconSize"
-                  :name="config.defaults?.deleteIcon"
+                  :name="config.defaults.deleteIcon"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
                   :data-test="`${dataTest}-delete`"
@@ -262,7 +248,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
               <slot
                 name="edit"
                 :item="element"
-                :icon-name="config.defaults?.editIcon"
+                :icon-name="config.defaults.editIcon"
                 :icon-size="iconSize"
               >
                 <UIcon
@@ -271,7 +257,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
                   interactive
                   color="gray"
                   :size="iconSize"
-                  :name="config.defaults?.editIcon"
+                  :name="config.defaults.editIcon"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"
                   :data-test="`${dataTest}-edit`"
@@ -293,23 +279,26 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"
           >
-            <template #label="{ item, active }">
+            <template #label="slotProps: { item: DataListItem; active: boolean }">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
                 @binding {boolean} active
               -->
-              <slot name="label" :item="item" :active="active">
-                <div v-bind="active ? labelAttrs : labelCrossedAttrs" v-text="item[labelKey]" />
+              <slot name="label" :item="slotProps.item" :active="slotProps.active">
+                <div
+                  v-bind="slotProps.active ? labelAttrs : labelCrossedAttrs"
+                  v-text="slotProps.item[labelKey]"
+                />
               </slot>
             </template>
 
-            <template #actions="{ item }">
+            <template #actions="slotProps: { item: DataListItem }">
               <!--
                 @slot Use it to add custom actions.
                 @binding {object} item
               -->
-              <slot name="actions" :item="item" />
+              <slot name="actions" :item="slotProps.item" />
             </template>
           </UDataList>
         </div>

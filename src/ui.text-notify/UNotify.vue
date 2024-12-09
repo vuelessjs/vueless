@@ -2,31 +2,22 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { merge } from "lodash-es";
 
-import { getDefault, vuelessConfig } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
-import useAttrs from "./useAttrs.ts";
 
 import defaultConfig from "./config.ts";
-import { UNotify, NOTIFY_TYPE, POSITION } from "./constants.ts";
+import { UNotify, NotificationType, NotificationPosition } from "./constants.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type {
-  UNotifyProps,
-  Notification,
-  NotifyEvent,
-  NotificationsWrapperRef,
-  NotificationType,
-} from "./types.ts";
+import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
+import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UNotifyProps>(), {
-  xPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).xPosition,
-  yPosition: getDefault<UNotifyProps>(defaultConfig, UNotify).yPosition,
-  html: getDefault<UNotifyProps>(defaultConfig, UNotify).html,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UNotify),
 });
 
 const { tm } = useLocale();
@@ -38,19 +29,6 @@ const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
 const i18nGlobal = tm(UNotify);
 const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const {
-  config,
-  wrapperAttrs,
-  bodyAttrs,
-  contentAttrs,
-  labelAttrs,
-  descriptionAttrs,
-  successIconAttrs,
-  warningIconAttrs,
-  errorIconAttrs,
-  closeIconAttrs,
-} = useAttrs(props, { notifications });
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });
@@ -111,22 +89,55 @@ function setPosition() {
 
   styles[props.yPosition] = "0px";
 
-  if (props.xPosition === POSITION.center) {
+  if (props.xPosition === NotificationPosition.Center) {
     styles.left = `calc(50% - ${notifyWidth / 2}px)`;
   } else {
     styles[props.xPosition] = "0px";
   }
 
-  if (pageWidth && props.xPosition !== POSITION.right) {
+  if (pageWidth && props.xPosition !== NotificationPosition.Right) {
     styles.left = `${asideWidth + pageWidth / 2 - notifyWidth / 2}px`;
   }
 
   notifyPositionStyles.value = styles;
 }
 
-function getText(notificationText: string, type: NotificationType): string {
+function getText(notificationText: string, type: Notification["type"]): string {
   return notificationText || currentLocale.value[type]?.default;
 }
+
+function getBodyAttrs(type: Notification["type"]) {
+  if (type === NotificationType.Success) {
+    return bodySuccessAttrs.value;
+  }
+
+  if (type === NotificationType.Warning) {
+    return bodyWarningAttrs.value;
+  }
+
+  if (type === NotificationType.Error) {
+    return bodyErrorAttrs.value;
+  }
+}
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  wrapperAttrs,
+  bodySuccessAttrs,
+  bodyWarningAttrs,
+  bodyErrorAttrs,
+  contentAttrs,
+  labelAttrs,
+  descriptionAttrs,
+  successIconAttrs,
+  warningIconAttrs,
+  errorIconAttrs,
+  closeIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -134,39 +145,44 @@ function getText(notificationText: string, type: NotificationType): string {
     ref="notificationsWrapperRef"
     :style="notifyPositionStyles"
     tag="div"
-    v-bind="{ ...config?.transitionGroup, ...wrapperAttrs }"
+    v-bind="{ ...(config?.transitionGroup as Transition), ...wrapperAttrs }"
+    :data-test="dataTest"
   >
-    <div v-for="notification in notifications" :key="notification.id" v-bind="bodyAttrs">
+    <div
+      v-for="notification in notifications"
+      :key="notification.id"
+      v-bind="getBodyAttrs(notification.type)"
+    >
       <UIcon
-        v-if="notification.type === NOTIFY_TYPE.success"
+        v-if="notification.type === NotificationType.Success"
         color="green"
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.successIcon"
+        :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
       />
 
       <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.warning"
+        v-else-if="notification.type === NotificationType.Warning"
         color="orange"
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.warningIcon"
+        :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
       />
 
       <UIcon
-        v-else-if="notification.type === NOTIFY_TYPE.error"
+        v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
         color="red"
         variant="light"
         size="md"
         internal
-        :name="config.defaults?.errorIcon"
+        :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
 
@@ -194,8 +210,9 @@ function getText(notificationText: string, type: NotificationType): string {
         size="xs"
         internal
         interactive
-        :name="config.defaults?.closeIcon"
+        :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"
+        :data-test="`${dataTest}-close`"
         @click="onClickClose(notification)"
       />
     </div>

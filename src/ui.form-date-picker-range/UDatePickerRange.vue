@@ -1,6 +1,10 @@
 <script setup lang="ts" generic="TModelValue extends RangeDate">
-import { computed, watch, ref, nextTick, provide, useId, useTemplateRef } from "vue";
-import { getDefault } from "../utils/ui.ts";
+import { computed, watch, ref, nextTick, provide, useId, useTemplateRef, watchEffect } from "vue";
+
+import { merge } from "lodash-es";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -36,8 +40,7 @@ import {
   type DatePeriodRange,
 } from "./utilDateRange.ts";
 
-import useAttrs from "./useAttrs.ts";
-import { useAutoPosition } from "../composables/useAutoPosition.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
 import { useLocale } from "./useLocale.ts";
 import { useUserFormat } from "./useUserFormat.ts";
 
@@ -59,31 +62,22 @@ import type {
   UDatePickerRangeProps,
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
+  Config,
 } from "./types.ts";
-import type { RangeDate } from "../ui.form-calendar/types.ts";
+import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
 import type { ComponentExposed } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerRangeProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  openDirectionX: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionX,
-  openDirectionY: getDefault<Props>(defaultConfig, UDatePickerRange).openDirectionY,
-  variant: getDefault<Props>(defaultConfig, UDatePickerRange).variant,
-  dateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).dateFormat,
-  userDateFormat: getDefault<Props>(defaultConfig, UDatePickerRange).userDateFormat,
-  size: getDefault<Props>(defaultConfig, UDatePickerRange).size,
-  rightIcon: getDefault<Props>(defaultConfig, UDatePickerRange).rightIcon,
-  labelAlign: getDefault<Props>(defaultConfig, UDatePickerRange).labelAlign,
-  disabled: getDefault<Props>(defaultConfig, UDatePickerRange).disabled,
-  customRangeButton: () => ({
-    range: { from: null, to: null },
-    label: "",
-    description: "",
-  }),
-  id: "",
-  dataTest: "",
-  config: () => ({}),
+  ...getDefaults<Props, Config>(defaultConfig, UDatePickerRange),
+  customRangeButton: () => ({ range: { from: null, to: null } }),
+  modelValue: undefined,
+  minDate: undefined,
+  maxDate: undefined,
+  placeholder: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -219,34 +213,6 @@ const clickOutsideOptions = computed(() => {
   };
 });
 
-const {
-  config,
-  wrapperAttrs,
-  calendarAttrs,
-  datepickerInputAttrs,
-  menuAttrs,
-  buttonWrapperAttrs,
-  buttonAttrs,
-  shiftRangeButtonAttrs,
-  rangeInputWrapperAttrs,
-  rangeInputErrorAttrs,
-  datepickerActiveInputAttrs,
-  rangeInputFirstAttrs,
-  rangeInputLastAttrs,
-  periodRowAttrs,
-  periodButtonAttrs,
-  periodButtonActiveAttrs,
-  periodDateAttrs,
-  periodDateCurrentAttrs,
-  periodDateSelectedAttrs,
-  periodDateCurrentSelectedAttrs,
-  periodDateListAttrs,
-  rangeSwitchButtonAttrs,
-  rangeSwitchTitleAttrs,
-  rangeSwitchWrapperAttrs,
-  customRangeDescriptionAttrs,
-} = useAttrs(props, { isShownMenu, isTop, isRight, isPeriod });
-
 const { userFormatDate } = useUserFormat(
   localValue,
   userFormatLocale,
@@ -319,7 +285,14 @@ function isDatePeriodOutOfRange(datePeriod: DatePeriodRange) {
       props.maxDate,
       locale.value,
       props.dateFormat,
-    ) || dateIsOutOfRange(datePeriod.endRange, props.minDate, props.maxDate, props.dateFormat)
+    ) ||
+    dateIsOutOfRange(
+      datePeriod.endRange,
+      props.minDate,
+      props.maxDate,
+      locale.value,
+      props.dateFormat,
+    )
   );
 }
 
@@ -549,6 +522,60 @@ function onMouseoverCalendar() {
 function onInputCalendar(value: RangeDate) {
   calendarInnerValue.value = value;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
+  openDirectionX: isRight.value ? Direction.Right : Direction.Left,
+  error: Boolean(props.error),
+  description: Boolean(props.description),
+  /* component state, not a props */
+  opened: isShownMenu.value,
+  week: isPeriod.value.week,
+  month: isPeriod.value.month,
+  quarter: isPeriod.value.quarter,
+  year: isPeriod.value.year,
+}));
+
+const {
+  config,
+  wrapperAttrs,
+  calendarAttrs,
+  datepickerInputAttrs,
+  menuAttrs,
+  buttonWrapperAttrs,
+  buttonAttrs,
+  shiftRangeButtonAttrs,
+  rangeInputWrapperAttrs,
+  rangeInputErrorAttrs,
+  datepickerActiveInputAttrs,
+  rangeInputFirstAttrs,
+  rangeInputLastAttrs,
+  periodRowAttrs,
+  periodButtonAttrs,
+  periodButtonActiveAttrs,
+  periodDateAttrs,
+  periodDateCurrentAttrs,
+  periodDateSelectedAttrs,
+  periodDateCurrentSelectedAttrs,
+  periodDateListAttrs,
+  rangeSwitchButtonAttrs,
+  rangeSwitchTitleAttrs,
+  rangeSwitchWrapperAttrs,
+  customRangeDescriptionAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
+
+/* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
+watchEffect(() => {
+  const calendarConfig = calendarAttrs.value.config as unknown as UCalendarConfig;
+
+  if (!calendarConfig.i18n || props.config?.i18n) {
+    calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
+  }
+});
 </script>
 
 <template>
@@ -607,7 +634,7 @@ function onInputCalendar(value: RangeDate) {
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        :left-icon="config.defaults?.prevIcon"
+        :left-icon="config.defaults.prevIcon"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange(ShiftAction.Prev)"
       />
@@ -634,7 +661,7 @@ function onInputCalendar(value: RangeDate) {
         :size="size"
         :disabled="disabled"
         variant="thirdary"
-        :left-icon="config.defaults?.nextIcon"
+        :left-icon="config.defaults.nextIcon"
         v-bind="shiftRangeButtonAttrs"
         @click="onClickShiftRange(ShiftAction.Next)"
       />

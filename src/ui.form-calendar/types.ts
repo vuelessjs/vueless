@@ -1,5 +1,6 @@
 import defaultConfig from "./config.ts";
 
+import type { ComponentConfig } from "../types.ts";
 import type { DateLocale } from "./utilFormatting.ts";
 
 export type RangeDate =
@@ -9,13 +10,13 @@ export type RangeDate =
 export type DateValue = Date | string | RangeDate | null;
 
 export type Locale = typeof defaultConfig.i18n;
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export function isRangeDate(value: Date | string | RangeDate | null): value is RangeDate {
-  return !(value instanceof Date || typeof value === "string") && value !== null;
+  return typeof value === "object" && value !== null && "to" in value && "from" in value;
 }
 
-export interface UCalendarProps<TModelValue> {
+export interface UCalendarProps<TModelValue extends DateValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
@@ -74,7 +75,7 @@ export interface UCalendarProps<TModelValue> {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
@@ -88,9 +89,9 @@ export interface UCalendarViewProps {
   activeDate: Date | null;
   activeMonth: Date | null;
   locale: DateLocale;
-  dateFormat: string | undefined;
+  dateFormat?: string;
   range: boolean;
-  maxDate: Date | string | undefined;
-  minDate: Date | string | undefined;
+  maxDate?: Date | string;
+  minDate?: Date | string;
   config: Config;
 }

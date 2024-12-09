@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import { UDot } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UDotProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UDotProps>(), {
-  color: getDefault<UDotProps>(defaultConfig, UDot).color,
-  size: getDefault<UDotProps>(defaultConfig, UDot).size,
-  dataTest: "",
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UDot),
 });
 
-const { dotAttrs } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { dotAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

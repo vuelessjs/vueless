@@ -1,34 +1,22 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { UEmpty } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UEmptyProps, IconSize, TitleSize } from "./types.ts";
+import type { Props, IconSize, TitleSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UEmptyProps>(), {
-  size: getDefault<UEmptyProps>(defaultConfig, UEmpty).size,
-  dataTest: "",
-  config: () => ({}),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, UEmpty),
 });
-
-const {
-  config,
-  titleAttrs,
-  descriptionAttrs,
-  wrapperAttrs,
-  headerAttrs,
-  footerAttrs,
-  emptyIconWrapperAttrs,
-  emptyIconAttrs,
-} = useAttrs(props);
 
 const iconSize = computed(() => {
   const sizes = {
@@ -49,6 +37,21 @@ const titleSize = computed(() => {
 
   return sizes[props.size] as TitleSize;
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  config,
+  titleAttrs,
+  descriptionAttrs,
+  wrapperAttrs,
+  headerAttrs,
+  footerAttrs,
+  emptyIconWrapperAttrs,
+  emptyIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -59,7 +62,7 @@ const titleSize = computed(() => {
         <div v-bind="emptyIconWrapperAttrs">
           <UIcon
             internal
-            :name="config.defaults?.emptyIcon"
+            :name="config.defaults.emptyIcon"
             color="gray"
             :size="iconSize"
             v-bind="emptyIconAttrs"

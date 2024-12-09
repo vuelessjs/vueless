@@ -1,9 +1,14 @@
 import { vuelessConfig } from "../utils/ui.ts";
 import { getRandomId } from "../utils/helper.ts";
-import { DELAY_BETWEEN_CLONES, DURATION, LOCAL_STORAGE_ID, NOTIFY_TYPE } from "./constants.ts";
+import {
+  LOCAL_STORAGE_ID,
+  DELAY_BETWEEN_CLONES,
+  NotificationDuration,
+  NotificationType,
+} from "./constants.ts";
 
 interface NotifyConfig {
-  type?: (typeof NOTIFY_TYPE)[keyof typeof NOTIFY_TYPE];
+  type?: NotificationType;
   label?: string;
   description?: string;
   duration?: number;
@@ -11,7 +16,7 @@ interface NotifyConfig {
 }
 
 interface NotifyEventDetail {
-  type: (typeof NOTIFY_TYPE)[keyof typeof NOTIFY_TYPE];
+  type: NotificationType;
   id: string;
   label: string;
   description: string;
@@ -39,7 +44,8 @@ export function notify({
   duration,
   ignoreDuplicates,
 }: NotifyConfig = {}): void {
-  const notifyDuration: number = duration || globalNotifyDuration?.short || DURATION.short;
+  const notifyDuration: number =
+    duration || globalNotifyDuration?.short || NotificationDuration.Short;
 
   const isSameMessage = Boolean(
     lastMessage === description &&
@@ -55,7 +61,7 @@ export function notify({
   lastMessage = description;
 
   const eventDetail: NotifyEventDetail = {
-    type: type as (typeof NOTIFY_TYPE)[keyof typeof NOTIFY_TYPE],
+    type: type as NotificationType,
     id: getRandomId(),
     label,
     description,
@@ -84,8 +90,8 @@ export function notifySuccess({
     label,
     description,
     ignoreDuplicates,
-    type: NOTIFY_TYPE.success,
-    duration: duration || globalNotifyDuration?.short || DURATION.short,
+    type: NotificationType.Success,
+    duration: duration || globalNotifyDuration?.short || NotificationDuration.Short,
   });
 }
 
@@ -99,8 +105,8 @@ export function notifyWarning({
     label,
     description,
     ignoreDuplicates,
-    type: NOTIFY_TYPE.warning,
-    duration: duration || globalNotifyDuration?.medium || DURATION.medium,
+    type: NotificationType.Warning,
+    duration: duration || globalNotifyDuration?.medium || NotificationDuration.Medium,
   });
 }
 
@@ -114,8 +120,8 @@ export function notifyError({
     label,
     description,
     ignoreDuplicates,
-    type: NOTIFY_TYPE.error,
-    duration: duration || globalNotifyDuration?.long || DURATION.long,
+    type: NotificationType.Error,
+    duration: duration || globalNotifyDuration?.long || NotificationDuration.Long,
   });
 }
 

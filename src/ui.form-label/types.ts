@@ -1,12 +1,19 @@
 import defaultConfig from "./config.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+import type { ComponentConfig } from "../types.ts";
 
-export interface ULabelProps {
+export type Config = typeof defaultConfig;
+
+export interface Props {
   /**
    * Label text.
    */
   label?: string;
+
+  /**
+   * Set input id for label `for` attribute.
+   */
+  for?: string;
 
   /**
    * Label description.
@@ -39,14 +46,9 @@ export interface ULabelProps {
   centred?: boolean;
 
   /**
-   * Set input id for label `for` attribute.
-   */
-  for?: string;
-
-  /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

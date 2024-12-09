@@ -1,11 +1,12 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export type Config = Partial<typeof defaultConfig>;
+export type Config = typeof defaultConfig;
 
 export type IconSize = "xs" | "sm" | "md";
 export type RemoveIconSize = "2xs" | "xs" | "sm";
 
-export interface UFileProps {
+export interface Props {
   /**
    * File url.
    */
@@ -39,7 +40,7 @@ export interface UFileProps {
   /**
    * Component config object.
    */
-  config?: Config;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.

@@ -12,9 +12,9 @@ import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UToggleProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UToggleArgs extends UToggleProps {
+interface UToggleArgs extends Props {
   slotTemplate?: string;
   enum: "variant" | "size";
 }

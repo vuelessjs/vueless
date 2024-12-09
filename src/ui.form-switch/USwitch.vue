@@ -2,29 +2,24 @@
 import { computed, useId } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
 
 import { USwitch } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { USwitchProps, IconSize } from "./types.ts";
+import type { Props, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<USwitchProps>(), {
-  labelAlign: getDefault<USwitchProps>(defaultConfig, USwitch).labelAlign,
-  size: getDefault<USwitchProps>(defaultConfig, USwitch).size,
-  color: getDefault<USwitchProps>(defaultConfig, USwitch).color,
-  toggleIcon: getDefault<USwitchProps>(defaultConfig, USwitch).toggleIcon,
-  toggleLabel: getDefault<USwitchProps>(defaultConfig, USwitch).toggleLabel,
-  disabled: getDefault<USwitchProps>(defaultConfig, USwitch).disabled,
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, USwitch),
   modelValue: false,
-  dataTest: "",
-  config: () => ({}),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -47,16 +42,6 @@ const checkedValue = computed({
 
 const elementId = props.id || useId();
 
-const {
-  config,
-  toggleIconAttrs,
-  switchLabelAttrs,
-  inputAttrs,
-  wrapperAttrs,
-  circleAttrs,
-  toggleLabelAttrs,
-} = useAttrs(props, { checked: checkedValue });
-
 const switchLabel = computed(() => {
   return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
 });
@@ -75,6 +60,10 @@ const iconColor = computed(() => {
   return checkedValue.value ? props.color : "grayscale";
 });
 
+const toggleIconName = computed(() => {
+  return checkedValue.value ? config.value.defaults.onIcon : config.value.defaults.offIcon;
+});
+
 function toggle() {
   if (!props.disabled) {
     checkedValue.value = !checkedValue.value;
@@ -88,6 +77,24 @@ function onClickToggle() {
 function onKeydownSpace() {
   toggle();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  checked: Boolean(checkedValue.value),
+}));
+
+const {
+  config,
+  toggleIconAttrs,
+  switchLabelAttrs,
+  inputAttrs,
+  wrapperAttrs,
+  circleAttrs,
+  toggleLabelAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -117,7 +124,7 @@ function onKeydownSpace() {
         <UIcon
           v-if="toggleIcon"
           internal
-          :name="checkedValue ? config.defaults?.onIcon : config.defaults?.offIcon"
+          :name="toggleIconName"
           :color="iconColor"
           :size="iconSize"
           v-bind="toggleIconAttrs"
