@@ -47,6 +47,7 @@ export default function useUI<T>(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
+  const propsConfig = props.config as ComponentConfig<T>;
   const config = ref({}) as Ref<ComponentConfig<T>>;
   const attrs = useAttrs();
 
@@ -54,7 +55,7 @@ export default function useUI<T>(
     config.value = getMergedConfig({
       defaultConfig,
       globalConfig,
-      propsConfig: props.config,
+      propsConfig,
       vuelessStrategy,
     }) as ComponentConfig<T>;
   });
@@ -117,9 +118,11 @@ export default function useUI<T>(
             ...extendsClasses,
             keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
           ]),
+          // TODO: Cannot merge several keys
           config: getMergedConfig({
             defaultConfig: config.value[extendsKeys[0]],
             globalConfig: keyAttrs.value.config,
+            propsConfig: propsConfig[extendsKeys[0]],
           }),
         })) as ComputedRef<KeyAttrsWithConfig<T>>;
       }
