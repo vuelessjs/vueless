@@ -10,6 +10,7 @@ import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loade
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
 import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
+import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
@@ -34,6 +35,8 @@ export const Vueless = function (options = {}) {
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
+    await removeCustomPropTypes(isVuelessEnv);
+
     /* remove cached icons */
     await removeIconsCache(mirrorCacheDir, debug);
 
@@ -82,6 +85,8 @@ export const Vueless = function (options = {}) {
         await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
         /* copy vueless cache folder */
         await copyIconsCache(mirrorCacheDir, debug);
+
+        await setCustomPropTypes(isVuelessEnv);
       }
     },
 

@@ -6,7 +6,7 @@ export type Config = ComponentConfig<typeof defaultConfig>;
 export type LoaderSize = "sm" | "md" | "lg";
 export type IconSize = "2xs" | "xs" | "sm" | "md";
 
-export interface UButtonProps {
+export interface Props {
   /**
    * Button variant.
    */
