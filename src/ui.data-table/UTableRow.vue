@@ -16,6 +16,8 @@ import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./ty
 const NESTED_ROW_SHIFT_REM = 1;
 const LAST_NESTED_ROW_SHIFT_REM = 1.1;
 
+defineOptions({ internal: true });
+
 const props = defineProps<UTableRowProps>();
 
 const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell"]);

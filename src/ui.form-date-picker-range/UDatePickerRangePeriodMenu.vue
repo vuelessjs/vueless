@@ -15,6 +15,8 @@ import { Period } from "./constants.ts";
 import type { UDatePickerRangePeriodMenuProps, IsDatePeriodOutOfRange } from "./types.ts";
 import type { DatePeriodRange } from "./utilDateRange.ts";
 
+defineOptions({ internal: true });
+
 const props = defineProps<UDatePickerRangePeriodMenuProps>();
 
 const emit = defineEmits(["toggleMenu", "closeMenu", "clickPrev", "clickNext"]);

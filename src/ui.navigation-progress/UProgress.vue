@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import defaultConfig from "./config.ts";
 import { UProgress, VARIANT } from "./constants.ts";
 
-import StepperProgress from "./StepperProgress.vue";
+import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import type { UProgressProps, HeaderSize, Config } from "./types.ts";
@@ -59,8 +59,8 @@ const progressPercent = computed(() => {
   return `${currentPercent} ${maxPercent}`;
 });
 
-function isActiveStep(index: number) {
-  return index === props.value;
+function isActiveStep(index: number | string) {
+  return Number(index) === props.value;
 }
 
 /**
@@ -111,7 +111,7 @@ const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } =
       </template>
     </div>
 
-    <StepperProgress
+    <UStepperProgress
       v-if="isVariant.stepper"
       v-bind="stepperAttrs"
       :color="color"

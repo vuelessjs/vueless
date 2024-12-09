@@ -19,6 +19,8 @@ import type { UCalendarViewProps, Config } from "./types.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
+defineOptions({ internal: true });
+
 const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);

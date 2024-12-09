@@ -6,11 +6,11 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  NESTED_COMPONENT_PATTERN_REG_EXP,
   EXTENDS_PATTERN_REG_EXP,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
-import type { ComponentInternalInstance, Ref, ComputedRef } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import type {
   CVA,
   UseUI,
@@ -23,6 +23,7 @@ import type {
   ComponentNames,
   ComponentConfig,
   KeyAttrsWithConfig,
+  VuelessComponentInstance,
 } from "../types.ts";
 
 /**
@@ -37,9 +38,12 @@ export default function useUI<T>(
   mutatedProps?: MutatedProps,
   topLevelClassKey?: string,
 ) {
-  const { type, props } = getCurrentInstance() as ComponentInternalInstance;
+  const { type, props, parent } = getCurrentInstance() as VuelessComponentInstance;
 
-  const componentName = type.__name as ComponentNames;
+  const componentName = type?.internal
+    ? (parent?.type.__name as ComponentNames)
+    : (type.__name as ComponentNames);
+
   const globalConfig = vuelessConfig?.component?.[componentName] || {};
 
   const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")

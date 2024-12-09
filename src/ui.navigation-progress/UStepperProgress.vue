@@ -9,6 +9,8 @@ import { GRAY_COLORS } from "../constants.js";
 
 import type { StepperProgressProps, Config } from "./types.ts";
 
+defineOptions({ internal: true });
+
 const props = withDefaults(defineProps<StepperProgressProps>(), {
   dataTest: "",
 });
