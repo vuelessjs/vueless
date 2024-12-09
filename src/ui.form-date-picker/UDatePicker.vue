@@ -146,6 +146,7 @@ function onPaste(event: ClipboardEvent) {
   try {
     const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
     const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
+    const dateFormat = props.timepicker ? props.dateFormat : props.dateTimeFormat;
     const relativeTokensAmount = Number(userFormat.match(/(?<!\\)r/g)?.length);
 
     // Amount of tokens used in format string without decimeters.
@@ -187,7 +188,7 @@ function onPaste(event: ClipboardEvent) {
 
     if (parsedDate) {
       localValue.value = (
-        props.dateFormat ? formatDate(parsedDate, userFormat, locale.value) : parsedDate
+        dateFormat ? formatDate(parsedDate, dateFormat, locale.value) : parsedDate
       ) as TModelValue;
     }
   } catch (error) {
