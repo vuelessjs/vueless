@@ -42,10 +42,12 @@ import defaultConfig from "./config.ts";
 import type { UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
+import type { ComponentExposed } from "src/types.ts";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
+import { nextTick } from "process";
 
 type DefaultLocale = typeof defaultConfig.i18n;
 
@@ -97,6 +99,7 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
 const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
+const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 
 const activeDate: Ref<Date | null> = ref(null);
 const activeMonth: Ref<Date | null> = ref(null);
@@ -319,13 +322,18 @@ watch(
 watch(
   selectedDate,
   () => {
-    if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value && props.timepicker) {
-      hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
-      minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
-      secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
-
-      emit("userDateChange", userFormattedDate.value);
-    }
+    nextTick(() => {
+      if (
+        selectedDate.value &&
+        isTimepickerEnabled.value &&
+        isInputRefs.value &&
+        props.timepicker
+      ) {
+        hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
+        minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
+        secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
+      }
+    });
 
     if (selectedDate.value) {
       emit("userDateChange", userFormattedDate.value);
@@ -557,6 +565,24 @@ function onClickSubmit() {
   emit("submit");
 }
 
+function onClickTimeInput(event: MouseEvent) {
+  const input = event.target as HTMLInputElement;
+
+  selectTimeInput(input);
+}
+
+function onFocusTimeInput(event: FocusEvent) {
+  const input = event.target as HTMLInputElement;
+
+  selectTimeInput(input);
+}
+
+function selectTimeInput(input: HTMLInputElement) {
+  const value = input.value;
+
+  input.setSelectionRange(0, value.length, "backward");
+}
+
 function onTimeInput(event: InputEvent, type: InputType) {
   const input = event.target as HTMLInputElement;
   const value = input.value;
@@ -586,22 +612,38 @@ function onTimeInput(event: InputEvent, type: InputType) {
 
   if (event.data !== null && !isNumeric(event.data)) {
     if (isHours) {
-      input.value = String(lastValidHourValue);
+      input.value = String(lastValidHourValue).padStart(2, "0");
     }
 
     if (isMinutes) {
-      input.value = String(lastValidMinuteValue);
+      input.value = String(lastValidMinuteValue).padStart(2, "0");
     }
 
     if (isSeconds) {
-      input.value = String(lastValidSecondValue);
+      input.value = String(lastValidSecondValue).padStart(2, "0");
     }
 
     return;
   }
 
   if (numericValue > maxValue || numericValue < minValue) {
-    input.value = "0".padStart(2, "0");
+    if (isHours && minutesRef.value) {
+      input.value = String(lastValidHourValue).padStart(2, "0");
+
+      minutesRef.value.focus();
+    }
+
+    if (isMinutes && secondsRef.value) {
+      input.value = String(lastValidMinuteValue).padStart(2, "0");
+
+      secondsRef.value.focus();
+    }
+
+    if (isSeconds && okButton.value) {
+      input.value = String(lastValidSecondValue).padStart(2, "0");
+
+      okButton.value.buttonRef?.focus();
+    }
 
     return;
   }
@@ -759,6 +801,8 @@ const {
           type="text"
           v-bind="timepickerInputHoursAttrs"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Hours)"
+          @click.prevent="onClickTimeInput"
+          @focus.prevent="onFocusTimeInput"
           @keydown="onTimeKeydown"
         />
         &#8282;
@@ -768,6 +812,8 @@ const {
           type="text"
           v-bind="timepickerInputMinutesAttrs"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Minutes)"
+          @click.prevent="onClickTimeInput"
+          @focus.prevent="onFocusTimeInput"
           @keydown="onTimeKeydown"
         />
         &#8282;
@@ -777,11 +823,14 @@ const {
           type="text"
           v-bind="timepickerInputSecondsAttrs"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Seconds)"
+          @click.prevent="onClickTimeInput"
+          @focus.prevent="onFocusTimeInput"
           @keydown="onTimeKeydown"
         />
       </div>
 
       <UButton
+        ref="ok-button"
         variant="thirdary"
         size="sm"
         filled
