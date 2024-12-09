@@ -131,7 +131,10 @@ function onSubmit() {
 
 function onInput() {
   nextTick(() => {
-    deactivate();
+    if (!props.timepicker) {
+      deactivate();
+    }
+
     emit("input", localValue.value);
   });
 }
