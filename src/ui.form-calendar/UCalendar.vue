@@ -42,7 +42,7 @@ import defaultConfig from "./config.ts";
 import type { UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
-import type { ComponentExposed } from "src/types.ts";
+import type { ComponentExposed } from "../types.ts";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
@@ -323,12 +323,7 @@ watch(
   selectedDate,
   () => {
     nextTick(() => {
-      if (
-        selectedDate.value &&
-        isTimepickerEnabled.value &&
-        isInputRefs.value &&
-        props.timepicker
-      ) {
+      if (selectedDate.value && isTimepickerEnabled.value && isInputRefs.value) {
         hoursRef.value!.value = String(selectedDate.value.getHours()).padStart(2, "0");
         minutesRef.value!.value = String(selectedDate.value.getMinutes()).padStart(2, "0");
         secondsRef.value!.value = String(selectedDate.value.getSeconds()).padStart(2, "0");
