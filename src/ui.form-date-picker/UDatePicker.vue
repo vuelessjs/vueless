@@ -257,10 +257,10 @@ const mutatedProps = computed(() => ({
 
 const {
   config,
+  wrapperAttrs,
   datepickerInputAttrs,
   datepickerInputActiveAttrs,
   datepickerCalendarAttrs,
-  wrapperAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 
 /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
