@@ -236,10 +236,10 @@ export type Component = {
 } & (CVA & NestedComponent);
 
 /* Make all config keys optional and allow to have string and object values. */
-export type ComponentConfig<T> = Partial<{
-  [K in keyof T]: T[K] | string | UnknownObject;
-}> &
-  Component;
+export type ComponentConfig<T> = Component &
+  Partial<{
+    [K in keyof Omit<T, keyof Component>]: T[K] | string | UnknownObject;
+  }>;
 
 export interface NestedComponent {
   [key: string]: Record<string, string | UnknownObject> | string;

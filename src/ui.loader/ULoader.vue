@@ -17,11 +17,11 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { loaderAttrs, ellipseAttrs, config } = useUI<Config>(defaultConfig);
+const { config, loaderAttrs, ellipseAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <Transition v-bind="config?.transition">
+  <Transition v-bind="config.transition">
     <div v-if="loading" v-bind="loaderAttrs" :data-test="dataTest">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
