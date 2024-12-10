@@ -13,12 +13,12 @@ import {
 } from "../constants.js";
 
 import type {
-  BrandColors,
   Config,
-  ComponentNames,
-  Component,
   Defaults,
   Strategies,
+  BrandColors,
+  UnknownObject,
+  ComponentNames,
 } from "../types.ts";
 
 interface MergedConfigOptions {
@@ -95,32 +95,10 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
   });
 
 /**
- * @deprecated
- * TODO: remove if after all components migration into getDefaults()
- * Return default values for component props, icons, etc..
- */
-export function getDefault<T>(defaultConfig: Component, name: ComponentNames) {
-  const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
-  const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
-
-  const defaults = merge(componentDefaults, globalDefaults) as T & Defaults;
-
-  if (defaults.color) {
-    defaults.color = getColor(defaults.color as BrandColors);
-  }
-
-  return {
-    ...defaults,
-    dataTest: "",
-    config: () => ({}),
-  };
-}
-
-/**
  * Return default values for component props, icons, etc..
  */
 export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
-  const componentDefaults = cloneDeep((defaultConfig as Component).defaults) || {};
+  const componentDefaults = cloneDeep((defaultConfig as UnknownObject).defaults) || {};
   const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
 
   const defaults = merge(componentDefaults, globalDefaults) as Props & Defaults;

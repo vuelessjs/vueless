@@ -13,6 +13,7 @@ export interface UCheckboxOption {
   label?: string;
   icon?: string;
   description?: string;
+  [key: string]: string | number | boolean | UnknownObject | UnknownArray | undefined;
 }
 
 export interface Props {

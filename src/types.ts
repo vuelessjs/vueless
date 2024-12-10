@@ -226,19 +226,17 @@ export interface Components {
   UDataList: Partial<typeof UDataListConfig>;
 }
 
-export type Component = {
-  i18n?: UnknownObject;
-  defaults?: Defaults;
-  strategy?: Strategies;
-  transition?: Transition;
-  safelistColors?: BrandColors[];
-} & (CVA & NestedComponent);
-
 /* Make all config keys optional and allow to have string and object values. */
-export type ComponentConfig<T> = Component &
-  Partial<{
-    [K in keyof Omit<T, keyof Component>]: T[K] | string | UnknownObject;
-  }>;
+export type ComponentConfig<T> = Partial<{
+  [K in keyof T]: K extends string
+    ? K extends `${string}transition${string}` | `${string}Transition${string}`
+      ? Transition
+      : K extends "i18n"
+        ? T[K]
+        : T[K] | string | UnknownObject
+    : never;
+}> &
+  NestedComponent;
 
 export interface NestedComponent {
   [key: string]: Record<string, string | UnknownObject> | string;

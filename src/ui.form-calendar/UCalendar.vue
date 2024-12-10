@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef } from "vue";
+import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -47,7 +47,6 @@ import type { ComponentExposed } from "../types.ts";
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
-import { nextTick } from "process";
 
 type DefaultLocale = typeof defaultConfig.i18n;
 
