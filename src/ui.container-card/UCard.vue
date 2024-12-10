@@ -39,7 +39,7 @@ const isShownFooter = computed(() => {
 const {
   wrapperAttrs,
   titleAttrs,
-  dividerAttrs,
+  cardDividerAttrs,
   headerAttrs,
   headerLeftAttrs,
   headerLeftFallbackAttrs,
@@ -77,7 +77,7 @@ const {
       <slot />
     </div>
 
-    <UDivider v-if="isShownFooter" padding="none" v-bind="dividerAttrs" />
+    <UDivider v-if="isShownFooter" padding="none" v-bind="cardDividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
       <!-- @slot Use it to add something to the left side of the footer. -->

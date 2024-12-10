@@ -255,12 +255,17 @@ const mutatedProps = computed(() => ({
   description: Boolean(props.description),
 }));
 
-const { config, datepickerInputAttrs, datepickerInputActiveAttrs, calendarAttrs, wrapperAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  config,
+  datepickerInputAttrs,
+  datepickerInputActiveAttrs,
+  datepickerCalendarAttrs,
+  wrapperAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 
 /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
 watchEffect(() => {
-  const calendarConfig = calendarAttrs.value.config as unknown as UCalendarConfig;
+  const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
 
   if (!calendarConfig?.i18n || props.config?.i18n) {
     calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
@@ -323,7 +328,7 @@ watchEffect(() => {
       </template>
     </UInput>
 
-    <Transition v-bind="config.calendarTransition as Transition">
+    <Transition v-bind="config.datepickerCalendarTransition as Transition">
       <UCalendar
         v-show="isShownCalendar"
         ref="calendar"
@@ -338,7 +343,7 @@ watchEffect(() => {
         :user-date-time-format="userDateTimeFormat"
         :max-date="maxDate"
         :min-date="minDate"
-        v-bind="calendarAttrs"
+        v-bind="datepickerCalendarAttrs"
         @keydown.esc="deactivate"
         @user-date-change="onUserFormatDateChange"
         @input="onInput"

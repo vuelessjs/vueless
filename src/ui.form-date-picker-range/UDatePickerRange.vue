@@ -543,7 +543,7 @@ const mutatedProps = computed(() => ({
 const {
   config,
   wrapperAttrs,
-  calendarAttrs,
+  datepickerCalendarAttrs,
   datepickerInputAttrs,
   menuAttrs,
   buttonWrapperAttrs,
@@ -570,7 +570,7 @@ const {
 
 /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
 watchEffect(() => {
-  const calendarConfig = calendarAttrs.value.config as unknown as UCalendarConfig;
+  const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
 
   if (!calendarConfig.i18n || props.config?.i18n) {
     calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
@@ -722,7 +722,7 @@ watchEffect(() => {
           v-model="calendarValue"
           :min-date="minDate"
           :max-date="maxDate"
-          v-bind="calendarAttrs"
+          v-bind="datepickerCalendarAttrs"
           :date-format="dateFormat"
           range
           @mouseenter="onMouseoverCalendar"

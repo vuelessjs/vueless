@@ -6,7 +6,7 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1 text-sm font-normal text-gray-500",
   content: "text-sm",
-  divider: "{UDivider}",
+  cardDivider: "{UDivider}",
   footer: "flex justify-between",
   defaults: {
     //

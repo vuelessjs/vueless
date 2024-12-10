@@ -25,7 +25,7 @@ export default /*tw*/ {
     },
   },
   toggleIcon: "{UIcon}",
-  divider: "{UDivider} group-last:hidden",
+  accordionDivider: "{UDivider} group-last:hidden",
   defaults: {
     size: "md",
     /* icons */

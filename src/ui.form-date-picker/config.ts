@@ -12,7 +12,7 @@ export default /*tw*/ {
       },
     },
   },
-  calendar: {
+  datepickerCalendarCalendar: {
     base: "{UCalendar} absolute mb-3 z-40",
     variants: {
       openDirectionX: {
@@ -28,7 +28,7 @@ export default /*tw*/ {
     },
     compoundVariants: [{ description: false, error: false, class: "mt-2" }],
   },
-  calendarTransition: {
+  datepickerCalendarTransition: {
     enterFromClass: "opacity-0 scale-95",
     enterActiveClass: "transition transform ease-out duration-100",
     enterToClass: "opacity-100 scale-100",
