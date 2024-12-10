@@ -559,6 +559,8 @@ function onClickSubmit() {
   emit("submit");
 }
 
+let timeInputCount = 0;
+
 function onClickTimeInput(event: MouseEvent) {
   const input = event.target as HTMLInputElement;
 
@@ -567,6 +569,8 @@ function onClickTimeInput(event: MouseEvent) {
 
 function onFocusTimeInput(event: FocusEvent) {
   const input = event.target as HTMLInputElement;
+
+  timeInputCount = 0;
 
   selectTimeInput(input);
 }
@@ -578,6 +582,8 @@ function selectTimeInput(input: HTMLInputElement) {
 }
 
 function onTimeInput(event: InputEvent, type: InputType) {
+  timeInputCount += 1;
+
   const input = event.target as HTMLInputElement;
   const value = input.value;
   const numericValue = Number(value);
@@ -666,6 +672,22 @@ function onTimeInput(event: InputEvent, type: InputType) {
   }
 
   input.value = String(numericValue).padStart(2, "0");
+
+  if (timeInputCount >= 2) {
+    if (isHours && minutesRef.value) {
+      minutesRef.value.focus();
+    }
+
+    if (isMinutes && secondsRef.value) {
+      secondsRef.value.focus();
+    }
+
+    if (isSeconds && okButton.value) {
+      okButton.value.buttonRef?.focus();
+    }
+
+    timeInputCount = 0;
+  }
 }
 
 defineExpose({
