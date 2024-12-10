@@ -12,7 +12,7 @@ import { UCheckboxMultiState } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
-import type { ComponentConfig, KeyAttrsWithConfig, UnknownObject } from "../types.ts";
+import type { KeyAttrsWithConfig, UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
