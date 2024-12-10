@@ -12,11 +12,14 @@ import { UColorPicker } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, IconSize, Config } from "./types.ts";
+import type { BrandColors } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, UColorPicker),
+  colorOptions: () =>
+    getDefaults<Props, Config>(defaultConfig, UColorPicker).colorOptions as BrandColors[],
   modelValue: "",
   label: "",
 });

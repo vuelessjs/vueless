@@ -40,7 +40,7 @@ export interface Props {
   /**
    * Color picker color list.
    */
-  colorOptions?: BrandColors;
+  colorOptions?: BrandColors[];
 
   /**
    * Set color picker disabled.
