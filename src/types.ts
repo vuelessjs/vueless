@@ -229,7 +229,6 @@ export interface Components {
 export type Component = {
   i18n?: UnknownObject;
   defaults?: Defaults;
-  safelist?: (string: string) => TailwindSafelist[];
   strategy?: Strategies;
   transition?: Transition;
   safelistColors?: BrandColors[];
@@ -303,11 +302,6 @@ export interface VueAttrs {
 
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
-}
-
-export interface TailwindSafelist {
-  pattern: string;
-  variants?: string[];
 }
 
 export interface TailwindColorShades {
