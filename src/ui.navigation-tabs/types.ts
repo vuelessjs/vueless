@@ -8,7 +8,7 @@ export type SetUTabsSelectedItem = (
   value: string | number | boolean | UnknownArray | UnknownObject,
 ) => void;
 
-interface UTabsOption {
+export interface UTabsOption {
   value: string | number;
   label: string;
   disabled?: boolean;

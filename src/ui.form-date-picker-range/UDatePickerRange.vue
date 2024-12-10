@@ -65,7 +65,7 @@ import type {
   Config,
 } from "./types.ts";
 import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
-import type { ComponentExposed } from "../types.ts";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -722,8 +722,8 @@ watchEffect(() => {
           v-model="calendarValue"
           :min-date="minDate"
           :max-date="maxDate"
-          v-bind="datepickerCalendarAttrs"
           :date-format="dateFormat"
+          v-bind="datepickerCalendarAttrs as KeyAttrsWithConfig<UCalendarConfig>"
           range
           @mouseenter="onMouseoverCalendar"
           @input="onInputCalendar"

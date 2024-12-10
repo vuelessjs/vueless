@@ -127,7 +127,7 @@ onMounted(() => {
   setLabelPosition();
 });
 
-function onInput(inputEvent: InputEvent) {
+function onInput(inputEvent: Event) {
   const target = inputEvent.target as HTMLInputElement | null;
 
   if (!target) return;
@@ -149,7 +149,7 @@ function onInput(inputEvent: InputEvent) {
   emit("input", value);
 }
 
-function onChange(event: CustomEvent) {
+function onChange(event: Event) {
   emit("change", event);
 }
 
