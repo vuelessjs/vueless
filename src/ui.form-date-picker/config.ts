@@ -12,7 +12,7 @@ export default /*tw*/ {
       },
     },
   },
-  datepickerCalendarCalendar: {
+  datepickerCalendar: {
     base: "{UCalendar} absolute mb-3 z-40",
     variants: {
       openDirectionX: {
