@@ -14,7 +14,6 @@ import defaultConfig from "./config.ts";
 import { UModal } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -117,7 +116,7 @@ const {
   backLinkAttrs,
   backLinkIconAttrs,
   closeIconAttrs,
-  dividerAttrs,
+  modalDividerAttrs,
   dividerSpacingAttrs,
   overlayAttrs,
   wrapperAttrs,
@@ -135,11 +134,11 @@ const {
 </script>
 
 <template>
-  <Transition v-bind="config.overlayTransition as Transition">
+  <Transition v-bind="config.overlayTransition">
     <div v-if="isShownModal" v-bind="overlayAttrs" />
   </Transition>
 
-  <Transition v-bind="config.wrapperTransition as Transition">
+  <Transition v-bind="config.wrapperTransition">
     <div
       v-if="isShownModal"
       :id="elementId"
@@ -220,7 +219,7 @@ const {
           <UDivider v-if="!isExistFooter || !noDivider" no-border v-bind="dividerSpacingAttrs" />
 
           <template v-if="isExistFooter">
-            <UDivider v-if="!noDivider" variant="dark" padding="none" v-bind="dividerAttrs" />
+            <UDivider v-if="!noDivider" variant="dark" padding="none" v-bind="modalDividerAttrs" />
 
             <div v-bind="footerAttrs">
               <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">

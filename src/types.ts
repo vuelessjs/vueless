@@ -55,11 +55,9 @@ import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 
-import type { ComputedRef, MaybeRef, Ref } from "vue";
+import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { Props } from "tippy.js";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
-
-export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
 
 export enum ColorMode {
   Dark = "dark",
@@ -170,78 +168,75 @@ export interface Directives {
 }
 
 export interface Components {
-  UText?: Partial<typeof UTextDefaultConfig>;
-  UAlert?: Partial<typeof UAlertDefaultConfig>;
-  UEmpty?: Partial<typeof UEmptyDefaultConfig>;
-  UFile?: Partial<typeof UFileDefaultConfig>;
-  UFiles?: Partial<typeof UFilesDefaultConfig>;
-  UMoney?: Partial<typeof UMoneyDefaultConfig>;
-  UHeader?: Partial<typeof UHeaderDefaultConfig>;
-  UNotify?: Partial<typeof UNotifyDefaultConfig>;
-  UDot?: Partial<typeof UDotDefaultConfig>;
-  UButton?: Partial<typeof UButtonDefaultConfig>;
-  ULink?: Partial<typeof ULinkDefaultConfig>;
-  UToggle?: Partial<typeof UToggleDefaultConfig>;
-  UToggleItem?: Partial<typeof UToggleItemDefaultConfig>;
-  UBadge?: Partial<typeof UBadgeDefaultConfig>;
-  UCalendar?: Partial<typeof UCalendarDefaultConfig>;
-  UDatePicker?: Partial<typeof UDatePickerConfig>;
-  UDatePickerRange?: Partial<typeof UDatePickerRangeConfig>;
-  UTable?: Partial<typeof UDataTableConfig>;
-  UDropdownBadge?: Partial<typeof UDropdownBadgeConfig>;
-  UDropdownButton?: Partial<typeof UDropdownButtonConfig>;
-  UDropdownLink?: Partial<typeof UDropdownLinkConfig>;
-  UDropdownList?: Partial<typeof UDropdownListConfig>;
-  UAccordion?: Partial<typeof UAccordionConfig>;
-  UCard?: Partial<typeof UCardConfig>;
-  UCol?: Partial<typeof UColConfig>;
-  UDivider?: Partial<typeof UDividerConfig>;
-  UGroup?: Partial<typeof UGroupConfig>;
-  UModal?: Partial<typeof UModalConfig>;
-  UModalConfirm?: Partial<typeof UModalConfirmConfig>;
-  UPage?: Partial<typeof UPageConfig>;
-  URow?: Partial<typeof URowConfig>;
-  ULoader?: Partial<typeof ULoaderConfig>;
-  ULoaderOverlay?: Partial<typeof ULoaderOverlayConfig>;
-  ULoaderProgress?: Partial<typeof ULoaderProgressConfig>;
-  UPagination?: Partial<typeof UPaginationConfig>;
-  UProgress?: Partial<typeof UProgressConfig>;
-  UTab?: Partial<typeof UTabConfig>;
-  UTabs?: Partial<typeof UTabsConfig>;
-  UAvatar?: Partial<typeof UAvatarConfig>;
-  UIcon?: Partial<typeof UIconConfig>;
-  UCheckbox?: Partial<typeof UCheckboxConfig>;
-  UCheckboxGroup?: Partial<typeof UCheckboxGroupConfig>;
-  UCheckboxMultiState?: Partial<typeof UCheckboxMultiStateConfig>;
-  URadio?: Partial<typeof URadioConfig>;
-  URadioGroup?: Partial<typeof URadioGroupConfig>;
-  USwitch?: Partial<typeof USwitchConfig>;
-  UTextarea?: Partial<typeof UTextareaConfig>;
-  ULabel?: Partial<typeof ULabelConfig>;
-  UColorPicker?: Partial<typeof UColorPickerConfig>;
-  UInput?: Partial<typeof UInputConfig>;
-  UInputNumber?: Partial<typeof UInputNumberConfig>;
-  UInputRating?: Partial<typeof UInputRatingConfig>;
-  UInputSearch?: Partial<typeof UInputSearchConfig>;
-  UInputFile?: Partial<typeof UInputFileConfig>;
-  UInputMoney?: Partial<typeof UInputMoneyConfig>;
-  UDataList?: Partial<typeof UDataListConfig>;
+  UText: Partial<typeof UTextDefaultConfig>;
+  UAlert: Partial<typeof UAlertDefaultConfig>;
+  UEmpty: Partial<typeof UEmptyDefaultConfig>;
+  UFile: Partial<typeof UFileDefaultConfig>;
+  UFiles: Partial<typeof UFilesDefaultConfig>;
+  UMoney: Partial<typeof UMoneyDefaultConfig>;
+  UHeader: Partial<typeof UHeaderDefaultConfig>;
+  UNotify: Partial<typeof UNotifyDefaultConfig>;
+  UDot: Partial<typeof UDotDefaultConfig>;
+  UButton: Partial<typeof UButtonDefaultConfig>;
+  ULink: Partial<typeof ULinkDefaultConfig>;
+  UToggle: Partial<typeof UToggleDefaultConfig>;
+  UToggleItem: Partial<typeof UToggleItemDefaultConfig>;
+  UBadge: Partial<typeof UBadgeDefaultConfig>;
+  UCalendar: Partial<typeof UCalendarDefaultConfig>;
+  UDatePicker: Partial<typeof UDatePickerConfig>;
+  UDatePickerRange: Partial<typeof UDatePickerRangeConfig>;
+  UTable: Partial<typeof UDataTableConfig>;
+  UDropdownBadge: Partial<typeof UDropdownBadgeConfig>;
+  UDropdownButton: Partial<typeof UDropdownButtonConfig>;
+  UDropdownLink: Partial<typeof UDropdownLinkConfig>;
+  UDropdownList: Partial<typeof UDropdownListConfig>;
+  UAccordion: Partial<typeof UAccordionConfig>;
+  UCard: Partial<typeof UCardConfig>;
+  UCol: Partial<typeof UColConfig>;
+  UDivider: Partial<typeof UDividerConfig>;
+  UGroup: Partial<typeof UGroupConfig>;
+  UModal: Partial<typeof UModalConfig>;
+  UModalConfirm: Partial<typeof UModalConfirmConfig>;
+  UPage: Partial<typeof UPageConfig>;
+  URow: Partial<typeof URowConfig>;
+  ULoader: Partial<typeof ULoaderConfig>;
+  ULoaderOverlay: Partial<typeof ULoaderOverlayConfig>;
+  ULoaderProgress: Partial<typeof ULoaderProgressConfig>;
+  UPagination: Partial<typeof UPaginationConfig>;
+  UProgress: Partial<typeof UProgressConfig>;
+  UTab: Partial<typeof UTabConfig>;
+  UTabs: Partial<typeof UTabsConfig>;
+  UAvatar: Partial<typeof UAvatarConfig>;
+  UIcon: Partial<typeof UIconConfig>;
+  UCheckbox: Partial<typeof UCheckboxConfig>;
+  UCheckboxGroup: Partial<typeof UCheckboxGroupConfig>;
+  UCheckboxMultiState: Partial<typeof UCheckboxMultiStateConfig>;
+  URadio: Partial<typeof URadioConfig>;
+  URadioGroup: Partial<typeof URadioGroupConfig>;
+  USwitch: Partial<typeof USwitchConfig>;
+  UTextarea: Partial<typeof UTextareaConfig>;
+  ULabel: Partial<typeof ULabelConfig>;
+  UColorPicker: Partial<typeof UColorPickerConfig>;
+  UInput: Partial<typeof UInputConfig>;
+  UInputNumber: Partial<typeof UInputNumberConfig>;
+  UInputRating: Partial<typeof UInputRatingConfig>;
+  UInputSearch: Partial<typeof UInputSearchConfig>;
+  UInputFile: Partial<typeof UInputFileConfig>;
+  UInputMoney: Partial<typeof UInputMoneyConfig>;
+  UDataList: Partial<typeof UDataListConfig>;
 }
-
-export type Component = {
-  i18n?: UnknownObject;
-  defaults?: Defaults;
-  safelist?: (string: string) => TailwindSafelist[];
-  strategy?: Strategies;
-  transition?: Transition;
-  safelistColors?: BrandColors[];
-} & (CVA & NestedComponent);
 
 /* Make all config keys optional and allow to have string and object values. */
 export type ComponentConfig<T> = Partial<{
-  [K in keyof T]: T[K] | string | UnknownObject;
+  [K in keyof T]: K extends string
+    ? K extends `${string}transition${string}` | `${string}Transition${string}`
+      ? Transition
+      : K extends "i18n"
+        ? T[K]
+        : T[K] | string | UnknownObject
+    : never;
 }> &
-  Component;
+  NestedComponent;
 
 export interface NestedComponent {
   [key: string]: Record<string, string | UnknownObject> | string;
@@ -305,11 +300,6 @@ export interface VueAttrs {
 
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
-}
-
-export interface TailwindSafelist {
-  pattern: string;
-  variants?: string[];
 }
 
 export interface TailwindColorShades {
@@ -442,6 +432,12 @@ export interface ExposeProperty {
   type: string;
   description?: string;
 }
+
+export type VuelessComponentInstance = ComponentInternalInstance & {
+  type?: {
+    internal?: boolean;
+  };
+};
 
 /**
  * Utility types to extract component props, slots, emit, exposed types.

@@ -13,6 +13,8 @@ import type { RangeDate } from "../ui.form-calendar/types.ts";
 
 type UInputRef = InstanceType<typeof UInput>;
 
+defineOptions({ internal: true });
+
 const props = defineProps<UDatePickerRangeInputsProps>();
 
 const rangeInputStartRef = useTemplateRef<UInputRef>("range-input-start");

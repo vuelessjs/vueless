@@ -6,6 +6,7 @@ import {
 } from "../../utils/storybook.ts";
 
 import { notify } from "../utilNotify.js";
+import { NotificationType } from "../constants.ts";
 
 import UNotify from "../../ui.text-notify/UNotify.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -40,7 +41,7 @@ const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   setup() {
     function onClick() {
       notify({
-        type: "success",
+        type: NotificationType.Success,
         label: "Hurray!",
         description: "The file successfully downloaded.",
       });
@@ -62,7 +63,7 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   components: { UNotify, UButton, UCol },
   setup() {
     function onClick(type: string) {
-      if (type === "success") {
+      if (type === NotificationType.Success) {
         notify({
           type,
           label: "Hurray!",
@@ -70,7 +71,7 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         });
       }
 
-      if (type === "warning") {
+      if (type === NotificationType.Warning) {
         notify({
           type,
           label: "Be aware!",
@@ -78,7 +79,7 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         });
       }
 
-      if (type === "error") {
+      if (type === NotificationType.Error) {
         notify({
           type,
           label: "Ooops!",

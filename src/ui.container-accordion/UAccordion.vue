@@ -63,7 +63,7 @@ const {
   bodyAttrs,
   titleAttrs,
   toggleIconAttrs,
-  dividerAttrs,
+  accordionDividerAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -86,6 +86,6 @@ const {
       <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
     </div>
 
-    <UDivider :size="dividerSize" v-bind="dividerAttrs" />
+    <UDivider :size="dividerSize" v-bind="accordionDividerAttrs" />
   </div>
 </template>

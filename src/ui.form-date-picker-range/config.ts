@@ -110,7 +110,7 @@ export default /*tw*/ {
     `,
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
-  calendar: {
+  datepickerCalendar: {
     base: "{UCalendar}",
     wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",
     navigation: "pb-0 mb-0 border-none",
@@ -127,6 +127,9 @@ export default /*tw*/ {
     notCorrectDayNumber: "Wrong day in month.",
     fromDateGraterThanSecond: "The 'from' date should be less than the 'to' date.",
     toDateSmallerThanFirst: "The 'to' date should be greater than the 'from' date.",
+    today: "Today,",
+    yesterday: "Yesterday,",
+    tomorrow: "Tomorrow,",
     weekdays: {
       shorthand: {
         sunday: "Sun",

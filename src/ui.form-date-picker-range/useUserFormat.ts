@@ -12,7 +12,7 @@ export function useUserFormat(
   userFormatLocale: Ref<SortedLocale>,
   dateFormat: string,
   isPeriod: Ref<IsPeriod>,
-  locale: Ref<SortedLocale | undefined>,
+  locale: Ref<SortedLocale>,
   userDateFormat: string,
 ) {
   const userFormatDate = computed(() => {

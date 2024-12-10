@@ -12,7 +12,6 @@ import { UNotify, NotificationType, NotificationPosition } from "./constants.ts"
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
-import type { Transition } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -145,7 +144,7 @@ const {
     ref="notificationsWrapperRef"
     :style="notifyPositionStyles"
     tag="div"
-    v-bind="{ ...(config?.transitionGroup as Transition), ...wrapperAttrs }"
+    v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
     :data-test="dataTest"
   >
     <div

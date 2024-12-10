@@ -12,7 +12,7 @@ import { UCheckboxMultiState } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
-import type { ComponentConfig } from "../types.ts";
+import type { KeyAttrsWithConfig, UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -34,7 +34,7 @@ const index = ref(0);
 const isChecked = ref(false);
 
 const selected = computed<UCheckboxOption>(() => {
-  return props.options[index.value] || { icon: undefined };
+  return props.options[index.value];
 });
 
 watchEffect(setIndex);
@@ -69,14 +69,13 @@ function onClickCheckbox() {
 const { multiStateCheckboxAttrs: checkboxAttrs } = useUI<Config>(defaultConfig);
 
 const multiStateCheckboxAttrs = computed(() => {
-  const clonedCheckboxAttrs = cloneDeep(checkboxAttrs.value) as {
-    config: ComponentConfig<UCheckboxConfig>;
-  };
+  const clonedCheckboxAttrs = cloneDeep(checkboxAttrs.value) as KeyAttrsWithConfig<UCheckboxConfig>;
 
-  if (selected.value.icon) {
-    clonedCheckboxAttrs.config.defaults = clonedCheckboxAttrs.config.defaults || {};
-
-    clonedCheckboxAttrs.config.defaults.checkedIcon = selected.value.icon;
+  if (selected.value.icon && clonedCheckboxAttrs.config) {
+    clonedCheckboxAttrs.config.defaults = {
+      ...((clonedCheckboxAttrs.config.defaults || {}) as UnknownObject),
+      checkedIcon: selected.value.icon,
+    };
   }
 
   return clonedCheckboxAttrs;

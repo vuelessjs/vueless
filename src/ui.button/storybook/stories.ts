@@ -75,7 +75,7 @@ const EnumVariantTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes
   `,
 });
 
-const ColorTemplate: StoryFn<UButtonArgs> = (args, { argTypes }) => ({
+const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
     const variantOptions = (argTypes.variant as StoryArgType)?.options ?? [];
