@@ -49,7 +49,7 @@ const dynamicComponent = computed(() => {
   const userLibrary = config.value.defaults.library as IconLibraries;
 
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
-  const customLibraryPath = config.value.defaults.customLibraryPath; // TODO: TS error arised here after, 'as string' does not help
+  const customLibraryPath = config.value.defaults.path;
   const weight = config.value.defaults.weight;
   const style = config.value.defaults.style;
   const isFill = props.name?.endsWith(FILL_SUFFIX);
@@ -110,12 +110,12 @@ const dynamicComponent = computed(() => {
           ? import(/* @vite-ignore */ `node_modules/${library}/24/${fillType}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
-    "custom": async () => {
+    "custom-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([customLibraryPath, name])
+        ? await getIcon([library, name])
         : isSSR
-          ? import(`${customLibraryPath}/${name}.svg?component`)
-          : import(`/${customLibraryPath}/${name}.svg?component`);
+          ? import(/* @vite-ignore */ `${customLibraryPath}/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/${customLibraryPath}/${name}.svg?component`);
     },
   };
   /* eslint-enable prettier/prettier */

@@ -261,7 +261,7 @@ function copyIcon(name, defaults) {
  * @returns {source: string, destination: string}
  */
 function getIconLibraryPaths(name, defaults) {
-  const customLibraryPath = defaults.customLibraryPath;
+  const customLibraryPath = defaults.path;
   const library = defaults.library;
   const weight = defaults.weight;
   const style = defaults.style;
@@ -285,7 +285,7 @@ function getIconLibraryPaths(name, defaults) {
       source: `${cwd}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
       destination: `${cacheIconsPath}/${library}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
     },
-    "custom": {
+    "custom-icons": {
       source: `${cwd}/${customLibraryPath}/${name}.svg`,
       destination: `${cacheIconsPath}/${library}/${name}.svg`
     },

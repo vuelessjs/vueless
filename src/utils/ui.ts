@@ -3,12 +3,13 @@ import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 import { cloneDeep, isCSR, isSSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
+import { UIcon } from "../ui.image-icon/constants.ts";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
   DEFAULT_BRAND_COLOR,
+  ICON_NON_PROPS_DEFAULTS,
   TAILWIND_MERGE_EXTENSION,
-  SYSTEM_NON_PROPS_DEFAULTS,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
@@ -110,8 +111,9 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
   /* Remove non a props defaults. */
   for (const key in defaults) {
     const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon)/.test(key);
+    const isNonPropIconDefaults = ICON_NON_PROPS_DEFAULTS.includes(key) && name === UIcon;
 
-    if (SYSTEM_NON_PROPS_DEFAULTS.includes(key) || isNonPropIcon) {
+    if (isNonPropIcon || isNonPropIconDefaults) {
       delete defaults[key];
     }
   }

@@ -160,7 +160,7 @@ export const Colors = ColorTemplate.bind({});
 Colors.args = {};
 
 export const Square = DefaultTemplate.bind({});
-Square.args = { square: true, icon: "downloadtest" };
+Square.args = { square: true, icon: "filter_list" };
 
 export const IconProps: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },

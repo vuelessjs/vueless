@@ -7,7 +7,12 @@ import type { Props as TippyProps } from "tippy.js";
 
 export type Config = typeof defaultConfig;
 
-export type IconLibraries = "vueless" | "@material-symbols" | "bootstrap-icons" | "heroicons";
+export type IconLibraries =
+  | "vueless"
+  | "@material-symbols"
+  | "bootstrap-icons"
+  | "heroicons"
+  | "custom-icons";
 
 export interface Props {
   /**
