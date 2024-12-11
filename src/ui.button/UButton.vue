@@ -186,6 +186,11 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
     </template>
 
     <!-- This is needed to prevent changing button height -->
-    <div v-if="!label || loading" tabindex="-1" class="invisible w-0" v-text="'invisible'" />
+    <div
+      v-if="(!label && !hasSlotContent(slots['default'])) || loading"
+      tabindex="-1"
+      class="invisible w-0"
+      v-text="'invisible'"
+    />
   </component>
 </template>
