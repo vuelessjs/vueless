@@ -1,3 +1,448 @@
+<script setup lang="ts">
+import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
+import { merge } from "lodash-es";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import ULabel from "../ui.form-label/ULabel.vue";
+import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+
+import useUI from "../composables/useUI.ts";
+import { createDebounce, hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { isMac } from "../utils/platform.ts";
+
+import {
+  filterOptions,
+  filterGroups,
+  flattenOptions,
+  removeSelectedValues,
+  getCurrentOption,
+} from "./utilSelect.ts";
+import defaultConfig from "./config.ts";
+import { USelect, DIRECTION, KEY_CODES } from "./constants.ts";
+
+import { useLocale } from "../composables/useLocale.ts";
+
+import type { Props, Config, IconSize, DropdownListRef, Group } from "./types.ts";
+import type { UnknownObject } from "../types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, USelect),
+  modelValue: "",
+  options: () => [],
+  label: "",
+  placeholder: "",
+  groupLabelKey: "label",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when a dropdown list is opened.
+   * @property {string} propsId
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   * @property {string} propsId
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   */
+  "searchChange",
+
+  /**
+   * Triggers when option is removed.
+   * @property {string} option
+   * @property {string} propsId
+   */
+  "remove",
+
+  /**
+   * Triggers when option is selected.
+   * @property {number} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers on click on add new option button in the dropdown.
+   */
+  "add",
+
+  /**
+   * Triggers when the user commits the change to options or selected value explicitly.
+   */
+  "change",
+]);
+
+const slots = useSlots();
+const { tm } = useLocale();
+
+const isOpen = ref(false);
+const preferredOpenDirection = ref(DIRECTION.bottom);
+const search = ref("");
+
+const dropdownListRef = ref<DropdownListRef | null>(null);
+const wrapperRef = ref<HTMLElement | null>(null);
+const searchInputRef = ref<HTMLElement | null>(null);
+const labelComponentRef = ref<{ labelElement: HTMLElement } | null>(null);
+const leftSlotWrapperRef = ref<HTMLElement | null>(null);
+const innerWrapperRef = ref<HTMLElement | null>(null);
+
+const isTop = computed(() => {
+  if (props.openDirection === DIRECTION.top) return true;
+  if (props.openDirection === DIRECTION.bottom) return false;
+
+  return preferredOpenDirection.value === DIRECTION.top;
+});
+
+const elementId = props.id || useId();
+
+const i18nGlobal = tm(USelect);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const iconSize = computed(() => {
+  const sizes = {
+    sm: "xs",
+    md: "sm",
+    lg: "md",
+  };
+
+  return sizes[props.size] as IconSize;
+});
+
+const inputPlaceholder = computed(() => {
+  const message = currentLocale.value.addMore;
+
+  return props.multiple && localValue.value?.length ? message : props.placeholder;
+});
+
+const dropdownValue = computed({
+  get: () => props.modelValue,
+  set: (newValue) => {
+    let value = newValue;
+
+    if (props.multiple) {
+      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
+    }
+
+    emit("update:modelValue", value);
+    emit("change", { value, options: props.options });
+    deactivate();
+  },
+});
+
+const isSelectedValueLabelVisible = computed(() => {
+  return !props.multiple && isLocalValue.value && (!isOpen.value || !props.searchable);
+});
+
+const filteredOptions = computed(() => {
+  const normalizedSearch = search.value.toLowerCase().trim() || "";
+
+  let selectedValues: (string | number)[] = [];
+
+  if (Array.isArray(props.modelValue)) {
+    selectedValues = props.modelValue.map((value) => {
+      if (typeof value === "object") {
+        return value[props.valueKey] as string | number;
+      }
+
+      return value;
+    });
+  } else if (props.modelValue) {
+    if (typeof props.modelValue === "object") {
+      selectedValues = [props.modelValue[props.valueKey] as string | number];
+    } else {
+      selectedValues = [props.modelValue];
+    }
+  }
+
+  let options = props.multiple
+    ? removeSelectedValues(props.options, props.groupValueKey, props.valueKey, selectedValues)
+    : [...props.options];
+
+  options = props.groupValueKey
+    ? filterAndFlat(options, normalizedSearch, props.labelKey)
+    : filterOptions(options, normalizedSearch, props.labelKey);
+
+  return options.slice(0, props.optionsLimit || options.length);
+});
+
+const localValue = computed(() => {
+  if (!props.multiple) {
+    const singleValue = props.modelValue instanceof Array ? props.modelValue[0] : props.modelValue;
+
+    return getCurrentOption(singleValue, props.options, props.groupValueKey, props.valueKey);
+  }
+
+  return props.modelValue && Array.isArray(props.modelValue)
+    ? props.modelValue.map((item) =>
+        getCurrentOption(item, props.options, props.groupValueKey, props.valueKey),
+      )
+    : [];
+});
+
+const isLocalValue = computed(() => {
+  if (props.multiple) return Boolean(localValue.value?.length);
+
+  return typeof localValue.value !== "number"
+    ? Boolean(localValue.value)
+    : Boolean(String(localValue.value));
+});
+
+const selectedLabel = computed(() => {
+  return isLocalValue.value ? getOptionLabel(localValue.value as UnknownObject) : "";
+});
+
+const isEmpty = computed(() => {
+  return (
+    (filteredOptions.value.length === 0 && search) ||
+    (props.multiple && localValue.value?.length === props.options.length)
+  );
+});
+
+const onSearchChange = createDebounce(function (query) {
+  emit("searchChange", query);
+}, 300);
+
+watch(search, onSearchChange);
+watch(localValue, setLabelPosition, { deep: true });
+
+if (props.addOption) {
+  document.addEventListener("keydown", onKeydownAddOption);
+}
+
+onMounted(setLabelPosition);
+
+function getOptionLabel(option: UnknownObject) {
+  if (!option) return "";
+
+  return option[props.labelKey] || "";
+}
+
+function onKeydownAddOption(event: KeyboardEvent) {
+  if (!isOpen.value) return;
+
+  const isEnter = event.keyCode === KEY_CODES.enter;
+  const isCtrl = event.ctrlKey;
+  const isMeta = event.metaKey;
+
+  if (isMeta && isEnter && isMac) {
+    emit("add");
+    emit("change", { value: dropdownValue.value, options: props.options });
+  }
+
+  if (isEnter && isCtrl && !isMac) {
+    emit("add");
+    emit("change", { value: dropdownValue.value, options: props.options });
+  }
+}
+
+function onAddOption() {
+  emit("add");
+}
+
+function filterAndFlat(options: Group[], search: string, label: string) {
+  const filteredGroups = filterGroups(
+    options,
+    search,
+    label,
+    props.groupValueKey,
+    props.groupLabelKey,
+  );
+
+  return flattenOptions(filteredGroups, props.groupValueKey, props.groupLabelKey);
+}
+
+function toggle() {
+  isOpen.value ? deactivate() : activate();
+}
+
+function deactivate() {
+  if (!isOpen.value || props.disabled) return;
+
+  props.searchable && searchInputRef.value ? searchInputRef.value.blur() : wrapperRef.value?.blur();
+
+  search.value = "";
+  isOpen.value = false;
+
+  nextTick(() => emit("close", localValue.value, elementId));
+}
+
+function activate() {
+  if (isOpen.value || props.disabled) return;
+
+  adjustPosition();
+
+  isOpen.value = true;
+
+  if (props.searchable) {
+    search.value = "";
+
+    nextTick(() => searchInputRef.value && searchInputRef.value.focus());
+  }
+
+  if (wrapperRef.value !== null && !props.searchable) {
+    wrapperRef.value.focus();
+  }
+
+  emit("open", elementId);
+}
+
+function adjustPosition() {
+  if (typeof window === "undefined" || !dropdownListRef.value || !wrapperRef.value) return;
+
+  const dropdownHeight = dropdownListRef.value.wrapperRef.getBoundingClientRect().height;
+  const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
+  const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
+  const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
+
+  if (hasEnoughSpaceBelow || spaceBelow > spaceAbove || props.openDirection === DIRECTION.bottom) {
+    preferredOpenDirection.value = DIRECTION.bottom;
+  } else {
+    preferredOpenDirection.value = DIRECTION.top;
+  }
+}
+
+function removeElement(option: UnknownObject, shouldClose = true) {
+  if (props.disabled) return;
+
+  if (props.clearable && !props.multiple) {
+    deactivate();
+
+    return;
+  }
+
+  let value: string | number | UnknownObject[] = "";
+
+  if (props.multiple) {
+    value = Array.isArray(props.modelValue)
+      ? [...props.modelValue].filter((item) => {
+          if (typeof item === "object") {
+            return item[props.valueKey] !== option[props.valueKey];
+          }
+
+          return item !== option[props.valueKey];
+        })
+      : [];
+  }
+
+  emit("update:modelValue", value);
+  emit("change", { value, options: props.options });
+  emit("remove", option, elementId);
+
+  if (shouldClose) {
+    deactivate();
+  }
+}
+
+function setLabelPosition() {
+  if (
+    props.labelAlign === "top" ||
+    !hasSlotContent(slots["left"]) ||
+    (!hasSlotContent(slots["left-icon"]) && !props.leftIcon)
+  ) {
+    return;
+  }
+
+  if (!leftSlotWrapperRef.value || !innerWrapperRef.value || !labelComponentRef.value) {
+    return;
+  }
+
+  const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+  const innerWrapperPaddingLeft = parseInt(
+    window.getComputedStyle(innerWrapperRef.value).paddingLeft,
+  );
+
+  if (props.multiple && Array.isArray(localValue.value) && localValue.value.length >= 1) {
+    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
+    leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
+  } else {
+    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
+  }
+}
+
+defineExpose({
+  /**
+   * A reference to the dropdown list element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  dropdownListRef,
+
+  /**
+   * A reference to the wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
+
+  /**
+   * A reference to the search input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  searchInputRef,
+
+  /**
+   * A reference to the label component for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  labelComponentRef,
+
+  /**
+   * A reference to the left slot wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  leftSlotWrapperRef,
+
+  /**
+   * A reference to the inner wrapper element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  innerWrapperRef,
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error),
+  label: Boolean(props.label),
+  /* component state, not a props */
+  selected: Boolean(selectedLabel.value),
+  opened: isOpen.value,
+  openedTop: isTop.value,
+}));
+
+const {
+  config,
+  selectLabelAttrs,
+  wrapperAttrs,
+  innerWrapperAttrs,
+  leftIconWrapperAttrs,
+  rightIconWrapperAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  beforeCaretAttrs,
+  afterCaretAttrs,
+  toggleAttrs,
+  clearAttrs,
+  clearMultipleTextAttrs,
+  clearMultipleAttrs,
+  searchAttrs,
+  searchInputAttrs,
+  selectedLabelsAttrs,
+  selectedLabelAttrs,
+  dropdownListAttrs,
+  toggleIconAttrs,
+  clearIconAttrs,
+  clearMultipleIconAttrs,
+} = useUI(defaultConfig, mutatedProps);
+</script>
+
 <template>
   <ULabel
     ref="labelComponentRef"
@@ -21,9 +466,9 @@
       v-bind="wrapperAttrs"
       @focus="activate"
       @blur="deactivate"
-      @keydown.self.down.prevent="dropdownListRef.pointerForward"
-      @keydown.self.up.prevent="dropdownListRef.pointerBackward"
-      @keydown.enter.tab.stop.self="dropdownListRef.addPointerElement"
+      @keydown.self.down.prevent="dropdownListRef?.pointerForward"
+      @keydown.self.up.prevent="dropdownListRef?.pointerBackward"
+      @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement"
       @keyup.esc="deactivate"
     >
       <!-- @slot Use it to add something right. -->
@@ -47,7 +492,7 @@
       </div>
 
       <div
-        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
+        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue?.length)"
         v-bind="afterCaretAttrs"
         :tabindex="-1"
       >
@@ -111,7 +556,7 @@
       </div>
 
       <div
-        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
+        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue?.length)"
         v-bind="beforeCaretAttrs"
       >
         <!--
@@ -148,7 +593,7 @@
           <slot name="left" />
         </span>
 
-        <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
+        <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
             <!--
               @slot Use it to customise selected value label.
@@ -215,9 +660,9 @@
             @focus="activate"
             @blur.prevent="deactivate"
             @keyup.esc="deactivate"
-            @keydown.down.prevent="dropdownListRef.pointerForward"
-            @keydown.up.prevent="dropdownListRef.pointerBackward"
-            @keydown.enter.prevent.stop.self="dropdownListRef.addPointerElement"
+            @keydown.down.prevent="dropdownListRef?.pointerForward"
+            @keydown.up.prevent="dropdownListRef?.pointerBackward"
+            @keydown.enter.prevent.stop.self="dropdownListRef?.addPointerElement"
           />
         </div>
 
@@ -309,614 +754,3 @@
     </div>
   </ULabel>
 </template>
-
-<script setup>
-import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
-import { merge } from "lodash-es";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
-
-import useUI from "../composables/useUI.ts";
-import { createDebounce, hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-
-import SelectService from "./utilSelect.js";
-import defaultConfig from "./config.js";
-import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
-
-import { useLocale } from "../composables/useLocale.ts";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Select value.
-   */
-  modelValue: {
-    type: [String, Number, Array],
-    default: "",
-  },
-
-  /**
-   * Select options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Select label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).labelAlign,
-  },
-
-  /**
-   * Select placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select open direction.
-   * @values auto, top, bottom
-   */
-  openDirection: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).openDirection,
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).valueKey,
-  },
-
-  /**
-   * Set a name of the property containing the group label.
-   */
-  groupLabelKey: {
-    type: String,
-    default: "label",
-  },
-
-  /**
-   * Set a name of the property containing the group values.
-   */
-  groupValueKey: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Number of options displayed in the dropdown.
-   */
-  optionsLimit: {
-    type: Number,
-    default: getDefaults(defaultConfig, USelect).optionsLimit,
-  },
-
-  /**
-   * Amount of options you can see without scroll.
-   */
-  visibleOptions: {
-    type: Number,
-    default: getDefaults(defaultConfig, USelect).visibleOptions,
-  },
-
-  /**
-   * Allow clearing selected value.
-   */
-  clearable: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).clearable,
-  },
-
-  /**
-   * Allows multiple selection.
-   */
-  multiple: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).multiple,
-  },
-
-  /**
-   * Allows to search value in a list.
-   */
-  searchable: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).searchable,
-  },
-
-  /**
-   * Disable the select.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).disabled,
-  },
-
-  /**
-   * Show "Add new option" button in the list.
-   */
-  addOption: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).addOption,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when a dropdown list is opened.
-   * @property {string} propsId
-   */
-  "open",
-
-  /**
-   * Triggers when a dropdown list is closed.
-   * @property {string} propsId
-   */
-  "close",
-
-  /**
-   * Triggers when the search value is changed.
-   */
-  "searchChange",
-
-  /**
-   * Triggers when option is removed.
-   * @property {string} option
-   * @property {string} propsId
-   */
-  "remove",
-
-  /**
-   * Triggers when option is selected.
-   * @property {number} value
-   */
-  "update:modelValue",
-
-  /**
-   * Triggers on click on add new option button in the dropdown.
-   */
-  "add",
-
-  /**
-   * Triggers when the user commits the change to options or selected value explicitly.
-   */
-  "change",
-]);
-
-const slots = useSlots();
-const { tm } = useLocale();
-
-const isOpen = ref(false);
-const preferredOpenDirection = ref(DIRECTION.bottom);
-const search = ref("");
-
-const dropdownListRef = ref(null);
-const wrapperRef = ref(null);
-const searchInputRef = ref(null);
-const labelComponentRef = ref(null);
-const leftSlotWrapperRef = ref(null);
-const innerWrapperRef = ref(null);
-
-const isTop = computed(() => {
-  if (props.openDirection === DIRECTION.top) return true;
-  if (props.openDirection === DIRECTION.bottom) return false;
-
-  return preferredOpenDirection.value === DIRECTION.top;
-});
-
-const elementId = props.id || useId();
-
-const i18nGlobal = tm(USelect);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const inputPlaceholder = computed(() => {
-  const message = currentLocale.value.addMore;
-
-  return props.multiple && localValue.value.length ? message : props.placeholder;
-});
-
-const dropdownValue = computed({
-  get: () => props.modelValue,
-  set: (newValue) => {
-    let value = newValue;
-
-    if (props.multiple) {
-      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
-    }
-
-    emit("update:modelValue", value);
-    emit("change", { value, options: props.options });
-    deactivate();
-  },
-});
-
-const isSelectedValueLabelVisible = computed(() => {
-  return !props.multiple && isLocalValue.value && (!isOpen.value || !props.searchable);
-});
-
-const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim() || "";
-
-  let options = props.multiple
-    ? SelectService.removeSelectedValues(
-        props.options,
-        props.groupValueKey,
-        props.valueKey,
-        props.modelValue,
-      )
-    : [...props.options];
-
-  options = props.groupValueKey
-    ? filterAndFlat(options, normalizedSearch, props.labelKey)
-    : SelectService.filterOptions(options, normalizedSearch, props.labelKey);
-
-  return options.slice(0, props.optionsLimit || options.length);
-});
-
-const localValue = computed(() => {
-  if (!props.multiple) {
-    return SelectService.getCurrentOption(
-      props.modelValue,
-      props.options,
-      props.groupValueKey,
-      props.valueKey,
-    );
-  }
-
-  return props.modelValue
-    ? props.modelValue.map((item) =>
-        SelectService.getCurrentOption(item, props.options, props.groupValueKey, props.valueKey),
-      )
-    : [];
-});
-
-const isLocalValue = computed(() => {
-  if (props.multiple) return Boolean(localValue.value.length);
-
-  return typeof localValue.value !== "number"
-    ? Boolean(localValue.value)
-    : Boolean(String(localValue.value));
-});
-
-const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value) : "";
-});
-
-const isEmpty = computed(() => {
-  return (
-    (filteredOptions.value.length === 0 && search) ||
-    (props.multiple && localValue.value.length === props.options.length)
-  );
-});
-
-const onSearchChange = createDebounce(function (query) {
-  emit("searchChange", query);
-}, 300);
-
-watch(search, onSearchChange);
-watch(localValue, setLabelPosition, { deep: true });
-
-if (props.addOption) {
-  document.addEventListener("keydown", onKeydownAddOption);
-}
-
-onMounted(setLabelPosition);
-
-function getOptionLabel(option) {
-  if (!option) return "";
-
-  return option[props.labelKey] || "";
-}
-
-function onKeydownAddOption(event) {
-  if (!isOpen.value) return;
-
-  const isEnter = event.keyCode === KEY_CODES.enter;
-  const isCtrl = event.ctrlKey;
-  const isMeta = event.metaKey;
-
-  if (isMeta && isEnter && isMac) {
-    emit("add");
-    emit("change", { value: dropdownValue.value, options: props.options });
-  }
-
-  if (isEnter && isCtrl && !isMac) {
-    emit("add");
-    emit("change", { value: dropdownValue.value, options: props.options });
-  }
-}
-
-function onAddOption() {
-  emit("add");
-}
-
-function filterAndFlat(options, search, label) {
-  const filteredGroups = SelectService.filterGroups(
-    options,
-    search,
-    label,
-    props.groupValueKey,
-    props.groupLabelKey,
-  );
-
-  return SelectService.flattenOptions(filteredGroups, props.groupValueKey, props.groupLabelKey);
-}
-
-function toggle() {
-  isOpen.value ? deactivate() : activate();
-}
-
-function deactivate() {
-  if (!isOpen.value || props.disabled) return;
-
-  props.searchable && searchInputRef.value ? searchInputRef.value.blur() : wrapperRef.value?.blur();
-
-  search.value = "";
-  isOpen.value = false;
-
-  nextTick(() => emit("close", localValue.value, elementId));
-}
-
-function activate() {
-  if (props.isOpen || props.disabled) return;
-
-  adjustPosition();
-
-  isOpen.value = true;
-
-  if (props.searchable) {
-    search.value = "";
-
-    nextTick(() => searchInputRef.value && searchInputRef.value.focus());
-  }
-
-  if (wrapperRef.value !== undefined && !props.searchable) wrapperRef.value.focus();
-
-  emit("open", elementId);
-}
-
-function adjustPosition() {
-  if (typeof window === "undefined" || !dropdownListRef.value) return;
-
-  const dropdownHeight = dropdownListRef.value.wrapperRef.getBoundingClientRect().height;
-  const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
-  const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
-  const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
-
-  if (hasEnoughSpaceBelow || spaceBelow > spaceAbove || props.openDirection === DIRECTION.bottom) {
-    preferredOpenDirection.value = DIRECTION.bottom;
-  } else {
-    preferredOpenDirection.value = DIRECTION.top;
-  }
-}
-
-function removeElement(option, shouldClose = true) {
-  if (props.disabled) return;
-
-  if (props.clearable && !props.multiple) {
-    deactivate();
-
-    return;
-  }
-
-  let value = "";
-
-  if (props.multiple) {
-    value = !Array.isArray(option)
-      ? [...props.modelValue].filter((item) => item !== option[props.valueKey])
-      : [];
-  }
-
-  emit("update:modelValue", value);
-  emit("change", { value, options: props.options });
-  emit("remove", option, elementId);
-
-  if (shouldClose) {
-    deactivate();
-  }
-}
-
-function setLabelPosition() {
-  if (
-    props.labelAlign === "top" ||
-    !hasSlotContent(slots["left"]) ||
-    (!hasSlotContent(slots["left-icon"]) && !props.leftIcon)
-  ) {
-    return;
-  }
-
-  const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-  const innerWrapperPaddingLeft = parseInt(
-    window.getComputedStyle(innerWrapperRef.value).paddingLeft,
-  );
-
-  if (props.multiple && localValue.value.length >= 1) {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
-    leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
-  } else {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
-  }
-}
-
-defineExpose({
-  /**
-   * A reference to the dropdown list element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  dropdownListRef,
-
-  /**
-   * A reference to the wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  wrapperRef,
-
-  /**
-   * A reference to the search input element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  searchInputRef,
-
-  /**
-   * A reference to the label component for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  labelComponentRef,
-
-  /**
-   * A reference to the left slot wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  leftSlotWrapperRef,
-
-  /**
-   * A reference to the inner wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  innerWrapperRef,
-});
-
-/**
- * Get element / nested component attributes for each config token ✨
- * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
- */
-const mutatedProps = computed(() => ({
-  error: Boolean(props.error),
-  label: Boolean(props.label),
-  /* component state, not a props */
-  selected: Boolean(selectedLabel.value),
-  opened: isOpen.value,
-  openedTop: isTop.value,
-}));
-
-// eslint-disable-next-line vue/no-dupe-keys
-const {
-  config,
-  selectLabelAttrs,
-  wrapperAttrs,
-  innerWrapperAttrs,
-  leftIconWrapperAttrs,
-  rightIconWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
-  beforeCaretAttrs,
-  afterCaretAttrs,
-  toggleAttrs,
-  clearAttrs,
-  clearMultipleTextAttrs,
-  clearMultipleAttrs,
-  searchAttrs,
-  searchInputAttrs,
-  selectedLabelsAttrs,
-  selectedLabelAttrs,
-  dropdownListAttrs,
-  toggleIconAttrs,
-  clearIconAttrs,
-  clearMultipleIconAttrs,
-} = useUI(defaultConfig, mutatedProps);
-</script>

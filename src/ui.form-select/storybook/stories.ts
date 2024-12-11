@@ -11,6 +11,20 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Props } from "../types.ts";
+
+interface USelectArgs extends Props {
+  slotTemplate?: string;
+  enum: "size" | "openDirection";
+}
+
+interface SelectOption {
+  id: string | number;
+  label: string;
+  badge?: string;
+}
+
 export default {
   id: "3080",
   title: "Form Inputs & Controls / Select",
@@ -37,12 +51,12 @@ export default {
     },
     ...getDocsDescription(USelect.__name),
   },
-};
+} as Meta;
 
-const DefaultTemplate = (args) => ({
+const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
   components: { USelect, UIcon, UBadge, ULink },
   setup() {
-    function getSelectedBadge(options, currentValue) {
+    function getSelectedBadge(options: SelectOption[], currentValue: string | number) {
       return options?.find((option) => option.id === currentValue);
     }
 
@@ -52,17 +66,17 @@ const DefaultTemplate = (args) => ({
   },
   template: `
     <USelect v-bind="args" v-model="args.modelValue">
-      ${args.slotTemplate || getSlotsFragment()}
+      ${args.slotTemplate || getSlotsFragment("")}
     </USelect>
   `,
 });
 
-const EnumVariantTemplate = (args, { argTypes }) => ({
+const EnumVariantTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => ({
   components: { USelect, URow },
   setup() {
     return {
       args,
-      options: argTypes[args.enum].options,
+      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -79,7 +93,7 @@ const EnumVariantTemplate = (args, { argTypes }) => ({
   `,
 });
 
-const GroupValuesTemplate = (args) => ({
+const GroupValuesTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
   components: { USelect },
   setup() {
     return {
@@ -121,7 +135,6 @@ OpenDirection.args = { enum: "openDirection" };
 export const GroupValue = GroupValuesTemplate.bind({});
 GroupValue.args = {
   modelValue: "",
-  modelValueMultiple: [],
   groupValueKey: "libs",
   groupLabelKey: "language",
   labelKey: "name",
@@ -162,9 +175,6 @@ Description.args = { description: "some description text" };
 export const OptionsLimit2 = DefaultTemplate.bind({});
 OptionsLimit2.args = { optionsLimit: 2 };
 
-export const NoClear = DefaultTemplate.bind({});
-NoClear.args = { noClear: true };
-
 export const AddOption = DefaultTemplate.bind({});
 AddOption.args = { addOption: true };
 
@@ -179,7 +189,7 @@ OptionIsHidden.args = {
 };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", multiple: true, multipleModelValue: [] };
+Sizes.args = { enum: "size", multiple: true, modelValue: [] };
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
