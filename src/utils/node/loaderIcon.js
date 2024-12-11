@@ -261,6 +261,7 @@ function copyIcon(name, defaults) {
  * @returns {source: string, destination: string}
  */
 function getIconLibraryPaths(name, defaults) {
+  const customLibraryPath = defaults.customLibraryPath;
   const library = defaults.library;
   const weight = defaults.weight;
   const style = defaults.style;
@@ -283,7 +284,11 @@ function getIconLibraryPaths(name, defaults) {
     "heroicons": {
       source: `${cwd}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
       destination: `${cacheIconsPath}/${library}/24/${style}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
-    }
+    },
+    "custom": {
+      source: `${cwd}/${customLibraryPath}/${name}.svg`,
+      destination: `${cacheIconsPath}/${library}/${name}.svg`
+    },
   };
   /* eslint-enable prettier/prettier, vue/max-len */
 

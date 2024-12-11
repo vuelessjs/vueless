@@ -36,8 +36,11 @@ export default /*tw*/ {
     size: "md",
     variant: "default",
     interactive: false,
+    /* TODO: delete after tests */
+    customLibraryPath: "src/assets",
+    library: "custom",
     /* icon library */
-    library: "@material-symbols",
+    // library: "@material-symbols", // TODO: uncomment after tests
     style: "outlined",
     weight: 500,
   },
