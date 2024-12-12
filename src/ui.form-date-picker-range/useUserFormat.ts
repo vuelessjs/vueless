@@ -50,8 +50,8 @@ export function useUserFormat(
         fromFormat = fromFormat.replace(/[Yy]/g, "");
       }
 
-      const fromTitle = from ? formatDate(from, fromFormat, locale.value) : "";
-      const toTitle = to ? formatDate(to, userDateFormat, locale.value) : "";
+      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
       title = `${fromTitle} – ${toTitle}`;
     }
