@@ -85,15 +85,9 @@ export default /*tw*/ {
       { labelAlign: "topInside", size: "lg", label: true, class: "-mt-[1.125rem]" },
     ],
   },
-  toggle: {
-    base: "{>caret} mr-3",
-    compoundVariants: [{ labelAlign: "topWithDesc", class: "mt-0" }],
-  },
+  toggle: "{>caret} mr-3",
   toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
-  clear: {
-    base: "{>caret}",
-    compoundVariants: [{ labelAlign: "topWithDesc", class: "mt-0" }],
-  },
+  clear: "{>caret}",
   clearIcon: "{UIcon}",
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon}",
