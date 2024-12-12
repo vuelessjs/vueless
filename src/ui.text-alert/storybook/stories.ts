@@ -31,7 +31,9 @@ export default {
     ...getArgTypes(UAlert.__name),
   },
   parameters: {
-    ...getDocsDescription(UAlert.__name),
+    docs: {
+      ...getDocsDescription(UAlert.__name),
+    },
   },
 } as Meta;
 

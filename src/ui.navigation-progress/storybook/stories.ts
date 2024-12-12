@@ -28,7 +28,9 @@ export default {
     ...getArgTypes(UProgress.__name),
   },
   parameters: {
-    ...getDocsDescription(UProgress.__name),
+    docs: {
+      ...getDocsDescription(UProgress.__name),
+    },
   },
 } as Meta;
 

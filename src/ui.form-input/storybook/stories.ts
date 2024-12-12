@@ -30,7 +30,9 @@ export default {
     modelValue: { control: { type: "text" } },
   },
   parameters: {
-    ...getDocsDescription(UInput.__name),
+    docs: {
+      ...getDocsDescription(UInput.__name),
+    },
   },
 } as Meta;
 

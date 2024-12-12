@@ -36,11 +36,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UDatePickerName),
       story: {
         height: "480px",
       },
     },
-    ...getDocsDescription(UDatePickerName),
   },
 } as Meta;
 

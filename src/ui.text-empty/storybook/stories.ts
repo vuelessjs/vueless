@@ -30,7 +30,9 @@ export default {
     ...getArgTypes(UEmpty.__name),
   },
   parameters: {
-    ...getDocsDescription(UEmpty.__name),
+    docs: {
+      ...getDocsDescription(UEmpty.__name),
+    },
   },
 } as Meta;
 

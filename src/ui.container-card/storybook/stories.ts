@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(UCard.__name),
   },
   parameters: {
-    ...getDocsDescription(UCard.__name),
+    docs: {
+      ...getDocsDescription(UCard.__name),
+    },
   },
 } as Meta;
 

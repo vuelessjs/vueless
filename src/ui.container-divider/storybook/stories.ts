@@ -24,7 +24,9 @@ export default {
     ...getArgTypes(UDivider.__name),
   },
   parameters: {
-    ...getDocsDescription(UDivider.__name),
+    docs: {
+      ...getDocsDescription(UDivider.__name),
+    },
   },
 } as Meta;
 

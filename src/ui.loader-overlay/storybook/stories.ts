@@ -27,11 +27,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(ULoaderOverlay.__name),
       story: {
         height: "420px",
       },
     },
-    ...getDocsDescription(ULoaderOverlay.__name),
   },
 } as Meta;
 

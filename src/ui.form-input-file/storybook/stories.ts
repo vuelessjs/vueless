@@ -27,7 +27,9 @@ export default {
     ...getArgTypes(UInputFile.__name),
   },
   parameters: {
-    ...getDocsDescription(UInputFile.__name),
+    docs: {
+      ...getDocsDescription(UInputFile.__name),
+    },
   },
 } as Meta;
 

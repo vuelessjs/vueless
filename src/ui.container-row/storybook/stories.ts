@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(URow.__name),
   },
   parameters: {
-    ...getDocsDescription(URow.__name),
+    docs: {
+      ...getDocsDescription(URow.__name),
+    },
   },
 } as Meta;
 

@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(UBadge.__name),
   },
   parameters: {
-    ...getDocsDescription(UBadge.__name),
+    docs: {
+      ...getDocsDescription(UBadge.__name),
+    },
   },
 } as Meta;
 

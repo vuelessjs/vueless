@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(ULoader.__name),
   },
   parameters: {
-    ...getDocsDescription(ULoader.__name),
+    docs: {
+      ...getDocsDescription(ULoader.__name),
+    },
   },
 } as Meta;
 

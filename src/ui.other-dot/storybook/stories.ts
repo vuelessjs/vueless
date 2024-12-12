@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(UDot.__name),
   },
   parameters: {
-    ...getDocsDescription(UDot.__name),
+    docs: {
+      ...getDocsDescription(UDot.__name),
+    },
   },
 } as Meta;
 

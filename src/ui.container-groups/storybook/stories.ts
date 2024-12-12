@@ -22,11 +22,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UGroups.__name),
       story: {
         iframeHeight: 360,
       },
     },
-    ...getDocsDescription(UGroups.__name),
   },
 } as Meta;
 

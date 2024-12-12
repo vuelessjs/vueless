@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(UAvatar.__name),
   },
   parameters: {
-    ...getDocsDescription(UAvatar.__name),
+    docs: {
+      ...getDocsDescription(UAvatar.__name),
+    },
   },
 } as Meta;
 

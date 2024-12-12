@@ -37,7 +37,9 @@ export default {
     ...getArgTypes(UButton.__name),
   },
   parameters: {
-    ...getDocsDescription(UButton.__name),
+    docs: {
+      ...getDocsDescription(UButton.__name),
+    },
   },
 } as Meta;
 

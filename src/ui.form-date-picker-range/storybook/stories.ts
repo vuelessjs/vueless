@@ -46,7 +46,9 @@ export default {
       },
     },
     parameters: {
-      ...getDocsDescription(UDatePickerRangeName),
+      docs: {
+        ...getDocsDescription(UDatePickerRangeName),
+      },
     },
   },
 } as Meta;

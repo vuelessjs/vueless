@@ -26,11 +26,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UCol.__name),
       story: {
         iframeHeight: 360,
       },
     },
-    ...getDocsDescription(UCol.__name),
   },
 } as Meta;
 

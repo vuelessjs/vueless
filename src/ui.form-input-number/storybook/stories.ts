@@ -28,7 +28,9 @@ export default {
     modelValue: { control: { type: "number" } },
   },
   parameters: {
-    ...getDocsDescription(UInputNumber.__name),
+    docs: {
+      ...getDocsDescription(UInputNumber.__name),
+    },
   },
 } as Meta;
 

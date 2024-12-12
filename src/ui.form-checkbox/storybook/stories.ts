@@ -30,7 +30,9 @@ export default {
     modelValue: { control: { type: "boolean" } },
   },
   parameters: {
-    ...getDocsDescription(UCheckbox.__name),
+    docs: {
+      ...getDocsDescription(UCheckbox.__name),
+    },
   },
 } as Meta;
 

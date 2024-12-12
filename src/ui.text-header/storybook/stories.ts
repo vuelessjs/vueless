@@ -27,7 +27,9 @@ export default {
     ...getArgTypes(UHeader.__name),
   },
   parameters: {
-    ...getDocsDescription(UHeader.__name),
+    docs: {
+      ...getDocsDescription(UHeader.__name),
+    },
   },
 } as Meta;
 

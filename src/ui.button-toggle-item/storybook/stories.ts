@@ -28,7 +28,9 @@ export default {
     value: { control: { type: "text" } },
   },
   parameters: {
-    ...getDocsDescription(UToggleItem.__name),
+    docs: {
+      ...getDocsDescription(UToggleItem.__name),
+    },
   },
 } as Meta;
 

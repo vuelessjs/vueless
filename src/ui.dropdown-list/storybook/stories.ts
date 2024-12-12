@@ -35,11 +35,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UDropdownList.__name),
       story: {
         height: "180px",
       },
     },
-    ...getDocsDescription(UDropdownList.__name),
   },
 } as Meta;
 

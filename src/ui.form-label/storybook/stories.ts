@@ -30,7 +30,9 @@ export default {
     ...getArgTypes(ULabel.__name),
   },
   parameters: {
-    ...getDocsDescription(ULabel.__name),
+    docs: {
+      ...getDocsDescription(ULabel.__name),
+    },
   },
 } as Meta;
 

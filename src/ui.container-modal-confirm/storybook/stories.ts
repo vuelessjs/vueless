@@ -35,11 +35,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UModalConfirm.__name),
       story: {
         height: "360px",
       },
     },
-    ...getDocsDescription(UModalConfirm.__name),
   },
 } as Meta;
 

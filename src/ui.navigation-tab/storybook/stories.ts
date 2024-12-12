@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(UTab.__name),
   },
   parameters: {
-    ...getDocsDescription(UTab.__name),
+    docs: {
+      ...getDocsDescription(UTab.__name),
+    },
   },
 } as Meta;
 

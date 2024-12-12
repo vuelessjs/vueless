@@ -36,7 +36,9 @@ export default {
     modelValue: { control: { type: "text" } },
   },
   parameters: {
-    ...getDocsDescription(UToggle.__name),
+    docs: {
+      ...getDocsDescription(UToggle.__name),
+    },
   },
 } as Meta;
 

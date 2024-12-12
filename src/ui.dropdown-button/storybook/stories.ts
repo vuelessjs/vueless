@@ -34,11 +34,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UDropdownButton.__name),
       story: {
         height: "200px",
       },
     },
-    ...getDocsDescription(UDropdownButton.__name),
   },
 } as Meta;
 

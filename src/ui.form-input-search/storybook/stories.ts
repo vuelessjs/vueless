@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(UInputSearch.__name),
   },
   parameters: {
-    ...getDocsDescription(UInputSearch.__name),
+    docs: {
+      ...getDocsDescription(UInputSearch.__name),
+    },
   },
 } as Meta;
 

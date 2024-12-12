@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(ULink.__name),
   },
   parameters: {
-    ...getDocsDescription(ULink.__name),
+    docs: {
+      ...getDocsDescription(ULink.__name),
+    },
   },
 } as Meta;
 
