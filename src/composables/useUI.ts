@@ -1,12 +1,4 @@
-import {
-  ref,
-  watch,
-  watchEffect,
-  getCurrentInstance,
-  toValue,
-  useAttrs,
-  computed,
-} from "vue";
+import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 
 import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
