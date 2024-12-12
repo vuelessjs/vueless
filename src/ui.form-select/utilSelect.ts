@@ -1,143 +1,122 @@
-import type { Group } from "./types.ts";
-import type { UnknownObject } from "../types.ts";
+import type { Option } from "../ui.dropdown-list/types.ts";
 
-export function filterOptions(
-  options: UnknownObject[],
-  search: string,
-  label: string,
-): UnknownObject[] {
+export function filterOptions(options: Option[], search: string, labelKey: string) {
   if (!search) return options;
 
-  const interpolateLabel = (option: UnknownObject, label: string): string => {
-    return label ? (option[label] as string) || "" : String(option);
-  };
-
   return options
-    .filter((option) =>
-      interpolateLabel(option, label).toLowerCase().includes(search.toLowerCase()),
-    )
-    .sort(
-      (a, b) =>
-        interpolateLabel(a, label).indexOf(search) - interpolateLabel(b, label).indexOf(search),
-    );
+    .filter((option) => {
+      return interpolateLabel(option, labelKey).toLowerCase().includes(search.toLowerCase());
+    })
+    .sort((a, b) => {
+      const aOptionIndex = interpolateLabel(a, labelKey).indexOf(search);
+      const bOptionIndex = interpolateLabel(b, labelKey).indexOf(search);
+
+      return aOptionIndex - bOptionIndex;
+    });
 }
 
 export function filterGroups(
-  options: UnknownObject[],
+  options: Option[],
   search: string,
   label: string,
-  valuesKey: string,
+  groupValueKey: string,
   groupLabelKey: string,
-): UnknownObject[] {
-  const filteredGroups = options.map((group) => {
-    if (!group[valuesKey]) {
-      // eslint-disable-next-line no-console
-      console.warn("Options passed to select do not contain groups, despite the config.");
+): Option[] {
+  return options
+    .map((option) => {
+      const group = option[groupValueKey];
 
-      return null;
-    }
+      if (Array.isArray(group)) {
+        return {
+          [groupLabelKey]: option[groupLabelKey],
+          [groupValueKey]: filterOptions(group, search, label),
+        };
+      }
+    })
+    .reduce((accumulator: Option[], group) => {
+      if (!group) return accumulator;
 
-    const groupOptions = filterOptions(group[valuesKey] as UnknownObject[], search, label);
+      const groupValues = group[groupValueKey];
 
-    return groupOptions.length
-      ? {
-          [groupLabelKey]: group[groupLabelKey],
-          [valuesKey]: groupOptions,
-        }
-      : null;
-  });
+      if (Array.isArray(groupValues) && groupValues.length) {
+        accumulator.push({ groupLabel: String(group[groupLabelKey] || "") });
 
-  return filteredGroups.filter((group) => group !== null) as Group[];
-}
+        return accumulator.concat(groupValues);
+      }
 
-export function flattenOptions(
-  options: Group[],
-  valuesKey: string,
-  groupLabelKey: string,
-): UnknownObject[] {
-  return options.reduce<UnknownObject[]>((result, group) => {
-    if (group[valuesKey] && (group[valuesKey] as UnknownObject[]).length) {
-      result.push({ groupLabel: group[groupLabelKey] });
-
-      return result.concat(group[valuesKey] as UnknownObject[]);
-    }
-
-    return result;
-  }, []);
-}
-
-export function isEmptyValue(value: unknown): boolean {
-  if (value === 0) return false;
-  if (Array.isArray(value) && value.length === 0) return true;
-
-  return !value;
-}
-
-export function removeEmptyGroups(options: Group[], groupValueKey: string): Group[] {
-  return options.filter((group) =>
-    Boolean(
-      (group[groupValueKey] as UnknownObject[] | undefined)?.filter((item) => !item.isSubGroup)
-        .length,
-    ),
-  );
+      return accumulator;
+    }, []);
 }
 
 export function removeSelectedValues(
-  options: Group[],
-  groupValueKey: string | null,
+  options: Option[],
+  selectedValues: (string | number)[],
   valueKey: string,
-  modelValue: (string | number)[],
-): Group[] {
+  groupValueKey?: string,
+): Option[] {
   if (!groupValueKey) {
-    return options.filter((option) => !modelValue.includes(option[valueKey] as string | number));
+    return options.filter((option) => {
+      const value = option[valueKey];
+
+      return typeof value === "string" || typeof value === "number"
+        ? !selectedValues.includes(value)
+        : false;
+    });
   }
 
-  const availableValues = options.map((group) => ({
-    ...group,
-    [groupValueKey]: (group[groupValueKey] as UnknownObject[] | undefined)?.filter(
-      (item) => !modelValue.includes(item[valueKey] as string | number),
-    ),
-  }));
+  return options
+    .map((option) => {
+      if (!Array.isArray(option[groupValueKey])) return;
 
-  return removeEmptyGroups(availableValues, groupValueKey);
-}
+      const filteredGroup = option[groupValueKey].filter((item) => {
+        const value = item[valueKey];
 
-export function interpolateLabel(option: UnknownObject, label: string): string {
-  if (isEmptyValue(option)) return "";
+        return typeof value === "string" || typeof value === "number"
+          ? !selectedValues.includes(value) && !item.isSubGroup
+          : false;
+      });
 
-  return label ? (option[label] as string) || "" : String(option);
-}
-
-export function getGroupOption(
-  item: string | number,
-  options: Group[],
-  groupValueKey: string,
-  valueKey: string,
-): UnknownObject | undefined {
-  const group = options.find((group) =>
-    (group[groupValueKey] as UnknownObject[] | undefined)?.find(
-      (value) => value[valueKey] === item,
-    ),
-  );
-
-  return Array.isArray(group?.[groupValueKey])
-    ? (group[groupValueKey] as UnknownObject[]).find(
-        (value) => (value as UnknownObject)[valueKey] === item,
-      )
-    : undefined;
+      return filteredGroup.length ? { ...option, [groupValueKey]: filteredGroup } : null;
+    })
+    .filter((option): option is Option => !!option);
 }
 
 export function getCurrentOption(
-  item: UnknownObject | string | number,
-  options: UnknownObject[] | Group[],
-  groupValueKey: string | null,
+  options: Option[],
+  selectedValue: string | number | Option,
   valueKey: string,
-): UnknownObject | undefined {
-  if (groupValueKey) {
-    return getGroupOption(item as string | number, options as Group[], groupValueKey, valueKey);
-  }
+  groupValueKey?: string,
+) {
+  const value = typeof selectedValue === "object" ? selectedValue?.[valueKey] : selectedValue;
 
-  const value = (item && (item as UnknownObject)[valueKey]) || item;
+  const currentOption = groupValueKey
+    ? getGroupOption(options, selectedValue, valueKey, groupValueKey)
+    : options.find((option) => option[valueKey] === value);
 
-  return (options as UnknownObject[]).find((option) => option[valueKey] === value);
+  return currentOption || ({} as Option);
+}
+
+function getGroupOption(
+  options: Option[],
+  selectedValue: string | number | Option,
+  valueKey: string,
+  groupValueKey: string,
+) {
+  const group = options.find((option) => {
+    return Array.isArray(option[groupValueKey])
+      ? option[groupValueKey].find((value) => value[valueKey] === selectedValue)
+      : false;
+  });
+
+  const groupValues = group?.[groupValueKey] || [];
+
+  return Array.isArray(groupValues)
+    ? groupValues.find((value) => value[valueKey] === selectedValue)
+    : undefined;
+}
+
+function interpolateLabel(option: Option, label: string) {
+  const interpolatedLabel = label ? option[label] : option;
+
+  return interpolatedLabel !== "object" ? String(interpolatedLabel) : "";
 }

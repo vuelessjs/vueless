@@ -1,15 +1,10 @@
 import defaultConfig from "./config.ts";
 
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import type { Option } from "../ui.dropdown-list/types.ts";
+import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
-
 export type IconSize = "xs" | "sm" | "md";
-
-export interface Group {
-  [key: string]: string | number | boolean | UnknownObject[] | undefined | unknown;
-  values?: UnknownObject[];
-}
 
 export interface DropdownListRef {
   wrapperRef: HTMLElement;
@@ -22,12 +17,12 @@ export interface Props {
   /**
    * Select value.
    */
-  modelValue?: string | number | UnknownObject[];
+  modelValue?: string | number | (string | number)[];
 
   /**
    * Select options.
    */
-  options?: UnknownObject[];
+  options?: Option[];
 
   /**
    * Select label.
@@ -100,7 +95,7 @@ export interface Props {
   optionsLimit?: number;
 
   /**
-   * Amount of options you can see without scroll.
+   * Number of options you can see without a scroll.
    */
   visibleOptions?: number;
 

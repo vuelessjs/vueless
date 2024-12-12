@@ -45,11 +45,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(USelect.__name),
       story: {
         height: "280px",
       },
     },
-    ...getDocsDescription(USelect.__name),
   },
 } as Meta;
 

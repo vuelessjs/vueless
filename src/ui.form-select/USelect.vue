@@ -14,57 +14,58 @@ import { isMac } from "../utils/platform.ts";
 import {
   filterOptions,
   filterGroups,
-  flattenOptions,
   removeSelectedValues,
   getCurrentOption,
 } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
-import { USelect, DIRECTION, KEY_CODES } from "./constants.ts";
+import { USelect, DIRECTION, KEYS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { Props, Config, IconSize, DropdownListRef, Group } from "./types.ts";
-import type { UnknownObject } from "../types.ts";
+import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
+import type { Props, Config, IconSize, DropdownListRef } from "./types.ts";
+import type { KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, USelect),
-  modelValue: "",
   options: () => [],
+  modelValue: "",
   label: "",
   placeholder: "",
-  groupLabelKey: "label",
 });
 
 const emit = defineEmits([
   /**
    * Triggers when a dropdown list is opened.
-   * @property {string} propsId
+   * @property {string} elementId
    */
   "open",
 
   /**
    * Triggers when a dropdown list is closed.
-   * @property {string} propsId
+   * @property {string} elementId
    */
   "close",
 
   /**
    * Triggers when the search value is changed.
+   * @property {string} query
    */
   "searchChange",
 
   /**
    * Triggers when option is removed.
    * @property {string} option
-   * @property {string} propsId
    */
   "remove",
 
   /**
    * Triggers when option is selected.
+   * @property {string} value
    * @property {number} value
+   * @property {Option} value
    */
   "update:modelValue",
 
@@ -93,17 +94,17 @@ const labelComponentRef = ref<{ labelElement: HTMLElement } | null>(null);
 const leftSlotWrapperRef = ref<HTMLElement | null>(null);
 const innerWrapperRef = ref<HTMLElement | null>(null);
 
+const elementId = props.id || useId();
+
+const i18nGlobal = tm(USelect);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
   if (props.openDirection === DIRECTION.bottom) return false;
 
   return preferredOpenDirection.value === DIRECTION.top;
 });
-
-const elementId = props.id || useId();
-
-const i18nGlobal = tm(USelect);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const iconSize = computed(() => {
   const sizes = {
@@ -124,10 +125,14 @@ const inputPlaceholder = computed(() => {
 const dropdownValue = computed({
   get: () => props.modelValue,
   set: (newValue) => {
-    let value = newValue;
+    let value;
 
     if (props.multiple) {
-      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
+      const multipleValue = Array.isArray(props.modelValue) ? props.modelValue : [];
+
+      value = [...multipleValue, newValue].flat();
+    } else {
+      value = newValue;
     }
 
     emit("update:modelValue", value);
@@ -154,19 +159,24 @@ const filteredOptions = computed(() => {
       return value;
     });
   } else if (props.modelValue) {
-    if (typeof props.modelValue === "object") {
-      selectedValues = [props.modelValue[props.valueKey] as string | number];
-    } else {
-      selectedValues = [props.modelValue];
-    }
+    selectedValues =
+      typeof props.modelValue === "object"
+        ? [props.modelValue[props.valueKey]]
+        : [props.modelValue];
   }
 
   let options = props.multiple
-    ? removeSelectedValues(props.options, props.groupValueKey, props.valueKey, selectedValues)
+    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
     : [...props.options];
 
   options = props.groupValueKey
-    ? filterAndFlat(options, normalizedSearch, props.labelKey)
+    ? filterGroups(
+        options,
+        normalizedSearch,
+        props.labelKey,
+        props.groupValueKey,
+        props.groupLabelKey,
+      )
     : filterOptions(options, normalizedSearch, props.labelKey);
 
   return options.slice(0, props.optionsLimit || options.length);
@@ -174,28 +184,34 @@ const filteredOptions = computed(() => {
 
 const localValue = computed(() => {
   if (!props.multiple) {
-    const singleValue = props.modelValue instanceof Array ? props.modelValue[0] : props.modelValue;
+    const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
 
-    return getCurrentOption(singleValue, props.options, props.groupValueKey, props.valueKey);
+    return getCurrentOption(props.options, singleValue, props.valueKey, props.groupValueKey);
   }
 
   return props.modelValue && Array.isArray(props.modelValue)
-    ? props.modelValue.map((item) =>
-        getCurrentOption(item, props.options, props.groupValueKey, props.valueKey),
+    ? props.modelValue.map((value) =>
+        getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
       )
     : [];
 });
 
 const isLocalValue = computed(() => {
-  if (props.multiple) return Boolean(localValue.value?.length);
+  const value = localValue.value;
 
-  return typeof localValue.value !== "number"
-    ? Boolean(localValue.value)
-    : Boolean(String(localValue.value));
+  if (Array.isArray(value)) {
+    return !!value?.length;
+  }
+
+  if (typeof value === "object") {
+    return !!Object.keys(value).length;
+  }
+
+  return !!String(value);
 });
 
 const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value as UnknownObject) : "";
+  return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
 });
 
 const isEmpty = computed(() => {
@@ -218,7 +234,7 @@ if (props.addOption) {
 
 onMounted(setLabelPosition);
 
-function getOptionLabel(option: UnknownObject) {
+function getOptionLabel(option: Option) {
   if (!option) return "";
 
   return option[props.labelKey] || "";
@@ -227,7 +243,7 @@ function getOptionLabel(option: UnknownObject) {
 function onKeydownAddOption(event: KeyboardEvent) {
   if (!isOpen.value) return;
 
-  const isEnter = event.keyCode === KEY_CODES.enter;
+  const isEnter = event.key === KEYS.enter;
   const isCtrl = event.ctrlKey;
   const isMeta = event.metaKey;
 
@@ -244,18 +260,6 @@ function onKeydownAddOption(event: KeyboardEvent) {
 
 function onAddOption() {
   emit("add");
-}
-
-function filterAndFlat(options: Group[], search: string, label: string) {
-  const filteredGroups = filterGroups(
-    options,
-    search,
-    label,
-    props.groupValueKey,
-    props.groupLabelKey,
-  );
-
-  return flattenOptions(filteredGroups, props.groupValueKey, props.groupLabelKey);
 }
 
 function toggle() {
@@ -308,36 +312,38 @@ function adjustPosition() {
   }
 }
 
-function removeElement(option: UnknownObject, shouldClose = true) {
+function onMouseDownClearItem(event: MouseEvent, option: Option) {
   if (props.disabled) return;
 
-  if (props.clearable && !props.multiple) {
+  const value = Array.isArray(props.modelValue)
+    ? [...props.modelValue].filter((item) => {
+        if (typeof item === "object") {
+          return item[props.valueKey] !== option[props.valueKey];
+        }
+
+        return item !== option[props.valueKey];
+      })
+    : [];
+
+  emit("update:modelValue", value);
+  emit("change", { value, options: props.options });
+  emit("remove", option);
+}
+
+function onMouseDownClear() {
+  if (props.disabled) return;
+
+  if (!props.clearable && !props.multiple) {
     deactivate();
 
     return;
   }
 
-  let value: string | number | UnknownObject[] = "";
-
-  if (props.multiple) {
-    value = Array.isArray(props.modelValue)
-      ? [...props.modelValue].filter((item) => {
-          if (typeof item === "object") {
-            return item[props.valueKey] !== option[props.valueKey];
-          }
-
-          return item !== option[props.valueKey];
-        })
-      : [];
-  }
+  const value = props.multiple ? [] : "";
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", option, elementId);
-
-  if (shouldClose) {
-    deactivate();
-  }
+  emit("remove", props.options);
 }
 
 function setLabelPosition() {
@@ -534,9 +540,9 @@ const {
       </div>
 
       <div
-        v-if="isLocalValue && !clearable && !disabled && !multiple"
+        v-if="isLocalValue && clearable && !disabled && !multiple"
         v-bind="clearAttrs"
-        @mousedown="removeElement"
+        @mousedown="onMouseDownClear"
       >
         <!--
           @slot Use it to add something instead of the clear icon.
@@ -594,7 +600,11 @@ const {
         </span>
 
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
-          <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
+          <span
+            v-for="item in localValue as Option[]"
+            :key="String(item[valueKey])"
+            v-bind="selectedLabelAttrs"
+          >
             <!--
               @slot Use it to customise selected value label.
               @binding {string} selected-label
@@ -619,7 +629,7 @@ const {
               v-bind="clearMultipleAttrs"
               @mousedown.prevent.capture
               @click.prevent.capture
-              @mousedown="removeElement(item)"
+              @mousedown="onMouseDownClearItem($event, item)"
             >
               <!--
                 @slot Use it to add something instead of the clear icon (when multiple prop enabled).
@@ -676,7 +686,11 @@ const {
             @binding {string} selected-label
             @binding {string} value
           -->
-          <slot name="selected-label" :selected-label="selectedLabel" :value="localValue[valueKey]">
+          <slot
+            name="selected-label"
+            :selected-label="selectedLabel"
+            :value="(localValue as Option)[valueKey]"
+          >
             {{ selectedLabel }}
           </slot>
 
@@ -688,9 +702,9 @@ const {
         </span>
 
         <div
-          v-if="isLocalValue && !clearable && !disabled && multiple"
+          v-if="isLocalValue && clearable && !disabled && multiple"
           v-bind="clearMultipleTextAttrs"
-          @mousedown.prevent.capture="removeElement(localValue)"
+          @mousedown.prevent.capture="onMouseDownClear"
           @click.prevent.capture
           v-text="currentLocale.clear"
         />
@@ -699,7 +713,7 @@ const {
       <UDropdownList
         v-if="isOpen"
         ref="dropdownListRef"
-        v-model="dropdownValue"
+        v-model="dropdownValue as string | number"
         :options="filteredOptions"
         :disabled="disabled"
         :size="size"
@@ -708,7 +722,7 @@ const {
         :label-key="labelKey"
         :add-option="addOption"
         tabindex="-1"
-        v-bind="dropdownListAttrs"
+        v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
         @add="onAddOption"
         @focus="activate"
         @mousedown.prevent.capture
