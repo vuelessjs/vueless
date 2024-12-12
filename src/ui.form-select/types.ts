@@ -6,13 +6,6 @@ import type { ComponentConfig } from "../types.ts";
 export type Config = typeof defaultConfig;
 export type IconSize = "xs" | "sm" | "md";
 
-export interface DropdownListRef {
-  wrapperRef: HTMLElement;
-  pointerForward: () => void;
-  pointerBackward: () => void;
-  addPointerElement: () => void;
-}
-
 export interface Props {
   /**
    * Select value.

@@ -23,8 +23,8 @@ import { USelect, DIRECTION, KEYS } from "./constants.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
-import type { Props, Config, IconSize, DropdownListRef } from "./types.ts";
-import type { KeyAttrsWithConfig } from "../types.ts";
+import type { Props, Config, IconSize } from "./types.ts";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -87,12 +87,12 @@ const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
 
-const dropdownListRef = ref<DropdownListRef | null>(null);
-const wrapperRef = ref<HTMLElement | null>(null);
-const searchInputRef = ref<HTMLElement | null>(null);
-const labelComponentRef = ref<{ labelElement: HTMLElement } | null>(null);
-const leftSlotWrapperRef = ref<HTMLElement | null>(null);
-const innerWrapperRef = ref<HTMLElement | null>(null);
+const dropdownListRef = ref<ComponentExposed<typeof UDropdownList> | null>(null);
+const wrapperRef = ref<HTMLDivElement | null>(null);
+const searchInputRef = ref<HTMLInputElement | null>(null);
+const labelComponentRef = ref<ComponentExposed<typeof ULabel> | null>(null);
+const leftSlotWrapperRef = ref<HTMLSpanElement | null>(null);
+const innerWrapperRef = ref<HTMLDivElement | null>(null);
 
 const elementId = props.id || useId();
 
@@ -128,9 +128,7 @@ const dropdownValue = computed({
     let value;
 
     if (props.multiple) {
-      const multipleValue = Array.isArray(props.modelValue) ? props.modelValue : [];
-
-      value = [...multipleValue, newValue].flat();
+      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
     } else {
       value = newValue;
     }
@@ -200,7 +198,7 @@ const isLocalValue = computed(() => {
   const value = localValue.value;
 
   if (Array.isArray(value)) {
-    return !!value?.length;
+    return !!value.length;
   }
 
   if (typeof value === "object") {
@@ -290,7 +288,7 @@ function activate() {
     nextTick(() => searchInputRef.value && searchInputRef.value.focus());
   }
 
-  if (wrapperRef.value !== null && !props.searchable) {
+  if (wrapperRef.value && !props.searchable) {
     wrapperRef.value.focus();
   }
 
@@ -300,7 +298,7 @@ function activate() {
 function adjustPosition() {
   if (typeof window === "undefined" || !dropdownListRef.value || !wrapperRef.value) return;
 
-  const dropdownHeight = dropdownListRef.value.wrapperRef.getBoundingClientRect().height;
+  const dropdownHeight = dropdownListRef.value.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -364,11 +362,18 @@ function setLabelPosition() {
     window.getComputedStyle(innerWrapperRef.value).paddingLeft,
   );
 
+  const nestedLabel = labelComponentRef.value.labelElement;
+
   if (props.multiple && Array.isArray(localValue.value) && localValue.value.length >= 1) {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
+    if (nestedLabel) {
+      nestedLabel.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
+    }
+
     leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
   } else {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
+    if (nestedLabel) {
+      nestedLabel.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
+    }
   }
 }
 
