@@ -33,11 +33,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UDropdownBadge.__name),
       story: {
         height: "200px",
       },
     },
-    ...getDocsDescription(UDropdownBadge.__name),
   },
 } as Meta;
 

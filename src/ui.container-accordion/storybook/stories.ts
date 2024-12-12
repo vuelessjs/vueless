@@ -45,7 +45,9 @@ export default {
     ...getArgTypes(UAccordion.__name),
   },
   parameters: {
-    ...getDocsDescription(UAccordion.__name),
+    docs: {
+      ...getDocsDescription(UAccordion.__name),
+    },
   },
 } as Meta;
 

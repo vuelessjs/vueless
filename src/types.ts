@@ -54,6 +54,7 @@ import UInputSearchConfig from "./ui.form-input-search/config.ts";
 import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
+import USelectConfig from "./ui.form-select/config.ts";
 
 import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { Props } from "tippy.js";
@@ -224,6 +225,7 @@ export interface Components {
   UInputFile: Partial<typeof UInputFileConfig>;
   UInputMoney: Partial<typeof UInputMoneyConfig>;
   UDataList: Partial<typeof UDataListConfig>;
+  USelect: Partial<typeof USelectConfig>;
 }
 
 /* Make all config keys optional and allow to have string and object values. */

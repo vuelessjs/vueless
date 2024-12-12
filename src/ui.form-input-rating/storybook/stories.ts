@@ -28,7 +28,9 @@ export default {
     ...getArgTypes(UInputRating.__name),
   },
   parameters: {
-    ...getDocsDescription(UInputRating.__name),
+    docs: {
+      ...getDocsDescription(UInputRating.__name),
+    },
   },
 } as Meta;
 

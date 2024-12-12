@@ -29,7 +29,9 @@ export default {
     modelValue: { control: { type: "text" } },
   },
   parameters: {
-    ...getDocsDescription(UTextarea.__name),
+    docs: {
+      ...getDocsDescription(UTextarea.__name),
+    },
   },
 } as Meta;
 

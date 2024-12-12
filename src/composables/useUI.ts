@@ -112,23 +112,25 @@ export default function useUI<T>(
       const extendsKeys = getExtendsKeys(baseClasses);
 
       if (extendsKeys.length) {
-        const extendsClasses = extendsKeys.map((key) => toValue(getClasses(key, mutatedProps)));
-
         const keyAttrs = keysAttrs[`${key}Attrs`];
 
-        keysAttrs[`${key}Attrs`] = computed(() => ({
-          ...keyAttrs.value,
-          class: cx([
-            ...extendsClasses,
-            keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
-          ]),
-          // TODO: Cannot merge several keys
-          config: getMergedConfig({
-            defaultConfig: config.value[extendsKeys[0]],
-            globalConfig: keyAttrs.value.config,
-            propsConfig: propsConfig[extendsKeys[0]],
-          }),
-        })) as ComputedRef<KeyAttrsWithConfig<T>>;
+        keysAttrs[`${key}Attrs`] = computed(() => {
+          const extendsClasses = extendsKeys.map((key) => toValue(getClasses(key, mutatedProps)));
+
+          return {
+            ...keyAttrs.value,
+            class: cx([
+              ...extendsClasses,
+              keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
+            ]),
+            // TODO: Add ability to merge array of keys
+            config: getMergedConfig({
+              defaultConfig: config.value[extendsKeys[0]],
+              globalConfig: keyAttrs.value.config,
+              propsConfig: propsConfig[extendsKeys[0]],
+            }),
+          };
+        }) as ComputedRef<KeyAttrsWithConfig<T>>;
       }
     }
 

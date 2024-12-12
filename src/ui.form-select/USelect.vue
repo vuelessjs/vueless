@@ -1,316 +1,4 @@
-<template>
-  <ULabel
-    ref="labelComponentRef"
-    :for="elementId"
-    :size="size"
-    :label="label"
-    :error="error"
-    :description="description"
-    :align="labelAlign"
-    :disabled="disabled"
-    centred
-    v-bind="selectLabelAttrs"
-    :data-test="dataTest"
-    :tabindex="-1"
-  >
-    <div
-      ref="wrapperRef"
-      :tabindex="searchable || disabled ? -1 : 0"
-      role="combobox"
-      :aria-owns="'listbox-' + elementId"
-      v-bind="wrapperAttrs"
-      @focus="activate"
-      @blur="deactivate"
-      @keydown.self.down.prevent="dropdownListRef.pointerForward"
-      @keydown.self.up.prevent="dropdownListRef.pointerBackward"
-      @keydown.enter.tab.stop.self="dropdownListRef.addPointerElement"
-      @keyup.esc="deactivate"
-    >
-      <!-- @slot Use it to add something right. -->
-      <slot name="right" />
-
-      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
-        <!--
-            @slot Use it to add icon right.
-            @binding {string} icon-name
-            @binding {string} icon-size
-          -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="rightIcon"
-            :name="rightIcon"
-            :size="iconSize"
-            internal
-            v-bind="rightIconAttrs"
-          />
-        </slot>
-      </div>
-
-      <div
-        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue.length)"
-        v-bind="afterCaretAttrs"
-        :tabindex="-1"
-      >
-        <!--
-          @slot Use it to add something after caret.
-          @binding {object} scope-props
-        -->
-        <slot :scope-props="props" name="after-caret" />
-      </div>
-
-      <div
-        v-show="!multiple || (!isLocalValue && multiple)"
-        v-bind="toggleAttrs"
-        :tabindex="-1"
-        @mousedown.prevent.stop="toggle"
-      >
-        <!--
-          @slot Use it to add something instead of the toggle icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
-          @binding {boolean} opened
-        -->
-        <slot
-          name="toggle"
-          :icon-name="config.defaults.dropdownIcon"
-          :icon-size="iconSize"
-          :opened="isOpen"
-        >
-          <UIcon
-            internal
-            interactive
-            color="gray"
-            :size="iconSize"
-            :name="config.defaults.dropdownIcon"
-            v-bind="toggleIconAttrs"
-            :tabindex="-1"
-          />
-        </slot>
-      </div>
-
-      <div
-        v-if="isLocalValue && !clearable && !disabled && !multiple"
-        v-bind="clearAttrs"
-        @mousedown="removeElement"
-      >
-        <!--
-          @slot Use it to add something instead of the clear icon.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
-          <UIcon
-            internal
-            interactive
-            color="gray"
-            :size="iconSize"
-            :name="config.defaults.clearIcon"
-            v-bind="clearIconAttrs"
-          />
-        </slot>
-      </div>
-
-      <div
-        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue.length)"
-        v-bind="beforeCaretAttrs"
-      >
-        <!--
-          @slot Use it to add something before caret.
-          @binding {object} scope-props
-        -->
-        <slot :scope-props="props" name="before-caret" />
-      </div>
-
-      <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
-        <span
-          v-if="hasSlotContent($slots['left-icon']) || leftIcon"
-          ref="leftSlotWrapperRef"
-          v-bind="leftIconWrapperAttrs"
-        >
-          <!--
-            @slot Use it to add icon left.
-            @binding {string} icon-name
-            @binding {string} icon-size
-          -->
-          <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
-            <UIcon
-              v-if="leftIcon"
-              :name="leftIcon"
-              :size="iconSize"
-              internal
-              v-bind="leftIconAttrs"
-            />
-          </slot>
-        </span>
-
-        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-          <!-- @slot Use it to add something left. -->
-          <slot name="left" />
-        </span>
-
-        <div v-if="multiple && localValue.length" v-bind="selectedLabelsAttrs">
-          <span v-for="item in localValue" :key="item[valueKey]" v-bind="selectedLabelAttrs">
-            <!--
-              @slot Use it to customise selected value label.
-              @binding {string} selected-label
-            -->
-            <slot
-              name="selected-label"
-              :selected-label="getOptionLabel(item)"
-              :value="item[valueKey]"
-              :raw-option="item"
-            >
-              {{ getOptionLabel(item) }}
-            </slot>
-
-            <!--
-              @slot Use it to add something after selected value label.
-              @binding {object} scope-props
-            -->
-            <slot :scope-props="props" name="selected-label-after" />
-
-            <div
-              v-if="!disabled"
-              v-bind="clearMultipleAttrs"
-              @mousedown.prevent.capture
-              @click.prevent.capture
-              @mousedown="removeElement(item)"
-            >
-              <!--
-                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
-                @binding {string} icon-name
-                @binding {string} icon-size
-              -->
-              <slot
-                name="clear-multiple"
-                :icon-name="config.defaults.clearMultipleIcon"
-                :icon-size="iconSize"
-              >
-                <UIcon
-                  internal
-                  interactive
-                  color="gray"
-                  :size="iconSize"
-                  :name="config.defaults.clearMultipleIcon"
-                  v-bind="clearMultipleIconAttrs"
-                />
-              </slot>
-            </div>
-          </span>
-        </div>
-
-        <div v-bind="searchAttrs">
-          <input
-            v-show="searchable || !localValue || multiple || !isOpen"
-            :id="elementId"
-            ref="searchInputRef"
-            v-model="search"
-            type="text"
-            autocomplete="off"
-            :spellcheck="false"
-            :placeholder="inputPlaceholder"
-            :disabled="disabled"
-            :aria-controls="'listbox-' + elementId"
-            v-bind="searchInputAttrs"
-            @focus="activate"
-            @blur.prevent="deactivate"
-            @keyup.esc="deactivate"
-            @keydown.down.prevent="dropdownListRef.pointerForward"
-            @keydown.up.prevent="dropdownListRef.pointerBackward"
-            @keydown.enter.prevent.stop.self="dropdownListRef.addPointerElement"
-          />
-        </div>
-
-        <span
-          v-if="isSelectedValueLabelVisible"
-          v-bind="selectedLabelAttrs"
-          @mousedown.prevent="toggle"
-        >
-          <!--
-            @slot Use it to add selected value label.
-            @binding {string} selected-label
-            @binding {string} value
-          -->
-          <slot name="selected-label" :selected-label="selectedLabel" :value="localValue[valueKey]">
-            {{ selectedLabel }}
-          </slot>
-
-          <!--
-            @slot Use it to add something after selected value label.
-            @binding {object} scope-props
-          -->
-          <slot :scope-props="props" name="selected-label-after" />
-        </span>
-
-        <div
-          v-if="isLocalValue && !clearable && !disabled && multiple"
-          v-bind="clearMultipleTextAttrs"
-          @mousedown.prevent.capture="removeElement(localValue)"
-          @click.prevent.capture
-          v-text="currentLocale.clear"
-        />
-      </div>
-
-      <UDropdownList
-        v-if="isOpen"
-        ref="dropdownListRef"
-        v-model="dropdownValue"
-        :options="filteredOptions"
-        :disabled="disabled"
-        :size="size"
-        :visible-options="visibleOptions"
-        :value-key="valueKey"
-        :label-key="labelKey"
-        :add-option="addOption"
-        tabindex="-1"
-        v-bind="dropdownListAttrs"
-        @add="onAddOption"
-        @focus="activate"
-        @mousedown.prevent.capture
-        @click.prevent.capture
-      >
-        <template #before-option="{ option, index }">
-          <!--
-            @slot Use it to add something before option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="before-option" :option="option" :index="index" />
-        </template>
-
-        <template #option="{ option, index }">
-          <!--
-            @slot Use it to customise the option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="option" :option="option" :index="index" />
-        </template>
-
-        <template #after-option="{ option, index }">
-          <!--
-            @slot Use it to add something after option.
-            @binding {object} option
-            @binding {number} index
-          -->
-          <slot name="after-option" :option="option" :index="index" />
-        </template>
-
-        <template #empty>
-          <template v-if="isEmpty">
-            {{ currentLocale.listIsEmpty }}
-          </template>
-
-          <template v-else>
-            {{ currentLocale.noDataToShow }}
-          </template>
-        </template>
-      </UDropdownList>
-    </div>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
 import { merge } from "lodash-es";
 
@@ -323,247 +11,61 @@ import { createDebounce, hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 
-import SelectService from "./utilSelect.js";
-import defaultConfig from "./config.js";
-import { USelect, DIRECTION, KEY_CODES } from "./constants.js";
+import {
+  filterOptions,
+  filterGroups,
+  removeSelectedValues,
+  getCurrentOption,
+} from "./utilSelect.ts";
+import defaultConfig from "./config.ts";
+import { USelect, DIRECTION, KEYS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
+import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
+import type { Props, Config, IconSize } from "./types.ts";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
+
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Select value.
-   */
-  modelValue: {
-    type: [String, Number, Array],
-    default: "",
-  },
-
-  /**
-   * Select options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Select label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).labelAlign,
-  },
-
-  /**
-   * Select placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Select open direction.
-   * @values auto, top, bottom
-   */
-  openDirection: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).openDirection,
-  },
-
-  /**
-   * Label key in the item object of options.
-   */
-  labelKey: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).labelKey,
-  },
-
-  /**
-   * Value key in the item object of options.
-   */
-  valueKey: {
-    type: String,
-    default: getDefaults(defaultConfig, USelect).valueKey,
-  },
-
-  /**
-   * Set a name of the property containing the group label.
-   */
-  groupLabelKey: {
-    type: String,
-    default: "label",
-  },
-
-  /**
-   * Set a name of the property containing the group values.
-   */
-  groupValueKey: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Number of options displayed in the dropdown.
-   */
-  optionsLimit: {
-    type: Number,
-    default: getDefaults(defaultConfig, USelect).optionsLimit,
-  },
-
-  /**
-   * Amount of options you can see without scroll.
-   */
-  visibleOptions: {
-    type: Number,
-    default: getDefaults(defaultConfig, USelect).visibleOptions,
-  },
-
-  /**
-   * Allow clearing selected value.
-   */
-  clearable: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).clearable,
-  },
-
-  /**
-   * Allows multiple selection.
-   */
-  multiple: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).multiple,
-  },
-
-  /**
-   * Allows to search value in a list.
-   */
-  searchable: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).searchable,
-  },
-
-  /**
-   * Disable the select.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).disabled,
-  },
-
-  /**
-   * Show "Add new option" button in the list.
-   */
-  addOption: {
-    type: Boolean,
-    default: getDefaults(defaultConfig, USelect).addOption,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, USelect),
+  options: () => [],
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([
   /**
    * Triggers when a dropdown list is opened.
-   * @property {string} propsId
+   * @property {string} elementId
    */
   "open",
 
   /**
    * Triggers when a dropdown list is closed.
-   * @property {string} propsId
+   * @property {string} elementId
    */
   "close",
 
   /**
    * Triggers when the search value is changed.
+   * @property {string} query
    */
   "searchChange",
 
   /**
    * Triggers when option is removed.
    * @property {string} option
-   * @property {string} propsId
    */
   "remove",
 
   /**
    * Triggers when option is selected.
+   * @property {string} value
    * @property {number} value
+   * @property {Option} value
    */
   "update:modelValue",
 
@@ -585,12 +87,17 @@ const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
 
-const dropdownListRef = ref(null);
-const wrapperRef = ref(null);
-const searchInputRef = ref(null);
-const labelComponentRef = ref(null);
-const leftSlotWrapperRef = ref(null);
-const innerWrapperRef = ref(null);
+const dropdownListRef = ref<ComponentExposed<typeof UDropdownList> | null>(null);
+const wrapperRef = ref<HTMLDivElement | null>(null);
+const searchInputRef = ref<HTMLInputElement | null>(null);
+const labelComponentRef = ref<ComponentExposed<typeof ULabel> | null>(null);
+const leftSlotWrapperRef = ref<HTMLSpanElement | null>(null);
+const innerWrapperRef = ref<HTMLDivElement | null>(null);
+
+const elementId = props.id || useId();
+
+const i18nGlobal = tm(USelect);
+const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
@@ -599,11 +106,6 @@ const isTop = computed(() => {
   return preferredOpenDirection.value === DIRECTION.top;
 });
 
-const elementId = props.id || useId();
-
-const i18nGlobal = tm(USelect);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
 const iconSize = computed(() => {
   const sizes = {
     sm: "xs",
@@ -611,22 +113,24 @@ const iconSize = computed(() => {
     lg: "md",
   };
 
-  return sizes[props.size];
+  return sizes[props.size] as IconSize;
 });
 
 const inputPlaceholder = computed(() => {
   const message = currentLocale.value.addMore;
 
-  return props.multiple && localValue.value.length ? message : props.placeholder;
+  return props.multiple && localValue.value?.length ? message : props.placeholder;
 });
 
 const dropdownValue = computed({
   get: () => props.modelValue,
   set: (newValue) => {
-    let value = newValue;
+    let value;
 
     if (props.multiple) {
       value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
+    } else {
+      value = newValue;
     }
 
     emit("update:modelValue", value);
@@ -642,55 +146,76 @@ const isSelectedValueLabelVisible = computed(() => {
 const filteredOptions = computed(() => {
   const normalizedSearch = search.value.toLowerCase().trim() || "";
 
+  let selectedValues: (string | number)[] = [];
+
+  if (Array.isArray(props.modelValue)) {
+    selectedValues = props.modelValue.map((value) => {
+      if (typeof value === "object") {
+        return value[props.valueKey] as string | number;
+      }
+
+      return value;
+    });
+  } else if (props.modelValue) {
+    selectedValues =
+      typeof props.modelValue === "object"
+        ? [props.modelValue[props.valueKey]]
+        : [props.modelValue];
+  }
+
   let options = props.multiple
-    ? SelectService.removeSelectedValues(
-        props.options,
-        props.groupValueKey,
-        props.valueKey,
-        props.modelValue,
-      )
+    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
     : [...props.options];
 
   options = props.groupValueKey
-    ? filterAndFlat(options, normalizedSearch, props.labelKey)
-    : SelectService.filterOptions(options, normalizedSearch, props.labelKey);
+    ? filterGroups(
+        options,
+        normalizedSearch,
+        props.labelKey,
+        props.groupValueKey,
+        props.groupLabelKey,
+      )
+    : filterOptions(options, normalizedSearch, props.labelKey);
 
   return options.slice(0, props.optionsLimit || options.length);
 });
 
 const localValue = computed(() => {
   if (!props.multiple) {
-    return SelectService.getCurrentOption(
-      props.modelValue,
-      props.options,
-      props.groupValueKey,
-      props.valueKey,
-    );
+    const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
+
+    return getCurrentOption(props.options, singleValue, props.valueKey, props.groupValueKey);
   }
 
-  return props.modelValue
-    ? props.modelValue.map((item) =>
-        SelectService.getCurrentOption(item, props.options, props.groupValueKey, props.valueKey),
+  return props.modelValue && Array.isArray(props.modelValue)
+    ? props.modelValue.map((value) =>
+        getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
       )
     : [];
 });
 
 const isLocalValue = computed(() => {
-  if (props.multiple) return Boolean(localValue.value.length);
+  const value = localValue.value;
 
-  return typeof localValue.value !== "number"
-    ? Boolean(localValue.value)
-    : Boolean(String(localValue.value));
+  if (Array.isArray(value)) {
+    return !!value.length;
+  }
+
+  if (typeof value === "object") {
+    return !!Object.keys(value).length;
+  }
+
+  return !!String(value);
 });
 
 const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value) : "";
+  return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
 });
 
 const isEmpty = computed(() => {
   return (
     (filteredOptions.value.length === 0 && search) ||
-    (props.multiple && localValue.value.length === props.options.length)
+    (props.multiple && localValue.value?.length === props.options.length)
   );
 });
 
@@ -707,16 +232,16 @@ if (props.addOption) {
 
 onMounted(setLabelPosition);
 
-function getOptionLabel(option) {
+function getOptionLabel(option: Option) {
   if (!option) return "";
 
   return option[props.labelKey] || "";
 }
 
-function onKeydownAddOption(event) {
+function onKeydownAddOption(event: KeyboardEvent) {
   if (!isOpen.value) return;
 
-  const isEnter = event.keyCode === KEY_CODES.enter;
+  const isEnter = event.key === KEYS.enter;
   const isCtrl = event.ctrlKey;
   const isMeta = event.metaKey;
 
@@ -735,18 +260,6 @@ function onAddOption() {
   emit("add");
 }
 
-function filterAndFlat(options, search, label) {
-  const filteredGroups = SelectService.filterGroups(
-    options,
-    search,
-    label,
-    props.groupValueKey,
-    props.groupLabelKey,
-  );
-
-  return SelectService.flattenOptions(filteredGroups, props.groupValueKey, props.groupLabelKey);
-}
-
 function toggle() {
   isOpen.value ? deactivate() : activate();
 }
@@ -763,7 +276,7 @@ function deactivate() {
 }
 
 function activate() {
-  if (props.isOpen || props.disabled) return;
+  if (isOpen.value || props.disabled) return;
 
   adjustPosition();
 
@@ -775,15 +288,17 @@ function activate() {
     nextTick(() => searchInputRef.value && searchInputRef.value.focus());
   }
 
-  if (wrapperRef.value !== undefined && !props.searchable) wrapperRef.value.focus();
+  if (wrapperRef.value && !props.searchable) {
+    wrapperRef.value.focus();
+  }
 
   emit("open", elementId);
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !dropdownListRef.value) return;
+  if (typeof window === "undefined" || !dropdownListRef.value || !wrapperRef.value) return;
 
-  const dropdownHeight = dropdownListRef.value.wrapperRef.getBoundingClientRect().height;
+  const dropdownHeight = dropdownListRef.value.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -795,30 +310,38 @@ function adjustPosition() {
   }
 }
 
-function removeElement(option, shouldClose = true) {
+function onMouseDownClearItem(event: MouseEvent, option: Option) {
   if (props.disabled) return;
 
-  if (props.clearable && !props.multiple) {
+  const value = Array.isArray(props.modelValue)
+    ? [...props.modelValue].filter((item) => {
+        if (typeof item === "object") {
+          return item[props.valueKey] !== option[props.valueKey];
+        }
+
+        return item !== option[props.valueKey];
+      })
+    : [];
+
+  emit("update:modelValue", value);
+  emit("change", { value, options: props.options });
+  emit("remove", option);
+}
+
+function onMouseDownClear() {
+  if (props.disabled) return;
+
+  if (!props.clearable && !props.multiple) {
     deactivate();
 
     return;
   }
 
-  let value = "";
-
-  if (props.multiple) {
-    value = !Array.isArray(option)
-      ? [...props.modelValue].filter((item) => item !== option[props.valueKey])
-      : [];
-  }
+  const value = props.multiple ? [] : "";
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", option, elementId);
-
-  if (shouldClose) {
-    deactivate();
-  }
+  emit("remove", props.options);
 }
 
 function setLabelPosition() {
@@ -830,16 +353,27 @@ function setLabelPosition() {
     return;
   }
 
+  if (!leftSlotWrapperRef.value || !innerWrapperRef.value || !labelComponentRef.value) {
+    return;
+  }
+
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
   const innerWrapperPaddingLeft = parseInt(
     window.getComputedStyle(innerWrapperRef.value).paddingLeft,
   );
 
-  if (props.multiple && localValue.value.length >= 1) {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
+  const nestedLabel = labelComponentRef.value.labelElement;
+
+  if (props.multiple && Array.isArray(localValue.value) && localValue.value.length >= 1) {
+    if (nestedLabel) {
+      nestedLabel.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
+    }
+
     leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
   } else {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
+    if (nestedLabel) {
+      nestedLabel.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
+    }
   }
 }
 
@@ -894,7 +428,6 @@ const mutatedProps = computed(() => ({
   openedTop: isTop.value,
 }));
 
-// eslint-disable-next-line vue/no-dupe-keys
 const {
   config,
   selectLabelAttrs,
@@ -920,3 +453,323 @@ const {
   clearMultipleIconAttrs,
 } = useUI(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <ULabel
+    ref="labelComponentRef"
+    :for="elementId"
+    :size="size"
+    :label="label"
+    :error="error"
+    :description="description"
+    :align="labelAlign"
+    :disabled="disabled"
+    centred
+    v-bind="selectLabelAttrs"
+    :data-test="dataTest"
+    :tabindex="-1"
+  >
+    <div
+      ref="wrapperRef"
+      :tabindex="searchable || disabled ? -1 : 0"
+      role="combobox"
+      :aria-owns="'listbox-' + elementId"
+      v-bind="wrapperAttrs"
+      @focus="activate"
+      @blur="deactivate"
+      @keydown.self.down.prevent="dropdownListRef?.pointerForward"
+      @keydown.self.up.prevent="dropdownListRef?.pointerBackward"
+      @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement"
+      @keyup.esc="deactivate"
+    >
+      <!-- @slot Use it to add something right. -->
+      <slot name="right" />
+
+      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
+        <!--
+            @slot Use it to add icon right.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
+          <UIcon
+            v-if="rightIcon"
+            :name="rightIcon"
+            :size="iconSize"
+            internal
+            v-bind="rightIconAttrs"
+          />
+        </slot>
+      </div>
+
+      <div
+        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue?.length)"
+        v-bind="afterCaretAttrs"
+        :tabindex="-1"
+      >
+        <!--
+          @slot Use it to add something after caret.
+          @binding {object} scope-props
+        -->
+        <slot :scope-props="props" name="after-caret" />
+      </div>
+
+      <div
+        v-show="!multiple || (!isLocalValue && multiple)"
+        v-bind="toggleAttrs"
+        :tabindex="-1"
+        @mousedown.prevent.stop="toggle"
+      >
+        <!--
+          @slot Use it to add something instead of the toggle icon.
+          @binding {string} icon-name
+          @binding {string} icon-size
+          @binding {boolean} opened
+        -->
+        <slot
+          name="toggle"
+          :icon-name="config.defaults.dropdownIcon"
+          :icon-size="iconSize"
+          :opened="isOpen"
+        >
+          <UIcon
+            internal
+            interactive
+            color="gray"
+            :size="iconSize"
+            :name="config.defaults.dropdownIcon"
+            v-bind="toggleIconAttrs"
+            :tabindex="-1"
+          />
+        </slot>
+      </div>
+
+      <div
+        v-if="isLocalValue && clearable && !disabled && !multiple"
+        v-bind="clearAttrs"
+        @mousedown="onMouseDownClear"
+      >
+        <!--
+          @slot Use it to add something instead of the clear icon.
+          @binding {string} icon-name
+          @binding {string} icon-size
+        -->
+        <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
+          <UIcon
+            internal
+            interactive
+            color="gray"
+            :size="iconSize"
+            :name="config.defaults.clearIcon"
+            v-bind="clearIconAttrs"
+          />
+        </slot>
+      </div>
+
+      <div
+        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue?.length)"
+        v-bind="beforeCaretAttrs"
+      >
+        <!--
+          @slot Use it to add something before caret.
+          @binding {object} scope-props
+        -->
+        <slot :scope-props="props" name="before-caret" />
+      </div>
+
+      <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
+        <span
+          v-if="hasSlotContent($slots['left-icon']) || leftIcon"
+          ref="leftSlotWrapperRef"
+          v-bind="leftIconWrapperAttrs"
+        >
+          <!--
+            @slot Use it to add icon left.
+            @binding {string} icon-name
+            @binding {string} icon-size
+          -->
+          <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
+            <UIcon
+              v-if="leftIcon"
+              :name="leftIcon"
+              :size="iconSize"
+              internal
+              v-bind="leftIconAttrs"
+            />
+          </slot>
+        </span>
+
+        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
+          <!-- @slot Use it to add something left. -->
+          <slot name="left" />
+        </span>
+
+        <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
+          <span
+            v-for="item in localValue as Option[]"
+            :key="String(item[valueKey])"
+            v-bind="selectedLabelAttrs"
+          >
+            <!--
+              @slot Use it to customise selected value label.
+              @binding {string} selected-label
+            -->
+            <slot
+              name="selected-label"
+              :selected-label="getOptionLabel(item)"
+              :value="item[valueKey]"
+              :raw-option="item"
+            >
+              {{ getOptionLabel(item) }}
+            </slot>
+
+            <!--
+              @slot Use it to add something after selected value label.
+              @binding {object} scope-props
+            -->
+            <slot :scope-props="props" name="selected-label-after" />
+
+            <div
+              v-if="!disabled"
+              v-bind="clearMultipleAttrs"
+              @mousedown.prevent.capture
+              @click.prevent.capture
+              @mousedown="onMouseDownClearItem($event, item)"
+            >
+              <!--
+                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
+                @binding {string} icon-name
+                @binding {string} icon-size
+              -->
+              <slot
+                name="clear-multiple"
+                :icon-name="config.defaults.clearMultipleIcon"
+                :icon-size="iconSize"
+              >
+                <UIcon
+                  internal
+                  interactive
+                  color="gray"
+                  :size="iconSize"
+                  :name="config.defaults.clearMultipleIcon"
+                  v-bind="clearMultipleIconAttrs"
+                />
+              </slot>
+            </div>
+          </span>
+        </div>
+
+        <div v-bind="searchAttrs">
+          <input
+            v-show="searchable || !localValue || multiple || !isOpen"
+            :id="elementId"
+            ref="searchInputRef"
+            v-model="search"
+            type="text"
+            autocomplete="off"
+            :spellcheck="false"
+            :placeholder="inputPlaceholder"
+            :disabled="disabled"
+            :aria-controls="'listbox-' + elementId"
+            v-bind="searchInputAttrs"
+            @focus="activate"
+            @blur.prevent="deactivate"
+            @keyup.esc="deactivate"
+            @keydown.down.prevent="dropdownListRef?.pointerForward"
+            @keydown.up.prevent="dropdownListRef?.pointerBackward"
+            @keydown.enter.prevent.stop.self="dropdownListRef?.addPointerElement"
+          />
+        </div>
+
+        <span
+          v-if="isSelectedValueLabelVisible"
+          v-bind="selectedLabelAttrs"
+          @mousedown.prevent="toggle"
+        >
+          <!--
+            @slot Use it to add selected value label.
+            @binding {string} selected-label
+            @binding {string} value
+          -->
+          <slot
+            name="selected-label"
+            :selected-label="selectedLabel"
+            :value="(localValue as Option)[valueKey]"
+          >
+            {{ selectedLabel }}
+          </slot>
+
+          <!--
+            @slot Use it to add something after selected value label.
+            @binding {object} scope-props
+          -->
+          <slot :scope-props="props" name="selected-label-after" />
+        </span>
+
+        <div
+          v-if="isLocalValue && clearable && !disabled && multiple"
+          v-bind="clearMultipleTextAttrs"
+          @mousedown.prevent.capture="onMouseDownClear"
+          @click.prevent.capture
+          v-text="currentLocale.clear"
+        />
+      </div>
+
+      <UDropdownList
+        v-if="isOpen"
+        ref="dropdownListRef"
+        v-model="dropdownValue as string | number"
+        :options="filteredOptions"
+        :disabled="disabled"
+        :size="size"
+        :visible-options="visibleOptions"
+        :value-key="valueKey"
+        :label-key="labelKey"
+        :add-option="addOption"
+        tabindex="-1"
+        v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
+        @add="onAddOption"
+        @focus="activate"
+        @mousedown.prevent.capture
+        @click.prevent.capture
+      >
+        <template #before-option="{ option, index }">
+          <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="before-option" :option="option" :index="index" />
+        </template>
+
+        <template #option="{ option, index }">
+          <!--
+            @slot Use it to customise the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="option" :option="option" :index="index" />
+        </template>
+
+        <template #after-option="{ option, index }">
+          <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+          <slot name="after-option" :option="option" :index="index" />
+        </template>
+
+        <template #empty>
+          <template v-if="isEmpty">
+            {{ currentLocale.listIsEmpty }}
+          </template>
+
+          <template v-else>
+            {{ currentLocale.noDataToShow }}
+          </template>
+        </template>
+      </UDropdownList>
+    </div>
+  </ULabel>
+</template>

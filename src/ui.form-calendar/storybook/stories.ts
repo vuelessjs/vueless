@@ -27,11 +27,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UCalendarName),
       story: {
         height: "380px",
       },
     },
-    ...getDocsDescription(UCalendarName),
   },
 } as Meta;
 

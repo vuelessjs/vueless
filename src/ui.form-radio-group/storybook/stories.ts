@@ -37,7 +37,9 @@ export default {
     ...getArgTypes(URadioGroup.__name),
   },
   parameters: {
-    ...getDocsDescription(URadioGroup.__name),
+    docs: {
+      ...getDocsDescription(URadioGroup.__name),
+    },
   },
 } as Meta;
 

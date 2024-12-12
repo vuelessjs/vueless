@@ -31,7 +31,9 @@ export default {
     ...getArgTypes(UCheckboxMultiState.__name),
   },
   parameters: {
-    ...getDocsDescription(UCheckboxMultiState.__name),
+    docs: {
+      ...getDocsDescription(UCheckboxMultiState.__name),
+    },
   },
 } as Meta;
 

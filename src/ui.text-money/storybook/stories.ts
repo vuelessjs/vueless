@@ -34,7 +34,9 @@ export default {
     ...getArgTypes(UMoney.__name),
   },
   parameters: {
-    ...getDocsDescription(UMoney.__name),
+    docs: {
+      ...getDocsDescription(UMoney.__name),
+    },
   },
 } as Meta;
 

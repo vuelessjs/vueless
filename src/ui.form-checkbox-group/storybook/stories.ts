@@ -38,7 +38,9 @@ export default {
     ...getArgTypes(UCheckboxGroup.__name),
   },
   parameters: {
-    ...getDocsDescription(UCheckboxGroup.__name),
+    docs: {
+      ...getDocsDescription(UCheckboxGroup.__name),
+    },
   },
 } as Meta;
 

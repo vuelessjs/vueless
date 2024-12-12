@@ -26,7 +26,9 @@ export default {
     ...getArgTypes(UFile.__name),
   },
   parameters: {
-    ...getDocsDescription(UFile.__name),
+    docs: {
+      ...getDocsDescription(UFile.__name),
+    },
   },
 } as Meta;
 

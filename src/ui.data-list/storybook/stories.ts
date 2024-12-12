@@ -50,7 +50,9 @@ export default {
     ...getArgTypes(UDataList.__name),
   },
   parameters: {
-    ...getDocsDescription(UDataList.__name),
+    docs: {
+      ...getDocsDescription(UDataList.__name),
+    },
   },
 } as Meta;
 

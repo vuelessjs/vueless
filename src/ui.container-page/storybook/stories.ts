@@ -33,7 +33,9 @@ export default {
     ...getArgTypes(UPage.__name),
   },
   parameters: {
-    ...getDocsDescription(UPage.__name),
+    docs: {
+      ...getDocsDescription(UPage.__name),
+    },
   },
 } as Meta;
 

@@ -25,7 +25,9 @@ export default {
     ...getArgTypes(ULoaderProgress.__name),
   },
   parameters: {
-    ...getDocsDescription(ULoaderProgress.__name),
+    docs: {
+      ...getDocsDescription(ULoaderProgress.__name),
+    },
   },
 } as Meta;
 

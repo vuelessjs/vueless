@@ -23,7 +23,7 @@ const emit = defineEmits([
   "click",
 ]);
 
-const labelRef = ref(null);
+const labelRef = ref<HTMLLabelElement | null>(null);
 const wrapperRef = ref(null);
 
 const isHorizontalPlacement = computed(() => {

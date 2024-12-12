@@ -30,7 +30,9 @@ export default {
     ...getArgTypes(URadio.__name),
   },
   parameters: {
-    ...getDocsDescription(URadio.__name),
+    docs: {
+      ...getDocsDescription(URadio.__name),
+    },
   },
 } as Meta;
 

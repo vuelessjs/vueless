@@ -27,7 +27,9 @@ export default {
     ...getArgTypes(UIcon.__name),
   },
   parameters: {
-    ...getDocsDescription(UIcon.__name),
+    docs: {
+      ...getDocsDescription(UIcon.__name),
+    },
   },
 } as Meta;
 

@@ -11,9 +11,4 @@ export const DIRECTION = {
 
 export const KEYS = {
   enter: "Enter",
-  tab: "Tab",
-};
-
-export const KEY_CODES = {
-  enter: 13,
 };

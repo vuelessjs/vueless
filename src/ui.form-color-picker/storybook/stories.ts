@@ -28,7 +28,9 @@ export default {
     ...getArgTypes(UColorPicker.__name),
   },
   parameters: {
-    ...getDocsDescription(UColorPicker.__name),
+    docs: {
+      ...getDocsDescription(UColorPicker.__name),
+    },
   },
 } as Meta;
 

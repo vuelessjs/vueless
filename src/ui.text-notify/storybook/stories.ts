@@ -28,11 +28,11 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UNotify.__name),
       story: {
         height: "280px",
       },
     },
-    ...getDocsDescription(UNotify.__name),
   },
 } as Meta;
 

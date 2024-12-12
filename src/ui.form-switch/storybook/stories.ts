@@ -28,7 +28,9 @@ export default {
     ...getArgTypes(USwitch.__name),
   },
   parameters: {
-    ...getDocsDescription(USwitch.__name),
+    docs: {
+      ...getDocsDescription(USwitch.__name),
+    },
   },
 } as Meta;
 

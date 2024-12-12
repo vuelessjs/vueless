@@ -30,7 +30,9 @@ export default {
     modelValue: { control: { type: "number" } },
   },
   parameters: {
-    ...getDocsDescription(UInputMoney.__name),
+    docs: {
+      ...getDocsDescription(UInputMoney.__name),
+    },
   },
 } as Meta;
 

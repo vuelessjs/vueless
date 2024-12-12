@@ -58,7 +58,9 @@ export default {
     numberOfRows: 5,
   },
   parameters: {
-    ...getDocsDescription(UTable.__name),
+    docs: {
+      ...getDocsDescription(UTable.__name),
+    },
   },
 } as Meta;
 

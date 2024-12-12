@@ -24,7 +24,9 @@ export default {
     ...getArgTypes(UText.__name),
   },
   parameters: {
-    ...getDocsDescription(UText.__name),
+    docs: {
+      ...getDocsDescription(UText.__name),
+    },
   },
   args: {},
 } as Meta;
