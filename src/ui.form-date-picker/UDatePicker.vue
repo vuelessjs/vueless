@@ -277,7 +277,7 @@ watchEffect(() => {
   <div v-bind="wrapperAttrs" ref="wrapper">
     <UInput
       :id="elementId"
-      :key="String(userDateFormat)"
+      :key="String(userFormatDate)"
       ref="input"
       :model-value="userFormatDate"
       :label-align="labelAlign"
