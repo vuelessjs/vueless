@@ -24,14 +24,7 @@ export default /*tw*/ {
       { align: "right", centred: true, class: "items-center justify-start w-auto" },
     ],
   },
-  content: {
-    base: "flex",
-    variants: {
-      disabled: {
-        true: "pointer-events-none",
-      },
-    },
-  },
+  content: "flex",
   label: {
     base: "text-gray-900 z-10 block !leading-none w-max",
     variants: {
@@ -51,7 +44,7 @@ export default /*tw*/ {
         true: "text-red-500",
       },
       disabled: {
-        true: "text-gray-500 pointer-events-none",
+        true: "text-gray-500",
       },
     },
     compoundVariants: [

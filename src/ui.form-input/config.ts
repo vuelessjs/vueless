@@ -2,7 +2,7 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition
+      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition bg-white
       hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
       focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
@@ -15,7 +15,10 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0 pointer-events-none",
+        true: `
+          focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 
+          hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
+        `,
       },
     },
   },
@@ -26,10 +29,10 @@ export default /*tw*/ {
   passwordIcon: "{UIcon}",
   input: {
     base: `
-      block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-white
+      block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-transparent
       border-none rounded-dynamic transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
-      disabled:text-gray-700 disabled:bg-gray-100
+      disabled:text-gray-700
     `,
     variants: {
       size: {
