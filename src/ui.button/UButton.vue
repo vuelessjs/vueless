@@ -2,7 +2,6 @@
 import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
 
 import useUI from "../composables/useUI.ts";
-import { useDarkMode } from "../composables/useDarkMode.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
@@ -10,20 +9,19 @@ import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import defaultConfig from "./config.ts";
-import { UButton } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, LoaderSize, IconSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UButton),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 
 const slots = useSlots();
 const elementId = props.id || useId();
-const { isDarkMode } = useDarkMode();
 
 const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
@@ -126,9 +124,9 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         <UIcon
           v-if="leftIcon"
           internal
+          color="inherit"
           :name="leftIcon"
           :size="iconSize"
-          color="inherit"
           v-bind="leftIconAttrs"
         />
       </slot>
@@ -143,9 +141,9 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         <UIcon
           v-if="icon"
           internal
+          color="inherit"
           :name="icon"
           :size="iconSize"
-          color="inherit"
           v-bind="centerIconAttrs"
         />
         <template v-else>
@@ -162,9 +160,9 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         <UIcon
           v-if="rightIcon"
           internal
+          color="inherit"
           :name="rightIcon"
           :size="iconSize"
-          color="inherit"
           v-bind="rightIconAttrs"
         />
       </slot>
