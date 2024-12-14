@@ -50,6 +50,7 @@ export interface Props {
     | "gray"
     | "black"
     | "white"
+    | "inherit"
     | "brand";
 
   /**

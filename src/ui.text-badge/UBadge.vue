@@ -55,10 +55,6 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-const iconColor = computed(() => {
-  return props.variant === "primary" ? "white" : props.color;
-});
-
 function onFocus() {
   emit("focus");
 }
@@ -115,15 +111,14 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
           @slot Use it to add icon before the text.
           @binding {string} icon-name
           @binding {string} icon-size
-          @binding {string} icon-color
         -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
+      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize">
         <UIcon
           v-if="leftIcon"
           internal
           :name="leftIcon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           v-bind="leftIconAttrs"
         />
       </slot>
@@ -133,21 +128,14 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
         @binding {string} label
         @binding {string} icon-name
         @binding {string} icon-size
-        @binding {string} icon-color
       -->
-      <slot
-        name="default"
-        :label="label"
-        :icon-name="icon"
-        :icon-size="iconSize"
-        :icon-color="iconColor"
-      >
+      <slot name="default" :label="label" :icon-name="icon" :icon-size="iconSize">
         <UIcon
           v-if="icon"
           internal
           :name="icon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           v-bind="centerIconAttrs"
         />
         <template v-else>
@@ -159,14 +147,13 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
           @slot Use it to add icon after the text.
           @binding {string} icon-name
           @binding {string} icon-size
-          @binding {string} icon-color
         -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
+      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize">
         <UIcon
           v-if="rightIcon"
           :name="rightIcon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           internal
           v-bind="rightIconAttrs"
         />

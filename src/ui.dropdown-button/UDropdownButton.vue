@@ -11,7 +11,7 @@ import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 import { vClickOutside } from "../directives";
 
 import defaultConfig from "./config.ts";
-import { UDropdownButton, BUTTON_VARIANT } from "./constants.ts";
+import { UDropdownButton } from "./constants.ts";
 
 import type { Props, IconSize, DropdownSize, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
@@ -40,10 +40,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const iconColor = computed(() => {
-  return props.variant === BUTTON_VARIANT.primary ? "white" : props.color;
-});
 
 const iconSize = computed(() => {
   const sizes = {
@@ -146,8 +142,8 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
           <UIcon
             v-if="!noIcon"
             internal
+            color="inherit"
             :size="iconSize"
-            :color="iconColor"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"

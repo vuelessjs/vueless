@@ -22,6 +22,7 @@ export default /*tw*/ {
         white: "bg-white",
         black: "bg-gray-900",
         grayscale: "bg-gray-900 dark:bg-white",
+        inherit: "bg-current",
       },
       size: {
         sm: `

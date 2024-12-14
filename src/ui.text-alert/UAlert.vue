@@ -69,12 +69,6 @@ const closeButtonColor = computed(() => {
   return props.color;
 });
 
-const iconColor = computed(() => {
-  if (props.color === "white") return "gray";
-
-  return props.variant === "primary" ? "white" : props.color;
-});
-
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -146,19 +140,14 @@ const {
       >
         <!--
           @slot Use it to add something instead of the close button.
+          @binding {string} icon-name
           @binding {string} icon-size
-          @binding {string} icon-color
         -->
-        <slot
-          name="close"
-          :icon-name="config.defaults.closeIcon"
-          :icon-size="closeIconSize"
-          :icon-color="iconColor"
-        >
+        <slot name="close" :icon-name="config.defaults.closeIcon" :icon-size="closeIconSize">
           <UIcon
             internal
+            color="inherit"
             :size="closeIconSize"
-            :color="iconColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
             :data-test="`${dataTest}-button`"

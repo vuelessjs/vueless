@@ -55,12 +55,6 @@ const iconSize = computed(() => {
   return sizes[props.size] as IconSize;
 });
 
-const iconColor = computed(() => {
-  const primaryColor = isDarkMode.value ? "black" : "white";
-
-  return props.variant === "primary" ? primaryColor : props.color;
-});
-
 watch(
   () => props.loading,
   (newValue, oldValue) => {
@@ -119,7 +113,7 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
     :data-test="dataTest"
   >
     <template v-if="loading">
-      <ULoader :loading="loading" :size="loaderSize" :color="iconColor" v-bind="loaderAttrs" />
+      <ULoader :loading="loading" :size="loaderSize" color="inherit" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
@@ -127,15 +121,14 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @slot Use it to add something before the label.
         @binding {string} icon-name
         @binding {string} icon-size
-        @binding {string} icon-color
       -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
+      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize">
         <UIcon
           v-if="leftIcon"
           internal
           :name="leftIcon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           v-bind="leftIconAttrs"
         />
       </slot>
@@ -145,21 +138,14 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @binding {string} label
         @binding {string} icon-name
         @binding {string} icon-size
-        @binding {string} icon-color
       -->
-      <slot
-        name="default"
-        :label="label"
-        :icon-name="icon"
-        :icon-size="iconSize"
-        :icon-color="iconColor"
-      >
+      <slot name="default" :label="label" :icon-name="icon" :icon-size="iconSize">
         <UIcon
           v-if="icon"
           internal
           :name="icon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           v-bind="centerIconAttrs"
         />
         <template v-else>
@@ -171,15 +157,14 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @slot Use it to add something after the label.
         @binding {string} icon-name
         @binding {string} icon-size
-        @binding {string} icon-color
       -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
+      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize">
         <UIcon
           v-if="rightIcon"
           internal
           :name="rightIcon"
           :size="iconSize"
-          :color="iconColor"
+          color="inherit"
           v-bind="rightIconAttrs"
         />
       </slot>

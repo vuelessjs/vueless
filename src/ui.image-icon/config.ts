@@ -11,6 +11,7 @@ export default /*tw*/ {
         white: "text-white",
         black: "text-gray-900",
         grayscale: "text-gray-900 dark:text-white",
+        inherit: "text-inherit",
       },
       interactive: {
         true: "cursor-pointer",
