@@ -288,7 +288,7 @@ watchEffect(() => {
       :disabled="disabled"
       :size="size"
       :left-icon="leftIcon"
-      :right-icon="rightIcon"
+      :right-icon="rightIcon || config.defaults.calendarIcon"
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @input="onTextInput"
       @focus="activate"
@@ -306,7 +306,7 @@ watchEffect(() => {
         <!--
           @slot Use it add an icon before the date.
           @binding {string} icon-name
-          @binding {string} icon-nize
+          @binding {string} icon-size
         -->
         <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
       </template>

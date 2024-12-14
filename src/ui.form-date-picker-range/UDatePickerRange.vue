@@ -594,7 +594,7 @@ watchEffect(() => {
       :error="error"
       readonly
       :left-icon="leftIcon"
-      :right-icon="rightIcon"
+      :right-icon="rightIcon || config.defaults.calendarIcon"
       v-bind="isShownMenu ? datepickerActiveInputAttrs : datepickerInputAttrs"
       @focus="activate"
     >

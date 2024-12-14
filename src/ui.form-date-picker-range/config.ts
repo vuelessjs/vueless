@@ -217,7 +217,7 @@ export default /*tw*/ {
     maxDate: undefined,
     minDate: undefined,
     /* icons */
-    rightIcon: "calendar_month-fill",
+    calendarIcon: "calendar_month-fill",
     nextIcon: "keyboard_arrow_right",
     prevIcon: "keyboard_arrow_left",
     ownRangeIcon: "apps",

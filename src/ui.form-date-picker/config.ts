@@ -130,6 +130,6 @@ export default /*tw*/ {
     timepicker: false,
     disabled: false,
     /* icons */
-    rightIcon: "calendar_month-fill",
+    calendarIcon: "calendar_month-fill",
   },
 };
