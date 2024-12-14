@@ -19,51 +19,6 @@ Thanks to [tailwind-merge](https://github.com/dcastil/tailwind-merge), all those
 * Global `vueless.config.js`
 * Component default config (lowest priority)
 
-### Merging strategy
-
-You can change a merge behaviour by changing the `strategy` key in the `vueless.config.js` or `config` prop:
-
-* `merge` (default) – smartly merge provided custom classes with default config classes.
-* `replace` – replace default config keys by provided custom keys (override only provided keys, the rest classes will be taken from the default config).
-* `override` – override default config by provided custom config (keeps only custom config, removes all default classes).
-
-{% code title="vueless.config.js" %}
-```js
-export default {
-  strategy: "override", // applies for all components
-  component: {
-    UButton: {
-      strategy: "merge", // applies only for UButton
-      button: {
-        base: "bg-red-500 w-full",
-      }
-    }
-  }
-};
-```
-{% endcode %}
-
-### Custom tailwind classes and merge
-
-If you are going to use custom tailwind classes for styling Vueless components, first you need to add them into `tailwindMerge` config. See: [All list of properties.](https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts)
-
-{% code title="vueless.config.js" %}
-```js
-export default {
-  tailwindMerge: {
-    extend: {
-      theme: {
-        classGroups: {
-          "ring-w": [{ ring: ["brand"] }],
-          "font-size": [{ text: ["2xs"] }],
-        }
-      }
-    }
-  }
-};
-```
-{% endcode %}
-
 ## CVA
 
 For managing classes variants Vueless components use [cva](https://github.com/joe-bell/cva) (Class Variance Authority) under the hood. For more details you can read related [cva docs](https://cva.style/docs/getting-started/variants).
@@ -192,6 +147,53 @@ You can also use the `class` attribute to add classes to the component.
 ```
 
 In this case classes will be applied to the top level component's HTML tag.
+
+***
+
+## Merging strategy
+
+You can change a merge behaviour by changing the `strategy` key in the `vueless.config.js` or `config` prop:
+
+* `merge` (default) – smartly merge provided custom classes with default config classes.
+* `replace` – replace default config keys by provided custom keys (override only provided keys, the rest classes will be taken from the default config).
+* `override` – override default config by provided custom config (keeps only custom config, removes all default classes).
+
+{% code title="vueless.config.js" %}
+```js
+export default {
+  strategy: "override", // applies for all components
+  component: {
+    UButton: {
+      strategy: "merge", // applies only for UButton
+      button: {
+        base: "bg-red-500 w-full",
+      }
+    }
+  }
+};
+```
+{% endcode %}
+
+## Custom tailwind classes and merge
+
+If you are going to use custom tailwind classes for styling Vueless components, first you need to add them into `tailwindMerge` config. See: [All list of properties.](https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts)
+
+{% code title="vueless.config.js" %}
+```js
+export default {
+  tailwindMerge: {
+    extend: {
+      theme: {
+        classGroups: {
+          "ring-w": [{ ring: ["brand"] }],
+          "font-size": [{ text: ["2xs"] }],
+        }
+      }
+    }
+  }
+};
+```
+{% endcode %}
 
 ***
 

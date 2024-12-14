@@ -11,7 +11,7 @@ setTheme({
   ring: 4, /* px */
   ringOffset: 0, /* px */
   rounding: 8, /* px */
-  darkMode: true, /* true | false | undefined */
+  colorMode: "dark", /* dark | light | auto */
 });
 ```
 

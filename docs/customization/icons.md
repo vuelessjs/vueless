@@ -2,7 +2,7 @@
 
 Vueless supports three popular SVG icon libraries: `@material-symbols`, `bootstrap-icons`, `heroicons`.
 
-if you going to use `bootstrap-icons` or `heroicons` or other weight of `@material-symbols`  you should install needed package first.
+if you going to use some of these package in you project you should install it first.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -105,17 +105,38 @@ export default {
 
 ## Custom icons
 
-&#x20;`UIcon` component supports custom icons as well. To use it:
+`<UIcon>` component supports custom icons as well. To use it:
 
-* Import the SVG icon, with suffix `?component` .&#x20;
+* Import the SVG icon, with suffix `?component` .
 * Pass the imported component in the `:src` prop.
 
 ```html
-<UIcon :src="EqualIcon" color="gray" />
+<UIcon :src="EqualIcon" />
 
 <script setup>
 import EqualIcon from "./images/equal.svg?component";
 </script>
+```
+
+If all the icons you plan to use are custom, you can define your own library path from the project.
+
+{% code title="vueless.config.js" %}
+```javascript
+export default {
+  component: {
+    UIcon: {
+      defaults: {
+        library: "custom-icons", /* tells Vueless that the library is custom */
+        path: "src/assets/icons", /* path to the icons folder from the project root */
+      }
+    }
+  }
+};
+```
+{% endcode %}
+
+```html
+<UIcon :name="equal-icon" />
 ```
 
 ## Dynamic import
@@ -135,7 +156,7 @@ To avoid this behavior and include all the icons into the build, please follow r
 <UIcon :name="stateIcon" />
 ```
 
-If you need to use icon names in JS you should declare the icon names in any of JS object. If the key in the object includes  `icon` word it will be automatically recognised by Vueless and icon will be added to the build.
+If you need to use icon names in JS you should declare the icon names in any of JS object. If the key in the object includes `icon` word it will be automatically recognised by Vueless and icon will be added to the build.
 
 ```html
 <UIcon :name="stateIcon" />
@@ -249,8 +270,14 @@ export default {
         unselectedIcon: "close",
       },
     },
+    UDatePicker: {
+      defaults: {
+        calendarIcon: "calendar_month-fill",
+      },
+    },
     UDatePickerRange: {
       defaults: {
+        calendarIcon: "calendar_month-fill",
         nextIcon: "keyboard_arrow_right",
         prevIcon: "keyboard_arrow_left",
         ownRangeIcon: "apps",
@@ -330,9 +357,9 @@ export default {
 
 ## Deep tuning
 
-Loding SVG icons provided by [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite)  which in turn was be inspired by [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader) .
+Loding SVG icons provided by [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) which in turn was be inspired by [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader) .
 
-For loading SVG  [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) use [SVGO](https://github.com/svg/svgo) by default. We created and already included optimal config to cover most of the cases, but if you will face with some issues with SVG rendering feel free to change it by passing you own config under the `svgoConfig` key, ([see SVGO plugin docs](https://svgo.dev/docs/preset-default/)).
+For loading SVG [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) use [SVGO](https://github.com/svg/svgo) by default. We created and already included optimal config to cover most of the cases, but if you will face with some issues with SVG rendering feel free to change it by passing you own config under the `svgoConfig` key, ([see SVGO plugin docs](https://svgo.dev/docs/preset-default/)).
 
 {% code title="vite.config.js" %}
 ```javascript
@@ -389,4 +416,3 @@ SVGO also can be explicitly disabled for one file by adding the `?skipsvgo` suff
 import IconWithoutOptimizer from "./my-icon.svg?skipsvgo"
 </script>
 ```
-

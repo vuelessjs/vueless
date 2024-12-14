@@ -52,7 +52,7 @@ See [Rounding](rounding.md) chapter for more details.
 You can specify dark mode globally for all Vueless components.&#x20;
 
 <pre class="language-js" data-title="vueless.config.js"><code class="lang-js">export default {
-  darkMode: true,
+  colorMode: "dark", /* dark | light | auto */
 }<a data-footnote-ref href="#user-content-fn-4">;</a>
 </code></pre>
 
