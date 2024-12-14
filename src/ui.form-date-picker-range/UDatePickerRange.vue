@@ -92,8 +92,8 @@ type UButtonRef = InstanceType<typeof UButton>;
 type UInputRef = InstanceType<typeof UInput>;
 
 const isShownMenu = ref(false);
-const wrapperRef = useTemplateRef("wrapper");
-const menuRef = useTemplateRef("menu");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const menuRef = useTemplateRef<HTMLDivElement>("menu");
 const buttonRef = useTemplateRef<UButtonRef>("button");
 const buttonPrevRef = useTemplateRef<UButtonRef>("button-prev");
 const buttonNextRef = useTemplateRef<UButtonRef>("button-next");
