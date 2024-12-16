@@ -31,7 +31,7 @@ export default /*tw*/ {
   anotherMonthFirstDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>firstDateInRange}",
   lastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
   currentLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange} {>currentDate}",
-  currentFirstDayInRange: "",
+  currentFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange} {>currentDate}",
   anotherMonthLastDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>lastDateInRange}",
   selectedDay: "{>day} {>selectedDate}",
   activeDay: "{>day} {>activeDate}",
