@@ -149,10 +149,34 @@ export default /*tw*/ {
       { square: true, size: "xl", class: "p-3.5" },
     ],
   },
-  loader: "{ULoader}",
-  leftIcon: "{UIcon}",
-  rightIcon: "{UIcon}",
-  centerIcon: "{UIcon}",
+  loader: {
+    base: "{ULoader}",
+    defaults: {
+      size: {
+        "2xs": "sm",
+        xs: "sm",
+        sm: "md",
+        md: "md",
+        lg: "lg",
+        xl: "lg",
+      },
+    },
+  },
+  leftIcon: "{UIcon} {>centerIcon}",
+  rightIcon: "{UIcon} {>centerIcon}",
+  centerIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        "2xs": "2xs",
+        xs: "xs",
+        sm: "sm",
+        md: "sm",
+        lg: "sm",
+        xl: "sm",
+      },
+    },
+  },
   defaults: {
     color: "brand",
     variant: "primary",

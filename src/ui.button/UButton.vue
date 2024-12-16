@@ -11,7 +11,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, LoaderSize, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,32 +26,6 @@ const elementId = props.id || useId();
 const buttonRef = ref<HTMLElement | null>(null);
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
-
-const loaderSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size] as LoaderSize;
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    "2xs": "2xs",
-    xs: "xs",
-    sm: "sm",
-    md: "sm",
-    lg: "sm",
-    xl: "sm",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 watch(
   () => props.loading,
@@ -111,7 +85,7 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
     :data-test="dataTest"
   >
     <template v-if="loading">
-      <ULoader :loading="loading" :size="loaderSize" color="inherit" v-bind="loaderAttrs" />
+      <ULoader :loading="loading" color="inherit" v-bind="loaderAttrs" />
     </template>
 
     <template v-else>
@@ -120,15 +94,8 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @binding {string} icon-name
         @binding {string} icon-size
       -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize">
-        <UIcon
-          v-if="leftIcon"
-          internal
-          color="inherit"
-          :name="leftIcon"
-          :size="iconSize"
-          v-bind="leftIconAttrs"
-        />
+      <slot name="left" :icon-name="leftIcon">
+        <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
@@ -137,15 +104,8 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @binding {string} icon-name
         @binding {string} icon-size
       -->
-      <slot name="default" :label="label" :icon-name="icon" :icon-size="iconSize">
-        <UIcon
-          v-if="icon"
-          internal
-          color="inherit"
-          :name="icon"
-          :size="iconSize"
-          v-bind="centerIconAttrs"
-        />
+      <slot name="default" :label="label" :icon-name="icon">
+        <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -156,13 +116,12 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @binding {string} icon-name
         @binding {string} icon-size
       -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize">
+      <slot name="right" :icon-name="rightIcon">
         <UIcon
           v-if="rightIcon"
           internal
           color="inherit"
           :name="rightIcon"
-          :size="iconSize"
           v-bind="rightIconAttrs"
         />
       </slot>

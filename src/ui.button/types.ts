@@ -3,9 +3,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type LoaderSize = "sm" | "md" | "lg";
-export type IconSize = "2xs" | "xs" | "sm" | "md";
-
 export interface Props {
   /**
    * Button variant.

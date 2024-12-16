@@ -172,10 +172,12 @@ export const IconProps: StoryFn<UButtonArgs> = (args) => ({
   template: `
     <URow no-mobile>
       <UButton
+        v-bind="args"
         left-icon="download"
         label="Download"
       />
       <UButton
+        v-bind="args"
         right-icon="menu"
         label="Menu"
       />

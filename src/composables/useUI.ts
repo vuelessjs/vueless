@@ -1,4 +1,5 @@
 import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
+import { merge } from "lodash-es";
 
 import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
@@ -14,6 +15,7 @@ import type { Ref, ComputedRef } from "vue";
 import type {
   CVA,
   UseUI,
+  Defaults,
   KeyAttrs,
   KeysAttrs,
   Strategies,
@@ -22,7 +24,7 @@ import type {
   UnknownObject,
   ComponentNames,
   ComponentConfig,
-  KeyAttrsWithConfig,
+  NestedComponent,
   VuelessComponentInstance,
 } from "../types.ts";
 
@@ -44,7 +46,7 @@ export default function useUI<T>(
     ? (parent?.type.__name as ComponentNames)
     : (type.__name as ComponentNames);
 
-  const globalConfig = vuelessConfig?.component?.[componentName] || {};
+  const globalConfig = (vuelessConfig?.component?.[componentName] || {}) as ComponentConfig<T>;
 
   const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
     ? (vuelessConfig.strategy as Strategies)
@@ -107,31 +109,6 @@ export default function useUI<T>(
       if (isSystemKey(key)) continue;
 
       keysAttrs[`${key}Attrs`] = getAttrs(key, getClasses(key, mutatedProps));
-
-      const baseClasses = getBaseClasses(config.value[key]);
-      const extendsKeys = getExtendsKeys(baseClasses);
-
-      if (extendsKeys.length) {
-        const keyAttrs = keysAttrs[`${key}Attrs`];
-
-        keysAttrs[`${key}Attrs`] = computed(() => {
-          const extendsClasses = extendsKeys.map((key) => toValue(getClasses(key, mutatedProps)));
-
-          return {
-            ...keyAttrs.value,
-            class: cx([
-              ...extendsClasses,
-              keyAttrs.value.class?.replaceAll(EXTENDS_PATTERN_REG_EXP, ""),
-            ]),
-            // TODO: Add ability to merge array of keys
-            config: getMergedConfig({
-              defaultConfig: config.value[extendsKeys[0]],
-              globalConfig: keyAttrs.value.config,
-              propsConfig: propsConfig[extendsKeys[0]],
-            }),
-          };
-        }) as ComputedRef<KeyAttrsWithConfig<T>>;
-      }
     }
 
     return keysAttrs;
@@ -168,22 +145,63 @@ export default function useUI<T>(
     }
 
     function updateVuelessAttrs() {
-      const configKeyValue = config.value[configKey];
+      let configAttr: NestedComponent = {};
+      let extendsConfigAttr: NestedComponent = {};
+      let extendsClasses: string[] = [];
 
-      let configAttr = {};
-      let defaultAttrs = {};
+      const baseClasses = getBaseClasses(config.value[configKey]);
+      const extendsKeys = getExtendsKeys(baseClasses);
 
-      if (typeof configKeyValue === "object") {
-        configAttr = configKeyValue;
-        defaultAttrs = configKeyValue?.defaults;
+      if (typeof config.value[configKey] === "object") {
+        configAttr = config.value[configKey] as NestedComponent;
+      }
+
+      if (extendsKeys.length) {
+        extendsClasses = extendsKeys.map((key) => toValue(getClasses(key, mutatedProps)));
+        extendsConfigAttr = getExtendsConfig(extendsKeys);
       }
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: toValue(classes),
-        config: configAttr,
-        ...defaultAttrs,
+        class: cx([...extendsClasses, toValue(classes).replaceAll(EXTENDS_PATTERN_REG_EXP, "")]),
+        config: merge(configAttr, extendsConfigAttr),
+        ...getDefaults({
+          ...(configAttr.defaults || {}),
+          ...(extendsConfigAttr.defaults || {}),
+        }),
       };
+    }
+
+    /**
+     * Merge extends nested component configs.
+     * TODO: Add ability to merge multiple keys in one (now works for merging only 1 first key).
+     */
+    function getExtendsConfig(extendsKeys: string[]) {
+      const [firstKey] = extendsKeys;
+
+      return getMergedConfig({
+        defaultConfig: config.value[firstKey],
+        globalConfig: globalConfig[firstKey],
+        propsConfig: propsConfig[firstKey],
+      }) as NestedComponent;
+    }
+
+    /**
+     * Conditionally set props default value for nested components based on parent component prop value.
+     * For example, set icon size for the nested component based on the size of the parent component.
+     * Use an object where key = parent component prop value, value = nested component prop value.
+     * */
+    function getDefaults(defaultAttrs: NestedComponent["defaults"]) {
+      const defaults: Defaults = {};
+
+      for (const key in defaultAttrs) {
+        defaults[key] =
+          typeof defaultAttrs[key] === "object"
+            ? defaultAttrs[key][String(props[key])]
+            : defaultAttrs[key];
+      }
+
+      return defaults;
     }
 
     return vuelessAttrs;
@@ -195,7 +213,7 @@ export default function useUI<T>(
 /**
  * Return base classes.
  */
-function getBaseClasses(value: string | CVA) {
+function getBaseClasses(value: string | CVA | undefined) {
   return typeof value === "object" ? value.base || "" : value || "";
 }
 

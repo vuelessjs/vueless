@@ -241,12 +241,13 @@ export type ComponentConfig<T> = Partial<{
   NestedComponent;
 
 export interface NestedComponent {
-  [key: string]: Record<string, string | UnknownObject> | string;
+  defaults?: Record<string, string | UnknownObject>;
+  [key: string]: Record<string, string | UnknownObject> | string | undefined;
 }
 
 export type Defaults = {
   color?: string;
-  [key: string]: unknown;
+  [key: string]: unknown | UnknownObject;
 };
 
 export interface Transition {
