@@ -103,6 +103,7 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
+    interactive
     v-bind="radioLabelAttrs"
     :data-test="`${dataTest}-label`"
   >

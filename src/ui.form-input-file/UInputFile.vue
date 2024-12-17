@@ -281,6 +281,7 @@ const {
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
+    interactive
     v-bind="inputLabelAttrs"
   >
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneAttrs">

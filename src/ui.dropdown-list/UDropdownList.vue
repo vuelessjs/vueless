@@ -151,7 +151,7 @@ function optionHighlight(index: number, option: Option) {
   return classes;
 }
 
-function addPointerElement(keyCode: string) {
+function addPointerElement(keyCode?: string) {
   if (props.options.length > 0) {
     select(props.options[pointer.value], keyCode);
     onClickOption(props.options[pointer.value]);

@@ -200,6 +200,7 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
     :size="size"
     :disabled="disabled"
     :align="labelAlign"
+    interactive
     v-bind="textareaLabelAttrs"
     :data-test="dataTest"
   >

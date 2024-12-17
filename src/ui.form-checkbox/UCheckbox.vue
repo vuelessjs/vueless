@@ -142,6 +142,7 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
+    interactive
     v-bind="checkboxLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
