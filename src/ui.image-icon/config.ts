@@ -1,6 +1,6 @@
 export default /*tw*/ {
   icon: {
-    base: "fill-current outline-0 shrink-0 grow-0",
+    base: "fill-current shrink-0 grow-0 focus:outline-0",
     variants: {
       variant: {
         light: "text-{color}-400 dark:text-{color}-200",
