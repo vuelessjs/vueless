@@ -96,7 +96,7 @@ const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-h
 const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
 const i18nGlobal = tm(UTable);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const sortedRows: ComputedRef<Row[]> = computed(() => {
   const headerKeys = props.columns.map((column) =>

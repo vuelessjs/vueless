@@ -40,14 +40,7 @@ export default /*tw*/ {
   },
   headerCellCheckbox: "{>headerCellBase} w-10 pr-2",
   headerCheckbox: "{UCheckbox}",
-  headerCounter: {
-    base: "{>headerCounterBase} absolute top-4 mt-px left-11 ml-px",
-    variants: {
-      compact: {
-        true: "top-3",
-      },
-    },
-  },
+  headerCounter: "{>stickyHeaderCounter} mt-px ml-px",
   headerLoader: "{ULoaderProgress} absolute !top-auto",
   body: "group/body divide-none",
   bodyRow: "hover:bg-gray-50",
@@ -108,7 +101,6 @@ export default /*tw*/ {
   },
   defaults: {
     emptyCellLabel: "—",
-    nesting: false,
     compact: false,
     selectable: false,
     dateDivider: false,

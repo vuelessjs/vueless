@@ -146,25 +146,18 @@ export default function useUI<T>(
 
     function updateVuelessAttrs() {
       let configAttr: NestedComponent = {};
-      let extendsConfigAttr: NestedComponent = {};
-      let extendsClasses: string[] = [];
-
-      const baseClasses = getBaseClasses(config.value[configKey]);
-      const extendsKeys = getExtendsKeys(baseClasses);
 
       if (typeof config.value[configKey] === "object") {
         configAttr = config.value[configKey] as NestedComponent;
       }
 
-      if (extendsKeys.length) {
-        extendsClasses = extendsKeys.map((key) => toValue(getClasses(key, mutatedProps)));
-        extendsConfigAttr = getExtendsConfig(extendsKeys);
-      }
+      const extendsClasses = getExtendsClasses(configKey);
+      const extendsConfigAttr = getExtendsConfigAttr(configKey);
 
       vuelessAttrs.value = {
         ...commonAttrs,
         class: cx([...extendsClasses, toValue(classes).replaceAll(EXTENDS_PATTERN_REG_EXP, "")]),
-        config: merge(configAttr, extendsConfigAttr),
+        config: merge({}, configAttr, extendsConfigAttr),
         ...getDefaults({
           ...(configAttr.defaults || {}),
           ...(extendsConfigAttr.defaults || {}),
@@ -173,17 +166,46 @@ export default function useUI<T>(
     }
 
     /**
+     * Recursively get extends classes.
+     */
+    function getExtendsClasses(configKey: string) {
+      let extendsClasses: string[] = [];
+
+      const extendsKeys = getExtendsKeys(config.value[configKey]);
+
+      if (extendsKeys.length) {
+        extendsKeys.forEach((key) => {
+          extendsClasses = [
+            ...extendsClasses,
+            ...getExtendsClasses(key),
+            toValue(getClasses(key, mutatedProps)),
+          ];
+        });
+      }
+
+      return extendsClasses;
+    }
+
+    /**
      * Merge extends nested component configs.
      * TODO: Add ability to merge multiple keys in one (now works for merging only 1 first key).
      */
-    function getExtendsConfig(extendsKeys: string[]) {
-      const [firstKey] = extendsKeys;
+    function getExtendsConfigAttr(configKey: string) {
+      let extendsConfigAttr: NestedComponent = {};
 
-      return getMergedConfig({
-        defaultConfig: config.value[firstKey],
-        globalConfig: globalConfig[firstKey],
-        propsConfig: propsConfig[firstKey],
-      }) as NestedComponent;
+      const extendsKeys = getExtendsKeys(config.value[configKey]);
+
+      if (extendsKeys.length) {
+        const [firstKey] = extendsKeys;
+
+        extendsConfigAttr = getMergedConfig({
+          defaultConfig: config.value[firstKey],
+          globalConfig: globalConfig[firstKey],
+          propsConfig: propsConfig[firstKey],
+        }) as NestedComponent;
+      }
+
+      return extendsConfigAttr;
     }
 
     /**
@@ -221,7 +243,8 @@ function getBaseClasses(value: string | CVA | undefined) {
  * Retrieves extends keys from patterns:
  * Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
  */
-function getExtendsKeys(values: string = ""): string[] {
+function getExtendsKeys(configItemValue?: CVA | string): string[] {
+  const values = getBaseClasses(configItemValue);
   const matches = values.match(EXTENDS_PATTERN_REG_EXP);
 
   return matches ? matches?.map((pattern) => pattern.slice(2, -1)) : [];
