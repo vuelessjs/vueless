@@ -174,7 +174,7 @@ async function getComponentSafelist(componentName, { colors, vuelessConfigFiles 
   if (defaultConfigPath) {
     const configPath = path.join(process.cwd(), defaultConfigPath);
 
-    defaultConfig = getComponentDefaultConfig(componentName, configPath);
+    defaultConfig = await getComponentDefaultConfig(componentName, configPath);
   }
 
   const isStrategyValid =
