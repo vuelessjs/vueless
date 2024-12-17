@@ -17,6 +17,32 @@ const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
+export async function setCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+
+  for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
+    const customProps =
+      componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
+
+    if (customProps) {
+      await cacheComponentTypes(path.join(srcDir, componentDir));
+      await modifyComponentTypes(
+        path.join(srcDir, componentDir),
+        vuelessConfig.component[componentName].props,
+      );
+    }
+  }
+}
+
+export async function removeCustomPropTypes(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+
+  for await (const componentDir of Object.values(COMPONENTS)) {
+    await restoreComponentTypes(path.join(srcDir, componentDir));
+    await clearComponentTypesCache(path.join(srcDir, componentDir));
+  }
+}
+
 async function cacheComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
   const sourceFile = path.join(filePath, "types.ts");
@@ -36,7 +62,7 @@ async function clearComponentTypesCache(filePath) {
   await fs.rm(path.join(filePath, ".cache"), { force: true, recursive: true });
 }
 
-export async function restoreComponentTypes(filePath) {
+async function restoreComponentTypes(filePath) {
   const cacheDir = path.join(filePath, ".cache");
   const sourceFile = path.join(cacheDir, "types.ts");
   const destFile = path.join(filePath, "types.ts");
@@ -160,31 +186,5 @@ async function modifyComponentTypes(filePath, props) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error updating file:", error.message);
-  }
-}
-
-export async function setCustomPropTypes(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
-
-  for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const customProps =
-      componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
-
-    if (customProps) {
-      await cacheComponentTypes(path.join(srcDir, componentDir));
-      await modifyComponentTypes(
-        path.join(srcDir, componentDir),
-        vuelessConfig.component[componentName].props,
-      );
-    }
-  }
-}
-
-export async function removeCustomPropTypes(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
-
-  for await (const componentDir of Object.values(COMPONENTS)) {
-    await restoreComponentTypes(path.join(srcDir, componentDir));
-    await clearComponentTypesCache(path.join(srcDir, componentDir));
   }
 }
