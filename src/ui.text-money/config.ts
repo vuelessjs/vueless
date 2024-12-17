@@ -59,7 +59,6 @@ export default /*tw*/ {
     decimalSeparator: ",",
     thousandsSeparator: " ",
     planned: false,
-    integer: false,
     symbolDivided: true,
   },
 };

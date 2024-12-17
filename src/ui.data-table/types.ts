@@ -5,16 +5,7 @@ import type { ComponentConfig, UnknownObject } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-type RowKeys =
-  | number
-  | string
-  | boolean
-  | undefined
-  | Date
-  | Row
-  | Row[]
-  | string
-  | ((row: Row) => string);
+type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
 
 export interface CellObject {
   contentClasses?: string | ((value: unknown | string, row: Row) => string);

@@ -213,6 +213,6 @@ const { stripeAttrs } = useUI<Config>(defaultConfig);
 
 <template>
   <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="stripeAttrs" :style="barStyle" />
+    <div v-if="show" v-bind="stripeAttrs" :data-test="dataTest" :style="barStyle" />
   </Transition>
 </template>
