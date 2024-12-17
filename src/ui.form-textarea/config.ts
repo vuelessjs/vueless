@@ -18,7 +18,10 @@ export default /*tw*/ {
         `,
       },
       disabled: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 pointer-events-none",
+        true: `
+            focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 
+            hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
+          `,
       },
     },
     compoundVariants: [
@@ -31,7 +34,7 @@ export default /*tw*/ {
     base: `
       p-0 block w-full bg-transparent border-none !leading-none font-normal text-gray-900
       placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
-      focus:border-none focus:outline-none focus:ring-0
+      focus:border-none focus:outline-none focus:ring-0 disabled:cursor-not-allowed
     `,
     variants: {
       size: {

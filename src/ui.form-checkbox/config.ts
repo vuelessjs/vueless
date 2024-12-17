@@ -1,11 +1,14 @@
 export default /*tw*/ {
-  checkboxLabel: "{ULabel}",
+  checkboxLabel: {
+    base: "{ULabel}",
+    label: "hover:cursor-pointer",
+  },
   checkbox: {
     base: `
       border rounded bg-white cursor-pointer transition checked:text-{color}-600
       border-gray-300 hover:border-gray-400 focus:border-{color}-500 active:border-{color}-800
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
-      disabled:border-gray-300 disabled:bg-gray-100
+      disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
     `,
     variants: {
       size: {

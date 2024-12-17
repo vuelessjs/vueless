@@ -479,7 +479,7 @@ const {
       @blur="deactivate"
       @keydown.self.down.prevent="dropdownListRef?.pointerForward"
       @keydown.self.up.prevent="dropdownListRef?.pointerBackward"
-      @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement"
+      @keydown.enter.tab.stop.self="() => dropdownListRef?.addPointerElement"
       @keyup.esc="deactivate"
     >
       <!-- @slot Use it to add something right. -->
@@ -677,7 +677,7 @@ const {
             @keyup.esc="deactivate"
             @keydown.down.prevent="dropdownListRef?.pointerForward"
             @keydown.up.prevent="dropdownListRef?.pointerBackward"
-            @keydown.enter.prevent.stop.self="dropdownListRef?.addPointerElement"
+            @keydown.enter.prevent.stop.self="() => dropdownListRef?.addPointerElement"
           />
         </div>
 

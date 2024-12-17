@@ -44,7 +44,7 @@ export default /*tw*/ {
         true: "text-red-500",
       },
       disabled: {
-        true: "text-gray-500",
+        true: "text-gray-500 cursor-not-allowed",
       },
     },
     compoundVariants: [

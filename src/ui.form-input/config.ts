@@ -2,7 +2,7 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition bg-white
+      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition
       hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
       focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
@@ -32,7 +32,7 @@ export default /*tw*/ {
       block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-transparent
       border-none rounded-dynamic transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
-      disabled:text-gray-700
+      disabled:text-gray-700 disabled:cursor-not-allowed
     `,
     variants: {
       size: {
