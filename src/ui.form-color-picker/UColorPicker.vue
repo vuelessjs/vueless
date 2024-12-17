@@ -78,6 +78,7 @@ const {
     :error="error"
     :size="size"
     align="topWithDesc"
+    :interactive="false"
     v-bind="colorPickerLabelAttrs"
     :data-test="dataTest"
   >

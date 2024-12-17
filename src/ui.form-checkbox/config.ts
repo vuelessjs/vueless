@@ -1,8 +1,5 @@
 export default /*tw*/ {
-  checkboxLabel: {
-    base: "{ULabel}",
-    label: "hover:cursor-pointer",
-  },
+  checkboxLabel: "{ULabel}",
   checkbox: {
     base: `
       border rounded bg-white cursor-pointer transition checked:text-{color}-600

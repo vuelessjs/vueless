@@ -81,6 +81,7 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
     :size="size"
     :align="labelAlign"
     :description="description"
+    :interactive="false"
     v-bind="inputLabelAttrs"
     :data-test="dataTest"
   >

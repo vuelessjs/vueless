@@ -1,8 +1,5 @@
 export default /*tw*/ {
-  radioLabel: {
-    base: "{ULabel}",
-    label: "hover:cursor-pointer",
-  },
+  radioLabel: "{ULabel}",
   radio: {
     base: `
       border cursor-pointer transition checked:text-{color}-600

@@ -57,6 +57,7 @@ const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultCon
     :description="description"
     :disabled="disabled"
     align="topWithDesc"
+    :interactive="false"
     v-bind="groupLabelAttrs"
     :data-test="dataTest"
   >
