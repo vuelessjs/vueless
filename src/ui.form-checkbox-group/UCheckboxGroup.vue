@@ -74,7 +74,6 @@ const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(default
     :description="description"
     :disabled="disabled"
     align="topWithDesc"
-    :interactive="false"
     v-bind="groupLabelAttrs"
     :data-test="dataTest"
   >

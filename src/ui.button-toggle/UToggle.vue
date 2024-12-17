@@ -97,7 +97,6 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
     :align="labelAlign"
     :disabled="disabled"
     centred
-    :interactive="false"
     v-bind="toggleLabelAttrs"
     :data-test="dataTest"
   >

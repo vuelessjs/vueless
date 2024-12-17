@@ -46,11 +46,9 @@ export default /*tw*/ {
       disabled: {
         true: "text-gray-500 cursor-not-allowed",
       },
-      interactive: {
-        true: "hover:cursor-pointer",
-      },
     },
     compoundVariants: [
+      { interactive: true, disabled: false, class: "hover:cursor-pointer" },
       { align: "topInside", size: "sm", class: "top-2 text-2xs" },
       { align: "topInside", size: "md", class: "top-2.5 text-xs" },
       { align: "topInside", size: "lg", class: "top-2.5 text-sm" },
@@ -97,6 +95,6 @@ export default /*tw*/ {
     size: "md",
     centred: false,
     disabled: false,
-    interactive: true,
+    interactive: false,
   },
 };

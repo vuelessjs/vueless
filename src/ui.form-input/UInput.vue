@@ -273,6 +273,7 @@ const {
     :size="size"
     :align="labelAlign"
     centred
+    interactive
     v-bind="inputLabelAttrs"
   >
     <label :for="elementId" v-bind="wrapperAttrs">

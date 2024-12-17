@@ -59,7 +59,6 @@ const { filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
     :label="label"
     :description="description"
     :size="size"
-    :interactive="false"
     :align="labelAlign"
     v-bind="filesLabelAttrs"
   >
