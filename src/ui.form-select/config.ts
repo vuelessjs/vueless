@@ -2,7 +2,7 @@ export default /*tw*/ {
   selectLabel: "{ULabel}",
   wrapper: {
     base: `
-      py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
+      flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
       focus-within:ring-brand-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
@@ -32,12 +32,13 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "px-3 flex min-h-full w-full overflow-hidden justify-between",
+    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-between",
     variants: {
       multiple: {
         true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
       },
     },
+    compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
   },
   selectedLabels: "flex flex-col col-span-2",
   selectedLabel: {
@@ -71,11 +72,11 @@ export default /*tw*/ {
   beforeCaret: "{>caret}",
   afterCaret: "{>caret} mr-3",
   caret: {
-    base: "flex items-center mt-0",
+    base: "flex items-center",
     compoundVariants: [
-      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-3" },
-      { labelAlign: "topInside", size: "md", label: true, class: "-mt-4" },
-      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-[1.125rem]" },
+      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-4" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-5" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-6" },
     ],
   },
   toggle: "{>caret} mr-3",
