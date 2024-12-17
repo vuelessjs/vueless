@@ -99,10 +99,10 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
  * Return default values for component props, icons, etc..
  */
 export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
-  const componentDefaults = cloneDeep((defaultConfig as UnknownObject).defaults) || {};
-  const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
+  const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
+  const globalDefaults = vuelessConfig.component?.[name]?.defaults || {};
 
-  const defaults = merge(componentDefaults, globalDefaults) as Props & Defaults;
+  const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
 
   if (defaults.color) {
     defaults.color = getColor(defaults.color as BrandColors);

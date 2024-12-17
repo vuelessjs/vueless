@@ -573,7 +573,7 @@ watchEffect(() => {
   const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
 
   if (!calendarConfig.i18n || props.config?.i18n) {
-    calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
+    calendarConfig.i18n = merge({}, calendarConfig.i18n, config.value.i18n);
   }
 });
 </script>

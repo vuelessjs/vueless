@@ -129,7 +129,7 @@ const isCurrentView = computed(() => ({
 const i18nGlobal = tm<DefaultLocale>(UCalendar);
 
 const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge(defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+  merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
 );
 
 const locale = computed(() => {

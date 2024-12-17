@@ -97,7 +97,7 @@ const innerWrapperRef = ref<HTMLDivElement | null>(null);
 const elementId = props.id || useId();
 
 const i18nGlobal = tm(USelect);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;

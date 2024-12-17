@@ -48,7 +48,7 @@ const emit = defineEmits([
 const { tm } = useLocale();
 
 const i18nGlobal = tm(UDataListName);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const iconSize = computed(() => {
   const sizes = {

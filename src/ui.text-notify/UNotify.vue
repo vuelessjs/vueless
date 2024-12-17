@@ -27,7 +27,7 @@ const notifyPositionStyles = ref({});
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
 const i18nGlobal = tm(UNotify);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });

@@ -54,7 +54,7 @@ const elementId = props.id || useId();
 const { tm } = useLocale();
 
 const i18nGlobal = tm(UDropdownList);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";

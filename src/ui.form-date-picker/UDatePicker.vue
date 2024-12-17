@@ -82,7 +82,7 @@ const localValue = computed({
 });
 
 const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge(defaultConfig.i18n, i18nGlobal, props.config.i18n),
+  merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n),
 );
 
 const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));
@@ -268,7 +268,7 @@ watchEffect(() => {
   const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
 
   if (!calendarConfig?.i18n || props.config?.i18n) {
-    calendarConfig.i18n = merge(calendarConfig.i18n, config.value.i18n);
+    calendarConfig.i18n = merge({}, calendarConfig.i18n, config.value.i18n);
   }
 });
 </script>

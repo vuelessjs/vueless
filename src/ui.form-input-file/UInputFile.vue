@@ -50,7 +50,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 const elementId = props.id || useId();
 
 const i18nGlobal = tm(UInputFile);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const currentFiles = computed<File | File[] | null>({
   get: () => props.modelValue,

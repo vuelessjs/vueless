@@ -15,7 +15,9 @@ export function useLocale(props: UDatePickerRangeProps<unknown>) {
 
   const i18nGlobal = tm<Locale>(UDatePickerRange);
 
-  const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config?.i18n));
+  const currentLocale = computed(() =>
+    merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+  );
 
   const locale = computed(() => {
     const { months, weekdays } = currentLocale.value;
