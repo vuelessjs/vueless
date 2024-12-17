@@ -9,9 +9,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "module";
 import { rm, cp } from "node:fs/promises";
+import { merge } from "lodash-es";
 
 import { vuelessConfig } from "./vuelessConfig.js";
-import { getDirFiles, getDefaultConfigJson, merge } from "./helper.js";
+import { getDirFiles, getComponentDefaultConfig } from "./helper.js";
 import {
   COMPONENTS,
   VUELESS_DIR,
@@ -306,10 +307,8 @@ function getDefaults() {
   const defaultConfigPath = path.join(cwd, defaultIconsDir, COMPONENTS[U_ICON], "config.ts");
 
   if (fs.existsSync(defaultConfigPath)) {
-    const defaultConfigFile = fs.readFileSync(defaultConfigPath).toString();
-
     return merge(
-      getDefaultConfigJson(defaultConfigFile)?.defaults,
+      getComponentDefaultConfig(U_ICON, defaultConfigPath)?.defaults,
       vuelessConfig?.component?.[U_ICON]?.defaults,
     );
   }

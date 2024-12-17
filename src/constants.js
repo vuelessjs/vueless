@@ -217,6 +217,7 @@ export const VUELESS_LOCAL_DIR = `src`;
 export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${ICONS_DIR}`;
 export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
 export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
+export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 
 /* Other */
 export const PX_IN_REM = 16;

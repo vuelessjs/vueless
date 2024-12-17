@@ -1,6 +1,9 @@
 import path from "path";
-import { statSync } from "fs";
+import { statSync, existsSync } from "fs";
 import { readdir } from "node:fs/promises";
+import esbuild from "esbuild";
+
+import { VUELESS_CONFIGS_CACHED_DIR } from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
@@ -68,23 +71,24 @@ export function getVueFiles() {
   return [path.join(process.cwd(), "src")];
 }
 
-export function getDefaultConfigJson(fileContents) {
-  const objectStartIndex = fileContents.indexOf("{");
-  const objectString = fileContents.substring(objectStartIndex).replace("};", "}");
+export async function getComponentDefaultConfig(name, entryPath) {
+  const configOutPath = path.join(process.cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
 
-  // indirect eval
-  return (0, eval)("(" + objectString + ")"); // Converting into JS object
+  await buildTSFile(entryPath, configOutPath);
+
+  if (existsSync(configOutPath)) {
+    return (await import(configOutPath)).default;
+  }
 }
 
-export function merge(source = {}, target = {}) {
-  for (const [key, val] of Object.entries(source)) {
-    if (val !== null && typeof val === `object`) {
-      target[key] ??= new val.__proto__.constructor();
-      merge(val, target[key]);
-    } else {
-      target[key] = val;
-    }
-  }
-
-  return target; // we're replacing in-situ, so this is more for chaining than anything else
+export async function buildTSFile(entryPath, configOutFile) {
+  await esbuild.build({
+    entryPoints: [entryPath],
+    outfile: configOutFile,
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    target: "ESNext",
+    loader: { ".ts": "ts" },
+  });
 }

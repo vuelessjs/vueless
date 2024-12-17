@@ -8,7 +8,7 @@ import { defineConfig } from "cva";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 import { createGetMergedConfig } from "./mergeConfigs.js";
-import { getDefaultConfigJson, getDirFiles } from "./helper.js";
+import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
   BRAND_COLORS,
@@ -173,9 +173,8 @@ async function getComponentSafelist(componentName, { colors, vuelessConfigFiles 
 
   if (defaultConfigPath) {
     const configPath = path.join(process.cwd(), defaultConfigPath);
-    const defaultConfigContent = await readFile(configPath, { encoding: "utf-8" });
 
-    defaultConfig = getDefaultConfigJson(defaultConfigContent);
+    defaultConfig = getComponentDefaultConfig(componentName, configPath);
   }
 
   const isStrategyValid =
