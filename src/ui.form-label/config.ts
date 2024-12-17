@@ -24,14 +24,7 @@ export default /*tw*/ {
       { align: "right", centred: true, class: "items-center justify-start w-auto" },
     ],
   },
-  content: {
-    base: "flex",
-    variants: {
-      disabled: {
-        true: "pointer-events-none",
-      },
-    },
-  },
+  content: "flex",
   label: {
     base: "text-gray-900 z-10 block !leading-none w-max",
     variants: {
@@ -51,10 +44,11 @@ export default /*tw*/ {
         true: "text-red-500",
       },
       disabled: {
-        true: "text-gray-500 pointer-events-none",
+        true: "text-gray-500 cursor-not-allowed",
       },
     },
     compoundVariants: [
+      { interactive: true, disabled: false, class: "hover:cursor-pointer" },
       { align: "topInside", size: "sm", class: "top-2 text-2xs" },
       { align: "topInside", size: "md", class: "top-2.5 text-xs" },
       { align: "topInside", size: "lg", class: "top-2.5 text-sm" },
@@ -101,5 +95,6 @@ export default /*tw*/ {
     size: "md",
     centred: false,
     disabled: false,
+    interactive: false,
   },
 };

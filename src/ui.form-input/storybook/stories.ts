@@ -127,6 +127,7 @@ RightIconSlot.args = {
   slotTemplate: `
     <template #right-icon>
       <UIcon
+        interactive
         name="star"
         color="green"
       />
