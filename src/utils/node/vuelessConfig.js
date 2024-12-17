@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import esbuild from "esbuild";
 
+import { buildTSFile } from "./helper.js";
 import { VUELESS_CACHE_DIR, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
 /**
@@ -24,22 +24,10 @@ export let vuelessConfig = {};
     return;
   }
 
-  fs.existsSync(configPathJs) && (await buildConfig(configPathJs, configOutPath));
-  fs.existsSync(configPathTs) && (await buildConfig(configPathTs, configOutPath));
+  fs.existsSync(configPathJs) && (await buildTSFile(configPathJs, configOutPath));
+  fs.existsSync(configPathTs) && (await buildTSFile(configPathTs, configOutPath));
 
   if (fs.existsSync(configOutPath)) {
     vuelessConfig = (await import(configOutPath)).default;
   }
 })();
-
-async function buildConfig(entryPath, configOutFile) {
-  await esbuild.build({
-    entryPoints: [entryPath],
-    outfile: configOutFile,
-    bundle: true,
-    platform: "node",
-    format: "esm",
-    target: "ESNext",
-    loader: { ".ts": "ts" },
-  });
-}
