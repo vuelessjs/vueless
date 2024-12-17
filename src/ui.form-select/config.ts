@@ -1,15 +1,5 @@
 export default /*tw*/ {
-  selectLabel: {
-    base: "{ULabel}",
-    variants: {
-      opened: {
-        true: "group/active",
-      },
-      openedTop: {
-        true: "group/top",
-      },
-    },
-  },
+  selectLabel: "{ULabel}",
   wrapper: {
     base: `
       py-2 flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -29,7 +19,10 @@ export default /*tw*/ {
         true: "bg-gray-100 pointer-events-none",
       },
       opened: {
-        true: "z-[inherit]",
+        true: "z-[inherit] group/active",
+      },
+      openedTop: {
+        true: "group/top",
       },
     },
     compoundVariants: [
