@@ -119,9 +119,9 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
       <slot name="right" :icon-name="rightIcon">
         <UIcon
           v-if="rightIcon"
-          internal
-          color="inherit"
           :name="rightIcon"
+          color="inherit"
+          internal
           v-bind="rightIconAttrs"
         />
       </slot>
