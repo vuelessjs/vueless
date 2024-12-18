@@ -1,7 +1,7 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { cloneDeep, isCSR, isSSR } from "./helper.ts";
+import { isCSR, isSSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { UIcon } from "../ui.image-icon/constants.ts";
 import {
