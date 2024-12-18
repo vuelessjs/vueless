@@ -176,6 +176,8 @@ export default function useUI<T>(
 
       if (extendsKeys.length) {
         extendsKeys.forEach((key) => {
+          if (key === configKey) return;
+
           extendsClasses = [
             ...extendsClasses,
             ...getExtendsClasses(key),
