@@ -102,7 +102,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
         <slot :label="label" :opened="isShownOptions" />
       </template>
 
-      <template #right="{ iconColor }">
+      <template #right="{ iconSize }">
         <!--
           @slot Use it to add something after the label.
           @binding {boolean} opened
@@ -111,8 +111,8 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
           <UIcon
             v-if="!noIcon"
             internal
-            :color="iconColor"
-            :size="size"
+            color="inherit"
+            :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
