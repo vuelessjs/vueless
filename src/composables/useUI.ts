@@ -93,6 +93,8 @@ export default function useUI<T>(
         classes = cx([classes, attrs.class]);
       }
 
+      classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
+
       return color ? setColor(classes, color) : classes;
     });
   }
@@ -118,12 +120,12 @@ export default function useUI<T>(
    * Get an element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef<string>) {
-    const nestedComponent = getNestedComponent(config.value[configKey] || "");
+    const vuelessAttrs = ref({});
 
     const attrs = useAttrs() as KeyAttrs;
     const isDev = isCSR && import.meta.env?.DEV;
-    const vuelessAttrs = ref({});
     const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
+    const nestedComponent = getNestedComponent(config.value[configKey] || "");
 
     const commonAttrs: KeyAttrs = {
       ...(isTopLevelKey ? attrs : {}),
@@ -139,11 +141,11 @@ export default function useUI<T>(
 
     watch(config, updateVuelessAttrs, { immediate: true });
     watch(props, updateVuelessAttrs);
+    watch(classes, updateVuelessAttrs);
 
-    if (classes?.value) {
-      watch(classes, updateVuelessAttrs);
-    }
-
+    /**
+     * Updating Vueless attributes.
+     */
     function updateVuelessAttrs() {
       let configAttr: NestedComponent = {};
 
@@ -156,7 +158,7 @@ export default function useUI<T>(
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([...extendsClasses, toValue(classes).replaceAll(EXTENDS_PATTERN_REG_EXP, "")]),
+        class: cx([...extendsClasses, toValue(classes)]),
         config: merge({}, configAttr, extendsConfigAttr),
         ...getDefaults({
           ...(configAttr.defaults || {}),
@@ -209,6 +211,7 @@ export default function useUI<T>(
     }
 
     /**
+     * Get component prop default value.
      * Conditionally set props default value for nested components based on parent component prop value.
      * For example, set icon size for the nested component based on the size of the parent component.
      * Use an object where key = parent component prop value, value = nested component prop value.
@@ -272,7 +275,11 @@ function isSystemKey(key: string): boolean {
 /**
  * Check is config contains default CVA keys.
  */
-function isCVA(config: UnknownObject): boolean {
+function isCVA(config?: UnknownObject | string): boolean {
+  if (typeof config !== "object") {
+    return false;
+  }
+
   return Object.values(CVA_CONFIG_KEY).some((value) =>
     Object.keys(config).some((key) => key === value),
   );
