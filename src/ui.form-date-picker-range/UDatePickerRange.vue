@@ -543,6 +543,7 @@ const mutatedProps = computed(() => ({
 const {
   config,
   wrapperAttrs,
+  rightIconAttrs,
   datepickerCalendarAttrs,
   datepickerInputAttrs,
   menuAttrs,
@@ -551,7 +552,7 @@ const {
   shiftRangeButtonAttrs,
   rangeInputWrapperAttrs,
   rangeInputErrorAttrs,
-  datepickerActiveInputAttrs,
+  datepickerInputActiveAttrs,
   rangeInputFirstAttrs,
   rangeInputLastAttrs,
   periodRowAttrs,
@@ -595,8 +596,9 @@ watchEffect(() => {
       readonly
       :left-icon="leftIcon"
       :right-icon="rightIcon || config.defaults.calendarIcon"
-      v-bind="isShownMenu ? datepickerActiveInputAttrs : datepickerInputAttrs"
+      v-bind="isShownMenu ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @focus="activate"
+      @keydown.esc="deactivate"
     >
       <template #left>
         <!-- @slot Use it to add something before the date. -->
@@ -608,14 +610,14 @@ watchEffect(() => {
         <slot name="left-icon" />
       </template>
 
-      <template #right-icon>
+      <template #right-icon="{ iconName, iconSize }">
         <!--
           @slot Use it add an icon after the date.
           @binding {string} icon-name
           @binding {string} icon-size
         -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="size">
-          <UIcon :name="rightIcon" :size="size" color="gray" />
+        <slot name="right-icon" :icon-name="iconName" :icon-size="size">
+          <UIcon :name="iconName" :size="iconSize" color="gray" v-bind="rightIconAttrs" />
         </slot>
       </template>
 

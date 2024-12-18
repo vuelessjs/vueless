@@ -31,6 +31,7 @@ export default {
   title: "Form Inputs & Controls / Date Picker Range",
   component: UDatePickerRange,
   args: {
+    label: "Datepicker range",
     modelValue: {
       from: new Date(2022, 1, 14),
       to: new Date(2022, 2, 20),
@@ -41,13 +42,9 @@ export default {
   },
   parameters: {
     docs: {
+      ...getDocsDescription(UDatePickerRangeName),
       story: {
         height: "620px",
-      },
-    },
-    parameters: {
-      docs: {
-        ...getDocsDescription(UDatePickerRangeName),
       },
     },
   },

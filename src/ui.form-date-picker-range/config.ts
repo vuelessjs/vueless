@@ -12,6 +12,7 @@ export default /*tw*/ {
       },
     },
   },
+  rightIcon: "{UIcon}",
   buttonWrapper: {
     base: `
       flex rounded-dynamic max-md:justify-between
@@ -211,7 +212,6 @@ export default /*tw*/ {
     labelAlign: "topInside",
     openDirectionX: "auto",
     openDirectionY: "auto",
-    timepicker: false,
     disabled: false,
     dateFormat: undefined,
     maxDate: undefined,

@@ -125,11 +125,6 @@ export interface UDatePickerRangeProps<TModelValue> {
   dateFormat?: string;
 
   /**
-   * Same as date format, but used when timepicker is enabled.
-   */
-  dateTimeFormat?: string;
-
-  /**
    * User-friendly date format (it will be shown in UI).
    */
   userDateFormat?: string;
