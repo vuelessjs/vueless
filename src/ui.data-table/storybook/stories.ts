@@ -39,12 +39,12 @@ export default {
   argTypes: {
     ...getArgTypes(UTable.__name),
     row: {
-      description:
-        "The row of the table. It's not a prop (it created for ease of work with storybook).",
+      table: {
+        disable: true,
+      },
     },
     numberOfRows: {
-      description:
-        "The number of table rows. It's not a prop (it created for ease of work with storybook).",
+      description: "The number of table rows (not a component prop).",
     },
   },
   args: {
