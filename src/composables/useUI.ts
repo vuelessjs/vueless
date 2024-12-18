@@ -53,11 +53,12 @@ export default function useUI<T>(
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
-  const propsConfig = props.config as ComponentConfig<T>;
   const config = ref({}) as Ref<ComponentConfig<T>>;
   const attrs = useAttrs();
 
   watchEffect(() => {
+    const propsConfig = props.config as ComponentConfig<T>;
+
     config.value = getMergedConfig({
       defaultConfig,
       globalConfig,
@@ -139,9 +140,7 @@ export default function useUI<T>(
     /* Delete value key to prevent v-model overwrite. */
     delete commonAttrs.value;
 
-    watch(config, updateVuelessAttrs, { immediate: true });
-    watch(props, updateVuelessAttrs);
-    watch(classes, updateVuelessAttrs);
+    watch([config, props, classes], updateVuelessAttrs, { immediate: true });
 
     /**
      * Updating Vueless attributes.
@@ -195,6 +194,7 @@ export default function useUI<T>(
     function getExtendsConfigAttr(configKey: string) {
       let extendsConfigAttr: NestedComponent = {};
 
+      const propsConfig = props.config as ComponentConfig<T>;
       const extendsKeys = getExtendsKeys(config.value[configKey]);
 
       if (extendsKeys.length) {
