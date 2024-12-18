@@ -63,7 +63,9 @@ const userFormatDate = ref("");
 const formattedDate = ref("");
 const customView = ref(View.Day);
 
-const datepickerInputRef = useTemplateRef<typeof UInput>("input");
+type UInputRef = InstanceType<typeof UInput>;
+
+const datepickerInputRef = useTemplateRef<UInputRef>("input");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 
@@ -258,6 +260,7 @@ const mutatedProps = computed(() => ({
 const {
   config,
   wrapperAttrs,
+  rightIconAttrs,
   datepickerInputAttrs,
   datepickerInputActiveAttrs,
   datepickerCalendarAttrs,
@@ -318,7 +321,7 @@ watchEffect(() => {
           @binding {string} icon-size
         -->
         <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
-          <UIcon :name="iconName" :size="iconSize" color="gray" />
+          <UIcon :name="iconName" :size="iconSize" color="gray" v-bind="rightIconAttrs" />
         </slot>
       </template>
 

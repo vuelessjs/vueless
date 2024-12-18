@@ -12,6 +12,7 @@ export default /*tw*/ {
       },
     },
   },
+  rightIcon: "{UIcon}",
   datepickerCalendar: {
     base: "{UCalendar} absolute mb-3 z-40",
     variants: {
