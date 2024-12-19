@@ -74,9 +74,9 @@ export default /*tw*/ {
   caret: {
     base: "flex items-center",
     compoundVariants: [
-      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-4" },
-      { labelAlign: "topInside", size: "md", label: true, class: "-mt-5" },
-      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-6" },
+      { labelAlign: "topInside", size: "sm", label: true, class: "-mt-5" },
+      { labelAlign: "topInside", size: "md", label: true, class: "-mt-6" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "-mt-7" },
     ],
   },
   toggle: "{>caret} mr-3",
