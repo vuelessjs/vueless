@@ -4,10 +4,10 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{UInput} {>datepickerInput}",
     wrapper: {
-      base: "ring-dynamic rounded-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+      base: "ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
       variants: {
         error: {
-          true: "ring-red-700/15",
+          true: "ring-red-700/15 border-red-500 hover:border-red-500",
         },
       },
     },

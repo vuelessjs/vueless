@@ -213,6 +213,7 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />
     </label>
+
     <label ref="textareaWrapperRef" :for="elementId" v-bind="textareaWrapperAttrs">
       <textarea
         :id="elementId"
@@ -232,9 +233,10 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
         @mousedown="onMousedown"
         @click="onClick"
         @keydown.enter="onEnter"
-        @keydown.backspace="onBackspace"
+        @keydown.delete="onBackspace"
       />
     </label>
+
     <label v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
       <!-- @slot Use it to add something after the text. -->
       <slot name="right" />
