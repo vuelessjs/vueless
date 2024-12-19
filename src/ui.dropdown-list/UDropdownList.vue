@@ -87,8 +87,18 @@ watch(
           const childStyles = childDiv && window.getComputedStyle(childDiv);
           const childMarginTop = parseFloat(childStyles?.marginTop || "0");
           const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
+          const childPaddingTop = parseFloat(childStyles?.paddingTop || "0");
+          const childPaddingBottom = parseFloat(childStyles?.paddingBottom || "0");
 
-          return elHeight + marginTop + marginBottom + childMarginTop + childMarginBottom;
+          return (
+            elHeight +
+            marginTop +
+            marginBottom +
+            childMarginTop +
+            childMarginBottom +
+            childPaddingTop +
+            childPaddingBottom
+          );
         })
         .reduce((acc, cur) => acc + cur, 0);
 
