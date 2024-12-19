@@ -26,7 +26,6 @@ export default /*tw*/ {
     color: "brand",
     size: "md",
     labelKey: "label",
-    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
     underlined: undefined,

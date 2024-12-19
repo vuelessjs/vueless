@@ -52,7 +52,7 @@ const { config, overlayAttrs, nestedLoaderAttrs } = useUI<Config>(defaultConfig)
 
 <template>
   <Transition v-bind="config.transition">
-    <div v-if="showLoader" v-bind="overlayAttrs">
+    <div v-if="showLoader" v-bind="overlayAttrs" :data-test="dataTest">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
         <ULoader :loading="showLoader" size="lg" :color="loaderColor" v-bind="nestedLoaderAttrs" />

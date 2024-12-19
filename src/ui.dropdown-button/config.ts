@@ -28,7 +28,6 @@ export default /*tw*/ {
     size: "md",
     variant: "primary",
     labelKey: "label",
-    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
     filled: false,

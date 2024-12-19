@@ -30,12 +30,6 @@ export default /*tw*/ {
   },
   toggleInput: "p-0 m-0 size-0 invisible absolute",
   defaults: {
-    variant: "primary",
-    type: "radio",
-    size: "md",
-    block: false,
-    round: false,
-    square: false,
     disabled: false,
   },
 };

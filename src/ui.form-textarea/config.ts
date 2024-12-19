@@ -19,7 +19,7 @@ export default /*tw*/ {
       },
       disabled: {
         true: `
-            focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100 
+            focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100
             hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
           `,
       },
@@ -53,7 +53,6 @@ export default /*tw*/ {
   defaults: {
     rows: "3",
     size: "md",
-    type: "text",
     inputmode: "text",
     labelAlign: "topInside",
     resizable: false,
