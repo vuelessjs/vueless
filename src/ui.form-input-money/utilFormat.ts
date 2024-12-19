@@ -3,6 +3,7 @@ import type { FormatOptions } from "./types.ts";
 const isNumberValueRegExp = /^[\d,.\s-]+$/;
 const rawDecimalMark = ".";
 const comma = ",";
+const minus = "-";
 
 export function getRawValue(value: string | number, options: FormatOptions): string {
   const { thousandsSeparator, decimalSeparator, prefix } = options;
@@ -44,12 +45,18 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   value = String(value)
     .replace(invalidValuesRegExp, "")
     .replace(doubleValueRegExp, "$1")
-    .replaceAll(decimalSeparator, rawDecimalMark);
+    .replaceAll(decimalSeparator, rawDecimalMark)
+    .trim();
 
   const isNumber = isNumberValueRegExp.test(value);
   const isFloat = value.endsWith(rawDecimalMark) || value.endsWith(".0");
+  const isMinus = value === minus;
 
-  if (!value || !isNumber || isFloat) {
+  if (isMinus && positiveOnly) {
+    value = "";
+  }
+
+  if (!value || !isNumber || isFloat || isMinus) {
     return `${prefix}${value.replaceAll(rawDecimalMark, decimalSeparator)}`;
   }
 
