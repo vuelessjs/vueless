@@ -28,7 +28,12 @@ const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
 const slots = useSlots();
 
-useMutationObserver(cellRef, setCellTitle);
+useMutationObserver(cellRef, setCellTitle, {
+  subtree: true,
+  childList: true,
+  characterData: true,
+  attributes: false,
+});
 
 const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
