@@ -42,11 +42,16 @@ const generatedIcons = computed(() => {
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
 
-  const isInternalIcon = Boolean(
-    generatedIcons.value.find(([path]) => path.includes(VUELESS_LIBRARY + "/" + props.name)),
-  );
-
   const userLibrary = config.value.defaults.library as IconLibraries;
+
+  const isInternalIcon = Boolean(
+    generatedIcons.value.find(([path]) => {
+      const hasInInternal = path.includes(VUELESS_LIBRARY + "/" + props.name);
+      const hasInExternal = path.includes(userLibrary + "/" + props.name);
+
+      return hasInInternal && !hasInExternal;
+    }),
+  );
 
   const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
   const customLibraryPath = config.value.defaults.path;
