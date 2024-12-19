@@ -87,6 +87,7 @@ export const vuelessTailwindConfig = {
         "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
       },
       borderRadius: {
+        inherit: "inherit",
         dynamic: "var(--vl-rounding)",
       },
       ringWidth: {
