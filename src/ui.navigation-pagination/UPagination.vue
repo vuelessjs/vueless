@@ -9,14 +9,14 @@ import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import defaultConfig from "./config.ts";
-import { UPagination } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UPagination),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: 1,
   firstLabel: "",
   prevLabel: "",

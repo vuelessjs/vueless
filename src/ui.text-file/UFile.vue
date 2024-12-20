@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { UFile } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -15,7 +15,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UFile),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 

@@ -10,7 +10,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 
-import { UDataList as UDataListName } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -19,7 +19,7 @@ import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDataListName),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   list: () => [],
 });
 
@@ -47,7 +47,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(UDataListName);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 function isActive(element: DataListItem) {

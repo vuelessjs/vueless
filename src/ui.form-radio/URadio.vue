@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import defaultConfig from "./config.ts";
-import { URadio } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, LocalValueType, Config } from "./types.ts";
 import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
@@ -24,7 +24,7 @@ const getRadioGroupSize = inject("getRadioGroupSize", null);
 const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, URadio),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => ({}),
   value: () => ({}),
   label: "",

@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
 
-import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
+import { COMPONENT_NAME, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -15,7 +15,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, ULoaderProgress),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   resources: () => [],
 });
 

@@ -16,7 +16,7 @@ import type { Props } from "../types.ts";
 
 interface UToggleArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size";
+  enum: "size";
 }
 
 export default {
@@ -109,41 +109,34 @@ Sizes.args = {
   enum: "size",
 };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = {
-  name: "sizeTemplate",
-  enum: "variant",
-};
-
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { name: "multipleTemplate", multiple: true };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
 
-export const Separated = DefaultTemplate.bind({});
-Separated.args = { name: "separated", separated: true };
+export const Split = DefaultTemplate.bind({});
+Split.args = { name: "split", split: true };
 
 export const Round = DefaultTemplate.bind({});
-Round.args = { name: "round", round: true, separated: true };
+Round.args = { name: "round", round: true, split: true };
 
 export const Square = DefaultTemplate.bind({});
 Square.args = {
   name: "square",
-  variant: "secondary",
   square: true,
   slotTemplate: `
     <template #default>
       <UToggleItem value="1">
-        <UIcon name="star" />
+        <UIcon name="star" color="inherit" />
       </UToggleItem>
 
       <UToggleItem value="2" >
-        <UIcon name="add" />
+        <UIcon name="add" color="inherit" />
       </UToggleItem>
 
       <UToggleItem value="3">
-        <UIcon name="timer" />
+        <UIcon name="timer" color="inherit" />
       </UToggleItem>
     </template>
   `,

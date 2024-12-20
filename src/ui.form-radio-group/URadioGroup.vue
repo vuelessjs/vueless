@@ -8,14 +8,14 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 
 import defaultConfig from "./config.ts";
-import { URadioGroup } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, SetRadioGroupSelectedItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, URadioGroup),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => [],
   options: () => [],
   label: "",

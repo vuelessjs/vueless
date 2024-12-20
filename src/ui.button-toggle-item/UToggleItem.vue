@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, useId, toValue } from "vue";
+import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -9,7 +9,7 @@ import { getDefaults } from "../utils/ui.ts";
 import { TYPE_RADIO } from "../ui.button-toggle/constants.ts";
 
 import defaultConfig from "./config.ts";
-import { UToggleItem } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, ToggleInjectValues, ToggleContextType, Config } from "./types.ts";
 
@@ -18,7 +18,7 @@ type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UToggleItem),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
   label: "",
 });
@@ -34,26 +34,23 @@ const emit = defineEmits([
 /* eslint-disable prettier/prettier */
 const getToggleName = inject<() => string>("getToggleName", () => "toggle");
 const getToggleType = inject<() => string>("getToggleType", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).type || TYPE_RADIO
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).type || TYPE_RADIO
 );
 const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
-  (getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).size || "md") as ButtonSize
+  (getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).size || "md") as ButtonSize
 );
 const getToggleRound = inject<() => boolean>("getToggleRound", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).round || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).round || false
 );
 const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).block || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).block || false
 );
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).square || false
+  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).square || false
 );
-const getToggleVariant = inject<string>("getToggleVariant",
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).variant || "secondary"
-);
-const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
+const getToggleSplit = inject<() => boolean>("getToggleSplit", () => true);
 const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
-  props.disabled || getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).disabled || false
+  props.disabled || getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).disabled || false
 );
 /* eslint-enable prettier/prettier */
 
@@ -99,29 +96,30 @@ function onClickSetValue() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  variant: toValue(getToggleVariant),
-  separated: toValue(getToggleSeparated),
   /* component state, not a props */
   selected: isSelected.value,
 }));
 
-const { toggleButtonAttrs, toggleInputAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
   <UButton
-    tabindex="0"
-    :for="elementId"
-    :no-ring="!getToggleSeparated"
-    color="grayscale"
-    variant="secondary"
     :label="label"
+    tabindex="0"
+    color="brand"
+    :for="elementId"
+    :filled="getToggleSplit()"
+    :no-ring="!getToggleSplit()"
     :size="getToggleSize()"
     :round="getToggleRound()"
     :block="getToggleBlock()"
     :square="getToggleSquare()"
-    :disabled="getToggleDisabled()"
-    v-bind="toggleButtonAttrs"
+    :disabled="getToggleDisabled() || disabled"
+    v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonAttrs"
     @click="onClickSetValue"
   >
     <template #left>

@@ -8,14 +8,14 @@ import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
-import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
+import { COMPONENT_NAME, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UToggle),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
   label: "",
@@ -60,9 +60,8 @@ provide("getToggleSize", () => props.size);
 provide("getToggleRound", () => props.round);
 provide("getToggleBlock", () => props.block);
 provide("getToggleSquare", () => props.square);
-provide("getToggleVariant", () => props.variant);
 provide("getToggleDisabled", () => props.disabled);
-provide("getToggleSeparated", () => props.separated);
+provide("getToggleSplit", () => props.split);
 
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
@@ -95,7 +94,7 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
           :name="name"
           :model-value="item.value"
           :value="item.value"
-          :disabled="disabled"
+          :disabled="disabled || item.disabled"
           :label="item.label"
           v-bind="itemAttrs"
           :data-test="`${dataTest}-item-${index}`"

@@ -18,7 +18,7 @@ import {
   getCurrentOption,
 } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
-import { USelect, DIRECTION, KEYS } from "./constants.ts";
+import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -29,7 +29,7 @@ import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, USelect),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
   label: "",
@@ -96,7 +96,7 @@ const innerWrapperRef = ref<HTMLDivElement | null>(null);
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(USelect);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const isTop = computed(() => {

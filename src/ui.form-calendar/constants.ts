@@ -2,7 +2,7 @@
   This const is needed to prevent the issue in script setup:
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
-export const UCalendar = "UCalendar";
+export const COMPONENT_NAME = "UCalendar";
 
 export const YEARS_PER_VIEW = 12;
 export const MONTHS_PER_VIEW = 12;

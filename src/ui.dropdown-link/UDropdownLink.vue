@@ -10,7 +10,7 @@ import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
 
 import { vClickOutside } from "../directives";
 
-import { UDropdownLink } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -19,7 +19,7 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDropdownLink),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   label: "",
 });

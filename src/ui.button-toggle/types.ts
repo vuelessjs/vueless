@@ -7,6 +7,7 @@ export type Config = typeof defaultConfig;
 export interface UToggleOption {
   value: string | number;
   label: string;
+  disabled?: boolean;
 }
 
 export interface Props {
@@ -19,11 +20,6 @@ export interface Props {
    * Toggle item options.
    */
   options?: UToggleOption[];
-
-  /**
-   * Toggle variant.
-   */
-  variant?: "primary" | "secondary" | "thirdary";
 
   /**
    * Toggle size.
@@ -56,9 +52,9 @@ export interface Props {
   multiple?: boolean;
 
   /**
-   * Separate toggle items.
+   * Show items without a grouping border.
    */
-  separated?: boolean;
+  split?: boolean;
 
   /**
    * Make toggle disabled.

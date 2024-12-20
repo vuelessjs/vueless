@@ -8,7 +8,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { UColorPicker } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -17,9 +17,9 @@ import type { BrandColors } from "../types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UColorPicker),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   colorOptions: () =>
-    getDefaults<Props, Config>(defaultConfig, UColorPicker).colorOptions as BrandColors[],
+    getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME).colorOptions as BrandColors[],
   modelValue: "",
   label: "",
 });

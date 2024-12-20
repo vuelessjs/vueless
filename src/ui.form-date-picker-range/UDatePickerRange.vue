@@ -46,7 +46,7 @@ import { useUserFormat } from "./useUserFormat.ts";
 
 import defaultConfig from "./config.ts";
 import {
-  UDatePickerRange,
+  COMPONENT_NAME,
   DATE_PICKER_BUTTON_TYPE,
   DATE_PICKER_INPUT_TYPE,
   INPUT_RANGE_FORMAT,
@@ -71,7 +71,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerRangeProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDatePickerRange),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   customRangeButton: () => ({ range: { from: null, to: null } }),
   modelValue: undefined,
   minDate: undefined,

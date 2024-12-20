@@ -5,7 +5,7 @@ import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
-import { UProgress, VARIANT } from "./constants.ts";
+import { COMPONENT_NAME, VARIANT } from "./constants.ts";
 
 import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
@@ -15,7 +15,7 @@ import type { UProgressProps, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
-  ...getDefaults<UProgressProps, Config>(defaultConfig, UProgress),
+  ...getDefaults<UProgressProps, Config>(defaultConfig, COMPONENT_NAME),
   max: 100,
 });
 

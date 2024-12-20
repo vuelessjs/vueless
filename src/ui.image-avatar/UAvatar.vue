@@ -6,7 +6,7 @@ import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { UAvatar } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { UAvatarProps, Config } from "./types.ts";
@@ -14,7 +14,7 @@ import type { UAvatarProps, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UAvatarProps>(), {
-  ...getDefaults<UAvatarProps, Config>(defaultConfig, UAvatar),
+  ...getDefaults<UAvatarProps, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 
