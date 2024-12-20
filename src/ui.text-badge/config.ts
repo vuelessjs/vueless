@@ -52,7 +52,7 @@ export default /*tw*/ {
       },
     },
   },
-  centerIcon: {
+  badgeIcon: {
     base: "{UIcon}",
     defaults: {
       size: {
@@ -62,8 +62,9 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>centerIcon}",
-  rightIcon: "{UIcon} {>centerIcon}",
+  centerIcon: "{UIcon} {>badgeIcon}",
+  leftIcon: "{UIcon} {>badgeIcon}",
+  rightIcon: "{UIcon} {>badgeIcon}",
   defaults: {
     color: "brand",
     variant: "primary",

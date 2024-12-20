@@ -65,28 +65,20 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-base" },
     ],
   },
+  baseIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   leftIconWrapper: "pr-1.5",
   rightIconWrapper: "{>caret} pr-3",
-  leftIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  rightIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  leftIcon: "{UIcon} {>baseIcon}",
+  rightIcon: "{UIcon} {>baseIcon}",
   beforeCaret: "{>caret}",
   afterCaret: "{>caret} mr-3",
   caret: {
@@ -98,38 +90,11 @@ export default /*tw*/ {
     ],
   },
   toggle: "{>caret} mr-3",
-  toggleIcon: {
-    base: "{UIcon} transition duration-300 group-[]/active:rotate-180",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  toggleIcon: "{UIcon} {>baseIcon}",
   clear: "{>caret}",
-  clearIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  clearIcon: "{UIcon} {>baseIcon}",
   clearMultiple: "flex items-center",
-  clearMultipleIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  clearMultipleIcon: "{UIcon} {>baseIcon}",
   clearMultipleText: {
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [

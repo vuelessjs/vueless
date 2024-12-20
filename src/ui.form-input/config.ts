@@ -24,7 +24,7 @@ export default /*tw*/ {
   },
   rightIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-inherit rounded-l-none",
   leftIconWrapper: "flex items-center justify-end whitespace-nowrap pl-2.5 gap-1 rounded-inherit rounded-r-none",
-  leftIcon: {
+  inputIcon: {
     base: "{UIcon}",
     defaults: {
       size: {
@@ -34,17 +34,9 @@ export default /*tw*/ {
       },
     },
   },
-  rightIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  passwordIcon: "{UIcon}",
+  leftIcon: "{UIcon} {>inputIcon}",
+  rightIcon: "{UIcon} {>inputIcon}",
+  passwordIcon: "{UIcon} {>inputIcon}",
   input: {
     base: `
       block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-transparent

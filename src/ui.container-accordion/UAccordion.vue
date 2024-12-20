@@ -68,7 +68,7 @@ const {
           @binding {boolean} opened
         -->
         <slot name="toggle" :icon-name="toggleIcon" :opened="isOpened">
-          <UIcon :name="toggleIcon" color="gray" internal v-bind="toggleIconAttrs" />
+          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
         </slot>
       </div>
 

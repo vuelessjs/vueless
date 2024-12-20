@@ -7,9 +7,6 @@ export default /*tw*/ {
         lg: "!text-base",
       },
     },
-  },
-  firstButton: {
-    base: "{UButton} {>paginationButton}",
     defaults: {
       size: {
         sm: "xs",
@@ -18,57 +15,13 @@ export default /*tw*/ {
       },
     },
   },
-  lastButton: {
-    base: "{UButton} {>paginationButton}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  prevButton: {
-    base: "{UButton} {>paginationButton}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  nextButton: {
-    base: "{UButton} {>paginationButton}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  inactiveButton: {
-    base: "{UButton} {>paginationButton}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  activeButton: {
-    base: "{UButton} {>paginationButton}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  lastIcon: {
+  firstButton: "{UButton} {>paginationButton}",
+  lastButton: "{UButton} {>paginationButton}",
+  prevButton: "{UButton} {>paginationButton}",
+  nextButton: "{UButton} {>paginationButton}",
+  inactiveButton: "{UButton} {>paginationButton}",
+  activeButton: "{UButton} {>paginationButton}",
+  paginationIcon: {
     base: "{UIcon}",
     defaults: {
       size: {
@@ -78,36 +31,10 @@ export default /*tw*/ {
       },
     },
   },
-  firstIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  prevIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
-  nextIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  lastIcon: "{UIcon} {>paginationIcon}",
+  firstIcon: "{UIcon} {>paginationIcon}",
+  prevIcon: "{UIcon} {>paginationIcon}",
+  nextIcon: "{UIcon} {>paginationIcon}",
   defaults: {
     variant: "primary",
     size: "md",
