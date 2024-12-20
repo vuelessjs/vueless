@@ -13,7 +13,7 @@ import UButton from "../../ui.button/UButton.vue";
 
 import { addDays } from "../../ui.form-calendar/utilDate.ts";
 
-import { COMPONENT_NAME as U_DATE_PICKER_RANGE_NAME } from "../constants.ts";
+import { COMPONENT_NAME } from "../constants.ts";
 
 import type { UDatePickerRangeProps } from "../types.ts";
 
@@ -38,11 +38,11 @@ export default {
     },
   },
   argTypes: {
-    ...getArgTypes(U_DATE_PICKER_RANGE_NAME),
+    ...getArgTypes(COMPONENT_NAME),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(U_DATE_PICKER_RANGE_NAME),
+      ...getDocsDescription(COMPONENT_NAME),
       story: {
         height: "620px",
       },
@@ -55,7 +55,7 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
 ) => ({
   components: { UDatePickerRange, UIcon, UButton },
   setup() {
-    const slots = getSlotNames(U_DATE_PICKER_RANGE_NAME);
+    const slots = getSlotNames(COMPONENT_NAME);
 
     return { args, slots };
   },
