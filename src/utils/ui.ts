@@ -3,7 +3,7 @@ import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 import { isCSR, isSSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
-import { UIcon } from "../ui.image-icon/constants.ts";
+import { COMPONENT_NAME as UIcon } from "../ui.image-icon/constants.ts";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,

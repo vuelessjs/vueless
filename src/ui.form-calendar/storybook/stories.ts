@@ -8,7 +8,7 @@ import {
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
-import { UCalendar as UCalendarName } from "../constants.ts";
+import { COMPONENT_NAME as UCalendarName } from "../constants.ts";
 
 import type { DateValue, UCalendarProps } from "../types.ts";
 

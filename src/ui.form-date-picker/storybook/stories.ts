@@ -10,7 +10,7 @@ import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import { UDatePicker as UDatePickerName } from "../constants.ts";
+import { COMPONENT_NAME as UDatePickerName } from "../constants.ts";
 
 import type { UDatePickerProps } from "../types.ts";
 

@@ -13,7 +13,7 @@ import UButton from "../../ui.button/UButton.vue";
 
 import { addDays } from "../../ui.form-calendar/utilDate.ts";
 
-import { UDatePickerRange as UDatePickerRangeName } from "../constants.ts";
+import { COMPONENT_NAME as UDatePickerRangeName } from "../constants.ts";
 
 import type { UDatePickerRangeProps } from "../types.ts";
 

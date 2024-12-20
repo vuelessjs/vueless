@@ -4,7 +4,7 @@ import { useLocale as useGlobalLocale } from "../composables/useLocale.ts";
 
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { LocaleType } from "../ui.form-calendar/constants.ts";
-import { UDatePickerRange } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import defaultConfig from "./config.ts";
 
@@ -13,7 +13,7 @@ import type { Locale, UDatePickerRangeProps } from "./types.ts";
 export function useLocale(props: UDatePickerRangeProps<unknown>) {
   const { tm } = useGlobalLocale();
 
-  const i18nGlobal = tm<Locale>(UDatePickerRange);
+  const i18nGlobal = tm<Locale>(COMPONENT_NAME);
 
   const currentLocale = computed(() =>
     merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
