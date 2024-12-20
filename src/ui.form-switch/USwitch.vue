@@ -8,7 +8,7 @@ import { getDefaults } from "../utils/ui.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { USwitch } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -17,7 +17,7 @@ import type { Props, IconSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, USwitch),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: false,
   label: "",
 });
@@ -32,7 +32,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(USwitch);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n));
 
 const checkedValue = computed({

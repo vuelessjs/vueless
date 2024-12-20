@@ -8,7 +8,7 @@ import { getDefaults } from "../utils/ui.ts";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import { UCheckboxGroup } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { UnknownObject } from "../types.ts";
@@ -17,7 +17,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UCheckboxGroup),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => [],
   options: () => [],
   label: "",

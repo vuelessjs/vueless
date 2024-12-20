@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
-import { UIcon } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { AsyncComponentLoader } from "vue";
@@ -17,7 +17,7 @@ import type { Props as TippyProps, Instance as TippyInstance } from "tippy.js";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UIcon),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   tooltipSettings: () => ({}) as TippyProps,
 });
 

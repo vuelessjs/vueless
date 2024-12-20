@@ -7,7 +7,7 @@ import { getDefaults, vuelessConfig } from "../utils/ui.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
-import { UNotify, NotificationType, NotificationPosition } from "./constants.ts";
+import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
@@ -16,7 +16,7 @@ import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UNotify),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const { tm } = useLocale();
@@ -26,7 +26,7 @@ const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
-const i18nGlobal = tm(UNotify);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 onMounted(() => {

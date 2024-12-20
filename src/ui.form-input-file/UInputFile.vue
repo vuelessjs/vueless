@@ -14,7 +14,7 @@ import UFiles from "../ui.text-files/UFiles.vue";
 
 import { useLocale } from "../composables/useLocale.ts";
 
-import { UInputFile } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, ButtonSize, Config } from "./types.ts";
@@ -22,7 +22,7 @@ import type { Props, ButtonSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UInputFile),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => [],
   allowedFileTypes: () => [],
   label: "",
@@ -49,7 +49,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(UInputFile);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const currentFiles = computed<File | File[] | null>({

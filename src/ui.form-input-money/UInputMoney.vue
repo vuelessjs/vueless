@@ -8,14 +8,14 @@ import UInput from "../ui.form-input/UInput.vue";
 
 import defaultConfig from "./config.ts";
 import useFormatCurrency from "./useFormatCurrency.ts";
-import { UInputMoney } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UInputMoney),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
   label: "",
   placeholder: "",

@@ -10,7 +10,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 
-import { UDataList as UDataListName } from "./constants.ts";
+import { COMPONENT_NAME as UDataListName } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
