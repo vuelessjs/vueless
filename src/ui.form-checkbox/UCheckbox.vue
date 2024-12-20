@@ -9,7 +9,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import defaultConfig from "./config.ts";
-import { UCheckbox } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { UnknownObject } from "../types.ts";
 import type { Props, IconSize, Config } from "./types.ts";
@@ -26,7 +26,7 @@ const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UCheckbox),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: false,
   value: "",
   trueValue: true,

@@ -2,4 +2,4 @@
   This const is needed to prevent the issue in script setup:
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
-export const USwitch = "USwitch";
+export const COMPONENT_NAME = "USwitch";

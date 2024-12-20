@@ -9,7 +9,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UText from "../ui.text-block/UText.vue";
 
-import { UAlert } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, TextSize, CloseIconSize, Config } from "./types.ts";
@@ -17,7 +17,7 @@ import type { Props, TextSize, CloseIconSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UAlert),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const emit = defineEmits([

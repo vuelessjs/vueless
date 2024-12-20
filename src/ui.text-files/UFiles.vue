@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { UFiles } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import { getRandomId } from "../utils/helper.ts";
@@ -17,7 +17,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UFiles),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   fileList: () => [],
   label: "",
 });
