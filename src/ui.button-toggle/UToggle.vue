@@ -73,9 +73,8 @@ provide("getToggleSize", () => props.size);
 provide("getToggleRound", () => props.round);
 provide("getToggleBlock", () => props.block);
 provide("getToggleSquare", () => props.square);
-provide("getToggleVariant", () => props.variant);
 provide("getToggleDisabled", () => props.disabled);
-provide("getToggleSeparated", () => props.separated);
+provide("getToggleSplit", () => props.split);
 
 provide("toggleSelectedValue", {
   selectedValue: readonly(selectedValue),
@@ -109,7 +108,7 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
           :name="name"
           :model-value="item.value"
           :value="item.value"
-          :disabled="disabled"
+          :disabled="disabled || item.disabled"
           :label="item.label"
           v-bind="itemAttrs"
           :data-test="`${dataTest}-item-${index}`"

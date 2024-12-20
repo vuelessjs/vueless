@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, useId, toValue } from "vue";
+import { computed, inject, onMounted, ref, useId } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -48,10 +48,7 @@ const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
   getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).square || false
 );
-const getToggleVariant = inject<string>("getToggleVariant",
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).variant || "secondary"
-);
-const getToggleSeparated = inject<boolean>("getToggleSeparated", true);
+const getToggleSplit = inject<() => boolean>("getToggleSplit", () => true);
 const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
   props.disabled || getDefaults<ToggleInjectValues, Config>(defaultConfig, UToggleItem).disabled || false
 );
@@ -99,29 +96,30 @@ function onClickSetValue() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  variant: toValue(getToggleVariant),
-  separated: toValue(getToggleSeparated),
   /* component state, not a props */
   selected: isSelected.value,
 }));
 
-const { toggleButtonAttrs, toggleInputAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
   <UButton
-    tabindex="0"
-    :for="elementId"
-    :no-ring="!getToggleSeparated"
-    color="grayscale"
-    variant="secondary"
     :label="label"
+    tabindex="0"
+    color="brand"
+    :for="elementId"
+    :filled="getToggleSplit()"
+    :no-ring="!getToggleSplit()"
     :size="getToggleSize()"
     :round="getToggleRound()"
     :block="getToggleBlock()"
     :square="getToggleSquare()"
-    :disabled="getToggleDisabled()"
-    v-bind="toggleButtonAttrs"
+    :disabled="getToggleDisabled() || disabled"
+    v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonAttrs"
     @click="onClickSetValue"
   >
     <template #left>

@@ -18,36 +18,35 @@ export default /*tw*/ {
         lg: "gap-3",
         xl: "gap-3",
       },
-      separated: {
+      split: {
         true: "flex flex-wrap",
         false: `
-          flex flex-nowrap -space-x-px gap-0 rounded-dynamic transition w-fit
-          [&>:first-child]:rounded-dynamic [&>:first-child]:rounded-r-none
-          [&>:last-child]:rounded-dynamic [&>:last-child]:rounded-l-none
-          [&>:first-child>*>*]:rounded-dynamic [&>:first-child>*>*]:rounded-r-none
-          [&>:last-child>*>*]:rounded-dynamic [&>:last-child>*>*]:rounded-l-none
+          p-1 gap-1 flex flex-nowrap w-fit transition
+          border border-gray-300 rounded-dynamic
+          hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
           focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
         `,
+      },
+      disabled: {
+        true: "pointer-events-none",
       },
       block: {
         true: "w-full flex-nowrap",
       },
+      round: {
+        true: "rounded-full",
+      },
     },
-    compoundVariants: [
-      { separated: false, variant: "thirdary", class: "space-x-px" },
-      { separated: false, multiple: true, class: "space-x-px" },
-    ],
   },
   item: "{UToggleItem}",
   defaults: {
-    variant: "primary",
     labelAlign: "top",
     size: "md",
+    split: false,
     block: false,
     round: false,
     square: false,
     disabled: false,
     multiple: false,
-    separated: false,
   },
 };
