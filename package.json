@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.609",
+  "version": "0.0.612",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [

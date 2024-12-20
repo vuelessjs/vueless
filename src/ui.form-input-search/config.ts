@@ -10,7 +10,6 @@ export default /*tw*/ {
     minLength: 0,
     disabled: false,
     readonly: false,
-    searchButton: false,
     /* icons */
     clearIcon: "close",
     searchIcon: "search",

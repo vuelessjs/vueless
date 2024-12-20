@@ -4,7 +4,10 @@ import { getRawValue, getFormattedValue } from "./utilFormat.ts";
 
 import type { FormatOptions } from "./types.ts";
 
-export default function useFormatCurrency(elementId: string = "", options: () => FormatOptions) {
+export default function useFormatCurrency(
+  elementId: string = "",
+  options: (() => FormatOptions) | FormatOptions,
+) {
   let prevValue = "";
   let inputElement: HTMLInputElement | null = null;
 

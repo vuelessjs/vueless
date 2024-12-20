@@ -40,4 +40,9 @@ export interface Props {
    * Component config object.
    */
   config?: ComponentConfig<Config>;
+
+  /**
+   * Data-test attribute for automated testing.
+   */
+  dataTest?: string;
 }
