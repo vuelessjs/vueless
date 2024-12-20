@@ -10,7 +10,7 @@ import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import { COMPONENT_NAME as UDatePickerName } from "../constants.ts";
+import { COMPONENT_NAME as U_DATE_PICKER_NAME } from "../constants.ts";
 
 import type { UDatePickerProps } from "../types.ts";
 
@@ -32,11 +32,11 @@ export default {
     modelValue: null,
   },
   argTypes: {
-    ...getArgTypes(UDatePickerName),
+    ...getArgTypes(U_DATE_PICKER_NAME),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UDatePickerName),
+      ...getDocsDescription(U_DATE_PICKER_NAME),
       story: {
         height: "480px",
       },
@@ -47,7 +47,7 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
   components: { UDatePicker, UIcon },
   setup() {
-    const slots = getSlotNames(UDatePickerName);
+    const slots = getSlotNames(U_DATE_PICKER_NAME);
 
     return { args, slots };
   },

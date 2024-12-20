@@ -10,7 +10,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 
-import { COMPONENT_NAME as UDataListName } from "./constants.ts";
+import { COMPONENT_NAME as U_DATA_LIST_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -19,7 +19,7 @@ import type { Props, IconSize, DragMoveEvent, DataListItem, Config } from "./typ
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDataListName),
+  ...getDefaults<Props, Config>(defaultConfig, U_DATA_LIST_NAME),
   list: () => [],
 });
 
@@ -47,7 +47,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(UDataListName);
+const i18nGlobal = tm(U_DATA_LIST_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const iconSize = computed(() => {

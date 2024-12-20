@@ -8,7 +8,7 @@ import {
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 
-import { COMPONENT_NAME as UCalendarName } from "../constants.ts";
+import { COMPONENT_NAME as U_CALENDAR_NAME } from "../constants.ts";
 
 import type { DateValue, UCalendarProps } from "../types.ts";
 
@@ -23,11 +23,11 @@ export default {
   component: UCalendar,
   args: {},
   argTypes: {
-    ...getArgTypes(UCalendarName),
+    ...getArgTypes(U_CALENDAR_NAME),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UCalendarName),
+      ...getDocsDescription(U_CALENDAR_NAME),
       story: {
         height: "380px",
       },
@@ -38,7 +38,7 @@ export default {
 const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
   components: { UCalendar },
   setup() {
-    const slots = getSlotNames(UCalendarName);
+    const slots = getSlotNames(U_CALENDAR_NAME);
 
     return { args, slots };
   },
