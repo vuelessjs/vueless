@@ -8,7 +8,7 @@ import { getDefaults } from "../utils/ui.ts";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config.ts";
-import { UCheckboxMultiState } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
@@ -17,7 +17,7 @@ import type { KeyAttrsWithConfig, UnknownObject } from "../types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UCheckboxMultiState),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: false,
   options: () => [],
 });

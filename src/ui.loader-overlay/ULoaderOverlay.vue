@@ -7,7 +7,7 @@ import { useDarkMode } from "../composables/useDarkMode.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
 
-import { ULoaderOverlay } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLoaderOverlay } from "./useLoaderOverlay.ts";
 
@@ -16,7 +16,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, ULoaderOverlay),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const { loaderOverlayOn, loaderOverlayOff, isLoading } = useLoaderOverlay();

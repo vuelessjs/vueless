@@ -2,7 +2,7 @@
   This const is needed to prevent the issue in script setup:
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
-export const UNotify = "UNotify";
+export const COMPONENT_NAME = "UNotify";
 export const LOCAL_STORAGE_ID = "vueless:notify";
 export const DELAY_BETWEEN_CLONES = 1000;
 

@@ -4,7 +4,7 @@ import { computed, inject, toValue } from "vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
-import { UTab } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, UTabSize, Config } from "./types.ts";
@@ -17,7 +17,7 @@ const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
 const getUTabsSize = inject("getUTabsSize", null);
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UTab),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const selected = computed(() => {
@@ -25,7 +25,7 @@ const selected = computed(() => {
 });
 
 const size = computed(() => {
-  return toValue(getUTabsSize) || getDefaults<UTabSize, Config>(defaultConfig, UTab).size;
+  return toValue(getUTabsSize) || getDefaults<UTabSize, Config>(defaultConfig, COMPONENT_NAME).size;
 });
 
 async function onClickSetValue() {

@@ -18,7 +18,7 @@ import { useLocale } from "../composables/useLocale.ts";
 import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
 
 import defaultConfig from "./config.ts";
-import { UDatePicker } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import { vClickOutside } from "../directives";
 
@@ -32,7 +32,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = UDatePickerProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDatePicker),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -56,7 +56,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(UDatePicker);
+const i18nGlobal = tm(COMPONENT_NAME);
 
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");

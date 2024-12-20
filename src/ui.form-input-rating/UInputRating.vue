@@ -8,7 +8,7 @@ import { getDefaults } from "../utils/ui.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { UInputRating } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, IconSize, Config } from "./types.ts";
@@ -16,7 +16,7 @@ import type { Props, IconSize, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UInputRating),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 

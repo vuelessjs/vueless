@@ -7,14 +7,14 @@ import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
-import { ULink } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, ULink),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
   to: undefined,
 });

@@ -9,14 +9,14 @@ import UHeader from "../ui.text-header/UHeader.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
-import { UCard } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UCard),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const slots = useSlots();

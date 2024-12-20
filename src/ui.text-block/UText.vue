@@ -3,7 +3,7 @@ import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
-import { UText } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -11,7 +11,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UText),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 /**

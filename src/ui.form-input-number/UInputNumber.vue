@@ -9,14 +9,14 @@ import UButton from "../ui.button/UButton.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import defaultConfig from "./config.ts";
-import { UInputNumber } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { UInputNumberProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UInputNumberProps>(), {
-  ...getDefaults<UInputNumberProps, Config>(defaultConfig, UInputNumber),
+  ...getDefaults<UInputNumberProps, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 

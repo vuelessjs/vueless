@@ -8,14 +8,14 @@ import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
-import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
+import { COMPONENT_NAME, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 
 import type { Props, LabelSize, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UToggle),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
   label: "",

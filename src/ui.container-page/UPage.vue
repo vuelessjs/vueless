@@ -11,7 +11,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import defaultConfig from "./config.ts";
-import { UPage } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -20,7 +20,7 @@ const slots = useSlots();
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UPage),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   backTo: "",
   backLabel: "",
 });

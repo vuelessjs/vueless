@@ -21,7 +21,7 @@ import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } fro
 import { useLocale } from "../composables/useLocale.ts";
 
 import {
-  UCalendar,
+  COMPONENT_NAME,
   ARROW_KEYS,
   YEARS_PER_VIEW,
   MAX_HOURS,
@@ -55,7 +55,7 @@ defineOptions({ inheritAttrs: false });
 type Props = UCalendarProps<TModelValue>;
 const props = withDefaults(defineProps<Props>(), {
   view: View.Day,
-  ...getDefaults<Props, Config>(defaultConfig, UCalendar),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -126,7 +126,7 @@ const isCurrentView = computed(() => ({
   year: currentView.value === View.Year,
 }));
 
-const i18nGlobal = tm<DefaultLocale>(UCalendar);
+const i18nGlobal = tm<DefaultLocale>(COMPONENT_NAME);
 
 const currentLocale: ComputedRef<Locale> = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),

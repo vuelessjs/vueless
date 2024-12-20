@@ -10,7 +10,7 @@ import UButton from "../ui.button/UButton.vue";
 import UModal from "../ui.container-modal/UModal.vue";
 
 import defaultConfig from "./config.ts";
-import { UModalConfirm } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -18,7 +18,7 @@ import type { Props, Config } from "./types.ts";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UModalConfirm),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: false,
   confirmLabel: "",
 });
@@ -48,7 +48,7 @@ const isShownModal = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const i18nGlobal = tm(UModalConfirm);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal, props?.config?.i18n),
 );

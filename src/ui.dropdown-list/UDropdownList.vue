@@ -13,7 +13,7 @@ import usePointer from "./usePointer.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import defaultConfig from "./config.ts";
-import { UDropdownList } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Option, Props, Config } from "./types.ts";
 import type { UnknownObject } from "../types.ts";
@@ -24,7 +24,7 @@ defineOptions({ inheritAttrs: false });
 const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
 
 const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, UDropdownList),
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
 });
 
@@ -53,7 +53,7 @@ const elementId = props.id || useId();
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(UDropdownList);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const addOptionKeyCombination = computed(() => {

@@ -35,7 +35,7 @@ import {
   addRowId,
 } from "./utilTable.ts";
 
-import { UTable } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
 import type { Ref, RendererElement, ComputedRef } from "vue";
@@ -43,7 +43,7 @@ import type { Ref, RendererElement, ComputedRef } from "vue";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UTableProps>(), {
-  ...getDefaults<UTableProps, Config>(defaultConfig, UTable),
+  ...getDefaults<UTableProps, Config>(defaultConfig, COMPONENT_NAME),
   columns: () => [],
   rows: () => [],
   dateDivider: () => [],
@@ -95,7 +95,7 @@ const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
 const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
 const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
-const i18nGlobal = tm(UTable);
+const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const sortedRows: ComputedRef<Row[]> = computed(() => {
