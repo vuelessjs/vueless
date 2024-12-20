@@ -11,7 +11,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, ButtonSize, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,26 +44,6 @@ const currentPage = computed({
     emit("update:modelValue", value);
     emit("change", value);
   },
-});
-
-const buttonSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as ButtonSize;
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
 });
 
 const totalPages = computed(() => {
@@ -145,7 +125,6 @@ const {
     <UButton
       v-if="showFirst"
       no-ring
-      :size="buttonSize"
       variant="thirdary"
       :label="firstLabel"
       :square="!firstLabel"
@@ -159,7 +138,6 @@ const {
         <UIcon
           v-if="!firstLabel"
           internal
-          :size="iconSize"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
@@ -168,7 +146,6 @@ const {
 
     <UButton
       no-ring
-      :size="buttonSize"
       variant="thirdary"
       :label="prevLabel"
       :square="!prevLabel"
@@ -179,13 +156,7 @@ const {
     >
       <!-- @slot Use it to add something instead of the "prev" label. -->
       <slot name="prev">
-        <UIcon
-          v-if="!prevLabel"
-          internal
-          :size="iconSize"
-          :name="config.defaults.prevIcon"
-          v-bind="prevIconAttrs"
-        />
+        <UIcon v-if="!prevLabel" internal :name="config.defaults.prevIcon" v-bind="prevIconAttrs" />
       </slot>
     </UButton>
 
@@ -195,7 +166,6 @@ const {
         square
         no-ring
         disabled
-        :size="buttonSize"
         variant="thirdary"
         v-bind="inactiveButtonAttrs"
       >
@@ -207,7 +177,6 @@ const {
         v-else-if="page.isActive"
         filled
         no-ring
-        :size="buttonSize"
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
@@ -218,7 +187,6 @@ const {
       <UButton
         v-else
         no-ring
-        :size="buttonSize"
         variant="thirdary"
         :label="String(page.number)"
         :disabled="disabled"
@@ -230,7 +198,6 @@ const {
 
     <UButton
       no-ring
-      :size="buttonSize"
       variant="thirdary"
       :label="nextLabel"
       :square="!nextLabel"
@@ -241,20 +208,13 @@ const {
     >
       <!-- @slot Use it to add something instead of the "next" label. -->
       <slot name="next">
-        <UIcon
-          v-if="!nextLabel"
-          internal
-          :size="iconSize"
-          :name="config.defaults.nextIcon"
-          v-bind="nextIconAttrs"
-        />
+        <UIcon v-if="!nextLabel" internal :name="config.defaults.nextIcon" v-bind="nextIconAttrs" />
       </slot>
     </UButton>
 
     <UButton
       v-if="showLast"
       no-ring
-      :size="buttonSize"
       variant="thirdary"
       :label="lastLabel"
       :square="!lastLabel"
@@ -265,13 +225,7 @@ const {
     >
       <!-- @slot Use it to add something instead of the "last" label. -->
       <slot name="last">
-        <UIcon
-          v-if="!lastLabel"
-          internal
-          :size="iconSize"
-          :name="config.defaults.lastIcon"
-          v-bind="lastIconAttrs"
-        />
+        <UIcon v-if="!lastLabel" internal :name="config.defaults.lastIcon" v-bind="lastIconAttrs" />
       </slot>
     </UButton>
   </div>

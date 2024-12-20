@@ -13,7 +13,7 @@ import { vClickOutside } from "../directives";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, IconSize, DropdownSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -40,32 +40,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    "2xs": "xs",
-    xs: "xs",
-    sm: "sm",
-    md: "sm",
-    lg: "md",
-    xl: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
-
-const dropdownSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "sm",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size] as DropdownSize;
-});
 
 function onClickOption(option: Option) {
   emit("clickOption", option);
@@ -143,7 +117,6 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
             v-if="!noIcon"
             internal
             color="inherit"
-            :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"
@@ -155,7 +128,6 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
-      :size="dropdownSize"
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"

@@ -11,7 +11,18 @@ export default /*tw*/ {
     },
   },
   unselected: "relative flex",
-  unselectedIcon: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
+  unselectedIcon: {
+    base: "{UIcon} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
+    defaults: {
+      size: {
+        xs: "3xs",
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+        xl: "md",
+      },
+    },
+  },
   unselectedColorPickerRadio: {
     base: "{URadio}",
     radio: "checked:text-white !border-gray-300",

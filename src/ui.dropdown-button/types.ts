@@ -5,9 +5,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
-export type DropdownSize = "sm" | "md" | "lg";
-
 export interface Props {
   /**
    * Button label.

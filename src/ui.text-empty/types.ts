@@ -3,9 +3,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "2xl" | "3xl" | "4xl";
-export type TitleSize = "xs" | "sm" | "md";
-
 export interface Props {
   /**
    * Empty state title.

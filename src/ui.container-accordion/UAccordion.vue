@@ -10,7 +10,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, DividerSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -34,16 +34,6 @@ const elementId = props.id || useId();
 const toggleIcon = computed(() =>
   isOpened.value ? config.value.defaults.collapseIcon : config.value.defaults.expandIcon,
 );
-
-const dividerSize = computed(() => {
-  const sizes = {
-    sm: "md",
-    md: "lg",
-    lg: "xl",
-  };
-
-  return sizes[props.size] as DividerSize;
-});
 
 function onClickItem() {
   isOpened.value = !isOpened.value;
@@ -75,10 +65,9 @@ const {
         <!--
           @slot Use it to add something instead of the toggle icon.
           @binding {string} icon-name
-          @binding {string} icon-size
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-name="toggleIcon" :icon-size="size" :opened="isOpened">
+        <slot name="toggle" :icon-name="toggleIcon" :opened="isOpened">
           <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
         </slot>
       </div>
@@ -86,6 +75,6 @@ const {
       <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
     </div>
 
-    <UDivider :size="dividerSize" v-bind="accordionDividerAttrs" />
+    <UDivider v-bind="accordionDividerAttrs" />
   </div>
 </template>

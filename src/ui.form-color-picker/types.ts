@@ -4,8 +4,6 @@ import type { BrandColors, ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "3xs" | "2xs" | "xs" | "sm" | "md";
-
 export interface Props {
   /**
    * Color picker selected value.

@@ -92,7 +92,6 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
       <!--
         @slot Use it to add something before the label.
         @binding {string} icon-name
-        @binding {string} icon-size
       -->
       <slot name="left" :icon-name="leftIcon">
         <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
@@ -102,7 +101,6 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
         @slot Use it to add something instead of the label.
         @binding {string} label
         @binding {string} icon-name
-        @binding {string} icon-size
       -->
       <slot name="default" :label="label" :icon-name="icon">
         <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
@@ -114,7 +112,6 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
       <!--
         @slot Use it to add something after the label.
         @binding {string} icon-name
-        @binding {string} icon-size
       -->
       <slot name="right" :icon-name="rightIcon">
         <UIcon

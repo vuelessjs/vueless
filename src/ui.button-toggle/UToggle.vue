@@ -10,7 +10,7 @@ import { getDefaults } from "../utils/ui.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
 
-import type { Props, LabelSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -32,19 +32,6 @@ const emit = defineEmits([
 const selectedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
-});
-
-const labelSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size] as LabelSize;
 });
 
 const type = computed(() => {
@@ -90,7 +77,6 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
 
 <template>
   <ULabel
-    :size="labelSize"
     :label="label"
     :description="description"
     :align="labelAlign"

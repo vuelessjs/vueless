@@ -41,7 +41,16 @@ export default /*tw*/ {
       { checked: true, size: "lg", class: "ml-[calc(100%-1.25rem)]" },
     ],
   },
-  toggleIcon: "{UIcon}",
+  toggleIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   toggleLabel: {
     base: "absolute text-center text-2xs font-medium uppercase text-white",
     compoundVariants: [

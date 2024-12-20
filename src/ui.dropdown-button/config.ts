@@ -9,7 +9,19 @@ export default /*tw*/ {
     },
     compoundVariants: [{ opened: true, color: ["grayscale", "white"], class: "ring-gray-700/15" }],
   },
-  dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
+  dropdownIcon: {
+    base: "{UIcon} transition duration-300 group-[]:rotate-180",
+    defaults: {
+      size: {
+        "2xs": "sm",
+        xs: "sm",
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+        xl: "lg",
+      },
+    },
+  },
   dropdownList: {
     base: "{UDropdownList} w-fit",
     variants: {
@@ -20,6 +32,16 @@ export default /*tw*/ {
       xPosition: {
         left: "left-0",
         right: "right-0",
+      },
+    },
+    defaults: {
+      size: {
+        "2xs": "sm",
+        xs: "sm",
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+        xl: "lg",
       },
     },
   },

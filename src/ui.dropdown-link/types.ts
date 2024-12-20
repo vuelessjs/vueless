@@ -5,8 +5,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "sm" | "2xs" | "xs";
-
 export interface Props {
   /**
    * Link label.

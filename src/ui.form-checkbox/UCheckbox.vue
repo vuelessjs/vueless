@@ -12,7 +12,7 @@ import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { UnknownObject } from "../types.ts";
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -53,16 +53,6 @@ const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
@@ -164,7 +154,6 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
       <UIcon
         internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
-        :size="iconSize"
         color="white"
         v-bind="checkedIconAttrs"
       />

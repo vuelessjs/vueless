@@ -8,7 +8,16 @@ export default /*tw*/ {
     },
   },
   dropdownLink: "{ULink}",
-  dropdownIcon: "{UIcon} block transition duration-300 group-[]:rotate-180",
+  dropdownIcon: {
+    base: "{UIcon} block transition duration-300 group-[]:rotate-180",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   dropdownList: {
     base: "{UDropdownList} w-fit",
     variants: {

@@ -65,10 +65,20 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-base" },
     ],
   },
+  baseIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   leftIconWrapper: "pr-1.5",
   rightIconWrapper: "{>caret} pr-3",
-  leftIcon: "{UIcon}",
-  rightIcon: "{UIcon}",
+  leftIcon: "{UIcon} {>baseIcon}",
+  rightIcon: "{UIcon} {>baseIcon}",
   beforeCaret: "{>caret}",
   afterCaret: "{>caret} mr-3",
   caret: {
@@ -80,11 +90,11 @@ export default /*tw*/ {
     ],
   },
   toggle: "{>caret} mr-3",
-  toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: "{UIcon} {>baseIcon}",
   clear: "{>caret}",
-  clearIcon: "{UIcon}",
+  clearIcon: "{UIcon} {>baseIcon}",
   clearMultiple: "flex items-center",
-  clearMultipleIcon: "{UIcon}",
+  clearMultipleIcon: "{UIcon} {>baseIcon}",
   clearMultipleText: {
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [

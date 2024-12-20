@@ -4,8 +4,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "2xs" | "xs" | "sm";
-
 export interface Props {
   /**
    * Switch value.

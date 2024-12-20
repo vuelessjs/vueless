@@ -4,8 +4,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type LabelSize = "sm" | "md" | "lg";
-
 export interface UToggleOption {
   value: string | number;
   label: string;

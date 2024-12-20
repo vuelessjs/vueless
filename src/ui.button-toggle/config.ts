@@ -6,6 +6,16 @@ export default /*tw*/ {
         true: "w-full",
       },
     },
+    defaults: {
+      size: {
+        "2xs": "sm",
+        xs: "sm",
+        sm: "md",
+        md: "md",
+        lg: "lg",
+        xl: "lg",
+      },
+    },
   },
   items: {
     base: "",

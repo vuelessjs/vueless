@@ -10,27 +10,13 @@ import { COMPONENT_NAME, VARIANT } from "./constants.ts";
 import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { UProgressProps, HeaderSize, Config } from "./types.ts";
+import type { UProgressProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<UProgressProps>(), {
   ...getDefaults<UProgressProps, Config>(defaultConfig, COMPONENT_NAME),
   max: 100,
-});
-
-const headerSize = computed(() => {
-  const sizes = {
-    "2xs": "xs",
-    xs: "xs",
-    sm: "sm",
-    md: "sm",
-    lg: "lg",
-    xl: "xl",
-    "2xl": "2xl",
-  };
-
-  return sizes[props.size] as HeaderSize;
 });
 
 const isSteps = computed(() => Array.isArray(props.max));
@@ -67,7 +53,7 @@ function isActiveStep(index: number | string) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } =
+const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs, headerAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
@@ -105,7 +91,7 @@ const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs } =
           :value="value"
           :max="max"
         >
-          <UHeader v-if="isVariant.stepper" :label="String(step)" :size="headerSize" />
+          <UHeader v-if="isVariant.stepper" :label="String(step)" v-bind="headerAttrs" />
           <template v-else>{{ step }}</template>
         </slot>
       </template>

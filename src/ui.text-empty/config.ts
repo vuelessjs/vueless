@@ -20,8 +20,26 @@ export default /*tw*/ {
       },
     },
   },
-  emptyIcon: "{UIcon}",
-  title: "{UHeader}",
+  emptyIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xl",
+        md: "3xl",
+        lg: "4xl",
+      },
+    },
+  },
+  title: {
+    base: "{UHeader}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   description: {
     base: "text-center",
     variants: {

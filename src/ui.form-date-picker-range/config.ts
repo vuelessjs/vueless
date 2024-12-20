@@ -12,7 +12,16 @@ export default /*tw*/ {
       },
     },
   },
-  rightIcon: "{UIcon}",
+  rightIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   buttonWrapper: {
     base: `
       flex rounded-dynamic max-md:justify-between

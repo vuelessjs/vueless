@@ -58,8 +58,24 @@ export default /*tw*/ {
         true: "opacity-75",
       },
     },
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
   },
-  clearButton: "{UButton}",
+  clearButton: {
+    base: "{UButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   input: "sr-only",
   i18n: {
     sizeError: "File size is too big.",

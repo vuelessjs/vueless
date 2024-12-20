@@ -40,7 +40,16 @@ export default /*tw*/ {
       },
     },
   },
-  checkedIcon: "{UIcon}",
+  checkedIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   defaults: {
     color: "brand",
     size: "md",

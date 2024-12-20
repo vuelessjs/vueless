@@ -7,6 +7,13 @@ export default /*tw*/ {
         lg: "!text-base",
       },
     },
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
   },
   firstButton: "{UButton} {>paginationButton}",
   lastButton: "{UButton} {>paginationButton}",
@@ -14,10 +21,20 @@ export default /*tw*/ {
   nextButton: "{UButton} {>paginationButton}",
   inactiveButton: "{UButton} {>paginationButton}",
   activeButton: "{UButton} {>paginationButton}",
-  lastIcon: "{UIcon}",
-  firstIcon: "{UIcon}",
-  prevIcon: "{UIcon}",
-  nextIcon: "{UIcon}",
+  paginationIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  lastIcon: "{UIcon} {>paginationIcon}",
+  firstIcon: "{UIcon} {>paginationIcon}",
+  prevIcon: "{UIcon} {>paginationIcon}",
+  nextIcon: "{UIcon} {>paginationIcon}",
   defaults: {
     variant: "primary",
     size: "md",

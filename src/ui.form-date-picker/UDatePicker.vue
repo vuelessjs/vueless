@@ -305,23 +305,21 @@ watchEffect(() => {
         <slot name="left" />
       </template>
 
-      <template #left-icon="{ iconName, iconSize }">
+      <template #left-icon="{ iconName }">
         <!--
           @slot Use it add an icon before the date.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
+        <slot name="left-icon" :icon-name="iconName" />
       </template>
 
-      <template #right-icon="{ iconName, iconSize }">
+      <template #right-icon="{ iconName }">
         <!--
           @slot Use it add an icon after the date.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
-          <UIcon :name="iconName" :size="iconSize" color="gray" v-bind="rightIconAttrs" />
+        <slot name="right-icon" :icon-name="iconName">
+          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
         </slot>
       </template>
 

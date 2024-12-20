@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
-
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
@@ -10,32 +8,12 @@ import UHeader from "../ui.text-header/UHeader.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, TitleSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xl",
-    md: "3xl",
-    lg: "4xl",
-  };
-
-  return sizes[props.size] as IconSize;
-});
-
-const titleSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as TitleSize;
 });
 
 /**
@@ -60,20 +38,14 @@ const {
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
         <div v-bind="emptyIconWrapperAttrs">
-          <UIcon
-            internal
-            :name="config.defaults.emptyIcon"
-            color="gray"
-            :size="iconSize"
-            v-bind="emptyIconAttrs"
-          />
+          <UIcon internal :name="config.defaults.emptyIcon" color="gray" v-bind="emptyIconAttrs" />
         </div>
       </slot>
     </div>
 
     <!-- @slot Use it to add something inside. -->
     <slot>
-      <UHeader v-if="title" :label="title" :size="titleSize" v-bind="titleAttrs" />
+      <UHeader v-if="title" :label="title" v-bind="titleAttrs" />
       <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
     </slot>
 
