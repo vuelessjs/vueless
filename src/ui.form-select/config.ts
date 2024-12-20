@@ -67,8 +67,26 @@ export default /*tw*/ {
   },
   leftIconWrapper: "pr-1.5",
   rightIconWrapper: "{>caret} pr-3",
-  leftIcon: "{UIcon}",
-  rightIcon: "{UIcon}",
+  leftIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  rightIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   beforeCaret: "{>caret}",
   afterCaret: "{>caret} mr-3",
   caret: {
@@ -80,11 +98,38 @@ export default /*tw*/ {
     ],
   },
   toggle: "{>caret} mr-3",
-  toggleIcon: "{UIcon} transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: {
+    base: "{UIcon} transition duration-300 group-[]/active:rotate-180",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   clear: "{>caret}",
-  clearIcon: "{UIcon}",
+  clearIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   clearMultiple: "flex items-center",
-  clearMultipleIcon: "{UIcon}",
+  clearMultipleIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   clearMultipleText: {
     base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [

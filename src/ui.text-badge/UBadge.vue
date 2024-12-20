@@ -10,7 +10,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import { UBadge } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,16 +44,6 @@ const emit = defineEmits([
 const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "3xs",
-    md: "2xs",
-    lg: "xs",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 function onFocus() {
   emit("focus");
@@ -110,34 +100,18 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
       <!--
           @slot Use it to add icon before the text.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize">
-        <UIcon
-          v-if="leftIcon"
-          internal
-          :name="leftIcon"
-          :size="iconSize"
-          color="inherit"
-          v-bind="leftIconAttrs"
-        />
+      <slot name="left" :icon-name="leftIcon">
+        <UIcon v-if="leftIcon" internal :name="leftIcon" color="inherit" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
         @slot Use it to add something instead of the label.
         @binding {string} label
         @binding {string} icon-name
-        @binding {string} icon-size
       -->
-      <slot name="default" :label="label" :icon-name="icon" :icon-size="iconSize">
-        <UIcon
-          v-if="icon"
-          internal
-          :name="icon"
-          :size="iconSize"
-          color="inherit"
-          v-bind="centerIconAttrs"
-        />
+      <slot name="default" :label="label" :icon-name="icon">
+        <UIcon v-if="icon" internal :name="icon" color="inherit" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -146,13 +120,11 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
       <!--
           @slot Use it to add icon after the text.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize">
+      <slot name="right" :icon-name="rightIcon">
         <UIcon
           v-if="rightIcon"
           :name="rightIcon"
-          :size="iconSize"
           color="inherit"
           internal
           v-bind="rightIconAttrs"

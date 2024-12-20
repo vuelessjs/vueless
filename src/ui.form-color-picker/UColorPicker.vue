@@ -11,7 +11,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import { UColorPicker } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 import type { BrandColors } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -37,18 +37,6 @@ const elementId = props.id || useId();
 const selectedItem = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    xs: "3xs",
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-    xl: "md",
-  };
-
-  return sizes[props.size] as IconSize;
 });
 
 function onUpdateValue(value: string) {
@@ -98,7 +86,6 @@ const {
           <UIcon
             v-if="selectedItem === ''"
             internal
-            :size="iconSize"
             color="gray"
             :name="config.defaults.unselectedIcon"
             v-bind="unselectedIconAttrs"

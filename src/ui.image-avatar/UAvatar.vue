@@ -72,15 +72,8 @@ const { avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
         @slot Use it to add something instead of the avatar image placeholder.
         @binding {string} icon-name
         @binding {string} icon-color
-        @binding {string} icon-size
       -->
-      <slot
-        v-else
-        name="placeholder"
-        :icon-name="placeholderIcon"
-        :icon-color="componentColor"
-        :icon-size="size"
-      >
+      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="componentColor">
         <UIcon
           internal
           :size="size"

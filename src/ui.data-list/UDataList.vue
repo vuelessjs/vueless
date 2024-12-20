@@ -14,7 +14,7 @@ import { UDataList as UDataListName } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { Props, IconSize, DragMoveEvent, DataListItem, Config } from "./types.ts";
+import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -49,16 +49,6 @@ const { tm } = useLocale();
 
 const i18nGlobal = tm(UDataListName);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 function isActive(element: DataListItem) {
   return element.isActive === undefined || element.isActive;
@@ -172,19 +162,12 @@ const {
               @slot Use it to add something instead of the drag icon.
               @binding {object} item
               @binding {string} icon-name
-              @binding {string} icon-size
             -->
-            <slot
-              name="drag"
-              :item="element"
-              :icon-name="config.defaults.dragIcon"
-              :icon-size="iconSize"
-            >
+            <slot name="drag" :item="element" :icon-name="config.defaults.dragIcon">
               <UIcon
                 internal
                 color="gray"
                 variant="light"
-                :size="iconSize"
                 :name="config.defaults.dragIcon"
                 v-bind="dragIconAttrs"
               />
@@ -217,20 +200,13 @@ const {
                 @slot Use it to add something instead of the delete icon.
                 @binding {object} item
                 @binding {string} icon-name
-                @binding {string} icon-size
               -->
-              <slot
-                name="delete"
-                :item="element"
-                :icon-name="config.defaults.deleteIcon"
-                :icon-size="iconSize"
-              >
+              <slot name="delete" :item="element" :icon-name="config.defaults.deleteIcon">
                 <UIcon
                   v-if="!element.isHiddenDelete"
                   internal
                   interactive
                   color="red"
-                  :size="iconSize"
                   :name="config.defaults.deleteIcon"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
@@ -243,20 +219,13 @@ const {
                 @slot Use it to add something instead of the edit icon.
                 @binding {object} item
                 @binding {string} icon-name
-                @binding {string} icon-size
               -->
-              <slot
-                name="edit"
-                :item="element"
-                :icon-name="config.defaults.editIcon"
-                :icon-size="iconSize"
-              >
+              <slot name="edit" :item="element" :icon-name="config.defaults.editIcon">
                 <UIcon
                   v-if="!element.isHiddenEdit"
                   internal
                   interactive
                   color="gray"
-                  :size="iconSize"
                   :name="config.defaults.editIcon"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"

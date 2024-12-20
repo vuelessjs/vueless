@@ -3,8 +3,6 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type HeaderSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-
 export interface UProgressProps {
   /**
    * Progress value (current step).

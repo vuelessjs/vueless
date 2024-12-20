@@ -17,7 +17,7 @@ import { useLocale } from "../composables/useLocale.ts";
 import { UInputFile } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, ButtonSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -88,16 +88,6 @@ const fileList = computed(() => {
   }
 
   return currentFiles.value ? [currentFiles.value] : [];
-});
-
-const buttonSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as ButtonSize;
 });
 
 onMounted(() => {
@@ -316,7 +306,6 @@ const {
               :for="elementId"
               tag="label"
               variant="thirdary"
-              :size="buttonSize"
               :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
@@ -343,7 +332,6 @@ const {
             filled
             no-ring
             variant="thirdary"
-            :size="buttonSize"
             :disabled="disabled"
             :left-icon="config.defaults.clearIcon"
             v-bind="clearButtonAttrs"

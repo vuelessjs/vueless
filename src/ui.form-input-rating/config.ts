@@ -11,7 +11,16 @@ export default /*tw*/ {
     },
   },
   stars: "flex",
-  star: "{UIcon}",
+  star: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   counter: {
     variants: {
       size: {

@@ -10,7 +10,16 @@ export default /*tw*/ {
     group-last/item-wrapper:border-b-0 group-[]/nested:group-last/item-wrapper:border-b
     py-4 space-x-4 flex flex-auto items-center justify-between
   `,
-  dragIcon: "{UIcon} icon-drag cursor-move opacity-100",
+  dragIcon: {
+    base: "{UIcon} icon-drag cursor-move opacity-100",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   label: {
     base: "font-normal text-gray-900 flex-auto pt-px",
     variants: {
@@ -26,8 +35,26 @@ export default /*tw*/ {
     space-x-5 opacity-50 md:flex md:items-center md:opacity-0
     group-hover/item:md:block group-hover/item:opacity-100
   `,
-  deleteIcon: "{UIcon} hidden md:block md:opacity-0 group-hover/item:md:opacity-100",
-  editIcon: "{UIcon} fill-gray-500 opacity-50",
+  deleteIcon: {
+    base: "{UIcon} hidden md:block md:opacity-0 group-hover/item:md:opacity-100",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  editIcon: {
+    base: "{UIcon} fill-gray-500 opacity-50",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   divider: "{UDivider}",
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",

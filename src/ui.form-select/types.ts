@@ -4,7 +4,6 @@ import type { Option } from "../ui.dropdown-list/types.ts";
 import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
-export type IconSize = "xs" | "sm" | "md";
 
 export interface Props {
   /**

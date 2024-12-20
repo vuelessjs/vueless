@@ -610,14 +610,13 @@ watchEffect(() => {
         <slot name="left-icon" />
       </template>
 
-      <template #right-icon="{ iconName, iconSize }">
+      <template #right-icon="{ iconName }">
         <!--
           @slot Use it add an icon after the date.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="right-icon" :icon-name="iconName" :icon-size="size">
-          <UIcon :name="iconName" :size="iconSize" color="gray" v-bind="rightIconAttrs" />
+        <slot name="right-icon" :icon-name="iconName">
+          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
         </slot>
       </template>
 

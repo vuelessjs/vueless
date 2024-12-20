@@ -41,9 +41,35 @@ export default /*tw*/ {
     },
   },
   description: "",
-  text: "{UText}",
-  closeButton: "{UButton}",
-  closeIcon: "{UIcon}",
+  text: {
+    base: "{UText}",
+    defaults: {
+      size: {
+        xs: "sm",
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
+  closeButton: {
+    base: "{UButton}",
+    compoundVariants: [
+      { color: "grayscale", variant: "primary", class: "text-white hover:text-white active:text-white focus:text-white" },
+      { color: "gray", variant: "primary", class: "text-white hover:text-white active:text-white focus:text-white" },
+    ],
+  },
+  closeIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        xs: "3xs",
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   defaults: {
     variant: "primary",
     color: "brand",

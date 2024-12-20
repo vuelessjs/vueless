@@ -4,8 +4,6 @@ import type { ComponentConfig, UnknownObject, UnknownArray } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "2xs" | "xs" | "sm";
-
 export interface UCheckboxOption {
   value?: string | number | boolean | UnknownObject | UnknownArray;
   falseValue?: string | number | boolean | UnknownObject | UnknownArray;

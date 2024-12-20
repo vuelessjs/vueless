@@ -12,7 +12,16 @@ export default /*tw*/ {
       },
     },
   },
-  rightIcon: "{UIcon}",
+  rightIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   datepickerCalendar: {
     base: "{UCalendar} absolute mb-3 z-40",
     variants: {

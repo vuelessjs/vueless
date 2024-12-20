@@ -8,16 +8,106 @@ export default /*tw*/ {
       },
     },
   },
-  firstButton: "{UButton} {>paginationButton}",
-  lastButton: "{UButton} {>paginationButton}",
-  prevButton: "{UButton} {>paginationButton}",
-  nextButton: "{UButton} {>paginationButton}",
-  inactiveButton: "{UButton} {>paginationButton}",
-  activeButton: "{UButton} {>paginationButton}",
-  lastIcon: "{UIcon}",
-  firstIcon: "{UIcon}",
-  prevIcon: "{UIcon}",
-  nextIcon: "{UIcon}",
+  firstButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  lastButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  prevButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  nextButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  inactiveButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  activeButton: {
+    base: "{UButton} {>paginationButton}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  lastIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  firstIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  prevIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  nextIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   defaults: {
     variant: "primary",
     size: "md",

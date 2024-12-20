@@ -52,9 +52,18 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon}",
-  centerIcon: "{UIcon}",
-  rightIcon: "{UIcon}",
+  centerIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "3xs",
+        md: "2xs",
+        lg: "xs",
+      },
+    },
+  },
+  leftIcon: "{UIcon} {>centerIcon}",
+  rightIcon: "{UIcon} {>centerIcon}",
   defaults: {
     color: "brand",
     variant: "primary",
