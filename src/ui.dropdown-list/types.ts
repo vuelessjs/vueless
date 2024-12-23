@@ -18,6 +18,11 @@ export interface Option extends BaseOption {
 
 export interface Props {
   /**
+   * Selected item.
+   */
+  modelValue: string | number | UnknownObject;
+
+  /**
    * List options.
    */
   options?: Option[];

@@ -61,8 +61,8 @@ export default /*tw*/ {
   bodyCellContent: "text-ellipsis overflow-hidden",
   bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
-  bodyCellNested: "mr-2 flex gap-0.5",
-  bodyCellNestedExpandIconWrapper: "",
+  bodyCellNested: "mr-2 flex items-center gap-2",
+  bodyCellNestedExpandIconWrapper: "bg-brand-200 rounded-sm",
   bodyCellNestedExpandIcon: {
     base: "{UIcon}",
     wrapper: "rounded-sm",
