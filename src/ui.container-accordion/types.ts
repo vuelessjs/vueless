@@ -2,7 +2,6 @@ import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
-export type DividerSize = "md" | "lg" | "xl";
 
 export interface Props {
   /**

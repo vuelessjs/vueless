@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId } from "vue";
+import { ref, useId } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -10,7 +10,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, RemoveIconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -30,26 +30,6 @@ const emit = defineEmits([
 const focus = ref(false);
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
-
-const removeIconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size] as RemoveIconSize;
-});
 
 function onRemove() {
   emit("remove", props.id);
@@ -91,7 +71,6 @@ const {
           internal
           interactive
           color="gray"
-          :size="iconSize"
           :name="config.defaults.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
@@ -108,7 +87,6 @@ const {
         internal
         interactive
         color="gray"
-        :size="removeIconSize"
         :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="`${dataTest}-remove-item`"

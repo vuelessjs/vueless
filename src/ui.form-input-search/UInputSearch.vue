@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId, ref, watchEffect } from "vue";
+import { useId, ref, watchEffect } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -12,7 +12,7 @@ import UButton from "../ui.button/UButton.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, ButtonSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -50,26 +50,6 @@ const localValue = ref("");
 const inputRef = ref(null);
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
-
-const buttonSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "md",
-    lg: "lg",
-  };
-
-  return sizes[props.size] as ButtonSize;
-});
 
 watchEffect(() => {
   updateValueWithDebounce = createDebounce((value) => {
@@ -166,7 +146,6 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
         interactive
         color="gray"
         :name="config.defaults.clearIcon"
-        :size="iconSize"
         v-bind="clearIconAttrs"
         :data-test="`${dataTest}-clear`"
         @click="onClickClear"
@@ -176,14 +155,12 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <slot
         name="right-icon"
         :icon-name="config.defaults.searchIcon"
-        :icon-size="iconSize"
         :search-button-label="searchButtonLabel"
       >
         <UIcon
           v-if="!searchButtonLabel"
           internal
           interactive
-          :size="iconSize"
           :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="`${dataTest}-search-icon`"
@@ -198,7 +175,6 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
-          :size="buttonSize"
           no-ring
           v-bind="searchButtonAttrs"
           :data-test="`${dataTest}-search-button`"

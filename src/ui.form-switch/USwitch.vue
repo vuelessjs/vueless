@@ -12,7 +12,7 @@ import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,16 +44,6 @@ const elementId = props.id || useId();
 
 const switchLabel = computed(() => {
   return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size] as IconSize;
 });
 
 const iconColor = computed(() => {
@@ -127,7 +117,6 @@ const {
           internal
           :name="toggleIconName"
           :color="iconColor"
-          :size="iconSize"
           v-bind="toggleIconAttrs"
         />
       </span>

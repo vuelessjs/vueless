@@ -13,7 +13,7 @@ import { vClickOutside } from "../directives";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 import type { Option } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -40,16 +40,6 @@ const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
@@ -129,7 +119,6 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
             internal
             interactive
             :color="color"
-            :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"

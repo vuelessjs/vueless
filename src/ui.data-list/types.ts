@@ -6,8 +6,6 @@ import type { ComponentConfig, UnknownType } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconSize = "xs" | "sm" | "md";
-
 export interface DragMoveEvent extends DragEvent {
   draggedContext: typeof DraggableContext;
   relatedContext: typeof DraggableContext | null;
