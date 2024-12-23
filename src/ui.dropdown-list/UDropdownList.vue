@@ -20,15 +20,21 @@ import type { UnknownObject } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-// TODO: Use props and regular modal value
-const modelValue = defineModel<string | number | UnknownObject>({ default: "" });
-
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
   options: () => [],
 });
 
 const emit = defineEmits([
+  /**
+   * Triggers when the selected value is changes.
+   * @property {string} modelValue
+   * @property {number} modelValue
+   * @property {object} modelValue
+   */
+  "update:modelValue",
+
   /**
    * Triggers when option is added.
    */
@@ -55,6 +61,11 @@ const { tm } = useLocale();
 
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const selectedValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
@@ -136,12 +147,12 @@ function select(option: Option, keyCode?: string) {
   if (keyCode === "Tab" && !pointerDirty.value) return;
 
   if (props.valueKey in option && !isMetaKey(props.valueKey)) {
-    modelValue.value = option[props.valueKey] as string | number | UnknownObject;
+    selectedValue.value = option[props.valueKey] as string | number | UnknownObject;
   }
 }
 
 function isSelectedOption(option: Option) {
-  return modelValue.value === option[props.valueKey];
+  return selectedValue.value === option[props.valueKey];
 }
 
 function getMarginForSubCategory(level: number = 0) {
