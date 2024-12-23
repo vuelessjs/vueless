@@ -57,7 +57,7 @@ export default /*tw*/ {
       `,
       },
       typePassword: {
-        true: "tracking-widest [font-family:text-security-disc,serif] [-webkit-text-security:disc]",
+        true: "tracking-widest !leading-[1.18] [font-family:text-security-disc,serif] [-webkit-text-security:disc]",
       },
     },
     compoundVariants: [
