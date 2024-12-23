@@ -11,7 +11,7 @@ export default /*tw*/ {
     py-4 space-x-4 flex flex-auto items-center justify-between
   `,
   dataListIcon: {
-    base: "{UIcon} icon-drag cursor-move opacity-100",
+    base: "{UIcon}",
     defaults: {
       size: {
         sm: "xs",
