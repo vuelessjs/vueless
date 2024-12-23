@@ -600,29 +600,22 @@ watchEffect(() => {
       @focus="activate"
       @keydown.esc="deactivate"
     >
-      <template #left>
-        <!-- @slot Use it to add something before the date. -->
-        <slot name="left" />
-      </template>
-
-      <template #left-icon>
-        <!-- @slot Use it to add icon before the date. -->
-        <slot name="left-icon" />
-      </template>
-
-      <template #right-icon="{ iconName }">
+      <template #left="{ iconName }">
         <!--
-          @slot Use it add an icon after the date.
+          @slot Use it to something before the date. 
           @binding {string} icon-name
         -->
-        <slot name="right-icon" :icon-name="iconName">
-          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
-        </slot>
+        <slot name="left" :icon-name="iconName" />
       </template>
 
-      <template #right>
-        <!-- @slot Use it to add something after the date. -->
-        <slot name="right" />
+      <template #right="{ iconName }">
+        <!--
+          @slot Use it something after the date.
+          @binding {string} icon-name
+        -->
+        <slot name="right" :icon-name="iconName">
+          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
+        </slot>
       </template>
     </UInput>
 

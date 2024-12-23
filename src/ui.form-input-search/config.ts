@@ -21,7 +21,7 @@ export default /*tw*/ {
     },
   },
   searchButton: {
-    base: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+    base: "{UButton} -mr-3 rounded-l-none ml-1 outline outline-1 outline-gray-900",
     defaults: {
       size: {
         sm: "xs",

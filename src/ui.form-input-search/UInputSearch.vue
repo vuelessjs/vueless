@@ -139,7 +139,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <slot name="left-icon" />
     </template>
 
-    <template #right-icon>
+    <template #right>
       <UIcon
         v-if="localValue"
         internal
@@ -153,7 +153,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
 
       <!-- @slot Use it to add icon after the text. -->
       <slot
-        name="right-icon"
+        name="right"
         :icon-name="config.defaults.searchIcon"
         :search-button-label="searchButtonLabel"
       >
@@ -166,12 +166,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
           :data-test="`${dataTest}-search-icon`"
           @click="onClickSearch"
         />
-      </slot>
-    </template>
 
-    <template #right>
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right">
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"

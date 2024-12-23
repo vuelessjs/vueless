@@ -335,11 +335,7 @@ function onMouseDownClear() {
 }
 
 function setLabelPosition() {
-  if (
-    props.labelAlign === "top" ||
-    !hasSlotContent(slots["left"]) ||
-    (!hasSlotContent(slots["left-icon"]) && !props.leftIcon)
-  ) {
+  if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {
     return;
   }
 
@@ -423,8 +419,8 @@ const {
   selectLabelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
-  leftIconWrapperAttrs,
-  rightIconWrapperAttrs,
+  leftSlotAttrs,
+  rightSlotAttrs,
   leftIconAttrs,
   rightIconAttrs,
   beforeCaretAttrs,
@@ -473,15 +469,12 @@ const {
       @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement()"
       @keyup.esc="deactivate"
     >
-      <!-- @slot Use it to add something right. -->
-      <slot name="right" />
-
-      <div v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
+      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
         <!--
-            @slot Use it to add icon right.
+            @slot Use it to add something to the right of input.
             @binding {string} icon-name
           -->
-        <slot name="right-icon" :icon-name="rightIcon">
+        <slot name="right" :icon-name="rightIcon">
           <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
         </slot>
       </div>
@@ -554,22 +547,17 @@ const {
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
         <span
-          v-if="hasSlotContent($slots['left-icon']) || leftIcon"
+          v-if="hasSlotContent($slots['left']) || leftIcon"
           ref="leftSlotWrapperRef"
-          v-bind="leftIconWrapperAttrs"
+          v-bind="leftSlotAttrs"
         >
           <!--
-            @slot Use it to add icon left.
+            @slot Use it to add something to the left of input.
             @binding {string} icon-name
           -->
-          <slot name="left-icon" :icon-name="leftIcon">
+          <slot name="left" :icon-name="leftIcon">
             <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
           </slot>
-        </span>
-
-        <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-          <!-- @slot Use it to add something left. -->
-          <slot name="left" />
         </span>
 
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">

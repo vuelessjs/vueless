@@ -134,16 +134,6 @@ const { moneyInputAttrs } = useUI<Config>(defaultConfig);
       <slot name="left" />
     </template>
 
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
-    <template #right-icon>
-      <!-- @slot Use it to add icon after the text. -->
-      <slot name="right-icon" />
-    </template>
-
     <template #right>
       <!-- @slot Use it to add something right. -->
       <slot name="right" />
