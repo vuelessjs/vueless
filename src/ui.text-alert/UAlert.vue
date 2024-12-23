@@ -41,10 +41,11 @@ function onClickClose() {
 }
 
 const closeButtonColor = computed(() => {
-  if (props.color === "grayscale") return "white";
-  if (props.color === "white") return "grayscale";
-
-  return props.color;
+  if (props.variant === "primary" || props.color === "white") {
+    return props.color === "white" ? "grayscale" : "white";
+  } else {
+    return props.color;
+  }
 });
 
 /**
@@ -123,7 +124,7 @@ const {
         <slot name="close" :icon-name="config.defaults.closeIcon">
           <UIcon
             internal
-            color="inherit"
+            :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
             :data-test="`${dataTest}-button`"

@@ -52,13 +52,7 @@ export default /*tw*/ {
       },
     },
   },
-  closeButton: {
-    base: "{UButton}",
-    compoundVariants: [
-      { color: "grayscale", variant: "primary", class: "text-white hover:text-white active:text-white focus:text-white" },
-      { color: "gray", variant: "primary", class: "text-white hover:text-white active:text-white focus:text-white" },
-    ],
-  },
+  closeButton: "{UButton}",
   closeIcon: {
     base: "{UIcon}",
     defaults: {
