@@ -166,8 +166,13 @@ function getMarginForSubCategory(level: number = 0) {
 function optionHighlight(index: number, option: Option) {
   const classes = [];
 
-  if (index === pointer.value) classes.push(config.value?.optionHighlighted);
-  if (isSelectedOption(option)) classes.push(config.value?.optionSelected);
+  if (isSelectedOption(option)) {
+    classes.push(config.value?.optionActive);
+  }
+
+  if (index === pointer.value && !isSelectedOption(option)) {
+    classes.push(config.value?.optionHighlighted);
+  }
 
   return classes;
 }
@@ -251,6 +256,7 @@ const {
   addOptionLabelHotkeyAttrs,
   addOptionButtonAttrs,
   addOptionIconAttrs,
+  optionActiveAttrs,
   optionAttrs,
   subGroupAttrs,
   groupAttrs,
@@ -281,7 +287,7 @@ const {
         <!-- option title -->
         <span
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
-          v-bind="optionAttrs"
+          v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
           :class="optionHighlight(index, option)"
           @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
