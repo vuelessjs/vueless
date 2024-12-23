@@ -103,6 +103,20 @@ export default /*tw*/ {
       },
     },
   },
+  header: {
+    base: "{UHeader}",
+    defaults: {
+      size: {
+        "2xs": "xs",
+        xs: "xs",
+        sm: "sm",
+        md: "sm",
+        lg: "lg",
+        xl: "xl",
+        "2xl": "2xl",
+      },
+    },
+  },
   defaults: {
     max: 100,
     color: "brand",

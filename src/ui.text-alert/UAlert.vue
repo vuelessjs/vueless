@@ -12,7 +12,7 @@ import UText from "../ui.text-block/UText.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, TextSize, CloseIconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -40,33 +40,12 @@ function onClickClose() {
   emit("hidden");
 }
 
-const textSize = computed(() => {
-  const sizes = {
-    xs: "sm",
-    sm: "sm",
-    md: "md",
-    lg: "lg",
-  };
-
-  return sizes[props.size] as TextSize;
-});
-
-const closeIconSize = computed(() => {
-  const sizes = {
-    xs: "3xs",
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size] as CloseIconSize;
-});
-
 const closeButtonColor = computed(() => {
-  if (props.color === "grayscale") return "white";
-  if (props.color === "white") return "grayscale";
-
-  return props.color;
+  if (props.variant === "primary" || props.color === "white") {
+    return props.color === "white" ? "grayscale" : "white";
+  } else {
+    return props.color;
+  }
 });
 
 /**
@@ -118,7 +97,7 @@ const {
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
-          <UText v-bind="textAttrs" :size="textSize">
+          <UText v-bind="textAttrs">
             <!-- @slot Use it to add something inside. -->
             <slot />
           </UText>
@@ -141,13 +120,11 @@ const {
         <!--
           @slot Use it to add something instead of the close button.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="close" :icon-name="config.defaults.closeIcon" :icon-size="closeIconSize">
+        <slot name="close" :icon-name="config.defaults.closeIcon">
           <UIcon
             internal
-            color="inherit"
-            :size="closeIconSize"
+            :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
             :data-test="`${dataTest}-button`"

@@ -11,7 +11,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -29,16 +29,6 @@ const emit = defineEmits([
 ]);
 
 const hovered = ref<number | null>(null);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 const counterValue = computed(() => {
   return hovered.value || props.modelValue;
@@ -102,7 +92,6 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
           :key="star"
           internal
           :color="error ? 'red' : 'brand'"
-          :size="iconSize"
           :interactive="selectable"
           :name="starIcon(star)"
           v-bind="starAttrs"

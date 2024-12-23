@@ -1,8 +1,35 @@
 export default /*tw*/ {
   searchInput: "{UInput}",
-  clearIcon: "{UIcon}",
-  searchIcon: "{UIcon}",
-  searchButton: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+  clearIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  searchIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  searchButton: {
+    base: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
   defaults: {
     size: "md",
     labelAlign: "topInside",

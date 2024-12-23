@@ -23,7 +23,7 @@ import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
 import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
-import type { Props, Config, IconSize } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -104,16 +104,6 @@ const isTop = computed(() => {
   if (props.openDirection === DIRECTION.bottom) return false;
 
   return preferredOpenDirection.value === DIRECTION.top;
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
 });
 
 const inputPlaceholder = computed(() => {
@@ -490,16 +480,9 @@ const {
         <!--
             @slot Use it to add icon right.
             @binding {string} icon-name
-            @binding {string} icon-size
           -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="rightIcon"
-            :name="rightIcon"
-            :size="iconSize"
-            internal
-            v-bind="rightIconAttrs"
-          />
+        <slot name="right-icon" :icon-name="rightIcon">
+          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
         </slot>
       </div>
 
@@ -524,20 +507,13 @@ const {
         <!--
           @slot Use it to add something instead of the toggle icon.
           @binding {string} icon-name
-          @binding {string} icon-size
           @binding {boolean} opened
         -->
-        <slot
-          name="toggle"
-          :icon-name="config.defaults.dropdownIcon"
-          :icon-size="iconSize"
-          :opened="isOpen"
-        >
+        <slot name="toggle" :icon-name="config.defaults.dropdownIcon" :opened="isOpen">
           <UIcon
             internal
             interactive
             color="gray"
-            :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="toggleIconAttrs"
             :tabindex="-1"
@@ -553,14 +529,12 @@ const {
         <!--
           @slot Use it to add something instead of the clear icon.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="clear" :icon-name="config.defaults.clearIcon" :icon-size="iconSize">
+        <slot name="clear" :icon-name="config.defaults.clearIcon">
           <UIcon
             internal
             interactive
             color="gray"
-            :size="iconSize"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
           />
@@ -587,16 +561,9 @@ const {
           <!--
             @slot Use it to add icon left.
             @binding {string} icon-name
-            @binding {string} icon-size
           -->
-          <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
-            <UIcon
-              v-if="leftIcon"
-              :name="leftIcon"
-              :size="iconSize"
-              internal
-              v-bind="leftIconAttrs"
-            />
+          <slot name="left-icon" :icon-name="leftIcon">
+            <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
           </slot>
         </span>
 
@@ -640,18 +607,12 @@ const {
               <!--
                 @slot Use it to add something instead of the clear icon (when multiple prop enabled).
                 @binding {string} icon-name
-                @binding {string} icon-size
               -->
-              <slot
-                name="clear-multiple"
-                :icon-name="config.defaults.clearMultipleIcon"
-                :icon-size="iconSize"
-              >
+              <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
                   internal
                   interactive
                   color="gray"
-                  :size="iconSize"
                   :name="config.defaults.clearMultipleIcon"
                   v-bind="clearMultipleIconAttrs"
                 />

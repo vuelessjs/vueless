@@ -41,9 +41,29 @@ export default /*tw*/ {
     },
   },
   description: "",
-  text: "{UText}",
+  text: {
+    base: "{UText}",
+    defaults: {
+      size: {
+        xs: "sm",
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
   closeButton: "{UButton}",
-  closeIcon: "{UIcon}",
+  closeIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        xs: "3xs",
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   defaults: {
     variant: "primary",
     color: "brand",

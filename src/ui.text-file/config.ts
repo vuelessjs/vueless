@@ -20,9 +20,27 @@ export default /*tw*/ {
     },
   },
   fileImage: "rounded-sm max-w-7",
-  fileIcon: "{UIcon}",
+  fileIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   fileLabel: "{ULink}",
-  removeIcon: "{UIcon}",
+  removeIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   defaults: {
     size: "md",
     /* icons */

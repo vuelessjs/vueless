@@ -12,7 +12,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, IconSize, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -101,16 +101,6 @@ const applyPasswordClasses = computed(() => {
 });
 
 const elementId = props.id || useId();
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size] as IconSize;
-});
 
 const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
@@ -290,16 +280,9 @@ const {
         <!--
           @slot Use it to add icon before the text.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="leftIcon"
-            :name="leftIcon"
-            :size="iconSize"
-            internal
-            v-bind="leftIconAttrs"
-          />
+        <slot name="left-icon" :icon-name="leftIcon">
+          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
         </slot>
       </span>
 
@@ -342,16 +325,9 @@ const {
         <!--
           @slot Use it to add icon after the text.
           @binding {string} icon-name
-          @binding {string} icon-size
         -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="rightIcon"
-            :name="rightIcon"
-            :size="iconSize"
-            internal
-            v-bind="rightIconAttrs"
-          />
+        <slot name="right-icon" :icon-name="rightIcon">
+          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
         </slot>
       </span>
 
