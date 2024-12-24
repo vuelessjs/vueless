@@ -493,9 +493,9 @@ const {
       >
         <!--
           @slot Use it to add something after caret.
-          @binding {object} scope-props
+          @binding {object} option
         -->
-        <slot :scope-props="props" name="after-caret" />
+        <slot :option="localValue" name="after-caret" />
       </div>
 
       <div
@@ -547,9 +547,9 @@ const {
       >
         <!--
           @slot Use it to add something before caret.
-          @binding {object} scope-props
+          @binding {object} option
         -->
-        <slot :scope-props="props" name="before-caret" />
+        <slot :option="localValue" name="before-caret" />
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
@@ -573,7 +573,7 @@ const {
         </span>
 
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
-          <span
+          <div
             v-for="item in localValue as Option[]"
             :key="String(item[valueKey])"
             v-bind="selectedLabelAttrs"
@@ -581,21 +581,22 @@ const {
             <!--
               @slot Use it to customise selected value label.
               @binding {string} selected-label
+              @binding {object} option
             -->
             <slot
               name="selected-label"
               :selected-label="getOptionLabel(item)"
               :value="item[valueKey]"
-              :raw-option="item"
+              :option="item"
             >
               {{ getOptionLabel(item) }}
             </slot>
 
             <!--
               @slot Use it to add something after selected value label.
-              @binding {object} scope-props
+              @binding {object} option
             -->
-            <slot :scope-props="props" name="selected-label-after" />
+            <slot :option="item" name="selected-label-after" />
 
             <div
               v-if="!disabled"
@@ -618,7 +619,7 @@ const {
                 />
               </slot>
             </div>
-          </span>
+          </div>
         </div>
 
         <div v-bind="searchAttrs">
@@ -652,20 +653,22 @@ const {
             @slot Use it to add selected value label.
             @binding {string} selected-label
             @binding {string} value
+            @binding {object} option
           -->
           <slot
             name="selected-label"
             :selected-label="selectedLabel"
             :value="(localValue as Option)[valueKey]"
+            :option="localValue"
           >
             {{ selectedLabel }}
           </slot>
 
           <!--
             @slot Use it to add something after selected value label.
-            @binding {object} scope-props
+            @binding {object} option
           -->
-          <slot :scope-props="props" name="selected-label-after" />
+          <slot :option="localValue" name="selected-label-after" />
         </span>
 
         <div
