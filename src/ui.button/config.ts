@@ -64,8 +64,8 @@ export default /*tw*/ {
       {
         color: ["grayscale", "white"],
         class: `
-          focus:ring-gray-700/15        dark:focus:ring-gray-500/15
-          focus-within:ring-gray-700/15 dark:focus-within:ring-gray-500/15
+          focus:ring-gray-500/10        dark:focus:ring-gray-400/10
+          focus-within:ring-gray-500/10 dark:focus-within:ring-gray-400/10
         `,
       },
       {
@@ -93,9 +93,9 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900                              dark:text-gray-100
-          hover:text-gray-800  hover:bg-gray-800/15  dark:hover:text-gray-200  dark:hover:bg-gray-200/15
-          focus:text-gray-800  focus:bg-gray-800/15  dark:focus:text-gray-200  dark:focus:bg-gray-200/15
-          active:text-gray-700 active:bg-gray-700/20 dark:active:text-gray-300 dark:active:bg-gray-300/20
+          hover:text-gray-800  hover:bg-gray-800/10  dark:hover:text-gray-200  dark:hover:bg-gray-200/10
+          focus:text-gray-800  focus:bg-gray-800/10  dark:focus:text-gray-200  dark:focus:bg-gray-200/10
+          active:text-gray-700 active:bg-gray-700/15 dark:active:text-gray-300 dark:active:bg-gray-300/15
         `,
       },
       {

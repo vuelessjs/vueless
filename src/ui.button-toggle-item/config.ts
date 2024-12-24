@@ -7,8 +7,16 @@ export default /*tw*/ {
   },
   toggleButtonActive: {
     base: "{UButton} {>toggleButton}",
+    button: {
+      variants: {
+        variant: {
+          thirdary: "!bg-{color}-800/15",
+        },
+      },
+    },
     defaults: {
-      variant: "primary",
+      variant: "thirdary",
+      filled: true,
     },
   },
   toggleInput: "p-0 m-0 size-0 invisible absolute",
