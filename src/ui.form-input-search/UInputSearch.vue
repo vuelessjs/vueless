@@ -134,11 +134,6 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <slot name="left" />
     </template>
 
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
     <template #right>
       <UIcon
         v-if="localValue"
@@ -151,10 +146,14 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
         @click="onClickClear"
       />
 
-      <!-- @slot Use it to add icon after the text. -->
+      <!-- 
+        @slot Use it to add something after the text. 
+        @binding {string} icon-name
+        @binding {string} icon-size      
+      -->
       <slot
         name="right"
-        :icon-name="config.defaults.searchIcon"
+        :icon-name="rightIcon || config.defaults.searchIcon"
         :search-button-label="searchButtonLabel"
       >
         <UIcon

@@ -602,7 +602,7 @@ watchEffect(() => {
     >
       <template #left="{ iconName }">
         <!--
-          @slot Use it to something before the date. 
+          @slot Use it to add something before the date.
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="iconName" />
@@ -610,7 +610,7 @@ watchEffect(() => {
 
       <template #right="{ iconName }">
         <!--
-          @slot Use it something after the date.
+          @slot Use it to add something after the date.
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
