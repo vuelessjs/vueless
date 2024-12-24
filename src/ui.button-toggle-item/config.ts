@@ -1,13 +1,14 @@
 export default /*tw*/ {
   toggleButton: {
-    base: "{UButton} font-normal",
+    base: "{UButton} font-normal text-gray-900",
     defaults: {
       variant: "thirdary",
     },
   },
   toggleButtonActive: {
-    base: "{UButton} {>toggleButton} !bg-{color}-800/10",
+    base: "{UButton} font-normal !bg-{color}-600/15",
     defaults: {
+      variant: "thirdary",
       filled: true,
     },
   },

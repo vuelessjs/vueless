@@ -101,7 +101,7 @@ const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<C
   <UButton
     :label="label"
     tabindex="0"
-    :color="isSelected ? 'brand' : 'grayscale'"
+    color="brand"
     :for="elementId"
     :filled="getToggleSplit()"
     :size="getToggleSize()"
