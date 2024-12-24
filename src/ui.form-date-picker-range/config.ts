@@ -93,31 +93,22 @@ export default /*tw*/ {
   periodDateCurrentSelected: "{>periodDate} {>periodDateSelected} {>periodDateCurrent}",
   customRangeDescription: "",
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
-  rangeInputFirst: {
+  rangeInput: {
     base: "{UInput}",
     inputLabel: {
       base: "{ULabel}",
-      wrapper: "w-full hover:z-10 focus:z-10 !rounded-none",
+      wrapper: "w-full transition",
       description: "hidden",
     },
-    input: "rounded-r-none",
-    wrapper: `
-      rounded-r-none
-      focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500
-    `,
+    wrapper: "focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500",
+  },
+  rangeInputFirst: {
+    base: "{UInput} {>rangeInput}",
+    wrapper: "rounded-r-none",
   },
   rangeInputLast: {
-    base: "{UInput}",
-    inputLabel: {
-      base: "{ULabel}",
-      wrapper: "w-full hover:z-10 focus:z-10",
-      description: "hidden",
-    },
-    input: "rounded-l-none",
-    wrapper: `
-      rounded-l-none
-      focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500
-    `,
+    base: "{UInput} {>rangeInput}",
+    wrapper: "rounded-l-none",
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   datepickerCalendar: {
