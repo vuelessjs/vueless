@@ -31,28 +31,19 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-/* eslint-disable prettier/prettier */
 const getToggleName = inject<() => string>("getToggleName", () => "toggle");
-const getToggleType = inject<() => string>("getToggleType", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).type || TYPE_RADIO
-);
-const getToggleSize = inject<() => ButtonSize>("getToggleSize", () =>
-  (getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).size || "md") as ButtonSize
-);
-const getToggleRound = inject<() => boolean>("getToggleRound", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).round || false
-);
-const getToggleBlock = inject<() => boolean>("getToggleBlock", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).block || false
-);
-const getToggleSquare = inject<() => boolean>("getToggleSquare", () =>
-  getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).square || false
-);
+const getToggleType = inject<() => string>("getToggleType", () => TYPE_RADIO);
+const getToggleSize = inject<() => ButtonSize>("getToggleSize", () => "md" as ButtonSize);
+const getToggleRound = inject<() => boolean>("getToggleRound", () => false);
+const getToggleBlock = inject<() => boolean>("getToggleBlock", () => false);
+const getToggleSquare = inject<() => boolean>("getToggleSquare", () => false);
+const getToggleNoRing = inject<() => boolean>("getToggleNoRing", () => true);
 const getToggleSplit = inject<() => boolean>("getToggleSplit", () => true);
-const getToggleDisabled = inject<() => boolean>("getToggleDisabled", () =>
-  props.disabled || getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).disabled || false
+
+const getToggleDisabled = inject<() => boolean>(
+  "getToggleDisabled",
+  () => getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).disabled || false,
 );
-/* eslint-enable prettier/prettier */
 
 const { selectedValue, updateSelectedValue } = inject<ToggleContextType>("toggleSelectedValue", {
   selectedValue: ref(""),
@@ -110,15 +101,15 @@ const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<C
   <UButton
     :label="label"
     tabindex="0"
-    color="brand"
+    :color="isSelected ? 'brand' : 'grayscale'"
     :for="elementId"
     :filled="getToggleSplit()"
-    :no-ring="!getToggleSplit()"
     :size="getToggleSize()"
     :round="getToggleRound()"
     :block="getToggleBlock()"
     :square="getToggleSquare()"
     :disabled="getToggleDisabled() || disabled"
+    :no-ring="getToggleNoRing() || !getToggleSplit()"
     v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonAttrs"
     @click="onClickSetValue"
   >
@@ -135,7 +126,7 @@ const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<C
         :name="getToggleName()"
         :type="getToggleType()"
         :value="value"
-        :disabled="getToggleDisabled()"
+        :disabled="getToggleDisabled() || disabled"
         v-bind="toggleInputAttrs"
       />
 

@@ -77,6 +77,11 @@ export interface Props {
   square?: boolean;
 
   /**
+   * Remove button ring on focus.
+   */
+  noRing?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
