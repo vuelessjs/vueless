@@ -158,7 +158,10 @@ export default function useUI<T>(
       vuelessAttrs.value = {
         ...commonAttrs,
         class: cx([...extendsClasses, toValue(classes)]),
-        config: merge({}, extendsConfigAttr, configAttr),
+        config: getMergedConfig({
+          defaultConfig: extendsConfigAttr,
+          globalConfig: configAttr,
+        }),
         ...getDefaults({
           ...(extendsConfigAttr.defaults || {}),
           ...(configAttr.defaults || {}),
