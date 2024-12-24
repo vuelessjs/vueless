@@ -6,7 +6,7 @@ export default /*tw*/ {
     },
   },
   toggleButtonActive: {
-    base: "{UButton} {>toggleButton} !bg-{color}-800/15",
+    base: "{UButton} {>toggleButton} !bg-{color}-800/10",
     defaults: {
       filled: true,
     },

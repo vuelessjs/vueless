@@ -64,8 +64,8 @@ export default /*tw*/ {
       {
         color: ["grayscale", "white"],
         class: `
-          focus:ring-gray-500/10        dark:focus:ring-gray-400/10
-          focus-within:ring-gray-500/10 dark:focus-within:ring-gray-400/10
+          focus:ring-gray-700/15        dark:focus:ring-gray-500/15
+          focus-within:ring-gray-700/15 dark:focus-within:ring-gray-500/15
         `,
       },
       {
@@ -93,9 +93,9 @@ export default /*tw*/ {
         variant: "thirdary",
         class: `
           text-gray-900                              dark:text-gray-100
-          hover:text-gray-800  hover:bg-gray-800/10  dark:hover:text-gray-200  dark:hover:bg-gray-200/10
-          focus:text-gray-800  focus:bg-gray-800/10  dark:focus:text-gray-200  dark:focus:bg-gray-200/10
-          active:text-gray-700 active:bg-gray-700/15 dark:active:text-gray-300 dark:active:bg-gray-300/15
+          hover:text-gray-800  hover:bg-gray-800/5   dark:hover:text-gray-200  dark:hover:bg-gray-200/5
+          focus:text-gray-800  focus:bg-gray-800/5   dark:focus:text-gray-200  dark:focus:bg-gray-200/5
+          active:text-gray-700 active:bg-gray-700/10 dark:active:text-gray-300 dark:active:bg-gray-300/10
         `,
       },
       {
@@ -127,8 +127,8 @@ export default /*tw*/ {
         variant: "thirdary",
         class: "hover:bg-white/10 focus:bg-white/10 active:bg-white/15",
       },
-      { filled: true, variant: "thirdary", class: "bg-{color}-600/10 dark:bg-{color}-400/10" },
-      { filled: true, variant: "thirdary", color: ["grayscale", "white"], class: "bg-gray-900/5 dark:bg-gray-200/5" },
+      { filled: true, variant: "thirdary", class: "bg-{color}-700/10 dark:bg-{color}-500/10" },
+      { filled: true, variant: "thirdary", color: ["grayscale", "white"], class: "bg-gray-800/5 dark:bg-gray-200/5" },
       { rightIcon: true, size: "2xs", class: "pr-1" },
       { rightIcon: true, size: "xs", class: "pr-2" },
       { rightIcon: true, size: "sm", class: "pr-3" },
