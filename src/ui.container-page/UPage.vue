@@ -78,7 +78,7 @@ const {
   footerLeftAttrs,
   footerRightAttrs,
   rightRoundingWrapperAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, undefined, "wrapper");
 </script>
 
 <template>
