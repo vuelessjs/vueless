@@ -9,7 +9,9 @@ import {
   GRAYSCALE_COLOR,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
+  DEFAULT_ROUNDING_SM,
   DEFAULT_ROUNDING,
+  DEFAULT_ROUNDING_LG,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
@@ -98,7 +100,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 export function setTheme(config: Config = {}) {
   setColorMode(config?.colorMode || vuelessConfig?.colorMode || ColorMode.Auto);
 
+  const roundingSm =
+    config?.["rounding-sm"] ?? vuelessConfig?.["rounding-sm"] ?? DEFAULT_ROUNDING_SM;
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  const roundingLg =
+    config?.["rounding-lg"] ?? vuelessConfig?.["rounding-lg"] ?? DEFAULT_ROUNDING_LG;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
@@ -148,7 +154,9 @@ export function setTheme(config: Config = {}) {
   const colors: DefaultColors = merge(tailwindColors, tailwindConfig?.theme?.extend?.colors || {});
 
   const variables: Partial<VuelessCssVariables> = {
+    "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
     "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),

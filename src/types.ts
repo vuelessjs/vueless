@@ -78,9 +78,19 @@ export interface ThemeConfig {
   gray?: GrayColors;
 
   /**
+   * Default components "sm" size rounding (border-radius).
+   */
+  "rounding-sm"?: number;
+
+  /**
    * Default components rounding (border-radius).
    */
   rounding?: number;
+
+  /**
+   * Default components "lg" size rounding (border-radius).
+   */
+  "rounding-lg"?: number;
 
   /**
    * Default components ring width.
@@ -323,7 +333,9 @@ export interface VuelessCssVariables {
   "--vl-ring": string;
   "--vl-ring-offset": string;
   "--vl-ring-offset-color": string;
+  "--vl-rounding-sm": string;
   "--vl-rounding": string;
+  "--vl-rounding-lg": string;
   /* Gray CSS variables */
   "--vl-color-gray-50": string;
   "--vl-color-gray-100": string;
