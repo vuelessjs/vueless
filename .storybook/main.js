@@ -17,9 +17,6 @@ export default {
       },
     },
   },
-  docs: {
-    autodocs: true,
-  },
   env: (config) => ({
     ...config,
     BASE_URL: "/",
