@@ -104,9 +104,14 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-
-const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  config,
+  searchInputAttrs,
+  searchInputWithButtonAttrs,
+  searchIconAttrs,
+  clearIconAttrs,
+  searchButtonAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -124,7 +129,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
-    v-bind="searchInputAttrs"
+    v-bind="searchButtonLabel ? searchInputWithButtonAttrs : searchInputAttrs"
     :data-test="dataTest"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
@@ -134,12 +139,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <slot name="left" />
     </template>
 
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
-    <template #right-icon>
+    <template #right>
       <UIcon
         v-if="localValue"
         internal
@@ -151,10 +151,13 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
         @click="onClickClear"
       />
 
-      <!-- @slot Use it to add icon after the text. -->
+      <!-- 
+        @slot Use it to add something after the text. 
+        @binding {string} icon-name
+      -->
       <slot
-        name="right-icon"
-        :icon-name="config.defaults.searchIcon"
+        name="right"
+        :icon-name="rightIcon || config.defaults.searchIcon"
         :search-button-label="searchButtonLabel"
       >
         <UIcon
@@ -166,12 +169,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
           :data-test="`${dataTest}-search-icon`"
           @click="onClickSearch"
         />
-      </slot>
-    </template>
 
-    <template #right>
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right">
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"

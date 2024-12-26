@@ -86,35 +86,11 @@ LeftIcon.args = { leftIcon: "star" };
 export const RightIcon = DefaultTemplate.bind({});
 RightIcon.args = { rightIcon: "star" };
 
-export const LeftIconSlot = DefaultTemplate.bind({});
-LeftIconSlot.args = {
-  slotTemplate: `
-    <template #left-icon>
-      <UIcon
-        name="archive"
-        color="red"
-      />
-    </template>
-  `,
-};
-
-export const RightIconSlot = DefaultTemplate.bind({});
-RightIconSlot.args = {
-  slotTemplate: `
-    <template #right-icon>
-      <UIcon
-        name="archive"
-        color="red"
-      />
-    </template>
-  `,
-};
-
 export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+      <UIcon name="star" />
     </template>
   `,
 };
@@ -123,7 +99,7 @@ export const RightSlot = DefaultTemplate.bind({});
 RightSlot.args = {
   slotTemplate: `
     <template #right>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
+      <UIcon name="star" />
     </template>
   `,
 };

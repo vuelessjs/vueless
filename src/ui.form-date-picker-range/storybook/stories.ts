@@ -194,32 +194,6 @@ LeftIcon.args = { leftIcon: "star", variant: "input" };
 export const RightIcon = DefaultTemplate.bind({});
 RightIcon.args = { rightIcon: "star", variant: "input" };
 
-export const LeftIconSlot = DefaultTemplate.bind({});
-LeftIconSlot.args = {
-  variant: "input",
-  slotTemplate: `
-    <template #left-icon>
-      <UIcon
-        name="archive"
-        color="red"
-      />
-    </template>
-  `,
-};
-
-export const RightIconSlot = DefaultTemplate.bind({});
-RightIconSlot.args = {
-  variant: "input",
-  slotTemplate: `
-    <template #right-icon>
-      <UIcon
-        name="archive"
-        color="red"
-      />
-    </template>
-  `,
-};
-
 export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   variant: "input",

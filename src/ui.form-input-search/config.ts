@@ -1,5 +1,9 @@
 export default /*tw*/ {
   searchInput: "{UInput}",
+  searchInputWithButton: {
+    base: "{UInput} {>searchInput}",
+    rightSlot: "pr-0",
+  },
   clearIcon: {
     base: "{UIcon}",
     defaults: {

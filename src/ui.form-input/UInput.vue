@@ -203,8 +203,7 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => {
 });
 
 function setLabelPosition() {
-  const shouldAlignLabelOnTop =
-    !hasSlotContent(slots["left-icon"]) && !hasSlotContent(slots["left"]) && !props.leftIcon;
+  const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
     return;
@@ -245,10 +244,11 @@ const {
   wrapperAttrs,
   inputLabelAttrs,
   passwordIconAttrs,
-  leftIconWrapperAttrs,
   leftIconAttrs,
+  leftSlotAttrs,
   rightIconAttrs,
-  rightIconWrapperAttrs,
+  rightSlotAttrs,
+  passwordIconWrapperAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -267,22 +267,17 @@ const {
     v-bind="inputLabelAttrs"
   >
     <label :for="elementId" v-bind="wrapperAttrs">
-      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-        <!-- @slot Use it to add something before the text. -->
-        <slot name="left" />
-      </span>
-
       <span
-        v-if="hasSlotContent($slots['left-icon']) || leftIcon"
+        v-if="hasSlotContent($slots['left']) || leftIcon"
+        v-bind="leftSlotAttrs"
         ref="leftSlotWrapperRef"
-        v-bind="leftIconWrapperAttrs"
       >
         <!--
-          @slot Use it to add icon before the text.
+          @slot Use it to add something before the text.
           @binding {string} icon-name
         -->
-        <slot name="left-icon" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
+        <slot name="left" :icon-name="leftIcon">
+          <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </span>
 
@@ -308,7 +303,7 @@ const {
         @copy="onCopy"
       />
 
-      <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">
+      <label v-if="isTypePassword" v-bind="passwordIconWrapperAttrs" :for="elementId">
         <UIcon
           v-if="isTypePassword"
           :name="passwordIcon"
@@ -321,18 +316,21 @@ const {
         />
       </label>
 
-      <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
+      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
         <!--
-          @slot Use it to add icon after the text.
+          @slot Use it to add something after the text.
           @binding {string} icon-name
         -->
-        <slot name="right-icon" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
+        <slot name="right" :icon-name="rightIcon">
+          <UIcon
+            v-if="rightIcon"
+            internal
+            color="inherit"
+            :name="rightIcon"
+            v-bind="rightIconAttrs"
+          />
         </slot>
-      </span>
-
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
+      </div>
     </label>
   </ULabel>
 </template>
