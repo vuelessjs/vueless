@@ -27,7 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "pre:start": "npx @vueless/web-types && node .scripts/icons",
+    "pre:start": "npx node .scripts/icons",
     "dev:docs": "npm run pre:start && storybook dev -p 6006 --docs --no-open",
     "dev": "npm run pre:start && STORYBOOK_FULL=1 storybook dev -p 6006 --no-open",
     "build": "npm run pre:start && storybook build --docs",
@@ -66,8 +66,7 @@
     "@vue/eslint-config-prettier": "^10.0.0",
     "@vue/eslint-config-typescript": "^14.1.1",
     "@vue/tsconfig": "^0.5.1",
-    "@vueless/storybook": "^0.0.53",
-    "@vueless/web-types": "^0.0.21",
+    "@vueless/storybook": "^0.0.54",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^9.12.0",

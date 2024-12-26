@@ -11,6 +11,7 @@ import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tail
 import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
+import { buildWebTypes } from "./utils/node/webTypes.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
@@ -64,6 +65,10 @@ export const Vueless = function (options = {}) {
       if (!isNuxt) {
         /* collect used in project colors for tailwind safelist */
         await createTailwindSafelist({ mode, env, debug, targetFiles });
+      }
+
+      if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
+        await buildWebTypes();
       }
 
       if (config.command === "build") {
