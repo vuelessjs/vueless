@@ -66,6 +66,18 @@ export const Vueless = function (options = {}) {
         await createTailwindSafelist({ mode, env, debug, targetFiles });
       }
 
+      if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
+        try {
+          const webTypesModule = await import("@vueless/storybook/webTypes");
+          const buildWebTypes = webTypesModule.default;
+
+          await buildWebTypes();
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.warn(error);
+        }
+      }
+
       if (config.command === "build") {
         /* remove cached icons */
         await removeIconsCache(mirrorCacheDir, debug);
