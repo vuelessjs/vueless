@@ -48,6 +48,12 @@ export default /*tw*/ {
         false: "no-underline",
       },
       color: {
+        gray: `
+          text-gray-500 decoration-gray-500
+          hover:text-gray-600 hover:decoration-gray-600
+          focus:text-gray-600 focus:decoration-gray-600
+          active:text-gray-700 active:decoration-gray-700
+        `,
         grayscale: `
           text-gray-900 decoration-gray-900
           hover:text-gray-800 hover:decoration-gray-800
