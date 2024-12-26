@@ -203,8 +203,7 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => {
 });
 
 function setLabelPosition() {
-  const shouldAlignLabelOnTop =
-    !hasSlotContent(slots["left-icon"]) && !hasSlotContent(slots["left"]) && !props.leftIcon;
+  const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
     return;

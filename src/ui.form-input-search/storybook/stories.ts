@@ -90,7 +90,7 @@ export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
+      <UIcon name="star" />
     </template>
   `,
 };
@@ -99,7 +99,7 @@ export const RightSlot = DefaultTemplate.bind({});
 RightSlot.args = {
   slotTemplate: `
     <template #right>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
+      <UIcon name="star" />
     </template>
   `,
 };

@@ -104,9 +104,14 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-
-const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  config,
+  searchInputAttrs,
+  searchInputWithButtonAttrs,
+  searchIconAttrs,
+  clearIconAttrs,
+  searchButtonAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -124,7 +129,7 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
-    v-bind="searchInputAttrs"
+    v-bind="searchButtonLabel ? searchInputWithButtonAttrs : searchInputAttrs"
     :data-test="dataTest"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
@@ -149,7 +154,6 @@ const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonA
       <!-- 
         @slot Use it to add something after the text. 
         @binding {string} icon-name
-        @binding {string} icon-size      
       -->
       <slot
         name="right"
