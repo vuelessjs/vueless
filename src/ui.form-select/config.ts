@@ -90,7 +90,7 @@ export default /*tw*/ {
     ],
   },
   toggle: "{>caret} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon}",
+  toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[]/active:rotate-180",
   clear: "{>caret}",
   clearIcon: "{UIcon} {>selectIcon}",
   clearMultiple: "flex items-center",

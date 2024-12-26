@@ -6,9 +6,9 @@ export default {
   ringOffset: 0,
   ringOffsetColorLight: "#ffffff", // white
   ringOffsetColorDark: "#111827", // gray-900
-  "rounding-sm": 4,
+  roundingSm: 4,
   rounding: 8,
-  "rounding-lg": 16,
+  roundingLg: 16,
   darkMode: "auto",
   directive: {
     // directive configs
