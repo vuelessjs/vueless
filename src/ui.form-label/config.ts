@@ -66,7 +66,7 @@ export default /*tw*/ {
     ],
   },
   description: {
-    base: "font-normal text-gray-500 text-left !leading-none",
+    base: "font-normal text-gray-500 text-left !leading-tight",
     variants: {
       size: {
         sm: "text-2xs",
@@ -74,21 +74,16 @@ export default /*tw*/ {
         lg: "text-sm",
       },
       align: {
-        top: "pl-0 -mt-0.5",
-        topInside: "pl-3",
-        topWithDesc: "pt-1",
-        left: "pt-1 pl-0",
-        right: "pt-1 pl-0",
+        top: "pl-3",
+        topInside: "pl-3 mt-1.5",
+        topWithDesc: "pt-0.5",
+        left: "pt-0.5",
+        right: "pt-0.5",
       },
       error: {
         true: "text-red-500",
       },
     },
-    compoundVariants: [
-      { align: "topInside", size: "sm", class: "mt-1.5" },
-      { align: "topInside", size: "md", class: "mt-2" },
-      { align: "topInside", size: "lg", class: "mt-2.5" },
-    ],
   },
   defaults: {
     align: "top",
