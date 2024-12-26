@@ -11,6 +11,7 @@ import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tail
 import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
+import { vuelessConfig } from "./utils/node/vuelessConfig.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
@@ -68,10 +69,9 @@ export const Vueless = function (options = {}) {
 
       if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
         try {
-          const webTypesModule = await import("@vueless/storybook/webTypes");
-          const buildWebTypes = webTypesModule.default;
+          const { default: buildWebTypes } = await import("@vueless/storybook/webTypes");
 
-          await buildWebTypes();
+          await buildWebTypes(vuelessConfig);
         } catch (error) {
           // eslint-disable-next-line no-console
           console.warn(error);
