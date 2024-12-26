@@ -5,6 +5,7 @@ export const vue3SourceDecorator = makeDecorator({
   name: "vue3SourceDecorator",
   wrapper: (storyFn, context) => {
     const story = storyFn(context);
+    const urlArgs = getArgsFromUrl();
     const [, updateArgs] = useArgs();
 
     // this returns a new component that computes the source code when mounted
@@ -14,6 +15,8 @@ export const vue3SourceDecorator = makeDecorator({
       components: { story },
       setup() {
         onMounted(async () => {
+          updateArgs({ ...context.args, ...urlArgs });
+
           await setSourceCode();
         });
 
@@ -132,4 +135,19 @@ function kebabCase(str) {
         : letter;
     })
     .join("");
+}
+
+function getArgsFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const args = params.get("args");
+
+  if (!args) return {};
+
+  return args.split(";").reduce((acc, pair) => {
+    const [key, value] = pair.split(":");
+
+    acc[key] = decodeURIComponent(value);
+
+    return acc;
+  }, {});
 }

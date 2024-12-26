@@ -130,23 +130,19 @@ const { moneyInputAttrs } = useUI<Config>(defaultConfig);
     @input="onInput"
   >
     <template #left>
-      <!-- @slot Use it to add something left. -->
-      <slot name="left" />
-    </template>
-
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
-    <template #right-icon>
-      <!-- @slot Use it to add icon after the text. -->
-      <slot name="right-icon" />
+      <!-- 
+        @slot Use it to add something left. 
+        @binding {string} icon-name
+      -->
+      <slot name="left" :icon-name="leftIcon" />
     </template>
 
     <template #right>
-      <!-- @slot Use it to add something right. -->
-      <slot name="right" />
+      <!-- 
+        @slot Use it to add something right. 
+        @binding {string} icon-name
+      -->
+      <slot name="right" :icon-name="leftIcon" />
     </template>
   </UInput>
 </template>

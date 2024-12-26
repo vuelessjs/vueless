@@ -134,7 +134,7 @@ const mutatedProps = computed(() => ({
   defaultSlot: hasSlotContent(slots["default"]),
 }));
 
-const { wrapperAttrs, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { wrapperAttrs, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps, "link");
 </script>
 
 <template>

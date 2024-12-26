@@ -75,10 +75,10 @@ export default /*tw*/ {
       },
     },
   },
-  leftIconWrapper: "pr-1.5",
-  rightIconWrapper: "{>caret} pr-3",
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
+  leftSlot: "pr-1.5",
+  rightSlot: "{>caret} pr-3",
   beforeCaret: "{>caret}",
   afterCaret: "{>caret} mr-3",
   caret: {

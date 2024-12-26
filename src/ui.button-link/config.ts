@@ -56,14 +56,17 @@ export default /*tw*/ {
         `,
         white: "decoration-white text-white",
       },
+      defaultSlot: {
+        true: "flex items-center no-underline hover:no-underline",
+      },
       dashed: {
         true: "hover:decoration-dashed decoration-dashed",
       },
       disabled: {
         true: "text-gray-400 pointer-events-none",
       },
-      defaultSlot: {
-        true: "flex items-center no-underline hover:no-underline",
+      block: {
+        true: "w-full",
       },
     },
   },

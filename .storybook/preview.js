@@ -31,6 +31,9 @@ setup((app) => {
 /* Set storybook decorators */
 export const decorators = [vue3SourceDecorator, storyDarkModeDecorator()];
 
+/* Set storybook tags */
+export const tags = ["autodocs"];
+
 /* Set storybook parameters */
 export const parameters = {
   layout: "fullscreen",

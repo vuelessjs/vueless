@@ -1,6 +1,5 @@
 export default /*tw*/ {
   htmlBody: "bg-gray-50 group/body-gray",
-  wrapperMobile: "overflow-x-hidden",
   wrapper: {
     base: "min-h-screen UNotifyPage",
     variants: {

@@ -149,7 +149,7 @@ export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = unknown[];
 export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 
-export type ComponentNames = keyof Components; // keys union
+export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
 
 export type Gray = "gray";
@@ -236,6 +236,7 @@ export interface Components {
   UInputMoney: Partial<typeof UInputMoneyConfig>;
   UDataList: Partial<typeof UDataListConfig>;
   USelect: Partial<typeof USelectConfig>;
+  [key: string]: UnknownObject;
 }
 
 /* Make all config keys optional and allow to have string and object values. */

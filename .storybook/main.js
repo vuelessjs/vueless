@@ -1,6 +1,6 @@
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
 export default {
-  stories: ["../src/**/*stories.@(js|jsx|ts|tsx)", "../src/**/*.@(mdx)"],
+  stories: ["../src/**/*stories.@(js|jsx|ts|tsx)", "../src/**/docs.@(mdx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -16,9 +16,6 @@ export default {
         viteConfigPath: ".storybook/vite.config.js",
       },
     },
-  },
-  docs: {
-    autodocs: true,
   },
   env: (config) => ({
     ...config,
