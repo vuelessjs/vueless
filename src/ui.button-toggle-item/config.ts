@@ -9,6 +9,7 @@ export default /*tw*/ {
     base: "{UButton} font-normal !bg-{color}-600/15",
     defaults: {
       variant: "thirdary",
+      color: "brand",
       filled: true,
     },
   },
