@@ -21,7 +21,9 @@ export const DEFAULT_RING = 4; /* pixels */
 export const DEFAULT_RING_OFFSET = 0; /* pixels */
 export const DEFAULT_RING_OFFSET_COLOR_LIGHT = "#ffffff"; // white
 export const DEFAULT_RING_OFFSET_COLOR_DARK = "#111827"; // gray-900
+export const DEFAULT_ROUNDING_SM = 4; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
+export const DEFAULT_ROUNDING_LG = 16; /* pixels */
 
 /* Vueless supported colors and shades */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
@@ -171,21 +173,21 @@ export const TAILWIND_MERGE_EXTENSION = {
       "ring-offset-w": [{ "ring-offset": ["dynamic"] }],
       "ring-offset-color": [{ "ring-offset": ["color-dynamic"] }],
       "font-size": [{ text: ["2xs"] }],
-      rounded: [{ rounded: ["dynamic", "inherit"] }],
-      "rounded-s": [{ "rounded-s": ["dynamic", "inherit"] }],
-      "rounded-e": [{ "rounded-e": ["dynamic", "inherit"] }],
-      "rounded-t": [{ "rounded-t": ["dynamic", "inherit"] }],
-      "rounded-r": [{ "rounded-r": ["dynamic", "inherit"] }],
-      "rounded-b": [{ "rounded-b": ["dynamic", "inherit"] }],
-      "rounded-l": [{ "rounded-l": ["dynamic", "inherit"] }],
-      "rounded-ss": [{ "rounded-ss": ["dynamic", "inherit"] }],
-      "rounded-se": [{ "rounded-se": ["dynamic", "inherit"] }],
-      "rounded-ee": [{ "rounded-ee": ["dynamic", "inherit"] }],
-      "rounded-es": [{ "rounded-es": ["dynamic", "inherit"] }],
-      "rounded-tl": [{ "rounded-tl": ["dynamic", "inherit"] }],
-      "rounded-tr": [{ "rounded-tr": ["dynamic", "inherit"] }],
-      "rounded-br": [{ "rounded-br": ["dynamic", "inherit"] }],
-      "rounded-bl": [{ "rounded-bl": ["dynamic", "inherit"] }],
+      rounded: [{ rounded: ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-s": [{ "rounded-s": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-e": [{ "rounded-e": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-t": [{ "rounded-t": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-r": [{ "rounded-r": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-b": [{ "rounded-b": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-l": [{ "rounded-l": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-ss": [{ "rounded-ss": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-se": [{ "rounded-se": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-ee": [{ "rounded-ee": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-es": [{ "rounded-es": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-tl": [{ "rounded-tl": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-tr": [{ "rounded-tr": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-br": [{ "rounded-br": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
+      "rounded-bl": [{ "rounded-bl": ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
     },
   },
 };
