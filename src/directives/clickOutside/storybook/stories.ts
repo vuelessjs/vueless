@@ -107,7 +107,7 @@ const SettingsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArg
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { callback: () => undefined };
+Default.args = {};
 
 export const Settings = SettingsTemplate.bind({});
 Settings.args = {};
