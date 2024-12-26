@@ -2,7 +2,7 @@ export default /*tw*/ {
   checkboxLabel: "{ULabel}",
   checkbox: {
     base: `
-      border rounded bg-white cursor-pointer transition checked:text-{color}-600
+      border rounded-dynamic-sm bg-white cursor-pointer transition checked:text-{color}-600
       border-gray-300 hover:border-gray-400 focus:border-{color}-500 active:border-{color}-800
       focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
@@ -23,7 +23,7 @@ export default /*tw*/ {
   },
   iconWrapper: {
     base: `
-      flex items-center justify-center absolute rounded cursor-pointer transition
+      flex items-center justify-center absolute rounded-dynamic-sm cursor-pointer transition
       bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800
     `,
     variants: {

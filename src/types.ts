@@ -80,7 +80,7 @@ export interface ThemeConfig {
   /**
    * Default components "sm" size rounding (border-radius).
    */
-  "rounding-sm"?: number;
+  roundingSm?: number;
 
   /**
    * Default components rounding (border-radius).
@@ -90,7 +90,7 @@ export interface ThemeConfig {
   /**
    * Default components "lg" size rounding (border-radius).
    */
-  "rounding-lg"?: number;
+  roundingLg?: number;
 
   /**
    * Default components ring width.

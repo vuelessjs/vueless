@@ -100,11 +100,9 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 export function setTheme(config: Config = {}) {
   setColorMode(config?.colorMode || vuelessConfig?.colorMode || ColorMode.Auto);
 
-  const roundingSm =
-    config?.["rounding-sm"] ?? vuelessConfig?.["rounding-sm"] ?? DEFAULT_ROUNDING_SM;
+  const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? DEFAULT_ROUNDING_SM;
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingLg =
-    config?.["rounding-lg"] ?? vuelessConfig?.["rounding-lg"] ?? DEFAULT_ROUNDING_LG;
+  const roundingLg = config?.roundingLg ?? vuelessConfig?.roundingLg ?? DEFAULT_ROUNDING_LG;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
