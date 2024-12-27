@@ -57,6 +57,10 @@ watchEffect(() => {
   }, Number(props.debounce));
 });
 
+watchEffect(() => {
+  localValue.value = props.modelValue;
+});
+
 function onUpdateValue(value: string) {
   localValue.value = value;
 
@@ -151,8 +155,8 @@ const {
         @click="onClickClear"
       />
 
-      <!-- 
-        @slot Use it to add something after the text. 
+      <!--
+        @slot Use it to add something after the text.
         @binding {string} icon-name
       -->
       <slot
