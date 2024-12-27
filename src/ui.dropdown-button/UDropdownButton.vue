@@ -43,6 +43,8 @@ const elementId = props.id || useId();
 
 function onClickOption(option: Option) {
   emit("clickOption", option);
+
+  hideOptions();
 }
 
 function onClickButton() {
@@ -55,10 +57,6 @@ function onClickButton() {
 
 function hideOptions() {
   isShownOptions.value = false;
-}
-
-function onClickList() {
-  hideOptions();
 }
 
 /**
@@ -132,7 +130,6 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
       :data-test="`${dataTest}-list`"
-      @click="onClickList"
       @click-option="onClickOption"
     />
   </div>
