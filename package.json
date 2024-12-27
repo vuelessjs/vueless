@@ -33,7 +33,7 @@
     "build": "npm run pre:start && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md node_modules/.cache/vueless/web-types.json dist/ && node .scripts/package",
+    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",

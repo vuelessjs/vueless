@@ -3,7 +3,6 @@
 node_modules
 storybook-static
 dist
-web-types.json
 
 # Log files
 npm-debug.log*
