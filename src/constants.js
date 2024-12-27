@@ -223,7 +223,7 @@ export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 
 /* Other */
 export const PX_IN_REM = 16;
-export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{U[^}]*}/g;
+export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{(U[^}]*)}/;
 export const EXTENDS_PATTERN_REG_EXP = /\{>[^}]*}/g;
 export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_COLOR_OPACITY_DELIMITER = "/";

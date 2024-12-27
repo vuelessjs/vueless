@@ -79,8 +79,7 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
-    onComplete: (classNames) =>
-      twMerge(classNames).replaceAll(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
+    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
 

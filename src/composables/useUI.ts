@@ -125,14 +125,17 @@ export default function useUI<T>(
     const attrs = useAttrs() as KeyAttrs;
     const isDev = isCSR && import.meta.env?.DEV;
     const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
-    const nestedComponent = getNestedComponent(config.value[configKey] || "");
+
+    const extendsKeyConfig = getExtendsKeyConfig(configKey);
+    const extendsKeyNestedComponent = getNestedComponent(extendsKeyConfig);
+    const keyNestedComponent = getNestedComponent(config.value[configKey]);
+    const nestedComponent = extendsKeyNestedComponent || keyNestedComponent || componentName;
 
     const commonAttrs: KeyAttrs = {
       ...(isTopLevelKey ? attrs : {}),
       "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
       "vl-key": isDev ? attrs["vl-key"] || configKey || null : null,
-      "vl-child-component":
-        isDev && attrs["vl-component"] ? nestedComponent || componentName : null,
+      "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent : null,
       "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
     };
 
@@ -145,25 +148,25 @@ export default function useUI<T>(
      * Updating Vueless attributes.
      */
     function updateVuelessAttrs() {
-      let configAttr: NestedComponent = {};
+      let keyConfig: NestedComponent = {};
 
       if (typeof config.value[configKey] === "object") {
-        configAttr = config.value[configKey] as NestedComponent;
+        keyConfig = config.value[configKey] as NestedComponent;
       }
 
       const extendsClasses = getExtendsClasses(configKey);
-      const extendsConfigAttr = getExtendsConfigAttr(configKey);
+      const extendsKeyConfig = getExtendsKeyConfig(configKey);
 
       vuelessAttrs.value = {
         ...commonAttrs,
         class: cx([...extendsClasses, toValue(classes)]),
         config: getMergedConfig({
-          defaultConfig: extendsConfigAttr,
-          globalConfig: configAttr,
+          defaultConfig: extendsKeyConfig,
+          globalConfig: keyConfig,
         }),
         ...getDefaults({
-          ...(extendsConfigAttr.defaults || {}),
-          ...(configAttr.defaults || {}),
+          ...(extendsKeyConfig.defaults || {}),
+          ...(keyConfig.defaults || {}),
         }),
       };
     }
@@ -195,8 +198,8 @@ export default function useUI<T>(
      * Merge extends nested component configs.
      * TODO: Add ability to merge multiple keys in one (now works for merging only 1 first key).
      */
-    function getExtendsConfigAttr(configKey: string) {
-      let extendsConfigAttr: NestedComponent = {};
+    function getExtendsKeyConfig(configKey: string) {
+      let extendsKeyConfig: NestedComponent = {};
 
       const propsConfig = props.config as ComponentConfig<T>;
       const extendsKeys = getExtendsKeys(config.value[configKey]);
@@ -204,14 +207,14 @@ export default function useUI<T>(
       if (extendsKeys.length) {
         const [firstKey] = extendsKeys;
 
-        extendsConfigAttr = getMergedConfig({
+        extendsKeyConfig = getMergedConfig({
           defaultConfig: config.value[firstKey],
           globalConfig: globalConfig[firstKey],
           propsConfig: propsConfig[firstKey],
         }) as NestedComponent;
       }
 
-      return extendsConfigAttr;
+      return extendsKeyConfig;
     }
 
     /**
@@ -242,7 +245,7 @@ export default function useUI<T>(
 /**
  * Return base classes.
  */
-function getBaseClasses(value: string | CVA | undefined) {
+function getBaseClasses(value?: string | CVA | NestedComponent) {
   return typeof value === "object" ? value.base || "" : value || "";
 }
 
@@ -250,7 +253,7 @@ function getBaseClasses(value: string | CVA | undefined) {
  * Retrieves extends keys from patterns:
  * Example: `{>someKey} {>someOtherKey}` >>> `["someKey", "someOtherKey"]`.
  */
-function getExtendsKeys(configItemValue?: CVA | string): string[] {
+function getExtendsKeys(configItemValue?: string | CVA | NestedComponent): string[] {
   const values = getBaseClasses(configItemValue);
   const matches = values.match(EXTENDS_PATTERN_REG_EXP);
 
@@ -260,7 +263,7 @@ function getExtendsKeys(configItemValue?: CVA | string): string[] {
 /**
  * Check is config key contains component name and returns it.
  */
-function getNestedComponent(value: string | CVA) {
+function getNestedComponent(value?: string | CVA | NestedComponent) {
   const classes = getBaseClasses(value);
   const match = classes.match(NESTED_COMPONENT_PATTERN_REG_EXP);
 

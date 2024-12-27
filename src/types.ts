@@ -252,6 +252,7 @@ export type ComponentConfig<T> = Partial<{
   NestedComponent;
 
 export interface NestedComponent {
+  base?: string;
   defaults?: Record<string, string | UnknownObject>;
   [key: string]: Record<string, string | UnknownObject> | string | undefined;
 }
