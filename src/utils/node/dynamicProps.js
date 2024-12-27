@@ -11,20 +11,19 @@ const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
 
-const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
-
 const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
 export async function setCustomPropTypes(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const customProps =
-      componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
+    const componentGlobalConfig = vuelessConfig.component[componentName];
+    const customProps = componentGlobalConfig && componentGlobalConfig.props;
+    const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
-    if (customProps && vuelessConfig.component[componentName].storybook !== false) {
+    if (customProps && !isHiddenStories) {
       await cacheComponentTypes(path.join(srcDir, componentDir));
       await modifyComponentTypes(
         path.join(srcDir, componentDir),
@@ -35,7 +34,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
 }
 
 export async function removeCustomPropTypes(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const componentDir of Object.values(COMPONENTS)) {
     await restoreComponentTypes(path.join(srcDir, componentDir));

@@ -12,7 +12,7 @@ import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
-import { hideStories, showHiddenStories } from "./utils/node/dynamicStories.js";
+import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
@@ -73,7 +73,7 @@ export const Vueless = function (options = {}) {
       if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
         await showHiddenStories(isVuelessEnv);
         await buildWebTypes();
-        await hideStories(isVuelessEnv);
+        await hideHiddenStories(isVuelessEnv);
       }
 
       if (config.command === "build") {

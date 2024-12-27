@@ -5,9 +5,7 @@ import { rename, readdir } from "node:fs/promises";
 import { vuelessConfig } from "./vuelessConfig.js";
 import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
-const VUELESS_SRC = path.join(VUELESS_DIR, VUELESS_LOCAL_DIR);
-
-async function hideStory(storybookPath) {
+async function hideComponentStories(storybookPath) {
   if (existsSync(storybookPath)) {
     const storyFiles = await readdir(storybookPath);
     const visibleFiles = storyFiles.filter((storybookFile) => !storybookFile.includes("hidden"));
@@ -25,7 +23,7 @@ async function hideStory(storybookPath) {
   }
 }
 
-async function showHiddenStory(storybookPath) {
+async function showComponentStories(storybookPath) {
   if (existsSync(storybookPath)) {
     const storyFiles = await readdir(storybookPath);
     const hiddenFiles = storyFiles.filter((storybookFile) => storybookFile.includes("hidden"));
@@ -33,7 +31,7 @@ async function showHiddenStory(storybookPath) {
     await Promise.all(
       hiddenFiles.map((storybookFile) => {
         const [fileName, extension] = storybookFile.split(".");
-        const originalFileName = fileName.split("_").at(0);
+        const [originalFileName] = fileName.split("_");
 
         return rename(
           path.join(storybookPath, storybookFile),
@@ -44,24 +42,23 @@ async function showHiddenStory(storybookPath) {
   }
 }
 
-export async function hideStories(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+export async function hideHiddenStories(isVuelessEnv) {
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const isStorybookHidden =
-      componentName in vuelessConfig.component &&
-      vuelessConfig.component[componentName].storybook === false;
+    const componentGlobalConfig = vuelessConfig.component[componentName];
+    const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
-    if (isStorybookHidden) {
-      await hideStory(path.join(srcDir, componentDir, "storybook"));
+    if (isHiddenStories) {
+      await hideComponentStories(path.join(process.cwd(), srcDir, componentDir, "storybook"));
     }
   }
 }
 
 export async function showHiddenStories(isVuelessEnv) {
-  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_SRC;
+  const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const componentDir of Object.values(COMPONENTS)) {
-    await showHiddenStory(path.join(srcDir, componentDir, "storybook"));
+    await showComponentStories(path.join(process.cwd(), srcDir, componentDir, "storybook"));
   }
 }
