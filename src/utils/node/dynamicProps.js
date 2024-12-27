@@ -24,7 +24,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
     const customProps =
       componentName in vuelessConfig.component && vuelessConfig.component[componentName].props;
 
-    if (customProps) {
+    if (customProps && vuelessConfig.component[componentName].storybook !== false) {
       await cacheComponentTypes(path.join(srcDir, componentDir));
       await modifyComponentTypes(
         path.join(srcDir, componentDir),
