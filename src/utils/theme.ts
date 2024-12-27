@@ -42,13 +42,13 @@ export function themeInit() {
 
   setTheme();
 
-  const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
+  if (vuelessConfig?.colorMode === ColorMode.Auto) {
+    const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  prefersColorSchemeDark.addEventListener("change", (event) => {
-    const colorMode = vuelessConfig?.colorMode || event.matches ? ColorMode.Dark : ColorMode.Light;
-
-    setTheme({ colorMode });
-  });
+    prefersColorSchemeDark.addEventListener("change", (event) => {
+      setTheme({ colorMode: event.matches ? ColorMode.Dark : ColorMode.Light });
+    });
+  }
 }
 
 export function setColorMode(colorMode: `${ColorMode}`) {
@@ -100,7 +100,7 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig?.colorMode || config?.colorMode || ColorMode.Auto);
+  setColorMode(vuelessConfig?.colorMode || config?.colorMode || ColorMode.Light);
 
   const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? DEFAULT_ROUNDING_SM;
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
