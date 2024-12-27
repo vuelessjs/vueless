@@ -91,7 +91,7 @@ const mutatedProps = computed(() => ({
   selected: isSelected.value,
 }));
 
-const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<Config>(
+const { toggleButtonInactiveAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
 );
@@ -110,7 +110,7 @@ const { toggleButtonAttrs, toggleButtonActiveAttrs, toggleInputAttrs } = useUI<C
     :square="getToggleSquare()"
     :disabled="getToggleDisabled() || disabled"
     :no-ring="getToggleNoRing() || !getToggleSplit()"
-    v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonAttrs"
+    v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
     @click="onClickSetValue"
   >
     <template #left>
