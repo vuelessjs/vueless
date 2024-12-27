@@ -204,17 +204,17 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
     v-bind="textareaLabelAttrs"
     :data-test="dataTest"
   >
-    <label
-      v-if="hasSlotContent($slots['left'])"
-      ref="leftSlotWrapperRef"
-      :for="elementId"
-      v-bind="leftSlotAttrs"
-    >
-      <!-- @slot Use it to add something before the text. -->
-      <slot name="left" />
-    </label>
-
     <label ref="textareaWrapperRef" :for="elementId" v-bind="textareaWrapperAttrs">
+      <div
+        v-if="hasSlotContent($slots['left'])"
+        ref="leftSlotWrapperRef"
+        :for="elementId"
+        v-bind="leftSlotAttrs"
+      >
+        <!-- @slot Use it to add something before the text. -->
+        <slot name="left" />
+      </div>
+
       <textarea
         :id="elementId"
         ref="textareaRef"
@@ -235,11 +235,11 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
         @keydown.enter="onEnter"
         @keydown.delete="onBackspace"
       />
-    </label>
 
-    <label v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
+      <div v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+        <!-- @slot Use it to add something after the text. -->
+        <slot name="right" />
+      </div>
     </label>
   </ULabel>
 </template>

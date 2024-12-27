@@ -1,10 +1,10 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  leftSlot: "flex items-center justify-center whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-r-none",
-  rightSlot: "flex items-center justify-center whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-l-none",
+  leftSlot: "flex items-center justify-center whitespace-nowrap pr-2.5 gap-1 rounded-dynamic rounded-r-none",
+  rightSlot: "flex items-center justify-center whitespace-nowrap pl-2.5 gap-1 rounded-dynamic rounded-l-none",
   textareaWrapper: {
     base: `
-      px-3 py-2 bg-white transition w-full
+      flex px-3 py-2 bg-white transition w-full
       rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-500
       focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic
       focus-within:ring-brand-700/15 focus-within:outline-none
@@ -24,11 +24,6 @@ export default /*tw*/ {
           `,
       },
     },
-    compoundVariants: [
-      { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
-      { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
-      { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
-    ],
   },
   textarea: {
     base: `
@@ -49,6 +44,11 @@ export default /*tw*/ {
         true: "placeholder:text-red-300",
       },
     },
+    compoundVariants: [
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
+    ],
   },
   defaults: {
     rows: "3",
