@@ -1,6 +1,6 @@
 import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
-import UBoilerplate from "../../ui.boilerplate/UBoilerplate.vue";
+import UBoilerplate from "../UBoilerplate.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
