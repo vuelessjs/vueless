@@ -24,6 +24,7 @@ import {
   SYSTEM_CONFIG_KEY,
 } from "../../constants.js";
 
+const cwd = process.cwd();
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
 export const { cx } = defineConfig({
@@ -60,46 +61,38 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
+  const safelist = [];
+
   const storybookColors = {
     colors: [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR],
     isComponentExists: true,
   };
-  const safelist = [];
 
   const componentNames = Object.keys(COMPONENTS);
 
-  for await (const component of componentNames) {
-    const defaultConfigPath = vuelessConfigFiles.find((file) =>
-      isDefaultComponentConfig(file, component),
-    );
-    const defaultConfig = await readFile(path.join(process.cwd(), defaultConfigPath), {
-      encoding: "utf-8",
-    });
-    const nestedComponents = (defaultConfig.match(/\{U\w+\}/g) || []).map(
-      (nestedComponentPattern) => nestedComponentPattern.replaceAll(/[{}]/g, ""),
-    );
-
+  for await (const componentName of componentNames) {
     const { colors, isComponentExists } = isStorybookMode
       ? storybookColors
-      : await findComponentColors(vuelessFiles, component);
+      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+
+    const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
+    const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
+
+    const nestedComponents = match.map((nestedComponentPattern) =>
+      nestedComponentPattern.replaceAll(/[{}]/g, ""),
+    );
 
     if (isComponentExists && colors.length) {
-      const componentSafelist = await getComponentSafelist(component, {
-        colors,
-        vuelessConfigFiles,
-        isVuelessEnv,
-      });
+      const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
+      const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
       safelist.push(...componentSafelist);
     }
 
     if (isComponentExists && colors.length && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
-        const nestedComponentSafelist = await getComponentSafelist(nestedComponent, {
-          colors,
-          vuelessConfigFiles,
-          isVuelessEnv,
-        });
+        const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
+        const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
 
         safelist.push(...nestedComponentSafelist);
       }
@@ -121,10 +114,10 @@ function getSafelistClasses(config) {
   const safelistItems = [];
 
   for (const key in config) {
+    if (key === SYSTEM_CONFIG_KEY.defaults) continue;
+
     if (Object.prototype.hasOwnProperty.call(config, key)) {
       const classes = config[key];
-
-      if (key === SYSTEM_CONFIG_KEY.defaults) continue;
 
       if (typeof classes === "object" && Array.isArray(classes)) {
         safelistItems.push(...classes.map(getSafelistClasses));
@@ -164,30 +157,7 @@ function getSafelistItem(safelistClass, colorString) {
   }
 }
 
-async function getComponentSafelist(componentName, { colors, vuelessConfigFiles }) {
-  let defaultConfigPath = vuelessConfigFiles.find((file) =>
-    isDefaultComponentConfig(file, componentName),
-  );
-  const customConfig = vuelessConfig.component?.[componentName] || {};
-  let defaultConfig = {};
-
-  if (defaultConfigPath) {
-    const configPath = path.join(process.cwd(), defaultConfigPath);
-
-    defaultConfig = await getComponentDefaultConfig(componentName, configPath);
-  }
-
-  const isStrategyValid =
-    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
-
-  const vuelessStrategy = isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge;
-
-  const mergedConfig = getMergedConfig({
-    defaultConfig,
-    globalConfig: customConfig,
-    vuelessStrategy,
-  });
-
+async function getComponentSafelist(mergedConfig, colors) {
   const colorString = `(${colors.join("|")})`;
 
   return getSafelistClasses(mergedConfig).map((safelistClass) =>
@@ -195,16 +165,38 @@ async function getComponentSafelist(componentName, { colors, vuelessConfigFiles 
   );
 }
 
-async function findComponentColors(files, componentName) {
+async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
+  const isStrategyValid =
+    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+
+  return getMergedConfig({
+    defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
+    globalConfig: vuelessConfig.component?.[componentName] || {},
+    vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
+  });
+}
+
+async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles) {
+  const componentDefaultConfigPath = vuelessConfigFiles.find((file) =>
+    isDefaultComponentConfig(file, componentName),
+  );
+
+  return componentDefaultConfigPath
+    ? await getComponentDefaultConfig(componentName, path.join(cwd, componentDefaultConfigPath))
+    : {};
+}
+
+async function findComponentColors(componentName, files, vuelessConfigFiles) {
   const objectColorRegExp = new RegExp(/\bcolor\s*:\s*["']([^"'\s]+)["']/, "g");
   const singleColorRegExp = new RegExp(/\bcolor\s*=\s*["']([^"'\s]+)["']/);
   const ternaryColorRegExp = new RegExp(/\bcolor="[^']*'([^']*)'\s*:\s*'([^']*)'/);
 
-  const brandColor = getComponentBrandColor(componentName);
+  const mergedComponentConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
+  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.brand || "";
   const colors = new Set();
 
-  if (brandColor && brandColor !== "grayscale") {
-    colors.add(brandColor);
+  if (defaultColor && defaultColor !== "grayscale") {
+    colors.add(defaultColor);
   }
 
   getSafelistColorsFromConfig().forEach((color) => colors.add(color));
@@ -251,13 +243,6 @@ async function findComponentColors(files, componentName) {
     ),
     isComponentExists,
   };
-}
-
-function getComponentBrandColor(componentName) {
-  const globalBrandColor = vuelessConfig.brand || "";
-  const globalComponentConfig = vuelessConfig.component?.[componentName] || {};
-
-  return vuelessConfig.component ? globalComponentConfig.defaults?.color : globalBrandColor;
 }
 
 function isDefaultComponentConfig(filePath, componentName) {
