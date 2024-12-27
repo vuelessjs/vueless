@@ -30,7 +30,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   } = options;
 
   const invalidValuesRegExp = new RegExp("[^\\d,\\d.\\s-" + decimalSeparator + "]", "g");
-  const doubleValueRegExp = new RegExp("([,\\.\\s-" + decimalSeparator + "])+", "g");
+  const doubleValueRegExp = new RegExp("([,\\.\\s" + decimalSeparator + "])+", "g");
 
   // slice to first decimal mark
   value = String(value)
@@ -51,9 +51,14 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   const isNumber = isNumberValueRegExp.test(value);
   const isFloat = value.endsWith(rawDecimalMark) || value.endsWith(".0");
   const isMinus = value === minus;
+  const isMinusWithin = value.includes(minus) && !value.startsWith(minus);
 
   if (isMinus && positiveOnly) {
     value = "";
+  }
+
+  if (isMinusWithin) {
+    value = value.replaceAll(minus, "");
   }
 
   if (!value || !isNumber || isFloat || isMinus) {
