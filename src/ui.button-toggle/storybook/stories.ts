@@ -24,6 +24,7 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
+    modelValue: "11",
     options: [
       { value: "11", label: "label 1" },
       { value: "12", label: "label 2" },
