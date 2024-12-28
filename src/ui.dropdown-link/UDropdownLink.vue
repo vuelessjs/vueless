@@ -53,12 +53,10 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
-function onClickList() {
-  hideOptions();
-}
-
 function onClickOption(option: Option) {
   emit("clickOption", option);
+
+  hideOptions();
 }
 
 /**
@@ -136,7 +134,6 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
       :data-test="`${dataTest}-list`"
-      @click="onClickList"
       @click-option="onClickOption"
     />
   </div>

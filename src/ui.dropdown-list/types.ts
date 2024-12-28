@@ -20,7 +20,7 @@ export interface Props {
   /**
    * Selected item.
    */
-  modelValue: string | number | UnknownObject;
+  modelValue?: string | number | UnknownObject;
 
   /**
    * List options.
