@@ -96,11 +96,13 @@ export interface UDatePickerRangeProps<TModelValue> {
 
   /**
    * Datepicker open direction on x-axis.
+   * @extendOnly
    */
   openDirectionX?: "auto" | "left" | "right";
 
   /**
    * Datepicker open direction on y-axis.
+   * @extendOnly
    */
   openDirectionY?: "auto" | "top" | "bottom";
 
