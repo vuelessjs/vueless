@@ -22,7 +22,8 @@ import {
   GRAYSCALE_COLOR,
 } from "./constants.js";
 
-const isStrategyOverride = process.env.VUELESS_STRATEGY === "override";
+const globalSettings = process.env.VUELESS_GLOBAL_SETTINGS || {};
+const isStrategyOverride = globalSettings.strategy === "override";
 const brandColor = process.env.VUELESS_BRAND || DEFAULT_BRAND_COLOR;
 const grayColor = process.env.VUELESS_GRAY || DEFAULT_GRAY_COLOR;
 
@@ -106,15 +107,16 @@ export const vuelessTailwindConfig = {
     },
     configViewer: {
       themeReplacements: {
-        // TODO: Set colors from vueless.config.{js|ts} if it present.
-        "var(--vl-ring)": DEFAULT_RING,
-        "var(--vl-ring-offset)": DEFAULT_RING_OFFSET,
-        "var(--vl-ring-offset-color)": DEFAULT_RING_OFFSET_COLOR_LIGHT,
-        "var(--vl-rounding-sm)": DEFAULT_ROUNDING_SM,
-        "var(--vl-rounding)": DEFAULT_ROUNDING,
-        "var(--vl-rounding-lg)": DEFAULT_ROUNDING_LG,
-        ...getReplacementColors(GRAY_COLOR, grayColor),
-        ...getReplacementColors(BRAND_COLOR, brandColor),
+        /* eslint-disable prettier/prettier */
+        "var(--vl-ring)": globalSettings.ring || DEFAULT_RING,
+        "var(--vl-ring-offset)": globalSettings.ringOffset || DEFAULT_RING_OFFSET,
+        "var(--vl-ring-offset-color)": globalSettings.ringOffsetColorLight || DEFAULT_RING_OFFSET_COLOR_LIGHT,
+        "var(--vl-rounding-sm)": globalSettings.roundingSm || DEFAULT_ROUNDING_SM,
+        "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
+        "var(--vl-rounding-lg)": globalSettings.roundingLg || DEFAULT_ROUNDING_LG,
+        ...getReplacementColors(GRAY_COLOR, globalSettings.gray || DEFAULT_GRAY_COLOR),
+        ...getReplacementColors(BRAND_COLOR, globalSettings.brand || DEFAULT_BRAND_COLOR),
+        /* eslint-enable prettier/prettier */
       },
     },
   },

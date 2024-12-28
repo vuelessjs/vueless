@@ -1,5 +1,5 @@
 import path from "node:path";
-import { merge } from "lodash-es";
+import { merge, cloneDeep } from "lodash-es";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { extendTailwindMerge } from "tailwind-merge";
@@ -106,8 +106,14 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     console.log("VUELESS_SAFELIST", mergedSafelist);
   }
 
+  const globalSettings = cloneDeep(vuelessConfig);
+
+  delete globalSettings.component;
+  delete globalSettings.directive;
+  delete globalSettings.tailwindMerge;
+
+  process.env.VUELESS_GLOBAL_SETTINGS = globalSettings;
   process.env.VUELESS_SAFELIST = JSON.stringify(mergedSafelist);
-  process.env.VUELESS_STRATEGY = vuelessConfig.strategy || "";
 }
 
 function getSafelistClasses(config) {
