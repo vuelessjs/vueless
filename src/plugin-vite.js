@@ -17,7 +17,7 @@ import { buildWebTypes } from "./utils/node/webTypes.js";
 export const VuelessUnpluginComponents = (options) =>
   UnpluginVueComponents({
     resolvers: [componentResolver, directiveResolver],
-    dts: false,
+    dts: true,
     ...options,
   });
 
