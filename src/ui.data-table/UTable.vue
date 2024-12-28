@@ -127,13 +127,11 @@ const sortedRows: ComputedRef<Row[]> = computed(() => {
   });
 });
 
-const isFooterSticky = computed(
-  () =>
-    window.innerHeight < tableHeight.value &&
-    props.stickyFooter &&
-    !isShownFooterPosition.value &&
-    isCheckedMoreOneTableItems.value,
-);
+const isFooterSticky = computed(() => {
+  return (
+    window.innerHeight < tableHeight.value && props.stickyFooter && !isShownFooterPosition.value
+  );
+});
 
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
 
