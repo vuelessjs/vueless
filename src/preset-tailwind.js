@@ -24,8 +24,6 @@ import {
 
 const globalSettings = process.env.VUELESS_GLOBAL_SETTINGS || {};
 const isStrategyOverride = globalSettings.strategy === "override";
-const brandColor = process.env.VUELESS_BRAND || DEFAULT_BRAND_COLOR;
-const grayColor = process.env.VUELESS_GRAY || DEFAULT_GRAY_COLOR;
 
 /**
  * Vueless Tailwind CSS `content` config.
