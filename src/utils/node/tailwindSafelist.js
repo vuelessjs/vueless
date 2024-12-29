@@ -205,7 +205,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     colors.add(defaultColor);
   }
 
-  getSafelistColorsFromConfig().forEach((color) => colors.add(color));
+  getSafelistColorsFromConfig(componentName).forEach((color) => colors.add(color));
 
   let isComponentExists = false;
 
@@ -262,8 +262,7 @@ function isDefaultComponentConfig(filePath, componentName) {
 
 function getSafelistColorsFromConfig(componentName) {
   const globalSafelistColors = vuelessConfig.safelistColors || [];
-  const componentSafelistColors =
-    (vuelessConfig.component && vuelessConfig.component[componentName]?.safelistColors) || [];
+  const componentSafelistColors = vuelessConfig.component?.[componentName]?.safelistColors || [];
 
   return [...globalSafelistColors, ...componentSafelistColors];
 }
