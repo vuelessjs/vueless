@@ -212,6 +212,7 @@ export const DEFAULT_SVGO_CONFIG = {
 /* Vueless general */
 export const ICONS_DIR = "assets/icons";
 export const VUELESS_LIBRARY = "vueless";
+export const STORYBOOK_DIR = "storybook";
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
 export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;
