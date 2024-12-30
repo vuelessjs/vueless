@@ -91,15 +91,6 @@ export function getArgTypes(componentName: string | undefined) {
   component.attributes?.forEach((attribute: Attribute) => {
     const type = attribute.value.type;
 
-    if (type.includes("|")) {
-      types[attribute.name] = {
-        control: type.split("|")[0].toLowerCase() as ArgType["control"],
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-        },
-      };
-    }
-
     if (attribute.enum) {
       types[attribute.name] = {
         options: attribute.enum,
@@ -121,7 +112,36 @@ export function getArgTypes(componentName: string | undefined) {
       };
     }
 
-    if (type === "string" || type.includes("string")) {
+    const nonUnionTypes = [
+      "string",
+      "number",
+      "boolean",
+      "Date",
+      "UnknownObject",
+      "UnknownArray",
+      "Array",
+    ];
+
+    if (attribute.enum?.every((value) => nonUnionTypes.includes(value))) {
+      let control = attribute.enum[0];
+
+      if (control === "string") {
+        control = "text";
+      }
+
+      if (control === "Date") {
+        control = "date";
+      }
+
+      types[attribute.name] = {
+        control: control as ArgType["control"],
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
+
+    if (type === "string") {
       types[attribute.name] = {
         control: "text",
         table: {
@@ -139,14 +159,11 @@ export function getArgTypes(componentName: string | undefined) {
       };
     }
 
-    if (type === "Date" || attribute.enum?.includes("Date")) {
+    if (type === "Date") {
       types[attribute.name] = {
         control: "date",
         table: {
           defaultValue: { summary: attribute.default || "" },
-          type: {
-            summary: ["Date", "string"].join(" | "),
-          },
         },
       };
     }
