@@ -1,6 +1,7 @@
 import path from "path";
 import { statSync, existsSync } from "fs";
 import { readdir } from "node:fs/promises";
+import { cwd } from "node:process";
 import esbuild from "esbuild";
 
 import { VUELESS_CONFIGS_CACHED_DIR } from "../../constants.js";
@@ -52,27 +53,27 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
 
 export function getNuxtFiles() {
   return [
-    path.join(process.cwd(), "composables"),
-    path.join(process.cwd(), "components"),
-    path.join(process.cwd(), "layouts"),
-    path.join(process.cwd(), "pages"),
-    path.join(process.cwd(), "plugins"),
-    path.join(process.cwd(), "utils"),
-    path.join(process.cwd(), "Error.vue"),
-    path.join(process.cwd(), "App.vue"),
-    path.join(process.cwd(), "Error.vue"),
-    path.join(process.cwd(), "app.vue"),
-    path.join(process.cwd(), "error.vue"),
-    path.join(process.cwd(), "playground", "app.vue"),
+    path.join(cwd(), "composables"),
+    path.join(cwd(), "components"),
+    path.join(cwd(), "layouts"),
+    path.join(cwd(), "pages"),
+    path.join(cwd(), "plugins"),
+    path.join(cwd(), "utils"),
+    path.join(cwd(), "Error.vue"),
+    path.join(cwd(), "App.vue"),
+    path.join(cwd(), "Error.vue"),
+    path.join(cwd(), "app.vue"),
+    path.join(cwd(), "error.vue"),
+    path.join(cwd(), "playground", "app.vue"),
   ];
 }
 
 export function getVueFiles() {
-  return [path.join(process.cwd(), "src")];
+  return [path.join(cwd(), "src")];
 }
 
 export async function getComponentDefaultConfig(name, entryPath) {
-  const configOutPath = path.join(process.cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
+  const configOutPath = path.join(cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
 
   await buildTSFile(entryPath, configOutPath);
 
