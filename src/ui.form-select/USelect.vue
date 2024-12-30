@@ -456,6 +456,11 @@ const {
     :data-test="dataTest"
     :tabindex="-1"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div
       ref="wrapperRef"
       :tabindex="searchable || disabled ? -1 : 0"

@@ -69,6 +69,11 @@ const {
     v-bind="colorPickerLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="listAttrs">
       <div v-bind="unselectedAttrs">
         <URadio

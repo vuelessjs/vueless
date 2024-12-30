@@ -136,6 +136,11 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
     v-bind="checkboxLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <input
       :id="elementId"
       type="checkbox"

@@ -100,6 +100,11 @@ const {
     :data-test="dataTest"
     @click="onClickToggle"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <label :for="elementId" v-bind="wrapperAttrs">
       <input
         :id="elementId"

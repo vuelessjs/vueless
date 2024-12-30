@@ -74,6 +74,11 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
     v-bind="inputLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="containerAttrs">
       <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
         <!--

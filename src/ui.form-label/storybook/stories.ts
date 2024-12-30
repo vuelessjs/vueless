@@ -9,7 +9,7 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import ULink from "../../ui.button-link/ULink.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -40,7 +40,7 @@ export default {
 const defaultTemplate = "This is plain text";
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
-  components: { ULabel, UText, UIcon, ULink },
+  components: { ULabel, UText, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(ULabel.__name);
 
@@ -111,9 +111,10 @@ Disabled.args = { disabled: true };
 
 export const SlotLabel = DefaultTemplate.bind({});
 SlotLabel.args = {
+  label: "Custom badge label",
   slotTemplate: `
-    <template #label>
-      <ULink label="Link component label" color="green" />
+    <template #label="{ label }">
+      <UBadge :label="label" color="green" />
     </template>
   `,
 };

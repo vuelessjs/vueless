@@ -76,6 +76,11 @@ const {
     v-bind="labelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <UButton
       variant="thirdary"
       size="sm"

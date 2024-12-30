@@ -77,6 +77,11 @@ const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(default
     v-bind="groupLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!-- @slot Use it to add something instead of label. -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="listAttrs">
       <!-- @slot Use it to add URadio directly. -->
       <slot>
