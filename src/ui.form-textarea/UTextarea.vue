@@ -63,7 +63,7 @@ const elementId = props.id || useId();
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const labelComponentRef = ref<{ labelElement: HTMLElement | null } | null>(null);
 const leftSlotWrapperRef = ref<HTMLElement | null>(null);
-const textareaWrapperRef = ref<HTMLElement | null>(null);
+const wrapperRef = ref<HTMLElement | null>(null);
 
 const currentRows = ref(Number(props.rows));
 
@@ -73,26 +73,6 @@ watch(
     currentRows.value = Number(newRows);
   },
 );
-
-function onEnter() {
-  if (currentRows.value !== undefined) {
-    currentRows.value++;
-  }
-}
-
-function onBackspace() {
-  const textarea = textareaRef.value;
-
-  if (!textarea) return;
-
-  const content = textarea.value;
-  const newlineCount = (content.match(/\n/g) || []).length;
-  const newRowCount = Math.max(Number(props.rows), newlineCount + 1);
-
-  if (newRowCount < currentRows.value) {
-    currentRows.value = newRowCount;
-  }
-}
 
 const localValue = computed({
   get() {
@@ -104,6 +84,33 @@ const localValue = computed({
 });
 
 onMounted(() => toggleReadonly(true));
+
+function getNewRowCount() {
+  const textarea = textareaRef.value;
+
+  if (!textarea) return 0;
+
+  const content = textarea.value;
+  const newlineCount = (content.match(/\n/g) || []).length;
+
+  return Math.max(Number(props.rows), newlineCount + 2);
+}
+
+function onEnter() {
+  const newRowCount = getNewRowCount();
+
+  if (newRowCount > currentRows.value) {
+    currentRows.value = newRowCount;
+  }
+}
+
+function onBackspace() {
+  const newRowCount = getNewRowCount() - 1;
+
+  if (newRowCount < currentRows.value) {
+    currentRows.value = newRowCount;
+  }
+}
 
 function onChange() {
   emit("change");
@@ -154,14 +161,10 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => {
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
-  if (
-    leftSlotWrapperRef.value &&
-    textareaWrapperRef.value &&
-    labelComponentRef.value?.labelElement
-  ) {
+  if (leftSlotWrapperRef.value && wrapperRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
 
-    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaWrapperRef.value).paddingLeft);
+    const textareaPaddingLeft = parseFloat(getComputedStyle(wrapperRef.value).paddingLeft);
 
     labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
   }
@@ -186,7 +189,7 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
+const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
   useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -209,7 +212,7 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="textareaWrapperRef" :for="elementId" v-bind="textareaWrapperAttrs">
+    <label ref="wrapperRef" :for="elementId" v-bind="wrapperAttrs">
       <div
         v-if="hasSlotContent($slots['left'])"
         ref="leftSlotWrapperRef"
@@ -238,7 +241,7 @@ const { textareaAttrs, textareaLabelAttrs, textareaWrapperAttrs, leftSlotAttrs, 
         @mousedown="onMousedown"
         @click="onClick"
         @keydown.enter="onEnter"
-        @keydown.delete="onBackspace"
+        @keyup.delete="onBackspace"
       />
 
       <div v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">

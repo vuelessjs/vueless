@@ -4,12 +4,21 @@ export default /*tw*/ {
   draggableDrag: "bg-gray-100",
   draggableGhost: "bg-gray-100/50",
   itemWrapper: "group/item-wrapper",
-  item: `
-    group/item
-    border-b border-gray-100
-    group-last/item-wrapper:border-b-0 group-[]/nested:group-last/item-wrapper:border-b
-    py-4 space-x-4 flex flex-auto items-center justify-between
-  `,
+  item: {
+    base: `
+      group/item
+      border-b border-gray-100
+      group-last/item-wrapper:border-b-0 group-[]/nested:group-last/item-wrapper:border-b
+      flex flex-auto items-center justify-between
+    `,
+    variants: {
+      size: {
+        sm: "gap-2.5 py-2.5",
+        md: "gap-3 py-3",
+        lg: "gap-3.5 py-3.5",
+      },
+    },
+  },
   dataListIcon: {
     base: "{UIcon}",
     defaults: {

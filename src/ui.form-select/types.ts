@@ -58,6 +58,7 @@ export interface Props {
 
   /**
    * Select open direction.
+   * @extendOnly
    */
   openDirection?: "auto" | "top" | "bottom";
 
