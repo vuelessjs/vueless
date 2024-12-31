@@ -137,7 +137,10 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
     :data-test="`${dataTest}-label`"
   >
     <template #label>
-      <!-- @slot Use it to add something instead of label. -->
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
       <slot name="label" :label="label" />
     </template>
 
