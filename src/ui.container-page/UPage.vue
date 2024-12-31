@@ -157,7 +157,7 @@ const {
       <slot name="footer-after" />
     </div>
 
-    <div v-if="fixedRounding && !isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
+    <div v-if="!isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
       <div v-bind="rightRoundingAttrs" />
     </div>
   </div>
