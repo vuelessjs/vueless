@@ -51,7 +51,7 @@ export default /*tw*/ {
   bodyRowAfter: "!p-0",
   bodyRowDateDivider: "",
   bodyCellBase: {
-    base: "p-[1.125rem] py-5 truncate align-top",
+    base: "p-4 truncate align-top",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:!px-4 first:py-3",
@@ -85,10 +85,10 @@ export default /*tw*/ {
     },
   },
   footerRow: {
-    base: "[&_td]:p-[1.125rem] [&_td]:py-5 first:[&_td]:p-5",
+    base: "[&_td]:py-4",
     variants: {
       compact: {
-        true: "[&_td]:p-4",
+        true: "[&_td]:px-4 [&_td]:py-3",
       },
     },
   },
