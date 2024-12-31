@@ -51,7 +51,7 @@ export default /*tw*/ {
     ],
   },
   defaults: {
-    rows: "1",
+    rows: "2",
     size: "md",
     inputmode: "text",
     labelAlign: "topInside",
