@@ -1,6 +1,6 @@
 # Ring
 
-You can specify the ring width, ring offset width and ring offset dark and light colors globally for all Vueless components.
+You can set the ring width, ring offset width and ring offset dark and light colors globally for all Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   ring: 6, /* default -> 4 (pixels) */
@@ -15,6 +15,6 @@ For `ring` and `ringOffset`, you can use any value in pixels; however, we highly
 
 ## Custom tailwind classes
 
-To implement global ring styling, custom Tailwind CSS classes `ring-dynamic`,  `ring-offset-dynamic` and `ring-offset-color-dynamic` have been created. Feel free to use these classes in your components whenever you need consistent ring styling throughout your project.
+To implement global ring styling, Vueless provides custom Tailwind CSS classes: `ring-dynamic`,  `ring-offset-dynamic` and `ring-offset-color-dynamic`. Feel free to use these classes in your components whenever you need consistent ring styling throughout your project.
 
 [^1]: 

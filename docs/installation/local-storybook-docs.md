@@ -1,6 +1,6 @@
 # Storybook docs
 
-If you going to debug component styles in a more easier way and share your design system across the team you can use our [Storybook](https://storybook.js.org/) based zero config Vueless docs locally.
+If you going to debug component stylings in a more easier way you can use our [Storybook](https://storybook.js.org/) preset to style and test components in isolation.
 
 ## Installation
 

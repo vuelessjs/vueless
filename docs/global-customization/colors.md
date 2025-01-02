@@ -50,9 +50,9 @@ You can [generate your colors](https://tailwindcss.com/docs/customizing-colors#g
 
 ## Brand color
 
-We'd advise you to use brand colors in your components and pages, e.g.: `text-brand-700 dark:text-brand-300`, etc.
+We recommend to use brand colors in your components and pages, e.g.: `text-brand-700 dark:text-brand-300`, etc.
 
-The `brand` and `gray` colors has a `DEFAULT` shade that changes based on the theme. It is `600` in light mode and `400` in dark mode. You can use it as a shortcut in your components and pages, e.g. `bg-brand`, `focus:ring-brand`, etc.
+The `brand` and `gray` colors has a `DEFAULT` shade that changes according to the color mode. It is `600` in light mode and `400` in dark mode. You can use it as a shortcut in your components and pages, e.g. `bg-brand`, `focus:ring-brand`, etc.
 
 ***
 
@@ -66,7 +66,7 @@ Similarly, you cannot define a `brand` color in your `tailwind.config.{js,ts}` f
 
 ## Smart Safelisting
 
-Components with a color prop, such as `UAvatar`, `UButton`, `URadioGroup` and `UCheckbox`, default to using the brand color but can also handle all colors defined in your `tailwind.config.{js,ts}` or the default Tailwind CSS palette.
+Components with a color prop, such as `UAvatar`, `UButton`, `URadioGroup` and `UCheckbox`, using the brand color by default, but they can also handle all colors defined in your `tailwind.config.{js,ts}` or the default Tailwind CSS palette.
 
 The variant classes for these components follow a syntax like `bg-{color}-500` `dark:bg-{color}-400`, making them compatible with any color. However, since Tailwind CSS cannot detect these dynamically generated classes, it will not generate the corresponding CSS by default.
 

@@ -1,6 +1,6 @@
 # Rounding
 
-You can specify three sizes of border radiuses globally for all Vueless components.
+You can set three sizes of border radiuses globally for all Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   roundingSm: 2, /* default -> 4 (pixels) */
@@ -17,6 +17,6 @@ In the config, values are specified in `pixels` for simplicity, but they are aut
 
 ## Custom tailwind class
 
-To implement global border radius stylings, custom Tailwind CSS classes `rounded-dynamic-sm`, `rounded-dynamic`, `rounded-dynamic-lg` have been created. Feel free to use these classes in your components whenever you need consistent rounding across your project.
+To implement global border radius stylings, Vueless provides custom Tailwind CSS classes: `rounded-dynamic-sm`, `rounded-dynamic`, `rounded-dynamic-lg`. Feel free to use these classes in your components whenever you need consistent rounding across your project.
 
 [^1]: 

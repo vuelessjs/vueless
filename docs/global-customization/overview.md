@@ -20,7 +20,7 @@ Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CS
 
 ## Ring
 
-You can specify the ring width and ring offset width globally for all Vueless components.
+You can set the ring width and ring offset width globally for all Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   ring: 6, /* px */
@@ -34,7 +34,7 @@ See [Ring](ring.md) chapter for more details.
 
 ## Rounding
 
-You can specify the border-radiuses globally for all Vueless components.
+You can set the border-radiuses globally for all Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   roundingSm: 4, /* px */
@@ -49,7 +49,7 @@ See [Rounding](rounding.md) chapter for more details.
 
 ## Dark mode
 
-You can specify the dark mode globally for all Vueless components.&#x20;
+You can set the dark mode globally for all Vueless components.&#x20;
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   colorMode: "dark", /* dark | light | auto */

@@ -1,6 +1,6 @@
 # Dark mode
 
-You can specify the dark mode globally for all Vueless components.&#x20;
+You can set the dark mode globally for all Vueless components.&#x20;
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   colorMode: "dark", /* default -> auto */
