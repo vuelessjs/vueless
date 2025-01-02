@@ -65,11 +65,19 @@ export function getSlotNames(componentName: string | undefined) {
  * Create story param config to show component description with a link on GitHub.
  */
 export function getDocsDescription(componentName: string | undefined) {
-  if (!componentName) return {};
+  if (!componentName) {
+    return {};
+  }
+
+  let viewOnGitHub = "";
+
+  if (COMPONENTS[componentName as ComponentNames]) {
+    viewOnGitHub = `| [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]})`;
+  }
 
   return {
     description: {
-      component: `The \`${componentName}\` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]})`,
+      component: `The \`${componentName}\` component. ${viewOnGitHub}`,
     },
   };
 }
