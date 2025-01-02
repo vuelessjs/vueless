@@ -207,6 +207,14 @@ const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlo
     v-bind="textareaLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <label ref="wrapperRef" :for="elementId" v-bind="wrapperAttrs">
       <div
         v-if="hasSlotContent($slots['left'])"

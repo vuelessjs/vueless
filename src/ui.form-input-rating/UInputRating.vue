@@ -74,6 +74,14 @@ const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, stars
     v-bind="inputLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="containerAttrs">
       <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
         <!--

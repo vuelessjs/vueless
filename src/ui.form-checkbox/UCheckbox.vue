@@ -136,6 +136,14 @@ const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIcon
     v-bind="checkboxLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <input
       :id="elementId"
       type="checkbox"

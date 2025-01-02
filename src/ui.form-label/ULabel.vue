@@ -88,13 +88,15 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
 
     <!-- `v-bind` isn't assigned, because the div is system -->
     <div v-if="label || error || description">
-      <label
-        v-if="label"
-        :for="props.for"
-        v-bind="labelAttrs"
-        :data-test="`${dataTest}-label`"
-        v-text="label"
-      />
+      <label v-if="label" :for="props.for" v-bind="labelAttrs" :data-test="`${dataTest}-label`">
+        <!--
+          @slot Use this to add custom content instead of the label.
+          @binding {string} label
+        -->
+        <slot name="label" :label="label">
+          {{ label }}
+        </slot>
+      </label>
 
       <div v-if="error" v-bind="descriptionAttrs" :data-test="`${dataTest}-error`" v-text="error" />
 
@@ -111,14 +113,15 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
   </div>
 
   <div v-else v-bind="wrapperAttrs">
-    <label
-      v-if="label"
-      ref="labelRef"
-      :for="props.for"
-      v-bind="labelAttrs"
-      :data-test="`${dataTest}-label`"
-      v-text="label"
-    />
+    <label v-if="label" :for="props.for" v-bind="labelAttrs" :data-test="`${dataTest}-label`">
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label">
+        {{ label }}
+      </slot>
+    </label>
 
     <div v-bind="contentAttrs">
       <!-- @slot Use it to add label content. -->

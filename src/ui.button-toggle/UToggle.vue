@@ -86,6 +86,14 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
     v-bind="toggleLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UToggleItem directly. -->
       <slot>

@@ -456,6 +456,14 @@ const {
     :data-test="dataTest"
     :tabindex="-1"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div
       ref="wrapperRef"
       :tabindex="searchable || disabled ? -1 : 0"
