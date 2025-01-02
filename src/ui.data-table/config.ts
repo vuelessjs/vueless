@@ -74,7 +74,10 @@ export default /*tw*/ {
     container: "bg-gray-200",
   },
   bodyCheckbox: "{UCheckbox}",
-  bodyDateDivider: "{UDivider}",
+  bodyDateDivider: {
+    base: "{UDivider}",
+    label: "py-0",
+  },
   bodyEmptyState: "{UEmpty} my-8",
   footer: {
     base: "group/footer border-t border-solid border-gray-200",
