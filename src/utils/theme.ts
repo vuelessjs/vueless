@@ -151,7 +151,12 @@ export function setTheme(config: Config = {}) {
     brand = gray;
   }
 
-  const colors: DefaultColors = merge(tailwindColors, tailwindConfig?.theme?.extend?.colors || {});
+  const colors: DefaultColors = merge(
+    {},
+    tailwindColors,
+    tailwindConfig?.theme?.extend?.colors || {},
+    vuelessConfig?.tailwindTheme?.extend?.colors || {},
+  );
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,

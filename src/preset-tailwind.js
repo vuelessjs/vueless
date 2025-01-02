@@ -2,7 +2,7 @@
  * The file has `.js` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
-
+import { merge } from "lodash-es";
 import forms from "@tailwindcss/forms";
 import colors from "tailwindcss/colors.js";
 import {
@@ -62,7 +62,7 @@ export const vuelessContentNuxt = [
 
 /**
  * Vueless tailwind static config.
- * Exported to use in `@vueless/module-nuxt`.
+ * Exported to use in `@vueless/nuxt`.
  */
 const safelist = getSafelist();
 const brandColors = getPalette(BRAND_COLOR);
@@ -126,7 +126,9 @@ export const vuelessTailwindConfig = {
  */
 export function vuelessPreset() {
   return {
-    ...vuelessTailwindConfig,
+    theme: merge({}, globalSettings.tailwindTheme || {}, vuelessTailwindConfig.theme),
+    darkMode: vuelessTailwindConfig.darkMode,
+    content: vuelessTailwindConfig.content,
     plugins: [forms],
     safelist,
   };

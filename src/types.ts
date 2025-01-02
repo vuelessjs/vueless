@@ -56,8 +56,9 @@ import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 import USelectConfig from "./ui.form-select/config.ts";
 
-import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { Props } from "tippy.js";
+import type { Config as TailwindConfig } from "tailwindcss";
+import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
 export enum ColorMode {
@@ -136,6 +137,12 @@ export interface Config extends ThemeConfig {
    * Directive configs.
    */
   directive?: Partial<Directives>;
+
+  /**
+   * Tailwind CSS theme config.
+   * https://tailwindcss.com/docs/theme
+   */
+  tailwindTheme?: TailwindConfig["theme"];
 
   /**
    * Tailwind-merge config extension for custom classes.

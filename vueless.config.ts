@@ -15,6 +15,16 @@ export default {
   roundingLg: 16,
 
   /**
+   * Tailwind CSS theme config.
+   * https://tailwindcss.com/docs/theme
+   */
+  tailwindTheme: {
+    extend: {
+      colors: {},
+    },
+  },
+
+  /**
    * Directive settings.
    */
   directive: {},
