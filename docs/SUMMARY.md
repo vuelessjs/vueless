@@ -2,22 +2,39 @@
 
 ## Installation
 
-* [Quick start](README.md)
+* [Quick start (Vue)](README.md)
+* [Quick start (Nuxt)](installation/readme-1.md)
 * [Class autocompletion](installation/class-autocompletion.md)
+* [Minimal requirements](installation/minimal-requirements.md)
+* [Storybook docs](installation/local-storybook-docs.md)
 
-## Customization
+## Global customization
 
-* [Overview](customization/overview.md)
-* [Colors](customization/colors.md)
-* [Ring](customization/ring.md)
-* [Rounding](customization/rounding.md)
-* [Dark mode](customization/dark-mode.md)
-* [Components](customization/components.md)
-* [Icons](customization/icons.md)
-* [Internationalization (i18n)](customization/internationalization-i18n.md)
-* [Change settings in runtime](customization/change-settings-in-runtime.md)
+* [General](global-customization/overview.md)
+* [Colors](global-customization/colors.md)
+* [Ring](global-customization/ring.md)
+* [Rounding](global-customization/rounding.md)
+* [Dark mode](global-customization/dark-mode.md)
+* [Custom tailwind classes](global-customization/custom-tailwind-classes.md)
 
-## Advanced
+## Component customization
 
-* [Local Storybook docs](advanced/local-storybook-docs.md)
-* [Web Types generation](advanced/web-types-generation.md)
+* [General](component-customization/components.md)
+* [Props defaults](component-customization/props-defaults.md)
+* [Styling](component-customization/components-1.md)
+* [Conditional styling](component-customization/conditional-styling.md)
+* [Extends styling](component-customization/extends-styling.md)
+* [Nested components styling](component-customization/nested-components-styling.md)
+* [Classes smart merging](component-customization/classes-smart-merging.md)
+* [Internationalization (i18n)](component-customization/internationalization-i18n.md)
+
+## Svg Icons
+
+* [General usage](svg-icons/icons.md)
+* [Custom icons](svg-icons/icons-1.md)
+* [Dynamic import](svg-icons/icons-2.md)
+* [Advanced settings](svg-icons/icons-3.md)
+
+## Helpers
+
+* [Change settings in runtime](helpers/change-settings-in-runtime.md)
