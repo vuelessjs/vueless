@@ -23,7 +23,7 @@
 * [Props defaults](component-customization/props-defaults.md)
 * [Styling](component-customization/components-1.md)
 * [Conditional styling](component-customization/conditional-styling.md)
-* [Extends styling](component-customization/extends-styling.md)
+* [Extends styling from keys](component-customization/extends-styling-from-keys.md)
 * [Nested components styling](component-customization/nested-components-styling.md)
 * [Classes smart merging](component-customization/classes-smart-merging.md)
 * [Internationalization (i18n)](component-customization/internationalization-i18n.md)
