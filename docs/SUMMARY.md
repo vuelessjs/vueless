@@ -20,12 +20,14 @@
 ## Component customization
 
 * [General](component-customization/components.md)
-* [Props defaults](component-customization/props-defaults.md)
 * [Styling](component-customization/components-1.md)
 * [Conditional styling](component-customization/conditional-styling.md)
 * [Extends styling from keys](component-customization/extends-styling-from-keys.md)
 * [Nested components styling](component-customization/nested-components-styling.md)
 * [Classes smart merging](component-customization/classes-smart-merging.md)
+* [Props defaults](component-customization/props-defaults.md)
+* [Redefining props](component-customization/redefining-props.md)
+* [Defining custom props](component-customization/defining-custom-props.md)
 * [Internationalization (i18n)](component-customization/internationalization-i18n.md)
 
 ## Svg Icons
