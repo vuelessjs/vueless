@@ -48,19 +48,17 @@ You can [generate your colors](https://tailwindcss.com/docs/customizing-colors#g
 
 ***
 
-## Brand color
-
-We recommend to use brand colors in your components and pages, e.g.: `text-brand-700 dark:text-brand-300`, etc.
-
-The `brand` and `gray` colors has a `DEFAULT` shade that changes according to the color mode. It is `600` in light mode and `400` in dark mode. You can use it as a shortcut in your components and pages, e.g. `bg-brand`, `focus:ring-brand`, etc.
-
-***
-
 ## Dynamic colors <a href="#css-variables" id="css-variables"></a>
 
 To provide dynamic colors that can be changed at runtime, Vueless uses CSS variables. Since Tailwind CSS already includes a `gray` color, the library automatically renames it to `cool` to avoid conflicts.&#x20;
 
 Similarly, you cannot define a `brand` color in your `tailwind.config.{js,ts}` file, as it would conflict with the `brand` color defined by the library.
+
+***
+
+## Brand and Gray colors
+
+We recommend to use the `brand` and `gray` colors in your components and pages, e.g.: `text-brand-700 dark:text-gray-300`, etc.
 
 ***
 
