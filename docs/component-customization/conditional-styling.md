@@ -42,7 +42,7 @@ export default {
 
 Sometimes you might want to add a variant that depends on another variant. For example, you might want to add a `color` variant that depends on the `disabled` variant. This is possible by using the `compoundVariants` key.
 
-There is no limit to the number of compound variants you can define.
+There is no limit to the number of compound variants and props inside you can define.
 
 {% code title="vueless.config.{js,ts}" %}
 ```js
@@ -52,16 +52,33 @@ export default {
       badge: {
         base: "border",
         compoundVariants: [
+          /* 
+           * Regular compound variant.
+           */
           {
             color: "white", 
             variant: "primary", 
-            class: "bg-white text-gray-900" 
+            class: "bg-white text-gray-900",
           },
+
+          /* 
+           * Compound variant with boolean value.
+           */  
           {
             color: "white", 
             variant: "primary", 
             disabled: true, 
-            class: "bg-gray-200" 
+            class: "bg-gray-200 text-gray-600",
+          },
+          
+          /* 
+           * Grouped compound variant.
+           * Applies classes for both "white" and "grayscale" color values.
+           */
+          {
+            color: ["white", "grayscale"], 
+            variant: "primary", 
+            class: "ring-gray-700",
           },
         ],
       },
@@ -72,5 +89,5 @@ export default {
 {% endcode %}
 
 {% hint style="info" %}
-Notes that the `compoundVariants` key is an array.
+Notes that the `compoundVariants` key always is an **array** of objects.
 {% endhint %}
