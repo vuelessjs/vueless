@@ -151,8 +151,14 @@ export function setTheme(config: Config = {}) {
     brand = gray;
   }
 
+  /* Remove deprecated color aliases. */
+  delete (tailwindColors as Partial<DefaultColors>).lightBlue;
+  delete (tailwindColors as Partial<DefaultColors>).warmGray;
+  delete (tailwindColors as Partial<DefaultColors>).trueGray;
+  delete (tailwindColors as Partial<DefaultColors>).coolGray;
+  delete (tailwindColors as Partial<DefaultColors>).blueGray;
+
   const colors: DefaultColors = merge(
-    {},
     tailwindColors,
     tailwindConfig?.theme?.extend?.colors || {},
     vuelessConfig?.tailwindTheme?.extend?.colors || {},
