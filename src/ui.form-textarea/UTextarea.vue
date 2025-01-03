@@ -161,10 +161,9 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => {
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
-  if (leftSlotWrapperRef.value && wrapperRef.value && labelComponentRef.value?.labelElement) {
+  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-
-    const textareaPaddingLeft = parseFloat(getComputedStyle(wrapperRef.value).paddingLeft);
+    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
 
     labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
   }

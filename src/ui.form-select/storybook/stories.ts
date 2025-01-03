@@ -254,14 +254,7 @@ export const SlotAfterCaret = DefaultTemplate.bind({});
 SlotAfterCaret.args = {
   slotTemplate: `
     <template #after-caret="{ scopeProps }">
-      <UBadge
-        v-show="scopeProps?.modelValue"
-        :label="getSelectedBadge(scopeProps?.options, scopeProps?.modelValue)?.badge"
-      />
-    </template>
-    <template #option="{ option }">
-      {{ option.label }}
-      <UBadge :label="option.badge" />
+      🤘
     </template>
   `,
 };
