@@ -487,11 +487,7 @@ const {
         </slot>
       </div>
 
-      <div
-        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue?.length)"
-        v-bind="afterCaretAttrs"
-        :tabindex="-1"
-      >
+      <div v-if="hasSlotContent($slots['after-caret'])" v-bind="afterCaretAttrs" :tabindex="-1">
         <!--
           @slot Use it to add something after caret.
           @binding {object} option
