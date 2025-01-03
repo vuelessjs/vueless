@@ -57,3 +57,15 @@ export const parameters = {
     },
   },
 };
+
+/* Reload the page on error "Failed to fetch dynamically imported module..." */
+window.addEventListener("error", (ev) => onFailedToFetchModule(ev.message));
+window.addEventListener("unhandledrejection", (ev) => onFailedToFetchModule(ev?.reason?.message));
+
+function onFailedToFetchModule(message) {
+  const isProd = import.meta.env.MODE === "production";
+
+  if (isProd && message?.includes("Failed to fetch dynamically imported module")) {
+    window.location.reload();
+  }
+}
