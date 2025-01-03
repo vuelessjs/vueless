@@ -47,3 +47,27 @@ Which:
 {% hint style="info" %}
 If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
 {% endhint %}
+
+## Hiding unused components
+
+If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the `storybook` key to `false` in the specific component’s config.
+
+For example, if you don’t plan to use `UPagination` and `UBadge` in your project, you can configure them as follows:
+
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
+  component: {
+    UPagination: {
+      storybook: false,
+    },
+    UBadge: {
+      storybook: false,
+    },
+  },
+};
+```
+{% endcode %}
+
+
+
