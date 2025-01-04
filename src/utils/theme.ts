@@ -9,9 +9,7 @@ import {
   GRAYSCALE_COLOR,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
-  DEFAULT_ROUNDING_SM,
   DEFAULT_ROUNDING,
-  DEFAULT_ROUNDING_LG,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
@@ -102,9 +100,9 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 export function setTheme(config: Config = {}) {
   setColorMode(vuelessConfig?.colorMode || config?.colorMode || ColorMode.Light);
 
-  const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? DEFAULT_ROUNDING_SM;
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingLg = config?.roundingLg ?? vuelessConfig?.roundingLg ?? DEFAULT_ROUNDING_LG;
+  const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? rounding / 2;
+  const roundingLg = config?.roundingLg ?? vuelessConfig?.roundingLg ?? rounding * 2;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
