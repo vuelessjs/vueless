@@ -1,6 +1,6 @@
 # General usage
 
-Vueless supports zero-config dynamic import of SVG icons, meaning you don’t need to explicitly import the SVG icons. Simply set the icon name in the component, and you’ll get perfectly optimized SVG icons in your project.&#x20;
+Vueless supports the dynamic import of SVG icons, so you don’t need to explicitly import them. Simply set the icon name in the component, and you’ll get perfectly optimized SVG icons in your project.&#x20;
 
 ***
 

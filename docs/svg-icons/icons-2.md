@@ -15,7 +15,7 @@ To avoid this behavior and ensure all icons are included in the build, follow th
 <UIcon :name="stateIcon" />
 ```
 
-If you need to use icon names in JavaScript, declare the icon names within a JavaScript object. If the key in the object contains the word `icon`, it will be automatically recognized by Vueless and the icon will be included in the build.
+If you need to use icon names in JavaScript, declare them within a JavaScript object. If the key in the object contains the word `icon`, it will be automatically recognized by Vueless and the icon will be included in the build.
 
 <pre class="language-html"><code class="lang-html">&#x3C;script setup>
 import { computed } from "vue";

@@ -1,6 +1,6 @@
 # Props defaults
 
-Component props such as `size`, `color`, `variant`, etc., have default values that can be overridden in the project `vueless.config.{js,ts}`.
+Component props such as `size`, `color`, `variant`, etc., have default values that can be overridden in the project's `vueless.config.{js,ts}`.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
   component: {
