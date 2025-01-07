@@ -70,7 +70,9 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const componentNames = Object.keys(COMPONENTS);
 
   for await (const componentName of componentNames) {
-    const { colors, isComponentExists } = await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+    const { colors, isComponentExists } = isStorybookMode
+      ? storybookColors
+      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
 
     const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
     const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
