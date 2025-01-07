@@ -124,7 +124,7 @@ const {
   <div v-bind="paginationAttrs">
     <UButton
       v-if="showFirst"
-      no-ring
+      :ring="false"
       variant="thirdary"
       :label="firstLabel"
       :square="!firstLabel"
@@ -145,7 +145,7 @@ const {
     </UButton>
 
     <UButton
-      no-ring
+      :ring="false"
       variant="thirdary"
       :label="prevLabel"
       :square="!prevLabel"
@@ -164,8 +164,8 @@ const {
       <UButton
         v-if="!isFinite(page.number)"
         square
-        no-ring
         disabled
+        :ring="false"
         variant="thirdary"
         v-bind="inactiveButtonAttrs"
       >
@@ -176,7 +176,7 @@ const {
       <UButton
         v-else-if="page.isActive"
         filled
-        no-ring
+        :ring="false"
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
@@ -186,7 +186,7 @@ const {
 
       <UButton
         v-else
-        no-ring
+        :ring="false"
         variant="thirdary"
         :label="String(page.number)"
         :disabled="disabled"
@@ -197,7 +197,7 @@ const {
     </template>
 
     <UButton
-      no-ring
+      :ring="false"
       variant="thirdary"
       :label="nextLabel"
       :square="!nextLabel"
@@ -214,7 +214,7 @@ const {
 
     <UButton
       v-if="showLast"
-      no-ring
+      :ring="false"
       variant="thirdary"
       :label="lastLabel"
       :square="!lastLabel"

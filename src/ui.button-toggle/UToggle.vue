@@ -61,7 +61,7 @@ provide("getToggleRound", () => props.round);
 provide("getToggleBlock", () => props.block);
 provide("getToggleSquare", () => props.square);
 provide("getToggleDisabled", () => props.disabled);
-provide("getToggleNoRing", () => props.noRing);
+provide("getToggleRing", () => props.ring);
 provide("getToggleSplit", () => props.split);
 
 provide("toggleSelectedValue", {

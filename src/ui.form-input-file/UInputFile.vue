@@ -310,7 +310,7 @@ const {
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
               filled
-              no-ring
+              :ring="false"
               :for="elementId"
               tag="label"
               variant="thirdary"
@@ -338,7 +338,7 @@ const {
             round
             square
             filled
-            no-ring
+            :ring="false"
             variant="thirdary"
             :disabled="disabled"
             :left-icon="config.defaults.clearIcon"

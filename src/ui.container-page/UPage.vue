@@ -97,7 +97,7 @@ const {
             <div v-bind="headerLeftFallbackAttrs">
               <ULink
                 v-if="isShownArrowButton"
-                no-ring
+                :ring="false"
                 size="sm"
                 color="gray"
                 :to="backTo"

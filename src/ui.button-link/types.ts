@@ -118,9 +118,9 @@ export interface Props {
   block?: boolean;
 
   /**
-   * Remove outline ring on focus.
+   * Show link ring on focus.
    */
-  noRing?: boolean;
+  ring?: boolean;
 
   /**
    * Component config object.

@@ -37,7 +37,7 @@ const getToggleSize = inject<() => ButtonSize>("getToggleSize", () => "md" as Bu
 const getToggleRound = inject<() => boolean>("getToggleRound", () => false);
 const getToggleBlock = inject<() => boolean>("getToggleBlock", () => false);
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () => false);
-const getToggleNoRing = inject<() => boolean>("getToggleNoRing", () => true);
+const getToggleRing = inject<() => boolean>("getToggleRing", () => false);
 const getToggleSplit = inject<() => boolean>("getToggleSplit", () => true);
 
 const getToggleDisabled = inject<() => boolean>(
@@ -109,7 +109,7 @@ const { toggleButtonInactiveAttrs, toggleButtonActiveAttrs, toggleInputAttrs } =
     :block="getToggleBlock()"
     :square="getToggleSquare()"
     :disabled="getToggleDisabled() || disabled"
-    :no-ring="getToggleNoRing() || !getToggleSplit()"
+    :ring="getToggleRing() || getToggleSplit()"
     v-bind="isSelected ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
     @click="onClickSetValue"
   >

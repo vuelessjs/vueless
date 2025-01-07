@@ -156,7 +156,7 @@ export const Disabled = EnumVariantTemplate.bind({});
 Disabled.args = { enum: "variant", disabled: true };
 
 export const NoRing = DefaultTemplate.bind({});
-NoRing.args = { noRing: true };
+NoRing.args = { ring: false };
 
 export const Colors = ColorTemplate.bind({});
 Colors.args = {};

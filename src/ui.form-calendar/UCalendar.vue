@@ -723,8 +723,8 @@ const {
     <div v-bind="navigationAttrs">
       <UButton
         square
-        no-ring
         size="sm"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
@@ -734,8 +734,8 @@ const {
       />
 
       <UButton
-        no-ring
         size="sm"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         v-bind="viewSwitchButtonAttrs"
@@ -751,8 +751,8 @@ const {
 
       <UButton
         square
-        no-ring
         size="sm"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
@@ -847,11 +847,11 @@ const {
 
       <UButton
         ref="ok-button"
-        variant="thirdary"
-        size="sm"
         filled
-        no-ring
+        size="sm"
+        :ring="false"
         color="grayscale"
+        variant="thirdary"
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >

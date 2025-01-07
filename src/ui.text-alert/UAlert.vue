@@ -110,8 +110,8 @@ const {
       <UButton
         v-if="closable"
         square
-        no-ring
         size="xs"
+        :ring="false"
         :color="closeButtonColor"
         variant="thirdary"
         v-bind="closeButtonAttrs"

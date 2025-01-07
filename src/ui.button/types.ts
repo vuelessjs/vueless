@@ -101,9 +101,9 @@ export interface Props {
   loading?: boolean;
 
   /**
-   * Remove button ring on focus.
+   * Show button ring on focus.
    */
-  noRing?: boolean;
+  ring?: boolean;
 
   /**
    * Unique element id.

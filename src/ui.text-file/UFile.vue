@@ -59,7 +59,7 @@ const {
 </script>
 
 <template>
-  <ULink :href="url" no-ring v-bind="fileAttrs" :data-test="dataTest">
+  <ULink :href="url" :ring="false" v-bind="fileAttrs" :data-test="dataTest">
     <slot name="left" :file="{ elementId, label, url, imageUrl }" />
 
     <slot :file="{ elementId, label, url, imageUrl }">
@@ -77,7 +77,14 @@ const {
           @blur="onBlur"
         />
 
-        <ULink :label="label" :size="size" color="gray" dashed no-ring v-bind="fileLabelAttrs" />
+        <ULink
+          :label="label"
+          :ring="false"
+          :size="size"
+          color="gray"
+          dashed
+          v-bind="fileLabelAttrs"
+        />
       </div>
     </slot>
 

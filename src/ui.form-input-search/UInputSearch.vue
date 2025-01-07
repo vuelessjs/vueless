@@ -177,7 +177,7 @@ const {
         <UButton
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
-          no-ring
+          :ring="false"
           v-bind="searchButtonAttrs"
           :data-test="`${dataTest}-search-button`"
           @click="onClickSearch"

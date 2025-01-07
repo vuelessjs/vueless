@@ -39,7 +39,7 @@ export default /*tw*/ {
     xPosition: "left",
     underlined: undefined,
     dashed: true,
-    noRing: true,
+    ring: false,
     noIcon: false,
     disabled: false,
     /* icons */
