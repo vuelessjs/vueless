@@ -28,8 +28,7 @@ export default /*tw*/ {
   headerRight: "",
   closeIcon: "{UIcon}",
   body: "space-y-4 px-4 md:px-8 text-sm",
-  modalDivider: "{UDivider}",
-  dividerSpacing: "{UDivider}",
+  modalDivider: "{UDivider} pt-8",
   footer: "flex justify-between px-4 md:px-8 py-8 max-md:flex-col max-md:gap-4",
   footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
   footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
@@ -55,7 +54,7 @@ export default /*tw*/ {
   defaults: {
     size: "sm",
     inner: false,
-    noDivider: false,
+    divider: true,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,

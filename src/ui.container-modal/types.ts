@@ -60,7 +60,7 @@ export interface Props {
   /**
    * Hide divider between content end footer.
    */
-  noDivider?: boolean;
+  divider?: boolean;
 
   /**
    * Attach small modal to the bottom of the screen (mobile version only).
