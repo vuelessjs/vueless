@@ -70,9 +70,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const componentNames = Object.keys(COMPONENTS);
 
   for await (const componentName of componentNames) {
-    const { colors, isComponentExists } = isStorybookMode
-      ? storybookColors
-      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+    const { colors, isComponentExists } = await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
 
     const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
     const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
@@ -214,7 +212,9 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     const fileContent = await readFile(file, "utf-8");
     const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
+    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
+    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
     if (!isComponentExists) {
       isComponentExists = Boolean(matchedComponent);
@@ -225,6 +225,14 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
         const [, color] = objectColorRegExp.exec(colorMatch) || [];
 
         colors.add(color);
+      });
+    }
+
+    if (matchedExtendComponent) {
+      const objectColors = objectColorRegExp.exec(fileContent) || [];
+
+      objectColors.forEach((color) => {
+        if (color) colors.add(color);
       });
     }
 
