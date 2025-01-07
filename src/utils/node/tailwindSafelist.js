@@ -214,7 +214,9 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     const fileContent = await readFile(file, "utf-8");
     const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
+    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
+    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
     if (!isComponentExists) {
       isComponentExists = Boolean(matchedComponent);
@@ -225,6 +227,14 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
         const [, color] = objectColorRegExp.exec(colorMatch) || [];
 
         colors.add(color);
+      });
+    }
+
+    if (matchedExtendComponent) {
+      const objectColors = objectColorRegExp.exec(fileContent) || [];
+
+      objectColors.forEach((color) => {
+        if (color) colors.add(color);
       });
     }
 
