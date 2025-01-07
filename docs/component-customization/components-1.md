@@ -2,7 +2,7 @@
 
 The library uses [Tailwind CSS](https://tailwindcss.com/) as its CSS framework for component styling. To conditionally apply styles based on prop values, Vueless leverages [CVA](https://beta.cva.style) (Class Variance Authority).
 
-Each HTML tag in component has its own config key with corresponding Tailwind classes inside.
+Each HTML tag in a component has its own config key with corresponding Tailwind classes inside.
 
 ### **The component styles can be customized in three ways:**
 
@@ -18,7 +18,7 @@ To apply your project’s design system styles to Vueless components, define the
 This is the recommended way for styling Vueless components.
 {% endhint %}
 
-Example of component customisation:
+Example of component customization:
 
 {% code title="vueless.config.{js,ts}" %}
 ```js
@@ -41,7 +41,7 @@ export default {
 Each component includes a config prop that allows for specific customization. Use this approach to fine-tune components for particular cases.&#x20;
 
 {% hint style="warning" %}
-Apply this approach cautiously to ensure the project’s design system remains consistent.
+Use this approach with caution to ensure the project's design system remains consistent.
 {% endhint %}
 
 For example, to change the font weight of the `title`, you only need to specify:

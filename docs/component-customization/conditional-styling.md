@@ -89,5 +89,5 @@ export default {
 {% endcode %}
 
 {% hint style="info" %}
-Notes that the `compoundVariants` key always is an **array** of objects.
+Note that the `compoundVariants` key always is an **array** of objects.
 {% endhint %}

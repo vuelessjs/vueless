@@ -95,7 +95,7 @@ export default function useUI<T>(
 
       classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
 
-      return color ? setColor(classes, color) : classes;
+      return color && !getNestedComponent(value) ? setColor(classes, color) : classes;
     });
   }
 

@@ -3,7 +3,6 @@ export default /*tw*/ {
     base: "{UButton} font-normal",
     defaults: {
       variant: "thirdary",
-      color: "brand",
     },
   },
   toggleButtonInactive: "{>toggleButton} text-gray-900",

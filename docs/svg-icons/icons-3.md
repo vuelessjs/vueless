@@ -1,6 +1,6 @@
 # Advanced settings
 
-Loding SVG icons supported by [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) which was inspired by [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader) . This allows efficient handling of SVG icons in your Vueless project.
+Loading SVG icons supported by [`@vueless/plugin-vite`](https://github.com/vuelessjs/vueless-plugin-vite) which was inspired by [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader). This allows efficient handling of SVG icons in your Vueless project.
 
 ## Changing SVG optimisation config
 
@@ -38,7 +38,7 @@ export default defineConfig({
 ```
 {% endcode %}
 
-## Disable SVG optimisation
+## Disable SVG optimization
 
 You can disable SVGO globally as well by setting the svgo option to false in the Vueless Vite plugin config. This will prevent SVGO from processing the SVGs in `dev` and `prod` environments.
 

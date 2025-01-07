@@ -61,7 +61,7 @@ const slots = useSlots();
 const elementId = props.id || useId();
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
-const labelComponentRef = ref<{ labelElement: HTMLElement | null } | null>(null);
+const labelComponentRef = ref<InstanceType<typeof ULabel> | null>(null);
 const leftSlotWrapperRef = ref<HTMLElement | null>(null);
 const wrapperRef = ref<HTMLElement | null>(null);
 

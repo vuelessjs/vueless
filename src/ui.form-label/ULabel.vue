@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, PLACEMENT } from "./constants.ts";
@@ -87,8 +88,14 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || error || description">
-      <label v-if="label" :for="props.for" v-bind="labelAttrs" :data-test="`${dataTest}-label`">
+    <div v-if="label || hasSlotContent($slots['label']) || error || description">
+      <label
+        v-if="label || hasSlotContent($slots['label'])"
+        ref="labelRef"
+        :for="props.for"
+        v-bind="labelAttrs"
+        :data-test="`${dataTest}-label`"
+      >
         <!--
           @slot Use this to add custom content instead of the label.
           @binding {string} label
@@ -113,7 +120,13 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
   </div>
 
   <div v-else v-bind="wrapperAttrs">
-    <label v-if="label" :for="props.for" v-bind="labelAttrs" :data-test="`${dataTest}-label`">
+    <label
+      v-if="label || hasSlotContent($slots['label'])"
+      v-bind="labelAttrs"
+      ref="labelRef"
+      :for="props.for"
+      :data-test="`${dataTest}-label`"
+    >
       <!--
         @slot Use this to add custom content instead of the label.
         @binding {string} label

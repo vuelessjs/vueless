@@ -1,6 +1,6 @@
 # Custom icons
 
-The `<UIcon>` component also supports custom icons. To use a custom icon, import the SVG icon with the suffix `?component` and pass the imported component in the `:src` prop.
+The `<UIcon>` component also supports custom SVG icons. To use a custom icon, import it with the suffix `?component` and pass the imported component in the `:src` prop.
 
 ```html
 <script setup>
@@ -12,7 +12,7 @@ import EqualIcon from "./images/equal.svg?component";
 
 ## Custom library
 
-If all the icons you plan to use are custom, you can define your own library path in the config to reference the icons from your project.
+To reference all icons from your project, specify your library path in the config.
 
 {% code title="vueless.config.js" %}
 ```javascript
