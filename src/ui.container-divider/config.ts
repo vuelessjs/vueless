@@ -46,8 +46,8 @@ export default /*tw*/ {
       dotted: {
         true: "border-dotted",
       },
-      noBorder: {
-        true: "border-transparent",
+      border: {
+        false: "border-transparent",
       },
     },
   },
@@ -68,9 +68,9 @@ export default /*tw*/ {
     variant: "default",
     padding: "all",
     size: "md",
+    border: true,
     dashed: false,
     dotted: false,
     vertical: false,
-    noBorder: false,
   },
 };
