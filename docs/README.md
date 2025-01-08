@@ -1,6 +1,6 @@
-# Quick start
+# Quick start (Vue)
 
-1\. Install Vueless UI library packages.
+1\. Install Vueless package.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -42,15 +42,18 @@ createApp(App).use(vueless).mount('#app');
 ```
 {% endcode %}
 
-3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not) and add `vuelessPreset` to it.
+3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not already done) and add `vuelessPreset`.
 
-<pre class="language-javascript" data-title="tailwind.config.{js,ts}"><code class="lang-javascript"><strong>import { vuelessPreset } from "vueless/preset-tailwind";
-</strong>
+{% code title="tailwind.config.{js,ts}" %}
+```javascript
+import { vuelessPreset } from "vueless/preset-tailwind";
+
 export default {
   presets: [vuelessPreset],
   ...
 };
-</code></pre>
+```
+{% endcode %}
 
 4\. Add Vite plugins.
 
@@ -69,12 +72,5 @@ export default defineConfig({
 ```
 {% endcode %}
 
-That's it! You can use Vueless in your app now ✨
-
-### Minimal requirements
-
-* Node 20+
-* Vite 5+
-* Vue 3.5+
-* TailwindCSS 3.4+
+That’s it! Vueless is now ready to use in your app ✨
 

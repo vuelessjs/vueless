@@ -10,9 +10,7 @@ export default {
   ringOffset: 0,
   ringOffsetColorLight: "#ffffff", // white
   ringOffsetColorDark: "#111827", // gray-900
-  roundingSm: 4,
   rounding: 8,
-  roundingLg: 16,
 
   /**
    * Directive settings.
@@ -23,6 +21,16 @@ export default {
    * Component settings.
    */
   component: /*tw*/ {},
+
+  /**
+   * Tailwind CSS theme config.
+   * https://tailwindcss.com/docs/theme
+   */
+  tailwindTheme: {
+    extend: {
+      colors: {},
+    },
+  },
 
   /**
    * Custom classes TailwindMerge settings.

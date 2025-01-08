@@ -107,6 +107,14 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
     v-bind="radioLabelAttrs"
     :data-test="`${dataTest}-label`"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <input
       :id="elementId"
       type="radio"

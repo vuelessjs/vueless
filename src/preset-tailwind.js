@@ -2,7 +2,7 @@
  * The file has `.js` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
-
+import { merge } from "lodash-es";
 import forms from "@tailwindcss/forms";
 import colors from "tailwindcss/colors.js";
 import {
@@ -11,9 +11,7 @@ import {
   GRAY_COLOR,
   COOL_COLOR,
   DARK_MODE_SELECTOR,
-  DEFAULT_ROUNDING_SM,
   DEFAULT_ROUNDING,
-  DEFAULT_ROUNDING_LG,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
@@ -62,7 +60,7 @@ export const vuelessContentNuxt = [
 
 /**
  * Vueless tailwind static config.
- * Exported to use in `@vueless/module-nuxt`.
+ * Exported to use in `@vueless/nuxt`.
  */
 const safelist = getSafelist();
 const brandColors = getPalette(BRAND_COLOR);
@@ -100,7 +98,7 @@ export const vuelessTailwindConfig = {
         dynamic: "var(--vl-ring-offset)",
       },
       ringOffsetColor: {
-        DEFAULT: twColorWithOpacity("--vl-ring-offset-color"),
+        dynamic: twColorWithOpacity("--vl-ring-offset-color"),
       },
     },
     configViewer: {
@@ -109,9 +107,9 @@ export const vuelessTailwindConfig = {
         "var(--vl-ring)": globalSettings.ring || DEFAULT_RING,
         "var(--vl-ring-offset)": globalSettings.ringOffset || DEFAULT_RING_OFFSET,
         "var(--vl-ring-offset-color)": globalSettings.ringOffsetColorLight || DEFAULT_RING_OFFSET_COLOR_LIGHT,
-        "var(--vl-rounding-sm)": globalSettings.roundingSm || DEFAULT_ROUNDING_SM,
+        "var(--vl-rounding-sm)": globalSettings.roundingSm || (globalSettings.ring || DEFAULT_ROUNDING) / 2,
         "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
-        "var(--vl-rounding-lg)": globalSettings.roundingLg || DEFAULT_ROUNDING_LG,
+        "var(--vl-rounding-lg)": globalSettings.roundingLg || (globalSettings.ring || DEFAULT_ROUNDING) * 2,
         ...getReplacementColors(GRAY_COLOR, globalSettings.gray || DEFAULT_GRAY_COLOR),
         ...getReplacementColors(BRAND_COLOR, globalSettings.brand || DEFAULT_BRAND_COLOR),
         /* eslint-enable prettier/prettier */
@@ -126,7 +124,9 @@ export const vuelessTailwindConfig = {
  */
 export function vuelessPreset() {
   return {
-    ...vuelessTailwindConfig,
+    theme: merge({}, globalSettings.tailwindTheme || {}, vuelessTailwindConfig.theme),
+    darkMode: vuelessTailwindConfig.darkMode,
+    content: vuelessTailwindConfig.content,
     plugins: [forms],
     safelist,
   };

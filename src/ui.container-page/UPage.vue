@@ -97,7 +97,7 @@ const {
             <div v-bind="headerLeftFallbackAttrs">
               <ULink
                 v-if="isShownArrowButton"
-                no-ring
+                :ring="false"
                 size="sm"
                 color="gray"
                 :to="backTo"
@@ -157,7 +157,7 @@ const {
       <slot name="footer-after" />
     </div>
 
-    <div v-if="fixedRounding && !isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
+    <div v-if="!isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
       <div v-bind="rightRoundingAttrs" />
     </div>
   </div>

@@ -305,10 +305,6 @@ watchEffect(() => {
           @slot Use it add something before the date.
           @binding {string} icon-name
         -->
-        <slot name="left-icon" :icon-name="iconName" />
-      </template>
-
-      <template #right-icon="{ iconName }">
         <slot name="left" :icon-name="iconName" />
       </template>
 

@@ -93,4 +93,4 @@ Vertical.args = {
 };
 
 export const NoBorder = DefaultTemplate.bind({});
-NoBorder.args = { label: "label", noBorder: true };
+NoBorder.args = { label: "label", border: false };

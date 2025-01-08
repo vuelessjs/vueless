@@ -9,6 +9,7 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -39,7 +40,7 @@ export default {
 const defaultTemplate = "This is plain text";
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
-  components: { ULabel, UText, UIcon },
+  components: { ULabel, UText, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(ULabel.__name);
 
@@ -108,10 +109,20 @@ Error.args = { error: "Error description" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
+  label: "Custom badge label",
+  slotTemplate: `
+    <template #label="{ label }">
+      <UBadge :label="label" color="green" />
+    </template>
+  `,
+};
+
 export const SlotFooter = DefaultTemplate.bind({});
 SlotFooter.args = {
   slotTemplate: `
-    <template #footer>
+    <template #bottom>
       <UIcon name="star" color="green" />
     </template>
   `,

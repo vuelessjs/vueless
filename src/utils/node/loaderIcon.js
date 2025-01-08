@@ -7,8 +7,9 @@
 /* eslint-disable no-console */
 import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "module";
+import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
+import { createRequire } from "module";
 import { merge } from "lodash-es";
 
 import { vuelessConfig } from "./vuelessConfig.js";
@@ -25,11 +26,9 @@ import {
   ICONS_DIR,
 } from "../../constants.js";
 
-const cwd = process.cwd();
-
-const DEFAULT_ICONS_DIR = path.join(cwd, VUELESS_ICONS_DIR);
-const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd, VUELESS_ICONS_LOCAL_DIR);
-const CACHED_ICONS_DIR = path.join(cwd, VUELESS_ICONS_CACHED_DIR);
+const DEFAULT_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_DIR);
+const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), VUELESS_ICONS_LOCAL_DIR);
+const CACHED_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
 const U_ICON = "UIcon";
 
 let isDebug = false;
@@ -53,8 +52,8 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
 
   if (isVuelessIconsMode) {
     targetFiles = isVuelessEnv
-      ? [path.join(cwd, VUELESS_LOCAL_DIR)]
-      : [path.join(cwd, VUELESS_DIR)];
+      ? [path.join(cwd(), VUELESS_LOCAL_DIR)]
+      : [path.join(cwd(), VUELESS_DIR)];
   }
 
   const commonExcludes = ["/types.ts", "/constants.ts"];
@@ -93,7 +92,7 @@ export async function removeIconsCache(mirrorCacheDir, debug) {
   }
 
   if (mirrorCacheDir) {
-    const mirrorCacheIconsPath = path.join(cwd, mirrorCacheDir, ICONS_DIR);
+    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -112,10 +111,10 @@ export async function removeIconsCache(mirrorCacheDir, debug) {
  * @returns {Promise<void>}
  */
 export async function copyIconsCache(mirrorCacheDir, debug) {
-  const cachePath = path.join(cwd, VUELESS_ICONS_CACHED_DIR);
+  const cachePath = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
 
   if (mirrorCacheDir && fs.existsSync(cachePath)) {
-    await cp(cachePath, path.join(cwd, mirrorCacheDir, ICONS_DIR), { recursive: true });
+    await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_DIR), { recursive: true });
   }
 
   if (debug) {
@@ -275,23 +274,23 @@ function getIconLibraryPaths(name, defaults) {
   const libraries = {
     [VUELESS_LIBRARY]: {
       // @material-symbols icons which used across the components (this works only at Vueless env).
-      source: `${cwd}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
+      source: `${cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
       destination: `${CACHED_ICONS_DIR}/${VUELESS_LIBRARY}/${name}.svg`
     },
     "@material-symbols": {
-      source: `${cwd}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
+      source: `${cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
       destination: `${CACHED_ICONS_DIR}/${library}/svg-${weight}/${style}/${name}.svg`
     },
     "bootstrap-icons": {
-      source: `${cwd}/node_modules/${library}/icons/${name}.svg`,
+      source: `${cwd()}/node_modules/${library}/icons/${name}.svg`,
       destination: `${CACHED_ICONS_DIR}/${library}/${name}.svg`
     },
     "heroicons": {
-      source: `${cwd}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
+      source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
       destination: `${CACHED_ICONS_DIR}/${library}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
     },
     "custom-icons": {
-      source: `${cwd}/${customLibraryPath}/${name}.svg`,
+      source: `${cwd()}/${customLibraryPath}/${name}.svg`,
       destination: `${CACHED_ICONS_DIR}/${library}/${name}.svg`
     },
   };
@@ -308,7 +307,7 @@ function getIconLibraryPaths(name, defaults) {
  */
 async function getDefaults() {
   const defaultIconsDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
-  const defaultConfigPath = path.join(cwd, defaultIconsDir, COMPONENTS[U_ICON], "config.ts");
+  const defaultConfigPath = path.join(cwd(), defaultIconsDir, COMPONENTS[U_ICON], "config.ts");
   const uIconDefaultConfig = await getComponentDefaultConfig(U_ICON, defaultConfigPath);
 
   return merge({}, uIconDefaultConfig?.defaults, vuelessConfig?.component?.[U_ICON]?.defaults);

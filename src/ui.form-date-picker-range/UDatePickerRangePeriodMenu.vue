@@ -139,8 +139,8 @@ function getDatePeriodState(date: DatePeriodRange) {
         v-if="periodButton.name !== period"
         square
         filled
-        no-ring
         size="xs"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :label="periodButton.title"
@@ -152,8 +152,8 @@ function getDatePeriodState(date: DatePeriodRange) {
         v-else
         square
         filled
-        no-ring
         size="xs"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :label="periodButton.title"
@@ -168,8 +168,8 @@ function getDatePeriodState(date: DatePeriodRange) {
       v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom !== period"
       square
       filled
-      no-ring
       size="xs"
+      :ring="false"
       color="grayscale"
       variant="thirdary"
       v-bind="attrs.periodButtonAttrs.value"
@@ -187,8 +187,8 @@ function getDatePeriodState(date: DatePeriodRange) {
       v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom === period"
       square
       filled
-      no-ring
       size="xs"
+      :ring="false"
       color="grayscale"
       variant="thirdary"
       v-bind="attrs.periodButtonActiveAttrs.value"
@@ -206,8 +206,8 @@ function getDatePeriodState(date: DatePeriodRange) {
       v-if="Period.OwnRange !== period"
       square
       filled
-      no-ring
       size="xs"
+      :ring="false"
       color="grayscale"
       variant="thirdary"
       :label="locale.ownRange"
@@ -220,8 +220,8 @@ function getDatePeriodState(date: DatePeriodRange) {
       v-else
       square
       filled
-      no-ring
       size="xs"
+      :ring="false"
       color="grayscale"
       variant="thirdary"
       :label="locale.ownRange"
@@ -235,8 +235,8 @@ function getDatePeriodState(date: DatePeriodRange) {
     <div v-bind="attrs.rangeSwitchWrapperAttrs.value">
       <UButton
         square
-        no-ring
         size="sm"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults?.prevIcon"
@@ -250,8 +250,8 @@ function getDatePeriodState(date: DatePeriodRange) {
 
       <UButton
         square
-        no-ring
         size="sm"
+        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults?.nextIcon"
@@ -264,11 +264,11 @@ function getDatePeriodState(date: DatePeriodRange) {
       <template v-for="date in periodDateList" :key="date.title">
         <UButton
           v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
-          size="sm"
-          variant="thirdary"
-          color="brand"
-          no-ring
           filled
+          size="sm"
+          :ring="false"
+          color="brand"
+          variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentSelectedAttrs.value"
           :label="String(date.title)"
@@ -277,11 +277,11 @@ function getDatePeriodState(date: DatePeriodRange) {
 
         <UButton
           v-else-if="getDatePeriodState(date).isSelected"
-          size="sm"
-          variant="thirdary"
-          color="brand"
-          no-ring
           filled
+          size="sm"
+          :ring="false"
+          color="brand"
+          variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateSelectedAttrs.value"
           :label="String(date.title)"
@@ -290,11 +290,11 @@ function getDatePeriodState(date: DatePeriodRange) {
 
         <UButton
           v-else-if="getDatePeriodState(date).isCurrentDate"
-          size="sm"
-          variant="secondary"
-          color="brand"
-          no-ring
           filled
+          size="sm"
+          color="brand"
+          :ring="false"
+          variant="secondary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"
           :label="String(date.title)"
@@ -303,8 +303,8 @@ function getDatePeriodState(date: DatePeriodRange) {
 
         <UButton
           v-else
-          no-ring
           size="sm"
+          :ring="false"
           color="grayscale"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"

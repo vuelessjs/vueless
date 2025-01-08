@@ -229,7 +229,7 @@ const {
           variant="primary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="selectedDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -244,7 +244,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="currentDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -259,7 +259,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="currentFirstDayInRangeAttrs"
@@ -275,7 +275,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="currentLastDayInRangeAttrs"
@@ -291,7 +291,7 @@ const {
           variant="primary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="firstDayInRangeAttrs"
@@ -307,7 +307,7 @@ const {
           variant="primary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="lastDayInRangeAttrs"
@@ -323,7 +323,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="anotherMonthFirstDayInRangeAttrs"
@@ -339,7 +339,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           filled
           v-bind="anotherMonthLastDayInRangeAttrs"
@@ -355,7 +355,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="currentDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -370,7 +370,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="dayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -385,7 +385,7 @@ const {
           variant="thirdary"
           color="brand"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="activeDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -400,7 +400,7 @@ const {
           variant="thirdary"
           color="grayscale"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="anotherMonthDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
@@ -415,7 +415,7 @@ const {
           variant="thirdary"
           color="grayscale"
           size="md"
-          no-ring
+          :ring="false"
           square
           v-bind="dayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"

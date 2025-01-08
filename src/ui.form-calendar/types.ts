@@ -65,12 +65,12 @@ export interface UCalendarProps<TModelValue extends DateValue> {
   /**
    * Min date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  minDate?: string | Date;
+  minDate?: Date | string;
 
   /**
    * Max date (JavaScript Date object or string formatted in given `dateFormat`).
    */
-  maxDate?: string | Date;
+  maxDate?: Date | string;
 
   /**
    * Component config object.

@@ -62,6 +62,14 @@ const { filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
     :align="labelAlign"
     v-bind="filesLabelAttrs"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UFile. -->
       <slot>

@@ -55,7 +55,7 @@ function onClick(event: MouseEvent) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
+const { config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -78,7 +78,7 @@ const { avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
           internal
           :size="size"
           :color="componentColor"
-          :name="placeholderIcon"
+          :name="placeholderIcon || config.defaults.placeholderIcon"
           v-bind="placeholderIconAttrs"
         />
       </slot>

@@ -20,8 +20,8 @@ export default /*tw*/ {
       defaultSlot: {
         true: "flex items-center focus-within:ring-0 focus-within:ring-offset-0",
       },
-      noRing: {
-        true: "!ring-0 !ring-offset-0",
+      ring: {
+        false: "!ring-0 !ring-offset-0",
       },
       block: {
         true: "w-full",
@@ -87,7 +87,7 @@ export default /*tw*/ {
     wrapperExactActiveClass: "",
     underlined: undefined,
     block: false,
-    noRing: false,
+    ring: true,
     dashed: false,
     disabled: false,
     targetBlank: false,

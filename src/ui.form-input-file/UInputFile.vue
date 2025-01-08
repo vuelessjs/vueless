@@ -274,6 +274,14 @@ const {
     interactive
     v-bind="inputLabelAttrs"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
         <!-- @slot Use it to add something above the component content. -->
@@ -302,7 +310,7 @@ const {
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
               filled
-              no-ring
+              :ring="false"
               :for="elementId"
               tag="label"
               variant="thirdary"
@@ -330,7 +338,7 @@ const {
             round
             square
             filled
-            no-ring
+            :ring="false"
             variant="thirdary"
             :disabled="disabled"
             :left-icon="config.defaults.clearIcon"

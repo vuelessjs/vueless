@@ -15,24 +15,19 @@ export default /*tw*/ {
         "5xl": "md:w-[75rem] md:max-[1300px]:!w-full",
         wide: "md:w-full",
       },
-      fixedRounding: {
-        true: "relative pr-0 md:pr-4 md:rounded-none",
-        false: "md:rounded-r-2xl",
-      },
-    },
-  },
-  page: {
-    base: "p-4 md:py-6 md:pl-8 mx-auto min-h-screen w-full",
-    variants: {
       gray: {
         false: "bg-white",
         true: "bg-gray-50",
       },
-      fixedRounding: {
-        true: "md:pr-4",
-        false: "md:pr-8",
+      rounding: {
+        relative: "md:relative md:pr-4 md:rounded-r-dynamic-lg",
+        fixed: "md:bg-transparent md:relative md:pr-4 md:rounded-r-dynamic-lg",
       },
     },
+  },
+  page: {
+    base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full",
+    compoundVariants: [{ rounding: ["fixed", "relative"], class: "md:pr-4" }],
   },
   header: "flex items-start justify-between mb-4 md:mb-6",
   headerLeft: "flex items-center gap-4",
@@ -43,12 +38,19 @@ export default /*tw*/ {
   description: "mt-1.5 text-base font-normal text-gray-500",
   headerRight: "",
   body: "",
-  footer: `mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200`,
+  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200",
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
-  rightRoundingWrapper: "absolute right-4",
+  rightRoundingWrapper: {
+    base: "absolute right-4",
+    variants: {
+      rounding: {
+        none: "hidden",
+      },
+    },
+  },
   rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-2xl bg-white h-screen",
+    base: "fixed top-0 w-4 rounded-r-dynamic-lg h-screen",
     variants: {
       gray: {
         false: "bg-white",
@@ -57,10 +59,10 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    rounding: "none",
     titleSize: "md",
     size: "wide",
     gray: false,
-    fixedRounding: false,
     /* icons */
     backIcon: "arrow_back",
   },

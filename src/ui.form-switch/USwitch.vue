@@ -100,6 +100,14 @@ const {
     :data-test="dataTest"
     @click="onClickToggle"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <label :for="elementId" v-bind="wrapperAttrs">
       <input
         :id="elementId"

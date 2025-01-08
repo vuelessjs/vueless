@@ -183,7 +183,7 @@ export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const NoRing = DefaultTemplate.bind({});
-NoRing.args = { noRing: true };
+NoRing.args = { ring: false };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { block: true };

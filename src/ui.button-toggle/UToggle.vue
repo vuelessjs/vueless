@@ -61,7 +61,7 @@ provide("getToggleRound", () => props.round);
 provide("getToggleBlock", () => props.block);
 provide("getToggleSquare", () => props.square);
 provide("getToggleDisabled", () => props.disabled);
-provide("getToggleNoRing", () => props.noRing);
+provide("getToggleRing", () => props.ring);
 provide("getToggleSplit", () => props.split);
 
 provide("toggleSelectedValue", {
@@ -87,6 +87,14 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
     v-bind="toggleLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <div v-bind="itemsAttrs">
       <!-- @slot Use it to add UToggleItem directly. -->
       <slot>

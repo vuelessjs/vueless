@@ -76,11 +76,11 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <ULink
       :id="elementId"
+      :ring="ring"
       :size="size"
       :label="label"
       :color="color"
       :dashed="dashed"
-      :no-ring="noRing"
       :disabled="disabled"
       :underlined="underlined"
       v-bind="dropdownLinkAttrs"

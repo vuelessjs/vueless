@@ -134,7 +134,7 @@ const {
         variant="primary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="selectedMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -148,7 +148,7 @@ const {
         "
         variant="thirdary"
         color="brand"
-        no-ring
+        :ring="false"
         v-bind="currentMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -161,7 +161,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="currentFirstMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -175,7 +175,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="currentLastMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -189,7 +189,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="firstMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -203,7 +203,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="lastMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -220,7 +220,7 @@ const {
         variant="primary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="singleCurrentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -233,7 +233,7 @@ const {
         variant="primary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="currentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -249,7 +249,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="singleMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -265,7 +265,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="monthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -278,7 +278,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="activeMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -291,7 +291,7 @@ const {
         variant="thirdary"
         color="grayscale"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="monthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"

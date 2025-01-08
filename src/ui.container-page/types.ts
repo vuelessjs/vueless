@@ -37,14 +37,14 @@ export interface Props {
   backLabel?: string;
 
   /**
+   * Show rounding block on the right side of the component.
+   */
+  rounding?: "none" | "fixed" | "relative";
+
+  /**
    * Sets background light gray (useful if the page contains nested cards).
    */
   gray?: boolean;
-
-  /**
-   * Stick right page rounding.
-   */
-  fixedRounding?: boolean;
 
   /**
    * Component config object.

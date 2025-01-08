@@ -47,8 +47,8 @@ export default /*tw*/ {
         false: "rounded-dynamic",
         true: "rounded-full",
       },
-      noRing: {
-        true: "!ring-0 !ring-offset-0",
+      ring: {
+        false: "!ring-0 !ring-offset-0",
       },
       loading: {
         true: "gap-0 pointer-events-none",
@@ -187,7 +187,7 @@ export default /*tw*/ {
     block: false,
     square: false,
     filled: false,
-    noRing: false,
+    ring: true,
     loading: false,
     disabled: false,
   },

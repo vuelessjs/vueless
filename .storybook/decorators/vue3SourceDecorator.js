@@ -143,11 +143,57 @@ function getArgsFromUrl() {
 
   if (!args) return {};
 
-  return args.split(";").reduce((acc, pair) => {
-    const [key, value] = pair.split(":");
+  return parseKeyValuePairs(args);
+}
 
-    acc[key] = decodeURIComponent(value);
+function parseKeyValuePairs(input) {
+  const result = {};
 
-    return acc;
-  }, {});
+  // Split key-value pairs and parse them
+  input.split(";").forEach((pair) => {
+    const [rawKey, rawValue] = pair.split(":");
+
+    if (!rawKey) return;
+
+    let value;
+
+    if (rawValue === "!null") {
+      value = null;
+    } else if (rawValue === "!undefined") {
+      value = undefined;
+    } else if (!isNaN(parseInt(rawValue))) {
+      value = Number(rawValue);
+    } else {
+      value = decodeURIComponent(rawValue.replace(/\+/g, " "));
+    }
+
+    setNestedValue(result, rawKey, value);
+  });
+
+  return result;
+}
+
+// Set nested values like objects or arrays
+function setNestedValue(obj, path, value) {
+  const arrayItems = path.match(/\w+|\[\d+\]/g) || [];
+  const keys = arrayItems.map((key) => (key.startsWith("[") ? Number(key.slice(1, -1)) : key));
+  const lastKeyIndex = keys.length - 1;
+
+  let current = obj;
+
+  for (let index = 0; index < keys.length; index++) {
+    const key = keys[index];
+
+    if (index === lastKeyIndex) {
+      current[key] = value;
+    }
+
+    if (index !== lastKeyIndex && !current[key]) {
+      current[key] = typeof keys[index + 1] === "number" ? [] : {};
+    }
+
+    if (index !== lastKeyIndex && current[key]) {
+      current = current[key];
+    }
+  }
 }

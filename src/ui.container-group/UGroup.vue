@@ -53,7 +53,7 @@ const {
         <slot name="header-right" />
       </div>
 
-      <UDivider size="xl" padding="after" :no-border="!underlined" v-bind="underlineAttrs" />
+      <UDivider size="xl" padding="after" :border="underlined" v-bind="underlineAttrs" />
     </template>
 
     <div v-bind="contentAttrs">

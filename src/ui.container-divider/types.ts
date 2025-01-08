@@ -41,9 +41,9 @@ export interface Props {
   vertical?: boolean;
 
   /**
-   * Remove border (keeps only spacings).
+   * Show divider border (or keeps only spacings).
    */
-  noBorder?: boolean;
+  border?: boolean;
 
   /**
    * Component config object.

@@ -132,7 +132,7 @@ const {
         variant="primary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="selectedYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -145,7 +145,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="currentYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -158,7 +158,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="currentFirstYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -172,7 +172,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="currentLastYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -186,7 +186,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="firstYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -200,7 +200,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         filled
         v-bind="lastYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -217,7 +217,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="singleCurrentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -230,7 +230,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="currentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale) + 'sd'"
@@ -245,7 +245,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="singleYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -260,7 +260,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="yearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -273,7 +273,7 @@ const {
         variant="thirdary"
         color="brand"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="activeYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"
@@ -286,7 +286,7 @@ const {
         variant="thirdary"
         color="grayscale"
         size="md"
-        no-ring
+        :ring="false"
         v-bind="yearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(year, 'Y', props.locale)"

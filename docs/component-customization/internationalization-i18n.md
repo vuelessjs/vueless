@@ -1,12 +1,12 @@
 # Internationalization (i18n)
 
-You can specify locale messages and a default locale for Vueless components and integrate it with [vue-i18n](https://vue-i18n.intlify.dev/) as well.
+You can specify locale messages and a default locale for Vueless components. Additionally, you can integrate the package with [vue-i18n](https://vue-i18n.intlify.dev/).
 
 ## Vueless i18n
 
-Vueless supports only English locale by default. To set additional locales, you can provide them in `createVueless()` under the `locale` key with the structure below:
+Vueless supports only the English locale by default. To add additional locales, you can provide them in the `createVueless()` function under the `locale` key, using the structure shown below:
 
-{% code title="main.js" %}
+{% code title="main.{js,ts}" %}
 ```javascript
 import { createVueless, defaultEnLocale } from "vueless";
 
@@ -38,13 +38,13 @@ const vueless = createVueless({
 ```
 {% endcode %}
 
-Full list of locale keys available in [Vueless UI docs](https://ui.vueless.com/) in **`Default config`** chapter (at the end of each page).
+The full list of locale keys available in Vueless UI can be found in the Default Config chapter of the  [Vueless UI docs](https://ui.vueless.com/), at the end of each page.
 
 ## Vue-i18n integration
 
-Use `createVueI18nAdapter()` to integrate [`vue-i18n`](https://vue-i18n.intlify.dev/) library with Vueless components.
+To integrate the [`vue-i18n`](https://vue-i18n.intlify.dev/) library with Vueless components, use the `createVueI18nAdapter()` function. This will allow Vueless components to work seamlessly with the vue-i18n package for localization.
 
-{% code title="main.js" %}
+{% code title="main.{js,ts}" %}
 ```javascript
 import { createVueless, defaultEnLocale, createVueI18nAdapter } from "vueless";
 import { createI18n } from "vue-i18n";
@@ -90,7 +90,7 @@ const vueless = createVueless({
 
 ## Changing current locale
 
-If you use `vue-i18n`, you can change current locale using provided `useI18n` composable. To change current locale without `vue-i18n` use `useLocale` composable provided by Vueless.
+If you’re using [`vue-i18n`](https://vue-i18n.intlify.dev/), you can change the current locale using the provided `useI18n` composable. However, if you want to change the locale without[`vue-i18n`](https://vue-i18n.intlify.dev/), you can use the `useLocale` composable provided by Vueless. This composable allows you to manage the locale directly within the Vueless library.
 
 {% tabs %}
 {% tab title=" vueless-i18n" %}
@@ -118,11 +118,9 @@ locale.value = "ua";
 
 ## Customizing messages in specific component
 
-You can easily set custom massages for specific component by providing `i18n` key in the component's config.&#x20;
+You can easily set custom messages for a specific component by providing the `i18n` key in the component’s config.
 
 ```html
-<USelect :config="seelctConfig">
-
 <script setup>
 import { useI18n } from "vue-i18n";
 
@@ -135,4 +133,6 @@ const seelctConfig = {
   }
 }
 </script>
+
+<USelect :config="seelctConfig">
 ```

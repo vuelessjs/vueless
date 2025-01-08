@@ -266,6 +266,14 @@ const {
     interactive
     v-bind="inputLabelAttrs"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <label :for="elementId" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left']) || leftIcon"

@@ -624,8 +624,8 @@ watchEffect(() => {
         ref="button-prev"
         square
         filled
-        no-ring
         :size="size"
+        :ring="false"
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
@@ -638,8 +638,8 @@ watchEffect(() => {
         ref="button"
         square
         filled
-        no-ring
         :size="size"
+        :ring="false"
         :disabled="disabled"
         :label="userFormatDate"
         variant="thirdary"
@@ -651,8 +651,8 @@ watchEffect(() => {
         ref="button-next"
         square
         filled
-        no-ring
         :size="size"
+        :ring="false"
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"

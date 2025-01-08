@@ -1,9 +1,9 @@
 import path from "node:path";
-import { merge, cloneDeep } from "lodash-es";
+import { cwd } from "node:process";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { merge, cloneDeep, isEqual } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
-import { isEqual } from "lodash-es";
 import { defineConfig } from "cva";
 
 import { vuelessConfig } from "./vuelessConfig.js";
@@ -24,7 +24,6 @@ import {
   TAILWIND_VARIANT_DELIMITER_REG_EXP,
 } from "../../constants.js";
 
-const cwd = process.cwd();
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
 export const { cx } = defineConfig({
@@ -188,7 +187,7 @@ async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles)
   );
 
   return componentDefaultConfigPath
-    ? await getComponentDefaultConfig(componentName, path.join(cwd, componentDefaultConfigPath))
+    ? await getComponentDefaultConfig(componentName, path.join(cwd(), componentDefaultConfigPath))
     : {};
 }
 
@@ -215,7 +214,9 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     const fileContent = await readFile(file, "utf-8");
     const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
+    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
+    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
     if (!isComponentExists) {
       isComponentExists = Boolean(matchedComponent);
@@ -226,6 +227,14 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
         const [, color] = objectColorRegExp.exec(colorMatch) || [];
 
         colors.add(color);
+      });
+    }
+
+    if (matchedExtendComponent) {
+      const objectColors = objectColorRegExp.exec(fileContent) || [];
+
+      objectColors.forEach((color) => {
+        if (color) colors.add(color);
       });
     }
 

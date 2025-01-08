@@ -21,9 +21,7 @@ export const DEFAULT_RING = 4; /* pixels */
 export const DEFAULT_RING_OFFSET = 0; /* pixels */
 export const DEFAULT_RING_OFFSET_COLOR_LIGHT = "#ffffff"; // white
 export const DEFAULT_RING_OFFSET_COLOR_DARK = "#111827"; // gray-900
-export const DEFAULT_ROUNDING_SM = 4; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
-export const DEFAULT_ROUNDING_LG = 16; /* pixels */
 
 /* Vueless supported colors and shades */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
@@ -212,6 +210,7 @@ export const DEFAULT_SVGO_CONFIG = {
 /* Vueless general */
 export const ICONS_DIR = "assets/icons";
 export const VUELESS_LIBRARY = "vueless";
+export const STORYBOOK_DIR = "storybook";
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
 export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;

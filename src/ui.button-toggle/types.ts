@@ -82,9 +82,9 @@ export interface Props {
   square?: boolean;
 
   /**
-   * Remove button ring on focus.
+   * Show button ring on focus.
    */
-  noRing?: boolean;
+  ring?: boolean;
 
   /**
    * Component config object.

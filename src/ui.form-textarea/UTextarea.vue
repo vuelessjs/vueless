@@ -61,7 +61,7 @@ const slots = useSlots();
 const elementId = props.id || useId();
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
-const labelComponentRef = ref<{ labelElement: HTMLElement | null } | null>(null);
+const labelComponentRef = ref<InstanceType<typeof ULabel> | null>(null);
 const leftSlotWrapperRef = ref<HTMLElement | null>(null);
 const wrapperRef = ref<HTMLElement | null>(null);
 
@@ -161,10 +161,9 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => {
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
-  if (leftSlotWrapperRef.value && wrapperRef.value && labelComponentRef.value?.labelElement) {
+  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-
-    const textareaPaddingLeft = parseFloat(getComputedStyle(wrapperRef.value).paddingLeft);
+    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
 
     labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
   }
@@ -207,6 +206,14 @@ const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlo
     v-bind="textareaLabelAttrs"
     :data-test="dataTest"
   >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <label ref="wrapperRef" :for="elementId" v-bind="wrapperAttrs">
       <div
         v-if="hasSlotContent($slots['left'])"

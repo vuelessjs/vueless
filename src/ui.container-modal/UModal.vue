@@ -117,7 +117,6 @@ const {
   backLinkIconAttrs,
   closeIconAttrs,
   modalDividerAttrs,
-  dividerSpacingAttrs,
   overlayAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
@@ -216,11 +215,15 @@ const {
             <slot />
           </div>
 
-          <UDivider v-if="!isExistFooter || !noDivider" no-border v-bind="dividerSpacingAttrs" />
+          <UDivider
+            v-if="divider || !isExistFooter"
+            :border="divider && isExistFooter"
+            variant="dark"
+            padding="before"
+            v-bind="modalDividerAttrs"
+          />
 
           <template v-if="isExistFooter">
-            <UDivider v-if="!noDivider" variant="dark" padding="none" v-bind="modalDividerAttrs" />
-
             <div v-bind="footerAttrs">
               <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
                 <!-- @slot Use it to add something to the left side of the footer. -->

@@ -80,7 +80,7 @@ export default /*tw*/ {
   leftSlot: "pr-1.5",
   rightSlot: "{>caret} pr-3",
   beforeToggle: "{>caret}",
-  afterToggle: "{>caret} mr-3",
+  afterToggle: "{>caret} mr-3 items-start pt-3",
   caret: {
     base: "flex items-center",
     compoundVariants: [
