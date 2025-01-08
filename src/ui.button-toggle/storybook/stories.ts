@@ -51,12 +51,8 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
     const slots = getSlotNames(UToggle.__name);
     const modelValueRef = ref(args.modelValue);
     const error = computed(() => {
-      if (args.name === "error") {
-        if (Array.isArray(modelValueRef.value)) {
-          return modelValueRef.value.length === 0 ? "Please select at least one option" : "";
-        }
-
-        return !modelValueRef.value ? "Please select an option" : "";
+      if (args.name === "error" && Array.isArray(modelValueRef.value)) {
+        return modelValueRef.value?.length === 0 ? "Please select at least one option" : "";
       }
 
       return "";
