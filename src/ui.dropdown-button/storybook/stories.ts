@@ -9,6 +9,7 @@ import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -45,7 +46,7 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   args: DefaultUDropdownButtonArgs,
 ) => ({
-  components: { UDropdownButton, UIcon },
+  components: { UDropdownButton, UIcon, ULink },
   setup() {
     const slots = getSlotNames(UDropdownButton.__name);
 
@@ -128,6 +129,15 @@ VariantColors.args = {};
 export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
 WithoutDropdownIcon.args = { enum: "variant", noIcon: true };
 
+export const CustomDropdownIcon = DefaultTemplate.bind({});
+CustomDropdownIcon.args = {
+  config: {
+    defaults: {
+      dropdownIcon: "expand_circle_down",
+    },
+  },
+};
+
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
@@ -138,31 +148,28 @@ DefaultSlot.args = {
   noIcon: true,
 };
 
-export const Slots: StoryFn<DefaultUDropdownButtonArgs> = (args) => ({
-  components: { UDropdownButton, UIcon, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URow>
-      <UDropdownButton label="Add to favorites">
-        <template #left>
-          <UIcon
-            name="heart_plus"
-            size="sm"
-            color="green"
-          />
-        </template>
-      </UDropdownButton>
-
-      <UDropdownButton label="Settings">
-        <template #toggle="{ opened }">
-          <UIcon
-            :name="opened ? 'expand_circle_up' : 'expand_circle_down'"
-            color="green"
-          />
-        </template>
-      </UDropdownButton>
-    </URow>
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon
+        name="heart_plus"
+        size="sm"
+        color="green"
+      />
+    </template>
   `,
-});
+};
+
+export const SlotToggle = DefaultTemplate.bind({});
+SlotToggle.args = {
+  slotTemplate: `
+    <template #toggle="{ opened }">
+      <ULink
+        :label="opened ? 'collapse' : 'expand'"
+        color="green"
+        :ring=false
+      />
+    </template>
+  `,
+};
