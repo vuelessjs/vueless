@@ -19,7 +19,7 @@ interface DefaultUDropdownButtonArgs extends Props {
 }
 
 interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
-  enum: keyof Pick<Props, "size" | "variant">;
+  enum: keyof Pick<Props, "size" | "variant" | "xPosition" | "yPosition">;
 }
 
 export default {
@@ -122,6 +122,12 @@ Variants.args = { enum: "variant" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
+
+export const DropdownListXPosition = EnumVariantTemplate.bind({});
+DropdownListXPosition.args = { enum: "xPosition" };
+
+export const DropdownListYPosition = EnumVariantTemplate.bind({});
+DropdownListYPosition.args = { enum: "yPosition" };
 
 export const VariantColors = VariantColorsTemplate.bind({});
 VariantColors.args = {};
