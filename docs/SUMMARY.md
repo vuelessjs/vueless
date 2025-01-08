@@ -3,14 +3,14 @@
 ## Installation
 
 * [Quick start (Vue)](README.md)
-* [Quick start (Nuxt)](installation/readme-1.md)
+* [Quick start (Nuxt)](installation/nuxt.md)
 * [Class autocompletion](installation/class-autocompletion.md)
 * [Minimal requirements](installation/minimal-requirements.md)
-* [Storybook docs](installation/local-storybook-docs.md)
+* [Storybook docs](installation/storybook.md)
 
 ## Global customization
 
-* [General](global-customization/overview.md)
+* [General](global-customization/general.md)
 * [Colors](global-customization/colors.md)
 * [Ring](global-customization/ring.md)
 * [Rounding](global-customization/rounding.md)
@@ -19,8 +19,8 @@
 
 ## Component customization
 
-* [General](component-customization/components.md)
-* [Styling](component-customization/components-1.md)
+* [General](component-customization/general.md)
+* [Styling](component-customization/styling.md)
 * [Conditional styling](component-customization/conditional-styling.md)
 * [Extends styling from keys](component-customization/extends-styling-from-keys.md)
 * [Nested components styling](component-customization/nested-components-styling.md)
@@ -32,10 +32,10 @@
 
 ## Svg Icons
 
-* [General usage](svg-icons/icons.md)
-* [Custom icons](svg-icons/icons-1.md)
-* [Dynamic import](svg-icons/icons-2.md)
-* [Advanced settings](svg-icons/icons-3.md)
+* [General usage](svg-icons/general-usage.md)
+* [Custom icons](svg-icons/custom-icons.md)
+* [Dynamic import](svg-icons/dynamic-import.md)
+* [Advanced settings](svg-icons/advanced-settings.md)
 
 ## Helpers
 

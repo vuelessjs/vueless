@@ -40,7 +40,8 @@ To enhance the developer experience, the component name and config key are displ
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-For components with nested components, two additional attributes, `vl-child-component` and `vl-child-key`, indicate the nested component and its corresponding config key.
+For components with nested components, two additional attributes, `vl-child-component` and `vl-child-key`, indicate the nested component and its corresponding config key.&#x20;
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
+See more details for [styling nested components](nested-components-styling.md).
