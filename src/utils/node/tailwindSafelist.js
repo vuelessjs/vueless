@@ -222,6 +222,10 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
       isComponentExists = Boolean(matchedComponent);
     }
 
+    const propsColors = getPropsColors(fileContent);
+
+    propsColors.forEach((color) => colors.add(color));
+
     if (isDefaultConfig) {
       fileContent.match(objectColorRegExp)?.forEach((colorMatch) => {
         const [, color] = objectColorRegExp.exec(colorMatch) || [];
@@ -258,6 +262,16 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     ),
     isComponentExists,
   };
+}
+
+function getPropsColors(inputString) {
+  const colorsMatch = inputString.match(/colors:\s*\[(.*?)\]/s);
+
+  if (colorsMatch && colorsMatch[1]) {
+    return colorsMatch[1].split(",").map((color) => color.trim().replace(/['"]/g, ""));
+  }
+
+  return [];
 }
 
 function isDefaultComponentConfig(filePath, componentName) {
