@@ -28,10 +28,10 @@ export default {
     label: "Please choose an option",
     modelValue: "11",
     options: [
-      { value: "11", label: "Item 1" },
-      { value: "12", label: "Item 2" },
-      { value: "13", label: "Item 3" },
-      { value: "14", label: "Item 4" },
+      { value: "11", label: "Admin" },
+      { value: "12", label: "Editor" },
+      { value: "13", label: "Viewer" },
+      { value: "14", label: "Guest" },
     ],
   },
   argTypes: {
@@ -74,14 +74,7 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const values = ref({
-      "2xs": "",
-      xs: "",
-      sm: "",
-      md: "",
-      lg: "",
-      xl: "",
-    });
+    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
 
     return {
       args,
@@ -118,10 +111,10 @@ Disabled.args = {
   name: "Disabled",
   label: "You can disable the whole toggle or specific items",
   options: [
-    { value: "11", label: "Item 1" },
-    { value: "12", label: "Item 2", disabled: true },
-    { value: "13", label: "Item 3" },
-    { value: "14", label: "Item 4", disabled: true },
+    { value: "11", label: "Admin" },
+    { value: "12", label: "Editor", disabled: true },
+    { value: "13", label: "Viewer" },
+    { value: "14", label: "Guest", disabled: true },
   ],
 };
 

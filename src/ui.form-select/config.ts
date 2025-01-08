@@ -78,10 +78,10 @@ export default /*tw*/ {
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "pr-1.5",
-  rightSlot: "{>caret} pr-3",
-  beforeToggle: "{>caret}",
-  afterToggle: "{>caret} mr-3 items-start pt-3",
-  caret: {
+  rightSlot: "{>toggle} pr-3",
+  beforeToggle: "{>toggle}",
+  afterToggle: "{>toggle} mr-3 items-start pt-3",
+  toggle: {
     base: "flex items-center",
     compoundVariants: [
       { labelAlign: "topInside", size: "sm", label: true, class: "-mt-5" },
@@ -89,9 +89,9 @@ export default /*tw*/ {
       { labelAlign: "topInside", size: "lg", label: true, class: "-mt-7" },
     ],
   },
-  toggle: "{>caret} mr-3",
+  toggleWrapper: "{>toggle} mr-3",
   toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[]/active:rotate-180",
-  clear: "{>caret}",
+  clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon} {>selectIcon}",

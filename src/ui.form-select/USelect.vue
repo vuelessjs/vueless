@@ -425,7 +425,7 @@ const {
   rightIconAttrs,
   beforeToggleAttrs,
   afterToggleAttrs,
-  toggleAttrs,
+  toggleWrapperAttrs,
   clearAttrs,
   clearMultipleTextAttrs,
   clearMultipleAttrs,
@@ -501,7 +501,7 @@ const {
 
       <div
         v-show="!multiple || (!isLocalValue && multiple)"
-        v-bind="toggleAttrs"
+        v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         @mousedown.prevent.stop="toggle"
       >
