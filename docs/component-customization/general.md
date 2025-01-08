@@ -44,4 +44,4 @@ For components with nested components, two additional attributes, `vl-child-comp
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-See more details for [styling nested components](nested-components-styling.md).
+Learn more how to [style nested components](nested-components-styling.md).
