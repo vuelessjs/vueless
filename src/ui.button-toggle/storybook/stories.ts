@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -49,11 +49,27 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   components: { UToggle, UIcon, UToggleItem, UBadge },
   setup() {
     const slots = getSlotNames(UToggle.__name);
+    const modelValueRef = ref(args.modelValue);
+    const error = computed(() => {
+      if (args.name === "error") {
+        if (Array.isArray(modelValueRef.value)) {
+          return modelValueRef.value.length === 0 ? "Please select at least one option" : "";
+        }
 
-    return { args, slots };
+        return !modelValueRef.value ? "Please select an option" : "";
+      }
+
+      return "";
+    });
+
+    return { args, slots, modelValueRef, error };
   },
   template: `
-    <UToggle v-bind="args" v-model="args.modelValue">
+    <UToggle
+      v-bind="args"
+      v-model="modelValueRef"
+      :error="error"
+    >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
   `,
@@ -62,11 +78,18 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const value = ref("");
+    const values = ref({
+      "2xs": "",
+      xs: "",
+      sm: "",
+      md: "",
+      lg: "",
+      xl: "",
+    });
 
     return {
       args,
-      value,
+      values,
       options: argTypes?.[args.enum]?.options,
     };
   },
@@ -76,7 +99,7 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="value"
+        v-model="values[option]"
         :[args.enum]="option"
         :label="option"
         :options="[
@@ -97,21 +120,34 @@ Default.args = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = {
   name: "Disabled",
-  disabled: true,
-  label: "You can't choose an option",
+  label: "You can disable the whole toggle or specific items",
+  options: [
+    { value: "11", label: "Item 1" },
+    { value: "12", label: "Item 2", disabled: true },
+    { value: "13", label: "Item 3" },
+    { value: "14", label: "Item 4", disabled: true },
+  ],
 };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { name: "Description", description: "Also add description if you want to" };
+Description.args = { name: "Description", description: "You can also add description" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { name: "sizeTemplate", enum: "size" };
 
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = {
-  name: "multipleTemplate",
+  name: "multiple",
   multiple: true,
   label: "You can choose more than one option",
+};
+
+export const Error = DefaultTemplate.bind({});
+Error.args = {
+  name: "error",
+  multiple: true,
+  modelValue: [],
+  label: "If no option is selected, error message is displayed",
 };
 
 export const Block = DefaultTemplate.bind({});

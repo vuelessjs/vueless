@@ -423,8 +423,8 @@ const {
   rightSlotAttrs,
   leftIconAttrs,
   rightIconAttrs,
-  beforeCaretAttrs,
-  afterCaretAttrs,
+  beforeToggleAttrs,
+  afterToggleAttrs,
   toggleAttrs,
   clearAttrs,
   clearMultipleTextAttrs,
@@ -480,15 +480,15 @@ const {
       </div>
 
       <div
-        v-if="hasSlotContent($slots['after-caret']) && !(multiple && localValue?.length)"
-        v-bind="afterCaretAttrs"
+        v-if="hasSlotContent($slots['after-toggle']) && !(multiple && localValue?.length)"
+        v-bind="afterToggleAttrs"
         :tabindex="-1"
       >
         <!--
-          @slot Use it to add something after caret.
+          @slot Use it to add something after toggle.
           @binding {object} option
         -->
-        <slot :option="localValue" name="after-caret" />
+        <slot :option="localValue" name="after-toggle" />
       </div>
 
       <div
@@ -535,14 +535,14 @@ const {
       </div>
 
       <div
-        v-if="hasSlotContent($slots['before-caret']) && !(multiple && localValue?.length)"
-        v-bind="beforeCaretAttrs"
+        v-if="hasSlotContent($slots['before-toggle']) && !(multiple && localValue?.length)"
+        v-bind="beforeToggleAttrs"
       >
         <!--
-          @slot Use it to add something before caret.
+          @slot Use it to add something before toggle.
           @binding {object} option
         -->
-        <slot :option="localValue" name="before-caret" />
+        <slot :option="localValue" name="before-toggle" />
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">

@@ -79,8 +79,8 @@ export default /*tw*/ {
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "pr-1.5",
   rightSlot: "{>caret} pr-3",
-  beforeCaret: "{>caret}",
-  afterCaret: "{>caret} mr-3",
+  beforeToggle: "{>caret}",
+  afterToggle: "{>caret} mr-3",
   caret: {
     base: "flex items-center",
     compoundVariants: [

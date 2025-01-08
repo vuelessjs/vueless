@@ -250,26 +250,19 @@ SlotOption.args = {
   `,
 };
 
-export const SlotAfterCaret = DefaultTemplate.bind({});
-SlotAfterCaret.args = {
+export const SlotAfterToggle = DefaultTemplate.bind({});
+SlotAfterToggle.args = {
   slotTemplate: `
-    <template #after-caret="{ scopeProps }">
-      <UBadge
-        v-show="scopeProps?.modelValue"
-        :label="getSelectedBadge(scopeProps?.options, scopeProps?.modelValue)?.badge"
-      />
-    </template>
-    <template #option="{ option }">
-      {{ option.label }}
-      <UBadge :label="option.badge" />
+    <template #after-toggle>
+      🤘
     </template>
   `,
 };
 
-export const SlotBeforeCaret = DefaultTemplate.bind({});
-SlotBeforeCaret.args = {
+export const SlotBeforeToggle = DefaultTemplate.bind({});
+SlotBeforeToggle.args = {
   slotTemplate: `
-    <template #before-caret>
+    <template #before-toggle>
       🤘
     </template>
   `,

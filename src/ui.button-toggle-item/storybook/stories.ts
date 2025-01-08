@@ -7,6 +7,7 @@ import {
 
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -58,26 +59,32 @@ Default.args = {};
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="star"
-        color="green"
-      />
-    </template>
-  `,
-};
+export const Slots: StoryFn<UToggleItemArgs> = (args) => ({
+  components: { UToggleItem, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+  <URow>
+    <UToggleItem label="Download">
+      <template #left>
+        <UIcon
+          name="download"
+          color="green"
+          size="sm"
+        />
+      </template>
+    </UToggleItem>
 
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon
-        name="star"
-        color="green"
-      />
-    </template>
+    <UToggleItem label="Edit">
+      <template #right>
+        <UIcon
+          name="edit"
+          color="orange"
+          size="sm"
+        />
+      </template>
+    </UToggleItem>
+  </URow>
   `,
-};
+});

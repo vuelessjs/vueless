@@ -36,7 +36,7 @@ export default {
     docs: {
       ...getDocsDescription(UDropdownButton.__name),
       story: {
-        height: "200px",
+        height: "250px",
       },
     },
   },
@@ -132,33 +132,37 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      Custom label
+      <UIcon name="unfold_more" color="white" />
     </template>
   `,
+  noIcon: true,
 };
 
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="archive"
-        color="red"
-        size="sm"
-      />
-    </template>
-  `,
-};
+export const Slots: StoryFn<DefaultUDropdownButtonArgs> = (args) => ({
+  components: { UDropdownButton, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow>
+      <UDropdownButton label="Add to favorites">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            size="sm"
+            color="green"
+          />
+        </template>
+      </UDropdownButton>
 
-export const RightSlot = DefaultTemplate.bind({});
-RightSlot.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon
-        name="archive"
-        color="red"
-        size="sm"
-      />
-    </template>
+      <UDropdownButton label="Settings">
+        <template #toggle="{ opened }">
+          <UIcon
+            :name="opened ? 'expand_circle_up' : 'expand_circle_down'"
+            color="green"
+          />
+        </template>
+      </UDropdownButton>
+    </URow>
   `,
-};
+});
