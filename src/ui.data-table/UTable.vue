@@ -69,10 +69,16 @@ const emit = defineEmits([
   "clickCell",
 
   /**
-   * Tirggers when row expand state changed.
+   * Tirggers when row expanded.
    * @property {object} row
    */
-  "toggleRowExpand",
+  "row-expand",
+
+  /**
+   * Tirggers when row collapsed.
+   * @property {object} row
+   */
+  "row-collapse",
 
   /**
    * Triggers when table rows are selected (updated).
@@ -390,8 +396,12 @@ function onToggleRowVisibility(rowId: string | number) {
   tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
 }
 
-function onToggleExpand(row: Row) {
-  emit("toggleRowExpand", row);
+function onToggleExpand(row: Row, expanded: boolean) {
+  if (expanded) {
+    emit("row-expand", row);
+  } else {
+    emit("row-collapse", row);
+  }
 }
 
 defineExpose({
@@ -686,7 +696,7 @@ const {
                 #[`cell-${key}`]="slotValues"
               >
                 <!--
-                  @slot Use it to customise needed table cell.
+                  @slot Use it to customize needed table cell.
                   @binding {string} value
                   @binding {object} row
                   @binding {number} index
@@ -698,9 +708,15 @@ const {
                   :index="index"
                 />
               </template>
-              <template #expand="slotValues">
-                <slot name="expand" :row="slotValues.row" :is-expanded="slotValues.isExpanded" />
+
+              <template #expand="{ row: expandedRow, expanded }">
+                <!--
+                  @slot Use it to customize row expand icon.
+                  @binding {object} row
+                -->
+                <slot name="expand" :row="expandedRow" :expanded="expanded" />
               </template>
+
               <template #nested-content>
                 <!--
                   @slot Use it to add nested content inside a row.

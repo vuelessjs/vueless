@@ -53,7 +53,7 @@ export interface RowScopedProps {
 }
 
 export interface RowScopedExpandProps {
-  isExpanded: boolean;
+  expanded: boolean;
   row: Row;
 }
 

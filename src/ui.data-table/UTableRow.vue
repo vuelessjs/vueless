@@ -233,8 +233,8 @@ function getRowAttrs(rowId: string | number) {
     : props.attrs.bodyRowAttrs.value;
 }
 
-function onToggleExpand(row: Row) {
-  emit("toggleExpand", row);
+function onToggleExpand(row: Row, expanded?: boolean) {
+  emit("toggleExpand", row, expanded || isExpanded(row));
 }
 </script>
 
@@ -277,7 +277,7 @@ function onToggleExpand(row: Row) {
           :data-row-toggle-icon="row.id"
           @click.stop="() => (onClickToggleIcon(), onToggleExpand(row))"
         >
-          <slot name="expand" :row="row" :is-expanded="isExpanded(row)">
+          <slot name="expand" :row="row" :expanded="isExpanded(row)">
             <div
               v-show="isShownToggleIcon"
               ref="toggle-wrapper"
@@ -369,7 +369,7 @@ function onToggleExpand(row: Row) {
     </template>
 
     <template #expand="slotValues: RowScopedExpandProps">
-      <slot name="expand" :row="slotValues.row" :is-expanded="slotValues.isExpanded" />
+      <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
     </template>
   </UTableRow>
 
@@ -410,7 +410,7 @@ function onToggleExpand(row: Row) {
           />
         </template>
         <template #expand="slotValues: RowScopedExpandProps">
-          <slot name="expand" :row="slotValues.row" :is-expanded="slotValues.isExpanded" />
+          <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
         </template>
       </UTableRow>
     </template>
