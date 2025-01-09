@@ -37,17 +37,17 @@ useMutationObserver(cellRef, setCellTitle, {
 
 const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
-  let isHidden = false;
+  let isShown = false;
 
   if (Array.isArray(nestedRow)) {
-    isHidden = nestedRow.some((row) => row.isHidden);
+    isShown = nestedRow.some((row) => row.isShown);
   } else {
-    isHidden = Boolean(nestedRow?.isHidden);
+    isShown = Boolean(nestedRow?.isShown);
   }
 
-  return isHidden
-    ? props.attrs.bodyCellNestedExpandIconAttrs.value
-    : props.attrs.bodyCellNestedCollapseIconAttrs.value;
+  return isShown
+    ? props.attrs.bodyCellNestedCollapseIconAttrs.value
+    : props.attrs.bodyCellNestedExpandIconAttrs.value;
 });
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
@@ -83,13 +83,13 @@ onMounted(() => {
 });
 
 function getToggleIconName(row: Row) {
-  const isHiddenNestedRow = Array.isArray(row.row)
-    ? row.row.some((nestedRow) => nestedRow.isHidden)
-    : row.row?.isHidden;
+  const isShownNestedRow = Array.isArray(row.row)
+    ? row.row.some((nestedRow) => nestedRow.isShown)
+    : row.row?.isShown;
 
-  const isHidden = isHiddenNestedRow || row.nestedData?.isHidden;
+  const isShown = isShownNestedRow || row.nestedData?.isShown;
 
-  return isHidden ? props.config?.defaults?.expandIcon : props.config?.defaults?.collapseIcon;
+  return isShown ? props.config?.defaults?.collapseIcon : props.config?.defaults?.expandIcon;
 }
 
 function getIconWidth() {
@@ -309,7 +309,7 @@ function getRowAttrs(rowId: string | number) {
   </tr>
 
   <template
-    v-if="row.nestedData && !row.nestedData.isHidden && hasSlotContent($slots['nested-content'])"
+    v-if="row.nestedData && row.nestedData.isShown && hasSlotContent($slots['nested-content'])"
   >
     <tr :class="row.nestedData.class">
       <td :colspan="columns.length + (selectable ? 1 : 0)">
@@ -321,7 +321,7 @@ function getRowAttrs(rowId: string | number) {
   </template>
 
   <UTableRow
-    v-if="isSingleNestedRow && singleNestedRow && !singleNestedRow.isHidden && !row.nestedData"
+    v-if="isSingleNestedRow && singleNestedRow && singleNestedRow.isShown && !row.nestedData"
     v-bind="{
       ...$attrs,
       ...getRowAttrs(singleNestedRow.id),
@@ -352,7 +352,7 @@ function getRowAttrs(rowId: string | number) {
   <template v-if="!isSingleNestedRow && nestedRows.length && !row.nestedData">
     <template v-for="nestedRow in nestedRows" :key="nestedRow.id">
       <UTableRow
-        v-if="!nestedRow.isHidden"
+        v-if="nestedRow.isShown"
         v-bind="{
           ...$attrs,
           ...getRowAttrs(nestedRow.id),

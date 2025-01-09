@@ -38,7 +38,7 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
-import type { Ref, RendererElement, ComputedRef } from "vue";
+import type { Ref, ComputedRef, VNode } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -136,7 +136,7 @@ const isFooterSticky = computed(() => {
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
 
 const visibleColumns = computed(() => {
-  return normalizedColumns.value.filter((column) => !column.isHidden);
+  return normalizedColumns.value.filter((column) => column.isShown !== false);
 });
 
 const colsCount = computed(() => {
@@ -177,9 +177,7 @@ const hasSlotContentBeforeFirstRow = computed(() => {
     hasSlotContent(slots["before-first-row"]) &&
     typeof slots["before-first-row"] === "function"
   ) {
-    return slots["before-first-row"]()?.some((item) =>
-      Boolean((item.type as RendererElement)?.render),
-    );
+    return (slots["before-first-row"]({}) as VNode[])?.some((item) => Boolean(item.type));
   }
 
   return false;

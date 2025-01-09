@@ -28,7 +28,7 @@ export interface DateDivider {
 export interface Row {
   id: RowId;
   isChecked?: boolean;
-  isHidden?: boolean;
+  isShown?: boolean;
   rowDate?: string | Date;
   row?: Row | Row[];
   nestedData?: Row;
@@ -39,7 +39,7 @@ export interface Row {
 export interface ColumnObject {
   key: string;
   label?: string;
-  isHidden?: string;
+  isShown?: boolean;
   class?: string | ((value: unknown | string, row: Row) => string);
   tdClass?: string;
   thClass?: string;
