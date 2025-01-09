@@ -713,6 +713,7 @@ const {
                 <!--
                   @slot Use it to customize row expand icon.
                   @binding {object} row
+                  @binding {boolean} expanded
                 -->
                 <slot name="expand" :row="expandedRow" :expanded="expanded" />
               </template>
