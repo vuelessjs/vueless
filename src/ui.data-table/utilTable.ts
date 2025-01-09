@@ -10,7 +10,7 @@ export function normalizeColumns(columns: Column[]): ColumnObject[] {
 
 export function mapRowColumns(row: Row, columns: ColumnObject[]): RowData {
   const filteredRow = Object.entries(row).filter((item) => {
-    return columns.some((column) => column.key === item[0] && !column.isHidden);
+    return columns.some((column) => column.key === item[0] && column.isShown !== false);
   });
 
   return Object.fromEntries(filteredRow) as RowData;
@@ -44,10 +44,10 @@ export function addRowId(row: Row) {
 
 export function toggleRowVisibility(row: Row, targetRowId: string | number) {
   if (row.id === targetRowId) {
-    if (row.hasOwnProperty("isHidden")) {
-      row.isHidden = !row.isHidden;
-    } else if (row.nestedData && row.nestedData.hasOwnProperty("isHidden")) {
-      row.nestedData.isHidden = !row.nestedData.isHidden;
+    if (row.hasOwnProperty("isShown")) {
+      row.isShown = !row.isShown;
+    } else if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
+      row.nestedData.isShown = !row.nestedData.isShown;
     }
 
     return row;

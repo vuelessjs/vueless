@@ -38,7 +38,7 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
-import type { Ref, RendererElement, ComputedRef } from "vue";
+import type { Ref, ComputedRef, VNode } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -67,6 +67,18 @@ const emit = defineEmits([
    * @property {object} cell
    */
   "clickCell",
+
+  /**
+   * Tirggers when row expanded.
+   * @property {object} row
+   */
+  "row-expand",
+
+  /**
+   * Tirggers when row collapsed.
+   * @property {object} row
+   */
+  "row-collapse",
 
   /**
    * Triggers when table rows are selected (updated).
@@ -136,7 +148,7 @@ const isFooterSticky = computed(() => {
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
 
 const visibleColumns = computed(() => {
-  return normalizedColumns.value.filter((column) => !column.isHidden);
+  return normalizedColumns.value.filter((column) => column.isShown !== false);
 });
 
 const colsCount = computed(() => {
@@ -177,18 +189,16 @@ const hasSlotContentBeforeFirstRow = computed(() => {
     hasSlotContent(slots["before-first-row"]) &&
     typeof slots["before-first-row"] === "function"
   ) {
-    return slots["before-first-row"]()?.some((item) =>
-      Boolean((item.type as RendererElement)?.render),
-    );
+    return (slots["before-first-row"]({}) as VNode[])?.some((item) => Boolean(item.type));
   }
 
   return false;
 });
 
-const isSelectedAllRows = computed(() => {
-  const rows = getFlatRows(tableRows.value);
+const flatTableRows = computed(() => getFlatRows(tableRows.value));
 
-  return selectedRows.value.length === rows.length;
+const isSelectedAllRows = computed(() => {
+  return selectedRows.value.length === flatTableRows.value.length;
 });
 
 const tableRowAttrs = computed(() => ({
@@ -354,7 +364,7 @@ function onClickCell(cell: Cell, row: Row, key: string | number) {
 
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
-    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
+    selectedRows.value = flatTableRows.value.map((row) => row.id);
 
     tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, true));
   } else if (!selectAll) {
@@ -384,6 +394,14 @@ function clearSelectedItems() {
 
 function onToggleRowVisibility(rowId: string | number) {
   tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
+}
+
+function onToggleExpand(row: Row, expanded: boolean) {
+  if (expanded) {
+    emit("row-expand", row);
+  } else {
+    emit("row-collapse", row);
+  }
 }
 
 defineExpose({
@@ -669,6 +687,7 @@ const {
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
+              @toggle-expand="onToggleExpand"
               @toggle-row-visibility="onToggleRowVisibility"
             >
               <template
@@ -677,7 +696,7 @@ const {
                 #[`cell-${key}`]="slotValues"
               >
                 <!--
-                  @slot Use it to customise needed table cell.
+                  @slot Use it to customize needed table cell.
                   @binding {string} value
                   @binding {object} row
                   @binding {number} index
@@ -689,6 +708,16 @@ const {
                   :index="index"
                 />
               </template>
+
+              <template #expand="{ row: expandedRow, expanded }">
+                <!--
+                  @slot Use it to customize row expand icon.
+                  @binding {object} row
+                  @binding {boolean} expanded
+                -->
+                <slot name="expand" :row="expandedRow" :expanded="expanded" />
+              </template>
+
               <template #nested-content>
                 <!--
                   @slot Use it to add nested content inside a row.

@@ -11,7 +11,14 @@ import { useMutationObserver } from "../composables/useMutationObserver.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import type { Cell, CellObject, Row, RowScopedProps, UTableRowProps } from "./types.ts";
+import type {
+  Cell,
+  CellObject,
+  Row,
+  RowScopedExpandProps,
+  RowScopedProps,
+  UTableRowProps,
+} from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
 const LAST_NESTED_ROW_SHIFT_REM = 1.1;
@@ -20,7 +27,7 @@ defineOptions({ internal: true });
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell"]);
+const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell", "toggleExpand"]);
 
 const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
 
@@ -37,17 +44,17 @@ useMutationObserver(cellRef, setCellTitle, {
 
 const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
-  let isHidden = false;
+  let isShown = false;
 
   if (Array.isArray(nestedRow)) {
-    isHidden = nestedRow.some((row) => row.isHidden);
+    isShown = nestedRow.some((row) => row.isShown);
   } else {
-    isHidden = Boolean(nestedRow?.isHidden);
+    isShown = Boolean(nestedRow?.isShown);
   }
 
-  return isHidden
-    ? props.attrs.bodyCellNestedExpandIconAttrs.value
-    : props.attrs.bodyCellNestedCollapseIconAttrs.value;
+  return isShown
+    ? props.attrs.bodyCellNestedCollapseIconAttrs.value
+    : props.attrs.bodyCellNestedExpandIconAttrs.value;
 });
 
 const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
@@ -82,14 +89,18 @@ onMounted(() => {
   }
 });
 
+function isExpanded(row: Row) {
+  const isShownNestedRow = Array.isArray(row.row)
+    ? row.row.some((nestedRow) => nestedRow.isShown)
+    : row.row?.isShown;
+
+  return Boolean(isShownNestedRow || row.nestedData?.isShown);
+}
+
 function getToggleIconName(row: Row) {
-  const isHiddenNestedRow = Array.isArray(row.row)
-    ? row.row.some((nestedRow) => nestedRow.isHidden)
-    : row.row?.isHidden;
-
-  const isHidden = isHiddenNestedRow || row.nestedData?.isHidden;
-
-  return isHidden ? props.config?.defaults?.expandIcon : props.config?.defaults?.collapseIcon;
+  return isExpanded(row)
+    ? props.config?.defaults?.collapseIcon
+    : props.config?.defaults?.expandIcon;
 }
 
 function getIconWidth() {
@@ -221,6 +232,10 @@ function getRowAttrs(rowId: string | number) {
     ? props.attrs.bodyRowCheckedAttrs.value
     : props.attrs.bodyRowAttrs.value;
 }
+
+function onToggleExpand(row: Row, expanded?: boolean) {
+  emit("toggleExpand", row, expanded || isExpanded(row));
+}
 </script>
 
 <template>
@@ -259,22 +274,26 @@ function getRowAttrs(rowId: string | number) {
         v-bind="attrs.bodyCellNestedAttrs.value"
       >
         <div
-          v-show="isShownToggleIcon"
-          ref="toggle-wrapper"
-          v-bind="attrs.bodyCellNestedExpandIconWrapperAttrs.value"
-          :style="{ width: getIconWidth() }"
+          :data-row-toggle-icon="row.id"
+          @click.stop="() => (onClickToggleIcon(), onToggleExpand(row))"
         >
-          <UIcon
-            v-if="isShownToggleIcon"
-            size="xs"
-            internal
-            interactive
-            :data-row-toggle-icon="row.id"
-            :name="getToggleIconName(row)"
-            color="brand"
-            v-bind="toggleIconConfig"
-            @click.stop="onClickToggleIcon"
-          />
+          <slot name="expand" :row="row" :expanded="isExpanded(row)">
+            <div
+              v-show="isShownToggleIcon"
+              ref="toggle-wrapper"
+              v-bind="attrs.bodyCellNestedExpandIconWrapperAttrs.value"
+              :style="{ width: getIconWidth() }"
+            >
+              <UIcon
+                size="xs"
+                internal
+                interactive
+                :name="getToggleIconName(row)"
+                color="brand"
+                v-bind="toggleIconConfig"
+              />
+            </div>
+          </slot>
         </div>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
@@ -309,7 +328,7 @@ function getRowAttrs(rowId: string | number) {
   </tr>
 
   <template
-    v-if="row.nestedData && !row.nestedData.isHidden && hasSlotContent($slots['nested-content'])"
+    v-if="row.nestedData && row.nestedData.isShown && hasSlotContent($slots['nested-content'])"
   >
     <tr :class="row.nestedData.class">
       <td :colspan="columns.length + (selectable ? 1 : 0)">
@@ -321,7 +340,7 @@ function getRowAttrs(rowId: string | number) {
   </template>
 
   <UTableRow
-    v-if="isSingleNestedRow && singleNestedRow && !singleNestedRow.isHidden && !row.nestedData"
+    v-if="isSingleNestedRow && singleNestedRow && singleNestedRow.isShown && !row.nestedData"
     v-bind="{
       ...$attrs,
       ...getRowAttrs(singleNestedRow.id),
@@ -336,6 +355,7 @@ function getRowAttrs(rowId: string | number) {
     :config="config"
     :selectable="selectable"
     :empty-cell-label="emptyCellLabel"
+    @toggle-expand="onToggleExpand"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
     @dblclick="onDoubleClick"
@@ -347,12 +367,16 @@ function getRowAttrs(rowId: string | number) {
     >
       <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" :index="index" />
     </template>
+
+    <template #expand="slotValues: RowScopedExpandProps">
+      <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
+    </template>
   </UTableRow>
 
   <template v-if="!isSingleNestedRow && nestedRows.length && !row.nestedData">
     <template v-for="nestedRow in nestedRows" :key="nestedRow.id">
       <UTableRow
-        v-if="!nestedRow.isHidden"
+        v-if="nestedRow.isShown"
         v-bind="{
           ...$attrs,
           ...getRowAttrs(nestedRow.id),
@@ -367,6 +391,7 @@ function getRowAttrs(rowId: string | number) {
         :config="config"
         :selectable="selectable"
         :empty-cell-label="emptyCellLabel"
+        @toggle-expand="onToggleExpand"
         @toggle-row-visibility="onClickToggleRowChild"
         @click="onClick"
         @dblclick="onDoubleClick"
@@ -383,6 +408,9 @@ function getRowAttrs(rowId: string | number) {
             :row="slotValues.row"
             :index="index"
           />
+        </template>
+        <template #expand="slotValues: RowScopedExpandProps">
+          <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
         </template>
       </UTableRow>
     </template>

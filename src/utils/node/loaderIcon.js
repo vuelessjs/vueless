@@ -177,13 +177,14 @@ async function findAndCopyIcons(files) {
     }
 
     /* Vueless components props */
-    const uComponentIconNamePattern = `\\b\\w*(name|icon)\\w*\\s*=\\s*(['"])(.*?)\\2`;
+    const iconPropsPattern = `\\b\\w*(name|icon)\\w*\\s*=\\s*(['"])(.*?)\\2`;
+    const uComponentIconNamePattern = /<U\w+\s+.*?\b\w*(name|icon)\w*\s*[:=]\s*(['"])(.*?)\2.*?>/;
     const uComponentIconNameArray = fileContents.match(new RegExp(uComponentIconNamePattern, "g"));
 
     if (!uComponentIconNameArray) return;
 
     for (const match of uComponentIconNameArray) {
-      const groupMatch = match.match(new RegExp(uComponentIconNamePattern));
+      const groupMatch = match.match(new RegExp(iconPropsPattern));
       const iconName = groupMatch ? groupMatch[3] : null;
 
       try {

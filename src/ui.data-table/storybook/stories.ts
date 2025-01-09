@@ -88,7 +88,7 @@ function getNestedRow() {
       {
         id: getRandomId(),
         isChecked: false,
-        isHidden: true,
+        isShown: false,
         key_1: "Nesting",
         key_2: "Nesting",
         key_3: "Nesting",
@@ -96,7 +96,7 @@ function getNestedRow() {
         row: {
           id: getRandomId(),
           isChecked: false,
-          isHidden: true,
+          isShown: false,
           key_1: "Second level nesting",
           key_2: "Second level nesting",
           key_3: "Second level nesting",
@@ -106,7 +106,7 @@ function getNestedRow() {
       {
         id: getRandomId(),
         isChecked: false,
-        isHidden: true,
+        isShown: false,
         key_1: "Nesting",
         key_2: "Nesting",
         key_3: "Nesting",
@@ -114,7 +114,7 @@ function getNestedRow() {
         row: {
           id: getRandomId(),
           isChecked: false,
-          isHidden: true,
+          isShown: false,
           key_1: "Second level nesting",
           key_2: "Second level nesting",
           key_3: "Second level nesting",
@@ -122,7 +122,7 @@ function getNestedRow() {
           row: {
             id: getRandomId(),
             isChecked: false,
-            isHidden: true,
+            isShown: false,
             key_1: "Third level nesting",
             key_2: "Third level nesting",
             key_3: "Third level nesting",
@@ -155,7 +155,7 @@ function getNestedContentRow(index: number) {
       key_3: "More info",
       nestedData: {
         isChecked: false,
-        isHidden: true,
+        isShown: false,
         rows: [
           {
             id: getRandomId(),
@@ -346,6 +346,21 @@ SlotDefault.args = {
   `,
 };
 
+export const SlotExpand = DefaultTemplate.bind({});
+SlotExpand.args = {
+  row: getNestedRow,
+  slotTemplate: `
+    <template #expand="{ row, isExpanded }">
+      <div v-if="isExpanded">
+        🔼
+      </div>
+      <div v-if="!isExpanded">
+        🔽
+      </div>
+    </template>
+  `,
+};
+
 export const SlotHeaderActions = DefaultTemplate.bind({});
 SlotHeaderActions.parameters = SHORT_STORY_PARAMETERS;
 SlotHeaderActions.args = {
@@ -440,7 +455,7 @@ CellSlots.args = {
     row: [
       {
         id: getRandomId(),
-        isHidden: false,
+        isShown: true,
         link: "some link",
         money: {
           sum: 10,
@@ -454,7 +469,7 @@ CellSlots.args = {
       },
       {
         id: getRandomId(),
-        isHidden: false,
+        isShown: true,
         link: "some link",
         money: {
           sum: 10,
