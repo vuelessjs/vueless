@@ -69,10 +69,10 @@ const emit = defineEmits([
   "clickCell",
 
   /**
-   * Tirggers when row visiblity changed.
+   * Tirggers when row expand state changed.
    * @property {object} row
    */
-  "toggleRowVisiblity",
+  "toggleRowExpand",
 
   /**
    * Triggers when table rows are selected (updated).
@@ -388,11 +388,10 @@ function clearSelectedItems() {
 
 function onToggleRowVisibility(rowId: string | number) {
   tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
-  const targetRow = flatTableRows.value.find((row) => row.id === rowId);
+}
 
-  if (targetRow) {
-    emit("toggleRowVisiblity", targetRow);
-  }
+function onToggleExpand(row: Row) {
+  emit("toggleRowExpand", row);
 }
 
 defineExpose({
@@ -678,6 +677,7 @@ const {
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
+              @toggle-expand="onToggleExpand"
               @toggle-row-visibility="onToggleRowVisibility"
             >
               <template
@@ -697,6 +697,9 @@ const {
                   :row="slotValues.row"
                   :index="index"
                 />
+              </template>
+              <template #expand="slotValues">
+                <slot name="expand" :row="slotValues.row" :is-expanded="slotValues.isExpanded" />
               </template>
               <template #nested-content>
                 <!--

@@ -334,9 +334,7 @@ DateDividerCustomLabel.args = {
   rows: Array(10)
     .fill({})
     .map(() => getDateDividerRow()),
-  dateDivider: [
-    { date: new Date().toString(), label: "Custom label for specific date" },
-  ],
+  dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
 };
 
 export const SlotDefault = DefaultTemplate.bind({});
@@ -344,6 +342,21 @@ SlotDefault.args = {
   slotTemplate: `
     <template #cell-key_3="{value}">
       🤘🤘🤘
+    </template>
+  `,
+};
+
+export const SlotExpand = DefaultTemplate.bind({});
+SlotExpand.args = {
+  row: getNestedRow,
+  slotTemplate: `
+    <template #expand="{ row, isExpanded }">
+      <div v-if="isExpanded">
+        🔼
+      </div>
+      <div v-if="!isExpanded">
+        🔽
+      </div>
     </template>
   `,
 };

@@ -52,6 +52,11 @@ export interface RowScopedProps {
   row: Row;
 }
 
+export interface RowScopedExpandProps {
+  isExpanded: boolean;
+  row: Row;
+}
+
 export interface UTableProps {
   /**
    * Table columns (headers).
