@@ -69,6 +69,12 @@ const emit = defineEmits([
   "clickCell",
 
   /**
+   * Tirggers when row visiblity changed.
+   * @property {object} row
+   */
+  "toggleRowVisiblity",
+
+  /**
    * Triggers when table rows are selected (updated).
    * @property {array} tableRows
    */
@@ -183,10 +189,10 @@ const hasSlotContentBeforeFirstRow = computed(() => {
   return false;
 });
 
-const isSelectedAllRows = computed(() => {
-  const rows = getFlatRows(tableRows.value);
+const flatTableRows = computed(() => getFlatRows(tableRows.value));
 
-  return selectedRows.value.length === rows.length;
+const isSelectedAllRows = computed(() => {
+  return selectedRows.value.length === flatTableRows.value.length;
 });
 
 const tableRowAttrs = computed(() => ({
@@ -352,7 +358,7 @@ function onClickCell(cell: Cell, row: Row, key: string | number) {
 
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
-    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
+    selectedRows.value = flatTableRows.value.map((row) => row.id);
 
     tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, true));
   } else if (!selectAll) {
@@ -382,6 +388,11 @@ function clearSelectedItems() {
 
 function onToggleRowVisibility(rowId: string | number) {
   tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
+  const targetRow = flatTableRows.value.find((row) => row.id === rowId);
+
+  if (targetRow) {
+    emit("toggleRowVisiblity", targetRow);
+  }
 }
 
 defineExpose({
