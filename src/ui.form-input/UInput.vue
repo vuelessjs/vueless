@@ -198,8 +198,10 @@ function transformValue(value: string | number, exp: string | RegExp) {
   return matches ? matches.join("") : "";
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => {
-  mutations.forEach(setLabelPosition);
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
 });
 
 function setLabelPosition() {
