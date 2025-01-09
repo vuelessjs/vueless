@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -10,6 +10,7 @@ import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -24,12 +25,13 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
+    label: "Please choose an option",
     modelValue: "11",
     options: [
-      { value: "11", label: "label 1" },
-      { value: "12", label: "label 2" },
-      { value: "13", label: "label 3" },
-      { value: "14", label: "label 4" },
+      { value: "11", label: "Admin" },
+      { value: "12", label: "Editor" },
+      { value: "13", label: "Viewer" },
+      { value: "14", label: "Guest" },
     ],
   },
   argTypes: {
@@ -44,14 +46,26 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
-  components: { UToggle, UIcon, UToggleItem },
+  components: { UToggle, UIcon, UToggleItem, UBadge },
   setup() {
     const slots = getSlotNames(UToggle.__name);
+    const modelValueRef = ref(args.modelValue);
+    const error = computed(() => {
+      if (args.name === "error" && Array.isArray(modelValueRef.value)) {
+        return modelValueRef.value?.length === 0 ? "Please select at least one option" : "";
+      }
 
-    return { args, slots };
+      return "";
+    });
+
+    return { args, slots, modelValueRef, error };
   },
   template: `
-    <UToggle v-bind="args" v-model="args.modelValue">
+    <UToggle
+      v-bind="args"
+      v-model="modelValueRef"
+      :error="error"
+    >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
   `,
@@ -60,11 +74,11 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const value = ref("");
+    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
 
     return {
       args,
-      value,
+      values,
       options: argTypes?.[args.enum]?.options,
     };
   },
@@ -74,13 +88,14 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="value"
+        v-model="values[option]"
         :[args.enum]="option"
         :label="option"
         :options="[
           { value: option + 1, label: option },
           { value: option + 2, label: option },
         ]"
+        class="w-auto"
       />
     </URow>
   `,
@@ -94,24 +109,35 @@ Default.args = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = {
   name: "Disabled",
-  disabled: true,
+  label: "You can disable the whole toggle or specific items",
+  options: [
+    { value: "11", label: "Admin" },
+    { value: "12", label: "Editor", disabled: true },
+    { value: "13", label: "Viewer" },
+    { value: "14", label: "Guest", disabled: true },
+  ],
 };
 
-export const Label = DefaultTemplate.bind({});
-Label.args = {
-  name: "Label",
-  label: "Label",
-  description: "description",
-};
+export const Description = DefaultTemplate.bind({});
+Description.args = { name: "Description", description: "You can also add description" };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = {
-  name: "sizeTemplate",
-  enum: "size",
-};
+Sizes.args = { name: "sizeTemplate", enum: "size" };
 
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = { name: "multipleTemplate", multiple: true };
+Multiple.args = {
+  name: "multiple",
+  multiple: true,
+  label: "You can choose more than one option",
+};
+
+export const Error = DefaultTemplate.bind({});
+Error.args = {
+  name: "error",
+  multiple: true,
+  modelValue: [],
+  label: "If no option is selected, error message is displayed",
+};
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
@@ -126,6 +152,7 @@ export const Square = DefaultTemplate.bind({});
 Square.args = {
   name: "square",
   square: true,
+  label: "Square prop is useful when icons are present",
   slotTemplate: `
     <template #default>
       <UToggleItem value="1">
@@ -143,14 +170,21 @@ Square.args = {
   `,
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
-  name: "slotDefault",
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
+  name: "defaultSlot",
+  label: "Please select an operation to proceed",
   slotTemplate: `
     <template #default>
-      <UToggleItem label="label 1" value="1" />
-      <UToggleItem label="label 2" value="2" />
-      <UToggleItem label="label 3" value="3" />
+      <UToggleItem value="1">
+        <UBadge label="Download" color="green" right-icon="download" />
+      </UToggleItem>
+      <UToggleItem value="2">
+        <UBadge label="Edit" color="amber" right-icon="edit" />
+      </UToggleItem>
+      <UToggleItem value="3">
+        <UBadge label="Delete" color="red" right-icon="delete" />
+      </UToggleItem>
     </template>
   `,
 };

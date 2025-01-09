@@ -27,6 +27,11 @@ export interface Props {
   size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
+   * Error message.
+   */
+  error?: string;
+
+  /**
    * Label placement.
    */
   labelAlign?: "top" | "topWithDesc" | "left" | "right";

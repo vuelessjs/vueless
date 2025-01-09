@@ -110,7 +110,7 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
           @slot Use it to add something after the label.
           @binding {boolean} opened
         -->
-        <slot name="right" :opened="isShownOptions">
+        <slot name="toggle" :opened="isShownOptions">
           <UIcon
             v-if="!noIcon"
             internal
