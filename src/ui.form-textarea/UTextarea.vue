@@ -154,8 +154,10 @@ function toggleReadonly(hasReadonly: boolean) {
   }
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => {
-  mutations.forEach(setLabelPosition);
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
 });
 
 function setLabelPosition() {
