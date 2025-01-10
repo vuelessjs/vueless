@@ -58,7 +58,7 @@ export interface Props {
   /**
    * Money sign.
    */
-  sign?: "default" | "positive" | "negative";
+  sign?: "auto" | "positive" | "negative" | "unsigned";
 
   /**
    * Minimal number of signs after the decimal separator (fractional part of a number).

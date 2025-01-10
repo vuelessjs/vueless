@@ -31,8 +31,10 @@ const currencySpace = computed(() => {
 const mathSign = computed(() => {
   let type = "";
 
+  if (props.sign === MONEY_SIGN_TYPE.unsigned) type = "";
   if (props.sign === MONEY_SIGN_TYPE.positive) type = "+";
   if (props.sign === MONEY_SIGN_TYPE.negative) type = "–";
+  if (props.sign === MONEY_SIGN_TYPE.auto && props.value < 0) type = "–";
 
   return type;
 });
