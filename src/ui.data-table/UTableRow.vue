@@ -46,7 +46,9 @@ const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
   let isShown = false;
 
-  if (Array.isArray(nestedRow)) {
+  if (props.row.nestedData) {
+    isShown = Boolean(props.row.nestedData.isShown);
+  } else if (Array.isArray(nestedRow)) {
     isShown = nestedRow.some((row) => row.isShown);
   } else {
     isShown = Boolean(nestedRow?.isShown);
