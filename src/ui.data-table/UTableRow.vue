@@ -76,10 +76,16 @@ const isNestedRowEmpty = computed(() => {
   return !Object.keys(mapRowColumns(props.row.row, props.columns)).length;
 });
 
+const isNestedDataEmpty = computed(() => {
+  if (!props.row.nestedData) return true;
+
+  return !props.row.nestedData.rows || props.row.nestedData.rows.length === 0;
+});
+
 const isShownToggleIcon = computed(() => {
   return (
     (props.row.row && !isNestedRowEmpty.value) ||
-    (props.row.nestedData && hasSlotContent(slots["nested-content"]))
+    (props.row.nestedData && !isNestedDataEmpty.value && hasSlotContent(slots["nested-content"]))
   );
 });
 
