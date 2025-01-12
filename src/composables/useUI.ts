@@ -142,7 +142,9 @@ export default function useUI<T>(
     /* Delete value key to prevent v-model overwrite. */
     delete commonAttrs.value;
 
-    watch([config, props, classes], updateVuelessAttrs, { immediate: true });
+    const reactiveProps = computed(() => ({ ...props }));
+
+    watch([config, reactiveProps, classes], updateVuelessAttrs, { immediate: true });
 
     /**
      * Updating Vueless attributes.
