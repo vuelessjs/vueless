@@ -40,7 +40,7 @@ export function themeInit() {
 
   setTheme();
 
-  if (vuelessConfig?.colorMode === ColorMode.Auto) {
+  if (vuelessConfig.colorMode === ColorMode.Auto) {
     const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
     prefersColorSchemeDark.addEventListener("change", (event) => {
@@ -98,11 +98,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig?.colorMode || config?.colorMode || ColorMode.Light);
+  setColorMode(vuelessConfig.colorMode || config?.colorMode || ColorMode.Light);
 
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? rounding / 2;
-  const roundingLg = config?.roundingLg ?? vuelessConfig?.roundingLg ?? rounding * 2;
+  const roundingSm = config?.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
+  const roundingLg = config?.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
   const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
@@ -159,7 +159,7 @@ export function setTheme(config: Config = {}) {
   const colors: DefaultColors = merge(
     tailwindColors,
     tailwindConfig?.theme?.extend?.colors || {},
-    vuelessConfig?.tailwindTheme?.extend?.colors || {},
+    vuelessConfig.tailwindTheme?.extend?.colors || {},
   );
 
   const variables: Partial<VuelessCssVariables> = {

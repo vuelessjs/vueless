@@ -45,7 +45,7 @@ export default function useUI<T>(
     ? (parent?.type.__name as ComponentNames)
     : (type.__name as ComponentNames);
 
-  const globalConfig = (vuelessConfig?.component?.[componentName] || {}) as ComponentConfig<T>;
+  const globalConfig = (vuelessConfig.component?.[componentName] || {}) as ComponentConfig<T>;
 
   const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
     ? (vuelessConfig.strategy as Strategies)
