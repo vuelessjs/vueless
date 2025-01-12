@@ -103,7 +103,7 @@ export function setTheme(config: Config = {}) {
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
   const roundingSm = config?.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
   const roundingLg = config?.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
-  const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
