@@ -50,7 +50,7 @@ export function themeInit() {
 }
 
 export function setColorMode(colorMode: `${ColorMode}`) {
-  const cashedColorMode = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
+  const cashedColorMode = isCSR ? (localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null) : null;
 
   const isDark = colorMode === ColorMode.Dark;
   const isLight = colorMode === ColorMode.Light;
