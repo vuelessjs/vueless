@@ -46,7 +46,9 @@ const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
   let isShown = false;
 
-  if (Array.isArray(nestedRow)) {
+  if (props.row.nestedData) {
+    isShown = Boolean(props.row.nestedData.isShown);
+  } else if (Array.isArray(nestedRow)) {
     isShown = nestedRow.some((row) => row.isShown);
   } else {
     isShown = Boolean(nestedRow?.isShown);
@@ -76,10 +78,16 @@ const isNestedRowEmpty = computed(() => {
   return !Object.keys(mapRowColumns(props.row.row, props.columns)).length;
 });
 
+const isNestedDataEmpty = computed(() => {
+  if (!props.row.nestedData) return true;
+
+  return !props.row.nestedData.rows || !props.row.nestedData.rows.length;
+});
+
 const isShownToggleIcon = computed(() => {
   return (
     (props.row.row && !isNestedRowEmpty.value) ||
-    (props.row.nestedData && hasSlotContent(slots["nested-content"]))
+    (props.row.nestedData && !isNestedDataEmpty.value && hasSlotContent(slots["nested-content"]))
   );
 });
 
