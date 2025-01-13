@@ -54,8 +54,6 @@ const toggleIconConfig = computed(() => {
     isShown = Boolean(nestedRow?.isShown);
   }
 
-  console.log(isShown);
-
   return isShown
     ? props.attrs.bodyCellNestedCollapseIconAttrs.value
     : props.attrs.bodyCellNestedExpandIconAttrs.value;
