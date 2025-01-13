@@ -51,7 +51,7 @@ export default /*tw*/ {
   defaults: {
     color: "grayscale",
     size: "md",
-    sign: "default",
+    sign: "auto",
     align: "left",
     symbolAlign: "right",
     minFractionDigits: 0,

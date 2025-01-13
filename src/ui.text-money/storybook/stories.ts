@@ -28,7 +28,7 @@ export default {
   args: {
     value: 10,
     symbol: "$",
-    sign: "positive",
+    sign: "auto",
   },
   argTypes: {
     ...getArgTypes(UMoney.__name),
@@ -95,7 +95,7 @@ Colors.args = {
   enum: "color",
   value: 0,
   symbol: "$",
-  sign: "default",
+  sign: "auto",
 };
 
 export const Sizes = EnumVariantTemplate.bind({});
