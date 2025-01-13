@@ -45,7 +45,7 @@ export default function useUI<T>(
     ? (parent?.type.__name as ComponentNames)
     : (type.__name as ComponentNames);
 
-  const globalConfig = (vuelessConfig?.component?.[componentName] || {}) as ComponentConfig<T>;
+  const globalConfig = (vuelessConfig.component?.[componentName] || {}) as ComponentConfig<T>;
 
   const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
     ? (vuelessConfig.strategy as Strategies)
@@ -142,7 +142,9 @@ export default function useUI<T>(
     /* Delete value key to prevent v-model overwrite. */
     delete commonAttrs.value;
 
-    watch([config, props, classes], updateVuelessAttrs, { immediate: true });
+    const reactiveProps = computed(() => ({ ...props }));
+
+    watch([config, reactiveProps, classes], updateVuelessAttrs, { immediate: true });
 
     /**
      * Updating Vueless attributes.
