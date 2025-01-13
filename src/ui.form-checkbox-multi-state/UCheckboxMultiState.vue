@@ -34,7 +34,7 @@ const index = ref(0);
 const isChecked = ref(false);
 
 const selected = computed<UCheckboxOption>(() => {
-  return props.options[index.value];
+  return props.options[index.value] || {};
 });
 
 watchEffect(setIndex);
@@ -50,7 +50,7 @@ function setIndex() {
 }
 
 function setChecked() {
-  setTimeout(() => (isChecked.value = !!props?.options[index.value].icon), 0);
+  setTimeout(() => (isChecked.value = !!props?.options[index.value]?.icon), 0);
 }
 
 function onClickCheckbox() {

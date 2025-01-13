@@ -1,5 +1,5 @@
 import { vuelessConfig } from "../utils/ui.ts";
-import { getRandomId } from "../utils/helper.ts";
+import { getRandomId, isSSR } from "../utils/helper.ts";
 import {
   LOCAL_STORAGE_ID,
   DELAY_BETWEEN_CLONES,
@@ -130,10 +130,14 @@ export function clearNotifications(): void {
 }
 
 export function setDelayedNotify(settings: NotifyConfig): void {
+  if (isSSR) return;
+
   localStorage.setItem(LOCAL_STORAGE_ID, JSON.stringify(settings));
 }
 
 export function getDelayedNotify(): void {
+  if (isSSR) return;
+
   const notifyData: NotifyConfig | null = JSON.parse(
     localStorage.getItem(LOCAL_STORAGE_ID) || "null",
   );

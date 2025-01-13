@@ -19,7 +19,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const componentGlobalConfig = vuelessConfig.component[componentName];
+    const componentGlobalConfig = vuelessConfig.component?.[componentName];
     const customProps = componentGlobalConfig && componentGlobalConfig.props;
     const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
@@ -27,7 +27,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
       await cacheComponentTypes(path.join(srcDir, componentDir));
       await modifyComponentTypes(
         path.join(srcDir, componentDir),
-        vuelessConfig.component[componentName].props,
+        vuelessConfig.component?.[componentName]?.props,
       );
     }
   }

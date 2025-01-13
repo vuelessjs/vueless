@@ -40,7 +40,7 @@ export function themeInit() {
 
   setTheme();
 
-  if (vuelessConfig?.colorMode === ColorMode.Auto) {
+  if (vuelessConfig.colorMode === ColorMode.Auto) {
     const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
     prefersColorSchemeDark.addEventListener("change", (event) => {
@@ -50,7 +50,7 @@ export function themeInit() {
 }
 
 export function setColorMode(colorMode: `${ColorMode}`) {
-  const cashedColorMode = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
+  const cashedColorMode = isCSR ? (localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null) : null;
 
   const isDark = colorMode === ColorMode.Dark;
   const isLight = colorMode === ColorMode.Light;
@@ -98,12 +98,12 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig?.colorMode || config?.colorMode || ColorMode.Light);
+  setColorMode(vuelessConfig.colorMode || config?.colorMode || ColorMode.Light);
 
   const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingSm = config?.roundingSm ?? vuelessConfig?.roundingSm ?? rounding / 2;
-  const roundingLg = config?.roundingLg ?? vuelessConfig?.roundingLg ?? rounding * 2;
-  const isDarkMode = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+  const roundingSm = config?.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
+  const roundingLg = config?.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
+  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
   let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
     config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
@@ -159,7 +159,7 @@ export function setTheme(config: Config = {}) {
   const colors: DefaultColors = merge(
     tailwindColors,
     tailwindConfig?.theme?.extend?.colors || {},
-    vuelessConfig?.tailwindTheme?.extend?.colors || {},
+    vuelessConfig.tailwindTheme?.extend?.colors || {},
   );
 
   const variables: Partial<VuelessCssVariables> = {
