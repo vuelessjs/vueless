@@ -5,6 +5,11 @@ export const MONEY_SIGN_TYPE = {
   unsigned: "unsigned",
 };
 
+export const MATH_SIGN = {
+  PLUS: "+",
+  MINUS: "-",
+};
+
 export const ADD_SPACE_IN_MONEY_REG_EX = /(\d)(?=(\d{3})+(\D|$))/g;
 export const SINGLE_ZERO = "0";
 export const DOUBLE_ZERO = "00";
