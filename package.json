@@ -33,7 +33,7 @@
     "build": "npm run pre:start && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/",
+    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && cp -r bin dist/bin",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
@@ -41,6 +41,9 @@
     "lint": "eslint --no-fix src/ .storybook/",
     "lint:fix": "eslint --fix src/ .storybook/",
     "lint:ci": "eslint --no-fix --max-warnings=0"
+  },
+  "bin": {
+    "vueless": "./bin/index.js"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.9",
@@ -75,6 +78,7 @@
     "eslint-plugin-vue": "^9.25.0",
     "globals": "^15.11.0",
     "jsdom": "^25.0.1",
+    "minimist": "^1.2.8",
     "postcss": "^8.4.38",
     "prettier": "^3.3.3",
     "release-it": "^17.2.1",

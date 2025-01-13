@@ -1,0 +1,44 @@
+export const DEFAULT_VUELESS_CONFIG_NAME = "vueless.config.ts";
+export const DEFAULT_VUELESS_CONFIG_CONTNET = `
+export default {
+  /**
+    * Global settings.
+    */
+  strategy: "merge",
+  brand: "grayscale",
+  gray: "cool",
+  darkMode: "auto",
+  ring: 4,
+  ringOffset: 0,
+  ringOffsetColorLight: "#ffffff", // white
+  ringOffsetColorDark: "#111827", // gray-900
+  rounding: 8,
+
+  /**
+    * Directive settings.
+    */
+  directive: {},
+
+  /**
+    * Component settings.
+    */
+  component: /*tw*/ {},
+
+  /**
+    * Tailwind CSS theme config.
+    * https://tailwindcss.com/docs/theme
+    */
+  tailwindTheme: {
+    extend: {
+      colors: {},
+    },
+  },
+
+  /**
+    * Custom classes TailwindMerge settings.
+    * All lists of rules available here:
+    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+    */
+  tailwindMerge: {},
+};
+`;
