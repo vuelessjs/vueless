@@ -78,7 +78,6 @@
     "eslint-plugin-vue": "^9.25.0",
     "globals": "^15.11.0",
     "jsdom": "^25.0.1",
-    "minimist": "^1.2.8",
     "postcss": "^8.4.38",
     "prettier": "^3.3.3",
     "release-it": "^17.2.1",

@@ -2,15 +2,15 @@
 
 /* eslint-disable no-console */
 
-import minimist from "minimist";
 import { commands } from "./commands/index.js";
 
-const command = process.argv[2];
-const options = minimist(process.argv.slice(3));
+import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "./constants.js";
+
+const [command, ...options] = process.argv.slice(2);
 
 try {
-  if (!command && command === "undefiend") {
-    process.exit(0);
+  if (!command || command === "undefiend") {
+    process.exit(DEFAULT_EXIT_CODE);
   }
 
   if (command in commands) {
@@ -19,5 +19,6 @@ try {
     throw new Error(`There is no such command: ${command}`);
   }
 } catch (error) {
-  console.error(error);
+  console.error(error.message);
+  process.exit(error.code || FAILURE_CODE);
 }
