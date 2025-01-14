@@ -12,13 +12,13 @@ import URow from "../../ui.container-row/URow.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
-import type { UDatePickerProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDatePickerArgs extends UDatePickerProps<unknown> {
+interface DefaultUDatePickerArgs extends Props<unknown> {
   slotTemplate?: string;
 }
 
-interface EnumUDatePickerArgs extends UDatePickerProps<unknown> {
+interface EnumUDatePickerArgs extends Props<unknown> {
   slotTemplate?: string;
   enum: "size";
 }

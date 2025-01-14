@@ -23,16 +23,15 @@ import { COMPONENT_NAME } from "./constants.ts";
 import { vClickOutside } from "../directives";
 
 import type { ComputedRef } from "vue";
-import type { UDatePickerProps, Config, Locale } from "./types.ts";
+import type { Props, Config, Locale } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
 import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
 import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
 
-type Props = UDatePickerProps<TModelValue>;
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,

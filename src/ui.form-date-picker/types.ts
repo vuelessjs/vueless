@@ -5,7 +5,7 @@ import type { ComponentConfig } from "../types.ts";
 export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;
 
-export interface UDatePickerProps<TModelValue> {
+export interface Props<TModelValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */
