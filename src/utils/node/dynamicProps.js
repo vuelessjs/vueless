@@ -11,7 +11,7 @@ const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
 
-const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props\s*{([^}]*)}/s;
+const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<\w+>)?\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
@@ -129,6 +129,11 @@ async function modifyComponentTypes(filePath, props) {
       const defaultOptionalMark = lines[propIndex]?.includes(OPTIONAL_MARK) ? OPTIONAL_MARK : "";
       const optionalMark = required === undefined ? defaultOptionalMark : userOptionalMark;
 
+      const isExtendOnly = lines
+        .slice(propIndex - 2, propIndex)
+        .join("")
+        .includes("@extendOnly");
+
       const propDescription = description?.replaceAll(/[\n\s]+/g, " ").trim() || "–"; // removes new lines and double spaces.
       const propType = unionType.length ? unionType : type;
 
@@ -142,14 +147,14 @@ async function modifyComponentTypes(filePath, props) {
 
       /* Check if the prop type already exists. */
       if (~propIndex) {
-        if (unionType.length && isAssignableValue) {
+        if (unionType.length && (isAssignableValue || !isExtendOnly)) {
           // Remove multiline union types;
           lines.splice(propIndex + 1, propEndIndex);
 
           lines.splice(propIndex, 1, `  ${name}${defaultOptionalMark}: ${propType};`);
         }
 
-        if (unionType.length && !isAssignableValue) {
+        if (unionType.length && isExtendOnly && !isAssignableValue) {
           // eslint-disable-next-line no-console
           console.warn(`${unionType} is not assignable to type ${defaultUnionType}.`);
         }
