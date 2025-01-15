@@ -46,7 +46,7 @@ import URadioGroupConfig from "./ui.form-radio-group/config.ts";
 import USwitchConfig from "./ui.form-switch/config.ts";
 import UTextareaConfig from "./ui.form-textarea/config.ts";
 import ULabelConfig from "./ui.form-label/config.ts";
-import UColorPickerConfig from "./ui.form-color-picker/config.ts";
+import UColorPickerConfig from "./ui.other-theme-color-toggle/config.ts";
 import UInputConfig from "./ui.form-input/config.ts";
 import UInputNumberConfig from "./ui.form-input-number/config.ts";
 import UInputRatingConfig from "./ui.form-input-rating/config.ts";
@@ -159,8 +159,7 @@ export type UnknownType = string | number | boolean | UnknownObject | undefined 
 export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
 
-export type Gray = "gray";
-export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
+export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone" | string;
 export type BrandColors =
   | "grayscale"
   | "red"
@@ -179,7 +178,8 @@ export type BrandColors =
   | "purple"
   | "fuchsia"
   | "pink"
-  | "rose";
+  | "rose"
+  | string;
 
 export interface Directives {
   tooltip?: Partial<Props>;
