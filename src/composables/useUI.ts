@@ -123,24 +123,6 @@ export default function useUI<T>(
     const vuelessAttrs = ref({});
 
     const attrs = useAttrs() as KeyAttrs;
-    const isDev = isCSR && import.meta.env?.DEV;
-    const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
-
-    const extendsKeyConfig = getExtendsKeyConfig(configKey);
-    const extendsKeyNestedComponent = getNestedComponent(extendsKeyConfig);
-    const keyNestedComponent = getNestedComponent(config.value[configKey]);
-    const nestedComponent = extendsKeyNestedComponent || keyNestedComponent || componentName;
-
-    const commonAttrs: KeyAttrs = {
-      ...(isTopLevelKey ? attrs : {}),
-      "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
-      "vl-key": isDev ? attrs["vl-key"] || configKey || null : null,
-      "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent : null,
-      "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
-    };
-
-    /* Delete value key to prevent v-model overwrite. */
-    delete commonAttrs.value;
 
     const reactiveProps = computed(() => ({ ...props }));
 
@@ -156,8 +138,25 @@ export default function useUI<T>(
         keyConfig = config.value[configKey] as NestedComponent;
       }
 
+      const isDev = isCSR && import.meta.env?.DEV;
+      const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
+
       const extendsClasses = getExtendsClasses(configKey);
       const extendsKeyConfig = getExtendsKeyConfig(configKey);
+      const extendsKeyNestedComponent = getNestedComponent(extendsKeyConfig);
+      const keyNestedComponent = getNestedComponent(config.value[configKey]);
+      const nestedComponent = extendsKeyNestedComponent || keyNestedComponent || componentName;
+
+      const commonAttrs: KeyAttrs = {
+        ...(isTopLevelKey ? attrs : {}),
+        "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
+        "vl-key": isDev ? attrs["vl-key"] || configKey || null : null,
+        "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent : null,
+        "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
+      };
+
+      /* Delete value key to prevent v-model overwrite. */
+      delete commonAttrs.value;
 
       vuelessAttrs.value = {
         ...commonAttrs,
@@ -165,6 +164,7 @@ export default function useUI<T>(
         config: getMergedConfig({
           defaultConfig: extendsKeyConfig,
           globalConfig: keyConfig,
+          propsConfig: attrs["config"] || {},
         }),
         ...getDefaults({
           ...(extendsKeyConfig.defaults || {}),
