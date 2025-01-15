@@ -4,10 +4,10 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { isCSR, isSSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
+import { getSelectedBrandColor } from "./theme.ts";
 import {
   BRAND_COLOR,
   GRAYSCALE_COLOR,
-  DEFAULT_BRAND_COLOR,
   ICON_NON_PROPS_DEFAULTS,
   TAILWIND_MERGE_EXTENSION,
   NESTED_COMPONENT_PATTERN_REG_EXP,
@@ -129,10 +129,13 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
  * Otherwise return given color.
  */
 export function getColor(color: string) {
-  const isBrandColorGrayscale = (vuelessConfig.brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR;
+  const isBrandColorGrayscale = vuelessConfig.brand === GRAYSCALE_COLOR;
+  const isSelectedColorGrayscale = getSelectedBrandColor() === GRAYSCALE_COLOR;
   const isComponentColorBrand = color === BRAND_COLOR;
 
-  return isBrandColorGrayscale && isComponentColorBrand ? GRAYSCALE_COLOR : color;
+  return (isBrandColorGrayscale || isSelectedColorGrayscale) && isComponentColorBrand
+    ? GRAYSCALE_COLOR
+    : color;
 }
 
 /**

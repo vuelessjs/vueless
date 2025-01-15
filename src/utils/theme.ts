@@ -35,6 +35,10 @@ import { ColorMode } from "../types.ts";
 
 type DefaultColors = typeof tailwindColors;
 
+interface Colors extends DefaultColors {
+  [key: string]: Partial<TailwindColorShades> | string;
+}
+
 export function themeInit() {
   if (isSSR) return;
 
@@ -97,45 +101,40 @@ export function setColorMode(colorMode: `${ColorMode}`) {
   }
 }
 
-export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig.colorMode || config?.colorMode || ColorMode.Light);
+export function getSelectedBrandColor() {
+  return localStorage.getItem("brand") || undefined;
+}
 
-  const rounding = config?.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingSm = config?.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
-  const roundingLg = config?.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
+export function getSelectedGrayColor() {
+  return localStorage.getItem("gray") || undefined;
+}
+
+export function setTheme(config: Config = {}) {
+  setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
+
+  const rounding = config.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
+  const roundingSm = config.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
+  const roundingLg = config.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
   const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
-  let brand: BrandColors | GrayColors | typeof GRAY_COLOR =
-    config?.brand ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+  const brand: BrandColors =
+    config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
 
-  let gray: GrayColors | typeof GRAY_COLOR =
-    config?.gray ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+  let gray: GrayColors =
+    config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
-  const ring = config?.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
-  const ringOffset = config?.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
+  const ring = config.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const ringOffset = config.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
 
   const ringOffsetColorDark =
-    config?.ringOffsetColorDark ??
+    config.ringOffsetColorDark ??
     vuelessConfig.ringOffsetColorDark ??
     DEFAULT_RING_OFFSET_COLOR_DARK;
 
   const ringOffsetColorLight =
-    config?.ringOffsetColorLight ??
+    config.ringOffsetColorLight ??
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
-
-  const isBrandColor = [...BRAND_COLORS, GRAYSCALE_COLOR].some((color) => color === brand);
-  const isGrayColor = GRAY_COLORS.some((color) => color === gray);
-
-  if (!isBrandColor) {
-    // eslint-disable-next-line no-console
-    console.warn(`Brand color '${brand}' is incorrect.`);
-  }
-
-  if (!isGrayColor) {
-    // eslint-disable-next-line no-console
-    console.warn(`Gray color '${gray}' is incorrect.`);
-  }
 
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
@@ -145,10 +144,6 @@ export function setTheme(config: Config = {}) {
     gray = GRAY_COLOR;
   }
 
-  if (brand === GRAYSCALE_COLOR) {
-    brand = gray;
-  }
-
   /* Remove deprecated color aliases. */
   delete (tailwindColors as Partial<DefaultColors>).lightBlue;
   delete (tailwindColors as Partial<DefaultColors>).warmGray;
@@ -156,11 +151,28 @@ export function setTheme(config: Config = {}) {
   delete (tailwindColors as Partial<DefaultColors>).coolGray;
   delete (tailwindColors as Partial<DefaultColors>).blueGray;
 
-  const colors: DefaultColors = merge(
-    tailwindColors,
+  const colors: Colors = merge(
+    tailwindColors as Colors,
     tailwindConfig?.theme?.extend?.colors || {},
     vuelessConfig.tailwindTheme?.extend?.colors || {},
   );
+
+  const projectColors = Object.keys(colors);
+  const isBrandColor = projectColors.some((color) => color === brand) || brand === GRAYSCALE_COLOR;
+  const isGrayColor = projectColors.some((color) => color === gray);
+
+  if (!isBrandColor) {
+    // eslint-disable-next-line no-console
+    console.warn(`The brand color '${brand}' is missing in your palette.`);
+  }
+
+  if (!isGrayColor) {
+    // eslint-disable-next-line no-console
+    console.warn(`The gray color '${gray}' is missing in your palette.`);
+  }
+
+  localStorage.setItem("brand", brand);
+  localStorage.setItem("gray", gray);
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
@@ -169,23 +181,23 @@ export function setTheme(config: Config = {}) {
     "--vl-ring": `${ring}px`,
     "--vl-ring-offset": `${ringOffset}px`,
     "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
-    "--vl-color-gray-default": convertHexInRgb(colors[gray][defaultBrandShade]),
-    "--vl-color-brand-default": convertHexInRgb(colors[brand][defaultGrayShade]),
+    "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
+    "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),
   };
 
-  for (const key in colors[gray]) {
+  for (const key in colors[gray] as TailwindColorShades) {
     const shade = key as unknown as keyof TailwindColorShades;
 
     variables[`--vl-color-gray-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[gray][shade],
+      colors[gray]?.[shade],
     );
   }
 
-  for (const key in colors[brand]) {
+  for (const key in colors[brand] as TailwindColorShades) {
     const shade = key as unknown as keyof TailwindColorShades;
 
     variables[`--vl-color-brand-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[brand][shade],
+      colors[brand]?.[shade],
     );
   }
 
@@ -205,7 +217,9 @@ export function setTheme(config: Config = {}) {
   return rootVariables;
 }
 
-export function convertHexInRgb(hex: string) {
+export function convertHexInRgb(hex?: string) {
+  if (!hex) return;
+
   const color = hex.replace(/#/g, "");
 
   let r, g, b;
