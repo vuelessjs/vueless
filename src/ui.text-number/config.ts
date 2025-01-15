@@ -1,14 +1,20 @@
 export default /*tw*/ {
-  money: {
-    base: "{UNumber} whitespace-nowrap flex items-center",
+  number: {
+    base: "whitespace-nowrap flex items-center text-{color}-600",
     variants: {
-      planned: {
-        true: "opacity-75 before:content-['('] after:content-[')']",
+      color: {
+        white: "text-white",
+        grayscale: "text-gray-900",
+      },
+      align: {
+        left: "justify-start",
+        right: "justify-end",
       },
     },
   },
-  symbol: {
-    base: "text-{color}-600",
+  slotLeft: "mr-1 flex items-center gap-2",
+  slotRight: "ml-1 flex items-center gap-2",
+  sum: {
     variants: {
       size: {
         xs: "text-xs",
@@ -24,30 +30,14 @@ export default /*tw*/ {
   },
   mathSign: "",
   integer: "",
-  penny: {
-    variants: {
-      size: {
-        xs: "text-2xs",
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
-        xl: "text-lg",
-        "2xl": "text-xl",
-        "3xl": "text-2xl",
-        "4xl": "text-3xl",
-      },
-    },
-  },
+  decimal: "",
   defaults: {
     color: "grayscale",
     size: "md",
     sign: "auto",
-    symbolAlign: "right",
     minFractionDigits: 0,
     maxFractionDigits: 2,
     decimalSeparator: ",",
     thousandsSeparator: " ",
-    planned: false,
-    symbolDivided: true,
   },
 };
