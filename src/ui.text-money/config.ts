@@ -1,6 +1,7 @@
 export default /*tw*/ {
+  wrapper: "",
   money: {
-    base: "{UNumber} whitespace-nowrap flex items-center",
+    base: "{UNumber}",
     variants: {
       planned: {
         true: "opacity-75 before:content-['('] after:content-[')']",

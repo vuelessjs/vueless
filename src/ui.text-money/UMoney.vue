@@ -3,7 +3,6 @@ import { computed } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -29,11 +28,11 @@ const currencySymbolPosition = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
+const { wrapperAttrs, moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="moneyAttrs">
+  <div v-bind="wrapperAttrs">
     <UNumber
       :value="value"
       :size="size"
@@ -43,34 +42,19 @@ const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
       :max-fraction-digits="maxFractionDigits"
       :decimal-separator="decimalSeparator"
       :thousands-separator="thousandsSeparator"
+      v-bind="moneyAttrs"
       :data-test="dataTest"
     >
       <template #left>
-        <template v-if="hasSlotContent($slots['left']) || symbol">
-          <span v-if="currencySymbolPosition.left && symbol" v-bind="symbolAttrs" v-text="symbol" />
-          <!-- @slot Use it to add something before money amount. -->
-          <slot name="left" />
-        </template>
-
-        <template v-else>
-          <slot name="left" />
-        </template>
+        <span v-if="currencySymbolPosition.left && symbol" v-bind="symbolAttrs" v-text="symbol" />
+        <!-- @slot Use it to add something before money amount. -->
+        <slot name="left" />
       </template>
 
       <template #right>
-        <template v-if="hasSlotContent($slots['right']) || symbol">
-          <span
-            v-if="currencySymbolPosition.right && symbol"
-            v-bind="symbolAttrs"
-            v-text="symbol"
-          />
-          <!-- @slot Use it to add something after money amount. -->
-          <slot name="right" />
-        </template>
-
-        <template v-else>
-          <slot name="right" />
-        </template>
+        <span v-if="currencySymbolPosition.right && symbol" v-bind="symbolAttrs" v-text="symbol" />
+        <!-- @slot Use it to add something after money amount. -->
+        <slot name="right" />
       </template>
     </UNumber>
   </div>
