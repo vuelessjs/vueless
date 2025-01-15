@@ -108,7 +108,6 @@ export const COMPONENTS = {
   UDatePicker: "ui.form-date-picker",
   UDatePickerRange: "ui.form-date-picker-range",
   ULabel: "ui.form-label",
-  UColorPicker: "ui.form-color-picker",
 
   /* Text & Content */
   UHeader: "ui.text-header",
@@ -154,6 +153,7 @@ export const COMPONENTS = {
 
   /* Other */
   UDot: "ui.other-dot",
+  UThemeColorToggle: "ui.other-theme-color-toggle",
 };
 
 /**
