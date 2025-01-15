@@ -17,20 +17,28 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const numericValue = computed(() => {
+  if (typeof props.value === "string") {
+    return parseFloat(props.value);
+  }
+
+  return props.value;
+});
+
 const mathSign = computed(() => {
   let type = "";
 
   if (props.sign === MATH_SIGN_TYPE.unsigned) type = "";
   if (props.sign === MATH_SIGN_TYPE.positive) type = MATH_SIGN.PLUS;
   if (props.sign === MATH_SIGN_TYPE.negative) type = MATH_SIGN.MINUS;
-  if (props.sign === MATH_SIGN_TYPE.auto && props.value < 0) type = MATH_SIGN.MINUS;
+  if (props.sign === MATH_SIGN_TYPE.auto && numericValue.value < 0) type = MATH_SIGN.MINUS;
 
   return type;
 });
 
 const preparedNumber = computed(() => {
   return separatedNumber(
-    Math.abs(props.value || 0),
+    Math.abs(numericValue.value || 0),
     props.minFractionDigits,
     props.maxFractionDigits,
     props.decimalSeparator,

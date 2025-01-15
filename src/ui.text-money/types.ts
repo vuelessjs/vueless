@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Money value.
    */
-  value?: number;
+  value?: number | string;
 
   /**
    * Money size.

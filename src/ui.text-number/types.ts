@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Number value.
    */
-  value?: number;
+  value?: number | string;
 
   /**
    * Number size.
