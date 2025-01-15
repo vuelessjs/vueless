@@ -147,15 +147,17 @@ export function createMergeConfigs(cx) {
       function findItem(config = []) {
         config = cloneDeep(config);
 
-        const globalConfigUniqueItemIndex = globalCompoundVariants.findIndex(isSameItem);
-        const propsConfigUniqueItemIndex = propsCompoundVariants.findIndex(isSameItem);
+        const globalConfigSimilarItemIndex = globalCompoundVariants.findIndex(isSameItem);
+        const propsConfigSimilarItemIndex = propsCompoundVariants.findIndex(isSameItem);
 
-        if (~globalConfigUniqueItemIndex) {
-          globalCompoundVariants.splice(globalConfigUniqueItemIndex, 1);
+        if (~globalConfigSimilarItemIndex) {
+          config.push(globalCompoundVariants[globalConfigSimilarItemIndex]);
+          globalCompoundVariants.splice(globalConfigSimilarItemIndex, 1);
         }
 
-        if (~propsConfigUniqueItemIndex) {
-          propsCompoundVariants.splice(propsConfigUniqueItemIndex, 1);
+        if (~propsConfigSimilarItemIndex) {
+          config.push(propsCompoundVariants[propsConfigSimilarItemIndex]);
+          propsCompoundVariants.splice(propsConfigSimilarItemIndex, 1);
         }
 
         return config.find(isSameItem);
