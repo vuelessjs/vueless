@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.665",
+  "version": "0.0.669",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -33,7 +33,7 @@
     "build": "npm run pre:start && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/",
+    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && cp -r bin dist/bin",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
@@ -41,6 +41,9 @@
     "lint": "eslint --no-fix src/ .storybook/",
     "lint:fix": "eslint --fix src/ .storybook/",
     "lint:ci": "eslint --no-fix --max-warnings=0"
+  },
+  "bin": {
+    "vueless": "./bin/index.js"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.9",

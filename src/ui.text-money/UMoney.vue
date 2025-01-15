@@ -7,7 +7,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { separatedMoney, MONEY_SIGN_TYPE } from "./utilMoney.ts";
+import { separatedMoney, MONEY_SIGN_TYPE, MATH_SIGN } from "./utilMoney.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -31,8 +31,10 @@ const currencySpace = computed(() => {
 const mathSign = computed(() => {
   let type = "";
 
-  if (props.sign === MONEY_SIGN_TYPE.positive) type = "+";
-  if (props.sign === MONEY_SIGN_TYPE.negative) type = "–";
+  if (props.sign === MONEY_SIGN_TYPE.unsigned) type = "";
+  if (props.sign === MONEY_SIGN_TYPE.positive) type = MATH_SIGN.PLUS;
+  if (props.sign === MONEY_SIGN_TYPE.negative) type = MATH_SIGN.MINUS;
+  if (props.sign === MONEY_SIGN_TYPE.auto && props.value < 0) type = MATH_SIGN.MINUS;
 
   return type;
 });

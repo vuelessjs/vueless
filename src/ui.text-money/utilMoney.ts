@@ -1,7 +1,13 @@
 export const MONEY_SIGN_TYPE = {
-  default: "default",
+  auto: "auto",
   positive: "positive",
   negative: "negative",
+  unsigned: "unsigned",
+};
+
+export const MATH_SIGN = {
+  PLUS: "+",
+  MINUS: "-",
 };
 
 export const ADD_SPACE_IN_MONEY_REG_EX = /(\d)(?=(\d{3})+(\D|$))/g;
