@@ -56,7 +56,7 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
         :class="args.enum === 'sign' ? 'border-green-500 border rounded-dynamic p-2' : ''"
       >
         <template #right v-if="args.enum === 'sign'">
-          <UText size="lg">{{ option }}</UText>
+          <UText size="lg" class="ml-1">{{ option }}</UText>
         </template>
       </UNumber>
     </URow>
