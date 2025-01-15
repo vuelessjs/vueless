@@ -12,8 +12,6 @@ export default /*tw*/ {
       },
     },
   },
-  slotLeft: "mr-1 flex items-center gap-2",
-  slotRight: "ml-1 flex items-center gap-2",
   sum: {
     variants: {
       size: {

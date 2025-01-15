@@ -3,7 +3,6 @@ import { computed } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -50,23 +49,14 @@ const preparedNumber = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  numberAttrs,
-  sumAttrs,
-  mathSignAttrs,
-  integerAttrs,
-  decimalAttrs,
-  slotLeftAttrs,
-  slotRightAttrs,
-} = useUI<Config>(defaultConfig);
+const { numberAttrs, sumAttrs, mathSignAttrs, integerAttrs, decimalAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div v-bind="numberAttrs">
-    <div v-if="hasSlotContent($slots['left'])" v-bind="slotLeftAttrs">
-      <!-- @slot Use it to add something before the number. -->
-      <slot name="left" />
-    </div>
+    <!-- @slot Use it to add something before the number. -->
+    <slot name="left" />
 
     <div v-bind="sumAttrs" :data-test="dataTest">
       <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
@@ -80,9 +70,7 @@ const {
       />
     </div>
 
-    <div v-if="hasSlotContent($slots['right'])" v-bind="slotRightAttrs">
-      <!-- @slot Use it to add something after the number. -->
-      <slot name="right" />
-    </div>
+    <!-- @slot Use it to add something after the number. -->
+    <slot name="right" />
   </div>
 </template>
