@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<StepperProgressProps>(), {
 
 const stepperColor = computed(() => {
   const isValidColor = (color: string): color is keyof typeof colors => color in colors;
-
   const isGrayColor = (color: string): color is keyof typeof colors => GRAY_COLORS.includes(color);
 
   if (isValidColor(props.color)) {

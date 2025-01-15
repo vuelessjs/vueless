@@ -5,7 +5,12 @@ import { tailwindConfig } from "./tailwindConfig.ts";
 import { vuelessConfig } from "./ui.ts";
 import { isSSR, isCSR } from "./helper.ts";
 import {
-  BRAND_COLORS,
+  PX_IN_REM,
+  COOL_COLOR,
+  GRAY_COLOR,
+  COLOR_MODE_KEY,
+  LIGHT_MODE_SELECTOR,
+  DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
@@ -14,13 +19,6 @@ import {
   DEFAULT_GRAY_COLOR,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_RING_OFFSET_COLOR_DARK,
-  DARK_MODE_SELECTOR,
-  GRAY_COLORS,
-  PX_IN_REM,
-  COOL_COLOR,
-  GRAY_COLOR,
-  LIGHT_MODE_SELECTOR,
-  COLOR_MODE_KEY,
 } from "../constants.js";
 
 import type {
