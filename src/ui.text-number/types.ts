@@ -5,17 +5,17 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Money value.
+   * Number value.
    */
   value?: number | string;
 
   /**
-   * Money size.
+   * Number size.
    */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 
   /**
-   * Money color.
+   * Number color.
    */
   color?:
     | "grayscale"
@@ -41,22 +41,7 @@ export interface Props {
     | "brand";
 
   /**
-   * Money currency symbol.
-   */
-  symbol?: string;
-
-  /**
-   * Money currency symbol align.
-   */
-  symbolAlign?: "right" | "left";
-
-  /**
-   * Add space between currency symbol and sum.
-   */
-  symbolDivided?: boolean;
-
-  /**
-   * Money sign.
+   * Number sign.
    */
   sign?: "auto" | "positive" | "negative" | "unsigned";
 
@@ -81,14 +66,9 @@ export interface Props {
   thousandsSeparator?: string;
 
   /**
-   * Money align.
+   * Number align.
    */
   align?: "right" | "left";
-
-  /**
-   * Make money planned (add brackets).
-   */
-  planned?: boolean;
 
   /**
    * Component config object.

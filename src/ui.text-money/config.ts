@@ -1,20 +1,14 @@
 export default /*tw*/ {
-  money: {
-    base: "whitespace-nowrap flex items-center text-{color}-600",
+  moneyNumber: {
+    base: "{UNumber}",
     variants: {
-      color: {
-        white: "text-white",
-        grayscale: "text-gray-900",
-      },
-      align: {
-        left: "justify-start",
-        right: "justify-end",
+      planned: {
+        true: "opacity-75 before:content-['('] after:content-[')']",
       },
     },
   },
-  slotLeft: "mr-2",
-  slotRight: "ml-2",
-  sum: {
+  symbol: {
+    base: "text-{color}-600 mx-1",
     variants: {
       size: {
         xs: "text-xs",
@@ -26,27 +20,13 @@ export default /*tw*/ {
         "3xl": "text-3xl",
         "4xl": "text-4xl",
       },
-      planned: {
-        true: "opacity-75 before:content-['('] after:content-[')']",
-      },
     },
-  },
-  symbol: "",
-  mathSign: "",
-  integer: "",
-  penny: {
-    variants: {
-      size: {
-        xs: "text-2xs",
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
-        xl: "text-lg",
-        "2xl": "text-xl",
-        "3xl": "text-2xl",
-        "4xl": "text-3xl",
-      },
-    },
+    compoundVariants: [
+      { symbolDivided: false, symbolAlign: "left", class: "mr-0" },
+      { symbolDivided: false, symbolAlign: "right", class: "ml-0" },
+      { planned: true, symbolAlign: "left", class: "ml-0" },
+      { planned: true, symbolAlign: "right", class: "mr-0" },
+    ],
   },
   defaults: {
     color: "grayscale",
