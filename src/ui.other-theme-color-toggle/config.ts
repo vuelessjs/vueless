@@ -12,7 +12,16 @@ export default /*tw*/ {
       ],
     },
   },
-  circle: "size-5 rounded-full",
+  circle: {
+    base: "rounded-full",
+    variants: {
+      size: {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      },
+    },
+  },
   colorDivider: "{UDivider}",
   defaults: {
     size: "md",
