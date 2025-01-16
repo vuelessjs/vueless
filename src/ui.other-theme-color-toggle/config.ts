@@ -7,7 +7,8 @@ export default /*tw*/ {
         {
           filled: true,
           variant: "thirdary",
-          class: "!bg-gray-800/10 dark:!bg-gray-200/10",
+          color: "grayscale",
+          class: "bg-gray-800/10 dark:bg-gray-200/10",
         },
       ],
     },

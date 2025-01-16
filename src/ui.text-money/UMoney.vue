@@ -3,11 +3,11 @@ import { computed } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { separatedMoney, MONEY_SIGN_TYPE, MATH_SIGN } from "./utilMoney.ts";
+
+import UNumber from "../ui.text-number/UNumber.vue";
 
 import type { Props, Config } from "./types.ts";
 
@@ -24,81 +24,37 @@ const currencySymbolPosition = computed(() => {
   };
 });
 
-const currencySpace = computed(() => {
-  return props.symbolDivided ? " " : "";
-});
-
-const mathSign = computed(() => {
-  let type = "";
-
-  if (props.sign === MONEY_SIGN_TYPE.unsigned) type = "";
-  if (props.sign === MONEY_SIGN_TYPE.positive) type = MATH_SIGN.PLUS;
-  if (props.sign === MONEY_SIGN_TYPE.negative) type = MATH_SIGN.MINUS;
-  if (props.sign === MONEY_SIGN_TYPE.auto && props.value < 0) type = MATH_SIGN.MINUS;
-
-  return type;
-});
-
-const preparedMoney = computed(() => {
-  return separatedMoney(
-    Math.abs(props.value || 0),
-    props.minFractionDigits,
-    props.maxFractionDigits,
-    props.decimalSeparator,
-    props.thousandsSeparator,
-  );
-});
-
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  moneyAttrs,
-  sumAttrs,
-  mathSignAttrs,
-  integerAttrs,
-  pennyAttrs,
-  slotLeftAttrs,
-  symbolAttrs,
-  slotRightAttrs,
-} = useUI<Config>(defaultConfig);
+const { moneyNumberAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="moneyAttrs">
-    <div v-if="hasSlotContent($slots['left'])" v-bind="slotLeftAttrs">
+  <UNumber
+    :value="value"
+    :size="size"
+    :color="color"
+    :sign="sign"
+    :align="align"
+    :min-fraction-digits="minFractionDigits"
+    :max-fraction-digits="maxFractionDigits"
+    :decimal-separator="decimalSeparator"
+    :thousands-separator="thousandsSeparator"
+    v-bind="moneyNumberAttrs"
+    :data-test="dataTest"
+  >
+    <template #left>
       <!-- @slot Use it to add something before money amount. -->
       <slot name="left" />
-    </div>
+      <span v-if="currencySymbolPosition.left && symbol" v-bind="symbolAttrs" v-text="symbol" />
+    </template>
 
-    <div v-bind="sumAttrs" :data-test="dataTest">
-      <span
-        v-if="currencySymbolPosition.left && symbol"
-        v-bind="symbolAttrs"
-        v-text="symbol + currencySpace"
-      />
-
-      <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
-
-      <span v-bind="integerAttrs" v-text="preparedMoney.integer" />
-
-      <span
-        v-if="maxFractionDigits > 0"
-        v-bind="pennyAttrs"
-        v-text="preparedMoney.decimalSeparator + preparedMoney.penny"
-      />
-
-      <span
-        v-if="currencySymbolPosition.right && symbol"
-        v-bind="symbolAttrs"
-        v-text="currencySpace + symbol"
-      />
-    </div>
-
-    <div v-if="hasSlotContent($slots['right'])" v-bind="slotRightAttrs">
+    <template #right>
+      <span v-if="currencySymbolPosition.right && symbol" v-bind="symbolAttrs" v-text="symbol" />
       <!-- @slot Use it to add something after money amount. -->
       <slot name="right" />
-    </div>
-  </div>
+    </template>
+  </UNumber>
 </template>

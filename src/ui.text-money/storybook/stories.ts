@@ -8,6 +8,9 @@ import {
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UText from "../../ui.text-block/UText.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
+
 import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
 
@@ -16,17 +19,15 @@ import type { Props } from "../types.ts";
 
 interface UMoneyArgs extends Props {
   slotTemplate?: string;
-  enum: "color" | "size" | "sign" | "symbolAlign" | "align";
+  enum: "color" | "size" | "sign" | "symbolAlign";
 }
 
-const COMPONENT_CLASSES = "flex justify-center w-1/6";
-
 export default {
-  id: "4040",
+  id: "4060",
   title: "Text & Content / Money",
   component: UMoney,
   args: {
-    value: 10,
+    value: -14.24,
     symbol: "$",
     sign: "auto",
   },
@@ -45,24 +46,17 @@ const DefaultTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs) => ({
   setup() {
     const slots = getSlotNames(UMoney.__name);
 
-    const icons = {
-      Debit: DebitIcon,
-      Credit: CreditIcon,
-    };
-
-    return { args, slots, icons };
+    return { args, slots };
   },
   template: `
-    <div class="${COMPONENT_CLASSES}">
-      <UMoney v-bind="args">
-        ${args.slotTemplate || getSlotsFragment("")}
-      </UMoney>
-    </div>
+    <UMoney v-bind="args">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UMoney>
   `,
 });
 
 const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }) => ({
-  components: { UMoney, URow },
+  components: { UMoney, URow, UText, UDivider },
   setup() {
     const slots = getSlotNames(UMoney.__name);
 
@@ -74,29 +68,26 @@ const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }
   },
   template: `
     <URow>
-      <div class="${COMPONENT_CLASSES}" v-for="(option, index) in options" :key="index">
-        <UMoney v-bind="args" :[args.enum]="option" />
-      </div>
+      <UMoney
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        :[args.enum]="option"
+      >
+        <template #right v-if="args.enum === 'sign'">
+          <UText size="lg" class="ml-1">{{ option }}</UText>
+          <UDivider vertical variant="dark" class="h-5" />
+        </template>
+      </UMoney>
     </URow>
   `,
-  created() {
-    this.mxArgTypes = argTypes;
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const OtherValues = DefaultTemplate.bind({});
-OtherValues.args = { value: 10, symbol: "$", sign: "negative" };
-
 export const Colors = EnumVariantTemplate.bind({});
-Colors.args = {
-  enum: "color",
-  value: 0,
-  symbol: "$",
-  sign: "auto",
-};
+Colors.args = { enum: "color" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
@@ -110,26 +101,32 @@ SymbolAlign.args = { enum: "symbolAlign" };
 export const Planned = DefaultTemplate.bind({});
 Planned.args = { planned: true };
 
-export const MinFractionDigits3 = DefaultTemplate.bind({});
-MinFractionDigits3.args = { value: 25.67, minFractionDigits: 3, maxFractionDigits: 3 };
+export const MinFractionDigits4 = DefaultTemplate.bind({});
+MinFractionDigits4.args = { minFractionDigits: 4, maxFractionDigits: 4 };
 
-export const Align = EnumVariantTemplate.bind({});
-Align.args = { enum: "align" };
+export const Slots: StoryFn<UMoneyArgs> = (args) => ({
+  components: { UMoney, UIcon, URow },
+  setup() {
+    const icons = {
+      Debit: DebitIcon,
+      Credit: CreditIcon,
+    };
 
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon :src="icons.Debit" size="3xs" />
-    </template>
+    return { args, icons };
+  },
+  template: `
+    <URow>
+      <UMoney v-bind="args">
+        <template #left>
+          <UIcon :src="icons.Debit" size="3xs" />
+        </template>
+      </UMoney>
+
+      <UMoney v-bind="args">
+        <template #right>
+          <UIcon :src="icons.Credit" size="3xs" />
+        </template>
+      </UMoney>
+    </URow>
   `,
-};
-
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon :src="icons.Credit" size="3xs" />
-    </template>
-  `,
-};
+});

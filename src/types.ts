@@ -6,6 +6,7 @@ import UFilesDefaultConfig from "./ui.text-files/config.ts";
 import UMoneyDefaultConfig from "./ui.text-money/config.ts";
 import UHeaderDefaultConfig from "./ui.text-header/config.ts";
 import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
+import UNumberDefaultConfig from "./ui.text-number/config.ts";
 import UDotDefaultConfig from "./ui.other-dot/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import ULinkDefaultConfig from "./ui.button-link/config.ts";
@@ -195,6 +196,7 @@ export interface Components {
   UMoney: Partial<typeof UMoneyDefaultConfig>;
   UHeader: Partial<typeof UHeaderDefaultConfig>;
   UNotify: Partial<typeof UNotifyDefaultConfig>;
+  UNumber: Partial<typeof UNumberDefaultConfig>;
   UDot: Partial<typeof UDotDefaultConfig>;
   UButton: Partial<typeof UButtonDefaultConfig>;
   ULink: Partial<typeof ULinkDefaultConfig>;
@@ -257,8 +259,9 @@ export type ComponentConfig<T> = Partial<{
         ? T[K]
         : T[K] | string | UnknownObject
     : never;
-}> &
-  NestedComponent;
+}> & { [key: string]: unknown };
+
+export type ComponentConfigFull<T> = ComponentConfig<T> & NestedComponent;
 
 export interface NestedComponent {
   base?: string;

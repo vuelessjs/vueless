@@ -19,7 +19,7 @@ interface UEmptyArgs extends Props {
 }
 
 export default {
-  id: "4080",
+  id: "4090",
   title: "Text & Content / Empty",
   component: UEmpty,
   args: {
