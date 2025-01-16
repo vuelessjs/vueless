@@ -20,7 +20,6 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   links: () => [],
-  /* Add default values for props below */
 });
 
 const emit = defineEmits([
