@@ -255,8 +255,9 @@ export type ComponentConfig<T> = Partial<{
         ? T[K]
         : T[K] | string | UnknownObject
     : never;
-}> &
-  NestedComponent;
+}> & { [key: string]: unknown };
+
+export type ComponentConfigFull<T> = ComponentConfig<T> & NestedComponent;
 
 export interface NestedComponent {
   base?: string;
