@@ -22,14 +22,14 @@ function replaceRelativeLineImports(line, isTopLevelFile) {
     const isDefaultImport = match.includes("{");
 
     if (!isDefaultImport) {
-      match = defaultToNamedImprot(match);
+      match = defaultToNamedImport(match);
     }
 
     return match.replace(oldPath + (ext || ""), "vueless");
   });
 }
 
-function defaultToNamedImprot(importString) {
+function defaultToNamedImport(importString) {
   const splittedImport = importString.split(" ");
 
   return splittedImport

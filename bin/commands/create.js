@@ -1,24 +1,18 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
-import { cp, readFile, writeFile, rm } from "node:fs/promises";
-import crypto from "node:crypto";
+import { cp, readFile, writeFile, rename } from "node:fs/promises";
 
 import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/formatUtil.js";
+import { getLastStorybookId } from "../utils/dataUtils.js";
+
+import { SRC_PATH, SRC_COMPONENTS_PATH, COMPONENTS_PATH, NODE_MODULES_PATH } from "../constants.js";
 
 import { COMPONENTS } from "../../constants.js";
 
-const srcComponentsPath = "/src/components";
-const componentsPath = "/components";
-const srcPath = "/src";
 const boilerplateName = "UBoilerplate";
-
-const boilerplatePath = path.join(
-  "/",
-  ...process.argv[1].split(path.sep).slice(0, -2),
-  "vueless/ui.boilerplate",
-);
+const boilerplatePath = path.join(NODE_MODULES_PATH, "vueless/ui.boilerplate");
 
 export async function createVuelessComponent(options) {
   const [componentName] = options;
@@ -27,10 +21,10 @@ export async function createVuelessComponent(options) {
     throw new Error("Component name is required");
   }
 
-  const isSrcDir = existsSync(path.join(cwd(), srcPath));
+  const isSrcDir = existsSync(path.join(cwd(), SRC_PATH));
   const destPath = isSrcDir
-    ? path.join(cwd(), srcComponentsPath, componentName)
-    : path.join(cwd(), componentsPath, componentName);
+    ? path.join(cwd(), SRC_COMPONENTS_PATH, componentName)
+    : path.join(cwd(), COMPONENTS_PATH, componentName);
 
   const isComponentExists = componentName in COMPONENTS || existsSync(destPath);
 
@@ -40,7 +34,12 @@ export async function createVuelessComponent(options) {
 
   await cp(boilerplatePath, destPath, { recursive: true });
 
+  await modifyCreatedComponent(destPath, componentName);
+}
+
+async function modifyCreatedComponent(destPath, componentName) {
   const destFiles = await getDirFiles(destPath, "");
+  const lastStorybookId = await getLastStorybookId();
 
   for await (const filePath of destFiles) {
     const fileContent = await readFile(filePath, "utf-8");
@@ -55,13 +54,13 @@ export async function createVuelessComponent(options) {
     if (filePath.endsWith("stories.ts")) {
       updatedContent = updatedContent
         .replaceAll(boilerplateName, componentName)
-        .replace('id: "110010"', `id: "${crypto.randomUUID()}"`);
+        .replace("{{component_id}}", String(lastStorybookId + 10));
     }
 
     if (targetPath.endsWith(`${boilerplateName}.vue`)) {
-      await rm(targetPath);
-
       targetPath = targetPath.replace(boilerplateName, componentName);
+
+      await rename(filePath, targetPath);
     }
 
     await writeFile(targetPath, updatedContent);
