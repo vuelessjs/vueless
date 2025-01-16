@@ -98,7 +98,7 @@ Colors.parameters = {
   docs: {
     description: {
       story:
-        "For full list of ULink's supported colors, see: https://ui.vueless.com/?path=/docs/1060--docs#colors",
+        "For a full list of ULink's supported colors, see [ULink Colors Documentation](https://ui.vueless.com/?path=/docs/1060--docs#colors).",
     },
   },
 };
