@@ -102,7 +102,11 @@ const { listAttrs, colorButtonAttrs, circleAttrs, colorDividerAttrs } =
       <div :class="brandColorClass" v-bind="circleAttrs" />
     </UButton>
 
-    <UDivider size="xs" v-bind="colorDividerAttrs" />
+    <UDivider
+      v-if="Object.keys(brandColors).length && Object.keys(grayColors).length"
+      size="xs"
+      v-bind="colorDividerAttrs"
+    />
 
     <UButton
       v-for="(grayColorClass, color) in grayColors"
