@@ -115,7 +115,7 @@ LinkIcon.parameters = {
   docs: {
     description: {
       story:
-        "You can pass an icon for a specific breadcrumb in the `links` array via the `icon` property",
+        "You can pass an icon for a specific breadcrumb in the `links` array via the `icon` property.",
     },
   },
 };
