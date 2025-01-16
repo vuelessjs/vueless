@@ -19,7 +19,7 @@ interface UBadgeArgs extends Props {
 }
 
 export default {
-  id: "4090",
+  id: "4095",
   title: "Text & Content / Badge",
   component: UBadge,
   args: {

@@ -5,6 +5,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -15,7 +16,7 @@ interface UNumberArgs extends Props {
 }
 
 export default {
-  id: "120020",
+  id: "4050",
   title: "Text & Content / Number",
   component: UNumber,
   args: {
@@ -42,7 +43,7 @@ const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => ({
-  components: { UNumber, URow, UText },
+  components: { UNumber, URow, UText, UDivider },
   setup() {
     return { args, options: argTypes?.[args.enum]?.options };
   },
@@ -53,10 +54,10 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :class="args.enum === 'sign' ? 'border-green-500 border rounded-dynamic p-2' : ''"
       >
         <template #right v-if="args.enum === 'sign'">
           <UText size="lg" class="ml-1">{{ option }}</UText>
+          <UDivider vertical variant="dark" class="h-5" />
         </template>
       </UNumber>
     </URow>

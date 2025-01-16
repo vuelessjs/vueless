@@ -15,7 +15,7 @@ interface UFileArgs extends Props {
 }
 
 export default {
-  id: "4050",
+  id: "4070",
   title: "Text & Content / File",
   component: UFile,
   args: {

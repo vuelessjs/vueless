@@ -8,8 +8,8 @@ import {
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
@@ -23,7 +23,7 @@ interface UMoneyArgs extends Props {
 }
 
 export default {
-  id: "4040",
+  id: "4060",
   title: "Text & Content / Money",
   component: UMoney,
   args: {
@@ -56,7 +56,7 @@ const DefaultTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }) => ({
-  components: { UMoney, URow, UCol, UText },
+  components: { UMoney, URow, UText, UDivider },
   setup() {
     const slots = getSlotNames(UMoney.__name);
 
@@ -67,27 +67,18 @@ const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }
     };
   },
   template: `
-    <UCol v-if="args.enum === 'sign'">
-      <URow
-        v-for="(option, index) in options"
-        :key="index"
-        gap="xs"
-        align="center"
-        justify="center"
-        class="border-green-500 border rounded-dynamic p-2 max-w-40"
-      >
-        <UMoney v-bind="args" :[args.enum]="option" />
-        <UText>{{ option }}</UText>
-      </URow>
-    </UCol>
-
-    <URow v-else>
+    <URow>
       <UMoney
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-      />
+      >
+        <template #right v-if="args.enum === 'sign'">
+          <UText size="lg" class="ml-1">{{ option }}</UText>
+          <UDivider vertical variant="dark" class="h-5" />
+        </template>
+      </UMoney>
     </URow>
   `,
 });

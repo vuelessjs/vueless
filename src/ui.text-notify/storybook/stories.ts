@@ -20,7 +20,7 @@ interface UNotifyArgs extends Props {
 }
 
 export default {
-  id: "4035",
+  id: "4040",
   title: "Text & Content / Notify",
   component: UNotify,
   argTypes: {
