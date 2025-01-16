@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  money: {
+  moneyNumber: {
     base: "{UNumber}",
     variants: {
       planned: {

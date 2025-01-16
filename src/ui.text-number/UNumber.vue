@@ -49,12 +49,12 @@ const preparedNumber = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyNumberAttrs, sumAttrs, mathSignAttrs, integerAttrs, decimalAttrs } =
+const { numberAttrs, sumAttrs, mathSignAttrs, integerAttrs, decimalAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="moneyNumberAttrs">
+  <div v-bind="numberAttrs">
     <!-- @slot Use it to add something before the number. -->
     <slot name="left" />
 

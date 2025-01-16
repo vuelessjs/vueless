@@ -28,7 +28,7 @@ const currencySymbolPosition = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
+const { moneyNumberAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
     :max-fraction-digits="maxFractionDigits"
     :decimal-separator="decimalSeparator"
     :thousands-separator="thousandsSeparator"
-    v-bind="moneyAttrs"
+    v-bind="moneyNumberAttrs"
     :data-test="dataTest"
   >
     <template #left>
