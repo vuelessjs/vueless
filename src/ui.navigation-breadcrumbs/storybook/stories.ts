@@ -28,7 +28,7 @@ export default {
         href: "https://ui.vueless.com/?path=/docs/8030--docs",
         disabled: true,
       },
-      { label: "Vueless", href: "https://docs.vueless.com/" },
+      { label: "Vueless Docs", href: "https://docs.vueless.com/" },
     ],
   },
   argTypes: {
