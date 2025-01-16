@@ -32,6 +32,7 @@ export default /*tw*/ {
     color: "grayscale",
     size: "md",
     sign: "auto",
+    align: "left",
     symbolAlign: "right",
     minFractionDigits: 0,
     maxFractionDigits: 2,

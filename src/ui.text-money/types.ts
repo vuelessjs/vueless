@@ -81,6 +81,11 @@ export interface Props {
   thousandsSeparator?: string;
 
   /**
+   * Money align.
+   */
+  align?: "right" | "left";
+
+  /**
    * Make money planned (add brackets).
    */
   planned?: boolean;

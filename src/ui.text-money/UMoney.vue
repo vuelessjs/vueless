@@ -37,6 +37,7 @@ const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
     :size="size"
     :color="color"
     :sign="sign"
+    :align="align"
     :min-fraction-digits="minFractionDigits"
     :max-fraction-digits="maxFractionDigits"
     :decimal-separator="decimalSeparator"

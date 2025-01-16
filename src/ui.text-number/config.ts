@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  number: {
+  moneyNumber: {
     base: "whitespace-nowrap flex items-center text-{color}-600",
     variants: {
       color: {
@@ -33,6 +33,7 @@ export default /*tw*/ {
     color: "grayscale",
     size: "md",
     sign: "auto",
+    align: "left",
     minFractionDigits: 0,
     maxFractionDigits: 2,
     decimalSeparator: ",",

@@ -66,6 +66,11 @@ export interface Props {
   thousandsSeparator?: string;
 
   /**
+   * Number align.
+   */
+  align?: "right" | "left";
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
