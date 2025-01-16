@@ -80,9 +80,10 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
     v-if="isHorizontalPlacement || isTopWithDescPlacement"
     ref="wrapperRef"
     v-bind="wrapperAttrs"
+    :data-test="dataTest"
     @click="onClick"
   >
-    <div v-bind="contentAttrs">
+    <div v-bind="contentAttrs" :data-test="`${dataTest}-content`">
       <!-- @slot Use it to add label content. -->
       <slot />
     </div>
@@ -136,7 +137,7 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
       </slot>
     </label>
 
-    <div v-bind="contentAttrs">
+    <div v-bind="contentAttrs" :data-test="`${dataTest}-content`">
       <!-- @slot Use it to add label content. -->
       <slot />
     </div>
