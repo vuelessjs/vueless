@@ -22,8 +22,8 @@ import type {
   MutatedProps,
   UnknownObject,
   ComponentNames,
-  ComponentConfig,
   NestedComponent,
+  ComponentConfigFull,
   VuelessComponentInstance,
 } from "../types.ts";
 
@@ -45,25 +45,25 @@ export default function useUI<T>(
     ? (parent?.type.__name as ComponentNames)
     : (type.__name as ComponentNames);
 
-  const globalConfig = (vuelessConfig.component?.[componentName] || {}) as ComponentConfig<T>;
+  const globalConfig = (vuelessConfig.component?.[componentName] || {}) as ComponentConfigFull<T>;
 
   const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
     ? (vuelessConfig.strategy as Strategies)
     : (STRATEGY_TYPE.merge as Strategies);
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
-  const config = ref({}) as Ref<ComponentConfig<T>>;
+  const config = ref({}) as Ref<ComponentConfigFull<T>>;
   const attrs = useAttrs();
 
   watchEffect(() => {
-    const propsConfig = props.config as ComponentConfig<T>;
+    const propsConfig = props.config as ComponentConfigFull<T>;
 
     config.value = getMergedConfig({
       defaultConfig,
       globalConfig,
       propsConfig,
       vuelessStrategy,
-    }) as ComponentConfig<T>;
+    }) as ComponentConfigFull<T>;
   });
 
   /**
@@ -73,7 +73,7 @@ export default function useUI<T>(
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
       const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
-      const value = (config.value as ComponentConfig<T>)[key];
+      const value = (config.value as ComponentConfigFull<T>)[key];
 
       let classes = "";
 
@@ -203,7 +203,7 @@ export default function useUI<T>(
     function getExtendsKeyConfig(configKey: string) {
       let extendsKeyConfig: NestedComponent = {};
 
-      const propsConfig = props.config as ComponentConfig<T>;
+      const propsConfig = props.config as ComponentConfigFull<T>;
       const extendsKeys = getExtendsKeys(config.value[configKey]);
 
       if (extendsKeys.length) {

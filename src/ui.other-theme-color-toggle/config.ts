@@ -7,12 +7,22 @@ export default /*tw*/ {
         {
           filled: true,
           variant: "thirdary",
-          class: "!bg-gray-800/10 dark:!bg-gray-200/10",
+          color: "grayscale",
+          class: "bg-gray-800/10 dark:bg-gray-200/10",
         },
       ],
     },
   },
-  circle: "size-5 rounded-full",
+  circle: {
+    base: "rounded-full",
+    variants: {
+      size: {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      },
+    },
+  },
   colorDivider: "{UDivider}",
   defaults: {
     size: "md",

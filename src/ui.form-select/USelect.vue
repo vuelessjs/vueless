@@ -517,6 +517,7 @@ const {
             color="gray"
             :name="config.defaults.dropdownIcon"
             v-bind="toggleIconAttrs"
+            :data-test="`${dataTest}-toggle`"
             :tabindex="-1"
           />
         </slot>
@@ -538,6 +539,7 @@ const {
             color="gray"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
+            :data-test="`${dataTest}-clear`"
           />
         </slot>
       </div>
@@ -612,6 +614,7 @@ const {
                   color="gray"
                   :name="config.defaults.clearMultipleIcon"
                   v-bind="clearMultipleIconAttrs"
+                  :data-test="`${dataTest}-clear-all`"
                 />
               </slot>
             </div>
@@ -631,6 +634,7 @@ const {
             :disabled="disabled"
             :aria-controls="'listbox-' + elementId"
             v-bind="searchInputAttrs"
+            :data-test="`${dataTest}-search`"
             @focus="activate"
             @blur.prevent="deactivate"
             @keyup.esc="deactivate"
@@ -689,6 +693,7 @@ const {
         :add-option="addOption"
         tabindex="-1"
         v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
+        :data-test="dataTest"
         @add="onAddOption"
         @focus="activate"
         @mousedown.prevent.capture

@@ -270,6 +270,7 @@ const {
     tabindex="1"
     :style="{ maxHeight: wrapperMaxHeight }"
     v-bind="wrapperAttrs"
+    :data-test="`${dataTest}-list`"
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
@@ -288,6 +289,7 @@ const {
         <span
           v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
           v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
+          :data-test="`${dataTest}-option`"
           :class="optionHighlight(index, option)"
           @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
@@ -353,6 +355,7 @@ const {
           ref="add-option"
           role="option"
           v-bind="addOptionLabelWrapperAttrs"
+          :data-test="`${dataTest}-add`"
           @click="onClickAddOption"
           @mouseenter.self="pointerSet(options.length + 1)"
         >
@@ -362,7 +365,13 @@ const {
           </span>
         </li>
 
-        <UButton round square v-bind="addOptionButtonAttrs" @click="onClickAddOption">
+        <UButton
+          round
+          square
+          v-bind="addOptionButtonAttrs"
+          :data-test="`${dataTest}-add-button`"
+          @click="onClickAddOption"
+        >
           <UIcon
             internal
             color="white"
