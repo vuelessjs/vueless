@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  money: {
+  number: {
     base: "whitespace-nowrap flex items-center text-{color}-600",
     variants: {
       color: {
