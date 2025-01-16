@@ -129,13 +129,10 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
  * Otherwise return given color.
  */
 export function getColor(color: string) {
-  const isBrandColorGrayscale = vuelessConfig.brand === GRAYSCALE_COLOR;
-  const isSelectedColorGrayscale = getSelectedBrandColor() === GRAYSCALE_COLOR;
   const isComponentColorBrand = color === BRAND_COLOR;
+  const isSelectedColorGrayscale = getSelectedBrandColor() === GRAYSCALE_COLOR;
 
-  return (isBrandColorGrayscale || isSelectedColorGrayscale) && isComponentColorBrand
-    ? GRAYSCALE_COLOR
-    : color;
+  return isComponentColorBrand && isSelectedColorGrayscale ? GRAYSCALE_COLOR : color;
 }
 
 /**
