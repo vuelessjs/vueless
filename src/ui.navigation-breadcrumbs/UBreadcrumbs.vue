@@ -109,7 +109,15 @@ const {
         v-bind="breadcrumbAttrs"
         :data-test="dataTest"
         @click="onClickLink(link)"
-      />
+      >
+        <!--
+          @slot Use it to add something instead of a link label.
+          @binding {string} label
+          @binding {number} index
+          @binding {boolean} active
+        -->
+        <slot name="label" :label="link.label" :index="index" :active="isLinkActive(index)" />
+      </ULink>
 
       <div
         v-if="hasSlotContent($slots['divider']) || links.length !== index + 1"

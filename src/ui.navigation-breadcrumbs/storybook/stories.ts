@@ -3,6 +3,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -124,7 +125,7 @@ LinkIcon.parameters = {
 };
 
 export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
-  components: { UBreadcrumbs, UBadge },
+  components: { UBreadcrumbs, UBadge, UButton },
   setup() {
     return { args };
   },
@@ -137,6 +138,12 @@ export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
           color="green"
           size="sm"
         />
+      </template>
+    </UBreadcrumbs>
+
+    <UBreadcrumbs v-bind="args">
+      <template #label="{ label, index }">
+        <UButton v-if="index === 0" :label="label" size="2xs" />
       </template>
     </UBreadcrumbs>
 
