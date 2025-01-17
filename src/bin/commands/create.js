@@ -1,18 +1,20 @@
+/* eslint-disable no-console */
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
 import { cp, readFile, writeFile, rename } from "node:fs/promises";
+import { styleText } from "node:util";
 
 import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/formatUtil.js";
 import { getLastStorybookId } from "../utils/dataUtils.js";
 
-import { SRC_PATH, SRC_COMPONENTS_PATH, COMPONENTS_PATH, NODE_MODULES_PATH } from "../constants.js";
+import { SRC_PATH, SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 
-import { COMPONENTS } from "../../constants.js";
+import { COMPONENTS, VUELESS_DIR } from "../../constants.js";
 
 const boilerplateName = "UBoilerplate";
-const boilerplatePath = path.join(NODE_MODULES_PATH, "vueless/ui.boilerplate");
+const boilerplatePath = path.join(cwd(), VUELESS_DIR, "ui.boilerplate");
 
 export async function createVuelessComponent(options) {
   const [componentName] = options;
@@ -35,6 +37,13 @@ export async function createVuelessComponent(options) {
   await cp(boilerplatePath, destPath, { recursive: true });
 
   await modifyCreatedComponent(destPath, componentName);
+
+  const successMessage = styleText(
+    "green",
+    `Success: ${componentName} was created in ${destPath} directory`,
+  );
+
+  console.log(successMessage);
 }
 
 async function modifyCreatedComponent(destPath, componentName) {

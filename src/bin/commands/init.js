@@ -5,14 +5,10 @@ import path from "node:path";
 import { writeFile } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import {
-  DEFAULT_VUELESS_CONFIG_NAME,
-  DEFAULT_VUELESS_CONFIG_CONTNET,
-  TYPESCRIPT_EXT,
-  JAVASCRIPT_EXT,
-} from "../constants.js";
+import { DEFAULT_VUELESS_CONFIG_CONTNET } from "../constants.js";
+import { VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
-const destPath = path.join(cwd(), DEFAULT_VUELESS_CONFIG_NAME);
+const destPath = path.join(cwd(), VUELESS_CONFIG_FILE_NAME);
 
 const vuelessInitOptions = ["--ts", "--js"];
 
@@ -23,7 +19,7 @@ export async function vuelssInit(options) {
     throw new Error("Ivalid options were provided");
   }
 
-  const fileExt = options.includes("--ts") ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+  const fileExt = options.includes("--ts") ? ".ts" : ".js";
   const formattedDestPath = path.format({ ...path.parse(destPath), base: "", ext: fileExt });
 
   console.log(formattedDestPath);

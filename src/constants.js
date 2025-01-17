@@ -221,6 +221,10 @@ export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
 export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 
+/* System error codes */
+export const DEFAULT_EXIT_CODE = 0;
+export const FAILURE_CODE = 1;
+
 /* Other */
 export const PX_IN_REM = 16;
 export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{(U[^}]*)}/;
