@@ -99,8 +99,6 @@ const {
         :replace="link.replace"
         :active-class="link.activeClass"
         :exact-active-class="link.exactActiveClass"
-        :wrapper-active-class="link.wrapperActiveClass"
-        :wrapper-exact-active-class="link.wrapperExactActiveClass"
         :aria-current-value="link.ariaCurrentValue"
         :underlined="underlined"
         :dashed="dashed"
