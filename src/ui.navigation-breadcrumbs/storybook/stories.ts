@@ -85,7 +85,7 @@ Styles.parameters = {
   docs: {
     description: {
       story:
-        "For a full list of ULink's supported colors, underlined / dashed styles, see [ULink Documentation](https://ui.vueless.com/?path=/docs/1060--docs).",
+        "For a full list of ULink's supported colors, underlined/dashed styles, etc., see the [ULink Documentation](https://ui.vueless.com/?path=/docs/1060--docs).",
     },
   },
 };
