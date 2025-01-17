@@ -115,7 +115,7 @@ export function setTheme(config: Config = {}) {
   const roundingLg = config.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
   const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
 
-  const brand: BrandColors =
+  let brand: BrandColors =
     config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
 
   let gray: GrayColors =
@@ -140,6 +140,10 @@ export function setTheme(config: Config = {}) {
 
   if (gray === COOL_COLOR) {
     gray = GRAY_COLOR;
+  }
+
+  if (brand === GRAYSCALE_COLOR) {
+    brand = gray;
   }
 
   /* Remove deprecated color aliases. */
