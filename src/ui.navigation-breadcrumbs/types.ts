@@ -1,23 +1,11 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
-
-import type { RouteLocationRaw } from "vue-router";
+import type { Props as ULinkProps } from "../ui.button-link/types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UBreadcrumb {
-  label?: string;
-  route?: RouteLocationRaw;
-  href?: string;
-  disabled?: boolean;
+export interface UBreadcrumb extends ULinkProps {
   icon?: string;
-  ariaCurrentValue?: string;
-  custom?: boolean;
-  replace?: boolean;
-  activeClass?: string;
-  exactActiveClass?: string;
-  wrapperActiveClass?: string;
-  wrapperExactActiveClass?: string;
 }
 
 export interface Props {

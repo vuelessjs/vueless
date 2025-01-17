@@ -22,9 +22,9 @@ export default {
   component: UBreadcrumbs,
   args: {
     links: [
-      { label: "Vueless", href: "https://vueless.com/" },
-      { label: "Vueless Docs", href: "https://docs.vueless.com/" },
-      { label: "Vueless Storybook", href: "https://ui.vueless.com/" },
+      { label: "Main", href: "https://vueless.com/" },
+      { label: "Category", href: "https://docs.vueless.com/" },
+      { label: "Product", href: "https://ui.vueless.com/" },
     ],
   },
   argTypes: {
@@ -71,13 +71,6 @@ Default.args = {};
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = {
-  docs: {
-    description: {
-      story: "Supported sizes: `sm`, `md`, `lg` ",
-    },
-  },
-};
 
 export const Styles = DefaultTemplate.bind({});
 Styles.args = { color: "green", dashed: true };
@@ -93,14 +86,14 @@ Styles.parameters = {
 export const LinkStates = DefaultTemplate.bind({});
 LinkStates.args = {
   links: [
-    { label: "Vueless (default link state)", href: "https://vueless.com/" },
+    { label: "Default link", href: "https://vueless.com/" },
     { label: "Empty link (no `route` or `href` properties)" },
     {
       label: "Manually disabled link",
       href: "https://ui.vueless.com/?path=/docs/8030--docs",
       disabled: true,
     },
-    { label: "Last link in the array (disabled automatically)", href: "https://docs.vueless.com/" },
+    { label: "Last link in the array", href: "https://docs.vueless.com/" },
   ],
 };
 LinkStates.parameters = {
@@ -116,7 +109,7 @@ LinkStates.parameters = {
 export const LinkIcon = DefaultTemplate.bind({});
 LinkIcon.args = {
   links: [
-    { label: "Vueless", href: "https://vueless.com/", icon: "home" },
+    { label: "Vueless", href: "https://vueless.com/", icon: "palette" },
     { label: "Settings", icon: "settings" },
     { label: "Breadcrumbs", href: "https://ui.vueless.com/?path=/docs/8030--docs" },
   ],
@@ -148,7 +141,9 @@ export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
     </UBreadcrumbs>
 
     <UBreadcrumbs v-bind="args">
-      <template #divider>/</template>
+      <template #divider="{ index }">
+        <span v-if="args.links.length !== index + 1">/</span>
+      </template>
     </UBreadcrumbs>
   `,
 });
