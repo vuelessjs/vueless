@@ -14,6 +14,8 @@ import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicP
 import { buildWebTypes } from "./utils/node/webTypes.js";
 import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
 
+import { DEFAULT_EXIT_CODE } from "./constants.js";
+
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
   UnpluginVueComponents({
@@ -48,7 +50,7 @@ export const Vueless = function (options = {}) {
     clearTailwindSafelist(debug);
 
     /* stop command line process */
-    process.exit(0);
+    process.exit(DEFAULT_EXIT_CODE);
   });
 
   return {

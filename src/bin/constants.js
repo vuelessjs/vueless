@@ -1,8 +1,5 @@
-export const DEFAULT_VUELESS_CONFIG_NAME = "vueless.config.js";
-export const DEFAULT_EXIT_CODE = 0;
-export const FAILURE_CODE = 1;
-export const TYPESCRIPT_EXT = ".ts";
-export const JAVASCRIPT_EXT = ".js";
+export const SRC_COMPONENTS_PATH = "/src/components";
+export const COMPONENTS_PATH = "/components";
 export const DEFAULT_VUELESS_CONFIG_CONTNET = `
 export default {
   /**
