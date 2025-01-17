@@ -142,7 +142,7 @@ export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
 
     <UBreadcrumbs v-bind="args">
       <template #divider="{ index }">
-        <span v-if="args.links.length !== index + 1">/</span>
+        <span>/</span>
       </template>
     </UBreadcrumbs>
   `,

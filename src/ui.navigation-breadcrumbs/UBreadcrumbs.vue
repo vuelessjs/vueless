@@ -122,6 +122,7 @@ const {
           @binding {boolean} active
         -->
         <slot
+          v-if="links.length !== index + 1"
           name="divider"
           :icon-name="config.defaults.dividerIcon"
           :index="index"
