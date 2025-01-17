@@ -139,7 +139,7 @@ export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
     <UBreadcrumbs v-bind="args">
       <template #left="{ index }">
         <UBadge
-          v-if="index === 0"
+          v-if="index === 1"
           label="Info"
           color="green"
           size="sm"
