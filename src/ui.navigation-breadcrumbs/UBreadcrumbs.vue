@@ -14,9 +14,6 @@ import type { Props, Config, UBreadcrumb } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-/**
- * Declaring component props.
- */
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   links: () => [],
@@ -47,14 +44,7 @@ function onClickLink(link: object) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const mutatedProps = computed(() => ({
-  /* Add mutated props or non-props component state below */
-}));
-
-const { wrapperAttrs, breadcrumbAttrs, breadcrumbIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { wrapperAttrs, breadcrumbAttrs, breadcrumbIconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
