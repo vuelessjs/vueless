@@ -36,9 +36,8 @@ export async function getLastStorybookId() {
   for await (const storyPath of stories) {
     const storyContent = await readFile(storyPath, "utf-8");
 
-    const storyIdLine = storyContent.split("\n").find((line, idx, array) => {
-      return line.includes("id:") && idx && array[idx - 1].includes("export default");
-    });
+    const storyIdLineIndex = findTopLevelIdLineIndex(storyContent);
+    const storyIdLine = storyContent.split("\n").at(storyIdLineIndex);
 
     if (!storyIdLine) continue;
 
@@ -50,4 +49,35 @@ export async function getLastStorybookId() {
   }
 
   return id;
+}
+
+export function findTopLevelIdLineIndex(fileContent) {
+  const lines = fileContent.split("\n");
+  let insideExportBlock = false;
+  let bracketDepth = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    if (line.startsWith("export default {")) {
+      insideExportBlock = true;
+      bracketDepth = 1;
+      continue;
+    }
+
+    if (insideExportBlock) {
+      bracketDepth += (line.match(/{/g) || []).length;
+      bracketDepth -= (line.match(/}/g) || []).length;
+
+      if (bracketDepth === 1 && line.startsWith("id:")) {
+        return i;
+      }
+
+      if (bracketDepth === 0) {
+        break;
+      }
+    }
+  }
+
+  return -1; // Return -1 if no top-level `id` is found
 }
