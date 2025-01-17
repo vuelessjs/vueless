@@ -196,25 +196,3 @@ DefaultSlot.args = {
     </template>
   `,
 };
-
-export const LeftAndRightSlots: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
-  components: { ULink, UIcon, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URow no-mobile>
-      <ULink label="Download">
-        <template #left>
-          <UIcon name="download" size="xs" color="green" />
-        </template>
-      </ULink>
-
-      <ULink label="Open">
-        <template #right>
-          <UIcon name="open_in_new" size="xs" color="green" />
-        </template>
-      </ULink>
-    </URow>
-  `,
-});

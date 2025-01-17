@@ -88,16 +88,6 @@ export interface Props {
   exactActiveClass?: string;
 
   /**
-   * Apply classes to the wrapper div when link route is active or when it matches any parent route.
-   */
-  wrapperActiveClass?: string;
-
-  /**
-   * Apply classes to the wrapper div when link route is active.
-   */
-  wrapperExactActiveClass?: string;
-
-  /**
    * Show underline.
    */
   underlined?: boolean;
@@ -130,5 +120,5 @@ export interface Props {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }
