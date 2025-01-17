@@ -111,7 +111,7 @@ export interface UTableProps {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }
 
 export interface UTableRowAttrs {

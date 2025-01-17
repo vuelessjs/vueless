@@ -133,7 +133,7 @@ function onClick(event: MouseEvent) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, iconAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -141,7 +141,7 @@ const { config, iconAttrs } = useUI<Config>(defaultConfig);
     :is="dynamicComponent"
     tabindex="-1"
     v-bind="iconAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @click="onClick"
   />
 </template>

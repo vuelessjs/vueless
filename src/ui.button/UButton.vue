@@ -67,10 +67,8 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -82,10 +80,15 @@ const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs
     v-bind="buttonAttrs"
     :style="buttonStyle"
     :tabindex="!loading ? tabindex : -1"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template v-if="loading">
-      <ULoader :loading="loading" color="inherit" v-bind="loaderAttrs" />
+      <ULoader
+        :loading="loading"
+        color="inherit"
+        v-bind="loaderAttrs"
+        :data-test="getDataTest('loader')"
+      />
     </template>
 
     <template v-else>

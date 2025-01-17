@@ -63,7 +63,7 @@ export interface UProgressProps {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }
 
 export interface StepperProgressProps {
@@ -90,5 +90,5 @@ export interface StepperProgressProps {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }
