@@ -1,0 +1,77 @@
+/* eslint-disable no-console */
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { cwd } from "node:process";
+import { cp, readFile, writeFile, rename } from "node:fs/promises";
+import { styleText } from "node:util";
+
+import { getDirFiles } from "../../utils/node/helper.js";
+import { replaceRelativeImports } from "../utils/formatUtil.js";
+import { getLastStorybookId } from "../utils/dataUtils.js";
+
+import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
+
+import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+
+const boilerplateName = "UBoilerplate";
+const boilerplatePath = path.join(cwd(), VUELESS_DIR, "ui.boilerplate");
+
+export async function createVuelessComponent(options) {
+  const [componentName] = options;
+
+  if (!componentName) {
+    throw new Error("Component name is required");
+  }
+
+  const isSrcDir = existsSync(path.join(cwd(), VUELESS_LOCAL_DIR));
+  const destPath = isSrcDir
+    ? path.join(cwd(), SRC_COMPONENTS_PATH, componentName)
+    : path.join(cwd(), COMPONENTS_PATH, componentName);
+
+  const isComponentExists = componentName in COMPONENTS || existsSync(destPath);
+
+  if (isComponentExists) {
+    throw new Error(`Component with name ${componentName} alrady exists`);
+  }
+
+  await cp(boilerplatePath, destPath, { recursive: true });
+
+  await modifyCreatedComponent(destPath, componentName);
+
+  const successMessage = styleText(
+    "green",
+    `Success: ${componentName} was created in ${destPath} directory`,
+  );
+
+  console.log(successMessage);
+}
+
+async function modifyCreatedComponent(destPath, componentName) {
+  const destFiles = await getDirFiles(destPath, "");
+  const lastStorybookId = await getLastStorybookId();
+
+  for await (const filePath of destFiles) {
+    const fileContent = await readFile(filePath, "utf-8");
+
+    let updatedContent = replaceRelativeImports(componentName, filePath, fileContent);
+    let targetPath = filePath;
+
+    if (filePath.endsWith("constants.ts")) {
+      updatedContent = updatedContent.replace(boilerplateName, componentName);
+    }
+
+    if (filePath.endsWith("stories.ts")) {
+      updatedContent = updatedContent
+        .replaceAll(boilerplateName, componentName)
+        .replace("{{component_id}}", String(lastStorybookId + 10));
+    }
+
+    if (targetPath.endsWith(`${boilerplateName}.vue`)) {
+      targetPath = targetPath.replace(boilerplateName, componentName);
+
+      await rename(filePath, targetPath);
+    }
+
+    await writeFile(targetPath, updatedContent);
+  }
+}

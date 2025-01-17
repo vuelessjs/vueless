@@ -3,7 +3,6 @@ import defaultConfig from "./config.ts";
 import type { DefineComponent, SVGAttributes } from "vue";
 
 import type { ComponentConfig } from "../types.ts";
-import type { Props as TippyProps } from "tippy.js";
 
 export type Config = typeof defaultConfig;
 
@@ -69,17 +68,6 @@ export interface Props {
   interactive?: boolean;
 
   /**
-   * Add tooltip text on hover.
-   */
-  tooltip?: string;
-
-  /**
-   * Tooltip settings.
-   * [See all settings here](https://kabbouchi.github.io/vue-tippy/4.0/features/placement.html).
-   */
-  tooltipSettings?: TippyProps;
-
-  /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).
    */
   internal?: boolean;
@@ -92,5 +80,5 @@ export interface Props {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }

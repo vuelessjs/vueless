@@ -80,7 +80,7 @@ export interface UCalendarProps<TModelValue extends DateValue> {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }
 
 export interface UCalendarViewProps {

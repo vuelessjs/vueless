@@ -299,7 +299,7 @@ export type MutatedProps = ComputedRef<UnknownObject>;
 
 export type UseUI<T> = {
   config: Ref<T & ComponentConfig<T>>;
-  getKeysAttrs: (mutatedProps?: MutatedProps) => KeysAttrs<T>;
+  getDataTest: (suffix?: string) => string | null;
 } & KeysAttrs<T>;
 
 export type KeysAttrs<T> = Record<

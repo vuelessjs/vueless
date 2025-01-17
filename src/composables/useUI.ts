@@ -241,7 +241,18 @@ export default function useUI<T>(
     return vuelessAttrs;
   }
 
-  return { config, getKeysAttrs, ...getKeysAttrs(mutatedProps) } as UseUI<T>;
+  /**
+   * Get data test attribute value if exist.
+   */
+  function getDataTest(suffix?: string) {
+    if (!props.dataTest) {
+      return null;
+    }
+
+    return suffix ? `${props.dataTest}-${suffix}` : props.dataTest;
+  }
+
+  return { config, getDataTest, ...getKeysAttrs(mutatedProps) } as UseUI<T>;
 }
 
 /**

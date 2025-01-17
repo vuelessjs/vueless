@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative inline-block",
+    base: "relative inline-flex",
     variants: {
       opened: {
         true: "group",
@@ -8,7 +8,7 @@ export default /*tw*/ {
     },
   },
   dropdownLink: "{ULink}",
-  dropdownIcon: {
+  toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[]:rotate-180",
     defaults: {
       size: {
@@ -43,6 +43,6 @@ export default /*tw*/ {
     noIcon: false,
     disabled: false,
     /* icons */
-    dropdownIcon: "keyboard_arrow_down",
+    toggleIcon: "keyboard_arrow_down",
   },
 };

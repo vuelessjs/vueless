@@ -2,7 +2,6 @@
 import { computed, defineAsyncComponent } from "vue";
 
 import useUI from "../composables/useUI.ts";
-import { vTooltip } from "../directives";
 import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
 import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
@@ -12,13 +11,11 @@ import defaultConfig from "./config.ts";
 
 import type { AsyncComponentLoader } from "vue";
 import type { Props, Config, IconLibraries } from "./types.ts";
-import type { Props as TippyProps, Instance as TippyInstance } from "tippy.js";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  tooltipSettings: () => ({}) as TippyProps,
 });
 
 const emit = defineEmits([
@@ -128,18 +125,6 @@ const dynamicComponent = computed(() => {
   return defineAsyncComponent(libraries[library] as AsyncComponentLoader);
 });
 
-const tooltipConfig = computed(() => ({
-  ...props.tooltipSettings,
-  content: props.tooltip,
-  onShow: (instance: TippyInstance) => {
-    const userOnShow = props.tooltipSettings?.onShow;
-
-    userOnShow && userOnShow(instance);
-
-    return !!props.tooltip;
-  },
-}));
-
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
@@ -148,16 +133,15 @@ function onClick(event: MouseEvent) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, iconAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <component
     :is="dynamicComponent"
-    v-tooltip="tooltipConfig"
     tabindex="-1"
     v-bind="iconAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @click="onClick"
   />
 </template>

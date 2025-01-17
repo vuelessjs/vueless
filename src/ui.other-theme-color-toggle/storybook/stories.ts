@@ -19,7 +19,7 @@ interface UThemeColorToggleArgs extends Props {
 
 export default {
   id: "100020",
-  title: "Other / Theme Color Switcher",
+  title: "Other / Theme Color Toggle",
   component: UThemeColorToggle,
   args: {
     modelValue: ["", ""],

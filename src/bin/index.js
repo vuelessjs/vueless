@@ -4,7 +4,7 @@
 
 import { commands } from "./commands/index.js";
 
-import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "./constants.js";
+import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "../constants.js";
 
 const [command, ...options] = process.argv.slice(2);
 

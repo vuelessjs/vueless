@@ -79,8 +79,5 @@ Sizes.args = { enum: "size" };
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant", color: "red" };
 
-export const Tooltip = DefaultTemplate.bind({});
-Tooltip.args = { tooltip: "Some text" };
-
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };

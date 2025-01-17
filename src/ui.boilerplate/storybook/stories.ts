@@ -10,7 +10,7 @@ interface UBoilerplateArgs extends Props {
 }
 
 export default {
-  id: "110010",
+  id: "{{component_id}}",
   title: "Custom / UBoilerplate",
   component: UBoilerplate,
   args: {

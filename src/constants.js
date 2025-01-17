@@ -222,6 +222,10 @@ export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
 export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 
+/* System error codes */
+export const DEFAULT_EXIT_CODE = 0;
+export const FAILURE_CODE = 1;
+
 /* Other */
 export const PX_IN_REM = 16;
 export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{(U[^}]*)}/;
@@ -230,3 +234,5 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_COLOR_OPACITY_DELIMITER = "/";
 export const TAILWIND_VARIANT_DELIMITER = ":";
 export const TAILWIND_VARIANT_DELIMITER_REG_EXP = /:(?![^[]*])/;
+export const JAVASCRIPT_EXT = ".js";
+export const TYPESCRIPT_EXT = ".ts";

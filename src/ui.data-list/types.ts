@@ -82,5 +82,5 @@ export interface Props {
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }

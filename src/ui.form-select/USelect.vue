@@ -416,6 +416,7 @@ const mutatedProps = computed(() => ({
 
 const {
   config,
+  getDataTest,
   selectLabelAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
@@ -453,7 +454,7 @@ const {
     centred
     interactive
     v-bind="selectLabelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     :tabindex="-1"
   >
     <template #label>
@@ -503,6 +504,7 @@ const {
         v-show="!multiple || (!isLocalValue && multiple)"
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
+        :data-test="getDataTest('toggle')"
         @mousedown.prevent.stop="toggle"
       >
         <!--
@@ -517,7 +519,6 @@ const {
             color="gray"
             :name="config.defaults.dropdownIcon"
             v-bind="toggleIconAttrs"
-            :data-test="`${dataTest}-toggle`"
             :tabindex="-1"
           />
         </slot>
@@ -526,6 +527,7 @@ const {
       <div
         v-if="isLocalValue && clearable && !disabled && !multiple"
         v-bind="clearAttrs"
+        :data-test="getDataTest('clear')"
         @mousedown="onMouseDownClear"
       >
         <!--
@@ -539,7 +541,6 @@ const {
             color="gray"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
-            :data-test="`${dataTest}-clear`"
           />
         </slot>
       </div>
@@ -599,6 +600,7 @@ const {
             <div
               v-if="!disabled"
               v-bind="clearMultipleAttrs"
+              :data-test="getDataTest('clear-item')"
               @mousedown.prevent.capture
               @click.prevent.capture
               @mousedown="onMouseDownClearItem($event, item)"
@@ -614,7 +616,6 @@ const {
                   color="gray"
                   :name="config.defaults.clearMultipleIcon"
                   v-bind="clearMultipleIconAttrs"
-                  :data-test="`${dataTest}-clear-all`"
                 />
               </slot>
             </div>
@@ -634,7 +635,7 @@ const {
             :disabled="disabled"
             :aria-controls="'listbox-' + elementId"
             v-bind="searchInputAttrs"
-            :data-test="`${dataTest}-search`"
+            :data-test="getDataTest('search')"
             @focus="activate"
             @blur.prevent="deactivate"
             @keyup.esc="deactivate"
@@ -674,6 +675,7 @@ const {
         <div
           v-if="isLocalValue && clearable && !disabled && multiple"
           v-bind="clearMultipleTextAttrs"
+          :data-test="getDataTest('clear-all')"
           @mousedown.prevent.capture="onMouseDownClear"
           @click.prevent.capture
           v-text="currentLocale.clear"
@@ -693,7 +695,7 @@ const {
         :add-option="addOption"
         tabindex="-1"
         v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
-        :data-test="dataTest"
+        :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
         @mousedown.prevent.capture
