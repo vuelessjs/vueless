@@ -233,3 +233,5 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const TAILWIND_COLOR_OPACITY_DELIMITER = "/";
 export const TAILWIND_VARIANT_DELIMITER = ":";
 export const TAILWIND_VARIANT_DELIMITER_REG_EXP = /:(?![^[]*])/;
+export const JAVASCRIPT_EXT = ".js";
+export const TYPESCRIPT_EXT = ".ts";

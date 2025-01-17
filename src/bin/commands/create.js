@@ -9,9 +9,9 @@ import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/formatUtil.js";
 import { getLastStorybookId } from "../utils/dataUtils.js";
 
-import { SRC_PATH, SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
+import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 
-import { COMPONENTS, VUELESS_DIR } from "../../constants.js";
+import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 const boilerplateName = "UBoilerplate";
 const boilerplatePath = path.join(cwd(), VUELESS_DIR, "ui.boilerplate");
@@ -23,7 +23,7 @@ export async function createVuelessComponent(options) {
     throw new Error("Component name is required");
   }
 
-  const isSrcDir = existsSync(path.join(cwd(), SRC_PATH));
+  const isSrcDir = existsSync(path.join(cwd(), VUELESS_LOCAL_DIR));
   const destPath = isSrcDir
     ? path.join(cwd(), SRC_COMPONENTS_PATH, componentName)
     : path.join(cwd(), COMPONENTS_PATH, componentName);
