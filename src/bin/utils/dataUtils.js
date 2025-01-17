@@ -31,7 +31,7 @@ export async function getLastStorybookId() {
     stories.push(...componentsDirStories);
   }
 
-  let id = 0;
+  let id = 200000;
 
   for await (const storyPath of stories) {
     const storyContent = await readFile(storyPath, "utf-8");
