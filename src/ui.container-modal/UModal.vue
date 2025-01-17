@@ -32,7 +32,7 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
-   * Triggers when back link in modal is clicked.
+   * Triggers when a back link is clicked.
    */
   "back",
 ]);
@@ -113,6 +113,7 @@ const {
   config,
   modalAttrs,
   titleAttrs,
+  backLinkWrapperAttrs,
   backLinkAttrs,
   backLinkIconAttrs,
   closeIconAttrs,
@@ -157,25 +158,25 @@ const {
                 <slot name="before-title" />
 
                 <div v-bind="headerLeftFallbackAttrs">
-                  <ULink
-                    v-if="isShownArrowButton"
-                    size="sm"
-                    color="gray"
-                    :to="backTo"
-                    :label="backLabel"
-                    v-bind="backLinkAttrs"
-                    @click="onClickBackLink"
-                  >
-                    <template #left>
-                      <UIcon
-                        internal
-                        size="xs"
-                        color="gray"
-                        :name="config.defaults.backIcon"
-                        v-bind="backLinkIconAttrs"
-                      />
-                    </template>
-                  </ULink>
+                  <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
+                    <UIcon
+                      internal
+                      size="2xs"
+                      color="gray"
+                      :name="config.defaults.backIcon"
+                      v-bind="backLinkIconAttrs"
+                    />
+
+                    <ULink
+                      size="sm"
+                      color="gray"
+                      :to="backTo"
+                      :ring="false"
+                      :label="backLabel"
+                      v-bind="backLinkAttrs"
+                      @click="onClickBackLink"
+                    />
+                  </div>
 
                   <UHeader :label="title" size="sm" v-bind="titleAttrs" />
                   <div v-if="description" v-bind="descriptionAttrs" v-text="description" />

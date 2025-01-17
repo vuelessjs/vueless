@@ -68,12 +68,18 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIconAttrs } =
+const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, toggleIconAttrs } =
   useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
   <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
+    <!--
+      @slot Use it to add something before the label.
+      @binding {boolean} opened
+    -->
+    <slot name="left" :opened="isShownOptions" />
+
     <ULink
       :id="elementId"
       :ring="ring"
@@ -84,47 +90,37 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
       :disabled="disabled"
       :underlined="underlined"
       v-bind="dropdownLinkAttrs"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       @click="onClickLink"
       @keydown.enter="onClickLink"
       @keydown.space.prevent="onClickLink"
     >
-      <template #left>
-        <!--
-          @slot Use it to add something before the label.
-          @binding {boolean} opened
-        -->
-        <slot name="left" :opened="isShownOptions" />
-      </template>
-
       <template #default>
         <!--
-            @slot Use it to add something instead of the default label.
-            @binding {string} label
-            @binding {boolean} opened
-          -->
+          @slot Use it to add something instead of the default label.
+          @binding {string} label
+          @binding {boolean} opened
+        -->
         <slot :label="label" :opened="isShownOptions" />
       </template>
-
-      <template #right>
-        <!--
-            @slot Use it to add something after the label.
-            @binding {boolean} opened
-          -->
-        <slot name="right" :opened="isShownOptions">
-          <UIcon
-            v-if="!noIcon"
-            internal
-            interactive
-            :color="color"
-            :name="config.defaults.dropdownIcon"
-            v-bind="dropdownIconAttrs"
-            :data-test="`${dataTest}-dropdown`"
-            @click="onClickLink"
-          />
-        </slot>
-      </template>
     </ULink>
+
+    <!--
+      @slot Use it to add something after the label.
+      @binding {boolean} opened
+    -->
+    <slot name="right" :opened="isShownOptions">
+      <UIcon
+        v-if="!noIcon"
+        internal
+        interactive
+        :color="color"
+        :name="config.defaults.toggleIcon"
+        v-bind="toggleIconAttrs"
+        :data-test="getDataTest('toggle')"
+        @click="onClickLink"
+      />
+    </slot>
 
     <UDropdownList
       v-if="isShownOptions"
@@ -133,7 +129,7 @@ const { config, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, dropdownIcon
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
-      :data-test="`${dataTest}-list`"
+      :data-test="getDataTest('list')"
       @click-option="onClickOption"
     />
   </div>

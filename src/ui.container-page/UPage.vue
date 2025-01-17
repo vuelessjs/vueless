@@ -25,6 +25,13 @@ const props = withDefaults(defineProps<Props>(), {
   backLabel: "",
 });
 
+const emit = defineEmits([
+  /**
+   * Triggers when a back link is clicked.
+   */
+  "back",
+]);
+
 const { isMobileBreakpoint } = useBreakpoint();
 
 const isExistHeader = computed(() => {
@@ -56,6 +63,10 @@ onMounted(() => {
   }
 });
 
+function onClickBackLink() {
+  emit("back");
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -66,6 +77,7 @@ const {
   pageAttrs,
   rightRoundingAttrs,
   titleAttrs,
+  backLinkWrapperAttrs,
   backLinkAttrs,
   backLinkIconAttrs,
   headerAttrs,
@@ -95,25 +107,25 @@ const {
             <slot name="before-title" />
 
             <div v-bind="headerLeftFallbackAttrs">
-              <ULink
-                v-if="isShownArrowButton"
-                :ring="false"
-                size="sm"
-                color="gray"
-                :to="backTo"
-                :label="backLabel"
-                v-bind="backLinkAttrs"
-              >
-                <template #left>
-                  <UIcon
-                    internal
-                    size="2xs"
-                    color="gray"
-                    :name="config.defaults.backIcon"
-                    v-bind="backLinkIconAttrs"
-                  />
-                </template>
-              </ULink>
+              <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
+                <UIcon
+                  internal
+                  size="2xs"
+                  color="gray"
+                  :name="config.defaults.backIcon"
+                  v-bind="backLinkIconAttrs"
+                />
+
+                <ULink
+                  :ring="false"
+                  size="sm"
+                  color="gray"
+                  :to="backTo"
+                  :label="backLabel"
+                  v-bind="backLinkAttrs"
+                  @click="onClickBackLink"
+                />
+              </div>
 
               <UHeader :label="title" :size="titleSize" v-bind="titleAttrs" />
               <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
