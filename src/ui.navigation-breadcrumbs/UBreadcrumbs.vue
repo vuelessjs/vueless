@@ -67,7 +67,8 @@ function onClickLink(link: UBreadcrumb) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { breadcrumbsAttrs, breadcrumbAttrs, dividerIconAttrs } = useUI<Config>(defaultConfig);
+const { config, breadcrumbsAttrs, breadcrumbAttrs, dividerIconAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -92,10 +93,15 @@ const { breadcrumbsAttrs, breadcrumbAttrs, dividerIconAttrs } = useUI<Config>(de
       <template v-if="links.length !== index + 1" #right>
         <!--
           @slot Use it to add something instead of the divider.
+          @binding {string} icon-name
           @binding {number} index
         -->
-        <slot name="divider" :index="index">
-          <UIcon name="arrow_right" :color="dividerIconColor(link)" v-bind="dividerIconAttrs" />
+        <slot name="divider" :icon-name="config.defaults.dividerIcon" :index="index">
+          <UIcon
+            :name="config.defaults.dividerIcon"
+            :color="dividerIconColor(link)"
+            v-bind="dividerIconAttrs"
+          />
         </slot>
       </template>
     </ULink>

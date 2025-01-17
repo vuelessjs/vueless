@@ -16,5 +16,6 @@ export default /*tw*/ {
     size: "md",
     underlined: undefined,
     dashed: false,
+    dividerIcon: "arrow_right",
   },
 };
