@@ -2,6 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -22,13 +23,8 @@ export default {
   args: {
     links: [
       { label: "Vueless", href: "https://vueless.com/" },
-      { label: "Empty link" },
-      {
-        label: "Breadcrumbs",
-        href: "https://ui.vueless.com/?path=/docs/8030--docs",
-        disabled: true,
-      },
       { label: "Vueless Docs", href: "https://docs.vueless.com/" },
+      { label: "Vueless Storybook", href: "https://ui.vueless.com/" },
     ],
   },
   argTypes: {
@@ -72,15 +68,6 @@ const EnumVariantTemplate: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs, 
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-Default.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`; <br /> - it is the last one in the array.",
-    },
-  },
-};
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
@@ -92,13 +79,36 @@ Sizes.parameters = {
   },
 };
 
-export const Colors = DefaultTemplate.bind({});
-Colors.args = { color: "green" };
-Colors.parameters = {
+export const Styles = DefaultTemplate.bind({});
+Styles.args = { color: "green", dashed: true };
+Styles.parameters = {
   docs: {
     description: {
       story:
-        "For a full list of ULink's supported colors, see [ULink Colors Documentation](https://ui.vueless.com/?path=/docs/1060--docs#colors).",
+        "For a full list of ULink's supported colors, underlined / dashed styles, see [ULink Documentation](https://ui.vueless.com/?path=/docs/1060--docs).",
+    },
+  },
+};
+
+export const LinkStates = DefaultTemplate.bind({});
+LinkStates.args = {
+  links: [
+    { label: "Vueless (default link state)", href: "https://vueless.com/" },
+    { label: "Empty link (no `route` or `href` properties)" },
+    {
+      label: "Manually disabled link",
+      href: "https://ui.vueless.com/?path=/docs/8030--docs",
+      disabled: true,
+    },
+    { label: "Last link in the array (disabled automatically)", href: "https://docs.vueless.com/" },
+  ],
+};
+LinkStates.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`; <br /> - it is the last one in the array.",
     },
   },
 };
@@ -119,3 +129,26 @@ LinkIcon.parameters = {
     },
   },
 };
+
+export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
+  components: { UBreadcrumbs, UBadge },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UBreadcrumbs v-bind="args">
+      <template #left="{ index }">
+        <UBadge
+          v-if="index === 0"
+          label="Info"
+          color="green"
+          size="sm"
+        />
+      </template>
+    </UBreadcrumbs>
+
+    <UBreadcrumbs v-bind="args">
+      <template #divider>/</template>
+    </UBreadcrumbs>
+  `,
+});

@@ -27,7 +27,30 @@ const emit = defineEmits([
   "clickLink",
 ]);
 
-const breadcrumbIconColor = computed(() => {
+const getLinkProps = computed(() => {
+  return (link: UBreadcrumb, index: number) => ({
+    label: link.label,
+    href: link.href,
+    to: link.route,
+    size: props.size,
+    color: props.color,
+    targetBlank: Boolean(link.href),
+    custom: link.custom,
+    replace: link.replace,
+    activeClass: link.activeClass,
+    exactActiveClass: link.exactActiveClass,
+    wrapperActiveClass: link.wrapperActiveClass,
+    wrapperExactActiveClass: link.wrapperExactActiveClass,
+    ariaCurrentValue: link.ariaCurrentValue,
+    underlined: props.underlined,
+    dashed: props.dashed,
+    disabled: link.disabled || (!link.route && !link.href) || isLastLink(index),
+    ring: false,
+    "data-test": props.dataTest,
+  });
+});
+
+const dividerIconColor = computed(() => {
   return (link: UBreadcrumb) =>
     link.disabled || (!link.route && !link.href) ? "gray" : props.color;
 });
@@ -36,7 +59,7 @@ function isLastLink(index: number) {
   return index === props.links.length - 1;
 }
 
-function onClickLink(link: object) {
+function onClickLink(link: UBreadcrumb) {
   emit("clickLink", link);
 }
 
@@ -44,34 +67,36 @@ function onClickLink(link: object) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { wrapperAttrs, breadcrumbAttrs, breadcrumbIconAttrs } = useUI<Config>(defaultConfig);
+const { breadcrumbsAttrs, breadcrumbAttrs, dividerIconAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="breadcrumbsAttrs">
     <ULink
       v-for="(link, index) in links"
       :key="index"
-      :label="link.label"
-      :size="size"
-      :color="color"
-      :ring="false"
-      :underlined="underlined"
-      :dashed="dashed"
-      :to="link.route"
-      :href="link.href"
-      :target-blank="Boolean(link.href)"
-      :disabled="link.disabled || (!link.route && !link.href) || isLastLink(index)"
-      v-bind="breadcrumbAttrs"
-      :data-test="dataTest"
+      v-bind="{ ...getLinkProps(link, index), ...breadcrumbAttrs }"
       @click="onClickLink(link)"
     >
-      <template v-if="link.icon" #left>
-        <UIcon :name="link.icon" :color="color" size="xs" />
+      <template #left>
+        <!--
+          @slot Use it to add something instead of a link icon.
+          @binding {string} icon-name
+          @binding {number} index
+        -->
+        <slot name="left" :index="index" :icon-name="link.icon">
+          <UIcon v-if="link.icon" :name="link.icon" :color="color" size="xs" />
+        </slot>
       </template>
 
       <template v-if="links.length !== index + 1" #right>
-        <UIcon name="arrow_right" :color="breadcrumbIconColor(link)" v-bind="breadcrumbIconAttrs" />
+        <!--
+          @slot Use it to add something instead of the divider.
+          @binding {number} index
+        -->
+        <slot name="divider" :index="index">
+          <UIcon name="arrow_right" :color="dividerIconColor(link)" v-bind="dividerIconAttrs" />
+        </slot>
       </template>
     </ULink>
   </div>

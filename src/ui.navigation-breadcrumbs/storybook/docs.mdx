@@ -1,4 +1,4 @@
-import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
+import { Markdown, Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
 import { getSource } from "../../utils/storybook.ts";
 
 import * as stories from "./stories.ts";
@@ -11,6 +11,28 @@ import defaultConfig from "../config.ts?raw"
 <Primary of={stories}  />
 <Controls of={stories.Default} />
 <Stories of={stories} />
+
+## Breadcrumb Link Object Properties
+Keys you may/have to provide to the component in a `link` object.
+
+<Markdown>
+{`
+|  Key name              | Description                                           | Type                    |
+| ---------------------- | ----------------------------------------------------- | ----------------------- |
+| label                  | Link label                                            | String                  |
+| route                  | Route object                                          | Object                  |
+| href                   | Link URL                                              | String                  |
+| disabled               | Used to disable link                                  | Boolean                 |
+| icon                   | Icon name                                             | String                  |
+| custom                 | Whether RouterLink should not wrap content in a tag   | Boolean                 |
+| replace                | Whether to replace current history entry              | Boolean                 |
+| activeClass            | Classes to apply when route is active                 | String                  |
+| exactActiveClass       | Classes to apply when route is exactly active         | String                  |
+| wrapperActiveClass     | Classes for wrapper when route is active              | String                  |
+| wrapperExactActiveClass| Classes for wrapper when route is exactly active      | String                  |
+| ariaCurrentValue       | Value for aria-current when link is exact active      | String                  |
+`}
+</Markdown>
 
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />

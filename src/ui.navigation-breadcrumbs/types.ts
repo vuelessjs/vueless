@@ -1,16 +1,23 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
+import type { RouteLocationRaw } from "vue-router";
+
 export type Config = typeof defaultConfig;
 
 export interface UBreadcrumb {
   label?: string;
-  route?: {
-    name: string;
-  };
+  route?: RouteLocationRaw;
   href?: string;
   disabled?: boolean;
   icon?: string;
+  ariaCurrentValue?: string;
+  custom?: boolean;
+  replace?: boolean;
+  activeClass?: string;
+  exactActiveClass?: string;
+  wrapperActiveClass?: string;
+  wrapperExactActiveClass?: string;
 }
 
 export interface Props {
