@@ -138,6 +138,9 @@ export function setTheme(config: Config = {}) {
   const defaultGrayShade = isDarkMode ? 400 : 600;
   const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
 
+  localStorage.setItem("brand", brand);
+  localStorage.setItem("gray", gray);
+
   if (gray === COOL_COLOR) {
     gray = GRAY_COLOR;
   }
@@ -172,9 +175,6 @@ export function setTheme(config: Config = {}) {
     // eslint-disable-next-line no-console
     console.warn(`The gray color '${gray}' is missing in your palette.`);
   }
-
-  localStorage.setItem("brand", brand);
-  localStorage.setItem("gray", gray);
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
