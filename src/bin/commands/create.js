@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
@@ -7,7 +8,7 @@ import { styleText } from "node:util";
 
 import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/formatUtil.js";
-import { getLastStorybookId } from "../utils/dataUtils.js";
+import { getStorybookId } from "../utils/dataUtils.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 
@@ -20,7 +21,7 @@ export async function createVuelessComponent(options) {
   const [componentName] = options;
 
   if (!componentName) {
-    throw new Error("Component name is required");
+    throw new Error("Component name is required.");
   }
 
   const isSrcDir = existsSync(path.join(cwd(), VUELESS_LOCAL_DIR));
@@ -31,7 +32,7 @@ export async function createVuelessComponent(options) {
   const isComponentExists = componentName in COMPONENTS || existsSync(destPath);
 
   if (isComponentExists) {
-    throw new Error(`Component with name ${componentName} alrady exists`);
+    throw new Error(`Component with name ${componentName} alrady exists.`);
   }
 
   await cp(boilerplatePath, destPath, { recursive: true });
@@ -40,7 +41,7 @@ export async function createVuelessComponent(options) {
 
   const successMessage = styleText(
     "green",
-    `Success: ${componentName} was created in ${destPath} directory`,
+    `Success: ${componentName} was created in ${destPath} directory.`,
   );
 
   console.log(successMessage);
@@ -48,7 +49,7 @@ export async function createVuelessComponent(options) {
 
 async function modifyCreatedComponent(destPath, componentName) {
   const destFiles = await getDirFiles(destPath, "");
-  const lastStorybookId = await getLastStorybookId();
+  const storybookId = await getStorybookId();
 
   for await (const filePath of destFiles) {
     const fileContent = await readFile(filePath, "utf-8");
@@ -63,7 +64,7 @@ async function modifyCreatedComponent(destPath, componentName) {
     if (filePath.endsWith("stories.ts")) {
       updatedContent = updatedContent
         .replaceAll(boilerplateName, componentName)
-        .replace("{{component_id}}", String(lastStorybookId + 10));
+        .replace("{{component_id}}", String(storybookId));
     }
 
     if (targetPath.endsWith(`${boilerplateName}.vue`)) {
