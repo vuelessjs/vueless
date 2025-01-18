@@ -27,6 +27,7 @@ export default {
       { label: "Category", href: "https://docs.vueless.com/" },
       { label: "Product", href: "https://ui.vueless.com/" },
     ],
+    targetBlank: true,
   },
   argTypes: {
     ...getArgTypes(UBreadcrumbs.__name),
@@ -91,10 +92,9 @@ LinkStates.args = {
     { label: "Empty link (no `route` or `href` properties)" },
     {
       label: "Manually disabled link",
-      href: "https://ui.vueless.com/?path=/docs/8030--docs",
+      href: "https://docs.vueless.com/",
       disabled: true,
     },
-    { label: "Last link in the array", href: "https://docs.vueless.com/" },
   ],
 };
 LinkStates.parameters = {
@@ -102,7 +102,7 @@ LinkStates.parameters = {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`; <br /> - it is the last one in the array.",
+        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true.",
     },
   },
 };

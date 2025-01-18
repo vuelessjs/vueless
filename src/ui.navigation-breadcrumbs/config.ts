@@ -1,9 +1,7 @@
 export default /*tw*/ {
-  wrapper: "flex",
-  container: "flex items-center gap-1 py-2",
-  breadcrumb: "{ULink}",
-  leftSlotWrapper: "flex items-center",
-  rightSlotWrapper: "flex items-center",
+  breadcrumbs: "flex",
+  breadcrumb: "flex items-center gap-1 py-2",
+  breadcrumbLink: "{ULink}",
   componentIcon: {
     base: "{UIcon}",
     defaults: {
@@ -21,6 +19,7 @@ export default /*tw*/ {
     size: "md",
     underlined: undefined,
     dashed: false,
+    targetBlank: false,
     dividerIcon: "arrow_right",
   },
 };

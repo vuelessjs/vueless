@@ -165,8 +165,12 @@ body {
   @apply mt-2;
 }
 
-.sb-anchor > p > a {
-  @apply text-green-500;
+.dark .sb-anchor > p > a {
+  @apply text-green-400;
+}
+
+.light .sb-anchor > p > a {
+  @apply text-green-600;
 }
 
 .sb-bar,

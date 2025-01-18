@@ -46,6 +46,11 @@ export interface Props {
     | "brand";
 
   /**
+   * Open link in the new tab.
+   */
+  targetBlank?: boolean;
+
+  /**
    * Show underline.
    */
   underlined?: boolean;

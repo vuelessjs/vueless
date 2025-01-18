@@ -4,7 +4,6 @@ import { useRoute } from "vue-router";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
@@ -32,21 +31,16 @@ const emit = defineEmits([
 const route = useRoute();
 
 const getIconColor = computed(() => {
-  return (link: UBreadcrumb, index: number) =>
-    link.disabled || (!link.to && !link.href) || isLastLink(index) ? "gray" : props.color;
+  return (link: UBreadcrumb) => (link.disabled || (!link.to && !link.href) ? "gray" : props.color);
 });
 
 const isLinkActive = computed(() => {
   return (index: number) => {
     const link = props.links[index];
 
-    return route.path === link.to || isLastLink(index);
+    return route.path === link.to;
   };
 });
-
-function isLastLink(index: number) {
-  return index === props.links.length - 1;
-}
 
 function onClickLink(link: UBreadcrumb) {
   emit("clickLink", link);
@@ -58,35 +52,31 @@ function onClickLink(link: UBreadcrumb) {
  */
 const {
   config,
-  wrapperAttrs,
-  containerAttrs,
+  breadcrumbsAttrs,
   breadcrumbAttrs,
+  breadcrumbLinkAttrs,
   breadcrumbIconAttrs,
   dividerIconAttrs,
-  leftSlotWrapperAttrs,
-  rightSlotWrapperAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
-    <div v-for="(link, index) in links" :key="index" v-bind="containerAttrs">
-      <div v-bind="leftSlotWrapperAttrs">
-        <!--
+  <div v-bind="breadcrumbsAttrs">
+    <div v-for="(link, index) in links" :key="index" v-bind="breadcrumbAttrs">
+      <!--
           @slot Use it to add something instead of a link icon.
           @binding {string} icon-name
           @binding {number} index
           @binding {boolean} active
         -->
-        <slot name="left" :index="index" :icon-name="link.icon" :active="isLinkActive(index)">
-          <UIcon
-            v-if="link.icon"
-            :name="link.icon"
-            :color="getIconColor(link, index)"
-            v-bind="breadcrumbIconAttrs"
-          />
-        </slot>
-      </div>
+      <slot name="left" :icon-name="link.icon" :index="index" :active="isLinkActive(index)">
+        <UIcon
+          v-if="link.icon"
+          :name="link.icon"
+          :color="getIconColor(link)"
+          v-bind="breadcrumbIconAttrs"
+        />
+      </slot>
 
       <ULink
         :label="link.label"
@@ -94,7 +84,7 @@ const {
         :to="link.to"
         :size="size"
         :color="color"
-        :target-blank="Boolean(link.href)"
+        :target-blank="targetBlank"
         :custom="link.custom"
         :replace="link.replace"
         :active-class="link.activeClass"
@@ -102,9 +92,9 @@ const {
         :aria-current-value="link.ariaCurrentValue"
         :underlined="underlined"
         :dashed="dashed"
-        :disabled="link.disabled || (!link.to && !link.href) || isLastLink(index)"
+        :disabled="link.disabled || (!link.to && !link.href)"
         :ring="false"
-        v-bind="breadcrumbAttrs"
+        v-bind="breadcrumbLinkAttrs"
         :data-test="dataTest"
         @click="onClickLink(link)"
       >
@@ -117,31 +107,26 @@ const {
         <slot name="label" :label="link.label" :index="index" :active="isLinkActive(index)" />
       </ULink>
 
-      <div
-        v-if="hasSlotContent($slots['divider']) || links.length !== index + 1"
-        v-bind="rightSlotWrapperAttrs"
-      >
-        <!--
+      <!--
           @slot Use it to add something instead of the divider.
           @binding {string} icon-name
           @binding {number} index
           @binding {boolean} active
         -->
-        <slot
+      <slot
+        v-if="links.length !== index + 1"
+        name="divider"
+        :icon-name="config.defaults.dividerIcon"
+        :index="index"
+        :active="isLinkActive(index)"
+      >
+        <UIcon
           v-if="links.length !== index + 1"
-          name="divider"
-          :icon-name="config.defaults.dividerIcon"
-          :index="index"
-          :active="isLinkActive(index)"
-        >
-          <UIcon
-            v-if="links.length !== index + 1"
-            :name="config.defaults.dividerIcon"
-            :color="getIconColor(link, index)"
-            v-bind="dividerIconAttrs"
-          />
-        </slot>
-      </div>
+          :name="config.defaults.dividerIcon"
+          :color="getIconColor(link)"
+          v-bind="dividerIconAttrs"
+        />
+      </slot>
     </div>
   </div>
 </template>
