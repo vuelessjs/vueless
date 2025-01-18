@@ -141,7 +141,9 @@ const sortedRows: ComputedRef<Row[]> = computed(() => {
 
 const isFooterSticky = computed(() => {
   return (
-    window.innerHeight < tableHeight.value && props.stickyFooter && !isShownFooterPosition.value
+    Number(window?.innerHeight) < tableHeight.value &&
+    props.stickyFooter &&
+    !isShownFooterPosition.value
   );
 });
 
@@ -165,15 +167,15 @@ const isShownActionsHeader = computed(
 
 const isHeaderSticky = computed(() => {
   const positionForFixHeader =
-    Number(headerRowRef.value?.getBoundingClientRect()?.top) + window.scrollY || 0;
+    Number(headerRowRef.value?.getBoundingClientRect()?.top) + Number(window?.scrollY) || 0;
 
   return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
 });
 
 const isShownFooterPosition = computed(() => {
-  const pageBottom = pagePositionY.value + window.innerHeight;
+  const pageBottom = pagePositionY.value + Number(window?.innerHeight);
   const positionForFixFooter =
-    Number(footerRowRef.value?.getBoundingClientRect()?.bottom) + window.scrollY;
+    Number(footerRowRef.value?.getBoundingClientRect()?.bottom) + Number(window?.scrollY);
 
   return pageBottom >= positionForFixFooter;
 });
@@ -310,7 +312,7 @@ function setHeaderCellWidth() {
 }
 
 function onScroll() {
-  pagePositionY.value = window.scrollY;
+  pagePositionY.value = Number(window?.scrollY);
 }
 
 function synchronizeTableItemsWithProps() {
