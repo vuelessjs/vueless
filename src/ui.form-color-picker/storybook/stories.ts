@@ -63,13 +63,9 @@ const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => (
     return { args, slots };
   },
   template: `
-    <UCol>
-      <UColorPicker v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate || getSlotsFragment("")}
-      </UColorPicker>
-
-      <UButton label="Brand button" color="brand"/>
-    </UCol>
+    <UColorPicker v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UColorPicker>
   `,
 });
 
