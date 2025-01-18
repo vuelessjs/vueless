@@ -100,11 +100,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function getSelectedBrandColor() {
-  return localStorage.getItem("brand") || undefined;
+  return (isCSR && localStorage.getItem("brand")) || undefined;
 }
 
 export function getSelectedGrayColor() {
-  return localStorage.getItem("gray") || undefined;
+  return (isCSR && localStorage.getItem("gray")) || undefined;
 }
 
 export function setTheme(config: Config = {}) {
@@ -138,8 +138,8 @@ export function setTheme(config: Config = {}) {
   const defaultGrayShade = isDarkMode ? 400 : 600;
   const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
 
-  localStorage.setItem("brand", brand);
-  localStorage.setItem("gray", gray);
+  isCSR && localStorage.setItem("brand", brand);
+  isCSR && localStorage.setItem("gray", gray);
 
   if (gray === COOL_COLOR) {
     gray = GRAY_COLOR;
