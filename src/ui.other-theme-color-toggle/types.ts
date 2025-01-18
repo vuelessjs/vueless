@@ -8,12 +8,12 @@ export interface Props {
   /**
    * Selected brand color (v-model).
    */
-  brand: BrandColors;
+  brand?: BrandColors;
 
   /**
    * Selected gray color (v-model).
    */
-  gray: GrayColors;
+  gray?: GrayColors;
 
   /**
    * Component size.
