@@ -6,9 +6,14 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Selected values.
+   * Selected brand color (v-model).
    */
-  modelValue: [BrandColors, GrayColors];
+  brand: BrandColors;
+
+  /**
+   * Selected gray color (v-model).
+   */
+  gray: GrayColors;
 
   /**
    * Component size.

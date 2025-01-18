@@ -22,10 +22,10 @@ export default {
   title: "Other / Theme Color Toggle",
   component: UThemeColorToggle,
   args: {
-    modelValue: ["", ""],
+    brand: "",
+    gray: "",
     brandColors: {
       grayscale: "bg-gray-900",
-      gray: "bg-gray-600",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
@@ -71,7 +71,7 @@ const DefaultTemplate: StoryFn<UThemeColorToggleArgs> = (args: UThemeColorToggle
   },
   template: `
     <UCol>
-      <UThemeColorToggle v-bind="args" v-model="args.modelValue">
+      <UThemeColorToggle v-bind="args" v-model:brand="args.brand" v-model:gray="args.gray">
         ${args.slotTemplate || getSlotsFragment("")}
       </UThemeColorToggle>
 
@@ -97,7 +97,8 @@ const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model="args.modelValue"
+        v-model:brand="args.brand"
+        v-model:gray="args.gray"
         :[args.enum]="option"
       />
     </UCol>
