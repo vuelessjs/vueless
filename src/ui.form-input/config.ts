@@ -53,9 +53,9 @@ export default /*tw*/ {
       },
       error: {
         true: `
-        bg-red-50 placeholder:text-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
-        focus-within:border-red-500 focus-within:ring-red-700/15
-      `,
+          bg-red-50 placeholder:text-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
+          focus-within:border-red-500 focus-within:ring-red-700/15
+        `,
       },
       typePassword: {
         true: "tracking-widest !leading-[1.18] [font-family:text-security-disc,serif] [-webkit-text-security:disc]",
