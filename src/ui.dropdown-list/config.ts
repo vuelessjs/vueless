@@ -21,7 +21,7 @@ export default /*tw*/ {
         lg: "text-base",
       },
       disabled: {
-        true: "pointer-events-none",
+        true: "pointer-events-none text-gray-400",
       },
     },
   },
@@ -50,6 +50,12 @@ export default /*tw*/ {
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
+  optionDivider: {
+    base: "{UDivider}",
+    defaults: {
+      padding: "none",
+    },
+  },
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",
