@@ -43,9 +43,11 @@ const DefaultTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
     return { args, slots };
   },
   template: `
-    <ULink v-if="args.block" v-bind="args" :config="{ wrapper: 'border-2 border-dashed border-green-500 p-2' }">
-      ${args.slotTemplate || getSlotsFragment("")}
-    </ULink>
+    <div v-if="args.block" class="border-2 border-dashed border-green-500 p-2 rounded-dynamic">
+      <ULink v-bind="args">
+        ${args.slotTemplate || getSlotsFragment("")}
+      </ULink>
+    </div>
     <ULink v-else v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </ULink>

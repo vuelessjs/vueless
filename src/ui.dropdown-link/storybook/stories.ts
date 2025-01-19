@@ -8,6 +8,8 @@ import {
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -17,7 +19,7 @@ interface DefaultUDropdownLinkArgs extends Props {
 }
 
 interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
-  enum: keyof Pick<Props, "size" | "color">;
+  enum: keyof Pick<Props, "size" | "color" | "xPosition" | "yPosition">;
 }
 
 export default {
@@ -46,7 +48,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
-  components: { UDropdownLink, UIcon },
+  components: { UDropdownLink, UIcon, UBadge, ULink },
   setup() {
     const slots = getSlotNames(UDropdownLink.__name);
 
@@ -96,8 +98,56 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
+export const DropdownListXPosition = EnumVariantTemplate.bind({});
+DropdownListXPosition.args = { enum: "xPosition" };
+
+export const DropdownListYPosition = EnumVariantTemplate.bind({});
+DropdownListYPosition.args = { enum: "yPosition" };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
+export const Ring = DefaultTemplate.bind({});
+Ring.args = { ring: true };
+
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
+
+export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (
+  args: EnumUDropdownLinkArgs,
+  { argTypes },
+) => ({
+  components: { UDropdownLink, URow },
+  setup() {
+    const variants = [
+      { name: "Default", props: {} },
+      { name: "Underlined on hover", props: { underlined: undefined, dashed: false } },
+      { name: "Underlined", props: { underlined: true, dashed: false } },
+    ];
+
+    const colors = argTypes?.color?.options;
+
+    return {
+      args,
+      variants,
+      colors,
+    };
+  },
+  template: `
+    <div v-for="variant in variants" :key="variant.name" class="mb-8">
+      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <URow no-mobile>
+        <UDropdownLink
+          v-for="color in colors"
+          :key="color"
+          v-bind="variant.props"
+          :color="color"
+          :label="color"
+        />
+      </URow>
+    </div>
+  `,
+});
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
@@ -106,7 +156,7 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      Custom label
+      <UBadge label="Dropdown" color="green" variant="thirdary" />
     </template>
   `,
 };
@@ -116,22 +166,24 @@ LeftSlot.args = {
   slotTemplate: `
     <template #left>
       <UIcon
-        name="archive"
-        color="red"
+        name="heart_plus"
         size="sm"
+        color="green"
+        class="mx-1"
       />
     </template>
   `,
 };
 
-export const RightSlot = DefaultTemplate.bind({});
-RightSlot.args = {
+export const SlotToggle = DefaultTemplate.bind({});
+SlotToggle.args = {
   slotTemplate: `
-    <template #right>
+    <template #toggle="{ opened }">
       <UIcon
-        name="archive"
-        color="red"
-        size="sm"
+        name="expand_circle_down"
+        color="green"
+        class="mx-1"
+        :class="{ 'rotate-180' : opened }"
       />
     </template>
   `,
