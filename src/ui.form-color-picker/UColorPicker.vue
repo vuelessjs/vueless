@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from "vue";
+import { ref, computed, useId } from "vue";
 
 import { vTooltip } from "../directives";
 import useUI from "../composables/useUI.ts";
@@ -31,13 +31,16 @@ const emit = defineEmits([
 
 const elementId = props.id || useId();
 
+const localValue = ref("");
+
 const selectedItem = computed({
-  get: () => props.modelValue,
+  get: () => props.modelValue || localValue.value,
   set: (value) => emit("update:modelValue", value),
 });
 
 function onClickColor(color: string) {
   selectedItem.value = color;
+  localValue.value = color;
 }
 
 /**
