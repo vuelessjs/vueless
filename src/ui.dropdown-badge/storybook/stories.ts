@@ -146,29 +146,32 @@ CustomDropdownIcon.args = {
   },
 };
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
-  slotTemplate: `
-    <template #default>
-      <UIcon name="unfold_more" color="white" />
-    </template>
-  `,
-  noIcon: true,
-};
+export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
+  components: { UDropdownBadge, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UDropdownBadge v-bind="args" label="Add to favorite">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            size="xs"
+            color="green"
+            class="mx-1"
+          />
+        </template>
+      </UDropdownBadge>
 
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="heart_plus"
-        size="xs"
-        color="green"
-        class="mx-1"
-      />
-    </template>
+      <UDropdownBadge v-bind="args" no-icon>
+        <template #default>
+          <UIcon name="unfold_more" color="white" />
+        </template>
+      </UDropdownBadge>
+    </URow>
   `,
-};
+});
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
