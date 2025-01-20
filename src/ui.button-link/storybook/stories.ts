@@ -153,8 +153,9 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
   setup() {
     const variants = [
       { name: "Default", props: {} },
-      { name: "Underlined", props: { underlined: true } },
       { name: "Dashed", props: { dashed: true } },
+      { name: "Underlined", props: { underlined: true } },
+      { name: "No underline", props: { underlined: false } },
     ];
 
     const colors = argTypes?.color?.options;
