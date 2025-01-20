@@ -9,7 +9,16 @@ export default /*tw*/ {
     },
     compoundVariants: [{ opened: true, color: ["grayscale", "white"], class: "ring-gray-700/15" }],
   },
-  dropdownIcon: "{UIcon} transition duration-300 group-[]:rotate-180",
+  dropdownIcon: {
+    base: "{UIcon} transition duration-300 group-[]:rotate-180",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "xs",
+      },
+    },
+  },
   dropdownList: {
     base: "{UDropdownList} w-fit",
     variants: {
