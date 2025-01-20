@@ -17,7 +17,7 @@ export interface Props {
   /**
    * Input value.
    */
-  modelValue?: string | number;
+  modelValue?: number | string;
   /**
    * Input label.
    */

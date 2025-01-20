@@ -41,7 +41,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(USelect.__name),
-    modelValue: { control: { type: "number" } },
   },
   parameters: {
     docs: {

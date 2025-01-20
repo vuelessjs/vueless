@@ -27,7 +27,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UInput.__name),
-    modelValue: { control: { type: "text" } },
   },
   parameters: {
     docs: {
