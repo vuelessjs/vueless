@@ -1,12 +1,27 @@
 import { addons, useArgs, makeDecorator } from "@storybook/preview-api";
 import { h, onMounted, watch } from "vue";
 
+const params = new URLSearchParams(window.location.search);
+let previousStoryId = null;
+
+function getArgsFromUrl(storyId) {
+  if (previousStoryId && parseInt(previousStoryId) === parseInt(storyId)) {
+    return parseKeyValuePairs(params.get("args"));
+  }
+
+  params.delete("args");
+
+  return {};
+}
+
 export const vue3SourceDecorator = makeDecorator({
   name: "vue3SourceDecorator",
   wrapper: (storyFn, context) => {
     const story = storyFn(context);
-    const urlArgs = getArgsFromUrl();
     const [, updateArgs] = useArgs();
+    const urlArgs = getArgsFromUrl(context.id);
+
+    previousStoryId = context.id;
 
     // this returns a new component that computes the source code when mounted
     // and emits an events that is handled by addons-docs
@@ -137,16 +152,8 @@ function kebabCase(str) {
     .join("");
 }
 
-function getArgsFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const args = params.get("args");
-
-  if (!args) return {};
-
-  return parseKeyValuePairs(args);
-}
-
 function parseKeyValuePairs(input) {
+  input = input || "";
   const result = {};
 
   // Split key-value pairs and parse them
