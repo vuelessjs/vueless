@@ -1,15 +1,23 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative inline-flex",
+    base: "relative inline-flex items-center rounded",
     variants: {
       opened: {
         true: "group",
       },
+      ring: {
+        true: "focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-700/15",
+      },
     },
   },
-  dropdownLink: "{ULink}",
+  dropdownLink: "{ULink} focus:ring-0 focus:ring-offset-0",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[]:rotate-180",
+    variants: {
+      disabled: {
+        true: "text-gray-400 pointer-events-none",
+      },
+    },
     defaults: {
       size: {
         sm: "2xs",
