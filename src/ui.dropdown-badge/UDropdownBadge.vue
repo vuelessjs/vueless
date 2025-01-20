@@ -89,7 +89,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       <template #left>
         <!--
           @slot Use it to add something before the label.
-          @binding {string} label
+          @binding {boolean} opened
         -->
         <slot name="left" :opened="isShownOptions" />
       </template>
