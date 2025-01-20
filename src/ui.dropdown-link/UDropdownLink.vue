@@ -106,7 +106,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
     </ULink>
 
     <!--
-      @slot Use it to add something after the label.
+      @slot Use it to add something instead of the toggle icon.
       @binding {boolean} opened
     -->
     <slot name="toggle" :opened="isShownOptions">
