@@ -5,7 +5,10 @@ const params = new URLSearchParams(window.location.search);
 let previousStoryId = null;
 
 function getArgsFromUrl(storyId) {
-  if (previousStoryId && parseInt(previousStoryId) === parseInt(storyId)) {
+  const isInIframe = params.toString().includes("globals=");
+  const isSameComponent = parseInt(previousStoryId) === parseInt(storyId);
+
+  if (isInIframe || isSameComponent || previousStoryId === null) {
     return parseKeyValuePairs(params.get("args"));
   }
 
