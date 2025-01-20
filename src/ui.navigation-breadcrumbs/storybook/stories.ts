@@ -23,11 +23,11 @@ export default {
   component: UBreadcrumbs,
   args: {
     links: [
-      { label: "Main", href: "https://vueless.com/" },
-      { label: "Category", href: "https://docs.vueless.com/" },
-      { label: "Product", href: "https://ui.vueless.com/" },
+      { label: "Vueless Docs", href: "https://docs.vueless.com/" },
+      { label: "Global Customization", href: "https://docs.vueless.com/global-customization/" },
+      { label: "Rounding", href: "https://docs.vueless.com/global-customization/rounding" },
     ],
-    targetBlank: true,
+    target: "_blank",
   },
   argTypes: {
     ...getArgTypes(UBreadcrumbs.__name),
@@ -131,7 +131,7 @@ export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
   },
   template: `
     <UBreadcrumbs v-bind="args">
-      <template #left="{ index }">
+      <template #icon="{ index }">
         <UBadge
           v-if="index === 1"
           label="Info"

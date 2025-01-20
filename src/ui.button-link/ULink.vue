@@ -46,6 +46,10 @@ const emit = defineEmits([
   "keydown",
 ]);
 
+defineSlots<{
+  default: (props: { isActive: boolean; isExactActive: boolean }) => void;
+}>();
+
 const slots = useSlots();
 
 const isPresentRoute = computed(() => {
@@ -101,6 +105,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 <template>
   <router-link
     v-if="isPresentRoute"
+    v-slot="{ isActive, isExactActive }"
     :to="safeTo"
     :custom="custom"
     :replace="replace"
@@ -119,7 +124,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
     @mouseover="onMouseover"
   >
     <!-- @slot Use it replace the label. -->
-    <slot>{{ label }}</slot>
+    <slot :is-active="isActive" :is-exact-active="isExactActive">{{ label }}</slot>
   </router-link>
 
   <a

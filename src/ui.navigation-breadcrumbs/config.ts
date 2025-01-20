@@ -19,7 +19,7 @@ export default /*tw*/ {
     size: "md",
     underlined: undefined,
     dashed: false,
-    targetBlank: false,
+    target: "_self",
     dividerIcon: "arrow_right",
   },
 };

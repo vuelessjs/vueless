@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute } from "vue-router";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -28,18 +27,8 @@ const emit = defineEmits([
   "clickLink",
 ]);
 
-const route = useRoute();
-
 const getIconColor = computed(() => {
   return (link: UBreadcrumb) => (link.disabled || (!link.to && !link.href) ? "gray" : props.color);
-});
-
-const isLinkActive = computed(() => {
-  return (index: number) => {
-    const link = props.links[index];
-
-    return route.path === link.to;
-  };
 });
 
 function onClickLink(link: UBreadcrumb) {
@@ -67,9 +56,8 @@ const {
           @slot Use it to add something instead of a link icon.
           @binding {string} icon-name
           @binding {number} index
-          @binding {boolean} active
         -->
-      <slot name="left" :icon-name="link.icon" :index="index" :active="isLinkActive(index)">
+      <slot name="icon" :icon-name="link.icon" :index="index">
         <UIcon
           v-if="link.icon"
           :name="link.icon"
@@ -84,7 +72,7 @@ const {
         :to="link.to"
         :size="size"
         :color="color"
-        :target-blank="targetBlank"
+        :target="link.target || target"
         :custom="link.custom"
         :replace="link.replace"
         :active-class="link.activeClass"
@@ -98,27 +86,32 @@ const {
         :data-test="dataTest"
         @click="onClickLink(link)"
       >
-        <!--
-          @slot Use it to add something instead of a link label.
-          @binding {string} label
-          @binding {number} index
-          @binding {boolean} active
-        -->
-        <slot name="label" :label="link.label" :index="index" :active="isLinkActive(index)" />
+        <template #default="{ isActive, isExactActive }">
+          <!--
+            @slot Use it to add something instead of a link label.
+            @binding {string} label
+            @binding {number} index
+            @binding {boolean} active
+          -->
+          <slot
+            name="label"
+            :label="link.label"
+            :index="index"
+            :active="isActive || isExactActive"
+          />
+        </template>
       </ULink>
 
       <!--
           @slot Use it to add something instead of the divider.
           @binding {string} icon-name
           @binding {number} index
-          @binding {boolean} active
         -->
       <slot
         v-if="links.length !== index + 1"
         name="divider"
         :icon-name="config.defaults.dividerIcon"
         :index="index"
-        :active="isLinkActive(index)"
       >
         <UIcon
           v-if="links.length !== index + 1"

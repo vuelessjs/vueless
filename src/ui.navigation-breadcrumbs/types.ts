@@ -46,9 +46,9 @@ export interface Props {
     | "brand";
 
   /**
-   * Open link in the new tab.
+   * Specifies where to open the linked page.
    */
-  targetBlank?: boolean;
+  target?: "_blank" | "_self" | "_parent" | "_top" | string;
 
   /**
    * Show underline.
