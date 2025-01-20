@@ -9,7 +9,7 @@ export interface Props {
   /**
    * Select value.
    */
-  modelValue?: string | number | (string | number)[];
+  modelValue?: number | string | (number | string)[];
 
   /**
    * Select options.

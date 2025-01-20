@@ -12,14 +12,14 @@ export interface Props {
   label?: string;
 
   /**
-   * Link href url.
-   */
-  href?: string;
-
-  /**
    * Vue-router route object.
    */
   to?: RouteLocationRaw;
+
+  /**
+   * Link href url.
+   */
+  href?: string;
 
   /**
    * Link size.
@@ -58,26 +58,6 @@ export interface Props {
   type?: "phone" | "email" | "link";
 
   /**
-   * Open link in the new tab.
-   */
-  targetBlank?: boolean;
-
-  /**
-   * Pass value to the attribute aria-current when the link is exact active.
-   */
-  ariaCurrentValue?: string;
-
-  /**
-   * Whether RouterLink should not wrap its content in a tag.
-   */
-  custom?: boolean;
-
-  /**
-   * Whether RouterLink should not wrap its content in a tag.
-   */
-  replace?: boolean;
-
-  /**
    * Apply classes to the link when its route is active or when it matches any parent route.
    */
   activeClass?: string;
@@ -86,6 +66,21 @@ export interface Props {
    * Apply classes to the link when its route is active.
    */
   exactActiveClass?: string;
+
+  /**
+   * Pass value to the attribute aria-current when the link is exact active.
+   */
+  ariaCurrentValue?: "time" | "location" | "page" | "step" | "date" | "true" | "false";
+
+  /**
+   * Specifies where to open the linked page.
+   */
+  target?: "_blank" | "_self" | "_parent" | "_top" | string;
+
+  /**
+   * A rel attribute value to apply on the external link.
+   */
+  rel?: string;
 
   /**
    * Show underline.
@@ -111,6 +106,21 @@ export interface Props {
    * Show link ring on focus.
    */
   ring?: boolean;
+
+  /**
+   * Whether RouterLink should not wrap its content in a tag.
+   */
+  custom?: boolean;
+
+  /**
+   * Calls `router.replace` instead of `router.push`.
+   */
+  replace?: boolean;
+
+  /**
+   * Pass the returned promise of `router.push()` to `document.startViewTransition()` if supported.
+   */
+  viewTransition?: boolean;
 
   /**
    * Component config object.

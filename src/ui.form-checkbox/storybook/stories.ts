@@ -27,7 +27,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UCheckbox.__name),
-    modelValue: { control: { type: "boolean" } },
   },
   parameters: {
     docs: {

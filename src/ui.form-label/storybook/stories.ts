@@ -20,7 +20,7 @@ interface ULabelArgs extends Props {
 }
 
 export default {
-  id: "3240",
+  id: "3210",
   title: "Form Inputs & Controls / Label",
   component: ULabel,
   args: {

@@ -36,7 +36,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UToggle.__name),
-    modelValue: { control: { type: "text" } },
   },
   parameters: {
     docs: {

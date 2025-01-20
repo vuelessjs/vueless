@@ -16,7 +16,7 @@ export async function vuelssInit(options) {
   const isValidOptions = options.every((option) => vuelessInitOptions.includes(option));
 
   if (options.length && !isValidOptions) {
-    throw new Error("Ivalid options were provided");
+    throw new Error("Ivalid options were provided.");
   }
 
   const fileExt = options.includes("--ts") ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
@@ -28,7 +28,7 @@ export async function vuelssInit(options) {
 
   const successMessage = styleText(
     "green",
-    `Success: ${formattedDestPath.split(path.sep).at(-1)} was created in ${cwd()} directory`,
+    `Success: ${formattedDestPath.split(path.sep).at(-1)} was created in ${cwd()} directory.`,
   );
 
   console.log(successMessage);

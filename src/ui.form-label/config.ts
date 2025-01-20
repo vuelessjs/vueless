@@ -3,9 +3,9 @@ export default /*tw*/ {
     base: "flex w-full",
     variants: {
       align: {
-        top: "flex-col gap-2",
         topInside: "flex-col gap-0 relative",
-        topWithDesc: "flex-col-reverse w-fit",
+        topWithDesc: "flex-col-reverse gap-2",
+        top: "flex-col gap-2",
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
@@ -68,7 +68,7 @@ export default /*tw*/ {
         lg: "text-sm",
       },
       align: {
-        top: "pl-3",
+        top: "",
         topInside: "pl-3 mt-1.5",
         topWithDesc: "pt-0.5",
         left: "pt-0.5",

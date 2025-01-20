@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
-import { RouterLink, useLink } from "vue-router";
+import { RouterLink } from "vue-router";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -53,31 +53,7 @@ const isPresentRoute = computed(() => {
 });
 
 const safeTo = computed(() => {
-  if (!props.to) {
-    return "/";
-  }
-
-  return props.to;
-});
-
-const useLinkOptions = {
-  activeClass: props.activeClass,
-  ariaCurrentValue: props.ariaCurrentValue,
-  exactActiveClass: props.exactActiveClass,
-  custom: props.custom,
-  replace: props.replace,
-  to: safeTo.value,
-};
-
-const { route, isActive, isExactActive } = useLink(useLinkOptions);
-
-const linkActiveClasses = computed(() => [
-  isActive.value && props.activeClass,
-  isExactActive.value && props.exactActiveClass,
-]);
-
-const targetValue = computed(() => {
-  return props.targetBlank ? "_blank" : "_self";
+  return props.to || "/";
 });
 
 const prefixedHref = computed(() => {
@@ -125,10 +101,15 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 <template>
   <router-link
     v-if="isPresentRoute"
-    :to="route"
-    :target="targetValue"
+    :to="safeTo"
+    :custom="custom"
+    :replace="replace"
+    :target="target"
+    :active-class="activeClass"
+    :exact-active-class="exactActiveClass"
+    :aria-current-value="ariaCurrentValue"
+    :view-transition="viewTransition"
     v-bind="linkAttrs"
-    :class="linkActiveClasses"
     :data-test="getDataTest()"
     tabindex="0"
     @blur="onBlur"
@@ -143,10 +124,10 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 
   <a
     v-else
+    :rel="rel"
     :href="prefixedHref"
-    :target="targetValue"
+    :target="target"
     v-bind="linkAttrs"
-    :class="linkActiveClasses"
     :data-test="getDataTest()"
     tabindex="0"
     @blur="onBlur"

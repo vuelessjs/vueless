@@ -100,11 +100,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 export function getSelectedBrandColor() {
-  return localStorage.getItem("brand") || undefined;
+  return (isCSR && localStorage.getItem("brand")) || undefined;
 }
 
 export function getSelectedGrayColor() {
-  return localStorage.getItem("gray") || undefined;
+  return (isCSR && localStorage.getItem("gray")) || undefined;
 }
 
 export function setTheme(config: Config = {}) {
@@ -137,6 +137,9 @@ export function setTheme(config: Config = {}) {
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
   const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
+
+  isCSR && localStorage.setItem("brand", brand);
+  isCSR && localStorage.setItem("gray", gray);
 
   if (gray === COOL_COLOR) {
     gray = GRAY_COLOR;
@@ -172,9 +175,6 @@ export function setTheme(config: Config = {}) {
     // eslint-disable-next-line no-console
     console.warn(`The gray color '${gray}' is missing in your palette.`);
   }
-
-  localStorage.setItem("brand", brand);
-  localStorage.setItem("gray", gray);
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,

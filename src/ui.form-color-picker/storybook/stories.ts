@@ -5,27 +5,27 @@ import {
   getDocsDescription,
 } from "../../utils/storybook.ts";
 
-import UThemeColorToggle from "../UThemeColorToggle.vue";
+import UColorPicker from "../UColorPicker.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
-interface UThemeColorToggleArgs extends Props {
+interface UColorPickerArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
 
 export default {
-  id: "100020",
-  title: "Other / Theme Color Toggle",
-  component: UThemeColorToggle,
+  id: "3190",
+  title: "Form Inputs & Controls / Color Picker",
+  component: UColorPicker,
   args: {
-    brand: "",
-    gray: "",
-    brandColors: {
+    modelValue: "",
+    colors: {
       grayscale: "bg-gray-900",
+      gray: "bg-gray-600",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
@@ -44,47 +44,33 @@ export default {
       pink: "bg-pink-600",
       rose: "bg-rose-600",
     },
-    grayColors: {
-      slate: "bg-slate-600",
-      cool: "bg-cool-600",
-      zinc: "bg-zinc-600",
-      neutral: "bg-neutral-600",
-      stone: "bg-stone-600",
-    },
   },
   argTypes: {
-    ...getArgTypes(UThemeColorToggle.__name),
+    ...getArgTypes(UColorPicker.__name),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UThemeColorToggle.__name),
+      ...getDocsDescription(UColorPicker.__name),
     },
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UThemeColorToggleArgs> = (args: UThemeColorToggleArgs) => ({
-  components: { UThemeColorToggle, UButton, UCol },
+const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => ({
+  components: { UColorPicker, UButton, UCol },
   setup() {
-    const slots = getSlotNames(UThemeColorToggle.__name);
+    const slots = getSlotNames(UColorPicker.__name);
 
     return { args, slots };
   },
   template: `
-    <UCol>
-      <UThemeColorToggle v-bind="args" v-model:brand="args.brand" v-model:gray="args.gray">
-        ${args.slotTemplate || getSlotsFragment("")}
-      </UThemeColorToggle>
-
-      <UButton label="Brand button" color="brand"/>
-    </UCol>
+    <UColorPicker v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UColorPicker>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
-  args: UThemeColorToggleArgs,
-  { argTypes },
-) => ({
-  components: { UCol, UThemeColorToggle },
+const EnumVariantTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, { argTypes }) => ({
+  components: { UCol, UColorPicker },
   setup() {
     return {
       args,
@@ -93,12 +79,11 @@ const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
   },
   template: `
     <UCol>
-      <UThemeColorToggle
+      <UColorPicker
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
-        v-model:brand="args.brand"
-        v-model:gray="args.gray"
+        v-model="args.modelValue"
         :[args.enum]="option"
       />
     </UCol>

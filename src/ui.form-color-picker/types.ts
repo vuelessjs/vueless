@@ -6,14 +6,9 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Selected brand color (v-model).
+   * Selected values.
    */
-  brand?: BrandColors;
-
-  /**
-   * Selected gray color (v-model).
-   */
-  gray?: GrayColors;
+  modelValue: string;
 
   /**
    * Component size.
@@ -21,24 +16,14 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Brand color list.
+   * Color list.
    */
-  brandColors?: Record<BrandColors, string>;
+  colors?: Record<BrandColors, string>;
 
   /**
-   * Gray color list.
+   * Color labels.
    */
-  grayColors?: Record<GrayColors, string>;
-
-  /**
-   * Brand color labels.
-   */
-  brandLabels?: Record<BrandColors, string>;
-
-  /**
-   * Gray color labels.
-   */
-  grayLabels?: Record<GrayColors, string>;
+  labels?: Record<GrayColors, string>;
 
   /**
    * Unique element id.
