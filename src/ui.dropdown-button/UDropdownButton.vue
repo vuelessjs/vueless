@@ -112,7 +112,6 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
         -->
         <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
-            v-if="!noIcon"
             internal
             color="inherit"
             :name="config.defaults.dropdownIcon"

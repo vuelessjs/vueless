@@ -78,6 +78,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       :size="size"
       :color="color"
       :variant="variant"
+      :round="round"
       v-bind="dropdownBadgeAttrs"
       tabindex="0"
       :data-test="dataTest"
@@ -109,7 +110,6 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
         -->
         <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
-            v-if="!noIcon"
             internal
             color="inherit"
             :name="config.defaults.dropdownIcon"

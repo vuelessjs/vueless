@@ -26,7 +26,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UTextarea.__name),
-    modelValue: { control: { type: "text" } },
   },
   parameters: {
     docs: {

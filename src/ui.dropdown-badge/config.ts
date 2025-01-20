@@ -13,9 +13,9 @@ export default /*tw*/ {
     base: "{UIcon} transition duration-300 group-[]:rotate-180",
     defaults: {
       size: {
-        sm: "sm",
-        md: "md",
-        lg: "md",
+        sm: "2xs",
+        md: "xs",
+        lg: "xs",
       },
     },
   },
