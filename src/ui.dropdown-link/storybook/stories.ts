@@ -48,7 +48,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
-  components: { UDropdownLink, UIcon, UBadge, ULink },
+  components: { UDropdownLink, UIcon, ULink },
   setup() {
     const slots = getSlotNames(UDropdownLink.__name);
 
@@ -153,28 +153,32 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
-  slotTemplate: `
-    <template #default>
-      <UBadge label="Dropdown" color="green" variant="thirdary" />
-    </template>
-  `,
-};
+export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
+  components: { UDropdownLink, UIcon, URow, UBadge },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UDropdownLink v-bind="args" label="Add to favorite">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            size="sm"
+            color="green"
+            class="mx-1"
+          />
+        </template>
+      </UDropdownLink>
 
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="heart_plus"
-        size="sm"
-        color="green"
-        class="mx-1"
-      />
-    </template>
+      <UDropdownLink v-bind="args">
+        <template #default>
+          <UBadge label="Dropdown" color="green" variant="thirdary" />
+        </template>
+      </UDropdownLink>
+    </URow>
   `,
-};
+});
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
