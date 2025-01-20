@@ -98,9 +98,9 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
   >
     <div v-bind="bodyAttrs">
       <!--
-          @slot Use it to add icon before the text.
-          @binding {string} icon-name
-        -->
+        @slot Use it to add icon before the text.
+        @binding {string} icon-name
+      -->
       <slot name="left" :icon-name="leftIcon">
         <UIcon v-if="leftIcon" internal :name="leftIcon" color="inherit" v-bind="leftIconAttrs" />
       </slot>
@@ -118,9 +118,9 @@ const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } 
       </slot>
 
       <!--
-          @slot Use it to add icon after the text.
-          @binding {string} icon-name
-        -->
+        @slot Use it to add icon after the text.
+        @binding {string} icon-name
+      -->
       <slot name="right" :icon-name="rightIcon">
         <UIcon
           v-if="rightIcon"
