@@ -50,21 +50,16 @@ export default /*tw*/ {
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
-  optionDivider: {
-    base: "{UDivider}",
-    defaults: {
-      padding: "none",
-    },
-  },
+  optionDivider: "{UDivider}",
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",
   },
   defaults: {
+    color: "brand",
     size: "md",
     labelKey: "label",
     valueKey: "id",
-    color: "brand",
     visibleOptions: undefined,
     disabled: false,
     addOption: false,

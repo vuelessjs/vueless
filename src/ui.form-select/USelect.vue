@@ -689,7 +689,6 @@ const {
         :options="filteredOptions"
         :disabled="disabled"
         :size="size"
-        :color="color"
         :visible-options="visibleOptions"
         :value-key="valueKey"
         :label-key="labelKey"
