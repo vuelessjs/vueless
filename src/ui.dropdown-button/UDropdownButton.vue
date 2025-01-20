@@ -110,18 +110,16 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
           @slot Use it to add something after the label.
           @binding {boolean} opened
         -->
-        <template v-if="!noIcon">
-          <slot name="toggle" :opened="isShownOptions">
-            <UIcon
-              v-if="!noIcon"
-              internal
-              color="inherit"
-              :name="config.defaults.dropdownIcon"
-              v-bind="dropdownIconAttrs"
-              :data-test="`${dataTest}-dropdown`"
-            />
-          </slot>
-        </template>
+        <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
+          <UIcon
+            v-if="!noIcon"
+            internal
+            color="inherit"
+            :name="config.defaults.dropdownIcon"
+            v-bind="dropdownIconAttrs"
+            :data-test="`${dataTest}-dropdown`"
+          />
+        </slot>
       </template>
     </UButton>
 
