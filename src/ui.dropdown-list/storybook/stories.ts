@@ -107,6 +107,23 @@ AddOption.parameters = {
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
+export const ColorsTemplate: StoryFn<DefaultUDropdownListArgs> = (
+  args: DefaultUDropdownListArgs,
+) => ({
+  components: { UDropdownList },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UDropdownList
+      v-bind="args"
+      class="mx-4 w-[24rem]"
+      modelValue="2"
+      color="green"
+    />
+  `,
+});
+
 export const VisibleOptions = DefaultTemplate.bind({});
 VisibleOptions.args = { visibleOptions: 3 };
 VisibleOptions.parameters = {
