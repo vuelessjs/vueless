@@ -16,7 +16,7 @@ interface DefaultUDropdownListArgs extends Props {
 }
 
 interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
-  enum: keyof Pick<Props, "size">;
+  enum: keyof Pick<Props, "size" | "color">;
 }
 
 export default {
@@ -77,13 +77,13 @@ const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
     };
   },
   template: `
-      <URow>
+      <URow class="w-fit">
         <UDropdownList
           v-for="(option, index) in options"
           :key="index"
           v-bind="args"
           :[args.enum]="option"
-          class="static"
+          class="static w-36"
         />
       </URow>
   `,
@@ -107,22 +107,8 @@ AddOption.parameters = {
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const ColorsTemplate: StoryFn<DefaultUDropdownListArgs> = (
-  args: DefaultUDropdownListArgs,
-) => ({
-  components: { UDropdownList },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UDropdownList
-      v-bind="args"
-      class="mx-4 w-[24rem]"
-      modelValue="2"
-      color="green"
-    />
-  `,
-});
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", modelValue: "2" };
 
 export const VisibleOptions = DefaultTemplate.bind({});
 VisibleOptions.args = { visibleOptions: 3 };
