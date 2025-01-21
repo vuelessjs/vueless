@@ -10,7 +10,7 @@ import { VUELESS_DIR } from "../../constants.js";
 
 const storiesName = "stories.ts";
 
-export async function getLastStorybookId() {
+export async function getStorybookId() {
   const srcComponentsDir = path.join(cwd(), SRC_COMPONENTS_PATH);
   const componentsDir = path.join(cwd(), COMPONENTS_PATH);
   const vuelessPackagePath = path.join(cwd(), VUELESS_DIR);
@@ -36,9 +36,8 @@ export async function getLastStorybookId() {
   for await (const storyPath of stories) {
     const storyContent = await readFile(storyPath, "utf-8");
 
-    const storyIdLine = storyContent.split("\n").find((line, idx, array) => {
-      return line.includes("id:") && idx && array[idx - 1].includes("export default");
-    });
+    const storyIdLineIndex = getStoryMetaKeyIndex(storyContent, "id");
+    const storyIdLine = storyContent.split("\n").at(storyIdLineIndex);
 
     if (!storyIdLine) continue;
 
@@ -49,5 +48,36 @@ export async function getLastStorybookId() {
     }
   }
 
-  return id;
+  return id + 10;
+}
+
+export function getStoryMetaKeyIndex(fileContent, key) {
+  const lines = fileContent.split("\n");
+  let insideExportBlock = false;
+  let bracketDepth = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    if (line.startsWith("export default {")) {
+      insideExportBlock = true;
+      bracketDepth = 1;
+      continue;
+    }
+
+    if (insideExportBlock) {
+      bracketDepth += (line.match(/{/g) || []).length;
+      bracketDepth -= (line.match(/}/g) || []).length;
+
+      if (bracketDepth === 1 && line.startsWith(`${key}:`)) {
+        return i;
+      }
+
+      if (bracketDepth === 0) {
+        break;
+      }
+    }
+  }
+
+  return -1; // Return -1 if no top-level `id` is found
 }

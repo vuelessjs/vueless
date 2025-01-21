@@ -152,6 +152,7 @@ DefaultSlot.args = {
     </template>
   `,
   noIcon: true,
+  square: true,
 };
 
 export const LeftSlot = DefaultTemplate.bind({});
