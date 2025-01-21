@@ -93,6 +93,7 @@ const {
             @binding {string} label
             @binding {number} index
             @binding {boolean} active
+            @binding {boolean} exact-active
           -->
           <slot
             name="label"
