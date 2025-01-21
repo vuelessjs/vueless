@@ -84,7 +84,7 @@ const EnumVariantTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        class="border border-gray-200 rounded p-4"
+        class="border border-gray-200 rounded-dynamic-sm p-4"
       >
         <UText :[args.enum]="option">
           {{ prefixedOptions[index] }}

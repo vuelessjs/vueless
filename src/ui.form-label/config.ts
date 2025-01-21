@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex w-full",
+    base: "flex w-full group",
     variants: {
       align: {
         topInside: "flex-col gap-0 relative",
@@ -24,7 +24,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "text-gray-900 z-10 block !leading-none w-max",
+    base: "text-gray-900 z-10 block !leading-none w-max transition",
     variants: {
       size: {
         sm: "text-xs",
@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-gray-500",
+        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-500",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",

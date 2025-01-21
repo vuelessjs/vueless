@@ -89,7 +89,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       <template #left>
         <!--
           @slot Use it to add something before the label.
-          @binding {string} label
+          @binding {boolean} opened
         -->
         <slot name="left" :opened="isShownOptions" />
       </template>
@@ -105,10 +105,10 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
 
       <template #right>
         <!--
-          @slot Use it to add something after the label.
+          @slot Use it to add something instead of the toggle icon.
           @binding {boolean} opened
         -->
-        <slot v-if="!noIcon" name="right" :opened="isShownOptions">
+        <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
             internal
             color="inherit"
