@@ -54,10 +54,10 @@ const {
   <div v-bind="breadcrumbsAttrs">
     <div v-for="(link, index) in links" :key="index" v-bind="breadcrumbAttrs">
       <!--
-          @slot Use it to add something instead of a link icon.
-          @binding {string} icon-name
-          @binding {number} index
-        -->
+        @slot Use it to add something instead of a link icon.
+        @binding {string} icon-name
+        @binding {number} index
+      -->
       <slot name="icon" :icon-name="link.icon" :index="index">
         <UIcon
           v-if="link.icon"
@@ -106,10 +106,10 @@ const {
       </ULink>
 
       <!--
-          @slot Use it to add something instead of the divider.
-          @binding {string} icon-name
-          @binding {number} index
-        -->
+        @slot Use it to add something instead of the divider.
+        @binding {string} icon-name
+        @binding {number} index
+      -->
       <slot
         v-if="links.length !== index + 1"
         name="divider"
