@@ -15,6 +15,7 @@ body {
 .light .sbdocs .sbdocs-content > h2,
 .light .sbdocs .sbdocs-content > h3,
 .light .sbdocs .sbdocs-content > .sb-anchor > h3,
+.light .sbdocs .sbdocs-content > .sb-anchor > p,
 .light .sbdocs .sbdocs-content > p,
 .light .sbdocs .sbdocs-content > table th,
 .light .sbdocs .sbdocs-content > table td {
@@ -25,6 +26,7 @@ body {
 .dark .sbdocs .sbdocs-content > h2,
 .dark .sbdocs .sbdocs-content > h3,
 .dark .sbdocs .sbdocs-content > .sb-anchor > h3,
+.dark .sbdocs .sbdocs-content > .sb-anchor > p,
 .dark .sbdocs .sbdocs-content > p,
 .dark .sbdocs .sbdocs-content > table th,
 .dark .sbdocs .sbdocs-content > table td {
@@ -161,6 +163,14 @@ body {
 
 .sb-anchor {
   @apply mt-2;
+}
+
+.dark .sb-anchor > p > a {
+  @apply text-green-400;
+}
+
+.light .sb-anchor > p > a {
+  @apply text-green-600;
 }
 
 .sb-bar,

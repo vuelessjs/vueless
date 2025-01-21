@@ -37,6 +37,7 @@ import UPaginationConfig from "./ui.navigation-pagination/config.ts";
 import UProgressConfig from "./ui.navigation-progress/config.ts";
 import UTabConfig from "./ui.navigation-tab/config.ts";
 import UTabsConfig from "./ui.navigation-tabs/config.ts";
+import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config.ts";
 import UAvatarConfig from "./ui.image-avatar/config.ts";
 import UIconConfig from "./ui.image-icon/config.ts";
 import UCheckboxConfig from "./ui.form-checkbox/config.ts";
@@ -226,6 +227,7 @@ export interface Components {
   UProgress: Partial<typeof UProgressConfig>;
   UTab: Partial<typeof UTabConfig>;
   UTabs: Partial<typeof UTabsConfig>;
+  UBreadcrumbs: Partial<typeof UBreadcrumbsConfig>;
   UAvatar: Partial<typeof UAvatarConfig>;
   UIcon: Partial<typeof UIconConfig>;
   UCheckbox: Partial<typeof UCheckboxConfig>;

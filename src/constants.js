@@ -147,6 +147,7 @@ export const COMPONENTS = {
   UTabs: "ui.navigation-tabs",
   UProgress: "ui.navigation-progress",
   UPagination: "ui.navigation-pagination",
+  UBreadcrumbs: "ui.navigation-breadcrumbs",
 
   /* Loaders and Skeletons */
   ULoader: "ui.loader",
