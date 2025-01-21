@@ -11,6 +11,7 @@ import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import type { Props, Config, UBreadcrumb } from "./types.ts";
+import type { ULinkSlotProps } from "../ui.button-link/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -86,7 +87,7 @@ const {
         :data-test="dataTest"
         @click="onClickLink(link)"
       >
-        <template #default="{ isActive, isExactActive }">
+        <template #default="slotProps">
           <!--
             @slot Use it to add something instead of a link label.
             @binding {string} label
@@ -97,7 +98,9 @@ const {
             name="label"
             :label="link.label"
             :index="index"
-            :active="isActive || isExactActive"
+            :active="
+              (slotProps as ULinkSlotProps).isActive || (slotProps as ULinkSlotProps).isExactActive
+            "
           />
         </template>
       </ULink>
