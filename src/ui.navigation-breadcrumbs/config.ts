@@ -1,6 +1,6 @@
 export default /*tw*/ {
   breadcrumbs: "flex",
-  breadcrumb: "flex items-center gap-1 py-2",
+  breadcrumb: "flex items-center gap-1 mr-1 py-2",
   breadcrumbLink: "{ULink}",
   componentIcon: {
     base: "{UIcon}",
