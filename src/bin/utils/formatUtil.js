@@ -1,5 +1,7 @@
 import path from "node:path";
 
+import { VUELESS_LIBRARY } from "../../constants.js";
+
 export function replaceRelativeImports(componentName, filePath, fileContent) {
   const isTopLevelFile = path.dirname(filePath).endsWith(componentName);
   const contentLines = fileContent.split("\n");
@@ -9,6 +11,7 @@ export function replaceRelativeImports(componentName, filePath, fileContent) {
 
 function replaceRelativeLineImports(line, isTopLevelFile) {
   const importRegex = /import\s+(?:[\w\s{},*]+)\s+from\s+(['"])(\.\.?\/.*?)(\.[tj]s)?\1(?!\?)/g;
+  const multiLineImportRegExp = /from\s+(['"])(\.\.?\/.*?)(\.[tj]s)?\1(?!\?)/g; // Matches import's "from" part
 
   const isTopLevelLocalImport = isTopLevelFile && !line.includes("../");
   const isInnerLocalImport =
@@ -18,6 +21,12 @@ function replaceRelativeLineImports(line, isTopLevelFile) {
     return line;
   }
 
+  if (line.startsWith("}")) {
+    return line.replace(multiLineImportRegExp, (match, quote, oldPath, ext) => {
+      return match.replace(oldPath + (ext || ""), VUELESS_LIBRARY);
+    });
+  }
+
   return line.replace(importRegex, (match, quote, oldPath, ext) => {
     const isDefaultImport = match.includes("{");
 
@@ -25,7 +34,7 @@ function replaceRelativeLineImports(line, isTopLevelFile) {
       match = defaultToNamedImport(match);
     }
 
-    return match.replace(oldPath + (ext || ""), "vueless");
+    return match.replace(oldPath + (ext || ""), VUELESS_LIBRARY);
   });
 }
 

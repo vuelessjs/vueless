@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from "vue";
+import { ref, computed, useId } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -42,8 +42,11 @@ const emit = defineEmits([
 
 const elementId = props.id || useId();
 
+const localBrand = ref("");
+const localGray = ref("");
+
 const selectedBrandColor = computed({
-  get: () => props.brand || getSelectedBrandColor(),
+  get: () => props.brand || localBrand.value || getSelectedBrandColor(),
   set: (brand: string) => {
     const prevBrand = getSelectedBrandColor();
     const isBrandGrayscale = brand === GRAYSCALE_COLOR;
@@ -55,14 +58,16 @@ const selectedBrandColor = computed({
 
     setTheme({ brand });
     emit("update:brand", brand);
+    localBrand.value = brand;
   },
 });
 
 const selectedGrayColor = computed({
-  get: () => props.gray || getSelectedGrayColor(),
-  set: (value: string) => {
-    setTheme({ gray: value });
-    emit("update:gray", value);
+  get: () => props.gray || localGray.value || getSelectedGrayColor(),
+  set: (gray: string) => {
+    setTheme({ gray });
+    emit("update:gray", gray);
+    localGray.value = gray;
   },
 });
 

@@ -107,12 +107,11 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
 
       <template #right>
         <!--
-          @slot Use it to add something after the label.
+          @slot Use it to add something instead of the toggle icon.
           @binding {boolean} opened
         -->
-        <slot name="toggle" :opened="isShownOptions">
+        <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
-            v-if="!noIcon"
             internal
             color="inherit"
             :name="config.defaults.dropdownIcon"

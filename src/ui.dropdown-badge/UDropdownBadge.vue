@@ -78,6 +78,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       :size="size"
       :color="color"
       :variant="variant"
+      :round="round"
       v-bind="dropdownBadgeAttrs"
       tabindex="0"
       :data-test="dataTest"
@@ -88,7 +89,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       <template #left>
         <!--
           @slot Use it to add something before the label.
-          @binding {string} label
+          @binding {boolean} opened
         -->
         <slot name="left" :opened="isShownOptions" />
       </template>
@@ -102,17 +103,15 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
         <slot :label="label" :opened="isShownOptions" />
       </template>
 
-      <template #right="{ iconSize }">
+      <template #right>
         <!--
-          @slot Use it to add something after the label.
+          @slot Use it to add something instead of the toggle icon.
           @binding {boolean} opened
         -->
-        <slot name="right" :opened="isShownOptions">
+        <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
-            v-if="!noIcon"
             internal
             color="inherit"
-            :size="iconSize"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
             :data-test="`${dataTest}-dropdown`"

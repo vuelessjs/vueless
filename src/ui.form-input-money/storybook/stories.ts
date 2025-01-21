@@ -27,7 +27,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UInputMoney.__name),
-    modelValue: { control: { type: "number" } },
   },
   parameters: {
     docs: {

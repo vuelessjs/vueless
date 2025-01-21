@@ -36,7 +36,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UToggle.__name),
-    modelValue: { control: { type: "text" } },
   },
   parameters: {
     docs: {
@@ -180,7 +179,7 @@ DefaultSlot.args = {
         <UBadge label="Download" color="green" right-icon="download" />
       </UToggleItem>
       <UToggleItem value="2">
-        <UBadge label="Edit" color="amber" right-icon="edit" />
+        <UBadge label="Edit" color="amber" right-icon="edit_note" />
       </UToggleItem>
       <UToggleItem value="3">
         <UBadge label="Delete" color="red" right-icon="delete" />

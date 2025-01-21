@@ -7,7 +7,9 @@ import {
 
 import UDropdownBadge from "../../ui.dropdown-badge/UDropdownBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -17,7 +19,7 @@ interface DefaultUDropdownBadgeArgs extends Props {
 }
 
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
-  enum: keyof Pick<Props, "color" | "size">;
+  enum: keyof Pick<Props, "color" | "size" | "variant" | "xPosition" | "yPosition">;
 }
 
 export default {
@@ -42,7 +44,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
-  components: { UDropdownBadge, UIcon },
+  components: { UDropdownBadge, UIcon, ULink },
   setup() {
     const slots = getSlotNames(UDropdownBadge.__name);
 
@@ -81,48 +83,106 @@ const EnumVariantTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
   `,
 });
 
+const VariantColorsTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
+  args: EnumUDropdownBadgeArgs,
+  { argTypes },
+) => ({
+  components: { UDropdownBadge, URow, UCol },
+  setup() {
+    return {
+      args,
+      variants: argTypes.variant?.options,
+      colors: argTypes.color?.options,
+    };
+  },
+  template: `
+    <UCol>
+      <URow v-for="(variant, index) in variants" :key="index">
+        <UDropdownBadge
+          v-for="(color, index) in colors"
+          :key="index"
+          v-bind="args"
+          :color="color"
+          :variant="variant"
+          :label="color"
+        />
+      </URow>
+    </UCol>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Variants = EnumVariantTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const DropdownListXPosition = EnumVariantTemplate.bind({});
+DropdownListXPosition.args = { enum: "xPosition" };
+
+export const DropdownListYPosition = EnumVariantTemplate.bind({});
+DropdownListYPosition.args = { enum: "yPosition" };
+
+export const VariantColors = VariantColorsTemplate.bind({});
+VariantColors.args = {};
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
-  slotTemplate: `
-    <template #default>
-      Custom label
-    </template>
-  `,
+export const CustomDropdownIcon = DefaultTemplate.bind({});
+CustomDropdownIcon.args = {
+  config: {
+    dropdownIcon: {
+      defaults: {
+        size: "sm",
+      },
+    },
+    defaults: {
+      dropdownIcon: "expand_circle_down",
+    },
+  },
 };
 
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="archive"
-        color="red"
-        size="sm"
-      />
-    </template>
-  `,
-};
+export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
+  components: { UDropdownBadge, UIcon, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UDropdownBadge v-bind="args" label="Add to favorite">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            size="xs"
+            color="green"
+            class="mx-1"
+          />
+        </template>
+      </UDropdownBadge>
 
-export const RightSlot = DefaultTemplate.bind({});
-RightSlot.args = {
+      <UDropdownBadge v-bind="args" no-icon>
+        <template #default>
+          <UIcon name="unfold_more" color="white" />
+        </template>
+      </UDropdownBadge>
+    </URow>
+  `,
+});
+
+export const SlotToggle = DefaultTemplate.bind({});
+SlotToggle.args = {
   slotTemplate: `
-    <template #right>
-      <UIcon
-        name="archive"
-        color="red"
+    <template #toggle="{ opened }">
+      <ULink
+        :label="opened ? 'collapse' : 'expand'"
+        color="green"
         size="sm"
+        :ring=false
+        class="mx-1"
       />
     </template>
   `,

@@ -100,6 +100,27 @@ export function getArgTypes(componentName: string | undefined) {
     const type = attribute.value.type;
 
     if (attribute.enum) {
+      attribute.enum = attribute.enum.map((item) => {
+        if (item === "UnknownObject") return "Object";
+        if (item === "UnknownArray") return "Array";
+
+        return item;
+      });
+    }
+
+    const nonUnionTypes = [
+      "null",
+      "string",
+      "number",
+      "boolean",
+      "Date",
+      "Array",
+      "Object",
+      "UnknownArray",
+      "UnknownObject",
+    ];
+
+    if (attribute.enum?.some((value) => !nonUnionTypes.includes(value))) {
       types[attribute.name] = {
         options: attribute.enum,
         control: "select",
@@ -108,29 +129,7 @@ export function getArgTypes(componentName: string | undefined) {
           type: { summary: attribute.enum.join(" | ") },
         },
       };
-    }
-
-    if (attribute.enum?.length === 1) {
-      types[attribute.name] = {
-        control: "object",
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-          type: { summary: attribute.enum.join(" | ") },
-        },
-      };
-    }
-
-    const nonUnionTypes = [
-      "string",
-      "number",
-      "boolean",
-      "Date",
-      "UnknownObject",
-      "UnknownArray",
-      "Array",
-    ];
-
-    if (attribute.enum?.every((value) => nonUnionTypes.includes(value))) {
+    } else if (attribute.enum?.some((value) => nonUnionTypes.includes(value))) {
       let control = attribute.enum[0];
 
       if (control === "string") {
@@ -145,6 +144,17 @@ export function getArgTypes(componentName: string | undefined) {
         control: control as ArgType["control"],
         table: {
           defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    }
+
+    if (attribute.enum?.length === 1) {
+      types[attribute.name] = {
+        control: "object",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
         },
       };
     }

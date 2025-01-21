@@ -34,7 +34,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
   footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
   modal: {
-    base: "mx-auto rounded-2xl bg-white",
+    base: "mx-auto rounded-dynamic-lg bg-white",
     variants: {
       size: {
         xs: "md:w-[25rem]",

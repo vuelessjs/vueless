@@ -1,11 +1,11 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex w-full",
+    base: "flex w-full group",
     variants: {
       align: {
-        top: "flex-col gap-2",
         topInside: "flex-col gap-0 relative",
-        topWithDesc: "flex-col-reverse w-fit",
+        topWithDesc: "flex-col-reverse gap-2",
+        top: "flex-col gap-2",
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
@@ -24,7 +24,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "text-gray-900 z-10 block !leading-none w-max",
+    base: "text-gray-900 z-10 block !leading-none w-max transition",
     variants: {
       size: {
         sm: "text-xs",
@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-gray-500",
+        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-500",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
@@ -68,7 +68,7 @@ export default /*tw*/ {
         lg: "text-sm",
       },
       align: {
-        top: "pl-3",
+        top: "",
         topInside: "pl-3 mt-1.5",
         topWithDesc: "pt-0.5",
         left: "pt-0.5",
