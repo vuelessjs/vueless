@@ -1,8 +1,17 @@
 export default /*tw*/ {
-  breadcrumbs: "flex",
-  breadcrumb: "flex items-center gap-1 mr-1 py-2",
+  breadcrumbs: "flex items-center gap-1 py-2",
   breadcrumbLink: "{ULink}",
-  componentIcon: {
+  breadcrumbIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
+  dividerIcon: {
     base: "{UIcon}",
     defaults: {
       size: {
@@ -12,8 +21,6 @@ export default /*tw*/ {
       },
     },
   },
-  dividerIcon: "{>componentIcon}",
-  breadcrumbIcon: "{>componentIcon}",
   defaults: {
     color: "grayscale",
     size: "md",

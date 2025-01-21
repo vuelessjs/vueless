@@ -40,19 +40,13 @@ function onClickLink(link: UBreadcrumb) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  config,
-  breadcrumbsAttrs,
-  breadcrumbAttrs,
-  breadcrumbLinkAttrs,
-  breadcrumbIconAttrs,
-  dividerIconAttrs,
-} = useUI<Config>(defaultConfig);
+const { config, breadcrumbsAttrs, breadcrumbLinkAttrs, breadcrumbIconAttrs, dividerIconAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div v-bind="breadcrumbsAttrs">
-    <div v-for="(link, index) in links" :key="index" v-bind="breadcrumbAttrs">
+    <template v-for="(link, index) in links" :key="index">
       <!--
         @slot Use it to add something instead of a link icon.
         @binding {string} icon-name
@@ -123,6 +117,6 @@ const {
           v-bind="dividerIconAttrs"
         />
       </slot>
-    </div>
+    </template>
   </div>
 </template>
