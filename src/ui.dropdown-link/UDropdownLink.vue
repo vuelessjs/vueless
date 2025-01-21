@@ -106,10 +106,10 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
     </ULink>
 
     <!--
-      @slot Use it to add something after the label.
+      @slot Use it to add something instead of the toggle icon.
       @binding {boolean} opened
     -->
-    <slot name="right" :opened="isShownOptions">
+    <slot name="toggle" :opened="isShownOptions">
       <UIcon
         v-if="!noIcon"
         internal
@@ -126,6 +126,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       v-if="isShownOptions"
       ref="dropdown-list"
       :size="size"
+      :color="color"
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"

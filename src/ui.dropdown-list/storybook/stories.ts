@@ -16,7 +16,7 @@ interface DefaultUDropdownListArgs extends Props {
 }
 
 interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
-  enum: keyof Pick<Props, "size">;
+  enum: keyof Pick<Props, "size" | "color">;
 }
 
 export default {
@@ -25,9 +25,11 @@ export default {
   component: UDropdownList,
   args: {
     options: [
-      { label: "option 1", id: "1" },
-      { label: "option 2", id: "2" },
-      { label: "option 3", id: "3" },
+      { label: "New York", id: "1" },
+      { label: "Los Angeles", id: "2" },
+      { label: "Chicago", id: "3" },
+      { label: "Houston", id: "4" },
+      { label: "San Francisco", id: "5" },
     ],
   },
   argTypes: {
@@ -37,7 +39,7 @@ export default {
     docs: {
       ...getDocsDescription(UDropdownList.__name),
       story: {
-        height: "180px",
+        height: "250px",
       },
     },
   },
@@ -48,10 +50,16 @@ const DefaultTemplate: StoryFn<DefaultUDropdownListArgs> = (args: DefaultUDropdo
   setup() {
     const slots = getSlotNames(UDropdownList.__name);
 
-    return { args, slots };
+    const showAlert = (message: string) => alert(message);
+
+    return { args, slots, showAlert };
   },
   template: `
-    <UDropdownList v-bind="args" class="mx-4 w-[24rem]">
+    <UDropdownList
+      v-bind="args"
+      class="mx-4 w-[24rem]"
+      @add="showAlert('You triggered the add action!')"
+    >
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownList>
   `,
@@ -69,27 +77,51 @@ const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
     };
   },
   template: `
-    <div class="flex flex-col gap-6">
-      <URow>
+      <URow class="w-fit">
         <UDropdownList
           v-for="(option, index) in options"
           :key="index"
           v-bind="args"
           :[args.enum]="option"
+          class="static w-36"
         />
       </URow>
-    </div>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const AddOption = DefaultTemplate.bind({});
+AddOption.args = { addOption: true };
+AddOption.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "The `addOption` prop displays an 'Add option' button, while the `add` event allows handling custom functionality when the button is clicked.",
+    },
+  },
+};
+
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", modelValue: "2" };
+
 export const VisibleOptions = DefaultTemplate.bind({});
 VisibleOptions.args = { visibleOptions: 3 };
+VisibleOptions.parameters = {
+  docs: {
+    description: {
+      story: "`visibleOptions` prop regulates number of options to show without a scroll.",
+    },
+  },
+};
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
 export const WithoutOptions = DefaultTemplate.bind({});
 WithoutOptions.args = { options: [] };
@@ -111,16 +143,54 @@ GroupedOptions.args = {
     { name: "Phoenix" },
   ],
 };
+GroupedOptions.parameters = {
+  docs: {
+    story: {
+      height: "500px",
+    },
+  },
+};
+
+export const Divider = DefaultTemplate.bind({});
+Divider.args = {
+  options: [
+    { label: "North America", id: "1" },
+    { label: "South America", id: "2" },
+    { divider: true },
+    { label: "Europe", id: "3" },
+    { divider: true },
+    { label: "Asia", id: "4" },
+  ],
+};
+Divider.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "In addition to grouping options, you can insert a divider between specific items by adding an object with a single `divider: true` property.",
+    },
+  },
+};
 
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
   options: [
-    { label: "option 1", id: "1" },
-    { label: "option 2", id: "2", isHidden: true },
+    { label: "New York", id: "1" },
+    { label: "Los Angeles", id: "2", isHidden: true },
     {
-      label: "option 3",
+      label: "Chicago",
       id: "3",
-      onClick: (option: Option) => alert("onClick option 3 " + JSON.stringify(option)),
+      onClick: (option: Option) =>
+        alert("onClick function for the third option: " + JSON.stringify(option)),
     },
   ],
+};
+OptionSettings.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "The second option of the array is hidden (`isHidden` object property is set to `true`). <br/> The third option has `onClick` event handler: <br/> `onClick: (option: Option) => alert('onClick function for option 3: ' + JSON.stringify(option))`",
+    },
+  },
 };

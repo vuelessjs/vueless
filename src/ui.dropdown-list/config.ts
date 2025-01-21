@@ -9,9 +9,9 @@ export default /*tw*/ {
   listItem: "group/item block",
   option: {
     base: `
-      rounded px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
+      rounded-dynamic-sm px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none text-gray-900
-      hover:bg-brand-50 active:bg-brand-100
+      hover:bg-{color}-50 active:bg-{color}-100
       overflow-hidden text-ellipsis
     `,
     variants: {
@@ -21,12 +21,12 @@ export default /*tw*/ {
         lg: "text-base",
       },
       disabled: {
-        true: "pointer-events-none",
+        true: "pointer-events-none text-gray-400",
       },
     },
   },
-  optionActive: "{>option} font-bold bg-brand-100 hover:bg-brand-100",
-  optionHighlighted: "bg-brand-50",
+  optionActive: "{>option} font-semibold bg-{color}-100 hover:bg-{color}-100 text-brand-600",
+  optionHighlighted: "bg-{color}-50",
   optionContent: "overflow-visible text-ellipsis",
   groupBase: {
     base: "px-2 pb-2.5 font-medium !leading-none text-gray-400 overflow-hidden text-ellipsis",
@@ -50,11 +50,13 @@ export default /*tw*/ {
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
+  optionDivider: "{UDivider}",
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",
   },
   defaults: {
+    color: "brand",
     size: "md",
     labelKey: "label",
     valueKey: "id",

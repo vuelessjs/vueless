@@ -8,6 +8,7 @@ import { isMac } from "../utils/platform.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
 
 import usePointer from "./usePointer.ts";
 import { useLocale } from "../composables/useLocale.ts";
@@ -136,7 +137,7 @@ function onClickAddOption() {
 }
 
 function isMetaKey(key: string) {
-  return ["isSubGroup", "groupLabel", "level", "isHidden", "onClick"].includes(key);
+  return ["isSubGroup", "groupLabel", "level", "isHidden", "onClick", "divider"].includes(key);
 }
 
 function select(option: Option, keyCode?: string) {
@@ -261,6 +262,7 @@ const {
   subGroupAttrs,
   groupAttrs,
   optionContentAttrs,
+  optionDividerAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -285,9 +287,14 @@ const {
         :role="!(option && option.groupLabel) ? 'option' : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
+        <UDivider v-if="option.divider" padding="none" v-bind="optionDividerAttrs" />
         <!-- option title -->
         <span
-          v-if="!(option && (option.groupLabel || option.isSubGroup)) && !option.isHidden"
+          v-if="
+            !(option && (option.groupLabel || option.isSubGroup)) &&
+            !option.isHidden &&
+            !option.divider
+          "
           v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
           :data-test="`${dataTest}-option`"
           :class="optionHighlight(index, option)"
