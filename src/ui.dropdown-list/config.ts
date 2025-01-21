@@ -9,7 +9,7 @@ export default /*tw*/ {
   listItem: "group/item block",
   option: {
     base: `
-      rounded px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
+      rounded-dynamic-sm px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none text-gray-900
       hover:bg-brand-50 active:bg-brand-100
       overflow-hidden text-ellipsis
@@ -25,7 +25,7 @@ export default /*tw*/ {
       },
     },
   },
-  optionActive: "{>option} font-bold bg-brand-100 hover:bg-brand-100",
+  optionActive: "{>option} font-semibold bg-brand-100 hover:bg-brand-100 text-brand-600",
   optionHighlighted: "bg-brand-50",
   optionContent: "overflow-visible text-ellipsis",
   groupBase: {
