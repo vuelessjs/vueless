@@ -261,7 +261,10 @@ function getDatePeriodState(date: DatePeriodRange) {
     </div>
 
     <div v-if="isDatePeriodOutOfRange" v-bind="attrs.periodDateListAttrs.value">
-      <template v-for="date in periodDateList" :key="date.title">
+      <template
+        v-for="date in periodDateList"
+        :key="date.title + date.startRange.toISOString() + date.endRange.toISOString()"
+      >
         <UButton
           v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
           filled
