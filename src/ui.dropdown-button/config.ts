@@ -38,7 +38,7 @@ export default /*tw*/ {
       size: {
         "2xs": "sm",
         xs: "sm",
-        sm: "sm",
+        sm: "md",
         md: "md",
         lg: "lg",
         xl: "lg",
