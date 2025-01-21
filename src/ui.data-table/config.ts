@@ -50,6 +50,7 @@ export default /*tw*/ {
   bodyRowBeforeCell: "{>bodyCellBase} py-1",
   bodyRowAfter: "!p-0",
   bodyRowDateDivider: "",
+  bodyRowCheckedDateDivider: "{>bodyRowChecked} {>bodyRowChecked}",
   bodyCellBase: {
     base: "p-4 truncate align-top",
     variants: {
@@ -77,6 +78,10 @@ export default /*tw*/ {
   bodyDateDivider: {
     base: "{UDivider}",
     label: "py-0",
+  },
+  bodySelectedDateDivider: {
+    base: "{>bodyDateDivider}",
+    label: "bg-gray-200 transition",
   },
   bodyEmptyState: "{UEmpty} my-8",
   footer: {
