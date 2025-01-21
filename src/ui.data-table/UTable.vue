@@ -406,6 +406,20 @@ function onToggleExpand(row: Row, expanded: boolean) {
   }
 }
 
+function isRowSelectedWithin(rowIndex: number) {
+  const prevRow = sortedRows.value[rowIndex - 1];
+  const isPrevRowSelected = prevRow && selectedRows.value.find((rowId) => rowId === prevRow.id);
+  const isRowsSelected = selectedRows.value.find(
+    (rowId) => rowId === sortedRows.value[rowIndex].id,
+  );
+
+  if (prevRow) {
+    return isPrevRowSelected && isRowsSelected;
+  }
+
+  return isRowsSelected;
+}
+
 defineExpose({
   /**
    * Allows to clear selected rows.
@@ -438,6 +452,7 @@ const {
   bodyRowBeforeCellAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
+  bodyRowCheckedDateDividerAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
   headerActionsCheckboxAttrs,
@@ -446,6 +461,7 @@ const {
   headerCounterAttrs,
   bodyEmptyStateAttrs,
   bodyDateDividerAttrs,
+  bodySelectedDateDividerAttrs,
   bodyCellDateDividerAttrs,
   headerActionsCounterAttrs,
   stickyHeaderCounterAttrs,
@@ -666,12 +682,28 @@ const {
               </td>
             </tr>
 
-            <tr v-if="isShownDateDivider(rowIndex) && row.rowDate" v-bind="bodyRowDateDividerAttrs">
+            <tr
+              v-if="isShownDateDivider(rowIndex) && !isRowSelectedWithin(rowIndex) && row.rowDate"
+              v-bind="bodyRowDateDividerAttrs"
+            >
               <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
                   :label="getDateDividerLabel(row.rowDate)"
                   v-bind="bodyDateDividerAttrs"
+                />
+              </td>
+            </tr>
+
+            <tr
+              v-if="isShownDateDivider(rowIndex) && isRowSelectedWithin(rowIndex) && row.rowDate"
+              v-bind="bodyRowCheckedDateDividerAttrs"
+            >
+              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
+                <UDivider
+                  size="xs"
+                  :label="getDateDividerLabel(row.rowDate)"
+                  v-bind="bodySelectedDateDividerAttrs"
                 />
               </td>
             </tr>
