@@ -125,6 +125,7 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
+      :color="color"
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"

@@ -126,6 +126,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       v-if="isShownOptions"
       ref="dropdown-list"
       :size="size"
+      :color="color"
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
