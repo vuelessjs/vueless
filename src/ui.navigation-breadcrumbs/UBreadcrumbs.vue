@@ -98,9 +98,8 @@ const {
             name="label"
             :label="link.label"
             :index="index"
-            :active="
-              (slotProps as ULinkSlotProps).isActive || (slotProps as ULinkSlotProps).isExactActive
-            "
+            :active="(slotProps as ULinkSlotProps).isActive"
+            :exact-active="(slotProps as ULinkSlotProps).isExactActive"
           />
         </template>
       </ULink>

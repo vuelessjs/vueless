@@ -124,9 +124,9 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
       @binding {boolean} is-active
       @binding {boolean} is-exact-active
     -->
-    <slot :is-active="slotProps.isActive" :is-exact-active="slotProps.isExactActive">{{
-      label
-    }}</slot>
+    <slot :is-active="slotProps.isActive" :is-exact-active="slotProps.isExactActive">
+      {{ label }}
+    </slot>
   </router-link>
 
   <a
