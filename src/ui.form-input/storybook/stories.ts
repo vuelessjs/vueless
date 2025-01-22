@@ -104,11 +104,11 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
       <UInput
         v-if="args.enum === 'validationRule'"
         v-bind="args"
-        validation-rule="^[a-gA-G]{1,10}$"
-        label="Custom RegExp"
-        description="Only letters between 'a' and 'g' are allowed, max length is 10"
+        validation-rule="^#([a-fA-F0-9]{3,4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+        label="Hex Color Code"
+        description="Enter a valid hex color code (e.g., #FF5733)"
         labelAlign="topWithDesc"
-        placeholder="^[a-gA-G]{1,10}$"
+        placeholder="#FF5733"
         class="max-w-96"
       />
     </UCol>
@@ -119,16 +119,16 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "Your placeholder text" };
+Placeholder.args = { placeholder: "Type something here..." };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Some description text" };
+Description.args = { description: "Provide additional details if necessary." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { error: "Some error text" };
+Error.args = { error: "This field is required. Please enter a value." };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "Some value for read" };
+Readonly.args = { readonly: true, modelValue: "Pre-filled content that cannot be changed" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
