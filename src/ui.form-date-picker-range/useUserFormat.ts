@@ -53,20 +53,20 @@ export function useUserFormat(
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-      title = `${fromTitle} – ${toTitle}`;
+      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
     }
 
     if (isPeriod.value.month) {
-      title = formatDate(from, "F Y", locale.value);
+      title = formatDate(from, "F Y", userFormatLocale.value);
     }
 
     if (isPeriod.value.quarter || isPeriod.value.year) {
       const fromFormat = userDateFormat.replace(/[Yy]/g, "");
 
-      const fromTitle = from ? formatDate(from, fromFormat, locale.value) : "";
-      const toTitle = to ? formatDate(to, userDateFormat, locale.value) : "";
+      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-      title = `${fromTitle} – ${toTitle}`;
+      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
     }
 
     return title;
