@@ -105,7 +105,7 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
         v-if="args.enum === 'validationRule'"
         v-bind="args"
         validation-rule="^#([a-fA-F0-9]{3,4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
-        label="Hex Color Code"
+        label="Custom RegExp"
         description="Enter a valid hex color code (e.g., #FF5733)"
         labelAlign="topWithDesc"
         placeholder="#FF5733"
