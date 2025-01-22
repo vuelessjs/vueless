@@ -16,7 +16,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  resources: () => [],
+  resources: () => "",
 });
 
 const error = ref(false);
@@ -46,14 +46,14 @@ const barStyle = computed(() => {
 });
 
 const resourceNamesArray = computed(() => {
-  if (!props.resources) {
-    return [];
-  }
-
   return Array.isArray(props.resources)
     ? props.resources.map(getRequestWithoutQuery)
     : [getRequestWithoutQuery(props.resources)];
 });
+
+const isPropsLoading = computed(
+  () => requestQueue.value.includes(INFINITY_LOADING) && props.loading,
+);
 
 watch(() => requestQueue.value.length, onChangeRequestsQueue);
 
@@ -98,7 +98,7 @@ function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
 
 function onChangeRequestsQueue() {
   const isActiveRequests =
-    requestQueue.value.includes(INFINITY_LOADING) ||
+    isPropsLoading.value ||
     resourceNamesArray.value.some((resource: string) => {
       return requestQueue.value.includes(resource);
     });
