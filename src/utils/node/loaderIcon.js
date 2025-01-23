@@ -146,7 +146,7 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  */
 async function findAndCopyIcons(files) {
   const defaults = await getDefaults();
-  const safelistIcons = vuelessConfig.component?.[U_ICON]?.safelistIcons;
+  const safelistIcons = vuelessConfig.components?.[U_ICON]?.safelistIcons;
 
   safelistIcons?.forEach((iconName) => {
     copyIcon(iconName, defaults);
@@ -312,5 +312,5 @@ async function getDefaults() {
   const defaultConfigPath = path.join(cwd(), defaultIconsDir, COMPONENTS[U_ICON], "config.ts");
   const uIconDefaultConfig = await getComponentDefaultConfig(U_ICON, defaultConfigPath);
 
-  return merge({}, uIconDefaultConfig?.defaults, vuelessConfig.component?.[U_ICON]?.defaults);
+  return merge({}, uIconDefaultConfig?.defaults, vuelessConfig.components?.[U_ICON]?.defaults);
 }

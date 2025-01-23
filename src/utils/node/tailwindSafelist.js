@@ -107,8 +107,8 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const globalSettings = cloneDeep(vuelessConfig);
 
-  delete globalSettings.component;
-  delete globalSettings.directive;
+  delete globalSettings.components;
+  delete globalSettings.directives;
   delete globalSettings.tailwindMerge;
 
   process.env.VUELESS_GLOBAL_SETTINGS = globalSettings;
@@ -176,7 +176,7 @@ async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
 
   return getMergedConfig({
     defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
-    globalConfig: vuelessConfig.component?.[componentName] || {},
+    globalConfig: vuelessConfig.components?.[componentName] || {},
     vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
   });
 }
@@ -271,7 +271,7 @@ function isDefaultComponentConfig(filePath, componentName) {
 
 function getSafelistColorsFromConfig(componentName) {
   const globalSafelistColors = vuelessConfig.safelistColors || [];
-  const componentSafelistColors = vuelessConfig.component?.[componentName]?.safelistColors || [];
+  const componentSafelistColors = vuelessConfig.components?.[componentName]?.safelistColors || [];
 
   return [...globalSafelistColors, ...componentSafelistColors];
 }

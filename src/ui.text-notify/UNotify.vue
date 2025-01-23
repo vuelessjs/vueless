@@ -72,7 +72,7 @@ function getOffsetWidth(selector: string): number {
 }
 
 function setPosition() {
-  const positionClasses = vuelessConfig.component?.UNotify?.positionClasses;
+  const positionClasses = vuelessConfig.components?.UNotify?.positionClasses;
   const pageClass = positionClasses?.page || config.value?.positionClasses?.page;
   const asideClass = positionClasses?.aside || config.value?.positionClasses?.aside;
   const pageWidth = getOffsetWidth(`${pageClass}`);

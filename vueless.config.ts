@@ -15,12 +15,12 @@ export default {
   /**
    * Directive settings.
    */
-  directive: {},
+  directives: {},
 
   /**
    * Component settings.
    */
-  component: /*tw*/ {},
+  components: /*tw*/ {},
 
   /**
    * Tailwind CSS theme config.

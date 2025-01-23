@@ -47,7 +47,7 @@ export async function hideHiddenStories(isVuelessEnv) {
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const componentGlobalConfig = vuelessConfig.component?.[componentName];
+    const componentGlobalConfig = vuelessConfig.components?.[componentName];
     const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
     if (isHiddenStories) {

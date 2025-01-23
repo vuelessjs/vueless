@@ -99,7 +99,7 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
  */
 export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
   const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
-  const globalDefaults = vuelessConfig.component?.[name]?.defaults || {};
+  const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
   const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
 

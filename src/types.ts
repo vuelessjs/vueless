@@ -133,12 +133,12 @@ export interface Config extends ThemeConfig {
   /**
    * Component configs.
    */
-  component?: Partial<Components>;
+  components?: Partial<Components>;
 
   /**
    * Directive configs.
    */
-  directive?: Partial<Directives>;
+  directives?: Partial<Directives>;
 
   /**
    * Tailwind CSS theme config.

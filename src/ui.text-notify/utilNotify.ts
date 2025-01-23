@@ -31,7 +31,7 @@ interface VuelessNotifyConfig {
   };
 }
 
-const globalNotifyDuration = (vuelessConfig.component?.UNotify as VuelessNotifyConfig)?.duration;
+const globalNotifyDuration = (vuelessConfig.components?.UNotify as VuelessNotifyConfig)?.duration;
 const notifyClearAllEvent: Event = new Event("notifyClearAll");
 
 let lastMessageTime: Date | undefined = undefined;
