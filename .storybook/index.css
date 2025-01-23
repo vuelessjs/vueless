@@ -168,6 +168,11 @@ body {
   @apply bg-white;
 }
 
+.vl-dark .sb-bar,
+.vl-dark .docs-story {
+  @apply bg-gray-900;
+}
+
 .sb-bar {
   @apply border-0;
 }
