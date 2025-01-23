@@ -1,5 +1,5 @@
 import { create } from "@storybook/theming/create";
-import colors from "tailwindcss/colors.js";
+import { TAILWIND_COLORS } from "../../src/constants.js";
 
 export default create({
   base: "light",
@@ -8,34 +8,34 @@ export default create({
   fontCode: "monospace",
 
   // Main colors
-  colorPrimary: colors.gray["900"],
-  colorSecondary: colors.gray["500"],
+  colorPrimary: TAILWIND_COLORS.cool["900"],
+  colorSecondary: TAILWIND_COLORS.cool["500"],
 
   // UI
-  appBg: colors.gray["100"],
-  appPreviewBg: colors.gray["50"],
-  appBorderColor: colors.gray["200"],
-  appContentBg: colors.gray["50"],
+  appBg: TAILWIND_COLORS.cool["100"],
+  appPreviewBg: TAILWIND_COLORS.cool["50"],
+  appBorderColor: TAILWIND_COLORS.cool["200"],
+  appContentBg: TAILWIND_COLORS.cool["50"],
   appBorderRadius: 8,
 
   // Text colors
-  textColor: colors.gray["900"],
-  textInverseColor: colors.gray["50"],
+  textColor: TAILWIND_COLORS.cool["900"],
+  textInverseColor: TAILWIND_COLORS.cool["50"],
 
   // Toolbar default and active colors
-  barTextColor: colors.gray["500"],
-  barHoverColor: colors.gray["600"],
-  barSelectedColor: colors.gray["700"],
-  barBg: colors.white,
+  barTextColor: TAILWIND_COLORS.cool["500"],
+  barHoverColor: TAILWIND_COLORS.cool["600"],
+  barSelectedColor: TAILWIND_COLORS.cool["700"],
+  barBg: TAILWIND_COLORS.white,
 
   // Form colors
-  inputBg: colors.white,
-  inputBorder: colors.gray["300"],
-  inputTextColor: colors.gray["900"],
+  inputBg: TAILWIND_COLORS.white,
+  inputBorder: TAILWIND_COLORS.cool["300"],
+  inputTextColor: TAILWIND_COLORS.cool["900"],
   inputBorderRadius: 4,
 
-  buttonBg: colors.gray["100"],
-  buttonBorder: colors.gray["200"],
-  booleanBg: colors.gray["50"],
-  booleanSelectedBg: colors.gray["200"],
+  buttonBg: TAILWIND_COLORS.cool["100"],
+  buttonBorder: TAILWIND_COLORS.cool["200"],
+  booleanBg: TAILWIND_COLORS.cool["50"],
+  booleanSelectedBg: TAILWIND_COLORS.cool["200"],
 });
