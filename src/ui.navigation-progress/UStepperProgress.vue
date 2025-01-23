@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import colors from "tailwindcss/colors.js";
 
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
-import { GRAY_COLORS } from "../constants.js";
+import { GRAY_COLORS, TAILWIND_COLORS } from "../constants.js";
 
 import type { StepperProgressProps, Config } from "./types.ts";
 
@@ -16,18 +15,21 @@ const props = withDefaults(defineProps<StepperProgressProps>(), {
 });
 
 const stepperColor = computed(() => {
-  const isValidColor = (color: string): color is keyof typeof colors => color in colors;
-  const isGrayColor = (color: string): color is keyof typeof colors => GRAY_COLORS.includes(color);
+  const isValidColor = (color: string): color is keyof typeof TAILWIND_COLORS =>
+    color in TAILWIND_COLORS;
+
+  const isGrayColor = (color: string): color is keyof typeof TAILWIND_COLORS =>
+    GRAY_COLORS.includes(color);
 
   if (isValidColor(props.color)) {
-    return colors[props.color][500];
+    return TAILWIND_COLORS[props.color][500];
   }
 
   if (isGrayColor(props.color)) {
-    return colors[props.color][900];
+    return TAILWIND_COLORS[props.color][900];
   }
 
-  return colors.zinc[900];
+  return TAILWIND_COLORS.cool[900];
 });
 
 /**

@@ -4,13 +4,13 @@
  */
 import { merge } from "lodash-es";
 import forms from "@tailwindcss/forms";
-import colors from "tailwindcss/colors.js";
 import {
   COLOR_SHADES,
   BRAND_COLOR,
   GRAY_COLOR,
   COOL_COLOR,
   DARK_MODE_SELECTOR,
+  TAILWIND_COLORS,
   DEFAULT_ROUNDING,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
@@ -74,7 +74,6 @@ export const vuelessTailwindConfig = {
       colors: {
         [BRAND_COLOR]: brandColors || {},
         [GRAY_COLOR]: grayColors || {},
-        [COOL_COLOR]: { ...(colors[GRAY_COLOR] || {}) },
       },
       spacing: {
         "safe-top": "env(safe-area-inset-top)",
@@ -176,16 +175,17 @@ function getPalette(color) {
  * @returns { Object } - `tailwind-config-viewer` color replacement object.
  */
 function getReplacementColors(color, tailwindColor) {
-  if (tailwindColor === GRAYSCALE_COLOR || tailwindColor === COOL_COLOR) {
-    tailwindColor = GRAY_COLOR;
+  if (tailwindColor === GRAYSCALE_COLOR) {
+    tailwindColor = COOL_COLOR;
   }
 
   const varsPalette = {
-    [twColorWithOpacity(`--vl-color-${color}-default`)]: colors[tailwindColor][600],
+    [twColorWithOpacity(`--vl-color-${color}-default`)]: TAILWIND_COLORS[tailwindColor][600],
   };
 
   COLOR_SHADES.forEach((shade) => {
-    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] = colors[tailwindColor][shade];
+    varsPalette[twColorWithOpacity(`--vl-color-${color}-${shade}`)] =
+      TAILWIND_COLORS[tailwindColor][shade];
   });
 
   return varsPalette;

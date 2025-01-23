@@ -62,7 +62,7 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["tailwindcss/colors.js", ...(!isVuelessEnv ? ["vueless/preset-tailwind"] : [])],
+        include: [...(!isVuelessEnv ? ["vueless/preset-tailwind"] : [])],
       },
     }),
 

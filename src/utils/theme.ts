@@ -1,17 +1,15 @@
 import { merge } from "lodash-es";
-import tailwindColors from "tailwindcss/colors.js";
 
 import { tailwindConfig } from "./tailwindConfig.ts";
 import { vuelessConfig } from "./ui.ts";
 import { isSSR, isCSR } from "./helper.ts";
 import {
   PX_IN_REM,
-  COOL_COLOR,
-  GRAY_COLOR,
   COLOR_MODE_KEY,
   LIGHT_MODE_SELECTOR,
   DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
+  TAILWIND_COLORS,
   DEFAULT_RING,
   DEFAULT_RING_OFFSET,
   DEFAULT_ROUNDING,
@@ -31,7 +29,7 @@ import type {
 
 import { ColorMode } from "../types.ts";
 
-type DefaultColors = typeof tailwindColors;
+type DefaultColors = typeof TAILWIND_COLORS;
 
 interface Colors extends DefaultColors {
   [key: string]: Partial<TailwindColorShades> | string;
@@ -118,7 +116,7 @@ export function setTheme(config: Config = {}) {
   let brand: BrandColors =
     config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
 
-  let gray: GrayColors =
+  const gray: GrayColors =
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const ring = config.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
@@ -134,30 +132,20 @@ export function setTheme(config: Config = {}) {
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
+  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
-  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
 
   isCSR && localStorage.setItem("brand", brand);
   isCSR && localStorage.setItem("gray", gray);
-
-  if (gray === COOL_COLOR) {
-    gray = GRAY_COLOR;
-  }
 
   if (brand === GRAYSCALE_COLOR) {
     brand = gray;
   }
 
-  /* Remove deprecated color aliases. */
-  delete (tailwindColors as Partial<DefaultColors>).lightBlue;
-  delete (tailwindColors as Partial<DefaultColors>).warmGray;
-  delete (tailwindColors as Partial<DefaultColors>).trueGray;
-  delete (tailwindColors as Partial<DefaultColors>).coolGray;
-  delete (tailwindColors as Partial<DefaultColors>).blueGray;
-
   const colors: Colors = merge(
-    tailwindColors as Colors,
+    TAILWIND_COLORS as Colors,
     tailwindConfig?.theme?.extend?.colors || {},
     vuelessConfig.tailwindTheme?.extend?.colors || {},
   );
