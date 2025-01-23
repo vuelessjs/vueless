@@ -104,11 +104,11 @@ export default /*tw*/ {
   },
   rangeInputFirst: {
     base: "{UInput} {>rangeInput}",
-    wrapper: "rounded-r-none",
+    wrapper: "!rounded-r-none",
   },
   rangeInputLast: {
     base: "{UInput} {>rangeInput}",
-    wrapper: "rounded-l-none",
+    wrapper: "!rounded-l-none",
   },
   rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
   datepickerCalendar: {

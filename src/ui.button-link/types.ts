@@ -5,6 +5,11 @@ import type { RouteLocationRaw } from "vue-router";
 
 export type Config = typeof defaultConfig;
 
+export interface ULinkSlotProps {
+  isActive: boolean;
+  isExactActive: boolean;
+}
+
 export interface Props {
   /**
    * Button label.

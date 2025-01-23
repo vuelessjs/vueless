@@ -3,7 +3,6 @@ import { inject, readonly, ref } from "vue";
 import type { Ref } from "vue";
 
 import { getRequestWithoutQuery } from "./utilLoaderProgress.ts";
-import { INFINITY_LOADING } from "./constants.ts";
 
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
@@ -51,9 +50,7 @@ function removeRequestUrl(url: string | string[]): void {
   if (Array.isArray(url)) {
     url.map(getRequestWithoutQuery).forEach(removeRequestUrl);
   } else {
-    requestQueue.value = requestQueue.value.filter(
-      (item) => item !== getRequestWithoutQuery(url) && item !== INFINITY_LOADING,
-    );
+    requestQueue.value = requestQueue.value.filter((item) => item !== getRequestWithoutQuery(url));
   }
 }
 

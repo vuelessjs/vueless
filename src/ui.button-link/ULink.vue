@@ -9,7 +9,7 @@ import { getDefaults } from "../utils/ui.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config, ULinkSlotProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -101,6 +101,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 <template>
   <router-link
     v-if="isPresentRoute"
+    v-slot="slotProps: ULinkSlotProps"
     :to="safeTo"
     :custom="custom"
     :replace="replace"
@@ -118,8 +119,14 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
     @keydown="onKeydown"
     @mouseover="onMouseover"
   >
-    <!-- @slot Use it replace the label. -->
-    <slot>{{ label }}</slot>
+    <!--
+      @slot Use it replace the label.
+      @binding {boolean} is-active
+      @binding {boolean} is-exact-active
+    -->
+    <slot :is-active="slotProps.isActive" :is-exact-active="slotProps.isExactActive">
+      {{ label }}
+    </slot>
   </router-link>
 
   <a
