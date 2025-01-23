@@ -242,6 +242,7 @@ export const TYPESCRIPT_EXT = ".ts";
 
 /* Default tailwind colors */
 export const TAILWIND_COLORS = {
+  white: "#ffffff",
   slate: {
     50: "#f8fafc",
     100: "#f1f5f9",
