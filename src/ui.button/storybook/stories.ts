@@ -199,7 +199,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
           <UIcon
             name="heart_plus"
             size="sm"
-            color="green"
+            color="inherit"
             :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
@@ -210,7 +210,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
           <UIcon
             name="settings"
             size="sm"
-            color="green"
+            color="inherit"
             :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
@@ -221,7 +221,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
           <UIcon
             name="delete"
             size="sm"
-            color="green"
+            color="inherit"
             :variant="isDarkMode ? 'dark' : 'default'"
           />
         </template>
