@@ -22,6 +22,8 @@ export const DEFAULT_RING_OFFSET = 0; /* pixels */
 export const DEFAULT_RING_OFFSET_COLOR_LIGHT = "#ffffff"; // white
 export const DEFAULT_RING_OFFSET_COLOR_DARK = "#111827"; // gray-900
 export const DEFAULT_ROUNDING = 8; /* pixels */
+export const ROUNDING_DECREMENT = 4; /* pixels */
+export const ROUNDING_INCREMENT = 6; /* pixels */
 
 /* Vueless supported colors and shades */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];

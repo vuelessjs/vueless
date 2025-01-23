@@ -17,6 +17,8 @@ import {
   DEFAULT_GRAY_COLOR,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_RING_OFFSET_COLOR_DARK,
+  ROUNDING_DECREMENT,
+  ROUNDING_INCREMENT,
 } from "../constants.js";
 
 import type {
@@ -108,10 +110,11 @@ export function getSelectedGrayColor() {
 export function setTheme(config: Config = {}) {
   setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
 
-  const rounding = config.rounding ?? vuelessConfig.rounding ?? DEFAULT_ROUNDING;
-  const roundingSm = config.roundingSm ?? vuelessConfig.roundingSm ?? rounding / 2;
-  const roundingLg = config.roundingLg ?? vuelessConfig.roundingLg ?? rounding * 2;
-  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+  const { roundingSm, rounding, roundingLg } = getRoundings(
+    config.roundingSm ?? vuelessConfig.roundingSm,
+    config.rounding ?? vuelessConfig.rounding,
+    config.roundingLg ?? vuelessConfig.roundingLg,
+  );
 
   let brand: BrandColors =
     config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
@@ -168,8 +171,8 @@ export function setTheme(config: Config = {}) {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
-    "--vl-ring": `${ring}px`,
-    "--vl-ring-offset": `${ringOffset}px`,
+    "--vl-ring": `${Math.max(0, ring)}px`,
+    "--vl-ring-offset": `${Math.max(0, ringOffset)}px`,
     "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
     "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),
@@ -227,4 +230,28 @@ export function convertHexInRgb(hex?: string) {
   }
 
   return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
+}
+
+function getRoundings(sm?: number, md?: number, lg?: number) {
+  const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
+  let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
+  let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
+
+  if (rounding === ROUNDING_INCREMENT) {
+    roundingSm = ROUNDING_DECREMENT;
+  }
+
+  if (rounding === ROUNDING_DECREMENT) {
+    roundingSm = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
+  }
+
+  if (rounding === 0) {
+    roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
+  }
+
+  return {
+    rounding,
+    roundingSm: sm === undefined ? roundingSm : Math.max(0, sm),
+    roundingLg: lg === undefined ? roundingLg : Math.max(0, lg),
+  };
 }
