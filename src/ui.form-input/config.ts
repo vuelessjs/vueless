@@ -2,14 +2,11 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      w-full bg-white relative flex border border-gray-300 rounded-dynamic-sm transition
+      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition
       hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
       focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
     `,
     variants: {
-      labelAlign: {
-        topInside: "rounded-dynamic",
-      },
       error: {
         true: `
           border-red-300 bg-red-50
