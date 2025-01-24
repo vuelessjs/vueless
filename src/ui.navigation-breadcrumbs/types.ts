@@ -56,7 +56,7 @@ export interface Props {
   underlined?: boolean;
 
   /**
-   * Set breadcrumbs' underline style as dashed.
+   * Set links underline style as dashed.
    */
   dashed?: boolean;
 
