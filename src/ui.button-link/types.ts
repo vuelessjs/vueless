@@ -80,7 +80,7 @@ export interface Props {
   /**
    * Specifies where to open the linked page.
    */
-  target?: "_blank" | "_self" | "_parent" | "_top" | string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
 
   /**
    * A rel attribute value to apply on the external link.
