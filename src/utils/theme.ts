@@ -37,6 +37,19 @@ interface Colors extends DefaultColors {
   [key: string]: Partial<TailwindColorShades> | string;
 }
 
+declare interface RootCSSVariableOptions {
+  colors: Colors;
+  brand: string;
+  gray: string;
+  ring: number;
+  ringOffset: number;
+  ringOffsetColorDark: string;
+  ringOffsetColorLight: string;
+  roundingSm: number;
+  rounding: number;
+  roundingLg: number;
+}
+
 export function themeInit() {
   if (isSSR) return;
 
@@ -107,6 +120,28 @@ export function getSelectedGrayColor() {
   return (isCSR && localStorage.getItem("gray")) || undefined;
 }
 
+export function convertHexInRgb(hex?: string) {
+  if (!hex) return;
+
+  const color = hex.replace(/#/g, "");
+
+  let r, g, b;
+
+  if (color.length === 6) {
+    r = parseInt(color.substring(0, 2), 16);
+    g = parseInt(color.substring(2, 4), 16);
+    b = parseInt(color.substring(4, 6), 16);
+  }
+
+  if (color.length === 3) {
+    r = parseInt(color.substring(0, 1).repeat(2), 16);
+    g = parseInt(color.substring(1, 2).repeat(2), 16);
+    b = parseInt(color.substring(2, 3).repeat(2), 16);
+  }
+
+  return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
+}
+
 export function setTheme(config: Config = {}) {
   setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
 
@@ -119,7 +154,7 @@ export function setTheme(config: Config = {}) {
   let brand: BrandColors =
     config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
 
-  const gray: GrayColors =
+  let gray: GrayColors =
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const ring = config.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
@@ -134,11 +169,6 @@ export function setTheme(config: Config = {}) {
     config.ringOffsetColorLight ??
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
-
-  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
-  const defaultBrandShade = isDarkMode ? 400 : 600;
-  const defaultGrayShade = isDarkMode ? 400 : 600;
 
   isCSR && localStorage.setItem("brand", brand);
   isCSR && localStorage.setItem("gray", gray);
@@ -160,12 +190,73 @@ export function setTheme(config: Config = {}) {
   if (!isBrandColor) {
     // eslint-disable-next-line no-console
     console.warn(`The brand color '${brand}' is missing in your palette.`);
+
+    brand = DEFAULT_GRAY_COLOR;
   }
 
   if (!isGrayColor) {
     // eslint-disable-next-line no-console
     console.warn(`The gray color '${gray}' is missing in your palette.`);
+
+    gray = DEFAULT_GRAY_COLOR;
   }
+
+  return setRootCSSVariables({
+    colors,
+    brand,
+    gray,
+    ring,
+    ringOffset,
+    ringOffsetColorDark,
+    ringOffsetColorLight,
+    roundingSm,
+    rounding,
+    roundingLg,
+  });
+}
+
+function getRoundings(sm?: number, md?: number, lg?: number) {
+  const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
+  let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
+  let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
+
+  if (rounding === ROUNDING_INCREMENT) {
+    roundingSm = ROUNDING_DECREMENT;
+  }
+
+  if (rounding === ROUNDING_DECREMENT) {
+    roundingSm = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
+  }
+
+  if (rounding === 0) {
+    roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
+  }
+
+  return {
+    rounding,
+    roundingSm: sm === undefined ? roundingSm : Math.max(0, sm),
+    roundingLg: lg === undefined ? roundingLg : Math.max(0, lg),
+  };
+}
+
+function setRootCSSVariables(options: RootCSSVariableOptions) {
+  const {
+    colors,
+    brand,
+    gray,
+    ring,
+    ringOffset,
+    ringOffsetColorDark,
+    ringOffsetColorLight,
+    roundingSm,
+    rounding,
+    roundingLg,
+  } = options;
+
+  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
+  const defaultBrandShade = isDarkMode ? 400 : 600;
+  const defaultGrayShade = isDarkMode ? 400 : 600;
 
   const variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
@@ -208,50 +299,4 @@ export function setTheme(config: Config = {}) {
   }
 
   return rootVariables;
-}
-
-export function convertHexInRgb(hex?: string) {
-  if (!hex) return;
-
-  const color = hex.replace(/#/g, "");
-
-  let r, g, b;
-
-  if (color.length === 6) {
-    r = parseInt(color.substring(0, 2), 16);
-    g = parseInt(color.substring(2, 4), 16);
-    b = parseInt(color.substring(4, 6), 16);
-  }
-
-  if (color.length === 3) {
-    r = parseInt(color.substring(0, 1).repeat(2), 16);
-    g = parseInt(color.substring(1, 2).repeat(2), 16);
-    b = parseInt(color.substring(2, 3).repeat(2), 16);
-  }
-
-  return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
-}
-
-function getRoundings(sm?: number, md?: number, lg?: number) {
-  const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
-  let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
-  let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
-
-  if (rounding === ROUNDING_INCREMENT) {
-    roundingSm = ROUNDING_DECREMENT;
-  }
-
-  if (rounding === ROUNDING_DECREMENT) {
-    roundingSm = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
-  }
-
-  if (rounding === 0) {
-    roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
-  }
-
-  return {
-    rounding,
-    roundingSm: sm === undefined ? roundingSm : Math.max(0, sm),
-    roundingLg: lg === undefined ? roundingLg : Math.max(0, lg),
-  };
 }
