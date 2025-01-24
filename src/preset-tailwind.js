@@ -29,6 +29,7 @@ const isStrategyOverride = globalSettings.strategy === "override";
  */
 export const vuelessContent = [
   "./vueless.config.{js,ts}",
+  "./.vueless/**/*.{js,ts,vue}",
   "./node_modules/vueless/**/*.{js,ts,vue}",
   ...(isStrategyOverride ? ["!./src/**/ui.*/config.{js,ts}"] : []), // only for vueless env
   ...(isStrategyOverride ? ["!./node_modules/vueless/**/ui.*/config.{js,ts}"] : []),
