@@ -74,6 +74,7 @@ export const vuelessTailwindConfig = {
       colors: {
         [BRAND_COLOR]: brandColors || {},
         [GRAY_COLOR]: grayColors || {},
+        [COOL_COLOR]: { ...(TAILWIND_COLORS[COOL_COLOR] || {}) },
       },
       spacing: {
         "safe-top": "env(safe-area-inset-top)",
