@@ -170,13 +170,6 @@ export function setTheme(config: Config = {}) {
     vuelessConfig.ringOffsetColorLight ??
     DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
-  isCSR && localStorage.setItem("brand", brand);
-  isCSR && localStorage.setItem("gray", gray);
-
-  if (brand === GRAYSCALE_COLOR) {
-    brand = gray;
-  }
-
   const colors: Colors = merge(
     TAILWIND_COLORS as Colors,
     tailwindConfig?.theme?.extend?.colors || {},
@@ -191,7 +184,7 @@ export function setTheme(config: Config = {}) {
     // eslint-disable-next-line no-console
     console.warn(`The brand color '${brand}' is missing in your palette.`);
 
-    brand = DEFAULT_GRAY_COLOR;
+    brand = DEFAULT_BRAND_COLOR;
   }
 
   if (!isGrayColor) {
@@ -200,6 +193,9 @@ export function setTheme(config: Config = {}) {
 
     gray = DEFAULT_GRAY_COLOR;
   }
+
+  isCSR && localStorage.setItem("brand", brand);
+  isCSR && localStorage.setItem("gray", gray);
 
   return setRootCSSVariables({
     colors,
@@ -240,6 +236,10 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
 }
 
 function setRootCSSVariables(options: RootCSSVariableOptions) {
+  if (options.brand === GRAYSCALE_COLOR) {
+    options.brand = options.gray;
+  }
+
   const {
     colors,
     brand,
