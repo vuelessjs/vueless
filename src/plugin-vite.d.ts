@@ -1,22 +1,26 @@
+import { Config } from "svgo";
+import { Plugin } from "vite";
+
+declare function Vueless(options?: {
+  env?: string;
+  mode?: string;
+  debug?: boolean;
+  include?: string[];
+  mirrorCacheDir?: string;
+  svgoConfig?: Config;
+  svgo?: boolean;
+  defaultImport?: "url" | "raw" | "component";
+}): Plugin;
+
+declare function VuelessUnpluginComponents(options?: unknown): Plugin & {
+  api: import("unplugin-vue-components/types.js").PublicPluginAPI;
+};
+
 declare module "vueless/plugin-vite" {
-  import { Plugin } from "vite";
-  import { Config } from "svgo";
+  export { Vueless, VuelessUnpluginComponents };
+}
 
-  function Vueless(options?: {
-    env?: string;
-    mode?: string;
-    debug?: boolean;
-    include?: string[];
-    mirrorCacheDir?: string;
-    svgoConfig?: Config;
-    svgo?: boolean;
-    defaultImport?: "url" | "raw" | "component";
-  }): Plugin;
-
-  function VuelessUnpluginComponents(options?: unknown): import("vite").Plugin<unknown> & {
-    api: import("unplugin-vue-components/types.js").PublicPluginAPI;
-  };
-
+declare module "vueless/plugin-vite.js" {
   export { Vueless, VuelessUnpluginComponents };
 }
 
