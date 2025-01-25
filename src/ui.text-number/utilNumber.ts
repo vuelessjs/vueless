@@ -7,7 +7,7 @@ export const MATH_SIGN_TYPE = {
 
 export const MATH_SIGN = {
   PLUS: "+",
-  MINUS: "-",
+  MINUS: "–",
 };
 
 export const SINGLE_ZERO = "0";
