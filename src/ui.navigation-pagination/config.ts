@@ -1,26 +1,24 @@
 export default /*tw*/ {
   pagination: "flex",
   paginationButton: {
-    base: "font-normal",
+    base: "{UButton} font-normal",
     variants: {
       size: {
-        lg: "!text-base",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
       },
     },
     defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
+      size: "xs",
     },
   },
-  firstButton: "{UButton} {>paginationButton}",
-  lastButton: "{UButton} {>paginationButton}",
-  prevButton: "{UButton} {>paginationButton}",
-  nextButton: "{UButton} {>paginationButton}",
-  inactiveButton: "{UButton} {>paginationButton}",
-  activeButton: "{UButton} {>paginationButton}",
+  firstButton: "{>paginationButton}",
+  lastButton: "{>paginationButton}",
+  prevButton: "{>paginationButton}",
+  nextButton: "{>paginationButton}",
+  inactiveButton: "{>paginationButton}",
+  activeButton: "{>paginationButton}",
   paginationIcon: {
     base: "{UIcon}",
     defaults: {
@@ -31,10 +29,10 @@ export default /*tw*/ {
       },
     },
   },
-  lastIcon: "{UIcon} {>paginationIcon}",
-  firstIcon: "{UIcon} {>paginationIcon}",
-  prevIcon: "{UIcon} {>paginationIcon}",
-  nextIcon: "{UIcon} {>paginationIcon}",
+  lastIcon: "{>paginationIcon}",
+  firstIcon: "{>paginationIcon}",
+  prevIcon: "{>paginationIcon}",
+  nextIcon: "{>paginationIcon}",
   defaults: {
     variant: "primary",
     size: "md",
