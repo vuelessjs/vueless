@@ -7,7 +7,7 @@ export default /*tw*/ {
       active:border-{color}-600 active:bg-{color}-200
       focus:ring-0 focus:ring-offset-0
       checked:text-{color}-600
-      focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-dynamic
+      focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-2
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
     `,
     variants: {

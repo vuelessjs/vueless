@@ -11,7 +11,6 @@ import {
   GRAYSCALE_COLOR,
   TAILWIND_COLORS,
   DEFAULT_RING,
-  DEFAULT_RING_OFFSET,
   DEFAULT_ROUNDING,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
@@ -42,7 +41,6 @@ declare interface RootCSSVariableOptions {
   brand: string;
   gray: string;
   ring: number;
-  ringOffset: number;
   ringOffsetColorDark: string;
   ringOffsetColorLight: string;
   roundingSm: number;
@@ -158,7 +156,6 @@ export function setTheme(config: Config = {}) {
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const ring = config.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
-  const ringOffset = config.ringOffset ?? vuelessConfig.ringOffset ?? DEFAULT_RING_OFFSET;
 
   const ringOffsetColorDark =
     config.ringOffsetColorDark ??
@@ -202,7 +199,6 @@ export function setTheme(config: Config = {}) {
     brand,
     gray,
     ring,
-    ringOffset,
     ringOffsetColorDark,
     ringOffsetColorLight,
     roundingSm,
@@ -245,7 +241,6 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     brand,
     gray,
     ring,
-    ringOffset,
     ringOffsetColorDark,
     ringOffsetColorLight,
     roundingSm,
@@ -263,7 +258,6 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
     "--vl-ring": `${Math.max(0, ring)}px`,
-    "--vl-ring-offset": `${Math.max(0, ringOffset)}px`,
     "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
     "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),

@@ -13,7 +13,6 @@ import {
   TAILWIND_COLORS,
   DEFAULT_ROUNDING,
   DEFAULT_RING,
-  DEFAULT_RING_OFFSET,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
@@ -95,9 +94,6 @@ export const vuelessTailwindConfig = {
       ringWidth: {
         dynamic: "var(--vl-ring)",
       },
-      ringOffsetWidth: {
-        dynamic: "var(--vl-ring-offset)",
-      },
       ringOffsetColor: {
         dynamic: twColorWithOpacity("--vl-ring-offset-color"),
       },
@@ -106,7 +102,6 @@ export const vuelessTailwindConfig = {
       themeReplacements: {
         /* eslint-disable prettier/prettier */
         "var(--vl-ring)": globalSettings.ring || DEFAULT_RING,
-        "var(--vl-ring-offset)": globalSettings.ringOffset || DEFAULT_RING_OFFSET,
         "var(--vl-ring-offset-color)": globalSettings.ringOffsetColorLight || DEFAULT_RING_OFFSET_COLOR_LIGHT,
         "var(--vl-rounding-sm)": globalSettings.roundingSm || (globalSettings.ring || DEFAULT_ROUNDING) / 2,
         "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,

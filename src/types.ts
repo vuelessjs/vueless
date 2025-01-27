@@ -101,11 +101,6 @@ export interface ThemeConfig {
   ring?: number;
 
   /**
-   * Default components ring offset width.
-   */
-  ringOffset?: number;
-
-  /**
    * Default components ring color for light theme.
    */
   ringOffsetColorLight?: string;
@@ -345,7 +340,6 @@ export interface TailwindColorShades {
 
 export interface VuelessCssVariables {
   "--vl-ring": string;
-  "--vl-ring-offset": string;
   "--vl-ring-offset-color": string;
   "--vl-rounding-sm": string;
   "--vl-rounding": string;

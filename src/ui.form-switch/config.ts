@@ -3,7 +3,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex items-center p-0.5 relative rounded-full cursor-pointer transition
-      focus-visible:ring-dynamic focus-visible:ring-offset-dynamic ring-{color}-600 outline-0
+      focus-visible:ring-dynamic focus-visible:ring-offset-2 ring-{color}-600 outline-0
     `,
     variants: {
       size: {
