@@ -40,9 +40,7 @@ const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => (
   components: { UInputRating, UBadge },
   setup() {
     const slots = getSlotNames(UInputRating.__name);
-    const errorMessage = computed(() =>
-      !args.modelValue && args.error !== "" ? "Your review helps us improve our services." : "",
-    );
+    const errorMessage = computed(() => (!args.modelValue ? args.error : ""));
 
     return { args, slots, errorMessage };
   },
@@ -87,7 +85,11 @@ export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Your review helps us improve our services." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { selectable: true, modelValue: NaN };
+Error.args = {
+  selectable: true,
+  modelValue: 0,
+  error: "Please select a rating before submitting your review.",
+};
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
