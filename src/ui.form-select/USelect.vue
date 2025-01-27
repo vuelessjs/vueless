@@ -10,6 +10,7 @@ import useUI from "../composables/useUI.ts";
 import { createDebounce, hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import {
   filterOptions,
@@ -333,6 +334,12 @@ function onMouseDownClear() {
   emit("change", { value, options: props.options });
   emit("remove", props.options);
 }
+
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {

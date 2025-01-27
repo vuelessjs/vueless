@@ -114,10 +114,8 @@ export default /*tw*/ {
       selected: {
         false: "w-full",
       },
-      opened: {
-        true: "w-full",
-      },
     },
+    compoundVariants: [{ opened: true, searchable: false, class: "w-0" }],
   },
   searchInput: {
     base: `
