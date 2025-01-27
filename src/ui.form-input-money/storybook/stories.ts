@@ -43,11 +43,7 @@ const DefaultTemplate: StoryFn<UInputMoneyArgs> = (args: UInputMoneyArgs) => ({
   components: { UInputMoney, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInputMoney.__name);
-    const errorMessage = computed(() =>
-      Number(args.modelValue) > 0
-        ? ""
-        : "Invalid amount. Please enter a positive number with up to two decimal places.",
-    );
+    const errorMessage = computed(() => (Number(args.modelValue) > 0 ? "" : args.error));
 
     return { args, slots, errorMessage };
   },
@@ -123,34 +119,18 @@ Sizes.args = { enum: "size" };
 export const LabelAlign = EnumVariantTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign" };
 
-export const MinFractionDigits = DefaultTemplate.bind({});
-MinFractionDigits.args = {
+export const LimitFractionDigits = DefaultTemplate.bind({});
+LimitFractionDigits.args = {
   minFractionDigits: 4,
   maxFractionDigits: 6,
-  description:
-    "modelValue contains only 2 digits after the decimal separator, but minimum is set to 4.",
+  description: "You can enter from 4 to 6 decimal places.",
 };
-MinFractionDigits.parameters = {
+LimitFractionDigits.parameters = {
   docs: {
     description: {
       story:
-        "`minFractionDigits` prop determines the minimum number of digits to display after the decimal separator.",
-    },
-  },
-};
-
-export const MaxFractionDigits = DefaultTemplate.bind({});
-MaxFractionDigits.args = {
-  modelValue: 132834.76914562,
-  maxFractionDigits: 4,
-  description:
-    "modelValue contains 8 digits after the decimal separator., but maximum is set to 4.",
-};
-MaxFractionDigits.parameters = {
-  docs: {
-    description: {
-      story:
-        "`maxFractionDigits` prop determines the maximum number of digits to display after the decimal separator.",
+        // eslint-disable-next-line vue/max-len
+        "`minFractionDigits` and `maxFractionDigits` props determine the minimum/maximum number of digits to display after the decimal separator.",
     },
   },
 };
