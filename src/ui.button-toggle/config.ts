@@ -1,6 +1,6 @@
 export default /*tw*/ {
   toggleLabel: {
-    base: "{ULabel} flex flex-wrap",
+    base: "{ULabel} flex-wrap",
     variants: {
       block: {
         true: "w-full",
@@ -18,19 +18,11 @@ export default /*tw*/ {
     },
   },
   items: {
-    base: "",
+    base: "flex gap-1",
     variants: {
-      size: {
-        "2xs": "gap-1",
-        xs: "gap-1.5",
-        sm: "gap-2",
-        md: "gap-2.5",
-        lg: "gap-3",
-        xl: "gap-3",
-      },
       split: {
-        true: "flex flex-wrap",
-        false: "p-1 gap-1 flex flex-nowrap w-fit transition border rounded-dynamic border-gray-300",
+        true: "flex-wrap",
+        false: "flex-nowrap p-1 w-fit border rounded-dynamic border-gray-300",
       },
       disabled: {
         true: "pointer-events-none",

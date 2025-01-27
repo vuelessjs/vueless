@@ -5,10 +5,11 @@ export default /*tw*/ {
       variant: "thirdary",
     },
   },
-  toggleButtonInactive: "{>toggleButton} text-gray-900",
+  toggleButtonInactive: "{>toggleButton}",
   toggleButtonActive: {
-    base: "{>toggleButton} !bg-{color}-600/15",
+    base: "{>toggleButton}",
     defaults: {
+      color: "brand",
       filled: true,
     },
   },
