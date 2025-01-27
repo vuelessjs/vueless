@@ -37,7 +37,6 @@ const getToggleSize = inject<() => ButtonSize>("getToggleSize", () => "md" as Bu
 const getToggleRound = inject<() => boolean>("getToggleRound", () => false);
 const getToggleBlock = inject<() => boolean>("getToggleBlock", () => false);
 const getToggleSquare = inject<() => boolean>("getToggleSquare", () => false);
-const getToggleSplit = inject<() => boolean>("getToggleSplit", () => true);
 
 const getToggleDisabled = inject<() => boolean>(
   "getToggleDisabled",
