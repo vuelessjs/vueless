@@ -1,20 +1,7 @@
 export default /*tw*/ {
-  tabs: {
-    base: "mb-6 flex",
-    variants: {
-      size: {
-        sm: "gap-5",
-        md: "gap-6",
-        lg: "gap-7",
-      },
-      underlined: {
-        true: "border-b border-gray-100",
-      },
-    },
-  },
+  tabs: "mb-6 flex border-b border-gray-200 dark:border-gray-700",
   item: "{UTab}",
   defaults: {
     size: "md",
-    underlined: false,
   },
 };

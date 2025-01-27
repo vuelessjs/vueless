@@ -57,7 +57,7 @@ SlotDefault.args = {
   slotTemplate: `
     <template #default>
       <div class="flex items-center">
-        <UIcon name="star" size="sm" />
+        <UIcon name="star" size="sm" color="inherit" />
       </div>
     </template>
   `,

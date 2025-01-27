@@ -32,9 +32,11 @@ const selectedItem = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
-provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("getUTabsSize", () => props.size);
+provide("getUTabsBlock", () => props.block);
+provide("getUTabsSquare", () => props.square);
+provide("getUTabsSelectedItem", () => selectedItem.value);
+provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
 
 /**
  * Get element / nested component attributes for each config token ✨

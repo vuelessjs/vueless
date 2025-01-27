@@ -28,12 +28,17 @@ export interface Props {
   /**
    * Tabs size.
    */
-  size?: "sm" | "md" | "lg";
+  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
-   * Add the bottom line along the entire length.
+   * Make the Tabs fill the width with its container.
    */
-  underlined?: boolean;
+  block?: boolean;
+
+  /**
+   * Set the same paddings for the tabs.
+   */
+  square?: boolean;
 
   /**
    * Component config object.

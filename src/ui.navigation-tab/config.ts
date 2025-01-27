@@ -1,18 +1,17 @@
 export default /*tw*/ {
-  tab: {
-    base: "w-max text-center cursor-pointer -mb-px",
-    variants: {
-      size: {
-        sm: "text-xs pb-1",
-        md: "text-sm pb-2",
-        lg: "text-base pb-3",
-      },
-      disabled: {
-        true: "text-gray-400 cursor-not-allowed",
-      },
-      selected: {
-        true: "border-b-2 text-brand-700 border-brand-700",
-      },
+  tabButton: {
+    base: `
+      {UButton} rounded-none -mb-px border-0 border-b border-transparent
+      hover:bg-transparent active:bg-transparent dark:hover:bg-transparent dark:active:bg-transparent
+    `,
+    defaults: {
+      color: "gray",
+    },
+  },
+  tabButtonActive: {
+    base: "{>tabButton} border-brand-600",
+    defaults: {
+      color: "brand",
     },
   },
   defaults: {
