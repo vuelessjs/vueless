@@ -42,7 +42,7 @@ provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value))
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { tabsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
+const { tabsAttrs, tabAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -56,7 +56,7 @@ const { tabsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
         :value="item.value"
         :disabled="item.disabled"
         :size="size"
-        v-bind="itemAttrs"
+        v-bind="tabAttrs"
         :data-test="`${dataTest}-item-${index}`"
       />
     </slot>
