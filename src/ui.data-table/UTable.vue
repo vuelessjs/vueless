@@ -227,7 +227,7 @@ watch(
   },
   { deep: true },
 );
-watch(() => tableRows.value.length, updateSelectedRows);
+watch(() => tableRows.value, updateSelectedRows, { deep: true });
 watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
 watch(isHeaderSticky, setHeaderCellWidth);
 watch(isFooterSticky, (newValue) =>
@@ -326,7 +326,17 @@ function synchronizeTableItemsWithProps() {
 }
 
 function updateSelectedRows() {
-  selectedRows.value = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
+  const newSelectedRows = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
+  const isNewRowsSelected = newSelectedRows.every((newRow) => selectedRows.value.includes(newRow));
+  const isSelectedSameRows = selectedRows.value.every((selectedRow) =>
+    newSelectedRows.includes(selectedRow),
+  );
+
+  if (isNewRowsSelected && isSelectedSameRows) {
+    return;
+  }
+
+  selectedRows.value = newSelectedRows;
 }
 
 function onKeyupEsc(event: KeyboardEvent) {
