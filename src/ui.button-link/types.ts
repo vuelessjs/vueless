@@ -108,11 +108,6 @@ export interface Props {
   block?: boolean;
 
   /**
-   * Show link ring on focus.
-   */
-  ring?: boolean;
-
-  /**
    * Whether RouterLink should not wrap its content in a tag.
    */
   custom?: boolean;

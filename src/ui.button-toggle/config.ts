@@ -30,12 +30,7 @@ export default /*tw*/ {
       },
       split: {
         true: "flex flex-wrap",
-        false: `
-          p-1 gap-1 flex flex-nowrap w-fit transition
-          border border-gray-300 rounded-dynamic
-          hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
-          focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
-        `,
+        false: "p-1 gap-1 flex flex-nowrap w-fit transition border rounded-dynamic border-gray-300",
       },
       disabled: {
         true: "pointer-events-none",

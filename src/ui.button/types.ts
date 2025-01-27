@@ -101,11 +101,6 @@ export interface Props {
   loading?: boolean;
 
   /**
-   * Show button ring on focus.
-   */
-  ring?: boolean;
-
-  /**
    * Unique element id.
    */
   id?: string;

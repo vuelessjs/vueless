@@ -108,15 +108,21 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label :for="elementId" v-bind="wrapperAttrs">
+    <label
+      tabindex="0"
+      :for="elementId"
+      v-bind="wrapperAttrs"
+      @keydown.enter="onKeydownSpace"
+      @keydown.space.prevent="onKeydownSpace"
+    >
       <input
         :id="elementId"
         v-model="checkedValue"
+        tabindex="-1"
         type="checkbox"
         :disabled="disabled"
         v-bind="inputAttrs"
         @click="onClickToggle"
-        @keydown.space="onKeydownSpace"
       />
 
       <span v-bind="circleAttrs">

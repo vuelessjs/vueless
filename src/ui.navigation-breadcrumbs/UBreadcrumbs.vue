@@ -76,7 +76,6 @@ const { config, breadcrumbsAttrs, breadcrumbLinkAttrs, breadcrumbIconAttrs, divi
         :underlined="underlined"
         :dashed="dashed"
         :disabled="link.disabled || (!link.to && !link.href)"
-        :ring="false"
         v-bind="breadcrumbLinkAttrs"
         :data-test="dataTest"
         @click="onClickLink(link)"

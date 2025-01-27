@@ -1,13 +1,12 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownBadge: {
-    base: "{UBadge} transition",
+    base: "{UBadge}",
     variants: {
       opened: {
-        true: "group ring-dynamic ring-offset-dynamic ring-{color}-700/15",
+        true: "group",
       },
     },
-    compoundVariants: [{ opened: true, color: ["grayscale", "white"], class: "ring-gray-700/15" }],
   },
   dropdownIcon: {
     base: "{UIcon} transition duration-300 group-[]:rotate-180",
@@ -23,8 +22,8 @@ export default /*tw*/ {
     base: "{UDropdownList} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-6 mb-6",
-        bottom: "top-3 mt-6",
+        top: "bottom-5 mb-5",
+        bottom: "top-3 mt-5",
       },
       xPosition: {
         left: "left-0",

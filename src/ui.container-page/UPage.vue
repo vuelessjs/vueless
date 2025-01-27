@@ -117,7 +117,6 @@ const {
                 />
 
                 <ULink
-                  :ring="false"
                   size="sm"
                   color="gray"
                   :to="backTo"

@@ -6,15 +6,19 @@ export default /*tw*/ {
     focus:outline-none
   `,
   list: "list-none align-top w-full h-full",
-  listItem: "group/item block",
+  listItem: "group/item block mb-px last:mb-0",
   option: {
     base: `
       rounded-dynamic-sm px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-none text-gray-900
-      hover:bg-{color}-50 active:bg-{color}-100
+      hover:bg-{color}-600/5 active:bg-{color}-600/10
       overflow-hidden text-ellipsis
     `,
     variants: {
+      color: {
+        grayscale: "hover:bg-gray-100 active:bg-gray-200",
+        white: "hover:bg-gray-100 active:bg-gray-200",
+      },
       size: {
         sm: "text-xs",
         md: "text-sm",
@@ -25,7 +29,7 @@ export default /*tw*/ {
       },
     },
   },
-  optionActive: "{>option} font-semibold bg-{color}-100 hover:bg-{color}-100 text-brand-600",
+  optionActive: "{>option} font-semibold bg-{color}-600/10 hover:bg-{color}-600/10 text-brand-600",
   optionHighlighted: "bg-{color}-50",
   optionContent: "overflow-visible text-ellipsis",
   groupBase: {

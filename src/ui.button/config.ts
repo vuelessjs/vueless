@@ -2,13 +2,10 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
-      border border-transparent outline-none transition
-      disabled:cursor-not-allowed cursor-pointer
-      disabled:ring-0 disabled:ring-offset-0
-      focus:ring-dynamic             focus-within:ring-dynamic
-      focus:ring-offset-dynamic      focus-within:ring-offset-dynamic
-      focus:ring-{color}-700/15      focus-within:ring-{color}-700/15
-      dark:focus:ring-{color}-500/15 dark:focus-within:ring-{color}-500/15
+      border border-transparent outline-none transition cursor-pointer
+      focus-visible:ring-dynamic focus-visible:ring-offset-dynamic
+      focus-visible:ring-{color}-600 dark:focus-visible:ring-{color}-400
+      disabled:cursor-not-allowed disabled:ring-0 disabled:ring-offset-0
     `,
     variants: {
       size: {
@@ -24,21 +21,18 @@ export default /*tw*/ {
           text-white            dark:text-gray-900
           bg-{color}-600        dark:bg-{color}-400
           hover:bg-{color}-700  dark:hover:bg-{color}-500
-          focus:bg-{color}-700  dark:focus:bg-{color}-500
           active:bg-{color}-800 dark:active:bg-{color}-600
           disabled:bg-gray-400  dark:disabled:bg-gray-600
         `,
         secondary: `
           text-{color}-600        border-{color}-600        dark:text-{color}-400        dark:border-{color}-400
           hover:text-{color}-700  hover:border-{color}-700  dark:hover:text-{color}-500  dark:hover:border-{color}-500
-          focus:text-{color}-700  focus:border-{color}-700  dark:focus:text-{color}-500  dark:focus:border-{color}-500
           active:text-{color}-800 active:border-{color}-800 dark:active:text-{color}-600 dark:active:border-{color}-600
           disabled:text-gray-400  disabled:border-gray-400  dark:disabled:text-gray-600  dark:disabled:border-gray-600
         `,
         thirdary: `
           text-{color}-600                                 dark:text-{color}-400
           hover:text-{color}-700  hover:bg-{color}-700/10  dark:hover:text-{color}-500  dark:hover:bg-{color}-500/10
-          focus:text-{color}-700  focus:bg-{color}-700/10  dark:focus:text-{color}-500  dark:focus:bg-{color}-500/10
           active:text-{color}-800 active:bg-{color}-800/15 dark:active:text-{color}-600 dark:active:bg-{color}-600/15
           disabled:text-gray-400  disabled:bg-transparent  dark:disabled:text-gray-600  dark:disabled:bg-transparent
         `,
@@ -46,9 +40,6 @@ export default /*tw*/ {
       round: {
         false: "rounded-dynamic",
         true: "rounded-full",
-      },
-      ring: {
-        false: "!ring-0 !ring-offset-0",
       },
       loading: {
         true: "gap-0 pointer-events-none",
@@ -63,10 +54,7 @@ export default /*tw*/ {
     compoundVariants: [
       {
         color: ["grayscale", "white"],
-        class: `
-          focus:ring-gray-700/15        dark:focus:ring-gray-500/15
-          focus-within:ring-gray-700/15 dark:focus-within:ring-gray-500/15
-        `,
+        class: "focus-visible:ring-gray-900 dark:focus-visible:ring-gray-100",
       },
       {
         color: "grayscale",
@@ -74,7 +62,6 @@ export default /*tw*/ {
         class: `
           bg-gray-900        dark:bg-gray-100
           hover:bg-gray-800  dark:hover:bg-gray-200
-          focus:bg-gray-800  dark:focus:bg-gray-200
           active:bg-gray-700 dark:active:bg-gray-300
         `,
       },
@@ -84,8 +71,7 @@ export default /*tw*/ {
         class: `
           text-gray-900        border-gray-900        dark:text-gray-100         dark:border-gray-100
           hover:text-gray-800  hover:border-gray-800  dark:hover:text-gray-200   dark:hover:border-gray-200
-          focus:text-gray-800  focus:border-gray-800  dark:focus:text-gray-200   dark:focus:border-gray-200
-          active:text-gray-700 active:border-gray-700 dark:active:focus-gray-300 dark:active:border-gray-300
+          active:text-gray-700 active:border-gray-700 dark:active:text-gray-300 dark:active:border-gray-300
         `,
       },
       {
@@ -94,7 +80,6 @@ export default /*tw*/ {
         class: `
           text-gray-900                              dark:text-gray-100
           hover:text-gray-800  hover:bg-gray-800/5   dark:hover:text-gray-200  dark:hover:bg-gray-200/5
-          focus:text-gray-800  focus:bg-gray-800/5   dark:focus:text-gray-200  dark:focus:bg-gray-200/5
           active:text-gray-700 active:bg-gray-700/10 dark:active:text-gray-300 dark:active:bg-gray-300/10
         `,
       },
@@ -103,7 +88,6 @@ export default /*tw*/ {
         class: `
           text-gray-900        dark:text-white
           hover:text-gray-800  dark:hover:text-gray-100
-          focus:text-gray-800  dark:focus:text-gray-100
           active:text-gray-700 dark:active:text-gray-200
         `,
       },
@@ -113,19 +97,18 @@ export default /*tw*/ {
         class: `
           bg-white           dark:text-gray-900
           hover:bg-gray-50   dark:hover:text-gray-800
-          focus:bg-gray-50   dark:focus:text-gray-800
           active:bg-gray-100 dark:active:text-gray-700
         `,
       },
       {
         color: "white",
         variant: "secondary",
-        class: "border-gray-100 hover:border-gray-200 focus:border-gray-200 active:border-gray-300",
+        class: "border-gray-100 hover:border-gray-200 active:border-gray-300",
       },
       {
         color: "white",
         variant: "thirdary",
-        class: "hover:bg-white/10 focus:bg-white/10 active:bg-white/15",
+        class: "hover:bg-white/10 active:bg-white/15",
       },
       { filled: true, variant: "thirdary", class: "bg-{color}-700/10 dark:bg-{color}-500/10" },
       { filled: true, variant: "thirdary", color: ["grayscale", "white"], class: "bg-gray-800/5 dark:bg-gray-200/5" },
@@ -187,7 +170,6 @@ export default /*tw*/ {
     block: false,
     square: false,
     filled: false,
-    ring: true,
     loading: false,
     disabled: false,
   },

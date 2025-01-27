@@ -68,11 +68,6 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Show link focus ring.
-   */
-  ring?: boolean;
-
-  /**
    * Hide dropdown icon.
    */
   noIcon?: boolean;

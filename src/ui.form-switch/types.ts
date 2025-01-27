@@ -53,7 +53,6 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "white"
     | "brand";
 
   /**

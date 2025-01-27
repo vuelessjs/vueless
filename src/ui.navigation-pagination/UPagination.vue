@@ -124,7 +124,6 @@ const {
   <div v-bind="paginationAttrs">
     <UButton
       v-if="showFirst"
-      :ring="false"
       variant="thirdary"
       :label="firstLabel"
       :square="!firstLabel"
@@ -138,6 +137,7 @@ const {
         <UIcon
           v-if="!firstLabel"
           internal
+          color="brand"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
@@ -145,7 +145,6 @@ const {
     </UButton>
 
     <UButton
-      :ring="false"
       variant="thirdary"
       :label="prevLabel"
       :square="!prevLabel"
@@ -156,7 +155,13 @@ const {
     >
       <!-- @slot Use it to add something instead of the "prev" label. -->
       <slot name="prev">
-        <UIcon v-if="!prevLabel" internal :name="config.defaults.prevIcon" v-bind="prevIconAttrs" />
+        <UIcon
+          v-if="!prevLabel"
+          internal
+          color="brand"
+          :name="config.defaults.prevIcon"
+          v-bind="prevIconAttrs"
+        />
       </slot>
     </UButton>
 
@@ -165,7 +170,6 @@ const {
         v-if="!isFinite(page.number)"
         square
         disabled
-        :ring="false"
         variant="thirdary"
         v-bind="inactiveButtonAttrs"
       >
@@ -176,7 +180,6 @@ const {
       <UButton
         v-else-if="page.isActive"
         filled
-        :ring="false"
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
@@ -186,7 +189,6 @@ const {
 
       <UButton
         v-else
-        :ring="false"
         variant="thirdary"
         :label="String(page.number)"
         :disabled="disabled"
@@ -197,7 +199,6 @@ const {
     </template>
 
     <UButton
-      :ring="false"
       variant="thirdary"
       :label="nextLabel"
       :square="!nextLabel"
@@ -208,13 +209,18 @@ const {
     >
       <!-- @slot Use it to add something instead of the "next" label. -->
       <slot name="next">
-        <UIcon v-if="!nextLabel" internal :name="config.defaults.nextIcon" v-bind="nextIconAttrs" />
+        <UIcon
+          v-if="!nextLabel"
+          internal
+          color="brand"
+          :name="config.defaults.nextIcon"
+          v-bind="nextIconAttrs"
+        />
       </slot>
     </UButton>
 
     <UButton
       v-if="showLast"
-      :ring="false"
       variant="thirdary"
       :label="lastLabel"
       :square="!lastLabel"
@@ -225,7 +231,13 @@ const {
     >
       <!-- @slot Use it to add something instead of the "last" label. -->
       <slot name="last">
-        <UIcon v-if="!lastLabel" internal :name="config.defaults.lastIcon" v-bind="lastIconAttrs" />
+        <UIcon
+          v-if="!lastLabel"
+          internal
+          color="brand"
+          :name="config.defaults.lastIcon"
+          v-bind="lastIconAttrs"
+        />
       </slot>
     </UButton>
   </div>

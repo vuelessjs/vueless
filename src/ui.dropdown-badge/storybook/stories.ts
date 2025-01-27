@@ -181,7 +181,6 @@ SlotToggle.args = {
         :label="opened ? 'collapse' : 'expand'"
         color="green"
         size="sm"
-        :ring=false
         class="mx-1"
       />
     </template>

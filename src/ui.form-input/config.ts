@@ -2,23 +2,16 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      w-full bg-white relative flex border border-gray-300 rounded-dynamic transition
-      hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
+      border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
+      hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
+      focus-within:ring-dynamic focus-within:ring-offset-0 focus-within:ring-brand-600
     `,
     variants: {
       error: {
-        true: `
-          border-red-300 bg-red-50
-          hover:border-red-400 hover:focus-within:border-red-500
-          focus-within:border-red-500 focus-within:ring-red-700/15
-        `,
+        true: "!border-red-600 focus-within:ring-red-600",
       },
       disabled: {
-        true: `
-          focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100
-          hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
-        `,
+        true: "!border-gray-300 focus-within:ring-0 bg-gray-100",
       },
     },
   },
@@ -52,10 +45,7 @@ export default /*tw*/ {
         lg: "text-base placeholder:text-base placeholder:font-normal",
       },
       error: {
-        true: `
-          bg-red-50 placeholder:text-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-700/15
-          focus-within:border-red-500 focus-within:ring-red-700/15
-        `,
+        true: "placeholder:text-red-300",
       },
       typePassword: {
         true: "tracking-widest !leading-[1.18] [font-family:text-security-disc,serif] [-webkit-text-security:disc]",

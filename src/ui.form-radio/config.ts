@@ -2,11 +2,14 @@ export default /*tw*/ {
   radioLabel: "{ULabel}",
   radio: {
     base: `
-      border cursor-pointer transition checked:text-{color}-600
-      border-gray-300 hover:border-gray-400 focus:border-{color}-500 active:border-{color}-800
-      focus:ring-{color}-700/15 focus:ring-dynamic focus:ring-offset-dynamic
-      disabled:border-gray-300 disabled:text-gray-100
-      checked:disabled:border-gray-400 checked:disabled:text-gray-400 disabled:cursor-not-allowed
+      border border-gray-300 bg-white cursor-pointer transition
+      hover:border-gray-400
+      active:border-{color}-600 active:bg-{color}-200
+      focus:ring-0 focus:ring-offset-0
+      checked:text-{color}-600
+      focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-dynamic
+      disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
+      disabled:checked:bg-gray-400 disabled:checked:border-transparent
     `,
     variants: {
       size: {
@@ -15,7 +18,10 @@ export default /*tw*/ {
         lg: "size-6",
       },
       color: {
-        grayscale: "focus:ring-gray-700/15 focus:border-gray-500 active:border-gray-800 checked:text-gray-900",
+        grayscale: `
+          focus-visible:ring-gray-900
+          checked:text-gray-900 checked:hover:text-gray-800 checked:active:text-gray-700
+        `,
       },
     },
   },

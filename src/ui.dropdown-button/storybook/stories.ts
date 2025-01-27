@@ -175,7 +175,6 @@ SlotToggle.args = {
       <ULink
         :label="opened ? 'collapse' : 'expand'"
         color="green"
-        :ring=false
       />
     </template>
   `,

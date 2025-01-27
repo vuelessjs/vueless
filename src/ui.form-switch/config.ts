@@ -2,32 +2,35 @@ export default /*tw*/ {
   switchLabel: "{ULabel}",
   wrapper: {
     base: `
-      flex items-center p-0.5 relative rounded-3xl cursor-pointer transition
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic
+      flex items-center p-0.5 relative rounded-full cursor-pointer transition
+      focus-visible:ring-dynamic focus-visible:ring-offset-dynamic ring-{color}-600 outline-0
     `,
     variants: {
-      checked: {
-        true: "bg-{color}-600 ring-{color}-700/15 hover:bg-{color}-700 active:bg-{color}-800",
-        false: "bg-gray-300 ring-gray-700/15 hover:bg-gray-400 active:bg-gray-500",
-      },
       size: {
         sm: "w-6",
         md: "w-8",
         lg: "w-10",
+      },
+      color: {
+        grayscale: "ring-gray-900",
+      },
+      checked: {
+        true: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",
+        false: "bg-gray-300 hover:bg-gray-400 active:bg-gray-600",
       },
     },
     compoundVariants: [
       { toggleLabel: true, size: "sm", class: "w-10" },
       { toggleLabel: true, size: "md", class: "w-12" },
       { toggleLabel: true, size: "lg", class: "w-14" },
+      { color: "grayscale", checked: true, class: "bg-gray-900 hover:bg-gray-800 active:bg-gray-700" },
       { disabled: true, checked: false, class: "bg-gray-300" },
       { disabled: true, checked: true, class: "bg-gray-400" },
-      { color: "grayscale", disabled: false, checked: true, class: "bg-gray-900 ring-gray-700/15" },
     ],
   },
   input: "absolute size-0 opacity-0",
   circle: {
-    base: "transition-all duration-300 rounded-full bg-white flex items-center justify-center",
+    base: "rounded-full bg-white flex items-center justify-center transition-all",
     variants: {
       size: {
         sm: "size-3",

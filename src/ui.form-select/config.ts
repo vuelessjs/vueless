@@ -4,16 +4,13 @@ export default /*tw*/ {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:focus-within:border-brand-500
-      focus-within:ring-brand-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
-      focus-within:border-brand-500 focus-within:outline-none
+      hover:border-gray-400 hover:transition hover:focus-within:border-brand-600
+      focus-within:ring-brand-600 focus-within:ring-dynamic focus-within:ring-offset-0
+      focus-within:border-brand-600 focus-within:outline-none
     `,
     variants: {
       error: {
-        true: `
-          bg-red-50 border-red-300 hover:border-red-300
-          focus-within:border-red-500 focus-within:ring-red-700/15
-        `,
+        true: "!border-red-600 focus-within:ring-red-600",
       },
       disabled: {
         true: "bg-gray-100 pointer-events-none",

@@ -185,9 +185,6 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const NoRing = DefaultTemplate.bind({});
-NoRing.args = { ring: false };
-
 export const Block = DefaultTemplate.bind({});
 Block.args = { block: true };
 

@@ -33,13 +33,13 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-500",
+        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-600",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
       },
       error: {
-        true: "text-red-500",
+        true: "text-red-600 group-focus-within:text-red-600",
       },
       disabled: {
         true: "text-gray-500 cursor-not-allowed",
@@ -75,7 +75,7 @@ export default /*tw*/ {
         right: "pt-0.5",
       },
       error: {
-        true: "text-red-500",
+        true: "text-red-600",
       },
     },
   },

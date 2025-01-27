@@ -82,11 +82,6 @@ export interface Props {
   square?: boolean;
 
   /**
-   * Show button ring on focus.
-   */
-  ring?: boolean;
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

@@ -171,7 +171,6 @@ const {
                       size="sm"
                       color="gray"
                       :to="backTo"
-                      :ring="false"
                       :label="backLabel"
                       v-bind="backLinkAttrs"
                       @click="onClickBackLink"

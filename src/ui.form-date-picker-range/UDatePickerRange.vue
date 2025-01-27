@@ -625,7 +625,6 @@ watchEffect(() => {
         square
         filled
         :size="size"
-        :ring="false"
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
@@ -639,7 +638,6 @@ watchEffect(() => {
         square
         filled
         :size="size"
-        :ring="false"
         :disabled="disabled"
         :label="userFormatDate"
         variant="thirdary"
@@ -652,7 +650,6 @@ watchEffect(() => {
         square
         filled
         :size="size"
-        :ring="false"
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"

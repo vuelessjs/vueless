@@ -6,8 +6,8 @@ export default {
   brand: "grayscale",
   gray: "cool",
   darkMode: "auto",
-  ring: 4,
-  ringOffset: 0,
+  ring: 2,
+  ringOffset: 2,
   ringOffsetColorLight: "#ffffff", // white
   ringOffsetColorDark: "#111827", // gray-900
   rounding: 8,

@@ -107,9 +107,6 @@ DropdownListYPosition.args = { enum: "yPosition" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Ring = DefaultTemplate.bind({});
-Ring.args = { ring: true };
-
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
 

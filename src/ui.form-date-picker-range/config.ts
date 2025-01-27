@@ -2,12 +2,12 @@ export default /*tw*/ {
   wrapper: "relative",
   datepickerInput: "{UInput}",
   datepickerInputActive: {
-    base: "{UInput} {>datepickerInput}",
+    base: "{>datepickerInput}",
     wrapper: {
-      base: "ring-dynamic ring-offset-dynamic ring-brand-700/15 border-brand-500 hover:border-brand-500",
+      base: "ring-dynamic ring-offset-0 ring-brand-600 border-brand-600 hover:border-brand-600",
       variants: {
         error: {
-          true: "ring-red-700/15 border-red-500 hover:border-red-500",
+          true: "!border-red-600 ring-red-600",
         },
       },
     },
@@ -22,17 +22,7 @@ export default /*tw*/ {
       },
     },
   },
-  buttonWrapper: {
-    base: `
-      flex rounded-dynamic max-md:justify-between
-      focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-brand-700/15
-    `,
-    variants: {
-      opened: {
-        true: "ring-dynamic ring-offset-dynamic ring-brand-700/15",
-      },
-    },
-  },
+  buttonWrapper: "flex rounded-dynamic max-md:justify-between",
   button: "{UButton} shrink-0 grow rounded-none",
   shiftRangeButton: `
     first:rounded-dynamic first:rounded-r-none
@@ -54,12 +44,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { error: true, variant: "input", class: "-mt-3" },
-      { description: true, variant: "input", class: "-mt-3" },
-      { description: false, error: false, variant: "input", class: "mt-2" },
-      { error: true, variant: "button", class: "-mt-2" },
-      { description: true, variant: "button", class: "-mt-2" },
-      { description: false, error: false, variant: "button", class: "mt-3" },
+      { error: true, variant: ["button", "input"], class: "-mt-2" },
+      { description: true, variant: ["button", "input"], class: "-mt-2" },
+      { description: false, error: false, variant: ["button", "input"], class: "mt-2" },
     ],
   },
   menuTransition: {

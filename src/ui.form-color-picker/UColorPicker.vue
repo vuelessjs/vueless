@@ -58,7 +58,6 @@ const { listAttrs, colorButtonAttrs, circleAttrs } = useUI<Config>(defaultConfig
       v-tooltip="labels?.[color] || color"
       square
       size="xs"
-      :ring="false"
       color="grayscale"
       variant="thirdary"
       :filled="selectedItem === color"

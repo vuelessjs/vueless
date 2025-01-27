@@ -57,6 +57,7 @@ const DefaultTemplate: StoryFn<DefaultUDropdownListArgs> = (args: DefaultUDropdo
   template: `
     <UDropdownList
       v-bind="args"
+      v-model="args.modelValue"
       class="mx-4 w-[24rem]"
       @add="showAlert('You triggered the add action!')"
     >

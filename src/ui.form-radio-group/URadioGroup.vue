@@ -41,6 +41,7 @@ provide("getRadioGroupSelectedItem", () => selectedItem.value);
 provide("getRadioGroupName", () => props.name);
 provide("getRadioGroupColor", () => props.color);
 provide("getRadioGroupSize", () => props.size);
+provide("getRadioGroupDisabled", () => props.disabled);
 
 /**
  * Get element / nested component attributes for each config token ✨

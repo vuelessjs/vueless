@@ -4,12 +4,12 @@ export default /*tw*/ {
     base: `
       p-3 size-auto w-full bg-white transition
       rounded-dynamic border border-solid border-gray-300
-      hover:border-gray-400 hover:focus-within:border-brand-500 focus-within:border-brand-500
-      focus-within:ring-brand-700/15 focus-within:ring-dynamic focus-within:ring-offset-dynamic
+      hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
+      focus-within:ring-brand-600 focus-within:ring-dynamic focus-within:ring-offset-0
     `,
     variants: {
       error: {
-        true: "border-red-300 hover:border-red-400",
+        true: "!border-red-600",
       },
       disabled: {
         true: "pointer-events-none bg-gray-100",
@@ -22,7 +22,7 @@ export default /*tw*/ {
     ],
   },
   dropzoneHover: "border-gray-400 border-dashed",
-  dropzoneError: "hover:border-red-400 border-dashed border-red-300",
+  dropzoneError: "!border-red-600 border-dashed",
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   content: {
@@ -30,9 +30,6 @@ export default /*tw*/ {
     variants: {
       multiple: {
         false: "items-center",
-      },
-      error: {
-        true: "bg-red-50",
       },
       disabled: {
         true: "bg-gray-200",

@@ -82,7 +82,6 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
 
     <ULink
       :id="elementId"
-      :ring="ring"
       :size="size"
       :label="label"
       :color="color"

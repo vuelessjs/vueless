@@ -111,7 +111,6 @@ const {
         v-if="closable"
         square
         size="xs"
-        :ring="false"
         :color="closeButtonColor"
         variant="thirdary"
         v-bind="closeButtonAttrs"

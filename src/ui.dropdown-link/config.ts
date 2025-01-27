@@ -5,12 +5,9 @@ export default /*tw*/ {
       opened: {
         true: "group",
       },
-      ring: {
-        true: "focus-within:ring-dynamic focus-within:ring-offset-4 focus-within:ring-{color}-700/15",
-      },
     },
   },
-  dropdownLink: "{ULink} focus:ring-0 focus:ring-offset-0",
+  dropdownLink: "{ULink}",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[]:rotate-180",
     variants: {
@@ -30,8 +27,8 @@ export default /*tw*/ {
     base: "{UDropdownList} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-6 mb-4",
-        bottom: "top-3 mt-4",
+        top: "bottom-3 mb-3",
+        bottom: "top-3 mt-3",
       },
       xPosition: {
         left: "left-0",
@@ -47,7 +44,6 @@ export default /*tw*/ {
     xPosition: "left",
     underlined: undefined,
     dashed: true,
-    ring: false,
     noIcon: false,
     disabled: false,
     /* icons */

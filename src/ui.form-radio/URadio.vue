@@ -21,6 +21,7 @@ const setRadioGroupSelectedItem = inject<SetRadioGroupSelectedItem>(
 const getRadioGroupName = inject("getRadioGroupName", null);
 const getRadioGroupColor = inject("getRadioGroupColor", null);
 const getRadioGroupSize = inject("getRadioGroupSize", null);
+const getRadioGroupDisabled = inject("getRadioGroupDisabled", null);
 const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = withDefaults(defineProps<Props>(), {
@@ -42,6 +43,7 @@ const localValue = ref<LocalValueType>("");
 const radioName = ref("");
 const radioColor = ref(toValue(getRadioGroupColor) || props.color);
 const radioSize = ref(toValue(getRadioGroupSize) || props.size);
+const radioDisabled = ref(toValue(getRadioGroupDisabled) || props.disabled);
 
 const isChecked = computed(() => {
   const currentValue = props.modelValue ?? localValue.value;
@@ -65,6 +67,7 @@ onMounted(() => {
 
 watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color));
 watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
+watchEffect(() => (radioDisabled.value = toValue(getRadioGroupDisabled) || props.disabled));
 watchEffect(() => {
   localValue.value = toValue(getRadioGroupSelectedItem) || null;
   emit("update:modelValue", props.value);
@@ -101,7 +104,7 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
     :error="error"
     :size="radioSize"
     :align="labelAlign"
-    :disabled="disabled"
+    :disabled="radioDisabled"
     :description="description"
     interactive
     v-bind="radioLabelAttrs"
@@ -121,7 +124,7 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
       :value="radioValue"
       :name="radioName"
       :checked="checked || isChecked"
-      :disabled="disabled"
+      :disabled="radioDisabled"
       v-bind="radioAttrs"
       :data-test="dataTest"
       @change="onChange"

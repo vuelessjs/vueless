@@ -724,7 +724,6 @@ const {
       <UButton
         square
         size="sm"
-        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
@@ -735,7 +734,6 @@ const {
 
       <UButton
         size="sm"
-        :ring="false"
         color="grayscale"
         variant="thirdary"
         v-bind="viewSwitchButtonAttrs"
@@ -752,7 +750,6 @@ const {
       <UButton
         square
         size="sm"
-        :ring="false"
         color="grayscale"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
@@ -849,7 +846,6 @@ const {
         ref="ok-button"
         filled
         size="sm"
-        :ring="false"
         color="grayscale"
         variant="thirdary"
         v-bind="timepickerSubmitButtonAttrs"

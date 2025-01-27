@@ -16,14 +16,11 @@ export default /*tw*/ {
         true: "rounded-full",
       },
       tabindex: {
-        true: `
-          cursor-pointer focus-within:ring-dynamic focus-within:ring-offset-dynamic focus-within:ring-{color}-700/15
-          focus:ring-dynamic focus:ring-offset-dynamic focus:ring-{color}-700/15
-        `,
+        true: "cursor-pointer focus-visible:ring-dynamic focus-visible:ring-offset-dynamic focus-visible:ring-{color}-600",
       },
       color: {
-        grayscale: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
-        white: "focus:ring-gray-700/15 focus-within:ring-gray-700/15",
+        grayscale: "focus-visible:ring-gray-900",
+        white: " focus-visible:ring-gray-900",
       },
     },
     compoundVariants: [

@@ -1,27 +1,21 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  leftSlot: "flex items-center justify-center whitespace-nowrap pl-3 gap-1 rounded-dynamic rounded-r-none",
-  rightSlot: "flex items-center justify-center whitespace-nowrap pr-3 gap-1 rounded-dynamic rounded-l-none",
+  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-dynamic",
+  leftSlot: "{>slot} pl-3 rounded-r-none",
+  rightSlot: "{>slot} pr-3 rounded-l-none",
   wrapper: {
     base: `
       flex bg-white transition w-full
-      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-500
-      focus-within:border-brand-500 focus-within:ring-dynamic focus-within:ring-offset-dynamic
-      focus-within:ring-brand-700/15 focus-within:outline-none
+      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-600
+      focus-within:border-brand-600 focus-within:ring-dynamic focus-within:ring-offset-0
+      focus-within:ring-brand-600 focus-within:outline-none
     `,
     variants: {
       error: {
-        true: `
-          bg-red-50 border-red-300
-          hover:border-red-400 hover:focus-within:border-red-500
-          focus-within:border-red-500 focus-within:ring-red-700/15
-        `,
+        true: "!border-red-600 focus-within:ring-red-600",
       },
       disabled: {
-        true: `
-            focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100
-            hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
-          `,
+        true: "!border-gray-300 focus-within:ring-0 bg-gray-100",
       },
     },
   },
