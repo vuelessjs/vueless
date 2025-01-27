@@ -6,6 +6,11 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
+   * Input label.
+   */
+  label?: string;
+
+  /**
    * Search input value.
    */
   modelValue?: string;
@@ -23,12 +28,7 @@ export interface Props {
   /**
    * Label placement.
    */
-  labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
-
-  /**
-   * Input label.
-   */
-  label?: string;
+  labelAlign?: "topInside" | "top" | "topWithDesc" | "left" | "right";
 
   /**
    * Input description.

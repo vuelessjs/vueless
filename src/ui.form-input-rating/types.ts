@@ -6,9 +6,19 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
+   * Rating label.
+   */
+  label?: string;
+
+  /**
    * Rating value.
    */
   modelValue: number;
+
+  /**
+   * Rating description.
+   */
+  description?: string;
 
   /**
    * Rating number of stars.
@@ -21,11 +31,6 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Rating label.
-   */
-  label?: string;
-
-  /**
    * Rating label placement.
    */
   labelAlign?: "top" | "topWithDesc" | "left" | "right";
@@ -36,9 +41,9 @@ export interface Props {
   error?: string;
 
   /**
-   * Rating description.
+   * Disable the input.
    */
-  description?: string;
+  disabled?: boolean;
 
   /**
    * Rating total.
