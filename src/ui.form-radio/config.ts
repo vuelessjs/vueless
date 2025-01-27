@@ -5,8 +5,8 @@ export default /*tw*/ {
       border border-gray-300 bg-white cursor-pointer transition
       hover:border-gray-400
       active:border-{color}-600 active:bg-{color}-200
-      focus:ring-0 focus:ring-offset-0
       checked:text-{color}-600
+      focus:ring-0 focus:ring-offset-0
       focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-2
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
       disabled:checked:bg-gray-400 disabled:checked:border-transparent
