@@ -1,3 +1,4 @@
+import { ref, computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -8,6 +9,9 @@ import {
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -22,7 +26,9 @@ export default {
   title: "Form Inputs & Controls / Textarea",
   component: UTextarea,
   args: {
-    label: "Label",
+    label: "Your message",
+    modelValue:
+      "Hello! I'm interested in learning more about your services. Please get back to me at your earliest convenience.",
   },
   argTypes: {
     ...getArgTypes(UTextarea.__name),
@@ -38,11 +44,17 @@ const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
   components: { UTextarea, UIcon },
   setup() {
     const slots = getSlotNames(UTextarea.__name);
+    const errorMessage = computed(() => (args.modelValue === "" ? args.error : ""));
 
-    return { args, slots };
+    return { args, slots, errorMessage };
   },
   template: `
-    <UTextarea v-bind="args" v-model="args.modelValue">
+    <UTextarea
+      v-bind="args"
+      v-model="args.modelValue"
+      :error="errorMessage"
+      class="max-w-96"
+    >
       ${args.slotTemplate || getSlotsFragment("")}
     </UTextarea>
   `,
@@ -51,18 +63,28 @@ const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
 const EnumVariantTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes }) => ({
   components: { UTextarea, UCol },
   setup() {
+    let filteredOptions = argTypes?.[args.enum]?.options;
+
+    if (args.enum === "labelAlign") {
+      filteredOptions = argTypes?.[args.enum]?.options?.filter(
+        (item) => item !== "right" && item !== "topWithDesc",
+      );
+    }
+
     return {
       args,
-      options: argTypes?.[args.enum]?.options,
+      filteredOptions,
     };
   },
   template: `
     <UCol>
-      <div class="w-1/3" v-for="(option, index) in options" :key="index">
+      <div class="w-1/3" v-for="(option, index) in filteredOptions" :key="index">
         <UTextarea
           v-bind="args"
           :[args.enum]="option"
-          :label="option"
+          :description="option"
+          rows="3"
+          class="max-w-96"
         />
       </div>
     </UCol>
@@ -72,53 +94,75 @@ const EnumVariantTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argT
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
-
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "some placeholder text" };
+Placeholder.args = { modelValue: "", placeholder: "Enter text here..." };
+
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Provide additional details in this field." };
+
+export const Error = DefaultTemplate.bind({});
+Error.args = { modelValue: "", error: "This field is required. Please enter a value." };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "some error text" };
-
-export const Description = DefaultTemplate.bind({});
-Description.args = { description: "some description text" };
-
-export const Rows1 = DefaultTemplate.bind({});
-Rows1.args = { rows: "1" };
-
-export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "some value for read" };
-
-export const NoAutocomplete = DefaultTemplate.bind({});
-NoAutocomplete.args = { noAutocomplete: true };
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="star"
-        color="black"
-      />
-    </template>
-  `,
+export const Resizable = DefaultTemplate.bind({});
+Resizable.args = { resizable: true };
+
+export const RowsNumber = DefaultTemplate.bind({});
+RowsNumber.args = { rows: "6" };
+RowsNumber.parameters = {
+  docs: {
+    description: {
+      story: "You can set the number of visible rows via the `rows` prop.",
+    },
+  },
 };
 
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-      <UIcon
-        name="star"
-        color="black"
-      />
-    </template>
-  `,
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true, modelValue: "Meeting scheduled for Monday at 10 AM." };
+
+export const NoAutocomplete = DefaultTemplate.bind({});
+NoAutocomplete.args = {
+  noAutocomplete: true,
+  modelValue: "",
+  placeholder: "Try typing something here...",
 };
+NoAutocomplete.parameters = {
+  docs: {
+    description: {
+      story: "Disable browser's autocomplete.",
+    },
+  },
+};
+
+export const Slots: StoryFn<UTextareaArgs> = (args) => ({
+  components: { UTextarea, URow, UIcon, UAvatar },
+  directives: { tooltip },
+  setup() {
+    const switchModel = ref(false);
+
+    return { args, switchModel };
+  },
+  template: `
+    <URow no-mobile>
+      <UTextarea v-bind="args">
+        <template #left>
+          <UAvatar />
+        </template>
+      </UTextarea>
+
+      <UTextarea v-bind="args">
+        <template #right>
+          <UIcon name="send" color="green" v-tooltip="'Send message'" />
+        </template>
+      </UTextarea>
+    </URow>
+  `,
+});

@@ -43,11 +43,7 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   components: { UInput, UIcon },
   setup() {
     const slots = getSlotNames(UInput.__name);
-    const errorMessage = computed(() =>
-      args.modelValue === "" && args.error !== ""
-        ? "This field is required. Please enter a value."
-        : "",
-    );
+    const errorMessage = computed(() => (args.modelValue === "" ? args.error : ""));
 
     return { args, slots, errorMessage };
   },
@@ -127,13 +123,13 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { modelValue: "", placeholder: "Type something here...", error: "" };
+Placeholder.args = { modelValue: "", placeholder: "Type something here..." };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Provide additional details if necessary." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { modelValue: "" };
+Error.args = { error: "This field is required. Please enter a value." };
 
 export const Readonly = DefaultTemplate.bind({});
 Readonly.args = {

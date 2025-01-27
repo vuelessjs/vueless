@@ -43,11 +43,7 @@ const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => (
   components: { UInputSearch, UButton, UIcon },
   setup() {
     const slots = getSlotNames(UInputSearch.__name);
-    const errorMessage = computed(() =>
-      args.modelValue === "" && args.error !== ""
-        ? "This field is required. Please enter a value."
-        : "",
-    );
+    const errorMessage = computed(() => (args.modelValue === "" ? args.error : ""));
 
     return { args, slots, errorMessage };
   },
@@ -102,13 +98,13 @@ export const Label = DefaultTemplate.bind({});
 Label.args = { label: "Search for product or brand" };
 
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { modelValue: "", placeholder: "Type to search...", error: "" };
+Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Search for additional details." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { modelValue: "" };
+Error.args = { error: "This field is required. Please enter a value." };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
