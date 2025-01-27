@@ -1,23 +1,42 @@
 export default /*tw*/ {
   label: {
     base: "{ULabel}",
-    content: "gap-6 items-center",
+    content: {
+      base: "items-center",
+      variants: {
+        size: {
+          sm: "gap-3",
+          md: "gap-3.5",
+          lg: "gap-4",
+        },
+      },
+    },
   },
   number: "",
-  removeButton: "{UButton}",
-  removeIcon: "{UIcon}",
   addButton: "{UButton}",
-  addIcon: "{UIcon}",
+  removeButton: "{UButton}",
+  actionIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
+  addIcon: "{>actionIcon}",
+  removeIcon: "{>actionIcon}",
   value: {
     base: "font-bold select-none !leading-none",
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base",
       },
       disabled: {
-        true: "focus-within:ring-0 focus-within:ring-offset-0 pointer-events-none",
+        true: "pointer-events-none",
       },
     },
   },
