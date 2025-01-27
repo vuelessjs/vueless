@@ -18,7 +18,6 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 export const DEFAULT_BRAND_COLOR = GRAYSCALE_COLOR;
 export const DEFAULT_GRAY_COLOR = COOL_COLOR;
 export const DEFAULT_RING = 2; /* pixels */
-export const DEFAULT_RING_OFFSET = 2; /* pixels */
 export const DEFAULT_RING_OFFSET_COLOR_LIGHT = "#ffffff"; // white
 export const DEFAULT_RING_OFFSET_COLOR_DARK = "#111827"; // gray-900
 export const DEFAULT_ROUNDING = 8; /* pixels */
@@ -172,8 +171,7 @@ export const TAILWIND_MERGE_EXTENSION = {
       spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
     },
     classGroups: {
-      "ring-w": [{ ring: ["dynamic"] }],
-      "ring-offset-w": [{ "ring-offset": ["dynamic"] }],
+      "ring-w": [{ ring: ["dynamic", "dynamic-1"] }],
       "ring-offset-color": [{ "ring-offset": ["color-dynamic"] }],
       "font-size": [{ text: ["2xs"] }],
       rounded: [{ rounded: ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],

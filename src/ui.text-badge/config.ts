@@ -16,7 +16,7 @@ export default /*tw*/ {
         true: "rounded-full",
       },
       tabindex: {
-        true: "cursor-pointer focus-visible:ring-dynamic focus-visible:ring-offset-dynamic focus-visible:ring-{color}-600",
+        true: "cursor-pointer focus-visible:ring-dynamic focus-visible:ring-offset-2 focus-visible:ring-{color}-600",
       },
       color: {
         grayscale: "focus-visible:ring-gray-900",

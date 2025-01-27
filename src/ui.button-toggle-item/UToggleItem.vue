@@ -100,9 +100,8 @@ const { toggleButtonInactiveAttrs, toggleButtonActiveAttrs, toggleInputAttrs } =
   <UButton
     :label="label"
     tabindex="0"
-    color="brand"
+    color="gray"
     :for="elementId"
-    :filled="getToggleSplit()"
     :size="getToggleSize()"
     :round="getToggleRound()"
     :block="getToggleBlock()"

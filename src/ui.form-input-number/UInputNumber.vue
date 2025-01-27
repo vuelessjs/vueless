@@ -86,7 +86,7 @@ const {
 
     <UButton
       variant="thirdary"
-      size="sm"
+      size="2xs"
       filled
       square
       round
@@ -110,7 +110,7 @@ const {
 
     <UButton
       variant="thirdary"
-      size="sm"
+      size="2xs"
       filled
       square
       round

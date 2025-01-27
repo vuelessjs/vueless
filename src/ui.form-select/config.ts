@@ -5,7 +5,7 @@ export default /*tw*/ {
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-600
-      focus-within:ring-brand-600 focus-within:ring-dynamic focus-within:ring-offset-0
+      focus-within:ring-brand-600 focus-within:ring-dynamic-1
       focus-within:border-brand-600 focus-within:outline-none
     `,
     variants: {
@@ -14,7 +14,7 @@ export default /*tw*/ {
       },
       disabled: {
         true: `
-          focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100
+          focus-within:ring-0 bg-gray-100
           hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
         `,
       },

@@ -4,7 +4,7 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{>datepickerInput}",
     wrapper: {
-      base: "ring-dynamic ring-offset-0 ring-brand-600 border-brand-600 hover:border-brand-600",
+      base: "ring-dynamic ring-brand-600 border-brand-600 hover:border-brand-600",
       variants: {
         error: {
           true: "!border-red-600 ring-red-600",

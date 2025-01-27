@@ -29,7 +29,7 @@ export default /*tw*/ {
       },
     },
   },
-  optionActive: "{>option} font-semibold bg-{color}-600/10 hover:bg-{color}-600/10 text-brand-600",
+  optionActive: "{>option} bg-{color}-600/10 hover:bg-{color}-600/10 text-brand-600",
   optionHighlighted: "bg-{color}-50",
   optionContent: "overflow-visible text-ellipsis",
   groupBase: {

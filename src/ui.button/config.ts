@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: `
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent outline-none transition cursor-pointer
-      focus-visible:ring-dynamic focus-visible:ring-offset-dynamic
+      focus-visible:ring-dynamic focus-visible:ring-offset-2
       focus-visible:ring-{color}-600 dark:focus-visible:ring-{color}-400
       disabled:cursor-not-allowed disabled:ring-0 disabled:ring-offset-0
     `,
