@@ -20,11 +20,10 @@ Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CS
 
 ## Ring
 
-You can set the ring width and ring offset width globally for all Vueless components.
+You can set the ring width globally for all Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
-  ring: 6, /* px */
-  ringOffset: 4, /* px */
+  ring: 4, /* px */
 }<a data-footnote-ref href="#user-content-fn-2">;</a>
 </code></pre>
 
