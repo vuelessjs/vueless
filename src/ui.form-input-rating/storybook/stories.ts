@@ -87,7 +87,7 @@ Description.args = { description: "Your review helps us improve our services." }
 export const Error = DefaultTemplate.bind({});
 Error.args = {
   selectable: true,
-  modelValue: NaN,
+  modelValue: 0,
   error: "Please select a rating before submitting your review.",
 };
 
