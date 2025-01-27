@@ -13,7 +13,10 @@ export default /*tw*/ {
         true: "!border-red-600 focus-within:ring-red-600",
       },
       disabled: {
-        true: "bg-gray-100 pointer-events-none",
+        true: `
+          focus-within:ring-0 focus-within:ring-offset-0 bg-gray-100
+          hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
+        `,
       },
       opened: {
         true: "z-[inherit] group/active",
@@ -64,6 +67,11 @@ export default /*tw*/ {
   },
   selectIcon: {
     base: "{UIcon}",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
     defaults: {
       size: {
         sm: "xs",
@@ -76,8 +84,8 @@ export default /*tw*/ {
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "pr-1.5",
   rightSlot: "{>toggle} pr-3",
-  beforeToggle: "{>toggle}",
-  afterToggle: "{>toggle} mr-3 items-start pt-3",
+  beforeToggle: "{>toggle} cursor-auto",
+  afterToggle: "{>toggle} mr-3 items-start pt-3 cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [
@@ -122,6 +130,9 @@ export default /*tw*/ {
         sm: "text-xs placeholder:text-xs",
         md: "text-sm placeholder:text-sm",
         lg: "text-base placeholder:text-base",
+      },
+      disabled: {
+        true: "cursor-not-allowed",
       },
       error: {
         true: "placeholder:text-red-300",

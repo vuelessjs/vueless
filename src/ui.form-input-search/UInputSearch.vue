@@ -168,6 +168,7 @@ const {
           v-if="!searchButtonLabel"
           internal
           interactive
+          color="gray"
           :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="`${dataTest}-search-icon`"

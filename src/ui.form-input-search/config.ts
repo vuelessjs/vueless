@@ -4,8 +4,13 @@ export default /*tw*/ {
     base: "{UInput} {>searchInput}",
     rightSlot: "pr-0",
   },
-  clearIcon: {
+  inputIcon: {
     base: "{UIcon}",
+    variants: {
+      disabled: {
+        true: "text-gray-400 pointer-events-none",
+      },
+    },
     defaults: {
       size: {
         sm: "xs",
@@ -14,23 +19,15 @@ export default /*tw*/ {
       },
     },
   },
-  searchIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
+  clearIcon: "{>inputIcon}",
+  searchIcon: "{>inputIcon}",
   searchButton: {
     base: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
     defaults: {
       size: {
         sm: "xs",
-        md: "md",
-        lg: "lg",
+        md: "sm",
+        lg: "md",
       },
     },
   },

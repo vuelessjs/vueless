@@ -13,6 +13,11 @@ export default /*tw*/ {
   stars: "flex",
   star: {
     base: "{UIcon}",
+    variants: {
+      disabled: {
+        true: "text-gray-400 pointer-events-none",
+      },
+    },
     defaults: {
       size: {
         sm: "xs",

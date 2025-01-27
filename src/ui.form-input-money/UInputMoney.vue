@@ -118,6 +118,7 @@ const { moneyInputAttrs } = useUI<Config>(defaultConfig);
     :label-align="labelAlign"
     :placeholder="placeholder"
     :description="description"
+    :readonly="readonly"
     :error="error"
     :disabled="disabled"
     inputmode="decimal"
@@ -130,16 +131,16 @@ const { moneyInputAttrs } = useUI<Config>(defaultConfig);
     @input="onInput"
   >
     <template #left>
-      <!-- 
-        @slot Use it to add something left. 
+      <!--
+        @slot Use it to add something left.
         @binding {string} icon-name
       -->
       <slot name="left" :icon-name="leftIcon" />
     </template>
 
     <template #right>
-      <!-- 
-        @slot Use it to add something right. 
+      <!--
+        @slot Use it to add something right.
         @binding {string} icon-name
       -->
       <slot name="right" :icon-name="leftIcon" />

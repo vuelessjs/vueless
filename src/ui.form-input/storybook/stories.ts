@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -25,7 +26,8 @@ export default {
   title: "Form Inputs & Controls / Input",
   component: UInput,
   args: {
-    label: "Label",
+    label: "Full Name",
+    modelValue: "Satoshi Nakamoto",
   },
   argTypes: {
     ...getArgTypes(UInput.__name),
@@ -41,13 +43,19 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   components: { UInput, UIcon },
   setup() {
     const slots = getSlotNames(UInput.__name);
+    const errorMessage = computed(() =>
+      args.modelValue === "" && args.error !== ""
+        ? "This field is required. Please enter a value."
+        : "",
+    );
 
-    return { args, slots };
+    return { args, slots, errorMessage };
   },
   template: `
     <UInput
       v-bind="args"
       v-model="args.modelValue"
+      :error="errorMessage"
       class="max-w-96"
     >
       ${args.slotTemplate || getSlotsFragment("")}
@@ -61,15 +69,15 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
     function getDescription(option: string) {
       switch (option) {
         case "string":
-          return "Only letters are allowed";
+          return "Only letters are allowed.";
         case "number":
-          return "Numbers are allowed (including decimals)";
+          return "Numbers are allowed (including decimals).";
         case "integer":
-          return "Only integers are allowed";
+          return "Only integers are allowed.";
         case "stringAndNumber":
-          return "Letters and numbers are allowed";
+          return "Letters and numbers are allowed.";
         case "symbol":
-          return "Special characters are allowed";
+          return "Special characters are allowed.";
         default:
           return "";
       }
@@ -96,18 +104,18 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :label="option"
-        :description="getDescription(option)"
+        :placeholder="args.enum === 'validationRule' ? '' : option"
+        :label="args.enum === 'validationRule' ? option : 'Full Name'"
+        :description="args.enum === 'validationRule' ? getDescription(option) : ''"
         class="max-w-96"
       />
 
       <UInput
         v-if="args.enum === 'validationRule'"
-        v-bind="args"
-        validation-rule="^#([a-fA-F0-9]{3,4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+        validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
         label="Custom RegExp"
-        description="Enter a valid hex color code (e.g., #FF5733)"
-        labelAlign="topWithDesc"
+        description="Enter a valid hex color code (e.g., #FF5733)."
+        label-align="topWithDesc"
         placeholder="#FF5733"
         class="max-w-96"
       />
@@ -119,31 +127,39 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "Type something here..." };
+Placeholder.args = { modelValue: "", placeholder: "Type something here...", error: "" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Provide additional details if necessary." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value." };
+Error.args = { modelValue: "" };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "Pre-filled content that cannot be changed" };
+Readonly.args = {
+  readonly: true,
+  label: "Readonly data",
+  modelValue: "Pre-filled content that cannot be changed",
+};
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const TypePassword = DefaultTemplate.bind({});
-TypePassword.args = { type: "password" };
+TypePassword.args = { label: "Password", modelValue: "donotforgetyourpassword", type: "password" };
 
 export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+Sizes.args = { enum: "size", modelValue: "" };
 
 export const ValidationRules = EnumVariantTemplate.bind({});
-ValidationRules.args = { enum: "validationRule", labelAlign: "topWithDesc" };
+ValidationRules.args = {
+  enum: "validationRule",
+  labelAlign: "topWithDesc",
+  modelValue: "",
+};
 ValidationRules.parameters = {
   docs: {
     description: {
@@ -161,13 +177,11 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
   template: `
     <URow>
       <UInput
-        v-bind="args"
         left-icon="feedback"
         label="Your opinion"
         placeholder="Share your feedback with us"
       />
       <UInput
-        v-bind="args"
         right-icon="person"
         label="Username"
         placeholder="Enter your username"
