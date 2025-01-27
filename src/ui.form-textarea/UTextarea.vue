@@ -99,7 +99,7 @@ function getNewRowCount() {
 function onEnter() {
   const newRowCount = getNewRowCount();
 
-  if (newRowCount > currentRows.value) {
+  if (newRowCount > currentRows.value && !props.readonly) {
     currentRows.value = newRowCount;
   }
 }
@@ -107,7 +107,7 @@ function onEnter() {
 function onBackspace() {
   const newRowCount = getNewRowCount() - 1;
 
-  if (newRowCount < currentRows.value) {
+  if (newRowCount < currentRows.value && !props.readonly) {
     currentRows.value = newRowCount;
   }
 }
