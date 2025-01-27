@@ -171,7 +171,7 @@ export const TAILWIND_MERGE_EXTENSION = {
       spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
     },
     classGroups: {
-      "ring-w": [{ ring: ["dynamic"] }],
+      "ring-w": [{ ring: ["dynamic", "dynamic-1"] }],
       "ring-offset-color": [{ "ring-offset": ["color-dynamic"] }],
       "font-size": [{ text: ["2xs"] }],
       rounded: [{ rounded: ["dynamic", "dynamic-sm", "dynamic-lg", "inherit"] }],
