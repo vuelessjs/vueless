@@ -28,7 +28,7 @@ export default {
   args: {
     label: "Your message",
     modelValue:
-      "Hello! I'm interested in learning more about your services. Please get back to me at your earliest convenience.",
+      "Hi there! I'd like to learn more about your services. When you have a moment, could you share some details?",
   },
   argTypes: {
     ...getArgTypes(UTextarea.__name),
