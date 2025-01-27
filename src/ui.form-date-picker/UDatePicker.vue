@@ -266,11 +266,15 @@ const {
 } = useUI<Config>(defaultConfig, mutatedProps);
 
 /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
+/* TODO:
+   Find way to do it more explicity. 
+   It is not really clear that i18n changes datepickerCalendarAttrs now.
+*/
 watchEffect(() => {
   const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
 
   if (!calendarConfig?.i18n || props.config?.i18n) {
-    calendarConfig.i18n = merge({}, calendarConfig.i18n, config.value.i18n);
+    calendarConfig.i18n = merge({}, calendarConfig.i18n, props.config.i18n);
   }
 });
 </script>
