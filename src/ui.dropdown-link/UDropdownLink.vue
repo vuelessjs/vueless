@@ -73,7 +73,13 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
 </script>
 
 <template>
-  <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div
+    v-click-outside="hideOptions"
+    tabindex="1"
+    v-bind="wrapperAttrs"
+    @keydown.enter="onClickLink"
+    @keydown.space.prevent="onClickLink"
+  >
     <!--
       @slot Use it to add something before the label.
       @binding {boolean} opened
@@ -82,6 +88,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
 
     <ULink
       :id="elementId"
+      tabindex="-1"
       :size="size"
       :label="label"
       :color="color"
@@ -91,8 +98,6 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       v-bind="dropdownLinkAttrs"
       :data-test="getDataTest()"
       @click="onClickLink"
-      @keydown.enter="onClickLink"
-      @keydown.space.prevent="onClickLink"
     >
       <template #default>
         <!--

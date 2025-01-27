@@ -1,13 +1,20 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative inline-flex items-center rounded",
+    base: `
+      relative inline-flex items-center outline-0 rounded
+      focus-visible:ring-dynamic focus-visible:ring-offset-4 focus-visible:ring-{color}-600
+    `,
     variants: {
+      color: {
+        grayscale: "focus-visible:ring-gray-900",
+        white: "focus-visible:ring-white",
+      },
       opened: {
         true: "group",
       },
     },
   },
-  dropdownLink: "{ULink}",
+  dropdownLink: "{ULink} focus-visible:ring-offset-0 focus-visible:ring-0",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[]:rotate-180",
     variants: {
