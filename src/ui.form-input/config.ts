@@ -4,7 +4,7 @@ export default /*tw*/ {
     base: `
       border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
       hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:ring-dynamic-1 focus-within:ring-brand-600
+      focus-within:ring-dynamic-sm focus-within:ring-brand-600
     `,
     variants: {
       error: {
