@@ -10,6 +10,7 @@ import useUI from "../composables/useUI.ts";
 import { createDebounce, hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import {
   filterOptions,
@@ -334,6 +335,12 @@ function onMouseDownClear() {
   emit("remove", props.options);
 }
 
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
+
 function setLabelPosition() {
   if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {
     return;
@@ -557,20 +564,6 @@ const {
       </div>
 
       <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
-        <span
-          v-if="hasSlotContent($slots['left']) || leftIcon"
-          ref="leftSlotWrapperRef"
-          v-bind="leftSlotAttrs"
-        >
-          <!--
-            @slot Use it to add something to the left of input.
-            @binding {string} icon-name
-          -->
-          <slot name="left" :icon-name="leftIcon">
-            <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
-          </slot>
-        </span>
-
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <div
             v-for="item in localValue as Option[]"
@@ -738,6 +731,20 @@ const {
           </template>
         </template>
       </UDropdownList>
+
+      <div
+        v-if="hasSlotContent($slots['left']) || leftIcon"
+        ref="leftSlotWrapperRef"
+        v-bind="leftSlotAttrs"
+      >
+        <!--
+            @slot Use it to add something to the left of input.
+            @binding {string} icon-name
+          -->
+        <slot name="left" :icon-name="leftIcon">
+          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
+        </slot>
+      </div>
     </div>
   </ULabel>
 </template>

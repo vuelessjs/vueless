@@ -82,7 +82,7 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
-  leftSlot: "pr-1.5",
+  leftSlot: "{>toggle} pl-3",
   rightSlot: "{>toggle} pr-3",
   beforeToggle: "{>toggle} cursor-auto",
   afterToggle: "{>toggle} mr-3 items-start pt-3 cursor-auto",
@@ -114,10 +114,8 @@ export default /*tw*/ {
       selected: {
         false: "w-full",
       },
-      opened: {
-        true: "w-full",
-      },
     },
+    compoundVariants: [{ opened: true, searchable: false, class: "w-0" }],
   },
   searchInput: {
     base: `
