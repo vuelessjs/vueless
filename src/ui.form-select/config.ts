@@ -5,7 +5,7 @@ export default /*tw*/ {
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
       hover:border-gray-400 hover:transition hover:focus-within:border-brand-600
-      focus-within:ring-brand-600 focus-within:ring-dynamic-1
+      focus-within:ring-brand-600 focus-within:ring-dynamic-sm
       focus-within:border-brand-600 focus-within:outline-none
     `,
     variants: {

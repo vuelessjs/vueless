@@ -10,12 +10,14 @@ import {
   DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
   TAILWIND_COLORS,
-  DEFAULT_RING,
-  DEFAULT_ROUNDING,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
+  DEFAULT_RING,
   DEFAULT_RING_OFFSET_COLOR_LIGHT,
   DEFAULT_RING_OFFSET_COLOR_DARK,
+  RING_DECREMENT,
+  RING_INCREMENT,
+  DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
 } from "../constants.js";
@@ -40,7 +42,9 @@ declare interface RootCSSVariableOptions {
   colors: Colors;
   brand: string;
   gray: string;
+  ringSm: number;
   ring: number;
+  ringLg: number;
   ringOffsetColorDark: string;
   ringOffsetColorLight: string;
   roundingSm: number;
@@ -155,7 +159,11 @@ export function setTheme(config: Config = {}) {
   let gray: GrayColors =
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
-  const ring = config.ring ?? vuelessConfig.ring ?? DEFAULT_RING;
+  const { ringSm, ring, ringLg } = getRings(
+    config.ringSm ?? vuelessConfig.ringSm,
+    config.ring ?? vuelessConfig.ring,
+    config.ringLg ?? vuelessConfig.ringLg,
+  );
 
   const ringOffsetColorDark =
     config.ringOffsetColorDark ??
@@ -198,13 +206,31 @@ export function setTheme(config: Config = {}) {
     colors,
     brand,
     gray,
+    ringSm,
     ring,
+    ringLg,
     ringOffsetColorDark,
     ringOffsetColorLight,
     roundingSm,
     rounding,
     roundingLg,
   });
+}
+
+function getRings(sm?: number, md?: number, lg?: number) {
+  const ring = Math.max(0, md ?? DEFAULT_RING);
+  const ringSm = Math.max(0, ring - RING_DECREMENT);
+  let ringLg = Math.max(0, ring + RING_INCREMENT);
+
+  if (ring === 0) {
+    ringLg = 0;
+  }
+
+  return {
+    ring,
+    ringSm: sm === undefined ? ringSm : Math.max(0, sm),
+    ringLg: lg === undefined ? ringLg : Math.max(0, lg),
+  };
 }
 
 function getRoundings(sm?: number, md?: number, lg?: number) {
@@ -240,7 +266,9 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     colors,
     brand,
     gray,
+    ringSm,
     ring,
+    ringLg,
     ringOffsetColorDark,
     ringOffsetColorLight,
     roundingSm,
@@ -257,7 +285,9 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
-    "--vl-ring": `${Math.max(0, ring)}px`,
+    "--vl-ring-sm": `${ringSm}px`,
+    "--vl-ring": `${ring}px`,
+    "--vl-ring-lg": `${ringLg}px`,
     "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
     "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),

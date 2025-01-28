@@ -17,6 +17,10 @@ import {
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   GRAYSCALE_COLOR,
+  ROUNDING_DECREMENT,
+  ROUNDING_INCREMENT,
+  RING_INCREMENT,
+  RING_DECREMENT,
 } from "./constants.js";
 
 const globalSettings = process.env.VUELESS_GLOBAL_SETTINGS || {};
@@ -92,8 +96,9 @@ export const vuelessTailwindConfig = {
         "dynamic-lg": "var(--vl-rounding-lg)",
       },
       ringWidth: {
+        "dynamic-sm": "var(--vl-ring-sm)",
         dynamic: "var(--vl-ring)",
-        "dynamic-1": "calc(var(--vl-ring) - 1px)",
+        "dynamic-lg": "var(--vl-ring-lg)",
       },
       ringOffsetColor: {
         dynamic: twColorWithOpacity("--vl-ring-offset-color"),
@@ -101,15 +106,17 @@ export const vuelessTailwindConfig = {
     },
     configViewer: {
       themeReplacements: {
-        /* eslint-disable prettier/prettier */
+        /* eslint-disable prettier/prettier, vue/max-len */
+        "var(--vl-ring-sm)": globalSettings.ringSm || Math.max(0, (globalSettings.ring || DEFAULT_RING) - RING_DECREMENT),
         "var(--vl-ring)": globalSettings.ring || DEFAULT_RING,
+        "var(--vl-ring-lg)": globalSettings.ringLg || Math.max(0, (globalSettings.ring || DEFAULT_RING) + RING_INCREMENT),
         "var(--vl-ring-offset-color)": globalSettings.ringOffsetColorLight || DEFAULT_RING_OFFSET_COLOR_LIGHT,
-        "var(--vl-rounding-sm)": globalSettings.roundingSm || (globalSettings.ring || DEFAULT_ROUNDING) / 2,
+        "var(--vl-rounding-sm)": globalSettings.roundingSm || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_DECREMENT),
         "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
-        "var(--vl-rounding-lg)": globalSettings.roundingLg || (globalSettings.ring || DEFAULT_ROUNDING) * 2,
+        "var(--vl-rounding-lg)": globalSettings.roundingLg || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_INCREMENT),
         ...getReplacementColors(GRAY_COLOR, globalSettings.gray || DEFAULT_GRAY_COLOR),
         ...getReplacementColors(BRAND_COLOR, globalSettings.brand || DEFAULT_BRAND_COLOR),
-        /* eslint-enable prettier/prettier */
+        /* eslint-enable prettier/prettier, vue/max-len */
       },
     },
   },

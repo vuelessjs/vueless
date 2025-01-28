@@ -13,17 +13,17 @@ You can set any border-radius value in pixels, but we highly recommend adhering 
 
 If you define only the `rounding` value, `roundingSm` and `roundingLg` will be automatically calculated. The expected values are listed in the table below:
 
-| rounding (md) | roundingSm | roundingLg |
-| ------------- | ---------- | ---------- |
-| 0             | 0          | 2          |
-| 2             | 0          | 8          |
-| 4             | 2          | 10         |
-| 6             | 4          | 12         |
-| 8             | 4          | 14         |
-| 10            | 6          | 16         |
-| 12            | 8          | 18         |
-| 14            | 10         | 20         |
-| 16            | 12         | 22         |
+| roundingSm | rounding | roundingLg |
+| ---------- | -------- | ---------- |
+| 0          | 0        | 2          |
+| 0          | 2        | 8          |
+| 2          | 4        | 10         |
+| 4          | 6        | 12         |
+| 4          | 8        | 14         |
+| 6          | 10       | 16         |
+| 8          | 12       | 18         |
+| 10         | 14       | 20         |
+| 12         | 16       | 22         |
 
 {% hint style="info" %}
 In the config, values are specified in `pixels` for simplicity, but they are automatically converted into `rem` under the hood.

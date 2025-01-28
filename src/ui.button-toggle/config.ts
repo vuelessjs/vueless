@@ -18,11 +18,19 @@ export default /*tw*/ {
     },
   },
   items: {
-    base: "flex gap-1",
+    base: "flex",
     variants: {
+      size: {
+        "2xs": "gap-1.5",
+        xs: "gap-1.5",
+        sm: "gap-2",
+        md: "gap-2",
+        lg: "gap-2.5",
+        xl: "gap-2.5",
+      },
       split: {
         true: "flex-wrap",
-        false: "flex-nowrap p-1 w-fit border rounded-dynamic border-gray-300",
+        false: "flex-nowrap gap-1 p-1 w-fit border rounded-dynamic border-gray-300",
       },
       disabled: {
         true: "pointer-events-none",

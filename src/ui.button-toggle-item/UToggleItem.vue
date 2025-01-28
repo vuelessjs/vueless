@@ -17,6 +17,24 @@ type ButtonSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
 defineOptions({ inheritAttrs: false });
 
+const getToggleName = inject<() => string>("getToggleName", () => "toggle");
+const getToggleType = inject<() => string>("getToggleType", () => TYPE_RADIO);
+const getToggleSize = inject<() => ButtonSize>("getToggleSize", () => "md" as ButtonSize);
+const getToggleRound = inject<() => boolean>("getToggleRound", () => false);
+const getToggleBlock = inject<() => boolean>("getToggleBlock", () => false);
+const getToggleSquare = inject<() => boolean>("getToggleSquare", () => false);
+const getToggleSplit = inject<() => boolean>("getToggleSplit", () => false);
+
+const getToggleDisabled = inject<() => boolean>(
+  "getToggleDisabled",
+  () => getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).disabled || false,
+);
+
+const { selectedValue, updateSelectedValue } = inject<ToggleContextType>("toggleSelectedValue", {
+  selectedValue: ref(""),
+  updateSelectedValue: () => {},
+});
+
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
@@ -30,23 +48,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const getToggleName = inject<() => string>("getToggleName", () => "toggle");
-const getToggleType = inject<() => string>("getToggleType", () => TYPE_RADIO);
-const getToggleSize = inject<() => ButtonSize>("getToggleSize", () => "md" as ButtonSize);
-const getToggleRound = inject<() => boolean>("getToggleRound", () => false);
-const getToggleBlock = inject<() => boolean>("getToggleBlock", () => false);
-const getToggleSquare = inject<() => boolean>("getToggleSquare", () => false);
-
-const getToggleDisabled = inject<() => boolean>(
-  "getToggleDisabled",
-  () => getDefaults<ToggleInjectValues, Config>(defaultConfig, COMPONENT_NAME).disabled || false,
-);
-
-const { selectedValue, updateSelectedValue } = inject<ToggleContextType>("toggleSelectedValue", {
-  selectedValue: ref(""),
-  updateSelectedValue: () => {},
-});
 
 const elementId = props.id || useId();
 
@@ -85,6 +86,7 @@ function onClickSetValue() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
+  split: getToggleSplit(),
   /* component state, not a props */
   selected: isSelected.value,
 }));
