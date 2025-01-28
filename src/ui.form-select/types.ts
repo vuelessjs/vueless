@@ -24,7 +24,7 @@ export interface Props {
   /**
    * Label placement.
    */
-  labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
+  labelAlign?: "topInside" | "top" | "topWithDesc" | "left" | "right";
 
   /**
    * Select placeholder.
