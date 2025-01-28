@@ -11,7 +11,6 @@ import UDotDefaultConfig from "./ui.other-dot/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import ULinkDefaultConfig from "./ui.button-link/config.ts";
 import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
-import UToggleItemDefaultConfig from "./ui.button-toggle-item/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
 import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
 import UDatePickerConfig from "./ui.form-date-picker/config.ts";
@@ -206,7 +205,6 @@ export interface Components {
   UButton: Partial<typeof UButtonDefaultConfig>;
   ULink: Partial<typeof ULinkDefaultConfig>;
   UToggle: Partial<typeof UToggleDefaultConfig>;
-  UToggleItem: Partial<typeof UToggleItemDefaultConfig>;
   UBadge: Partial<typeof UBadgeDefaultConfig>;
   UCalendar: Partial<typeof UCalendarDefaultConfig>;
   UDatePicker: Partial<typeof UDatePickerConfig>;

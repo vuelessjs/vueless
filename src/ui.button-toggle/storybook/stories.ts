@@ -8,7 +8,6 @@ import {
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
@@ -21,7 +20,7 @@ interface UToggleArgs extends Props {
 }
 
 export default {
-  components: { UIcon, UToggleItem },
+  components: { UIcon },
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
@@ -45,25 +44,24 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
-  components: { UToggle, UIcon, UToggleItem, UBadge },
+  components: { UToggle, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(UToggle.__name);
-    const modelValueRef = ref(args.modelValue);
-    const error = computed(() => {
-      if (args.name === "error" && Array.isArray(modelValueRef.value)) {
-        return modelValueRef.value?.length === 0 ? "Please select at least one option" : "";
+    const errorMessage = computed(() => {
+      if (args.name === "error" && Array.isArray(args.modelValue)) {
+        return args.modelValue.length === 0 ? "Please select at least one option" : "";
       }
 
       return "";
     });
 
-    return { args, slots, modelValueRef, error };
+    return { args, slots, errorMessage };
   },
   template: `
     <UToggle
       v-bind="args"
-      v-model="modelValueRef"
-      :error="error"
+      v-model="args.modelValue"
+      :error="errorMessage"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
@@ -152,19 +150,14 @@ Square.args = {
   name: "square",
   square: true,
   label: "Square prop is useful when icons are present",
+  options: [
+    { value: "11", label: "star" },
+    { value: "12", label: "add" },
+    { value: "13", label: "timer" },
+  ],
   slotTemplate: `
-    <template #default>
-      <UToggleItem value="1">
-        <UIcon name="star" color="inherit" />
-      </UToggleItem>
-
-      <UToggleItem value="2" >
-        <UIcon name="add" color="inherit" />
-      </UToggleItem>
-
-      <UToggleItem value="3">
-        <UIcon name="timer" color="inherit" />
-      </UToggleItem>
+    <template #default="{ option, index }">
+      <UIcon :name="args.options[index].label" color="inherit" />
     </template>
   `,
 };
@@ -173,17 +166,18 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   name: "defaultSlot",
   label: "Please select an operation to proceed",
+  options: [
+    { value: "1", label: "Download", icon: "download", color: "green" },
+    { value: "2", label: "Edit", icon: "edit_note", color: "orange" },
+    { value: "3", label: "Delete", icon: "delete", color: "red" },
+  ],
   slotTemplate: `
-    <template #default>
-      <UToggleItem value="1">
-        <UBadge label="Download" color="green" right-icon="download" />
-      </UToggleItem>
-      <UToggleItem value="2">
-        <UBadge label="Edit" color="amber" right-icon="edit_note" />
-      </UToggleItem>
-      <UToggleItem value="3">
-        <UBadge label="Delete" color="red" right-icon="delete" />
-      </UToggleItem>
+    <template #default="{ option, index }">
+      <UBadge
+        :label="args.options[index].label"
+        :color="args.options[index].color"
+        :right-icon="args.options[index].icon"
+      />
     </template>
   `,
 };
