@@ -125,6 +125,7 @@ export const Multiple = DefaultTemplate.bind({});
 Multiple.args = {
   name: "multiple",
   multiple: true,
+  modelValue: [],
   label: "You can choose more than one option",
 };
 

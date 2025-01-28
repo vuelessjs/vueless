@@ -36,15 +36,8 @@ const type = computed(() => {
 });
 
 const selectedValue = computed({
-  get: () =>
-    props.multiple ? (Array.isArray(props.modelValue) ? props.modelValue : []) : props.modelValue,
-  set: (value) => {
-    if (props.multiple) {
-      emit("update:modelValue", Array.isArray(value) ? value : [value]);
-    } else {
-      emit("update:modelValue", value);
-    }
-  },
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
 });
 
 function isSelected(item: UToggleOption) {
