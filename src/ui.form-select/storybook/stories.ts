@@ -271,7 +271,7 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
       { label: "Awesome", id: "1" },
       { label: "Good", id: "2" },
       { label: "Could be better", id: "3" },
-      { label: "I didn't like your services", id: "4" },
+      { label: "Terrible", id: "4" },
     ];
 
     const roleOptions = [
