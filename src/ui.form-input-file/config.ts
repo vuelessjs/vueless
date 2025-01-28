@@ -9,7 +9,7 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-red-600",
+        true: "!border-red-600 focus-within:ring-red-600",
       },
       disabled: {
         true: "pointer-events-none bg-gray-100",
@@ -22,14 +22,16 @@ export default /*tw*/ {
     ],
   },
   dropzoneHover: "border-gray-400 border-dashed",
-  dropzoneError: "!border-red-600 border-dashed",
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   content: {
-    base: "p-3 gap-6 flex justify-between items-start relative w-full rounded-dynamic bg-brand-50",
+    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-dynamic bg-brand-50",
     variants: {
       multiple: {
         false: "items-center",
+      },
+      error: {
+        true: "bg-red-50",
       },
       disabled: {
         true: "bg-gray-200",
