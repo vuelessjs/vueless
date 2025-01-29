@@ -43,7 +43,6 @@ export default /*tw*/ {
       },
     },
   },
-  itemWrapper: "w-[inherit]",
   toggleButton: {
     base: "{UButton} font-normal focus-visible:ring-offset-0",
     defaults: {
@@ -78,7 +77,6 @@ export default /*tw*/ {
       filled: true,
     },
   },
-  toggleInput: "p-0 m-0 size-0 invisible absolute",
   defaults: {
     labelAlign: "top",
     size: "md",

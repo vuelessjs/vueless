@@ -24,12 +24,12 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
-    label: "Please choose an option",
+    label: "Please choose a role",
     modelValue: "11",
     options: [
       { value: "11", label: "Admin" },
-      { value: "12", label: "Editor" },
-      { value: "13", label: "Viewer" },
+      { value: "12", label: "Manager" },
+      { value: "13", label: "Employee" },
       { value: "14", label: "Guest" },
     ],
   },
@@ -65,6 +65,8 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
+
+    <div>{{ args.modelValue }}</div>
   `,
 });
 
@@ -163,9 +165,9 @@ Square.args = {
   `,
 };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
-  name: "slotLabel",
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
+  name: "defaultSlot",
   label: "Please select an operation to proceed",
   options: [
     { value: "1", label: "Download", rightIcon: "download", color: "green" },
@@ -182,3 +184,28 @@ SlotLabel.args = {
     </template>
   `,
 };
+
+export const Slots: StoryFn<UToggleArgs> = (args) => ({
+  components: { UToggle, URow, UIcon },
+  setup() {
+    const leftModel = ref("11");
+    const rightModel = ref("13");
+
+    return { args, leftModel, rightModel };
+  },
+  template: `
+    <URow no-mobile>
+      <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
+        <template #left="{ index }">
+          <UIcon v-if="index === 0" name="settings" />
+        </template>
+      </UToggle>
+
+      <UToggle v-bind="args" v-model="rightModel" name="rightSlot">
+        <template #right="{ index }">
+          <UIcon v-if="index === 2" name="person" />
+        </template>
+      </UToggle>
+    </URow>
+  `,
+});
