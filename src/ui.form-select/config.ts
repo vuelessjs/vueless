@@ -109,7 +109,10 @@ export default /*tw*/ {
   },
   search: {
     base: "flex w-full",
-    compoundVariants: [{ multiple: false, selected: true, class: "w-0" }],
+    compoundVariants: [
+      { multiple: false, selected: true, opened: false, class: "w-0" },
+      { multiple: false, selected: true, searchable: false, class: "w-0" },
+    ],
   },
   searchInput: {
     base: `

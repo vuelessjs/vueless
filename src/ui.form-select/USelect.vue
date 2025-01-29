@@ -634,7 +634,7 @@ const {
         </div>
 
         <span
-          v-if="!multiple && isLocalValue"
+          v-if="!multiple && isLocalValue && ((searchable && !isOpen) || !searchable)"
           v-bind="selectedLabelAttrs"
           @mousedown.prevent="toggle"
         >
