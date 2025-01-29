@@ -4,14 +4,14 @@ export default /*tw*/ {
     base: `
       border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
       hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:ring-dynamic-sm focus-within:ring-brand-600
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:ring-red-600",
+        true: "!border-red-600 focus-within:outline-red-600",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:ring-0 bg-gray-100",
+        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
       },
     },
   },

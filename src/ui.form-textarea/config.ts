@@ -6,16 +6,15 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex bg-white transition w-full
-      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-600
-      focus-within:border-brand-600 focus-within:ring-dynamic-sm
-      focus-within:ring-brand-600 focus-within:outline-none
+      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:ring-red-600",
+        true: "!border-red-600 focus-within:outline-red-600",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:ring-0 bg-gray-100",
+        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
       },
     },
   },
@@ -23,7 +22,7 @@ export default /*tw*/ {
     base: `
       px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal text-gray-900
       placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
-      focus:border-none focus:outline-none focus:ring-0 disabled:cursor-not-allowed
+      focus:ring-0 disabled:cursor-not-allowed
     `,
     variants: {
       size: {

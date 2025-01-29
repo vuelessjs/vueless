@@ -7,7 +7,7 @@ export default /*tw*/ {
       active:border-{color}-600 active:bg-{color}-200
       checked:text-{color}-600
       focus:ring-0 focus:ring-offset-0
-      focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-2
+      focus-visible:outline-{color}-600 focus-visible:outline-dynamic focus-visible:outline-offset-2
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
       disabled:checked:bg-gray-400 disabled:checked:border-transparent
     `,
@@ -19,7 +19,7 @@ export default /*tw*/ {
       },
       color: {
         grayscale: `
-          focus-visible:ring-gray-900
+          focus-visible:outline-gray-900
           checked:text-gray-900 checked:hover:text-gray-800 checked:active:text-gray-700
         `,
       },

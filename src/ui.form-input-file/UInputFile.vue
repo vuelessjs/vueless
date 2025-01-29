@@ -295,6 +295,7 @@ const {
         <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
 
         <UFiles
+          v-else
           :size="size"
           v-bind="fileListAttrs"
           :file-list="fileList"
@@ -314,6 +315,7 @@ const {
               :for="elementId"
               tag="label"
               variant="thirdary"
+              :color="error ? 'red' : 'brand'"
               :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
@@ -340,6 +342,7 @@ const {
             filled
             variant="thirdary"
             :disabled="disabled"
+            :color="error ? 'red' : 'brand'"
             :left-icon="config.defaults.clearIcon"
             v-bind="clearButtonAttrs"
             :data-test="`${dataTest}-clear`"

@@ -3,7 +3,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex items-center p-0.5 relative rounded-full cursor-pointer transition
-      focus-visible:ring-dynamic focus-visible:ring-offset-2 ring-{color}-600 outline-0
+      focus-visible:outline focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}-600
     `,
     variants: {
       size: {
@@ -12,7 +12,7 @@ export default /*tw*/ {
         lg: "w-10",
       },
       color: {
-        grayscale: "ring-gray-900",
+        grayscale: "outline-gray-900",
       },
       checked: {
         true: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",

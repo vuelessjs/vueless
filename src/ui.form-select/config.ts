@@ -4,17 +4,16 @@ export default /*tw*/ {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:focus-within:border-brand-600
-      focus-within:ring-brand-600 focus-within:ring-dynamic-sm
-      focus-within:border-brand-600 focus-within:outline-none
+      hover:border-gray-400 hover:transition hover:focus-within:border-brand-600 focus-within:border-brand-600
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:ring-red-600",
+        true: "!border-red-600 focus-within:outline-red-600",
       },
       disabled: {
         true: `
-          focus-within:ring-0 bg-gray-100
+          focus-within:outline-0 bg-gray-100
           hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
         `,
       },
@@ -109,13 +108,11 @@ export default /*tw*/ {
     ],
   },
   search: {
-    base: "flex w-0",
-    variants: {
-      selected: {
-        false: "w-full",
-      },
-    },
-    compoundVariants: [{ opened: true, searchable: false, class: "w-0" }],
+    base: "flex w-full",
+    compoundVariants: [
+      { multiple: false, selected: true, opened: false, class: "w-0" },
+      { multiple: false, selected: true, searchable: false, class: "w-0" },
+    ],
   },
   searchInput: {
     base: `

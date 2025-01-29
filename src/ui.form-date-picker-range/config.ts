@@ -4,10 +4,10 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{>datepickerInput}",
     wrapper: {
-      base: "ring-dynamic ring-brand-600 border-brand-600 hover:border-brand-600",
+      base: "outline outline-dynamic-sm outline-brand-600 border-brand-600 hover:border-brand-600",
       variants: {
         error: {
-          true: "!border-red-600 ring-red-600",
+          true: "border-red-600 hover:border-red-600 outline-red-600",
         },
       },
     },
@@ -87,7 +87,7 @@ export default /*tw*/ {
       wrapper: "w-full transition",
       description: "hidden",
     },
-    wrapper: "focus-within:z-10 focus-within:ring-0 focus-within:border-gray-500 hover:focus-within:border-gray-500",
+    wrapper: "focus-within:z-10 focus-within:outline-0 focus-within:border-gray-500 hover:focus-within:border-gray-500",
   },
   rangeInputFirst: {
     base: "{UInput} {>rangeInput}",

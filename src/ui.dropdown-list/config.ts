@@ -16,8 +16,8 @@ export default /*tw*/ {
     `,
     variants: {
       color: {
-        grayscale: "hover:bg-gray-100 active:bg-gray-200",
-        white: "hover:bg-gray-100 active:bg-gray-200",
+        grayscale: "hover:bg-gray-900/5 active:bg-gray-900/10",
+        white: "hover:bg-gray-900/5 active:bg-gray-900/10",
       },
       size: {
         sm: "text-xs",
@@ -29,7 +29,15 @@ export default /*tw*/ {
       },
     },
   },
-  optionActive: "{>option} bg-{color}-600/10 hover:bg-{color}-600/10 text-brand-600",
+  optionActive: {
+    base: "{>option} bg-{color}-600/10 hover:bg-{color}-600/10 text-{color}-600",
+    variants: {
+      color: {
+        grayscale: "bg-gray-900/10 hover:bg-gray-900/10 text-gray-900",
+        white: "bg-gray-900/10 hover:bg-gray-900/10 text-gray-900",
+      },
+    },
+  },
   optionHighlighted: "bg-{color}-50",
   optionContent: "overflow-visible text-ellipsis",
   groupBase: {
