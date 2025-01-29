@@ -108,13 +108,15 @@ const {
           v-bind="isSelected(item) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
           :data-test="`${dataTest}-item-${index}`"
         >
-          <template #left>
-            <!-- @slot Use it to add something before the label. -->
-            <slot name="left" />
+          <template #left="{ iconName }">
+            <!--
+              @slot Use it to add something before the label.
+              @binding {string} icon-name
+            -->
+            <slot name="left" :icon-name="iconName" />
           </template>
 
-          <!-- @slot Use it to add something instead of the label. -->
-          <template #default>
+          <template #default="{ label, iconName }">
             <input
               :id="`${elementId}-${index}`"
               v-model="selectedValue"
@@ -124,22 +126,23 @@ const {
               :disabled="disabled"
               v-bind="toggleInputAttrs"
             />
-            <!-- @slot Use it to add UToggleItem directly. -->
-            <slot name="default" :option="item" :index="index">
-              <!--
-              @slot Use it to add something instead of the label.
+            <!--
+              @slot Use it to add something instead of the toggle item label.
               @binding {string} label
+              @binding {string} icon-name
               @binding {number} index
             -->
-              <slot name="label" :label="item.label" :index="index">
-                {{ item.label }}
-              </slot>
+            <slot name="default" :label="label" :icon-name="iconName" :index="index">
+              {{ item.label }}
             </slot>
           </template>
 
-          <template #right>
-            <!-- @slot Use it to add something after the label. -->
-            <slot name="right" />
+          <template #right="{ iconName }">
+            <!--
+              @slot Use it to add something after the label.
+              @binding {string} icon-name
+            -->
+            <slot name="right" :icon-name="iconName" />
           </template>
         </UButton>
       </label>

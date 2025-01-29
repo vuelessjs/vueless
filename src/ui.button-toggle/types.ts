@@ -8,6 +8,9 @@ export interface UToggleOption {
   value: string | number;
   label: string;
   disabled?: boolean;
+  icon?: string;
+  leftIcon?: string;
+  rightIcon?: string;
   [key: string]: unknown;
 }
 
