@@ -8,7 +8,6 @@ import {
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UToggleItem from "../../ui.button-toggle-item/UToggleItem.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
@@ -21,16 +20,16 @@ interface UToggleArgs extends Props {
 }
 
 export default {
-  components: { UIcon, UToggleItem },
+  components: { UIcon },
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
-    label: "Please choose an option",
+    label: "Please choose a role",
     modelValue: "11",
     options: [
       { value: "11", label: "Admin" },
-      { value: "12", label: "Editor" },
-      { value: "13", label: "Viewer" },
+      { value: "12", label: "Manager" },
+      { value: "13", label: "Employee" },
       { value: "14", label: "Guest" },
     ],
   },
@@ -45,25 +44,24 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
-  components: { UToggle, UIcon, UToggleItem, UBadge },
+  components: { UToggle, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(UToggle.__name);
-    const modelValueRef = ref(args.modelValue);
-    const error = computed(() => {
-      if (args.name === "error" && Array.isArray(modelValueRef.value)) {
-        return modelValueRef.value?.length === 0 ? "Please select at least one option" : "";
+    const errorMessage = computed(() => {
+      if (args.name === "error" && Array.isArray(args.modelValue)) {
+        return args.modelValue.length === 0 ? "Please select at least one option" : "";
       }
 
       return "";
     });
 
-    return { args, slots, modelValueRef, error };
+    return { args, slots, errorMessage };
   },
   template: `
     <UToggle
       v-bind="args"
-      v-model="modelValueRef"
-      :error="error"
+      v-model="args.modelValue"
+      :error="errorMessage"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
@@ -127,6 +125,7 @@ export const Multiple = DefaultTemplate.bind({});
 Multiple.args = {
   name: "multiple",
   multiple: true,
+  modelValue: [],
   label: "You can choose more than one option",
 };
 
@@ -152,19 +151,14 @@ Square.args = {
   name: "square",
   square: true,
   label: "Square prop is useful when icons are present",
+  options: [
+    { value: "11", label: "star" },
+    { value: "12", label: "add" },
+    { value: "13", label: "timer" },
+  ],
   slotTemplate: `
-    <template #default>
-      <UToggleItem value="1">
-        <UIcon name="star" color="inherit" />
-      </UToggleItem>
-
-      <UToggleItem value="2" >
-        <UIcon name="add" color="inherit" />
-      </UToggleItem>
-
-      <UToggleItem value="3">
-        <UIcon name="timer" color="inherit" />
-      </UToggleItem>
+    <template #default="{ label, index }">
+      <UIcon :name="label" color="inherit" />
     </template>
   `,
 };
@@ -173,17 +167,43 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   name: "defaultSlot",
   label: "Please select an operation to proceed",
+  options: [
+    { value: "1", label: "Download", rightIcon: "download", color: "green" },
+    { value: "2", label: "Edit", rightIcon: "edit_note", color: "orange" },
+    { value: "3", label: "Delete", rightIcon: "delete", color: "red" },
+  ],
   slotTemplate: `
-    <template #default>
-      <UToggleItem value="1">
-        <UBadge label="Download" color="green" right-icon="download" />
-      </UToggleItem>
-      <UToggleItem value="2">
-        <UBadge label="Edit" color="amber" right-icon="edit_note" />
-      </UToggleItem>
-      <UToggleItem value="3">
-        <UBadge label="Delete" color="red" right-icon="delete" />
-      </UToggleItem>
+    <template #default="{ label, index }">
+      <UBadge
+        :label="label"
+        :color="args.options[index].color"
+        :right-icon="args.options[index].rightIcon"
+      />
     </template>
   `,
 };
+
+export const Slots: StoryFn<UToggleArgs> = (args) => ({
+  components: { UToggle, URow, UIcon },
+  setup() {
+    const leftModel = ref("11");
+    const rightModel = ref("13");
+
+    return { args, leftModel, rightModel };
+  },
+  template: `
+    <URow no-mobile>
+      <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
+        <template #left="{ index }">
+          <UIcon v-if="index === 0" name="settings" />
+        </template>
+      </UToggle>
+
+      <UToggle v-bind="args" v-model="rightModel" name="rightSlot">
+        <template #right="{ index }">
+          <UIcon v-if="index === 2" name="person" />
+        </template>
+      </UToggle>
+    </URow>
+  `,
+});

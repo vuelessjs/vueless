@@ -8,6 +8,10 @@ export interface UToggleOption {
   value: string | number;
   label: string;
   disabled?: boolean;
+  icon?: string;
+  leftIcon?: string;
+  rightIcon?: string;
+  [key: string]: unknown;
 }
 
 export interface Props {
@@ -80,6 +84,11 @@ export interface Props {
    * Set the same paddings for the button.
    */
   square?: boolean;
+
+  /**
+   * Unique element id.
+   */
+  id?: string;
 
   /**
    * Component config object.

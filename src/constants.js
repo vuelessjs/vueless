@@ -82,7 +82,6 @@ export const COMPONENTS = {
   UButton: "ui.button",
   ULink: "ui.button-link",
   UToggle: "ui.button-toggle",
-  UToggleItem: "ui.button-toggle-item",
 
   /* Dropdowns */
   UDropdownButton: "ui.dropdown-button",
