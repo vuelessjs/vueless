@@ -65,8 +65,6 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
-
-    <div>{{ args.modelValue }}</div>
   `,
 });
 
