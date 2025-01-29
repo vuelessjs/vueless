@@ -106,20 +106,20 @@ const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonAct
       >
         <template #left="{ iconName }">
           <!--
-              @slot Use it to add something before the label.
-              @binding {string} icon-name
-              @binding {number} index
-            -->
+            @slot Use it to add something before the label.
+            @binding {string} icon-name
+            @binding {number} index
+          -->
           <slot name="left" :icon-name="iconName" :index="index" />
         </template>
 
         <template #default="{ label, iconName }">
           <!--
-              @slot Use it to add something instead of the toggle item label.
-              @binding {string} label
-              @binding {string} icon-name
-              @binding {number} index
-            -->
+            @slot Use it to add something instead of the toggle item label.
+            @binding {string} label
+            @binding {string} icon-name
+            @binding {number} index
+          -->
           <slot name="default" :label="label" :icon-name="iconName" :index="index">
             {{ item.label }}
           </slot>
@@ -127,10 +127,10 @@ const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonAct
 
         <template #right="{ iconName }">
           <!--
-              @slot Use it to add something after the label.
-              @binding {string} icon-name
-              @binding {number} index
-            -->
+            @slot Use it to add something after the label.
+            @binding {string} icon-name
+            @binding {number} index
+          -->
           <slot name="right" :icon-name="iconName" :index="index" />
         </template>
       </UButton>
