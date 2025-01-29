@@ -12,11 +12,9 @@ import {
   TAILWIND_COLORS,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
-  DEFAULT_RING,
-  DEFAULT_RING_OFFSET_COLOR_LIGHT,
-  DEFAULT_RING_OFFSET_COLOR_DARK,
-  RING_DECREMENT,
-  RING_INCREMENT,
+  DEFAULT_OUTLINE,
+  OUTLINE_DECREMENT,
+  OUTLINE_INCREMENT,
   DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
@@ -42,11 +40,9 @@ declare interface RootCSSVariableOptions {
   colors: Colors;
   brand: string;
   gray: string;
-  ringSm: number;
-  ring: number;
-  ringLg: number;
-  ringOffsetColorDark: string;
-  ringOffsetColorLight: string;
+  outlineSm: number;
+  outline: number;
+  outlineLg: number;
   roundingSm: number;
   rounding: number;
   roundingLg: number;
@@ -159,21 +155,11 @@ export function setTheme(config: Config = {}) {
   let gray: GrayColors =
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
-  const { ringSm, ring, ringLg } = getRings(
-    config.ringSm ?? vuelessConfig.ringSm,
-    config.ring ?? vuelessConfig.ring,
-    config.ringLg ?? vuelessConfig.ringLg,
+  const { outlineSm, outline, outlineLg } = getRings(
+    config.outlineSm ?? vuelessConfig.outlineSm,
+    config.outline ?? vuelessConfig.outline,
+    config.outlineLg ?? vuelessConfig.outlineLg,
   );
-
-  const ringOffsetColorDark =
-    config.ringOffsetColorDark ??
-    vuelessConfig.ringOffsetColorDark ??
-    DEFAULT_RING_OFFSET_COLOR_DARK;
-
-  const ringOffsetColorLight =
-    config.ringOffsetColorLight ??
-    vuelessConfig.ringOffsetColorLight ??
-    DEFAULT_RING_OFFSET_COLOR_LIGHT;
 
   const colors: Colors = merge(
     TAILWIND_COLORS as Colors,
@@ -206,11 +192,9 @@ export function setTheme(config: Config = {}) {
     colors,
     brand,
     gray,
-    ringSm,
-    ring,
-    ringLg,
-    ringOffsetColorDark,
-    ringOffsetColorLight,
+    outlineSm,
+    outline,
+    outlineLg,
     roundingSm,
     rounding,
     roundingLg,
@@ -218,18 +202,18 @@ export function setTheme(config: Config = {}) {
 }
 
 function getRings(sm?: number, md?: number, lg?: number) {
-  const ring = Math.max(0, md ?? DEFAULT_RING);
-  const ringSm = Math.max(0, ring - RING_DECREMENT);
-  let ringLg = Math.max(0, ring + RING_INCREMENT);
+  const outline = Math.max(0, md ?? DEFAULT_OUTLINE);
+  const outlineSm = Math.max(0, outline - OUTLINE_DECREMENT);
+  let outlineLg = Math.max(0, outline + OUTLINE_INCREMENT);
 
-  if (ring === 0) {
-    ringLg = 0;
+  if (outline === 0) {
+    outlineLg = 0;
   }
 
   return {
-    ring,
-    ringSm: sm === undefined ? ringSm : Math.max(0, sm),
-    ringLg: lg === undefined ? ringLg : Math.max(0, lg),
+    outline,
+    outlineSm: sm === undefined ? outlineSm : Math.max(0, sm),
+    outlineLg: lg === undefined ? outlineLg : Math.max(0, lg),
   };
 }
 
@@ -262,22 +246,10 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     options.brand = options.gray;
   }
 
-  const {
-    colors,
-    brand,
-    gray,
-    ringSm,
-    ring,
-    ringLg,
-    ringOffsetColorDark,
-    ringOffsetColorLight,
-    roundingSm,
-    rounding,
-    roundingLg,
-  } = options;
+  const { colors, brand, gray, outlineSm, outline, outlineLg, roundingSm, rounding, roundingLg } =
+    options;
 
   const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-  const defaultRingOffsetColor = isDarkMode ? ringOffsetColorDark : ringOffsetColorLight;
   const defaultBrandShade = isDarkMode ? 400 : 600;
   const defaultGrayShade = isDarkMode ? 400 : 600;
 
@@ -285,10 +257,9 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
-    "--vl-ring-sm": `${ringSm}px`,
-    "--vl-ring": `${ring}px`,
-    "--vl-ring-lg": `${ringLg}px`,
-    "--vl-ring-offset-color": convertHexInRgb(defaultRingOffsetColor),
+    "--vl-outline-sm": `${outlineSm}px`,
+    "--vl-outline": `${outline}px`,
+    "--vl-outline-lg": `${outlineLg}px`,
     "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
     "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),
   };

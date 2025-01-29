@@ -12,15 +12,14 @@ import {
   DARK_MODE_SELECTOR,
   TAILWIND_COLORS,
   DEFAULT_ROUNDING,
-  DEFAULT_RING,
-  DEFAULT_RING_OFFSET_COLOR_LIGHT,
+  DEFAULT_OUTLINE,
   DEFAULT_BRAND_COLOR,
   DEFAULT_GRAY_COLOR,
   GRAYSCALE_COLOR,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
-  RING_INCREMENT,
-  RING_DECREMENT,
+  OUTLINE_INCREMENT,
+  OUTLINE_DECREMENT,
 } from "./constants.js";
 
 const globalSettings = process.env.VUELESS_GLOBAL_SETTINGS || {};
@@ -95,22 +94,18 @@ export const vuelessTailwindConfig = {
         dynamic: "var(--vl-rounding)",
         "dynamic-lg": "var(--vl-rounding-lg)",
       },
-      ringWidth: {
-        "dynamic-sm": "var(--vl-ring-sm)",
-        dynamic: "var(--vl-ring)",
-        "dynamic-lg": "var(--vl-ring-lg)",
-      },
-      ringOffsetColor: {
-        dynamic: twColorWithOpacity("--vl-ring-offset-color"),
+      outlineWidth: {
+        "dynamic-sm": "var(--vl-outline-sm)",
+        dynamic: "var(--vl-outline)",
+        "dynamic-lg": "var(--vl-outline-lg)",
       },
     },
     configViewer: {
       themeReplacements: {
         /* eslint-disable prettier/prettier, vue/max-len */
-        "var(--vl-ring-sm)": globalSettings.ringSm || Math.max(0, (globalSettings.ring || DEFAULT_RING) - RING_DECREMENT),
-        "var(--vl-ring)": globalSettings.ring || DEFAULT_RING,
-        "var(--vl-ring-lg)": globalSettings.ringLg || Math.max(0, (globalSettings.ring || DEFAULT_RING) + RING_INCREMENT),
-        "var(--vl-ring-offset-color)": globalSettings.ringOffsetColorLight || DEFAULT_RING_OFFSET_COLOR_LIGHT,
+        "var(--vl-outline-sm)": globalSettings.ringSm || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) - OUTLINE_DECREMENT),
+        "var(--vl-outline)": globalSettings.ring || DEFAULT_OUTLINE,
+        "var(--vl-outline-lg)": globalSettings.ringLg || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) + OUTLINE_INCREMENT),
         "var(--vl-rounding-sm)": globalSettings.roundingSm || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_DECREMENT),
         "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
         "var(--vl-rounding-lg)": globalSettings.roundingLg || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_INCREMENT),

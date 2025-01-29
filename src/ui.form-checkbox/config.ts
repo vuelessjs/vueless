@@ -7,7 +7,7 @@ export default /*tw*/ {
       active:border-{color}-600 active:bg-{color}-200
       checked:text-{color}-600
       focus:ring-0 focus:ring-offset-0
-      focus-visible:ring-{color}-600 focus-visible:ring-dynamic focus-visible:ring-offset-2
+      focus-visible:outline-{color}-600 focus-visible:outline-dynamic focus-visible:outline-offset-2
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
     `,
     variants: {
@@ -17,10 +17,10 @@ export default /*tw*/ {
         lg: "size-6",
       },
       color: {
-        grayscale: "focus-visible:ring-gray-900 active:bg-gray-200 checked:text-gray-900",
+        grayscale: "focus-visible:outline-gray-900 active:bg-gray-200 checked:text-gray-900",
       },
       error: {
-        true: "!border-red-600 focus:ring-red-600",
+        true: "!border-red-600 focus:outline-red-600",
       },
     },
   },

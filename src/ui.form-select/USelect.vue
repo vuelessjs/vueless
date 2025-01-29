@@ -130,10 +130,6 @@ const dropdownValue = computed({
   },
 });
 
-const isSelectedValueLabelVisible = computed(() => {
-  return !props.multiple && isLocalValue.value && (!isOpen.value || !props.searchable);
-});
-
 const filteredOptions = computed(() => {
   const normalizedSearch = search.value.toLowerCase().trim() || "";
 
@@ -617,7 +613,6 @@ const {
 
         <div v-bind="searchAttrs">
           <input
-            v-show="searchable || !localValue || multiple || !isOpen"
             :id="elementId"
             ref="searchInputRef"
             v-model="search"
@@ -625,7 +620,7 @@ const {
             autocomplete="off"
             :spellcheck="false"
             :placeholder="inputPlaceholder"
-            :disabled="disabled"
+            :disabled="disabled || !searchable"
             :aria-controls="'listbox-' + elementId"
             v-bind="searchInputAttrs"
             :data-test="getDataTest('search')"
@@ -639,7 +634,7 @@ const {
         </div>
 
         <span
-          v-if="isSelectedValueLabelVisible"
+          v-if="!multiple && isLocalValue"
           v-bind="selectedLabelAttrs"
           @mousedown.prevent="toggle"
         >

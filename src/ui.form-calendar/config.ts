@@ -63,8 +63,12 @@ export default /*tw*/ {
   activeYear: "{>year} {>activeDate}",
   timepicker: "mt-2 pl-1 pt-3 text-sm flex items-stretch justify-between gap-2 border-t border-gray-200",
   timepickerLabel: "w-full self-center",
-  timepickerInputWrapper: "flex items-center rounded-dynamic border border-brand-300",
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-sm focus:ring-0 focus:placeholder:text-gray-900",
+  timepickerInputWrapper: `
+    flex items-center rounded-dynamic border border-gray-300
+    hover:focus-within:border-brand-600 focus-within:border-brand-600
+    focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+  `,
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-sm focus:ring-0",
   timepickerInputHours: "{>timepickerInput} rounded-l-dynamic",
   timepickerInputMinutes: "{>timepickerInput}",
   timepickerInputSeconds: "{>timepickerInput} rounded-r-dynamic",

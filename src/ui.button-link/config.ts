@@ -5,7 +5,7 @@ export default /*tw*/ {
       text-{color}-600 decoration-{color}-600 underline-offset-4
       hover:text-{color}-700 hover:decoration-{color}-700
       active:text-{color}-800 active:decoration-{color}-800
-      focus-visible:ring-dynamic focus-visible:ring-offset-4 focus-visible:ring-{color}-600 focus-visible:outline-0
+      focus-visible:outline-dynamic focus-visible:outline-offset-4 focus-visible:outline-{color}-600
     `,
     variants: {
       size: {
@@ -28,9 +28,9 @@ export default /*tw*/ {
           text-gray-900 decoration-gray-900
           hover:text-gray-800 hover:decoration-gray-800
           active:text-gray-700 active:decoration-gray-700
-          focus-visible:ring-gray-900
+          focus-visible:outline-gray-900
         `,
-        white: "decoration-white text-white focus-visible:ring-white",
+        white: "decoration-white text-white focus-visible:outline-white",
       },
       defaultSlot: {
         true: "flex items-center no-underline hover:no-underline",

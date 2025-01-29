@@ -96,29 +96,19 @@ export interface ThemeConfig {
   roundingLg?: number;
 
   /**
-   * Default components small size ring width.
+   * Default components small size outline width.
    */
-  ringSm?: number;
+  outlineSm?: number;
 
   /**
-   * Default components ring width.
+   * Default components outline width.
    */
-  ring?: number;
+  outline?: number;
 
   /**
-   * Default components large size ring width.
+   * Default components large size outline width.
    */
-  ringLg?: number;
-
-  /**
-   * Default components ring color for light theme.
-   */
-  ringOffsetColorLight?: string;
-
-  /**
-   * Default components ring color for dark theme.
-   */
-  ringOffsetColorDark?: string;
+  outlineLg?: number;
 
   /**
    * Default color mode.
@@ -349,10 +339,9 @@ export interface TailwindColorShades {
 }
 
 export interface VuelessCssVariables {
-  "--vl-ring-sm": string;
-  "--vl-ring": string;
-  "--vl-ring-lg": string;
-  "--vl-ring-offset-color": string;
+  "--vl-outline-sm": string;
+  "--vl-outline": string;
+  "--vl-outline-lg": string;
   "--vl-rounding-sm": string;
   "--vl-rounding": string;
   "--vl-rounding-lg": string;

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   toggleButton: {
-    base: "{UButton} font-normal focus-visible:ring-offset-0",
+    base: "{UButton} font-normal focus-visible:outline-offset-0",
     defaults: {
       variant: "thirdary",
     },

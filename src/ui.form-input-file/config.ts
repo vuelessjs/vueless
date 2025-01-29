@@ -5,11 +5,11 @@ export default /*tw*/ {
       p-3 size-auto w-full bg-white transition
       rounded-dynamic border border-solid border-gray-300
       hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:ring-brand-600 focus-within:ring-dynamic-sm
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:ring-red-600",
+        true: "!border-red-600 focus-within:outline-red-600",
       },
       disabled: {
         true: "pointer-events-none bg-gray-100",
