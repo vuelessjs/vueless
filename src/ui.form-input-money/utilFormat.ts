@@ -61,6 +61,8 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     value = value.replaceAll(minus, "");
   }
 
+  // console.log("value ", value);
+
   if (!value || !isNumber || isFloat || isMinus) {
     return `${prefix}${value.replaceAll(rawDecimalMark, decimalSeparator)}`;
   }
@@ -86,8 +88,18 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const formattedValue = intlNumber
-    .format(parseFloat(rawValue))
+  const [wholeNumber, tenths] = rawValue.split(rawDecimalMark);
+  const BigIntWholeNumber = intlNumber.format(BigInt(wholeNumber));
+
+  const formattedTenths = tenths
+    .slice(minFractionDigits, maxFractionDigits)
+    .padStart(maxFractionDigits, "0");
+
+  const formattedBigInt = tenths
+    ? BigIntWholeNumber + `${rawDecimalMark}${formattedTenths}`
+    : BigIntWholeNumber;
+
+  const formattedValue = formattedBigInt
     .replaceAll(comma, thousandsSeparator)
     .replaceAll(rawDecimalMark, decimalSeparator);
 
