@@ -221,9 +221,7 @@ watch(selectedRows, onChangeSelectedRows, { deep: true });
 watch(
   tableRows,
   () => {
-    if (!isEqual(tableRows.value, props.rows)) {
-      emit("update:rows", tableRows.value);
-    }
+    emit("update:rows", tableRows.value);
   },
   { deep: true },
 );
