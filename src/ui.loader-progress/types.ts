@@ -43,7 +43,7 @@ export interface Props {
   /**
    * Loader state (shown / hidden).
    */
-  loading?: undefined | boolean;
+  loading?: boolean;
 
   /**
    * Component config object.

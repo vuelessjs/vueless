@@ -59,15 +59,7 @@ watch(() => requestQueue, onChangeRequestsQueue, { immediate: true, deep: true }
 
 watch(
   () => props.loading,
-  () => {
-    if (props.loading === true) {
-      start();
-    }
-
-    if (props.loading === false || props.loading === undefined) {
-      stop();
-    }
-  },
+  () => (props.loading ? start() : stop()),
 );
 
 function onChangeRequestsQueue() {
