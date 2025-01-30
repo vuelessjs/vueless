@@ -86,16 +86,16 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const [wholeNumber, fraction] = rawValue.split(rawDecimalMark);
-  const bigIntWholeNumber = intlNumber.format(BigInt(wholeNumber));
+  const [integer, fraction] = rawValue.split(rawDecimalMark);
+  const bigInteger = intlNumber.format(BigInt(integer));
 
   const formattedFraction = fraction
     .slice(minFractionDigits, maxFractionDigits)
     .padStart(maxFractionDigits, "0");
 
   const formattedBigInt = fraction
-    ? bigIntWholeNumber + `${rawDecimalMark}${formattedFraction}`
-    : bigIntWholeNumber;
+    ? bigInteger + `${rawDecimalMark}${formattedFraction}`
+    : bigInteger;
 
   const formattedValue = formattedBigInt
     .replaceAll(comma, thousandsSeparator)
