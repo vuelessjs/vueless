@@ -1,18 +1,6 @@
 export default /*tw*/ {
-  number: {
+  wrapper: {
     base: "whitespace-nowrap flex items-center text-{color}-600",
-    variants: {
-      color: {
-        white: "text-white",
-        grayscale: "text-gray-900",
-      },
-      align: {
-        left: "justify-start",
-        right: "justify-end",
-      },
-    },
-  },
-  sum: {
     variants: {
       size: {
         xs: "text-xs",
@@ -24,11 +12,20 @@ export default /*tw*/ {
         "3xl": "text-3xl",
         "4xl": "text-4xl",
       },
+      color: {
+        white: "text-white",
+        grayscale: "text-gray-900",
+      },
+      align: {
+        left: "justify-start",
+        right: "justify-end",
+      },
     },
   },
+  number: "",
   mathSign: "",
   integer: "",
-  decimal: "",
+  fraction: "",
   defaults: {
     color: "grayscale",
     size: "md",

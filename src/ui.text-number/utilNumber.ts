@@ -28,25 +28,25 @@ export function separatedNumber(
   const formattedNumber =
     value !== undefined && value !== null ? Number(value).toLocaleString("en-US", options) : "0";
 
-  let [integer, decimal = ""] = formattedNumber.split(".");
+  let [integer, fraction = ""] = formattedNumber.split(".");
 
   integer = integer.replace(/,/g, thousandsSeparator);
 
   if (!value && value !== 0) {
     integer = SINGLE_ZERO;
-    decimal = DOUBLE_ZERO;
+    fraction = DOUBLE_ZERO;
   }
 
-  if (decimal === "") {
+  if (fraction === "") {
     decimalSeparator = "";
   }
 
   if (minFractionDigits === 0 && maxFractionDigits === 0) {
     decimalSeparator = "";
-    decimal = "";
-  } else if (decimal.length < minFractionDigits) {
-    decimal = decimal.padEnd(minFractionDigits, "0");
+    fraction = "";
+  } else if (fraction.length < minFractionDigits) {
+    fraction = fraction.padEnd(minFractionDigits, "0");
   }
 
-  return { integer, decimal, decimalSeparator };
+  return { integer, fraction, decimalSeparator };
 }

@@ -28,7 +28,7 @@ const currencySymbolPosition = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyNumberAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
+const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -42,17 +42,19 @@ const { moneyNumberAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
     :max-fraction-digits="maxFractionDigits"
     :decimal-separator="decimalSeparator"
     :thousands-separator="thousandsSeparator"
-    v-bind="moneyNumberAttrs"
+    v-bind="moneyAttrs"
     :data-test="dataTest"
   >
     <template #left>
       <!-- @slot Use it to add something before money amount. -->
       <slot name="left" />
+
       <span v-if="currencySymbolPosition.left && symbol" v-bind="symbolAttrs" v-text="symbol" />
     </template>
 
     <template #right>
       <span v-if="currencySymbolPosition.right && symbol" v-bind="symbolAttrs" v-text="symbol" />
+
       <!-- @slot Use it to add something after money amount. -->
       <slot name="right" />
     </template>
