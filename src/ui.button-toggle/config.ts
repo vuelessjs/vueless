@@ -17,7 +17,7 @@ export default /*tw*/ {
       },
     },
   },
-  items: {
+  options: {
     base: "flex",
     variants: {
       size: {

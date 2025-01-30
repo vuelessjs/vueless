@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when toggle item is selected.
+   * Triggers when toggle option is selected.
    * @property {string} modelValue
    */
   "update:modelValue",
@@ -34,24 +34,24 @@ const selectedValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-function isSelected(item: UToggleOption) {
+function isSelected(option: UToggleOption) {
   if (Array.isArray(selectedValue.value)) {
-    return selectedValue.value.includes(item.value);
+    return selectedValue.value.includes(option.value);
   }
 
-  return selectedValue.value === item.value;
+  return selectedValue.value === option.value;
 }
 
-function onClickOption(item: UToggleOption) {
+function onClickOption(option: UToggleOption) {
   if (props.multiple) {
     const newValue = Array.isArray(selectedValue.value) ? [...selectedValue.value] : [];
-    const index = newValue.indexOf(item.value);
+    const index = newValue.indexOf(option.value);
 
-    ~index ? newValue.splice(index, 1) : newValue.push(item.value);
+    ~index ? newValue.splice(index, 1) : newValue.push(option.value);
 
     emit("update:modelValue", newValue);
   } else {
-    emit("update:modelValue", item.value);
+    emit("update:modelValue", option.value);
   }
 }
 
@@ -65,7 +65,7 @@ const mutatedProps = computed(() => ({
   selected: isSelected,
 }));
 
-const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
+const { toggleLabelAttrs, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
   useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -82,17 +82,17 @@ const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonAct
   >
     <template #label>
       <!--
-        @slot Use this to add custom content instead of the label.
+        @slot Use this to add custom content instead of the entire Toggle label.
         @binding {string} label
       -->
       <slot name="label" :label="label" />
     </template>
 
-    <div v-bind="itemsAttrs">
+    <div v-bind="optionsAttrs">
       <UButton
-        v-for="(item, index) in options"
-        :key="item.value"
-        :label="item.label"
+        v-for="(option, index) in options"
+        :key="option.value"
+        :label="option.label"
         tabindex="0"
         color="gray"
         :size="size"
@@ -100,38 +100,41 @@ const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonAct
         :block="block"
         :square="square"
         :disabled="disabled"
-        v-bind="isSelected(item) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
-        :data-test="`${dataTest}-item-${index}`"
-        @click="onClickOption(item)"
+        v-bind="isSelected(option) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
+        :data-test="`${dataTest}-option-${index}`"
+        @click="onClickOption(option)"
       >
         <template #left="{ iconName }">
           <!--
             @slot Use it to add something before the label.
+            @binding {object} option
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="left" :icon-name="iconName" :index="index" />
+          <slot name="left" :option="option" :icon-name="iconName" :index="index" />
         </template>
 
         <template #default="{ label, iconName }">
           <!--
-            @slot Use it to add something instead of the toggle item label.
+            @slot Use it to add something instead of the toggle option label.
+            @binding {object} option
             @binding {string} label
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="default" :label="label" :icon-name="iconName" :index="index">
-            {{ item.label }}
+          <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index">
+            {{ option.label }}
           </slot>
         </template>
 
         <template #right="{ iconName }">
           <!--
             @slot Use it to add something after the label.
+            @binding {object} option
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="right" :icon-name="iconName" :index="index" />
+          <slot name="right" :option="option" :icon-name="iconName" :index="index" />
         </template>
       </UButton>
     </div>
