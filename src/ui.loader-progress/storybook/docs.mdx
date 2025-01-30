@@ -21,33 +21,21 @@ The loader uses queue of resources and will be shown until at least one item is 
 import { useLoaderProgress } from "vueless";
 
 const {
-  isLoading,
   loaderProgressOn,
   loaderProgressOff,
   requestQueue,
-  addRequestUrl
-  removeRequestUrl
 } = useLoaderProgress();
-
-// get loader state
-console.log(isLoading.value);
 
 // show loader (add resource into queue)
 loaderProgressOn("/transactions");
+loaderProgressOff(["/transactions", "/products"]);
 
 // hide loader (remove resource from queue)
 loaderProgressOff("/transactions");
+loaderProgressOff(["/transactions", "/products"]);
 
-// get current resource array
+// get current global resource queue
 console.log(requestQueue.value);
-
-// add resource into loader queue
-addRequestUrl("/transactions");
-addRequestUrl(["/transactions", "/products"]);
-
-// remove resource from loader queue
-removeRequestUrl("/transactions");
-removeRequestUrl(["/transactions", "/products"]);
 `} language="jsx" dark />
 
 ## Using loader outside Vue components
