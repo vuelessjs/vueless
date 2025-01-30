@@ -96,10 +96,6 @@ const inputValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const applyPasswordClasses = computed(() => {
-  return Boolean(inputValue.value && !isShownPassword.value && isTypePassword.value);
-});
-
 const elementId = props.id || useId();
 
 const inputType = computed(() => {
@@ -237,7 +233,7 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
   label: Boolean(props.label),
   /* component state, not a props */
-  typePassword: applyPasswordClasses.value,
+  typePassword: Boolean(inputValue.value && !isShownPassword.value && isTypePassword.value),
 }));
 
 const {
