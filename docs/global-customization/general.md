@@ -44,7 +44,7 @@ You can set the focus outline width globally for all Vueless components.
 }<a data-footnote-ref href="#user-content-fn-3">;</a>
 </code></pre>
 
-See [Ring](ring.md) chapter for more details.
+See [Focus Outline](general.md#focus-outline) chapter for more details.
 
 ***
 

@@ -9,7 +9,7 @@ You can set the focus outline width globally for all Vueless components.
 }<a data-footnote-ref href="#user-content-fn-1">;</a>
 </code></pre>
 
-For `outline`, `c` and `outlineLg` you can use any value in pixels.
+For `outline`, `outlineSm` and `outlineLg` you can use any value in pixels.
 
 If you define only the `outline` value, `outlineSm` and `outlineLg` will be automatically calculated. The expected values are listed in the table below:
 
