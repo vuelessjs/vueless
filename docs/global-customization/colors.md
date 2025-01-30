@@ -91,6 +91,13 @@ export default {
 To minimize the app bundle size, it’s recommended to safelist colors for specific components rather than globally.
 {% endhint %}
 
+***
 
+## CSS variables
+
+You can also use the corresponding CSS variables directly for all tailwind color shades:&#x20;
+
+* `--vl-brand-50`,  `--vl-brand-100`, ... `--vl-brand-900`, `--vl-brand-950`
+* `--vl-gray-50`,  `--vl-gray-100`, ... `--vl-gray-900`, `--vl-gray-950`
 
 [^1]: 
