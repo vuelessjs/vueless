@@ -86,7 +86,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const [integer, fraction] = rawValue.split(rawDecimalMark);
+  const [integer, fraction = ""] = rawValue.split(rawDecimalMark);
   const bigInteger = intlNumber.format(BigInt(integer));
 
   const formattedFraction = fraction
