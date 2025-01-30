@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed, provide, readonly } from "vue";
+import { computed } from "vue";
 
 import ULabel from "../ui.form-label/ULabel.vue";
-import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
+import UButton from "../ui.button/UButton.vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config, UToggleOption } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
-  modelValue: "",
+  modelValue: () => [],
   label: "",
 });
 
@@ -34,45 +34,39 @@ const selectedValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const type = computed(() => {
-  return props.multiple ? TYPE_CHECKBOX : TYPE_RADIO;
-});
-
-function updateSelectedValue(value: string | number, checked: boolean) {
-  if (type.value === TYPE_RADIO) {
-    selectedValue.value = value;
-
-    return;
-  }
-
+function isSelected(item: UToggleOption) {
   if (Array.isArray(selectedValue.value)) {
-    selectedValue.value = checked
-      ? [...selectedValue.value, value]
-      : selectedValue.value.filter((item) => String(item) !== String(value));
-  } else {
-    selectedValue.value = [value];
+    return selectedValue.value.includes(item.value);
   }
+
+  return selectedValue.value === item.value;
 }
 
-provide("getToggleName", () => props.name);
-provide("getToggleType", () => type.value);
-provide("getToggleSize", () => props.size);
-provide("getToggleRound", () => props.round);
-provide("getToggleBlock", () => props.block);
-provide("getToggleSquare", () => props.square);
-provide("getToggleDisabled", () => props.disabled);
-provide("getToggleSplit", () => props.split);
+function onClickOption(item: UToggleOption) {
+  if (props.multiple) {
+    const newValue = Array.isArray(selectedValue.value) ? [...selectedValue.value] : [];
+    const index = newValue.indexOf(item.value);
 
-provide("toggleSelectedValue", {
-  selectedValue: readonly(selectedValue),
-  updateSelectedValue,
-});
+    ~index ? newValue.splice(index, 1) : newValue.push(item.value);
+
+    emit("update:modelValue", newValue);
+  } else {
+    emit("update:modelValue", item.value);
+  }
+}
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
+const mutatedProps = computed(() => ({
+  split: props.split,
+  /* component state, not a props */
+  selected: isSelected,
+}));
+
+const { toggleLabelAttrs, itemsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -95,20 +89,51 @@ const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig)
     </template>
 
     <div v-bind="itemsAttrs">
-      <!-- @slot Use it to add UToggleItem directly. -->
-      <slot>
-        <UToggleItem
-          v-for="(item, index) in options"
-          :key="item.value"
-          :name="name"
-          :model-value="item.value"
-          :value="item.value"
-          :disabled="disabled || item.disabled"
-          :label="item.label"
-          v-bind="itemAttrs"
-          :data-test="`${dataTest}-item-${index}`"
-        />
-      </slot>
+      <UButton
+        v-for="(item, index) in options"
+        :key="item.value"
+        :label="item.label"
+        tabindex="0"
+        color="gray"
+        :size="size"
+        :round="round"
+        :block="block"
+        :square="square"
+        :disabled="disabled"
+        v-bind="isSelected(item) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
+        :data-test="`${dataTest}-item-${index}`"
+        @click="onClickOption(item)"
+      >
+        <template #left="{ iconName }">
+          <!--
+            @slot Use it to add something before the label.
+            @binding {string} icon-name
+            @binding {number} index
+          -->
+          <slot name="left" :icon-name="iconName" :index="index" />
+        </template>
+
+        <template #default="{ label, iconName }">
+          <!--
+            @slot Use it to add something instead of the toggle item label.
+            @binding {string} label
+            @binding {string} icon-name
+            @binding {number} index
+          -->
+          <slot name="default" :label="label" :icon-name="iconName" :index="index">
+            {{ item.label }}
+          </slot>
+        </template>
+
+        <template #right="{ iconName }">
+          <!--
+            @slot Use it to add something after the label.
+            @binding {string} icon-name
+            @binding {number} index
+          -->
+          <slot name="right" :icon-name="iconName" :index="index" />
+        </template>
+      </UButton>
     </div>
   </ULabel>
 </template>
