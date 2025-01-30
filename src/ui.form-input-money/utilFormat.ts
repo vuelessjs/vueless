@@ -86,8 +86,18 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const formattedValue = intlNumber
-    .format(parseFloat(rawValue))
+  const [integer, fraction] = rawValue.split(rawDecimalMark);
+  const bigInteger = intlNumber.format(BigInt(integer));
+
+  const formattedFraction = fraction
+    .slice(minFractionDigits, maxFractionDigits)
+    .padStart(maxFractionDigits, "0");
+
+  const formattedBigInt = fraction
+    ? bigInteger + `${rawDecimalMark}${formattedFraction}`
+    : bigInteger;
+
+  const formattedValue = formattedBigInt
     .replaceAll(comma, thousandsSeparator)
     .replaceAll(rawDecimalMark, decimalSeparator);
 
