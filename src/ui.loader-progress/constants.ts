@@ -6,4 +6,3 @@ export const COMPONENT_NAME = "ULoaderProgress";
 
 export const MAXIMUM = 99;
 export const SPEED = 150;
-export const INFINITY_LOADING = "Infinity";

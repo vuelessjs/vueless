@@ -97,7 +97,7 @@ const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { loading: false };
+Default.args = {};
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };

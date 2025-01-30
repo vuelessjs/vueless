@@ -33,7 +33,7 @@ export interface Props {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | string[];
+  resources?: string | string[] | "any" | ["any"];
 
   /**
    * Progress size.
@@ -43,7 +43,7 @@ export interface Props {
   /**
    * Loader state (shown / hidden).
    */
-  loading?: boolean;
+  loading?: undefined | boolean;
 
   /**
    * Component config object.
