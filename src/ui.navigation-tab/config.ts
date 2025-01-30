@@ -1,7 +1,7 @@
 export default /*tw*/ {
   tabButton: {
     base: `
-      {UButton} -mb-px rounded-none border-transparent
+      {UButton} -mb-px rounded-none border-b-2 border-transparent
       hover:bg-transparent dark:hover:bg-transparent
       active:bg-transparent dark:active:bg-transparent
     `,
@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
   },
   tabButtonActive: {
-    base: "{>tabButton} -mb-0.5 border-b-2 border-b-brand-600",
+    base: "{>tabButton} border-b-brand-600",
     defaults: {
       color: "brand",
     },
