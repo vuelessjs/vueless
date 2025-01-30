@@ -61,8 +61,6 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     value = value.replaceAll(minus, "");
   }
 
-  // console.log("value ", value);
-
   if (!value || !isNumber || isFloat || isMinus) {
     return `${prefix}${value.replaceAll(rawDecimalMark, decimalSeparator)}`;
   }
@@ -88,16 +86,16 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const [wholeNumber, tenths] = rawValue.split(rawDecimalMark);
-  const BigIntWholeNumber = intlNumber.format(BigInt(wholeNumber));
+  const [wholeNumber, fraction] = rawValue.split(rawDecimalMark);
+  const bigIntWholeNumber = intlNumber.format(BigInt(wholeNumber));
 
-  const formattedTenths = tenths
+  const formattedFraction = fraction
     .slice(minFractionDigits, maxFractionDigits)
     .padStart(maxFractionDigits, "0");
 
-  const formattedBigInt = tenths
-    ? BigIntWholeNumber + `${rawDecimalMark}${formattedTenths}`
-    : BigIntWholeNumber;
+  const formattedBigInt = fraction
+    ? bigIntWholeNumber + `${rawDecimalMark}${formattedFraction}`
+    : bigIntWholeNumber;
 
   const formattedValue = formattedBigInt
     .replaceAll(comma, thousandsSeparator)
