@@ -13,9 +13,9 @@ export default /*tw*/ {
     base: "{UButton}",
     defaults: {
       size: {
-        "2xs": "2xs",
+        "2xs": "xs",
         xs: "xs",
-        sm: "xs",
+        sm: "sm",
         md: "sm",
         lg: "md",
         xl: "md",
@@ -24,8 +24,21 @@ export default /*tw*/ {
       square: true,
     },
   },
-  nextIcon: "{UIcon}",
-  prevIcon: "{UIcon}",
+  scrollIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        "2xs": "xs",
+        xs: "xs",
+        sm: "sm",
+        md: "sm",
+        lg: "md",
+        xl: "md",
+      },
+    },
+  },
+  nextIcon: "{>scrollIcon}",
+  prevIcon: "{>scrollIcon}",
   defaults: {
     size: "md",
     block: false,
