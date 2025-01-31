@@ -12,6 +12,14 @@ export default /*tw*/ {
   scrollButton: {
     base: "{UButton}",
     defaults: {
+      size: {
+        "2xs": "2xs",
+        xs: "xs",
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+        xl: "md",
+      },
       variant: "thirdary",
       square: true,
     },
