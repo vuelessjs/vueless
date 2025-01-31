@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "mb-6 flex",
+  wrapper: "mb-6 flex items-end",
   tabs: {
     base: "flex flex-nowrap border-b border-gray-200 dark:border-gray-700 overflow-hidden scroll-smooth",
     variants: {
