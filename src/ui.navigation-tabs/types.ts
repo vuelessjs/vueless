@@ -31,6 +31,11 @@ export interface Props {
   size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
+   * Make the Tabs scrollable.
+   */
+  scrollable?: boolean;
+
+  /**
    * Make the Tabs fill the width with its container.
    */
   block?: boolean;

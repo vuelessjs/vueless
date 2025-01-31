@@ -37,6 +37,13 @@ export default {
   },
 } as Meta;
 
+function getOptionsArray(count = 40) {
+  return Array.from({ length: count }, (_, index) => ({
+    label: `Tab ${index + 1}`,
+    value: (index + 1).toString(),
+  }));
+}
+
 const DefaultTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs) => ({
   components: { UTabs },
   setup() {
@@ -85,4 +92,10 @@ DisabledTab.args = {
     { label: "Tab 2", value: 2, disabled: true },
     { label: "Tab 3", value: 3 },
   ],
+};
+
+export const Scrollable = DefaultTemplate.bind({});
+Scrollable.args = {
+  options: getOptionsArray(),
+  scrollable: true,
 };
