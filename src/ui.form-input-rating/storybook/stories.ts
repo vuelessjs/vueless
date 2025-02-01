@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -15,7 +14,7 @@ import type { Props } from "../types.ts";
 
 interface UInputRatingArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "labelAlign";
+  enum: "size";
 }
 
 export default {
@@ -40,16 +39,11 @@ const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => (
   components: { UInputRating, UBadge },
   setup() {
     const slots = getSlotNames(UInputRating.__name);
-    const errorMessage = computed(() => (!args.modelValue ? args.error : ""));
 
-    return { args, slots, errorMessage };
+    return { args, slots };
   },
   template: `
-    <UInputRating
-      v-bind="args"
-      v-model="args.modelValue"
-      :error="errorMessage"
-    >
+    <UInputRating v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
     </UInputRating>
   `,
@@ -81,24 +75,11 @@ const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Your review helps us improve our services." };
-
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  selectable: true,
-  modelValue: 0,
-  error: "Please select a rating before submitting your review.",
-};
-
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
-
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
 
 export const StarAmount = DefaultTemplate.bind({});
 StarAmount.args = { stars: 7 };

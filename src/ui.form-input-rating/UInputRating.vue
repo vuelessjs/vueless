@@ -6,7 +6,6 @@ import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -60,65 +59,46 @@ function onMouseHover(overStar: number | null = null) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, inputLabelAttrs, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+const { config, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <ULabel
-    :label="label"
-    :error="error"
-    :size="size"
-    :align="labelAlign"
-    :description="description"
-    :disabled="disabled"
-    v-bind="inputLabelAttrs"
-    :data-test="dataTest"
-  >
-    <template #label>
+  <div v-bind="containerAttrs">
+    <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
       <!--
-        @slot Use this to add custom content instead of the label.
-        @binding {string} label
-      -->
-      <slot name="label" :label="label" />
-    </template>
-
-    <div v-bind="containerAttrs">
-      <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
-        <!--
           @slot Use it to customise counter.
           @binding {number} counter
           @binding {number} total
         -->
-        <slot name="counter" :counter="counterValue" :total="total">
-          {{ counterValue }}
-        </slot>
-      </div>
+      <slot name="counter" :counter="counterValue" :total="total">
+        {{ counterValue }}
+      </slot>
+    </div>
 
-      <div v-bind="starsAttrs">
-        <UIcon
-          v-for="star in stars"
-          :key="star"
-          internal
-          :color="error ? 'red' : 'brand'"
-          :interactive="selectable"
-          :name="starIcon(star)"
-          v-bind="starAttrs"
-          :data-test="`${dataTest}-rating-star-${star}`"
-          @click="onClickStar(star)"
-          @mouseleave="onMouseHover()"
-          @mouseover="onMouseHover(star)"
-        />
-      </div>
+    <div v-bind="starsAttrs">
+      <UIcon
+        v-for="star in stars"
+        :key="star"
+        internal
+        :color="error ? 'red' : 'brand'"
+        :interactive="selectable"
+        :name="starIcon(star)"
+        v-bind="starAttrs"
+        :data-test="`${dataTest}-rating-star-${star}`"
+        @click="onClickStar(star)"
+        @mouseleave="onMouseHover()"
+        @mouseover="onMouseHover(star)"
+      />
+    </div>
 
-      <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
-        <!--
+    <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
+      <!--
           @slot Use it to customise total.
           @binding {number} counter
           @binding {number} total
         -->
-        <slot name="total" :counter="counter" :total="total">({{ total }})</slot>
-      </div>
+      <slot name="total" :counter="counter" :total="total">({{ total }})</slot>
     </div>
-  </ULabel>
+  </div>
 </template>
