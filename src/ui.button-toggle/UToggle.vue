@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 
 import useUI from "../composables/useUI.ts";
@@ -65,78 +64,61 @@ const mutatedProps = computed(() => ({
   selected: isSelected,
 }));
 
-const { toggleLabelAttrs, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const { optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
-  <ULabel
-    :label="label"
-    :description="description"
-    :align="labelAlign"
-    :disabled="disabled"
-    :error="error"
-    centred
-    v-bind="toggleLabelAttrs"
-    :data-test="dataTest"
-  >
-    <template #label>
-      <!--
-        @slot Use this to add custom content instead of the entire Toggle label.
-        @binding {string} label
-      -->
-      <slot name="label" :label="label" />
-    </template>
-
-    <div v-bind="optionsAttrs">
-      <UButton
-        v-for="(option, index) in options"
-        :key="option.value"
-        :label="option.label"
-        tabindex="0"
-        color="gray"
-        :size="size"
-        :round="round"
-        :block="block"
-        :square="square"
-        :disabled="disabled"
-        v-bind="isSelected(option) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
-        :data-test="`${dataTest}-option-${index}`"
-        @click="onClickOption(option)"
-      >
-        <template #left="{ iconName }">
-          <!--
+  <div v-bind="optionsAttrs">
+    <UButton
+      v-for="(option, index) in options"
+      :key="option.value"
+      :label="option.label"
+      tabindex="0"
+      color="gray"
+      :size="size"
+      :round="round"
+      :block="block"
+      :square="square"
+      :disabled="disabled"
+      v-bind="isSelected(option) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
+      :data-test="`${dataTest}-option-${index}`"
+      @click="onClickOption(option)"
+    >
+      <template #left="{ iconName }">
+        <!--
             @slot Use it to add something before the label.
             @binding {object} option
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="left" :option="option" :icon-name="iconName" :index="index" />
-        </template>
+        <slot name="left" :option="option" :icon-name="iconName" :index="index" />
+      </template>
 
-        <template #default="{ label, iconName }">
-          <!--
+      <template #default="{ label, iconName }">
+        <!--
             @slot Use it to add something instead of the toggle option label.
             @binding {object} option
             @binding {string} label
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index">
-            {{ option.label }}
-          </slot>
-        </template>
+        <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index">
+          {{ option.label }}
+        </slot>
+      </template>
 
-        <template #right="{ iconName }">
-          <!--
+      <template #right="{ iconName }">
+        <!--
             @slot Use it to add something after the label.
             @binding {object} option
             @binding {string} icon-name
             @binding {number} index
           -->
-          <slot name="right" :option="option" :icon-name="iconName" :index="index" />
-        </template>
-      </UButton>
-    </div>
-  </ULabel>
+        <slot name="right" :option="option" :icon-name="iconName" :index="index" />
+      </template>
+    </UButton>
+  </div>
 </template>
