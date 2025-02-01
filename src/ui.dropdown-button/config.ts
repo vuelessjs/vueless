@@ -25,8 +25,8 @@ export default /*tw*/ {
     base: "{UDropdownList} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-full mb-1",
-        bottom: "top-full mt-1",
+        top: "bottom-full mb-1.5",
+        bottom: "top-full mt-1.5",
       },
       xPosition: {
         left: "left-0",
