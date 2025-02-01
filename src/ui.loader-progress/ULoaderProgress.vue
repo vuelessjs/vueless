@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
+import { computed, watch, ref } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
 import { useLoaderProgress } from "./useLoaderProgress.ts";
 
-import { COMPONENT_NAME, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.ts";
+import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -25,16 +25,9 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
-const {
-  requestQueue,
-  removeRequestUrl,
-  isLoading,
-  loaderProgressOff,
-  loaderProgressOn,
-  addRequestUrl,
-} = useLoaderProgress();
+const { requestQueue } = useLoaderProgress();
 
-const isStarted = computed(() => {
+const isLoading = computed(() => {
   return typeof status.value === "number";
 });
 
@@ -45,68 +38,37 @@ const barStyle = computed(() => {
   };
 });
 
-const resourceNamesArray = computed(() => {
-  return Array.isArray(props.resources)
-    ? props.resources.map(getRequestWithoutQuery)
-    : [getRequestWithoutQuery(props.resources)];
-});
-
-const isPropsLoading = computed(
-  () => requestQueue.value.includes(INFINITY_LOADING) && props.loading,
-);
-
-watch(() => requestQueue.value.length, onChangeRequestsQueue);
-
-onMounted(() => {
-  window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-  window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-
-  if (props.resources) {
-    onChangeRequestsQueue();
+const resourceSubscriptions = computed(() => {
+  if (Array.isArray(props.resources)) {
+    return props.resources.map(getRequestWithoutQuery);
   }
+
+  return [getRequestWithoutQuery(props.resources)];
 });
 
-onBeforeUnmount(() => {
-  removeRequestUrl(resourceNamesArray.value);
+const isActiveRequests = computed(() => {
+  const isAnyRequestActive = props.resources === "any" && requestQueue.value.length;
+  const isSubscribedRequestsActive = resourceSubscriptions.value.some((resource) =>
+    requestQueue.value.includes(resource),
+  );
+
+  return isAnyRequestActive || isSubscribedRequestsActive;
 });
 
-onUnmounted(() => {
-  window.removeEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-  window.removeEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-});
+watch(() => requestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
 
 watch(
   () => props.loading,
-  () => {
-    if (props.loading) {
-      addRequestUrl(INFINITY_LOADING);
-      isLoading.value = true;
-    } else {
-      removeRequestUrl(INFINITY_LOADING);
-    }
-  },
-  { immediate: true },
+  () => (props.loading ? start() : stop()),
 );
 
-function setLoaderOnHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOff(event.detail.resource);
-}
-
 function onChangeRequestsQueue() {
-  const isActiveRequests =
-    isPropsLoading.value ||
-    resourceNamesArray.value.some((resource: string) => {
-      return requestQueue.value.includes(resource);
-    });
+  if (props.loading !== undefined) return;
 
-  if (isActiveRequests && !isStarted.value && isLoading.value) {
+  if (isActiveRequests.value && !isLoading.value) {
     start();
-  } else if (!isActiveRequests && isStarted.value && show.value) {
-    done();
+  } else if (!isActiveRequests.value && isLoading.value && show.value) {
+    stop();
   }
 }
 
@@ -125,8 +87,9 @@ function afterEnter() {
 }
 
 function work() {
+  // TODO: Use requestAnimationFrame for animations instead of setTimeout for better performance and smoothness.
   setTimeout(() => {
-    if (!isStarted.value) {
+    if (!isLoading.value) {
       return;
     }
 
@@ -152,7 +115,7 @@ function start() {
 function set(amount: number) {
   let currentProgress;
 
-  if (isStarted.value) {
+  if (isLoading.value) {
     currentProgress = amount < progress.value ? clamp(amount, 0, 100) : clamp(amount, 0.8, 100);
   } else {
     currentProgress = 0;
@@ -200,9 +163,29 @@ function increase(amount?: number) {
   set(clamp(currentProgress + (amount || 0), 0, MAXIMUM));
 }
 
-function done() {
+function stop() {
   set(100);
 }
+
+defineExpose({
+  /**
+   * Start loading animation.
+   * @property {Function}
+   */
+  start,
+
+  /**
+   * Stop loading animation.
+   * @property {Function}
+   */
+  stop,
+
+  /**
+   * Loading state.
+   * @property {Boolean}
+   */
+  isLoading,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨

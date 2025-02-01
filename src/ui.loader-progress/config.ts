@@ -20,6 +20,6 @@ export default /*tw*/ {
   defaults: {
     color: "brand",
     size: "md",
-    loading: false,
+    loading: undefined,
   },
 };
