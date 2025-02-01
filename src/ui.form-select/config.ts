@@ -81,10 +81,10 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
-  leftSlot: "{>toggle} pl-3",
-  rightSlot: "{>toggle} pr-3",
+  leftSlot: "{>toggle} pl-2.5",
+  rightSlot: "{>toggle} pr-2.5",
   beforeToggle: "{>toggle} cursor-auto",
-  afterToggle: "{>toggle} mr-3 items-start pt-3 cursor-auto",
+  afterToggle: "{>toggle} mr-2.5 items-start pt-3 cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [

@@ -25,7 +25,7 @@ export default /*tw*/ {
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   content: {
-    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-dynamic bg-brand-50",
+    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-dynamic bg-brand-600/5",
     variants: {
       multiple: {
         false: "items-center",
