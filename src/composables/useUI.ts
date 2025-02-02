@@ -6,6 +6,7 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
+  DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -90,7 +91,7 @@ export default function useUI<T>(
       }
 
       if (key === (topLevelClassKey || firstClassKey)) {
-        classes = cx([classes, attrs.class]);
+        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes, attrs.class]);
       }
 
       classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");

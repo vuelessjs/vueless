@@ -8,6 +8,7 @@ export default {
   darkMode: "auto",
   outline: 2,
   rounding: 8,
+  baseClasses: "",
 
   /**
    * Directive settings.

@@ -31,7 +31,7 @@ export default /*tw*/ {
   },
   dragIcon: "{UIcon} {>dataListIcon} icon-drag cursor-move opacity-100",
   label: {
-    base: "font-normal text-gray-900 flex-auto pt-px",
+    base: "font-normal flex-auto pt-px",
     variants: {
       size: {
         sm: "text-xs",

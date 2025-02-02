@@ -42,7 +42,7 @@ export default /*tw*/ {
   selectedLabels: "flex flex-col col-span-2",
   selectedLabel: {
     base: `
-        font-normal !leading-none text-gray-900 relative truncate
+        font-normal !leading-none relative truncate
         inline-flex items-center whitespace-nowrap mb-0 w-full
       `,
     variants: {
@@ -116,7 +116,7 @@ export default /*tw*/ {
   },
   searchInput: {
     base: `
-        p-0 font-normal !leading-none text-gray-900 relative w-full border-none bg-transparent
+        p-0 font-normal !leading-none relative w-full border-none bg-transparent
         focus:shadow-none focus:outline-none focus:ring-0
         placeholder:text-gray-400 placeholder:font-normal
       `,

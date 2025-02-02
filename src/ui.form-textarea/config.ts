@@ -20,7 +20,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal text-gray-900
+      px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
       placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
       focus:ring-0 disabled:cursor-not-allowed
     `,

@@ -24,7 +24,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "text-gray-900 z-10 block !leading-none w-max transition",
+    base: "z-10 block !leading-none w-max transition",
     variants: {
       size: {
         sm: "text-xs",

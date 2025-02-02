@@ -125,6 +125,11 @@ export interface Config extends ThemeConfig {
   strategy?: Strategies;
 
   /**
+   * Classes which will be applied to the root element of all vueless components.
+   */
+  baseClasses?: string;
+
+  /**
    * Component configs.
    */
   components?: Partial<Components>;

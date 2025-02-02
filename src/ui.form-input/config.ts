@@ -33,7 +33,7 @@ export default /*tw*/ {
   rightSlot: "pr-2.5 flex items-center",
   input: {
     base: `
-      block w-full py-2 px-3 font-normal !leading-none text-gray-900 bg-transparent
+      block w-full py-2 px-3 font-normal !leading-none bg-transparent
       border-none rounded-inherit transition focus:ring-0
       placeholder:font-normal placeholder-gray-400
       disabled:text-gray-700 disabled:cursor-not-allowed
