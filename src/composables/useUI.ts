@@ -54,7 +54,6 @@ export default function useUI<T>(
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
   const config = ref({}) as Ref<ComponentConfigFull<T>>;
-  const attrs = useAttrs();
 
   watchEffect(() => {
     const propsConfig = props.config as ComponentConfigFull<T>;
