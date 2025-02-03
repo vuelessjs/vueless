@@ -15,6 +15,7 @@
 * [Rounding](global-customization/rounding.md)
 * [Focus Outline](global-customization/ring.md)
 * [Dark mode](global-customization/dark-mode.md)
+* [Base Classes](global-customization/base-classes.md)
 * [Custom tailwind classes](global-customization/custom-tailwind-classes.md)
 
 ## Component customization

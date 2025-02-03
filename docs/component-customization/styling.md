@@ -6,7 +6,8 @@ Each HTML tag in a component has its own config key with corresponding Tailwind 
 
 ### **The component styles can be customized in three ways:**
 
-* Globally in `vueless.config.{js,ts}`(lowest priority)
+* Globally for [all components at once](../global-customization/base-classes.md) in `vueless.config.{js,ts}` (lowest priority)
+* Globally for particular component in `vueless.config.{js,ts}`
 * Locally using the component’s config prop.
 * Locally using the component’s `class` attribute (highest priority)
 
