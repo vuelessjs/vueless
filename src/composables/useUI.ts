@@ -91,7 +91,7 @@ export default function useUI<T>(
       }
 
       if (key === (topLevelClassKey || firstClassKey)) {
-        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes, attrs.class]);
+        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
       }
 
       classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
@@ -150,18 +150,21 @@ export default function useUI<T>(
 
       const commonAttrs: KeyAttrs = {
         ...(isTopLevelKey ? attrs : {}),
+        "data-vl-child": attrs["data-vl-child"] ? null : true,
         "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
         "vl-key": isDev ? attrs["vl-key"] || configKey || null : null,
         "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent : null,
         "vl-child-key": isDev && attrs["vl-component"] ? configKey : null,
       };
 
+      const topLevelClasses = (!attrs["data-vl-child"] && commonAttrs.class) || "";
+
       /* Delete value key to prevent v-model overwrite. */
       delete commonAttrs.value;
 
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([...extendsClasses, toValue(classes)]),
+        class: cx([...extendsClasses, toValue(classes), topLevelClasses]),
         config: getMergedConfig({
           defaultConfig: extendsKeyConfig,
           globalConfig: keyConfig,
