@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -24,7 +24,6 @@ export default {
   title: "Buttons & Links / Toggle",
   component: UToggle,
   args: {
-    label: "Please choose a role",
     modelValue: "11",
     options: [
       { value: "11", label: "Admin" },
@@ -47,22 +46,11 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   components: { UToggle, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(UToggle.__name);
-    const errorMessage = computed(() => {
-      if (args.name === "error" && Array.isArray(args.modelValue)) {
-        return args.modelValue.length === 0 ? "Please select at least one option" : "";
-      }
 
-      return "";
-    });
-
-    return { args, slots, errorMessage };
+    return { args, slots };
   },
   template: `
-    <UToggle
-      v-bind="args"
-      v-model="args.modelValue"
-      :error="errorMessage"
-    >
+    <UToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
     </UToggle>
   `,
@@ -87,7 +75,6 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
         v-bind="args"
         v-model="values[option]"
         :[args.enum]="option"
-        :label="option"
         :options="[
           { value: option + 1, label: option },
           { value: option + 2, label: option },
@@ -106,7 +93,6 @@ Default.args = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = {
   name: "Disabled",
-  label: "You can disable the whole toggle or specific items",
   options: [
     { value: "11", label: "Admin" },
     { value: "12", label: "Editor", disabled: true },
@@ -114,9 +100,6 @@ Disabled.args = {
     { value: "14", label: "Guest", disabled: true },
   ],
 };
-
-export const Description = DefaultTemplate.bind({});
-Description.args = { name: "Description", description: "You can also add description" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { name: "sizeTemplate", enum: "size" };
@@ -126,15 +109,6 @@ Multiple.args = {
   name: "multiple",
   multiple: true,
   modelValue: [],
-  label: "You can choose more than one option",
-};
-
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  name: "error",
-  multiple: true,
-  modelValue: [],
-  label: "If no option is selected, error message is displayed",
 };
 
 export const Block = DefaultTemplate.bind({});
@@ -150,7 +124,6 @@ export const Square = DefaultTemplate.bind({});
 Square.args = {
   name: "square",
   square: true,
-  label: "Square prop is useful when icons are present",
   options: [
     { value: "11", label: "star" },
     { value: "12", label: "add" },
@@ -166,7 +139,6 @@ Square.args = {
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   name: "defaultSlot",
-  label: "Please select an operation to proceed",
   options: [
     { value: "1", label: "Download", rightIcon: "download", color: "green" },
     { value: "2", label: "Edit", rightIcon: "edit_note", color: "orange" },
@@ -195,13 +167,13 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
     <URow no-mobile>
       <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
         <template #left="{ index }">
-          <UIcon v-if="index === 0" name="settings" />
+          <UIcon size="sm" color="inherit" v-if="index === 0" name="settings" />
         </template>
       </UToggle>
 
       <UToggle v-bind="args" v-model="rightModel" name="rightSlot">
         <template #right="{ index }">
-          <UIcon v-if="index === 2" name="person" />
+          <UIcon size="sm" color="inherit" v-if="index === 2" name="person" />
         </template>
       </UToggle>
     </URow>

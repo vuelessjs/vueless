@@ -42,7 +42,7 @@ export default /*tw*/ {
   selectedLabels: "flex flex-col col-span-2",
   selectedLabel: {
     base: `
-        font-normal !leading-none text-gray-900 relative truncate
+        font-normal !leading-none relative truncate
         inline-flex items-center whitespace-nowrap mb-0 w-full
       `,
     variants: {
@@ -81,10 +81,10 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
-  leftSlot: "{>toggle} pl-3",
-  rightSlot: "{>toggle} pr-3",
+  leftSlot: "{>toggle} pl-2.5",
+  rightSlot: "{>toggle} pr-2.5",
   beforeToggle: "{>toggle} cursor-auto",
-  afterToggle: "{>toggle} mr-3 items-start pt-3 cursor-auto",
+  afterToggle: "{>toggle} mr-2.5 items-start pt-3 cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [
@@ -116,7 +116,7 @@ export default /*tw*/ {
   },
   searchInput: {
     base: `
-        p-0 font-normal !leading-none text-gray-900 relative w-full border-none bg-transparent
+        p-0 font-normal !leading-none relative w-full border-none bg-transparent
         focus:shadow-none focus:outline-none focus:ring-0
         placeholder:text-gray-400 placeholder:font-normal
       `,

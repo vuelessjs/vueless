@@ -10,7 +10,7 @@ export default /*tw*/ {
   option: {
     base: `
       rounded-dynamic-sm px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
-      font-normal !leading-none text-gray-900
+      font-normal !leading-none
       hover:bg-{color}-600/5 active:bg-{color}-600/10
       overflow-hidden text-ellipsis
     `,

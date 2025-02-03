@@ -32,7 +32,7 @@ export default /*tw*/ {
       },
     },
   },
-  stepperCount: "text-md font-bold text-gray-900 translate-y-2 transform",
+  stepperCount: "text-md font-bold translate-y-2 transform",
   indicator: {
     base: "text-{color}-600 flex justify-end w-full min-w-fit font-medium transition",
     variants: {

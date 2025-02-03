@@ -23,6 +23,9 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
+export const DEFAULT_BASE_CLASSES = `
+  text-gray-900 dark:text-gray-100
+`;
 
 /* Vueless supported colors and shades */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];

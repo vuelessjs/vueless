@@ -1,8 +1,8 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
   slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-dynamic",
-  leftSlot: "{>slot} pl-3 rounded-r-none",
-  rightSlot: "{>slot} pr-3 rounded-l-none",
+  leftSlot: "{>slot} pl-2.5 rounded-r-none",
+  rightSlot: "{>slot} pr-2.5 rounded-l-none",
   wrapper: {
     base: `
       flex bg-white transition w-full
@@ -20,7 +20,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal text-gray-900
+      px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
       placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
       focus:ring-0 disabled:cursor-not-allowed
     `,

@@ -1,5 +1,4 @@
 export default /*tw*/ {
-  inputLabel: "{ULabel}",
   container: {
     base: "flex items-center text-gray-500 !leading-none",
     variants: {
@@ -45,7 +44,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    labelAlign: "top",
     size: "md",
     stars: 5,
     counter: false,

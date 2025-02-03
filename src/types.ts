@@ -125,6 +125,11 @@ export interface Config extends ThemeConfig {
   strategy?: Strategies;
 
   /**
+   * Classes which will be applied to the root element of all vueless components.
+   */
+  baseClasses?: string;
+
+  /**
    * Component configs.
    */
   components?: Partial<Components>;
@@ -305,11 +310,12 @@ export type KeyAttrsWithConfig<T> = {
 } & KeyAttrs;
 
 export interface KeyAttrs extends VueAttrs {
+  "data-vl-child"?: boolean | null;
   "vl-component"?: string | null;
   "vl-key"?: string | null;
   "vl-child-component"?: string | null;
   "vl-child-key"?: string | null;
-  [key: string]: string | undefined | null;
+  [key: string]: string | boolean | undefined | null;
 }
 
 export interface VueAttrs {
