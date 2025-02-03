@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "mb-6 flex",
+  wrapper: "mb-6 flex gap-1",
   tabs: {
     base: "flex flex-nowrap border-b border-gray-200 dark:border-gray-700",
     variants: {
@@ -12,6 +12,8 @@ export default /*tw*/ {
     },
   },
   tab: "{UTab}",
+  prev: "",
+  next: "",
   scrollButton: {
     base: "{UButton}",
     defaults: {
@@ -29,9 +31,6 @@ export default /*tw*/ {
   },
   nextButton: "{>scrollButton}",
   prevButton: "{>scrollButton}",
-  tabSlotWrapper: "",
-  scrollLeftSlotWrapper: "",
-  scrollRightSlotWrapper: "",
   defaults: {
     size: "md",
     block: false,
