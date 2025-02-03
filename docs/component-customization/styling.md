@@ -11,7 +11,7 @@ Each HTML tag in a component has its own config key with corresponding Tailwind 
 * Locally using the component’s config prop.
 * Locally using the component’s `class` attribute (highest priority)
 
-## Global vueless config
+## Component global styling
 
 To apply your project’s design system styles to Vueless components, define them under the `component` key in the `vueless.config.{js,ts}` file. Use the component name (e.g., `UButton`, `UCard`, etc.) as a nested key, and assign class names to relevant parts of the component within its config.
 
