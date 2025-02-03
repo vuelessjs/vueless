@@ -132,9 +132,9 @@ const {
     </div>
     <div v-bind="scrollRightSlotWrapper" @click="scrollRight">
       <!--
-      @slot Use it to add something instead of the "next" button.
-      @binding {string} icon-name
-    -->
+        @slot Use it to add something instead of the "next" button.
+        @binding {string} icon-name
+      -->
       <slot name="scrollRight" :icon-name="config.defaults.nextIcon">
         <UButton
           v-if="scrollable && showRightArrow"
