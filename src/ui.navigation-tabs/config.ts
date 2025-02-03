@@ -1,10 +1,13 @@
 export default /*tw*/ {
-  wrapper: "mb-6 flex items-end",
+  wrapper: "mb-6 flex",
   tabs: {
-    base: "flex flex-nowrap border-b border-gray-200 dark:border-gray-700 overflow-hidden scroll-smooth",
+    base: "flex flex-nowrap border-b border-gray-200 dark:border-gray-700",
     variants: {
       block: {
         true: "w-full",
+      },
+      scrollable: {
+        true: "overflow-hidden scroll-smooth",
       },
     },
   },
@@ -24,21 +27,8 @@ export default /*tw*/ {
       square: true,
     },
   },
-  scrollIcon: {
-    base: "{UIcon}",
-    defaults: {
-      size: {
-        "2xs": "xs",
-        xs: "xs",
-        sm: "sm",
-        md: "sm",
-        lg: "md",
-        xl: "md",
-      },
-    },
-  },
-  nextIcon: "{>scrollIcon}",
-  prevIcon: "{>scrollIcon}",
+  nextButton: "{>scrollButton}",
+  prevButton: "{>scrollButton}",
   defaults: {
     size: "md",
     block: false,
