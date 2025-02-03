@@ -3,3 +3,5 @@
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
 export const COMPONENT_NAME = "UTabs";
+
+export const SCROLL_OFFSET = 200;
