@@ -82,50 +82,66 @@ provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value))
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, wrapperAttrs, tabsAttrs, tabAttrs, nextButtonAttrs, prevButtonAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  config,
+  wrapperAttrs,
+  tabsAttrs,
+  tabAttrs,
+  nextButtonAttrs,
+  prevButtonAttrs,
+  tabSlotWrapper,
+  scrollLeftSlotWrapper,
+  scrollRightSlotWrapper,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div v-bind="wrapperAttrs">
-    <!--
-      @slot Use it to add something instead of the "prev" button.
-      @binding {string} icon-name
-    -->
-    <slot name="scrollLeft" :icon-name="config.defaults.prevIcon">
-      <UButton
-        v-if="scrollable && showLeftArrow"
-        :icon="config.defaults.prevIcon"
-        v-bind="prevButtonAttrs"
-        @click="scrollLeft"
-      />
-    </slot>
-    <div ref="scroll-container" v-bind="tabsAttrs" :data-test="dataTest" @scroll="checkScroll">
-      <!-- @slot Use it to add the UTab component. -->
-      <slot>
-        <UTab
-          v-for="(item, index) in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-          :disabled="item.disabled"
-          :size="size"
-          v-bind="tabAttrs"
-          :data-test="`${dataTest}-item-${index}`"
+    <div v-bind="scrollLeftSlotWrapper" @click="scrollLeft">
+      <!--
+        @slot Use it to add something instead of the "prev" button.
+        @binding {string} icon-name
+      -->
+      <slot name="scrollLeft" :icon-name="config.defaults.prevIcon">
+        <UButton
+          v-if="scrollable && showLeftArrow"
+          :icon="config.defaults.prevIcon"
+          v-bind="prevButtonAttrs"
         />
       </slot>
     </div>
-    <!--
+    <div ref="scroll-container" v-bind="tabsAttrs" :data-test="dataTest" @scroll="checkScroll">
+      <div
+        v-for="(item, index) in options"
+        :key="item.value"
+        v-bind="tabSlotWrapper"
+        @click="selectedItem = String(item.value)"
+      >
+        <!-- @slot Use it to add the UTab component. -->
+        <slot>
+          <UTab
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+            :size="size"
+            v-bind="tabAttrs"
+            :data-test="`${dataTest}-item-${index}`"
+          />
+        </slot>
+      </div>
+    </div>
+    <div v-bind="scrollRightSlotWrapper" @click="scrollRight">
+      <!--
       @slot Use it to add something instead of the "next" button.
       @binding {string} icon-name
     -->
-    <slot name="scrollRight" :icon-name="config.defaults.nextIcon">
-      <UButton
-        v-if="scrollable && showRightArrow"
-        :icon="config.defaults.nextIcon"
-        v-bind="nextButtonAttrs"
-        @click="scrollRight"
-      />
-    </slot>
+      <slot name="scrollRight" :icon-name="config.defaults.nextIcon">
+        <UButton
+          v-if="scrollable && showRightArrow"
+          :icon="config.defaults.nextIcon"
+          v-bind="nextButtonAttrs"
+        />
+      </slot>
+    </div>
   </div>
 </template>

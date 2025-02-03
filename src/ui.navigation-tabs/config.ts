@@ -29,6 +29,9 @@ export default /*tw*/ {
   },
   nextButton: "{>scrollButton}",
   prevButton: "{>scrollButton}",
+  tabSlotWrapper: "",
+  scrollLeftSlotWrapper: "",
+  scrollRightSlotWrapper: "",
   defaults: {
     size: "md",
     block: false,
