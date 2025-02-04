@@ -6,7 +6,7 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  // DEFAULT_BASE_CLASSES,
+  DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -72,8 +72,8 @@ export default function useUI<T>(
   function getClasses(key: string, mutatedProps?: MutatedProps) {
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
-      const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
       const value = (config.value as ComponentConfigFull<T>)[key];
+      const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
 
       let classes = "";
 
@@ -87,12 +87,6 @@ export default function useUI<T>(
 
       if (typeof value === "string") {
         classes = value;
-      }
-
-      if (key === (topLevelClassKey || firstClassKey)) {
-        classes = cx([classes]);
-        // TODO: It will be fixed soon
-        //classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
       }
 
       classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
@@ -122,7 +116,8 @@ export default function useUI<T>(
    * Get an element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef<string>) {
-    const vuelessAttrs = ref({});
+    const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
+    const vuelessAttrs = ref({} as KeyAttrs);
 
     const attrs = useAttrs() as KeyAttrs;
 
@@ -141,7 +136,6 @@ export default function useUI<T>(
       }
 
       const isDev = isCSR && import.meta.env?.DEV;
-      const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
       const extendsClasses = getExtendsClasses(configKey);
       const extendsKeyConfig = getExtendsKeyConfig(configKey);
@@ -151,8 +145,6 @@ export default function useUI<T>(
 
       const commonAttrs: KeyAttrs = {
         ...(isTopLevelKey ? attrs : {}),
-        "data-vl-root": isTopLevelKey || null,
-        "data-vl-child": attrs["data-vl-child"] ? null : true,
         "vl-component": isDev ? attrs["vl-component"] || componentName || null : null,
         "vl-key": isDev ? attrs["vl-key"] || configKey || null : null,
         "vl-child-component": isDev && attrs["vl-component"] ? nestedComponent : null,
@@ -162,21 +154,9 @@ export default function useUI<T>(
       /* Delete value key to prevent v-model overwrite. */
       delete commonAttrs.value;
 
-      let topLevelClasses;
-
-      if (!commonAttrs["data-vl-child"] && !attrs["data-vl-root"]) {
-        topLevelClasses = commonAttrs.class || "";
-      }
-
-      // console.log(configKey, isTopLevelKey, commonAttrs["data-vl-child"], attrs["data-vl-root"]);
-
-      if (isTopLevelKey) {
-        topLevelClasses = attrs.class;
-      }
-
       vuelessAttrs.value = {
         ...commonAttrs,
-        class: cx([...extendsClasses, toValue(classes), topLevelClasses]),
+        class: cx([...extendsClasses, toValue(classes), commonAttrs.class]),
         config: getMergedConfig({
           defaultConfig: extendsKeyConfig,
           globalConfig: keyConfig,
@@ -252,6 +232,15 @@ export default function useUI<T>(
       }
 
       return defaults;
+    }
+
+    // Injecting global base classes.
+    if (isTopLevelKey) {
+      vuelessAttrs.value.class = cx([
+        DEFAULT_BASE_CLASSES,
+        vuelessConfig.baseClasses,
+        vuelessAttrs.value.class,
+      ]);
     }
 
     return vuelessAttrs;
