@@ -58,7 +58,10 @@ if (isSSR) {
 if (isCSR) {
   vuelessConfig =
     Object.values(
-      import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }),
+      import.meta.glob(["/vueless.config.{js,ts}", "/**/vueless.config.{js,ts}"], {
+        eager: true,
+        import: "default",
+      }),
     )[0] || {};
 }
 
