@@ -310,6 +310,7 @@ export type KeyAttrsWithConfig<T> = {
 } & KeyAttrs;
 
 export interface KeyAttrs extends VueAttrs {
+  "data-vl-root"?: boolean | null;
   "data-vl-child"?: boolean | null;
   "vl-component"?: string | null;
   "vl-key"?: string | null;
