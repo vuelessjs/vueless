@@ -148,6 +148,7 @@ function getDayState(day: Date) {
   const isSelectedDay = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
   const isCurrentDay = isToday(day);
   const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
+  const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
   const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
   const isLastDayInRange =
@@ -171,6 +172,7 @@ function getDayState(day: Date) {
     isAnotherMonthFirstDayInRange,
     isAnotherMonthLastDayInRange,
     isActiveDay,
+    isAnotherMonthDayInRange,
   };
 }
 
@@ -213,6 +215,7 @@ const {
   activeDayAttrs,
   currentLastDayInRangeAttrs,
   currentFirstDayInRangeAttrs,
+  anotherMonthDayInRangeAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -349,6 +352,20 @@ const {
           size="md"
           square
           v-bind="currentDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isAnotherMonthDayInRange"
+          tabindex="-1"
+          variant="thirdary"
+          color="blue"
+          size="md"
+          square
+          v-bind="anotherMonthDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
