@@ -6,7 +6,7 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  DEFAULT_BASE_CLASSES,
+  // DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -234,14 +234,14 @@ export default function useUI<T>(
       return defaults;
     }
 
-    // Injecting global base classes.
-    if (isTopLevelKey) {
-      vuelessAttrs.value.class = cx([
-        DEFAULT_BASE_CLASSES,
-        vuelessConfig.baseClasses,
-        vuelessAttrs.value.class,
-      ]);
-    }
+    // TODO: Injecting global base classes.
+    // if (isTopLevelKey) {
+    //   vuelessAttrs.value.class = cx([
+    //     DEFAULT_BASE_CLASSES,
+    //     vuelessConfig.baseClasses,
+    //     vuelessAttrs.value.class,
+    //   ]);
+    // }
 
     return vuelessAttrs;
   }
