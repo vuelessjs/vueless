@@ -357,7 +357,7 @@ function isShownDateDivider(rowIndex: number) {
   const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
   const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
 
-  return isPrevSameDate && !isNextSameDate && props.dateDivider;
+  return !isPrevSameDate && isNextSameDate && props.dateDivider;
 }
 
 function onClickRow(row: Row) {
