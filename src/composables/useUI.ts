@@ -90,7 +90,9 @@ export default function useUI<T>(
       }
 
       if (key === (topLevelClassKey || firstClassKey)) {
-        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
+        classes = cx([classes]);
+        // TODO: It will be fixed soon
+        //classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
       }
 
       classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
@@ -164,6 +166,12 @@ export default function useUI<T>(
 
       if (!commonAttrs["data-vl-child"] && !attrs["data-vl-root"]) {
         topLevelClasses = commonAttrs.class || "";
+      }
+
+      // console.log(configKey, isTopLevelKey, commonAttrs["data-vl-child"], attrs["data-vl-root"]);
+
+      if (isTopLevelKey) {
+        topLevelClasses = attrs.class;
       }
 
       vuelessAttrs.value = {
