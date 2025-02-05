@@ -71,14 +71,9 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   function getIcon(name: string, params: (string | number)[] = []) {
-    // eslint-disable-next-line prettier/prettier
-    const iconName = isFill
-      ? name + FILL_SUFFIX + ICON_EXTENSION
-      : name + ICON_EXTENSION;
-
     const [, component] =
       generatedIcons.value.find(([path]) =>
-        [iconName, ...params].every((param) => path.includes(String(param))),
+        [name + ICON_EXTENSION, ...params].every((param) => path.includes(String(param))),
       ) || [];
 
     return component;
