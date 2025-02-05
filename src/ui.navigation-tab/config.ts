@@ -5,6 +5,11 @@ export default /*tw*/ {
       hover:bg-transparent dark:hover:bg-transparent
       active:bg-transparent dark:active:bg-transparent
     `,
+    variants: {
+      scrollable: {
+        false: "-mb-px",
+      },
+    },
     defaults: {
       color: "gray",
     },

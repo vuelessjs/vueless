@@ -15,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const setUTabsSelectedItem = inject<SetUTabsSelectedItem>("setUTabsSelectedItem");
 const getUTabsSelectedItem = inject("getUTabsSelectedItem");
+const getUTabsScrollable = inject<UTabsProps["scrollable"]>("getUTabsScrollable");
 const getUTabsSquare = inject<UTabsProps["square"]>("getUTabsSquare");
 const getUTabsBlock = inject<UTabsProps["block"]>("getUTabsBlock");
 const getUTabsSize = inject<UTabsProps["size"]>("getUTabsSize", "md");
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const size = computed(() => toValue(getUTabsSize));
 const block = computed(() => toValue(getUTabsBlock));
 const square = computed(() => toValue(getUTabsSquare));
+const scrollable = computed(() => toValue(getUTabsScrollable));
 const isActive = computed(() => toValue(getUTabsSelectedItem) === props.value && !props.disabled);
 
 async function onClickSetValue() {
@@ -42,6 +44,7 @@ const mutatedProps = computed(() => ({
   size: size.value,
   block: block.value,
   square: square.value,
+  scrollable: scrollable.value,
   /* component state, not a props */
   active: isActive.value,
 }));

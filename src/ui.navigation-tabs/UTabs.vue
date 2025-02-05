@@ -75,6 +75,7 @@ onUnmounted(() => {
 provide("getUTabsSize", () => props.size);
 provide("getUTabsBlock", () => props.block);
 provide("getUTabsSquare", () => props.square);
+provide("getUTabsScrollable", () => props.scrollable);
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
 
