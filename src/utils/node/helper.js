@@ -51,7 +51,7 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
     .filter((filePath) => !statSync(filePath).isDirectory());
 }
 
-export function getNuxtFiles() {
+export function getNuxtDirs() {
   return [
     path.join(cwd(), "composables"),
     path.join(cwd(), "components"),
@@ -68,8 +68,12 @@ export function getNuxtFiles() {
   ];
 }
 
-export function getVueFiles() {
+export function getVueDirs() {
   return [path.join(cwd(), "src")];
+}
+
+export function getVuelessConfigDirs() {
+  return [path.join(cwd(), ".vueless")];
 }
 
 export async function getComponentDefaultConfig(name, entryPath) {

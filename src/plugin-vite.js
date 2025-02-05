@@ -8,7 +8,7 @@ import UnpluginVueComponents from "unplugin-vue-components/vite";
 import { loadSvg } from "./utils/node/loaderSvg.js";
 import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
-import { getNuxtFiles, getVueFiles } from "./utils/node/helper.js";
+import { getNuxtDirs, getVueDirs, getVuelessConfigDirs } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
@@ -35,7 +35,11 @@ export const Vueless = function (options = {}) {
   const isVuelessEnv = env === "vueless";
   const isNuxt = mode === "nuxt-module";
 
-  const targetFiles = [...(include || []), ...(isNuxt ? getNuxtFiles() : getVueFiles())];
+  const targetFiles = [
+    ...(include || []),
+    ...getVuelessConfigDirs(),
+    ...(isNuxt ? getNuxtDirs() : getVueDirs()),
+  ];
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
