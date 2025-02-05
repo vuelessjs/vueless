@@ -8,10 +8,10 @@ export default /*tw*/ {
     },
   },
   tabs: {
-    base: "flex flex-nowrap border-b border-gray-200 dark:border-gray-700",
+    base: "flex border-b border-gray-200 dark:border-gray-700",
     variants: {
       scrollable: {
-        true: "overflow-hidden scroll-smooth",
+        true: "overflow-hidden flex-nowrap scroll-smooth",
       },
       block: {
         true: "w-full",
