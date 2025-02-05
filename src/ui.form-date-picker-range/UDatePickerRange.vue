@@ -547,9 +547,9 @@ const {
   datepickerCalendarAttrs,
   datepickerInputAttrs,
   menuAttrs,
-  buttonWrapperAttrs,
-  buttonAttrs,
-  shiftRangeButtonAttrs,
+  rangeButtonAttrs,
+  rangeButtonShiftAttrs,
+  rangeButtonSelectAttrs,
   rangeInputWrapperAttrs,
   rangeInputErrorAttrs,
   datepickerInputActiveAttrs,
@@ -572,7 +572,7 @@ const {
 /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
 
 /* TODO:
-   Find way to do it more explicity. 
+   Find way to do it more explicity.
    It is not really clear that i18n changes datepickerCalendarAttrs now.
 */
 watchEffect(() => {
@@ -624,7 +624,7 @@ watchEffect(() => {
       </template>
     </UInput>
 
-    <div v-if="isVariant.button" v-bind="buttonWrapperAttrs">
+    <div v-if="isVariant.button" v-bind="rangeButtonAttrs">
       <UButton
         ref="button-prev"
         square
@@ -633,7 +633,7 @@ watchEffect(() => {
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.prevIcon"
-        v-bind="shiftRangeButtonAttrs"
+        v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Prev)"
       />
 
@@ -646,7 +646,7 @@ watchEffect(() => {
         :disabled="disabled"
         :label="userFormatDate"
         variant="thirdary"
-        v-bind="buttonAttrs"
+        v-bind="rangeButtonSelectAttrs"
         @click="activate"
       />
 
@@ -658,7 +658,7 @@ watchEffect(() => {
         :disabled="disabled"
         variant="thirdary"
         :left-icon="config.defaults.nextIcon"
-        v-bind="shiftRangeButtonAttrs"
+        v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Next)"
       />
     </div>

@@ -22,9 +22,9 @@ export default /*tw*/ {
       },
     },
   },
-  buttonWrapper: "flex rounded-dynamic max-md:justify-between",
-  button: "{UButton} shrink-0 grow rounded-none",
-  shiftRangeButton: `
+  rangeButton: "flex rounded-dynamic max-md:justify-between",
+  rangeButtonSelect: "{UButton} shrink-0 grow rounded-none",
+  rangeButtonShift: `
     first:rounded-dynamic first:rounded-r-none
     last:rounded-dynamic last:rounded-l-none
   `,
