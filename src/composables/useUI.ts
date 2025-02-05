@@ -130,8 +130,9 @@ export default function useUI<T>(
     const attrs = useAttrs() as KeyAttrs;
 
     const reactiveProps = computed(() => ({ ...props }));
+    const reactiveClass = computed(() => attrs.class);
 
-    watch([config, reactiveProps, classes], updateVuelessAttrs, { immediate: true });
+    watch([config, reactiveProps, classes, reactiveClass], updateVuelessAttrs, { immediate: true });
 
     /**
      * Updating Vueless attributes.
