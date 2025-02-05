@@ -10,7 +10,6 @@ import {
   GRAYSCALE_COLOR,
   ICON_NON_PROPS_DEFAULTS,
   TAILWIND_MERGE_EXTENSION,
-  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
 
 import type {
@@ -82,7 +81,7 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
+    onComplete: (classNames) => twMerge(classNames),
   },
 });
 

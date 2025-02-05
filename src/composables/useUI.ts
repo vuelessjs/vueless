@@ -6,7 +6,7 @@ import {
   STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  // DEFAULT_BASE_CLASSES,
+  DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -75,6 +75,9 @@ export default function useUI<T>(
       const value = (config.value as ComponentConfigFull<T>)[key];
       const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
 
+      const isTopLevelKey = (topLevelClassKey || firstClassKey) === key;
+      const isNestedComponent = Boolean(getNestedComponent(value));
+
       let classes = "";
 
       if (typeof value === "object" && isCVA(value)) {
@@ -89,9 +92,15 @@ export default function useUI<T>(
         classes = value;
       }
 
-      classes = classes.replaceAll(EXTENDS_PATTERN_REG_EXP, "");
+      if (isTopLevelKey && !isNestedComponent) {
+        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
+      }
 
-      return color && !getNestedComponent(value) ? setColor(classes, color) : classes;
+      classes = classes
+        .replaceAll(EXTENDS_PATTERN_REG_EXP, "")
+        .replace(NESTED_COMPONENT_PATTERN_REG_EXP, "");
+
+      return color && !isNestedComponent ? setColor(classes, color) : classes;
     });
   }
 
@@ -116,7 +125,6 @@ export default function useUI<T>(
    * Get an element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef<string>) {
-    const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
     const vuelessAttrs = ref({} as KeyAttrs);
 
     const attrs = useAttrs() as KeyAttrs;
@@ -136,6 +144,7 @@ export default function useUI<T>(
       }
 
       const isDev = isCSR && import.meta.env?.DEV;
+      const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
       const extendsClasses = getExtendsClasses(configKey);
       const extendsKeyConfig = getExtendsKeyConfig(configKey);
@@ -233,15 +242,6 @@ export default function useUI<T>(
 
       return defaults;
     }
-
-    // TODO: Injecting global base classes.
-    // if (isTopLevelKey) {
-    //   vuelessAttrs.value.class = cx([
-    //     DEFAULT_BASE_CLASSES,
-    //     vuelessConfig.baseClasses,
-    //     vuelessAttrs.value.class,
-    //   ]);
-    // }
 
     return vuelessAttrs;
   }
