@@ -38,6 +38,7 @@ const generatedIcons = computed(() => {
 
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
+  const ICON_EXTENSION = ".svg";
 
   const userLibrary = config.value.defaults.library as IconLibraries;
 
@@ -69,12 +70,15 @@ const dynamicComponent = computed(() => {
   /* Dynamic import */
   if (!name) return "";
 
-  function getIcon(params: (string | number)[]) {
+  function getIcon(name: string, params: (string | number)[] = []) {
+    // eslint-disable-next-line prettier/prettier
+    const iconName = isFill
+      ? name + FILL_SUFFIX + ICON_EXTENSION
+      : name + ICON_EXTENSION;
+
     const [, component] =
       generatedIcons.value.find(([path]) =>
-        params.every(
-          (param) => (isFill || !path.includes(FILL_SUFFIX)) && path.includes(String(param)),
-        ),
+        [iconName, ...params].every((param) => path.includes(String(param))),
       ) || [];
 
     return component;
@@ -84,21 +88,21 @@ const dynamicComponent = computed(() => {
   const libraries = {
     "vueless": async () => {
       return import.meta.env.PROD
-        ? await getIcon([name])
+        ? await getIcon(name)
         : isSSR
           ? import(/* @vite-ignore */ `${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`);
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, weight, style, name])
+        ? await getIcon(name, [library, weight, style])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/svg-${weight}/${style}/${name}.svg?component`);
     },
     "bootstrap-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, name])
+        ? await getIcon(name, [library])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/icons/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/icons/${name}.svg?component`);
@@ -107,14 +111,14 @@ const dynamicComponent = computed(() => {
       const fillType = isFill ? "solid" : "outline";
 
       return import.meta.env.PROD
-        ? await getIcon([library, fillType, name])
+        ? await getIcon(name, [library, fillType])
         : isSSR
           ? import(/* @vite-ignore */ `node_modules/${library}/24/${fillType}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/node_modules/${library}/24/${fillType}/${name}.svg?component`);
     },
     "custom-icons": async () => {
       return import.meta.env.PROD
-        ? await getIcon([library, name])
+        ? await getIcon(name, [library])
         : isSSR
           ? import(/* @vite-ignore */ `${customLibraryPath}/${name}.svg?component`)
           : import(/* @vite-ignore */ `/${customLibraryPath}/${name}.svg?component`);
