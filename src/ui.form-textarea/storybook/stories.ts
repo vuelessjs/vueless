@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -44,15 +44,13 @@ const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
   components: { UTextarea, UIcon },
   setup() {
     const slots = getSlotNames(UTextarea.__name);
-    const errorMessage = computed(() => (args.modelValue === "" ? args.error : ""));
 
-    return { args, slots, errorMessage };
+    return { args, slots };
   },
   template: `
     <UTextarea
       v-bind="args"
       v-model="args.modelValue"
-      :error="errorMessage"
       class="max-w-96"
     >
       ${args.slotTemplate || getSlotsFragment("")}

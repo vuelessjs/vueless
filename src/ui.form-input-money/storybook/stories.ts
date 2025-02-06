@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -43,15 +42,13 @@ const DefaultTemplate: StoryFn<UInputMoneyArgs> = (args: UInputMoneyArgs) => ({
   components: { UInputMoney, UIcon, UButton },
   setup() {
     const slots = getSlotNames(UInputMoney.__name);
-    const errorMessage = computed(() => (Number(args.modelValue) > 0 ? "" : args.error));
 
-    return { args, slots, errorMessage };
+    return { args, slots };
   },
   template: `
     <UInputMoney
       v-bind="args"
       v-model="args.modelValue"
-      :error="errorMessage"
       class="max-w-96"
     >
       ${args.slotTemplate || getSlotsFragment("")}
