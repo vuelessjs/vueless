@@ -72,6 +72,7 @@ function onClickBackLink() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   pageAttrs,
@@ -94,7 +95,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="pageAttrs">
       <!-- @slot Use it to add something before the header. -->
       <slot name="header-before" />

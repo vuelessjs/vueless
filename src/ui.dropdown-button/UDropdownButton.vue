@@ -68,8 +68,14 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapperAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  config,
+  dropdownButtonAttrs,
+  dropdownListAttrs,
+  dropdownIconAttrs,
+  wrapperAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -85,7 +91,7 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
       :disabled="disabled"
       :filled="filled || isShownOptions"
       v-bind="dropdownButtonAttrs"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       @click="onClickButton"
     >
       <template #left>
@@ -116,7 +122,7 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
             color="inherit"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
-            :data-test="`${dataTest}-dropdown`"
+            :data-test="getDataTest('dropdown')"
           />
         </slot>
       </template>
@@ -129,7 +135,7 @@ const { config, dropdownButtonAttrs, dropdownListAttrs, dropdownIconAttrs, wrapp
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
-      :data-test="`${dataTest}-list`"
+      :data-test="getDataTest('list')"
       @click-option="onClickOption"
     />
   </div>

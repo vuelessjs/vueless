@@ -248,6 +248,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   listAttrs,
@@ -272,7 +273,7 @@ const {
     tabindex="1"
     :style="{ maxHeight: wrapperMaxHeight }"
     v-bind="wrapperAttrs"
-    :data-test="`${dataTest}-list`"
+    :data-test="getDataTest('list')"
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
@@ -296,7 +297,7 @@ const {
             !option.divider
           "
           v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
-          :data-test="`${dataTest}-option`"
+          :data-test="getDataTest('option')"
           :class="optionHighlight(index, option)"
           @click="select(option), onClickOption(option)"
           @mouseenter.self="pointerSet(index)"
@@ -362,7 +363,7 @@ const {
           ref="add-option"
           role="option"
           v-bind="addOptionLabelWrapperAttrs"
-          :data-test="`${dataTest}-add`"
+          :data-test="getDataTest('add')"
           @click="onClickAddOption"
           @mouseenter.self="pointerSet(options.length + 1)"
         >
@@ -376,7 +377,7 @@ const {
           round
           square
           v-bind="addOptionButtonAttrs"
-          :data-test="`${dataTest}-add-button`"
+          :data-test="getDataTest('add-button')"
           @click="onClickAddOption"
         >
           <UIcon

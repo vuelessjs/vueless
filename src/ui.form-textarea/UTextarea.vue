@@ -190,8 +190,14 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlotAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  textareaAttrs,
+  textareaLabelAttrs,
+  wrapperAttrs,
+  leftSlotAttrs,
+  rightSlotAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -206,7 +212,7 @@ const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlo
     :align="labelAlign"
     interactive
     v-bind="textareaLabelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--
@@ -237,7 +243,7 @@ const { textareaAttrs, textareaLabelAttrs, wrapperAttrs, leftSlotAttrs, rightSlo
         :rows="currentRows"
         :inputmode="inputmode"
         v-bind="textareaAttrs"
-        :data-test="dataTest"
+        :data-test="getDataTest()"
         @focus="onFocus"
         @blur="onBlur"
         @change="onChange"

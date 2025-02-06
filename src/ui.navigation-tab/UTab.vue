@@ -49,7 +49,10 @@ const mutatedProps = computed(() => ({
   active: isActive.value,
 }));
 
-const { tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
@@ -64,7 +67,7 @@ const { tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(defaultConfig, mu
     :square="square"
     :disabled="disabled"
     v-bind="isActive ? tabButtonActiveAttrs : tabButtonAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @click="onClickSetValue"
   >
     <template #left="{ iconName }">

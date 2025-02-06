@@ -40,8 +40,14 @@ function onClickLink(link: UBreadcrumb) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, breadcrumbsAttrs, breadcrumbLinkAttrs, breadcrumbIconAttrs, dividerIconAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  config,
+  breadcrumbsAttrs,
+  breadcrumbLinkAttrs,
+  breadcrumbIconAttrs,
+  dividerIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -77,7 +83,7 @@ const { config, breadcrumbsAttrs, breadcrumbLinkAttrs, breadcrumbIconAttrs, divi
         :dashed="dashed"
         :disabled="link.disabled || (!link.to && !link.href)"
         v-bind="breadcrumbLinkAttrs"
-        :data-test="dataTest"
+        :data-test="getDataTest()"
         @click="onClickLink(link)"
       >
         <template #default="slotProps">

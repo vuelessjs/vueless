@@ -105,6 +105,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   emptyAttrs,
@@ -151,13 +152,13 @@ const {
       :ghost-class="config.draggableGhost"
       :drag-class="config.draggableDrag"
       v-bind="draggableAttrs"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       :move="onDragMove"
       @end="onDragEnd"
     >
       <template #item="{ element }">
-        <div :id="element[valueKey]" v-bind="itemWrapperAttrs" :data-test="`${dataTest}-item`">
-          <div v-bind="itemAttrs" :data-test="`${dataTest}-item-${element[valueKey]}`">
+        <div :id="element[valueKey]" v-bind="itemWrapperAttrs" :data-test="getDataTest('item')">
+          <div v-bind="itemAttrs" :data-test="getDataTest(`item-${element[valueKey]}`)">
             <!--
               @slot Use it to add something instead of the drag icon.
               @binding {object} item
@@ -210,7 +211,7 @@ const {
                   :name="config.defaults.deleteIcon"
                   :tooltip="currentLocale.delete"
                   v-bind="deleteIconAttrs"
-                  :data-test="`${dataTest}-delete`"
+                  :data-test="getDataTest('delete')"
                   @click="onClickDelete(element[valueKey], element[labelKey])"
                 />
               </slot>
@@ -229,7 +230,7 @@ const {
                   :name="config.defaults.editIcon"
                   :tooltip="currentLocale.edit"
                   v-bind="editIconAttrs"
-                  :data-test="`${dataTest}-edit`"
+                  :data-test="getDataTest('edit')"
                   @click="onClickEdit(element[valueKey], element[labelKey])"
                 />
               </slot>
@@ -243,7 +244,7 @@ const {
             :list="element.children"
             :group="group"
             v-bind="nestedAttrs"
-            :data-test="`${dataTest}-table`"
+            :data-test="getDataTest('table')"
             @click-delete="onClickDelete"
             @click-edit="onClickEdit"
             @drag-sort="onDragEnd"

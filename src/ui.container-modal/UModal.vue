@@ -110,6 +110,7 @@ function closeModal() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   modalAttrs,
   titleAttrs,
@@ -145,7 +146,7 @@ const {
       ref="wrapperRef"
       tabindex="0"
       v-bind="wrapperAttrs"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       @keydown.self.esc="onKeydownEsc"
     >
       <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
@@ -203,7 +204,7 @@ const {
                   size="sm"
                   :name="config.defaults.closeIcon"
                   v-bind="closeIconAttrs"
-                  :data-test="`${dataTest}-close`"
+                  :data-test="getDataTest('close')"
                   @click="onClickCloseModal"
                 />
               </slot>

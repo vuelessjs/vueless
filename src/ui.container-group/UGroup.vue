@@ -20,6 +20,7 @@ withDefaults(defineProps<Props>(), {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   headerAttrs,
   wrapperAttrs,
   headerLeftFallbackAttrs,
@@ -31,7 +32,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="title">
       <UDivider v-if="upperlined" size="xl" padding="after" v-bind="upperlineAttrs" />
 

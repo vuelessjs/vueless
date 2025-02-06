@@ -448,6 +448,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   stickyHeaderCellAttrs,
@@ -494,7 +495,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div
       v-show="isHeaderSticky && !isShownActionsHeader"
       ref="sticky-header-row"
@@ -508,7 +509,7 @@ const {
           size="md"
           :partial="!isSelectedAllRows"
           v-bind="stickyHeaderCheckboxAttrs"
-          :data-test="`${dataTest}-select-all`"
+          :data-test="getDataTest('select-all')"
         />
 
         <div
@@ -562,7 +563,7 @@ const {
           size="md"
           :partial="!isSelectedAllRows"
           v-bind="headerActionsCheckboxAttrs"
-          :data-test="`${dataTest}-select-all`"
+          :data-test="getDataTest('select-all')"
         />
       </div>
 
@@ -595,7 +596,7 @@ const {
           size="md"
           :partial="!isSelectedAllRows"
           v-bind="headerActionsCheckboxAttrs"
-          :data-test="`${dataTest}-select-all`"
+          :data-test="getDataTest('select-all')"
         />
       </div>
 
@@ -634,7 +635,7 @@ const {
                 size="md"
                 :partial="!isSelectedAllRows"
                 v-bind="headerCheckboxAttrs"
-                :data-test="`${dataTest}-select-all`"
+                :data-test="getDataTest('select-all')"
               />
 
               <div
@@ -725,7 +726,7 @@ const {
               :attrs="tableRowAttrs as unknown as UTableRowAttrs"
               :nested-level="0"
               :empty-cell-label="emptyCellLabel"
-              :data-test="`${dataTest}-row`"
+              :data-test="getDataTest('row')"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
@@ -788,7 +789,7 @@ const {
                   size="md"
                   :description="currentLocale.noData"
                   v-bind="bodyEmptyStateAttrs"
-                  :data-test="`${dataTest}-empty`"
+                  :data-test="getDataTest('empty')"
                 />
               </slot>
             </td>

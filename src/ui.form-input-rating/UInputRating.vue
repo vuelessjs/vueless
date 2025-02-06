@@ -59,7 +59,7 @@ function onMouseHover(overStar: number | null = null) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
+const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
@@ -81,11 +81,11 @@ const { config, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs 
         v-for="star in stars"
         :key="star"
         internal
-        :color="error ? 'red' : 'brand'"
+        color="inherit"
         :interactive="selectable"
         :name="starIcon(star)"
         v-bind="starAttrs"
-        :data-test="`${dataTest}-rating-star-${star}`"
+        :data-test="getDataTest(`rating-star-${star}`)"
         @click="onClickStar(star)"
         @mouseleave="onMouseHover()"
         @mouseover="onMouseHover(star)"

@@ -51,7 +51,7 @@ function onRemoveFile(fileId: string | number) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -83,7 +83,7 @@ const { filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(defaultConfig);
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"
-          :data-test="`${dataTest}-item`"
+          :data-test="getDataTest('item')"
           @remove="onRemoveFile"
         >
           <template #left="{ file: currentFile }">

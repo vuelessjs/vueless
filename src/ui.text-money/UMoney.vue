@@ -28,7 +28,7 @@ const currencySymbolPosition = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -43,7 +43,7 @@ const { moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
     :decimal-separator="decimalSeparator"
     :thousands-separator="thousandsSeparator"
     v-bind="moneyAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #left>
       <!-- @slot Use it to add something before money amount. -->

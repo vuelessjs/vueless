@@ -21,6 +21,7 @@ withDefaults(defineProps<Props>(), {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   titleAttrs,
   descriptionAttrs,
@@ -33,7 +34,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="headerAttrs">
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">

@@ -18,11 +18,11 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { headerAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, headerAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <component :is="tag" v-bind="headerAttrs" :data-test="dataTest">
+  <component :is="tag" v-bind="headerAttrs" :data-test="getDataTest()">
     <slot>{{ label }}</slot>
   </component>
 </template>
