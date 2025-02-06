@@ -17,9 +17,9 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { dotAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, dotAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="dotAttrs" :data-test="dataTest" />
+  <div v-bind="dotAttrs" :data-test="getDataTest()" />
 </template>

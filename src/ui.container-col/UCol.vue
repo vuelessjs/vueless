@@ -18,11 +18,11 @@ withDefaults(defineProps<Props>(), {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 
-const { wrapperAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
     <slot />
   </div>

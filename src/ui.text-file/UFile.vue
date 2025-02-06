@@ -48,6 +48,7 @@ function onBlur() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   fileAttrs,
   bodyAttrs,
@@ -59,7 +60,7 @@ const {
 </script>
 
 <template>
-  <ULink :href="url" v-bind="fileAttrs" :data-test="dataTest">
+  <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
     <slot name="left" :file="{ elementId, label, url, imageUrl }" />
 
     <slot :file="{ elementId, label, url, imageUrl }">
@@ -89,7 +90,7 @@ const {
         color="gray"
         :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
-        :data-test="`${dataTest}-remove-item`"
+        :data-test="getDataTest('remove-item')"
         @click.stop.prevent="onRemove"
       />
     </slot>

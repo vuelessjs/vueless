@@ -94,7 +94,7 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -108,7 +108,7 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
     :description="description"
     interactive
     v-bind="radioLabelAttrs"
-    :data-test="`${dataTest}-label`"
+    :data-test="getDataTest('label')"
   >
     <template #label>
       <!--
@@ -126,7 +126,7 @@ const { radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProp
       :checked="checked || isChecked"
       :disabled="radioDisabled"
       v-bind="radioAttrs"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       @change="onChange"
     />
 

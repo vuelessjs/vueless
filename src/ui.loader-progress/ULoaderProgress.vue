@@ -191,11 +191,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { stripeAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, stripeAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="stripeAttrs" :data-test="dataTest" :style="barStyle" />
+    <div v-if="show" v-bind="stripeAttrs" :data-test="getDataTest()" :style="barStyle" />
   </Transition>
 </template>

@@ -53,6 +53,7 @@ const closeButtonColor = computed(() => {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   bodyAttrs,
@@ -67,7 +68,7 @@ const {
 </script>
 
 <template>
-  <div v-if="isShownAlert" v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-if="isShownAlert" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
@@ -126,7 +127,7 @@ const {
             :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
-            :data-test="`${dataTest}-button`"
+            :data-test="getDataTest('button')"
           />
         </slot>
       </UButton>

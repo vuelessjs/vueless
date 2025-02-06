@@ -247,6 +247,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   inputLabelAttrs,
   chooseFileButtonAttrs,
@@ -320,7 +321,7 @@ const {
               :label="currentLocale.uploadFile"
               :disabled="disabled"
               v-bind="chooseFileButtonAttrs"
-              :data-test="`${dataTest}-upload`"
+              :data-test="getDataTest('upload')"
             />
 
             <input
@@ -345,7 +346,7 @@ const {
             :color="error ? 'red' : 'brand'"
             :left-icon="config.defaults.clearIcon"
             v-bind="clearButtonAttrs"
-            :data-test="`${dataTest}-clear`"
+            :data-test="getDataTest('clear')"
             @click="onClickResetFiles"
           />
         </div>

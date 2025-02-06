@@ -37,6 +37,7 @@ const isShownFooter = computed(() => {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   wrapperAttrs,
   titleAttrs,
   cardDividerAttrs,
@@ -50,7 +51,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-if="isShownHeader" v-bind="headerAttrs">
       <div v-bind="headerLeftAttrs">
         <!-- @slot Use it to add something before left side of the header. -->

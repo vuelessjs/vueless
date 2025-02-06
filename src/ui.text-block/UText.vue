@@ -18,11 +18,11 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
     <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
     <slot />

@@ -47,12 +47,12 @@ const showLoader = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { config, overlayAttrs, nestedLoaderAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, config, overlayAttrs, nestedLoaderAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <Transition v-bind="config.transition">
-    <div v-if="showLoader" v-bind="overlayAttrs" :data-test="dataTest">
+    <div v-if="showLoader" v-bind="overlayAttrs" :data-test="getDataTest()">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
         <ULoader :loading="showLoader" size="lg" :color="loaderColor" v-bind="nestedLoaderAttrs" />

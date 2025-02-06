@@ -71,8 +71,13 @@ function emitConfirmAction() {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelButtonAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  footerLeftFallbackAttrs,
+  confirmModalAttrs,
+  confirmButtonAttrs,
+  cancelButtonAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -90,7 +95,7 @@ const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelBu
     no-divider
     mobile-bottom-align
     v-bind="confirmModalAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #header-left>
       <!-- @slot Use it to add something to the left side of the header. -->
@@ -133,7 +138,7 @@ const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelBu
           :color="confirmColor"
           :disabled="confirmDisabled"
           v-bind="confirmButtonAttrs"
-          :data-test="`${dataTest}-confirm`"
+          :data-test="getDataTest('confirm')"
           @click="emitConfirmAction"
         />
 
@@ -143,7 +148,7 @@ const { footerLeftFallbackAttrs, confirmModalAttrs, confirmButtonAttrs, cancelBu
           variant="secondary"
           color="gray"
           v-bind="cancelButtonAttrs"
-          :data-test="`${dataTest}-close`"
+          :data-test="getDataTest('close')"
           @click="onCloseModal"
         />
       </div>

@@ -79,17 +79,15 @@ const mutatedProps = computed(() => ({
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
 }));
 
-const { badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
   <div
     ref="wrapper"
     v-bind="badgeAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     :tabindex="tabindex"
     @blur="onBlur"
     @focus="onFocus"

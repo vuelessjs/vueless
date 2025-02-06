@@ -47,6 +47,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   descriptionAttrs,
@@ -58,7 +59,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest" @click="onClickItem">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}

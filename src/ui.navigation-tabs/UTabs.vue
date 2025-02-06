@@ -84,6 +84,7 @@ provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value))
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   tabsAttrs,
@@ -107,7 +108,7 @@ const {
       </slot>
     </div>
 
-    <div ref="scroll-container" v-bind="tabsAttrs" :data-test="dataTest" @scroll="checkScroll">
+    <div ref="scroll-container" v-bind="tabsAttrs" :data-test="getDataTest()" @scroll="checkScroll">
       <!-- @slot Use it to add the UTab component. -->
       <slot>
         <UTab
@@ -118,7 +119,7 @@ const {
           :disabled="item.disabled"
           :size="size"
           v-bind="tabAttrs"
-          :data-test="`${dataTest}-item-${index}`"
+          :data-test="getDataTest(`item-${index}`)"
         />
       </slot>
     </div>
