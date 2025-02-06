@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -64,16 +64,14 @@ const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
     }
 
     const slots = getSlotNames(USelect.__name);
-    const errorMessage = computed(() => (!args.modelValue ? args.error : ""));
     const showAlert = (message: string) => alert(message);
 
-    return { args, slots, getSelectedBadge, errorMessage, showAlert };
+    return { args, slots, getSelectedBadge, showAlert };
   },
   template: `
     <USelect
       v-bind="args"
       v-model="args.modelValue"
-      :error="errorMessage"
       class="max-w-96"
       @add="showAlert('You triggered the add action!')"
     >
