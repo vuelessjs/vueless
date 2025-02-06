@@ -212,7 +212,7 @@ const {
     :align="labelAlign"
     interactive
     v-bind="textareaLabelAttrs"
-    :data-test="getDataTest()"
+    :data-test="getDataTest('label')"
   >
     <template #label>
       <!--

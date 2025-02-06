@@ -83,7 +83,7 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           :size="size"
           :removable="removable"
           v-bind="itemAttrs"
-          :data-test="getDataTest('item')"
+          :data-test="getDataTest(`item-${index}`)"
           @remove="onRemoveFile"
         >
           <template #left="{ file: currentFile }">

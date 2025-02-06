@@ -85,7 +85,7 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
         :interactive="selectable"
         :name="starIcon(star)"
         v-bind="starAttrs"
-        :data-test="getDataTest(`rating-star-${star}`)"
+        :data-test="getDataTest(`star-${star}`)"
         @click="onClickStar(star)"
         @mouseleave="onMouseHover()"
         @mouseover="onMouseHover(star)"
