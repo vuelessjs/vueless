@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -43,15 +42,13 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   components: { UInput, UIcon },
   setup() {
     const slots = getSlotNames(UInput.__name);
-    const errorMessage = computed(() => (args.modelValue === "" ? args.error : ""));
 
-    return { args, slots, errorMessage };
+    return { args, slots };
   },
   template: `
     <UInput
       v-bind="args"
       v-model="args.modelValue"
-      :error="errorMessage"
       class="max-w-96"
     >
       ${args.slotTemplate || getSlotsFragment("")}
@@ -129,7 +126,7 @@ export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Provide additional details if necessary." };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value." };
+Error.args = { error: "This field is required. Please enter a value.", modelValue: "" };
 
 export const Readonly = DefaultTemplate.bind({});
 Readonly.args = {
