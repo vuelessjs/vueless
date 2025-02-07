@@ -47,9 +47,9 @@ export default /*tw*/ {
     leaveToClass: "opacity-0 scale-95",
   },
   i18n: {
-    today: "Today,",
-    yesterday: "Yesterday,",
-    tomorrow: "Tomorrow,",
+    today: "Today",
+    yesterday: "Yesterday",
+    tomorrow: "Tomorrow",
     weekdays: {
       shorthand: {
         sunday: "Sun",
@@ -128,8 +128,8 @@ export default /*tw*/ {
   },
   defaults: {
     size: "md",
-    userDateFormat: "r j F, Y",
-    userDateTimeFormat: "r j F, Y - H:i:S",
+    userDateFormat: "r, j F, Y",
+    userDateTimeFormat: "r, j F, Y - H:i:S",
     dateFormat: undefined,
     dateTimeFormat: undefined,
     openDirectionX: "auto",
