@@ -115,9 +115,9 @@ export default /*tw*/ {
     notCorrectDayNumber: "Wrong day in month.",
     fromDateGraterThanSecond: "The 'from' date should be less than the 'to' date.",
     toDateSmallerThanFirst: "The 'to' date should be greater than the 'from' date.",
-    today: "Today,",
-    yesterday: "Yesterday,",
-    tomorrow: "Tomorrow,",
+    today: "Today",
+    yesterday: "Yesterday",
+    tomorrow: "Tomorrow",
     weekdays: {
       shorthand: {
         sunday: "Sun",

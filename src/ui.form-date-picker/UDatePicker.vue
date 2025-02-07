@@ -173,6 +173,7 @@ function onPaste(event: ClipboardEvent) {
       locale.value.tomorrow,
       locale.value.today,
       locale.value.tomorrow,
+      ...locale.value.weekdays.longhand,
     ].some((word) => {
       return pasteContent.includes(word);
     });

@@ -225,6 +225,6 @@ export const formats = {
       return `${locale.tomorrow}`;
     }
 
-    return "";
+    return formats.l(date, locale);
   },
 };
