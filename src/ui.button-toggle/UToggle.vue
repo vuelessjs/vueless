@@ -40,8 +40,16 @@ function isSelected(option: UToggleOption) {
   return selectedValue.value === option.value;
 }
 
-function onClickOption(option: UToggleOption) {
-  if (props.multiple) {
+function onClickOption(rawOption: UToggleOption) {
+  const option = { ...rawOption };
+
+  delete option.onClick;
+
+  if (typeof rawOption.onClick === "function") {
+    rawOption.onClick(option);
+  }
+
+  if (props.multiple || props.options.length === 1) {
     const newValue = Array.isArray(selectedValue.value) ? [...selectedValue.value] : [];
     const index = newValue.indexOf(option.value);
 
@@ -105,9 +113,7 @@ const { getDataTest, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActive
             @binding {string} icon-name
             @binding {number} index
           -->
-        <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index">
-          {{ option.label }}
-        </slot>
+        <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index" />
       </template>
 
       <template #right="{ iconName }">

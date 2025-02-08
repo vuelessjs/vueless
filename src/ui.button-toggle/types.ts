@@ -6,11 +6,12 @@ export type Config = typeof defaultConfig;
 
 export interface UToggleOption {
   value: string | number;
-  label: string;
+  label?: string;
   disabled?: boolean;
   icon?: string;
   leftIcon?: string;
   rightIcon?: string;
+  onClick?: (option: Omit<UToggleOption, "onClick">) => void;
   [key: string]: unknown;
 }
 
