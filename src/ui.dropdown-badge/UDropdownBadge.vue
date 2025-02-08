@@ -66,8 +66,14 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  config,
+  wrapperAttrs,
+  dropdownBadgeAttrs,
+  dropdownListAttrs,
+  dropdownIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -81,7 +87,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       :round="round"
       v-bind="dropdownBadgeAttrs"
       tabindex="0"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       @click="onClickBadge"
       @keydown.enter="onClickBadge"
       @keydown.space.prevent="onClickBadge"
@@ -114,7 +120,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
             color="inherit"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"
-            :data-test="`${dataTest}-dropdown`"
+            :data-test="getDataTest('dropdown')"
           />
         </slot>
       </template>
@@ -128,7 +134,7 @@ const { config, wrapperAttrs, dropdownBadgeAttrs, dropdownListAttrs, dropdownIco
       :options="options"
       :label-key="labelKey"
       v-bind="dropdownListAttrs"
-      :data-test="`${dataTest}-list`"
+      :data-test="getDataTest('list')"
       @click-option="onClickOption"
     />
   </div>

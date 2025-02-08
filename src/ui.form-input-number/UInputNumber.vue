@@ -53,6 +53,7 @@ function onClickAdd() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   valueAttrs,
   labelAttrs,
@@ -74,7 +75,7 @@ const {
     :align="labelAlign"
     centred
     v-bind="labelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--
@@ -92,7 +93,7 @@ const {
       round
       :disabled="isRemoveButtonDisabled || disabled"
       v-bind="removeButtonAttrs"
-      :data-test="`${dataTest}-remove`"
+      :data-test="getDataTest('remove')"
       @click="onClickRemove"
     >
       <UIcon
@@ -116,7 +117,7 @@ const {
       round
       :disabled="isAddButtonDisabled || disabled"
       v-bind="addButtonAttrs"
-      :data-test="`${dataTest}-add`"
+      :data-test="getDataTest('add')"
       @click="onClickAdd"
     >
       <UIcon

@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: () => [],
-  label: "",
 });
 
 const emit = defineEmits([
@@ -64,10 +63,8 @@ const mutatedProps = computed(() => ({
   selected: isSelected,
 }));
 
-const { optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -87,7 +84,7 @@ const { optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } = use
       :right-icon="option.rightIcon"
       :disabled="option.disabled || disabled"
       v-bind="isSelected(option) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
-      :data-test="`${dataTest}-option-${index}`"
+      :data-test="getDataTest(`option-${index}`)"
       @click="onClickOption(option)"
     >
       <template #left="{ iconName }">

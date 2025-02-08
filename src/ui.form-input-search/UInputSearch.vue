@@ -109,6 +109,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   searchInputAttrs,
   searchInputWithButtonAttrs,
@@ -134,7 +135,7 @@ const {
     inputmode="search"
     :left-icon="leftIcon"
     v-bind="searchButtonLabel ? searchInputWithButtonAttrs : searchInputAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
   >
@@ -151,7 +152,7 @@ const {
         color="gray"
         :name="config.defaults.clearIcon"
         v-bind="clearIconAttrs"
-        :data-test="`${dataTest}-clear`"
+        :data-test="getDataTest('clear')"
         @click="onClickClear"
       />
 
@@ -171,7 +172,7 @@ const {
           color="gray"
           :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
-          :data-test="`${dataTest}-search-icon`"
+          :data-test="getDataTest('search-icon')"
           @click="onClickSearch"
         />
 
@@ -179,7 +180,7 @@ const {
           v-if="searchButtonLabel"
           :label="searchButtonLabel"
           v-bind="searchButtonAttrs"
-          :data-test="`${dataTest}-search-button`"
+          :data-test="getDataTest('search-button')"
           @click="onClickSearch"
         />
       </slot>

@@ -77,6 +77,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   toggleIconAttrs,
   switchLabelAttrs,
@@ -97,7 +98,7 @@ const {
     :disabled="disabled"
     interactive
     v-bind="switchLabelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @click="onClickToggle"
   >
     <template #label>

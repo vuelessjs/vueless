@@ -20,11 +20,14 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="dividerAttrs" />
     <span v-if="label" v-bind="labelAttrs" v-text="label" />
   </div>

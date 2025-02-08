@@ -47,7 +47,7 @@ provide("getRadioGroupDisabled", () => props.disabled);
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -59,7 +59,7 @@ const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultCon
     :disabled="disabled"
     align="topWithDesc"
     v-bind="groupLabelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--
@@ -81,7 +81,7 @@ const { groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultCon
           :description="option.description"
           :disabled="disabled"
           v-bind="groupRadioAttrs"
-          :data-test="`${dataTest}-item-${index}`"
+          :data-test="getDataTest(`item-${index}`)"
         />
       </slot>
     </div>

@@ -124,6 +124,7 @@ function getBodyAttrs(type: Notification["type"]) {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   bodySuccessAttrs,
@@ -145,7 +146,7 @@ const {
     :style="notifyPositionStyles"
     tag="div"
     v-bind="{ ...config.transitionGroup, ...wrapperAttrs }"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <div
       v-for="notification in notifications"
@@ -211,7 +212,7 @@ const {
         interactive
         :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"
-        :data-test="`${dataTest}-close`"
+        :data-test="getDataTest('close')"
         @click="onClickClose(notification)"
       />
     </div>

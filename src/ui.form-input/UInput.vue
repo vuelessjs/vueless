@@ -237,6 +237,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   inputAttrs,
   wrapperAttrs,
@@ -298,7 +299,7 @@ const {
         :maxlength="maxLength"
         :inputmode="inputmode"
         v-bind="inputAttrs"
-        :data-test="dataTest"
+        :data-test="getDataTest()"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -317,7 +318,7 @@ const {
           interactive
           internal
           v-bind="passwordIconAttrs"
-          :data-test="`${dataTest}-password-icon`"
+          :data-test="getDataTest('password-icon')"
           @click="onClickShowPassword"
         />
       </label>

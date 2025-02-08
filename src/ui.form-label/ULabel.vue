@@ -69,7 +69,7 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
+const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
 );
@@ -80,10 +80,10 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
     v-if="isHorizontalPlacement || isTopWithDescPlacement"
     ref="wrapperRef"
     v-bind="wrapperAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     @click="onClick"
   >
-    <div v-bind="contentAttrs" :data-test="`${dataTest}-content`">
+    <div v-bind="contentAttrs" :data-test="getDataTest('content')">
       <!-- @slot Use it to add label content. -->
       <slot />
     </div>
@@ -95,7 +95,7 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
         ref="labelRef"
         :for="props.for"
         v-bind="labelAttrs"
-        :data-test="`${dataTest}-label`"
+        :data-test="getDataTest('label')"
       >
         <!--
           @slot Use this to add custom content instead of the label.
@@ -106,12 +106,17 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
         </slot>
       </label>
 
-      <div v-if="error" v-bind="descriptionAttrs" :data-test="`${dataTest}-error`" v-text="error" />
+      <div
+        v-if="error"
+        v-bind="descriptionAttrs"
+        :data-test="getDataTest('error')"
+        v-text="error"
+      />
 
       <div
         v-if="description && !error"
         v-bind="descriptionAttrs"
-        :data-test="`${dataTest}-description`"
+        :data-test="getDataTest('description')"
         v-text="description"
       />
 
@@ -126,7 +131,7 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
       v-bind="labelAttrs"
       ref="labelRef"
       :for="props.for"
-      :data-test="`${dataTest}-label`"
+      :data-test="getDataTest('label')"
     >
       <!--
         @slot Use this to add custom content instead of the label.
@@ -137,17 +142,17 @@ const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Confi
       </slot>
     </label>
 
-    <div v-bind="contentAttrs" :data-test="`${dataTest}-content`">
+    <div v-bind="contentAttrs" :data-test="getDataTest('content')">
       <!-- @slot Use it to add label content. -->
       <slot />
     </div>
 
-    <div v-if="error" v-bind="descriptionAttrs" :data-test="`${dataTest}-error`" v-text="error" />
+    <div v-if="error" v-bind="descriptionAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
       v-if="description && !error"
       v-bind="descriptionAttrs"
-      :data-test="`${dataTest}-description`"
+      :data-test="getDataTest('description')"
       v-text="description"
     />
 

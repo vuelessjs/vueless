@@ -105,7 +105,7 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { moneyInputAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -125,7 +125,7 @@ const { moneyInputAttrs } = useUI<Config>(defaultConfig);
     :left-icon="leftIcon"
     :right-icon="rightIcon"
     v-bind="moneyInputAttrs"
-    :data-test="`${dataTest}-base-currency`"
+    :data-test="getDataTest('base-currency')"
     @keyup="onKeyup"
     @blur="onBlur"
     @input="onInput"

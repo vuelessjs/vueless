@@ -63,7 +63,8 @@ function onChangeCheckedItems() {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -75,7 +76,7 @@ const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(default
     :disabled="disabled"
     align="topWithDesc"
     v-bind="groupLabelAttrs"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--
@@ -99,7 +100,7 @@ const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useUI<Config>(default
           :description="option.description"
           :disabled="disabled"
           v-bind="groupCheckboxAttrs"
-          :data-test="`${dataTest}-item-${index}`"
+          :data-test="getDataTest('item-${index}')"
         />
       </slot>
     </div>

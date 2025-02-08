@@ -53,8 +53,15 @@ function isActiveStep(index: number | string) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs, headerAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  progressAttrs,
+  wrapperAttrs,
+  indicatorAttrs,
+  stepAttrs,
+  stepperAttrs,
+  headerAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -102,7 +109,7 @@ const { progressAttrs, wrapperAttrs, indicatorAttrs, stepAttrs, stepperAttrs, he
       v-bind="stepperAttrs"
       :color="color"
       :value="value"
-      :data-test="dataTest"
+      :data-test="getDataTest()"
       :progress-percent="progressPercent"
     />
   </div>

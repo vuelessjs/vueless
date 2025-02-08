@@ -105,6 +105,7 @@ function goToLastPage() {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   paginationAttrs,
   firstButtonAttrs,
@@ -129,7 +130,7 @@ const {
       :square="!firstLabel"
       :disabled="prevIsDisabled"
       v-bind="firstButtonAttrs"
-      :data-test="`${dataTest}-first`"
+      :data-test="getDataTest('first')"
       @click="goToFirstPage"
     >
       <!-- @slot Use it to add something instead of the "first" label. -->
@@ -150,7 +151,7 @@ const {
       :square="!prevLabel"
       :disabled="prevIsDisabled"
       v-bind="prevButtonAttrs"
-      :data-test="`${dataTest}-prev`"
+      :data-test="getDataTest('prev')"
       @click="goToPrevPage"
     >
       <!-- @slot Use it to add something instead of the "prev" label. -->
@@ -184,7 +185,7 @@ const {
         :label="String(page.number)"
         :disabled="disabled"
         v-bind="activeButtonAttrs"
-        :data-test="`${dataTest}-active`"
+        :data-test="getDataTest('active')"
       />
 
       <UButton
@@ -193,7 +194,7 @@ const {
         :label="String(page.number)"
         :disabled="disabled"
         v-bind="inactiveButtonAttrs"
-        :data-test="`${dataTest}-inactive`"
+        :data-test="getDataTest('inactive')"
         @click="selectPage(page.number)"
       />
     </template>
@@ -204,7 +205,7 @@ const {
       :square="!nextLabel"
       :disabled="nextIsDisabled"
       v-bind="nextButtonAttrs"
-      :data-test="`${dataTest}-next`"
+      :data-test="getDataTest('next')"
       @click="goToNextPage"
     >
       <!-- @slot Use it to add something instead of the "next" label. -->
@@ -226,7 +227,7 @@ const {
       :square="!lastLabel"
       :disabled="nextIsDisabled"
       v-bind="lastButtonAttrs"
-      :data-test="`${dataTest}-last`"
+      :data-test="getDataTest('last')"
       @click="goToLastPage"
     >
       <!-- @slot Use it to add something instead of the "last" label. -->

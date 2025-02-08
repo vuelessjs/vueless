@@ -130,22 +130,22 @@ Square.args = {
     { value: "13", label: "timer" },
   ],
   slotTemplate: `
-    <template #default="{ label, index }">
+    <template #option="{ label, index }">
       <UIcon :name="label" color="inherit" />
     </template>
   `,
 };
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
-  name: "defaultSlot",
+export const OptionSlot = DefaultTemplate.bind({});
+OptionSlot.args = {
+  name: "optionSlot",
   options: [
     { value: "1", label: "Download", rightIcon: "download", color: "green" },
     { value: "2", label: "Edit", rightIcon: "edit_note", color: "orange" },
     { value: "3", label: "Delete", rightIcon: "delete", color: "red" },
   ],
   slotTemplate: `
-    <template #default="{ label, index }">
+    <template #option="{ label, index }">
       <UBadge
         :label="label"
         :color="args.options[index].color"

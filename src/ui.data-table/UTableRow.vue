@@ -7,9 +7,12 @@ import { PX_IN_REM } from "../constants.js";
 import { mapRowColumns } from "./utilTable.ts";
 
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
+import useUI from "../composables/useUI.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+
+import defaultConfig from "./config.ts";
 
 import type {
   Cell,
@@ -18,6 +21,7 @@ import type {
   RowScopedExpandProps,
   RowScopedProps,
   UTableRowProps,
+  Config,
 } from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
@@ -244,6 +248,8 @@ function getRowAttrs(rowId: string | number) {
 function onToggleExpand(row: Row, expanded?: boolean) {
   emit("toggleExpand", row, expanded || isExpanded(row));
 }
+
+const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -265,7 +271,7 @@ function onToggleExpand(row: Row, expanded?: boolean) {
         :value="row.id"
         v-bind="attrs.bodyCheckboxAttrs.value"
         :data-id="row.id"
-        :data-test="`${dataTest}-body-checkbox`"
+        :data-test="getDataTest('body-checkbox')"
       />
     </td>
 
@@ -311,7 +317,7 @@ function onToggleExpand(row: Row, expanded?: boolean) {
             :class="
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
             "
-            :data-test="`${dataTest}-${key}-cell`"
+            :data-test="getDataTest(`${key}-cell`)"
           >
             {{ formatCellValue(value) }}
           </div>
@@ -326,7 +332,7 @@ function onToggleExpand(row: Row, expanded?: boolean) {
             :class="
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
             "
-            :data-test="`${dataTest}-${key}-cell`"
+            :data-test="getDataTest(`${key}-cell`)"
           >
             {{ formatCellValue(value) }}
           </div>
@@ -358,7 +364,7 @@ function onToggleExpand(row: Row, expanded?: boolean) {
     :attrs="attrs"
     :columns="columns"
     :row="row.row as Row"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     :nested-level="nestedLevel + 1"
     :config="config"
     :selectable="selectable"
@@ -394,7 +400,7 @@ function onToggleExpand(row: Row, expanded?: boolean) {
         :attrs="attrs"
         :columns="columns"
         :row="nestedRow"
-        :data-test="dataTest"
+        :data-test="getDataTest()"
         :nested-level="nestedLevel + 1"
         :config="config"
         :selectable="selectable"
