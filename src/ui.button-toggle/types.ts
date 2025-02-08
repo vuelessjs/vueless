@@ -5,7 +5,7 @@ import type { ComponentConfig } from "../types.ts";
 export type Config = typeof defaultConfig;
 
 export interface UToggleOption {
-  value: string | number;
+  value: string | number | boolean;
   label?: string;
   disabled?: boolean;
   icon?: string;
@@ -19,7 +19,7 @@ export interface Props {
   /**
    * Selected value.
    */
-  modelValue?: string | number | (string | number)[];
+  modelValue?: string | number | boolean | (string | number | boolean)[];
 
   /**
    * Toggle item options.
