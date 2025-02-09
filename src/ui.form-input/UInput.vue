@@ -335,10 +335,3 @@ const {
     </label>
   </ULabel>
 </template>
-
-<style lang="postcss" scoped>
-@font-face {
-  font-family: text-security-disc;
-  src: url("./assets/text-security-disc.woff");
-}
-</style>

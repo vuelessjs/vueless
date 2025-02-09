@@ -48,7 +48,7 @@ export default /*tw*/ {
         true: "placeholder:text-red-300",
       },
       typePassword: {
-        true: "tracking-widest !leading-[1.18] [font-family:text-security-disc,serif] [-webkit-text-security:disc]",
+        true: "tracking-widest [-webkit-text-security:disc]",
       },
     },
     compoundVariants: [
