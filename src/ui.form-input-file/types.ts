@@ -8,7 +8,7 @@ export interface Props {
   /**
    * Input value.
    */
-  modelValue?: File[];
+  modelValue?: File | File[];
 
   /**
    * Input label.
