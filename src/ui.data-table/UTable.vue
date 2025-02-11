@@ -547,7 +547,7 @@ const {
         <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
       </div>
 
-      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -579,7 +579,7 @@ const {
         -->
       <slot name="header-actions" :selected-rows="selectedRows" />
 
-      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -612,7 +612,7 @@ const {
         -->
       <slot name="header-actions" :selected-rows="selectedRows" />
 
-      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs">
