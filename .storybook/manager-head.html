@@ -23,6 +23,61 @@ Custom dark mode related vueless loader.
 </div>
 
 <style>
+    ::-webkit-scrollbar {
+        width: 0.75rem; /* w-3 */
+        height: 0.75rem; /* h-3 */
+    }
+
+    ::-webkit-scrollbar-track {
+        transition: all 0.2s ease-in-out; /* transition */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 0.125rem; /* rounded-sm */
+        transition: all 0.2s ease-in-out; /* transition */
+    }
+
+    .light ::-webkit-scrollbar-track {
+        background-color: rgba(var(--vl-color-gray-50)); /* bg-gray-50 */
+    }
+
+    .light ::-webkit-scrollbar-track:hover {
+        background-color: rgba(var(--vl-color-gray-200)); /* hover:bg-gray-200 */
+    }
+
+    .light ::-webkit-scrollbar-thumb {
+        background-color: rgba(var(--vl-color-gray-400)); /* bg-gray-400 */
+    }
+
+    .light ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(var(--vl-color-gray-500)); /* hover:bg-gray-500 */
+    }
+
+    .light * {
+        scrollbar-color: rgba(var(--vl-color-gray-400)) rgba(var(--vl-color-gray-50)); /* thumb color track color */
+    }
+
+    .dark ::-webkit-scrollbar-track {
+        background-color: rgba(var(--vl-color-gray-950)); /* bg-gray-950 */
+    }
+
+    .dark ::-webkit-scrollbar-track:hover {
+        background-color: rgba(var(--vl-color-gray-800)); /* hover:bg-gray-800 */
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background-color: rgba(var(--vl-color-gray-600)); /* bg-gray-600 */
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(var(--vl-color-gray-500)); /* hover:bg-gray-500 */
+    }
+
+    .dark * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(var(--vl-color-gray-600)) rgba(var(--vl-color-gray-950)); /* thumb color track color */
+    }
+
   /* -------------------- Prevent showing users default storybook theme styles -------------------- */
 
   body.dark {
@@ -146,7 +201,8 @@ Custom dark mode related vueless loader.
       setTimeout(() => {
         document.getElementById("root").style.visibility = 'visible';
         document.getElementById("sb-vueless-loader").style.display = 'none';
-      }, 1000);
+        //document.body.classList.remove("dark", "light");
+      }, 1500);
     };
   })();
 </script>
