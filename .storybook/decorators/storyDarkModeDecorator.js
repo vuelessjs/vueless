@@ -6,13 +6,14 @@ const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
 
 export const storyDarkModeDecorator = () => {
   /* Set theme className to html tag before initialization (fix white blink issue). */
-  const sbAddonThemesConfig = localStorage.getItem("sb-addon-themes-3") || {};
+  const sbAddonThemesConfig = localStorage.getItem("sb-addon-themes-3") || "{}";
   const storybookTheme = JSON.parse(sbAddonThemesConfig).current || "light";
 
+  document.body.classList.add(storybookTheme); // this fixing first load
   document.documentElement.classList.add(storybookTheme);
 
   setTimeout(() => {
-    document.documentElement.classList.remove(storybookTheme);
+    document.documentElement.classList.remove("light", "dark");
   }, 4000);
 
   /* Initialize theme state. */
