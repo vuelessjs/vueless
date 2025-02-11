@@ -133,7 +133,7 @@ export interface UTableRowProps {
   emptyCellLabel?: string;
   selectable: boolean;
   nestedLevel: number;
-  dataTest: string;
+  dataTest: string | null;
   attrs: UTableRowAttrs;
   config: Config;
 }
