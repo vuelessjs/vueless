@@ -1,8 +1,7 @@
-import path from "path";
-import { statSync, existsSync } from "fs";
-import { readdir } from "node:fs/promises";
-import { cwd } from "node:process";
 import esbuild from "esbuild";
+import path from "node:path";
+import { cwd } from "node:process";
+import { statSync, existsSync, promises as fsPromises } from "node:fs";
 
 import { VUELESS_CONFIGS_CACHED_DIR } from "../../constants.js";
 
@@ -15,7 +14,7 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
   };
 
   try {
-    fileNames = await readdir(dirPath, { recursive });
+    fileNames = await fsPromises.readdir(dirPath, { recursive });
   } catch (error) {
     if (error.code === ERROR_CODE.dirIsFile) {
       const pathArray = dirPath.split(path.sep);
