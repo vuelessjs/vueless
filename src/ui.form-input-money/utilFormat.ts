@@ -32,6 +32,9 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   const invalidValuesRegExp = new RegExp("[^\\d,\\d.\\s-" + decimalSeparator + "]", "g");
   const doubleValueRegExp = new RegExp("([,\\.\\s\\-" + decimalSeparator + "])+", "g");
 
+  const actualMinFractionDigit =
+    minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits;
+
   // slice to first decimal mark
   value = String(value)
     .replaceAll(rawDecimalMark, decimalSeparator)
@@ -75,8 +78,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   }
 
   const intlNumberOptions: Intl.NumberFormatOptions = {
-    minimumFractionDigits:
-      minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits,
+    minimumFractionDigits: actualMinFractionDigit,
     maximumFractionDigits: maxFractionDigits,
     roundingMode: "trunc",
   };
@@ -103,14 +105,11 @@ export function getFormattedValue(value: string | number, options: FormatOptions
       if (part.type === "decimal") part.value = decimalSeparator;
 
       if (part.type === "fraction") {
-        const formattedFraction = String(
-          rawValue
-            .split(rawDecimalMark)
-            .at(-1)
-            ?.split("")
-            .slice(minFractionDigits, maxFractionDigits)
-            .join(""),
-        );
+        const fraction = rawValue.split(rawDecimalMark).at(-1) || "";
+        const formattedFraction = fraction
+          .split("")
+          .slice(actualMinFractionDigit, maxFractionDigits)
+          .join("");
 
         part.value = formattedFraction;
       }
