@@ -2,7 +2,6 @@ import type { FormatOptions } from "./types.ts";
 
 const isNumberValueRegExp = /^[\d,.\s-]+$/;
 const rawDecimalMark = ".";
-const comma = ",";
 const minus = "-";
 
 export function getRawValue(value: string | number, options: FormatOptions): string {
@@ -14,6 +13,7 @@ export function getRawValue(value: string | number, options: FormatOptions): str
 
   const rawValueWithPrefix = value
     .replaceAll(thousandsSeparator, "")
+    .replaceAll(" ", "")
     .replace(decimalSeparator, ".");
 
   return rawValueWithPrefix.replace(prefix, "");
@@ -30,11 +30,11 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   } = options;
 
   const invalidValuesRegExp = new RegExp("[^\\d,\\d.\\s-" + decimalSeparator + "]", "g");
-  const doubleValueRegExp = new RegExp("([,\\.\\s" + decimalSeparator + "])+", "g");
+  const doubleValueRegExp = new RegExp("([,\\.\\s\\-" + decimalSeparator + "])+", "g");
 
   // slice to first decimal mark
   value = String(value)
-    .replaceAll(comma, decimalSeparator)
+    .replaceAll(rawDecimalMark, decimalSeparator)
     .split(decimalSeparator)
     .slice(0, 2)
     .map((value: string, index: number) =>
@@ -51,14 +51,17 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   const isNumber = isNumberValueRegExp.test(value);
   const isFloat = value.endsWith(rawDecimalMark) || value.endsWith(".0");
   const isMinus = value === minus;
-  const isMinusWithin = value.includes(minus) && !value.startsWith(minus);
 
   if (isMinus && positiveOnly) {
     value = "";
   }
 
-  if (isMinusWithin) {
-    value = value.replaceAll(minus, "");
+  if (value.includes(minus)) {
+    let isFirstMinus = value.startsWith(minus);
+
+    value = value.replaceAll(minus, (match) =>
+      isFirstMinus ? ((isFirstMinus = false), match) : "",
+    );
   }
 
   if (!value || !isNumber || isFloat || isMinus) {
@@ -86,20 +89,16 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     positiveOnly: false,
   });
 
-  const [integer, fraction = ""] = rawValue.split(rawDecimalMark);
-  const bigInteger = intlNumber.format(BigInt(integer));
+  const formattedValue = intlNumber
+    .formatToParts((rawValue || 0) as unknown as number)
+    .map((part) => {
+      if (part.type === "group") part.value = thousandsSeparator;
+      if (part.type === "decimal") part.value = decimalSeparator;
 
-  const formattedFraction = fraction
-    .slice(minFractionDigits, maxFractionDigits)
-    .padStart(maxFractionDigits, "0");
+      return part;
+    });
 
-  const formattedBigInt = fraction
-    ? bigInteger + `${rawDecimalMark}${formattedFraction}`
-    : bigInteger;
+  formattedValue.unshift({ value: prefix, type: "minusSign" });
 
-  const formattedValue = formattedBigInt
-    .replaceAll(comma, thousandsSeparator)
-    .replaceAll(rawDecimalMark, decimalSeparator);
-
-  return prefix + formattedValue;
+  return formattedValue.map((part) => part.value).join("");
 }
