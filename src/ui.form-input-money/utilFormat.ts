@@ -14,7 +14,7 @@ export function getRawValue(value: string | number, options: FormatOptions): str
   const rawValueWithPrefix = value
     .replaceAll(thousandsSeparator, "")
     .replaceAll(" ", "")
-    .replace(decimalSeparator, ".");
+    .replace(decimalSeparator, rawDecimalMark);
 
   return rawValueWithPrefix.replace(prefix, "");
 }
@@ -59,9 +59,15 @@ export function getFormattedValue(value: string | number, options: FormatOptions
   if (value.includes(minus)) {
     let isFirstMinus = value.startsWith(minus);
 
-    value = value.replaceAll(minus, (match) =>
-      isFirstMinus ? ((isFirstMinus = false), match) : "",
-    );
+    value = value.replaceAll(minus, (match) => {
+      if (isFirstMinus) {
+        isFirstMinus = false;
+
+        return match;
+      }
+
+      return "";
+    });
   }
 
   if (!value || !isNumber || isFloat || isMinus) {
