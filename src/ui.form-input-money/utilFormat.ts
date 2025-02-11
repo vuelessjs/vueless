@@ -78,6 +78,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     minimumFractionDigits:
       minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits,
     maximumFractionDigits: maxFractionDigits,
+    roundingMode: "trunc"
   };
 
   if (positiveOnly) {
