@@ -78,7 +78,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     minimumFractionDigits:
       minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits,
     maximumFractionDigits: maxFractionDigits,
-    roundingMode: "trunc"
+    roundingMode: "trunc",
   };
 
   if (positiveOnly) {
@@ -101,6 +101,19 @@ export function getFormattedValue(value: string | number, options: FormatOptions
     .map((part) => {
       if (part.type === "group") part.value = thousandsSeparator;
       if (part.type === "decimal") part.value = decimalSeparator;
+
+      if (part.type === "fraction") {
+        const formattedFraction = String(
+          rawValue
+            .split(rawDecimalMark)
+            .at(-1)
+            ?.split("")
+            .slice(minFractionDigits, maxFractionDigits)
+            .join(""),
+        );
+
+        part.value = formattedFraction;
+      }
 
       return part;
     });
