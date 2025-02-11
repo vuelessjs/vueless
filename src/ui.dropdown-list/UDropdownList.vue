@@ -299,7 +299,7 @@ const {
           v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
           :data-test="getDataTest('option')"
           :class="optionHighlight(index, option)"
-          @click="select(option), onClickOption(option)"
+          @click="(select(option), onClickOption(option))"
           @mouseenter.self="pointerSet(index)"
         >
           <!--
