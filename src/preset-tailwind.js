@@ -70,7 +70,7 @@ const brandColors = getPalette(BRAND_COLOR);
 const grayColors = getPalette(GRAY_COLOR);
 
 export const vuelessTailwindConfig = {
-  darkMode: ["selector", `[class="${DARK_MODE_SELECTOR}"]`],
+  darkMode: ["class", `:where(.${DARK_MODE_SELECTOR})`],
   content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
   theme: {
     extend: {
