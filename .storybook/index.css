@@ -7,6 +7,51 @@
 /* -------------------- Storybook Preview UI -------------------- */
 /* -------------------- General -------------------- */
 
+::-webkit-scrollbar {
+  @apply w-3 h-3;
+}
+
+::-webkit-scrollbar-track {
+  @apply transition;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-sm transition;
+}
+
+.light ::-webkit-scrollbar-track {
+  @apply bg-gray-50 hover:bg-gray-200;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 hover:bg-gray-500;
+}
+
+.light * {
+  scrollbar-color: rgba(var(--vl-color-gray-400)) rgba(var(--vl-color-gray-50)); /* thumb color track color */
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-gray-950 hover:bg-gray-800;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 hover:bg-gray-500;
+}
+
+.dark * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--vl-color-gray-600)) rgba(var(--vl-color-gray-950)); /* thumb color track color */
+}
+
+html.dark {
+  @apply bg-gray-950;
+}
+
+html.light {
+  @apply bg-gray-50;
+}
+
 body {
   font-family: Roboto, sans-serif;
 }
@@ -114,8 +159,6 @@ body {
   @apply bg-gray-200;
 }
 
-
-
 .dark .sb-preparing-docs,
 .dark .sb-preparing-story {
   @apply bg-gray-950;
@@ -181,6 +224,10 @@ body {
 .vl-dark .sb-bar,
 .vl-dark .docs-story {
   @apply bg-gray-900;
+}
+
+.docs-story > div > div {
+  @apply mb-px;
 }
 
 .sb-bar {

@@ -11,6 +11,12 @@ export const storyDarkModeDecorator = () => {
 
   initializeThemeState(["light", "dark"], cachedColorMode);
 
+  /* Set theme className to html tag before initialization. */
+  const sbAddonThemesConfig = localStorage.getItem("sb-addon-themes-3") || {};
+  const storybookTheme = JSON.parse(sbAddonThemesConfig).current || "light";
+
+  document.documentElement.classList.add(storybookTheme);
+
   return (story, context) => {
     const theme = pluckThemeFromContext(context);
 

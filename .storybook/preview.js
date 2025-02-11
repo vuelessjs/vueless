@@ -45,7 +45,7 @@ export const parameters = {
   darkMode: {
     light: themeLight,
     dark: themeDark,
-    classTarget: "body",
+    classTarget: "html",
     stylePreview: true,
   },
   options: {
