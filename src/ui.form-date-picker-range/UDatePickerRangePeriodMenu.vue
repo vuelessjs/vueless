@@ -266,7 +266,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentSelectedAttrs.value"
           :label="String(date.title)"
-          @click="(selectDate(date), toggleMenu())"
+          @click="selectDate(date), toggleMenu()"
         />
 
         <UButton
@@ -278,7 +278,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateSelectedAttrs.value"
           :label="String(date.title)"
-          @click="(selectDate(date), toggleMenu())"
+          @click="selectDate(date), toggleMenu()"
         />
 
         <UButton
@@ -290,7 +290,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"
           :label="String(date.title)"
-          @click="(selectDate(date), toggleMenu())"
+          @click="selectDate(date), toggleMenu()"
         />
 
         <UButton
@@ -301,7 +301,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateAttrs.value"
           :label="String(date.title)"
-          @click="(selectDate(date), toggleMenu())"
+          @click="selectDate(date), toggleMenu()"
         />
       </template>
     </div>

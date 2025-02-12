@@ -38,7 +38,7 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
-import type { Ref, ComputedRef, VNode } from "vue";
+import type { Ref, ComputedRef } from "vue"
 
 defineOptions({ inheritAttrs: false });
 
@@ -163,7 +163,7 @@ const lastRow = computed(() => {
 
 const isShownActionsHeader = computed(
   () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
-);
+)
 
 const isHeaderSticky = computed(() => {
   const positionForFixHeader =
@@ -185,17 +185,6 @@ const isCheckedMoreOneTableItems = computed(() => {
 });
 
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
-
-const hasSlotContentBeforeFirstRow = computed(() => {
-  if (
-    hasSlotContent(slots["before-first-row"]) &&
-    typeof slots["before-first-row"] === "function"
-  ) {
-    return (slots["before-first-row"]({}) as VNode[])?.some((item) => Boolean(item.type));
-  }
-
-  return false;
-});
 
 const flatTableRows = computed(() => getFlatRows(tableRows.value));
 
