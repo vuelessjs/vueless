@@ -105,13 +105,7 @@ export function getFormattedValue(value: string | number, options: FormatOptions
       if (part.type === "decimal") part.value = decimalSeparator;
 
       if (part.type === "fraction") {
-        const fraction = rawValue.split(rawDecimalMark).at(-1) || "";
-        const formattedFraction = fraction
-          .split("")
-          .slice(actualMinFractionDigit, maxFractionDigits)
-          .join("");
-
-        part.value = formattedFraction;
+        part.value = part.value.padEnd(maxFractionDigits, "0");
       }
 
       return part;
