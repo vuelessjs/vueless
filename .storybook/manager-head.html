@@ -33,11 +33,6 @@ Custom dark mode related vueless loader.
     visibility: hidden;
   }
 
-
-  #sidebar-bottom-wrapper {
-    display: none;
-  }
-
   #sb-vueless-loader {
     top: 0;
     left: 0;
@@ -111,6 +106,32 @@ Custom dark mode related vueless loader.
 
   .sidebar-header a:focus {
     border: 1px solid transparent;
+  }
+
+  .sidebar-item {
+    text-transform: capitalize;
+  }
+
+  .light .sidebar-item svg[width="12"] {
+      color: #10b981;
+  }
+
+  .light .sidebar-item[data-nodetype="document"] svg[width="12"],
+  .light .sidebar-item[data-nodetype="story"] svg[width="12"] {
+      color: #9ca3af;
+  }
+
+  .dark .sidebar-item[data-nodetype="document"] svg[width="12"],
+  .dark .sidebar-item[data-nodetype="story"] svg[width="12"] {
+      color: #4b5563;
+  }
+
+  .dark .sidebar-item svg[width="12"] {
+      color: #059669;
+  }
+
+  #sidebar-bottom-wrapper {
+      display: none;
   }
 
   /* -------------------- Storybook args -------------------- */

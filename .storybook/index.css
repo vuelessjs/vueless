@@ -335,7 +335,12 @@ body {
 .dark .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
-  @apply !bg-gray-800 !border-gray-700/50 !text-gray-400;
+  @apply bg-gray-800 border-gray-700/50 text-gray-400;
+}
+
+.dark .sb-story code,
+.light .sb-story code {
+  @apply !bg-inherit !text-inherit;
 }
 
 .dark .docblock-argstable-body tr > td > div + div > span:not([class]) {
