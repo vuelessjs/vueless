@@ -38,7 +38,7 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
-import type { Ref, ComputedRef } from "vue"
+import type { Ref, ComputedRef } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -163,7 +163,7 @@ const lastRow = computed(() => {
 
 const isShownActionsHeader = computed(
   () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
-)
+);
 
 const isHeaderSticky = computed(() => {
   const positionForFixHeader =
