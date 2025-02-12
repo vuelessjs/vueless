@@ -345,19 +345,16 @@ function onKeyupEsc(event: KeyboardEvent) {
 
 function isShownDateDivider(rowIndex: number) {
   const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
-  const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
   const prevItem = tableRows.value[prevIndex];
-  const nextItem = tableRows.value[nextIndex];
   const currentItem = tableRows.value[rowIndex];
 
   if (rowIndex === 0) {
-    return hasSlotContentBeforeFirstRow.value;
+    return true;
   }
 
   const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
-  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
 
-  return !isPrevSameDate && isNextSameDate && props.dateDivider;
+  return !isPrevSameDate && props.dateDivider;
 }
 
 function onClickRow(row: Row) {
