@@ -87,6 +87,11 @@ export interface Props {
   inner?: boolean;
 
   /**
+   * Show divider between content end footer.
+   */
+  divider?: boolean;
+
+  /**
    * Attach small modal to the bottom of the screen (mobile version only).
    */
   mobileStickBottom?: boolean;

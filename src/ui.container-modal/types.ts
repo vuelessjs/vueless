@@ -58,7 +58,7 @@ export interface Props {
   inner?: boolean;
 
   /**
-   * Hide divider between content end footer.
+   * Show divider between content end footer.
    */
   divider?: boolean;
 

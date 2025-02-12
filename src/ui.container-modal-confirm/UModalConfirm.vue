@@ -92,7 +92,7 @@ const {
     :close-on-cross="closeOnCross"
     :close-on-overlay="closeOnOverlay"
     :mobile-stick-bottom="mobileStickBottom"
-    no-divider
+    :divider="divider"
     mobile-bottom-align
     v-bind="confirmModalAttrs"
     :data-test="getDataTest()"
