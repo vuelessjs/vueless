@@ -55,7 +55,7 @@ export default /*tw*/ {
   defaults: {
     size: "sm",
     inner: false,
-    divider: true,
+    divider: false,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,

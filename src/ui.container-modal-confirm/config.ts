@@ -11,7 +11,7 @@ export default /*tw*/ {
     size: "sm",
     confirmColor: "brand",
     inner: false,
-    divider: true,
+    divider: false,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,
