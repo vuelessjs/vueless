@@ -126,7 +126,7 @@ export function vuelessPreset() {
     theme: merge({}, globalSettings.tailwindTheme || {}, vuelessTailwindConfig.theme),
     darkMode: vuelessTailwindConfig.darkMode,
     content: vuelessTailwindConfig.content,
-    plugins: [forms],
+    plugins: [forms({ strategy: "base" })],
     safelist,
   };
 }
