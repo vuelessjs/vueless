@@ -38,7 +38,7 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
-import type { Ref, ComputedRef, VNode } from "vue";
+import type { Ref, ComputedRef } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -185,17 +185,6 @@ const isCheckedMoreOneTableItems = computed(() => {
 });
 
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
-
-const hasSlotContentBeforeFirstRow = computed(() => {
-  if (
-    hasSlotContent(slots["before-first-row"]) &&
-    typeof slots["before-first-row"] === "function"
-  ) {
-    return (slots["before-first-row"]({}) as VNode[])?.some((item) => Boolean(item.type));
-  }
-
-  return false;
-});
 
 const flatTableRows = computed(() => getFlatRows(tableRows.value));
 
@@ -345,19 +334,16 @@ function onKeyupEsc(event: KeyboardEvent) {
 
 function isShownDateDivider(rowIndex: number) {
   const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
-  const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
   const prevItem = tableRows.value[prevIndex];
-  const nextItem = tableRows.value[nextIndex];
   const currentItem = tableRows.value[rowIndex];
 
   if (rowIndex === 0) {
-    return hasSlotContentBeforeFirstRow.value;
+    return true;
   }
 
   const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
-  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
 
-  return !isPrevSameDate && isNextSameDate && props.dateDivider;
+  return !isPrevSameDate && props.dateDivider;
 }
 
 function onClickRow(row: Row) {
