@@ -1,81 +1,30 @@
 import type { FormatOptions } from "./types.ts";
 
-const isNumberValueRegExp = /^[\d,.\s-]+$/;
 const rawDecimalMark = ".";
-const minus = "-";
 
-export function getRawValue(value: string | number, options: FormatOptions): string {
+export function getRawValue(
+  value: string,
+  options: Pick<FormatOptions, "prefix" | "decimalSeparator" | "thousandsSeparator">,
+): Intl.StringNumericLiteral {
   const { thousandsSeparator, decimalSeparator, prefix } = options;
 
-  value = String(value).endsWith(decimalSeparator)
-    ? String(value).replace(decimalSeparator, "")
-    : String(value);
+  value = value.endsWith(decimalSeparator) ? value.replace(decimalSeparator, "") : value;
 
   const rawValueWithPrefix = value
     .replaceAll(thousandsSeparator, "")
-    .replaceAll(" ", "")
     .replace(decimalSeparator, rawDecimalMark);
 
-  return rawValueWithPrefix.replace(prefix, "");
+  return rawValueWithPrefix.replace(prefix, "") as Intl.StringNumericLiteral;
 }
 
-export function getFormattedValue(value: string | number, options: FormatOptions): string {
-  const {
-    thousandsSeparator,
-    decimalSeparator,
-    minFractionDigits,
-    maxFractionDigits,
-    prefix,
-    positiveOnly,
-  } = options;
+export function getFormattedValue(value: string, options: FormatOptions): string {
+  const { thousandsSeparator, decimalSeparator, prefix, positiveOnly } = options;
 
-  const invalidValuesRegExp = new RegExp("[^\\d,\\d.\\s-" + decimalSeparator + "]", "g");
-  const doubleValueRegExp = new RegExp("([,\\.\\s\\-" + decimalSeparator + "])+", "g");
+  const minFractionDigits = Math.abs(options.minFractionDigits);
+  const maxFractionDigits = Math.abs(options.maxFractionDigits);
 
-  const actualMinFractionDigit =
-    minFractionDigits <= maxFractionDigits ? minFractionDigits : maxFractionDigits;
-
-  // slice to first decimal mark
-  value = String(value)
-    .replaceAll(rawDecimalMark, decimalSeparator)
-    .split(decimalSeparator)
-    .slice(0, 2)
-    .map((value: string, index: number) =>
-      index ? value.replaceAll(thousandsSeparator, "") : value,
-    )
-    .join(decimalSeparator);
-
-  value = String(value)
-    .replace(invalidValuesRegExp, "")
-    .replace(doubleValueRegExp, "$1")
-    .replaceAll(decimalSeparator, rawDecimalMark)
-    .trim();
-
-  const isNumber = isNumberValueRegExp.test(value);
-  const isFloat = value.endsWith(rawDecimalMark) || value.endsWith(".0");
-  const isMinus = value === minus;
-
-  if (isMinus && positiveOnly) {
-    value = "";
-  }
-
-  if (value.includes(minus)) {
-    let isFirstMinus = value.startsWith(minus);
-
-    value = value.replaceAll(minus, (match) => {
-      if (isFirstMinus) {
-        isFirstMinus = false;
-
-        return match;
-      }
-
-      return "";
-    });
-  }
-
-  if (!value || !isNumber || isFloat || isMinus) {
-    return `${prefix}${value.replaceAll(rawDecimalMark, decimalSeparator)}`;
-  }
+  const isValidMinFractionDigits = minFractionDigits <= maxFractionDigits;
+  const actualMinFractionDigit = isValidMinFractionDigits ? minFractionDigits : maxFractionDigits;
 
   const intlNumberOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: actualMinFractionDigit,
@@ -89,24 +38,11 @@ export function getFormattedValue(value: string | number, options: FormatOptions
 
   const intlNumber = new Intl.NumberFormat("en-US", intlNumberOptions);
 
-  const rawValue = getRawValue(value, {
-    decimalSeparator,
-    thousandsSeparator,
-    prefix,
-    minFractionDigits: 0,
-    maxFractionDigits: 2,
-    positiveOnly: false,
-  });
-
   const formattedValue = intlNumber
-    .formatToParts((rawValue || 0) as unknown as number)
+    .formatToParts(value as Intl.StringNumericLiteral)
     .map((part) => {
       if (part.type === "group") part.value = thousandsSeparator;
       if (part.type === "decimal") part.value = decimalSeparator;
-
-      if (part.type === "fraction") {
-        part.value = part.value.padEnd(maxFractionDigits, "0");
-      }
 
       return part;
     });
