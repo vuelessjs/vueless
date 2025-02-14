@@ -84,15 +84,12 @@ export default function useFormatCurrency(
       return;
     }
 
+    const endsWithDecimal = formattedValue.value.endsWith(options.value.decimalSeparator);
     const includesDecimalMark =
-      formattedValue.value.includes(options.value.decimalSeparator) &&
-      !formattedValue.value.endsWith(options.value.decimalSeparator);
+      formattedValue.value.includes(options.value.decimalSeparator) && !endsWithDecimal;
     const isCharKey = !arrowKeys.includes(event.key) && !isKeyCombination;
 
-    if (
-      (event.key === comma || event.key === rawDecimalMark) &&
-      formattedValue.value.endsWith(options.value.decimalSeparator)
-    ) {
+    if ((event.key === comma || event.key === rawDecimalMark) && endsWithDecimal) {
       event.preventDefault();
 
       return;
