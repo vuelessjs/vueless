@@ -1,7 +1,7 @@
 export default /*tw*/ {
   moneyInput: "{UInput}",
   defaults: {
-    symbol: "$",
+    symbol: "",
     size: "md",
     minFractionDigits: 0,
     maxFractionDigits: 2,

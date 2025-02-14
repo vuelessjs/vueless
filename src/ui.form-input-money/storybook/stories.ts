@@ -20,6 +20,8 @@ interface UInputMoneyArgs extends Props {
   enum: "labelAlign" | "size";
 }
 
+const argTypes = getArgTypes(UInputMoney.__name);
+
 export default {
   id: "3030",
   title: "Form Inputs & Controls / Input Money",
@@ -29,7 +31,12 @@ export default {
     modelValue: 245000.42,
   },
   argTypes: {
-    ...getArgTypes(UInputMoney.__name),
+    ...argTypes,
+    valueType: {
+      ...argTypes?.valueType,
+      options: (argTypes?.valueType?.table?.type?.summary as string)?.split(" | "),
+      control: "select",
+    },
   },
   parameters: {
     docs: {
