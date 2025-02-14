@@ -158,7 +158,6 @@ export default function useFormatCurrency(
 
     const isReservedSymbol = eventData !== rawDecimalMark && eventData !== comma;
 
-
     if (
       (!isNumericValue && isReservedSymbol && !isMinus && eventData.length === 1) ||
       isDoubleMinus ||
@@ -174,7 +173,6 @@ export default function useFormatCurrency(
     }
 
     const newFormattedValue = getFormattedValue(newRawValue, options.value);
-
 
     if (Number.isNaN(newFormattedValue) || newFormattedValue.includes("NaN")) {
       inputElement.value = prevValue.value;

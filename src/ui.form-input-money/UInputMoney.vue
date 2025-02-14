@@ -148,6 +148,4 @@ const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
       <slot name="right" :icon-name="leftIcon" />
     </template>
   </UInput>
-
-  {{ modelValue }}
 </template>
