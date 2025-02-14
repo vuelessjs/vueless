@@ -53,7 +53,7 @@ const input = computed(() => {
 });
 
 const stringLocalValue = computed(() =>
-  localValue.value === -0 ? "-0" : String(localValue.value),
+  Object.is(localValue.value, -0) ? "-0" : String(localValue.value),
 );
 
 watch(
