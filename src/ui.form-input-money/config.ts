@@ -9,6 +9,7 @@ export default /*tw*/ {
     thousandsSeparator: " ",
     labelAlign: "topInside",
     prefix: "",
+    valueType: "number",
     positiveOnly: false,
     readonly: false,
     disabled: false,

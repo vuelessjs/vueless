@@ -7,7 +7,6 @@ import type { FormatOptions } from "./types.ts";
 const digitSet = ["1", "2", "3", "4", "5", "6", "7", "9", "0"];
 const rawDecimalMark = ".";
 const comma = ",";
-const arrowKeys = ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
 const minus = "-";
 
 export default function useFormatCurrency(
@@ -62,8 +61,6 @@ export default function useFormatCurrency(
 
     const cursorStart = inputElement.selectionStart || 0;
     const cursorEnd = inputElement.selectionEnd || 0;
-    const isEndOfValue = cursorEnd === formattedValue.value.length;
-    const isKeyCombination = event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
     const isSelection = cursorEnd !== cursorStart;
 
     if (event.key === "Backspace" && !isSelection) {
@@ -85,22 +82,9 @@ export default function useFormatCurrency(
     }
 
     const endsWithDecimal = formattedValue.value.endsWith(options.value.decimalSeparator);
-    const includesDecimalMark =
-      formattedValue.value.includes(options.value.decimalSeparator) && !endsWithDecimal;
-    const isCharKey = !arrowKeys.includes(event.key) && !isKeyCombination;
 
     if ((event.key === comma || event.key === rawDecimalMark) && endsWithDecimal) {
       event.preventDefault();
-
-      return;
-    }
-
-    if (isEndOfValue && includesDecimalMark && isCharKey && !isSelection) {
-      const fraction = prevValue.value.split(options.value.decimalSeparator).at(-1) || "";
-
-      if (fraction.length >= options.value.maxFractionDigits) {
-        event.preventDefault();
-      }
 
       return;
     }
@@ -146,13 +130,25 @@ export default function useFormatCurrency(
       value = value.split("").with(value.lastIndexOf(options.value.decimalSeparator), "").join("");
     }
 
-    if (value.endsWith(options.value.decimalSeparator)) {
+    const decimalSeparatorIndex = value.indexOf(options.value.decimalSeparator);
+    const newRawValue = getRawValue(value, options.value);
+
+    const isEventDataDecimal =
+      value.endsWith(options.value.decimalSeparator) ||
+      value.endsWith(`${options.value.decimalSeparator}0`);
+
+    if (
+      isEventDataDecimal &&
+      cursorStart > decimalSeparatorIndex &&
+      !options.value.minFractionDigits
+    ) {
       formattedValue.value = value;
+
+      rawValue.value = newRawValue;
 
       return;
     }
 
-    const newRawValue = getRawValue(value, options.value);
     const isNumericValue = eventData && digitSet.includes(eventData);
     const isMinus = cursorEnd === 1 && cursorStart === 1 && eventData === minus;
     const isDoubleMinus = isMinus && prevValue.value.startsWith(minus);
