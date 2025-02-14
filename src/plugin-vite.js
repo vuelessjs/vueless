@@ -66,7 +66,12 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: [...(!isVuelessEnv ? ["vueless/preset-tailwind"] : [])],
+        include: [
+          ...(!isVuelessEnv ? ["vueless/preset-tailwind"] : []),
+          ...(!isVuelessEnv
+            ? ["vueless/directives/tooltip/vTooltip.ts"]
+            : ["./src/directives/tooltip/vTooltip.ts"]),
+        ],
       },
     }),
 
