@@ -9,6 +9,7 @@ export default /*tw*/ {
       focus:ring-0 focus:ring-offset-0
       focus-visible:outline-{color}-600 focus-visible:outline-dynamic focus-visible:outline-offset-2
       disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
+      disabled:checked:bg-gray-400 disabled:checked:border-transparent
     `,
     variants: {
       size: {
@@ -39,7 +40,7 @@ export default /*tw*/ {
         grayscale: "bg-gray-900 hover:bg-gray-800 active:bg-gray-700",
       },
       disabled: {
-        true: "border-gray-400 bg-gray-400",
+        true: "!border-gray-400 !bg-gray-400 cursor-not-allowed",
       },
     },
   },
