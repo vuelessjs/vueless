@@ -112,7 +112,7 @@ const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
   <UInput
     :id="elementId"
     ref="moneyInputRef"
-    v-model="formattedValue"
+    :model-value="formattedValue"
     :size="size"
     :label="localLabel"
     :label-align="labelAlign"
