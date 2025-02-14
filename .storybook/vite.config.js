@@ -18,6 +18,7 @@ export default defineConfig({
       "@storybook/blocks",
       "@storybook/theming/create",
       "@storybook/addon-themes",
+      "@storybook/addon-interactions/preview",
     ],
   },
   css: {
