@@ -68,7 +68,7 @@ onMounted(() => {
 });
 
 function onKeyup(event: KeyboardEvent) {
-  const numberValue = rawValue.value ? parseFloat(rawValue.value) : "";
+  const numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
 
   localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
@@ -148,4 +148,6 @@ const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
       <slot name="right" :icon-name="leftIcon" />
     </template>
   </UInput>
+
+  {{ modelValue }}
 </template>

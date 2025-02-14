@@ -107,7 +107,9 @@ export default function useFormatCurrency(
 
     if (value === minus) {
       formattedValue.value = minus;
-      rawValue.value = minus;
+      rawValue.value = "";
+
+      return;
     }
 
     if (!value || value.startsWith(`${options.value.decimalSeparator}0`)) {
@@ -156,6 +158,7 @@ export default function useFormatCurrency(
 
     const isReservedSymbol = eventData !== rawDecimalMark && eventData !== comma;
 
+
     if (
       (!isNumericValue && isReservedSymbol && !isMinus && eventData.length === 1) ||
       isDoubleMinus ||
@@ -171,6 +174,7 @@ export default function useFormatCurrency(
     }
 
     const newFormattedValue = getFormattedValue(newRawValue, options.value);
+
 
     if (Number.isNaN(newFormattedValue) || newFormattedValue.includes("NaN")) {
       inputElement.value = prevValue.value;
