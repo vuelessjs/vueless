@@ -56,19 +56,21 @@ watch(
   () => props.modelValue,
   () => {
     if (String(localValue.value) !== String(rawValue.value)) {
-      setValue(localValue.value);
+      setValue(String(localValue.value));
     }
   },
 );
 
 onMounted(() => {
   if (localValue.value) {
-    setValue(localValue.value);
+    setValue(String(localValue.value));
   }
 });
 
 function onKeyup(event: KeyboardEvent) {
-  localValue.value = rawValue.value || "";
+  const numberValue = rawValue.value ? parseFloat(rawValue.value) : "";
+
+  localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
   nextTick(() => emit("keyup", event));
 }
