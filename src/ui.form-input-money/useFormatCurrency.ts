@@ -107,7 +107,9 @@ export default function useFormatCurrency(
 
     if (value === minus) {
       formattedValue.value = minus;
-      rawValue.value = minus;
+      rawValue.value = "";
+
+      return;
     }
 
     if (!value || value.startsWith(`${options.value.decimalSeparator}0`)) {
