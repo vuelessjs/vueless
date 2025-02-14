@@ -52,18 +52,22 @@ const input = computed(() => {
   return moneyInputRef.value?.inputRef || null;
 });
 
+const stringLocalValue = computed(() =>
+  localValue.value === -0 ? "-0" : String(localValue.value),
+);
+
 watch(
   () => props.modelValue,
   () => {
-    if (String(localValue.value) !== String(rawValue.value)) {
-      setValue(String(localValue.value));
+    if (stringLocalValue.value !== String(rawValue.value)) {
+      setValue(stringLocalValue.value);
     }
   },
 );
 
 onMounted(() => {
   if (localValue.value) {
-    setValue(String(localValue.value));
+    setValue(stringLocalValue.value);
   }
 });
 
