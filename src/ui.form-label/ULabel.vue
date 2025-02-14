@@ -43,6 +43,10 @@ const wrapperElement = computed(() => {
   return wrapperRef.value;
 });
 
+const isShownError = computed(() => {
+  return Boolean(props.error) && !props.disabled;
+});
+
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
@@ -66,7 +70,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error),
+  error: Boolean(props.error) && !props.disabled,
 }));
 
 const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
@@ -107,14 +111,14 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       </label>
 
       <div
-        v-if="error"
+        v-if="isShownError"
         v-bind="descriptionAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
       />
 
       <div
-        v-if="description && !error"
+        v-if="description && !isShownError"
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
         v-text="description"
@@ -147,10 +151,15 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       <slot />
     </div>
 
-    <div v-if="error" v-bind="descriptionAttrs" :data-test="getDataTest('error')" v-text="error" />
+    <div
+      v-if="isShownError"
+      v-bind="descriptionAttrs"
+      :data-test="getDataTest('error')"
+      v-text="error"
+    />
 
     <div
-      v-if="description && !error"
+      v-if="description && !isShownError"
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
       v-text="description"

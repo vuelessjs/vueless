@@ -409,7 +409,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error),
+  error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label),
   /* component state, not a props */
   selected: Boolean(selectedLabel.value),
