@@ -1,4 +1,4 @@
-import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
+import { Markdown, Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
 import { getSource } from "../../utils/storybook.ts";
 
 import * as stories from "./stories.ts";
@@ -11,6 +11,22 @@ import defaultConfig from "../config.ts?raw"
 <Primary of={stories}  />
 <Controls of={stories.Default} />
 <Stories of={stories} />
+
+## Option meta keys
+Keys you may/have to provide to component in an option object.
+
+<Markdown>
+{`
+|  Key name         | Description                            | Type                                   |
+| ------------------| ---------------------------------------| ---------------------------------------|
+| value             | Native value attribute                 | Boolean, String, Number, Array, Object |
+| trueValue         | Own value for checkbox checked state   | Boolean, String, Number, Array, Object |
+| falseValue        | Own value for checkbox unchecked state | Boolean, String, Number, Array, Object |
+| label             | Option label                           | String                                 |
+| icon              | Option icon                            | String                                 |
+| description       | Option description                     | Number                                 |   
+`}
+</Markdown>
 
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />
