@@ -4,7 +4,7 @@ import { getRawValue, getFormattedValue } from "./utilFormat.ts";
 
 import type { FormatOptions } from "./types.ts";
 
-const digitSet = ["1", "2", "3", "4", "5", "6", "7", "9", "0"];
+const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const rawDecimalMark = ".";
 const comma = ",";
 const minus = "-";
