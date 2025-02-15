@@ -108,26 +108,35 @@ Custom dark mode related vueless loader.
     border: 1px solid transparent;
   }
 
-  .sidebar-item {
+  .sidebar-item,
+  .search-result-item {
     text-transform: capitalize;
   }
 
-  .light .sidebar-item svg[width="12"] {
+  .light .sidebar-item svg[type="component"],
+  .light .search-result-item svg[type="component"],
+  .dark .search-result-item mark {
       color: #10b981;
   }
 
-  .light .sidebar-item[data-nodetype="document"] svg[width="12"],
-  .light .sidebar-item[data-nodetype="story"] svg[width="12"] {
+  .dark .sidebar-item svg[type="component"],
+  .dark .search-result-item svg[type="component"],
+  .light .search-result-item mark {
+      color: #059669;
+  }
+
+  .light .sidebar-item svg[type="document"],
+  .light .sidebar-item svg[type="story"],
+  .light .search-result-item svg[type="document"],
+  .light .search-result-item svg[type="story"] {
       color: #9ca3af;
   }
 
-  .dark .sidebar-item[data-nodetype="document"] svg[width="12"],
-  .dark .sidebar-item[data-nodetype="story"] svg[width="12"] {
+  .dark .sidebar-item svg[type="document"],
+  .dark .sidebar-item svg[type="story"],
+  .dark .search-result-item svg[type="document"],
+  .dark .search-result-item svg[type="story"] {
       color: #4b5563;
-  }
-
-  .dark .sidebar-item svg[width="12"] {
-      color: #059669;
   }
 
   #sidebar-bottom-wrapper {
