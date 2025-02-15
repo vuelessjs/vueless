@@ -5,7 +5,7 @@ export default /*tw*/ {
     base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
       actionsHeader: {
-        true: "rounded-t-dynamic border-blue-200 bg-blue-50",
+        true: "rounded-t-dynamic border-brand-200 bg-brand-50",
       },
     },
     compoundVariants: [
