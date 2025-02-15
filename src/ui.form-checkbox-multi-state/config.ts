@@ -3,7 +3,7 @@ export default /*tw*/ {
   defaults: {
     color: "brand",
     size: "md",
-    placement: "left",
+    labelAlign: "right",
     disabled: false,
   },
 };

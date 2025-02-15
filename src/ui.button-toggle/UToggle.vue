@@ -97,32 +97,32 @@ const { getDataTest, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActive
     >
       <template #left="{ iconName }">
         <!--
-            @slot Use it to add something before the label.
-            @binding {object} option
-            @binding {string} icon-name
-            @binding {number} index
-          -->
+          @slot Use it to add something before the label.
+          @binding {object} option
+          @binding {string} icon-name
+          @binding {number} index
+        -->
         <slot name="left" :option="option" :icon-name="iconName" :index="index" />
       </template>
 
       <template #default="{ label, iconName }">
         <!--
-            @slot Use it to add something instead of the toggle option label.
-            @binding {object} option
-            @binding {string} label
-            @binding {string} icon-name
-            @binding {number} index
-          -->
+          @slot Use it to add something instead of the toggle option label.
+          @binding {object} option
+          @binding {string} label
+          @binding {string} icon-name
+          @binding {number} index
+        -->
         <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index" />
       </template>
 
       <template #right="{ iconName }">
         <!--
-            @slot Use it to add something after the label.
-            @binding {object} option
-            @binding {string} icon-name
-            @binding {number} index
-          -->
+          @slot Use it to add something after the label.
+          @binding {object} option
+          @binding {string} icon-name
+          @binding {number} index
+        -->
         <slot name="right" :option="option" :icon-name="iconName" :index="index" />
       </template>
     </UButton>

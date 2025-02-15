@@ -12,10 +12,11 @@ import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
+import { computed } from "vue";
 
 interface UCheckboxArgs extends Props {
   slotTemplate?: string;
-  enum: "size";
+  enum: "size" | "labelAlign" | "color";
 }
 
 export default {
@@ -23,7 +24,7 @@ export default {
   title: "Form Inputs & Controls / Checkbox",
   component: UCheckbox,
   args: {
-    label: "Label",
+    label: "Subscribe to the newsletter",
   },
   argTypes: {
     ...getArgTypes(UCheckbox.__name),
@@ -106,19 +107,23 @@ const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
 const EnumVariantTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs, { argTypes }) => ({
   components: { UCheckbox, UCol },
   setup() {
+    const isColorStory = computed(() => args.enum === "color");
+
     return {
       args,
       options: argTypes?.[args.enum]?.options,
+      isColorStory,
     };
   },
   template: `
-    <UCol gap="xl">
+    <UCol gap="xl" :class="{ 'flex-row': isColorStory }">
       <UCheckbox
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :label="option"
+        :label="isColorStory ? option : args.label"
+        :description="isColorStory ? '' : option"
       />
     </UCol>
   `,
@@ -127,23 +132,60 @@ const EnumVariantTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs, { argT
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const CustomValues = ValueTypesTemplate.bind({});
-CustomValues.args = {};
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "Receive updates and exclusive offers directly to your inbox." };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "Please agree to the Terms and Conditions before proceeding." };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Some description" };
+export const CustomValues = ValueTypesTemplate.bind({});
+CustomValues.args = {};
+CustomValues.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "You can pass custom `trueValue` and `falseValue` props, that can be of different types (see object meta keys table below).",
+    },
+  },
+};
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
+
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color", modelValue: true };
+
+export const Partial = DefaultTemplate.bind({});
+Partial.args = { partial: true };
+Partial.parameters = {
+  docs: {
+    description: {
+      story: "Make checkbox partially checked (change the checked tick to a minus).",
+    },
+  },
+};
+
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
   slotTemplate: `
-    <template #footer>
-      <UBadge label="favourite" color="green" size="sm" />
+    <template #label>
+      <UBadge label="This option is required" color="red" size="sm" />
+    </template>
+  `,
+};
+
+export const SlotBottom = DefaultTemplate.bind({});
+SlotBottom.args = {
+  slotTemplate: `
+    <template #bottom>
+      <UBadge label="Subscription is optional" color="green" size="sm" />
     </template>
   `,
 };

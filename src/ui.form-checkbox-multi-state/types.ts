@@ -54,7 +54,7 @@ export interface Props {
   /**
    * Label placement.
    */
-  placement?: "left" | "right";
+  labelAlign?: "left" | "right";
 
   /**
    * Make checkbox disabled.

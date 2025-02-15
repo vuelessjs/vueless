@@ -10,6 +10,7 @@ import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -26,13 +27,13 @@ export default {
   title: "Form Inputs & Controls / Checkbox Group",
   component: UCheckboxGroup,
   args: {
-    label: "Label",
+    label: "Select your preferred communication methods:",
     options: [
-      { label: "checkbox 1", value: "1" },
-      { label: "checkbox 2", value: "2" },
-      { label: "checkbox 3", value: "3" },
+      { label: "Email Notifications", value: "email" },
+      { label: "SMS Alerts", value: "sms" },
+      { label: "Push Notifications", value: "push" },
     ],
-    value: ["One"],
+    value: [],
   },
   argTypes: {
     ...getArgTypes(UCheckboxGroup.__name),
@@ -45,7 +46,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) => ({
-  components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol },
+  components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol, UBadge },
   setup() {
     const slots = getSlotNames(UCheckboxGroup.__name);
 
@@ -63,7 +64,7 @@ const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) 
       </UCheckboxGroup>
 
       <URow>
-        <UAlert size="sm" color="gray">
+        <UAlert size="sm" variant="thirdary" color="green" bordered>
           <p>Selected value: {{ value }}</p>
         </UAlert>
       </URow>
@@ -102,50 +103,52 @@ const EnumVariantTemplate: StoryFn<UCheckboxGroupArgs> = (
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  name: "Default",
-  slotTemplate: `
-    <template v-for="(radio, index) in args.options" :key="index">
-      <UCheckbox v-bind="radio"/>
-    </template>
-  `,
-  options: [
-    { name: "Default", label: "String", value: "One" },
-    { name: "Default", label: "Boolean", value: false },
-    {
-      name: "Default",
-      label: "Object",
+Default.args = { name: "Default" };
 
-      value: { key: "value" },
-    },
-    {
-      name: "Default",
-      label: "Array",
-      value: ["Array", 1],
-    },
-  ],
+export const Description = DefaultTemplate.bind({});
+Description.args = {
+  name: "Description",
+  description: "You may select multiple options that best fit your preferences.",
 };
+
+export const Error = DefaultTemplate.bind({});
+Error.args = { name: "Error", error: "some error" };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { name: "Disabled", disabled: true };
 
 export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   options: [
-    { name: "Options", label: "Boolean", value: false },
-    { name: "Options", label: "String", value: "One" },
-    { name: "Options", label: "Number", value: 3 },
-    { name: "Options", label: "Object", value: { key: "value" } },
-    { name: "Options", label: "Array", value: ["Array", 1] },
+    { label: "String", value: "Subscribed" },
+    { label: "Number", value: 42 },
+    { label: "Boolean", value: true },
+    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Array", value: ["Admin", "Editor"] },
   ],
 };
-
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { name: "Disabled", disabled: true };
-
-export const Error = DefaultTemplate.bind({});
-Error.args = { name: "Error", error: "some error" };
+Options.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Every option you pass via the `options` prop can be of different type (`Boolean` | `String` | `Number` | `Array` | `Object`).",
+    },
+  },
+};
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", name: "Colors" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", name: "Sizes" };
+
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
+  slotTemplate: `
+    <template #label>
+      <UBadge label="At least one option is required" color="green" />
+    </template>
+  `,
+};

@@ -6,14 +6,14 @@ import {
 } from "../../utils/storybook.ts";
 
 import UCheckboxMultiState from "../../ui.form-checkbox-multi-state/UCheckboxMultiState.vue";
-import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UCheckboxMultiStateArgs extends Props {
   slotTemplate?: string;
-  enum: "size";
+  enum: "size" | "color" | "labelAlign";
 }
 
 export default {
@@ -22,9 +22,24 @@ export default {
   component: UCheckboxMultiState,
   args: {
     options: [
-      { value: false, label: "empty", icon: "", description: "checkbox empty" },
-      { value: true, label: "selected", icon: "check", description: "checkbox selected" },
-      { value: null, label: "not selected", icon: "remove", description: "checkbox unselected" },
+      {
+        value: false,
+        label: "Not Selected",
+        icon: "",
+        description: "The checkbox is currently not selected.",
+      },
+      {
+        value: true,
+        label: "Selected",
+        icon: "check",
+        description: "The checkbox has been selected.",
+      },
+      {
+        value: null,
+        label: "Indeterminate",
+        icon: "remove",
+        description: "The checkbox is in an indeterminate state.",
+      },
     ],
   },
   argTypes: {
@@ -55,7 +70,7 @@ const EnumVariantTemplate: StoryFn<UCheckboxMultiStateArgs> = (
   args: UCheckboxMultiStateArgs,
   { argTypes },
 ) => ({
-  components: { UCheckboxMultiState, URow },
+  components: { UCheckboxMultiState, UCol },
   setup() {
     return {
       args,
@@ -63,7 +78,7 @@ const EnumVariantTemplate: StoryFn<UCheckboxMultiStateArgs> = (
     };
   },
   template: `
-    <URow>
+    <UCol>
       <UCheckboxMultiState
         v-for="(option, index) in options"
         :key="index"
@@ -72,12 +87,21 @@ const EnumVariantTemplate: StoryFn<UCheckboxMultiStateArgs> = (
         :[args.enum]="option"
         :label="option"
       />
-    </URow>
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
+
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
+
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
