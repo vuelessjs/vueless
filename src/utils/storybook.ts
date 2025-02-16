@@ -72,7 +72,7 @@ export function getDocsDescription(componentName: string | undefined) {
   let viewOnGitHub = "";
 
   if (COMPONENTS[componentName as ComponentNames]) {
-    viewOnGitHub = `| [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]})`;
+    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
   }
 
   return {

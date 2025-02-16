@@ -1,4 +1,4 @@
-import { inject, onBeforeUnmount, readonly, ref } from "vue";
+import { inject, onBeforeMount, onBeforeUnmount, readonly, ref } from "vue";
 
 import type { Ref } from "vue";
 
@@ -49,8 +49,10 @@ export function createLoaderProgress(): LoaderProgress {
 export function useLoaderProgress(): LoaderProgress {
   const loaderProgress = inject<LoaderProgress>(LoaderProgressSymbol);
 
-  window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-  window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
+  onBeforeMount(() => {
+    window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
+    window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
+  });
 
   onBeforeUnmount(() => {
     window.removeEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
