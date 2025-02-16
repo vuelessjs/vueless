@@ -26,7 +26,7 @@ export default {
   component: UInput,
   args: {
     label: "Full Name",
-    modelValue: "Satoshi Nakamoto",
+    modelValue: "John Doe",
   },
   argTypes: {
     ...getArgTypes(UInput.__name),
