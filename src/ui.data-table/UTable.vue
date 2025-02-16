@@ -19,7 +19,7 @@ import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
 import useUI from "../composables/useUI.ts";
-import { getDefaults, cx } from "../utils/ui.ts";
+import { getDefaults, cx, getMergedConfig } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import { PX_IN_REM } from "../constants.js";
@@ -37,8 +37,17 @@ import {
 
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Cell, Row, RowId, UTableProps, UTableRowAttrs, Config } from "./types.ts";
 import type { Ref, ComputedRef } from "vue";
+import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
+import type {
+  Cell,
+  Row,
+  RowId,
+  UTableProps,
+  UTableRowAttrs,
+  Config,
+  DateDivider,
+} from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -256,10 +265,21 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function getDateDividerLabel(rowDate: string | Date) {
-  return Array.isArray(props.dateDivider)
-    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || String(rowDate)
-    : String(rowDate);
+function getDateDividerData(rowDate: string | Date) {
+  let dividerItem = {} as DateDivider;
+
+  if (Array.isArray(props.dateDivider)) {
+    const dividerItemData = props.dateDivider.find((dateItem) => dateItem.date === rowDate);
+
+    if (dividerItemData) {
+      dividerItem = dividerItemData;
+    }
+  }
+
+  return {
+    label: dividerItem?.label || String(rowDate),
+    config: dividerItem?.config,
+  };
 }
 
 function setFooterCellWidth(zero?: null) {
@@ -684,8 +704,14 @@ const {
               <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
-                  :label="getDateDividerLabel(row.rowDate)"
+                  :label="getDateDividerData(row.rowDate).label"
                   v-bind="bodyDateDividerAttrs"
+                  :config="
+                    getMergedConfig({
+                      defaultConfig: bodyDateDividerAttrs.config,
+                      globalConfig: getDateDividerData(row.rowDate).config,
+                    }) as UDividerConfig
+                  "
                 />
               </td>
             </tr>
@@ -697,8 +723,14 @@ const {
               <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
                 <UDivider
                   size="xs"
-                  :label="getDateDividerLabel(row.rowDate)"
+                  :label="getDateDividerData(row.rowDate).label"
                   v-bind="bodySelectedDateDividerAttrs"
+                  :config="
+                    getMergedConfig({
+                      defaultConfig: bodyDateDividerAttrs.config,
+                      globalConfig: getDateDividerData(row.rowDate).config,
+                    }) as UDividerConfig
+                  "
                 />
               </td>
             </tr>

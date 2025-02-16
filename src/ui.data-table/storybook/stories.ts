@@ -334,7 +334,13 @@ DateDividerCustomLabel.args = {
   rows: Array(10)
     .fill({})
     .map(() => getDateDividerRow()),
-  dateDivider: [{ date: new Date().toString(), label: "Custom label for specific date" }],
+  dateDivider: [
+    {
+      date: new Date().toString(),
+      label: "Custom label for specific date",
+      config: { label: "!text-orange-400", divider: "!border-orange-300" },
+    },
+  ],
 };
 
 export const SlotDefault = DefaultTemplate.bind({});

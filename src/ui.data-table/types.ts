@@ -2,6 +2,7 @@ import defaultConfig from "./config.ts";
 
 import type { Ref } from "vue";
 import type { ComponentConfig, UnknownObject } from "../types.ts";
+import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 
 export type Config = typeof defaultConfig;
 
@@ -23,6 +24,7 @@ export interface RowData {
 export interface DateDivider {
   date: Date | string;
   label?: string;
+  config?: ComponentConfig<UDividerConfig>;
 }
 
 export interface Row {
