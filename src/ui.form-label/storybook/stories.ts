@@ -24,8 +24,8 @@ export default {
   title: "Form Inputs & Controls / Label",
   component: ULabel,
   args: {
-    label: "Label",
-    description: "Description",
+    label: "Email Address",
+    description: "We'll never share your email with anyone else.",
   },
   argTypes: {
     ...getArgTypes(ULabel.__name),
@@ -37,7 +37,7 @@ export default {
   },
 } as Meta;
 
-const defaultTemplate = "This is plain text";
+const defaultTemplate = "johndoe@example.com";
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
   components: { ULabel, UText, UIcon, UBadge },
@@ -78,13 +78,12 @@ const EnumVariantTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }
     };
   },
   template: `
-    <UCol>
+    <UCol class="gap-10">
       <ULabel
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        class="border border-gray-200 rounded-dynamic-sm p-4"
       >
         <UText :[args.enum]="option">
           {{ prefixedOptions[index] }}
@@ -95,7 +94,29 @@ const EnumVariantTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { description: "" };
+
+export const Description = DefaultTemplate.bind({});
+Description.args = {};
+
+export const Error = DefaultTemplate.bind({});
+Error.args = { error: "Please enter a valid email address." };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
+export const Interactive = DefaultTemplate.bind({});
+Interactive.args = { interactive: true };
+Interactive.parameters = {
+  docs: {
+    description: {
+      story: "Make the label interactive (cursor pointer on hover).",
+    },
+  },
+};
+
+export const Centred = DefaultTemplate.bind({});
+Centred.args = { centred: true };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
@@ -103,15 +124,9 @@ Sizes.args = { enum: "size" };
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "align" };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "Error description" };
-
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
-
 export const SlotLabel = DefaultTemplate.bind({});
 SlotLabel.args = {
-  label: "Custom badge label",
+  label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
       <UBadge :label="label" color="green" />
@@ -119,11 +134,11 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const SlotBottom = DefaultTemplate.bind({});
+SlotBottom.args = {
   slotTemplate: `
     <template #bottom>
-      <UIcon name="star" color="green" />
+      <UBadge label="Your opinion is important for us!" color="green" class="max-w-fit" />
     </template>
   `,
 };
