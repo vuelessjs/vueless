@@ -8,7 +8,7 @@ import UInput from "../ui.form-input/UInput.vue";
 
 import defaultConfig from "./config.ts";
 import useFormatCurrency from "./useFormatCurrency.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -52,9 +52,15 @@ const input = computed(() => {
   return moneyInputRef.value?.inputRef || null;
 });
 
-const stringLocalValue = computed(() =>
-  Object.is(localValue.value, -0) ? "-0" : String(localValue.value),
-);
+const stringLocalValue = computed(() => {
+  if (Object.is(localValue.value, -0)) return "-0";
+
+  const fraction = String(rawValue.value).split(RAW_DECIMAL_MARK).at(1) || "";
+
+  return props.valueType === "number" && !Number.isNaN(parseFloat(String(localValue.value)))
+    ? parseFloat(String(localValue.value)).toFixed(fraction.length)
+    : String(localValue.value);
+});
 
 watch(
   () => props.modelValue,

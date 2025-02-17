@@ -2,10 +2,11 @@ import { onMounted, nextTick, ref, onBeforeUnmount, toValue, watch, computed, re
 
 import { getRawValue, getFormattedValue } from "./utilFormat.ts";
 
+import { RAW_DECIMAL_MARK } from "./constants.ts";
+
 import type { FormatOptions } from "./types.ts";
 
 const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-const rawDecimalMark = ".";
 const comma = ",";
 const minus = "-";
 
@@ -83,7 +84,7 @@ export default function useFormatCurrency(
 
     const endsWithDecimal = formattedValue.value.endsWith(options.value.decimalSeparator);
 
-    if ((event.key === comma || event.key === rawDecimalMark) && endsWithDecimal) {
+    if ((event.key === comma || event.key === RAW_DECIMAL_MARK) && endsWithDecimal) {
       event.preventDefault();
 
       return;
@@ -120,7 +121,7 @@ export default function useFormatCurrency(
     }
 
     // Replace dot with decimal separator
-    if (eventData === rawDecimalMark || eventData === comma) {
+    if (eventData === RAW_DECIMAL_MARK || eventData === comma) {
       value = [
         ...prevValue.value.slice(0, prevCursorPosition),
         options.value.decimalSeparator,
@@ -145,7 +146,6 @@ export default function useFormatCurrency(
       !options.value.minFractionDigits
     ) {
       formattedValue.value = value;
-
       rawValue.value = newRawValue;
 
       return;
@@ -156,7 +156,7 @@ export default function useFormatCurrency(
     const isDoubleMinus = isMinus && prevValue.value.startsWith(minus);
     const isMinusWithin = newRawValue.includes(minus) && !newRawValue.startsWith(minus);
 
-    const isReservedSymbol = eventData !== rawDecimalMark && eventData !== comma;
+    const isReservedSymbol = eventData !== RAW_DECIMAL_MARK && eventData !== comma;
 
     if (
       (!isNumericValue && isReservedSymbol && !isMinus && eventData.length === 1) ||
@@ -172,7 +172,15 @@ export default function useFormatCurrency(
       return;
     }
 
-    const newFormattedValue = getFormattedValue(newRawValue, options.value);
+    const currentFraction = (newRawValue.split(RAW_DECIMAL_MARK).at(1) || "").slice(
+      0,
+      options.value.maxFractionDigits,
+    );
+
+    const newFormattedValue = getFormattedValue(newRawValue, {
+      ...options.value,
+      minFractionDigits: currentFraction.length,
+    });
 
     if (Number.isNaN(newFormattedValue) || newFormattedValue.includes("NaN")) {
       inputElement.value = prevValue.value;
