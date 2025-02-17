@@ -36,16 +36,18 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
-   * Triggers when the input has not passed validation.
+   * Triggers error changes.
    * @property {string} value
    */
-  "update:error",
+  "error-change",
 ]);
 
 const { tm } = useLocale();
 
 const dropZoneRef = ref<HTMLDivElement | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
+
+const localError = ref("");
 
 const elementId = props.id || useId();
 
@@ -61,10 +63,7 @@ const currentFiles = computed<File | File[] | null>({
   },
 });
 
-const currentError = computed({
-  get: () => props.error,
-  set: (newValue) => emit("update:error", newValue),
-});
+const currentError = computed(() => localError.value || props.error);
 
 const extensionNames = computed(() => {
   return props.allowedFileTypes.map((type) => type.replace(".", ""));
@@ -105,6 +104,7 @@ onBeforeUnmount(() => {
 });
 
 watch(() => props.multiple, normalizeFilesForMultipleMode);
+watch(currentError, () => emit("error-change", currentError.value));
 
 function normalizeFilesForMultipleMode() {
   if (!props.multiple) return;
@@ -131,13 +131,19 @@ function validate(file: File) {
 
   const isValidSize = Number(targetFileSize) <= props.maxFileSize;
 
-  if (!isValidSize && props.maxFileSize) {
-    currentError.value = currentLocale.value.sizeError;
+  if (!isValidType) {
+    localError.value = currentLocale.value.formatError;
+
+    return;
   }
 
-  if (!isValidType) {
-    currentError.value = currentLocale.value.formatError;
+  if (!isValidSize && props.maxFileSize) {
+    localError.value = currentLocale.value.sizeError;
+
+    return;
   }
+
+  localError.value = "";
 }
 
 function onChangeFile(event: Event) {
@@ -242,9 +248,17 @@ function onClickRemoveItem(id: string | number) {
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error),
+  error: Boolean(currentError.value),
   label: Boolean(props.label),
 }));
+
+defineExpose({
+  /**
+   * An error.
+   * @property {boolean}
+   */
+  error: currentError,
+});
 
 const {
   getDataTest,
@@ -268,7 +282,7 @@ const {
     :for="elementId"
     :size="size"
     :label="label"
-    :error="error"
+    :error="currentError"
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
@@ -316,7 +330,7 @@ const {
               :for="elementId"
               tag="label"
               variant="thirdary"
-              :color="error ? 'red' : 'brand'"
+              :color="currentError ? 'red' : 'brand'"
               :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
@@ -343,7 +357,7 @@ const {
             filled
             variant="thirdary"
             :disabled="disabled"
-            :color="error ? 'red' : 'brand'"
+            :color="currentError ? 'red' : 'brand'"
             :left-icon="config.defaults.clearIcon"
             v-bind="clearButtonAttrs"
             :data-test="getDataTest('clear')"
