@@ -11,6 +11,7 @@ import useFormatCurrency from "./useFormatCurrency.ts";
 import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
+import { getRawValue } from "./utilFormat.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -55,7 +56,8 @@ const input = computed(() => {
 const stringLocalValue = computed(() => {
   if (Object.is(localValue.value, -0)) return "-0";
 
-  const fraction = String(rawValue.value).split(RAW_DECIMAL_MARK).at(1) || "";
+  const currentRawValue = getRawValue(String(localValue.value), props);
+  const fraction = String(currentRawValue).split(RAW_DECIMAL_MARK).at(1) || "";
 
   return props.valueType === "number" && !Number.isNaN(parseFloat(String(localValue.value)))
     ? parseFloat(String(localValue.value)).toFixed(fraction.length)
@@ -73,6 +75,7 @@ watch(
 
 onMounted(() => {
   if (localValue.value) {
+    // console.log(localValue.value);
     setValue(stringLocalValue.value);
   }
 });
