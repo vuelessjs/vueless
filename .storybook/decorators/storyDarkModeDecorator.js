@@ -9,12 +9,17 @@ export const storyDarkModeDecorator = () => {
   const sbAddonThemesConfig = localStorage.getItem("sb-addon-themes-3") || "{}";
   const storybookTheme = JSON.parse(sbAddonThemesConfig).current || "light";
 
-  document.body.classList.add(storybookTheme); // this fixing first load
-  document.documentElement.classList.add(storybookTheme);
+  // this fixing first load
+  document.body.classList.add(storybookTheme);
 
-  setTimeout(() => {
-    document.documentElement.classList.remove("light", "dark");
-  }, 4000);
+  // this fixing white blink issue
+  if (window.location.toString().includes("/docs/")) {
+    document.documentElement.classList.add(storybookTheme);
+
+    setTimeout(() => {
+      document.documentElement.classList.remove("light", "dark");
+    }, 4000);
+  }
 
   /* Initialize theme state. */
   const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
