@@ -167,7 +167,11 @@ function parseKeyValuePairs(input) {
 
     let value;
 
-    if (rawValue === "!null") {
+    if (rawValue === "!true") {
+      value = true;
+    } else if (rawValue === "!false") {
+      value = false;
+    } else if (rawValue === "!null") {
       value = null;
     } else if (rawValue === "!undefined") {
       value = undefined;
