@@ -17,8 +17,8 @@ export function createMergeConfigs(cx) {
     isReplace = false,
     isVariants = false,
   }) {
-    globalConfig = cloneDeep(globalConfig || {});
-    propsConfig = cloneDeep(propsConfig || {});
+    globalConfig = cloneDeep(stringToObject(globalConfig, { addBase: true }));
+    propsConfig = cloneDeep(stringToObject(propsConfig, { addBase: true }));
 
     const isGlobalConfig = Object.keys(globalConfig).length;
     const isPropsConfig = Object.keys(propsConfig).length;
