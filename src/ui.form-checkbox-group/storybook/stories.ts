@@ -132,8 +132,7 @@ Options.parameters = {
   docs: {
     description: {
       story:
-        // eslint-disable-next-line vue/max-len
-        "Every option you pass via the `options` prop can be of different type (`Boolean` | `String` | `Number` | `Array` | `Object`).",
+        "Every option you pass via the `options` prop can be of different type (see object meta keys table below).",
     },
   },
 };
