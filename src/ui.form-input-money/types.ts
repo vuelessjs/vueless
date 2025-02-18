@@ -17,12 +17,12 @@ export interface Props {
   /**
    * Input value.
    */
-  modelValue?: string | number;
+  modelValue?: number | string;
 
   /**
    * Set type of the modelValue.
    */
-  valueType?: "string" | "number";
+  valueType?: "number" | "string";
 
   /**
    * Input label.
