@@ -24,11 +24,15 @@ export default function useFormatCurrency(
 
   watch(
     () => options,
-    () => setValue(formattedValue.value),
+    () => {
+      validateOptions();
+      setValue(formattedValue.value);
+    },
     { deep: true },
   );
 
   onMounted(() => {
+    validateOptions();
     inputElement = document.getElementById(elementId) as HTMLInputElement;
 
     if (inputElement) {
@@ -42,6 +46,19 @@ export default function useFormatCurrency(
       inputElement.removeEventListener("input", onInput);
     }
   });
+
+  function validateOptions() {
+    const warnMessages = [];
+
+    if (options.value.decimalSeparator.length > 1) {
+      warnMessages.push(
+        "[VUELESS/UInputMoney]: DecimalSeparator option should not contain more than one symbol.",
+      );
+    }
+
+    // eslint-disable-next-line no-console
+    warnMessages.forEach((message) => console.warn(message));
+  }
 
   /**
    * Set input value manually.
