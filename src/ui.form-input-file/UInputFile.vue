@@ -39,7 +39,7 @@ const emit = defineEmits([
    * Triggers error changes.
    * @property {string} value
    */
-  "error-change",
+  "error",
 ]);
 
 const { tm } = useLocale();
@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
 });
 
 watch(() => props.multiple, normalizeFilesForMultipleMode);
-watch(currentError, () => emit("error-change", currentError.value));
+watch(currentError, () => emit("error", currentError.value));
 
 function normalizeFilesForMultipleMode() {
   if (!props.multiple) return;
@@ -274,6 +274,8 @@ const {
   inputAttrs,
   fileListAttrs,
   buttonsAttrs,
+  chooseFileButtonErrorAttrs,
+  clearButtonErrorAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -330,11 +332,10 @@ const {
               :for="elementId"
               tag="label"
               variant="thirdary"
-              :color="currentError ? 'red' : 'brand'"
               :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
-              v-bind="chooseFileButtonAttrs"
+              v-bind="currentError ? chooseFileButtonErrorAttrs : chooseFileButtonAttrs"
               :data-test="getDataTest('upload')"
             />
 
@@ -357,9 +358,8 @@ const {
             filled
             variant="thirdary"
             :disabled="disabled"
-            :color="currentError ? 'red' : 'brand'"
             :left-icon="config.defaults.clearIcon"
-            v-bind="clearButtonAttrs"
+            v-bind="currentError ? clearButtonErrorAttrs : clearButtonAttrs"
             :data-test="getDataTest('clear')"
             @click="onClickResetFiles"
           />
