@@ -36,7 +36,6 @@ export default {
       options: (argTypes?.align?.table?.type?.summary as string)
         ?.split(" | ")
         ?.filter((option) => option !== "topInside"),
-      control: "select",
     },
   },
   parameters: {
