@@ -1,4 +1,5 @@
 import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
+import { isEqual } from "lodash-es";
 
 import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
@@ -137,7 +138,9 @@ export default function useUI<T>(
     /**
      * Updating Vueless attributes.
      */
-    function updateVuelessAttrs() {
+    function updateVuelessAttrs(newVal: unknown, oldVal: unknown) {
+      if (isEqual(newVal, oldVal)) return;
+
       let keyConfig: NestedComponent = {};
 
       if (typeof config.value[configKey] === "object") {
