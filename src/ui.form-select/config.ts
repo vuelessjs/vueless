@@ -84,7 +84,21 @@ export default /*tw*/ {
   leftSlot: "{>toggle} pl-2.5",
   rightSlot: "{>toggle} pr-2.5",
   beforeToggle: "{>toggle} cursor-auto",
-  afterToggle: "{>toggle} mr-2.5 items-start pt-3 cursor-auto",
+  afterToggle: {
+    base: "{>toggle} mr-2.5 items-start cursor-auto",
+    variants: {
+      size: {
+        sm: "pt-0.5",
+        md: "pt-1",
+        lg: "pt-1.5",
+      },
+    },
+    compoundVariants: [
+      { labelAlign: "topInside", size: "sm", class: "pt-2" },
+      { labelAlign: "topInside", size: "md", class: "pt-3" },
+      { labelAlign: "topInside", size: "lg", class: "pt-4" },
+    ],
+  },
   toggle: {
     base: "flex items-center",
     compoundVariants: [
