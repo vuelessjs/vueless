@@ -8,13 +8,14 @@ import {
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface USwitchArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "color";
+  enum: "size" | "color" | "labelAlign";
 }
 
 export default {
@@ -35,7 +36,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
-  components: { USwitch, UIcon },
+  components: { USwitch, UIcon, UBadge },
   setup() {
     const slots = getSlotNames(USwitch.__name);
 
@@ -57,7 +58,7 @@ const EnumVariantTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes
     };
   },
   template: `
-    <URow>
+    <URow :class="{ '!flex-col max-w-fit': args.enum === 'labelAlign' }">
       <USwitch
         v-for="(option, index) in options"
         :key="index"
@@ -74,10 +75,19 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Some label" };
+Label.args = { label: "Enable Notifications" };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { label: "Label", description: "Some description" };
+Description.args = {
+  label: "Enable Dark Mode",
+  description: "Switch to a darker color scheme to reduce eye strain.",
+};
+
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign" };
+
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", color: "yellow" };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", modelValue: true };
@@ -85,11 +95,18 @@ Colors.args = { enum: "color", modelValue: true };
 export const ToggleLabel = DefaultTemplate.bind({});
 ToggleLabel.args = { toggleLabel: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", color: "yellow" };
-
-export const Icon = DefaultTemplate.bind({});
-Icon.args = { toggleIcon: true, color: "yellow" };
+export const ToggleIcon = DefaultTemplate.bind({});
+ToggleIcon.args = { toggleIcon: true, color: "yellow" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
+
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
+  label: "Enable Notifications",
+  slotTemplate: `
+    <template #label="{ label }">
+      <UBadge :label="label" color="green" />
+    </template>
+  `,
+};

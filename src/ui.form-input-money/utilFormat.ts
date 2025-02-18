@@ -1,6 +1,6 @@
-import type { FormatOptions } from "./types.ts";
+import { RAW_DECIMAL_MARK } from "./constants.ts";
 
-const rawDecimalMark = ".";
+import type { FormatOptions } from "./types.ts";
 
 export function getRawValue(
   value: string,
@@ -12,7 +12,7 @@ export function getRawValue(
 
   const rawValueWithPrefix = value
     .replaceAll(thousandsSeparator, "")
-    .replace(decimalSeparator, rawDecimalMark);
+    .replace(decimalSeparator, RAW_DECIMAL_MARK);
 
   return rawValueWithPrefix.replace(prefix, "") as Intl.StringNumericLiteral;
 }
