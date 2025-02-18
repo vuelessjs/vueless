@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute text-gray-500 group-focus-within:text-brand-600",
+        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-600",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
@@ -47,9 +47,9 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { interactive: true, disabled: false, class: "hover:cursor-pointer" },
-      { align: "topInside", size: "sm", class: "-top-3 text-2xs" },
-      { align: "topInside", size: "md", class: "-top-4 text-xs" },
-      { align: "topInside", size: "lg", class: "-top-5 text-sm" },
+      { align: "topInside", size: "sm", class: "top-2 text-2xs" },
+      { align: "topInside", size: "md", class: "top-2.5 text-xs" },
+      { align: "topInside", size: "lg", class: "top-2.5 text-sm" },
       { align: "topWithDesc", size: "sm", class: "-mt-px" },
       { align: "topWithDesc", size: "md", class: "" },
       { align: "topWithDesc", size: "lg", class: "mt-px" },
@@ -69,7 +69,7 @@ export default /*tw*/ {
       },
       align: {
         top: "",
-        topInside: "mt-1.5",
+        topInside: "pl-3 mt-1.5",
         topWithDesc: "pt-0.5",
         left: "pt-0.5",
         right: "pt-0.5",
