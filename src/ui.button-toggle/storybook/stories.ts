@@ -140,16 +140,16 @@ export const OptionSlot = DefaultTemplate.bind({});
 OptionSlot.args = {
   name: "optionSlot",
   options: [
-    { value: "1", label: "Download", rightIcon: "download", color: "green" },
-    { value: "2", label: "Edit", rightIcon: "edit_note", color: "orange" },
-    { value: "3", label: "Delete", rightIcon: "delete", color: "red" },
+    { value: "1", label: "Download", iconName: "download", color: "green" },
+    { value: "2", label: "Edit", iconName: "edit_note", color: "orange" },
+    { value: "3", label: "Delete", iconName: "delete", color: "red" },
   ],
   slotTemplate: `
     <template #option="{ label, index }">
       <UBadge
         :label="label"
         :color="args.options[index].color"
-        :right-icon="args.options[index].rightIcon"
+        :right-icon="args.options[index].iconName"
       />
     </template>
   `,
