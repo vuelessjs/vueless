@@ -9,6 +9,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UMoney from "../../ui.text-money/UMoney.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -99,35 +100,100 @@ const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Round = DefaultTemplate.bind({});
+Round.args = { round: true };
+
+export const Bordered = DefaultTemplate.bind({});
+Bordered.args = {
+  variant: "thirdary",
+  bordered: true,
+  color: "green",
+};
+Bordered.parameters = {
+  docs: {
+    description: {
+      story: "Add border to the `thirdary` variant.",
+    },
+  },
+};
+
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = ColorsTemplate.bind({});
-Colors.args = {};
+export const Color = ColorsTemplate.bind({});
+Color.args = {};
 
-export const LeftIcon = DefaultTemplate.bind({});
-LeftIcon.args = { leftIcon: "star" };
-
-export const RightIcon = DefaultTemplate.bind({});
-RightIcon.args = { rightIcon: "star" };
-
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      🤘
-    </template>
+export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
+  components: { UBadge, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UBadge
+        v-bind="args"
+        left-icon="mail"
+        label="Message"
+      />
+      <UBadge
+        v-bind="args"
+        icon="info"
+        label="Info"
+      />
+      <UBadge
+        v-bind="args"
+        right-icon="chat"
+        label="Chat"
+      />
+    </URow>
   `,
-};
+});
 
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-      🤘
-    </template>
+export const Slots: StoryFn<UBadgeArgs> = (args) => ({
+  components: { UBadge, UIcon, URow, UMoney },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow no-mobile>
+      <UBadge v-bind="args" label="Add to favorite">
+        <template #left>
+          <UIcon
+            name="heart_plus"
+            size="2xs"
+            color="inherit"
+          />
+        </template>
+      </UBadge>
+
+      <UBadge v-bind="args" label="shopping_cart">
+        <template #default="{ label }">
+          <UMoney
+            value="20.25"
+            size="sm"
+            color="inherit"
+            symbol="$"
+          />
+          <UIcon
+            :name="label"
+            size="2xs"
+            color="inherit"
+          />
+        </template>
+      </UBadge>
+
+      <UBadge v-bind="args" label="Delete">
+        <template #right>
+          <UIcon
+            name="delete"
+            size="2xs"
+            color="inherit"
+          />
+        </template>
+      </UBadge>
+    </URow>
   `,
-};
+});

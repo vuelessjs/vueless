@@ -9,6 +9,7 @@ import UEmpty from "../../ui.text-empty/UEmpty.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -24,7 +25,6 @@ export default {
   component: UEmpty,
   args: {
     title: "No contacts",
-    description: "There are no contacts in the list.",
   },
   argTypes: {
     ...getArgTypes(UEmpty.__name),
@@ -37,7 +37,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
-  components: { UEmpty, UIcon, UButton },
+  components: { UEmpty, UIcon, UButton, UBadge },
   setup() {
     const slots = getSlotNames(UEmpty.__name);
 
@@ -74,6 +74,9 @@ const EnumVariantTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs, { argTypes }
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Description = DefaultTemplate.bind({});
+Description.args = { description: "There are no contacts in the list." };
+
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", title: "" };
 
@@ -94,7 +97,7 @@ export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
   slotTemplate: `
     <template #default>
-      <span>Some unique <b><code>HTML</code></b> or <b><code>Components</code></b>...</span>
+      <UBadge label="There are no contacts in the list." />
     </template>
   `,
 };

@@ -38,11 +38,6 @@ export interface Props {
   yPosition?: "top" | "bottom";
 
   /**
-   * Use html to render you own content.
-   */
-  html?: boolean;
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

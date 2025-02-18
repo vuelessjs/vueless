@@ -46,7 +46,7 @@ export interface Props {
   tag?: string;
 
   /**
-   * Removes text line height (disable for multiline headers).
+   * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
 
