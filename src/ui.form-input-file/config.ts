@@ -65,6 +65,12 @@ export default /*tw*/ {
       },
     },
   },
+  chooseFileButtonError: {
+    base: "{>chooseFileButton}",
+    defaults: {
+      color: "red",
+    },
+  },
   clearButton: {
     base: "{UButton}",
     defaults: {
@@ -73,6 +79,12 @@ export default /*tw*/ {
         md: "sm",
         lg: "md",
       },
+    },
+  },
+  clearButtonError: {
+    base: "{>clearButton}",
+    defaults: {
+      color: "red",
     },
   },
   input: "sr-only",
