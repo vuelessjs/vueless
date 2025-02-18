@@ -19,6 +19,8 @@ interface ULabelArgs extends Props {
   enum: "align" | "size";
 }
 
+const argTypes = getArgTypes(ULabel.__name);
+
 export default {
   id: "3210",
   title: "Form Inputs & Controls / Label",
@@ -28,7 +30,13 @@ export default {
     description: "We'll never share your email with anyone else.",
   },
   argTypes: {
-    ...getArgTypes(ULabel.__name),
+    ...argTypes,
+    align: {
+      ...argTypes?.align,
+      options: (argTypes?.align?.table?.type?.summary as string)
+        ?.split(" | ")
+        ?.filter((option) => option !== "topInside"),
+    },
   },
   parameters: {
     docs: {
