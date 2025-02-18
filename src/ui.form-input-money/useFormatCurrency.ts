@@ -52,7 +52,13 @@ export default function useFormatCurrency(
 
     if (options.value.decimalSeparator.length > 1) {
       warnMessages.push(
-        "[VUELESS/UInputMoney]: DecimalSeparator option should not contain more than one symbol.",
+        "[VUELESS/UInputMoney]: DecimalSeparator should not contain more than one symbol.",
+      );
+    }
+
+    if (options.value.thousandsSeparator.length > 1) {
+      warnMessages.push(
+        "[VUELESS/UInputMoney]: ThousandsSeparator should not contain more than one symbol.",
       );
     }
 
@@ -236,6 +242,8 @@ export default function useFormatCurrency(
     const offset = currentValueOffsetLength - prevValueOffsetLength;
 
     await nextTick();
+
+    if (newValue.length <= 1) return;
 
     // Move cursor after decimal mark
     if (newValue.length < prevValue.value.length && eventData) {
