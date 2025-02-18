@@ -193,7 +193,7 @@ export default function useFormatCurrency(
 
     inputElement.value = formattedValue.value;
 
-    await setInputCursor(newFormattedValue, inputElement, cursorStart, cursorEnd);
+    await setInputCursor(newFormattedValue, inputElement, cursorStart, cursorEnd, eventData);
 
     prevValue.value = formattedValue.value;
   }
@@ -201,8 +201,9 @@ export default function useFormatCurrency(
   async function setInputCursor(
     newValue: string,
     inputElement: HTMLInputElement,
-    prevCursorStart: number | null,
-    prevCursorEnd: number | null,
+    prevCursorStart: number,
+    prevCursorEnd: number,
+    eventData: string,
   ) {
     const hasValueInputValue = prevCursorStart === 1 && prevCursorEnd === 1;
 
@@ -219,16 +220,31 @@ export default function useFormatCurrency(
 
     await nextTick();
 
-    if (offset < 0 && inputElement) {
+    // Move cursor after decimal mark
+    if (newValue.length < prevValue.value.length && eventData) {
+      const newChar = newValue[prevCursorEnd - 1];
+
+      prevCursorEnd -= newChar === options.value.decimalSeparator ? 0 : 1;
+      prevCursorStart -= newChar === options.value.decimalSeparator ? 0 : 1;
+    }
+
+    if (offset < 0 && inputElement && eventData) {
       inputElement.setSelectionRange(prevCursorStart, prevCursorEnd);
+
+      return;
+    }
+
+    // Move cursor step back on backspace.
+    if (offset < 0 && inputElement && !eventData) {
+      inputElement.setSelectionRange(prevCursorStart - 1, prevCursorEnd - 1);
 
       return;
     }
 
     if (newValue.length === prevCursorEnd || !prevCursorStart || !prevCursorEnd) return;
 
-    let newCursorStart = prevCursorStart;
-    let newCursorEnd = prevCursorEnd;
+    let newCursorStart = prevCursorStart + offset;
+    let newCursorEnd = prevCursorEnd + offset;
 
     if (hasValueInputValue && prefixLength) {
       newCursorStart += prefixLength;
@@ -236,7 +252,7 @@ export default function useFormatCurrency(
     }
 
     if (inputElement) {
-      inputElement.setSelectionRange(newCursorStart + offset, newCursorEnd + offset);
+      inputElement.setSelectionRange(newCursorStart, newCursorEnd);
     }
   }
 
