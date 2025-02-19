@@ -1,10 +1,11 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
+import { toValue, computed, watch } from "vue";
 
 import { vuelessConfig } from "../../utils/ui.ts";
 import { isCSR, isSSR } from "../../utils/helper.ts";
 
-import type { DefaultProps } from "tippy.js";
+import type { DefaultProps, Instance as TippyInstance, Props as TippyProps } from "tippy.js";
 import type {
   TippyTargetElement,
   DirectiveBindingContent,
@@ -49,6 +50,16 @@ function onMounted(
   ) {
     tippy(el, merge(settings, bindings.value || {}));
   }
+
+  const localBindings = computed(() => toValue(bindings));
+
+  watch(
+    localBindings,
+    () => {
+      updateTippyProps(el._tippy, localBindings.value.value);
+    },
+    { deep: true },
+  );
 }
 
 function onUpdated(el: TippyTargetElement, bindings: DirectiveBindingContent): void;
@@ -59,19 +70,25 @@ function onUpdated(
 ): void {
   if (!el._tippy || isSSR) return;
 
-  if (typeof bindings.value === "string") {
-    el._tippy.setProps(merge(settings, { content: bindings.value }));
-
-    return;
-  }
-
-  el._tippy.setProps(merge(settings, bindings.value || {}));
+  updateTippyProps(el._tippy, bindings.value);
 }
 
 function onUnmounted(el: TippyTargetElement) {
   if (!el._tippy || isSSR) return;
 
   el._tippy.destroy();
+}
+
+function updateTippyProps(tippyInstance: TippyInstance | undefined, props: string | TippyProps) {
+  if (!tippyInstance || isSSR) return;
+
+  if (typeof props === "string") {
+    tippyInstance.setProps(merge(settings, { content: props }));
+
+    return;
+  }
+
+  tippyInstance.setProps(merge(settings, props || {}));
 }
 
 export default {
