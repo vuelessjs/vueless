@@ -38,7 +38,7 @@ export async function copyVuelessComponent(options) {
   const isComponentExists = newComponentName in COMPONENTS || existsSync(destPath);
 
   if (isComponentExists) {
-    throw new Error(`Component with name ${newComponentName} alrady exists.`);
+    throw new Error(`Component with name ${newComponentName} already exists.`);
   }
 
   await cp(sourceComponentPath, destPath, { recursive: true });
@@ -46,7 +46,7 @@ export async function copyVuelessComponent(options) {
 
   const successMessage = styleText(
     "green",
-    `Success: ${componentName} was copied into ${destPath} directory.`,
+    `The '${componentName}' was successfully copied into the '${destPath}' directory.`,
   );
 
   console.log(successMessage);

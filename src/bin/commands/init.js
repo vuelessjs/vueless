@@ -28,7 +28,7 @@ export async function vuelessInit(options) {
 
   const successMessage = styleText(
     "green",
-    `'${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
+    `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
   );
 
   console.log(successMessage);
