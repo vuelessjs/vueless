@@ -26,7 +26,6 @@ export default /*tw*/ {
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
   description: "mt-1.5 text-sm font-normal text-gray-500",
-  headerRight: "",
   closeIcon: "{UIcon}",
   body: "space-y-4 px-4 md:px-8 text-sm",
   modalDivider: "{UDivider} pt-8",

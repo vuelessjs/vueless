@@ -97,14 +97,14 @@ const {
     v-bind="confirmModalAttrs"
     :data-test="getDataTest()"
   >
-    <template #header-left>
-      <!-- @slot Use it to add something to the left side of the header. -->
-      <slot name="header-left" />
-    </template>
-
     <template #before-title>
       <!-- @slot Use it to add something before the header title. -->
       <slot name="before-title" />
+    </template>
+
+    <template #title>
+      <!-- @slot Use it to add something to the left side of the header. -->
+      <slot name="title" />
     </template>
 
     <template #after-title>
@@ -112,17 +112,13 @@ const {
       <slot name="after-title" />
     </template>
 
-    <template #header-right>
-      <!-- @slot Use it to add something to the right side of the header. -->
-      <slot name="header-right" />
-    </template>
-
-    <template #close-button="{ iconName }">
+    <template #actions="{ iconName, close }">
       <!--
         @slot Use it to add something instead of the close button.
         @binding {string} icon-name
+        @binding {function} close
       -->
-      <slot name="close-button" :icon-name="iconName" />
+      <slot name="actions" :icon-name="iconName" :close="close" />
     </template>
 
     <!-- @slot Use it to add something into the modal body. -->

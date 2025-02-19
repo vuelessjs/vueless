@@ -47,6 +47,8 @@ const {
   descriptionAttrs,
   contentAttrs,
   footerAttrs,
+  footerLeftAttrs,
+  footerRightAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -55,10 +57,10 @@ const {
     <div v-if="isShownHeader" v-bind="headerAttrs">
       <div v-bind="headerLeftAttrs">
         <!-- @slot Use it to add something before left side of the header. -->
-        <slot name="header-left-before" />
+        <slot name="before-title" />
 
         <!-- @slot Use it to customise left side of the header. -->
-        <slot name="header-left">
+        <slot name="title">
           <div v-bind="headerLeftFallbackAttrs">
             <UHeader :label="title" size="xs" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
@@ -66,11 +68,11 @@ const {
         </slot>
 
         <!-- @slot Use it to add something after left side of the header. -->
-        <slot name="header-left-after" />
+        <slot name="after-title" />
       </div>
 
       <!-- @slot Use it to customise right side of the header. -->
-      <slot name="header-right" />
+      <slot name="actions" />
     </div>
 
     <div v-bind="contentAttrs">
@@ -81,11 +83,15 @@ const {
     <UDivider v-if="isShownFooter" padding="none" v-bind="cardDividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
-      <!-- @slot Use it to add something to the left side of the footer. -->
-      <slot name="footer-left" />
+      <div v-bind="footerLeftAttrs">
+        <!-- @slot Use it to add something to the left side of the footer. -->
+        <slot name="footer-left" />
+      </div>
 
-      <!-- @slot Use it to add something to the right side of the footer. -->
-      <slot name="footer-right" />
+      <div v-bind="footerRightAttrs">
+        <!-- @slot Use it to add something to the right side of the footer. -->
+        <slot name="footer-right" />
+      </div>
     </div>
   </div>
 </template>

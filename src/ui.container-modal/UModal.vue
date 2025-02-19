@@ -126,7 +126,6 @@ const {
   headerLeftAttrs,
   headerLeftFallbackAttrs,
   descriptionAttrs,
-  headerRightAttrs,
   bodyAttrs,
   footerLeftAttrs,
   footerAttrs,
@@ -153,11 +152,10 @@ const {
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
             <div v-bind="headerLeftAttrs">
+              <!-- @slot Use it to add something before the header title. -->
+              <slot name="before-title" />
               <!-- @slot Use it to add something to the left side of the header. -->
-              <slot name="header-left">
-                <!-- @slot Use it to add something before the header title. -->
-                <slot name="before-title" />
-
+              <slot name="title">
                 <div v-bind="headerLeftFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
@@ -181,23 +179,18 @@ const {
                   <UHeader :label="title" size="sm" v-bind="titleAttrs" />
                   <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
                 </div>
-
-                <!-- @slot Use it to add something after the header title. -->
-                <slot name="after-title" />
               </slot>
-            </div>
-
-            <div v-bind="headerRightAttrs">
-              <!-- @slot Use it to add something to the right side of the header. -->
-              <slot name="header-right" />
+              <!-- @slot Use it to add something after the header title. -->
+              <slot name="after-title" />
             </div>
 
             <div v-if="closeOnCross" v-bind="closeIconAttrs">
               <!--
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
+                @binding {function} close
               -->
-              <slot name="close-button" :icon-name="config.defaults.closeIcon">
+              <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
                 <UIcon
                   internal
                   interactive

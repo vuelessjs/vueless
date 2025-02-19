@@ -7,12 +7,14 @@ import {
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UAccordionArgs extends Props {
   slotTemplate?: string;
+  enum: "size";
 }
 
 export default {
@@ -20,26 +22,11 @@ export default {
   title: "Containers / Accordion",
   component: UAccordion,
   args: {
-    accordions: [
-      {
-        name: "Excellence",
-        title: "Excellence by necessity",
-        description: `As creators and maintainers of the technologies you are using,
-            our services are here to showcase the full power of our softwares.`,
-      },
-      {
-        name: "Innovation",
-        title: "Driving innovation forward",
-        description: `All the people that will be involved in delivering your project are contributing
-            to the technologies you are using, when they are not the creators themselves.`,
-      },
-      {
-        name: "Collaboration",
-        title: "Fostering collaboration",
-        description: `By working with us, you are directly supporting the open source community,
-            ensuring the ecosystem continuity and enabling Nuxt development.`,
-      },
-    ],
+    title: "Committed to Quality and Performance",
+    description: `
+      We take pride in delivering high-quality solutions tailored to your needs.
+      Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.
+    `,
   },
   argTypes: {
     ...getArgTypes(UAccordion.__name),
@@ -59,8 +46,46 @@ const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
     return { args, slots };
   },
   template: `
+    <UAccordion v-bind="args">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UAccordion>
+  `,
+});
+
+const AccordionsTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
+  components: { UAccordion, UButton },
+  setup() {
+    const slots = getSlotNames(UAccordion.__name);
+
+    const accordions = [
+      {
+        title: "Committed to Quality and Performance",
+        description: `
+          We take pride in delivering high-quality solutions tailored to your needs.
+          Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.
+        `,
+      },
+      {
+        title: "Pioneering Cutting-Edge Solutions",
+        description: `
+          Our team stays ahead of the curve, integrating the latest technologies and best practices
+          to drive innovation and create future-ready applications for your business.
+        `,
+      },
+      {
+        title: "Building Together for Long-Term Success",
+        description: `
+          We work closely with you to understand your goals, ensuring seamless communication
+          and a collaborative approach that leads to sustainable, impactful results.
+        `,
+      },
+    ];
+
+    return { args, slots, accordions };
+  },
+  template: `
     <UAccordion
-      v-for="(accordion, index) in args.accordions"
+      v-for="(accordion, index) in accordions"
       :key="index"
       v-bind="accordion"
     >
@@ -69,11 +94,32 @@ const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
   `,
 });
 
+const EnumVariantTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes }) => ({
+  components: { UAccordion, UCol },
+  setup() {
+    return { args, options: argTypes?.[args.enum]?.options };
+  },
+  template: `
+    <UCol>
+      <UAccordion
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        :[args.enum]="option"
+        :description="option"
+      />
+    </UCol>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Size = DefaultTemplate.bind({});
-Size.args = { size: "sm" };
+export const Accordions = AccordionsTemplate.bind({});
+Accordions.args = {};
+
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size", config: { accordionDivider: "hidden" } };
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {

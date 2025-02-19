@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -10,6 +11,8 @@ import UButton from "../../ui.button/UButton.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -26,7 +29,7 @@ export default {
   title: "Containers / Modal Confirm",
   component: UModalConfirm,
   args: {
-    title: "Complete the transfer?",
+    title: "Confirm Subscription Upgrade?",
     confirmLabel: "Confirm",
     modelValue: false,
   },
@@ -44,8 +47,7 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  It looks like you going to complete the transaction before the process will finished.
-  All unsaved data will be lost.
+  <p>You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.</p>
 `;
 
 const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
@@ -111,8 +113,50 @@ const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Description = DefaultTemplate.bind({});
+Description.args = {
+  description: "Are you sure you want to upgrade? Your new plan will take effect immediately.",
+};
+
+export const ConfirmLabel = DefaultTemplate.bind({});
+ConfirmLabel.args = { confirmLabel: "Upgrade" };
+ConfirmLabel.parameters = {
+  docs: {
+    description: {
+      story: "Set confirm button label.",
+    },
+  },
+};
+
+export const Inner = DefaultTemplate.bind({});
+Inner.args = { inner: true };
+Inner.parameters = {
+  docs: {
+    description: {
+      story: "Add extra top margin for modal inside another modal.",
+    },
+  },
+};
+
+export const Divider = DefaultTemplate.bind({});
+Divider.args = {
+  divider: true,
+  slotTemplate: `
+    ${defaultTemplate}
+    <template #footer-left>
+      <UButton label="Submit" />
+    </template>`,
+};
+Divider.parameters = {
+  docs: {
+    description: {
+      story: "Show divider between content and footer.",
+    },
+  },
+};
+
 export const WithoutCancelButton = DefaultTemplate.bind({});
-WithoutCancelButton.args = { cancelHidden: false };
+WithoutCancelButton.args = { cancelHidden: true };
 
 export const DisableAcceptButton = DefaultTemplate.bind({});
 DisableAcceptButton.args = { confirmDisabled: true };
@@ -123,61 +167,81 @@ Sizes.args = { enum: "size" };
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "confirmColor" };
 
-export const SlotBeforeTitle = DefaultTemplate.bind({});
-SlotBeforeTitle.args = {
-  slotTemplate: `
-    <template #before-title>
-      <UIcon name="star" color="gray" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({
+  components: { UModalConfirm, UIcon, UButton, UCol, UBadge, URow },
+  setup() {
+    const modalStates = ref({
+      beforeTitle: false,
+      title: false,
+      afterTitle: false,
+      actions: false,
+      footerLeft: false,
+      footerRight: false,
+    });
 
-export const SlotAfterTitle = DefaultTemplate.bind({});
-SlotAfterTitle.args = {
-  slotTemplate: `
-    <template #after-title>
-      <UIcon name="star" color="gray" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+    return { args, modalStates };
+  },
+  template: `
+    <UCol gap="lg">
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.beforeTitle">
+          <template #before-title>
+            <UIcon name="subscriptions" size="sm" />
+          </template>
+          ${defaultTemplate}
+        </UModalConfirm>
+        <UButton label="Show before-title slot modal" @click="modalStates.beforeTitle = true"/>
+      </div>
 
-export const SlotHeaderLeft = DefaultTemplate.bind({});
-SlotHeaderLeft.args = {
-  slotTemplate: `
-    <template #header-left>
-      <UHeader size="lg" label="Large title" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.title">
+          <template #title>
+            <UBadge label="Confirm Subscription Upgrade?" size="lg" />
+          </template>
+          ${defaultTemplate}
+        </UModalConfirm>
+        <UButton label="Show title slot modal" @click="modalStates.title = true"/>
+      </div>
 
-export const SlotHeaderRight = DefaultTemplate.bind({});
-SlotHeaderRight.args = {
-  slotTemplate: `
-    <template #header-right>
-      <UButton label="I'm in the right slot" size="sm" color="gray" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.afterTitle">
+          <template #after-title>
+            <UIcon name="verified" size="sm" />
+          </template>
+          ${defaultTemplate}
+        </UModalConfirm>
+        <UButton label="Show after-title slot modal" @click="modalStates.afterTitle = true"/>
+      </div>
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
-  slotTemplate: `
-    <template #default>
-      🤘🤘🤘
-    </template>
-  `,
-};
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.actions">
+          <template #actions="{ close }">
+            <UButton size="sm" color="grayscale" label="Close" @click="close" />
+          </template>
+          ${defaultTemplate}
+        </UModalConfirm>
+        <UButton label="Show actions slot modal" @click="modalStates.actions = true"/>
+      </div>
 
-export const SlotFooterRight = DefaultTemplate.bind({});
-SlotFooterRight.args = {
-  slotTemplate: `
-    ${defaultTemplate}
-    <template #footer-right>
-      <UButton label="I'm in the right slot" size="sm" color="gray" />
-    </template>
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.footerLeft">
+          ${defaultTemplate}
+          <template #footer-left>
+            <UButton label="Back" />
+          </template>
+        </UModalConfirm>
+        <UButton label="Show footer-left modal" @click="modalStates.footerLeft = true"/>
+      </div>
+
+      <div>
+        <UModalConfirm v-bind="args" v-model="modalStates.footerRight">
+          ${defaultTemplate}
+          <template #footer-right>
+            <UButton label="Submit" />
+          </template>
+        </UModalConfirm>
+        <UButton label="Show footer-right modal" @click="modalStates.footerRight = true"/>
+      </div>
+    </UCol>
   `,
-};
+});
