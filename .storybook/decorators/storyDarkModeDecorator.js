@@ -13,7 +13,7 @@ export const storyDarkModeDecorator = () => {
   document.body.classList.add(storybookTheme);
 
   // this fixing white blink issue
-  if (window.location.toString().includes("/docs/")) {
+  if (window.location.toString().includes("viewMode=docs")) {
     document.documentElement.classList.add(storybookTheme);
 
     setTimeout(() => {
