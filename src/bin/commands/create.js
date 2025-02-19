@@ -32,7 +32,7 @@ export async function createVuelessComponent(options) {
   const isComponentExists = componentName in COMPONENTS || existsSync(destPath);
 
   if (isComponentExists) {
-    throw new Error(`Component with name ${componentName} alrady exists.`);
+    throw new Error(`Component with name ${componentName} already exists.`);
   }
 
   await cp(boilerplatePath, destPath, { recursive: true });
@@ -41,7 +41,7 @@ export async function createVuelessComponent(options) {
 
   const successMessage = styleText(
     "green",
-    `Success: ${componentName} was created in ${destPath} directory.`,
+    `The '${componentName}' was successfully created in the '${destPath}' directory.`,
   );
 
   console.log(successMessage);

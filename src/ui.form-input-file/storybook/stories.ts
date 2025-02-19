@@ -43,14 +43,12 @@ const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
   data() {
     return {
       files: [],
-      error: args.error || "",
     };
   },
   template: `
     <UInputFile
       v-bind="args"
       v-model="files"
-      v-model:error="error"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UInputFile>
