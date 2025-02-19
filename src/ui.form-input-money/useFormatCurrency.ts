@@ -199,10 +199,13 @@ export default function useFormatCurrency(
       0,
       options.value.maxFractionDigits,
     );
+    const actualMinFractionDigits = options.value.minFractionDigits
+      ? options.value.minFractionDigits
+      : currentFraction.length;
 
     const newFormattedValue = getFormattedValue(newRawValue, {
       ...options.value,
-      minFractionDigits: currentFraction.length,
+      minFractionDigits: actualMinFractionDigits,
     });
 
     if (Number.isNaN(newFormattedValue) || newFormattedValue.includes("NaN")) {
