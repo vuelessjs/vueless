@@ -20,7 +20,7 @@ export interface Props {
   align?: "left" | "center" | "right";
 
   /**
-   * Remove line height (useful for 1-line text).
+   * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
 

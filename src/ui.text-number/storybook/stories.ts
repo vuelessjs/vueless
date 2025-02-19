@@ -12,7 +12,7 @@ import type { Props } from "../types.ts";
 
 interface UNumberArgs extends Props {
   slotTemplate?: string;
-  enum: "color" | "size" | "sign";
+  enum: "color" | "size" | "sign" | "align";
 }
 
 export default {
@@ -48,7 +48,7 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
     return { args, options: argTypes?.[args.enum]?.options };
   },
   template: `
-    <URow>
+    <URow :class="{ '!flex-col items-stretch': args.enum === 'align' }">
       <UNumber
         v-for="(option, index) in options"
         :key="index"
@@ -67,6 +67,12 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Sign = EnumVariantTemplate.bind({});
+Sign.args = { enum: "sign" };
+
+export const Align = EnumVariantTemplate.bind({});
+Align.args = { enum: "align" };
+
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = {
   enum: "color",
@@ -76,11 +82,40 @@ Colors.args = {
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Sign = EnumVariantTemplate.bind({});
-Sign.args = { enum: "sign" };
+export const LimitFractionDigits = DefaultTemplate.bind({});
+LimitFractionDigits.args = {
+  minFractionDigits: 4,
+  maxFractionDigits: 6,
+};
+LimitFractionDigits.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "`minFractionDigits` and `maxFractionDigits` props determine the minimum/maximum number of digits to display after the decimal separator.",
+    },
+  },
+};
 
-export const MinFractionDigits4 = DefaultTemplate.bind({});
-MinFractionDigits4.args = { minFractionDigits: 4, maxFractionDigits: 4 };
+export const DecimalSeparator = DefaultTemplate.bind({});
+DecimalSeparator.args = { decimalSeparator: "." };
+DecimalSeparator.parameters = {
+  docs: {
+    description: {
+      story: "A symbol used to separate the integer part from the fractional part of a number.",
+    },
+  },
+};
+
+export const ThousandsSeparator = DefaultTemplate.bind({});
+ThousandsSeparator.args = { value: -1400000.24, thousandsSeparator: "-" };
+ThousandsSeparator.parameters = {
+  docs: {
+    description: {
+      story: "A symbol used to separate the thousand parts of a number.",
+    },
+  },
+};
 
 export const Slots: StoryFn<UNumberArgs> = (args) => ({
   components: { UNumber, UIcon, URow, UBadge },

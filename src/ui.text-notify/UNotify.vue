@@ -187,21 +187,11 @@ const {
       />
 
       <div v-bind="contentAttrs">
-        <template v-if="html">
-          <span v-bind="labelAttrs" v-html="notification.label" />
-          <span
-            v-bind="descriptionAttrs"
-            v-html="getText(notification.description, notification.type)"
-          />
-        </template>
-
-        <template v-else>
-          <span v-bind="labelAttrs" v-text="notification.label" />
-          <span
-            v-bind="descriptionAttrs"
-            v-text="getText(notification.description, notification.type)"
-          />
-        </template>
+        <span v-bind="labelAttrs" v-text="notification.label" />
+        <span
+          v-bind="descriptionAttrs"
+          v-text="getText(notification.description, notification.type)"
+        />
       </div>
 
       <UIcon

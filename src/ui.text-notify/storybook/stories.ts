@@ -106,6 +106,13 @@ Default.args = {};
 
 export const Position = DefaultTemplate.bind({});
 Position.args = { xPosition: "right", yPosition: "bottom" };
+Position.parameters = {
+  docs: {
+    description: {
+      story: "Control notify's position in your layout via `xPosition` and `yPosition` props.",
+    },
+  },
+};
 
 export const Types = TypesTemplate.bind({});
 Types.args = {};
