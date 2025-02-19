@@ -49,7 +49,7 @@ export default /*tw*/ {
   bodyRowBeforeChecked: "{>bodyRowChecked} !p-0",
   bodyRowBeforeCell: "{>bodyCellBase} py-1",
   bodyRowAfter: "!p-0",
-  bodyRowDateDivider: "",
+  bodyRowDateDivider: "group/row-divider",
   bodyRowCheckedDateDivider: "{>bodyRowChecked} {>bodyRowChecked}",
   bodyCellBase: {
     base: "p-4 truncate align-top",
@@ -76,7 +76,7 @@ export default /*tw*/ {
   },
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: {
-    base: "{UDivider}",
+    base: "{UDivider} group-first/row-divider:mt-2",
     label: "py-0",
   },
   bodySelectedDateDivider: {
