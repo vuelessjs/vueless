@@ -48,7 +48,7 @@ export interface Props {
   /**
    * Money currency symbol align.
    */
-  symbolAlign?: "right" | "left";
+  symbolAlign?: "left" | "right";
 
   /**
    * Add space between currency symbol and sum.

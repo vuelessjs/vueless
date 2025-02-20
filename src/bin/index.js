@@ -2,6 +2,8 @@
 
 /* eslint-disable no-console */
 
+import { styleText } from "node:util";
+
 import { commands } from "./commands/index.js";
 
 import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "../constants.js";
@@ -16,9 +18,9 @@ try {
   if (command in commands) {
     commands[command](options);
   } else {
-    throw new Error(`There is no such command: ${command}`);
+    throw new Error(styleText("red", `There is no such command: ${command}`));
   }
 } catch (error) {
-  console.error(error.message);
+  console.error(styleText("red", error.message));
   process.exit(error.code || FAILURE_CODE);
 }

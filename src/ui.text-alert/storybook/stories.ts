@@ -10,6 +10,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -24,8 +25,7 @@ export default {
   title: "Text & Content / Alert",
   component: UAlert,
   args: {
-    title: "Default Title",
-    description: "Default Description",
+    title: "Network Error",
   },
   argTypes: {
     ...getArgTypes(UAlert.__name),
@@ -82,78 +82,38 @@ const EnumVariantTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs, { argTypes }
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Description = DefaultTemplate.bind({});
+Description.args = {
+  description:
+    "Unable to connect to the server. Please check your internet connection and try again.",
+};
+
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Bordered = DefaultTemplate.bind({});
+Bordered.args = {
+  title: "Your connection is secure",
+  variant: "thirdary",
+  bordered: true,
+  color: "green",
+};
+Bordered.parameters = {
+  docs: {
+    description: {
+      story: "Add border to the `thirdary` variant.",
+    },
+  },
+};
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const HTML = DefaultTemplate.bind({});
-HTML.args = {
-  title: "",
-  description: "",
-  slotTemplate: `
-    <h3 class="text-lg font-medium mb-2">Important Security Update</h3>
-    <p class="mb-0.5">
-      <b>Your account password will expire in 10 days,</b> please update it to maintain account security.
-    </p>
-    <a href="https://security.example.com/password-update" target="_blank">Update Password</a>
-  `,
-};
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const Closable = DefaultTemplate.bind({});
 Closable.args = { closable: true };
-
-export const Paragraphs = DefaultTemplate.bind({});
-Paragraphs.args = {
-  slotTemplate: `
-    <template #default>
-      <p>
-        Please be aware that the scheduled maintenance will occur this Saturday,
-        from 12 AM to 4 AM. During this time, some services may be temporarily
-        unavailable.
-      </p>
-      <p>
-        We apologize for any inconvenience this may cause and
-        appreciate your understanding. Our team is committed to improving
-        the system's performance and reliability.
-      </p>
-    </template>
-  `,
-};
-
-export const List = DefaultTemplate.bind({});
-List.args = {
-  slotTemplate: `
-    <URow>
-      <ul>
-        <li>Check your email for verification link.</li>
-        <li>Update your password regularly to enhance security.</li>
-        <li>Enable two-factor authentication for added protection.</li>
-      </ul>
-      <ol>
-        <li>Sign in to your account using your credentials.</li>
-        <li>Navigate to the settings menu to update your profile.</li>
-        <li>Review your privacy settings and adjust them as needed.</li>
-      </ol>
-    </URow>
-  `,
-};
-
-export const SlotTitleAndDescription = DefaultTemplate.bind({});
-SlotTitleAndDescription.args = {
-  slotTemplate: `
-    <template #title>
-      <div class="text-lg font-semibold">This is a custom title for the alert.</div>
-    </template>
-    <template #description>
-      <div class="italic">This is a custom description for the alert.</div>
-    </template>
-  `,
-};
 
 export const SlotClose = DefaultTemplate.bind({});
 SlotClose.args = {
@@ -170,50 +130,61 @@ SlotClose.args = {
   `,
 };
 
-export const SlotLeft = DefaultTemplate.bind({});
-SlotLeft.args = {
-  slotTemplate: `
-    <template #left>
-      <UIcon
-        name="star"
-        color="gray"
-      />
-    </template>
-  `,
-};
+export const Slots: StoryFn<UAlertArgs> = (args) => ({
+  components: { UAlert, UIcon, URow, UCol, UBadge },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UCol>
+      <URow>
+        <UAlert v-bind="args">
+          <template #title>
+            <UBadge
+              label="Connection lost"
+              size="lg"
+              color="red"
+              variant="secondary"
+            />
+          </template>
+        </UAlert>
 
-export const SlotRight = DefaultTemplate.bind({});
-SlotRight.args = {
-  slotTemplate: `
-    <template #right>
-        <UIcon
-        name="star"
-        color="gray"
-      />
-    </template>
-  `,
-};
+        <UAlert v-bind="args">
+          <template #description>
+            <UBadge
+              label="We are trying to reconnect. Please wait a moment or check your network settings."
+              color="red"
+              variant="thirdary"
+            />
+          </template>
+        </UAlert>
+      </URow>
 
-export const SlotTop = DefaultTemplate.bind({});
-SlotTop.args = {
-  slotTemplate: `
-    <template #top>
-      <UIcon
-        name="star"
-        color="gray"
-      />
-    </template>
-  `,
-};
+      <URow>
+        <UAlert v-bind="args">
+          <template #top>
+            <UIcon name="wifi_off" color="red" />
+          </template>
+        </UAlert>
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
-  slotTemplate: `
-    <template #bottom>
-      <UIcon
-        name="star"
-        color="gray"
-      />
-    </template>
+        <UAlert v-bind="args">
+          <template #bottom>
+            <UIcon name="sync" color="blue" />
+          </template>
+        </UAlert>
+
+        <UAlert v-bind="args">
+          <template #left>
+            <UIcon name="warning" color="yellow" />
+          </template>
+        </UAlert>
+
+        <UAlert v-bind="args" label="Delete">
+          <template #right>
+            <UIcon name="play_arrow" color="green" />
+          </template>
+        </UAlert>
+      </URow>
+    </UCol>
   `,
-};
+});

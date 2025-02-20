@@ -7,13 +7,15 @@ import {
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UTextArgs extends Props {
   slotTemplate?: string;
-  enum: "size";
+  enum: "size" | "align";
 }
 
 export default {
@@ -33,14 +35,13 @@ export default {
 
 const defaultTemplate = `
   <p>
-    <b>To proceed with your registration</b>, please enter your
-      <u>email address</u> in the field below. <i>A verification link</i> will be sent to your inbox shortly.
-    <a href="https://uk.wikipedia.org/wiki/Lorem_ipsum" target="_blank">Wikipedia</a>
+    <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
+    <i>A verification link</i> will be sent to your inbox shortly.
   </p>
 `;
 
 const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
-  components: { UText, URow },
+  components: { UText, URow, UBadge },
   setup() {
     const slots = getSlotNames(UText.__name);
 
@@ -54,7 +55,7 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
-  components: { UText, URow },
+  components: { UText, UCol },
   setup() {
     return {
       args,
@@ -62,24 +63,40 @@ const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) 
     };
   },
   template: `
-    <URow>
+    <UCol>
       <UText
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
+        class="w-full"
       >
         ${args.slotTemplate || defaultTemplate}
       </UText>
-    </URow>
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Align = EnumVariantTemplate.bind({});
+Align.args = { enum: "align" };
+
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
+
+export const Line = DefaultTemplate.bind({});
+Line.args = {
+  line: true,
+};
+Line.parameters = {
+  docs: {
+    description: {
+      story: "Removes text line height (useful for 1-line text).",
+    },
+  },
+};
 
 export const Paragraphs = DefaultTemplate.bind({});
 Paragraphs.args = {
@@ -123,5 +140,14 @@ List.args = {
         </ol>
       </URow>
     </template>
+  `,
+};
+
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
+  slotTemplate: `
+    <UText>To proceed with your registration, please enter your
+    <UBadge label="email address" v-bind="args" color="green" /> in the field below.
+    A verification link will be sent to your inbox shortly.</UText>
   `,
 };

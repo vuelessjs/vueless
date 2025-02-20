@@ -68,7 +68,7 @@ export interface Props {
   /**
    * Number align.
    */
-  align?: "right" | "left";
+  align?: "left" | "right";
 
   /**
    * Component config object.

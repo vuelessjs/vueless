@@ -6,12 +6,15 @@ import {
 } from "../../utils/storybook.ts";
 
 import UFiles from "../../ui.text-files/UFiles.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UFilesArgs extends Props {
   slotTemplate?: string;
+  enum: "size" | "labelAlign";
 }
 
 export default {
@@ -19,10 +22,12 @@ export default {
   title: "Text & Content / Files",
   component: UFiles,
   args: {
-    label: "Label",
+    label: "Documents",
     fileList: [
-      new File(["foo"], "foo.txt", { type: "text/plain" }),
-      new File(["bar"], "foo.txt", { type: "text/plain" }),
+      new File(["Company_Report_2025"], "Company_Report_2025.pdf", { type: "application/pdf" }),
+      new File(["Employee_Resumes"], "Employee_Resumes.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      }),
     ],
   },
   argTypes: {
@@ -49,5 +54,57 @@ const DefaultTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs) => ({
   `,
 });
 
+const EnumVariantTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs, { argTypes }) => ({
+  components: { UFiles, URow },
+  setup() {
+    return { args, options: argTypes?.[args.enum]?.options };
+  },
+  template: `
+    <URow>
+      <UFiles
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
+      />
+    </URow>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Description = DefaultTemplate.bind({});
+Description.args = {
+  description: "These files include important documents like reports and employee data.",
+};
+
+export const Removable = DefaultTemplate.bind({});
+Removable.args = { removable: true };
+
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = {
+  enum: "labelAlign",
+  description: "These files include important documents like reports and employee data.",
+};
+
+export const Slots: StoryFn<UFilesArgs> = (args) => ({
+  components: { UFiles, URow, UIcon },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UFiles v-bind="args">
+      <template #left="{ index }">
+        <UIcon v-if="index === 0" name="info" color="orange" size="xs" />
+      </template>
+      <template #right="{ index }">
+        <UIcon v-if="index === 1" name="check_circle" color="green" size="xs" />
+      </template>
+    </UFiles>
+  `,
+});

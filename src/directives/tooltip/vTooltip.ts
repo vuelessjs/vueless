@@ -4,7 +4,7 @@ import { merge } from "lodash-es";
 import { vuelessConfig } from "../../utils/ui.ts";
 import { isCSR, isSSR } from "../../utils/helper.ts";
 
-import type { DefaultProps } from "tippy.js";
+import type { DefaultProps, Instance as TippyInstance, Props as TippyProps } from "tippy.js";
 import type {
   TippyTargetElement,
   DirectiveBindingContent,
@@ -36,19 +36,7 @@ function onMounted(
 ): void {
   if (isSSR) return;
 
-  if (typeof bindings.value === "string" && bindings.value.length) {
-    tippy(el, merge(settings, { content: bindings.value }));
-
-    return;
-  }
-
-  if (
-    typeof bindings.value !== "string" &&
-    bindings.value.content &&
-    String(bindings.value.content).length
-  ) {
-    tippy(el, merge(settings, bindings.value || {}));
-  }
+  setUpTippy(el, bindings.value);
 }
 
 function onUpdated(el: TippyTargetElement, bindings: DirectiveBindingContent): void;
@@ -57,21 +45,45 @@ function onUpdated(
   el: TippyTargetElement,
   bindings: DirectiveBindingProps | DirectiveBindingContent,
 ): void {
-  if (!el._tippy || isSSR) return;
+  if (isSSR) return;
 
-  if (typeof bindings.value === "string") {
-    el._tippy.setProps(merge(settings, { content: bindings.value }));
+  if (!el._tippy) {
+    setUpTippy(el, bindings.value);
 
     return;
   }
 
-  el._tippy.setProps(merge(settings, bindings.value || {}));
+  updateTippyProps(el._tippy, bindings.value);
 }
 
 function onUnmounted(el: TippyTargetElement) {
   if (!el._tippy || isSSR) return;
 
   el._tippy.destroy();
+}
+
+function setUpTippy(el: HTMLElement, props: string | TippyProps) {
+  if (typeof props === "string" && props.length) {
+    tippy(el, merge(settings, { content: props }));
+
+    return;
+  }
+
+  if (typeof props !== "string" && props.content && String(props.content).length) {
+    tippy(el, merge(settings, props || {}));
+  }
+}
+
+function updateTippyProps(tippyInstance: TippyInstance | undefined, props: string | TippyProps) {
+  if (!tippyInstance || isSSR) return;
+
+  if (typeof props === "string") {
+    tippyInstance.setProps(merge(settings, { content: props }));
+
+    return;
+  }
+
+  tippyInstance.setProps(merge(settings, props || {}));
 }
 
 export default {

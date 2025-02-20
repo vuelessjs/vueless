@@ -7,6 +7,7 @@ import {
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -21,7 +22,7 @@ export default {
   title: "Text & Content / Header",
   component: UHeader,
   args: {
-    label: "Header",
+    label: "Dashboard",
   },
   argTypes: {
     ...getArgTypes(UHeader.__name),
@@ -34,7 +35,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
-  components: { UHeader },
+  components: { UHeader, UBadge },
   setup() {
     const slots = getSlotNames(UHeader.__name);
 
@@ -62,7 +63,7 @@ const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :label="'Header ' + option"
+        :label="args.label + ' (' + option + ')'"
       />
     </UCol>
   `,
@@ -79,10 +80,24 @@ Underlined.args = { enum: "size", underlined: true };
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
-  size: "2xl",
-  line: false,
-  label: "Some very long header you ever may imagine in your whole long and beautiful life",
+  size: "xl",
+  line: true,
+  label: "Detailed Analysis of User Engagement Metrics",
+};
+Line.parameters = {
+  docs: {
+    description: {
+      story: "Removes text line height (useful for 1-line text).",
+    },
+  },
 };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
+
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
+  slotTemplate: `
+    <UBadge v-bind="args" size="lg" color="green" />
+  `,
+};
