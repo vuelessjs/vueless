@@ -65,7 +65,7 @@ export default {
 } as Meta;
 
 function getDateDividerRow(rowAmount: number) {
-  return Array(10)
+  return Array(rowAmount)
     .fill({})
     .map((_, index) => {
       let rowDate = new Date().toString();
@@ -344,11 +344,14 @@ export const DateDivider = DefaultTemplate.bind({});
 DateDivider.args = { dateDivider: true, rows: getDateDividerRow(10) };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
+
+const dateDividerCustomLabelRows = getDateDividerRow(10);
+
 DateDividerCustomLabel.args = {
-  rows: getDateDividerRow(10),
+  rows: dateDividerCustomLabelRows,
   dateDivider: [
     {
-      date: new Date().toString(),
+      date: dateDividerCustomLabelRows.at(6)!.rowDate,
       label: "Custom label for specific date",
       config: { label: "!text-orange-400", divider: "!border-orange-300" },
     },
