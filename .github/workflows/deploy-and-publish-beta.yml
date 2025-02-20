@@ -19,6 +19,18 @@ jobs:
       - run: npm ci
       - run: npm run lint:ci
 
+  test:
+    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:ci
+
   publish-npm:
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
