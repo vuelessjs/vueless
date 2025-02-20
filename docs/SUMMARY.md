@@ -31,6 +31,13 @@
 * [Defining custom props](component-customization/defining-custom-props.md)
 * [Internationalization (i18n)](component-customization/internationalization-i18n.md)
 
+## Creating own components <a href="#own-components" id="own-components"></a>
+
+* [Vueless file structure](own-components/vueless-file-structure.md)
+* [Vueless component anatomy](own-components/vueless-component-anatomy.md)
+* [Create new component](own-components/create-new-component.md)
+* [Copy existing component](own-components/copy-existing-component.md)
+
 ## Svg Icons
 
 * [General usage](svg-icons/general-usage.md)

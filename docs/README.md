@@ -6,24 +6,28 @@
 {% tab title="npm" %}
 ```bash
 npm install vueless
+npx vueless init
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
 yarn add vueless
+yarn vueless init
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
 pnpm add vueless
+pnpm exec vueless init
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
 bun add vueless
+bunx vueless init
 ```
 {% endtab %}
 {% endtabs %}

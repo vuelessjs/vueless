@@ -56,6 +56,9 @@ async function modifyCreatedComponent(destPath, componentName, newComponentName)
   const destFiles = await getDirFiles(destPath, "");
   const storybookId = await getStorybookId();
 
+  const componentFileName = `${componentName}.vue`;
+  const newComponentFileName = `${newComponentName}.vue`;
+
   for await (const filePath of destFiles) {
     const fileContent = await readFile(filePath, "utf-8");
 
@@ -78,13 +81,13 @@ async function modifyCreatedComponent(destPath, componentName, newComponentName)
       storyLines[storyIdIndex] = `  id: "${storybookId}",`;
       storyLines[storyTitleIndex] = `  title: "Custom / ${newComponentName}",`;
       storyLines[storyComponentImportIndex] =
-        `import ${newComponentName} from "../${newComponentName}.vue"`;
+        `import ${newComponentName} from "../${newComponentFileName}"`;
 
       updatedContent = storyLines.join("\n").replaceAll(componentName, newComponentName);
     }
 
-    if (targetPath.endsWith(`${componentName}.vue`)) {
-      targetPath = targetPath.replace(componentName, newComponentName);
+    if (targetPath.endsWith(componentFileName)) {
+      targetPath = targetPath.replace(componentFileName, newComponentFileName);
 
       await rename(filePath, targetPath);
     }

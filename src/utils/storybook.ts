@@ -61,27 +61,6 @@ export function getSlotNames(componentName: string | undefined) {
   return getComponentData(componentName as ComponentNames)?.slots?.map((item) => item.name);
 }
 
-/**
- * Create story param config to show component description with a link on GitHub.
- */
-export function getDocsDescription(componentName: string | undefined) {
-  if (!componentName) {
-    return {};
-  }
-
-  let viewOnGitHub = "";
-
-  if (COMPONENTS[componentName as ComponentNames]) {
-    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
-  }
-
-  return {
-    description: {
-      component: `The \`${componentName}\` component. ${viewOnGitHub}`,
-    },
-  };
-}
-
 export function getArgTypes(componentName: string | undefined) {
   if (!componentName) return;
 
@@ -323,4 +302,25 @@ export function getSlotsFragment(defaultTemplate: string) {
     <template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
   </template>
 `;
+}
+
+/**
+ * Create story param config to show component description with a link on GitHub.
+ */
+export function getDocsDescription(componentName: string | undefined) {
+  if (!componentName) {
+    return {};
+  }
+
+  let viewOnGitHub = "";
+
+  if (COMPONENTS[componentName as ComponentNames]) {
+    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
+  }
+
+  return {
+    description: {
+      component: `The \`${componentName}\` component. ${viewOnGitHub}`,
+    },
+  };
 }

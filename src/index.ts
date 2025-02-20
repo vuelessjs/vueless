@@ -9,7 +9,7 @@ import type { CreateVuelessOptions } from "./types.ts"
 
 export { setTheme } from "./utils/theme.ts";
 export { cx, cva, compose, getDefaults } from "./utils/ui.ts";
-export { getArgTypes, getSlotNames, getSlotsFragment, getSource } from "./utils/storybook.ts";
+export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook.ts";
 export { isSSR, isCSR, getRandomId, setTitle, createDebounce, hasSlotContent } from "./utils/helper.ts";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform.ts";
 export { default as createVueI18nAdapter } from "./adatper.locale/vue-i18n.ts";

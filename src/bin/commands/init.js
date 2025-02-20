@@ -2,10 +2,11 @@
 
 import { cwd } from "node:process";
 import path from "node:path";
-import { writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { DEFAULT_VUELESS_CONFIG_CONTNET } from "../constants.js";
+import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
 import { JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
 const vuelessInitOptions = ["--ts", "--js"];
@@ -24,7 +25,22 @@ export async function vuelessInit(options) {
     ext: fileExt,
   });
 
-  await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTNET, "utf-8");
+  if (existsSync(formattedDestPath)) {
+    const timestamp = new Date().valueOf();
+    const renamedTarget = `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`;
+
+    await rename(formattedDestPath, renamedTarget);
+
+    const warnMessage = styleText(
+      "yellow",
+      // eslint-disable-next-line vue/max-len
+      `Current Vueless config backed into: '${path.basename(renamedTarget)}' folder. Don't forget to remove it before commit.`,
+    );
+
+    console.warn(warnMessage);
+  }
+
+  await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
 
   const successMessage = styleText(
     "green",
