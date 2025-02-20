@@ -64,16 +64,30 @@ export default {
   },
 } as Meta;
 
-function getDateDividerRow() {
-  return {
-    id: getRandomId(),
-    isChecked: false,
-    rowDate: new Date().toString(),
-    key_1: "Info",
-    key_2: "Statistics",
-    key_3: "Reports",
-    key_4: "Discounts",
-  };
+function getDateDividerRow(rowAmount: number) {
+  return Array(rowAmount)
+    .fill({})
+    .map((_, index) => {
+      let rowDate = new Date().toString();
+
+      if (index > Math.round(rowAmount / 2)) {
+        const date = new Date();
+
+        date.setFullYear(date.getFullYear() + 1);
+
+        rowDate = date.toDateString();
+      }
+
+      return {
+        id: getRandomId(),
+        isChecked: false,
+        rowDate,
+        key_1: "Info",
+        key_2: "Statistics",
+        key_3: "Reports",
+        key_4: "Discounts",
+      };
+    });
 }
 
 function getNestedRow() {
@@ -327,16 +341,17 @@ export const Compact = DefaultTemplate.bind({});
 Compact.args = { compact: true };
 
 export const DateDivider = DefaultTemplate.bind({});
-DateDivider.args = { dateDivider: true, row: getDateDividerRow };
+DateDivider.args = { dateDivider: true, rows: getDateDividerRow(10) };
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
+
+const dateDividerCustomLabelRows = getDateDividerRow(10);
+
 DateDividerCustomLabel.args = {
-  rows: Array(10)
-    .fill({})
-    .map(() => getDateDividerRow()),
+  rows: dateDividerCustomLabelRows,
   dateDivider: [
     {
-      date: new Date().toString(),
+      date: dateDividerCustomLabelRows.at(6)!.rowDate,
       label: "Custom label for specific date",
       config: { label: "!text-orange-400", divider: "!border-orange-300" },
     },
