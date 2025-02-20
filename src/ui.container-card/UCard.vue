@@ -22,8 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 
 const isShownHeader = computed(() => {
-  const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
-  const isHeaderRightSlot = hasSlotContent(slots["header-left"]);
+  const isHeaderLeftSlot = hasSlotContent(slots["title"]);
+  const isHeaderRightSlot = hasSlotContent(slots["title"]);
 
   return props.title || isHeaderLeftSlot || isHeaderRightSlot;
 });

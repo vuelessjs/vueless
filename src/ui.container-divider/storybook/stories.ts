@@ -7,6 +7,7 @@ import {
 
 import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -38,14 +39,22 @@ const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
     return { args, slots };
   },
   template: `
+    <p>
+      Understanding your clients' needs is essential for building long-term business relationships.
+      By analyzing customer behavior and feedback, companies can tailor their services to provide more value.
+    </p>
     <UDivider v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDivider>
+    <p>
+      Businesses that prioritize customer satisfaction see higher retention rates and increased referrals.
+      Implementing a structured follow-up process can help maintain strong client engagement and trust.
+    </p>
   `,
 });
 
 const EnumVariantTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) => ({
-  components: { UDivider, URow },
+  components: { UDivider, URow, UCol },
   setup() {
     return {
       args,
@@ -53,14 +62,21 @@ const EnumVariantTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTyp
     };
   },
   template: `
-    <URow>
-      <UDivider
-        class="w-1/4"
+    <URow gap="xl">
+      <UCol
         v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
         :key="index"
-      />
+        gap="none"
+        class="w-1/4"
+      >
+        <p>{{ option }}</p>
+        <UDivider
+          v-bind="args"
+          :[args.enum]="option"
+          :key="index"
+        />
+        <p>{{ option }}</p>
+      </UCol>
     </URow>
   `,
 });
@@ -86,11 +102,18 @@ Dotted.args = { dotted: true };
 export const Vertical = DefaultTemplate.bind({});
 Vertical.args = {
   vertical: true,
-  label: "label",
+  label: "Feedback",
   config: {
     wrapper: "!h-32",
   },
 };
 
 export const NoBorder = DefaultTemplate.bind({});
-NoBorder.args = { label: "label", border: false };
+NoBorder.args = { label: "Customer Feedback", border: false };
+NoBorder.parameters = {
+  docs: {
+    description: {
+      story: "Keep only spacings by setting `border` prop to `false`.",
+    },
+  },
+};

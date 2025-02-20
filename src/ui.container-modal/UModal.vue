@@ -55,8 +55,8 @@ const isShownArrowButton = computed(() => {
 const isExistHeader = computed(() => {
   return (
     props.title ||
-    hasSlotContent(slots["header-left"]) ||
     hasSlotContent(slots["before-title"]) ||
+    hasSlotContent(slots["title"]) ||
     hasSlotContent(slots["after-title"]) ||
     hasSlotContent(slots["header-right"])
   );

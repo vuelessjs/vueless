@@ -7,7 +7,6 @@ import {
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
-import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -95,20 +94,18 @@ const AccordionsTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes }) => ({
-  components: { UAccordion, UCol },
+  components: { UAccordion },
   setup() {
     return { args, options: argTypes?.[args.enum]?.options };
   },
   template: `
-    <UCol>
-      <UAccordion
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :description="option"
-      />
-    </UCol>
+    <UAccordion
+      v-for="(option, index) in options"
+      :key="index"
+      v-bind="args"
+      :[args.enum]="option"
+      :description="option"
+    />
   `,
 });
 
@@ -119,7 +116,7 @@ export const Accordions = AccordionsTemplate.bind({});
 Accordions.args = {};
 
 export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size", config: { accordionDivider: "hidden" } };
+Size.args = { enum: "size" };
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {

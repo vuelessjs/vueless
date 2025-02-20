@@ -118,8 +118,53 @@ Description.args = {
   description: "Upgrade your subscription to unlock premium features and benefits.",
 };
 
-export const Inner = DefaultTemplate.bind({});
-Inner.args = { inner: true };
+export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
+  components: { UModal, UButton },
+  setup() {
+    const showMainModal = ref(false);
+    const showInnerModal = ref(false);
+
+    function openMainModal() {
+      showMainModal.value = true;
+    }
+
+    function openInnerModal() {
+      showInnerModal.value = true;
+    }
+
+    return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
+  },
+  template: `
+    <div>
+      <UModal v-bind="args" v-model="showMainModal">
+        <p>
+          Are you sure you want to cancel your subscription?
+          This action will remove access to premium features and cannot be undone.
+        </p>
+        <UButton label="View Plan Details" @click="openInnerModal"/>
+
+        <UModal
+          v-model="showInnerModal"
+          title="Current Plan Details"
+          description="
+            Your current plan includes unlimited access to premium content,
+            priority support, and exclusive features.
+          "
+          inner
+        >
+          <p>Consider downgrading instead of canceling</p>
+        </UModal>
+
+        <template #footer-right>
+          <UButton label="Cancel" variant="secondary" @click="showMainModal = false" />
+          <UButton label="Confirm" @click="showMainModal = false" />
+        </template>
+      </UModal>
+
+      <UButton label="Manage Subscription" @click="openMainModal"/>
+    </div>
+  `,
+});
 Inner.parameters = {
   docs: {
     description: {

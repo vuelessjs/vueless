@@ -37,10 +37,10 @@ const { isMobileBreakpoint } = useBreakpoint();
 const isExistHeader = computed(() => {
   return (
     props.title ||
-    hasSlotContent(slots["header-left"]) ||
-    hasSlotContent(slots["header-right"]) ||
     hasSlotContent(slots["before-title"]) ||
-    hasSlotContent(slots["after-title"])
+    hasSlotContent(slots["title"]) ||
+    hasSlotContent(slots["after-title"]) ||
+    hasSlotContent(slots["header-right"])
   );
 });
 
@@ -97,16 +97,13 @@ const {
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="pageAttrs">
-      <!-- @slot Use it to add something before the header. -->
-      <slot name="header-before" />
-
       <div v-if="isExistHeader" v-bind="headerAttrs">
         <div v-bind="headerLeftAttrs">
-          <!-- @slot Use it to add something to the left side of the header. -->
-          <slot name="header-left">
-            <!-- @slot Use it to add something before the header title. -->
-            <slot name="before-title" />
+          <!-- @slot Use it to add something before the header title. -->
+          <slot name="before-title" />
 
+          <!-- @slot Use it to add something to the left side of the header. -->
+          <slot name="title">
             <div v-bind="headerLeftFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon
@@ -130,28 +127,21 @@ const {
               <UHeader :label="title" :size="titleSize" v-bind="titleAttrs" />
               <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
             </div>
-
-            <!-- @slot Use it to add something after the header title. -->
-            <slot name="after-title" />
           </slot>
+          <!-- @slot Use it to add something after the header title. -->
+          <slot name="after-title" />
         </div>
 
         <div v-bind="headerRightAttrs">
           <!-- @slot Use it to add something to the right side of the header. -->
-          <slot name="header-right" />
+          <slot name="actions" />
         </div>
       </div>
-
-      <!-- @slot Use it to add something after the header. -->
-      <slot name="header-after" />
 
       <div v-bind="bodyAttrs">
         <!-- @slot Use it to add main content. -->
         <slot />
       </div>
-
-      <!-- @slot Use it to add something before the footer. -->
-      <slot name="footer-before" />
 
       <div v-if="isExistFooter" v-bind="footerAttrs">
         <div v-bind="footerLeftAttrs">
@@ -164,9 +154,6 @@ const {
           <slot name="footer-right" />
         </div>
       </div>
-
-      <!-- @slot Use it to add something after the footer. -->
-      <slot name="footer-after" />
     </div>
 
     <div v-if="!isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">

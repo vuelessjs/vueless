@@ -7,6 +7,7 @@ import {
 } from "../../utils/storybook.ts";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
+import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -51,7 +52,7 @@ const defaultTemplate = `
 `;
 
 const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
-  components: { UModalConfirm, UButton, UHeader, UIcon },
+  components: { UModalConfirm, UButton, UHeader, UIcon, UModal },
   setup() {
     function onClick() {
       args.modelValue = true;
@@ -67,7 +68,7 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
         ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModalConfirm>
 
-      <UButton label="show modal" @click="onClick"/>
+      <UButton label="Show modal" @click="onClick"/>
     </div>
   `,
 });
@@ -128,8 +129,48 @@ ConfirmLabel.parameters = {
   },
 };
 
-export const Inner = DefaultTemplate.bind({});
-Inner.args = { inner: true };
+export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
+  components: { UModalConfirm, UButton, UModal },
+  setup() {
+    const showMainModal = ref(false);
+    const showInnerModal = ref(false);
+
+    function openMainModal() {
+      showMainModal.value = true;
+    }
+
+    function openInnerModal() {
+      showInnerModal.value = true;
+    }
+
+    return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
+  },
+  template: `
+    <div>
+      <UModalConfirm v-bind="args" v-model="showMainModal">
+        <p>
+          Are you sure you want to cancel your subscription?
+          This action will remove access to premium features and cannot be undone.
+        </p>
+        <UButton label="View Plan Details" @click="openInnerModal"/>
+
+        <UModal
+          v-model="showInnerModal"
+          title="Current Plan Details"
+          description="
+            Your current plan includes unlimited access to premium content,
+            priority support, and exclusive features.
+          "
+          inner
+        >
+          <p>Consider downgrading instead of canceling</p>
+        </UModal>
+      </UModalConfirm>
+
+      <UButton label="Manage Subscription" @click="openMainModal"/>
+    </div>
+  `,
+});
 Inner.parameters = {
   docs: {
     description: {
@@ -158,8 +199,8 @@ Divider.parameters = {
 export const WithoutCancelButton = DefaultTemplate.bind({});
 WithoutCancelButton.args = { cancelHidden: true };
 
-export const DisableAcceptButton = DefaultTemplate.bind({});
-DisableAcceptButton.args = { confirmDisabled: true };
+export const DisableConfirmButton = DefaultTemplate.bind({});
+DisableConfirmButton.args = { confirmDisabled: true };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };

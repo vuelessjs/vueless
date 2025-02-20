@@ -41,7 +41,7 @@ export interface Props {
   vertical?: boolean;
 
   /**
-   * Show divider border (or keeps only spacings).
+   * Show divider border (or keep only spacings).
    */
   border?: boolean;
 
