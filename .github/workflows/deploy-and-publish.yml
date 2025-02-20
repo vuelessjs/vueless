@@ -21,6 +21,7 @@ jobs:
 
   test:
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +34,7 @@ jobs:
 
   release-ui-docs:
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
-    needs: lint
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
