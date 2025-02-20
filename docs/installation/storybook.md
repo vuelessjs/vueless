@@ -45,7 +45,7 @@ Which:
 * creates `.npmrc` config (for `pnpm` propject only).
 
 {% hint style="info" %}
-If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
+If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-backup-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
 {% endhint %}
 
 3\. Run Storybook ✨
@@ -57,7 +57,7 @@ npm run sb:dev
 Other available commands:
 
 ```bash
-# run Storybook in docs mode (as seen on ui.vueless.com)
+# run Storybook in docs mode (same as seen on ui.vueless.com)
 npm run sb:dev:docs
 
 # build Storybook
@@ -67,7 +67,7 @@ npm run sb:build
 npm run sb:preview
 ```
 
-## Hiding unused components docs
+## Hiding unused components in storybook
 
 If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the `storybook` key to `false` in the specific component’s config.
 
