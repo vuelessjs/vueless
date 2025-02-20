@@ -7,7 +7,9 @@ export default /*tw*/ {
   description: "mt-1 text-sm font-normal text-gray-500",
   content: "text-sm",
   cardDivider: "{UDivider}",
-  footer: "flex justify-between",
+  footer: "flex justify-between w-full",
+  footerLeft: "",
+  footerRight: "",
   defaults: {
     //
   },

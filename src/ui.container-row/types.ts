@@ -30,7 +30,7 @@ export interface Props {
     | "baseline";
 
   /**
-   * Items horizontally align (justify-content).
+   * Items horizontal align (justify-content).
    */
   justify?: "start" | "end" | "center" | "around" | "evenly" | "between";
 

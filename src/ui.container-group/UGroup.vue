@@ -38,7 +38,7 @@ const {
 
       <div v-bind="headerAttrs">
         <!-- @slot Use it to add something on the left side of the header. -->
-        <slot name="header-left">
+        <slot name="title">
           <div v-bind="headerLeftFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
@@ -51,7 +51,7 @@ const {
         </slot>
 
         <!-- @slot Use it to add something on the right side of the header. -->
-        <slot name="header-right" />
+        <slot name="actions" />
       </div>
 
       <UDivider size="xl" padding="after" :border="underlined" v-bind="underlineAttrs" />

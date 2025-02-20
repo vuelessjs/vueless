@@ -10,6 +10,7 @@ import type { Props } from "../types.ts";
 
 interface UGroupsArgs extends Props {
   slotTemplate?: string;
+  enum: "gap";
 }
 
 export default {
@@ -23,9 +24,6 @@ export default {
   parameters: {
     docs: {
       ...getDocsDescription(UGroups.__name),
-      story: {
-        iframeHeight: 360,
-      },
     },
   },
 } as Meta;
@@ -44,14 +42,49 @@ const DefaultTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs) => ({
   `,
 });
 
+const EnumVariantTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => ({
+  components: { UGroups, UGroup, UCol, UInput },
+  setup() {
+    return {
+      args,
+      options: argTypes?.[args.enum]?.options,
+    };
+  },
+  template: `
+    <div>
+      <UGroups
+        v-for="(option, index) in options"
+        :key="option"
+        :[args.enum]="option"
+        class="mb-8"
+      >
+        <UGroup :title="option" :upperlined="index !== 0">
+          <UCol>
+            <UInput placeholder="Enter full name" label="Full Name" />
+            <UInput placeholder="Enter email address" label="Email Address" />
+          </UCol>
+        </UGroup>
+        <UGroup title="'Additional Group'">
+          <UCol>
+            <UInput placeholder="Enter phone number" label="Phone Number" />
+          </UCol>
+        </UGroup>
+      </UGroups>
+    </div>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {
   slotTemplate: `
-    <UGroup :upperlined="n !== 1" :title="'Group '+n" v-for="n in 3">
+    <UGroup :upperlined="n !== 1" :title="'User Group '+n" v-for="n in 3">
       <UCol>
-        <UInput placeholder="input" label="Label" />
-        <UInput placeholder="input" label="Label" />
+        <UInput placeholder="Enter full name" label="Full Name" />
+        <UInput placeholder="Enter email address" label="Email Address" />
       </UCol>
     </UGroup>
   `,
 };
+
+export const Gap = EnumVariantTemplate.bind({});
+Gap.args = { enum: "gap" };

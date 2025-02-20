@@ -10,6 +10,9 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -23,7 +26,7 @@ export default {
   title: "Containers / Card",
   component: UCard,
   args: {
-    title: "Title",
+    title: "User Profile",
   },
   argTypes: {
     ...getArgTypes(UCard.__name),
@@ -37,19 +40,24 @@ export default {
 
 const defaultTemplate = `
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Duis aute irure dolor in reprehenderit in voluptate velit
-    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-    occaecat cupidatat non proident, sunt in culpa qui officia
-    deserunt mollit anim id est laborum.
+    The <strong>Card</strong> component is a versatile UI element designed to present
+    structured content in an organized manner. It can be used for displaying
+    user profiles, product details, notifications, or any other grouped information.
+  </p>
+  <p>
+    With a clean layout that includes a title and content area, this component
+    is ideal for dashboards, settings pages, and interactive modals. You can
+    customize it further by adding buttons, images, icons, or additional
+    sections as needed.
+  </p>
+  <p>
+    Whether you're building a simple info box or a detailed summary card, this
+    component helps maintain a visually consistent and responsive design.
   </p>
 `;
 
 const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
-  components: { UCard, UButton, UInput, UIcon, UHeader },
+  components: { UCard, UButton, UInput, UIcon, UHeader, URow },
   setup() {
     const slots = getSlotNames(UCard.__name);
 
@@ -66,64 +74,59 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Card description" };
+Description.args = { description: "Displays key details about a user, product, or feature." };
 
-export const SlotHeaderLeftBefore = DefaultTemplate.bind({});
-SlotHeaderLeftBefore.args = {
-  slotTemplate: `
-    <template #header-left-before>
-      <UIcon name="star" size="sm" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+export const Slots: StoryFn<UCardArgs> = (args) => ({
+  components: { UCard, UIcon, URow, UCol, UButton, UBadge },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UCol gap="lg">
+      <UCard v-bind="args" description="Before Title Slot">
+        <template #before-title>
+          <UIcon name="account_circle" size="sm" />
+        </template>
+        ${defaultTemplate}
+      </UCard>
 
-export const SlotHeaderLeft = DefaultTemplate.bind({});
-SlotHeaderLeft.args = {
-  slotTemplate: `
-    <template #header-left>
-      <UHeader size="lg" label="Large title" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+      <UCard v-bind="args">
+        <template #title>
+          <UBadge label="Title Slot" size="lg" />
+        </template>
+        ${defaultTemplate}
+      </UCard>
 
-export const SlotHeaderLeftAfter = DefaultTemplate.bind({});
-SlotHeaderLeftAfter.args = {
-  slotTemplate: `
-    <template #header-left-after>
-      <UIcon name="star" size="sm" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+      <UCard v-bind="args" description="After Title Slot">
+        <template #after-title>
+          <UIcon name="verified" size="sm" />
+        </template>
+        ${defaultTemplate}
+      </UCard>
 
-export const SlotHeaderRight = DefaultTemplate.bind({});
-SlotHeaderRight.args = {
-  slotTemplate: `
-    <template #header-right>
-      <UButton size="sm" color="gray" label="Read more" />
-    </template>
-    ${defaultTemplate}
-  `,
-};
+      <UCard v-bind="args" description="Actions Slot">
+        <template #actions>
+          <URow class="max-w-fit">
+            <UButton size="sm" label="Follow" />
+            <UButton size="sm" label="Message" />
+          </URow>
+        </template>
+        ${defaultTemplate}
+      </UCard>
 
-export const SlotFooterLeft = DefaultTemplate.bind({});
-SlotFooterLeft.args = {
-  slotTemplate: `
-    ${defaultTemplate}
-    <template #footer-left>
-      <UButton size="sm" label="Read more" />
-    </template>
-  `,
-};
+      <UCard v-bind="args" description="Footer Left Slot">
+        ${defaultTemplate}
+        <template #footer-left>
+          <UButton size="sm" label="Cancel" />
+        </template>
+      </UCard>
 
-export const SlotFooterRight = DefaultTemplate.bind({});
-SlotFooterRight.args = {
-  slotTemplate: `
-    ${defaultTemplate}
-    <template #footer-right>
-      <UButton size="sm" label="Read more" />
-    </template>
+      <UCard v-bind="args" description="Footer Right Slot">
+        ${defaultTemplate}
+        <template #footer-right>
+          <UButton size="sm" label="Save Changes" />
+        </template>
+      </UCard>
+    </UCol>
   `,
-};
+});
