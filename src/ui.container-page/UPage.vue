@@ -40,7 +40,7 @@ const isExistHeader = computed(() => {
     hasSlotContent(slots["before-title"]) ||
     hasSlotContent(slots["title"]) ||
     hasSlotContent(slots["after-title"]) ||
-    hasSlotContent(slots["header-right"])
+    hasSlotContent(slots["actions"])
   );
 });
 
