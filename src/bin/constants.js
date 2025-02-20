@@ -1,31 +1,32 @@
 export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
-export const DEFAULT_VUELESS_CONFIG_CONTNET = `
+export const DEFAULT_VUELESS_CONFIG_CONTENT = `
 export default {
   /**
-    * Global settings.
-    */
+   * Global settings.
+   */
   strategy: "merge",
   brand: "grayscale",
   gray: "cool",
-  darkMode: "auto",
   outline: 2,
   rounding: 8,
+  colorMode: "auto",
+  baseClasses: ``,
 
   /**
-    * Directive settings.
-    */
+   * Directive settings.
+   */
   directives: {},
 
   /**
-    * Component settings.
-    */
+   * Component settings.
+   */
   components: /*tw*/ {},
 
   /**
-    * Tailwind CSS theme config.
-    * https://tailwindcss.com/docs/theme
-    */
+   * Tailwind CSS theme config.
+   * https://tailwindcss.com/docs/theme
+   */
   tailwindTheme: {
     extend: {
       colors: {},
@@ -33,10 +34,10 @@ export default {
   },
 
   /**
-    * Custom classes TailwindMerge settings.
-    * All lists of rules available here:
-    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
-    */
+   * Custom classes TailwindMerge settings.
+   * All lists of rules available here:
+   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+   */
   tailwindMerge: {},
 };
 `;
