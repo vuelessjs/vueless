@@ -119,6 +119,7 @@ const {
   deleteIconAttrs,
   editIconAttrs,
   dragIconAttrs,
+  dragIconWrapperAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -159,20 +160,22 @@ const {
       <template #item="{ element }">
         <div :id="element[valueKey]" v-bind="itemWrapperAttrs" :data-test="getDataTest('item')">
           <div v-bind="itemAttrs" :data-test="getDataTest(`item-${element[valueKey]}`)">
-            <!--
-              @slot Use it to add something instead of the drag icon.
-              @binding {object} item
-              @binding {string} icon-name
-            -->
-            <slot name="drag" :item="element" :icon-name="config.defaults.dragIcon">
-              <UIcon
-                internal
-                color="gray"
-                variant="light"
-                :name="config.defaults.dragIcon"
-                v-bind="dragIconAttrs"
-              />
-            </slot>
+            <div v-bind="dragIconWrapperAttrs">
+              <!--
+                @slot Use it to add something instead of the drag icon.
+                @binding {object} item
+                @binding {string} icon-name
+              -->
+              <slot name="drag" :item="element" :icon-name="config.defaults.dragIcon">
+                <UIcon
+                  internal
+                  color="gray"
+                  variant="light"
+                  :name="config.defaults.dragIcon"
+                  v-bind="dragIconAttrs"
+                />
+              </slot>
+            </div>
 
             <div v-bind="isActive(element) ? labelAttrs : labelCrossedAttrs">
               <!--

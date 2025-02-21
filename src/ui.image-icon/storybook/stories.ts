@@ -7,6 +7,9 @@ import {
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import tooltip from "../../directives/tooltip/vTooltip.ts";
+
+import CloudMoon from "../assets/cloud-moon.svg?component";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -35,6 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
   components: { UIcon },
+  directives: { tooltip },
   setup() {
     const slots = getSlotNames(UIcon.__name);
 
@@ -49,6 +53,7 @@ const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
 
 const EnumVariantTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
   components: { UIcon, URow },
+  directives: { tooltip },
   setup() {
     return {
       args,
@@ -62,6 +67,7 @@ const EnumVariantTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) 
         :key="index"
         v-bind="args"
         :[args.enum]="option"
+        v-tooltip="option"
       />
     </URow>
   `,
@@ -70,6 +76,18 @@ const EnumVariantTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Src = DefaultTemplate.bind({});
+Src.args = { src: CloudMoon };
+Src.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import CloudMoon from '../assets/cloud-moon.svg?component'`",
+    },
+  },
+};
+
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
 
@@ -77,7 +95,7 @@ export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant", color: "red" };
+Variants.args = { enum: "variant", color: "green" };
 
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };

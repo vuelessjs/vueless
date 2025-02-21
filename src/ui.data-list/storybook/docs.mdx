@@ -1,4 +1,4 @@
-import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
+import { Markdown, Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
 import { getSource } from "../../utils/storybook.ts";
 
 import * as stories from "./stories.ts";
@@ -13,28 +13,23 @@ import defaultConfig from "../config.ts?raw"
 <Stories of={stories} />
 
 ## Configuring items in a list
-You can configure any item in a list by passing the following params.
+You can configure any item in a `list` array by passing the following params:
 
-<Source code={`
-<UDataList :list="list" />
-
-const list = [
-  {
-    id: 1, // unique item identifier
-    label: "Rent", // item label
-    children: [ // nested items
-      { label: "Office", id: 11 },
-      { label: "Shops", id: 12, children: [...] }, // children of subitems
-    ],
-    isHiddenEdit: true, // hide edit button
-    isHiddenDelete: true, // hide delete button
-    isHiddenActions: true, // hide default and custom action buttons
-    isHiddenCustomActions: true, // hide only custom action buttons
-    isDisabledNesting: true, // disable nesting for the item
-  }
-  {...}
-];
-`} language="jsx" dark />
+<Markdown>
+{`
+|  Key name             | Description                             | Type           |
+| ----------------------| --------------------------------------- | ---------------|
+| id                    | Unique item identifier                  | String, Number |
+| label                 | Item label                              | String         |
+| children              | Nested items                            | Array          |        
+| isActive              | Option value                            | Boolean        |
+| isHiddenActions       | Hide default and custom action buttons  | Boolean        |
+| isHiddenCustomActions | Hide only custom action buttons         | Boolean        |
+| isHiddenDelete        | Hide delete button                      | Boolean        |
+| isHiddenEdit          | Hide edit button                        | Boolean        |
+| isDisabledNesting     | Disable nesting for the item            | Boolean        |
+`}
+</Markdown>
 
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />
