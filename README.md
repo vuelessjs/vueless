@@ -54,5 +54,19 @@ export default defineConfig({
 
 That's it! You can use components in your app now ✨
 
+## Contributing
+
+We encourage you to contribute to Vueless! Please check out the
+[Contributing to Vueless](CONTRIBUTING.md) for guidelines about how to proceed.
+
+Trying to report a possible security vulnerability in Vueless? Please
+check out our [security policy](SECURITY.md) for guidelines about how to proceed.
+
+Everyone interacting in Vueless and its sub-projects' codebases, issue trackers, chat rooms, and mailing lists is expected to follow the Vueless [code of conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+Ruby on Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
+
 
 
