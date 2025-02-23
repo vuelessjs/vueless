@@ -1,6 +1,6 @@
 export default /*tw*/ {
   badge: {
-    base: "border rounded-dynamic inline-block py-1 !leading-none outline-none",
+    base: "border rounded-dynamic inline-block py-1 !leading-none outline-hidden",
     variants: {
       variant: {
         primary: "bg-{color}-600 text-white border-transparent",

@@ -72,7 +72,7 @@ const EnumVariantTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) =>
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        class="w-full h-full border border-brand-500 rounded p-2"
+        class="w-full h-full border border-brand-500 rounded-sm p-2"
       >
         <UButton :label="args.enum" />
         <UButton :label="option" />

@@ -63,17 +63,14 @@ export default /*tw*/ {
   bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex items-center gap-2",
-  bodyCellNestedExpandIconWrapper: "bg-brand-200 rounded-sm",
-  bodyCellNestedExpandIcon: {
+  bodyCellNestedIconWrapper: "bg-brand-200 rounded-xs",
+  bodyCellNestedIcon: {
     base: "{UIcon}",
-    wrapper: "rounded-sm",
+    wrapper: "rounded-xs",
     container: "bg-gray-200",
   },
-  bodyCellNestedCollapseIcon: {
-    base: "{UIcon}",
-    wrapper: "rounded-sm",
-    container: "bg-gray-200",
-  },
+  bodyCellNestedExpandIcon: "{UIcon} {>bodyCellNestedIcon}",
+  bodyCellNestedCollapseIcon: "{UIcon} {>bodyCellNestedIcon}",
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: {
     base: "{UDivider}",

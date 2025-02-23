@@ -14,7 +14,7 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownLink: "{ULink} focus-visible:outline-none",
+  dropdownLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[]:rotate-180",
     variants: {

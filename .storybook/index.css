@@ -1,8 +1,6 @@
-@config "./tailwind.config.js";
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "./tailwind.config.js";
 
 /* -------------------- Storybook Preview UI -------------------- */
 /* -------------------- General -------------------- */
@@ -16,7 +14,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-sm transition;
+  @apply rounded-xs transition;
 }
 
 .light::-webkit-scrollbar-track,
@@ -151,7 +149,7 @@ body {
 }
 
 .light .sb-argstableBlock-body {
-  @apply rounded;
+  @apply rounded-sm;
   box-shadow: rgb(0 0 0 / 5%) 0 1px 3px 1px, rgb(0 0 0 / 4%) 0 0 0 1px;
 }
 
@@ -188,7 +186,7 @@ body {
 }
 
 .dark .sb-argstableBlock-body {
-  @apply rounded;
+  @apply rounded-sm;
   box-shadow: rgb(255 255 255 / 10%) 0 1px 3px 1px, rgb(255 255 255 / 7%) 0 0 0 1px;
 }
 

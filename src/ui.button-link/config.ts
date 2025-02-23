@@ -1,7 +1,7 @@
 export default /*tw*/ {
   link: {
     base: `
-      inline-block cursor-pointer !leading-none rounded transition
+      inline-block cursor-pointer !leading-none rounded-dynamic-sm transition
       text-{color}-600 decoration-{color}-600 underline-offset-4
       hover:text-{color}-700 hover:decoration-{color}-700
       active:text-{color}-800 active:decoration-{color}-800

@@ -1,9 +1,9 @@
 export default /*tw*/ {
   wrapper: `
-    my-2 p-1 flex w-auto absolute z-50 shadow
+    my-2 p-1 flex w-auto absolute z-50 shadow-sm
     rounded-dynamic border border-gray-300 bg-white
     overflow-auto [-webkit-overflow-scrolling:touch]
-    focus:outline-none
+    focus:outline-hidden
   `,
   list: "list-none align-top w-full h-full",
   listItem: "group/item block mb-px last:mb-0",

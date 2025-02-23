@@ -295,7 +295,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             <div
               v-show="isShownToggleIcon"
               ref="toggle-wrapper"
-              v-bind="attrs.bodyCellNestedExpandIconWrapperAttrs.value"
+              v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
               :style="{ width: getIconWidth() }"
             >
               <UIcon

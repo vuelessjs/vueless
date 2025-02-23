@@ -131,7 +131,7 @@ export default /*tw*/ {
   searchInput: {
     base: `
         p-0 font-normal !leading-none relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-none focus:ring-0
+        focus:shadow-none focus:outline-hidden focus:ring-0
         placeholder:text-gray-400 placeholder:font-normal
       `,
     variants: {
