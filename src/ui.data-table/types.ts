@@ -124,7 +124,7 @@ export interface UTableRowAttrs {
   bodyCellNestedExpandIconAttrs: Ref<UnknownObject>;
   bodyCellNestedCollapseIconAttrs: Ref<UnknownObject>;
   bodyCellBaseAttrs: Ref<UnknownObject>;
-  bodyCellNestedExpandIconWrapperAttrs: Ref<UnknownObject>;
+  bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
   bodyDateDividerAttrs: Ref<UnknownObject>;

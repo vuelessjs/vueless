@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "p-3 w-[19rem] border border-gray-300 rounded-dynamic bg-white shadow overflow-hidden focus:outline-none",
+  wrapper: "p-3 w-[19rem] border border-gray-300 rounded-dynamic bg-white shadow-sm overflow-hidden focus:outline-hidden",
   navigation: "mb-2 pb-2 border-b flex items-center justify-between",
   viewSwitchButton: "{UButton}",
   nextPrevButton: "{UButton}",

@@ -202,7 +202,7 @@ const tableRowAttrs = computed(() => ({
   bodyCellNestedExpandIconAttrs,
   bodyCellNestedCollapseIconAttrs,
   bodyCellBaseAttrs,
-  bodyCellNestedExpandIconWrapperAttrs,
+  bodyCellNestedIconWrapperAttrs,
   bodyRowCheckedAttrs,
   bodyRowAttrs,
   bodyDateDividerAttrs,
@@ -505,7 +505,7 @@ const {
   bodyCellNestedExpandIconAttrs,
   bodyCellNestedCollapseIconAttrs,
   bodyCellBaseAttrs,
-  bodyCellNestedExpandIconWrapperAttrs,
+  bodyCellNestedIconWrapperAttrs,
   bodyRowCheckedAttrs,
   bodyRowAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);

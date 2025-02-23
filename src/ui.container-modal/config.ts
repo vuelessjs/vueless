@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "fixed inset-0 z-50 outline-none",
+  wrapper: "fixed inset-0 z-50 outline-hidden",
   wrapperTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
