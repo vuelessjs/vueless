@@ -29,7 +29,7 @@ export default /*tw*/ {
       },
     },
   },
-  dragIconWrapper: "icon-drag cursor-move",
+  drag: "icon-drag cursor-move",
   dragIcon: "{UIcon} {>dataListIcon} icon-drag cursor-move opacity-100",
   label: {
     base: "font-normal flex-auto pt-px",

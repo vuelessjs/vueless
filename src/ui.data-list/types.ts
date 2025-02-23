@@ -12,12 +12,12 @@ export interface DragMoveEvent extends DragEvent {
 }
 
 export interface DataListItem {
-  isActive?: boolean;
-  isHiddenActions?: boolean;
-  isHiddenCustomActions?: boolean;
-  isHiddenDelete?: boolean;
-  isHiddenEdit?: boolean;
-  isDisabledNesting?: boolean;
+  active?: boolean;
+  hideActions?: boolean;
+  hideCustomActions?: boolean;
+  hideDelete?: boolean;
+  hideEdit?: boolean;
+  nesting?: boolean;
   children?: DataListItem[];
   [key: string]: UnknownType | DataListItem[];
 }

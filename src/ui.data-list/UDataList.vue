@@ -51,12 +51,12 @@ const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 function isActive(element: DataListItem) {
-  return element.isActive === undefined || element.isActive;
+  return element.active === undefined || element.active;
 }
 
 function onDragMove(event: DragMoveEvent): boolean | void {
-  const isDisabledNestingItem = event.draggedContext.element.isDisabledNesting;
-  const isNestingAction = !event.relatedContext?.element?.isDisabledNesting;
+  const isDisabledNestingItem = event.draggedContext.element.nesting === false;
+  const isNestingAction = !event.relatedContext?.element?.nesting === false;
 
   if (isDisabledNestingItem && isNestingAction) {
     return false;
@@ -119,7 +119,7 @@ const {
   deleteIconAttrs,
   editIconAttrs,
   dragIconAttrs,
-  dragIconWrapperAttrs,
+  dragAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -160,7 +160,7 @@ const {
       <template #item="{ element }">
         <div :id="element[valueKey]" v-bind="itemWrapperAttrs" :data-test="getDataTest('item')">
           <div v-bind="itemAttrs" :data-test="getDataTest(`item-${element[valueKey]}`)">
-            <div v-bind="dragIconWrapperAttrs">
+            <div v-bind="dragAttrs">
               <!--
                 @slot Use it to add something instead of the drag icon.
                 @binding {object} item
@@ -188,9 +188,9 @@ const {
               </slot>
             </div>
 
-            <template v-if="!element.isHiddenActions">
+            <template v-if="!element.hideActions">
               <div
-                v-if="hasSlotContent($slots['actions']) && !element.isHiddenCustomActions"
+                v-if="hasSlotContent($slots['actions']) && !element.hideCustomActions"
                 v-bind="customActionsAttrs"
               >
                 <!--
@@ -207,7 +207,7 @@ const {
               -->
               <slot name="delete" :item="element" :icon-name="config.defaults.deleteIcon">
                 <UIcon
-                  v-if="!element.isHiddenDelete"
+                  v-if="!element.hideDelete"
                   internal
                   interactive
                   color="red"
@@ -226,7 +226,7 @@ const {
               -->
               <slot name="edit" :item="element" :icon-name="config.defaults.editIcon">
                 <UIcon
-                  v-if="!element.isHiddenEdit"
+                  v-if="!element.hideEdit"
                   internal
                   interactive
                   color="gray"
@@ -241,7 +241,7 @@ const {
           </div>
 
           <UDataList
-            v-if="nesting && !element.isDisabledNesting"
+            v-if="nesting && !element.nesting"
             :nesting="nesting"
             hide-empty-state-for-nesting
             :list="element.children"

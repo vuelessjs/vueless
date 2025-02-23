@@ -126,11 +126,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const EmptyState = DefaultTemplate.bind({});
-EmptyState.args = {
-  list: [],
-  emptyTitle: "The list is empty.",
-  emptyDescription: "There is no data in the list.",
-};
+EmptyState.args = { list: [] };
 EmptyState.parameters = {
   docs: {
     description: {
