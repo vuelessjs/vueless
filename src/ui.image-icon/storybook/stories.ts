@@ -9,7 +9,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import CloudMoon from "../../assets/icons/vueless/cloud-moon.svg?component";
+import Beverage from "../../assets/icons/vueless/emoji_food_beverage.svg?component";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -77,13 +77,13 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Src = DefaultTemplate.bind({});
-Src.args = { src: CloudMoon };
+Src.args = { src: Beverage };
 Src.parameters = {
   docs: {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import CloudMoon from '../../assets/icons/vueless/cloud-moon.svg?component'`",
+        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import Beverage from '../../assets/icons/vueless/emoji_food_beverage.svg?component'`",
     },
   },
 };

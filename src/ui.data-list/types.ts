@@ -12,11 +12,8 @@ export interface DragMoveEvent extends DragEvent {
 }
 
 export interface DataListItem {
-  active?: boolean;
-  hideActions?: boolean;
-  hideCustomActions?: boolean;
-  hideDelete?: boolean;
-  hideEdit?: boolean;
+  crossed?: boolean;
+  actions?: boolean;
   nesting?: boolean;
   children?: DataListItem[];
   [key: string]: UnknownType | DataListItem[];

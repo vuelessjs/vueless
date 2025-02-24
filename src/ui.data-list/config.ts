@@ -42,12 +42,7 @@ export default /*tw*/ {
     },
   },
   labelCrossed: "{>label} line-through",
-  customActions: `
-    space-x-5 opacity-50 md:flex md:items-center md:opacity-0
-    group-hover/item:md:block group-hover/item:opacity-100
-  `,
-  deleteIcon: "{UIcon} {>dataListIcon} hidden md:block md:opacity-0 group-hover/item:md:opacity-100",
-  editIcon: "{UIcon} {>dataListIcon} fill-gray-500 opacity-50",
+  customActions: "space-x-5 opacity-50 flex items-center group-hover/item:opacity-100",
   divider: "{UDivider}",
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",
@@ -65,7 +60,5 @@ export default /*tw*/ {
     nesting: false,
     /* icons */
     dragIcon: "drag_indicator",
-    deleteIcon: "delete",
-    editIcon: "edit_note",
   },
 };

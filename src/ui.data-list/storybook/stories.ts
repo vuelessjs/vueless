@@ -14,6 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props, DataListItem } from "../types.ts";
@@ -70,6 +71,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
   components: { UDataList, UIcon, URow, UButton, UBadge, UAvatar, ULoader, UHeader },
+  directives: { tooltip },
   setup() {
     const slots = getSlotNames(UDataList.__name);
 
@@ -168,15 +170,6 @@ SlotEmpty.args = {
   `,
 };
 
-export const SlotActions = DefaultTemplate.bind({});
-SlotActions.args = {
-  slotTemplate: `
-    <template #actions>
-      <UButton label="Export" size="xs" />
-    </template>
-  `,
-};
-
 export const SlotDrag = DefaultTemplate.bind({});
 SlotDrag.args = {
   list: [
@@ -191,20 +184,25 @@ SlotDrag.args = {
   `,
 };
 
-export const SlotDelete = DefaultTemplate.bind({});
-SlotDelete.args = {
+export const SlotActions = DefaultTemplate.bind({});
+SlotActions.args = {
   slotTemplate: `
-    <template #delete="{ item }">
-      <UButton label="Delete" size="xs" variant="secondary" color="red" @click="removeItem(item)" />
-    </template>
-  `,
-};
-
-export const SlotEdit = DefaultTemplate.bind({});
-SlotEdit.args = {
-  slotTemplate: `
-    <template #edit="{ item }">
-      <UButton label="Edit" size="xs" variant="secondary" color="grayscale" @click="editItem(item)" />
+    <template #actions="{ item }">
+      <UButton label="Export" size="xs" />
+      <UIcon
+        name="delete"
+        size="sm"
+        color="red"
+        v-tooltip="'Delete'"
+        @click="removeItem(item)"
+      />
+      <UIcon
+        name="edit_note"
+        size="sm"
+        color="grayscale"
+        v-tooltip="'Edit'"
+        @click="editItem(item)"
+      />
     </template>
   `,
 };

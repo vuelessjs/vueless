@@ -17,17 +17,14 @@ You can configure any item in a `list` array by passing the following params:
 
 <Markdown>
 {`
-|  Key name             | Description                                            | Type           |
-| ----------------------| ------------------------------------------------------ | ---------------|
-| id                    | Unique item identifier                                 | String, Number |
-| label                 | Item label                                             | String         |
-| children              | Nested items                                           | Array          |        
-| active                | Controls item style (false = line-through decoration)  | Boolean        |
-| hideActions           | Hide default and custom action buttons                 | Boolean        |
-| hideCustomActions     | Hide only custom action buttons                        | Boolean        |
-| hideDelete            | Hide delete button                                     | Boolean        |
-| hideEdit              | Hide edit button                                       | Boolean        |
-| nesting               | Disable nesting for the item                           | Boolean        |
+|  Key name             | Description                                            | Type           | Default |
+| ----------------------| ------------------------------------------------------ | ---------------| --------|
+| id                    | Unique item identifier                                 | String, Number |         |
+| label                 | Item label                                             | String         |         |
+| children              | Nested items                                           | Array          |         |        
+| crossed               | Controls item style (line-through decoration)          | Boolean        | False   |
+| actions               | Show custom actions buttons                            | Boolean        | True    |
+| nesting               | Enable nesting for the item                            | Boolean        | False   |
 `}
 </Markdown>
 
