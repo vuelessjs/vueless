@@ -42,7 +42,7 @@ export default /*tw*/ {
     },
   },
   labelCrossed: "{>label} line-through",
-  customActions: "space-x-5 opacity-50 flex items-center group-hover/item:opacity-100",
+  customActions: "space-x-5 opacity-50 flex items-center md:opacity-0 group-hover/item:opacity-100",
   divider: "{UDivider}",
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",

@@ -193,6 +193,7 @@ SlotActions.args = {
         name="delete"
         size="sm"
         color="red"
+        interactive
         v-tooltip="'Delete'"
         @click="removeItem(item)"
       />
@@ -200,6 +201,7 @@ SlotActions.args = {
         name="edit_note"
         size="sm"
         color="grayscale"
+        interactive
         v-tooltip="'Edit'"
         @click="editItem(item)"
       />
