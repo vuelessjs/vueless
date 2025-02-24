@@ -12,12 +12,9 @@ export interface DragMoveEvent extends DragEvent {
 }
 
 export interface DataListItem {
-  isActive?: boolean;
-  isHiddenActions?: boolean;
-  isHiddenCustomActions?: boolean;
-  isHiddenDelete?: boolean;
-  isHiddenEdit?: boolean;
-  isDisabledNesting?: boolean;
+  crossed?: boolean;
+  actions?: boolean;
+  nesting?: boolean;
   children?: DataListItem[];
   [key: string]: UnknownType | DataListItem[];
 }
@@ -47,16 +44,6 @@ export interface Props {
    * Value key in the item object of options.
    */
   valueKey?: string;
-
-  /**
-   * Empty state title.
-   */
-  emptyTitle?: string;
-
-  /**
-   * Empty state description.
-   */
-  emptyDescription?: string;
 
   /**
    * Drag animation duration.
