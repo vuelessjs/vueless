@@ -102,19 +102,19 @@ const {
 <template>
   <div v-bind="wrapperAttrs">
     <!--
-      @slot Use it to add something instead of the drag icon.
+      @slot Use it to add something instead of empty state.
       @binding {string} empty-title
       @binding {string} empty-description
     -->
     <slot
       v-if="!hideEmptyStateForNesting && !list?.length"
       name="empty"
-      :empty-title="emptyTitle"
-      :empty-description="emptyDescription"
+      :empty-title="currentLocale.emptyTitle"
+      :empty-description="currentLocale.emptyDescription"
     >
       <UEmpty
-        :title="emptyTitle || currentLocale.emptyTitle"
-        :description="emptyDescription || currentLocale.emptyDescription"
+        :title="currentLocale.emptyTitle"
+        :description="currentLocale.emptyDescription"
         v-bind="emptyAttrs"
       />
     </slot>

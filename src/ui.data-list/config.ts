@@ -47,8 +47,6 @@ export default /*tw*/ {
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",
   i18n: {
-    edit: "Edit",
-    delete: "Delete",
     emptyTitle: "",
     emptyDescription: "There is no data in the list.",
   },

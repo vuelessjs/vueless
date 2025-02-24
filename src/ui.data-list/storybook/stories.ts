@@ -132,14 +132,6 @@ Default.args = {};
 
 export const EmptyState = DefaultTemplate.bind({});
 EmptyState.args = { list: [] };
-EmptyState.parameters = {
-  docs: {
-    description: {
-      story:
-        "The `emptyTitle` and `emptyDescription` props are used to display a message when the list is empty.",
-    },
-  },
-};
 
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { nesting: true };
@@ -159,10 +151,12 @@ SlotLabel.args = {
 export const SlotEmpty = DefaultTemplate.bind({});
 SlotEmpty.args = {
   list: [],
-  emptyTitle: "Fetching data...",
-  emptyDescription: "Please wait until data is received.",
   config: {
     wrapper: "flex flex-col items-center justify-center py-10 gap-4",
+    i18n: {
+      emptyTitle: "Fetching data...",
+      emptyDescription: "Please wait until data is received.",
+    },
   },
   slotTemplate: `
     <template #empty="{ emptyTitle, emptyDescription }">
@@ -171,6 +165,14 @@ SlotEmpty.args = {
       <p>{{ emptyDescription }}</p>
     </template>
   `,
+};
+SlotEmpty.parameters = {
+  docs: {
+    description: {
+      story:
+        "You can customize the `empty` slot's props (`emptyTitle` and `emptyDescription`) using the `i18n` config key.",
+    },
+  },
 };
 
 export const SlotDrag = DefaultTemplate.bind({});

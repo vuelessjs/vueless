@@ -46,16 +46,6 @@ export interface Props {
   valueKey?: string;
 
   /**
-   * Empty state title.
-   */
-  emptyTitle?: string;
-
-  /**
-   * Empty state description.
-   */
-  emptyDescription?: string;
-
-  /**
    * Drag animation duration.
    */
   animationDuration?: number;
