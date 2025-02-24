@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
-import UButton from "./UButton.vue";
+import UButton from "../UButton.vue";
 
 describe("UButton.vue", () => {
   it("component renders", () => {
@@ -27,6 +27,6 @@ describe("UButton.vue", () => {
       },
     });
 
-    expect(component.text()).toContain(result);
+    expect(component.text()).toBe(result);
   });
 });
