@@ -33,6 +33,7 @@ export default {
       {
         label: "Expenses",
         id: 1,
+        nesting: true,
         children: [
           { label: "Office Supplies", id: 1.1 },
           { label: "Travel & Lodging", id: 1.2 },
@@ -42,6 +43,7 @@ export default {
       {
         label: "Revenue Streams",
         id: 2,
+        nesting: true,
         children: [
           { label: "Product Sales", id: 2.1 },
           { label: "Subscription Services", id: 2.2 },
@@ -51,6 +53,7 @@ export default {
       {
         label: "Departments",
         id: 3,
+        nesting: true,
         children: [
           { label: "Engineering", id: 3.1 },
           { label: "Marketing", id: 3.2 },

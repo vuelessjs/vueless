@@ -37,12 +37,12 @@ const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 function isCrossed(element: DataListItem) {
-  return element.crossed === true;
+  return Boolean(element.crossed);
 }
 
 function onDragMove(event: DragMoveEvent): boolean | void {
-  const isDisabledNestingItem = event.draggedContext.element.nesting === false;
-  const isNestingAction = !event.relatedContext?.element?.nesting === false;
+  const isDisabledNestingItem = !Boolean(event.draggedContext.element.nesting);
+  const isNestingAction = Boolean(event.relatedContext?.element?.nesting);
 
   if (isDisabledNestingItem && isNestingAction) {
     return false;
@@ -176,7 +176,7 @@ const {
           </div>
 
           <UDataList
-            v-if="nesting && !element.nesting"
+            v-if="nesting && element.nesting"
             :nesting="nesting"
             hide-empty-state-for-nesting
             :list="element.children"
