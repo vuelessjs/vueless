@@ -461,10 +461,12 @@ const {
   stickyHeaderAttrs,
   tableWrapperAttrs,
   headerRowAttrs,
+  headerRowBeforeAttrs,
   bodyRowAfterAttrs,
   bodyRowBeforeAttrs,
   bodyRowBeforeCheckedAttrs,
   bodyRowBeforeCellAttrs,
+  bodyRowAfterCellAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
   bodyRowCheckedDateDividerAttrs,
@@ -475,6 +477,7 @@ const {
   headerCheckboxAttrs,
   headerCounterAttrs,
   bodyEmptyStateAttrs,
+  bodyEmptyStateCellAttrs,
   bodyDateDividerAttrs,
   bodySelectedDateDividerAttrs,
   bodyCellDateDividerAttrs,
@@ -625,14 +628,14 @@ const {
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
-            <!--
+            <td :colspan="colsCount" v-bind="headerRowBeforeAttrs">
+              <!--
                 @slot Use it to add something before header row.
                 @binding {number} cols-count
               -->
-            <slot name="before-header" :cols-count="colsCount" />
+              <slot name="before-header" :cols-count="colsCount" />
+            </td>
           </tr>
-
-          <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
@@ -792,17 +795,22 @@ const {
               v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
               v-bind="bodyRowAfterAttrs"
             >
-              <!-- @slot Use it to add something after last row. -->
-              <slot name="after-last-row" :cols-count="colsCount" />
+              <td :colspan="colsCount" v-bind="bodyRowAfterCellAttrs">
+                <!-- @slot Use it to add something after last row. -->
+                <slot name="after-last-row" :cols-count="colsCount" />
+              </td>
             </tr>
           </template>
         </tbody>
 
         <tbody v-else>
           <tr>
-            <td :colspan="colsCount">
-              <!-- @slot Use it to add custom empty state. -->
-              <slot name="empty-state">
+            <td :colspan="colsCount" v-bind="bodyEmptyStateCellAttrs">
+              <!--
+                @slot Use it to add custom empty state.
+                @binding {string} no-data
+              -->
+              <slot name="empty-state" :no-data="currentLocale.noData">
                 <UEmpty
                   size="md"
                   :description="currentLocale.noData"
