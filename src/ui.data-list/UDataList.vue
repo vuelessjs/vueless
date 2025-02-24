@@ -102,7 +102,7 @@ const {
 <template>
   <div v-bind="wrapperAttrs">
     <!--
-      @slot Use it to add something instead of empty state.
+      @slot Use it to add custom empty state.
       @binding {string} empty-title
       @binding {string} empty-description
     -->
