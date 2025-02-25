@@ -441,11 +441,7 @@ function isRowSelectedWithin(rowIndex: number) {
 function onToggleRowCheckbox(rowId: RowId) {
   const targetIndex = selectedRows.value.findIndex((selectedId) => selectedId === rowId);
 
-  if (targetIndex === -1) {
-    selectedRows.value.push(rowId);
-  } else {
-    selectedRows.value.splice(targetIndex, 1);
-  }
+  !~targetIndex ? selectedRows.value.push(rowId) : selectedRows.value.splice(targetIndex, 1);
 }
 
 defineExpose({
@@ -695,6 +691,7 @@ const {
               <slot name="before-first-row" />
             </td>
           </tr>
+
           <UTableRow
             v-for="(row, rowIndex) in sortedRows"
             :key="row.id"
@@ -734,6 +731,7 @@ const {
                 :value="slotValues.value"
                 :row="slotValues.row"
                 :index="index"
+                :row-index="rowIndex"
               />
             </template>
 
@@ -743,7 +741,7 @@ const {
                   @binding {object} row
                   @binding {boolean} expanded
                 -->
-              <slot name="expand" :row="expandedRow" :expanded="expanded" />
+              <slot name="expand" :row-index="rowIndex" :row="expandedRow" :expanded="expanded" />
             </template>
 
             <template #nested-content>
@@ -751,7 +749,7 @@ const {
                   @slot Use it to add nested content inside a row.
                   @binding {object} row
                 -->
-              <slot v-if="row" name="nested-content" :row="row" />
+              <slot v-if="row" name="nested-content" :row-index="rowIndex" :row="row" />
             </template>
           </UTableRow>
 

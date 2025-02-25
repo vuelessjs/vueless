@@ -17,6 +17,7 @@ import defaultConfig from "./config.ts";
 import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 
 import type {
+  RowId,
   Cell,
   CellObject,
   Row,
@@ -24,7 +25,6 @@ import type {
   RowScopedProps,
   UTableRowProps,
   Config,
-  RowId,
 } from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
@@ -35,12 +35,12 @@ defineOptions({ internal: true });
 const props = defineProps<UTableRowProps>();
 
 const emit = defineEmits([
-  "toggleRowVisibility",
   "click",
   "dblclick",
   "clickCell",
   "toggleExpand",
   "toggleCheckbox",
+  "toggleRowVisibility",
 ]);
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
@@ -322,7 +322,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         v-bind="attrs.bodyCheckboxAttrs.value"
         :data-id="row.id"
         :data-test="getDataTest('body-checkbox')"
-        @input="emit('toggleCheckbox', row.id)"
+        @input="onInputCheckbox(row.id)"
       />
     </td>
 
