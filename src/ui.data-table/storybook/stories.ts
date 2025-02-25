@@ -422,25 +422,6 @@ SlotHeaderKey.args = {
   `,
 };
 
-export const SlotHeaderKeyAfter = DefaultTemplate.bind({});
-SlotHeaderKeyAfter.args = {
-  columns: [
-    { key: "orderId", label: "Order Id", thClass: "w-2/5" },
-    {
-      key: "customerName",
-      label: "Customer Name",
-      thClass: "grid grid-rows-none grid-cols-3 leading-normal",
-    },
-    { key: "status", label: "Status" },
-    { key: "totalPrice", label: "Total Price" },
-  ],
-  slotTemplate: `
-    <template #header-customerName-after>
-      <UButton label="Sort clients" size="2xs" class="w-fit" />
-    </template>
-  `,
-};
-
 export const SlotHeaderActions = DefaultTemplate.bind({});
 SlotHeaderActions.parameters = SHORT_STORY_PARAMETERS;
 SlotHeaderActions.args = {

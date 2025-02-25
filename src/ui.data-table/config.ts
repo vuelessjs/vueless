@@ -49,7 +49,6 @@ export default /*tw*/ {
   bodyRowBefore: "!p-0",
   bodyRowBeforeChecked: "{>bodyRowChecked} !p-0",
   bodyRowBeforeCell: "{>bodyCellBase} py-1",
-  bodyRowAfterCell: "{>bodyCellBase} py-1",
   bodyRowAfter: "!p-0",
   bodyRowDateDivider: "first:hidden",
   bodyRowCheckedDateDivider: "{>bodyRowChecked} {>bodyRowChecked}",
