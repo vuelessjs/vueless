@@ -29,6 +29,7 @@ export default /*tw*/ {
       },
     },
   },
+  drag: "icon-drag cursor-move",
   dragIcon: "{UIcon} {>dataListIcon} icon-drag cursor-move opacity-100",
   label: {
     base: "font-normal flex-auto pt-px",
@@ -41,18 +42,11 @@ export default /*tw*/ {
     },
   },
   labelCrossed: "{>label} line-through",
-  customActions: `
-    space-x-5 opacity-50 md:flex md:items-center md:opacity-0
-    group-hover/item:md:block group-hover/item:opacity-100
-  `,
-  deleteIcon: "{UIcon} {>dataListIcon} hidden md:block md:opacity-0 group-hover/item:md:opacity-100",
-  editIcon: "{UIcon} {>dataListIcon} fill-gray-500 opacity-50",
+  customActions: "space-x-5 opacity-50 flex items-center md:opacity-0 group-hover/item:opacity-100",
   divider: "{UDivider}",
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",
   i18n: {
-    edit: "Edit",
-    delete: "Delete",
     emptyTitle: "",
     emptyDescription: "There is no data in the list.",
   },
@@ -64,7 +58,5 @@ export default /*tw*/ {
     nesting: false,
     /* icons */
     dragIcon: "drag_indicator",
-    deleteIcon: "delete",
-    editIcon: "edit_note",
   },
 };

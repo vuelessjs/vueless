@@ -23,7 +23,6 @@ export default {
   component: UInputRating,
   args: {
     modelValue: 2,
-    label: "Rate your experience: ",
   },
   argTypes: {
     ...getArgTypes(UInputRating.__name),

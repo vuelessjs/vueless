@@ -7,8 +7,8 @@ import {
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UCol from "../../ui.container-col/UCol.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { UAvatarProps } from "../types.ts";
@@ -47,7 +47,8 @@ const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
-  components: { UCol, URow, UAvatar },
+  components: { URow, UAvatar },
+  directives: { tooltip },
   setup() {
     return {
       args,
@@ -55,26 +56,16 @@ const EnumVariantTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes
     };
   },
   template: `
-    <UCol gap="xl">
-      <URow>
-        <UAvatar
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          :[args.enum]="option"
-          :label="option"
-        />
-      </URow>
-      <URow>
-        <UAvatar
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          :[args.enum]="option"
-          :label="''"
-        />
-      </URow>
-    </UCol>
+    <URow>
+      <UAvatar
+        v-for="(option, index) in options"
+        :key="index"
+        v-bind="args"
+        :[args.enum]="option"
+        :label="option"
+        v-tooltip="option"
+      />
+    </URow>
   `,
 });
 
@@ -83,43 +74,66 @@ Default.args = { size: "3xl" };
 
 export const Src = DefaultTemplate.bind({});
 Src.args = {
-  src: "https://avatars.githubusercontent.com/u/16276298?v=4",
+  src: "https://i.pravatar.cc/300?img=67",
+  size: "3xl",
+};
+
+export const PlaceholderIcon = DefaultTemplate.bind({});
+PlaceholderIcon.args = {
+  placeholderIcon: "account_circle",
   size: "3xl",
 };
 
 export const Label = DefaultTemplate.bind({});
 Label.args = { label: "Name Surname", size: "3xl" };
 
-/**
- * Hold cursor above an avatar to see value.
- */
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = {
+  docs: {
+    description: {
+      story: "Hold cursor above an avatar to see the value.",
+    },
+  },
+};
 
-/**
- * Hold cursor above an avatar to see value.
- */
 export const Rounded = EnumVariantTemplate.bind({});
 Rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
+Rounded.parameters = {
+  docs: {
+    description: {
+      story: "Hold cursor above an avatar to see the value.",
+    },
+  },
+};
 
-/**
- * Hold cursor above an avatar to see value.
- */
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
+Color.parameters = {
+  docs: {
+    description: {
+      story: "Hold cursor above an avatar to see the value.",
+    },
+  },
+};
 
-/**
- * Hold cursor above an avatar to see value.
- */
 export const Bordered = EnumVariantTemplate.bind({});
 Bordered.args = { enum: "color", bordered: true };
+Bordered.parameters = {
+  docs: {
+    description: {
+      story: "Hold cursor above an avatar to see the value.",
+    },
+  },
+};
 
 export const SlotPlaceholder = DefaultTemplate.bind({});
 SlotPlaceholder.args = {
+  color: "green",
   size: "3xl",
   slotTemplate: `
-    <template #placeholder>
-      <ULoader loading />
+    <template #placeholder="{ iconColor }">
+      <ULoader loading :color="iconColor" />
     </template>
   `,
 };
