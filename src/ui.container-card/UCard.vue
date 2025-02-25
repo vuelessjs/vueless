@@ -22,10 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 
 const isShownHeader = computed(() => {
-  const isHeaderLeftSlot = hasSlotContent(slots["title"]);
-  const isHeaderRightSlot = hasSlotContent(slots["title"]);
+  const isTitleSlot = hasSlotContent(slots["title"]);
+  const isActionsSlot = hasSlotContent(slots["actions"]);
 
-  return props.title || isHeaderLeftSlot || isHeaderRightSlot;
+  return props.title || isTitleSlot || isActionsSlot;
 });
 
 const isShownFooter = computed(() => {
