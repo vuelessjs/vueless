@@ -13,13 +13,12 @@ import {
 import { merge, isEqual } from "lodash-es";
 
 import UEmpty from "../ui.text-empty/UEmpty.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 
 import useUI from "../composables/useUI.ts";
-import { getDefaults, cx, getMergedConfig } from "../utils/ui.ts";
+import { getDefaults, cx } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { useLocale } from "../composables/useLocale.ts";
 import { PX_IN_REM } from "../constants.js";
@@ -38,7 +37,6 @@ import {
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Ref, ComputedRef } from "vue";
-import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 import type {
   Cell,
   Row,
@@ -103,7 +101,6 @@ const selectAll = ref(false);
 const canSelectAll = ref(true);
 const selectedRows: Ref<RowId[]> = ref([]);
 const tableRows: Ref<Row[]> = ref([]);
-const firstRow = ref(0);
 const tableWidth = ref(0);
 const tableHeight = ref(0);
 const pagePositionY = ref(0);
@@ -166,10 +163,6 @@ const colsCount = computed(() => {
   return normalizedColumns.value.length + 1;
 });
 
-const lastRow = computed(() => {
-  return props.rows.length - 1;
-});
-
 const isShownActionsHeader = computed(
   () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
 );
@@ -195,7 +188,7 @@ const isCheckedMoreOneTableItems = computed(() => {
 
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
 
-const flatTableRows = computed(() => getFlatRows(tableRows.value));
+const flatTableRows = computed(() => getFlatRows(props.rows));
 
 const isSelectedAllRows = computed(() => {
   return selectedRows.value.length === flatTableRows.value.length;
@@ -212,6 +205,11 @@ const tableRowAttrs = computed(() => ({
   bodyCellNestedExpandIconWrapperAttrs,
   bodyRowCheckedAttrs,
   bodyRowAttrs,
+  bodyDateDividerAttrs,
+  bodySelectedDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  bodyRowDateDividerAttrs,
+  bodyRowCheckedDateDividerAttrs,
 }));
 
 watch(selectAll, onChangeSelectAll, { deep: true });
@@ -265,7 +263,14 @@ function onWindowResize() {
   setFooterCellWidth();
 }
 
-function getDateDividerData(rowDate: string | Date) {
+function getDateDividerData(rowDate: string | Date | undefined) {
+  if (!rowDate) {
+    return {
+      label: "",
+      config: {},
+    };
+  }
+
   let dividerItem = {} as DateDivider;
 
   if (Array.isArray(props.dateDivider)) {
@@ -333,7 +338,9 @@ function synchronizeTableItemsWithProps() {
 }
 
 function updateSelectedRows() {
-  const newSelectedRows = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
+  const newSelectedRows = getFlatRows(tableRows.value)
+    .filter((row) => row.isChecked)
+    .map((row) => row.id);
   const isNewRowsSelected = newSelectedRows.every((newRow) => selectedRows.value.includes(newRow));
   const isSelectedSameRows = selectedRows.value.every((selectedRow) =>
     newSelectedRows.includes(selectedRow),
@@ -363,7 +370,7 @@ function isShownDateDivider(rowIndex: number) {
 
   const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
 
-  return !isPrevSameDate && props.dateDivider;
+  return Boolean(!isPrevSameDate && props.dateDivider);
 }
 
 function onClickRow(row: Row) {
@@ -428,10 +435,20 @@ function isRowSelectedWithin(rowIndex: number) {
   );
 
   if (prevRow) {
-    return isPrevRowSelected && isRowsSelected;
+    return Boolean(isPrevRowSelected && isRowsSelected);
   }
 
-  return isRowsSelected;
+  return Boolean(isRowsSelected);
+}
+
+function onToggleRowCheckbox(rowId: RowId) {
+  const targetIndex = selectedRows.value.findIndex((selectedId) => selectedId === rowId);
+
+  if (targetIndex === -1) {
+    selectedRows.value.push(rowId);
+  } else {
+    selectedRows.value.splice(targetIndex, 1);
+  }
 }
 
 defineExpose({
@@ -468,6 +485,9 @@ const {
   footerAttrs,
   bodyRowDateDividerAttrs,
   bodyRowCheckedDateDividerAttrs,
+  bodyDateDividerAttrs,
+  bodySelectedDateDividerAttrs,
+  bodyCellDateDividerAttrs,
   headerCellBaseAttrs,
   headerCellCheckboxAttrs,
   headerActionsCheckboxAttrs,
@@ -476,9 +496,6 @@ const {
   headerCounterAttrs,
   bodyEmptyStateAttrs,
   bodyEmptyStateCellAttrs,
-  bodyDateDividerAttrs,
-  bodySelectedDateDividerAttrs,
-  bodyCellDateDividerAttrs,
   headerActionsCounterAttrs,
   stickyHeaderCounterAttrs,
   stickyHeaderLoaderAttrs,
@@ -671,125 +688,88 @@ const {
           <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
-        <tbody v-if="tableRows.length" v-bind="bodyAttrs">
-          <template v-for="(row, rowIndex) in sortedRows" :key="row.id">
-            <tr
-              v-if="rowIndex === firstRow && hasSlotContent($slots['before-first-row'])"
-              v-bind="tableRows[0]?.isChecked ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
+        <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
+          <tr
+            v-if="hasSlotContent($slots['before-first-row'])"
+            v-bind="sortedRows[0]?.isChecked ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
+          >
+            <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
+              <!-- @slot Use it to add something before first row. -->
+              <slot name="before-first-row" />
+            </td>
+          </tr>
+          <UTableRow
+            v-for="(row, rowIndex) in sortedRows"
+            :key="row.id"
+            v-memo="[selectedRows.includes(row.id)]"
+            :selectable="selectable"
+            :row="row"
+            :is-date-divider="isShownDateDivider(rowIndex)"
+            :columns="normalizedColumns"
+            :config="config"
+            :selected-within="isRowSelectedWithin(rowIndex)"
+            :date-divider-data="getDateDividerData(row.rowDate)"
+            :attrs="tableRowAttrs as unknown as UTableRowAttrs"
+            :cols-count="colsCount"
+            :nested-level="0"
+            :empty-cell-label="emptyCellLabel"
+            :data-test="getDataTest('row')"
+            @click="onClickRow"
+            @dblclick="onDoubleClickRow"
+            @click-cell="onClickCell"
+            @toggle-expand="onToggleExpand"
+            @toggle-row-visibility="onToggleRowVisibility"
+            @toggle-checkbox="onToggleRowCheckbox"
+          >
+            <template
+              v-for="(value, key, index) in mapRowColumns(row, normalizedColumns)"
+              :key="index"
+              #[`cell-${key}`]="slotValues"
             >
-              <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
-                <!-- @slot Use it to add something before first row. -->
-                <slot name="before-first-row" />
-              </td>
-            </tr>
-
-            <tr
-              v-if="isShownDateDivider(rowIndex) && !isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  size="xs"
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodyDateDividerAttrs"
-                  :config="
-                    getMergedConfig({
-                      defaultConfig: bodyDateDividerAttrs.config,
-                      globalConfig: getDateDividerData(row.rowDate).config,
-                    }) as UDividerConfig
-                  "
-                />
-              </td>
-            </tr>
-
-            <tr
-              v-if="isShownDateDivider(rowIndex) && isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowCheckedDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  size="xs"
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodySelectedDateDividerAttrs"
-                  :config="
-                    getMergedConfig({
-                      defaultConfig: bodyDateDividerAttrs.config,
-                      globalConfig: getDateDividerData(row.rowDate).config,
-                    }) as UDividerConfig
-                  "
-                />
-              </td>
-            </tr>
-
-            <UTableRow
-              v-model:selected-rows="selectedRows"
-              :selectable="selectable"
-              :row="row"
-              :columns="normalizedColumns"
-              :config="config"
-              :attrs="tableRowAttrs as unknown as UTableRowAttrs"
-              :nested-level="0"
-              :empty-cell-label="emptyCellLabel"
-              :data-test="getDataTest('row')"
-              @click="onClickRow"
-              @dblclick="onDoubleClickRow"
-              @click-cell="onClickCell"
-              @toggle-expand="onToggleExpand"
-              @toggle-row-visibility="onToggleRowVisibility"
-            >
-              <template
-                v-for="(value, key, index) in mapRowColumns(row, normalizedColumns)"
-                :key="index"
-                #[`cell-${key}`]="slotValues"
-              >
-                <!--
+              <!--
                   @slot Use it to customize needed table cell.
                   @binding {string} value
                   @binding {object} row
                   @binding {number} index
                 -->
-                <slot
-                  :name="`cell-${key}`"
-                  :value="slotValues.value"
-                  :row="slotValues.row"
-                  :index="index"
-                />
-              </template>
+              <slot
+                :name="`cell-${key}`"
+                :value="slotValues.value"
+                :row="slotValues.row"
+                :index="index"
+              />
+            </template>
 
-              <template #expand="{ row: expandedRow, expanded }">
-                <!--
+            <template #expand="{ row: expandedRow, expanded }">
+              <!--
                   @slot Use it to customize row expand icon.
                   @binding {object} row
                   @binding {boolean} expanded
                 -->
-                <slot name="expand" :row="expandedRow" :expanded="expanded" />
-              </template>
+              <slot name="expand" :row="expandedRow" :expanded="expanded" />
+            </template>
 
-              <template #nested-content>
-                <!--
+            <template #nested-content>
+              <!--
                   @slot Use it to add nested content inside a row.
                   @binding {object} row
                 -->
-                <slot v-if="row" name="nested-content" :row="row" />
-              </template>
-            </UTableRow>
+              <slot v-if="row" name="nested-content" :row="row" />
+            </template>
+          </UTableRow>
 
-            <tr
-              v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
-              v-bind="bodyRowAfterAttrs"
-            >
-              <!--
+          <tr v-if="hasSlotContent($slots['after-last-row'])" v-bind="bodyRowAfterAttrs">
+            <!--
                 @slot Use it to add something after last row.
                 @binding {number} cols-count
                 @classes {string} classes
               -->
-              <slot
-                name="after-last-row"
-                :cols-count="colsCount"
-                :classes="bodyCellBaseAttrs.class"
-              />
-            </tr>
-          </template>
+            <slot
+              name="after-last-row"
+              :cols-count="colsCount"
+              :classes="bodyCellBaseAttrs.class"
+            />
+          </tr>
         </tbody>
 
         <tbody v-else>

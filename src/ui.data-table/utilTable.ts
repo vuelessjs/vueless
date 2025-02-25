@@ -23,6 +23,10 @@ export function syncRowCheck(row: Row, selectedRows: RowId[]) {
     row.row = syncRowCheck(row.row, selectedRows);
   }
 
+  if (row.row && Array.isArray(row.row)) {
+    row.row = row.row.map((nestedRow) => syncRowCheck(nestedRow, selectedRows));
+  }
+
   return row;
 }
 

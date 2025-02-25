@@ -127,6 +127,11 @@ export interface UTableRowAttrs {
   bodyCellNestedExpandIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
+  bodyDateDividerAttrs: Ref<UnknownObject>;
+  bodySelectedDateDividerAttrs: Ref<UnknownObject>;
+  bodyCellDateDividerAttrs: Ref<UnknownObject>;
+  bodyRowDateDividerAttrs: Ref<UnknownObject>;
+  bodyRowCheckedDateDividerAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -137,5 +142,9 @@ export interface UTableRowProps {
   nestedLevel: number;
   dataTest: string | null;
   attrs: UTableRowAttrs;
+  isDateDivider: boolean;
+  selectedWithin: boolean;
+  dateDividerData: DateDivider;
+  colsCount: number;
   config: Config;
 }

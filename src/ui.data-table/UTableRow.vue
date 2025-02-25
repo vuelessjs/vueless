@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, useSlots, useTemplateRef } from "vue";
-import { cx } from "../utils/ui.ts";
+import { cx, getMergedConfig } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 
 import { PX_IN_REM } from "../constants.js";
@@ -11,8 +11,10 @@ import useUI from "../composables/useUI.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
+import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 
 import type {
   Cell,
@@ -22,6 +24,7 @@ import type {
   RowScopedProps,
   UTableRowProps,
   Config,
+  RowId,
 } from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
@@ -31,9 +34,14 @@ defineOptions({ internal: true });
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleRowVisibility", "click", "dblclick", "clickCell", "toggleExpand"]);
-
-const selectedRows = defineModel("selectedRows", { type: Array, default: () => [] });
+const emit = defineEmits([
+  "toggleRowVisibility",
+  "click",
+  "dblclick",
+  "clickCell",
+  "toggleExpand",
+  "toggleCheckbox",
+]);
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
@@ -85,7 +93,10 @@ const isNestedRowEmpty = computed(() => {
 const isNestedDataEmpty = computed(() => {
   if (!props.row.nestedData) return true;
 
-  return !props.row.nestedData.rows || !props.row.nestedData.rows.length;
+  return (
+    !props.row.nestedData.rows ||
+    (Array.isArray(props.row.nestedData.rows) && !props.row.nestedData.rows.length)
+  );
 });
 
 const isShownToggleIcon = computed(() => {
@@ -239,14 +250,16 @@ function getRowClasses(row: Row) {
   return typeof rowClasses === "function" ? rowClasses(row) : rowClasses;
 }
 
-function getRowAttrs(rowId: string | number) {
-  return selectedRows.value.includes(rowId)
-    ? props.attrs.bodyRowCheckedAttrs.value
-    : props.attrs.bodyRowAttrs.value;
+function getRowAttrs(row: Row) {
+  return row.isChecked ? props.attrs.bodyRowCheckedAttrs.value : props.attrs.bodyRowAttrs.value;
 }
 
 function onToggleExpand(row: Row, expanded?: boolean) {
   emit("toggleExpand", row, expanded || isExpanded(row));
+}
+
+function onInputCheckbox(rowId: RowId) {
+  emit("toggleCheckbox", rowId);
 }
 
 const { getDataTest } = useUI<Config>(defaultConfig);
@@ -254,8 +267,46 @@ const { getDataTest } = useUI<Config>(defaultConfig);
 
 <template>
   <tr
-    v-bind="{ ...$attrs, ...getRowAttrs(row.id) }"
-    :class="cx([getRowAttrs(row.id).class, getRowClasses(row)])"
+    v-if="isDateDivider && !selectedWithin && row.rowDate"
+    v-bind="attrs.bodyRowDateDividerAttrs.value"
+  >
+    <td v-bind="attrs.bodyCellDateDividerAttrs.value" :colspan="colsCount">
+      <UDivider
+        size="xs"
+        :label="dateDividerData.label"
+        v-bind="attrs.bodyDateDividerAttrs.value"
+        :config="
+          getMergedConfig({
+            defaultConfig: attrs.bodyDateDividerAttrs.value.config,
+            globalConfig: dateDividerData.config,
+          }) as UDividerConfig
+        "
+      />
+    </td>
+  </tr>
+
+  <tr
+    v-if="isDateDivider && selectedWithin && row.rowDate"
+    v-bind="attrs.bodyRowCheckedDateDividerAttrs.value"
+  >
+    <td v-bind="attrs.bodyCellDateDividerAttrs.value" :colspan="colsCount">
+      <UDivider
+        size="xs"
+        :label="dateDividerData.label"
+        v-bind="attrs.bodySelectedDateDividerAttrs.value"
+        :config="
+          getMergedConfig({
+            defaultConfig: attrs.bodyDateDividerAttrs.value.config,
+            globalConfig: dateDividerData.config,
+          }) as UDividerConfig
+        "
+      />
+    </td>
+  </tr>
+
+  <tr
+    v-bind="{ ...$attrs, ...getRowAttrs(row) }"
+    :class="cx([getRowAttrs(row).class, getRowClasses(row)])"
     @click="onClick(props.row)"
     @dblclick="onDoubleClick(props.row)"
   >
@@ -266,12 +317,12 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       @click.stop
     >
       <UCheckbox
-        v-model="selectedRows"
+        :model-value="row.isChecked"
         size="md"
-        :value="row.id"
         v-bind="attrs.bodyCheckboxAttrs.value"
         :data-id="row.id"
         :data-test="getDataTest('body-checkbox')"
+        @input="emit('toggleCheckbox', row.id)"
       />
     </td>
 
@@ -357,10 +408,13 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     v-if="isSingleNestedRow && singleNestedRow && singleNestedRow.isShown && !row.nestedData"
     v-bind="{
       ...$attrs,
-      ...getRowAttrs(singleNestedRow.id),
+      ...getRowAttrs(singleNestedRow),
     }"
-    v-model:selected-rows="selectedRows"
-    :class="cx([getRowAttrs(singleNestedRow.id).class, getRowClasses(singleNestedRow)])"
+    :is-date-divider="isDateDivider"
+    :selected-within="selectedWithin"
+    :date-divider-data="dateDividerData"
+    :cols-count="colsCount"
+    :class="cx([getRowAttrs(singleNestedRow).class, getRowClasses(singleNestedRow)])"
     :attrs="attrs"
     :columns="columns"
     :row="row.row as Row"
@@ -369,6 +423,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     :config="config"
     :selectable="selectable"
     :empty-cell-label="emptyCellLabel"
+    @toggle-checkbox="onInputCheckbox"
     @toggle-expand="onToggleExpand"
     @toggle-row-visibility="onClickToggleRowChild"
     @click="onClick"
@@ -393,11 +448,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         v-if="nestedRow.isShown"
         v-bind="{
           ...$attrs,
-          ...getRowAttrs(nestedRow.id),
+          ...getRowAttrs(nestedRow),
         }"
-        v-model:selected-rows="selectedRows"
-        :class="cx([getRowAttrs(nestedRow.id).class, getRowClasses(nestedRow)])"
+        :class="cx([getRowAttrs(nestedRow).class, getRowClasses(nestedRow)])"
         :attrs="attrs"
+        :is-date-divider="isDateDivider"
+        :selected-within="selectedWithin"
+        :date-divider-data="dateDividerData"
+        :cols-count="colsCount"
         :columns="columns"
         :row="nestedRow"
         :data-test="getDataTest()"
@@ -410,6 +468,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         @click="onClick"
         @dblclick="onDoubleClick"
         @click-cell="onClickCell"
+        @toggle-checkbox="onInputCheckbox"
       >
         <template
           v-for="(value, key, index) in mapRowColumns(nestedRow, columns)"
