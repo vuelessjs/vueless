@@ -429,16 +429,13 @@ function onToggleExpand(row: Row, expanded: boolean) {
 
 function isRowSelectedWithin(rowIndex: number) {
   const prevRow = sortedRows.value[rowIndex - 1];
-  const isPrevRowSelected = prevRow && selectedRows.value.find((rowId) => rowId === prevRow.id);
-  const isRowsSelected = selectedRows.value.find(
-    (rowId) => rowId === sortedRows.value[rowIndex].id,
-  );
+  const targetRow = sortedRows.value[rowIndex];
 
   if (prevRow) {
-    return Boolean(isPrevRowSelected && isRowsSelected);
+    return Boolean(prevRow.isChecked && targetRow.isChecked);
   }
 
-  return Boolean(isRowsSelected);
+  return Boolean(targetRow.isChecked);
 }
 
 function onToggleRowCheckbox(rowId: RowId) {
@@ -701,7 +698,7 @@ const {
           <UTableRow
             v-for="(row, rowIndex) in sortedRows"
             :key="row.id"
-            v-memo="[selectedRows.includes(row.id)]"
+            v-memo="[selectedRows.includes(row.id), isRowSelectedWithin(rowIndex)]"
             :selectable="selectable"
             :row="row"
             :is-date-divider="isShownDateDivider(rowIndex)"
