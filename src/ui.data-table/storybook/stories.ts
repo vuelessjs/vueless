@@ -75,7 +75,7 @@ function getDateDividerRow(rowAmount: number) {
       if (index > 1) {
         const date = new Date();
 
-        date.setFullYear(date.getFullYear() + 1);
+        date.setFullYear(date.getFullYear());
 
         rowDate = date.toDateString();
       }
@@ -452,11 +452,13 @@ SlotHeaderActions.args = {
 export const SlotBeforeHeader = DefaultTemplate.bind({});
 SlotBeforeHeader.args = {
   slotTemplate: `
-    <template #before-header>
-      <p class="py-2">
-        📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
-        Please verify all entries for accuracy before proceeding.
-      </p>
+    <template #before-header="{ colsCount, classes }">
+      <td :colspan="colsCount" :class="classes">
+        <p class="p-2">
+          📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
+          Please verify all entries for accuracy before proceeding.
+        </p>
+      </td>
     </template>
   `,
 };
@@ -538,10 +540,12 @@ SlotNestedContent.parameters = {
 export const SlotAfterLastRow = DefaultTemplate.bind({});
 SlotAfterLastRow.args = {
   slotTemplate: `
-    <template #after-last-row>
-      <p class="py-2">
-        ✅ End of results. If you need more data, try adjusting your filters or loading more entries.
-      </p>
+    <template #after-last-row="{ colsCount, classes }">
+      <td :colspan="colsCount" :class="classes">
+        <p>
+          ✅ End of results. If you need more data, try adjusting your filters or loading more entries.
+        </p>
+      </td>
     </template>
   `,
 };
@@ -554,26 +558,18 @@ SlotEmptyState.args = {
     bodyEmptyStateCell: "py-10",
   },
   slotTemplate: `
-    <template #empty-state="{ noData }">
-      <ULoader loading size="lg" :config="{ loader: 'mx-auto mb-2' }" />
-      <p class="text-center">{{ noData }}</p>
+    <template #empty-state>
+      <ULoader loading size="lg" :config="{ loader: 'mx-auto mb-4' }" />
+      <p class="text-center">Fetching latest data, please wait...</p>
     </template>
   `,
-};
-SlotEmptyState.parameters = {
-  docs: {
-    description: {
-      story:
-        "You can customize the `empty-state` slot's prop (`noData`) using the `i18n` config key.",
-    },
-  },
 };
 
 export const SlotFooter = DefaultTemplate.bind({});
 SlotFooter.args = {
   slotTemplate: `
     <template #footer>
-      <td colspan="100%" class="text-center">
+      <td colspan="100%" class="px-2">
         🔍 For more detailed insights, please visit our data analysis page or reach out to support for assistance.
       </td>
     </template>
