@@ -13,6 +13,8 @@ import ULink from "../../ui.button-link/ULink.vue";
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Row, UTableProps } from "../types.ts";
 
@@ -49,10 +51,10 @@ export default {
   },
   args: {
     columns: [
-      { key: "key_1", label: "title 1", thClass: "w-2/5" },
-      { key: "key_2", label: "title 2" },
-      { key: "key_3", label: "title 3" },
-      { key: "key_4", label: "title 4" },
+      { key: "orderId", label: "Order Id", thClass: "w-2/5" },
+      { key: "customerName", label: "Customer Name" },
+      { key: "status", label: "Status" },
+      { key: "totalPrice", label: "Total Price" },
     ],
     row: getRow,
     numberOfRows: 5,
@@ -70,10 +72,10 @@ function getDateDividerRow(rowAmount: number) {
     .map((_, index) => {
       let rowDate = new Date().toString();
 
-      if (index > Math.round(rowAmount / 2)) {
+      if (index > 1) {
         const date = new Date();
 
-        date.setFullYear(date.getFullYear() + 1);
+        date.setFullYear(date.getFullYear());
 
         rowDate = date.toDateString();
       }
@@ -82,112 +84,109 @@ function getDateDividerRow(rowAmount: number) {
         id: getRandomId(),
         isChecked: false,
         rowDate,
-        key_1: "Info",
-        key_2: "Statistics",
-        key_3: "Reports",
-        key_4: "Discounts",
+        orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+        customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+          Math.floor(Math.random() * 4)
+        ],
+        status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
       };
     });
-}
-
-function getNestedRow() {
-  return {
-    id: getRandomId(),
-    isChecked: false,
-    key_1: "Click to expand",
-    key_2: "Some data",
-    key_3: "Numbers",
-    key_4: "Statistics",
-    row: [
-      {
-        id: getRandomId(),
-        isChecked: false,
-        isShown: false,
-        key_1: "Nesting",
-        key_2: "Nesting",
-        key_3: "Nesting",
-        key_4: "Nesting",
-        row: {
-          id: getRandomId(),
-          isChecked: false,
-          isShown: false,
-          key_1: "Second level nesting",
-          key_2: "Second level nesting",
-          key_3: "Second level nesting",
-          key_4: "Second level nesting",
-        },
-      },
-      {
-        id: getRandomId(),
-        isChecked: false,
-        isShown: false,
-        key_1: "Nesting",
-        key_2: "Nesting",
-        key_3: "Nesting",
-        key_4: "Nesting",
-        row: {
-          id: getRandomId(),
-          isChecked: false,
-          isShown: false,
-          key_1: "Second level nesting",
-          key_2: "Second level nesting",
-          key_3: "Second level nesting",
-          key_4: "Second level nesting",
-          row: {
-            id: getRandomId(),
-            isChecked: false,
-            isShown: false,
-            key_1: "Third level nesting",
-            key_2: "Third level nesting",
-            key_3: "Third level nesting",
-            key_4: "Third level nesting",
-          },
-        },
-      },
-    ],
-  };
 }
 
 function getRow() {
   return {
     id: getRandomId(),
     isChecked: false,
-    key_1: "Info",
-    key_2: "Statistics",
-    key_3: "Reports",
-    key_4: "Discounts",
+    orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+    customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+      Math.floor(Math.random() * 4)
+    ],
+    status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+    totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+  };
+}
+
+function getNestedRow() {
+  return {
+    id: getRandomId(),
+    isChecked: false,
+    orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+    customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+      Math.floor(Math.random() * 4)
+    ],
+    status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+    totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    row: [
+      {
+        id: getRandomId(),
+        isChecked: false,
+        isShown: false,
+        orderId: "Suborder-1",
+        customerName: "",
+        status: "",
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+        row: {
+          id: getRandomId(),
+          isChecked: false,
+          isShown: false,
+          orderId: "Extra Services",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+        },
+      },
+      {
+        id: getRandomId(),
+        isChecked: false,
+        isShown: false,
+        orderId: "Suborder-2",
+        customerName: "",
+        status: "",
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+        row: {
+          id: getRandomId(),
+          isChecked: false,
+          isShown: false,
+          orderId: "Extra Services",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+        },
+      },
+    ],
   };
 }
 
 function getNestedContentRow(index: number) {
-  if (index === 0) {
+  if (index === 1) {
     return {
       id: getRandomId(),
       isChecked: false,
-      key_1: "Row with nested content",
-      key_2: "Basic data",
-      key_3: "More info",
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "John Doe",
+      status: "Processing",
       nestedData: {
         isChecked: false,
         isShown: false,
         rows: [
           {
             id: getRandomId(),
-            key_1: "Detail 1A",
-            key_2: "Info 1B",
-            key_3: "Data 1C",
+            category: "Gadgets",
+            itemName: "Ergonomic Mouse",
+            quantity: 2,
           },
           {
             id: getRandomId(),
-            key_1: "Detail 2A",
-            key_2: "Info 2B",
-            key_3: "Data 2C",
+            category: "Gadgets",
+            itemName: "Wireless Keyboard",
+            quantity: 1,
           },
           {
             id: getRandomId(),
-            key_1: "Detail 3A",
-            key_2: "Info 3B",
-            key_3: "Data 3C",
+            category: "Electronics",
+            itemName: "USB-C Hub",
+            quantity: 3,
           },
         ],
       },
@@ -196,15 +195,18 @@ function getNestedContentRow(index: number) {
     return {
       id: getRandomId(),
       isChecked: false,
-      key_1: `Regular row ${index}`,
-      key_2: "Standard info",
-      key_3: "Basic data",
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
     };
   }
 }
 
 const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable, UButton, ULink, UMoney, UBadge, URow },
+  components: { UTable, UButton, ULink, UMoney, UBadge, URow, UIcon, ULoader },
   setup() {
     const slots = getSlotNames(UTable.__name);
 
@@ -235,82 +237,117 @@ const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   },
 });
 
-const EmptyTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable },
+export const Default = DefaultTemplate.bind({});
+Default.args = {};
+
+const LoadingTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UButton },
   setup() {
     const slots = getSlotNames(UTable.__name);
 
     return { args, slots };
   },
   template: `
-    <UTable v-bind="args" :rows="[]" />
+    <UButton
+      label="Toggle loading"
+      @click="args.loading = !args.loading"
+      class="mb-4"
+    />
+
+    <UTable
+      v-bind="args"
+      :rows="args.rows"
+    >
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UTable>
   `,
 });
 
-export const Default = DefaultTemplate.bind({});
-Default.args = {};
-
-export const Nesting = DefaultTemplate.bind({});
-Nesting.args = { row: getNestedRow, selectable: true };
-
-export const NestedContent = DefaultTemplate.bind({});
-NestedContent.args = {
-  columns: [
-    { key: "key_1", label: "Title 1" },
-    { key: "key_2", label: "Title 2" },
-    { key: "key_3", label: "Title 3" },
-  ],
-  row: getNestedContentRow,
-  slotTemplate: `
-    <template #nested-content="{ row }">
-      <div class="p-4 bg-gray-100">
-        <UTable
-          :columns="[
-            { key: 'key_1', label: 'Detail' },
-            { key: 'key_2', label: 'Info' },
-            { key: 'key_3', label: 'Data' },
-          ]"
-          :rows="row.nestedData.rows"
-          compact
-        />
-      </div>
-    </template>
-  `,
+export const Loading = LoadingTemplate.bind({});
+Loading.args = {};
+Loading.parameters = {
+  docs: {
+    description: {
+      story: "Set table loader state.",
+    },
+  },
 };
 
-export const RowAndCellClasses = DefaultTemplate.bind({});
-RowAndCellClasses.args = {
+export const EmptyCellLabel = DefaultTemplate.bind({});
+EmptyCellLabel.args = {
+  emptyCellLabel: "NO DATA FOUND",
   rows: [
     {
       id: getRandomId(),
       isChecked: false,
-      key_1: "Info",
-      key_2: "Statistics",
-      key_3: { value: "Reports", class: "bg-red-200" },
-      key_4: "Discounts",
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "",
+      status: "",
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+  ],
+};
+EmptyCellLabel.parameters = {
+  docs: {
+    description: {
+      story: "Label to display for empty cell values.",
+    },
+  },
+};
+
+export const Nesting = DefaultTemplate.bind({});
+Nesting.args = { row: getNestedRow };
+Nesting.parameters = {
+  docs: {
+    description: {
+      story:
+        "If you need to have nested row(s) in the table, you can use the `row` key inside a row object.",
+    },
+  },
+};
+
+export const CellClasses = DefaultTemplate.bind({});
+CellClasses.args = {
+  rows: [
+    {
+      id: getRandomId(),
+      isChecked: false,
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "John Doe",
+      status: { value: "Cancelled", class: "bg-red-200" },
+      totalPrice: "$18.92",
     },
     {
       id: getRandomId(),
       isChecked: false,
       class: "bg-green-100",
-      key_1: "Data",
-      key_2: "Meetings",
-      key_3: "Calendar",
-      key_4: "Departments",
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "Bob Smith",
+      status: "Delivered",
+      totalPrice: "$173.11",
     },
     {
       id: getRandomId(),
       isChecked: false,
-      key_1: "Events",
-      key_2: "Sales",
-      key_3: "Renovation",
-      key_4: "Calendar",
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "Helen Williams",
+      status: { value: "Delivered", contentClasses: "line-through" },
+      totalPrice: "$314.26",
     },
   ],
 };
+CellClasses.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "To apply classes to a table content, you may use different approaches: <br/> 1. Pass a string with classes to the `class` key in a row object (classes are applied to the whole row). <br/> 2. Pass a string with classes to the `class` key in a cell object (classes are applied to the table cell, while the value is passed via a `value` key). <br/> 3. Pass a string with classes to the `contentClasses` key in a cell object (classes are applied to the cell content, while the value is passed via a `value` key).",
+    },
+  },
+};
 
-export const Empty = EmptyTemplate.bind({});
-Empty.args = {};
+export const Empty = DefaultTemplate.bind({});
+Empty.args = { rows: [] };
 
 export const Selectable = DefaultTemplate.bind({});
 Selectable.args = { selectable: true };
@@ -327,10 +364,9 @@ StickyFooter.args = {
   stickyFooter: true,
   slotTemplate: `
     <template #footer>
-      <td>
-        <p>
-          🤘🤘🤘
-          Lorem ipsum dolor sit amet.
+      <td colspan="4">
+        <p class="font-semibold text-gray-700">
+          📊 Summary: 50 transactions processed | Total Revenue: <strong>$12,345.67</strong>
         </p>
       </td>
     </template>
@@ -339,45 +375,49 @@ StickyFooter.args = {
 
 export const Compact = DefaultTemplate.bind({});
 Compact.args = { compact: true };
+Compact.parameters = {
+  docs: {
+    description: {
+      story: "`compact` prop makes the table compact (fewer spacings).",
+    },
+  },
+};
 
 export const DateDivider = DefaultTemplate.bind({});
-DateDivider.args = { dateDivider: true, rows: getDateDividerRow(10) };
+DateDivider.args = { dateDivider: true, rows: getDateDividerRow(4) };
+DateDivider.parameters = {
+  docs: {
+    description: {
+      story: "Show date divider line between dates.",
+    },
+  },
+};
 
 export const DateDividerCustomLabel = DefaultTemplate.bind({});
-
-const dateDividerCustomLabelRows = getDateDividerRow(10);
-
 DateDividerCustomLabel.args = {
-  rows: dateDividerCustomLabelRows,
+  rows: getDateDividerRow(4),
   dateDivider: [
     {
-      date: dateDividerCustomLabelRows.at(6)!.rowDate,
+      date: getDateDividerRow(4).at(2)!.rowDate,
       label: "Custom label for specific date",
       config: { label: "!text-orange-400", divider: "!border-orange-300" },
     },
   ],
 };
-
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
-  slotTemplate: `
-    <template #cell-key_3="{value}">
-      🤘🤘🤘
-    </template>
-  `,
+DateDividerCustomLabel.parameters = {
+  docs: {
+    description: {
+      story:
+        "You can customize date divider by passing necessary data in `date`, `label` and `config` object keys.",
+    },
+  },
 };
 
-export const SlotExpand = DefaultTemplate.bind({});
-SlotExpand.args = {
-  row: getNestedRow,
+export const SlotHeaderKey = DefaultTemplate.bind({});
+SlotHeaderKey.args = {
   slotTemplate: `
-    <template #expand="{ row, isExpanded }">
-      <div v-if="isExpanded">
-        🔼
-      </div>
-      <div v-if="!isExpanded">
-        🔽
-      </div>
+    <template #header-status="{ column }">
+      <UBadge :label="column?.label" />
     </template>
   `,
 };
@@ -409,30 +449,118 @@ SlotHeaderActions.args = {
   `,
 };
 
+export const SlotBeforeHeader = DefaultTemplate.bind({});
+SlotBeforeHeader.args = {
+  slotTemplate: `
+    <template #before-header="{ colsCount, classes }">
+      <td :colspan="colsCount" :class="classes">
+        <p class="p-2">
+          📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
+          Please verify all entries for accuracy before proceeding.
+        </p>
+      </td>
+    </template>
+  `,
+};
+
 export const SlotBeforeFirstRow = DefaultTemplate.bind({});
 SlotBeforeFirstRow.args = {
   slotTemplate: `
     <template #before-first-row>
-      <p>
-        🤘🤘🤘
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua.
+      <p class="py-2">
+        📌 Showing the latest data as of {{ new Date().toLocaleDateString() }}.
+        Please ensure all entries are up to date.
       </p>
     </template>
   `,
 };
 
+export const CellSlots = DefaultTemplate.bind({});
+CellSlots.args = {
+  slotTemplate: `
+    <template #cell-orderId="{ value }">
+      <ULink :label="value" color="green" />
+    </template>
+
+    <template #cell-customerName="{ value }">
+      <UBadge :label="value" />
+    </template>
+
+    <template #cell-totalPrice="{ value }">
+      <UMoney :value="value.slice(1)" symbol="€" symbolAlign="left" />
+    </template>
+  `,
+};
+
+export const SlotExpand = DefaultTemplate.bind({});
+SlotExpand.args = {
+  row: getNestedRow,
+  slotTemplate: `
+    <template #expand="{ row, expanded }">
+      <UBadge v-if="expanded" label="Collapse" class="cursor-pointer" />
+      <UBadge v-if="!expanded" label="Expand" class="cursor-pointer" />
+    </template>
+  `,
+};
+
+export const SlotNestedContent = DefaultTemplate.bind({});
+SlotNestedContent.args = {
+  columns: [
+    { key: "orderId", label: "Order Id" },
+    { key: "customerName", label: "Customer Name" },
+    { key: "status", label: "Status" },
+  ],
+  row: getNestedContentRow,
+  slotTemplate: `
+    <template #nested-content="{ row }">
+      <div class="p-4 bg-gray-100">
+        <UTable
+          :columns="[
+            { key: 'category', label: 'Category' },
+            { key: 'itemName', label: 'Product' },
+            { key: 'quantity', label: 'Quantity' },
+          ]"
+          :rows="row.nestedData.rows"
+          compact
+        />
+      </div>
+    </template>
+  `,
+};
+SlotNestedContent.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "You can also pass nested content inside the row (to render a nested table, for example). Use the `nestedData` key inside a row object.",
+    },
+  },
+};
+
 export const SlotAfterLastRow = DefaultTemplate.bind({});
 SlotAfterLastRow.args = {
   slotTemplate: `
-    <template #after-last-row>
-      <p>
-        🤘🤘🤘
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua.
-      </p>
+    <template #after-last-row="{ colsCount, classes }">
+      <td :colspan="colsCount" :class="classes">
+        <p>
+          ✅ End of results. If you need more data, try adjusting your filters or loading more entries.
+        </p>
+      </td>
+    </template>
+  `,
+};
+
+export const SlotEmptyState = DefaultTemplate.bind({});
+SlotEmptyState.args = {
+  rows: [],
+  config: {
+    i18n: { noData: "Fetching data..." },
+    bodyEmptyStateCell: "py-10",
+  },
+  slotTemplate: `
+    <template #empty-state>
+      <ULoader loading size="lg" :config="{ loader: 'mx-auto mb-4' }" />
+      <p class="text-center">Fetching latest data, please wait...</p>
     </template>
   `,
 };
@@ -441,90 +569,9 @@ export const SlotFooter = DefaultTemplate.bind({});
 SlotFooter.args = {
   slotTemplate: `
     <template #footer>
-      <td>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
+      <td colspan="100%" class="px-2">
+        🔍 For more detailed insights, please visit our data analysis page or reach out to support for assistance.
       </td>
-    </template>
-  `,
-};
-
-export const CellSlots = DefaultTemplate.bind({});
-CellSlots.args = {
-  columns: [
-    { key: "link", label: "link" },
-    { key: "money", label: "money", thClass: "text-right" },
-    { key: "email", label: "email" },
-    { key: "tags", label: "tags" },
-  ],
-  row: {
-    id: getRandomId(),
-    link: "some link",
-    money: {
-      sum: 10,
-      currencySymbol: "$",
-    },
-    email: "some@email.ua",
-    tags: {
-      tags: { label: "some tag" },
-      variant: "orange",
-    },
-    row: [
-      {
-        id: getRandomId(),
-        isShown: true,
-        link: "some link",
-        money: {
-          sum: 10,
-          currencySymbol: "$",
-        },
-        email: "some@email.ua",
-        tags: {
-          tags: { label: "some tag" },
-          variant: "orange",
-        },
-      },
-      {
-        id: getRandomId(),
-        isShown: true,
-        link: "some link",
-        money: {
-          sum: 10,
-          currencySymbol: "$",
-        },
-        email: "some@email.ua",
-        tags: {
-          tags: { label: "some tag" },
-          variant: "orange",
-        },
-      },
-    ],
-  },
-
-  slotTemplate: `
-    <template #cell-link="{ value }">
-      <ULink :url="value" :label="value" />
-    </template>
-
-    <template #cell-money="{ value }">
-      <UMoney :sum="value.sum" :symbol="value.currencySymbol" />
-    </template>
-
-    <template #cell-email="{ value }">
-      <ULink :label="value" :url="value" type="email" />
-    </template>
-
-    <template #cell-tags="{ value }">
-      <UBadge
-        v-for="item in value.tags"
-        :key="item"
-        :label="item"
-        :color="value.variant"
-      />
     </template>
   `,
 };

@@ -30,6 +30,7 @@ export default /*tw*/ {
   table: "min-w-full border-none text-sm w-full table-auto",
   header: "border-b border-gray-200",
   headerRow: "",
+  headerRowBefore: "{>headerCellBase} py-1",
   headerCellBase: {
     base: "p-4 text-sm font-normal text-gray-500 text-left text-nowrap",
     variants: {
@@ -84,6 +85,7 @@ export default /*tw*/ {
     label: "bg-gray-100 transition",
   },
   bodyEmptyState: "{UEmpty} my-8",
+  bodyEmptyStateCell: "",
   footer: {
     base: "group/footer border-t border-solid border-gray-200",
     variants: {

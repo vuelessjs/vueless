@@ -475,6 +475,7 @@ const {
   headerCheckboxAttrs,
   headerCounterAttrs,
   bodyEmptyStateAttrs,
+  bodyEmptyStateCellAttrs,
   bodyDateDividerAttrs,
   bodySelectedDateDividerAttrs,
   bodyCellDateDividerAttrs,
@@ -544,13 +545,6 @@ const {
         <template v-else>
           {{ column.label }}
         </template>
-
-        <!--
-            @slot Use it to add something after the needed header cell.
-            @binding {object} column
-            @binding {number} index
-          -->
-        <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
       </div>
 
       <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
@@ -626,13 +620,12 @@ const {
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
             <!--
-                @slot Use it to add something before header row.
-                @binding {number} cols-count
-              -->
-            <slot name="before-header" :cols-count="colsCount" />
+              @slot Use it to add something before header row.
+              @binding {number} cols-count
+              @binding {string} classes
+            -->
+            <slot name="before-header" :cols-count="colsCount" :classes="headerRowAttrs.class" />
           </tr>
-
-          <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
@@ -672,13 +665,6 @@ const {
               <template v-else>
                 {{ column.label }}
               </template>
-
-              <!--
-                @slot Use it to add something after the needed header cell.
-                @binding {object} column
-                @binding {number} index
-              -->
-              <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
             </th>
           </tr>
 
@@ -792,15 +778,23 @@ const {
               v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
               v-bind="bodyRowAfterAttrs"
             >
-              <!-- @slot Use it to add something after last row. -->
-              <slot name="after-last-row" :cols-count="colsCount" />
+              <!--
+                @slot Use it to add something after last row.
+                @binding {number} cols-count
+                @classes {string} classes
+              -->
+              <slot
+                name="after-last-row"
+                :cols-count="colsCount"
+                :classes="bodyCellBaseAttrs.class"
+              />
             </tr>
           </template>
         </tbody>
 
         <tbody v-else>
           <tr>
-            <td :colspan="colsCount">
+            <td :colspan="colsCount" v-bind="bodyEmptyStateCellAttrs">
               <!-- @slot Use it to add custom empty state. -->
               <slot name="empty-state">
                 <UEmpty
