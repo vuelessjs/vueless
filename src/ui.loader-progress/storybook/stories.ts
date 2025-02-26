@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
@@ -14,7 +15,7 @@ import type { Props } from "../types.ts";
 
 interface ULoaderProgressArgs extends Props {
   slotTemplate?: string;
-  enum: "color";
+  enum: "color" | "size";
 }
 
 export default {
@@ -82,7 +83,7 @@ const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
       >
         <UBadge
           :label="option"
-          :[args.enum]="option"
+          :[args.enum]="args.enum !== 'size' ? option : undefined"
         />
         <ULoaderProgress
           resources="https://api.publicapis.org/images"
@@ -96,8 +97,33 @@ const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
   `,
 });
 
+const LoadingTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs) => ({
+  components: { ULoaderProgress, UButton, URow },
+  setup() {
+    function toggleLoader() {
+      isLoading.value = !isLoading.value;
+    }
+
+    const isLoading = ref(false);
+
+    return { args, isLoading, toggleLoader };
+  },
+  template: `
+    <URow align="center">
+      <UButton @click="toggleLoader" size="sm">Toggle Loader</UButton>
+      <ULoaderProgress v-bind="args" :loading="isLoading" />
+    </URow>
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };
+
+export const Loading = LoadingTemplate.bind({});
+Loading.args = {};
