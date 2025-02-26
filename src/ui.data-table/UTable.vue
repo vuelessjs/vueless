@@ -441,7 +441,7 @@ function isRowSelectedWithin(rowIndex: number) {
 function onToggleRowCheckbox(rowId: RowId) {
   const targetIndex = selectedRows.value.findIndex((selectedId) => selectedId === rowId);
 
-  !~targetIndex ? selectedRows.value.push(rowId) : selectedRows.value.splice(targetIndex, 1);
+  ~targetIndex ? selectedRows.value.splice(targetIndex, 1) : selectedRows.value.push(rowId);
 }
 
 defineExpose({
@@ -725,13 +725,14 @@ const {
                   @binding {string} value
                   @binding {object} row
                   @binding {number} index
+                  @binding {number} cellIndex
                 -->
               <slot
                 :name="`cell-${key}`"
                 :value="slotValues.value"
                 :row="slotValues.row"
-                :index="index"
-                :row-index="rowIndex"
+                :index="rowIndex"
+                :cell-index="index"
               />
             </template>
 
@@ -740,16 +741,18 @@ const {
                   @slot Use it to customize row expand icon.
                   @binding {object} row
                   @binding {boolean} expanded
+                  @binding {number} index
                 -->
-              <slot name="expand" :row-index="rowIndex" :row="expandedRow" :expanded="expanded" />
+              <slot name="expand" :index="rowIndex" :row="expandedRow" :expanded="expanded" />
             </template>
 
             <template #nested-content>
               <!--
                   @slot Use it to add nested content inside a row.
                   @binding {object} row
+                  @binding {number} index
                 -->
-              <slot v-if="row" name="nested-content" :row-index="rowIndex" :row="row" />
+              <slot v-if="row" name="nested-content" :index="rowIndex" :row="row" />
             </template>
           </UTableRow>
 
