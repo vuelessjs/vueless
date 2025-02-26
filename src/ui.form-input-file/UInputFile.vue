@@ -320,6 +320,10 @@ const {
           @remove="onClickRemoveItem"
         >
           <template #right="{ file }">
+            <!--
+              @slot Use it to add something after the placeholder.
+              @binding {File} file
+            -->
             <slot name="right" :file="file" />
           </template>
         </UFiles>
