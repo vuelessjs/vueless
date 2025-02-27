@@ -4,13 +4,16 @@ import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UButton from "../../ui.button/UButton.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UBreadcrumbsArgs extends Props {
   slotTemplate?: string;
-  enum: "size";
+  enum: "size" | "color";
 }
 
 interface UBreadcrumbsArgs extends Props {
@@ -35,7 +38,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs) => ({
-  components: { UBreadcrumbs },
+  components: { UBreadcrumbs, UButton, UBadge, UIcon },
   setup() {
     const slots = getSlotNames(UBreadcrumbs.__name);
 
@@ -49,7 +52,7 @@ const DefaultTemplate: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs) => (
 });
 
 const EnumVariantTemplate: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs, { argTypes }) => ({
-  components: { UBreadcrumbs, UCol },
+  components: { UBreadcrumbs, UCol, URow, ULabel },
   setup() {
     return {
       args,
@@ -58,12 +61,11 @@ const EnumVariantTemplate: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs, 
   },
   template: `
     <UCol>
-      <UBreadcrumbs
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-      />
+      <URow v-for="(option, index) in options" :key="index" align="center">
+        <ULabel :label="option">
+          <UBreadcrumbs v-bind="args" :[args.enum]="option" />
+        </ULabel>
+      </URow>
     </UCol>
   `,
 });
@@ -74,16 +76,31 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Styles = DefaultTemplate.bind({});
-Styles.args = { color: "green", dashed: true };
-Styles.parameters = {
-  docs: {
-    description: {
-      story:
-        "For a full list of ULink's supported colors, underlined/dashed styles, etc., see the [ULink Documentation](https://ui.vueless.com/?path=/docs/1060--docs).",
-    },
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
+
+export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs) => ({
+  components: { UBreadcrumbs },
+  setup() {
+    const variants = [
+      { name: "Default", props: {} },
+      { name: "Dashed", props: { dashed: true } },
+      { name: "Underlined", props: { underlined: true } },
+      { name: "No underline", props: { underlined: false } },
+    ];
+
+    return {
+      args,
+      variants,
+    };
   },
-};
+  template: `
+    <div v-for="variant in variants" :key="variant.name" class="mb-8">
+      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <UBreadcrumbs v-bind="variant.props" :links="args.links" />
+    </div>
+  `,
+});
 
 export const LinkStates = DefaultTemplate.bind({});
 LinkStates.args = {
@@ -102,7 +119,7 @@ LinkStates.parameters = {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true.",
+        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`.",
     },
   },
 };
@@ -124,33 +141,34 @@ LinkIcon.parameters = {
   },
 };
 
-export const Slots: StoryFn<UBreadcrumbsArgs> = (args) => ({
-  components: { UBreadcrumbs, UBadge, UButton },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UBreadcrumbs v-bind="args">
-      <template #icon="{ index }">
-        <UBadge
-          v-if="index === 1"
-          label="Info"
-          color="green"
-          size="sm"
-        />
-      </template>
-    </UBreadcrumbs>
-
-    <UBreadcrumbs v-bind="args">
-      <template #label="{ label, index }">
-        <UButton v-if="index === 0" :label="label" size="2xs" />
-      </template>
-    </UBreadcrumbs>
-
-    <UBreadcrumbs v-bind="args">
-      <template #divider="{ index }">
-        <span>/</span>
-      </template>
-    </UBreadcrumbs>
+export const SlotIcon = DefaultTemplate.bind({});
+SlotIcon.args = {
+  slotTemplate: `
+    <template #icon="{ index }">
+      <UBadge
+        v-if="index === 1"
+        label="Info"
+        color="green"
+        size="sm"
+      />
+    </template>
   `,
-});
+};
+
+export const SlotLabel = DefaultTemplate.bind({});
+SlotLabel.args = {
+  slotTemplate: `
+    <template #label="{ label, index }">
+      <UButton v-if="index === 0" :label="label" size="2xs" />
+    </template>
+  `,
+};
+
+export const SlotDivider = DefaultTemplate.bind({});
+SlotDivider.args = {
+  slotTemplate: `
+    <template #divider="{ index }">
+      <UIcon v-if="index === 1" name="double_arrow" size="xs" />
+    </template>
+  `,
+};

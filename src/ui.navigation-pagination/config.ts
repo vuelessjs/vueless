@@ -40,8 +40,8 @@ export default /*tw*/ {
     perPage: 20,
     disabled: false,
     ellipsis: true,
-    showFirst: false,
-    showLast: false,
+    showFirst: true,
+    showLast: true,
     /* icons */
     firstIcon: "first_page",
     lastIcon: "last_page",
