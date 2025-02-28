@@ -6,6 +6,8 @@ import {
 } from "../../utils/storybook.ts";
 
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
+import URow from "../../ui.container-row/URow.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -22,9 +24,9 @@ export default {
   args: {
     modelValue: "1",
     options: [
-      { label: "Tab 1", value: "1" },
-      { label: "Tab 2", value: "2" },
-      { label: "Tab 3", value: "3" },
+      { label: "Dashboard", value: "1" },
+      { label: "Orders", value: "2" },
+      { label: "Settings", value: "3" },
     ],
   },
   argTypes: {
@@ -59,7 +61,7 @@ const DefaultTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs, { argTypes }) => ({
-  components: { UTabs },
+  components: { UTabs, URow, ULabel },
   setup() {
     return {
       args,
@@ -67,15 +69,20 @@ const EnumVariantTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs, { argTypes }) 
     };
   },
   template: `
-    <div class="space-y-16">
-      <UTabs
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        v-model="args.modelValue"
-        :[args.enum]="option"
-      />
-    </div>
+
+    <URow
+      v-for="(option, index) in options"
+      :key="index"
+      align="center"
+    >
+      <ULabel :label="option">
+        <UTabs
+          v-bind="args"
+          v-model="args.modelValue"
+          :[args.enum]="option"
+        />
+      </ULabel>
+    </URow>
   `,
 });
 
@@ -85,17 +92,53 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const DisabledTab = DefaultTemplate.bind({});
-DisabledTab.args = {
-  options: [
-    { label: "Tab 1", value: 1 },
-    { label: "Tab 2", value: 2, disabled: true },
-    { label: "Tab 3", value: 3 },
-  ],
-};
-
 export const Scrollable = DefaultTemplate.bind({});
 Scrollable.args = {
   options: getOptionsArray(),
   scrollable: true,
+};
+
+export const Block = DefaultTemplate.bind({});
+Block.args = { block: true };
+
+export const Square = DefaultTemplate.bind({});
+Square.args = { square: true };
+Square.parameters = {
+  docs: {
+    description: {
+      story: "Set the same paddings for the tabs.",
+    },
+  },
+};
+
+export const Slots: StoryFn<UTabsArgs> = (args) => ({
+  components: { UTabs },
+  setup() {
+    args.config = { next: "flex items-center", prev: "flex items-center" };
+
+    return { args, getOptionsArray };
+  },
+  template: `
+    <UTabs
+      v-bind="args"
+      :options="getOptionsArray()"
+      scrollable
+    >
+      <template #prev>
+        <span class="cursor-pointer">◀️</span>
+      </template>
+      <template #next>
+        <span class="cursor-pointer">▶️</span>
+      </template>
+    </UTabs>
+  `,
+});
+Slots.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "When the `scrollable` prop is set to `true`, you can replace the default `prev` and `next` slot icons with custom content.",
+    },
+  },
 };

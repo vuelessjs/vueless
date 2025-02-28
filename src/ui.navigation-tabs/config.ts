@@ -42,6 +42,7 @@ export default /*tw*/ {
     size: "md",
     block: false,
     square: false,
+    scrollable: false,
     /* icons */
     nextIcon: "chevron_right",
     prevIcon: "chevron_left",
