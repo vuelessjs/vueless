@@ -90,6 +90,31 @@ export interface UDatePickerRangeProps<TModelValue> {
   modelValue: TModelValue;
 
   /**
+   * Datepicker label.
+   */
+  label?: string;
+
+  /**
+   * Datepicker placeholder.
+   */
+  placeholder?: string;
+
+  /**
+   * Datepicker description.
+   */
+  description?: string;
+
+  /**
+   * Datepicker error message.
+   */
+  error?: string;
+
+  /**
+   * Make datepicker disabled.
+   */
+  disabled?: boolean;
+
+  /**
    * Custom range button.
    */
   customRangeButton?: CustomRangeButton;
@@ -137,6 +162,11 @@ export interface UDatePickerRangeProps<TModelValue> {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Datepicker label placement.
+   */
+  labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
+
+  /**
    * Left icon name.
    */
   leftIcon?: string;
@@ -145,36 +175,6 @@ export interface UDatePickerRangeProps<TModelValue> {
    * Right icon name.
    */
   rightIcon?: string;
-
-  /**
-   * Datepicker label.
-   */
-  label?: string;
-
-  /**
-   * Datepicker label placement.
-   */
-  labelAlign?: "top" | "topInside" | "topWithDesc" | "left" | "right";
-
-  /**
-   * Datepicker placeholder.
-   */
-  placeholder?: string;
-
-  /**
-   * Datepicker description.
-   */
-  description?: string;
-
-  /**
-   * Datepicker error message.
-   */
-  error?: string;
-
-  /**
-   * Make datepicker disabled.
-   */
-  disabled?: boolean;
 
   /**
    * Unique element id.
