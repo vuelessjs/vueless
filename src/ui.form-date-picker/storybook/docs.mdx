@@ -1,8 +1,10 @@
-import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
 import { getSource } from "../../utils/storybook.ts";
 
 import * as stories from "./stories.ts";
 import defaultConfig from "../config.ts?raw"
+import DateTokensTable from "../../ui.form-calendar/storybook/dateTokensTable.mdx"
+
 
 <Meta of={stories} />
 <Title of={stories} />
@@ -12,42 +14,7 @@ import defaultConfig from "../config.ts?raw"
 <Controls of={stories.Default} />
 <Stories of={stories} />
 
+<DateTokensTable />
+
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />
-
-## Formatting tokens
-Each character in the table below can be used in `dateFormat` / `dateTimeFormat` and `userDateFormat` / `userDateTimeFormat` options
-to achieve the format you need.
-
-<Markdown>
-{`
-| Token | Description                                               | Example                                                       |
-| ----- | --------------------------------------------------------- | ------------------------------------------------------------- |
-| d     | Day of the month, 2 digits with leading zeros             | 01 to 31                                                      |
-| D     | A textual representation of a day                         | Mon through Sun                                               |
-| l     | A full textual representation of the day of the week      | Sunday through Saturday                                       |
-| j     | Day of the month without leading zeros                    | 1 to 31                                                       |
-| J     | Day of the month without leading zeros and ordinal suffix | 1st, 2nd, to 31st                                             |
-| w     | Numeric representation of the day of the week             | 0 (for Sunday) through 6 (for Saturday)                       |
-| W     | Numeric representation of the week                        | 0 (first week of the year) through 52 (last week of the year) |
-| F     | A full textual representation of a month                  | January through December                                      |
-| m     | Numeric representation of a month, with leading zero      | 01 through 12                                                 |
-| n     | Numeric representation of a month, without leading zeros  | 1 through 12                                                  |
-| M     | A short textual representation of a month                 | Jan through Dec                                               |
-| U     | A short textual representation of a month                 | 1413704993                                                    |
-| y     | A two-digit representation of a year                      | 99 or 03                                                      |
-| Y     | A full numeric representation of a year, 4 digits         | 1999 or 2003                                                  |
-| Z     | ISO Date format                                           | 2017-03-04T01:23:43.000Z                                      |
-| H     | Hours (24 hours)                                          | 00 to 23                                                      |
-| h     | Hours                                                     | 1 to 12                                                       |
-| G     | Hours, 2 digits with leading zeros                        | 1 to 12                                                       |
-| i     | Minutes                                                   | 00 to 59                                                      |
-| S     | Seconds, 2 digits                                         | 00 to 59                                                      |
-| s     | Seconds                                                   | 0, 1 to 59                                                    |
-`}
-</Markdown>
-
-## Escaping Formatting Tokens
-You may escape formatting tokens using `\\`.
-
-<Source code={`dateFormat: "Y-m-d\\Z", // Displays: 2017-01-22Z`} language="jsx" dark />
