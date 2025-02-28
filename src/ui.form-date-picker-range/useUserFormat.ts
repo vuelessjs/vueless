@@ -43,11 +43,15 @@ export function useUserFormat(
       let fromFormat = userDateFormat;
 
       if (isDateToSameMonth && isDateToSameYear) {
-        fromFormat = fromFormat.replace(/[YyMmFnU]/g, "");
+        fromFormat = "d";
       }
 
       if (!isDateToSameMonth && isDateToSameYear) {
-        fromFormat = fromFormat.replace(/[Yy]/g, "");
+        fromFormat = userDateFormat.replace(/[Yy]/g, "").trim();
+
+        if (fromFormat.endsWith("/") || fromFormat.endsWith("-") || fromFormat.endsWith(".")) {
+          fromFormat = fromFormat.slice(0, -1);
+        }
       }
 
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
@@ -63,7 +67,17 @@ export function useUserFormat(
     if (isPeriod.value.quarter || isPeriod.value.year) {
       const fromFormat = userDateFormat.replace(/[Yy]/g, "");
 
-      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+      let cleanFromFormat = fromFormat;
+
+      if (
+        cleanFromFormat.endsWith("/") ||
+        cleanFromFormat.endsWith("-") ||
+        cleanFromFormat.endsWith(".")
+      ) {
+        cleanFromFormat = cleanFromFormat.slice(0, -1);
+      }
+
+      const fromTitle = from ? formatDate(from, cleanFromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
       title = `${fromTitle.trim()} – ${toTitle.trim()}`;
