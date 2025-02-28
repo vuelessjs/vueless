@@ -169,7 +169,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="thirdary"
-      v-bind="attrs.periodButtonAttrs.value"
+      v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
@@ -187,7 +187,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="thirdary"
-      v-bind="attrs.periodButtonActiveAttrs.value"
+      v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}

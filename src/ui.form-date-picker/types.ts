@@ -37,6 +37,11 @@ export interface Props<TModelValue> {
   error?: string;
 
   /**
+   * Make datepicker disabled.
+   */
+  disabled?: boolean;
+
+  /**
    * Datepicker size.
    */
   size?: "sm" | "md" | "lg";
@@ -97,11 +102,6 @@ export interface Props<TModelValue> {
    * Right icon name.
    */
   rightIcon?: string;
-
-  /**
-   * Make datepicker disabled.
-   */
-  disabled?: boolean;
 
   /**
    * Unique element id.
