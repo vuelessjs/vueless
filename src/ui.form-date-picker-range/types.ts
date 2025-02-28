@@ -45,6 +45,7 @@ export interface UDatePickerRangePeriodMenuAttrs {
   rangeSwitchButtonAttrs: Ref<UnknownObject>;
   rangeSwitchTitleAttrs: Ref<UnknownObject>;
   rangeSwitchWrapperAttrs: Ref<UnknownObject>;
+  customRangeButtonAttrs: Ref<UnknownObject>;
   customRangeDescriptionAttrs: Ref<UnknownObject>;
 }
 

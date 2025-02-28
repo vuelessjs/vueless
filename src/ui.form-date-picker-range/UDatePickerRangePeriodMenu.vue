@@ -8,8 +8,6 @@ import {
   getMonthsDateList,
 } from "./utilDateRange.ts";
 
-import { cx } from "../utils/ui.ts";
-
 import UButton from "../ui.button/UButton.vue";
 
 import { Period } from "./constants.ts";
@@ -54,10 +52,6 @@ const rangeSwitchTitle = computed(() => {
   }
 
   return "";
-});
-
-const customRangeButtonClass = computed(() => {
-  return "flex-col";
 });
 
 function onClickPeriodButton(periodName: `${Period}`) {
@@ -175,8 +169,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="thirdary"
-      v-bind="attrs.periodButtonAttrs.value"
-      :class="cx([attrs.periodButtonAttrs.value.class, customRangeButtonClass])"
+      v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
@@ -194,7 +187,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="thirdary"
-      v-bind="attrs.periodButtonActiveAttrs.value"
+      v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
       {{ customRangeButton.label }}
