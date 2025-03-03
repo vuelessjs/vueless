@@ -86,7 +86,7 @@ const { getDataTest, tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(
         @binding {boolean} active
         @binding {string} icon-name
       -->
-      <slot :label="label" :active="isActive" :icon-name="iconName" />
+      <slot name="label" :label="label" :active="isActive" :icon-name="iconName" />
     </template>
 
     <template #right="{ iconName }">

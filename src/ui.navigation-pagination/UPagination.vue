@@ -133,8 +133,11 @@ const {
       :data-test="getDataTest('first')"
       @click="goToFirstPage"
     >
-      <!-- @slot Use it to add something instead of the "first" label. -->
-      <slot name="first">
+      <!--
+        @slot Use it to add something instead of the "first" label.
+        @binding {string} icon-name
+      -->
+      <slot name="first" :icon-name="config.defaults.firstIcon">
         <UIcon
           v-if="!firstLabel"
           internal
@@ -154,8 +157,11 @@ const {
       :data-test="getDataTest('prev')"
       @click="goToPrevPage"
     >
-      <!-- @slot Use it to add something instead of the "prev" label. -->
-      <slot name="prev">
+      <!--
+        @slot Use it to add something instead of the "prev" label.
+        @binding {string} icon-name
+      -->
+      <slot name="prev" :icon-name="config.defaults.prevIcon">
         <UIcon
           v-if="!prevLabel"
           internal
@@ -208,7 +214,10 @@ const {
       :data-test="getDataTest('next')"
       @click="goToNextPage"
     >
-      <!-- @slot Use it to add something instead of the "next" label. -->
+      <!--
+        @slot Use it to add something instead of the "next" label.
+        @binding {string} icon-name
+      -->
       <slot name="next">
         <UIcon
           v-if="!nextLabel"
@@ -230,7 +239,10 @@ const {
       :data-test="getDataTest('last')"
       @click="goToLastPage"
     >
-      <!-- @slot Use it to add something instead of the "last" label. -->
+      <!--
+        @slot Use it to add something instead of the "last" label.
+        @binding {string} icon-name
+      -->
       <slot name="last">
         <UIcon
           v-if="!lastLabel"

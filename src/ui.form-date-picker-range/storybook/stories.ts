@@ -8,6 +8,7 @@ import {
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
@@ -23,7 +24,7 @@ interface DefaultUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
 
 interface EnumUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
   slotTemplate?: string;
-  enum: "size" | "variant";
+  enum: "size" | "variant" | "labelAlign";
 }
 
 export default {
@@ -31,7 +32,7 @@ export default {
   title: "Form Inputs & Controls / Date Picker Range",
   component: UDatePickerRange,
   args: {
-    label: "Datepicker range",
+    label: "Select a date",
     modelValue: {
       from: new Date(2022, 1, 14),
       to: new Date(2022, 2, 20),
@@ -74,7 +75,7 @@ const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
   args: EnumUDatePickerRangeArgs,
   { argTypes },
 ) => ({
-  components: { UDatePickerRange, URow },
+  components: { UDatePickerRange, UCol },
   setup() {
     return {
       args,
@@ -82,7 +83,7 @@ const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
     };
   },
   template: `
-    <URow>
+    <UCol>
       <UDatePickerRange
         v-for="(option, index) in options"
         :key="index"
@@ -90,8 +91,10 @@ const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
         v-bind="args"
         v-model="args.modelValue"
         :[args.enum]="option"
+        :placeholder="option"
+        class="w-full"
       />
-    </URow>
+    </UCol>
   `,
 });
 
@@ -143,23 +146,72 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Placeholder = DefaultTemplate.bind({});
+Placeholder.args = {
+  variant: "input",
+  placeholder: "MM/DD/YYYY",
+  modelValue: { from: null, to: null },
+};
+
+export const Description = DefaultTemplate.bind({});
+Description.args = {
+  variant: "input",
+  description: "Please choose a date range from the calendar.",
+};
+
+export const Error = DefaultTemplate.bind({});
+Error.args = { variant: "input", error: "Please select a valid date." };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
+export const LabelPlacement = EnumVariantTemplate.bind({});
+LabelPlacement.args = {
+  variant: "input",
+  enum: "labelAlign",
+  modelValue: { from: null, to: null },
+};
+
+export const Size = EnumVariantTemplate.bind({});
+Size.args = {
+  variant: "input",
+  enum: "size",
+  modelValue: { from: null, to: null },
+};
+
 export const OpenDirection = OpenDirectionTemplate.bind({});
-OpenDirection.args = {};
+OpenDirection.args = { variant: "input" };
 
-export const Disabled = EnumVariantTemplate.bind({});
-Disabled.args = { enum: "variant", disabled: true };
+export const DateFormat = DefaultTemplate.bind({});
+DateFormat.args = {
+  modelValue: { from: null, to: null },
+  variant: "input",
+  dateFormat: "Y-m-d",
+};
+DateFormat.parameters = {
+  docs: {
+    description: {
+      story: "Date string format.",
+    },
+  },
+};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { variant: "input", label: "some label" };
-
-export const Description = DefaultTemplate.bind({});
-Description.args = { variant: "input", description: "some description" };
-
-export const Error = DefaultTemplate.bind({});
-Error.args = { variant: "input", error: "some error" };
+export const UserDateFormat = DefaultTemplate.bind({});
+UserDateFormat.args = {
+  modelValue: { from: null, to: null },
+  variant: "input",
+  userDateFormat: "d/m/Y",
+};
+UserDateFormat.parameters = {
+  docs: {
+    description: {
+      story: "User-friendly date format (it will be shown in UI).",
+    },
+  },
+};
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
@@ -167,12 +219,12 @@ MinMax.args = {
   maxDate: new Date(2022, 2, 26),
   modelValue: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
 };
-
-export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = {
-  dateFormat: "d.m.Y",
-  userDateFormat: "d.m.Y",
-  modelValue: { from: "28.06.2024", to: "30.06.2024" },
+MinMax.parameters = {
+  docs: {
+    description: {
+      story: "Use `minDate` and `maxDate` props to set the minimum and maximum date.",
+    },
+  },
 };
 
 export const CustomRangeButton = DefaultTemplate.bind({});
@@ -183,33 +235,65 @@ CustomRangeButton.args = {
       to: addDays(new Date(), 2),
     },
     label: "Next 2 days",
-    description: "Some description",
+    description: "Select next couple days",
   },
   modelValue: { from: null, to: null },
 };
 
-export const LeftIcon = DefaultTemplate.bind({});
-LeftIcon.args = { leftIcon: "star", variant: "input" };
-
-export const RightIcon = DefaultTemplate.bind({});
-RightIcon.args = { rightIcon: "star", variant: "input" };
-
-export const LeftSlot = DefaultTemplate.bind({});
-LeftSlot.args = {
-  variant: "input",
-  slotTemplate: `
-    <template #left>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-r-none h-full" />
-    </template>
+export const IconProps: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
+  components: { UDatePickerRange, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow>
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        variant="input"
+        left-icon="update"
+        class="w-full"
+      />
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        variant="input"
+        right-icon="edit_calendar"
+        class="w-full"
+      />
+    </URow>
   `,
-};
+});
 
-export const RightSlot = DefaultTemplate.bind({});
-RightSlot.args = {
-  variant: "input",
-  slotTemplate: `
-    <template #right>
-      <UButton variant="thirdary" filled square label="Filter" class="rounded-l-none" />
-    </template>
+export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
+  components: { UDatePickerRange, URow, UButton },
+  setup() {
+    return { args };
+  },
+  template: `
+    <URow justify="stretch">
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        variant="input"
+        class="w-full"
+        :config="{ datepickerInput: { leftSlot: 'pl-0' } }"
+      >
+        <template #left>
+          <UButton label="Export" size="xs" class="h-full rounded-r-none" />
+        </template>
+      </UDatePickerRange>
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        variant="input"
+        class="w-full"
+        :config="{ datepickerInput: { rightSlot: 'pr-0' } }"
+      >
+        <template #right>
+          <UButton label="Schedule" size="xs" class="h-full rounded-l-none" />
+        </template>
+      </UDatePickerRange>
+    </URow>
   `,
-};
+});
