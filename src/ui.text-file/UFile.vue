@@ -61,14 +61,8 @@ const {
 
 <template>
   <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
-    <!--
-      @slot Use it to add something before the file.
-      @binding {string | number} id
-      @binding {string} label
-      @binding {string} url
-      @binding {string} image-url
-    -->
-    <slot :id="fileId" name="left" :label="label" :url="url" :image-url="imageUrl" />
+    <!-- @slot Use it to add something before the file. -->
+    <slot name="left" />
 
     <!--
       @slot Use it to add a file directly.
@@ -96,14 +90,8 @@ const {
       </div>
     </slot>
 
-    <!--
-      @slot Use it to add something after the file.
-      @binding {string | number} id
-      @binding {string} label
-      @binding {string} url
-      @binding {string} image-url
-    -->
-    <slot :id="fileId" name="right" :label="label" :url="url" :image-url="imageUrl">
+    <!-- @slot Use it to add something after the file. -->
+    <slot name="right">
       <UIcon
         v-if="removable"
         internal

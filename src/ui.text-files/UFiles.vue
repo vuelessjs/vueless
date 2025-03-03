@@ -86,22 +86,12 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           :data-test="getDataTest(`item-${index}`)"
           @remove="onRemoveFile"
         >
-          <template #left="{ id, label, url, imageUrl }">
-            <!-- @slot Use it to add something left.
-              @binding {string | number} id
-              @binding {string} label
-              @binding {string} url
-              @binding {string} image-url
+          <template #left>
+            <!--
+              @slot Use it to add something left.
               @binding {number} index
             -->
-            <slot
-              :id="id"
-              name="left"
-              :label="label"
-              :url="url"
-              :image-url="imageUrl"
-              :index="index"
-            />
+            <slot name="left" :index="index" />
           </template>
 
           <template #default="{ id, label, url, imageUrl }">
@@ -122,22 +112,12 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
             />
           </template>
 
-          <template #right="{ id, label, url, imageUrl }">
-            <!-- @slot Use it to add something right.
-              @binding {string | number} id
-              @binding {string} label
-              @binding {string} url
-              @binding {string} image-url
+          <template #right>
+            <!--
+              @slot Use it to add something right.
               @binding {number} index
             -->
-            <slot
-              :id="id"
-              name="right"
-              :label="label"
-              :url="url"
-              :image-url="imageUrl"
-              :index="index"
-            />
+            <slot name="right" :index="index" />
           </template>
         </UFile>
       </slot>
