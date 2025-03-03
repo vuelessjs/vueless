@@ -1,9 +1,6 @@
 import { computed } from "vue";
-
 import { isSameMonth, isSameYear } from "../ui.form-calendar/utilDate.ts";
-
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
-
 import type { Ref } from "vue";
 import type { IsPeriod, SortedLocale } from "./types.ts";
 import type { RangeDate } from "../ui.form-calendar/types.ts";
@@ -17,110 +14,53 @@ export function useUserFormat(
   userDateFormat: string,
 ) {
   const userFormatDate = computed(() => {
-    if ((!localValue.value.from && !localValue.value.to) || !localValue.value.from) return "";
+    const { from, to } = localValue.value;
 
-    let title = "";
+    if (!from) return "";
 
-    const isDefaultTitle = isPeriod.value.week || isPeriod.value.custom || isPeriod.value.ownRange;
+    const parsedFrom = parseDate(from, dateFormat, locale.value);
+    const parsedTo = to ? parseDate(to, dateFormat, locale.value) : null;
 
-    const from = parseDate(localValue.value.from, dateFormat, locale.value);
-    const to =
-      localValue.value.to !== null
-        ? parseDate(localValue.value.to, dateFormat, locale.value)
-        : null;
+    if (!parsedFrom) return "";
 
-    if (isDefaultTitle && from && to) {
-      const isDateToSameMonth = isSameMonth(from, to);
-      const isDateToSameYear = isSameYear(from, to);
+    if (isPeriod.value.month) return formatDate(parsedFrom, "F Y", userFormatLocale.value);
 
-      const dateFormatParts = userDateFormat.split(/([^dmYFnU]+)/);
+    const isSameYearFlag = parsedTo && isSameYear(parsedFrom, parsedTo);
+    const isSameMonthFlag = parsedTo && isSameMonth(parsedFrom, parsedTo);
 
-      let fromParts = [...dateFormatParts];
+    const formatParts = userDateFormat.split(/([^dmYFnU]+)/);
+    let fromParts = [...formatParts];
 
-      if (isDateToSameYear) {
-        if (isDateToSameMonth) {
-          fromParts = ["d"];
-        } else {
-          let monthFound = false;
+    if (isSameMonthFlag) {
+      fromParts = ["d"];
+    } else if (isSameYearFlag) {
+      let monthFound = false;
 
-          fromParts = fromParts.filter((part, index) => {
-            if (/[Yy]/.test(part)) {
-              return false;
-            }
+      fromParts = fromParts.filter((part, index) => {
+        if (/[Yy]/.test(part)) return false;
 
-            if (/[MmFnU]/.test(part)) {
-              monthFound = true;
-
-              return true;
-            }
-
-            if (/d/.test(part)) {
-              return true;
-            }
-
-            if (monthFound && index > 0 && /[^dmYFnU]+/.test(part)) {
-              monthFound = false;
-
-              return false;
-            }
-
-            return true;
-          });
-        }
-      }
-
-      const fromFormat = fromParts.join("");
-      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
-      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
-
-      title = `${fromTitle.trim()} - ${toTitle.trim()}`;
-    }
-
-    if (isPeriod.value.month) {
-      title = formatDate(from, "F Y", userFormatLocale.value);
-    }
-
-    if (isPeriod.value.quarter || isPeriod.value.year) {
-      const isDateToSameYear = from && to ? from.getFullYear() === to.getFullYear() : false;
-
-      const dateFormatParts = userDateFormat.split(/([^dmYFnU]+)/);
-
-      let fromParts = [...dateFormatParts];
-
-      if (isDateToSameYear) {
-        let yearFound = false;
-
-        fromParts = fromParts.filter((part, index) => {
-          if (/[Yy]/.test(part)) {
-            return false;
-          }
-
-          if (/[MmFnUd]/.test(part)) {
-            yearFound = true;
-
-            return true;
-          }
-
-          if (yearFound && index > 0 && /[^dmYFnU]+/.test(part)) {
-            yearFound = false;
-
-            return false;
-          }
+        if (/[MmFnU]/.test(part)) {
+          monthFound = true;
 
           return true;
-        });
-      }
+        }
 
-      const fromFormat = fromParts.join("");
+        if (/d/.test(part)) return true;
 
-      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+        if (monthFound && index > 0 && /[^dmYFnU]+/.test(part)) {
+          monthFound = false;
 
-      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
+          return false;
+        }
 
-      title = `${fromTitle.trim()} - ${toTitle.trim()}`;
+        return true;
+      });
     }
 
-    return title;
+    const fromTitle = formatDate(parsedFrom, fromParts.join(""), userFormatLocale.value);
+    const toTitle = parsedTo ? formatDate(parsedTo, userDateFormat, userFormatLocale.value) : "";
+
+    return `${fromTitle.trim()}${toTitle ? ` - ${toTitle.trim()}` : ""}`;
   });
 
   return { userFormatDate };
