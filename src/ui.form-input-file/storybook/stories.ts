@@ -143,17 +143,6 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Right"
-        description="Select a file to see the slot content"
-      >
-        <template #right>
-          <UBadge label="File uploaded" color="green" />
-        </template>
-      </UInputFile>
-
-      <UInputFile
-        v-bind="args"
-        v-model="args.files"
         label="Slot Bottom"
       >
         <template #bottom>

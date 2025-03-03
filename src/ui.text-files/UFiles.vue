@@ -86,20 +86,58 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           :data-test="getDataTest(`item-${index}`)"
           @remove="onRemoveFile"
         >
-          <template #left="{ file: currentFile }">
+          <template #left="{ id, label, url, imageUrl }">
             <!-- @slot Use it to add something left.
-              @binding {object} file
+              @binding {string | number} id
+              @binding {string} label
+              @binding {string} url
+              @binding {string} image-url
               @binding {number} index
             -->
-            <slot name="left" :file="currentFile" :index="index" />
+            <slot
+              :id="id"
+              name="left"
+              :label="label"
+              :url="url"
+              :image-url="imageUrl"
+              :index="index"
+            />
           </template>
 
-          <template #right="{ file: currentFile }">
-            <!-- @slot Use it to add something right.
-              @binding {object} file
+          <template #default="{ id, label, url, imageUrl }">
+            <!-- @slot Use it to add a file directly.
+              @binding {string | number} id
+              @binding {string} label
+              @binding {string} url
+              @binding {string} image-url
               @binding {number} index
             -->
-            <slot name="right" :file="currentFile" :index="index" />
+            <slot
+              :id="id"
+              name="default"
+              :label="label"
+              :url="url"
+              :image-url="imageUrl"
+              :index="index"
+            />
+          </template>
+
+          <template #right="{ id, label, url, imageUrl }">
+            <!-- @slot Use it to add something right.
+              @binding {string | number} id
+              @binding {string} label
+              @binding {string} url
+              @binding {string} image-url
+              @binding {number} index
+            -->
+            <slot
+              :id="id"
+              name="right"
+              :label="label"
+              :url="url"
+              :image-url="imageUrl"
+              :index="index"
+            />
           </template>
         </UFile>
       </slot>
