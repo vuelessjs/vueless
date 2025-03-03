@@ -1,6 +1,7 @@
 import { computed } from "vue";
 
-import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
+import { isSameMonth, isSameYear } from "../ui.form-calendar/utilDate.ts";
+
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import type { Ref } from "vue";
@@ -29,35 +30,50 @@ export function useUserFormat(
         : null;
 
     if (isDefaultTitle && from && to) {
-      let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
-      const endMonthName = userFormatLocale.value.months.longhand[to.getMonth()];
-      const endYear = String(to.getFullYear());
-
-      if (startMonthName === endMonthName && endMonthName === endYear) {
-        startMonthName = "";
-      }
-
       const isDateToSameMonth = isSameMonth(from, to);
-      const isDateToSameYear = from.getFullYear() === to.getFullYear();
+      const isDateToSameYear = isSameYear(from, to);
 
-      let fromFormat = userDateFormat;
+      const dateFormatParts = userDateFormat.split(/([^dmYFnU]+)/);
 
-      if (isDateToSameMonth && isDateToSameYear) {
-        fromFormat = "d";
-      }
+      let fromParts = [...dateFormatParts];
 
-      if (!isDateToSameMonth && isDateToSameYear) {
-        fromFormat = userDateFormat.replace(/[Yy]/g, "").trim();
+      if (isDateToSameYear) {
+        if (isDateToSameMonth) {
+          fromParts = ["d"];
+        } else {
+          let monthFound = false;
 
-        if (fromFormat.endsWith("/") || fromFormat.endsWith("-") || fromFormat.endsWith(".")) {
-          fromFormat = fromFormat.slice(0, -1);
+          fromParts = fromParts.filter((part, index) => {
+            if (/[Yy]/.test(part)) {
+              return false;
+            }
+
+            if (/[MmFnU]/.test(part)) {
+              monthFound = true;
+
+              return true;
+            }
+
+            if (/d/.test(part)) {
+              return true;
+            }
+
+            if (monthFound && index > 0 && /[^dmYFnU]+/.test(part)) {
+              monthFound = false;
+
+              return false;
+            }
+
+            return true;
+          });
         }
       }
 
+      const fromFormat = fromParts.join("");
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
+      title = `${fromTitle.trim()} - ${toTitle.trim()}`;
     }
 
     if (isPeriod.value.month) {
@@ -65,22 +81,43 @@ export function useUserFormat(
     }
 
     if (isPeriod.value.quarter || isPeriod.value.year) {
-      const fromFormat = userDateFormat.replace(/[Yy]/g, "");
+      const isDateToSameYear = from && to ? from.getFullYear() === to.getFullYear() : false;
 
-      let cleanFromFormat = fromFormat;
+      const dateFormatParts = userDateFormat.split(/([^dmYFnU]+)/);
 
-      if (
-        cleanFromFormat.endsWith("/") ||
-        cleanFromFormat.endsWith("-") ||
-        cleanFromFormat.endsWith(".")
-      ) {
-        cleanFromFormat = cleanFromFormat.slice(0, -1);
+      let fromParts = [...dateFormatParts];
+
+      if (isDateToSameYear) {
+        let yearFound = false;
+
+        fromParts = fromParts.filter((part, index) => {
+          if (/[Yy]/.test(part)) {
+            return false;
+          }
+
+          if (/[MmFnUd]/.test(part)) {
+            yearFound = true;
+
+            return true;
+          }
+
+          if (yearFound && index > 0 && /[^dmYFnU]+/.test(part)) {
+            yearFound = false;
+
+            return false;
+          }
+
+          return true;
+        });
       }
 
-      const fromTitle = from ? formatDate(from, cleanFromFormat, userFormatLocale.value) : "";
+      const fromFormat = fromParts.join("");
+
+      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
+      title = `${fromTitle.trim()} - ${toTitle.trim()}`;
     }
 
     return title;

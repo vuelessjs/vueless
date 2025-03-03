@@ -189,6 +189,10 @@ export function getDateWithoutTime(date = new Date()) {
   return date;
 }
 
+export function isSameYear(dateOne: Date, dateTwo: Date) {
+  return Boolean(dateOne) && Boolean(dateTwo) && dateOne.getFullYear() === dateTwo.getFullYear();
+}
+
 export function isSameMonth(dateOne: Date, dateTwo: Date) {
   return (
     Boolean(dateOne) &&
