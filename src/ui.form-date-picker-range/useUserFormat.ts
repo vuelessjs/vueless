@@ -60,7 +60,7 @@ export function useUserFormat(
     const fromTitle = formatDate(parsedFrom, fromParts.join(""), userFormatLocale.value);
     const toTitle = parsedTo ? formatDate(parsedTo, userDateFormat, userFormatLocale.value) : "";
 
-    return `${fromTitle.trim()}${toTitle ? ` - ${toTitle.trim()}` : ""}`;
+    return `${fromTitle.trim()} - ${toTitle.trim()}`;
   });
 
   return { userFormatDate };
