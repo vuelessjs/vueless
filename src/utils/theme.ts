@@ -337,8 +337,8 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     : STATE_COLOR_SHADES;
 
   const configs = [
-    { type: "color", color: brand, shades: brandColorShades, stateColor: BRAND_COLOR },
-    { type: "color", color: gray, shades: GRAYSCALE_COLOR_SHADES, stateColor: GRAYSCALE_COLOR },
+    { type: BRAND_COLOR, color: brand, shades: brandColorShades },
+    { type: GRAYSCALE_COLOR, color: gray, shades: GRAYSCALE_COLOR_SHADES },
     { type: "border", color: gray, shades: BORDER_COLOR_SHADES },
     { type: "text", color: gray, shades: TEXT_COLOR_SHADES },
     { type: "bg", color: gray, shades: BACKGROUND_COLOR_SHADES },
@@ -346,10 +346,9 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
 
   for (const stateColor in STATE_COLORS_MAP) {
     configs.push({
-      type: "color",
+      type: stateColor,
       color: STATE_COLORS_MAP[stateColor as StateColors],
       shades: STATE_COLOR_SHADES,
-      stateColor: stateColor,
     });
   }
 
@@ -368,7 +367,7 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
  * @return string - Vueless color CSS variables.
  */
 function generateCSSColorVariables(config: GenerateCSSColorVariables) {
-  const { colors, shades, type, color, stateColor } = config;
+  const { colors, shades, type, color } = config;
 
   const variables: Partial<VuelessCssVariables> = {};
   const darkVariables: Partial<VuelessCssVariables> = {};
@@ -381,13 +380,8 @@ function generateCSSColorVariables(config: GenerateCSSColorVariables) {
     const lightColor = String(lightShade) === WHITE_COLOR ? colors.white : colors[color]?.[lightShade];
     const darkColor = String(darkShade) === WHITE_COLOR ? colors.white : colors[color]?.[darkShade];
 
-    const variableColor = stateColor ? `${stateColor}-${shade}` : shade;
-
-    variables[`--vl-${type}-${variableColor}` as keyof VuelessCssVariables] =
-      convertHexInRgb(lightColor);
-
-    darkVariables[`--vl-${type}-${variableColor}` as keyof VuelessCssVariables] =
-      convertHexInRgb(darkColor);
+    variables[`--vl-${type}-${shade}` as keyof VuelessCssVariables] = lightColor;
+    darkVariables[`--vl-${type}-${shade}` as keyof VuelessCssVariables] = darkColor;
   });
 
   return [variables, darkVariables];
