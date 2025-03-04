@@ -1,6 +1,8 @@
 import { computed } from "vue";
-import { isSameMonth, isSameYear } from "../ui.form-calendar/utilDate.ts";
+
+import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
+
 import type { Ref } from "vue";
 import type { IsPeriod, SortedLocale } from "./types.ts";
 import type { RangeDate } from "../ui.form-calendar/types.ts";
@@ -14,53 +16,60 @@ export function useUserFormat(
   userDateFormat: string,
 ) {
   const userFormatDate = computed(() => {
-    const { from, to } = localValue.value;
+    if ((!localValue.value.from && !localValue.value.to) || !localValue.value.from) return "";
 
-    if (!from) return "";
+    let title = "";
 
-    const parsedFrom = parseDate(from, dateFormat, locale.value);
-    const parsedTo = to ? parseDate(to, dateFormat, locale.value) : null;
+    const isDefaultTitle = isPeriod.value.week || isPeriod.value.custom || isPeriod.value.ownRange;
 
-    if (!parsedFrom) return "";
+    const from = parseDate(localValue.value.from, dateFormat, locale.value);
+    const to =
+      localValue.value.to !== null
+        ? parseDate(localValue.value.to, dateFormat, locale.value)
+        : null;
 
-    if (isPeriod.value.month) return formatDate(parsedFrom, "F Y", userFormatLocale.value);
+    if (isDefaultTitle && from && to) {
+      let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
+      const endMonthName = userFormatLocale.value.months.longhand[to.getMonth()];
+      const endYear = String(to.getFullYear());
 
-    const isSameYearFlag = parsedTo && isSameYear(parsedFrom, parsedTo);
-    const isSameMonthFlag = parsedTo && isSameMonth(parsedFrom, parsedTo);
+      if (startMonthName === endMonthName && endMonthName === endYear) {
+        startMonthName = "";
+      }
 
-    const formatParts = userDateFormat.split(/([^dmYFnU]+)/);
-    let fromParts = [...formatParts];
+      const isDateToSameMonth = isSameMonth(from, to);
+      const isDateToSameYear = from.getFullYear() === to.getFullYear();
 
-    if (isSameMonthFlag) {
-      fromParts = ["d"];
-    } else if (isSameYearFlag) {
-      let monthFound = false;
+      let fromFormat = userDateFormat;
 
-      fromParts = fromParts.filter((part, index) => {
-        if (/[Yy]/.test(part)) return false;
+      if (isDateToSameMonth && isDateToSameYear) {
+        fromFormat = fromFormat.replace(/([YyMmFnU])[\W]*/g, "");
+      }
 
-        if (/[MmFnU]/.test(part)) {
-          monthFound = true;
+      if (!isDateToSameMonth && isDateToSameYear) {
+        fromFormat = fromFormat.replace(/([Yy])[\W]*/g, "");
+      }
 
-          return true;
-        }
+      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-        if (/d/.test(part)) return true;
-
-        if (monthFound && index > 0 && /[^dmYFnU]+/.test(part)) {
-          monthFound = false;
-
-          return false;
-        }
-
-        return true;
-      });
+      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
     }
 
-    const fromTitle = formatDate(parsedFrom, fromParts.join(""), userFormatLocale.value);
-    const toTitle = parsedTo ? formatDate(parsedTo, userDateFormat, userFormatLocale.value) : "";
+    if (isPeriod.value.month) {
+      title = formatDate(from, "F Y", userFormatLocale.value);
+    }
 
-    return `${fromTitle.trim()} - ${toTitle.trim()}`;
+    if (isPeriod.value.quarter || isPeriod.value.year) {
+      const fromFormat = userDateFormat.replace(/([Yy])[\W]*/g, "");
+
+      const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
+      const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
+
+      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
+    }
+
+    return title;
   });
 
   return { userFormatDate };
