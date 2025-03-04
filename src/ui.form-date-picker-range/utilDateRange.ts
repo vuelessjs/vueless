@@ -11,6 +11,7 @@ import {
   getEndOfYear,
   getStartOfYear,
 } from "../ui.form-calendar/utilDate.ts";
+import { formats } from "../ui.form-calendar/utilFormatting.ts";
 
 export interface DatePeriodRange {
   title: string | number;
@@ -115,4 +116,35 @@ export function getWeekDateList(date: Date, monthShortLocales: string[] = []) {
   }
 
   return weeks;
+}
+
+export function getTokenIndexes(inputString: string) {
+  let firstIndex = -1;
+  let lastIndex = 0;
+  let isEscaped = false;
+
+  const tokens = Object.keys(formats);
+
+  for (let i = 0; i < inputString.length; i++) {
+    const char = inputString[i];
+
+    if (char === "\\" && !isEscaped) {
+      isEscaped = true;
+      continue;
+    }
+
+    if (!isEscaped && tokens.includes(char)) {
+      if (firstIndex === -1) {
+        firstIndex = i;
+      }
+
+      lastIndex = i + 1;
+    }
+
+    if (isEscaped) {
+      isEscaped = false;
+    }
+  }
+
+  return [firstIndex, lastIndex];
 }
