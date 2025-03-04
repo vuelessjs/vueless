@@ -31,13 +31,13 @@ export default /*tw*/ {
         `,
         thirdary: `
           text-{color}-normal
-          hover:text-{color}-hovered hover:bg-{color}-toned/10
+          hover:text-{color}-toned hover:bg-{color}-toned/10
           active:text-{color}-accented active:bg-{color}-accented/15
           disabled:text-gray-muted disabled:bg-transparent
         `,
       },
       round: {
-        false: "rounded-[var(--vl-rounding-md)] rounded-(--vl-rounding-md)",
+        false: "rounded-medium",
         true: "rounded-full",
       },
       loading: {

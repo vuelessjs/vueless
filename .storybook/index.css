@@ -1,6 +1,20 @@
 @import "tailwindcss";
+@source "../src";
+@source "../node_modules/.cache/vueless/safelist.txt";
 
-@config "./tailwind.config.js";
+@theme {
+  --color-success-normal: var(--vl-success-normal);
+ /* --- */
+  --radius-small: var(--vl-rounding-sm);
+  --radius-medium: var(--vl-rounding);
+}
+
+/*
+@utility rounded-* {
+  tab-size: --value(--tab-size-*);
+}
+*/
+
 
 /* -------------------- Storybook Preview UI -------------------- */
 /* -------------------- General -------------------- */
