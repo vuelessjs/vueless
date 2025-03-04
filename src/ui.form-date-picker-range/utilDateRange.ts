@@ -120,7 +120,7 @@ export function getWeekDateList(date: Date, monthShortLocales: string[] = []) {
 
 export function getTokenIndexes(inputString: string) {
   let firstIndex = -1;
-  let lastIndex = -1;
+  let lastIndex = 0;
   let isEscaped = false;
 
   const tokens = Object.keys(formats);
@@ -138,7 +138,7 @@ export function getTokenIndexes(inputString: string) {
         firstIndex = i;
       }
 
-      lastIndex = i;
+      lastIndex = i + 1;
     }
 
     if (isEscaped) {
@@ -146,5 +146,5 @@ export function getTokenIndexes(inputString: string) {
     }
   }
 
-  return [firstIndex, lastIndex + 1];
+  return [firstIndex, lastIndex];
 }
