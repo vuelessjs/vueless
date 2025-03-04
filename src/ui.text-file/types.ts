@@ -25,7 +25,7 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Unique element id.
+   * Unique file id.
    */
   id?: string;
 
