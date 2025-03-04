@@ -2,9 +2,8 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
-      border border-transparent outline-hidden transition cursor-pointer
-      focus-visible:outline-dynamic focus-visible:outline-offset-2
-      focus-visible:outline-{color}-600 dark:focus-visible:outline-{color}-400
+      border border-transparent outline-none transition cursor-pointer
+      focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}-normal
       disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
     `,
     variants: {
@@ -18,27 +17,27 @@ export default /*tw*/ {
       },
       variant: {
         primary: `
-          text-white            dark:text-gray-900
-          bg-{color}-600        dark:bg-{color}-400
-          hover:bg-{color}-700  dark:hover:bg-{color}-500
-          active:bg-{color}-800 dark:active:bg-{color}-600
-          disabled:bg-gray-400  dark:disabled:bg-gray-600
+          text-inverted
+          bg-{color}-normal
+          hover:bg-{color}-toned
+          active:bg-{color}-accented
+          disabled:bg-gray-muted
         `,
         secondary: `
-          text-{color}-600        border-{color}-600        dark:text-{color}-400        dark:border-{color}-400
-          hover:text-{color}-700  hover:border-{color}-700  dark:hover:text-{color}-500  dark:hover:border-{color}-500
-          active:text-{color}-800 active:border-{color}-800 dark:active:text-{color}-600 dark:active:border-{color}-600
-          disabled:text-gray-400  disabled:border-gray-400  dark:disabled:text-gray-600  dark:disabled:border-gray-600
+          text-{color}-normal border-{color}-normal
+          hover:text-{color}-toned hover:border-{color}-toned hover:bg-{color}-toned/10
+          active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
+          disabled:text-gray-muted disabled:border-{color}-muted
         `,
         thirdary: `
-          text-{color}-600                                 dark:text-{color}-400
-          hover:text-{color}-700  hover:bg-{color}-700/10  dark:hover:text-{color}-500  dark:hover:bg-{color}-500/10
-          active:text-{color}-800 active:bg-{color}-800/15 dark:active:text-{color}-600 dark:active:bg-{color}-600/15
-          disabled:text-gray-400  disabled:bg-transparent  dark:disabled:text-gray-600  dark:disabled:bg-transparent
+          text-{color}-normal
+          hover:text-{color}-hovered hover:bg-{color}-toned/10
+          active:text-{color}-accented active:bg-{color}-accented/15
+          disabled:text-gray-muted disabled:bg-transparent
         `,
       },
       round: {
-        false: "rounded-dynamic",
+        false: "rounded-[var(--vl-rounding-md)] rounded-(--vl-rounding-md)",
         true: "rounded-full",
       },
       loading: {
@@ -52,66 +51,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      {
-        color: ["grayscale", "white"],
-        class: "focus-visible:outline-gray-900 dark:focus-visible:outline-gray-100",
-      },
-      {
-        color: "grayscale",
-        variant: "primary",
-        class: `
-          bg-gray-900        dark:bg-gray-100
-          hover:bg-gray-800  dark:hover:bg-gray-200
-          active:bg-gray-700 dark:active:bg-gray-300
-        `,
-      },
-      {
-        color: "grayscale",
-        variant: "secondary",
-        class: `
-          text-gray-900        border-gray-900        dark:text-gray-100         dark:border-gray-100
-          hover:text-gray-800  hover:border-gray-800  dark:hover:text-gray-200   dark:hover:border-gray-200
-          active:text-gray-700 active:border-gray-700 dark:active:text-gray-300 dark:active:border-gray-300
-        `,
-      },
-      {
-        color: "grayscale",
-        variant: "thirdary",
-        class: `
-          text-gray-900                              dark:text-gray-100
-          hover:text-gray-800  hover:bg-gray-800/10   dark:hover:text-gray-200  dark:hover:bg-gray-200/10
-          active:text-gray-700 active:bg-gray-700/15 dark:active:text-gray-300 dark:active:bg-gray-300/15
-        `,
-      },
-      {
-        color: "white",
-        class: `
-          text-gray-900        dark:text-white
-          hover:text-gray-800  dark:hover:text-gray-100
-          active:text-gray-700 dark:active:text-gray-200
-        `,
-      },
-      {
-        color: "white",
-        variant: "primary",
-        class: `
-          bg-white           dark:text-gray-900
-          hover:bg-gray-50   dark:hover:text-gray-800
-          active:bg-gray-100 dark:active:text-gray-700
-        `,
-      },
-      {
-        color: "white",
-        variant: "secondary",
-        class: "border-gray-100 hover:border-gray-200 active:border-gray-300",
-      },
-      {
-        color: "white",
-        variant: "thirdary",
-        class: "hover:bg-white/10 active:bg-white/15",
-      },
-      { filled: true, variant: "thirdary", class: "bg-{color}-700/5 dark:bg-{color}-500/5" },
-      { filled: true, variant: "thirdary", color: ["grayscale", "white"], class: "bg-gray-800/5 dark:bg-gray-200/5" },
+      { filled: true, variant: "thirdary", class: "bg-{color}-toned/5" },
       { rightIcon: true, size: "2xs", class: "pr-1" },
       { rightIcon: true, size: "xs", class: "pr-2" },
       { rightIcon: true, size: "sm", class: "pr-3" },

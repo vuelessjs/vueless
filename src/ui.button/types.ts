@@ -12,28 +12,7 @@ export interface Props {
   /**
    * Button color.
    */
-  color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+  color?: "brand" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Button size.
