@@ -118,7 +118,7 @@ export function getWeekDateList(date: Date, monthShortLocales: string[] = []) {
   return weeks;
 }
 
-export function findTokenIndexes(inputString: string) {
+export function getTokenIndexes(inputString: string) {
   let firstIndex = -1;
   let lastIndex = -1;
   let isEscaped = false;

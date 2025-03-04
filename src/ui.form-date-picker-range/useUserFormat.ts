@@ -2,7 +2,7 @@ import { computed } from "vue";
 
 import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
-import { findTokenIndexes } from "./utilDateRange.ts";
+import { getTokenIndexes } from "./utilDateRange.ts";
 
 import type { Ref } from "vue";
 import type { IsPeriod, SortedLocale } from "./types.ts";
@@ -51,7 +51,7 @@ export function useUserFormat(
         fromFormat = fromFormat.replace(/[Yy]/g, "");
       }
 
-      fromFormat = fromFormat.slice(...findTokenIndexes(fromFormat));
+      fromFormat = fromFormat.slice(...getTokenIndexes(fromFormat));
 
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
@@ -66,7 +66,7 @@ export function useUserFormat(
     if (isPeriod.value.quarter || isPeriod.value.year) {
       fromFormat = fromFormat.replace(/[Yy]/g, "");
 
-      fromFormat = fromFormat.slice(...findTokenIndexes(fromFormat));
+      fromFormat = fromFormat.slice(...getTokenIndexes(fromFormat));
 
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";

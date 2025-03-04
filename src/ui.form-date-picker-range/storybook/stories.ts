@@ -203,7 +203,7 @@ export const UserDateFormat = DefaultTemplate.bind({});
 UserDateFormat.args = {
   modelValue: { from: null, to: null },
   variant: "input",
-  userDateFormat: "Y/m/d",
+  userDateFormat: "d/m/Y",
 };
 UserDateFormat.parameters = {
   docs: {
