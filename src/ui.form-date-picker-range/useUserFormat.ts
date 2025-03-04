@@ -2,6 +2,7 @@ import { computed } from "vue";
 
 import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
+import { findTokenIndexes } from "./utilDateRange.ts";
 
 import type { Ref } from "vue";
 import type { IsPeriod, SortedLocale } from "./types.ts";
@@ -28,6 +29,8 @@ export function useUserFormat(
         ? parseDate(localValue.value.to, dateFormat, locale.value)
         : null;
 
+    let fromFormat = userDateFormat;
+
     if (isDefaultTitle && from && to) {
       let startMonthName = userFormatLocale.value.months.longhand[from.getMonth()];
       const endMonthName = userFormatLocale.value.months.longhand[to.getMonth()];
@@ -40,15 +43,15 @@ export function useUserFormat(
       const isDateToSameMonth = isSameMonth(from, to);
       const isDateToSameYear = from.getFullYear() === to.getFullYear();
 
-      let fromFormat = userDateFormat;
-
       if (isDateToSameMonth && isDateToSameYear) {
-        fromFormat = fromFormat.replace(/([YyMmFnU])[\W]?.[.]*/g, "");
+        fromFormat = fromFormat.replace(/[YyMmFnU]/g, "");
       }
 
       if (!isDateToSameMonth && isDateToSameYear) {
-        fromFormat = fromFormat.replace(/([Yy])[\W]?.[.]*/g, "");
+        fromFormat = fromFormat.replace(/[Yy]/g, "");
       }
+
+      fromFormat = fromFormat.slice(...findTokenIndexes(fromFormat));
 
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
@@ -61,7 +64,9 @@ export function useUserFormat(
     }
 
     if (isPeriod.value.quarter || isPeriod.value.year) {
-      const fromFormat = userDateFormat.replace(/([Yy])[\W]?.[.]*/g, "");
+      fromFormat = fromFormat.replace(/[Yy]/g, "");
+
+      fromFormat = fromFormat.slice(...findTokenIndexes(fromFormat));
 
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
