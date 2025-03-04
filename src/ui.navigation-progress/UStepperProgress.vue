@@ -29,7 +29,7 @@ const stepperColor = computed(() => {
     return TAILWIND_COLORS[props.color][900];
   }
 
-  return TAILWIND_COLORS.cool[900];
+  return TAILWIND_COLORS.gray[900];
 });
 
 /**

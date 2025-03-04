@@ -160,7 +160,7 @@ export type UnknownType = string | number | boolean | UnknownObject | undefined 
 export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
 
-export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone" | string;
+export type GrayColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
 export type BrandColors =
   | "grayscale"
   | "red"
@@ -327,6 +327,11 @@ export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
 }
 
+export interface TailwindColorModeShades {
+  light: string | number;
+  dark: string | number;
+}
+
 export interface TailwindColorShades {
   50: string;
   100: string;
@@ -374,6 +379,36 @@ export interface VuelessCssVariables {
   "--vl-color-brand-900": string;
   "--vl-color-brand-950": string;
   "--vl-color-brand-default": string;
+  /* Brand design system CSS variables */
+  "--vl-color-brand-muted": string;
+  "--vl-color-brand-normal": string;
+  "--vl-color-brand-toned": string;
+  "--vl-color-brand-accented": string;
+  /* Grayscale design system CSS variables */
+  "--vl-color-grayscale-muted": string;
+  "--vl-color-grayscale-normal": string;
+  "--vl-color-grayscale-toned": string;
+  "--vl-color-grayscale-accented": string;
+  /* Success design system CSS variables */
+  "--vl-color-success-muted": string;
+  "--vl-color-success-normal": string;
+  "--vl-color-success-toned": string;
+  "--vl-color-success-accented": string;
+  /* Info design system CSS variables */
+  "--vl-color-info-muted": string;
+  "--vl-color-info-normal": string;
+  "--vl-color-info-toned": string;
+  "--vl-color-info-accented": string;
+  /* Warning design system CSS variables */
+  "--vl-color-warning-muted": string;
+  "--vl-color-warning-normal": string;
+  "--vl-color-warning-toned": string;
+  "--vl-color-warning-accented": string;
+  /* Error design system CSS variables */
+  "--vl-color-error-muted": string;
+  "--vl-color-error-normal": string;
+  "--vl-color-error-toned": string;
+  "--vl-color-error-accented": string;
 }
 
 /* Web-types interfaces and types */

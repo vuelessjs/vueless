@@ -18,28 +18,40 @@ import {
   DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
+  STATE_COLORS_MAP,
+  BRAND_COLOR,
+  GRAY_COLORS,
+  WHITE_COLOR,
+  TEXT_COLOR_SHADES,
+  STATE_COLOR_SHADES,
+  BORDER_COLOR_SHADES,
+  GRAYSCALE_COLOR_SHADES,
+  BACKGROUND_COLOR_SHADES,
 } from "../constants.js";
 
 import type {
+  Config,
   GrayColors,
   BrandColors,
   VuelessCssVariables,
   TailwindColorShades,
-  Config,
+  TailwindColorModeShades,
 } from "../types.ts";
 
 import { ColorMode } from "../types.ts";
 
-type DefaultColors = typeof TAILWIND_COLORS;
+type StateColors = keyof typeof STATE_COLORS_MAP;
+type DefaultColors = keyof typeof TAILWIND_COLORS;
+type DefaultColorsWithValues = typeof TAILWIND_COLORS;
 
-interface Colors extends DefaultColors {
-  [key: string]: Partial<TailwindColorShades> | string;
+interface Colors extends DefaultColorsWithValues {
+  [key: string]: Partial<TailwindColorShades> | StateColors | string;
 }
 
 declare interface RootCSSVariableOptions {
   colors: Colors;
-  brand: string;
-  gray: string;
+  brand: DefaultColors | string;
+  gray: DefaultColors | string;
   outlineSm: number;
   outline: number;
   outlineLg: number;
@@ -48,6 +60,17 @@ declare interface RootCSSVariableOptions {
   roundingLg: number;
 }
 
+declare interface GenerateCSSColorVariables {
+  type: string;
+  colors: Colors;
+  color: DefaultColors | StateColors | string;
+  shades: Record<string, TailwindColorModeShades>;
+  stateColor?: string;
+}
+
+/**
+ * Initiate theme and changes color mode when it is changed on the user side.
+ */
 export function themeInit() {
   if (isSSR) return;
 
@@ -62,6 +85,10 @@ export function themeInit() {
   }
 }
 
+/**
+ * Sets color mode.
+ * @param {string} colorMode (dark | light | auto)
+ */
 export function setColorMode(colorMode: `${ColorMode}`) {
   const cashedColorMode = isCSR ? (localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null) : null;
 
@@ -110,14 +137,28 @@ export function setColorMode(colorMode: `${ColorMode}`) {
   }
 }
 
+/**
+ * Get selected brand color from the local storage.
+ * @returns string | undefined
+ */
 export function getSelectedBrandColor() {
   return (isCSR && localStorage.getItem("brand")) || undefined;
 }
 
+/**
+ * Get selected gray color from the local storage.
+ * @return string | undefined
+ */
 export function getSelectedGrayColor() {
   return (isCSR && localStorage.getItem("gray")) || undefined;
 }
 
+/**
+ * Convert hex color value into rgb.
+ * Example: `#345D3A` >>> `52, 93, 58`
+ * Example: `#FFF` >>> `255, 255, 255`
+ * @returns string
+ */
 export function convertHexInRgb(hex?: string) {
   if (!hex) return;
 
@@ -140,6 +181,11 @@ export function convertHexInRgb(hex?: string) {
   return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
 }
 
+/**
+ * Applying theme settings.
+ * Changes and reset Vueless CSS variables.
+ * @return string - CSS variables
+ */
 export function setTheme(config: Config = {}) {
   setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
 
@@ -149,17 +195,17 @@ export function setTheme(config: Config = {}) {
     config.roundingLg ?? vuelessConfig.roundingLg,
   );
 
-  let brand: BrandColors =
-    config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
-
-  let gray: GrayColors =
-    config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
-
   const { outlineSm, outline, outlineLg } = getRings(
     config.outlineSm ?? vuelessConfig.outlineSm,
     config.outline ?? vuelessConfig.outline,
     config.outlineLg ?? vuelessConfig.outlineLg,
   );
+
+  let brand: BrandColors =
+    config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+
+  let gray: GrayColors =
+    config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
   const colors: Colors = merge(
     TAILWIND_COLORS as Colors,
@@ -178,6 +224,7 @@ export function setTheme(config: Config = {}) {
     brand = DEFAULT_BRAND_COLOR;
   }
 
+  // TODO: Should be removed after all components migration into custom vueless theme variables.
   if (!isGrayColor) {
     // eslint-disable-next-line no-console
     console.warn(`The gray color '${gray}' is missing in your palette.`);
@@ -201,6 +248,10 @@ export function setTheme(config: Config = {}) {
   });
 }
 
+/**
+ * Calculate ring values.
+ * @return object - sm, md, lg ring values.
+ */
 function getRings(sm?: number, md?: number, lg?: number) {
   const outline = Math.max(0, md ?? DEFAULT_OUTLINE);
   const outlineSm = Math.max(0, outline - OUTLINE_DECREMENT);
@@ -217,6 +268,10 @@ function getRings(sm?: number, md?: number, lg?: number) {
   };
 }
 
+/**
+ * Calculate rounding values.
+ * @return object - sm, md, lg rounding values.
+ */
 function getRoundings(sm?: number, md?: number, lg?: number) {
   const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
   let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
@@ -241,6 +296,10 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
   };
 }
 
+/**
+ * Generate and apply Vueless CSS variables.
+ * @return string - Vueless CSS variables string.
+ */
 function setRootCSSVariables(options: RootCSSVariableOptions) {
   if (options.brand === GRAYSCALE_COLOR) {
     options.brand = options.gray;
@@ -249,28 +308,21 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   const { colors, brand, gray, outlineSm, outline, outlineLg, roundingSm, rounding, roundingLg } =
     options;
 
-  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-  const defaultBrandShade = isDarkMode ? 400 : 600;
-  const defaultGrayShade = isDarkMode ? 400 : 600;
+  let darkVariables: Partial<VuelessCssVariables> = {
+    "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[400]),
+    "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[400]),
+  };
 
-  const variables: Partial<VuelessCssVariables> = {
+  let variables: Partial<VuelessCssVariables> = {
     "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
     "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,
-    "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
-    "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),
+    "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[600]),
+    "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[600]),
   };
-
-  for (const key in colors[gray] as TailwindColorShades) {
-    const shade = key as unknown as keyof TailwindColorShades;
-
-    variables[`--vl-color-gray-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[gray]?.[shade],
-    );
-  }
 
   for (const key in colors[brand] as TailwindColorShades) {
     const shade = key as unknown as keyof TailwindColorShades;
@@ -280,11 +332,87 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     );
   }
 
-  const stringVariables = Object.entries(variables)
+  const brandColorShades = GRAY_COLORS.includes(brand)
+    ? GRAYSCALE_COLOR_SHADES
+    : STATE_COLOR_SHADES;
+
+  const configs = [
+    { type: "color", color: brand, shades: brandColorShades, stateColor: BRAND_COLOR },
+    { type: "color", color: gray, shades: GRAYSCALE_COLOR_SHADES, stateColor: GRAYSCALE_COLOR },
+    { type: "border", color: gray, shades: BORDER_COLOR_SHADES },
+    { type: "text", color: gray, shades: TEXT_COLOR_SHADES },
+    { type: "bg", color: gray, shades: BACKGROUND_COLOR_SHADES },
+  ];
+
+  for (const stateColor in STATE_COLORS_MAP) {
+    configs.push({
+      type: "color",
+      color: STATE_COLORS_MAP[stateColor as StateColors],
+      shades: STATE_COLOR_SHADES,
+      stateColor: stateColor,
+    });
+  }
+
+  configs.forEach((config) => {
+    const [light, dark] = generateCSSColorVariables({ colors, ...config });
+
+    variables = { ...variables, ...light };
+    darkVariables = { ...darkVariables, ...dark };
+  });
+
+  return setCSSVariables(variables, darkVariables);
+}
+
+/**
+ * Generate CSS color variables.
+ * @return string - Vueless color CSS variables.
+ */
+function generateCSSColorVariables(config: GenerateCSSColorVariables) {
+  const { colors, shades, type, color, stateColor } = config;
+
+  const variables: Partial<VuelessCssVariables> = {};
+  const darkVariables: Partial<VuelessCssVariables> = {};
+
+  Object.entries(shades).forEach(([shade, colorModeConfig]) => {
+    const lightShade = colorModeConfig.light as unknown as keyof TailwindColorShades;
+    const darkShade = colorModeConfig.dark as unknown as keyof TailwindColorShades;
+
+    // eslint-disable-next-line prettier/prettier
+    const lightColor = String(lightShade) === WHITE_COLOR ? colors.white : colors[color]?.[lightShade];
+    const darkColor = String(darkShade) === WHITE_COLOR ? colors.white : colors[color]?.[darkShade];
+
+    const variableColor = stateColor ? `${stateColor}-${shade}` : shade;
+
+    variables[`--vl-${type}-${variableColor}` as keyof VuelessCssVariables] =
+      convertHexInRgb(lightColor);
+
+    darkVariables[`--vl-${type}-${variableColor}` as keyof VuelessCssVariables] =
+      convertHexInRgb(darkColor);
+  });
+
+  return [variables, darkVariables];
+}
+
+/**
+ * Converts CSS variables object into strings and apply them.
+ * @return string - Vueless CSS variables.
+ */
+function setCSSVariables(
+  variables: Partial<VuelessCssVariables>,
+  darkVariables: Partial<VuelessCssVariables>,
+) {
+  const variablesString = Object.entries(variables)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
-  const rootVariables = `:root {${stringVariables}`;
+  const darkVariablesString = Object.entries(darkVariables)
+    .map(([key, value]) => `${key}: ${value};`)
+    .join(" ");
+
+  const rootVariables = `
+    :root {${variablesString}}
+    .${DARK_MODE_SELECTOR} {${darkVariablesString}}
+  `;
 
   if (isCSR) {
     const style = document.createElement("style");
