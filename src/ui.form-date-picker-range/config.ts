@@ -78,6 +78,14 @@ export default /*tw*/ {
   periodDateSelected: "{>periodDate}",
   periodDateCurrent: "{>periodDate} border-2 border-brand-600",
   periodDateCurrentSelected: "{>periodDate} {>periodDateSelected} {>periodDateCurrent}",
+  customRangeButton: {
+    base: "{>periodButton}",
+    variants: {
+      customRangeButtonDescription: {
+        true: "flex-col",
+      },
+    },
+  },
   customRangeDescription: "",
   rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
   rangeInput: {

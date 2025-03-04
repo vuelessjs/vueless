@@ -76,14 +76,14 @@ const LoadingTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
       isLoading.value = !isLoading.value;
     }
 
-    const isLoading = ref(false);
+    const isLoading = ref(true);
 
     return { args, isLoading, toggleLoader };
   },
   template: `
     <URow align="center">
+      <UButton @click="toggleLoader" size="sm">Toggle Loader</UButton>
       <ULoader v-bind="args" :loading="isLoading" />
-      <UButton @click="toggleLoader" size="sm">ToggleLoader</UButton>
     </URow>
   `,
 });
@@ -99,3 +99,13 @@ Colors.args = { enum: "color" };
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
+
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
+  size: "lg",
+  slotTemplate: `
+    <template #default>
+      <img src="https://media.tenor.com/9zmtHZ0tIjkAAAAi/nyancat-rainbow-cat.gif" alt="Cat" />
+    </template>
+  `,
+};

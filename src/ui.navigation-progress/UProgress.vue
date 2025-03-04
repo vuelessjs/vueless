@@ -86,7 +86,6 @@ const {
       <template v-for="(step, index) in max" :key="index">
         <!--
           @slot Use it to add something instead of the progress step label.
-          @binding {string} name
           @binding {number} step
           @binding {number} value
           @binding {number} max

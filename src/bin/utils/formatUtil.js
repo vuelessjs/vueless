@@ -12,6 +12,7 @@ export function replaceRelativeImports(componentName, filePath, fileContent) {
 function replaceRelativeLineImports(line, isTopLevelFile) {
   const importRegex = /import\s+(?:[\w\s{},*]+)\s+from\s+(['"])(\.\.?\/.*?)(\.[tj]s)?\1(?!\?)/g;
   const multiLineImportRegExp = /from\s+(['"])(\.\.?\/.*?)(\.[tj]s)?\1(?!\?)/g; // Matches import's "from" part
+  const relativePathStartRegExp = /(?:\.\.\/)+/g;
 
   const isTopLevelLocalImport = isTopLevelFile && !line.includes("../");
   const isInnerLocalImport =
@@ -27,31 +28,7 @@ function replaceRelativeLineImports(line, isTopLevelFile) {
     });
   }
 
-  return line.replace(importRegex, (match, quote, oldPath, ext) => {
-    const isDefaultImport = match.includes("{");
-
-    if (!isDefaultImport) {
-      match = defaultToNamedImport(match);
-    }
-
-    return match.replace(oldPath + (ext || ""), VUELESS_LIBRARY);
+  return line.replace(importRegex, (match) => {
+    return match.replaceAll(relativePathStartRegExp, `${VUELESS_LIBRARY}/`);
   });
-}
-
-function defaultToNamedImport(importString) {
-  const splittedImport = importString.split(" ");
-
-  return splittedImport
-    .map((importStringToken) => {
-      if (importStringToken.includes("import")) {
-        return `${importStringToken} { `;
-      }
-
-      if (importStringToken.includes("from")) {
-        return ` } ${importStringToken} `;
-      }
-
-      return importStringToken;
-    })
-    .join("");
 }

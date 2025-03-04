@@ -157,6 +157,7 @@ const rangePeriodMenuAttrs = computed(() => ({
   rangeSwitchButtonAttrs,
   rangeSwitchTitleAttrs,
   rangeSwitchWrapperAttrs,
+  customRangeButtonAttrs,
   customRangeDescriptionAttrs,
 }));
 
@@ -538,6 +539,7 @@ const mutatedProps = computed(() => ({
   month: isPeriod.value.month,
   quarter: isPeriod.value.quarter,
   year: isPeriod.value.year,
+  customRangeButtonDescription: Boolean(props.customRangeButton.description),
 }));
 
 const {
@@ -566,6 +568,7 @@ const {
   rangeSwitchButtonAttrs,
   rangeSwitchTitleAttrs,
   rangeSwitchWrapperAttrs,
+  customRangeButtonAttrs,
   customRangeDescriptionAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 

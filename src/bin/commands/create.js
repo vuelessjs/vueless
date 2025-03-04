@@ -26,18 +26,18 @@ export async function createVuelessComponent(options) {
 
   const isSrcDir = existsSync(path.join(cwd(), VUELESS_LOCAL_DIR));
   const destPath = isSrcDir
-    ? path.join(cwd(), SRC_COMPONENTS_PATH, componentName)
-    : path.join(cwd(), COMPONENTS_PATH, componentName);
+    ? path.join(SRC_COMPONENTS_PATH, componentName)
+    : path.join(COMPONENTS_PATH, componentName);
+  const absoluteDestPath = path.join(cwd(), destPath);
 
-  const isComponentExists = componentName in COMPONENTS || existsSync(destPath);
+  const isComponentExists = componentName in COMPONENTS || existsSync(absoluteDestPath);
 
   if (isComponentExists) {
     throw new Error(`Component with name ${componentName} already exists.`);
   }
 
-  await cp(boilerplatePath, destPath, { recursive: true });
-
-  await modifyCreatedComponent(destPath, componentName);
+  await cp(boilerplatePath, absoluteDestPath, { recursive: true });
+  await modifyCreatedComponent(absoluteDestPath, componentName);
 
   const successMessage = styleText(
     "green",
