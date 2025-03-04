@@ -319,8 +319,15 @@ const {
           :removable="multiple && !disabled"
           @remove="onClickRemoveItem"
         >
-          <template #right="{ file }">
-            <slot name="right" :file="file" />
+          <template #default="{ id, label, url, imageUrl }">
+            <!--
+              @slot Use it to add a file directly.
+              @binding {string | number} id
+              @binding {string} label
+              @binding {string} url
+              @binding {string} image-url
+            -->
+            <slot :id="id" :label="label" :url="url" :image-url="imageUrl" />
           </template>
         </UFiles>
 

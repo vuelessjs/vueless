@@ -82,7 +82,7 @@ export default /*tw*/ {
   },
   bodySelectedDateDivider: {
     base: "{>bodyDateDivider}",
-    label: "bg-gray-100 transition",
+    label: "!bg-gray-100 transition",
   },
   bodyEmptyState: "{UEmpty} my-8",
   bodyEmptyStateCell: "",

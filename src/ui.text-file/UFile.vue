@@ -29,10 +29,10 @@ const emit = defineEmits([
 
 const focus = ref(false);
 
-const elementId = props.id || useId();
+const fileId = props.id || useId();
 
 function onRemove() {
-  emit("remove", props.id);
+  emit("remove", fileId);
 }
 
 function onFocus() {
@@ -61,9 +61,17 @@ const {
 
 <template>
   <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
-    <slot name="left" :file="{ elementId, label, url, imageUrl }" />
+    <!-- @slot Use it to add something before the file. -->
+    <slot name="left" />
 
-    <slot :file="{ elementId, label, url, imageUrl }">
+    <!--
+      @slot Use it to add a file directly.
+      @binding {string | number} id
+      @binding {string} label
+      @binding {string} url
+      @binding {string} image-url
+    -->
+    <slot :id="fileId" :label="label" :url="url" :image-url="imageUrl">
       <div v-bind="bodyAttrs">
         <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
 
@@ -82,7 +90,8 @@ const {
       </div>
     </slot>
 
-    <slot name="right" :file="{ elementId, label, url, imageUrl }">
+    <!-- @slot Use it to add something after the file. -->
+    <slot name="right">
       <UIcon
         v-if="removable"
         internal

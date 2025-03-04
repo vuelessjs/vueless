@@ -86,20 +86,38 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           :data-test="getDataTest(`item-${index}`)"
           @remove="onRemoveFile"
         >
-          <template #left="{ file: currentFile }">
-            <!-- @slot Use it to add something left.
-              @binding {object} file
+          <template #left>
+            <!--
+              @slot Use it to add something left.
               @binding {number} index
             -->
-            <slot name="left" :file="currentFile" :index="index" />
+            <slot name="left" :index="index" />
           </template>
 
-          <template #right="{ file: currentFile }">
-            <!-- @slot Use it to add something right.
-              @binding {object} file
+          <template #default="{ id, label, url, imageUrl }">
+            <!-- @slot Use it to add a file directly.
+              @binding {string | number} id
+              @binding {string} label
+              @binding {string} url
+              @binding {string} image-url
               @binding {number} index
             -->
-            <slot name="right" :file="currentFile" :index="index" />
+            <slot
+              :id="id"
+              name="default"
+              :label="label"
+              :url="url"
+              :image-url="imageUrl"
+              :index="index"
+            />
+          </template>
+
+          <template #right>
+            <!--
+              @slot Use it to add something right.
+              @binding {number} index
+            -->
+            <slot name="right" :index="index" />
           </template>
         </UFile>
       </slot>

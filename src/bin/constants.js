@@ -11,7 +11,7 @@ export default {
   outline: 2,
   rounding: 8,
   colorMode: "auto",
-  baseClasses: ``,
+  baseClasses: "",
 
   /**
    * Directive settings.

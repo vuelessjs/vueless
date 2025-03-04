@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex",
+    base: "flex relative",
     variants: {
       vertical: {
         true: "h-full w-fit",
