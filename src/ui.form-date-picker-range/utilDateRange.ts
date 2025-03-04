@@ -123,6 +123,8 @@ export function getTokenIndexes(inputString: string) {
   let lastIndex = -1;
   let isEscaped = false;
 
+  const tokens = Object.keys(formats);
+
   for (let i = 0; i < inputString.length; i++) {
     const char = inputString[i];
 
@@ -131,7 +133,7 @@ export function getTokenIndexes(inputString: string) {
       continue;
     }
 
-    if (!isEscaped && Object.keys(formats).includes(char)) {
+    if (!isEscaped && tokens.includes(char)) {
       if (firstIndex === -1) {
         firstIndex = i;
       }
