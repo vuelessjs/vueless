@@ -4,9 +4,13 @@
  */
 
 /* Custom Vueless colors */
+export const WHITE_COLOR = "white";
 export const BRAND_COLOR = "brand";
 export const GRAY_COLOR = "gray";
-export const COOL_COLOR = "cool";
+export const INFO_COLOR = "info";
+export const ERROR_COLOR = "error";
+export const WARNING_COLOR = "warning";
+export const SUCCESS_COLOR = "success";
 export const GRAYSCALE_COLOR = "grayscale";
 
 /* Vueless dark mode */
@@ -16,39 +20,59 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 
 /* Vueless defaults */
 export const DEFAULT_BRAND_COLOR = GRAYSCALE_COLOR;
-export const DEFAULT_GRAY_COLOR = COOL_COLOR;
+export const DEFAULT_GRAY_COLOR = GRAY_COLOR;
 export const DEFAULT_OUTLINE = 2; /* pixels */
 export const OUTLINE_DECREMENT = 1; /* pixels */
 export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
-export const DEFAULT_BASE_CLASSES = `
-  text-gray-900 dark:text-gray-100
-`;
+export const DEFAULT_BASE_CLASSES = ``;
 
-/* Vueless supported colors and shades */
+/* Vueless supported color shades */
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-export const GRAY_COLORS = ["slate", COOL_COLOR, "zinc", "neutral", "stone"];
-export const BRAND_COLORS = [
-  "red",
-  "orange",
-  "amber",
-  "yellow",
-  "lime",
-  "green",
-  "emerald",
-  "teal",
-  "cyan",
-  "sky",
-  "blue",
-  "indigo",
-  "violet",
-  "purple",
-  "fuchsia",
-  "pink",
-  "rose",
-];
+
+export const STATE_COLOR_SHADES = {
+  muted: { light: 400, dark: 600 },
+  normal: { light: 600, dark: 400 },
+  toned: { light: 700, dark: 500 },
+  accented: { light: 800, dark: 600 },
+};
+export const GRAYSCALE_COLOR_SHADES = {
+  muted: { light: 400, dark: 600 },
+  normal: { light: 900, dark: 100 },
+  toned: { light: 800, dark: 200 },
+  accented: { light: 700, dark: 300 },
+};
+export const TEXT_COLOR_SHADES = {
+  muted: { light: 400, dark: 600 },
+  normal: { light: 900, dark: 100 },
+  toned: { light: 500, dark: 500 },
+  accented: { light: 600, dark: 400 },
+  inverted: { light: "white", dark: 900 },
+};
+export const BORDER_COLOR_SHADES = {
+  muted: { light: 200, dark: 800 },
+  normal: { light: 300, dark: 700 },
+  toned: { light: 400, dark: 600 },
+  accented: { light: 600, dark: 400 },
+};
+export const BACKGROUND_COLOR_SHADES = {
+  normal: { light: "white", dark: 900 },
+  muted: { light: 50, dark: 900 },
+  toned: { light: 100, dark: 800 },
+  accented: { light: 200, dark: 700 },
+};
+
+/* Vueless supported colors */
+export const STATE_COLORS_MAP = {
+  [SUCCESS_COLOR]: "green",
+  [WARNING_COLOR]: "orange",
+  [ERROR_COLOR]: "red",
+  [INFO_COLOR]: "blue",
+};
+export const STATE_COLORS = [SUCCESS_COLOR, WARNING_COLOR, ERROR_COLOR, INFO_COLOR];
+export const GRAY_COLORS = ["slate", GRAY_COLOR, "zinc", "neutral", "stone"];
 
 /* Vueless merge class strategy types */
 export const STRATEGY_TYPE = {
@@ -255,8 +279,7 @@ export const TAILWIND_COLORS = {
     900: "#0f172a",
     950: "#020617",
   },
-  /* ex. `gray` color */
-  cool: {
+  gray: {
     50: "#f9fafb",
     100: "#f3f4f6",
     200: "#e5e7eb",

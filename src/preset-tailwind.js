@@ -5,21 +5,24 @@
 import { merge } from "lodash-es";
 import forms from "@tailwindcss/forms";
 import {
-  COLOR_SHADES,
   BRAND_COLOR,
   GRAY_COLOR,
-  COOL_COLOR,
+  GRAYSCALE_COLOR,
+  COLOR_SHADES,
+  TEXT_COLOR_SHADES,
+  STATE_COLOR_SHADES,
   DARK_MODE_SELECTOR,
   TAILWIND_COLORS,
   DEFAULT_ROUNDING,
   DEFAULT_OUTLINE,
   DEFAULT_BRAND_COLOR,
-  DEFAULT_GRAY_COLOR,
-  GRAYSCALE_COLOR,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
   OUTLINE_INCREMENT,
   OUTLINE_DECREMENT,
+  BORDER_COLOR_SHADES,
+  BACKGROUND_COLOR_SHADES,
+  STATE_COLORS,
 } from "./constants.js";
 
 const globalSettings = process.env.VUELESS_GLOBAL_SETTINGS || {};
@@ -61,23 +64,62 @@ export const vuelessContentNuxt = [
   "./app.config.{js,ts}",
 ];
 
+const safelist = getSafelist();
+
+const stateColors = {};
+const typeColors = {};
+
+const stateColorConfigs = [
+  { type: "color", shades: STATE_COLOR_SHADES, stateColor: BRAND_COLOR },
+  { type: "color", shades: STATE_COLOR_SHADES, stateColor: GRAYSCALE_COLOR },
+  ...STATE_COLORS.map((stateColor) => ({ type: "color", stateColor, shades: STATE_COLOR_SHADES })),
+];
+
+const typeColorsConfigs = [
+  { type: "border", shades: BORDER_COLOR_SHADES },
+  { type: "text", shades: TEXT_COLOR_SHADES },
+  { type: "bg", shades: BACKGROUND_COLOR_SHADES },
+];
+
+stateColorConfigs.forEach((config) => {
+  stateColors[config.stateColor] = getColorPalette(config);
+});
+
+typeColorsConfigs.forEach((config) => {
+  typeColors[`${config.type}Color`] = getColorPalette(config);
+});
+
 /**
  * Vueless tailwind static config.
  * Exported to use in `@vueless/nuxt`.
  */
-const safelist = getSafelist();
-const brandColors = getPalette(BRAND_COLOR);
-const grayColors = getPalette(GRAY_COLOR);
-
 export const vuelessTailwindConfig = {
   darkMode: ["class", `:where(.${DARK_MODE_SELECTOR})`],
   content: [...vuelessContent, ...vuelessContentVue, ...vuelessContentNuxt],
   theme: {
     extend: {
+      ...typeColors /* borderColor, bgColor, textColor */,
       colors: {
-        [BRAND_COLOR]: brandColors || {},
-        [GRAY_COLOR]: grayColors || {},
-        [COOL_COLOR]: { ...(TAILWIND_COLORS[COOL_COLOR] || {}) },
+        ...TAILWIND_COLORS,
+        ...stateColors,
+      },
+      borderRadius: {
+        inherit: "inherit",
+        small: "var(--vl-rounding-sm)",
+        medium: "var(--vl-rounding-md)",
+        large: "var(--vl-rounding-lg)",
+      },
+      outlineWidth: {
+        small: "var(--vl-outline-sm)",
+        medium: "var(--vl-outline-md)",
+        large: "var(--vl-outline-lg)",
+      },
+      fontSize: {
+        "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
+        xsmall: "var(--vl-text-xs)",
+        small: "var(--vl-text-sm)",
+        medium: "var(--vl-text-md)",
+        large: "var(--vl-text-lg)",
       },
       spacing: {
         "safe-top": "env(safe-area-inset-top)",
@@ -85,35 +127,20 @@ export const vuelessTailwindConfig = {
         "safe-left": "env(safe-area-inset-left)",
         "safe-right": "env(safe-area-inset-right)",
       },
-      fontSize: {
-        "2xs": ["0.625rem", "0.875rem"] /* 10px / 14px */,
-      },
-      borderRadius: {
-        inherit: "inherit",
-        "dynamic-sm": "var(--vl-rounding-sm)",
-        dynamic: "var(--vl-rounding)",
-        "dynamic-lg": "var(--vl-rounding-lg)",
-      },
-      outlineWidth: {
-        "dynamic-sm": "var(--vl-outline-sm)",
-        dynamic: "var(--vl-outline)",
-        "dynamic-lg": "var(--vl-outline-lg)",
-      },
     },
-    configViewer: {
-      themeReplacements: {
-        /* eslint-disable prettier/prettier, vue/max-len */
-        "var(--vl-outline-sm)": globalSettings.ringSm || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) - OUTLINE_DECREMENT),
-        "var(--vl-outline)": globalSettings.ring || DEFAULT_OUTLINE,
-        "var(--vl-outline-lg)": globalSettings.ringLg || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) + OUTLINE_INCREMENT),
-        "var(--vl-rounding-sm)": globalSettings.roundingSm || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_DECREMENT),
-        "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
-        "var(--vl-rounding-lg)": globalSettings.roundingLg || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_INCREMENT),
-        ...getReplacementColors(GRAY_COLOR, globalSettings.gray || DEFAULT_GRAY_COLOR),
-        ...getReplacementColors(BRAND_COLOR, globalSettings.brand || DEFAULT_BRAND_COLOR),
-        /* eslint-enable prettier/prettier, vue/max-len */
-      },
-    },
+    // configViewer: {
+    //   themeReplacements: {
+    //     /* eslint-disable prettier/prettier, vue/max-len */
+    //     "var(--vl-outline-sm)": globalSettings.ringSm || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) - OUTLINE_DECREMENT),
+    //     "var(--vl-outline)": globalSettings.ring || DEFAULT_OUTLINE,
+    //     "var(--vl-outline-lg)": globalSettings.ringLg || Math.max(0, (globalSettings.ring || DEFAULT_OUTLINE) + OUTLINE_INCREMENT),
+    //     "var(--vl-rounding-sm)": globalSettings.roundingSm || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_DECREMENT),
+    //     "var(--vl-rounding)": globalSettings.ring || DEFAULT_ROUNDING,
+    //     "var(--vl-rounding-lg)": globalSettings.roundingLg || Math.max(0, (globalSettings.rounding || DEFAULT_ROUNDING) - ROUNDING_INCREMENT),
+    //     ...getReplacementColors(BRAND_COLOR, globalSettings.brand || DEFAULT_BRAND_COLOR),
+    //     /* eslint-enable prettier/prettier, vue/max-len */
+    //   },
+    // },
   },
 };
 
@@ -152,18 +179,26 @@ function twColorWithOpacity(variableName) {
 }
 
 /**
- * Convert sting patterns to RegExp.
- * @param { String } color (gray | brand)
+ * Creates Vueless theme color palette based on CSS variables.
  * @returns { Object } - TailwindCSS color object palette.
  */
-function getPalette(color) {
-  const palette = {
-    DEFAULT: twColorWithOpacity(`--vl-color-${color}-default`),
-  };
+function getColorPalette({ type, shades, stateColor = "" }) {
+  const palette = {};
 
-  COLOR_SHADES.forEach((shade) => {
-    palette[shade] = twColorWithOpacity(`--vl-color-${color}-${shade}`);
+  Object.keys(shades).forEach((shade) => {
+    const variableColor = stateColor ? `${stateColor}-${shade}` : shade;
+
+    palette[shade] = twColorWithOpacity(`--vl-${type}-${variableColor}`);
   });
+
+  /* Generate default brand pallet. */
+  if (stateColor === BRAND_COLOR) {
+    palette.DEFAULT = twColorWithOpacity(`--vl-${type}-${BRAND_COLOR}-default`);
+
+    COLOR_SHADES.forEach((shade) => {
+      palette[shade] = twColorWithOpacity(`--vl-${type}-${BRAND_COLOR}-${shade}`);
+    });
+  }
 
   return palette;
 }
@@ -176,7 +211,7 @@ function getPalette(color) {
  */
 function getReplacementColors(color, tailwindColor) {
   if (tailwindColor === GRAYSCALE_COLOR) {
-    tailwindColor = COOL_COLOR;
+    tailwindColor = GRAY_COLOR;
   }
 
   const varsPalette = {

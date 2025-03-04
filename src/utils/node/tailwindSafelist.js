@@ -11,9 +11,9 @@ import { createGetMergedConfig } from "./mergeConfigs.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  GRAY_COLOR,
+  GRAYSCALE_COLOR,
   BRAND_COLOR,
-  BRAND_COLORS,
+  STATE_COLORS,
   STRATEGY_TYPE,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
@@ -63,7 +63,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelist = [];
 
   const storybookColors = {
-    colors: [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR],
+    colors: [...STATE_COLORS, BRAND_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
 
@@ -254,7 +254,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
 
   return {
     colors: Array.from(colors).filter(
-      (color) => color && [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR].includes(color),
+      (color) => color && [...STATE_COLORS, BRAND_COLOR, GRAYSCALE_COLOR].includes(color),
     ),
     isComponentExists,
   };
@@ -299,7 +299,9 @@ function getSafelistData(safelist) {
   return safelist.map((safelistItem) => {
     const matchGroupStart = 1;
     const matchGroupEnd = 4;
-    const safelistItemRegExp = new RegExp(/^(.*-)\((.*)\)-(\d+(?:\/\d+)?)$/);
+    const safelistItemRegExp = new RegExp(
+      /^(.*-)\((.*)\)-(muted|normal|toned|accented|\d+)(?:\/\d+)?$/,
+    );
 
     const [property, colorPattern, colorShade] = safelistItem.pattern
       .match(safelistItemRegExp)

@@ -8,34 +8,34 @@ export default create({
   fontCode: "monospace",
 
   // Main colors
-  colorPrimary: TAILWIND_COLORS.cool["900"],
-  colorSecondary: TAILWIND_COLORS.cool["500"],
+  colorPrimary: TAILWIND_COLORS.gray["900"],
+  colorSecondary: TAILWIND_COLORS.gray["500"],
 
   // UI
-  appBg: TAILWIND_COLORS.cool["100"],
-  appPreviewBg: TAILWIND_COLORS.cool["50"],
-  appBorderColor: TAILWIND_COLORS.cool["200"],
-  appContentBg: TAILWIND_COLORS.cool["50"],
+  appBg: TAILWIND_COLORS.gray["100"],
+  appPreviewBg: TAILWIND_COLORS.gray["50"],
+  appBorderColor: TAILWIND_COLORS.gray["200"],
+  appContentBg: TAILWIND_COLORS.gray["50"],
   appBorderRadius: 8,
 
   // Text colors
-  textColor: TAILWIND_COLORS.cool["900"],
-  textInverseColor: TAILWIND_COLORS.cool["50"],
+  textColor: TAILWIND_COLORS.gray["900"],
+  textInverseColor: TAILWIND_COLORS.gray["50"],
 
   // Toolbar default and active colors
-  barTextColor: TAILWIND_COLORS.cool["500"],
-  barHoverColor: TAILWIND_COLORS.cool["600"],
-  barSelectedColor: TAILWIND_COLORS.cool["700"],
+  barTextColor: TAILWIND_COLORS.gray["500"],
+  barHoverColor: TAILWIND_COLORS.gray["600"],
+  barSelectedColor: TAILWIND_COLORS.gray["700"],
   barBg: TAILWIND_COLORS.white,
 
   // Form colors
   inputBg: TAILWIND_COLORS.white,
-  inputBorder: TAILWIND_COLORS.cool["300"],
-  inputTextColor: TAILWIND_COLORS.cool["900"],
+  inputBorder: TAILWIND_COLORS.gray["300"],
+  inputTextColor: TAILWIND_COLORS.gray["900"],
   inputBorderRadius: 4,
 
-  buttonBg: TAILWIND_COLORS.cool["100"],
-  buttonBorder: TAILWIND_COLORS.cool["200"],
-  booleanBg: TAILWIND_COLORS.cool["50"],
-  booleanSelectedBg: TAILWIND_COLORS.cool["200"],
+  buttonBg: TAILWIND_COLORS.gray["100"],
+  buttonBorder: TAILWIND_COLORS.gray["200"],
+  booleanBg: TAILWIND_COLORS.gray["50"],
+  booleanSelectedBg: TAILWIND_COLORS.gray["200"],
 });
