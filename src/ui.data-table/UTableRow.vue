@@ -296,7 +296,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         v-bind="attrs.bodySelectedDateDividerAttrs.value"
         :config="
           getMergedConfig({
-            defaultConfig: attrs.bodyDateDividerAttrs.value.config,
+            defaultConfig: attrs.bodySelectedDateDividerAttrs.value.config,
             globalConfig: dateDividerData.config,
           }) as UDividerConfig
         "
