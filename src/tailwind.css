@@ -172,8 +172,3 @@
     outline-width: var(--vl-outline-lg);
 }
 
-@utility outline-large {
-    outline-style: var(--tw-outline-style);
-    outline-width: var(--vl-outline-lg);
-}
-

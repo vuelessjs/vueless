@@ -11,7 +11,17 @@ export default {
   outline: 2,
   rounding: 8,
   colorMode: "auto",
-  baseClasses: ``,
+  baseClasses: "",
+
+  /**
+   * Light theme CSS variable settings.
+   */
+  lightTheme: {},
+
+  /**
+   * Dark theme CSS variable settings.
+   */
+  darkTheme: {},
 
   /**
    * Directive settings.
@@ -24,14 +34,14 @@ export default {
   components: /*tw*/ {},
 
   /**
-   * Tailwind CSS theme config.
-   * https://tailwindcss.com/docs/theme
+   * Directive settings.
    */
-  tailwindTheme: {
-    extend: {
-      colors: {},
-    },
-  },
+  directives: {},
+
+  /**
+   * Component settings.
+   */
+  components: /*tw*/ {},
 
   /**
    * Custom classes TailwindMerge settings.
