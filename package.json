@@ -21,6 +21,7 @@
   ],
   "homepage": "https://vueless.com",
   "author": "Johnny Grid",
+  "style": "tailwind.css",
   "main": "index.ts",
   "type": "module",
   "publishConfig": {

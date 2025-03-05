@@ -2,36 +2,36 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
-      border border-transparent outline-none transition cursor-pointer
-      focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}-normal
+      border border-transparent transition cursor-pointer
+      focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
       disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
     `,
     variants: {
       size: {
-        "2xs": "px-2 py-1 text-xs gap-0.5",
-        xs: "px-3 py-1.5 text-xs gap-1",
-        sm: "px-4 py-2 text-sm gap-1.5",
-        md: "px-5 py-2.5 text-sm gap-1.5",
-        lg: "px-6 py-3 text-base gap-1.5",
-        xl: "px-7 py-3.5 text-base gap-2",
+        "2xs": "px-2 py-1 text-small gap-0.5",
+        xs: "px-3 py-1.5 text-small gap-1",
+        sm: "px-4 py-2 text-medium gap-1.5",
+        md: "px-5 py-2.5 text-medium gap-1.5",
+        lg: "px-6 py-3 text-large gap-1.5",
+        xl: "px-7 py-3.5 text-large gap-2",
       },
       variant: {
         primary: `
           text-inverted
-          bg-{color}-normal
-          hover:bg-{color}-toned
+          bg-{color}
+          hover:bg-{color}-lifted
           active:bg-{color}-accented
           disabled:bg-gray-muted
         `,
         secondary: `
-          text-{color}-normal border-{color}-normal
-          hover:text-{color}-toned hover:border-{color}-toned hover:bg-{color}-toned/10
+          text-{color} border-{color}
+          hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
           disabled:text-gray-muted disabled:border-{color}-muted
         `,
         thirdary: `
-          text-{color}-normal
-          hover:text-{color}-toned hover:bg-{color}-toned/10
+          text-{color}
+          hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
           disabled:text-gray-muted disabled:bg-transparent
         `,
@@ -51,7 +51,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { filled: true, variant: "thirdary", class: "bg-{color}-toned/5" },
+      { filled: true, variant: "thirdary", class: "bg-{color}-lifted/5" },
       { rightIcon: true, size: "2xs", class: "pr-1" },
       { rightIcon: true, size: "xs", class: "pr-2" },
       { rightIcon: true, size: "sm", class: "pr-3" },

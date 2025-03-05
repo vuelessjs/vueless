@@ -14,6 +14,7 @@ import {
   GRAYSCALE_COLOR,
   BRAND_COLOR,
   STATE_COLORS,
+  COLOR_SHADES,
   STRATEGY_TYPE,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
@@ -62,7 +63,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
-  const safelist = [];
+  const safelistClasses = [];
 
   const storybookColors = {
     colors: [...STATE_COLORS, BRAND_COLOR, GRAYSCALE_COLOR],
@@ -87,7 +88,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
       const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
       const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
-      safelist.push(...componentSafelist);
+      safelistClasses.push(...componentSafelist);
     }
 
     if (isComponentExists && colors.length && nestedComponents.length) {
@@ -95,20 +96,24 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
         const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
         const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
 
-        safelist.push(...nestedComponentSafelist);
+        safelistClasses.push(...nestedComponentSafelist);
       }
     }
   }
 
-  const uniqueSafelistClasses = [...new Set(safelist)];
+  const colorSafelistVariables = COLOR_SHADES.map((shade) =>
+    [`--color-${vuelessConfig.brand}-${shade}, --color-${vuelessConfig.gray}-${shade}`].join("\n"),
+  );
 
-  writeFile(SAFELIST_DIR, uniqueSafelistClasses.join("\n"), (err) => {
+  const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
+
+  writeFile(SAFELIST_DIR, safelist.join("\n"), (err) => {
     if (err) throw err;
   });
 
   if (debug) {
     // eslint-disable-next-line no-console
-    console.log("safelist", uniqueSafelistClasses);
+    console.log("safelist", safelist);
   }
 }
 
