@@ -31,16 +31,6 @@ export default {
   components: /*tw*/ {},
 
   /**
-   * Tailwind CSS theme config.
-   * https://tailwindcss.com/docs/theme
-   */
-  tailwindTheme: {
-    extend: {
-      colors: {},
-    },
-  },
-
-  /**
    * Custom classes TailwindMerge settings.
    * All lists of rules available here:
    * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts

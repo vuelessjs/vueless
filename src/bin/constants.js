@@ -14,6 +14,16 @@ export default {
   baseClasses: "",
 
   /**
+   * Light theme CSS variable settings.
+   */
+  lightTheme: {},
+
+  /**
+   * Dark theme CSS variable settings.
+   */
+  darkTheme: {},
+
+  /**
    * Directive settings.
    */
   directives: {},
@@ -22,16 +32,6 @@ export default {
    * Component settings.
    */
   components: /*tw*/ {},
-
-  /**
-   * Tailwind CSS theme config.
-   * https://tailwindcss.com/docs/theme
-   */
-  tailwindTheme: {
-    extend: {
-      colors: {},
-    },
-  },
 
   /**
    * Custom classes TailwindMerge settings.
