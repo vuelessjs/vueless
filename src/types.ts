@@ -80,6 +80,21 @@ export interface ThemeConfig {
   gray?: GrayColors;
 
   /**
+   * Default components small font size.
+   */
+  fontSizeSm?: number;
+
+  /**
+   * Default components font size.
+   */
+  fontSize?: number;
+
+  /**
+   * Default components large font size.
+   */
+  fontSizeLg?: number;
+
+  /**
    * Default components small size rounding (border-radius).
    */
   roundingSm?: number;
@@ -128,6 +143,16 @@ export interface Config extends ThemeConfig {
    * Classes which will be applied to the root element of all vueless components.
    */
   baseClasses?: string;
+
+  /**
+   * Light theme design system CSS variables.
+   */
+  lightTheme?: Partial<VuelessCssVariables>;
+
+  /**
+   * Dark theme design system CSS variables.
+   */
+  darkTheme?: Partial<VuelessCssVariables>;
 
   /**
    * Component configs.
@@ -327,88 +352,89 @@ export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
 }
 
-export interface TailwindColorModeShades {
-  light: string | number;
-  dark: string | number;
-}
-
-export interface TailwindColorShades {
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-  950: string;
-}
-
 export interface VuelessCssVariables {
+  /* Outline size CSS variables */
   "--vl-outline-sm": string;
-  "--vl-outline": string;
+  "--vl-outline-md": string;
   "--vl-outline-lg": string;
-  "--vl-rounding-sm": string;
-  "--vl-rounding": string;
-  "--vl-rounding-lg": string;
+  /* Border radius size variables */
+  "--vl-radius-sm": string;
+  "--vl-radius-md": string;
+  "--vl-radius-lg": string;
+  /* Font size CSS variables */
+  "--vl-text-sm": string;
+  "--vl-text-md": string;
+  "--vl-text-lg": string;
   /* Gray CSS variables */
-  "--vl-color-gray-50": string;
-  "--vl-color-gray-100": string;
-  "--vl-color-gray-200": string;
-  "--vl-color-gray-300": string;
-  "--vl-color-gray-400": string;
-  "--vl-color-gray-500": string;
-  "--vl-color-gray-600": string;
-  "--vl-color-gray-700": string;
-  "--vl-color-gray-800": string;
-  "--vl-color-gray-900": string;
-  "--vl-color-gray-950": string;
-  "--vl-color-gray-default": string;
+  "--vl-grayscale-50": string;
+  "--vl-grayscale-100": string;
+  "--vl-grayscale-200": string;
+  "--vl-grayscale-300": string;
+  "--vl-grayscale-400": string;
+  "--vl-grayscale-500": string;
+  "--vl-grayscale-600": string;
+  "--vl-grayscale-700": string;
+  "--vl-grayscale-800": string;
+  "--vl-grayscale-900": string;
+  "--vl-grayscale-950": string;
   /* Brand CSS variables */
-  "--vl-color-brand-50": string;
-  "--vl-color-brand-100": string;
-  "--vl-color-brand-200": string;
-  "--vl-color-brand-300": string;
-  "--vl-color-brand-400": string;
-  "--vl-color-brand-500": string;
-  "--vl-color-brand-600": string;
-  "--vl-color-brand-700": string;
-  "--vl-color-brand-800": string;
-  "--vl-color-brand-900": string;
-  "--vl-color-brand-950": string;
-  "--vl-color-brand-default": string;
+  "--vl-brand-50": string;
+  "--vl-brand-100": string;
+  "--vl-brand-200": string;
+  "--vl-brand-300": string;
+  "--vl-brand-400": string;
+  "--vl-brand-500": string;
+  "--vl-brand-600": string;
+  "--vl-brand-700": string;
+  "--vl-brand-800": string;
+  "--vl-brand-900": string;
+  "--vl-brand-950": string;
   /* Brand design system CSS variables */
-  "--vl-color-brand-muted": string;
-  "--vl-color-brand-normal": string;
-  "--vl-color-brand-toned": string;
-  "--vl-color-brand-accented": string;
+  "--vl-brand-muted": string;
+  "--vl-brand-normal": string;
+  "--vl-brand-toned": string;
+  "--vl-brand-accented": string;
   /* Grayscale design system CSS variables */
-  "--vl-color-grayscale-muted": string;
-  "--vl-color-grayscale-normal": string;
-  "--vl-color-grayscale-toned": string;
-  "--vl-color-grayscale-accented": string;
+  "--vl-grayscale-muted": string;
+  "--vl-grayscale-normal": string;
+  "--vl-grayscale-toned": string;
+  "--vl-grayscale-accented": string;
   /* Success design system CSS variables */
-  "--vl-color-success-muted": string;
-  "--vl-color-success-normal": string;
-  "--vl-color-success-toned": string;
-  "--vl-color-success-accented": string;
+  "--vl-success-muted": string;
+  "--vl-success-normal": string;
+  "--vl-success-toned": string;
+  "--vl-success-accented": string;
   /* Info design system CSS variables */
-  "--vl-color-info-muted": string;
-  "--vl-color-info-normal": string;
-  "--vl-color-info-toned": string;
-  "--vl-color-info-accented": string;
+  "--vl-info-muted": string;
+  "--vl-info-normal": string;
+  "--vl-info-toned": string;
+  "--vl-info-accented": string;
   /* Warning design system CSS variables */
-  "--vl-color-warning-muted": string;
-  "--vl-color-warning-normal": string;
-  "--vl-color-warning-toned": string;
-  "--vl-color-warning-accented": string;
+  "--vl-warning-muted": string;
+  "--vl-warning-normal": string;
+  "--vl-warning-toned": string;
+  "--vl-warning-accented": string;
   /* Error design system CSS variables */
-  "--vl-color-error-muted": string;
-  "--vl-color-error-normal": string;
-  "--vl-color-error-toned": string;
-  "--vl-color-error-accented": string;
+  "--vl-error-muted": string;
+  "--vl-error-normal": string;
+  "--vl-error-toned": string;
+  "--vl-error-accented": string;
+  /* Text grayscale design system CSS variables */
+  "--vl-text": string;
+  "--vl-text-lifted": string;
+  "--vl-text-accented": string;
+  "--vl-text-muted": string;
+  "--vl-text-inverted": string;
+  /* Border grayscale design system CSS variables */
+  "--vl-border": string;
+  "--vl-border-lifted": string;
+  "--vl-border-accented": string;
+  "--vl-border-muted": string;
+  /* Background grayscale design system CSS variables */
+  "--vl-bg": string;
+  "--vl-bg-lifted": string;
+  "--vl-bg-accented": string;
+  "--vl-bg-muted": string;
 }
 
 /* Web-types interfaces and types */
