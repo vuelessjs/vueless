@@ -18,13 +18,6 @@ export default /*tw*/ {
         true: "decoration-solid underline",
         false: "no-underline",
       },
-      color: {
-        gray: `
-          text-grayscale-500 decoration-grayscale-500 dark:text-grayscale-400 dark:decoration-grayscale-400
-          hover:text-grayscale-600 hover:decoration-grayscale-600 dark:hover:text-grayscale-500 dark:hover:decoration-grayscale-500
-          active:text-grayscale-700 active:decoration-grayscale-700 dark:active:text-grayscale-600 dark:active:decoration-grayscale-600
-        `,
-      },
       defaultSlot: {
         true: "flex items-center no-underline hover:no-underline",
       },
@@ -32,7 +25,7 @@ export default /*tw*/ {
         true: "hover:decoration-dashed decoration-dashed",
       },
       disabled: {
-        true: "text-muted pointer-events-none",
+        true: "text-{color}-muted pointer-events-none",
       },
       block: {
         true: "w-full",

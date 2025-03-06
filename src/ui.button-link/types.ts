@@ -34,7 +34,7 @@ export interface Props {
   /**
    * Link color.
    */
-  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "gray";
+  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Link open type behavior.

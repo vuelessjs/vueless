@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  htmlBody: "bg-gray-50 group/body-gray",
+  htmlBody: "bg-muted group/body",
   wrapper: {
     base: "min-h-screen UNotifyPage",
     variants: {
@@ -15,9 +15,9 @@ export default /*tw*/ {
         "5xl": "md:w-[75rem] md:max-[1300px]:!w-full",
         wide: "md:w-full",
       },
-      gray: {
-        false: "bg-white",
-        true: "bg-gray-50",
+      muted: {
+        false: "bg-default",
+        true: "bg-muted",
       },
       rounding: {
         relative: "md:relative md:pr-4 md:rounded-r-dynamic-lg",
@@ -53,9 +53,9 @@ export default /*tw*/ {
   rightRounding: {
     base: "fixed top-0 w-4 rounded-r-dynamic-lg h-screen",
     variants: {
-      gray: {
-        false: "bg-white",
-        true: "bg-gray-50",
+      muted: {
+        false: "bg-default",
+        true: "bg-muted",
       },
     },
   },
@@ -63,7 +63,7 @@ export default /*tw*/ {
     rounding: "none",
     titleSize: "md",
     size: "wide",
-    gray: false,
+    muted: false,
     /* icons */
     backIcon: "arrow_back",
   },

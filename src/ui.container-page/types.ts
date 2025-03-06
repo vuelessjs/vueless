@@ -42,9 +42,9 @@ export interface Props {
   rounding?: "none" | "fixed" | "relative";
 
   /**
-   * Sets background light gray (useful if the page contains nested cards).
+   * Sets muted background color (useful if the page contains nested cards).
    */
-  gray?: boolean;
+  muted?: boolean;
 
   /**
    * Component config object.

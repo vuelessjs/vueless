@@ -54,7 +54,7 @@ const isShownArrowButton = computed(() => {
 
 onMounted(() => {
   const classes =
-    props.gray && config.value?.htmlBody
+    props.muted && config.value?.htmlBody
       ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
       : "";
 

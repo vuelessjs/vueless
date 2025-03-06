@@ -21,19 +21,19 @@ export default /*tw*/ {
           bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
-          disabled:bg-gray-muted
+          disabled:bg-{color}-muted
         `,
         secondary: `
           text-{color} border-{color}
           hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
-          disabled:text-gray-muted disabled:border-{color}-muted
+          disabled:text-{color}-muted disabled:border-{color}-muted
         `,
         thirdary: `
           text-{color}
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:text-gray-muted disabled:bg-transparent
+          disabled:text-{color}-muted disabled:bg-transparent
         `,
       },
       round: {
@@ -101,7 +101,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     variant: "primary",
     tag: "button",
     size: "md",

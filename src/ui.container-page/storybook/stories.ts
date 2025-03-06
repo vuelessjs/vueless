@@ -30,7 +30,7 @@ export default {
   component: UPage,
   args: {
     title: "User Profile",
-    gray: true,
+    muted: true,
   },
   argTypes: {
     ...getArgTypes(UPage.__name),

@@ -12,7 +12,7 @@ export interface Props {
   /**
    * Button color.
    */
-  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Button size.
