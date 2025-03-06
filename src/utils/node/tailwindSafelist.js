@@ -11,8 +11,10 @@ import { createGetMergedConfig } from "./mergeConfigs.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  GRAYSCALE_COLOR,
   BRAND_COLOR,
+  BRAND_COLORS,
+  GRAYSCALE_COLOR,
+  GRAYSCALE_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
   STRATEGY_TYPE,
@@ -101,9 +103,15 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     }
   }
 
-  const colorSafelistVariables = COLOR_SHADES.map((shade) =>
-    [`--color-${vuelessConfig.brand}-${shade}, --color-${vuelessConfig.gray}-${shade}`].join("\n"),
-  );
+  /* Safelist all color variables to allow runtime color switching feature. */
+  const colorSafelistVariables = COLOR_SHADES.map((shade) => {
+    const brandColorsCSSConstants = BRAND_COLORS.map((color) => `--color-${color}-${shade}`);
+    const grayscaleColorsCSSConstants = GRAYSCALE_COLORS.map(
+      (color) => `--color-${color}-${shade}`,
+    );
+
+    return [...brandColorsCSSConstants, ...grayscaleColorsCSSConstants].join("\n");
+  });
 
   const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
 
