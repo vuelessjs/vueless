@@ -2,16 +2,16 @@ export default /*tw*/ {
   link: {
     base: `
       inline-block cursor-pointer !leading-none rounded-dynamic-sm transition
-      text-{color}-600 decoration-{color}-600 underline-offset-4
-      hover:text-{color}-700 hover:decoration-{color}-700
-      active:text-{color}-800 active:decoration-{color}-800
-      focus-visible:outline-dynamic focus-visible:outline-offset-4 focus-visible:outline-{color}-600
+      text-{color} decoration-{color} underline-offset-4
+      hover:text-{color}-lifted hover:decoration-{color}-lifted
+      active:text-{color}-accented active:decoration-{color}-accented
+      focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       underlined: {
         undefined: "hover:decoration-solid hover:underline",
@@ -20,17 +20,10 @@ export default /*tw*/ {
       },
       color: {
         gray: `
-          text-gray-500 decoration-gray-500
-          hover:text-gray-600 hover:decoration-gray-600
-          active:text-gray-700 active:decoration-gray-700
+          text-grayscale-500 decoration-grayscale-500 dark:text-grayscale-400 dark:decoration-grayscale-400
+          hover:text-grayscale-600 hover:decoration-grayscale-600 dark:hover:text-grayscale-500 dark:hover:decoration-grayscale-500
+          active:text-grayscale-700 active:decoration-grayscale-700 dark:active:text-grayscale-600 dark:active:decoration-grayscale-600
         `,
-        grayscale: `
-          text-gray-900 decoration-gray-900
-          hover:text-gray-800 hover:decoration-gray-800
-          active:text-gray-700 active:decoration-gray-700
-          focus-visible:outline-gray-900
-        `,
-        white: "decoration-white text-white focus-visible:outline-white",
       },
       defaultSlot: {
         true: "flex items-center no-underline hover:no-underline",
@@ -39,7 +32,7 @@ export default /*tw*/ {
         true: "hover:decoration-dashed decoration-dashed",
       },
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "text-muted pointer-events-none",
       },
       block: {
         true: "w-full",
