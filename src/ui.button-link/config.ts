@@ -22,7 +22,10 @@ export default /*tw*/ {
         true: "flex items-center no-underline hover:no-underline",
       },
       dashed: {
-        true: "hover:decoration-dashed decoration-dashed",
+        true: "decoration-dashed hover:decoration-dashed",
+      },
+      dotted: {
+        true: "decoration-dotted hover:decoration-dotted ",
       },
       disabled: {
         true: "text-{color}-muted pointer-events-none",
