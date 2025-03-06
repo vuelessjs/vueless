@@ -49,63 +49,6 @@ export const BRAND_COLORS = [
 export const GRAYSCALE_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
-export const DEFAULT_DARK_THEME = {
-  /* Brand colors */
-  "--vl-brand": "--color-brand-400",
-  "--vl-brand-lifted": "--color-brand-500",
-  "--vl-brand-accented": "--color-brand-600",
-  "--vl-brand-muted": "--color-brand-600",
-
-  /* Info colors */
-  "--vl-info": "--color-blue-400",
-  "--vl-info-lifted": "--color-blue-500",
-  "--vl-info-accented": "--color-blue-600",
-  "--vl-info-muted": "--color-blue-600",
-
-  /* Error colors */
-  "--vl-error": "--color-red-400",
-  "--vl-error-lifted": "--color-red-500",
-  "--vl-error-accented": "--color-red-600",
-  "--vl-error-muted": "--color-red-600",
-
-  /* Warning colors */
-  "--vl-warning": "--color-orange-400",
-  "--vl-warning-lifted": "--color-orange-500",
-  "--vl-warning-accented": "--color-orange-600",
-  "--vl-warning-muted": "--color-orange-600",
-
-  /* Success colors */
-  "--vl-success": "--color-green-400",
-  "--vl-success-lifted": "--color-green-500",
-  "--vl-success-accented": "--color-green-600",
-  "--vl-success-muted": "--color-green-600",
-
-  /* Grayscale colors */
-  "--vl-grayscale": "--color-grayscale-100",
-  "--vl-grayscale-lifted": "--color-grayscale-200",
-  "--vl-grayscale-accented": "--color-grayscale-300",
-  "--vl-grayscale-muted": "--color-grayscale-600",
-
-  /* Text grayscale colors */
-  "--vl-text": "--color-grayscale-100",
-  "--vl-text-lifted": "--color-grayscale-500",
-  "--vl-text-accented": "--color-grayscale-400",
-  "--vl-text-muted": "--color-grayscale-600",
-  "--vl-text-inverted": "--color-grayscale-900",
-
-  /* Border grayscale colors */
-  "--vl-border": "--color-grayscale-700",
-  "--vl-border-lifted": "--color-grayscale-600",
-  "--vl-border-accented": "--color-grayscale-400",
-  "--vl-border-muted": "--color-grayscale-800",
-
-  /* Background grayscale colors */
-  "--vl-bg": "--color-grayscale-900",
-  "--vl-bg-lifted": "--color-grayscale-800",
-  "--vl-bg-accented": "--color-grayscale-700",
-  "--vl-bg-muted": "--color-grayscale-900",
-};
-
 export const DEFAULT_LIGHT_THEME = {
   /* Brand colors */
   "--vl-brand": "--color-brand-600",
@@ -143,24 +86,81 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-grayscale-accented": "--color-grayscale-700",
   "--vl-grayscale-muted": "--color-grayscale-400",
 
-  /* Text grayscale colors */
+  /* Text gray colors */
   "--vl-text": "--color-grayscale-900",
   "--vl-text-lifted": "--color-grayscale-500",
   "--vl-text-accented": "--color-grayscale-600",
   "--vl-text-muted": "--color-grayscale-400",
   "--vl-text-inverted": "--color-white",
 
-  /* Border grayscale colors */
+  /* Border gray colors */
   "--vl-border": "--color-grayscale-300",
   "--vl-border-lifted": "--color-grayscale-400",
   "--vl-border-accented": "--color-grayscale-600",
   "--vl-border-muted": "--color-grayscale-200",
 
-  /* Background grayscale colors */
+  /* Background gray colors */
   "--vl-bg": "--color-white",
   "--vl-bg-lifted": "--color-grayscale-100",
   "--vl-bg-accented": "--color-grayscale-200",
   "--vl-bg-muted": "--color-grayscale-50",
+};
+
+export const DEFAULT_DARK_THEME = {
+  /* Brand colors */
+  "--vl-brand": "--color-brand-400",
+  "--vl-brand-lifted": "--color-brand-500",
+  "--vl-brand-accented": "--color-brand-600",
+  "--vl-brand-muted": "--color-brand-600",
+
+  /* Info colors */
+  "--vl-info": "--color-blue-400",
+  "--vl-info-lifted": "--color-blue-500",
+  "--vl-info-accented": "--color-blue-600",
+  "--vl-info-muted": "--color-blue-600",
+
+  /* Error colors */
+  "--vl-error": "--color-red-400",
+  "--vl-error-lifted": "--color-red-500",
+  "--vl-error-accented": "--color-red-600",
+  "--vl-error-muted": "--color-red-600",
+
+  /* Warning colors */
+  "--vl-warning": "--color-orange-400",
+  "--vl-warning-lifted": "--color-orange-500",
+  "--vl-warning-accented": "--color-orange-600",
+  "--vl-warning-muted": "--color-orange-600",
+
+  /* Success colors */
+  "--vl-success": "--color-green-400",
+  "--vl-success-lifted": "--color-green-500",
+  "--vl-success-accented": "--color-green-600",
+  "--vl-success-muted": "--color-green-600",
+
+  /* Grayscale colors */
+  "--vl-grayscale": "--color-grayscale-100",
+  "--vl-grayscale-lifted": "--color-grayscale-200",
+  "--vl-grayscale-accented": "--color-grayscale-300",
+  "--vl-grayscale-muted": "--color-grayscale-600",
+
+  /* Text gray colors */
+  "--vl-text": "--color-grayscale-100",
+  "--vl-text-lifted": "--color-grayscale-400",
+  "--vl-text-accented": "--color-grayscale-300",
+  "--vl-text-muted": "--color-grayscale-600",
+  "--vl-text-inverted": "--color-grayscale-900",
+
+  /* Border gray colors */
+  "--vl-border": "--color-grayscale-700",
+  "--vl-border-lifted": "--color-grayscale-600",
+  "--vl-border-accented": "--color-grayscale-400",
+  "--vl-border-muted": "--color-grayscale-800",
+
+  /* Background gray colors */
+  "--vl-bg": "--color-grayscale-900",
+  "--vl-bg-lifted": "--color-grayscale-800",
+  "--vl-bg-accented": "--color-grayscale-700",
+  "--vl-bg-muted": "--color-grayscale-900",
 };
 
 /* Vueless supported colors */
