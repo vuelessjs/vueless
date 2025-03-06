@@ -141,5 +141,5 @@ export function getColor(color: string) {
  * Replace in tailwind classes `{color}` variable into given color.
  */
 export function setColor(classes: string, color: string) {
-  return classes?.replace(/{color}/g, color);
+  return classes?.replace(/{color}/g, getColor(color));
 }

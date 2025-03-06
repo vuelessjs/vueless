@@ -4,7 +4,7 @@ export default {
    */
   strategy: "merge",
   primary: "grayscale",
-  neutral: "",
+  neutral: "gray",
   darkMode: "auto",
   outline: 2,
   rounding: 8,

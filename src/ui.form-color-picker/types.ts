@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { PrimaryColors, GrayColors, ComponentConfig } from "../types.ts";
+import type { PrimaryColors, NeutralColors, ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
@@ -23,7 +23,7 @@ export interface Props {
   /**
    * Color labels.
    */
-  labels?: Record<GrayColors, string>;
+  labels?: Record<NeutralColors, string>;
 
   /**
    * Unique element id.

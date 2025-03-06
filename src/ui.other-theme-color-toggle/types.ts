@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { PrimaryColors, GrayColors, ComponentConfig } from "../types.ts";
+import type { PrimaryColors, NeutralColors, ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
@@ -11,9 +11,9 @@ export interface Props {
   primary?: PrimaryColors;
 
   /**
-   * Selected gray color (v-model).
+   * Selected neutral color (v-model).
    */
-  gray?: GrayColors;
+  neutral?: NeutralColors;
 
   /**
    * Component size.
@@ -28,7 +28,7 @@ export interface Props {
   /**
    * Gray color list.
    */
-  grayColors?: Record<GrayColors, string>;
+  neutralColors?: Record<NeutralColors, string>;
 
   /**
    * Primary color labels.
@@ -38,7 +38,7 @@ export interface Props {
   /**
    * Gray color labels.
    */
-  grayLabels?: Record<GrayColors, string>;
+  neutralLabels?: Record<NeutralColors, string>;
 
   /**
    * Unique element id.

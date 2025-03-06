@@ -3,7 +3,7 @@ import { ref, computed, useId } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { setTheme, getSelectedPrimaryColor, getSelectedGrayColor } from "../utils/theme.ts";
+import { setTheme, getSelectedPrimaryColor, getSelectedNeutralColor } from "../utils/theme.ts";
 import { GRAYSCALE_COLOR } from "../constants.js";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
@@ -19,11 +19,11 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   primary: "",
-  gray: "",
+  neutral: "",
   primaryColors: () => ({}),
-  grayColors: () => ({}),
+  neutralColors: () => ({}),
   primaryLabels: () => ({}),
-  grayLabels: () => ({}),
+  neutralLabels: () => ({}),
 });
 
 const emit = defineEmits([
@@ -34,16 +34,16 @@ const emit = defineEmits([
   "update:primary",
 
   /**
-   * Triggers when the gray color changes.
+   * Triggers when the neutral color changes.
    * @property {string} value
    */
-  "update:gray",
+  "update:neutral",
 ]);
 
 const elementId = props.id || useId();
 
 const localPrimary = ref("");
-const localGray = ref("");
+const localNeutral = ref("");
 
 const selectedPrimaryColor = computed({
   get: () => props.primary || localPrimary.value || getSelectedPrimaryColor(),
@@ -62,12 +62,12 @@ const selectedPrimaryColor = computed({
   },
 });
 
-const selectedGrayColor = computed({
-  get: () => props.gray || localGray.value || getSelectedGrayColor(),
-  set: (gray: string) => {
-    setTheme({ gray });
-    emit("update:gray", gray);
-    localGray.value = gray;
+const selectedNeutralColor = computed({
+  get: () => props.neutral || localNeutral.value || getSelectedNeutralColor(),
+  set: (neutral: string) => {
+    setTheme({ neutral });
+    emit("update:neutral", neutral);
+    localNeutral.value = neutral;
   },
 });
 
@@ -75,7 +75,7 @@ const selectedGrayColor = computed({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, grayColorPickerAttrs } =
+const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPickerAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
@@ -90,17 +90,17 @@ const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, grayColorPickerAt
     />
 
     <UDivider
-      v-if="Object.keys(primaryColors).length && Object.keys(grayColors).length"
+      v-if="Object.keys(primaryColors).length && Object.keys(neutralColors).length"
       size="xs"
       v-bind="colorDividerAttrs"
     />
 
     <UColorPicker
-      v-model="selectedGrayColor"
+      v-model="selectedNeutralColor"
       :size="size"
-      :colors="grayColors"
-      :labels="grayLabels"
-      v-bind="grayColorPickerAttrs"
+      :colors="neutralColors"
+      :labels="neutralLabels"
+      v-bind="neutralColorPickerAttrs"
     />
   </div>
 </template>

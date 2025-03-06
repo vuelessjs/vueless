@@ -7,7 +7,7 @@ export default {
    */
   strategy: "merge",
   primary: "grayscale",
-  gray: "gray",
+  neutral: "gray",
   outline: 2,
   rounding: 8,
   colorMode: "auto",

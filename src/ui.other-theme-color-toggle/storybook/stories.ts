@@ -23,7 +23,7 @@ export default {
   component: UThemeColorToggle,
   args: {
     primary: "",
-    gray: "",
+    neutral: "",
     primaryColors: {
       grayscale: "bg-gray-900",
       red: "bg-red-600",
@@ -44,7 +44,7 @@ export default {
       pink: "bg-pink-600",
       rose: "bg-rose-600",
     },
-    grayColors: {
+    neutralColors: {
       slate: "bg-slate-600",
       gray: "bg-gray-600",
       zinc: "bg-zinc-600",
@@ -71,7 +71,7 @@ const DefaultTemplate: StoryFn<UThemeColorToggleArgs> = (args: UThemeColorToggle
   },
   template: `
     <UCol>
-      <UThemeColorToggle v-bind="args" v-model:primary="args.primary" v-model:gray="args.gray">
+      <UThemeColorToggle v-bind="args" v-model:primary="args.primary" v-model:neutral="args.neutral">
         ${args.slotTemplate || getSlotsFragment("")}
       </UThemeColorToggle>
 
@@ -98,7 +98,7 @@ const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
         :key="index"
         v-bind="args"
         v-model:primary="args.primary"
-        v-model:gray="args.gray"
+        v-model:neutral="args.neutral"
         :[args.enum]="option"
       />
     </UCol>

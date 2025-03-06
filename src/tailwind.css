@@ -31,27 +31,31 @@
     --color-primary-800: var(--vl-primary-800);
     --color-primary-900: var(--vl-primary-900);
     --color-primary-950: var(--vl-primary-950);
+
+    /* Neutral colors */
+    --color-neu-50: var(--vl-neutral-50);
+    --color-neu-100: var(--vl-neutral-100);
+    --color-neu-200: var(--vl-neutral-200);
+    --color-neu-300: var(--vl-neutral-300);
+    --color-neu-400: var(--vl-neutral-400);
+    --color-neu-500: var(--vl-neutral-500);
+    --color-neu-600: var(--vl-neutral-600);
+    --color-neu-700: var(--vl-neutral-700);
+    --color-neu-800: var(--vl-neutral-800);
+    --color-neu-900: var(--vl-neutral-900);
+    --color-neu-950: var(--vl-neutral-950);
+
+    /* Primary colors */
     --color-primary: var(--vl-primary);
     --color-primary-muted: var(--vl-primary-muted);
     --color-primary-lifted: var(--vl-primary-lifted);
     --color-primary-accented: var(--vl-primary-accented);
 
-    /* Grayscale colors */
-    --color-grayscale-50: var(--vl-grayscale-50);
-    --color-grayscale-100: var(--vl-grayscale-100);
-    --color-grayscale-200: var(--vl-grayscale-200);
-    --color-grayscale-300: var(--vl-grayscale-300);
-    --color-grayscale-400: var(--vl-grayscale-400);
-    --color-grayscale-500: var(--vl-grayscale-500);
-    --color-grayscale-600: var(--vl-grayscale-600);
-    --color-grayscale-700: var(--vl-grayscale-700);
-    --color-grayscale-800: var(--vl-grayscale-800);
-    --color-grayscale-900: var(--vl-grayscale-900);
-    --color-grayscale-950: var(--vl-grayscale-950);
-    --color-grayscale: var(--vl-grayscale);
-    --color-grayscale-muted: var(--vl-grayscale-muted);
-    --color-grayscale-lifted: var(--vl-grayscale-lifted);
-    --color-grayscale-accented: var(--vl-grayscale-accented);
+    /* Neutral colors */
+    --color-neutral: var(--vl-neutral);
+    --color-neutral-muted: var(--vl-neutral-muted);
+    --color-neutral-lifted: var(--vl-neutral-lifted);
+    --color-neutral-accented: var(--vl-neutral-accented);
 
     /* Info colors */
     --color-info: var(--vl-info);
@@ -76,6 +80,12 @@
     --color-success-muted: var(--vl-success-muted);
     --color-success-lifted: var(--vl-success-lifted);
     --color-success-accented: var(--vl-success-accented);
+
+    /* Grayscale colors */
+    --color-grayscale: var(--vl-grayscale);
+    --color-grayscale-muted: var(--vl-grayscale-muted);
+    --color-grayscale-lifted: var(--vl-grayscale-lifted);
+    --color-grayscale-accented: var(--vl-grayscale-accented);
 
     /* Border radius rounding values */
     --radius-small: var(--vl-radius-sm);

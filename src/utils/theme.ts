@@ -7,30 +7,31 @@ import {
   DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
   DEFAULT_PRIMARY_COLOR,
-  DEFAULT_GRAY_COLOR,
+  DEFAULT_NEUTRAL_COLOR,
   DEFAULT_OUTLINE,
   OUTLINE_DECREMENT,
   OUTLINE_INCREMENT,
   DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
+  NEUTRAL_COLOR,
   PRIMARY_COLOR,
   COLOR_SHADES,
   DEFAULT_LIGHT_THEME,
   DEFAULT_DARK_THEME,
   PRIMARY_COLORS,
-  GRAYSCALE_COLORS,
+  NEUTRAL_COLORS,
   DEFAULT_FONT_SIZE,
   FONT_SIZE_INCREMENT,
   FONT_SIZE_DECREMENT,
 } from "../constants.js";
 
-import type { Config, GrayColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
+import type { Config, NeutralColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
 
 declare interface RootCSSVariableOptions {
   primary: PrimaryColors | string;
-  gray: GrayColors | string;
+  neutral: NeutralColors | string;
   outlineSm: number;
   outline: number;
   outlineLg: number;
@@ -116,15 +117,15 @@ export function setColorMode(colorMode: `${ColorMode}`) {
  * @returns string | undefined
  */
 export function getSelectedPrimaryColor() {
-  return (isCSR && localStorage.getItem("primary")) || undefined;
+  return (isCSR && localStorage.getItem(PRIMARY_COLOR)) || undefined;
 }
 
 /**
- * Get selected gray color from the local storage.
+ * Get selected neutral color from the local storage.
  * @return string | undefined
  */
-export function getSelectedGrayColor() {
-  return (isCSR && localStorage.getItem("gray")) || undefined;
+export function getSelectedNeutralColor() {
+  return (isCSR && localStorage.getItem(NEUTRAL_COLOR)) || undefined;
 }
 
 /**
@@ -156,12 +157,12 @@ export function setTheme(config: Config = {}) {
   let primary: PrimaryColors =
     config.primary ?? getSelectedPrimaryColor() ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
 
-  let gray: GrayColors =
-    config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
+  let neutral: NeutralColors =
+    config.neutral ?? getSelectedNeutralColor() ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
 
   const isPrimaryColor =
     PRIMARY_COLORS.some((color) => color === primary) || primary === GRAYSCALE_COLOR;
-  const isGrayColor = GRAYSCALE_COLORS.some((color) => color === gray);
+  const isNeutralColor = NEUTRAL_COLORS.some((color) => color === neutral);
 
   if (!isPrimaryColor) {
     // eslint-disable-next-line no-console
@@ -170,20 +171,19 @@ export function setTheme(config: Config = {}) {
     primary = DEFAULT_PRIMARY_COLOR;
   }
 
-  // TODO: Should be removed after all components migration into custom vueless theme variables.
-  if (!isGrayColor) {
+  if (!isNeutralColor) {
     // eslint-disable-next-line no-console
-    console.warn(`The gray color '${gray}' is missing in your palette.`);
+    console.warn(`The neutral color '${neutral}' is missing in your palette.`);
 
-    gray = DEFAULT_GRAY_COLOR;
+    neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  isCSR && localStorage.setItem("primary", primary);
-  isCSR && localStorage.setItem("gray", gray);
+  isCSR && localStorage.setItem(PRIMARY_COLOR, primary);
+  isCSR && localStorage.setItem(NEUTRAL_COLOR, neutral);
 
   return setRootCSSVariables({
     primary,
-    gray,
+    neutral,
     outlineSm,
     outline,
     outlineLg,
@@ -266,12 +266,12 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
  */
 function setRootCSSVariables(options: RootCSSVariableOptions) {
   if (options.primary === GRAYSCALE_COLOR) {
-    options.primary = options.gray;
+    options.primary = options.neutral;
   }
 
   const {
     primary,
-    gray,
+    neutral,
     outlineSm,
     outline,
     outlineLg,
@@ -303,8 +303,8 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   }
 
   for (const shade of COLOR_SHADES) {
-    variables[`--vl-${GRAYSCALE_COLOR}-${shade}` as keyof VuelessCssVariables] =
-      `var(--color-${gray}-${shade})`;
+    variables[`--vl-${NEUTRAL_COLOR}-${shade}` as keyof VuelessCssVariables] =
+      `var(--color-${neutral}-${shade})`;
   }
 
   const [light, dark] = generateCSSColorVariables();

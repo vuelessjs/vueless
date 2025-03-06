@@ -12,9 +12,10 @@ import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
   PRIMARY_COLOR,
+  NEUTRAL_COLOR,
   PRIMARY_COLORS,
   GRAYSCALE_COLOR,
-  GRAYSCALE_COLORS,
+  NEUTRAL_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
   STRATEGY_TYPE,
@@ -68,7 +69,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelistClasses = [];
 
   const storybookColors = {
-    colors: [...STATE_COLORS, PRIMARY_COLOR, GRAYSCALE_COLOR],
+    colors: [...STATE_COLORS, PRIMARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
 
@@ -106,11 +107,9 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   /* Safelist all color variables to allow runtime color switching feature. */
   const colorSafelistVariables = COLOR_SHADES.map((shade) => {
     const primaryColorsCSSConstants = PRIMARY_COLORS.map((color) => `--color-${color}-${shade}`);
-    const grayscaleColorsCSSConstants = GRAYSCALE_COLORS.map(
-      (color) => `--color-${color}-${shade}`,
-    );
+    const neutralColorsCSSConstants = NEUTRAL_COLORS.map((color) => `--color-${color}-${shade}`);
 
-    return [...primaryColorsCSSConstants, ...grayscaleColorsCSSConstants].join("\n");
+    return [...primaryColorsCSSConstants, ...neutralColorsCSSConstants].join("\n");
   });
 
   const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
@@ -195,7 +194,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
   const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.primary || "";
   const colors = new Set();
 
-  if (defaultColor && defaultColor !== "grayscale") {
+  if (defaultColor && defaultColor !== GRAYSCALE_COLOR) {
     colors.add(defaultColor);
   }
 

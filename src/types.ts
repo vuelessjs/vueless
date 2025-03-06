@@ -75,9 +75,9 @@ export interface ThemeConfig {
   primary?: PrimaryColors;
 
   /**
-   * Components gray (secondary) color.
+   * Components neutral (secondary) color.
    */
-  gray?: GrayColors;
+  neutral?: NeutralColors;
 
   /**
    * Default components small font size.
@@ -185,9 +185,8 @@ export type UnknownType = string | number | boolean | UnknownObject | undefined 
 export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
 
-export type GrayColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
 export type PrimaryColors =
-  | "grayscale"
   | "red"
   | "orange"
   | "amber"
@@ -366,17 +365,17 @@ export interface VuelessCssVariables {
   "--vl-text-md": string;
   "--vl-text-lg": string;
   /* Gray CSS variables */
-  "--vl-grayscale-50": string;
-  "--vl-grayscale-100": string;
-  "--vl-grayscale-200": string;
-  "--vl-grayscale-300": string;
-  "--vl-grayscale-400": string;
-  "--vl-grayscale-500": string;
-  "--vl-grayscale-600": string;
-  "--vl-grayscale-700": string;
-  "--vl-grayscale-800": string;
-  "--vl-grayscale-900": string;
-  "--vl-grayscale-950": string;
+  "--vl-neutral-50": string;
+  "--vl-neutral-100": string;
+  "--vl-neutral-200": string;
+  "--vl-neutral-300": string;
+  "--vl-neutral-400": string;
+  "--vl-neutral-500": string;
+  "--vl-neutral-600": string;
+  "--vl-neutral-700": string;
+  "--vl-neutral-800": string;
+  "--vl-neutral-900": string;
+  "--vl-neutral-950": string;
   /* Primary CSS variables */
   "--vl-primary-50": string;
   "--vl-primary-100": string;
@@ -394,11 +393,11 @@ export interface VuelessCssVariables {
   "--vl-primary-normal": string;
   "--vl-primary-toned": string;
   "--vl-primary-accented": string;
-  /* Grayscale design system CSS variables */
-  "--vl-grayscale-muted": string;
-  "--vl-grayscale-normal": string;
-  "--vl-grayscale-toned": string;
-  "--vl-grayscale-accented": string;
+  /* Neutral design system CSS variables */
+  "--vl-neutral-muted": string;
+  "--vl-neutral-normal": string;
+  "--vl-neutral-toned": string;
+  "--vl-neutral-accented": string;
   /* Success design system CSS variables */
   "--vl-success-muted": string;
   "--vl-success-normal": string;
@@ -419,18 +418,23 @@ export interface VuelessCssVariables {
   "--vl-error-normal": string;
   "--vl-error-toned": string;
   "--vl-error-accented": string;
-  /* Text grayscale design system CSS variables */
+  /* Grayscale design system CSS variables */
+  "--vl-grayscale-muted": string;
+  "--vl-grayscale-normal": string;
+  "--vl-grayscale-toned": string;
+  "--vl-grayscale-accented": string;
+  /* Text neutral design system CSS variables */
   "--vl-text": string;
   "--vl-text-lifted": string;
   "--vl-text-accented": string;
   "--vl-text-muted": string;
   "--vl-text-inverted": string;
-  /* Border grayscale design system CSS variables */
+  /* Border neutral design system CSS variables */
   "--vl-border": string;
   "--vl-border-lifted": string;
   "--vl-border-accented": string;
   "--vl-border-muted": string;
-  /* Background grayscale design system CSS variables */
+  /* Background neutral design system CSS variables */
   "--vl-bg": string;
   "--vl-bg-lifted": string;
   "--vl-bg-accented": string;
