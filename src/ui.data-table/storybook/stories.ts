@@ -434,14 +434,14 @@ SlotHeaderActions.args = {
         <UButton
           label="Edit"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="sm"
         />
 
         <UButton
           label="Delete"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="sm"
         />
       </URow>

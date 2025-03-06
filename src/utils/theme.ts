@@ -6,7 +6,7 @@ import {
   LIGHT_MODE_SELECTOR,
   DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
-  DEFAULT_BRAND_COLOR,
+  DEFAULT_PRIMARY_COLOR,
   DEFAULT_GRAY_COLOR,
   DEFAULT_OUTLINE,
   OUTLINE_DECREMENT,
@@ -14,22 +14,22 @@ import {
   DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
-  BRAND_COLOR,
+  PRIMARY_COLOR,
   COLOR_SHADES,
   DEFAULT_LIGHT_THEME,
   DEFAULT_DARK_THEME,
-  BRAND_COLORS,
+  PRIMARY_COLORS,
   GRAYSCALE_COLORS,
   DEFAULT_FONT_SIZE,
   FONT_SIZE_INCREMENT,
   FONT_SIZE_DECREMENT,
 } from "../constants.js";
 
-import type { Config, GrayColors, BrandColors, VuelessCssVariables } from "../types.ts";
+import type { Config, GrayColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
 
 declare interface RootCSSVariableOptions {
-  brand: BrandColors | string;
+  primary: PrimaryColors | string;
   gray: GrayColors | string;
   outlineSm: number;
   outline: number;
@@ -112,11 +112,11 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 /**
- * Get selected brand color from the local storage.
+ * Get selected primary color from the local storage.
  * @returns string | undefined
  */
-export function getSelectedBrandColor() {
-  return (isCSR && localStorage.getItem("brand")) || undefined;
+export function getSelectedPrimaryColor() {
+  return (isCSR && localStorage.getItem("primary")) || undefined;
 }
 
 /**
@@ -153,20 +153,21 @@ export function setTheme(config: Config = {}) {
     config.fontSizeLg ?? vuelessConfig.fontSizeLg,
   );
 
-  let brand: BrandColors =
-    config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
+  let primary: PrimaryColors =
+    config.primary ?? getSelectedPrimaryColor() ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
 
   let gray: GrayColors =
     config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
 
-  const isBrandColor = BRAND_COLORS.some((color) => color === brand) || brand === GRAYSCALE_COLOR;
+  const isPrimaryColor =
+    PRIMARY_COLORS.some((color) => color === primary) || primary === GRAYSCALE_COLOR;
   const isGrayColor = GRAYSCALE_COLORS.some((color) => color === gray);
 
-  if (!isBrandColor) {
+  if (!isPrimaryColor) {
     // eslint-disable-next-line no-console
-    console.warn(`The brand color '${brand}' is missing in your palette.`);
+    console.warn(`The primary color '${primary}' is missing in your palette.`);
 
-    brand = DEFAULT_BRAND_COLOR;
+    primary = DEFAULT_PRIMARY_COLOR;
   }
 
   // TODO: Should be removed after all components migration into custom vueless theme variables.
@@ -177,11 +178,11 @@ export function setTheme(config: Config = {}) {
     gray = DEFAULT_GRAY_COLOR;
   }
 
-  isCSR && localStorage.setItem("brand", brand);
+  isCSR && localStorage.setItem("primary", primary);
   isCSR && localStorage.setItem("gray", gray);
 
   return setRootCSSVariables({
-    brand,
+    primary,
     gray,
     outlineSm,
     outline,
@@ -264,12 +265,12 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
  * @return string - Vueless CSS variables string.
  */
 function setRootCSSVariables(options: RootCSSVariableOptions) {
-  if (options.brand === GRAYSCALE_COLOR) {
-    options.brand = options.gray;
+  if (options.primary === GRAYSCALE_COLOR) {
+    options.primary = options.gray;
   }
 
   const {
-    brand,
+    primary,
     gray,
     outlineSm,
     outline,
@@ -297,8 +298,8 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   };
 
   for (const shade of COLOR_SHADES) {
-    variables[`--vl-${BRAND_COLOR}-${shade}` as keyof VuelessCssVariables] =
-      `var(--color-${brand}-${shade})`;
+    variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
+      `var(--color-${primary}-${shade})`;
   }
 
   for (const shade of COLOR_SHADES) {

@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { BrandColors, GrayColors, ComponentConfig } from "../types.ts";
+import type { PrimaryColors, GrayColors, ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
@@ -18,7 +18,7 @@ export interface Props {
   /**
    * Color list.
    */
-  colors?: Record<BrandColors, string>;
+  colors?: Record<PrimaryColors, string>;
 
   /**
    * Color labels.

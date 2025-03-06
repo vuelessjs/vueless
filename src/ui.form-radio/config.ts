@@ -26,7 +26,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     labelAlign: "right",
     size: "md",
     checked: false,

@@ -4,8 +4,8 @@ export default /*tw*/ {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-dynamic border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+      hover:border-gray-400 hover:transition hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
     `,
     variants: {
       error: {

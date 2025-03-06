@@ -53,7 +53,7 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "brand";
+    | "primary";
 
   /**
    * Show toggle icons inside the circle.

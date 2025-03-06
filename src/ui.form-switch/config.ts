@@ -85,7 +85,7 @@ export default /*tw*/ {
     active: "On",
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     labelAlign: "right",
     disabled: false,

@@ -49,7 +49,7 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "brand";
+    | "primary";
 
   /**
    * Label placement.

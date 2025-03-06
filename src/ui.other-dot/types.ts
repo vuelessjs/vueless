@@ -28,7 +28,7 @@ export interface Props {
     | "rose"
     | "gray"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Dot size.

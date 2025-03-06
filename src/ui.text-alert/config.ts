@@ -70,7 +70,7 @@ export default /*tw*/ {
   },
   defaults: {
     variant: "primary",
-    color: "brand",
+    color: "primary",
     size: "md",
     timeout: 0,
     bordered: false,

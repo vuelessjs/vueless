@@ -3,8 +3,8 @@ export default /*tw*/ {
   wrapper: {
     base: `
       border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
-      hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+      hover:border-gray-400 hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
     `,
     variants: {
       error: {

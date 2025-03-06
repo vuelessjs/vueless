@@ -36,7 +36,7 @@ export interface Props {
     | "black"
     | "white"
     | "inherit"
-    | "brand";
+    | "primary";
 
   /**
    * Loader size.

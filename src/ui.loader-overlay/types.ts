@@ -34,7 +34,7 @@ export interface Props {
     | "gray"
     | "black"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Component config object.

@@ -354,7 +354,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
                 internal
                 interactive
                 :name="getToggleIconName(row)"
-                color="brand"
+                color="primary"
                 v-bind="toggleIconConfig"
               />
             </div>

@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-brand-600",
+        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-primary-600",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",

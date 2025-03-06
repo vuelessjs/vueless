@@ -21,7 +21,7 @@ export default /*tw*/ {
   },
   nestedLoader: "{ULoader}",
   defaults: {
-    color: "brand",
+    color: "primary",
     loading: undefined,
   },
 };

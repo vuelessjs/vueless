@@ -261,7 +261,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
           filled
           size="sm"
-          color="brand"
+          color="primary"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentSelectedAttrs.value"
@@ -273,7 +273,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           v-else-if="getDatePeriodState(date).isSelected"
           filled
           size="sm"
-          color="brand"
+          color="primary"
           variant="thirdary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateSelectedAttrs.value"
@@ -285,7 +285,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           v-else-if="getDatePeriodState(date).isCurrentDate"
           filled
           size="sm"
-          color="brand"
+          color="primary"
           variant="secondary"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"

@@ -92,7 +92,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Search for product or brand" };
+Label.args = { label: "Search for product or primary" };
 
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
@@ -110,7 +110,11 @@ export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "" };
 
 export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", modelValue: "", label: "Search for product or brand" };
+LabelPlacement.args = {
+  enum: "labelAlign",
+  modelValue: "",
+  label: "Search for product or primary",
+};
 
 export const SearchButton = DefaultTemplate.bind({});
 SearchButton.args = { searchButtonLabel: "Search" };

@@ -70,9 +70,9 @@ export enum ColorMode {
 
 export interface ThemeConfig {
   /**
-   * Components brand (primary) color.
+   * Components primary (primary) color.
    */
-  brand?: BrandColors;
+  primary?: PrimaryColors;
 
   /**
    * Components gray (secondary) color.
@@ -186,7 +186,7 @@ export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
 
 export type GrayColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
-export type BrandColors =
+export type PrimaryColors =
   | "grayscale"
   | "red"
   | "orange"
@@ -377,23 +377,23 @@ export interface VuelessCssVariables {
   "--vl-grayscale-800": string;
   "--vl-grayscale-900": string;
   "--vl-grayscale-950": string;
-  /* Brand CSS variables */
-  "--vl-brand-50": string;
-  "--vl-brand-100": string;
-  "--vl-brand-200": string;
-  "--vl-brand-300": string;
-  "--vl-brand-400": string;
-  "--vl-brand-500": string;
-  "--vl-brand-600": string;
-  "--vl-brand-700": string;
-  "--vl-brand-800": string;
-  "--vl-brand-900": string;
-  "--vl-brand-950": string;
-  /* Brand design system CSS variables */
-  "--vl-brand-muted": string;
-  "--vl-brand-normal": string;
-  "--vl-brand-toned": string;
-  "--vl-brand-accented": string;
+  /* Primary CSS variables */
+  "--vl-primary-50": string;
+  "--vl-primary-100": string;
+  "--vl-primary-200": string;
+  "--vl-primary-300": string;
+  "--vl-primary-400": string;
+  "--vl-primary-500": string;
+  "--vl-primary-600": string;
+  "--vl-primary-700": string;
+  "--vl-primary-800": string;
+  "--vl-primary-900": string;
+  "--vl-primary-950": string;
+  /* Primary design system CSS variables */
+  "--vl-primary-muted": string;
+  "--vl-primary-normal": string;
+  "--vl-primary-toned": string;
+  "--vl-primary-accented": string;
   /* Grayscale design system CSS variables */
   "--vl-grayscale-muted": string;
   "--vl-grayscale-normal": string;

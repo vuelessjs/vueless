@@ -141,7 +141,7 @@ const {
         <UIcon
           v-if="!firstLabel"
           internal
-          color="brand"
+          color="primary"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
@@ -165,7 +165,7 @@ const {
         <UIcon
           v-if="!prevLabel"
           internal
-          color="brand"
+          color="primary"
           :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
         />
@@ -222,7 +222,7 @@ const {
         <UIcon
           v-if="!nextLabel"
           internal
-          color="brand"
+          color="primary"
           :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
         />
@@ -247,7 +247,7 @@ const {
         <UIcon
           v-if="!lastLabel"
           internal
-          color="brand"
+          color="primary"
           :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"
         />

@@ -43,7 +43,7 @@ export interface UProgressProps {
     | "rose"
     | "gray"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Progress variant.

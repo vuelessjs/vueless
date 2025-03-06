@@ -68,7 +68,7 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "brand";
+    | "primary";
 
   /**
    * Unique radio group name (sets for each radio).

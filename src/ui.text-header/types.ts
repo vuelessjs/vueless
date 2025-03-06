@@ -38,7 +38,7 @@ export interface Props {
     | "rose"
     | "gray"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Allows changing HTML tag.

@@ -230,7 +230,7 @@ const {
           v-if="getDayState(day).isSelectedDay && !props.range"
           tabindex="-1"
           variant="primary"
-          color="brand"
+          color="primary"
           size="md"
           square
           v-bind="selectedDayAttrs"
@@ -244,7 +244,7 @@ const {
           v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           v-bind="currentDayAttrs"
@@ -258,7 +258,7 @@ const {
           v-else-if="getDayState(day).isCurrentFirstDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -273,7 +273,7 @@ const {
           v-else-if="getDayState(day).isCurrentLastDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -288,7 +288,7 @@ const {
           v-else-if="getDayState(day).isFirstDayInRange"
           tabindex="-1"
           variant="primary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -303,7 +303,7 @@ const {
           v-else-if="getDayState(day).isLastDayInRange"
           tabindex="-1"
           variant="primary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -318,7 +318,7 @@ const {
           v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -333,7 +333,7 @@ const {
           v-else-if="getDayState(day).isAnotherMonthLastDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           filled
@@ -348,7 +348,7 @@ const {
           v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           v-bind="currentDayInRangeAttrs"
@@ -376,7 +376,7 @@ const {
           v-else-if="getDayState(day).isDayInRange"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           v-bind="dayInRangeAttrs"
@@ -390,7 +390,7 @@ const {
           v-else-if="getDayState(day).isActiveDay"
           tabindex="-1"
           variant="thirdary"
-          color="brand"
+          color="primary"
           size="md"
           square
           v-bind="activeDayAttrs"

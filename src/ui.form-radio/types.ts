@@ -70,7 +70,7 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "brand";
+    | "primary";
 
   /**
    * Set radio disabled.

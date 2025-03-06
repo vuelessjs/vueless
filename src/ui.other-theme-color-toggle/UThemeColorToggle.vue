@@ -3,7 +3,7 @@ import { ref, computed, useId } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { setTheme, getSelectedBrandColor, getSelectedGrayColor } from "../utils/theme.ts";
+import { setTheme, getSelectedPrimaryColor, getSelectedGrayColor } from "../utils/theme.ts";
 import { GRAYSCALE_COLOR } from "../constants.js";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
@@ -18,20 +18,20 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  brand: "",
+  primary: "",
   gray: "",
-  brandColors: () => ({}),
+  primaryColors: () => ({}),
   grayColors: () => ({}),
-  brandLabels: () => ({}),
+  primaryLabels: () => ({}),
   grayLabels: () => ({}),
 });
 
 const emit = defineEmits([
   /**
-   * Triggers when the brand color changes.
+   * Triggers when the primary color changes.
    * @property {string} value
    */
-  "update:brand",
+  "update:primary",
 
   /**
    * Triggers when the gray color changes.
@@ -42,23 +42,23 @@ const emit = defineEmits([
 
 const elementId = props.id || useId();
 
-const localBrand = ref("");
+const localPrimary = ref("");
 const localGray = ref("");
 
-const selectedBrandColor = computed({
-  get: () => props.brand || localBrand.value || getSelectedBrandColor(),
-  set: (brand: string) => {
-    const prevBrand = getSelectedBrandColor();
-    const isBrandGrayscale = brand === GRAYSCALE_COLOR;
-    const isPrevBrandGrayscale = prevBrand === GRAYSCALE_COLOR;
+const selectedPrimaryColor = computed({
+  get: () => props.primary || localPrimary.value || getSelectedPrimaryColor(),
+  set: (primary: string) => {
+    const prevPrimary = getSelectedPrimaryColor();
+    const isPrimaryGrayscale = primary === GRAYSCALE_COLOR;
+    const isPrevPrimaryGrayscale = prevPrimary === GRAYSCALE_COLOR;
 
-    if (brand !== prevBrand && (isBrandGrayscale || isPrevBrandGrayscale)) {
+    if (primary !== prevPrimary && (isPrimaryGrayscale || isPrevPrimaryGrayscale)) {
       window.location.reload();
     }
 
-    setTheme({ brand });
-    emit("update:brand", brand);
-    localBrand.value = brand;
+    setTheme({ primary });
+    emit("update:primary", primary);
+    localPrimary.value = primary;
   },
 });
 
@@ -75,22 +75,22 @@ const selectedGrayColor = computed({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorDividerAttrs, brandColorPickerAttrs, grayColorPickerAttrs } =
+const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, grayColorPickerAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div :id="elementId" v-bind="listAttrs">
     <UColorPicker
-      v-model="selectedBrandColor"
+      v-model="selectedPrimaryColor"
       :size="size"
-      :colors="brandColors"
-      :labels="brandLabels"
-      v-bind="brandColorPickerAttrs"
+      :colors="primaryColors"
+      :labels="primaryLabels"
+      v-bind="primaryColorPickerAttrs"
     />
 
     <UDivider
-      v-if="Object.keys(brandColors).length && Object.keys(grayColors).length"
+      v-if="Object.keys(primaryColors).length && Object.keys(grayColors).length"
       size="xs"
       v-bind="colorDividerAttrs"
     />

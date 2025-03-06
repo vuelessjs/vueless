@@ -20,9 +20,9 @@ import type {
   KeyAttrs,
   KeysAttrs,
   Strategies,
-  BrandColors,
   MutatedProps,
   UnknownObject,
+  PrimaryColors,
   ComponentNames,
   NestedComponent,
   ComponentConfigFull,
@@ -74,7 +74,7 @@ export default function useUI<T>(
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
       const value = (config.value as ComponentConfigFull<T>)[key];
-      const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
+      const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
 
       const isTopLevelKey = (topLevelClassKey || firstClassKey) === key;
       const isNestedComponent = Boolean(getNestedComponent(value));

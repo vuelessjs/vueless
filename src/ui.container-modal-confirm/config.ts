@@ -9,7 +9,7 @@ export default /*tw*/ {
   },
   defaults: {
     size: "sm",
-    confirmColor: "brand",
+    confirmColor: "primary",
     inner: false,
     divider: false,
     closeOnEsc: true,

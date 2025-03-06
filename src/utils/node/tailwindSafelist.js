@@ -11,8 +11,8 @@ import { createGetMergedConfig } from "./mergeConfigs.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  BRAND_COLOR,
-  BRAND_COLORS,
+  PRIMARY_COLOR,
+  PRIMARY_COLORS,
   GRAYSCALE_COLOR,
   GRAYSCALE_COLORS,
   STATE_COLORS,
@@ -68,7 +68,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelistClasses = [];
 
   const storybookColors = {
-    colors: [...STATE_COLORS, BRAND_COLOR, GRAYSCALE_COLOR],
+    colors: [...STATE_COLORS, PRIMARY_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
 
@@ -105,12 +105,12 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   /* Safelist all color variables to allow runtime color switching feature. */
   const colorSafelistVariables = COLOR_SHADES.map((shade) => {
-    const brandColorsCSSConstants = BRAND_COLORS.map((color) => `--color-${color}-${shade}`);
+    const primaryColorsCSSConstants = PRIMARY_COLORS.map((color) => `--color-${color}-${shade}`);
     const grayscaleColorsCSSConstants = GRAYSCALE_COLORS.map(
       (color) => `--color-${color}-${shade}`,
     );
 
-    return [...brandColorsCSSConstants, ...grayscaleColorsCSSConstants].join("\n");
+    return [...primaryColorsCSSConstants, ...grayscaleColorsCSSConstants].join("\n");
   });
 
   const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
@@ -192,7 +192,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
   const ternaryColorRegExp = new RegExp(/\bcolor="[^']*'([^']*)'\s*:\s*'([^']*)'/);
 
   const mergedComponentConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
-  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.brand || "";
+  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.primary || "";
   const colors = new Set();
 
   if (defaultColor && defaultColor !== "grayscale") {
@@ -249,7 +249,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
 
   return {
     colors: Array.from(colors).filter(
-      (color) => color && [...STATE_COLORS, BRAND_COLOR, GRAYSCALE_COLOR].includes(color),
+      (color) => color && [...STATE_COLORS, PRIMARY_COLOR, GRAYSCALE_COLOR].includes(color),
     ),
     isComponentExists,
   };

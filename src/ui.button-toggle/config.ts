@@ -50,12 +50,12 @@ export default /*tw*/ {
       split: {
         false: "border-0",
         true: `
-          border border-brand-600
+          border border-primary-600
         `,
       },
     },
     defaults: {
-      color: "brand",
+      color: "primary",
       filled: true,
     },
   },

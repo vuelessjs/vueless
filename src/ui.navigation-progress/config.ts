@@ -119,7 +119,7 @@ export default /*tw*/ {
   },
   defaults: {
     max: 100,
-    color: "brand",
+    color: "primary",
     size: "md",
     variant: "progress",
     indicator: false,

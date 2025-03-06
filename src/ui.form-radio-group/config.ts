@@ -12,7 +12,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     disabled: false,
   },

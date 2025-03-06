@@ -3,8 +3,8 @@ export default {
    * Global settings.
    */
   strategy: "merge",
-  brand: "grayscale",
-  gray: "gray",
+  primary: "grayscale",
+  neutral: "",
   darkMode: "auto",
   outline: 2,
   rounding: 8,

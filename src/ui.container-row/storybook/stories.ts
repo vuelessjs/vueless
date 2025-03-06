@@ -69,7 +69,7 @@ const EnumVariantTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) =>
         v-bind="args"
         :[args.enum]="option"
         :key="index"
-        class="border border-brand-500 rounded-sm p-2"
+        class="border border-primary-500 rounded-sm p-2"
         :class="{ 'h-24': args.enum === 'align' }"
       >
         <template v-if="isGapEnum">

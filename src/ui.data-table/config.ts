@@ -5,7 +5,7 @@ export default /*tw*/ {
     base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
       actionsHeader: {
-        true: "rounded-t-dynamic border-brand-200 bg-brand-50",
+        true: "rounded-t-dynamic border-primary-200 bg-primary-50",
       },
     },
     compoundVariants: [
@@ -64,7 +64,7 @@ export default /*tw*/ {
   bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex items-center gap-2",
-  bodyCellNestedIconWrapper: "bg-brand-200 rounded-xs",
+  bodyCellNestedIconWrapper: "bg-primary-200 rounded-xs",
   bodyCellNestedIcon: {
     base: "{UIcon}",
     wrapper: "rounded-xs",

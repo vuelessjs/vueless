@@ -40,7 +40,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     type: "link",
     size: "md",
     target: "_self",

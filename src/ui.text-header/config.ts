@@ -11,7 +11,7 @@ export default /*tw*/ {
         "2xl": "text-5xl",
       },
       color: {
-        brand: "text-brand",
+        primary: "text-primary",
         white: "text-white",
         grayscale: "text-gray-900",
       },

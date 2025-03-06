@@ -50,7 +50,7 @@ export interface Props {
     | "black"
     | "white"
     | "inherit"
-    | "brand";
+    | "primary";
 
   /**
    * Icon size.

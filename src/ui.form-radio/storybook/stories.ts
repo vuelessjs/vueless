@@ -25,7 +25,7 @@ export default {
     name: "radio1",
     label: "Payment Method",
     value: "1",
-    color: "brand",
+    color: "primary",
   },
   argTypes: {
     ...getArgTypes(URadio.__name),

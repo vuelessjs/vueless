@@ -6,7 +6,7 @@ export default {
    * Global settings.
    */
   strategy: "merge",
-  brand: "grayscale",
+  primary: "grayscale",
   gray: "gray",
   outline: 2,
   rounding: 8,

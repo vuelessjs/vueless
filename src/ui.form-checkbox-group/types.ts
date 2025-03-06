@@ -59,7 +59,7 @@ export interface Props {
     | "pink"
     | "rose"
     | "gray"
-    | "brand";
+    | "primary";
 
   /**
    * Name for each checkbox.

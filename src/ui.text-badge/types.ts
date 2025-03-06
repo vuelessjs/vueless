@@ -48,7 +48,7 @@ export interface Props {
     | "rose"
     | "gray"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Icon name (appears instead of label).

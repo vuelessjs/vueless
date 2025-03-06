@@ -4,7 +4,7 @@
  */
 
 /* Custom Vueless colors */
-export const BRAND_COLOR = "brand";
+export const PRIMARY_COLOR = "primary";
 export const GRAYSCALE_COLOR = "grayscale";
 
 /* Vueless dark mode */
@@ -13,7 +13,7 @@ export const LIGHT_MODE_SELECTOR = "vl-light";
 export const COLOR_MODE_KEY = "vl-color-mode";
 
 /* Vueless defaults */
-export const DEFAULT_BRAND_COLOR = GRAYSCALE_COLOR;
+export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
 export const DEFAULT_GRAY_COLOR = "gray";
 export const DEFAULT_FONT_SIZE = 14; /* pixels */
 export const FONT_SIZE_DECREMENT = 2; /* pixels */
@@ -27,7 +27,7 @@ export const ROUNDING_INCREMENT = 6; /* pixels */
 export const DEFAULT_BASE_CLASSES = ``;
 
 /* Vueless supported color shades */
-export const BRAND_COLORS = [
+export const PRIMARY_COLORS = [
   "red",
   "orange",
   "amber",
@@ -50,11 +50,17 @@ export const GRAYSCALE_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 export const DEFAULT_LIGHT_THEME = {
-  /* Brand colors */
-  "--vl-brand": "--color-brand-600",
-  "--vl-brand-lifted": "--color-brand-700",
-  "--vl-brand-accented": "--color-brand-800",
-  "--vl-brand-muted": "--color-brand-400",
+  /* Primary colors */
+  "--vl-primary": "--color-primary-600",
+  "--vl-primary-lifted": "--color-primary-700",
+  "--vl-primary-accented": "--color-primary-800",
+  "--vl-primary-muted": "--color-primary-400",
+
+  /* Secondary colors */
+  "--vl-secondary": "--color-secondary-500",
+  "--vl-secondary-lifted": "--color-secondary-600",
+  "--vl-secondary-accented": "--color-secondary-700",
+  "--vl-secondary-muted": "--color-secondary-400",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
@@ -107,11 +113,17 @@ export const DEFAULT_LIGHT_THEME = {
 };
 
 export const DEFAULT_DARK_THEME = {
-  /* Brand colors */
-  "--vl-brand": "--color-brand-400",
-  "--vl-brand-lifted": "--color-brand-500",
-  "--vl-brand-accented": "--color-brand-600",
-  "--vl-brand-muted": "--color-brand-600",
+  /* Primary colors */
+  "--vl-primary": "--color-primary-400",
+  "--vl-primary-lifted": "--color-primary-500",
+  "--vl-primary-accented": "--color-primary-600",
+  "--vl-primary-muted": "--color-primary-700",
+
+  /* Secondary colors */
+  "--vl-secondary": "--color-secondary-400",
+  "--vl-secondary-lifted": "--color-secondary-500",
+  "--vl-secondary-accented": "--color-secondary-600",
+  "--vl-secondary-muted": "--color-secondary-600",
 
   /* Info colors */
   "--vl-info": "--color-blue-400",

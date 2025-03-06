@@ -14,14 +14,14 @@ export default /*tw*/ {
       },
     },
   },
-  dateInRange: "bg-brand-600/10 text-brand-900 hover:bg-brand/15 rounded-none",
+  dateInRange: "bg-primary-600/10 text-primary-900 hover:bg-primary/15 rounded-none",
   edgeDateInRange: "",
   firstDateInRange: "rounded-r-none",
   lastDateInRange: "rounded-l-none",
   anotherMonthDate: "text-gray-400",
-  activeDate: "bg-brand-600/10",
+  activeDate: "bg-primary-600/10",
   selectedDate: "",
-  currentDate: "border-2 border-brand-600",
+  currentDate: "border-2 border-primary-600",
   day: "{UButton} size-9 w-full",
   currentDay: "{>day} {>currentDate}",
   dayInRange: "{>day} {>dateInRange}",
@@ -66,8 +66,8 @@ export default /*tw*/ {
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
     flex items-center rounded-dynamic border border-gray-300
-    hover:focus-within:border-brand-600 focus-within:border-brand-600
-    focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+    hover:focus-within:border-primary-600 focus-within:border-primary-600
+    focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
   `,
   timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-sm focus:ring-0",
   timepickerInputHours: "{>timepickerInput} rounded-l-dynamic",

@@ -49,7 +49,7 @@ export interface UAvatarProps {
     | "rose"
     | "gray"
     | "white"
-    | "brand";
+    | "primary";
 
   /**
    * Avatar corner rounding.

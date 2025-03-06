@@ -4,9 +4,9 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { isCSR, isSSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
-import { getSelectedBrandColor } from "./theme.ts";
+import { getSelectedPrimaryColor } from "./theme.ts";
 import {
-  BRAND_COLOR,
+  PRIMARY_COLOR,
   GRAYSCALE_COLOR,
   ICON_NON_PROPS_DEFAULTS,
   TAILWIND_MERGE_EXTENSION,
@@ -16,7 +16,7 @@ import type {
   Config,
   Defaults,
   Strategies,
-  BrandColors,
+  PrimaryColors,
   UnknownObject,
   ComponentNames,
 } from "../types.ts";
@@ -106,7 +106,7 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
   const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
 
   if (defaults.color) {
-    defaults.color = getColor(defaults.color as BrandColors);
+    defaults.color = getColor(defaults.color as PrimaryColors);
   }
 
   /* Remove non a props defaults. */
@@ -127,14 +127,14 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
 }
 
 /**
- * Return `grayscale` color if in component config it `brand` but in vueless config it `grayscale`
+ * Return `grayscale` color if in component config it `primary` but in vueless config it `grayscale`
  * Otherwise return given color.
  */
 export function getColor(color: string) {
-  const isComponentColorBrand = color === BRAND_COLOR;
-  const isSelectedColorGrayscale = getSelectedBrandColor() === GRAYSCALE_COLOR;
+  const isComponentColorPrimary = color === PRIMARY_COLOR;
+  const isSelectedColorGrayscale = getSelectedPrimaryColor() === GRAYSCALE_COLOR;
 
-  return isComponentColorBrand && isSelectedColorGrayscale ? GRAYSCALE_COLOR : color;
+  return isComponentColorPrimary && isSelectedColorGrayscale ? GRAYSCALE_COLOR : color;
 }
 
 /**

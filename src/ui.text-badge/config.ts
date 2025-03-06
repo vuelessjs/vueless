@@ -63,7 +63,7 @@ export default /*tw*/ {
   leftIcon: "{UIcon} {>badgeIcon}",
   rightIcon: "{UIcon} {>badgeIcon}",
   defaults: {
-    color: "brand",
+    color: "primary",
     variant: "primary",
     tabindex: "-1",
     size: "md",

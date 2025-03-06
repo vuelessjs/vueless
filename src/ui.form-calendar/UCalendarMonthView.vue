@@ -132,7 +132,7 @@ const {
       <UButton
         v-if="getMonthState(month, idx).isSelectedMonth && !props.range"
         variant="primary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="selectedMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -146,7 +146,7 @@ const {
           getMonthState(month, idx).isCurrentMonth && !getMonthState(month, idx).isMonthInRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         v-bind="currentMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
         :label="formatDate(month, 'M', props.locale)"
@@ -157,7 +157,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isCurrentFirstMonthInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="currentFirstMonthInRangeAttrs"
@@ -170,7 +170,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isCurrentLastMonthInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="currentLastMonthInRangeAttrs"
@@ -183,7 +183,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isFirstMonthInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="firstMonthInRangeAttrs"
@@ -196,7 +196,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isLastMonthInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="lastMonthInRangeAttrs"
@@ -212,7 +212,7 @@ const {
           !getMonthState(month, idx).isMoreThanOneMonthRange
         "
         variant="primary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="singleCurrentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -224,7 +224,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isCurrentMonthInRange"
         variant="primary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="currentMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -239,7 +239,7 @@ const {
           getMonthState(month, idx).isMonthInRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="singleMonthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -254,7 +254,7 @@ const {
           getMonthState(month, idx).isMoreThanOneMonthRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="monthInRangeAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
@@ -266,7 +266,7 @@ const {
       <UButton
         v-else-if="getMonthState(month, idx).isActiveMonth"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="activeMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"

@@ -130,7 +130,7 @@ const {
       <UButton
         v-if="getYearState(year, idx).isSelectedYear && !props.range"
         variant="primary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="selectedYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -142,7 +142,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isCurrentYear && !getYearState(year, idx).isYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="currentYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -154,7 +154,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isCurrentFirstYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="currentFirstYearInRangeAttrs"
@@ -167,7 +167,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isCurrentLastYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="currentLastYearInRangeAttrs"
@@ -180,7 +180,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isFirstYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="firstYearInRangeAttrs"
@@ -193,7 +193,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isLastYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         filled
         v-bind="lastYearInRangeAttrs"
@@ -209,7 +209,7 @@ const {
           !getYearState(year, idx).isMoreThanOneYearRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="singleCurrentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -221,7 +221,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isCurrentYearInRange"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="currentYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -235,7 +235,7 @@ const {
           !getYearState(year, idx).isMoreThanOneYearRange && getYearState(year, idx).isYearInRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="singleYearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -249,7 +249,7 @@ const {
           getYearState(year, idx).isMoreThanOneYearRange && getYearState(year, idx).isYearInRange
         "
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="yearInRangeAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"
@@ -261,7 +261,7 @@ const {
       <UButton
         v-else-if="getYearState(year, idx).isActiveYear"
         variant="thirdary"
-        color="brand"
+        color="primary"
         size="md"
         v-bind="activeYearAttrs"
         :disabled="dateIsOutOfRange(year, minDate, maxDate, locale, dateFormat)"

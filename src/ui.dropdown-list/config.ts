@@ -57,7 +57,7 @@ export default /*tw*/ {
     pt-4 group-first/item:pt-2
   `,
   subGroup: "{>groupBase} pt-2",
-  addOptionLabelWrapper: "{>option} -mb-[1.375rem] active:bg-brand-100",
+  addOptionLabelWrapper: "{>option} -mb-[1.375rem] active:bg-primary-100",
   addOptionLabel: "leading-none font-medium",
   addOptionLabelHotkey: "text-gray-500",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
@@ -68,7 +68,7 @@ export default /*tw*/ {
     add: "Add",
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     labelKey: "label",
     valueKey: "id",
