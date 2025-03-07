@@ -419,7 +419,7 @@ function clearSelectedItems() {
 }
 
 function onToggleRowVisibility(row: FlatRow | Row) {
-  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentId === row.id);
+  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentRowId === row.id);
 
   if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
     row.nestedData.isShown = !row.nestedData.isShown;

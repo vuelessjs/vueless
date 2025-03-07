@@ -87,9 +87,9 @@ export function switchRowCheck(row: Row, isChecked: boolean) {
 export function getFlatRows(tableRows: Row[]) {
   const rows: FlatRow[] = [];
 
-  function addRow(row: Row, nestedLevel: number, parentId?: string | number) {
-    if (parentId) {
-      row.parentId = parentId;
+  function addRow(row: Row, nestedLevel: number, parentRowId?: string | number) {
+    if (parentRowId) {
+      row.parentRowId = parentRowId;
     }
 
     row.nestedLevel = nestedLevel;
