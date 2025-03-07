@@ -1,6 +1,6 @@
 import { getRandomId } from "../utils/helper.ts";
 
-import type { Column, ColumnObject, Row, RowData, RowId } from "./types.ts";
+import type { Column, ColumnObject, FlatRow, Row, RowData, RowId } from "./types.ts";
 
 export function normalizeColumns(columns: Column[]): ColumnObject[] {
   return columns.map((column) =>
@@ -50,8 +50,6 @@ export function toggleRowVisibility(row: Row, targetRowId: string | number) {
   if (row.id === targetRowId) {
     if (row.hasOwnProperty("isShown")) {
       row.isShown = !row.isShown;
-    } else if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
-      row.nestedData.isShown = !row.nestedData.isShown;
     }
 
     return row;
@@ -87,21 +85,27 @@ export function switchRowCheck(row: Row, isChecked: boolean) {
 }
 
 export function getFlatRows(tableRows: Row[]) {
-  const rows: Row[] = [];
+  const rows: FlatRow[] = [];
 
-  function addRow(row: Row) {
-    rows.push(row);
+  function addRow(row: Row, nestedLevel: number, parentId?: string | number) {
+    if (parentId) {
+      row.parentId = parentId;
+    }
+
+    row.nestedLevel = nestedLevel;
+
+    rows.push(row as FlatRow);
 
     if (row.row && !Array.isArray(row.row)) {
-      addRow(row.row);
+      addRow(row.row, nestedLevel + 1, row.id);
     }
 
     if (row.row && Array.isArray(row.row)) {
-      row.row.forEach(addRow);
+      row.row.forEach((nestedRow) => addRow(nestedRow, nestedLevel + 1, row.id));
     }
   }
 
-  tableRows.forEach((row) => addRow(row));
+  tableRows.forEach((row) => addRow(row, 0));
 
   return rows;
 }

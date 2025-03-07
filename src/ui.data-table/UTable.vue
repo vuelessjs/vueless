@@ -45,6 +45,7 @@ import type {
   UTableRowAttrs,
   Config,
   DateDivider,
+  FlatRow,
 } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -116,12 +117,12 @@ const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-const sortedRows: ComputedRef<Row[]> = computed(() => {
+const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
   const headerKeys = props.columns.map((column) =>
     typeof column === "object" ? column.key : column,
   );
 
-  return tableRows.value.map((row) => {
+  return flatTableRows.value.map((row) => {
     const rowEntries = Object.entries(row);
 
     const sortedEntries: typeof rowEntries = new Array(rowEntries.length);
@@ -141,7 +142,7 @@ const sortedRows: ComputedRef<Row[]> = computed(() => {
 
     const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
 
-    return sortedRow as Row;
+    return sortedRow as FlatRow;
   });
 });
 
@@ -188,7 +189,7 @@ const isCheckedMoreOneTableItems = computed(() => {
 
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
 
-const flatTableRows = computed(() => getFlatRows(props.rows));
+const flatTableRows = computed(() => getFlatRows(tableRows.value));
 
 const isSelectedAllRows = computed(() => {
   return selectedRows.value.length === flatTableRows.value.length;
@@ -266,6 +267,7 @@ function onWindowResize() {
 function getDateDividerData(rowDate: string | Date | undefined) {
   if (!rowDate) {
     return {
+      date: "",
       label: "",
       config: {},
     };
@@ -282,6 +284,7 @@ function getDateDividerData(rowDate: string | Date | undefined) {
   }
 
   return {
+    date: dividerItem?.date || "",
     label: dividerItem?.label || String(rowDate),
     config: dividerItem?.config,
   };
@@ -415,8 +418,22 @@ function clearSelectedItems() {
   selectedRows.value = [];
 }
 
-function onToggleRowVisibility(rowId: string | number) {
-  tableRows.value = tableRows.value.map((row) => toggleRowVisibility({ ...row }, rowId));
+function onToggleRowVisibility(row: FlatRow | Row) {
+  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentId === row.id);
+
+  if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
+    row.nestedData.isShown = !row.nestedData.isShown;
+  }
+
+  if (nestedRows.length) {
+    let updatedRows: Row[] = [];
+
+    nestedRows.forEach((nestedRow) => {
+      updatedRows = tableRows.value.map((row) => toggleRowVisibility({ ...row }, nestedRow.id));
+    });
+
+    tableRows.value = updatedRows;
+  }
 }
 
 function onToggleExpand(row: Row, expanded: boolean) {
@@ -695,7 +712,7 @@ const {
           <UTableRow
             v-for="(row, rowIndex) in sortedRows"
             :key="row.id"
-            v-memo="[selectedRows.includes(row.id), isRowSelectedWithin(rowIndex)]"
+            v-memo="[selectedRows.includes(row.id), row.isShown, isRowSelectedWithin(rowIndex)]"
             :selectable="selectable"
             :row="row"
             :is-date-divider="isShownDateDivider(rowIndex)"
@@ -705,7 +722,7 @@ const {
             :date-divider-data="getDateDividerData(row.rowDate)"
             :attrs="tableRowAttrs as unknown as UTableRowAttrs"
             :cols-count="colsCount"
-            :nested-level="0"
+            :nested-level="Number(row.nestedLevel || 0)"
             :empty-cell-label="emptyCellLabel"
             :data-test="getDataTest('row')"
             @click="onClickRow"

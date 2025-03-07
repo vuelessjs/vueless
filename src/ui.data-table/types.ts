@@ -38,6 +38,11 @@ export interface Row {
   [key: string]: Cell | RowKeys;
 }
 
+export interface FlatRow extends Row {
+  parentId?: RowId;
+  nestedLeveL: number;
+}
+
 export interface ColumnObject {
   key: string;
   label?: string;
@@ -48,16 +53,6 @@ export interface ColumnObject {
 }
 
 export type Column = ColumnObject | string;
-
-export interface RowScopedProps {
-  value: unknown | string | number;
-  row: Row;
-}
-
-export interface RowScopedExpandProps {
-  expanded: boolean;
-  row: Row;
-}
 
 export interface UTableProps {
   /**
@@ -135,7 +130,7 @@ export interface UTableRowAttrs {
 }
 
 export interface UTableRowProps {
-  row: Row;
+  row: FlatRow;
   columns: ColumnObject[];
   emptyCellLabel?: string;
   selectable: boolean;
