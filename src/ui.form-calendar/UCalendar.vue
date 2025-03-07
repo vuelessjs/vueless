@@ -725,7 +725,7 @@ const {
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="ghost"
         :left-icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
@@ -735,7 +735,7 @@ const {
       <UButton
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="ghost"
         v-bind="viewSwitchButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
@@ -751,7 +751,7 @@ const {
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="ghost"
         :left-icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
@@ -844,10 +844,9 @@ const {
 
       <UButton
         ref="ok-button"
-        filled
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="soft"
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >

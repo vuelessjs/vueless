@@ -156,7 +156,7 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
         </UModal>
 
         <template #footer-right>
-          <UButton label="Cancel" variant="secondary" @click="showMainModal = false" />
+          <UButton label="Cancel" variant="outlined" @click="showMainModal = false" />
           <UButton label="Confirm" @click="showMainModal = false" />
         </template>
       </UModal>

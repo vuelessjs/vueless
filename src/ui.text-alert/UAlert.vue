@@ -113,7 +113,7 @@ const {
         square
         size="xs"
         :color="closeButtonColor"
-        variant="thirdary"
+        variant="ghost"
         v-bind="closeButtonAttrs"
         @click="onClickClose"
       >

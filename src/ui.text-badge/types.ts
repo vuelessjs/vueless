@@ -12,12 +12,7 @@ export interface Props {
   /**
    * Badge variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Badge size.

@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Button variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";
 
   /**
    * Button color.
@@ -48,11 +48,6 @@ export interface Props {
    * Controls the keyboard “Tab” focus order of elements.
    */
   tabindex?: string | number;
-
-  /**
-   * Fill the background for thirdary variant.
-   */
-  filled?: boolean;
 
   /**
    * Disable the button.

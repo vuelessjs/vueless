@@ -17,7 +17,7 @@ export interface Props {
   /**
    * Alert variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  variant?: "solid" | "outlined" | "soft" | "ghost";
 
   /**
    * Add border to the `thirdary` variant.

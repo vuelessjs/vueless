@@ -87,9 +87,6 @@ const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) =>
       args,
       variants,
       colors: argTypes?.color?.options,
-      shouldBeFilled: (variant: string, index: number) => {
-        return variant === "thirdary" && index === variants.length - 2;
-      },
     };
   },
   template: `
@@ -102,7 +99,6 @@ const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) =>
           :color="color"
           :label="color"
           :key="colorIndex"
-          :filled="shouldBeFilled(variant, variantIndex)"
         />
       </URow>
     </UCol>
@@ -140,7 +136,7 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
         />
       <UButton
         label="Toggle loading"
-        variant="secondary"
+        variant="outlined"
         color="green"
         leftIcon="play_arrow"
         @click="toggleLoading"

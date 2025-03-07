@@ -94,7 +94,7 @@ Variants.args = { enum: "variant" };
 export const Bordered = DefaultTemplate.bind({});
 Bordered.args = {
   title: "Your connection is secure",
-  variant: "thirdary",
+  variant: "ghost",
   bordered: true,
   color: "green",
 };
@@ -121,7 +121,7 @@ SlotClose.args = {
   slotTemplate: `
     <template #close>
       <UButton
-        variant="primary"
+        variant="solid"
         color="neutral"
         size="sm"
         label="Close"
@@ -144,7 +144,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
               label="Connection lost"
               size="lg"
               color="red"
-              variant="secondary"
+              variant="outlined"
             />
           </template>
         </UAlert>
@@ -154,7 +154,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
             <UBadge
               label="We are trying to reconnect. Please wait a moment or check your network settings."
               color="red"
-              variant="thirdary"
+              variant="ghost"
             />
           </template>
         </UAlert>

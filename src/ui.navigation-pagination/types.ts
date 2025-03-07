@@ -27,7 +27,7 @@ export interface Props {
   /**
    * Pagination variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  variant?: "solid" | "outlined" | "soft" | "ghost";
 
   /**
    * Pagination size.

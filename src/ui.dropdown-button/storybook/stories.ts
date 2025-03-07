@@ -114,9 +114,6 @@ const VariantColorsTemplate: StoryFn<EnumUDropdownButtonArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Filled = DefaultTemplate.bind({});
-Filled.args = { variant: "thirdary", filled: true };
-
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 

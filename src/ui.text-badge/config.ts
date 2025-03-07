@@ -3,9 +3,10 @@ export default /*tw*/ {
     base: "border rounded-medium inline-block py-1 !leading-none outline-hidden",
     variants: {
       variant: {
-        primary: "bg-{color} text-inverted border-transparent",
-        secondary: "border-{color} text-{color}",
-        thirdary: "bg-{color}/5 text-{color} border-transparent",
+        solid: "border-transparent text-inverted bg-{color}",
+        outlined: "border-{color} text-{color}",
+        subtle: "border-{color}/15 text-{color} bg-{color}/5",
+        soft: "border-transparent text-{color} bg-{color}/5",
       },
       size: {
         sm: "px-2 text-xsmall",
@@ -19,7 +20,6 @@ export default /*tw*/ {
         true: "cursor-pointer focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}",
       },
     },
-    compoundVariants: [{ variant: "thirdary", bordered: true, class: "border-{color}/10" }],
   },
   body: {
     base: "flex items-center",
@@ -46,10 +46,9 @@ export default /*tw*/ {
   rightIcon: "{UIcon} {>badgeIcon} -mr-0.5",
   defaults: {
     color: "primary",
-    variant: "primary",
+    variant: "solid",
     tabindex: "-1",
     size: "md",
     round: false,
-    bordered: false,
   },
 };

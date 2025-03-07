@@ -125,7 +125,7 @@ SlotToggle.args = {
       <UButton
         :label="opened ? 'Close' : 'Open'"
         color="grayscale"
-        variant="secondary"
+        variant="outlined"
         size="sm"
       />
     </template>

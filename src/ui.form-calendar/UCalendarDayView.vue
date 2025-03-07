@@ -229,7 +229,7 @@ const {
         <UButton
           v-if="getDayState(day).isSelectedDay && !props.range"
           tabindex="-1"
-          variant="primary"
+          variant="solid"
           color="primary"
           size="md"
           square
@@ -243,7 +243,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="primary"
           size="md"
           square
@@ -257,11 +257,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isCurrentFirstDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="currentFirstDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -272,11 +271,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isCurrentLastDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="currentLastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -287,11 +285,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isFirstDayInRange"
           tabindex="-1"
-          variant="primary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="firstDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -302,11 +299,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isLastDayInRange"
           tabindex="-1"
-          variant="primary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="lastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -317,11 +313,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="anotherMonthFirstDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -332,11 +327,10 @@ const {
         <UButton
           v-else-if="getDayState(day).isAnotherMonthLastDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="soft"
           color="primary"
           size="md"
           square
-          filled
           v-bind="anotherMonthLastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
@@ -347,7 +341,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="primary"
           size="md"
           square
@@ -361,7 +355,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isAnotherMonthDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="blue"
           size="md"
           square
@@ -375,7 +369,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isDayInRange"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="primary"
           size="md"
           square
@@ -389,7 +383,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isActiveDay"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="primary"
           size="md"
           square
@@ -403,7 +397,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isAnotherMonthDay"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="grayscale"
           size="md"
           square
@@ -417,7 +411,7 @@ const {
         <UButton
           v-else-if="!getDayState(day).isSelectedDay"
           tabindex="-1"
-          variant="thirdary"
+          variant="ghost"
           color="grayscale"
           size="md"
           square

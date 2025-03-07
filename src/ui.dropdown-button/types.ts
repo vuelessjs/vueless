@@ -24,12 +24,7 @@ export interface Props {
   /**
    * Button variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
-
-  /**
-   * Fill the background for thirdary variant.
-   */
-  filled?: boolean;
+  variant?: "solid" | "outlined" | "soft" | "ghost";
 
   /**
    * Button color.

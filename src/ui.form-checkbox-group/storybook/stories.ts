@@ -64,7 +64,7 @@ const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) 
       </UCheckboxGroup>
 
       <URow>
-        <UAlert size="sm" variant="thirdary" color="green" bordered>
+        <UAlert size="sm" variant="ghost" color="green" bordered>
           <p>Selected value: {{ value }}</p>
         </UAlert>
       </URow>

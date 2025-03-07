@@ -334,11 +334,10 @@ const {
         <div v-bind="buttonsAttrs">
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
-              filled
               tabindex="-1"
               :for="elementId"
               tag="label"
-              variant="thirdary"
+              variant="soft"
               :right-icon="config.defaults.chooseFileIcon"
               :label="currentLocale.uploadFile"
               :disabled="disabled"
@@ -362,8 +361,7 @@ const {
             v-if="isValue && !disabled"
             round
             square
-            filled
-            variant="thirdary"
+            variant="soft"
             :disabled="disabled"
             :left-icon="config.defaults.clearIcon"
             v-bind="currentError ? clearButtonErrorAttrs : clearButtonAttrs"

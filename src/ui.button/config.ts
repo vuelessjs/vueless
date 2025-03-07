@@ -16,20 +16,32 @@ export default /*tw*/ {
         xl: "px-7 py-3.5 text-large gap-2",
       },
       variant: {
-        primary: `
+        solid: `
           text-inverted
           bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
           disabled:bg-{color}-muted
         `,
-        secondary: `
+        outlined: `
           text-{color} border-{color}
           hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
           disabled:text-{color}-muted disabled:border-{color}-muted
         `,
-        thirdary: `
+        subtle: `
+          text-{color} bg-{color}-lifted/5 border-{color}/15
+          hover:text-{color}-lifted hover:bg-{color}-lifted/10
+          active:text-{color}-accented active:bg-{color}-accented/15
+          disabled:text-{color}-muted disabled:bg-{color}-muted/5
+        `,
+        soft: `
+          text-{color} bg-{color}-lifted/5
+          hover:text-{color}-lifted hover:bg-{color}-lifted/10
+          active:text-{color}-accented active:bg-{color}-accented/15
+          disabled:text-{color}-muted disabled:bg-{color}-muted/5
+        `,
+        ghost: `
           text-{color}
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
@@ -51,8 +63,6 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { filled: true, variant: "thirdary", class: "bg-{color}-lifted/5" },
-      { filled: true, disabled: true, variant: "thirdary", class: "bg-{color}-muted/5" },
       { square: true, size: "2xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
       { square: true, size: "sm", class: "p-2" },
@@ -91,14 +101,13 @@ export default /*tw*/ {
   },
   defaults: {
     color: "primary",
-    variant: "primary",
+    variant: "solid",
     tag: "button",
     size: "md",
     tabindex: 0,
     round: false,
     block: false,
     square: false,
-    filled: false,
     loading: false,
     disabled: false,
   },

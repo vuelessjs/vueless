@@ -34,7 +34,7 @@ export default /*tw*/ {
   prevIcon: "{>paginationIcon}",
   nextIcon: "{>paginationIcon}",
   defaults: {
-    variant: "primary",
+    variant: "solid",
     size: "md",
     limit: 5,
     perPage: 20,

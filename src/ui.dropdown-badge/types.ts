@@ -24,7 +24,7 @@ export interface Props {
   /**
    * Badge variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  variant?: "solid" | "outlined" | "soft" | "subtle";
 
   /**
    * Badge color.

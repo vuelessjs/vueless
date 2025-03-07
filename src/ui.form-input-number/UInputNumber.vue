@@ -86,9 +86,8 @@ const {
     </template>
 
     <UButton
-      variant="thirdary"
+      variant="soft"
       size="2xs"
-      filled
       square
       round
       :disabled="isRemoveButtonDisabled || disabled"
@@ -110,9 +109,8 @@ const {
     </div>
 
     <UButton
-      variant="thirdary"
+      variant="soft"
       size="2xs"
-      filled
       square
       round
       :disabled="isAddButtonDisabled || disabled"

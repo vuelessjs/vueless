@@ -34,7 +34,7 @@ export default /*tw*/ {
   defaults: {
     color: "primary",
     size: "md",
-    variant: "primary",
+    variant: "solid",
     labelKey: "label",
     yPosition: "bottom",
     xPosition: "left",

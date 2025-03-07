@@ -54,7 +54,7 @@ const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
   template: `
     <UCol>
       <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment("")}</UProgress>
-      <UButton label="Next Step" size="sm" variant="thirdary" filled @click="updateProgress" />
+      <UButton label="Next Step" size="sm" variant="soft" @click="updateProgress" />
     </UCol>
   `,
 });
@@ -84,7 +84,7 @@ const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argT
           {{ option }}
         </template>
       </UProgress>
-    <UButton label="Next Step" size="sm" variant="thirdary" filled @click="updateProgress" />
+    <UButton label="Next Step" size="sm" variant="soft" @click="updateProgress" />
     </UCol>
   `,
 });

@@ -57,7 +57,7 @@ const { getDataTest, tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(
 
 <template>
   <UButton
-    variant="thirdary"
+    variant="ghost"
     :size="size"
     :label="label"
     :icon="icon"

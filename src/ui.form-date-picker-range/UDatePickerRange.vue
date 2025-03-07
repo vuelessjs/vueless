@@ -631,10 +631,9 @@ watchEffect(() => {
       <UButton
         ref="button-prev"
         square
-        filled
         :size="size"
         :disabled="disabled"
-        variant="thirdary"
+        variant="soft"
         :left-icon="config.defaults.prevIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Prev)"
@@ -644,11 +643,10 @@ watchEffect(() => {
         :id="elementId"
         ref="button"
         square
-        filled
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
-        variant="thirdary"
+        variant="soft"
         v-bind="rangeButtonSelectAttrs"
         @click="activate"
       />
@@ -656,10 +654,9 @@ watchEffect(() => {
       <UButton
         ref="button-next"
         square
-        filled
         :size="size"
         :disabled="disabled"
-        variant="thirdary"
+        variant="soft"
         :left-icon="config.defaults.nextIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Next)"

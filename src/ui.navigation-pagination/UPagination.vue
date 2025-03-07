@@ -125,7 +125,7 @@ const {
   <div v-bind="paginationAttrs">
     <UButton
       v-if="showFirst"
-      variant="thirdary"
+      variant="ghost"
       :label="firstLabel"
       :square="!firstLabel"
       :disabled="prevIsDisabled"
@@ -149,7 +149,7 @@ const {
     </UButton>
 
     <UButton
-      variant="thirdary"
+      variant="ghost"
       :label="prevLabel"
       :square="!prevLabel"
       :disabled="prevIsDisabled"
@@ -177,7 +177,7 @@ const {
         v-if="!isFinite(page.number)"
         square
         disabled
-        variant="thirdary"
+        variant="ghost"
         v-bind="inactiveButtonAttrs"
       >
         <!-- @slot Use it to add something instead of the ellipsis. -->
@@ -186,7 +186,6 @@ const {
 
       <UButton
         v-else-if="page.isActive"
-        filled
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
@@ -196,7 +195,7 @@ const {
 
       <UButton
         v-else
-        variant="thirdary"
+        variant="ghost"
         :label="String(page.number)"
         :disabled="disabled"
         v-bind="inactiveButtonAttrs"
@@ -206,7 +205,7 @@ const {
     </template>
 
     <UButton
-      variant="thirdary"
+      variant="ghost"
       :label="nextLabel"
       :square="!nextLabel"
       :disabled="nextIsDisabled"
@@ -231,7 +230,7 @@ const {
 
     <UButton
       v-if="showLast"
-      variant="thirdary"
+      variant="ghost"
       :label="lastLabel"
       :square="!lastLabel"
       :disabled="nextIsDisabled"

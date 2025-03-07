@@ -89,7 +89,6 @@ const {
       :square="square"
       :variant="variant"
       :disabled="disabled"
-      :filled="filled || isShownOptions"
       v-bind="dropdownButtonAttrs"
       :data-test="getDataTest()"
       @click="onClickButton"

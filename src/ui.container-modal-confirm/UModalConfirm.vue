@@ -141,7 +141,7 @@ const {
         <UButton
           v-if="!cancelHidden"
           :label="currentLocale.cancel"
-          variant="secondary"
+          variant="outlined"
           color="neutral"
           v-bind="cancelButtonAttrs"
           :data-test="getDataTest('close')"

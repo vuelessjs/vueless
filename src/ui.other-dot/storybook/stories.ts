@@ -62,7 +62,7 @@ const EnumVariantTemplate: StoryFn<UDotArgs> = (args: UDotArgs, { argTypes }) =>
         align="center"
       >
         <UDot v-bind="args" :[args.enum]="option"/>
-        <UBadge :label="option" :[args.enum]="option" variant="thirdary" size="md"/>
+        <UBadge :label="option" :[args.enum]="option" variant="ghost" size="md"/>
       </URow>
     </UCol>
   `,

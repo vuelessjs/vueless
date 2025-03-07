@@ -48,7 +48,7 @@ const DefaultTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs
 
     <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
 
-    <UAlert class="mt-4" variant="secondary">
+    <UAlert class="mt-4" variant="outlined">
       <p>
         Click on calendar itself will trigger directive callback, use ignore option to prevent this behavior.
       </p>
@@ -98,7 +98,7 @@ const SettingsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArg
       <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
     </div>
 
-    <UAlert class="mt-4" variant="secondary">
+    <UAlert class="mt-4" variant="outlined">
       <p>
         Click on calendar will not trigger directive callback now.
       </p>

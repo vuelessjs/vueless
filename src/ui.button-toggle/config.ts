@@ -28,7 +28,7 @@ export default /*tw*/ {
   toggleButton: {
     base: "{UButton} font-normal focus-visible:ring-offset-0",
     defaults: {
-      variant: "thirdary",
+      variant: "ghost",
     },
   },
   toggleButtonInactive: {

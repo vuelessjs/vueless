@@ -32,7 +32,7 @@ export default /*tw*/ {
         lg: "md",
         xl: "md",
       },
-      variant: "thirdary",
+      variant: "ghost",
       square: true,
     },
   },

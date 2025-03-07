@@ -106,7 +106,7 @@ export const SlotFooter = DefaultTemplate.bind({});
 SlotFooter.args = {
   slotTemplate: `
     <template #footer>
-      <UButton label="Add new one" size="sm" variant="thirdary" filled />
+      <UButton label="Add new one" size="sm" variant="soft" />
     </template>
   `,
 };

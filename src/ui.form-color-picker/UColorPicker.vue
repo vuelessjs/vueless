@@ -59,8 +59,7 @@ const { listAttrs, colorButtonAttrs, circleAttrs } = useUI<Config>(defaultConfig
       square
       size="xs"
       color="grayscale"
-      variant="thirdary"
-      :filled="selectedItem === color"
+      :variant="selectedItem === color ? 'soft' : 'ghost'"
       v-bind="colorButtonAttrs"
       @click="onClickColor(color)"
     >

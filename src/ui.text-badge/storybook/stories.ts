@@ -103,20 +103,6 @@ Default.args = {};
 export const Round = DefaultTemplate.bind({});
 Round.args = { round: true };
 
-export const Bordered = DefaultTemplate.bind({});
-Bordered.args = {
-  variant: "thirdary",
-  bordered: true,
-  color: "green",
-};
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Add border to the `thirdary` variant.",
-    },
-  },
-};
-
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 

@@ -114,7 +114,7 @@ export const Slots: StoryFn<UGroupArgs> = (args) => ({
       <UGroup v-bind="args" title="Actions Slot">
         <template #actions>
           <URow class="max-w-fit">
-            <UButton size="sm" variant="secondary" label="Clear" />
+            <UButton size="sm" variant="outlined" label="Clear" />
             <UButton size="sm" label="Submit" />
           </URow>
         </template>
