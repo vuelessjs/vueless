@@ -301,7 +301,7 @@ export const TAILWIND_MERGE_EXTENSION = {
     },
     classGroups: {
       "outline-w": [{ outline: ["small", "medium", "large"] }],
-      "font-size": [{ text: ["2xs", "small", "medium", "large"] }],
+      "font-size": [{ text: ["xsmall", "small", "medium", "large"] }],
       rounded: [{ rounded: ["small", "medium", "large", "inherit"] }],
       "rounded-s": [{ "rounded-s": ["small", "medium", "large", "inherit"] }],
       "rounded-e": [{ "rounded-e": ["small", "medium", "large", "inherit"] }],

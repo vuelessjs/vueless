@@ -148,7 +148,8 @@ export function setTheme(config: Config = {}) {
     config.outlineLg ?? vuelessConfig.outlineLg,
   );
 
-  const { fontSizeSm, fontSize, fontSizeLg } = getFontSize(
+  const { fontSizeXs, fontSizeSm, fontSize, fontSizeLg } = getFontSize(
+    config.fontSizeXs ?? vuelessConfig.fontSizeXs,
     config.fontSizeSm ?? vuelessConfig.fontSizeSm,
     config.fontSize ?? vuelessConfig.fontSize,
     config.fontSizeLg ?? vuelessConfig.fontSizeLg,
@@ -190,6 +191,7 @@ export function setTheme(config: Config = {}) {
     roundingSm,
     rounding,
     roundingLg,
+    fontSizeXs,
     fontSizeSm,
     fontSize,
     fontSizeLg,
@@ -220,13 +222,15 @@ function getRings(sm?: number, md?: number, lg?: number) {
  * Calculate ring values.
  * @return object - sm, md, lg ring values.
  */
-function getFontSize(sm?: number, md?: number, lg?: number) {
+function getFontSize(xs?: number, sm?: number, md?: number, lg?: number) {
   const fontSize = Math.max(0, md ?? DEFAULT_FONT_SIZE);
+  const fontSizeXs = Math.max(0, fontSize - FONT_SIZE_DECREMENT * 2);
   const fontSizeSm = Math.max(0, fontSize - FONT_SIZE_DECREMENT);
   const fontSizeLg = Math.max(0, fontSize + FONT_SIZE_INCREMENT);
 
   return {
     fontSize,
+    fontSizeXs: xs === undefined ? fontSizeXs : Math.max(0, xs),
     fontSizeSm: sm === undefined ? fontSizeSm : Math.max(0, sm),
     fontSizeLg: lg === undefined ? fontSizeLg : Math.max(0, lg),
   };
@@ -278,6 +282,7 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     roundingSm,
     rounding,
     roundingLg,
+    fontSizeXs,
     fontSizeSm,
     fontSize,
     fontSizeLg,
@@ -292,6 +297,7 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline-md": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,
+    "--vl-text-xs": `${fontSizeXs}px`,
     "--vl-text-sm": `${fontSizeSm}px`,
     "--vl-text-md": `${fontSize}px`,
     "--vl-text-lg": `${fontSizeLg}px`,

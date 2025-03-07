@@ -93,6 +93,8 @@
     --radius-large: var(--vl-radius-lg);
 
     /* Text size */
+    --text-xsmall: var(--vl-text-xs);
+    --text-xsmall--line-height: calc(1 / 0.625);
     --text-small: var(--vl-text-sm);
     --text-small--line-height: var(--text-xs--line-height);
     --text-medium: var(--vl-text-md);
@@ -100,7 +102,7 @@
     --text-large: var(--vl-text-lg);
     --text-large--line-height: var(--text-base--line-height);
 
-    /* Mobile safe area spaceing. TODO: Need to check, may not working. */
+    /* Mobile safe area spaceing. */
     --spacing-safe-top: "env(safe-area-inset-top)";
     --spacing-safe-bottom: "env(safe-area-inset-bottom)";
     --spacing-safe-left: "env(safe-area-inset-left)";
@@ -132,19 +134,19 @@
 /* Border color utilities */
 
 @utility border-default {
-    color: var(--vl-border);
+    border-color: var(--vl-border);
 }
 
 @utility border-lifted {
-    color: var(--vl-border-lifted);
+    border-color: var(--vl-border-lifted);
 }
 
 @utility border-accented {
-    color: var(--vl-border-accented);
+    border-color: var(--vl-border-accented);
 }
 
 @utility border-muted {
-    color: var(--vl-border-muted);
+    border-color: var(--vl-border-muted);
 }
 
 /* Background color utilities */
