@@ -109,14 +109,14 @@ const {
                 <UIcon
                   internal
                   size="2xs"
-                  color="gray"
+                  color="neutral"
                   :name="config.defaults.backIcon"
                   v-bind="backLinkIconAttrs"
                 />
 
                 <ULink
                   size="sm"
-                  color="gray"
+                  color="neutral"
                   :to="backTo"
                   :label="backLabel"
                   v-bind="backLinkAttrs"

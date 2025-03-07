@@ -82,7 +82,7 @@ const { getDataTest, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActive
       :key="option.value"
       :label="option.label"
       tabindex="0"
-      color="gray"
+      color="neutral"
       :size="size"
       :round="round"
       :block="block"

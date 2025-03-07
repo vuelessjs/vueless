@@ -32,28 +32,7 @@ export interface Props {
   /**
    * Alert color.
    */
-  color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "primary";
+  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Alert timeout.

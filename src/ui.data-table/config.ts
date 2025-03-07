@@ -101,7 +101,7 @@ export default /*tw*/ {
   },
   stickyFooterRow: `
     fixed bottom-0 -ml-px border border-b border-gray-200 bg-white
-    collapse group-[]/footer-fixed:[visibility:inherit]
+    collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {
     noData: "There is no data in the table.",

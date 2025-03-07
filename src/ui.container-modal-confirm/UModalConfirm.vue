@@ -142,7 +142,7 @@ const {
           v-if="!cancelHidden"
           :label="currentLocale.cancel"
           variant="secondary"
-          color="gray"
+          color="neutral"
           v-bind="cancelButtonAttrs"
           :data-test="getDataTest('close')"
           @click="onCloseModal"

@@ -284,7 +284,7 @@ const {
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" internal color="gray" :name="leftIcon" v-bind="leftIconAttrs" />
+          <UIcon v-if="leftIcon" internal color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </span>
 
@@ -314,7 +314,7 @@ const {
         <UIcon
           v-if="isTypePassword"
           :name="passwordIcon"
-          color="gray"
+          color="neutral"
           interactive
           internal
           v-bind="passwordIconAttrs"
@@ -329,7 +329,13 @@ const {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" internal color="gray" :name="rightIcon" v-bind="rightIconAttrs" />
+          <UIcon
+            v-if="rightIcon"
+            internal
+            color="neutral"
+            :name="rightIcon"
+            v-bind="rightIconAttrs"
+          />
         </slot>
       </div>
     </label>

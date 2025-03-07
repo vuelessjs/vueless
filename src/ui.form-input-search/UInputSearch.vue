@@ -149,7 +149,7 @@ const {
         v-if="localValue"
         internal
         interactive
-        color="gray"
+        color="neutral"
         :name="config.defaults.clearIcon"
         v-bind="clearIconAttrs"
         :data-test="getDataTest('clear')"
@@ -169,7 +169,7 @@ const {
           v-if="!searchButtonLabel"
           internal
           interactive
-          color="gray"
+          color="neutral"
           :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="getDataTest('search-icon')"

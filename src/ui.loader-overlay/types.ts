@@ -12,29 +12,7 @@ export interface Props {
   /**
    * Loader color.
    */
-  color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "black"
-    | "white"
-    | "primary";
+  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Component config object.

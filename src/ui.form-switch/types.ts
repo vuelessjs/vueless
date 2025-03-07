@@ -33,27 +33,7 @@ export interface Props {
   /**
    * Switch color.
    */
-  color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "primary";
+  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
 
   /**
    * Show toggle icons inside the circle.

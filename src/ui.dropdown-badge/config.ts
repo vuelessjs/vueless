@@ -9,7 +9,7 @@ export default /*tw*/ {
     },
   },
   dropdownIcon: {
-    base: "{UIcon} transition duration-300 group-[]:rotate-180",
+    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-0.5",
     defaults: {
       size: {
         sm: "2xs",

@@ -195,7 +195,7 @@ const {
       </div>
 
       <UIcon
-        color="gray"
+        color="neutral"
         variant="light"
         size="xs"
         internal

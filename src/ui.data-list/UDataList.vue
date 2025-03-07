@@ -145,7 +145,7 @@ const {
               <slot name="drag" :item="element" :icon-name="config.defaults.dragIcon">
                 <UIcon
                   internal
-                  color="gray"
+                  color="neutral"
                   variant="light"
                   :name="config.defaults.dragIcon"
                   v-bind="dragIconAttrs"

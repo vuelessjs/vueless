@@ -28,29 +28,14 @@ export interface Props {
    * Icon color.
    */
   color?:
+    | "primary"
+    | "neutral"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
     | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "black"
-    | "white"
-    | "inherit"
-    | "primary";
+    | "inherit";
 
   /**
    * Icon size.

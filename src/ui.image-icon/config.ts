@@ -1,20 +1,17 @@
 export default /*tw*/ {
   icon: {
-    base: "fill-current shrink-0 grow-0 focus:outline-0",
+    base: "text-{color} fill-current shrink-0 grow-0 focus:outline-0",
     variants: {
       variant: {
-        light: "text-{color}-400 dark:text-{color}-200",
-        default: "text-{color}-600 dark:text-{color}-400",
-        dark: "text-{color}-800 dark:text-{color}-600",
+        light: "brightness-125",
+        default: "brightness-100",
+        dark: "brightness-75",
       },
       color: {
-        white: "text-white",
-        black: "text-gray-900",
-        grayscale: "text-gray-900 dark:text-white",
         inherit: "text-inherit",
       },
       interactive: {
-        true: "cursor-pointer",
+        true: "cursor-pointer opacity-75",
       },
       size: {
         "4xs": "size-2.5",

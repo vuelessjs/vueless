@@ -288,7 +288,8 @@ const {
         :role="!(option && option.groupLabel) ? 'option' : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
-        <UDivider v-if="option.divider" padding="none" v-bind="optionDividerAttrs" />
+        <UDivider v-if="option.divider" size="xs" variant="light" v-bind="optionDividerAttrs" />
+
         <!-- option title -->
         <span
           v-if="
@@ -382,7 +383,7 @@ const {
         >
           <UIcon
             internal
-            color="white"
+            color="inherit"
             size="xs"
             :name="config.defaults.addOptionIcon"
             v-bind="addOptionIconAttrs"

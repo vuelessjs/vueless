@@ -5,19 +5,19 @@ export default /*tw*/ {
     base: "flex items-center justify-between font-medium",
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },
   description: {
-    base: "text-gray-600 h-0 opacity-0 transition-all",
+    base: "text-accented h-0 opacity-0 transition-all",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-xsmall",
+        md: "text-small",
+        lg: "text-medium",
       },
       opened: {
         true: "pt-2 h-fit opacity-100",

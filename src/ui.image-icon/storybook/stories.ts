@@ -95,7 +95,7 @@ export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant", color: "green" };
+Variants.args = { enum: "variant", color: "success" };
 
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };

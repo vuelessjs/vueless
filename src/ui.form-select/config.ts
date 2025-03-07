@@ -108,7 +108,7 @@ export default /*tw*/ {
     ],
   },
   toggleWrapper: "{>toggle} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[*]/active:rotate-180",
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   clearMultiple: "flex items-center",
@@ -148,7 +148,7 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownList: "{UDropdownList} group-[]/top:bottom-full group-[]/top:top-auto top-full w-full",
+  dropdownList: "{UDropdownList} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
     listIsEmpty: "List is empty.",
     noDataToShow: "No data to show.",

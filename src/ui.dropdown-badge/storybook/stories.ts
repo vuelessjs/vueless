@@ -166,7 +166,7 @@ export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
 
       <UDropdownBadge v-bind="args" no-icon>
         <template #default>
-          <UIcon name="unfold_more" color="white" />
+          <UIcon name="unfold_more" color="inherit" />
         </template>
       </UDropdownBadge>
     </URow>

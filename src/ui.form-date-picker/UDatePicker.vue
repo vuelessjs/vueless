@@ -268,7 +268,7 @@ const {
 
 /* Merging DatePicker's i18n translations into Calendar's i18n translations. */
 /* TODO:
-   Find way to do it more explicity. 
+   Find way to do it more explicity.
    It is not really clear that i18n changes datepickerCalendarAttrs now.
 */
 watchEffect(() => {
@@ -318,7 +318,7 @@ watchEffect(() => {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
-          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
         </slot>
       </template>
     </UInput>

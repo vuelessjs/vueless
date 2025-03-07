@@ -168,7 +168,7 @@ const {
       <UIcon
         internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
-        color="white"
+        color="inherit"
         v-bind="checkedIconAttrs"
       />
     </label>

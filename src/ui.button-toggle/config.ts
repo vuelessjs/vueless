@@ -12,10 +12,10 @@ export default /*tw*/ {
       },
       split: {
         true: "flex-wrap",
-        false: "flex-nowrap gap-1 p-1 w-fit border rounded-dynamic border-gray-300",
+        false: "flex-nowrap gap-1 p-1 w-fit border rounded-medium border-default",
       },
       disabled: {
-        true: "pointer-events-none bg-gray-100",
+        true: "pointer-events-none bg-lifted",
       },
       block: {
         true: "w-full flex-nowrap",
@@ -37,7 +37,7 @@ export default /*tw*/ {
       split: {
         false: "border-0",
         true: `
-          border border-gray-300 hover:border-gray-400
+          border border-default hover:border-lifted
           hover:bg-transparent dark:hover:bg-transparent
           active:bg-transparent dark:active:bg-transparent
         `,
@@ -45,18 +45,15 @@ export default /*tw*/ {
     },
   },
   toggleButtonActive: {
-    base: "{>toggleButton}",
+    base: "{>toggleButton} !bg-primary/15 disabled:text-primary",
     variants: {
       split: {
         false: "border-0",
-        true: `
-          border border-primary-600
-        `,
+        true: "border border-primary",
       },
     },
     defaults: {
       color: "primary",
-      filled: true,
     },
   },
   defaults: {

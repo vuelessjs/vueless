@@ -79,14 +79,14 @@ const {
           v-else
           internal
           interactive
-          color="gray"
+          color="neutral"
           :name="config.defaults.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
         />
 
-        <ULink :label="label" :size="size" color="gray" dashed v-bind="fileLabelAttrs" />
+        <ULink :label="label" :size="size" color="neutral" dashed v-bind="fileLabelAttrs" />
       </div>
     </slot>
 
@@ -96,7 +96,7 @@ const {
         v-if="removable"
         internal
         interactive
-        color="gray"
+        color="neutral"
         :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="getDataTest('remove-item')"

@@ -358,7 +358,7 @@ function setLabelPosition() {
       nestedLabel.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
     }
 
-    leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
+    leftSlotWrapperRef.value.classList.remove("group-[*]/placement-inside:-mt-4");
   } else {
     if (nestedLabel) {
       nestedLabel.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
@@ -519,7 +519,7 @@ const {
           <UIcon
             internal
             interactive
-            color="gray"
+            color="neutral"
             :name="config.defaults.dropdownIcon"
             v-bind="toggleIconAttrs"
             :tabindex="-1"
@@ -541,7 +541,7 @@ const {
           <UIcon
             internal
             interactive
-            color="gray"
+            color="neutral"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
           />
@@ -602,7 +602,7 @@ const {
                 <UIcon
                   internal
                   interactive
-                  color="gray"
+                  color="neutral"
                   :name="config.defaults.clearMultipleIcon"
                   v-bind="clearMultipleIconAttrs"
                 />

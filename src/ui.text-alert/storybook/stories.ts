@@ -122,7 +122,7 @@ SlotClose.args = {
     <template #close>
       <UButton
         variant="primary"
-        color="white"
+        color="neutral"
         size="sm"
         label="Close"
       />

@@ -148,7 +148,7 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <UIcon name="unfold_more" color="white" />
+      <UIcon name="unfold_more" color="inherit" />
     </template>
   `,
   noIcon: true,

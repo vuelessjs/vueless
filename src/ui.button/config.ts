@@ -4,7 +4,7 @@ export default /*tw*/ {
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent transition cursor-pointer
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
-      disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
+      disabled:pointer-events-none disabled:outline-0 disabled:outline-offset-0
     `,
     variants: {
       size: {
@@ -33,7 +33,7 @@ export default /*tw*/ {
           text-{color}
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:text-{color}-muted disabled:bg-transparent
+          disabled:text-{color}-muted
         `,
       },
       round: {
@@ -52,18 +52,7 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { filled: true, variant: "thirdary", class: "bg-{color}-lifted/5" },
-      { rightIcon: true, size: "2xs", class: "pr-1" },
-      { rightIcon: true, size: "xs", class: "pr-2" },
-      { rightIcon: true, size: "sm", class: "pr-3" },
-      { rightIcon: true, size: "md", class: "pr-4" },
-      { rightIcon: true, size: "lg", class: "pr-5" },
-      { rightIcon: true, size: "xl", class: "pr-6" },
-      { leftIcon: true, size: "2xs", class: "pl-1" },
-      { leftIcon: true, size: "xs", class: "pl-2" },
-      { leftIcon: true, size: "sm", class: "pl-3" },
-      { leftIcon: true, size: "md", class: "pl-4" },
-      { leftIcon: true, size: "lg", class: "pl-5" },
-      { leftIcon: true, size: "xl", class: "pl-6" },
+      { filled: true, disabled: true, variant: "thirdary", class: "bg-{color}-muted/5" },
       { square: true, size: "2xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
       { square: true, size: "sm", class: "p-2" },
@@ -85,8 +74,8 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>centerIcon}",
-  rightIcon: "{UIcon} {>centerIcon}",
+  leftIcon: "{UIcon} {>centerIcon} -ml-1",
+  rightIcon: "{UIcon} {>centerIcon} -mr-1",
   centerIcon: {
     base: "{UIcon}",
     defaults: {

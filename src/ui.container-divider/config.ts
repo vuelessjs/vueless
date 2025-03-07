@@ -29,12 +29,12 @@ export default /*tw*/ {
     ],
   },
   divider: {
-    base: "border-transparent",
+    base: "border-default",
     variants: {
       variant: {
-        light: "border-gray-100",
-        default: "border-gray-200",
-        dark: "border-gray-300",
+        light: "contrast-125",
+        default: "contrast-100",
+        dark: "contrast-75",
       },
       vertical: {
         true: "border-l h-full",
@@ -52,12 +52,12 @@ export default /*tw*/ {
     },
   },
   label: {
-    base: "absolute p-2 rounded-dynamic bg-white shrink-0 text-sm w-fit",
+    base: "absolute p-2 rounded-medium bg-default shrink-0 text-medium w-fit",
     variants: {
       variant: {
-        light: "text-gray-400",
-        default: "text-gray-500",
-        dark: "text-gray-600",
+        light: "text-muted",
+        default: "text-lifted",
+        dark: "text-accented",
       },
       vertical: {
         true: "transform origin-center rotate-90",
