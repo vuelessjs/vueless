@@ -202,8 +202,8 @@ function setElementTitle(element: HTMLElement) {
   }
 }
 
-function onClickToggleIcon(row: Row) {
-  emit("toggleRowVisibility", row);
+function onClickToggleIcon() {
+  emit("toggleRowVisibility");
 }
 
 function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
@@ -307,7 +307,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       >
         <div
           :data-row-toggle-icon="row.id"
-          @click.stop="() => (onClickToggleIcon(row), onToggleExpand(row))"
+          @click.stop="() => (onClickToggleIcon(), onToggleExpand(row))"
         >
           <slot name="expand" :row="row" :expanded="isExpanded(row)">
             <div

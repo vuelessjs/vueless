@@ -46,21 +46,23 @@ export function addRowId(row: Row) {
   return row;
 }
 
-export function toggleRowVisibility(row: Row, targetRowId: string | number) {
+export function toggleRowVisibility(row: Row, targetRowId: string | number): Row {
   if (row.id === targetRowId) {
     if (row.hasOwnProperty("isShown")) {
       row.isShown = !row.isShown;
+
+      if (!row.isShown) {
+        setNestedRowsHidden(row);
+      }
     }
 
     return row;
   }
 
-  if (row.row && !Array.isArray(row.row)) {
-    toggleRowVisibility(row.row, targetRowId);
-  }
-
   if (row.row && Array.isArray(row.row)) {
     row.row.forEach((nestedRow) => toggleRowVisibility(nestedRow, targetRowId));
+  } else if (row.row && !Array.isArray(row.row)) {
+    toggleRowVisibility(row.row, targetRowId);
   }
 
   if (row.nestedData) {
@@ -68,6 +70,24 @@ export function toggleRowVisibility(row: Row, targetRowId: string | number) {
   }
 
   return row;
+}
+
+function setNestedRowsHidden(row: Row) {
+  if (row.hasOwnProperty("isShown")) {
+    row.isShown = false;
+  }
+
+  if (row.row) {
+    if (Array.isArray(row.row)) {
+      row.row.forEach(setNestedRowsHidden);
+    } else {
+      setNestedRowsHidden(row.row);
+    }
+  }
+
+  if (row.nestedData) {
+    setNestedRowsHidden(row.nestedData);
+  }
 }
 
 export function switchRowCheck(row: Row, isChecked: boolean) {
