@@ -1,16 +1,16 @@
 export default /*tw*/ {
   wrapper: "relative w-full overflow-auto",
-  headerCounterBase: "mr-1.5 pr-1.5 font-medium text-sm",
+  headerCounterBase: "mr-1.5 pr-1.5 font-medium text-medium",
   stickyHeader: {
     base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
       actionsHeader: {
-        true: "rounded-t-dynamic border-primary-200 bg-primary-50",
+        true: "rounded-t-medium border-primary-200 bg-primary-50",
       },
     },
     compoundVariants: [
       { stickedHeader: true, actionsHeader: true, class: "rounded-none" },
-      { stickedHeader: true, actionsHeader: false, class: "border-gray-200 bg-white" },
+      { stickedHeader: true, actionsHeader: false, class: "border-gray-200 bg-default" },
     ],
   },
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
@@ -26,13 +26,13 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-gray-200 rounded-dynamic bg-white",
-  table: "min-w-full border-none text-sm w-full table-auto",
+  tableWrapper: "border border-gray-200 rounded-medium bg-default",
+  table: "min-w-full border-none text-medium w-full table-auto",
   header: "border-b border-gray-200",
   headerRow: "",
   headerRowBefore: "{>headerCellBase} py-1",
   headerCellBase: {
-    base: "p-4 text-sm font-normal text-gray-500 text-left text-nowrap",
+    base: "p-4 text-medium font-normal text-gray-500 text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
@@ -100,7 +100,7 @@ export default /*tw*/ {
     },
   },
   stickyFooterRow: `
-    fixed bottom-0 -ml-px border border-b border-gray-200 bg-white
+    fixed bottom-0 -ml-px border border-b border-gray-200 bg-default
     collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {

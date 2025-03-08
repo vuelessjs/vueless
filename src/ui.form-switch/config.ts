@@ -7,7 +7,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex items-center p-0.5 relative rounded-full cursor-pointer transition
-      focus-visible:outline focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}-600
+      focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
     `,
     variants: {
       size: {
@@ -19,7 +19,7 @@ export default /*tw*/ {
         grayscale: "outline-gray-900",
       },
       checked: {
-        true: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",
+        true: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
         false: "bg-gray-300 hover:bg-gray-400 active:bg-gray-600",
       },
     },
@@ -34,7 +34,7 @@ export default /*tw*/ {
   },
   input: "absolute size-0 opacity-0",
   circle: {
-    base: "rounded-full bg-white flex items-center justify-center transition-all",
+    base: "rounded-full bg-default flex items-center justify-center transition-all",
     variants: {
       size: {
         sm: "size-3",
@@ -59,14 +59,14 @@ export default /*tw*/ {
     },
   },
   toggleLabel: {
-    base: "absolute text-center text-2xs font-medium uppercase text-white",
+    base: "absolute text-center text-xsmall font-medium uppercase text-white",
     compoundVariants: [
       { toggleLabel: true, checked: true, class: "w-1/2 left-1" },
       { toggleLabel: true, checked: false, class: "w-1/2 right-1" },
       {
         toggleLabel: false,
         checked: true,
-        class: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",
+        class: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
       },
       {
         toggleLabel: false,

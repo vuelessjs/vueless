@@ -13,7 +13,7 @@ export default /*tw*/ {
     `,
     variants: {
       color: {
-        white: "bg-white",
+        white: "bg-default",
         black: "bg-gray-900",
         grayscale: "bg-gray-100 dark:bg-gray-900",
       },

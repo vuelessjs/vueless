@@ -43,7 +43,7 @@ const DefaultTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
     return { args, slots };
   },
   template: `
-    <div v-if="args.block" class="border-2 border-dashed border-green-500 p-2 rounded-dynamic">
+    <div v-if="args.block" class="border-2 border-dashed border-green-500 p-2 rounded-medium">
       <ULink v-bind="args">
         ${args.slotTemplate || getSlotsFragment("")}
       </ULink>
@@ -168,7 +168,7 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
   },
   template: `
     <div v-for="variant in variants" :key="variant.name" class="mb-8">
-      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <div class="text-medium font-medium mb-2">{{ variant.name }}</div>
       <URow no-mobile>
         <ULink
           v-for="color in colors"

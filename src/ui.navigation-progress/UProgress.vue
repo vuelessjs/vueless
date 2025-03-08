@@ -11,6 +11,7 @@ import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import type { UProgressProps, Config } from "./types.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -53,6 +54,10 @@ function isActiveStep(index: number | string) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  value: Boolean(props.value),
+}));
+
 const {
   getDataTest,
   progressAttrs,
@@ -61,7 +66,7 @@ const {
   stepAttrs,
   stepperAttrs,
   headerAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>

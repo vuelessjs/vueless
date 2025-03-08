@@ -28,12 +28,12 @@ export interface UAvatarProps {
   /**
    * Avatar color.
    */
-  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
 
   /**
    * Avatar corner rounding.
    */
-  rounded?: "dynamic" | "none" | "sm" | "md" | "lg" | "full";
+  rounded?: "default" | "none" | "sm" | "md" | "lg" | "full";
 
   /**
    * Add border to the avatar.

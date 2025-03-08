@@ -24,12 +24,12 @@ export interface Props {
   /**
    * Badge variant.
    */
-  variant?: "solid" | "outlined" | "soft" | "subtle";
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Badge color.
    */
-  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
 
   /**
    * Badge size.

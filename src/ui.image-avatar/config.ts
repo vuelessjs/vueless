@@ -3,17 +3,17 @@ export default /*tw*/ {
     base: `
       flex items-center justify-center shrink-0
       bg-{color}-100 bg-contain bg-center bg-no-repeat
-      text-{color}-600
+      text-{color}
     `,
     variants: {
       bordered: {
         true: "border border-{color}-200",
       },
       size: {
-        "3xs": "size-4 text-2xs",
-        "2xs": "size-5 text-2xs",
-        xs: "size-6 text-xs",
-        sm: "size-8 text-sm",
+        "3xs": "size-4 text-xsmall",
+        "2xs": "size-5 text-xsmall",
+        xs: "size-6 text-small",
+        sm: "size-8 text-medium",
         md: "size-10 text-lg",
         lg: "size-12 text-2xl",
         xl: "size-14 text-3xl",
@@ -21,7 +21,7 @@ export default /*tw*/ {
         "3xl": "size-20 text-5xl",
       },
       rounded: {
-        dynamic: "rounded-dynamic",
+        default: "rounded-medium",
         none: "rounded-none",
         sm: "rounded",
         md: "rounded-md",
@@ -29,7 +29,7 @@ export default /*tw*/ {
         full: "rounded-full",
       },
       color: {
-        white: "bg-white text-gray-900",
+        white: "bg-default text-gray-900",
         grayscale: "bg-gray-100 text-gray-900",
       },
     },
@@ -37,7 +37,7 @@ export default /*tw*/ {
   placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",
-    rounded: "dynamic",
+    rounded: "default",
     size: "md",
     bordered: false,
     /* icons */

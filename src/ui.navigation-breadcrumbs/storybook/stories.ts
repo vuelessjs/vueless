@@ -96,7 +96,7 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
   },
   template: `
     <div v-for="variant in variants" :key="variant.name" class="mb-8">
-      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <div class="text-medium font-medium mb-2">{{ variant.name }}</div>
       <UBreadcrumbs v-bind="variant.props" :links="args.links" />
     </div>
   `,

@@ -1,14 +1,10 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      relative inline-flex items-center rounded
-      focus-visible:outline focus-visible:outline-dynamic focus-visible:outline-offset-4 focus-visible:outline-{color}-600
+      inline-flex gap-0.5 relative items-center rounded
+      focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {
-      color: {
-        grayscale: "focus-visible:outline-gray-900",
-        white: "focus-visible:outline-white",
-      },
       opened: {
         true: "group",
       },
@@ -19,7 +15,7 @@ export default /*tw*/ {
     base: "{UIcon} block transition duration-300 group-[*]:rotate-180",
     variants: {
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "text-{color}-muted pointer-events-none",
       },
     },
     defaults: {

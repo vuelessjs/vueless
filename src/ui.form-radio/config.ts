@@ -2,13 +2,13 @@ export default /*tw*/ {
   radioLabel: "{ULabel}",
   radio: {
     base: `
-      border border-gray-300 bg-white cursor-pointer transition
-      hover:border-gray-400
-      active:border-{color}-600 active:bg-{color}-200
-      checked:text-{color}-600
+      border border-default bg-default cursor-pointer transition
+      hover:border-lifted
+      active:border-{color} active:bg-{color}/15
+      checked:text-{color}
       focus:ring-0 focus:ring-offset-0
-      focus-visible:outline-{color}-600 focus-visible:outline-dynamic focus-visible:outline-offset-2
-      disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
+      focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2
+      disabled:border-default disabled:bg-gray-100 disabled:cursor-not-allowed
       disabled:checked:bg-gray-400 disabled:checked:border-transparent
     `,
     variants: {

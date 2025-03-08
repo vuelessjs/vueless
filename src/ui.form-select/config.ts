@@ -3,18 +3,18 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-dynamic border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
+      rounded-medium border border-default bg-default
+      hover:border-lifted hover:transition hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
         true: `
           focus-within:outline-0 bg-gray-100
-          hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
+          hover:border-default focus-within:border-default hover:focus-within:border-default
         `,
       },
       opened: {
@@ -47,9 +47,9 @@ export default /*tw*/ {
       `,
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       disabled: {
         true: "text-gray-700",
@@ -59,9 +59,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { size: "sm", multiple: true, class: "text-xs" },
-      { size: "md", multiple: true, class: "text-sm" },
-      { size: "lg", multiple: true, class: "text-base" },
+      { size: "sm", multiple: true, class: "text-small" },
+      { size: "md", multiple: true, class: "text-medium" },
+      { size: "lg", multiple: true, class: "text-large" },
     ],
   },
   selectIcon: {
@@ -114,11 +114,11 @@ export default /*tw*/ {
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon} {>selectIcon}",
   clearMultipleText: {
-    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
+    base: "cursor-pointer flex items-center text-medium font-normal text-gray-400 hover:text-gray-500 transition",
     compoundVariants: [
-      { size: "sm", class: "text-xs" },
-      { size: "md", class: "text-sm" },
-      { size: "lg", class: "text-base" },
+      { size: "sm", class: "text-small" },
+      { size: "md", class: "text-medium" },
+      { size: "lg", class: "text-large" },
     ],
   },
   search: {
@@ -136,9 +136,9 @@ export default /*tw*/ {
       `,
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs",
-        md: "text-sm placeholder:text-sm",
-        lg: "text-base placeholder:text-base",
+        sm: "text-small placeholder:text-small",
+        md: "text-medium placeholder:text-medium",
+        lg: "text-large placeholder:text-large",
       },
       disabled: {
         true: "cursor-not-allowed",

@@ -22,7 +22,7 @@ export interface Props {
   /**
    * Breadcrumbs' color.
    */
-  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
 
   /**
    * Specifies where to open the linked page.

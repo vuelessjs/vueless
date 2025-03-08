@@ -168,7 +168,7 @@ export const Slots: StoryFn<UPaginationArgs> = (args) => ({
             <UIcon name="more_horiz" size="sm" />
           </template>
         </UPagination>
-        <span class="text-sm">Slot Ellipsis</span>
+        <span class="text-medium">Slot Ellipsis</span>
       </URow>
 
       <UPagination v-bind="args" v-model="args.modelValue">

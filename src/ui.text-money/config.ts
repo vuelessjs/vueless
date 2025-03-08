@@ -8,7 +8,7 @@ export default /*tw*/ {
     },
   },
   symbol: {
-    base: "text-{color}-600 mx-1",
+    base: "text-{color} mx-1",
     compoundVariants: [
       { symbolDivided: false, symbolAlign: "left", class: "mr-0" },
       { symbolDivided: false, symbolAlign: "right", class: "ml-0" },

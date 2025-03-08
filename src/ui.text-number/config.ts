@@ -1,12 +1,12 @@
 export default /*tw*/ {
   wrapper: {
-    base: "whitespace-nowrap flex items-center text-{color}-600",
+    base: "whitespace-nowrap flex items-center text-{color}",
     variants: {
       size: {
-        xs: "text-2xs",
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        xs: "text-xsmall",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
         xl: "text-lg",
       },
       color: {

@@ -4,7 +4,6 @@ import { computed } from "vue";
 import useUI from "../composables/useUI.ts";
 
 import defaultConfig from "./config.ts";
-import { NEUTRAL_COLORS, TAILWIND_COLORS } from "../constants.js";
 
 import type { StepperProgressProps, Config } from "./types.ts";
 
@@ -15,21 +14,7 @@ const props = withDefaults(defineProps<StepperProgressProps>(), {
 });
 
 const stepperColor = computed(() => {
-  const isValidColor = (color: string): color is keyof typeof TAILWIND_COLORS =>
-    color in TAILWIND_COLORS;
-
-  const isGrayColor = (color: string): color is keyof typeof TAILWIND_COLORS =>
-    NEUTRAL_COLORS.includes(color);
-
-  if (isValidColor(props.color)) {
-    return TAILWIND_COLORS[props.color][500];
-  }
-
-  if (isGrayColor(props.color)) {
-    return TAILWIND_COLORS[props.color][900];
-  }
-
-  return TAILWIND_COLORS.neutral[900];
+  return `var(--vl-${props.color})`;
 });
 
 /**

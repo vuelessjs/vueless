@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Loader stripe color.
    */
-  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
 
   /**
    * API resource names (endpoint URIs).

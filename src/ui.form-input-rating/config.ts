@@ -28,7 +28,7 @@ export default /*tw*/ {
   counter: {
     variants: {
       size: {
-        sm: "text-base",
+        sm: "text-large",
         md: "text-xl",
         lg: "text-2xl",
       },
@@ -37,8 +37,8 @@ export default /*tw*/ {
   total: {
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
+        sm: "text-medium",
+        md: "text-large",
         lg: "text-xl",
       },
     },

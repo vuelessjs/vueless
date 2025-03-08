@@ -17,7 +17,7 @@ export default /*tw*/ {
         true: "rounded-full",
       },
       tabindex: {
-        true: "cursor-pointer focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}",
+        true: "cursor-pointer focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}",
       },
     },
   },

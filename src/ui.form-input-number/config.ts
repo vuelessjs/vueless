@@ -31,9 +31,9 @@ export default /*tw*/ {
     base: "font-bold select-none !leading-none",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       disabled: {
         true: "pointer-events-none",

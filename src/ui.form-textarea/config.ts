@@ -1,20 +1,20 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-dynamic",
+  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-medium",
   leftSlot: "{>slot} pl-2.5 rounded-r-none",
   rightSlot: "{>slot} pr-2.5 rounded-l-none",
   wrapper: {
     base: `
-      flex bg-white transition w-full
-      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
+      flex bg-default transition w-full
+      rounded-medium border border-default hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
+        true: "!border-default focus-within:outline-0 bg-gray-100",
       },
     },
   },
@@ -26,9 +26,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs",
-        md: "text-sm placeholder:text-sm",
-        lg: "text-base placeholder:text-base",
+        sm: "text-small placeholder:text-small",
+        md: "text-medium placeholder:text-medium",
+        lg: "text-large placeholder:text-large",
       },
       resizable: {
         false: "resize-none",

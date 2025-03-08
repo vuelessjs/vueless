@@ -4,9 +4,9 @@ export default /*tw*/ {
     base: "{UButton} font-normal",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
     defaults: {

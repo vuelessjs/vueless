@@ -133,7 +133,7 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (
   },
   template: `
     <div v-for="variant in variants" :key="variant.name" class="mb-8">
-      <div class="text-sm font-medium mb-2">{{ variant.name }}</div>
+      <div class="text-medium font-medium mb-2">{{ variant.name }}</div>
       <URow no-mobile>
         <UDropdownLink
           v-for="color in colors"

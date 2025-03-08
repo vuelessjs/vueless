@@ -24,12 +24,12 @@ export interface Props {
   /**
    * Button variant.
    */
-  variant?: "solid" | "outlined" | "soft" | "ghost";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";
 
   /**
    * Button color.
    */
-  color?: "primary" | "neutral" | "success" | "warning" | "error" | "info" | "grayscale";
+  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
 
   /**
    * Button size.

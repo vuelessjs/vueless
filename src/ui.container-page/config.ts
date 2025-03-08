@@ -20,8 +20,8 @@ export default /*tw*/ {
         true: "bg-muted",
       },
       rounding: {
-        relative: "md:relative md:pr-4 md:rounded-r-dynamic-lg",
-        fixed: "md:bg-transparent md:relative md:pr-4 md:rounded-r-dynamic-lg",
+        relative: "md:relative md:pr-4 md:rounded-r-large",
+        fixed: "md:bg-transparent md:relative md:pr-4 md:rounded-r-large",
       },
     },
   },
@@ -36,7 +36,7 @@ export default /*tw*/ {
   backLink: "{ULink}",
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
-  description: "mt-1.5 text-base font-normal text-gray-500",
+  description: "mt-1.5 text-large font-normal text-gray-500",
   headerRight: "",
   body: "",
   footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200",
@@ -51,7 +51,7 @@ export default /*tw*/ {
     },
   },
   rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-dynamic-lg h-screen",
+    base: "fixed top-0 w-4 rounded-r-large h-screen",
     variants: {
       muted: {
         false: "bg-default",

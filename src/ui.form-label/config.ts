@@ -27,9 +27,9 @@ export default /*tw*/ {
     base: "z-10 block !leading-none w-max transition",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       align: {
         top: "font-medium",
@@ -39,7 +39,7 @@ export default /*tw*/ {
         right: "font-normal",
       },
       error: {
-        true: "text-red-600 group-focus-within:text-red-600",
+        true: "text-error group-focus-within:text-error",
       },
       disabled: {
         true: "text-gray-500 cursor-not-allowed",
@@ -47,15 +47,15 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { interactive: true, disabled: false, class: "hover:cursor-pointer" },
-      { align: "topInside", size: "sm", class: "top-2 text-2xs" },
-      { align: "topInside", size: "md", class: "top-2.5 text-xs" },
-      { align: "topInside", size: "lg", class: "top-2.5 text-sm" },
+      { align: "topInside", size: "sm", class: "top-2 text-xsmall" },
+      { align: "topInside", size: "md", class: "top-2.5 text-small" },
+      { align: "topInside", size: "lg", class: "top-2.5 text-medium" },
       { align: "topWithDesc", size: "sm", class: "-mt-px" },
       { align: "topWithDesc", size: "md", class: "" },
       { align: "topWithDesc", size: "lg", class: "mt-px" },
-      { align: ["left", "right"], size: "sm", class: "-mt-0.5 text-sm" },
-      { align: ["left", "right"], size: "md", class: "text-sm" },
-      { align: ["left", "right"], size: "lg", class: "mt-px text-base" },
+      { align: ["left", "right"], size: "sm", class: "-mt-0.5 text-medium" },
+      { align: ["left", "right"], size: "md", class: "text-medium" },
+      { align: ["left", "right"], size: "lg", class: "mt-px text-large" },
       { align: ["left", "right"], centred: false, class: "pt-1" },
     ],
   },
@@ -63,9 +63,9 @@ export default /*tw*/ {
     base: "font-normal text-gray-500 text-left !leading-tight",
     variants: {
       size: {
-        sm: "text-2xs",
-        md: "text-xs",
-        lg: "text-sm",
+        sm: "text-xsmall",
+        md: "text-small",
+        lg: "text-medium",
       },
       align: {
         top: "",
@@ -75,7 +75,7 @@ export default /*tw*/ {
         right: "pt-0.5",
       },
       error: {
-        true: "text-red-600",
+        true: "text-error",
       },
     },
   },

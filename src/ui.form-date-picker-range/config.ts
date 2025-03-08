@@ -4,10 +4,10 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{>datepickerInput}",
     wrapper: {
-      base: "outline outline-dynamic-sm outline-primary-600 border-primary-600 hover:border-primary-600",
+      base: "outline outline-small outline-primary-600 border-primary-600 hover:border-primary-600",
       variants: {
         error: {
-          true: "border-red-600 hover:border-red-600 outline-red-600",
+          true: "border-error hover:border-error outline-error",
         },
       },
     },
@@ -22,16 +22,16 @@ export default /*tw*/ {
       },
     },
   },
-  rangeButton: "flex rounded-dynamic max-md:justify-between",
+  rangeButton: "flex rounded-medium max-md:justify-between",
   rangeButtonSelect: "{UButton} shrink-0 grow rounded-none",
   rangeButtonShift: `
-    first:rounded-dynamic first:rounded-r-none
-    last:rounded-dynamic last:rounded-l-none
+    first:rounded-medium first:rounded-r-none
+    last:rounded-medium last:rounded-l-none
   `,
   menu: {
     base: `
-      absolute z-40 mb-3 w-80 overflow-hidden rounded-dynamic
-      border border-gray-300 bg-white p-2 shadow-sm focus:outline-hidden
+      absolute z-40 mb-3 w-80 overflow-hidden rounded-medium
+      border border-default bg-default p-2 shadow-sm focus:outline-hidden
     `,
     variants: {
       openDirectionX: {
@@ -62,7 +62,7 @@ export default /*tw*/ {
   periodButtonActive: "{>periodButton} !bg-gray-700/15",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
-  rangeSwitchTitle: "font-medium text-sm",
+  rangeSwitchTitle: "font-medium text-medium",
   periodDateList: {
     base: "grid grid-rows-1 gap-0.5",
     variants: {
@@ -105,7 +105,7 @@ export default /*tw*/ {
     base: "{UInput} {>rangeInput}",
     wrapper: "!rounded-l-none",
   },
-  rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
+  rangeInputError: "text-small font-normal leading-none mt-2 text-center text-red-500",
   datepickerCalendar: {
     base: "{UCalendar}",
     wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",

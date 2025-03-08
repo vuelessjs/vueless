@@ -35,9 +35,9 @@ export default /*tw*/ {
     base: "font-normal flex-auto pt-px",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },

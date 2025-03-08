@@ -1,11 +1,11 @@
 export default /*tw*/ {
-  wrapper: "p-3 w-[19rem] border border-gray-300 rounded-dynamic bg-white shadow-sm overflow-hidden focus:outline-hidden",
+  wrapper: "p-3 w-[19rem] border border-default rounded-medium bg-default shadow-sm overflow-hidden focus:outline-hidden",
   navigation: "mb-2 pb-2 border-b flex items-center justify-between",
   viewSwitchButton: "{UButton}",
   nextPrevButton: "{UButton}",
   dayView: "",
   weekDays: "grid grid-cols-7 justify-items-center gap-1",
-  weekDay: "flex size-8 items-center justify-center text-xs capitalize text-gray-500 font-medium",
+  weekDay: "flex size-8 items-center justify-center text-small capitalize text-gray-500 font-medium",
   days: {
     base: "grid grid-cols-7 justify-items-center gap-0.5",
     variants: {
@@ -44,8 +44,8 @@ export default /*tw*/ {
   currentFirstMonthInRange: "{>month} {>edgeDateInRange} {>firstDateInRange} {>currentDate}",
   lastMonthInRange: "{>month} {>edgeDateInRange} {>lastDateInRange}",
   firstMonthInRange: "{>month} {>edgeDateInRange} {>firstDateInRange}",
-  singleMonthInRange: "{>month} {>dateInRange} rounded-dynamic",
-  singleCurrentMonthInRange: "{>month} {>dateInRange} {>currentDate} rounded-dynamic",
+  singleMonthInRange: "{>month} {>dateInRange} rounded-medium",
+  singleCurrentMonthInRange: "{>month} {>dateInRange} {>currentDate} rounded-medium",
   monthInRange: "{>month} {>dateInRange}",
   selectedMonth: "{>month} {>selectedDate}",
   activeMonth: "{>month} {>activeDate}",
@@ -58,21 +58,21 @@ export default /*tw*/ {
   lastYearInRange: "{>year} {>edgeDateInRange} {>lastDateInRange}",
   firstYearInRange: "{>year} {>edgeDateInRange} {>firstDateInRange}",
   yearInRange: "{>year} {>dateInRange}",
-  singleYearInRange: "{>year} {>dateInRange} rounded-dynamic",
-  singleCurrentYearInRange: "{>year} {>dateInRange} {>currentDate} rounded-dynamic",
+  singleYearInRange: "{>year} {>dateInRange} rounded-medium",
+  singleCurrentYearInRange: "{>year} {>dateInRange} {>currentDate} rounded-medium",
   selectedYear: "{>year} {>selectedDate}",
   activeYear: "{>year} {>activeDate}",
-  timepicker: "mt-2 pl-1 pt-3 text-sm flex items-stretch justify-between gap-2 border-t border-gray-200",
+  timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-gray-200",
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
-    flex items-center rounded-dynamic border border-gray-300
+    flex items-center rounded-medium border border-default
     hover:focus-within:border-primary-600 focus-within:border-primary-600
-    focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
+    focus-within:outline focus-within:outline-small focus-within:outline-primary-600
   `,
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-sm focus:ring-0",
-  timepickerInputHours: "{>timepickerInput} rounded-l-dynamic",
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0",
+  timepickerInputHours: "{>timepickerInput} rounded-l-medium",
   timepickerInputMinutes: "{>timepickerInput}",
-  timepickerInputSeconds: "{>timepickerInput} rounded-r-dynamic",
+  timepickerInputSeconds: "{>timepickerInput} rounded-r-medium",
   timepickerSubmitButton: "{UButton} py-2 border-0",
   i18n: {
     today: "Today",

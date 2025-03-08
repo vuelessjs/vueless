@@ -2,14 +2,14 @@ export default /*tw*/ {
   inputLabel: "{ULabel} w-full",
   dropzone: {
     base: `
-      p-3 size-auto w-full bg-white transition
-      rounded-dynamic border border-solid border-gray-300
-      hover:border-gray-400 hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
+      p-3 size-auto w-full bg-default transition
+      rounded-medium border border-solid border-default
+      hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
         true: "pointer-events-none bg-gray-100",
@@ -21,11 +21,11 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, size: "lg", class: "pt-9" },
     ],
   },
-  dropzoneHover: "border-gray-400 border-dashed",
+  dropzoneHover: "border-lifted border-dashed",
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   content: {
-    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-dynamic bg-primary-600/5",
+    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-medium bg-primary-600/5",
     variants: {
       multiple: {
         false: "items-center",
@@ -42,9 +42,9 @@ export default /*tw*/ {
     base: "pr-4 text-gray-700 grow w-full self-center",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },

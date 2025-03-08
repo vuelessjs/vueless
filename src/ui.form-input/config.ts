@@ -2,16 +2,16 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
-      hover:border-gray-400 hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-primary-600
+      border rounded-medium border-default relative flex w-full bg-default transition
+      hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
+      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
+        true: "!border-default focus-within:outline-0 bg-gray-100",
       },
     },
   },
@@ -40,9 +40,9 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs placeholder:font-normal",
-        md: "text-sm placeholder:text-sm placeholder:font-normal",
-        lg: "text-base placeholder:text-base placeholder:font-normal",
+        sm: "text-small placeholder:text-small placeholder:font-normal",
+        md: "text-medium placeholder:text-medium placeholder:font-normal",
+        lg: "text-large placeholder:text-large placeholder:font-normal",
       },
       error: {
         true: "placeholder:text-red-300",
