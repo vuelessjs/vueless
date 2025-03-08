@@ -25,10 +25,10 @@ export default /*tw*/ {
         true: "decoration-dashed hover:decoration-dashed",
       },
       dotted: {
-        true: "decoration-dotted hover:decoration-dotted ",
+        true: "decoration-dotted hover:decoration-dotted",
       },
       disabled: {
-        true: "text-{color}-muted pointer-events-none",
+        true: "!text-{color}/75 !no-underline cursor-not-allowed",
       },
       block: {
         true: "w-full",

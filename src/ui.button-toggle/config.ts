@@ -15,7 +15,7 @@ export default /*tw*/ {
         false: "flex-nowrap gap-1 p-1 w-fit border rounded-medium border-default",
       },
       disabled: {
-        true: "pointer-events-none bg-lifted",
+        true: "bg-lifted cursor-not-allowed",
       },
       block: {
         true: "w-full flex-nowrap",
@@ -45,7 +45,7 @@ export default /*tw*/ {
     },
   },
   toggleButtonActive: {
-    base: "{>toggleButton} !bg-primary/15 disabled:text-primary",
+    base: "{>toggleButton} !bg-primary/15 disabled:!bg-primary/15 disabled:text-primary",
     variants: {
       split: {
         false: "border-0",

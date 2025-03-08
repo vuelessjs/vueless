@@ -9,7 +9,7 @@ export default /*tw*/ {
       focus:ring-0 focus:outline-none focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2
       disabled:border-default disabled:bg-neutral/10 disabled:cursor-not-allowed
-      disabled:checked:bg-neutral-muted disabled:checked:border-transparent
+      disabled:checked:bg-{color}/75 disabled:checked:border-transparent
     `,
     variants: {
       size: {
@@ -34,7 +34,7 @@ export default /*tw*/ {
         lg: "size-6",
       },
       disabled: {
-        true: "!border-lifted !bg-neutral-muted cursor-not-allowed",
+        true: "!bg-{color}/75 cursor-not-allowed",
       },
     },
   },

@@ -53,6 +53,11 @@ export interface Props {
   interactive?: boolean;
 
   /**
+   * Disable the link.
+   */
+  disabled?: boolean;
+
+  /**
    * Mark that Icon used inside Vueless components (used to get icons from vueless library).
    */
   internal?: boolean;

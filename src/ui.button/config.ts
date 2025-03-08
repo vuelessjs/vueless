@@ -4,7 +4,7 @@ export default /*tw*/ {
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
       border border-transparent transition cursor-pointer
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
-      disabled:pointer-events-none disabled:outline-0 disabled:outline-offset-0
+      disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
     `,
     variants: {
       size: {
@@ -21,31 +21,31 @@ export default /*tw*/ {
           bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
-          disabled:bg-{color}-muted
+          disabled:!bg-{color}/75
         `,
         outlined: `
           text-{color} border-{color}
           hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
-          disabled:text-{color}-muted disabled:border-{color}-muted
+          disabled:!text-{color}/75 disabled:!bg-{color}/5 disabled:!border-{color}/75
         `,
         subtle: `
-          text-{color} bg-{color}-lifted/5 border-{color}/15
+          text-{color} bg-{color}/5 border-{color}/15
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:text-{color}-muted disabled:bg-{color}-muted/5
+          disabled:!text-{color}/75 disabled:!bg-{color}/5 disabled:!border-{color}/10
         `,
         soft: `
-          text-{color} bg-{color}-lifted/5
+          text-{color} bg-{color}/5
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:text-{color}-muted disabled:bg-{color}-muted/5
+          disabled:!text-{color}/75 disabled:!bg-{color}/5
         `,
         ghost: `
           text-{color}
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:text-{color}-muted
+          disabled:!text-{color}/75 disabled:!bg-transparent
         `,
       },
       round: {

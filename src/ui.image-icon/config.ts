@@ -10,9 +10,6 @@ export default /*tw*/ {
       color: {
         inherit: "text-inherit",
       },
-      interactive: {
-        true: "cursor-pointer opacity-75",
-      },
       size: {
         "4xs": "size-2.5",
         "3xs": "size-3",
@@ -26,6 +23,12 @@ export default /*tw*/ {
         "3xl": "size-14",
         "4xl": "size-16",
         "5xl": "size-20",
+      },
+      interactive: {
+        true: "cursor-pointer hover:text-{color}-lifted active:text-{color}-accented",
+      },
+      disabled: {
+        true: "text-{color}/75 cursor-not-allowed",
       },
     },
   },

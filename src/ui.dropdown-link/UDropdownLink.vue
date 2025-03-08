@@ -42,6 +42,8 @@ const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 const elementId = props.id || useId();
 
 function onClickLink() {
+  if (props.disabled) return;
+
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
@@ -119,6 +121,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
         internal
         interactive
         :color="color"
+        :disabled="disabled"
         :name="config.defaults.toggleIcon"
         v-bind="toggleIconAttrs"
         :data-test="getDataTest('toggle')"

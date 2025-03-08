@@ -13,11 +13,6 @@ export default /*tw*/ {
   dropdownLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[*]:rotate-180",
-    variants: {
-      disabled: {
-        true: "text-{color}-muted pointer-events-none",
-      },
-    },
     defaults: {
       size: {
         sm: "2xs",
