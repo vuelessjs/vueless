@@ -39,7 +39,7 @@ export interface Row {
 }
 
 export interface FlatRow extends Row {
-  parentId?: RowId;
+  parentRowId?: RowId;
   nestedLeveL: number;
 }
 

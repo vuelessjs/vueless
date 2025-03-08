@@ -418,8 +418,8 @@ function clearSelectedItems() {
   selectedRows.value = [];
 }
 
-function onToggleRowVisibility(row: FlatRow | Row) {
-  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentId === row.id);
+function onToggleRowVisibility(row: Row) {
+  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentRowId === row.id);
 
   if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
     row.nestedData.isShown = !row.nestedData.isShown;
@@ -729,7 +729,7 @@ const {
             @dblclick="onDoubleClickRow"
             @click-cell="onClickCell"
             @toggle-expand="onToggleExpand"
-            @toggle-row-visibility="onToggleRowVisibility"
+            @toggle-row-visibility="onToggleRowVisibility(row)"
             @toggle-checkbox="onToggleRowCheckbox"
           >
             <template
