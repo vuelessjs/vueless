@@ -19,9 +19,6 @@ export default /*tw*/ {
     base: "absolute rounded-full bg-{color} ease-[cubic-bezier(0,1,1,0)] vueless-loader-ellipse",
     variants: {
       color: {
-        white: "bg-default",
-        black: "bg-gray-900",
-        grayscale: "bg-gray-900 dark:bg-default",
         inherit: "bg-current",
       },
       size: {
