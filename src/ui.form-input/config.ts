@@ -3,8 +3,8 @@ export default /*tw*/ {
   wrapper: {
     base: `
       border rounded-medium border-default relative flex w-full bg-default transition
-      hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
+      hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
@@ -34,8 +34,8 @@ export default /*tw*/ {
   input: {
     base: `
       block w-full py-2 px-3 font-normal !leading-none bg-transparent
-      border-none rounded-inherit transition focus:ring-0
-      placeholder:font-normal placeholder-gray-400
+      border-none rounded-inherit transition focus:ring-0 focus:outline-none
+      placeholder:font-normal placeholder-neutral-muted
       disabled:text-gray-700 disabled:cursor-not-allowed
     `,
     variants: {
@@ -45,7 +45,7 @@ export default /*tw*/ {
         lg: "text-large placeholder:text-large placeholder:font-normal",
       },
       error: {
-        true: "placeholder:text-red-300",
+        true: "placeholder:text-error-muted",
       },
       typePassword: {
         true: "tracking-widest [-webkit-text-security:disc]",

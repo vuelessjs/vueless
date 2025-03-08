@@ -143,7 +143,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
             <UBadge
               label="Connection lost"
               size="lg"
-              color="red"
+              color="error"
               variant="outlined"
             />
           </template>
@@ -153,7 +153,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
           <template #description>
             <UBadge
               label="We are trying to reconnect. Please wait a moment or check your network settings."
-              color="red"
+              color="error"
               variant="ghost"
             />
           </template>
@@ -163,7 +163,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
       <URow>
         <UAlert v-bind="args">
           <template #top>
-            <UIcon name="wifi_off" color="red" />
+            <UIcon name="wifi_off" color="error" />
           </template>
         </UAlert>
 
@@ -181,7 +181,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
 
         <UAlert v-bind="args" label="Delete">
           <template #right>
-            <UIcon name="play_arrow" color="green" />
+            <UIcon name="play_arrow" color="success" />
           </template>
         </UAlert>
       </URow>

@@ -148,7 +148,7 @@ SlotIcon.args = {
       <UBadge
         v-if="index === 1"
         label="Info"
-        color="green"
+        color="success"
         size="sm"
       />
     </template>

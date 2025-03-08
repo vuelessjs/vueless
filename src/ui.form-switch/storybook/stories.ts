@@ -106,7 +106,7 @@ SlotLabel.args = {
   label: "Enable Notifications",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" />
+      <UBadge :label="label" color="success" />
     </template>
   `,
 };

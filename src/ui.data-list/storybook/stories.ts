@@ -197,7 +197,7 @@ SlotActions.args = {
       <UIcon
         name="delete"
         size="sm"
-        color="red"
+        color="error"
         interactive
         v-tooltip="'Delete'"
         @click="removeItem(item)"

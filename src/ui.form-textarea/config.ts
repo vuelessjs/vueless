@@ -6,8 +6,8 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex bg-default transition w-full
-      rounded-medium border border-default hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
+      rounded-medium border border-default hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
@@ -22,7 +22,7 @@ export default /*tw*/ {
     base: `
       px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
       placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
-      focus:ring-0 disabled:cursor-not-allowed
+      focus:ring-0 focus:outline-none disabled:cursor-not-allowed
     `,
     variants: {
       size: {
@@ -34,7 +34,7 @@ export default /*tw*/ {
         false: "resize-none",
       },
       error: {
-        true: "placeholder:text-red-300",
+        true: "placeholder:text-error-muted",
       },
     },
     compoundVariants: [

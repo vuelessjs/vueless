@@ -158,7 +158,7 @@ export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           <UIcon
             name="heart_plus"
             size="xs"
-            color="green"
+            color="success"
             class="mx-1"
           />
         </template>
@@ -179,7 +179,7 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <ULink
         :label="opened ? 'collapse' : 'expand'"
-        color="green"
+        color="success"
         size="sm"
         class="mx-1"
       />

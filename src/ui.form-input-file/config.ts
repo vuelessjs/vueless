@@ -4,8 +4,8 @@ export default /*tw*/ {
     base: `
       p-3 size-auto w-full bg-default transition
       rounded-medium border border-solid border-default
-      hover:border-lifted hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
+      hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
@@ -25,7 +25,7 @@ export default /*tw*/ {
   descriptionTop: "{UText} text-gray-700 mb-2",
   descriptionBottom: "{UText} text-gray-700 mt-2",
   content: {
-    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-medium bg-primary-600/5",
+    base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-medium bg-primary/5",
     variants: {
       multiple: {
         false: "items-center",

@@ -162,7 +162,7 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           <UIcon
             name="heart_plus"
             size="sm"
-            color="green"
+            color="success"
             class="mx-1"
           />
         </template>
@@ -170,7 +170,7 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
 
       <UDropdownLink v-bind="args">
         <template #default>
-          <UBadge label="Dropdown" color="green" variant="ghost" />
+          <UBadge label="Dropdown" color="success" variant="ghost" />
         </template>
       </UDropdownLink>
     </URow>
@@ -183,7 +183,7 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <UIcon
         name="expand_circle_down"
-        color="green"
+        color="success"
         class="mx-1"
         :class="{ 'rotate-180' : opened }"
       />

@@ -100,10 +100,10 @@ export const Slots: StoryFn<UFilesArgs> = (args) => ({
   template: `
     <UFiles v-bind="args">
       <template #left="{ index }">
-        <UIcon v-if="index === 0" name="info" color="orange" size="xs" />
+        <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
       </template>
       <template #right="{ index }">
-        <UIcon v-if="index === 1" name="check_circle" color="green" size="xs" />
+        <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
       </template>
     </UFiles>
   `,

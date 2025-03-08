@@ -479,7 +479,7 @@ export const CellSlots = DefaultTemplate.bind({});
 CellSlots.args = {
   slotTemplate: `
     <template #cell-orderId="{ value }">
-      <ULink :label="value" color="green" />
+      <ULink :label="value" color="success" />
     </template>
 
     <template #cell-customerName="{ value }">

@@ -4,8 +4,8 @@ export default /*tw*/ {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
       rounded-medium border border-default bg-default
-      hover:border-lifted hover:transition hover:focus-within:border-primary-600 focus-within:border-primary-600
-      focus-within:outline focus-within:outline-small focus-within:outline-primary-600
+      hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
@@ -131,7 +131,7 @@ export default /*tw*/ {
   searchInput: {
     base: `
         p-0 font-normal !leading-none relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-hidden focus:ring-0
+        focus:shadow-none focus:outline-hidden focus:ring-0 focus:outline-none
         placeholder:text-gray-400 placeholder:font-normal
       `,
     variants: {
@@ -144,7 +144,7 @@ export default /*tw*/ {
         true: "cursor-not-allowed",
       },
       error: {
-        true: "placeholder:text-red-300",
+        true: "placeholder:text-error-muted",
       },
     },
   },

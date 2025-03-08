@@ -159,7 +159,7 @@ LeftSlot.args = {
       <UIcon
         name="heart_plus"
         size="sm"
-        color="green"
+        color="success"
       />
     </template>
   `,
@@ -171,7 +171,7 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <ULink
         :label="opened ? 'collapse' : 'expand'"
-        color="green"
+        color="success"
       />
     </template>
   `,

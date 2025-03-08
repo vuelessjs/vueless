@@ -147,7 +147,7 @@ export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
   slotTemplate: `
     <UText>To proceed with your registration, please enter your
-    <UBadge label="email address" v-bind="args" color="green" /> in the field below.
+    <UBadge label="email address" v-bind="args" color="success" /> in the field below.
     A verification link will be sent to your inbox shortly.</UText>
   `,
 };

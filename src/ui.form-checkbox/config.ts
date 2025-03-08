@@ -6,7 +6,7 @@ export default /*tw*/ {
       hover:border-lifted
       active:border-{color} active:bg-{color}/15
       checked:text-{color}
-      focus:ring-0 focus:ring-offset-0
+      focus:ring-0 focus:outline-none focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2
       disabled:border-default disabled:bg-neutral/10 disabled:cursor-not-allowed
       disabled:checked:bg-neutral-muted disabled:checked:border-transparent

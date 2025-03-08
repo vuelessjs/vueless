@@ -4,7 +4,7 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{>datepickerInput}",
     wrapper: {
-      base: "outline outline-small outline-primary-600 border-primary-600 hover:border-primary-600",
+      base: "outline outline-small outline-primary border-primary hover:border-primary",
       variants: {
         error: {
           true: "border-error hover:border-error outline-error",
@@ -76,7 +76,7 @@ export default /*tw*/ {
   },
   periodDate: "w-full",
   periodDateSelected: "{>periodDate}",
-  periodDateCurrent: "{>periodDate} border-2 border-primary-600",
+  periodDateCurrent: "{>periodDate} border-2 border-primary",
   periodDateCurrentSelected: "{>periodDate} {>periodDateSelected} {>periodDateCurrent}",
   customRangeButton: {
     base: "{>periodButton}",

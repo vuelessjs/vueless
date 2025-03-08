@@ -173,7 +173,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
 
       <UInputSearch v-bind="args" :config="{ searchInput: { rightSlot: 'pr-0' } }">
         <template #right>
-          <UBadge label="Search" size="sm" color="green" />
+          <UBadge label="Search" size="sm" color="success" />
         </template>
       </UInputSearch>
     </URow>

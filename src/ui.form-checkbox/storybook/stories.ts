@@ -176,7 +176,7 @@ export const SlotLabel = DefaultTemplate.bind({});
 SlotLabel.args = {
   slotTemplate: `
     <template #label>
-      <UBadge label="This option is required" color="red" size="sm" />
+      <UBadge label="This option is required" color="error" size="sm" />
     </template>
   `,
 };
@@ -185,7 +185,7 @@ export const SlotBottom = DefaultTemplate.bind({});
 SlotBottom.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Subscription is optional" color="green" size="sm" />
+      <UBadge label="Subscription is optional" color="success" size="sm" />
     </template>
   `,
 };

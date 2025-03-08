@@ -64,7 +64,7 @@ const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) 
       </UCheckboxGroup>
 
       <URow>
-        <UAlert size="sm" variant="ghost" color="green" bordered>
+        <UAlert size="sm" variant="ghost" color="success" bordered>
           <p>Selected value: {{ value }}</p>
         </UAlert>
       </URow>
@@ -147,7 +147,7 @@ export const SlotLabel = DefaultTemplate.bind({});
 SlotLabel.args = {
   slotTemplate: `
     <template #label>
-      <UBadge label="At least one option is required" color="green" />
+      <UBadge label="At least one option is required" color="success" />
     </template>
   `,
 };

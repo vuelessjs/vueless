@@ -22,10 +22,6 @@ interface UButtonArgs extends Props {
   enum: "variant" | "size";
 }
 
-interface StoryArgType {
-  options?: string[];
-}
-
 export default {
   id: "1010",
   title: "Buttons & Links / Button",
@@ -80,12 +76,9 @@ const EnumVariantTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes
 const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
   components: { UButton, URow, UCol },
   setup() {
-    const variantOptions = (argTypes.variant as StoryArgType)?.options ?? [];
-    const variants = [...Array.from(variantOptions), "thirdary"];
-
     return {
       args,
-      variants,
+      variants: argTypes?.variant?.options,
       colors: argTypes?.color?.options,
     };
   },
@@ -137,7 +130,7 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
       <UButton
         label="Toggle loading"
         variant="outlined"
-        color="green"
+        color="success"
         leftIcon="play_arrow"
         @click="toggleLoading"
         />

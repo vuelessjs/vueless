@@ -125,7 +125,7 @@ export const SlotCounter = DefaultTemplate.bind({});
 SlotCounter.args = {
   slotTemplate: `
     <template #counter="{ counter }">
-      <UBadge :label="'Current rating is: ' + String(counter)" color="green" />
+      <UBadge :label="'Current rating is: ' + String(counter)" color="success" />
     </template>
   `,
 };
@@ -135,7 +135,7 @@ SlotTotal.args = {
   total: 250,
   slotTemplate: `
     <template #total="{total}">
-      <UBadge :label="'Total reviews: ' + String(total)" color="green" />
+      <UBadge :label="'Total reviews: ' + String(total)" color="success" />
     </template>
   `,
 };

@@ -14,14 +14,14 @@ export default /*tw*/ {
       },
     },
   },
-  dateInRange: "bg-primary-600/10 text-primary-900 hover:bg-primary/15 rounded-none",
+  dateInRange: "bg-primary/10 text-default hover:bg-primary/15 rounded-none",
   edgeDateInRange: "",
   firstDateInRange: "rounded-r-none",
   lastDateInRange: "rounded-l-none",
   anotherMonthDate: "text-gray-400",
-  activeDate: "bg-primary-600/10",
+  activeDate: "bg-primary/10",
   selectedDate: "",
-  currentDate: "border-2 border-primary-600",
+  currentDate: "border-2 border-primary",
   day: "{UButton} size-9 w-full",
   currentDay: "{>day} {>currentDate}",
   dayInRange: "{>day} {>dateInRange}",
@@ -66,10 +66,10 @@ export default /*tw*/ {
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
     flex items-center rounded-medium border border-default
-    hover:focus-within:border-primary-600 focus-within:border-primary-600
-    focus-within:outline focus-within:outline-small focus-within:outline-primary-600
+    hover:focus-within:border-primary focus-within:border-primary
+    focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0",
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0 focus:outline-none",
   timepickerInputHours: "{>timepickerInput} rounded-l-medium",
   timepickerInputMinutes: "{>timepickerInput}",
   timepickerInputSeconds: "{>timepickerInput} rounded-r-medium",

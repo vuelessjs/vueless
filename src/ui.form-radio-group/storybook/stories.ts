@@ -60,7 +60,7 @@ const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
         </URadio>
       </URadioGroup>
 
-      <UAlert size="sm" variant="ghost" color="green" bordered>
+      <UAlert size="sm" variant="ghost" color="success" bordered>
         <p>Selected value: {{ args.modelValue }}</p>
       </UAlert>
     </UCol>
@@ -147,7 +147,7 @@ SlotLabel.args = {
   name: "SlotLabel",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" variant="ghost" />
+      <UBadge :label="label" color="success" variant="ghost" />
     </template>
   `,
 };

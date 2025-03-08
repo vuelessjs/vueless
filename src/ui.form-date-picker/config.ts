@@ -4,7 +4,7 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{UInput} {>datepickerInput}",
     wrapper: {
-      base: "outline outline-small outline-primary-600 border-primary-600 hover:border-primary-600",
+      base: "outline outline-small outline-primary border-primary hover:border-primary",
       variants: {
         error: {
           true: "outline-error border-error hover:border-error",

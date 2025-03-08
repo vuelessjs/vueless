@@ -137,7 +137,7 @@ SlotLabel.args = {
   label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" />
+      <UBadge :label="label" color="success" />
     </template>
   `,
 };
@@ -146,7 +146,7 @@ export const SlotBottom = DefaultTemplate.bind({});
 SlotBottom.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Your opinion is important for us!" color="green" class="max-w-fit" />
+      <UBadge label="Your opinion is important for us!" color="success" class="max-w-fit" />
     </template>
   `,
 };

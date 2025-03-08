@@ -126,13 +126,13 @@ export const Slots: StoryFn<UNumberArgs> = (args) => ({
     <URow>
       <UNumber v-bind="args">
         <template #left>
-          <UIcon name="confirmation_number" color="green" />
+          <UIcon name="confirmation_number" color="success" />
         </template>
       </UNumber>
 
       <UNumber v-bind="args">
         <template #right>
-          <UBadge label="Quantity" color="green" />
+          <UBadge label="Quantity" color="success" />
         </template>
       </UNumber>
     </URow>

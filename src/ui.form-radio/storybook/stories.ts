@@ -108,7 +108,7 @@ export const SlotLabel = DefaultTemplate.bind({});
 SlotLabel.args = {
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" />
+      <UBadge :label="label" color="success" />
     </template>
   `,
 };
@@ -119,7 +119,7 @@ SlotBottom.args = {
   value: "radio",
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Add to favorite" color="green" size="sm" />
+      <UBadge label="Add to favorite" color="success" size="sm" />
     </template>
   `,
 };

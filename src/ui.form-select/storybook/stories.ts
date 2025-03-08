@@ -334,7 +334,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         label="Slot clear-multiple"
       >
         <template #clear-multiple>
-          <ULink label="Close" color="green" />
+          <ULink label="Close" color="success" />
         </template>
       </USelect>
 
@@ -397,7 +397,7 @@ export const SlotSelectedValueLabel = DefaultTemplate.bind({});
 SlotSelectedValueLabel.args = {
   slotTemplate: `
     <template #selected-label="{ selectedLabel }">
-      <UBadge :label="selectedLabel" color="green" />
+      <UBadge :label="selectedLabel" color="success" />
     </template>
   `,
 };

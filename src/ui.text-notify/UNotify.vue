@@ -155,7 +155,7 @@ const {
     >
       <UIcon
         v-if="notification.type === NotificationType.Success"
-        color="green"
+        color="success"
         variant="light"
         size="md"
         internal
@@ -166,7 +166,7 @@ const {
 
       <UIcon
         v-else-if="notification.type === NotificationType.Warning"
-        color="orange"
+        color="warning"
         variant="light"
         size="md"
         internal
@@ -178,7 +178,7 @@ const {
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
-        color="red"
+        color="error"
         variant="light"
         size="md"
         internal

@@ -98,6 +98,6 @@ Colors.args = { enum: "color" };
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
   slotTemplate: `
-    <UBadge v-bind="args" size="lg" color="green" />
+    <UBadge v-bind="args" size="lg" color="success" />
   `,
 };
