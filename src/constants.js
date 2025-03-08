@@ -56,43 +56,36 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-primary": "--color-primary-600",
   "--vl-primary-lifted": "--color-primary-700",
   "--vl-primary-accented": "--color-primary-800",
-  "--vl-primary-muted": "--color-primary-400",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
   "--vl-info-lifted": "--color-blue-700",
   "--vl-info-accented": "--color-blue-800",
-  "--vl-info-muted": "--color-blue-400",
 
   /* Error colors */
   "--vl-error": "--color-red-600",
   "--vl-error-lifted": "--color-red-700",
   "--vl-error-accented": "--color-red-800",
-  "--vl-error-muted": "--color-red-400",
 
   /* Warning colors */
   "--vl-warning": "--color-orange-600",
   "--vl-warning-lifted": "--color-orange-700",
   "--vl-warning-accented": "--color-orange-800",
-  "--vl-warning-muted": "--color-orange-400",
 
   /* Success colors */
   "--vl-success": "--color-green-600",
   "--vl-success-lifted": "--color-green-700",
   "--vl-success-accented": "--color-green-800",
-  "--vl-success-muted": "--color-green-400",
 
   /* Neutral colors */
   "--vl-neutral": "--vl-neutral-500",
   "--vl-neutral-lifted": "--vl-neutral-600",
   "--vl-neutral-accented": "--vl-neutral-700",
-  "--vl-neutral-muted": "--vl-neutral-400",
 
   /* Grayscale colors */
   "--vl-grayscale": "--vl-neutral-900",
   "--vl-grayscale-lifted": "--vl-neutral-800",
   "--vl-grayscale-accented": "--vl-neutral-700",
-  "--vl-grayscale-muted": "--vl-neutral-400",
 
   /* Text neutral colors */
   "--vl-text": "--vl-neutral-900",
@@ -119,43 +112,36 @@ export const DEFAULT_DARK_THEME = {
   "--vl-primary": "--color-primary-400",
   "--vl-primary-lifted": "--color-primary-500",
   "--vl-primary-accented": "--color-primary-600",
-  "--vl-primary-muted": "--color-primary-700",
 
   /* Info colors */
   "--vl-info": "--color-blue-400",
   "--vl-info-lifted": "--color-blue-500",
   "--vl-info-accented": "--color-blue-600",
-  "--vl-info-muted": "--color-blue-700",
 
   /* Error colors */
   "--vl-error": "--color-red-400",
   "--vl-error-lifted": "--color-red-500",
   "--vl-error-accented": "--color-red-600",
-  "--vl-error-muted": "--color-red-700",
 
   /* Warning colors */
   "--vl-warning": "--color-orange-400",
   "--vl-warning-lifted": "--color-orange-500",
   "--vl-warning-accented": "--color-orange-600",
-  "--vl-warning-muted": "--color-orange-700",
 
   /* Success colors */
   "--vl-success": "--color-green-400",
   "--vl-success-lifted": "--color-green-500",
   "--vl-success-accented": "--color-green-600",
-  "--vl-success-muted": "--color-green-700",
 
   /* Neutral colors */
   "--vl-neutral": "--vl-neutral-300",
   "--vl-neutral-lifted": "--vl-neutral-400",
   "--vl-neutral-accented": "--vl-neutral-500",
-  "--vl-neutral-muted": "--vl-neutral-600",
 
   /* Grayscale colors */
   "--vl-grayscale": "--vl-neutral-100",
   "--vl-grayscale-lifted": "--vl-neutral-200",
   "--vl-grayscale-accented": "--vl-neutral-300",
-  "--vl-grayscale-muted": "--vl-neutral-600",
 
   /* Text neutral colors */
   "--vl-text": "--vl-neutral-100",

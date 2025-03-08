@@ -389,37 +389,30 @@ export interface VuelessCssVariables {
   "--vl-primary-900": string;
   "--vl-primary-950": string;
   /* Primary design system CSS variables */
-  "--vl-primary-muted": string;
   "--vl-primary-normal": string;
   "--vl-primary-toned": string;
   "--vl-primary-accented": string;
   /* Neutral design system CSS variables */
-  "--vl-neutral-muted": string;
   "--vl-neutral-normal": string;
   "--vl-neutral-toned": string;
   "--vl-neutral-accented": string;
   /* Success design system CSS variables */
-  "--vl-success-muted": string;
   "--vl-success-normal": string;
   "--vl-success-toned": string;
   "--vl-success-accented": string;
   /* Info design system CSS variables */
-  "--vl-info-muted": string;
   "--vl-info-normal": string;
   "--vl-info-toned": string;
   "--vl-info-accented": string;
   /* Warning design system CSS variables */
-  "--vl-warning-muted": string;
   "--vl-warning-normal": string;
   "--vl-warning-toned": string;
   "--vl-warning-accented": string;
   /* Error design system CSS variables */
-  "--vl-error-muted": string;
   "--vl-error-normal": string;
   "--vl-error-toned": string;
   "--vl-error-accented": string;
   /* Grayscale design system CSS variables */
-  "--vl-grayscale-muted": string;
   "--vl-grayscale-normal": string;
   "--vl-grayscale-toned": string;
   "--vl-grayscale-accented": string;
