@@ -50,7 +50,7 @@ export interface Props {
   /**
    * Option highlight color.
    */
-  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
+  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
 
   /**
    * Number of options to show without a scroll.

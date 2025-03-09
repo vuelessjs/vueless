@@ -29,11 +29,11 @@ export interface Props {
    */
   color?:
     | "primary"
-    | "grayscale"
     | "success"
     | "warning"
     | "error"
     | "info"
+    | "grayscale"
     | "neutral"
     | "inherit";
 

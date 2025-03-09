@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Dot color.
    */
-  color?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
+  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
 
   /**
    * Dot size.
