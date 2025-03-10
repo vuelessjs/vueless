@@ -105,6 +105,7 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-bg-lifted": "--vl-neutral-100",
   "--vl-bg-accented": "--vl-neutral-200",
   "--vl-bg-muted": "--vl-neutral-50",
+  "--vl-bg-inverted": "--vl-neutral-900",
 };
 
 export const DEFAULT_DARK_THEME = {
@@ -161,6 +162,7 @@ export const DEFAULT_DARK_THEME = {
   "--vl-bg-lifted": "--vl-neutral-800",
   "--vl-bg-accented": "--vl-neutral-700",
   "--vl-bg-muted": "--vl-neutral-900",
+  "--vl-bg-inverted": "--vl-neutral-100",
 };
 
 /* Vueless merge class strategy types */
@@ -283,11 +285,21 @@ export const COMPONENTS = {
 export const TAILWIND_MERGE_EXTENSION = {
   extend: {
     theme: {
+      colors: ["brand", "brand-"],
       spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
     },
     classGroups: {
       "outline-w": [{ outline: ["small", "medium", "large"] }],
       "font-size": [{ text: ["xsmall", "small", "medium", "large"] }],
+      "bg-color": [{ bg: ["default", "muted", "lifted", "accented", "inverted"] }],
+      "text-color": [{ text: ["default", "muted", "lifted", "accented", "inverted"] }],
+      "border-color": [{ border: ["default", "muted", "lifted", "accented"] }],
+      "border-color-x": [{ "border-x": ["default", "muted", "lifted", "accented"] }],
+      "border-color-y": [{ "border-y": ["default", "muted", "lifted", "accented"] }],
+      "border-color-t": [{ "border-t": ["default", "muted", "lifted", "accented"] }],
+      "border-color-r": [{ "border-r": ["default", "muted", "lifted", "accented"] }],
+      "border-color-b": [{ "border-b": ["default", "muted", "lifted", "accented"] }],
+      "border-color-l": [{ "border-l": ["default", "muted", "lifted", "accented"] }],
       rounded: [{ rounded: ["small", "medium", "large", "inherit"] }],
       "rounded-s": [{ "rounded-s": ["small", "medium", "large", "inherit"] }],
       "rounded-e": [{ "rounded-e": ["small", "medium", "large", "inherit"] }],

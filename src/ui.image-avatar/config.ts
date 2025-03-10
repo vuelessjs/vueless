@@ -28,10 +28,6 @@ export default /*tw*/ {
         lg: "rounded-lg",
         full: "rounded-full",
       },
-      color: {
-        white: "bg-default text-gray-900",
-        grayscale: "bg-gray-100 text-gray-900",
-      },
     },
   },
   placeholderIcon: "{UIcon}",

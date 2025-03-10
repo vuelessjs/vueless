@@ -17,8 +17,7 @@ export default /*tw*/ {
       },
       variant: {
         solid: `
-          text-inverted
-          bg-{color}
+          text-inverted bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
           disabled:!bg-{color}/75

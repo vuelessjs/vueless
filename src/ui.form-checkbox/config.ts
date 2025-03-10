@@ -2,13 +2,14 @@ export default /*tw*/ {
   checkboxLabel: "{ULabel}",
   checkbox: {
     base: `
-      border border-default rounded-small bg-default cursor-pointer transition
+      bg-default cursor-pointer transition
+      border border-default rounded-small outline-transparent
       hover:border-lifted
       active:border-{color} active:bg-{color}/15
       checked:text-{color}
-      focus:ring-0 focus:outline-none focus:ring-offset-0
-      focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2
-      disabled:border-default disabled:bg-neutral/10 disabled:cursor-not-allowed
+      focus:ring-0 focus:ring-offset-0
+      focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
+      disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
       disabled:checked:bg-{color}/75 disabled:checked:border-transparent
     `,
     variants: {
@@ -22,7 +23,7 @@ export default /*tw*/ {
       },
     },
   },
-  iconWrapper: {
+  checked: {
     base: `
       flex items-center justify-center absolute rounded-small cursor-pointer transition
       bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented

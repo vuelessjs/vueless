@@ -17,12 +17,7 @@ export interface Props {
   /**
    * Alert variant.
    */
-  variant?: "solid" | "outlined" | "soft" | "ghost";
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Alert size.

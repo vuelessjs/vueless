@@ -513,7 +513,7 @@ SlotNestedContent.args = {
   row: getNestedContentRow,
   slotTemplate: `
     <template #nested-content="{ row }">
-      <div class="p-4 bg-gray-100">
+      <div class="p-4 bg-lifted">
         <UTable
           :columns="[
             { key: 'category', label: 'Category' },

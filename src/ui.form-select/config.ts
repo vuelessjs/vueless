@@ -3,9 +3,9 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-medium border border-default bg-default
+      rounded-medium border border-default bg-default outline-transparent
       hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
-      focus-within:outline focus-within:outline-small focus-within:outline-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
@@ -13,7 +13,7 @@ export default /*tw*/ {
       },
       disabled: {
         true: `
-          focus-within:outline-0 bg-gray-100
+          focus-within:outline-0 bg-lifted
           hover:border-default focus-within:border-default hover:focus-within:border-default
         `,
       },

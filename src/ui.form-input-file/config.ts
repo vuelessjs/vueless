@@ -12,7 +12,7 @@ export default /*tw*/ {
         true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "pointer-events-none bg-gray-100",
+        true: "pointer-events-none bg-lifted",
       },
     },
     compoundVariants: [

@@ -2,16 +2,17 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      border rounded-medium border-default relative flex w-full bg-default transition
+      flex w-full relative bg-default transition
+      border rounded-medium border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
-      focus-within:outline focus-within:outline-small focus-within:outline-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
         true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "!border-default focus-within:outline-0 bg-gray-100",
+        true: "!border-default focus-within:outline-0 bg-lifted",
       },
     },
   },

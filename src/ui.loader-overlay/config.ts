@@ -11,13 +11,6 @@ export default /*tw*/ {
       fixed left-0 top-0 z-[9999]
       transition duration-300
     `,
-    variants: {
-      color: {
-        white: "bg-default",
-        black: "bg-gray-900",
-        grayscale: "bg-gray-100 dark:bg-gray-900",
-      },
-    },
   },
   nestedLoader: "{ULoader}",
   defaults: {

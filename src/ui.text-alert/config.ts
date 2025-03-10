@@ -1,11 +1,12 @@
 export default /*tw*/ {
   wrapper: {
-    base: "border p-4 flex flex-col rounded-medium",
+    base: "p-4 flex flex-col rounded-medium",
     variants: {
       variant: {
-        primary: "bg-{color} text-white border-transparent",
-        secondary: "border-{color} text-{color}",
-        thirdary: "bg-{color}-50 text-{color} border-transparent",
+        solid: "text-inverted bg-{color}",
+        outlined: "text-{color} border-{color}",
+        subtle: "text-{color} bg-{color}/5 border-{color}/15",
+        soft: "text-{color} bg-{color}/5",
       },
       size: {
         xs: "text-xsmall",
@@ -14,21 +15,6 @@ export default /*tw*/ {
         lg: "text-large",
       },
     },
-    compoundVariants: [
-      { variant: "ghost", bordered: true, class: "border-{color}-100" },
-      { color: "white", variant: "solid", class: "text-gray-900 bg-default" },
-      { color: "white", variant: "outlined", class: "text-gray-900 border-gray-200" },
-      { color: "white", variant: "ghost", class: "text-gray-900 bg-default" },
-      { color: "white", variant: "ghost", bordered: true, class: "border-gray-200" },
-      { color: "grayscale", variant: "solid", class: "bg-gray-900" },
-      { color: "grayscale", variant: "outlined", class: "text-gray-900 border-gray-900" },
-      { color: "grayscale", variant: "ghost", class: "text-gray-900 bg-gray-50" },
-      { color: "grayscale", variant: "ghost", bordered: true, class: "border-gray-200" },
-      { color: "gray", variant: "solid", class: "bg-gray-500" },
-      { color: "gray", variant: "outlined", class: "text-gray-500 border-gray-500" },
-      { color: "gray", variant: "ghost", class: "text-gray-500 bg-gray-50" },
-      { color: "gray", variant: "ghost", bordered: true, class: "border-gray-500" },
-    ],
   },
   body: "flex items-start justify-between",
   contentWrapper: "flex gap-2",
@@ -73,7 +59,6 @@ export default /*tw*/ {
     color: "primary",
     size: "md",
     timeout: 0,
-    bordered: false,
     closable: false,
     /* icons */
     closeIcon: "close",

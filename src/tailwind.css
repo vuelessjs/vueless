@@ -160,6 +160,10 @@
     background-color: var(--vl-bg-muted);
 }
 
+@utility bg-inverted {
+    background-color: var(--vl-bg-inverted);
+}
+
 /* Outline width utilities */
 
 @utility outline-small {

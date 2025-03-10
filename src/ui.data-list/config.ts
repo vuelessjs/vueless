@@ -1,8 +1,8 @@
 export default /*tw*/ {
   wrapper: "",
   draggable: "",
-  draggableDrag: "bg-gray-100",
-  draggableGhost: "bg-gray-100/50",
+  draggableDrag: "bg-lifted",
+  draggableGhost: "bg-lifted/50",
   itemWrapper: "group/item-wrapper",
   item: {
     base: `
