@@ -23,10 +23,10 @@ export default {
   component: UColorPicker,
   args: {
     modelValue: "",
-    colors: {
-      grayscale: "bg-gray-900",
-      neutral: "bg-gray-600",
-      red: "bg-error",
+    colors: /*tw*/ {
+      grayscale: "bg-grayscale",
+      neutral: "bg-neutral",
+      red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
       yellow: "bg-yellow-600",

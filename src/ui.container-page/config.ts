@@ -36,10 +36,10 @@ export default /*tw*/ {
   backLink: "{ULink}",
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
-  description: "mt-1.5 text-large font-normal text-gray-500",
+  description: "mt-1.5 text-large font-normal text-lifted",
   headerRight: "",
   body: "",
-  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200",
+  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-muted",
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   rightRoundingWrapper: {

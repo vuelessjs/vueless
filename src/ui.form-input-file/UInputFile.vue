@@ -363,7 +363,7 @@ const {
             square
             variant="soft"
             :disabled="disabled"
-            :left-icon="config.defaults.clearIcon"
+            :icon="config.defaults.clearIcon"
             v-bind="currentError ? clearButtonErrorAttrs : clearButtonAttrs"
             :data-test="getDataTest('clear')"
             @click="onClickResetFiles"

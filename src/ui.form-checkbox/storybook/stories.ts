@@ -96,7 +96,7 @@ const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
           />
         </UCheckboxGroup>
 
-        <span class="font-normal text-gray-400 text-small pl-0 mt-1">
+        <span class="font-normal text-muted text-small pl-0 mt-1">
           {{ arrayValue }}
         </span>
       </div>

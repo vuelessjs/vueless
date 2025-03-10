@@ -2,10 +2,6 @@ export default /*tw*/ {
   dot: {
     base: "rounded-full bg-{color}",
     variants: {
-      color: {
-        white: "bg-default",
-        grayscale: "bg-gray-900",
-      },
       size: {
         xs: "size-0.5",
         sm: "size-1",

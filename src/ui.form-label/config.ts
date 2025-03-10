@@ -33,7 +33,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-gray-500 group-focus-within:text-primary",
+        topInside: "font-normal absolute left-3 text-lifted group-focus-within:text-primary",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
@@ -42,7 +42,7 @@ export default /*tw*/ {
         true: "text-error group-focus-within:text-error",
       },
       disabled: {
-        true: "text-gray-500 cursor-not-allowed",
+        true: "text-lifted cursor-not-allowed",
       },
     },
     compoundVariants: [
@@ -60,7 +60,7 @@ export default /*tw*/ {
     ],
   },
   description: {
-    base: "font-normal text-gray-500 text-left !leading-tight",
+    base: "font-normal text-lifted text-left !leading-tight",
     variants: {
       size: {
         sm: "text-xsmall",

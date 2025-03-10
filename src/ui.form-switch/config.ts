@@ -6,7 +6,7 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex items-center p-0.5 relative rounded-full cursor-pointer transition
+      flex items-center p-0.5 relative rounded-full outline-transparent cursor-pointer transition focus-within:transition
       focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
     `,
     variants: {
@@ -15,21 +15,20 @@ export default /*tw*/ {
         md: "w-8",
         lg: "w-10",
       },
-      color: {
-        grayscale: "outline-gray-900",
-      },
       checked: {
         true: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
-        false: "bg-gray-300 hover:bg-gray-400 active:bg-gray-600",
+        false: "bg-neutral/25 hover:bg-neutral/50 active:bg-neutral/75",
+      },
+      disabled: {
+        true: "pointer-events-none",
       },
     },
     compoundVariants: [
       { toggleLabel: true, size: "sm", class: "w-10" },
       { toggleLabel: true, size: "md", class: "w-12" },
       { toggleLabel: true, size: "lg", class: "w-14" },
-      { color: "grayscale", checked: true, class: "bg-gray-900 hover:bg-gray-800 active:bg-gray-700" },
-      { disabled: true, checked: false, class: "bg-gray-300" },
-      { disabled: true, checked: true, class: "bg-gray-400" },
+      { disabled: true, checked: false, class: "bg-neutral/50" },
+      { disabled: true, checked: true, class: "bg-{color}/50" },
     ],
   },
   input: "absolute size-0 opacity-0",
@@ -71,12 +70,7 @@ export default /*tw*/ {
       {
         toggleLabel: false,
         checked: false,
-        class: "bg-gray-300 hover:bg-gray-400 active:bg-gray-500",
-      },
-      {
-        toggleLabel: false,
-        color: "grayscale",
-        class: "bg-gray-700 hover:bg-gray-800 active:bg-gray-900",
+        class: "bg-neutral/25 hover:bg-neutral/50 active:bg-neutral/75",
       },
     ],
   },

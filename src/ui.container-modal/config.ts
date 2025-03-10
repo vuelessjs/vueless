@@ -25,7 +25,7 @@ export default /*tw*/ {
   backLink: "{ULink} flex items-center gap-0.5",
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
-  description: "mt-1.5 text-medium font-normal text-gray-500",
+  description: "mt-1.5 text-medium font-normal text-lifted",
   closeIcon: "{UIcon}",
   body: "space-y-4 px-4 md:px-8 text-medium",
   modalDivider: "{UDivider} pt-8",

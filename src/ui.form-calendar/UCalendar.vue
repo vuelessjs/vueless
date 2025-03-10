@@ -726,7 +726,7 @@ const {
         size="sm"
         color="grayscale"
         variant="ghost"
-        :left-icon="config.defaults.prevIcon"
+        :icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
@@ -752,7 +752,7 @@ const {
         size="sm"
         color="grayscale"
         variant="ghost"
-        :left-icon="config.defaults.nextIcon"
+        :icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickNextButton"

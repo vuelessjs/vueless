@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { stickedHeader: true, actionsHeader: true, class: "rounded-none" },
-      { stickedHeader: true, actionsHeader: false, class: "border-gray-200 bg-default" },
+      { stickedHeader: true, actionsHeader: false, class: "border-muted bg-default" },
     ],
   },
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
@@ -26,13 +26,13 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-gray-200 rounded-medium bg-default",
+  tableWrapper: "border border-muted rounded-medium bg-default",
   table: "min-w-full border-none text-medium w-full table-auto",
-  header: "border-b border-gray-200",
+  header: "border-b border-muted",
   headerRow: "",
   headerRowBefore: "{>headerCellBase} py-1",
   headerCellBase: {
-    base: "p-4 text-medium font-normal text-gray-500 text-left text-nowrap",
+    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
@@ -84,7 +84,7 @@ export default /*tw*/ {
   bodyEmptyState: "{UEmpty} my-8",
   bodyEmptyStateCell: "",
   footer: {
-    base: "group/footer border-t border-solid border-gray-200",
+    base: "group/footer border-t border-solid border-muted",
     variants: {
       stickedFooter: {
         true: "relative group/footer-fixed",
@@ -100,7 +100,7 @@ export default /*tw*/ {
     },
   },
   stickyFooterRow: `
-    fixed bottom-0 -ml-px border border-b border-gray-200 bg-default
+    fixed bottom-0 -ml-px border border-b border-muted bg-default
     collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {

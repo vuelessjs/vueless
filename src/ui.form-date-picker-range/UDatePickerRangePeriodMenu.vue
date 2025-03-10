@@ -226,7 +226,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         size="sm"
         color="grayscale"
         variant="ghost"
-        :left-icon="config.defaults?.prevIcon"
+        :icon="config.defaults?.prevIcon"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickPrev')"
       />
@@ -240,7 +240,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         size="sm"
         color="grayscale"
         variant="ghost"
-        :left-icon="config.defaults?.nextIcon"
+        :icon="config.defaults?.nextIcon"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickNext')"
       />

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   container: {
-    base: "flex items-center text-gray-500 !leading-none",
+    base: "flex items-center text-lifted !leading-none",
     variants: {
       size: {
         sm: "gap-1.5",
@@ -14,7 +14,7 @@ export default /*tw*/ {
     base: "{UIcon}",
     variants: {
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "text-muted pointer-events-none",
       },
     },
     defaults: {

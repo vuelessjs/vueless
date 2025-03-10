@@ -8,7 +8,7 @@ export default /*tw*/ {
     },
   },
   tabs: {
-    base: "flex border-b border-gray-200 dark:border-gray-700",
+    base: "flex border-b border-muted dark:border-gray-700",
     variants: {
       scrollable: {
         true: "overflow-hidden flex-nowrap scroll-smooth",

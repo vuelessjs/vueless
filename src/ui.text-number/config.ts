@@ -9,10 +9,6 @@ export default /*tw*/ {
         lg: "text-large",
         xl: "text-lg",
       },
-      color: {
-        white: "text-white",
-        grayscale: "text-gray-900",
-      },
       align: {
         left: "justify-start",
         right: "justify-end",

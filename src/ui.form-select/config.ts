@@ -114,7 +114,7 @@ export default /*tw*/ {
   clearMultiple: "flex items-center",
   clearMultipleIcon: "{UIcon} {>selectIcon}",
   clearMultipleText: {
-    base: "cursor-pointer flex items-center text-medium font-normal text-gray-400 hover:text-gray-500 transition",
+    base: "cursor-pointer flex items-center text-medium font-normal text-muted hover:text-lifted transition",
     compoundVariants: [
       { size: "sm", class: "text-small" },
       { size: "md", class: "text-medium" },
@@ -132,7 +132,7 @@ export default /*tw*/ {
     base: `
         p-0 font-normal !leading-none relative w-full border-none bg-transparent
         focus:shadow-none focus:outline-hidden focus:ring-0 focus:outline-none
-        placeholder:text-gray-400 placeholder:font-normal
+        placeholder:text-muted placeholder:font-normal
       `,
     variants: {
       size: {

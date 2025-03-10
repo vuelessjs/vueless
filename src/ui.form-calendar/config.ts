@@ -1,11 +1,11 @@
 export default /*tw*/ {
   wrapper: "p-3 w-[19rem] border border-default rounded-medium bg-default shadow-sm overflow-hidden focus:outline-hidden",
-  navigation: "mb-2 pb-2 border-b flex items-center justify-between",
+  navigation: "mb-2 pb-2 border-b border-muted flex items-center justify-between",
   viewSwitchButton: "{UButton}",
   nextPrevButton: "{UButton}",
   dayView: "",
   weekDays: "grid grid-cols-7 justify-items-center gap-1",
-  weekDay: "flex size-8 items-center justify-center text-small capitalize text-gray-500 font-medium",
+  weekDay: "flex size-8 items-center justify-center text-small capitalize text-lifted font-medium",
   days: {
     base: "grid grid-cols-7 justify-items-center gap-0.5",
     variants: {
@@ -18,7 +18,7 @@ export default /*tw*/ {
   edgeDateInRange: "",
   firstDateInRange: "rounded-r-none",
   lastDateInRange: "rounded-l-none",
-  anotherMonthDate: "text-gray-400",
+  anotherMonthDate: "text-muted",
   activeDate: "bg-primary/10",
   selectedDate: "",
   currentDate: "border-2 border-primary",
@@ -62,7 +62,7 @@ export default /*tw*/ {
   singleCurrentYearInRange: "{>year} {>dateInRange} {>currentDate} rounded-medium",
   selectedYear: "{>year} {>selectedDate}",
   activeYear: "{>year} {>activeDate}",
-  timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-gray-200",
+  timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-muted",
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
     flex items-center rounded-medium border border-default

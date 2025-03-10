@@ -8,7 +8,7 @@ export default /*tw*/ {
     base: "{UIcon}",
     variants: {
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "text-muted pointer-events-none",
       },
     },
     defaults: {

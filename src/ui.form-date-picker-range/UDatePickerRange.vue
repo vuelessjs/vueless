@@ -634,7 +634,7 @@ watchEffect(() => {
         :size="size"
         :disabled="disabled"
         variant="soft"
-        :left-icon="config.defaults.prevIcon"
+        :icon="config.defaults.prevIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Prev)"
       />
@@ -657,7 +657,7 @@ watchEffect(() => {
         :size="size"
         :disabled="disabled"
         variant="soft"
-        :left-icon="config.defaults.nextIcon"
+        :icon="config.defaults.nextIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Next)"
       />
