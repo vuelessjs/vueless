@@ -33,7 +33,7 @@ export interface UAvatarProps {
   /**
    * Avatar corner rounding.
    */
-  rounded?: "default" | "none" | "sm" | "md" | "lg" | "full";
+  rounded?: "none" | "sm" | "md" | "lg" | "full";
 
   /**
    * Add border to the avatar.

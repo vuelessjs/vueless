@@ -86,7 +86,7 @@ const {
           @blur="onBlur"
         />
 
-        <ULink :label="label" :size="size" color="neutral" dashed v-bind="fileLabelAttrs" />
+        <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
       </div>
     </slot>
 

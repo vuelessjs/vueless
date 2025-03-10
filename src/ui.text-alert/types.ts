@@ -30,7 +30,7 @@ export interface Props {
   color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
 
   /**
-   * Alert timeout.
+   * Delayed hide alert (milliseconds).
    */
   timeout?: number;
 

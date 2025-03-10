@@ -41,11 +41,7 @@ function onClickClose() {
 }
 
 const closeButtonColor = computed(() => {
-  if (props.variant === "primary" || props.color === "white") {
-    return props.color === "white" ? "grayscale" : "white";
-  } else {
-    return props.color;
-  }
+  return props.variant === "solid" ? "grayscale" : props.color;
 });
 
 /**

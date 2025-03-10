@@ -1,12 +1,12 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 flex flex-col rounded-medium",
+    base: "p-4 border-box flex flex-col border rounded-medium",
     variants: {
       variant: {
-        solid: "text-inverted bg-{color}",
+        solid: "text-inverted bg-{color} border-transparent",
         outlined: "text-{color} border-{color}",
         subtle: "text-{color} bg-{color}/5 border-{color}/15",
-        soft: "text-{color} bg-{color}/5",
+        soft: "text-{color} bg-{color}/5 border-transparent",
       },
       size: {
         xs: "text-xsmall",
@@ -16,35 +16,20 @@ export default /*tw*/ {
       },
     },
   },
-  body: "flex items-start justify-between",
+  body: "flex items-center justify-between",
   contentWrapper: "flex gap-2",
   content: "",
-  title: {
-    base: "font-bold leading-tight",
-    variants: {
-      size: {
-        xs: "text-small",
-        sm: "text-medium",
-        md: "text-large",
-        lg: "text-lg",
-      },
-    },
-  },
-  description: "",
-  text: {
-    base: "{UText}",
-    defaults: {
-      size: {
-        xs: "sm",
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      },
-    },
-  },
+  title: "font-semibold leading-tight",
+  description: "mt-0.5",
+  text: "{UText}",
   closeButton: "{UButton}",
   closeIcon: {
     base: "{UIcon}",
+    variants: {
+      variant: {
+        solid: "text-inverted",
+      },
+    },
     defaults: {
       size: {
         xs: "3xs",

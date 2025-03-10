@@ -10,6 +10,7 @@ export default {
   neutral: "gray",
   outline: 2,
   rounding: 8,
+  fontSize: 14,
   colorMode: "auto",
   baseClasses: "",
 

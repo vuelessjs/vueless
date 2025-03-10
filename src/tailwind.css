@@ -87,7 +87,7 @@
 
     /* Text size */
     --text-xsmall: var(--vl-text-xs);
-    --text-xsmall--line-height: calc(1 / 0.625);
+    --text-xsmall--line-height: calc(1 / var(--text-xs));
     --text-small: var(--vl-text-sm);
     --text-small--line-height: var(--text-xs--line-height);
     --text-medium: var(--vl-text-md);
@@ -179,5 +179,76 @@
 @utility outline-large {
     outline-style: var(--tw-outline-style);
     outline-width: var(--vl-outline-lg);
+}
+
+/* Defined variables to prevent IDE's unused property error. */
+:root {
+    --vl-primary-50: "";
+    --vl-primary-100: "";
+    --vl-primary-200: "";
+    --vl-primary-300: "";
+    --vl-primary-400: "";
+    --vl-primary-500: "";
+    --vl-primary-600: "";
+    --vl-primary-700: "";
+    --vl-primary-800: "";
+    --vl-primary-900: "";
+    --vl-primary-950: "";
+    --vl-neutral-50: "";
+    --vl-neutral-100: "";
+    --vl-neutral-200: "";
+    --vl-neutral-300: "";
+    --vl-neutral-400: "";
+    --vl-neutral-500: "";
+    --vl-neutral-600: "";
+    --vl-neutral-700: "";
+    --vl-neutral-800: "";
+    --vl-neutral-900: "";
+    --vl-neutral-950: "";
+    --vl-primary: "";
+    --vl-primary-lifted: "";
+    --vl-primary-accented: "";
+    --vl-neutral: "";
+    --vl-neutral-lifted: "";
+    --vl-neutral-accented: "";
+    --vl-info: "";
+    --vl-info-lifted: "";
+    --vl-info-accented: "";
+    --vl-error: "";
+    --vl-error-lifted: "";
+    --vl-error-accented: "";
+    --vl-warning: "";
+    --vl-warning-lifted: "";
+    --vl-warning-accented: "";
+    --vl-success: "";
+    --vl-success-lifted: "";
+    --vl-success-accented: "";
+    --vl-grayscale: "";
+    --vl-grayscale-lifted: "";
+    --vl-grayscale-accented: "";
+    --vl-radius-sm: "";
+    --vl-radius-md: "";
+    --vl-radius-lg: "";
+    --vl-text-xs: "";
+    --vl-text-sm: "";
+    --vl-text-md: "";
+    --vl-text-lg: "";
+    --vl-text: "";
+    --vl-text-lifted: "";
+    --vl-text-accented: "";
+    --vl-text-muted: "";
+    --vl-text-inverted: "";
+    --vl-border: "";
+    --vl-border-lifted: "";
+    --vl-border-accented: "";
+    --vl-border-muted: "";
+    --vl-bg: "";
+    --vl-bg-lifted: "";
+    --vl-bg-accented: "";
+    --vl-bg-muted: "";
+    --vl-bg-inverted: "";
+    --vl-outline-sm: "";
+    --vl-outline-md: "";
+    --vl-outline-lg: "";
 }
 

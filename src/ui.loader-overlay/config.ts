@@ -5,12 +5,17 @@ export default /*tw*/ {
   },
   overlay: {
     base: `
-      bg-{color}-100 dark:bg-{color}-950
+      bg-{color} text-inverted
       h-screen w-screen
       flex justify-center items-center
       fixed left-0 top-0 z-[9999]
       transition duration-300
     `,
+    variants: {
+      color: {
+        grayscale: "bg-lifted text-default",
+      },
+    },
   },
   nestedLoader: "{ULoader}",
   defaults: {

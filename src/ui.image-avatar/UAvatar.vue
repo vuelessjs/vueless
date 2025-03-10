@@ -43,10 +43,6 @@ const backgroundImage = computed(() => {
   return props.src ? `background-image: url(${src});` : "";
 });
 
-const componentColor = computed(() => {
-  return props.color === "white" ? "grayscale" : props.color;
-});
-
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
@@ -73,11 +69,11 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
         @binding {string} icon-name
         @binding {string} icon-color
       -->
-      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="componentColor">
+      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="color">
         <UIcon
           internal
           :size="size"
-          :color="componentColor"
+          :color="color"
           :name="placeholderIcon || config.defaults.placeholderIcon"
           v-bind="placeholderIconAttrs"
         />

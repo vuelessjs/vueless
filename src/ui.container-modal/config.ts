@@ -8,7 +8,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-y-0 transform sm:scale-100",
     leaveToClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
   },
-  overlay: "fixed inset-0 z-40 bg-gray-900/75",
+  overlay: "fixed inset-0 z-40 bg-lifted opacity-75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
@@ -33,7 +33,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
   footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
   modal: {
-    base: "mx-auto rounded-large bg-default",
+    base: "mx-auto bg-default rounded-large border border-muted",
     variants: {
       size: {
         xs: "md:w-[25rem]",

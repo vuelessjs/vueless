@@ -5,9 +5,10 @@ export default {
   strategy: "merge",
   primary: "grayscale",
   neutral: "gray",
-  darkMode: "auto",
+  colorMode: "auto",
   outline: 2,
   rounding: 8,
+  fontSize: 14,
   baseClasses: "",
 
   /**

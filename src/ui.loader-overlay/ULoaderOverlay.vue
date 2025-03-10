@@ -3,7 +3,6 @@ import { computed, onMounted, onUnmounted } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { useDarkMode } from "../composables/useDarkMode.ts";
 
 import ULoader from "../ui.loader/ULoader.vue";
 
@@ -20,14 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { loaderOverlayOn, loaderOverlayOff, isLoading } = useLoaderOverlay();
-const { isDarkMode } = useDarkMode();
-
-const loaderColor = computed(() => {
-  if (props.color === "white") return "black";
-  if (props.color === "black") return "white";
-
-  return isDarkMode.value ? "white" : "black";
-});
 
 onMounted(() => {
   window.addEventListener("loaderOverlayOn", loaderOverlayOn);
@@ -55,7 +46,7 @@ const { getDataTest, config, overlayAttrs, nestedLoaderAttrs } = useUI<Config>(d
     <div v-if="showLoader" v-bind="overlayAttrs" :data-test="getDataTest()">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
-        <ULoader :loading="showLoader" size="lg" :color="loaderColor" v-bind="nestedLoaderAttrs" />
+        <ULoader :loading="showLoader" size="lg" color="inherit" v-bind="nestedLoaderAttrs" />
       </slot>
     </div>
   </Transition>

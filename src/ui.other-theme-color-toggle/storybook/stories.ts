@@ -25,7 +25,7 @@ export default {
     primary: "",
     neutral: "",
     primaryColors: {
-      grayscale: "bg-gray-900",
+      grayscale: "bg-grayscale",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
