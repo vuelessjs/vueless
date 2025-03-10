@@ -90,14 +90,14 @@ const EnumVariantTemplate: StoryFn<EnumUDatePickerArgs> = (
 });
 
 const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
-  components: { UDatePicker, URow },
+  components: { UDatePicker, UCol },
   setup() {
     return {
       args,
     };
   },
   template: `
-    <URow class="!flex-col">
+    <UCol>
       <UDatePicker
         class="w-full"
         open-direction-y="top"
@@ -130,7 +130,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
         v-model="args.modelValue"
         label="Bottom Right"
       />
-    </URow>
+    </UCol>
   `,
 });
 
@@ -256,7 +256,7 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow justify="stretch">
+    <URow align="stretch">
       <UDatePicker
         v-bind="args"
         v-model="args.modelValue"

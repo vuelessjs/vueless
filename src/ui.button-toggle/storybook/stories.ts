@@ -148,7 +148,6 @@ OptionSlot.args = {
     <template #option="{ label, index }">
       <UBadge
         :label="label"
-        :color="args.options[index].color"
         :right-icon="args.options[index].iconName"
       />
     </template>
@@ -164,7 +163,7 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
     return { args, leftModel, rightModel };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
         <template #left="{ index }">
           <UIcon size="sm" color="inherit" v-if="index === 0" name="settings" />
@@ -173,7 +172,7 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
 
       <UToggle v-bind="args" v-model="rightModel" name="rightSlot">
         <template #right="{ index }">
-          <UIcon size="sm" color="inherit" v-if="index === 2" name="person" />
+          <div class="font-medium" v-if="index === 2">(24)</div>
         </template>
       </UToggle>
     </URow>

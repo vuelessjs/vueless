@@ -58,7 +58,7 @@ const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes
     };
   },
   template: `
-    <URow class="flex-wrap">
+    <URow wrap>
       <ULoader
         v-for="(option, index) in options"
         :key="index"
