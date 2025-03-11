@@ -1,7 +1,7 @@
 import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
-import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
+import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
 import {
   STRATEGY_TYPE,
@@ -85,7 +85,7 @@ export default function useUI<T>(
         classes = cva(value)({
           ...props,
           ...mutatedPropsValue,
-          ...(color ? { color: getColor(color) } : {}),
+          ...(color ? { color } : {}),
         });
       }
 

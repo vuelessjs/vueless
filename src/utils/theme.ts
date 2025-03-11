@@ -1,5 +1,8 @@
+import { merge } from "lodash-es";
+
 import { vuelessConfig } from "./ui.ts";
 import { isSSR, isCSR } from "./helper.ts";
+
 import {
   PX_IN_REM,
   COLOR_MODE_KEY,
@@ -25,7 +28,6 @@ import {
   FONT_SIZE_INCREMENT,
   FONT_SIZE_DECREMENT,
 } from "../constants.js";
-
 import type { Config, NeutralColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
 
@@ -38,9 +40,12 @@ declare interface RootCSSVariableOptions {
   roundingSm: number;
   rounding: number;
   roundingLg: number;
+  fontSizeXs: number;
   fontSizeSm: number;
   fontSize: number;
   fontSizeLg: number;
+  lightTheme: Partial<VuelessCssVariables>;
+  darkTheme: Partial<VuelessCssVariables>;
 }
 
 /**
@@ -134,7 +139,7 @@ export function getSelectedNeutralColor() {
  * @return string - CSS variables
  */
 export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
+  setColorMode(config.colorMode || vuelessConfig.colorMode || ColorMode.Light);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
@@ -182,6 +187,32 @@ export function setTheme(config: Config = {}) {
   isCSR && localStorage.setItem(PRIMARY_COLOR, primary);
   isCSR && localStorage.setItem(NEUTRAL_COLOR, neutral);
 
+  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
+  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
+
+  /* Redeclare primary color if grayscale color set as default */
+  if (primary === GRAYSCALE_COLOR) {
+    primary = neutral;
+
+    ["", "lifted", "accented"].forEach((shade) => {
+      const primaryShade: keyof VuelessCssVariables = shade
+        ? `--vl-primary-${shade}`
+        : "--vl-primary";
+
+      const grayscaleShade: keyof VuelessCssVariables = shade
+        ? `--vl-grayscale-${shade}`
+        : "--vl-grayscale";
+
+      if (!vuelessConfig.darkTheme?.[primaryShade] && !config.darkTheme?.[primaryShade]) {
+        darkTheme[primaryShade] = darkTheme[grayscaleShade];
+      }
+
+      if (!vuelessConfig.lightTheme?.[primaryShade] && !config.lightTheme?.[primaryShade]) {
+        lightTheme[primaryShade] = lightTheme[grayscaleShade];
+      }
+    });
+  }
+
   return setRootCSSVariables({
     primary,
     neutral,
@@ -195,6 +226,8 @@ export function setTheme(config: Config = {}) {
     fontSizeSm,
     fontSize,
     fontSizeLg,
+    lightTheme,
+    darkTheme,
   });
 }
 
@@ -269,10 +302,6 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
  * @return string - Vueless CSS variables string.
  */
 function setRootCSSVariables(options: RootCSSVariableOptions) {
-  if (options.primary === GRAYSCALE_COLOR) {
-    options.primary = options.neutral;
-  }
-
   const {
     primary,
     neutral,
@@ -286,6 +315,8 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     fontSizeSm,
     fontSize,
     fontSizeLg,
+    lightTheme,
+    darkTheme,
   } = options;
 
   let darkVariables: Partial<VuelessCssVariables> = {};
@@ -313,7 +344,7 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
       `var(--color-${neutral}-${shade})`;
   }
 
-  const [light, dark] = generateCSSColorVariables();
+  const [light, dark] = generateCSSColorVariables(lightTheme, darkTheme);
 
   variables = { ...variables, ...light };
   darkVariables = { ...darkVariables, ...dark };
@@ -325,22 +356,23 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
  * Generate CSS color variables.
  * @return string - Vueless color CSS variables.
  */
-function generateCSSColorVariables() {
+function generateCSSColorVariables(
+  lightTheme: Partial<VuelessCssVariables>,
+  darkTheme: Partial<VuelessCssVariables>,
+) {
   const variables: Partial<VuelessCssVariables> = {};
   const darkVariables: Partial<VuelessCssVariables> = {};
 
-  Object.entries(DEFAULT_LIGHT_THEME).forEach(([vuelessVariable, color]) => {
+  Object.entries(lightTheme).forEach(([vuelessVariable, lightColor]) => {
     const variable = vuelessVariable as keyof VuelessCssVariables;
-    const lightColor = vuelessConfig.lightTheme?.[variable] || color;
 
-    variables[variable] = lightColor.startsWith("--") ? `var(${lightColor})` : lightColor;
+    variables[variable] = lightColor?.startsWith("--") ? `var(${lightColor})` : lightColor;
   });
 
-  Object.entries(DEFAULT_DARK_THEME).forEach(([vuelessVariable, color]) => {
+  Object.entries(darkTheme).forEach(([vuelessVariable, darkColor]) => {
     const variable = vuelessVariable as keyof VuelessCssVariables;
-    const darkColor = vuelessConfig.darkTheme?.[variable] || color;
 
-    darkVariables[variable] = darkColor.startsWith("--") ? `var(${darkColor})` : darkColor;
+    darkVariables[variable] = darkColor?.startsWith("--") ? `var(${darkColor})` : darkColor;
   });
 
   return [variables, darkVariables];
