@@ -80,6 +80,11 @@ export interface ThemeConfig {
   neutral?: NeutralColors;
 
   /**
+   * Default components extra small font size.
+   */
+  fontSizeXs?: number;
+
+  /**
    * Default components small font size.
    */
   fontSizeSm?: number;
@@ -361,6 +366,7 @@ export interface VuelessCssVariables {
   "--vl-radius-md": string;
   "--vl-radius-lg": string;
   /* Font size CSS variables */
+  "--vl-text-xs": string;
   "--vl-text-sm": string;
   "--vl-text-md": string;
   "--vl-text-lg": string;
@@ -389,31 +395,31 @@ export interface VuelessCssVariables {
   "--vl-primary-900": string;
   "--vl-primary-950": string;
   /* Primary design system CSS variables */
-  "--vl-primary-normal": string;
+  "--vl-primary": string;
   "--vl-primary-toned": string;
   "--vl-primary-accented": string;
   /* Neutral design system CSS variables */
-  "--vl-neutral-normal": string;
+  "--vl-neutral": string;
   "--vl-neutral-toned": string;
   "--vl-neutral-accented": string;
   /* Success design system CSS variables */
-  "--vl-success-normal": string;
+  "--vl-success": string;
   "--vl-success-toned": string;
   "--vl-success-accented": string;
   /* Info design system CSS variables */
-  "--vl-info-normal": string;
+  "--vl-info": string;
   "--vl-info-toned": string;
   "--vl-info-accented": string;
   /* Warning design system CSS variables */
-  "--vl-warning-normal": string;
+  "--vl-warning": string;
   "--vl-warning-toned": string;
   "--vl-warning-accented": string;
   /* Error design system CSS variables */
-  "--vl-error-normal": string;
+  "--vl-error": string;
   "--vl-error-toned": string;
   "--vl-error-accented": string;
   /* Grayscale design system CSS variables */
-  "--vl-grayscale-normal": string;
+  "--vl-grayscale": string;
   "--vl-grayscale-toned": string;
   "--vl-grayscale-accented": string;
   /* Text neutral design system CSS variables */
@@ -432,6 +438,9 @@ export interface VuelessCssVariables {
   "--vl-bg-lifted": string;
   "--vl-bg-accented": string;
   "--vl-bg-muted": string;
+  "--vl-bg-inverted": string;
+  /* Amy other design system CSS variables */
+  [key: string]: string;
 }
 
 /* Web-types interfaces and types */
