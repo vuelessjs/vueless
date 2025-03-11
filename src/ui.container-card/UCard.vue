@@ -45,7 +45,6 @@ const {
   headerLeftAttrs,
   headerLeftFallbackAttrs,
   descriptionAttrs,
-  contentAttrs,
   footerAttrs,
   footerLeftAttrs,
   footerRightAttrs,
@@ -75,10 +74,8 @@ const {
       <slot name="actions" />
     </div>
 
-    <div v-bind="contentAttrs">
-      <!-- @slot Use it to add something inside. -->
-      <slot />
-    </div>
+    <!-- @slot Use it to add something inside. -->
+    <slot />
 
     <UDivider v-if="isShownFooter" padding="none" v-bind="cardDividerAttrs" />
 
