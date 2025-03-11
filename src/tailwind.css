@@ -1,22 +1,32 @@
+/* ------ Tailwind plugins ------ */
+
 @plugin "@tailwindcss/forms" {
     strategy: base;
 }
 
-@source "../node_modules/.cache/vueless/safelist.txt";
-@source "../node_modules/vueless";
-@source "../vueless.config.ts";
-@source "../vueless.config.js";
-@source "../.vueless";
+/* ------ Development sources ------ */
 
+@source "../node_modules/.cache/vueless/safelist.txt";
+
+/* ------ Production sources ------ */
+
+@source "../.cache/vueless/safelist.txt";
+@source "../vueless";
+
+/* ------ Color mode settings ------ */
 
 @variant light (&:where(.vl-light, .vl-light *));
 @variant dark (&:where(.vl-dark, .vl-dark *));
+
+/* ------ Base styles ------ */
 
 @layer base {
     body {
         @apply antialiased text-(--vl-text) bg-(--vl-bg) scheme-light dark:scheme-dark;
     }
 }
+
+/* ------ Tailwind theme settings ------ */
 
 @theme {
     /* Primary colors */
@@ -89,7 +99,7 @@
     --spacing-safe-right: "env(safe-area-inset-right)";
 }
 
-/* Text color utilities */
+/* ------ Text color utilities ------ */
 
 @utility text-default {
     color: var(--vl-text);
@@ -111,7 +121,7 @@
     color: var(--vl-text-inverted);
 }
 
-/* Border color utilities */
+/* ------ Border color utilities ------  */
 
 @utility border-default {
     border-color: var(--vl-border);
@@ -129,7 +139,7 @@
     border-color: var(--vl-border-muted);
 }
 
-/* Background color utilities */
+/* ------ Background color utilities ------ */
 
 @utility bg-default {
     background-color: var(--vl-bg);
@@ -151,7 +161,7 @@
     background-color: var(--vl-bg-inverted);
 }
 
-/* Outline width utilities */
+/* ------ Outline width utilities ------ */
 
 @utility outline-small {
     outline-style: var(--tw-outline-style);
@@ -167,64 +177,3 @@
     outline-style: var(--tw-outline-style);
     outline-width: var(--vl-outline-lg);
 }
-
-/* Defined variables to prevent IDE's unused property error. */
-:root {
-    --vl-primary-50: "";
-    --vl-primary-100: "";
-    --vl-primary-200: "";
-    --vl-primary-300: "";
-    --vl-primary-400: "";
-    --vl-primary-500: "";
-    --vl-primary-600: "";
-    --vl-primary-700: "";
-    --vl-primary-800: "";
-    --vl-primary-900: "";
-    --vl-primary-950: "";
-    --vl-primary: "";
-    --vl-primary-lifted: "";
-    --vl-primary-accented: "";
-    --vl-neutral: "";
-    --vl-neutral-lifted: "";
-    --vl-neutral-accented: "";
-    --vl-info: "";
-    --vl-info-lifted: "";
-    --vl-info-accented: "";
-    --vl-error: "";
-    --vl-error-lifted: "";
-    --vl-error-accented: "";
-    --vl-warning: "";
-    --vl-warning-lifted: "";
-    --vl-warning-accented: "";
-    --vl-success: "";
-    --vl-success-lifted: "";
-    --vl-success-accented: "";
-    --vl-grayscale: "";
-    --vl-grayscale-lifted: "";
-    --vl-grayscale-accented: "";
-    --vl-radius-sm: "";
-    --vl-radius-md: "";
-    --vl-radius-lg: "";
-    --vl-text-xs: "";
-    --vl-text-sm: "";
-    --vl-text-md: "";
-    --vl-text-lg: "";
-    --vl-text: "";
-    --vl-text-lifted: "";
-    --vl-text-accented: "";
-    --vl-text-muted: "";
-    --vl-text-inverted: "";
-    --vl-border: "";
-    --vl-border-lifted: "";
-    --vl-border-accented: "";
-    --vl-border-muted: "";
-    --vl-bg: "";
-    --vl-bg-lifted: "";
-    --vl-bg-accented: "";
-    --vl-bg-muted: "";
-    --vl-bg-inverted: "";
-    --vl-outline-sm: "";
-    --vl-outline-md: "";
-    --vl-outline-lg: "";
-}
-
