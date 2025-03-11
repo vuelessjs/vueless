@@ -1,78 +1,21 @@
-<template>
-  <div
-    v-if="isHorizontalPlacement || isTopWithDescPlacement"
-    ref="wrapperRef"
-    v-bind="wrapperAttrs"
-    @click="onClick"
-  >
-    <div v-bind="contentAttrs">
-      <!-- @slot Use it to add label content. -->
-      <slot />
-    </div>
-
-    <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || error || description">
-      <label
-        v-if="label"
-        :for="props.for"
-        :data-test="`${dataTest}-label`"
-        v-bind="labelAttrs"
-        v-text="label"
-      />
-
-      <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
-
-      <div
-        v-if="description && !error"
-        :data-test="`${dataTest}-description`"
-        v-bind="descriptionAttrs"
-        v-text="description"
-      />
-
-      <!-- @slot Use it to add something below the label content. -->
-      <slot name="bottom" />
-    </div>
-  </div>
-
-  <div v-else v-bind="wrapperAttrs">
-    <label
-      v-if="label"
-      ref="labelRef"
-      :for="props.for"
-      :data-test="`${dataTest}-label`"
-      v-bind="labelAttrs"
-      v-text="label"
-    />
-
-    <div v-bind="contentAttrs">
-      <!-- @slot Use it to add label content. -->
-      <slot />
-    </div>
-
-    <div v-if="error" :data-test="`${dataTest}-error`" v-bind="descriptionAttrs" v-text="error" />
-
-    <div
-      v-if="description && !error"
-      :data-test="`${dataTest}-description`"
-      v-bind="descriptionAttrs"
-      v-text="description"
-    />
-
-    <!-- @slot Use it to add something below the label content. -->
-    <slot name="bottom" />
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
-import defaultConfig from "./config.js";
-import { ULabel, PLACEMENT } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME, PLACEMENT } from "./constants.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  label: "",
+});
 
 const emit = defineEmits([
   /**
@@ -81,94 +24,8 @@ const emit = defineEmits([
   "click",
 ]);
 
-const props = defineProps({
-  /**
-   * Label text.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label align.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  align: {
-    type: String,
-    default: getDefault(defaultConfig, ULabel).align,
-  },
-
-  /**
-   * Label size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, ULabel).size,
-  },
-
-  /**
-   * Make label disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULabel).disabled,
-  },
-
-  /**
-   * Centre label horizontally.
-   */
-  centred: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULabel).centred,
-  },
-
-  /**
-   * Set input id for label `for` attribute.
-   */
-  for: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const labelRef = ref(null);
+const labelRef = ref<HTMLLabelElement | null>(null);
 const wrapperRef = ref(null);
-
-const { wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useAttrs(props);
 
 const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
@@ -186,7 +43,11 @@ const wrapperElement = computed(() => {
   return wrapperRef.value;
 });
 
-function onClick(event) {
+const isShownError = computed(() => {
+  return Boolean(props.error) && !props.disabled;
+});
+
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
@@ -203,4 +64,108 @@ defineExpose({
    */
   wrapperElement,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error) && !props.disabled,
+}));
+
+const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
+
+<template>
+  <div
+    v-if="isHorizontalPlacement || isTopWithDescPlacement"
+    ref="wrapperRef"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest()"
+    @click="onClick"
+  >
+    <div v-bind="contentAttrs" :data-test="getDataTest('content')">
+      <!-- @slot Use it to add label content. -->
+      <slot />
+    </div>
+
+    <!-- `v-bind` isn't assigned, because the div is system -->
+    <div v-if="label || hasSlotContent($slots['label']) || error || description">
+      <label
+        v-if="label || hasSlotContent($slots['label'])"
+        ref="labelRef"
+        :for="props.for"
+        v-bind="labelAttrs"
+        :data-test="getDataTest('label')"
+      >
+        <!--
+          @slot Use this to add custom content instead of the label.
+          @binding {string} label
+        -->
+        <slot name="label" :label="label">
+          {{ label }}
+        </slot>
+      </label>
+
+      <div
+        v-if="isShownError"
+        v-bind="descriptionAttrs"
+        :data-test="getDataTest('error')"
+        v-text="error"
+      />
+
+      <div
+        v-if="description && !isShownError"
+        v-bind="descriptionAttrs"
+        :data-test="getDataTest('description')"
+        v-text="description"
+      />
+
+      <!-- @slot Use it to add something below the label content. -->
+      <slot name="bottom" />
+    </div>
+  </div>
+
+  <div v-else v-bind="wrapperAttrs">
+    <label
+      v-if="label || hasSlotContent($slots['label'])"
+      v-bind="labelAttrs"
+      ref="labelRef"
+      :for="props.for"
+      :data-test="getDataTest('label')"
+    >
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label">
+        {{ label }}
+      </slot>
+    </label>
+
+    <div v-bind="contentAttrs" :data-test="getDataTest('content')">
+      <!-- @slot Use it to add label content. -->
+      <slot />
+    </div>
+
+    <div
+      v-if="isShownError"
+      v-bind="descriptionAttrs"
+      :data-test="getDataTest('error')"
+      v-text="error"
+    />
+
+    <div
+      v-if="description && !isShownError"
+      v-bind="descriptionAttrs"
+      :data-test="getDataTest('description')"
+      v-text="description"
+    />
+
+    <!-- @slot Use it to add something below the label content. -->
+    <slot name="bottom" />
+  </div>
+</template>

@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
       - run: npm run lint:ci
 
-  release-ui-docs:
+  test:
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
     runs-on: ubuntu-latest
@@ -29,14 +29,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: sudo apt-get install -y lftp
       - run: npm ci
-      - run: npm run build
-      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --parallel=10 ./storybook-static ./www"
+      - run: npm run test:ci
 
   publish-npm:
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
-    needs: release-ui-docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

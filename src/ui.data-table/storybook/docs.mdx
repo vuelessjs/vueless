@@ -1,0 +1,34 @@
+import { Markdown, Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
+import { getSource } from "../../utils/storybook.ts";
+
+import * as stories from "./stories.ts";
+import defaultConfig from "../config.ts?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Formatting tokens
+Each character in the table below can be used in `dateFormat` and `userDateFormat` / `userDateTimeFormat` options to achieve the format you need.
+
+## Row meta keys
+Keys you have/may to provide to the component in row object.
+
+<Markdown>
+{`
+|  Key name         | Description                        | Type           |
+| ------------------| ---------------------------------- | ---------------|
+| id                | A unique identifier for row        | String, Number |
+| content           | Content to be rendered in the cell | Any            |
+| isChecked         | Indicates if row checked           | Boolean        |
+| isShown           | Indicated if nested row shown      | Boolean        |
+| rowDate           | Row date for date divider          | String, Date   |
+`}
+</Markdown>
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />

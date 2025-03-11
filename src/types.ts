@@ -1,26 +1,108 @@
-import { hasSlotContent } from "./composables/useUI.ts";
-
-// TODO: Import all components here
 import UTextDefaultConfig from "./ui.text-block/config.ts";
+import UAlertDefaultConfig from "./ui.text-alert/config.ts";
+import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
+import UFileDefaultConfig from "./ui.text-file/config.ts";
+import UFilesDefaultConfig from "./ui.text-files/config.ts";
+import UMoneyDefaultConfig from "./ui.text-money/config.ts";
+import UHeaderDefaultConfig from "./ui.text-header/config.ts";
+import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
+import UNumberDefaultConfig from "./ui.text-number/config.ts";
+import UDotDefaultConfig from "./ui.other-dot/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
+import ULinkDefaultConfig from "./ui.button-link/config.ts";
+import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
 import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
+import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
+import UDatePickerConfig from "./ui.form-date-picker/config.ts";
+import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
+import UDataTableConfig from "./ui.data-table/config.ts";
+import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
+import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
+import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
+import UDropdownListConfig from "./ui.dropdown-list/config.ts";
+import UAccordionConfig from "./ui.container-accordion/config.ts";
+import UCardConfig from "./ui.container-card/config.ts";
+import UColConfig from "./ui.container-col/config.ts";
+import UDividerConfig from "./ui.container-divider/config.ts";
+import UGroupConfig from "./ui.container-group/config.ts";
+import UModalConfig from "./ui.container-modal/config.ts";
+import UModalConfirmConfig from "./ui.container-modal-confirm/config.ts";
+import UPageConfig from "./ui.container-page/config.ts";
+import URowConfig from "./ui.container-row/config.ts";
+import ULoaderConfig from "./ui.loader/config.ts";
+import ULoaderOverlayConfig from "./ui.loader-overlay/config.ts";
+import ULoaderProgressConfig from "./ui.loader-progress/config.ts";
+import UPaginationConfig from "./ui.navigation-pagination/config.ts";
+import UProgressConfig from "./ui.navigation-progress/config.ts";
+import UTabConfig from "./ui.navigation-tab/config.ts";
+import UTabsConfig from "./ui.navigation-tabs/config.ts";
+import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config.ts";
+import UAvatarConfig from "./ui.image-avatar/config.ts";
+import UIconConfig from "./ui.image-icon/config.ts";
+import UCheckboxConfig from "./ui.form-checkbox/config.ts";
+import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
+import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
+import URadioConfig from "./ui.form-radio/config.ts";
+import URadioGroupConfig from "./ui.form-radio-group/config.ts";
+import USwitchConfig from "./ui.form-switch/config.ts";
+import UTextareaConfig from "./ui.form-textarea/config.ts";
+import ULabelConfig from "./ui.form-label/config.ts";
+import UColorPickerConfig from "./ui.other-theme-color-toggle/config.ts";
+import UInputConfig from "./ui.form-input/config.ts";
+import UInputNumberConfig from "./ui.form-input-number/config.ts";
+import UInputRatingConfig from "./ui.form-input-rating/config.ts";
+import UInputSearchConfig from "./ui.form-input-search/config.ts";
+import UInputFileConfig from "./ui.form-input-file/config.ts";
+import UInputMoneyConfig from "./ui.form-input-money/config.ts";
+import UDataListConfig from "./ui.data-list/config.ts";
+import USelectConfig from "./ui.form-select/config.ts";
 
-import type { ComputedRef, MaybeRef } from "vue";
 import type { Props } from "tippy.js";
+import type { Config as TailwindConfig } from "tailwindcss";
+import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
 import type { LocaleOptions } from "./adatper.locale/vueless.ts";
 
-export type TemplateRefElement = MaybeRef<HTMLElement | HTMLElement[] | null>;
+export enum ColorMode {
+  Dark = "dark",
+  Light = "light",
+  Auto = "auto",
+}
 
 export interface ThemeConfig {
   /**
-   * Components brand (primary) color.
+   * Components primary (primary) color.
    */
-  brand?: BrandColors;
+  primary?: PrimaryColors;
 
   /**
-   * Components gray (secondary) color.
+   * Components neutral (secondary) color.
    */
-  gray?: GrayColors;
+  neutral?: NeutralColors;
+
+  /**
+   * Default components extra small font size.
+   */
+  fontSizeXs?: number;
+
+  /**
+   * Default components small font size.
+   */
+  fontSizeSm?: number;
+
+  /**
+   * Default components font size.
+   */
+  fontSize?: number;
+
+  /**
+   * Default components large font size.
+   */
+  fontSizeLg?: number;
+
+  /**
+   * Default components small size rounding (border-radius).
+   */
+  roundingSm?: number;
 
   /**
    * Default components rounding (border-radius).
@@ -28,29 +110,29 @@ export interface ThemeConfig {
   rounding?: number;
 
   /**
-   * Default components ring width.
+   * Default components large size rounding (border-radius).
    */
-  ring?: number;
+  roundingLg?: number;
 
   /**
-   * Default components ring offset width.
+   * Default components small size outline width.
    */
-  ringOffset?: number;
+  outlineSm?: number;
 
   /**
-   * Default components ring color for light theme.
+   * Default components outline width.
    */
-  ringOffsetColorLight?: string;
+  outline?: number;
 
   /**
-   * Default components ring color for dark theme.
+   * Default components large size outline width.
    */
-  ringOffsetColorDark?: string;
+  outlineLg?: number;
 
   /**
-   * Default dark mode state.
+   * Default color mode.
    */
-  darkMode?: boolean;
+  colorMode?: `${ColorMode}`;
 }
 
 export interface Config extends ThemeConfig {
@@ -63,30 +145,53 @@ export interface Config extends ThemeConfig {
   strategy?: Strategies;
 
   /**
+   * Classes which will be applied to the root element of all vueless components.
+   */
+  baseClasses?: string;
+
+  /**
+   * Light theme design system CSS variables.
+   */
+  lightTheme?: Partial<VuelessCssVariables>;
+
+  /**
+   * Dark theme design system CSS variables.
+   */
+  darkTheme?: Partial<VuelessCssVariables>;
+
+  /**
    * Component configs.
    */
-  component?: Partial<Components>;
+  components?: Partial<Components>;
 
   /**
    * Directive configs.
    */
-  directive?: Partial<Directives>;
+  directives?: Partial<Directives>;
+
+  /**
+   * Tailwind CSS theme config.
+   * https://tailwindcss.com/docs/theme
+   */
+  tailwindTheme?: TailwindConfig["theme"];
 
   /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts.
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts.
    */
   tailwindMerge?: UnknownObject;
 }
 
 export type UnknownObject = Record<string, unknown>;
-export type ComponentNames = keyof Components; // keys union
+export type UnknownArray = unknown[];
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
+
+export type ComponentNames = keyof Components & string; // keys union
 export type Strategies = "merge" | "replace" | "override";
-export type Gray = "gray";
-export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone";
-export type BrandColors =
-  | "grayscale"
+
+export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type PrimaryColors =
   | "red"
   | "orange"
   | "amber"
@@ -103,37 +208,98 @@ export type BrandColors =
   | "purple"
   | "fuchsia"
   | "pink"
-  | "rose";
-
-export interface Components {
-  UText?: Partial<typeof UTextDefaultConfig>;
-  UButton?: Partial<typeof UButtonDefaultConfig>;
-  UBadge?: Partial<typeof UBadgeDefaultConfig>;
-}
+  | "rose"
+  | string;
 
 export interface Directives {
   tooltip?: Partial<Props>;
 }
 
-export interface Component {
-  i18n?: UnknownObject;
-  defaults?: Defaults;
-  safelist?: (string: string) => TailwindSafelist[];
-  strategy?: Strategies;
-  transition?: Transition;
-  safelistColors?: BrandColors;
-  [key: string]: (CVA & NestedComponent) | object | string | undefined;
+export interface Components {
+  UText: Partial<typeof UTextDefaultConfig>;
+  UAlert: Partial<typeof UAlertDefaultConfig>;
+  UEmpty: Partial<typeof UEmptyDefaultConfig>;
+  UFile: Partial<typeof UFileDefaultConfig>;
+  UFiles: Partial<typeof UFilesDefaultConfig>;
+  UMoney: Partial<typeof UMoneyDefaultConfig>;
+  UHeader: Partial<typeof UHeaderDefaultConfig>;
+  UNotify: Partial<typeof UNotifyDefaultConfig>;
+  UNumber: Partial<typeof UNumberDefaultConfig>;
+  UDot: Partial<typeof UDotDefaultConfig>;
+  UButton: Partial<typeof UButtonDefaultConfig>;
+  ULink: Partial<typeof ULinkDefaultConfig>;
+  UToggle: Partial<typeof UToggleDefaultConfig>;
+  UBadge: Partial<typeof UBadgeDefaultConfig>;
+  UCalendar: Partial<typeof UCalendarDefaultConfig>;
+  UDatePicker: Partial<typeof UDatePickerConfig>;
+  UDatePickerRange: Partial<typeof UDatePickerRangeConfig>;
+  UTable: Partial<typeof UDataTableConfig>;
+  UDropdownBadge: Partial<typeof UDropdownBadgeConfig>;
+  UDropdownButton: Partial<typeof UDropdownButtonConfig>;
+  UDropdownLink: Partial<typeof UDropdownLinkConfig>;
+  UDropdownList: Partial<typeof UDropdownListConfig>;
+  UAccordion: Partial<typeof UAccordionConfig>;
+  UCard: Partial<typeof UCardConfig>;
+  UCol: Partial<typeof UColConfig>;
+  UDivider: Partial<typeof UDividerConfig>;
+  UGroup: Partial<typeof UGroupConfig>;
+  UModal: Partial<typeof UModalConfig>;
+  UModalConfirm: Partial<typeof UModalConfirmConfig>;
+  UPage: Partial<typeof UPageConfig>;
+  URow: Partial<typeof URowConfig>;
+  ULoader: Partial<typeof ULoaderConfig>;
+  ULoaderOverlay: Partial<typeof ULoaderOverlayConfig>;
+  ULoaderProgress: Partial<typeof ULoaderProgressConfig>;
+  UPagination: Partial<typeof UPaginationConfig>;
+  UProgress: Partial<typeof UProgressConfig>;
+  UTab: Partial<typeof UTabConfig>;
+  UTabs: Partial<typeof UTabsConfig>;
+  UBreadcrumbs: Partial<typeof UBreadcrumbsConfig>;
+  UAvatar: Partial<typeof UAvatarConfig>;
+  UIcon: Partial<typeof UIconConfig>;
+  UCheckbox: Partial<typeof UCheckboxConfig>;
+  UCheckboxGroup: Partial<typeof UCheckboxGroupConfig>;
+  UCheckboxMultiState: Partial<typeof UCheckboxMultiStateConfig>;
+  URadio: Partial<typeof URadioConfig>;
+  URadioGroup: Partial<typeof URadioGroupConfig>;
+  USwitch: Partial<typeof USwitchConfig>;
+  UTextarea: Partial<typeof UTextareaConfig>;
+  ULabel: Partial<typeof ULabelConfig>;
+  UColorPicker: Partial<typeof UColorPickerConfig>;
+  UInput: Partial<typeof UInputConfig>;
+  UInputNumber: Partial<typeof UInputNumberConfig>;
+  UInputRating: Partial<typeof UInputRatingConfig>;
+  UInputSearch: Partial<typeof UInputSearchConfig>;
+  UInputFile: Partial<typeof UInputFileConfig>;
+  UInputMoney: Partial<typeof UInputMoneyConfig>;
+  UDataList: Partial<typeof UDataListConfig>;
+  USelect: Partial<typeof USelectConfig>;
+  [key: string]: UnknownObject;
+}
+
+/* Make all config keys optional and allow to have string and object values. */
+export type ComponentConfig<T> = Partial<{
+  [K in keyof T]: K extends string
+    ? K extends `${string}transition${string}` | `${string}Transition${string}`
+      ? Transition
+      : K extends "i18n"
+        ? T[K]
+        : T[K] | string | UnknownObject
+    : never;
+}> & { [key: string]: unknown };
+
+export type ComponentConfigFull<T> = ComponentConfig<T> & NestedComponent;
+
+export interface NestedComponent {
+  base?: string;
+  defaults?: Record<string, string | UnknownObject>;
+  [key: string]: Record<string, string | UnknownObject> | string | undefined;
 }
 
 export type Defaults = {
   color?: string;
-  [key: string]: unknown;
+  [key: string]: unknown | UnknownObject;
 };
-
-export interface NestedComponent {
-  component: string;
-  [key: string]: Record<string, string | object> | string;
-}
 
 export interface Transition {
   enterFromClass?: string;
@@ -156,85 +322,125 @@ export interface CVACompoundVariants {
   [key: string]: string | number | undefined | null;
 }
 
-export interface VueAttrs {
-  id?: string;
-  class?: string;
-  value?: string;
-}
+export type MutatedProps = ComputedRef<UnknownObject>;
 
-export interface UseAttrs {
-  hasSlotContent: typeof hasSlotContent;
-  [key: string]: object | undefined;
-}
+export type UseUI<T> = {
+  config: Ref<T & ComponentConfig<T>>;
+  getDataTest: (suffix?: string) => string | null;
+} & KeysAttrs<T>;
+
+export type KeysAttrs<T> = Record<
+  string,
+  Ref<KeyAttrsWithConfig<T>> | ComputedRef<KeyAttrsWithConfig<T>>
+>;
+
+export type KeyAttrsWithConfig<T> = {
+  config?: ComponentConfig<T>;
+} & KeyAttrs;
 
 export interface KeyAttrs extends VueAttrs {
   "vl-component"?: string | null;
   "vl-key"?: string | null;
   "vl-child-component"?: string | null;
   "vl-child-key"?: string | null;
-  config?: UnknownObject;
-  [key: string]: string | UnknownObject | undefined | null;
+  [key: string]: string | boolean | unknown | undefined | null;
 }
 
-export interface KeysToExtend {
-  base?: ComputedRef;
-  extend?: ComputedRef;
+export interface VueAttrs {
+  id?: string;
+  class?: string;
+  value?: string;
 }
 
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
 }
 
-export interface TailwindSafelist {
-  pattern: string;
-  variants?: string[];
-}
-
-export interface TailwindColorShades {
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-  950: string;
-}
-
 export interface VuelessCssVariables {
-  "--vl-ring": string;
-  "--vl-ring-offset": string;
-  "--vl-ring-offset-color": string;
-  "--vl-rounding": string;
+  /* Outline size CSS variables */
+  "--vl-outline-sm": string;
+  "--vl-outline-md": string;
+  "--vl-outline-lg": string;
+  /* Border radius size variables */
+  "--vl-radius-sm": string;
+  "--vl-radius-md": string;
+  "--vl-radius-lg": string;
+  /* Font size CSS variables */
+  "--vl-text-xs": string;
+  "--vl-text-sm": string;
+  "--vl-text-md": string;
+  "--vl-text-lg": string;
   /* Gray CSS variables */
-  "--vl-color-gray-50": string;
-  "--vl-color-gray-100": string;
-  "--vl-color-gray-200": string;
-  "--vl-color-gray-300": string;
-  "--vl-color-gray-400": string;
-  "--vl-color-gray-500": string;
-  "--vl-color-gray-600": string;
-  "--vl-color-gray-700": string;
-  "--vl-color-gray-800": string;
-  "--vl-color-gray-900": string;
-  "--vl-color-gray-950": string;
-  "--vl-color-gray-default": string;
-  /* Brand CSS variables */
-  "--vl-color-brand-50": string;
-  "--vl-color-brand-100": string;
-  "--vl-color-brand-200": string;
-  "--vl-color-brand-300": string;
-  "--vl-color-brand-400": string;
-  "--vl-color-brand-500": string;
-  "--vl-color-brand-600": string;
-  "--vl-color-brand-700": string;
-  "--vl-color-brand-800": string;
-  "--vl-color-brand-900": string;
-  "--vl-color-brand-950": string;
-  "--vl-color-brand-default": string;
+  "--vl-neutral-50": string;
+  "--vl-neutral-100": string;
+  "--vl-neutral-200": string;
+  "--vl-neutral-300": string;
+  "--vl-neutral-400": string;
+  "--vl-neutral-500": string;
+  "--vl-neutral-600": string;
+  "--vl-neutral-700": string;
+  "--vl-neutral-800": string;
+  "--vl-neutral-900": string;
+  "--vl-neutral-950": string;
+  /* Primary CSS variables */
+  "--vl-primary-50": string;
+  "--vl-primary-100": string;
+  "--vl-primary-200": string;
+  "--vl-primary-300": string;
+  "--vl-primary-400": string;
+  "--vl-primary-500": string;
+  "--vl-primary-600": string;
+  "--vl-primary-700": string;
+  "--vl-primary-800": string;
+  "--vl-primary-900": string;
+  "--vl-primary-950": string;
+  /* Primary design system CSS variables */
+  "--vl-primary": string;
+  "--vl-primary-toned": string;
+  "--vl-primary-accented": string;
+  /* Neutral design system CSS variables */
+  "--vl-neutral": string;
+  "--vl-neutral-toned": string;
+  "--vl-neutral-accented": string;
+  /* Success design system CSS variables */
+  "--vl-success": string;
+  "--vl-success-toned": string;
+  "--vl-success-accented": string;
+  /* Info design system CSS variables */
+  "--vl-info": string;
+  "--vl-info-toned": string;
+  "--vl-info-accented": string;
+  /* Warning design system CSS variables */
+  "--vl-warning": string;
+  "--vl-warning-toned": string;
+  "--vl-warning-accented": string;
+  /* Error design system CSS variables */
+  "--vl-error": string;
+  "--vl-error-toned": string;
+  "--vl-error-accented": string;
+  /* Grayscale design system CSS variables */
+  "--vl-grayscale": string;
+  "--vl-grayscale-toned": string;
+  "--vl-grayscale-accented": string;
+  /* Text neutral design system CSS variables */
+  "--vl-text": string;
+  "--vl-text-lifted": string;
+  "--vl-text-accented": string;
+  "--vl-text-muted": string;
+  "--vl-text-inverted": string;
+  /* Border neutral design system CSS variables */
+  "--vl-border": string;
+  "--vl-border-lifted": string;
+  "--vl-border-accented": string;
+  "--vl-border-muted": string;
+  /* Background neutral design system CSS variables */
+  "--vl-bg": string;
+  "--vl-bg-lifted": string;
+  "--vl-bg-accented": string;
+  "--vl-bg-muted": string;
+  "--vl-bg-inverted": string;
+  /* Amy other design system CSS variables */
+  [key: string]: string;
 }
 
 /* Web-types interfaces and types */
@@ -320,3 +526,51 @@ export interface ExposeProperty {
   type: string;
   description?: string;
 }
+
+export type VuelessComponentInstance = ComponentInternalInstance & {
+  type?: {
+    internal?: boolean;
+  };
+};
+
+/**
+ * Utility types to extract component props, slots, emit, exposed types.
+ * Original code taken from `vue-component-type-helpers` npm package.
+ * Source code: https://github.com/vuejs/language-tools/blob/master/packages/component-type-helpers/index.ts
+ */
+
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
+export type ComponentType<T> = T extends new (...args: any) => {}
+  ? 1
+  : T extends (...args: any) => any
+    ? 2
+    : 0;
+
+export type ComponentProps<T> = T extends new (...args: any) => {
+  $props: infer P;
+}
+  ? NonNullable<P>
+  : T extends (props: infer P, ...args: any) => any
+    ? P
+    : {};
+
+export type ComponentSlots<T> = T extends new (...args: any) => {
+  $slots: infer S;
+}
+  ? NonNullable<S>
+  : T extends (props: any, ctx: { slots: infer S; attrs: any; emit: any }, ...args: any) => any
+    ? NonNullable<S>
+    : {};
+
+export type ComponentEmit<T> = T extends new (...args: any) => {
+  $emit: infer E;
+}
+  ? NonNullable<E>
+  : {};
+
+export type ComponentExposed<T> = T extends new (...args: any) => infer E
+  ? E
+  : T extends (props: any, ctx: any, expose: (exposed: infer E) => any, ...args: any) => any
+    ? NonNullable<E>
+    : {};
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */

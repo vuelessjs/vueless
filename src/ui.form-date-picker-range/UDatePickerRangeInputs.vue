@@ -1,90 +1,50 @@
-<template>
-  <div>
-    <UInput
-      ref="rangeInputStartRef"
-      v-model="rangeStart"
-      :error="inputRangeFromError"
-      size="md"
-      v-bind="rangeInputFirstAttrs"
-      :name="rangeInputName"
-      @input="onInputRangeInput($event, INPUT_RANGE_TYPE.start)"
-    />
+<script setup lang="ts" generic="TLocalValue extends RangeDate">
+import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.ts";
+import { useTemplateRef } from "vue";
 
-    <UInput
-      ref="rangeInputEndRef"
-      v-model="rangeEnd"
-      :error="inputRangeToError"
-      size="md"
-      v-bind="rangeInputLastAttrs"
-      :name="rangeInputName"
-      @input="onInputRangeInput($event, INPUT_RANGE_TYPE.end)"
-    />
-  </div>
-</template>
-
-<script setup>
-import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.js";
-
-import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.js";
+import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import { INPUT_RANGE_TYPE, INPUT_RANGE_FORMAT } from "./constants.js";
+import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants.ts";
 
-const props = defineProps({
-  locale: {
-    type: Object,
-    required: true,
-  },
+import type { UDatePickerRangeInputsProps } from "./types.ts";
+import type { RangeDate } from "../ui.form-calendar/types.ts";
 
-  dateFormat: {
-    type: [String, undefined],
-    default: undefined,
-  },
+type UInputRef = InstanceType<typeof UInput>;
 
-  rangeInputName: {
-    type: String,
-    required: true,
-  },
+defineOptions({ internal: true });
 
-  config: {
-    type: Object,
-    required: true,
-  },
+const props = defineProps<UDatePickerRangeInputsProps>();
 
-  attrs: {
-    type: Object,
-    required: true,
-  },
-});
+const rangeInputStartRef = useTemplateRef<UInputRef>("range-input-start");
+const rangeInputEndRef = useTemplateRef<UInputRef>("range-input-end");
 
-const { rangeInputFirstAttrs, rangeInputLastAttrs } = props.attrs;
+const localValue = defineModel<TLocalValue>("localValue", { required: true });
+const inputRangeFromError = defineModel<string>("inputRangeFromError", { required: true });
+const inputRangeToError = defineModel<string>("inputRangeToError", { required: true });
+const rangeStart = defineModel<string>("rangeStart", { required: true });
+const rangeEnd = defineModel<string>("rangeEnd", { required: true });
 
-const localValue = defineModel("localValue", { required: true, type: Object });
-const inputRangeFromError = defineModel("inputRangeFromError", { required: true, type: String });
-const inputRangeToError = defineModel("inputRangeToError", { required: true, type: String });
-const rangeStart = defineModel("rangeStart", { type: String, required: true });
-const rangeEnd = defineModel("rangeEnd", { type: String, required: true });
-
-function isGraterThanTo(value) {
+function isGraterThanTo(value: string) {
   if (!value) return false;
 
   const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
   const parsedTo = parseDate(localValue.value.to, props.dateFormat, props.locale);
 
-  return parsedValue > parsedTo;
+  return parsedValue && parsedTo && parsedValue > parsedTo;
 }
 
-function isSmallerThanFrom(value) {
+function isSmallerThanFrom(value: string) {
   if (!value) return false;
 
   const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
   const parsedFrom = parseDate(localValue.value.from, props.dateFormat, props.locale);
 
-  return parsedValue < parsedFrom;
+  return parsedValue && parsedFrom && parsedValue < parsedFrom;
 }
 
-function onInputRangeInput(value, type) {
+function onInputRangeInput(value: string, type: `${InputRangeType}`) {
   const isInvalidDateFormat = isWrongDateFormat(value);
 
   let error = "";
@@ -95,22 +55,26 @@ function onInputRangeInput(value, type) {
     error = props.locale.notCorrectMonthNumber;
   } else if (isWrongDayNumber(value) && value) {
     error = props.locale.notCorrectDayNumber;
-  } else if (isGraterThanTo(value) && type === INPUT_RANGE_TYPE.start) {
+  } else if (isGraterThanTo(value) && type === InputRangeType.Start) {
     error = props.locale.fromDateGraterThanSecond;
-  } else if (isSmallerThanFrom(value) && type === INPUT_RANGE_TYPE.end) {
+  } else if (isSmallerThanFrom(value) && type === InputRangeType.End) {
     error = props.locale.toDateSmallerThanFirst;
   }
 
-  if (type === INPUT_RANGE_TYPE.start) {
+  if (type === InputRangeType.Start) {
     inputRangeFromError.value = error;
   }
 
-  if (type === INPUT_RANGE_TYPE.end) {
+  if (type === InputRangeType.End) {
     inputRangeToError.value = error;
   }
 
   if (!isInvalidDateFormat) {
     const parsedValue = parseDate(value || new Date(), INPUT_RANGE_FORMAT, props.locale);
+    const parsedDateFrom = parseDate(localValue.value.from, props.dateFormat, props.locale);
+    const parsedDateTo = parseDate(localValue.value.to, props.dateFormat, props.locale);
+
+    if (!parsedValue) return;
 
     const isOutOfRange = dateIsOutOfRange(
       parsedValue,
@@ -120,19 +84,48 @@ function onInputRangeInput(value, type) {
       props.dateFormat,
     );
 
-    if (type === INPUT_RANGE_TYPE.start && !error && !isOutOfRange) {
+    if (type === InputRangeType.Start && !error && !isOutOfRange) {
       localValue.value = {
         from: value ? parsedValue : "",
-        to: localValue.value.to,
-      };
+        to: parsedDateTo,
+      } as TLocalValue;
     }
 
-    if (type === INPUT_RANGE_TYPE.end && !error && !isOutOfRange) {
+    if (type === InputRangeType.End && !error && !isOutOfRange) {
       localValue.value = {
-        from: localValue.value.from,
-        to: value ? parsedValue : "",
-      };
+        from: parsedDateFrom,
+        to: value ? parsedValue : null,
+      } as TLocalValue;
     }
   }
 }
+
+defineExpose({
+  rangeInputEndRef,
+  rangeInputStartRef,
+});
 </script>
+
+<template>
+  <div>
+    <UInput
+      ref="range-input-start"
+      v-model="rangeStart"
+      :error="inputRangeFromError"
+      size="md"
+      v-bind="attrs.rangeInputFirstAttrs.value"
+      :name="rangeInputName"
+      @input="onInputRangeInput($event, InputRangeType.Start)"
+    />
+
+    <UInput
+      ref="range-input-end"
+      v-model="rangeEnd"
+      :error="inputRangeToError"
+      size="md"
+      v-bind="attrs.rangeInputLastAttrs.value"
+      :name="rangeInputName"
+      @input="onInputRangeInput($event, InputRangeType.End)"
+    />
+  </div>
+</template>

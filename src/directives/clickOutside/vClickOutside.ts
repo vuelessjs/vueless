@@ -8,7 +8,11 @@ import type {
   ClickOutsideTargetElement,
   DirectiveBindingCallback,
   DirectiveBindingOptions,
-} from "./types";
+} from "./types.ts";
+
+function isElement(element: EventTarget | null) {
+  return element instanceof HTMLElement || element instanceof SVGElement;
+}
 
 function clickOutside(
   target: MaybeRef<HTMLElement | null>,
@@ -21,9 +25,9 @@ function clickOutside(
   const el = unref(target);
 
   function onClick(event: MouseEvent) {
-    if (!(event.target instanceof HTMLElement)) return;
+    if (!isElement(event.target)) return;
 
-    const targetElements = event.composedPath().filter((element) => element instanceof HTMLElement);
+    const targetElements = event.composedPath().filter((element) => isElement(element));
 
     if (
       !el ||

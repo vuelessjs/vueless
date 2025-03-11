@@ -1,122 +1,22 @@
-<template>
-  <ULink :href="url" no-ring v-bind="fileAttrs" :data-test="dataTest">
-    <slot name="left" :file="{ elementId, label, url, imageUrl }" />
+<script setup lang="ts">
+import { ref, useId } from "vue";
 
-    <slot :file="{ elementId, label, url, imageUrl }">
-      <div v-bind="bodyAttrs">
-        <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
-
-        <UIcon
-          v-else
-          internal
-          interactive
-          color="gray"
-          :size="iconSize"
-          :name="config.defaults.fileIcon"
-          v-bind="fileIconAttrs"
-          @focus="onFocus"
-          @blur="onBlur"
-        />
-
-        <ULink :label="label" :size="size" color="gray" dashed no-ring v-bind="fileLabelAttrs" />
-      </div>
-    </slot>
-
-    <slot name="right" :file="{ elementId, label, url, imageUrl }">
-      <UIcon
-        v-if="removable"
-        internal
-        interactive
-        color="gray"
-        :size="removeIconSize"
-        :name="config.defaults.removeIcon"
-        v-bind="removeIconAttrs"
-        :data-test="`${dataTest}-remove-item`"
-        @click.stop.prevent="onRemove"
-      />
-    </slot>
-  </ULink>
-</template>
-
-<script setup>
-import { computed, ref, useId } from "vue";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
 
-import useAttrs from "./useAttrs.js";
-import { UFile } from "./constants.js";
-import defaultConfig from "./config.js";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * File url.
-   */
-  url: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Image url.
-   */
-  imageUrl: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * File label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * File size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UFile).size,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Show remove button.
-   */
-  removable: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -129,40 +29,10 @@ const emit = defineEmits([
 
 const focus = ref(false);
 
-const elementId = props.id || useId();
-
-const {
-  config,
-  fileAttrs,
-  bodyAttrs,
-  fileIconAttrs,
-  fileLabelAttrs,
-  fileImageAttrs,
-  removeIconAttrs,
-} = useAttrs(props);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const removeIconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
+const fileId = props.id || useId();
 
 function onRemove() {
-  emit("remove", props.id);
+  emit("remove", fileId);
 }
 
 function onFocus() {
@@ -172,4 +42,66 @@ function onFocus() {
 function onBlur() {
   focus.value = false;
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  getDataTest,
+  config,
+  fileAttrs,
+  bodyAttrs,
+  fileIconAttrs,
+  fileLabelAttrs,
+  fileImageAttrs,
+  removeIconAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
+    <!-- @slot Use it to add something before the file. -->
+    <slot name="left" />
+
+    <!--
+      @slot Use it to add a file directly.
+      @binding {string | number} id
+      @binding {string} label
+      @binding {string} url
+      @binding {string} image-url
+    -->
+    <slot :id="fileId" :label="label" :url="url" :image-url="imageUrl">
+      <div v-bind="bodyAttrs">
+        <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
+
+        <UIcon
+          v-else
+          internal
+          interactive
+          color="neutral"
+          :name="config.defaults.fileIcon"
+          v-bind="fileIconAttrs"
+          @focus="onFocus"
+          @blur="onBlur"
+        />
+
+        <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
+      </div>
+    </slot>
+
+    <!-- @slot Use it to add something after the file. -->
+    <slot name="right">
+      <UIcon
+        v-if="removable"
+        internal
+        interactive
+        color="neutral"
+        :name="config.defaults.removeIcon"
+        v-bind="removeIconAttrs"
+        :data-test="getDataTest('remove-item')"
+        @click.stop.prevent="onRemove"
+      />
+    </slot>
+  </ULink>
+</template>

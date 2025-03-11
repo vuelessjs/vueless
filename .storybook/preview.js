@@ -1,7 +1,6 @@
 import { setup } from "@storybook/vue3";
 
-import { getRandomId } from "../src/utils/ui.ts";
-import { DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR } from "../src/constants.js";
+import { getRandomId } from "../src";
 
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
@@ -16,11 +15,11 @@ import "./index.css";
 import { createVueless } from "../src/index";
 import { createRouter, createWebHistory } from "vue-router";
 
+const vueless = createVueless();
+const router = createRouter({ history: createWebHistory(), routes: [] });
+
 /* Setup storybook */
 setup((app) => {
-  const vueless = createVueless();
-  const router = createRouter({ history: createWebHistory(), routes: [] });
-
   app.config.idPrefix = getRandomId();
 
   if (!app._context.config.globalProperties.$route) {
@@ -30,10 +29,10 @@ setup((app) => {
 });
 
 /* Set storybook decorators */
-export const decorators = [
-  vue3SourceDecorator,
-  storyDarkModeDecorator(DARK_MODE_SELECTOR, LIGHT_MODE_SELECTOR),
-];
+export const decorators = [vue3SourceDecorator, storyDarkModeDecorator()];
+
+/* Set storybook tags */
+export const tags = ["autodocs"];
 
 /* Set storybook parameters */
 export const parameters = {
@@ -58,3 +57,15 @@ export const parameters = {
     },
   },
 };
+
+/* Reload the page on error "Failed to fetch dynamically imported module..." */
+window.addEventListener("error", (ev) => onFailedToFetchModule(ev.message));
+window.addEventListener("unhandledrejection", (ev) => onFailedToFetchModule(ev?.reason?.message));
+
+function onFailedToFetchModule(message) {
+  const isProd = import.meta.env.MODE === "production";
+
+  if (isProd && message?.includes("Failed to fetch dynamically imported module")) {
+    window.location.reload();
+  }
+}

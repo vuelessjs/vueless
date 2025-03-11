@@ -1,280 +1,42 @@
-<template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef">
-    <UInput
-      :id="elementId"
-      :key="isShownCalendar"
-      v-model="userFormatDate"
-      :label-align="labelAlign"
-      :label="label"
-      :placeholder="placeholder"
-      :error="error"
-      :description="description"
-      readonly
-      :disabled="disabled"
-      :size="size"
-      :left-icon="leftIcon"
-      :right-icon="rightIcon"
-      v-bind="isShownCalendar ? activeInputAttrs : inputAttrs"
-      @focus="activate"
-    >
-      <template #left>
-        <!-- @slot Use it add something before the date. -->
-        <slot name="left" />
-      </template>
-
-      <template #left-icon="{ iconName, iconSize }">
-        <!--
-          @slot Use it add an icon before the date.
-          @binding {string} icon-name
-          @binding {string} icon-nize
-        -->
-        <slot name="left-icon" :icon-name="iconName" :icon-size="iconSize" />
-      </template>
-
-      <template #right-icon="{ iconName, iconSize }">
-        <!--
-          @slot Use it add an icon after the date.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="right-icon" :icon-name="iconName" :icon-size="iconSize">
-          <UIcon :name="iconName" :size="iconSize" color="gray" />
-        </slot>
-      </template>
-
-      <template #right>
-        <!-- @slot Use it add something after the date. -->
-        <slot name="right" />
-      </template>
-    </UInput>
-
-    <Transition v-bind="config.calendarTransition">
-      <UCalendar
-        v-show="isShownCalendar"
-        ref="calendarRef"
-        v-model="localValue"
-        v-model:view="customView"
-        tabindex="-1"
-        :timepicker="timepicker"
-        :date-format="dateFormat"
-        :date-time-format="dateTimeFormat"
-        :user-date-format="userDateFormat"
-        :user-date-time-format="userDateTimeFormat"
-        :max-date="maxDate"
-        :min-date="minDate"
-        v-bind="calendarAttrs"
-        @keydown.esc="deactivate"
-        @user-date-change="onUserFormatDateChange"
-        @input="onInput"
-        @blur="onBlur"
-        @submit="onSubmit"
-      />
-    </Transition>
-  </div>
-</template>
-
-<script setup>
-import { computed, nextTick, ref, useId } from "vue";
+<script setup lang="ts" generic="TModelValue extends string | Date">
+import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
 import { merge } from "lodash-es";
+
+import useUI from "../composables/useUI.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { VIEW, STANDARD_USER_FORMAT } from "../ui.form-calendar/constants.js";
+import { View, LocaleType, ARROW_KEYS, TOKEN_REG_EXP } from "../ui.form-calendar/constants.ts";
 
-import { getDefault } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-import { addDays, isSameDay } from "../ui.form-calendar/utilDate.js";
+import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
+import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
-import useAttrs from "./useAttrs.js";
 import { useLocale } from "../composables/useLocale.ts";
-import { useAutoPosition } from "../composables/useAutoPosition.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
 
-import defaultConfig from "./config.js";
-import { UDatePicker } from "./constants.js";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+
+import { vClickOutside } from "../directives";
+
+import type { ComputedRef } from "vue";
+import type { Props, Config, Locale } from "./types.ts";
+import type { ComponentExposed } from "../types.ts";
+import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
+import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Datepicker value (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  modelValue: {
-    type: [Date, String],
-    default: null,
-  },
-
-  /**
-   * Datepicker label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).labelAlign,
-  },
-
-  /**
-   * Datepicker placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Datepicker size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).size,
-  },
-
-  /**
-   * Datepicker open direction on x-axis.
-   * @values auto, left, right
-   */
-  openDirectionX: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).openDirectionX,
-  },
-
-  /**
-   * Datepicker open direction on y-axis.
-   * @values auto, top, bottom
-   */
-  openDirectionY: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).openDirectionY,
-  },
-
-  /**
-   * Min date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  minDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePicker).minDate,
-  },
-
-  /**
-   * Max date (JavaScript Date object or string formatted in given `dateFormat`).
-   */
-  maxDate: {
-    type: [Date, String],
-    default: getDefault(defaultConfig, UDatePicker).maxDate,
-  },
-
-  /**
-   * Date string format.
-   */
-  dateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateFormat,
-  },
-
-  /**
-   * Same as date format, but used when timepicker is enabled.
-   */
-  dateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).dateTimeFormat,
-  },
-
-  /**
-   * User-friendly date format (it will be shown in UI).
-   */
-  userDateFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateFormat,
-  },
-
-  /**
-   * Same as user format, but used when timepicker is enabled.
-   */
-  userDateTimeFormat: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).userDateTimeFormat,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: getDefault(defaultConfig, UDatePicker).rightIcon,
-  },
-
-  /**
-   * Make datepicker disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).disabled,
-  },
-
-  /**
-   * Show timepicker.
-   */
-  timepicker: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UDatePicker).timepicker,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: undefined,
+  minDate: undefined,
+  maxDate: undefined,
+  placeholder: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -293,17 +55,20 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(UDatePicker);
+const i18nGlobal = tm(COMPONENT_NAME);
 
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
-const customView = ref(VIEW.day);
+const customView = ref(View.Day);
 
-const wrapperRef = ref(null);
-const calendarRef = ref(null);
+type UInputRef = InstanceType<typeof UInput>;
 
-const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef);
+const datepickerInputRef = useTemplateRef<UInputRef>("input");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
+
+const calendarWrapperRef = computed(() => calendarRef?.value?.wrapperRef || null);
 
 const { isTop, isRight, adjustPositionY, adjustPositionX } = useAutoPosition(
   wrapperRef,
@@ -317,15 +82,30 @@ const localValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const currentLocale: ComputedRef<Locale> = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n),
+);
+
+const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));
+
+const locale = computed(() => {
+  const { months, weekdays } = currentLocale.value;
+
+  // formatted locale
+  return {
+    ...currentLocale.value,
+    months: {
+      shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
+      longhand: getSortedLocale(months.longhand, LocaleType.Month),
+    },
+    weekdays: {
+      shorthand: getSortedLocale(weekdays.shorthand, LocaleType.Day),
+      longhand: getSortedLocale(weekdays.longhand, LocaleType.Day),
+    },
+  } as DateLocale;
+});
 
 const elementId = props.id || useId();
-
-const { config, inputAttrs, activeInputAttrs, calendarAttrs, wrapperAttrs } = useAttrs(props, {
-  isShownCalendar,
-  isTop,
-  isRight,
-});
 
 function activate() {
   isShownCalendar.value = true;
@@ -333,64 +113,117 @@ function activate() {
   nextTick(() => {
     adjustPositionY();
     adjustPositionX();
-
-    calendarRef.value.wrapperRef.focus();
   });
 }
 
 function deactivate() {
   isShownCalendar.value = false;
 
-  customView.value = VIEW.day;
+  customView.value = View.Day;
 }
 
-function onUserFormatDateChange(value) {
-  userFormatDate.value = formatUserDate(value) || "";
+function onUserFormatDateChange(value: string) {
+  userFormatDate.value = value.trim();
 }
 
 function onSubmit() {
   deactivate();
 }
 
-function onBlur(event) {
-  const { relatedTarget } = event;
-
-  if (!calendarRef?.value?.wrapperRef?.contains(relatedTarget)) deactivate();
-}
-
-function formatUserDate(data) {
-  if (props.userDateFormat !== STANDARD_USER_FORMAT || props.timepicker) return data;
-
-  let prefix = "";
-  const formattedDate = data.charAt(0).toUpperCase() + data.toLowerCase().slice(1);
-  const formattedDateWithoutDay = formattedDate.split(",").slice(1).join("").trim();
-
-  const today = new Date();
-
-  const isToday = isSameDay(today, localValue.value);
-  const isYesterday = isSameDay(addDays(today, -1), localValue.value);
-  const isTomorrow = isSameDay(addDays(today, 1), localValue.value);
-
-  if (isToday) {
-    prefix = currentLocale.value.today;
-  }
-
-  if (isYesterday) {
-    prefix = currentLocale.value.yesterday;
-  }
-
-  if (isTomorrow) {
-    prefix = currentLocale.value.tomorrow;
-  }
-
-  return prefix ? `${prefix}, ${formattedDateWithoutDay}` : formattedDate;
-}
-
 function onInput() {
   nextTick(() => {
-    calendarRef.value?.wrapperRef?.blur();
+    if (!props.timepicker) {
+      deactivate();
+    }
+
     emit("input", localValue.value);
   });
+}
+
+function onTextInput() {
+  if (datepickerInputRef.value?.inputRef) {
+    datepickerInputRef.value.inputRef.value = userFormatDate.value;
+  }
+}
+
+function onPaste(event: ClipboardEvent) {
+  try {
+    const pasteContent = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
+    const userFormat = props.timepicker ? props.userDateTimeFormat : props.userDateFormat;
+    const dateFormat = props.timepicker ? props.dateFormat : props.dateTimeFormat;
+    const relativeTokensAmount = Number(userFormat.match(/(?<!\\)r/g)?.length);
+
+    // Amount of tokens used in format string without decimeters.
+    const dateFormatTokensAmount = props.userDateFormat
+      .split("")
+      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+
+    const timeFormatTokensAmount = props.userDateTimeFormat
+      .split("")
+      .filter((char) => Object.keys(TOKEN_REG_EXP).includes(char)).length;
+
+    // Amount of substring that satisfies format tokens.
+    let pastedTokensAmount = pasteContent
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(" ").length;
+
+    const isPastedRelativeDay = [
+      locale.value.tomorrow,
+      locale.value.today,
+      locale.value.tomorrow,
+      ...locale.value.weekdays.longhand,
+    ].some((word) => {
+      return pasteContent.includes(word);
+    });
+
+    if (isPastedRelativeDay) {
+      pastedTokensAmount -= relativeTokensAmount;
+    }
+
+    if (
+      pastedTokensAmount !== dateFormatTokensAmount &&
+      pastedTokensAmount !== timeFormatTokensAmount
+    ) {
+      return;
+    }
+
+    const parsedDate = parseDate(pasteContent, userFormat, locale.value);
+
+    if (parsedDate) {
+      localValue.value = (
+        dateFormat ? formatDate(parsedDate, dateFormat, locale.value) : parsedDate
+      ) as TModelValue;
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+}
+
+function onCopy(event: ClipboardEvent) {
+  const target = event.target as HTMLInputElement;
+
+  const cursorStart = target.selectionStart || 0;
+  const cursorEnd = target.selectionEnd || 0;
+
+  try {
+    if (cursorStart !== cursorEnd) {
+      navigator.clipboard.writeText(target.value.substring(cursorStart, cursorEnd));
+    } else {
+      navigator.clipboard.writeText(target.value);
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+}
+
+function onTextInputKeyDown(event: KeyboardEvent) {
+  if (ARROW_KEYS.includes(event.code)) {
+    calendarRef.value?.wrapperRef?.focus();
+  }
 }
 
 defineExpose({
@@ -412,4 +245,105 @@ defineExpose({
    */
   formattedDate,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  openDirectionY: isTop.value ? Direction.Top : Direction.Bottom,
+  openDirectionX: isRight.value ? Direction.Right : Direction.Left,
+  error: Boolean(props.error),
+  description: Boolean(props.description),
+}));
+
+const {
+  config,
+  wrapperAttrs,
+  rightIconAttrs,
+  datepickerInputAttrs,
+  datepickerInputActiveAttrs,
+  datepickerCalendarAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
+
+/* Merging DatePicker's i18n translations into Calendar's i18n translations. */
+/* TODO:
+   Find way to do it more explicity.
+   It is not really clear that i18n changes datepickerCalendarAttrs now.
+*/
+watchEffect(() => {
+  const calendarConfig = datepickerCalendarAttrs.value.config as unknown as UCalendarConfig;
+
+  if (!calendarConfig?.i18n || props.config?.i18n) {
+    calendarConfig.i18n = merge({}, calendarConfig.i18n, props.config.i18n);
+  }
+});
 </script>
+
+<template>
+  <div v-bind="wrapperAttrs" ref="wrapper">
+    <UInput
+      :id="elementId"
+      :key="String(userFormatDate)"
+      ref="input"
+      :model-value="userFormatDate"
+      :label-align="labelAlign"
+      :label="label"
+      :placeholder="placeholder"
+      :error="error"
+      :description="description"
+      :disabled="disabled"
+      :size="size"
+      :left-icon="leftIcon"
+      :right-icon="rightIcon || config.defaults.calendarIcon"
+      v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
+      @input="onTextInput"
+      @focus="activate"
+      @copy="onCopy"
+      @paste="onPaste"
+      @keydown.esc="deactivate"
+      @keydown="onTextInputKeyDown"
+    >
+      <template #left="{ iconName }">
+        <!--
+          @slot Use it add something before the date.
+          @binding {string} icon-name
+        -->
+        <slot name="left" :icon-name="iconName" />
+      </template>
+
+      <template #right="{ iconName }">
+        <!--
+          @slot Use it add something after the date.
+          @binding {string} icon-name
+        -->
+        <slot name="right" :icon-name="iconName">
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
+        </slot>
+      </template>
+    </UInput>
+
+    <Transition v-bind="config.datepickerCalendarTransition">
+      <UCalendar
+        v-show="isShownCalendar"
+        ref="calendar"
+        v-model="localValue"
+        v-model:view="customView"
+        v-click-outside="[deactivate, clickOutsideOptions]"
+        :tabindex="-1"
+        :timepicker="timepicker"
+        :date-format="dateFormat"
+        :date-time-format="dateTimeFormat"
+        :user-date-format="userDateFormat"
+        :user-date-time-format="userDateTimeFormat"
+        :max-date="maxDate"
+        :min-date="minDate"
+        v-bind="datepickerCalendarAttrs"
+        @keydown.esc="deactivate"
+        @user-date-change="onUserFormatDateChange"
+        @input="onInput"
+        @submit="onSubmit"
+      />
+    </Transition>
+  </div>
+</template>

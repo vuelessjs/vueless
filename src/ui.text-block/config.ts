@@ -12,9 +12,10 @@ export default /*tw*/ {
     `,
     variants: {
       size: {
-        sm: "text-xs space-y-2",
-        md: "text-sm space-y-3",
-        lg: "text-base space-y-4",
+        xs: "text-xsmall space-y-1",
+        sm: "text-small space-y-2",
+        md: "text-medium space-y-3",
+        lg: "text-large space-y-4",
       },
       align: {
         left: "text-left",

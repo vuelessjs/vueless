@@ -1,5 +1,5 @@
 import { create } from "@storybook/theming/create";
-import colors from "tailwindcss/colors.js";
+import { TAILWIND_COLORS } from "./tailwindColors.js";
 
 export default create({
   base: "dark",
@@ -14,33 +14,33 @@ export default create({
   brandTarget: "_blank",
 
   // Main colors
-  colorPrimary: colors.gray["200"],
-  colorSecondary: colors.gray["700"],
+  colorPrimary: TAILWIND_COLORS.gray["200"],
+  colorSecondary: TAILWIND_COLORS.gray["700"],
 
   // UI
-  appBg: colors.gray["900"],
-  appPreviewBg: colors.gray["900"],
-  appBorderColor: colors.gray["900"],
+  appBg: TAILWIND_COLORS.gray["900"],
+  appPreviewBg: TAILWIND_COLORS.gray["900"],
+  appBorderColor: TAILWIND_COLORS.gray["900"],
   appBorderRadius: 0,
 
   // Text colors
-  textColor: colors.gray["300"],
-  textInverseColor: colors.gray["800"],
+  textColor: TAILWIND_COLORS.gray["300"],
+  textInverseColor: TAILWIND_COLORS.gray["800"],
 
   // Toolbar default and active colors
-  barTextColor: colors.gray["500"],
-  barHoverColor: colors.gray["400"],
-  barSelectedColor: colors.gray["300"],
-  barBg: colors.gray["950"],
+  barTextColor: TAILWIND_COLORS.gray["500"],
+  barHoverColor: TAILWIND_COLORS.gray["400"],
+  barSelectedColor: TAILWIND_COLORS.gray["300"],
+  barBg: TAILWIND_COLORS.gray["950"],
 
   // Form colors
-  inputBg: colors.gray["950"],
-  inputBorder: colors.gray["600"],
-  inputTextColor: colors.gray["100"],
+  inputBg: TAILWIND_COLORS.gray["950"],
+  inputBorder: TAILWIND_COLORS.gray["600"],
+  inputTextColor: TAILWIND_COLORS.gray["100"],
   inputBorderRadius: 4,
 
-  buttonBg: colors.gray["800"],
-  buttonBorder: colors.gray["800"],
-  booleanBg: colors.gray["900"],
-  booleanSelectedBg: colors.gray["800"],
+  buttonBg: TAILWIND_COLORS.gray["800"],
+  buttonBorder: TAILWIND_COLORS.gray["800"],
+  booleanBg: TAILWIND_COLORS.gray["900"],
+  booleanSelectedBg: TAILWIND_COLORS.gray["800"],
 });

@@ -1,18 +1,40 @@
 export default {
+  /**
+   * Global settings.
+   */
   strategy: "merge",
-  brand: "grayscale",
-  gray: "cool",
-  ring: 4,
-  ringOffset: 0,
-  ringOffsetColorLight: "#ffffff", // white
-  ringOffsetColorDark: "#1f2937", // gray-800
+  primary: "grayscale",
+  neutral: "gray",
+  colorMode: "auto",
+  outline: 2,
   rounding: 8,
-  darkMode: undefined,
-  directive: {
-    // directive configs
-  },
-  component: /*tw*/ {
-    // component configs
-  },
+  fontSize: 14,
+  baseClasses: "",
+
+  /**
+   * Light theme CSS variable settings.
+   */
+  lightTheme: {},
+
+  /**
+   * Dark theme CSS variable settings.
+   */
+  darkTheme: {},
+
+  /**
+   * Directive settings.
+   */
+  directives: {},
+
+  /**
+   * Component settings.
+   */
+  components: /*tw*/ {},
+
+  /**
+   * Custom classes TailwindMerge settings.
+   * All lists of rules available here:
+   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+   */
   tailwindMerge: {},
 };

@@ -14,15 +14,19 @@ export function componentResolver(componentName) {
   const folder = COMPONENTS[componentName];
 
   if (folder) {
-    return { from: `vueless/${folder}/${componentName}.vue` };
+    return {
+      from: `vueless/${folder}/${componentName}.vue`,
+    };
   }
 }
 
 export const directiveResolver = {
   type: "directive",
   resolve(name) {
+    const folder = name[0].toLowerCase() + name.slice(1);
+
     return {
-      from: `vueless/directives/v${name}.js`,
+      from: `vueless/directives/${folder}/v${name}.ts`,
     };
   },
 };

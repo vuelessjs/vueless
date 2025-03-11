@@ -1,25 +1,28 @@
-<script lang="ts" setup>
-import { getDefault } from "../utils/ui.ts";
+<script setup lang="ts">
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
-import { UText } from "./constants.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import useAttrs from "./useAttrs.ts";
 
-import type { UTextProps } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UTextProps>(), {
-  size: getDefault<UTextProps>(defaultConfig, UText).size,
-  align: getDefault<UTextProps>(defaultConfig, UText).align,
-  line: getDefault<UTextProps>(defaultConfig, UText).line,
+withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const { wrapperAttrs, htmlAttrs, hasSlotContent } = useAttrs(props);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="dataTest">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
     <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
     <slot />

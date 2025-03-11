@@ -1,0 +1,19 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/blocks";
+import { getSource } from "../../utils/storybook.ts";
+
+import * as stories from "./stories.ts";
+import defaultConfig from "../config.ts?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Option meta keys
+Full list of keys you may/have to provide to the component in an option object can be found here: <a href="https://ui.vueless.com/?path=/docs/3100--docs" target="_blank">UCheckbox docs</a>.
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />

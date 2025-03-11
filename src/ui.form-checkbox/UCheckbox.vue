@@ -1,198 +1,37 @@
-<template>
-  <ULabel
-    :for="elementId"
-    :label="label"
-    :error="error"
-    :size="checkboxSize"
-    :align="labelAlign"
-    :disabled="disabled"
-    :description="description"
-    v-bind="checkboxLabelAttrs"
-    :data-test="`${dataTest}-label`"
-  >
-    <input
-      :id="elementId"
-      type="checkbox"
-      :value="checkboxValue"
-      :true-value="trueValue"
-      :false-value="falseValue"
-      :name="checkboxName"
-      :checked="isChecked"
-      :disabled="disabled"
-      v-bind="checkboxAttrs"
-      :data-test="dataTest"
-      @change="onChange"
-    />
-
-    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
-      <UIcon
-        internal
-        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
-        :size="iconSize"
-        color="white"
-        v-bind="checkedIconAttrs"
-      />
-    </label>
-
-    <template #bottom>
-      <!-- @slot Use it to add something below the checkbox. -->
-      <slot name="bottom" />
-    </template>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { getDefault } from "../utils/ui.ts";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
-import defaultConfig from "./config.js";
-import { UCheckbox } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import type { UnknownObject } from "../types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const getCheckboxGroupName = inject("getCheckboxGroupName", null);
 const getCheckboxGroupCheckedItems = inject("getCheckboxGroupCheckedItems", null);
-const setCheckboxGroupCheckedItems = inject("setCheckboxGroupCheckedItems", null);
+const setCheckboxGroupCheckedItems = inject<((value: UnknownObject[]) => void) | null>(
+  "setCheckboxGroupCheckedItems",
+  null,
+);
 const getCheckboxGroupColor = inject("getCheckboxGroupColor", null);
 const getCheckboxSize = inject("getCheckboxSize", null);
 
-const props = defineProps({
-  /**
-   * Checkbox value.
-   */
-  modelValue: {
-    type: [Boolean, String, Number, Array, Object],
-    default: false,
-  },
-
-  /**
-   * Native value attribute.
-   */
-  value: {
-    type: [Boolean, String, Number, Array, Object],
-    default: "",
-  },
-
-  /**
-   * Own value for checkbox checked state.
-   */
-  trueValue: {
-    type: [Boolean, String, Number, Array, Object],
-    default: true,
-  },
-
-  /**
-   * Own value for checkbox unchecked state.
-   */
-  falseValue: {
-    type: [Boolean, String, Number, Array, Object],
-    default: false,
-  },
-
-  /**
-   * Checkbox name.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox label description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckbox).labelAlign,
-  },
-
-  /**
-   * Checkbox color.
-   * @values brand, grayscale, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckbox).color,
-  },
-
-  /**
-   * Checkbox size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckbox).size,
-  },
-
-  /**
-   * Make checkbox disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCheckbox).disabled,
-  },
-
-  /**
-   * Make checkbox partially checked (change the checked tick to a minus).
-   */
-  partial: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCheckbox).partial,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: false,
+  value: "",
+  trueValue: true,
+  falseValue: false,
+  label: "",
 });
 
 const emit = defineEmits([
@@ -215,31 +54,17 @@ const checkboxColor = ref(props.color);
 
 const elementId = props.id || useId();
 
-const { config, checkboxAttrs, iconWrapperAttrs, checkboxLabelAttrs, checkedIconAttrs } = useAttrs(
-  props,
-  {
-    checkboxColor,
-    checkboxSize,
-  },
-);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
-
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
 
 const isChecked = computed(() => {
-  return isBinary.value && !isCheckboxInGroup.value
-    ? isEqual(props.modelValue, props.trueValue)
-    : currentValue.value.findIndex((item) => isEqual(item, checkboxValue.value)) !== -1;
+  if (isBinary.value && !isCheckboxInGroup.value) {
+    return isEqual(props.modelValue, props.trueValue);
+  } else if (Array.isArray(currentValue.value)) {
+    return currentValue.value.findIndex((item) => isEqual(item, checkboxValue.value)) !== -1;
+  } else {
+    return false;
+  }
 });
 
 const checkboxValue = computed(() => {
@@ -251,7 +76,8 @@ const currentValue = computed(() => {
 });
 
 onMounted(() => {
-  checkboxName.value = isCheckboxInGroup.value ? toValue(getCheckboxGroupName) : props.name;
+  checkboxName.value =
+    isCheckboxInGroup.value && getCheckboxGroupName ? toValue(getCheckboxGroupName) : props.name;
 });
 
 watchEffect(() => (checkboxColor.value = toValue(getCheckboxGroupColor) || props.color));
@@ -265,16 +91,85 @@ function onChange() {
   }
 
   if (!isBinary.value || isCheckboxInGroup.value) {
-    newModelValue = !isChecked.value
-      ? [...currentValue.value, checkboxValue.value]
-      : currentValue.value.filter((item) => !isEqual(checkboxValue.value, item));
+    if (Array.isArray(currentValue.value)) {
+      newModelValue = !isChecked.value
+        ? [...currentValue.value, checkboxValue.value]
+        : currentValue.value.filter((item) => !isEqual(checkboxValue.value, item));
+    } else {
+      newModelValue = isChecked.value ? [checkboxValue.value] : [];
+    }
   }
 
   if (isCheckboxInGroup.value && setCheckboxGroupCheckedItems) {
-    setCheckboxGroupCheckedItems(newModelValue);
+    setCheckboxGroupCheckedItems(newModelValue as UnknownObject[]);
   }
 
   emit("update:modelValue", newModelValue);
   emit("input", newModelValue);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  color: checkboxColor.value,
+  size: checkboxSize.value,
+  label: Boolean(props.label),
+  error: Boolean(props.error),
+}));
+
+const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, checkedIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <ULabel
+    :for="elementId"
+    :label="label"
+    :error="error"
+    :size="checkboxSize"
+    :align="labelAlign"
+    :disabled="disabled"
+    :description="description"
+    interactive
+    v-bind="checkboxLabelAttrs"
+    :data-test="getDataTest('label')"
+  >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
+    <input
+      :id="elementId"
+      type="checkbox"
+      :value="checkboxValue"
+      :true-value="trueValue"
+      :false-value="falseValue"
+      :name="checkboxName"
+      :checked="isChecked"
+      :disabled="disabled"
+      v-bind="checkboxAttrs"
+      :data-test="getDataTest()"
+      @change="onChange"
+    />
+
+    <label v-if="isChecked" v-bind="checkedAttrs" :for="elementId">
+      <UIcon
+        internal
+        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
+        color="inherit"
+        v-bind="checkedIconAttrs"
+      />
+    </label>
+
+    <template #bottom>
+      <!-- @slot Use it to add something below the checkbox. -->
+      <slot name="bottom" />
+    </template>
+  </ULabel>
+</template>

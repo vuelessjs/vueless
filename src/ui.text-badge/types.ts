@@ -1,6 +1,9 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export interface UBadgeProps {
+export type Config = typeof defaultConfig;
+
+export interface Props {
   /**
    *  Badge label.
    */
@@ -9,12 +12,7 @@ export interface UBadgeProps {
   /**
    * Badge variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Badge size.
@@ -24,28 +22,7 @@ export interface UBadgeProps {
   /**
    * Badge color.
    */
-  color?:
-    | "brand"
-    | "grayscale"
-    | "gray"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "white";
+  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
 
   /**
    * Icon name (appears instead of label).
@@ -75,10 +52,10 @@ export interface UBadgeProps {
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }

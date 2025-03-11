@@ -1,0 +1,230 @@
+@plugin "@tailwindcss/forms" {
+    strategy: base;
+}
+
+@source "../node_modules/.cache/vueless/safelist.txt";
+@source "../node_modules/vueless";
+@source "../vueless.config.ts";
+@source "../vueless.config.js";
+@source "../.vueless";
+
+
+@variant light (&:where(.vl-light, .vl-light *));
+@variant dark (&:where(.vl-dark, .vl-dark *));
+
+@layer base {
+    body {
+        @apply antialiased text-(--vl-text) bg-(--vl-bg) scheme-light dark:scheme-dark;
+    }
+}
+
+@theme {
+    /* Primary colors */
+    --color-primary-50: var(--vl-primary-50);
+    --color-primary-100: var(--vl-primary-100);
+    --color-primary-200: var(--vl-primary-200);
+    --color-primary-300: var(--vl-primary-300);
+    --color-primary-400: var(--vl-primary-400);
+    --color-primary-500: var(--vl-primary-500);
+    --color-primary-600: var(--vl-primary-600);
+    --color-primary-700: var(--vl-primary-700);
+    --color-primary-800: var(--vl-primary-800);
+    --color-primary-900: var(--vl-primary-900);
+    --color-primary-950: var(--vl-primary-950);
+
+    /* Primary colors */
+    --color-primary: var(--vl-primary);
+    --color-primary-lifted: var(--vl-primary-lifted);
+    --color-primary-accented: var(--vl-primary-accented);
+
+    /* Neutral colors */
+    --color-neutral: var(--vl-neutral);
+    --color-neutral-lifted: var(--vl-neutral-lifted);
+    --color-neutral-accented: var(--vl-neutral-accented);
+
+    /* Info colors */
+    --color-info: var(--vl-info);
+    --color-info-lifted: var(--vl-info-lifted);
+    --color-info-accented: var(--vl-info-accented);
+
+    /* Error colors */
+    --color-error: var(--vl-error);
+    --color-error-lifted: var(--vl-error-lifted);
+    --color-error-accented: var(--vl-error-accented);
+
+    /* Warning colors */
+    --color-warning: var(--vl-warning);
+    --color-warning-lifted: var(--vl-warning-lifted);
+    --color-warning-accented: var(--vl-warning-accented);
+
+    /* Success colors */
+    --color-success: var(--vl-success);
+    --color-success-lifted: var(--vl-success-lifted);
+    --color-success-accented: var(--vl-success-accented);
+
+    /* Grayscale colors */
+    --color-grayscale: var(--vl-grayscale);
+    --color-grayscale-lifted: var(--vl-grayscale-lifted);
+    --color-grayscale-accented: var(--vl-grayscale-accented);
+
+    /* Border radius rounding values */
+    --radius-small: var(--vl-radius-sm);
+    --radius-medium: var(--vl-radius-md);
+    --radius-large: var(--vl-radius-lg);
+
+    /* Text size */
+    --text-xsmall: var(--vl-text-xs);
+    --text-xsmall--line-height: calc(1 / var(--text-xs));
+    --text-small: var(--vl-text-sm);
+    --text-small--line-height: var(--text-xs--line-height);
+    --text-medium: var(--vl-text-md);
+    --text-medium--line-height: var(--text-sm--line-height);
+    --text-large: var(--vl-text-lg);
+    --text-large--line-height: var(--text-base--line-height);
+
+    /* Mobile safe area spaceing. */
+    --spacing-safe-top: "env(safe-area-inset-top)";
+    --spacing-safe-bottom: "env(safe-area-inset-bottom)";
+    --spacing-safe-left: "env(safe-area-inset-left)";
+    --spacing-safe-right: "env(safe-area-inset-right)";
+}
+
+/* Text color utilities */
+
+@utility text-default {
+    color: var(--vl-text);
+}
+
+@utility text-lifted {
+    color: var(--vl-text-lifted);
+}
+
+@utility text-accented {
+    color: var(--vl-text-accented);
+}
+
+@utility text-muted {
+    color: var(--vl-text-muted);
+}
+
+@utility text-inverted {
+    color: var(--vl-text-inverted);
+}
+
+/* Border color utilities */
+
+@utility border-default {
+    border-color: var(--vl-border);
+}
+
+@utility border-lifted {
+    border-color: var(--vl-border-lifted);
+}
+
+@utility border-accented {
+    border-color: var(--vl-border-accented);
+}
+
+@utility border-muted {
+    border-color: var(--vl-border-muted);
+}
+
+/* Background color utilities */
+
+@utility bg-default {
+    background-color: var(--vl-bg);
+}
+
+@utility bg-lifted {
+    background-color: var(--vl-bg-lifted);
+}
+
+@utility bg-accented {
+    background-color: var(--vl-bg-accented);
+}
+
+@utility bg-muted {
+    background-color: var(--vl-bg-muted);
+}
+
+@utility bg-inverted {
+    background-color: var(--vl-bg-inverted);
+}
+
+/* Outline width utilities */
+
+@utility outline-small {
+    outline-style: var(--tw-outline-style);
+    outline-width: var(--vl-outline-sm);
+}
+
+@utility outline-medium {
+    outline-style: var(--tw-outline-style);
+    outline-width: var(--vl-outline-md);
+}
+
+@utility outline-large {
+    outline-style: var(--tw-outline-style);
+    outline-width: var(--vl-outline-lg);
+}
+
+/* Defined variables to prevent IDE's unused property error. */
+:root {
+    --vl-primary-50: "";
+    --vl-primary-100: "";
+    --vl-primary-200: "";
+    --vl-primary-300: "";
+    --vl-primary-400: "";
+    --vl-primary-500: "";
+    --vl-primary-600: "";
+    --vl-primary-700: "";
+    --vl-primary-800: "";
+    --vl-primary-900: "";
+    --vl-primary-950: "";
+    --vl-primary: "";
+    --vl-primary-lifted: "";
+    --vl-primary-accented: "";
+    --vl-neutral: "";
+    --vl-neutral-lifted: "";
+    --vl-neutral-accented: "";
+    --vl-info: "";
+    --vl-info-lifted: "";
+    --vl-info-accented: "";
+    --vl-error: "";
+    --vl-error-lifted: "";
+    --vl-error-accented: "";
+    --vl-warning: "";
+    --vl-warning-lifted: "";
+    --vl-warning-accented: "";
+    --vl-success: "";
+    --vl-success-lifted: "";
+    --vl-success-accented: "";
+    --vl-grayscale: "";
+    --vl-grayscale-lifted: "";
+    --vl-grayscale-accented: "";
+    --vl-radius-sm: "";
+    --vl-radius-md: "";
+    --vl-radius-lg: "";
+    --vl-text-xs: "";
+    --vl-text-sm: "";
+    --vl-text-md: "";
+    --vl-text-lg: "";
+    --vl-text: "";
+    --vl-text-lifted: "";
+    --vl-text-accented: "";
+    --vl-text-muted: "";
+    --vl-text-inverted: "";
+    --vl-border: "";
+    --vl-border-lifted: "";
+    --vl-border-accented: "";
+    --vl-border-muted: "";
+    --vl-bg: "";
+    --vl-bg-lifted: "";
+    --vl-bg-accented: "";
+    --vl-bg-muted: "";
+    --vl-bg-inverted: "";
+    --vl-outline-sm: "";
+    --vl-outline-md: "";
+    --vl-outline-lg: "";
+}
+

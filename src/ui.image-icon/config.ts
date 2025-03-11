@@ -1,18 +1,14 @@
 export default /*tw*/ {
   icon: {
-    base: "fill-current outline-0 shrink-0 grow-0",
+    base: "text-{color} fill-current shrink-0 grow-0 focus:outline-0",
     variants: {
       variant: {
-        light: "text-{color}-400",
-        default: "text-{color}-600",
-        dark: "text-{color}-800",
+        light: "brightness-125",
+        default: "brightness-100",
+        dark: "brightness-75",
       },
       color: {
-        white: "text-white",
-        grayscale: "text-gray-900",
-      },
-      interactive: {
-        true: "cursor-pointer",
+        inherit: "text-inherit",
       },
       size: {
         "4xs": "size-2.5",
@@ -28,6 +24,12 @@ export default /*tw*/ {
         "4xl": "size-16",
         "5xl": "size-20",
       },
+      interactive: {
+        true: "cursor-pointer hover:text-{color}-lifted active:text-{color}-accented",
+      },
+      disabled: {
+        true: "text-{color}/75 cursor-not-allowed",
+      },
     },
   },
   defaults: {
@@ -37,6 +39,7 @@ export default /*tw*/ {
     interactive: false,
     /* icon library */
     library: "@material-symbols",
+    path: "", // set for `custom-icons` library only.
     style: "outlined",
     weight: 500,
   },

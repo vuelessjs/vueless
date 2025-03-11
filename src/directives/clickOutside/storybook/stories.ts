@@ -1,5 +1,4 @@
-import type { Meta } from "@storybook/vue3";
-import { getArgTypes } from "../../../utils/storybook.ts";
+import type { Meta, StoryFn } from "@storybook/vue3";
 
 import { ref, computed, onMounted, useTemplateRef } from "vue";
 
@@ -7,6 +6,7 @@ import UAlert from "../../../ui.text-alert/UAlert.vue";
 import UButton from "../../../ui.button/UButton.vue";
 import UCalendar from "../../../ui.form-calendar/UCalendar.vue";
 import clickOutside from "../vClickOutside.ts";
+import type { ClickCallback } from "../types.ts";
 
 /**
  * The `v-click-outside` directive. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/directives/clickOutside)
@@ -14,14 +14,15 @@ import clickOutside from "../vClickOutside.ts";
 export default {
   id: "7022",
   title: "Directives / Click Outside",
-  component: UButton,
   args: {},
-  argTypes: {
-    ...getArgTypes(UButton.__name),
-  } as Meta,
-};
+  argTypes: {},
+} as Meta;
 
-const DefaultTemplate = () => ({
+interface VOnClickOutsideArgs {
+  callback: ClickCallback;
+}
+
+const DefaultTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs) => ({
   components: { UButton, UCalendar, UAlert },
   directives: { clickOutside },
   setup() {
@@ -40,14 +41,14 @@ const DefaultTemplate = () => ({
       isShownCalendar.value = false;
     }
 
-    return { date, isShownCalendar, buttonLabel, toggleCalendar, closeCalendar };
+    return { date, isShownCalendar, buttonLabel, toggleCalendar, closeCalendar, args };
   },
   template: `
     <UButton :label="buttonLabel" @click="toggleCalendar" v-click-outside="closeCalendar" />
 
     <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
 
-    <UAlert class="mt-4" variant="secondary">
+    <UAlert class="mt-4" variant="outlined">
       <p>
         Click on calendar itself will trigger directive callback, use ignore option to prevent this behavior.
       </p>
@@ -55,7 +56,7 @@ const DefaultTemplate = () => ({
   `,
 });
 
-const SettingsTemplate = () => ({
+const SettingsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs) => ({
   components: { UButton, UCalendar, UAlert },
   directives: { clickOutside },
   setup() {
@@ -87,6 +88,7 @@ const SettingsTemplate = () => ({
       toggleCalendar,
       closeCalendar,
       clickOutsideOptions,
+      args,
     };
   },
   template: `
@@ -96,7 +98,7 @@ const SettingsTemplate = () => ({
       <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
     </div>
 
-    <UAlert class="mt-4" variant="secondary">
+    <UAlert class="mt-4" variant="outlined">
       <p>
         Click on calendar will not trigger directive callback now.
       </p>
@@ -105,5 +107,17 @@ const SettingsTemplate = () => ({
 });
 
 export const Default = DefaultTemplate.bind({});
+Default.args = {};
 
 export const Settings = SettingsTemplate.bind({});
+Settings.args = {};
+
+Settings.parameters = {
+  docs: {
+    source: {
+      code: `
+        <UButton @click="toggleCalendar" v-click-outside="[closeCalendar, { ignore: [calendarRef] }]" />
+      `,
+    },
+  },
+};

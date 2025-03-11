@@ -1,293 +1,31 @@
-<template>
-  <component
-    :is="tag"
-    :id="elementId"
-    ref="buttonRef"
-    :disabled="disabled"
-    v-bind="buttonAttrs"
-    :style="buttonStyle"
-    :tabindex="!loading ? tabindex : -1"
-    :data-test="dataTest"
-  >
-    <template v-if="loading">
-      <!-- Label is needed to prevent changing button height -->
-      <div tabindex="-1" class="invisible w-0" v-text="label" />
-      <ULoader :loading="loading" :size="loaderSize" :color="iconColor" v-bind="loaderAttrs" />
-    </template>
+<script setup lang="ts">
+import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
 
-    <template v-else>
-      <!--
-        @slot Use it to add something before the label.
-        @binding {string} icon-name
-        @binding {string} icon-size
-        @binding {string} icon-color
-      -->
-      <slot name="left" :icon-name="leftIcon" :icon-size="iconSize" :icon-color="iconColor">
-        <UIcon
-          v-if="leftIcon"
-          internal
-          :name="leftIcon"
-          :size="iconSize"
-          :color="iconColor"
-          v-bind="leftIconAttrs"
-        />
-      </slot>
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-      <!--
-        @slot Use it to add something instead of the label.
-        @binding {string} label
-        @binding {string} icon-name
-        @binding {string} icon-size
-        @binding {string} icon-color
-      -->
-      <slot
-        name="default"
-        :label="label"
-        :icon-name="icon"
-        :icon-size="iconSize"
-        :icon-color="iconColor"
-      >
-        <UIcon
-          v-if="icon"
-          internal
-          :name="icon"
-          :size="iconSize"
-          :color="iconColor"
-          v-bind="centerIconAttrs"
-        />
-        <template v-else>
-          {{ label }}
-        </template>
-      </slot>
-
-      <!--
-        @slot Use it to add something after the label.
-        @binding {string} icon-name
-        @binding {string} icon-size
-        @binding {string} icon-color
-      -->
-      <slot name="right" :icon-name="rightIcon" :icon-size="iconSize" :icon-color="iconColor">
-        <UIcon
-          v-if="rightIcon"
-          internal
-          :name="rightIcon"
-          :size="iconSize"
-          :color="iconColor"
-          v-bind="rightIconAttrs"
-        />
-      </slot>
-    </template>
-  </component>
-</template>
-
-<script setup>
-import { computed, ref, watchEffect, useId, watch } from "vue";
-
-import { getDefault } from "../utils/ui.ts";
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import { UButton } from "./constants.js";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Button variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).variant,
-  },
-
-  /**
-   * Button color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).color,
-  },
-
-  /**
-   * Button size.
-   * @values 2xs, xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).size,
-  },
-
-  /**
-   * Button label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Allows changing button html tag.
-   */
-  tag: {
-    type: String,
-    default: getDefault(defaultConfig, UButton).tag,
-  },
-
-  /**
-   * Icon name (appears instead of label).
-   */
-  icon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Controls the keyboard “Tab” focus order of elements.
-   */
-  tabindex: {
-    type: [String, Number],
-    default: getDefault(defaultConfig, UButton).tabindex,
-  },
-
-  /**
-   * Fill the background for thirdary variant.
-   */
-  filled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).filled,
-  },
-
-  /**
-   * Disable the button.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).disabled,
-  },
-
-  /**
-   * Make the Button fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).block,
-  },
-
-  /**
-   * Set button corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).round,
-  },
-
-  /**
-   * Set the same paddings for the button.
-   */
-  square: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).square,
-  },
-
-  /**
-   * Enable loader.
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).loading,
-  },
-
-  /**
-   * Remove button ring on focus.
-   */
-  noRing: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UButton).noRing,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  label: "",
 });
 
+const slots = useSlots();
 const elementId = props.id || useId();
 
-const { buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useAttrs(props);
-
-const buttonRef = ref(null);
-const buttonStyle = ref(null);
+const buttonRef = ref<HTMLElement | null>(null);
+const buttonStyle = ref({});
 const buttonWidth = ref(0);
-
-const loaderSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size];
-});
-
-const iconSize = computed(() => {
-  const sizes = {
-    "2xs": "2xs",
-    xs: "xs",
-    sm: "sm",
-    md: "sm",
-    lg: "md",
-    xl: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const iconColor = computed(() => {
-  return props.variant === "primary" ? "white" : props.color;
-});
 
 watch(
   () => props.loading,
@@ -308,7 +46,7 @@ watch(
 );
 
 watchEffect(() => {
-  props.loading && buttonRef.value.blur();
+  props.loading && buttonRef?.value?.blur();
 });
 
 defineExpose({
@@ -318,4 +56,83 @@ defineExpose({
    */
   buttonRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
+  rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
+  label: Boolean(props.label),
+}));
+
+const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <component
+    :is="tag"
+    :id="elementId"
+    ref="buttonRef"
+    :disabled="disabled"
+    v-bind="buttonAttrs"
+    :style="buttonStyle"
+    :tabindex="!loading ? tabindex : -1"
+    :data-test="getDataTest()"
+  >
+    <template v-if="loading">
+      <ULoader
+        :loading="loading"
+        color="inherit"
+        v-bind="loaderAttrs"
+        :data-test="getDataTest('loader')"
+      />
+    </template>
+
+    <template v-else>
+      <!--
+        @slot Use it to add something before the label.
+        @binding {string} icon-name
+      -->
+      <slot name="left" :icon-name="leftIcon">
+        <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
+      </slot>
+
+      <!--
+        @slot Use it to add something instead of the label.
+        @binding {string} label
+        @binding {string} icon-name
+      -->
+      <slot name="default" :label="label" :icon-name="icon">
+        <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
+        <template v-else>
+          {{ label }}
+        </template>
+      </slot>
+
+      <!--
+        @slot Use it to add something after the label.
+        @binding {string} icon-name
+      -->
+      <slot name="right" :icon-name="rightIcon">
+        <UIcon
+          v-if="rightIcon"
+          :name="rightIcon"
+          color="inherit"
+          internal
+          v-bind="rightIconAttrs"
+        />
+      </slot>
+    </template>
+
+    <!-- This is needed to prevent changing button height -->
+    <div
+      v-if="(!label && !hasSlotContent(slots['default'])) || loading"
+      tabindex="-1"
+      class="invisible w-0"
+      v-text="'invisible'"
+    />
+  </component>
+</template>

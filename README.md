@@ -11,7 +11,7 @@
 1. Install `vueless` UI library packages.
 
 ```bash
-npm install vueless @vueless/plugin-vite
+npm install vueless
 ```
 
 
@@ -29,7 +29,7 @@ createApp(App).use(vueless).mount('#app');
 3. Add TailwindCSS preset.
 
 ```javascript
-import { vuelessPreset } from "vueless/preset.tailwind.js";
+import { vuelessPreset } from "vueless/preset-tailwind";
 
 export default {
   presets: [vuelessPreset],
@@ -40,7 +40,7 @@ export default {
 4. Add Vite plugins.
 
 ```javascript
-import { Vueless, VuelessUnpluginComponents } from "@vueless/plugin-vite";
+import { Vueless, VuelessUnpluginComponents } from "vueless/plugin-vite";
 
 export default defineConfig({
   plugins: [
@@ -53,6 +53,18 @@ export default defineConfig({
 ```
 
 That's it! You can use components in your app now ✨
+
+## Contributing
+
+* We encourage you to contribute to Vueless! Please check out the
+[contributing to Vueless](CONTRIBUTING.md) for guidelines.
+* Trying to report a possible security vulnerability in Vueless? Please
+check out our [security policy](SECURITY.md) for guidelines.
+* Everyone interacting in Vueless and its sub-projects' codebases, issue trackers, chats, and mailing lists is expected to follow our [code of conduct](CODE_OF_CONDUCT.md) rules.
+
+## License
+
+Ruby on Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 
 

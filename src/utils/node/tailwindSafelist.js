@@ -1,37 +1,47 @@
 import path from "node:path";
-import { merge } from "lodash-es";
-import { existsSync } from "node:fs";
+import { cwd } from "node:process";
+import { existsSync, unlinkSync, writeFile } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { merge } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
-import { isEqual, omit } from "lodash-es";
 import { defineConfig } from "cva";
 
 import { vuelessConfig } from "./vuelessConfig.js";
-import { createMergeConfigsFunction } from "./mergeConfigs.js";
-import { getDefaultConfigJson, getDirFiles } from "./helper.js";
+import { createGetMergedConfig } from "./mergeConfigs.js";
+import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  BRAND_COLORS,
-  BRAND_COLOR,
-  GRAY_COLOR,
+  PRIMARY_COLOR,
+  NEUTRAL_COLOR,
+  PRIMARY_COLORS,
+  GRAYSCALE_COLOR,
+  NEUTRAL_COLORS,
+  STATE_COLORS,
+  COLOR_SHADES,
+  STRATEGY_TYPE,
+  SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
-  TAILWIND_CLASS_DELIMITER,
   TAILWIND_MERGE_EXTENSION,
-  NESTED_COMPONENT_REG_EXP,
+  VUELESS_TAILWIND_SAFELIST,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../../constants.js";
+
+const SAFELIST_DIR = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
 
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
 export const { cx } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
 
-const mergeConfigs = createMergeConfigsFunction(cx);
+const getMergedConfig = createGetMergedConfig(cx);
 
 export function clearTailwindSafelist() {
-  process.env.VUELESS_SAFELIST = "";
+  if (existsSync(SAFELIST_DIR)) {
+    unlinkSync(SAFELIST_DIR);
+  }
 }
 
 export async function createTailwindSafelist({ mode, env, debug, targetFiles = [] } = {}) {
@@ -56,67 +66,70 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
+  const safelistClasses = [];
+
   const storybookColors = {
-    colors: [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR],
+    colors: [...STATE_COLORS, PRIMARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
-  const safelist = [];
 
   const componentNames = Object.keys(COMPONENTS);
 
-  for await (const component of componentNames) {
-    const defaultConfigPath = vuelessConfigFiles.find((file) =>
-      isDefaultComponentConfig(file, component),
-    );
-    const defaultConfig = await readFile(path.join(process.cwd(), defaultConfigPath), {
-      encoding: "utf-8",
-    });
-    const nestedComponents = (defaultConfig.match(/\{U\w+\}/g) || []).map(
-      (nestedComponentPattern) => nestedComponentPattern.replaceAll(/[{}]/g, ""),
-    );
-
+  for await (const componentName of componentNames) {
     const { colors, isComponentExists } = isStorybookMode
       ? storybookColors
-      : await findComponentColors(vuelessFiles, component);
+      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+
+    const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
+    const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
+
+    const nestedComponents = match.map((nestedComponentPattern) =>
+      nestedComponentPattern.replaceAll(/[{}]/g, ""),
+    );
 
     if (isComponentExists && colors.length) {
-      const componentSafelist = await getComponentSafelist(component, {
-        colors,
-        vuelessConfigFiles,
-        isVuelessEnv,
-      });
+      const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
+      const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
-      safelist.push(...componentSafelist);
+      safelistClasses.push(...componentSafelist);
     }
 
     if (isComponentExists && colors.length && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
-        const nestedComponentSafelist = await getComponentSafelist(nestedComponent, {
-          colors,
-          vuelessConfigFiles,
-          isVuelessEnv,
-        });
+        const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
+        const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
 
-        safelist.push(...nestedComponentSafelist);
+        safelistClasses.push(...nestedComponentSafelist);
       }
     }
   }
 
-  const mergedSafelist = mergeSafelistPatterns(safelist);
+  /* Safelist all color variables to allow runtime color switching feature. */
+  const colorSafelistVariables = COLOR_SHADES.map((shade) => {
+    const primaryColorsCSSConstants = PRIMARY_COLORS.map((color) => `--color-${color}-${shade}`);
+    const neutralColorsCSSConstants = NEUTRAL_COLORS.map((color) => `--color-${color}-${shade}`);
+
+    return [...primaryColorsCSSConstants, ...neutralColorsCSSConstants].join("\n");
+  });
+
+  const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
+
+  writeFile(SAFELIST_DIR, safelist.join("\n"), (err) => {
+    if (err) throw err;
+  });
 
   if (debug) {
     // eslint-disable-next-line no-console
-    console.log("VUELESS_SAFELIST", mergedSafelist);
+    console.log("safelist", safelist);
   }
-
-  process.env.VUELESS_SAFELIST = JSON.stringify(mergedSafelist);
-  process.env.VUELESS_STRATEGY = vuelessConfig.strategy || "";
 }
 
 function getSafelistClasses(config) {
   const safelistItems = [];
 
   for (const key in config) {
+    if (key === SYSTEM_CONFIG_KEY.defaults) continue;
+
     if (Object.prototype.hasOwnProperty.call(config, key)) {
       const classes = config[key];
 
@@ -139,57 +152,53 @@ function getSafelistClasses(config) {
   return safelistItems.flat().map((item) => item.replaceAll("\\n", "").trim());
 }
 
-function getSafelistItem(safelistClass, colorString) {
-  const classes = safelistClass.split(TAILWIND_CLASS_DELIMITER);
-  const mainClass = classes.at(-1);
-  const variantClasses = classes.slice(0, classes.length - 1);
+async function getComponentSafelist(mergedConfig, colors) {
+  const classes = new Set();
 
-  const pattern = mainClass.replace(DYNAMIC_COLOR_PATTERN, colorString);
-  const variants = variantClasses
-    .map((variantItem) => (variantItem ? variantItem : TAILWIND_CLASS_DELIMITER))
-    .join("");
+  getSafelistClasses(mergedConfig).map((safelistClass) => {
+    colors.forEach((color) => {
+      classes.add(safelistClass.replace(DYNAMIC_COLOR_PATTERN, color));
+    });
+  });
 
-  return classes.length === 1 ? { pattern } : { pattern, variants: [variants].flat() };
+  return classes;
 }
 
-async function getComponentSafelist(componentName, { colors, vuelessConfigFiles }) {
-  let defaultConfigPath = vuelessConfigFiles.find((file) =>
+async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
+  const isStrategyValid =
+    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
+
+  return getMergedConfig({
+    defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
+    globalConfig: vuelessConfig.components?.[componentName] || {},
+    vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
+  });
+}
+
+async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles) {
+  const componentDefaultConfigPath = vuelessConfigFiles.find((file) =>
     isDefaultComponentConfig(file, componentName),
   );
-  const customConfig = vuelessConfig.component?.[componentName] || {};
-  let defaultConfig = {};
 
-  if (defaultConfigPath) {
-    const configPath = path.join(process.cwd(), defaultConfigPath);
-    const defaultConfigContent = await readFile(configPath, { encoding: "utf-8" });
-
-    defaultConfig = getDefaultConfigJson(defaultConfigContent);
-  }
-
-  const mergedConfig = omit(mergeConfigs({ defaultConfig, globalConfig: customConfig }), [
-    "defaults",
-  ]);
-
-  const colorString = `(${colors.join("|")})`;
-
-  return getSafelistClasses(mergedConfig).map((safelistClass) =>
-    getSafelistItem(safelistClass, colorString),
-  );
+  return componentDefaultConfigPath
+    ? await getComponentDefaultConfig(componentName, path.join(cwd(), componentDefaultConfigPath))
+    : {};
 }
 
-async function findComponentColors(files, componentName) {
+async function findComponentColors(componentName, files, vuelessConfigFiles) {
   const objectColorRegExp = new RegExp(/\bcolor\s*:\s*["']([^"'\s]+)["']/, "g");
   const singleColorRegExp = new RegExp(/\bcolor\s*=\s*["']([^"'\s]+)["']/);
   const ternaryColorRegExp = new RegExp(/\bcolor="[^']*'([^']*)'\s*:\s*'([^']*)'/);
 
-  const brandColor = getComponentBrandColor(componentName);
+  const mergedComponentConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
+  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.primary || "";
   const colors = new Set();
 
-  if (brandColor && brandColor !== "grayscale") {
-    colors.add(brandColor);
+  if (defaultColor && defaultColor !== GRAYSCALE_COLOR) {
+    colors.add(defaultColor);
   }
 
-  getSafelistColorsFromConfig().forEach((color) => colors.add(color));
+  getSafelistColorsFromConfig(componentName).forEach((color) => colors.add(color));
 
   let isComponentExists = false;
 
@@ -199,7 +208,9 @@ async function findComponentColors(files, componentName) {
     const fileContent = await readFile(file, "utf-8");
     const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
+    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
+    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
     if (!isComponentExists) {
       isComponentExists = Boolean(matchedComponent);
@@ -210,6 +221,14 @@ async function findComponentColors(files, componentName) {
         const [, color] = objectColorRegExp.exec(colorMatch) || [];
 
         colors.add(color);
+      });
+    }
+
+    if (matchedExtendComponent) {
+      const objectColors = objectColorRegExp.exec(fileContent) || [];
+
+      objectColors.forEach((color) => {
+        if (color) colors.add(color);
       });
     }
 
@@ -229,17 +248,10 @@ async function findComponentColors(files, componentName) {
 
   return {
     colors: Array.from(colors).filter(
-      (color) => color && [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR].includes(color),
+      (color) => color && [...STATE_COLORS, PRIMARY_COLOR, GRAYSCALE_COLOR].includes(color),
     ),
     isComponentExists,
   };
-}
-
-function getComponentBrandColor(componentName) {
-  const globalBrandColor = vuelessConfig.brand || "";
-  const globalComponentConfig = vuelessConfig.component?.[componentName] || {};
-
-  return vuelessConfig.component ? globalComponentConfig.defaults?.color : globalBrandColor;
 }
 
 function isDefaultComponentConfig(filePath, componentName) {
@@ -253,114 +265,7 @@ function isDefaultComponentConfig(filePath, componentName) {
 
 function getSafelistColorsFromConfig(componentName) {
   const globalSafelistColors = vuelessConfig.safelistColors || [];
-  const componentSafelistColors =
-    (vuelessConfig.component && vuelessConfig.component[componentName]?.safelistColors) || [];
+  const componentSafelistColors = vuelessConfig.components?.[componentName]?.safelistColors || [];
 
   return [...globalSafelistColors, ...componentSafelistColors];
-}
-
-/**
- Combine collected tailwind patterns from different components into groups.
- */
-function mergeSafelistPatterns(safelist) {
-  const safelistData = getSafelistData(safelist);
-  const mergedColorsSafelist = mergeSafelistColors(safelistData);
-
-  return mergeSafelistVariants(mergedColorsSafelist).map((item) => {
-    const pattern = `${item.property}(${item.colorPattern})-(${Array.from(item.shades).join("|")})`;
-    const safelistItem = { pattern };
-
-    if (item.variants) {
-      safelistItem.variants = item.variants;
-    }
-
-    return safelistItem;
-  });
-}
-
-function getSafelistData(safelist) {
-  return safelist.map((safelistItem) => {
-    const matchGroupStart = 1;
-    const matchGroupEnd = 4;
-    const safelistItemRegExp = new RegExp(/^(.*-)\((.*)\)-(\d+(?:\/\d+)?)$/);
-
-    const [property, colorPattern, colorShade] = safelistItem.pattern
-      .match(safelistItemRegExp)
-      .slice(matchGroupStart, matchGroupEnd);
-
-    return {
-      property,
-      colorPattern,
-      variants: safelistItem.variants,
-      shades: new Set([colorShade]),
-    };
-  });
-}
-
-function mergeSafelistColors(safelistData) {
-  const mergedSafelist = [];
-
-  safelistData.forEach((currentSafelistItem, currentIndex) => {
-    const duplicateIndex = mergedSafelist.findIndex((safelistItem, index) => {
-      const isSameItem = index === currentIndex;
-      const isSameProperty = safelistItem.property === currentSafelistItem.property;
-      const isSameVariants = isEqual(safelistItem.variants, currentSafelistItem.variants);
-
-      const currentItemColors = currentSafelistItem.colorPattern.split("|");
-      const safelistColors = safelistItem.colorPattern.split("|");
-
-      const isIncludesColors =
-        safelistItem.colorPattern === currentSafelistItem.colorPattern ||
-        currentItemColors.some((color) => safelistColors.includes(color)) ||
-        safelistColors.some((color) => currentItemColors.includes(color));
-
-      return !isSameItem && isSameProperty && isSameVariants && isIncludesColors;
-    });
-
-    if (duplicateIndex === -1) {
-      mergedSafelist.push(currentSafelistItem);
-    } else {
-      const mergedColors = [
-        ...new Set([
-          ...currentSafelistItem.colorPattern.split("|"),
-          ...mergedSafelist[duplicateIndex].colorPattern.split("|"),
-        ]),
-      ];
-
-      mergedSafelist[duplicateIndex].colorPattern = mergedColors.join("|");
-      mergedSafelist[duplicateIndex].shades.add(
-        ...currentSafelistItem.shades,
-        ...mergedSafelist[duplicateIndex].shades,
-      );
-    }
-  });
-
-  return mergedSafelist;
-}
-
-function mergeSafelistVariants(safelistData) {
-  safelistData.forEach((currentItem, currentIndex) => {
-    if (!currentItem.variants) return;
-
-    const duplicateIndex = safelistData.findIndex((item, index) => {
-      const isSameItem = index === currentIndex;
-      const isSameProperty = item.property === currentItem.property;
-      const isSameColors = item.colorPattern === currentItem.colorPattern;
-      const isSameShades = isEqual(item.shades, currentItem.shades);
-
-      return !isSameItem && isSameProperty && isSameColors && isSameShades;
-    });
-
-    if (~duplicateIndex) {
-      const currentItemVariants = currentItem.variants;
-      const foundItemVariants = safelistData[duplicateIndex].variants || [];
-
-      safelistData[duplicateIndex].variants = [
-        ...new Set([...currentItemVariants, ...foundItemVariants]),
-      ];
-      safelistData.splice(currentIndex, 1);
-    }
-  });
-
-  return safelistData;
 }

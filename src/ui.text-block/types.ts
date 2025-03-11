@@ -1,6 +1,9 @@
 import defaultConfig from "./config.ts";
+import type { ComponentConfig } from "../types.ts";
 
-export interface UTextProps {
+export type Config = typeof defaultConfig;
+
+export interface Props {
   /**
    * HTML markdown or plain text.
    */
@@ -17,17 +20,17 @@ export interface UTextProps {
   align?: "left" | "center" | "right";
 
   /**
-   * Remove line height (useful for 1-line text).
+   * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
 
   /**
    * Component config object.
    */
-  config?: Partial<typeof defaultConfig>;
+  config?: ComponentConfig<Config>;
 
   /**
    * Data-test attribute for automated testing.
    */
-  dataTest?: string;
+  dataTest?: string | null;
 }

@@ -28,6 +28,9 @@ if (isSSR) {
 
 if (isCSR) {
   tailwindConfig = Object.values(
-    import.meta.glob("/tailwind.config.{js,ts}", { eager: true, import: "default" }),
+    import.meta.glob(["/tailwind.config.{js,ts}", "/**/tailwind.config.{js,ts}"], {
+      eager: true,
+      import: "default",
+    }),
   )[0] as Config;
 }

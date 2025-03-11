@@ -1,125 +1,21 @@
-<template>
-  <div
-    :title="label"
-    :style="backgroundImage"
-    :data-test="dataTest"
-    v-bind="avatarAttrs"
-    @click="onClick"
-  >
-    <template v-if="!backgroundImage">
-      <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
-      <!--
-        @slot Use it to add something instead of the avatar image placeholder.
-        @binding {string} icon-name
-        @binding {string} icon-color
-        @binding {string} icon-size
-      -->
-      <slot
-        v-else
-        name="placeholder"
-        :icon-name="placeholderIcon"
-        :icon-color="componentColor"
-        :icon-size="size"
-      >
-        <UIcon
-          internal
-          :size="size"
-          :color="componentColor"
-          :name="placeholderIcon"
-          v-bind="placeholderIconAttrs"
-        />
-      </slot>
-    </template>
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-import { UAvatar } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import UIcon from "../ui.image-icon/UIcon.vue";
+
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { UAvatarProps, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Avatar image source.
-   */
-  src: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Avatar label (username, nickname, etc.).
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Avatar placeholder icon.
-   */
-  placeholderIcon: {
-    type: String,
-    default: getDefault(defaultConfig, UAvatar).placeholderIcon,
-  },
-
-  /**
-   * Avatar size.
-   * @values 3xs, 2xs, xs, sm, md, lg, xl, 2xl, 3xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UAvatar).size,
-  },
-
-  /**
-   * Avatar color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UAvatar).color,
-  },
-
-  /**
-   * Avatar corner rounding.
-   * @values dynamic, none, sm, md, lg, full
-   */
-  rounded: {
-    type: String,
-    default: getDefault(defaultConfig, UAvatar).rounded,
-  },
-
-  /**
-   * Add border to the avatar.
-   */
-  bordered: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UAvatar).bordered,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<UAvatarProps>(), {
+  ...getDefaults<UAvatarProps, Config>(defaultConfig, COMPONENT_NAME),
+  label: "",
 });
 
 const emit = defineEmits([
@@ -129,9 +25,9 @@ const emit = defineEmits([
   "click",
 ]);
 
-const { avatarAttrs, placeholderIconAttrs } = useAttrs(props);
-
 const labelFirstLetters = computed(() => {
+  if (!props.label) return "";
+
   const [firstWord, secondWord] = props.label.split(" ");
 
   const firstWordLetter = firstWord ? firstWord[0].toUpperCase() : "";
@@ -147,11 +43,41 @@ const backgroundImage = computed(() => {
   return props.src ? `background-image: url(${src});` : "";
 });
 
-const componentColor = computed(() => {
-  return props.color === "white" ? "grayscale" : props.color;
-});
-
-function onClick(event) {
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <div
+    :title="label"
+    :style="backgroundImage"
+    v-bind="avatarAttrs"
+    :data-test="getDataTest()"
+    @click="onClick"
+  >
+    <template v-if="!backgroundImage">
+      <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
+      <!--
+        @slot Use it to add something instead of the avatar image placeholder.
+        @binding {string} icon-name
+        @binding {string} icon-color
+      -->
+      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="color">
+        <UIcon
+          internal
+          :size="size"
+          :color="color"
+          :name="placeholderIcon || config.defaults.placeholderIcon"
+          v-bind="placeholderIconAttrs"
+        />
+      </slot>
+    </template>
+  </div>
+</template>

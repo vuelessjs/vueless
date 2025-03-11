@@ -1,140 +1,26 @@
-<template>
-  <ULabel
-    :size="size"
-    :label="label"
-    :error="error"
-    :description="description"
-    :disabled="disabled"
-    align="topWithDesc"
-    v-bind="groupLabelAttrs"
-    :data-test="dataTest"
-  >
-    <div v-bind="listAttrs">
-      <!-- @slot Use it to add URadio directly. -->
-      <slot>
-        <UCheckbox
-          v-for="(option, index) in options"
-          :key="option.value"
-          :model-value="modelValue"
-          :value="option.value"
-          :true-value="option.trueValue"
-          :false-value="option.falseValue"
-          :label="option.label"
-          :description="option.description"
-          :disabled="disabled"
-          v-bind="groupCheckboxAttrs"
-          :data-test="`${dataTest}-item-${index}`"
-        />
-      </slot>
-    </div>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { provide, ref, watch } from "vue";
 import { isEqual } from "lodash-es";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import { UCheckboxGroup } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { UnknownObject } from "../types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Checkbox group value.
-   */
-  modelValue: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Checkbox group options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Checkbox group label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Checkbox group size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckboxGroup).size,
-  },
-
-  /**
-   * Checkbox group color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UCheckboxGroup).color,
-  },
-
-  /**
-   * Name for each checkbox.
-   */
-  name: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Make checkbox disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UCheckboxGroup).disabled,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: () => [],
+  options: () => [],
+  label: "",
 });
 
 const emit = defineEmits([
@@ -145,26 +31,78 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const checkedItems = ref([]);
+const checkedItems = ref([] as UnknownObject[]);
 
-const { groupLabelAttrs, groupCheckboxAttrs, listAttrs } = useAttrs(props);
-
-provide("setCheckboxGroupCheckedItems", (value) => (checkedItems.value = value));
-provide("getCheckboxGroupCheckedItems", () => checkedItems.value);
-provide("getCheckboxGroupName", () => props.name);
+provide<(value: UnknownObject[]) => void>(
+  "setCheckboxGroupCheckedItems",
+  (value: UnknownObject[]) => {
+    checkedItems.value = value;
+  },
+);
+provide<() => UnknownObject[]>("getCheckboxGroupCheckedItems", () => checkedItems.value);
+provide<() => string>("getCheckboxGroupName", () => props.name);
 provide("getCheckboxGroupColor", () => props.color);
 provide("getCheckboxSize", () => props.size);
 
 watch(() => checkedItems.value.length, onChangeCheckedItems);
-watch(() => props.modelValue.length, onModelValueChange, { immediate: true });
-
-function onModelValueChange(newValue, oldValue) {
-  if (!isEqual(newValue, oldValue)) {
-    checkedItems.value = props.modelValue;
-  }
-}
+watch(
+  () => props?.modelValue?.length,
+  (newValue, oldValue) => {
+    if (!isEqual(newValue, oldValue)) {
+      checkedItems.value = props.modelValue;
+    }
+  },
+  { immediate: true },
+);
 
 function onChangeCheckedItems() {
   emit("update:modelValue", checkedItems.value);
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <ULabel
+    :size="size"
+    :label="label"
+    :error="error"
+    :description="description"
+    :disabled="disabled"
+    align="topWithDesc"
+    v-bind="groupLabelAttrs"
+    :data-test="getDataTest()"
+  >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
+    <div v-bind="listAttrs">
+      <!-- @slot Use it to add URadio directly. -->
+      <slot>
+        <UCheckbox
+          v-for="(option, index) in options"
+          :key="index"
+          :model-value="modelValue"
+          :value="option.value"
+          :true-value="option.trueValue"
+          :false-value="option.falseValue"
+          :label="option.label"
+          :description="option.description"
+          :disabled="disabled"
+          v-bind="groupCheckboxAttrs"
+          :data-test="getDataTest('item-${index}')"
+        />
+      </slot>
+    </div>
+  </ULabel>
+</template>

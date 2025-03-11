@@ -1,198 +1,26 @@
-<template>
-  <ULabel
-    ref="labelComponentRef"
-    :for="elementId"
-    :label="label"
-    :error="error"
-    :description="description"
-    :size="size"
-    :disabled="disabled"
-    :data-test="dataTest"
-    :align="labelAlign"
-    v-bind="textareaLabelAttrs"
-  >
-    <label
-      v-if="hasSlotContent($slots['left'])"
-      ref="leftSlotWrapperRef"
-      :for="elementId"
-      v-bind="leftSlotAttrs"
-    >
-      <!-- @slot Use it to add something before the text. -->
-      <slot name="left" />
-    </label>
-    <label ref="textareaWrapperRef" :for="elementId" v-bind="textareaWrapperAttrs">
-      <textarea
-        :id="elementId"
-        ref="textareaRef"
-        v-model="localValue"
-        :value="modelValue"
-        :placeholder="placeholder"
-        :readonly="readonly"
-        :disabled="disabled"
-        :rows="currentRows"
-        :inputmode="inputmode"
-        :data-test="dataTest"
-        v-bind="textareaAttrs"
-        @focus="onFocus"
-        @blur="onBlur"
-        @change="onChange"
-        @mouseleave="onMouseleave"
-        @mousedown="onMousedown"
-        @click="onClick"
-        @keydown.enter="onEnter"
-        @keydown.backspace="onBackspace"
-      />
-    </label>
-    <label v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
-    </label>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
 
-import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
-import { UTextarea } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { useMutationObserver } from "../composables/useMutationObserver.ts";
+
+import ULabel from "../ui.form-label/ULabel.vue";
+
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Set input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UTextarea).size,
-  },
-
-  /**
-   * Set component value.
-   */
-  modelValue: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set component placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set input label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UTextarea).labelAlign,
-  },
-
-  /**
-   * Set description for component.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Allow resizing of the textarea.
-   */
-  resizable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTextarea).resizable,
-  },
-
-  /**
-   * Make textarea read only.
-   */
-  readonly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTextarea).readonly,
-  },
-
-  /**
-   * Make input disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTextarea).disabled,
-  },
-
-  /**
-   * Set proper keyboard on mobile devices.
-   * @values text, decimal, numeric, tel, email, url, search, none
-   */
-  inputmode: {
-    type: String,
-    default: getDefault(defaultConfig, UTextarea).inputmode,
-  },
-
-  /**
-   * Disable browsers autocomplete.
-   */
-  noAutocomplete: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTextarea).noAutocomplete,
-  },
-
-  /**
-   * Set error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Set number of visible rows.
-   */
-  rows: {
-    type: [String, Number],
-    default: getDefault(defaultConfig, UTextarea).rows,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([
@@ -232,46 +60,19 @@ const slots = useSlots();
 
 const elementId = props.id || useId();
 
-const {
-  textareaAttrs,
-  textareaLabelAttrs,
-  textareaWrapperAttrs,
-  leftSlotAttrs,
-  rightSlotAttrs,
-  hasSlotContent,
-} = useAttrs(props);
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
+const labelComponentRef = ref<InstanceType<typeof ULabel> | null>(null);
+const leftSlotWrapperRef = ref<HTMLElement | null>(null);
+const wrapperRef = ref<HTMLElement | null>(null);
 
-const textareaRef = ref(null);
-const labelComponentRef = ref(null);
-const leftSlotWrapperRef = ref(null);
-const textareaWrapperRef = ref(null);
-
-const currentRows = ref(props.rows);
+const currentRows = ref(Number(props.rows));
 
 watch(
   () => props.rows,
   (newRows) => {
-    currentRows.value = newRows;
+    currentRows.value = Number(newRows);
   },
 );
-
-function onEnter() {
-  currentRows.value++;
-}
-
-function onBackspace() {
-  const textarea = textareaRef.value;
-
-  if (!textarea) return;
-
-  const content = textarea.value;
-  const newlineCount = (content.match(/\n/g) || []).length;
-  const newRowCount = Math.max(props.rows, newlineCount + 1);
-
-  if (newRowCount < currentRows.value) {
-    currentRows.value = newRowCount;
-  }
-}
 
 const localValue = computed({
   get() {
@@ -284,11 +85,38 @@ const localValue = computed({
 
 onMounted(() => toggleReadonly(true));
 
+function getNewRowCount() {
+  const textarea = textareaRef.value;
+
+  if (!textarea) return 0;
+
+  const content = textarea.value;
+  const newlineCount = (content.match(/\n/g) || []).length;
+
+  return Math.max(Number(props.rows), newlineCount + 2);
+}
+
+function onEnter() {
+  const newRowCount = getNewRowCount();
+
+  if (newRowCount > currentRows.value && !props.readonly) {
+    currentRows.value = newRowCount;
+  }
+}
+
+function onBackspace() {
+  const newRowCount = getNewRowCount() - 1;
+
+  if (newRowCount < currentRows.value && !props.readonly) {
+    currentRows.value = newRowCount;
+  }
+}
+
 function onChange() {
   emit("change");
 }
 
-function onClick(event) {
+function onClick(event: MouseEvent) {
   toggleReadonly(false);
 
   emit("click", event);
@@ -314,26 +142,33 @@ function onMousedown() {
   emit("mousedown");
 }
 
-function toggleReadonly(hasReadonly) {
-  if (props.noAutocomplete && !props.readonly) {
+function toggleReadonly(hasReadonly: boolean) {
+  if (props.noAutocomplete && !props.readonly && elementId) {
     const textarea = document.getElementById(elementId);
 
-    hasReadonly
-      ? textarea.setAttribute("readonly", "readonly")
-      : textarea.removeAttribute("readonly");
+    if (textarea) {
+      hasReadonly
+        ? textarea.setAttribute("readonly", "readonly")
+        : textarea.removeAttribute("readonly");
+    }
   }
 }
+
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
 
-  const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
+    const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
 
-  if (labelComponentRef.value.labelElement) {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth}px`;
+    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
   }
-
-  textareaWrapperRef.value.style.paddingLeft = `${leftSlotWidth}px`;
 }
 
 onMounted(() => setLabelPosition());
@@ -345,4 +180,84 @@ defineExpose({
    */
   textareaRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error) && !props.disabled,
+  label: Boolean(props.label),
+}));
+
+const {
+  getDataTest,
+  textareaAttrs,
+  textareaLabelAttrs,
+  wrapperAttrs,
+  leftSlotAttrs,
+  rightSlotAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <ULabel
+    ref="labelComponentRef"
+    :for="elementId"
+    :label="label"
+    :error="error"
+    :description="description"
+    :size="size"
+    :disabled="disabled"
+    :align="labelAlign"
+    interactive
+    v-bind="textareaLabelAttrs"
+    :data-test="getDataTest('label')"
+  >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
+    <label ref="wrapperRef" :for="elementId" v-bind="wrapperAttrs">
+      <div
+        v-if="hasSlotContent($slots['left'])"
+        ref="leftSlotWrapperRef"
+        :for="elementId"
+        v-bind="leftSlotAttrs"
+      >
+        <!-- @slot Use it to add something before the text. -->
+        <slot name="left" />
+      </div>
+
+      <textarea
+        :id="elementId"
+        ref="textareaRef"
+        v-model="localValue"
+        :placeholder="placeholder"
+        :readonly="readonly"
+        :disabled="disabled"
+        :rows="currentRows"
+        :inputmode="inputmode"
+        v-bind="textareaAttrs"
+        :data-test="getDataTest()"
+        @focus="onFocus"
+        @blur="onBlur"
+        @change="onChange"
+        @mouseleave="onMouseleave"
+        @mousedown="onMousedown"
+        @click="onClick"
+        @keydown.enter="onEnter"
+        @keyup.delete="onBackspace"
+      />
+
+      <div v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+        <!-- @slot Use it to add something after the text. -->
+        <slot name="right" />
+      </div>
+    </label>
+  </ULabel>
+</template>

@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import esbuild from "esbuild";
+import { cwd } from "node:process";
 
-import { CACHE_PATH, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
+import { buildTSFile } from "./helper.js";
+import { VUELESS_CACHE_DIR, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 
 /**
  * Load Vueless config from the project root.
@@ -11,9 +12,9 @@ import { CACHE_PATH, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
 export let vuelessConfig = {};
 
 (async () => {
-  const configPathJs = path.join(process.cwd(), `${VUELESS_CONFIG_FILE_NAME}.js`);
-  const configPathTs = path.join(process.cwd(), `${VUELESS_CONFIG_FILE_NAME}.ts`);
-  const configOutPath = path.join(process.cwd(), `${CACHE_PATH}/${VUELESS_CONFIG_FILE_NAME}.mjs`);
+  const configPathJs = path.join(cwd(), `${VUELESS_CONFIG_FILE_NAME}.js`);
+  const configPathTs = path.join(cwd(), `${VUELESS_CONFIG_FILE_NAME}.ts`);
+  const configOutPath = path.join(cwd(), `${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`);
 
   if (!fs.existsSync(configPathJs) && !fs.existsSync(configPathTs)) {
     vuelessConfig = {};
@@ -21,22 +22,10 @@ export let vuelessConfig = {};
     return;
   }
 
-  fs.existsSync(configPathJs) && (await buildConfig(configPathJs, configOutPath));
-  fs.existsSync(configPathTs) && (await buildConfig(configPathTs, configOutPath));
+  fs.existsSync(configPathJs) && (await buildTSFile(configPathJs, configOutPath));
+  fs.existsSync(configPathTs) && (await buildTSFile(configPathTs, configOutPath));
 
   if (fs.existsSync(configOutPath)) {
     vuelessConfig = (await import(configOutPath)).default;
   }
 })();
-
-async function buildConfig(entryPath, configOutFile) {
-  await esbuild.build({
-    entryPoints: [entryPath],
-    outfile: configOutFile,
-    bundle: true,
-    platform: "node",
-    format: "esm",
-    target: "ESNext",
-    loader: { ".ts": "ts" },
-  });
-}

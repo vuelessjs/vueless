@@ -1,191 +1,21 @@
-<template>
-  <div v-bind="moneyAttrs">
-    <div v-if="hasSlotContent($slots['left'])" v-bind="slotLeftAttrs">
-      <!-- @slot Use it to add something before money amount. -->
-      <slot name="left" />
-    </div>
-
-    <div :data-test="dataTest" v-bind="sumAttrs">
-      <span
-        v-if="currencySymbolPosition.left"
-        v-bind="symbolAttrs"
-        v-text="symbol + currencySpace"
-      />
-
-      <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
-
-      <span v-bind="integerAttrs" v-text="preparedMoney.integer" />
-
-      <span
-        v-if="maxFractionDigits > 0"
-        v-bind="pennyAttrs"
-        v-text="preparedMoney.decimalSeparator + preparedMoney.penny"
-      />
-
-      <span
-        v-if="currencySymbolPosition.right"
-        v-bind="symbolAttrs"
-        v-text="currencySpace + symbol"
-      />
-    </div>
-
-    <div v-if="hasSlotContent($slots['right'])" v-bind="slotRightAttrs">
-      <!-- @slot Use it to add something after money amount. -->
-      <slot name="right" />
-    </div>
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-import { UMoney } from "./constants.js";
-import defaultConfig from "./config.js";
-import { useAttrs } from "./useAttrs.js";
-import { separatedMoney, MONEY_SIGN_TYPE } from "./utilMoney.js";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import UNumber from "../ui.text-number/UNumber.vue";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Money value.
-   */
-  value: {
-    type: Number,
-    default: 0,
-  },
-
-  /**
-   * Money size.
-   * @values xs, sm, md, lg, xl, 2xl, 3xl, 4xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).size,
-  },
-
-  /**
-   * Money color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).color,
-  },
-
-  /**
-   * Money currency symbol.
-   */
-  symbol: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Money currency symbol align.
-   * @values right, left
-   */
-  symbolAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).symbolAlign,
-  },
-
-  /**
-   * Add space between currency symbol and sum.
-   */
-  symbolDivided: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).symbolDivided,
-  },
-
-  /**
-   * Money sign.
-   * @values default, positive, negative
-   */
-  sign: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).sign,
-  },
-
-  /**
-   * Minimal number of signs after the decimal separator (fractional part of a number).
-   */
-  minFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UMoney).minFractionDigits,
-  },
-
-  /**
-   * Maximal number of signs after the decimal separator (fractional part of a number).
-   */
-  maxFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UMoney).maxFractionDigits,
-  },
-
-  /**
-   * A symbol used to separate the integer part from the fractional part of a number.
-   */
-  decimalSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).decimalSeparator,
-  },
-
-  /**
-   *  A symbol used to separate the thousand parts of a number.
-   */
-  thousandsSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).thousandsSeparator,
-  },
-
-  /**
-   * Money align.
-   * @values right, left
-   */
-  align: {
-    type: String,
-    default: getDefault(defaultConfig, UMoney).align,
-  },
-
-  /**
-   * Make money planned (add brackets).
-   */
-  planned: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UMoney).planned,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
-
-const {
-  moneyAttrs,
-  sumAttrs,
-  mathSignAttrs,
-  integerAttrs,
-  pennyAttrs,
-  slotLeftAttrs,
-  symbolAttrs,
-  slotRightAttrs,
-  hasSlotContent,
-} = useAttrs(props);
 
 const currencySymbolPosition = computed(() => {
   return {
@@ -194,26 +24,39 @@ const currencySymbolPosition = computed(() => {
   };
 });
 
-const currencySpace = computed(() => {
-  return props.symbolDivided ? " " : "";
-});
-
-const mathSign = computed(() => {
-  let type = "";
-
-  if (props.sign === MONEY_SIGN_TYPE.positive) type = "+";
-  if (props.sign === MONEY_SIGN_TYPE.negative) type = "–";
-
-  return type;
-});
-
-const preparedMoney = computed(() => {
-  return separatedMoney(
-    Math.abs(props.value),
-    props.minFractionDigits,
-    props.maxFractionDigits,
-    props.decimalSeparator,
-    props.thousandsSeparator,
-  );
-});
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <UNumber
+    :value="value"
+    :size="size"
+    :color="color"
+    :sign="sign"
+    :align="align"
+    :min-fraction-digits="minFractionDigits"
+    :max-fraction-digits="maxFractionDigits"
+    :decimal-separator="decimalSeparator"
+    :thousands-separator="thousandsSeparator"
+    v-bind="moneyAttrs"
+    :data-test="getDataTest()"
+  >
+    <template #left>
+      <!-- @slot Use it to add something before money amount. -->
+      <slot name="left" />
+
+      <span v-if="currencySymbolPosition.left && symbol" v-bind="symbolAttrs" v-text="symbol" />
+    </template>
+
+    <template #right>
+      <span v-if="currencySymbolPosition.right && symbol" v-bind="symbolAttrs" v-text="symbol" />
+
+      <!-- @slot Use it to add something after money amount. -->
+      <slot name="right" />
+    </template>
+  </UNumber>
+</template>

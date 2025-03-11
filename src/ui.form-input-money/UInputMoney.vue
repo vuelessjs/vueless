@@ -1,238 +1,32 @@
-<template>
-  <UInput
-    :id="elementId"
-    ref="moneyInputRef"
-    v-model="formattedValue"
-    :size="size"
-    :label="localLabel"
-    :label-align="labelAlign"
-    :placeholder="placeholder"
-    :description="description"
-    :error="error"
-    :disabled="disabled"
-    inputmode="decimal"
-    :data-test="`${dataTest}-base-currency`"
-    :left-icon="leftIcon"
-    :right-icon="rightIcon"
-    v-bind="moneyInputAttrs"
-    @keyup="onKeyup"
-    @blur="onBlur"
-    @input="onInput"
-  >
-    <template #left>
-      <!-- @slot Use it to add something left. -->
-      <slot name="left" />
-    </template>
-
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
-    <template #right-icon>
-      <!-- @slot Use it to add icon after the text. -->
-      <slot name="right-icon" />
-    </template>
-
-    <template #right>
-      <!-- @slot Use it to add something right. -->
-      <slot name="right" />
-    </template>
-  </UInput>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-import useFormatCurrency from "./useFormatCurrency.js";
-import { UInputMoney } from "./constants.js";
+import defaultConfig from "./config.ts";
+import useFormatCurrency from "./useFormatCurrency.ts";
+import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
+
+import type { Props, Config } from "./types.ts";
+import { getRawValue } from "./utilFormat.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Input value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-  /**
-   * Input label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).labelAlign,
-  },
-
-  /**
-   * Currency symbol.
-   */
-  symbol: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).symbol,
-  },
-
-  /**
-   * Input placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Minimal number of signs after the decimal separator (fractional part of a number).
-   */
-  minFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputMoney).minFractionDigits,
-  },
-
-  /**
-   * Maximal number of signs after the decimal separator (fractional part of a number).
-   */
-  maxFractionDigits: {
-    type: Number,
-    default: getDefault(defaultConfig, UInputMoney).maxFractionDigits,
-  },
-
-  /**
-   * A symbol used to separate the integer part from the fractional part of a number.
-   */
-  decimalSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).decimalSeparator,
-  },
-
-  /**
-   *  A symbol used to separate the thousand parts of a number.
-   */
-  thousandsSeparator: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).thousandsSeparator,
-  },
-
-  /**
-   * Allow only positive values.
-   */
-  positiveOnly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).positiveOnly,
-  },
-
-  /**
-   * Prefix to display before input value.
-   */
-  prefix: {
-    type: String,
-    default: getDefault(defaultConfig, UInputMoney).prefix,
-  },
-
-  /**
-   * Set input read-only.
-   */
-  readonly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).readonly,
-  },
-
-  /**
-   * Disable the input.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputMoney).disabled,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
-const moneyInputRef = ref(null);
+const moneyInputRef = ref<{ inputRef: HTMLInputElement } | null>(null);
 
 const elementId = props.id || useId();
-
-const { moneyInputAttrs } = useAttrs(props);
 
 const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
   minFractionDigits: props.minFractionDigits,
@@ -256,20 +50,40 @@ const localLabel = computed(() => {
 });
 
 const input = computed(() => {
-  return moneyInputRef.value.inputRef;
+  return moneyInputRef.value?.inputRef || null;
+});
+
+const stringLocalValue = computed(() => {
+  if (Object.is(localValue.value, -0)) return "-0";
+
+  const currentRawValue = getRawValue(String(localValue.value), props);
+  const fraction = String(currentRawValue).split(RAW_DECIMAL_MARK).at(1) || "";
+
+  return props.valueType === "number" && !Number.isNaN(parseFloat(String(localValue.value)))
+    ? parseFloat(String(localValue.value)).toFixed(fraction.length)
+    : String(localValue.value);
 });
 
 watch(
   () => props.modelValue,
-  () => String(localValue.value) !== String(rawValue.value) && setValue(localValue.value),
+  () => {
+    if (stringLocalValue.value !== String(rawValue.value)) {
+      setValue(stringLocalValue.value);
+    }
+  },
 );
 
 onMounted(() => {
-  setValue(localValue.value);
+  if (localValue.value) {
+    // console.log(localValue.value);
+    setValue(stringLocalValue.value);
+  }
 });
 
-function onKeyup(event) {
-  localValue.value = rawValue.value || "";
+function onKeyup(event: KeyboardEvent) {
+  const numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
+
+  localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
   nextTick(() => emit("keyup", event));
 }
@@ -278,7 +92,7 @@ function onBlur() {
   nextTick(() => emit("blur"));
 }
 
-function onInput(value) {
+function onInput(value: InputEvent) {
   nextTick(() => emit("input", value));
 }
 
@@ -301,4 +115,50 @@ defineExpose({
    */
   formattedValue,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <UInput
+    :id="elementId"
+    ref="moneyInputRef"
+    :model-value="formattedValue"
+    :size="size"
+    :label="localLabel"
+    :label-align="labelAlign"
+    :placeholder="placeholder"
+    :description="description"
+    :readonly="readonly"
+    :error="error"
+    :disabled="disabled"
+    inputmode="decimal"
+    :left-icon="leftIcon"
+    :right-icon="rightIcon"
+    v-bind="moneyInputAttrs"
+    :data-test="getDataTest('base-currency')"
+    @keyup="onKeyup"
+    @blur="onBlur"
+    @input="onInput"
+  >
+    <template #left>
+      <!--
+        @slot Use it to add something left.
+        @binding {string} icon-name
+      -->
+      <slot name="left" :icon-name="leftIcon" />
+    </template>
+
+    <template #right>
+      <!--
+        @slot Use it to add something right.
+        @binding {string} icon-name
+      -->
+      <slot name="right" :icon-name="leftIcon" />
+    </template>
+  </UInput>
+</template>

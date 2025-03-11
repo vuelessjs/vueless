@@ -1,19 +1,15 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../../utils/storybook.ts";
 
 import UIcon from "../../../ui.image-icon/UIcon.vue";
 import URow from "../../../ui.container-row/URow.vue";
+import UAlert from "../../../ui.text-alert/UAlert.vue";
+import ULink from "../../../ui.button-link/ULink.vue";
 import tooltip from "../vTooltip.ts";
 
 import type { Props } from "tippy.js";
 
 interface VTooltipArgs {
-  tooltip: Partial<Props> | string;
-}
-
-interface VTooltipEnumArgs extends VTooltipArgs {
-  enum: keyof Props;
-  options: unknown[];
+  tooltipOptions: Partial<Props> | string;
 }
 
 /**
@@ -22,11 +18,8 @@ interface VTooltipEnumArgs extends VTooltipArgs {
 export default {
   id: "7021",
   title: "Directives / Tooltip",
-  component: UIcon,
   args: {},
-  argTypes: {
-    ...getArgTypes(UIcon.__name),
-  },
+  argTypes: {},
 } as Meta;
 
 const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
@@ -36,53 +29,34 @@ const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
     return { args };
   },
   template: `
-    <UIcon interactive name="sentiment_satisfied" v-tooltip="args.tooltip" >
+    <UIcon interactive name="sentiment_satisfied" v-tooltip="'Tooltip'" />
   `,
 });
 
-const EnumTemplate: StoryFn<VTooltipEnumArgs> = (args: VTooltipEnumArgs) => ({
-  components: { UIcon, URow },
+const SettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
+  components: { UIcon, URow, UAlert, ULink },
   directives: { tooltip },
   setup() {
     return { args };
   },
   template: `
-    <URow>
+    <URow align="center">
+      <UAlert variant="outlined">
+        <p>
+          See all available settings in <ULink label="Tippy.js docs" href="https://atomiks.github.io/tippyjs/v6/all-props/" underlined />
+        </p>
+      </UAlert>
       <UIcon
-        v-for="option in args.options"
         interactive
         name="sentiment_satisfied"
-        v-tooltip="{ content: option, ...args.tooltip, [args.enum]: option }"
-      >
+        v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true, zIndex: 42 }"
+      />
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { tooltip: "Tooltip" };
+Default.args = {};
 
-export const Settings = DefaultTemplate.bind({});
-Settings.args = { tooltip: { content: "Tooltip", placement: "right" } };
-
-export const Placement = EnumTemplate.bind({});
-Placement.args = {
-  tooltip: {},
-  enum: "placement",
-  options: [
-    "top",
-    "top-start",
-    "top-end",
-    "right",
-    "right-start",
-    "right-end",
-    "bottom",
-    "bottom-start",
-    "bottom-end",
-    "left",
-    "left-start",
-    "left-end",
-    "auto",
-    "auto-start",
-    "auto-end",
-  ],
-};
+export const Settings = SettingsTemplate.bind({});
+Settings.args = {};

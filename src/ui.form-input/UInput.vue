@@ -1,128 +1,27 @@
-<template>
-  <ULabel
-    ref="labelComponentRef"
-    :for="elementId"
-    :label="label"
-    :description="description"
-    :disabled="disabled"
-    :error="error"
-    :size="size"
-    :align="labelAlign"
-    centred
-    v-bind="inputLabelAttrs"
-  >
-    <label :for="elementId" v-bind="wrapperAttrs">
-      <span v-if="hasSlotContent($slots['left'])" ref="leftSlotWrapperRef">
-        <!-- @slot Use it to add something before the text. -->
-        <slot name="left" />
-      </span>
-
-      <span
-        v-if="hasSlotContent($slots['left-icon']) || leftIcon"
-        ref="leftSlotWrapperRef"
-        v-bind="leftIconWrapperAttrs"
-      >
-        <!--
-          @slot Use it to add icon before the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="left-icon" :icon-name="leftIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="leftIcon"
-            :name="leftIcon"
-            :size="iconSize"
-            internal
-            v-bind="leftIconAttrs"
-          />
-        </slot>
-      </span>
-
-      <input
-        :id="elementId"
-        ref="inputRef"
-        v-model="inputValue"
-        :placeholder="placeholder"
-        :type="inputType"
-        :readonly="readonly"
-        :disabled="disabled"
-        :maxlength="maxLength"
-        :inputmode="inputmode"
-        :data-test="dataTest"
-        v-bind="inputAttrs"
-        @focus="onFocus"
-        @blur="onBlur"
-        @input="onInput"
-        @change="onChange"
-        @mousedown="onMousedown"
-        @click="onClick"
-      />
-
-      <label v-if="isTypePassword" v-bind="rightIconWrapperAttrs" :for="elementId">
-        <UIcon
-          v-if="isTypePassword"
-          :name="
-            isShownPassword
-              ? config.defaults.passwordVisibleIcon
-              : config.defaults.passwordHiddenIcon
-          "
-          color="gray"
-          interactive
-          internal
-          :data-test="`${dataTest}-password-icon`"
-          v-bind="passwordIconAttrs"
-          @click="onClickShowPassword"
-        />
-      </label>
-
-      <span v-if="hasSlotContent($slots['right-icon']) || rightIcon" v-bind="rightIconWrapperAttrs">
-        <!--
-          @slot Use it to add icon after the text.
-          @binding {string} icon-name
-          @binding {string} icon-size
-        -->
-        <slot name="right-icon" :icon-name="rightIcon" :icon-size="iconSize">
-          <UIcon
-            v-if="rightIcon"
-            :name="rightIcon"
-            :size="iconSize"
-            internal
-            v-bind="rightIconAttrs"
-          />
-        </slot>
-      </span>
-
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right" />
-    </label>
-  </ULabel>
-</template>
-
-<script>
-import { getDefault } from "../utils/ui.ts";
-
-const VALIDATION_RULES_REG_EX = {
-  integer: /\d*/g,
-  number: /\d*\.?\d*/g,
-  string: /[a-zA-Z]+/g,
-  stringAndNumber: /[a-zA-Z0-9]+/g,
-  symbol: /\D/g,
-};
-</script>
-
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, useSlots, useId } from "vue";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import defaultConfig from "./config.js";
-import { UInput } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
+  label: "",
+  placeholder: "",
+});
 
 const emit = defineEmits([
   /**
@@ -163,175 +62,32 @@ const emit = defineEmits([
    * @property {number} modelValue
    */
   "input",
+
+  /**
+   * Triggers when content copied from the input.
+   */
+  "copy",
+
+  /**
+   * Triggers when content pasted to the input.
+   */
+  "paste",
 ]);
 
-const props = defineProps({
-  /**
-   * Input value.
-   */
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-
-  /**
-   * Input label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInput).labelAlign,
-  },
-
-  /**
-   * Input placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInput).size,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Maximum character length.
-   */
-  maxLength: {
-    type: [String, Number],
-    default: "",
-  },
-
-  /**
-   * Prevents some characters from input.
-   * You can use predefined values or own RegExp.
-   * @values symbol, string, stringAndNumber, number, integer
-   */
-  validationRule: {
-    type: [String, RegExp],
-    default: getDefault(defaultConfig, UInput).validationRule,
-    validator: (value) => Object.keys(VALIDATION_RULES_REG_EX).includes(value) || value === "",
-  },
-
-  /**
-   * Input type.
-   * @values text, number, tel, email, url, search, password
-   */
-  type: {
-    type: String,
-    default: getDefault(defaultConfig, UInput).type,
-  },
-
-  /**
-   * Set specific keyboard for mobile devices.
-   * @values text, decimal, numeric, tel, email, url, search, none
-   */
-  inputmode: {
-    type: String,
-    default: getDefault(defaultConfig, UInput).inputmode,
-  },
-
-  /**
-   * Make input read-only.
-   */
-  readonly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInput).readonly,
-  },
-
-  /**
-   * Disable the input.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInput).disabled,
-  },
-
-  /**
-   * Disable browsers autocomplete.
-   */
-  noAutocomplete: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInput).noAutocomplete,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
+const VALIDATION_RULES_REG_EX = {
+  integer: /\d*/g,
+  number: /\d*\.?\d*/g,
+  string: /[a-zA-Z]+/g,
+  stringAndNumber: /[a-zA-Z0-9]+/g,
+  symbol: /\D/g,
+};
 
 const slots = useSlots();
 
 const isShownPassword = ref(false);
-const inputRef = ref(null);
-const labelComponentRef = ref(null);
-const leftSlotWrapperRef = ref(null);
+const inputRef = ref<HTMLInputElement | null>(null);
+const leftSlotWrapperRef = ref<HTMLElement | null>(null);
+const labelComponentRef = ref<{ labelElement: HTMLElement } | null>(null);
 
 const isTypePassword = computed(() => props.type === "password");
 
@@ -340,39 +96,16 @@ const inputValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const inputPasswordClasses = computed(() => {
-  return inputValue.value && !isShownPassword.value && isTypePassword.value
-    ? "tracking-widest [font-family:text-security-disc,serif] [-webkit-text-security:disc]"
-    : "";
-});
-
 const elementId = props.id || useId();
-
-const {
-  config,
-  inputAttrs,
-  wrapperAttrs,
-  inputLabelAttrs,
-  passwordIconAttrs,
-  leftIconWrapperAttrs,
-  leftIconAttrs,
-  rightIconAttrs,
-  rightIconWrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props, { isTypePassword, inputPasswordClasses });
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
 
 const inputType = computed(() => {
   return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
+});
+
+const passwordIcon = computed(() => {
+  return isShownPassword.value
+    ? config.value.defaults.passwordVisibleIcon || ""
+    : config.value.defaults.passwordHiddenIcon || "";
 });
 
 onMounted(() => {
@@ -380,11 +113,17 @@ onMounted(() => {
   setLabelPosition();
 });
 
-function onInput(inputEvent) {
-  let value = inputEvent.target.value;
+function onInput(inputEvent: Event) {
+  const target = inputEvent.target as HTMLInputElement | null;
+
+  if (!target) return;
+
+  let value = target.value;
 
   if (props.validationRule) {
-    const input = document.querySelector(`#${elementId}`);
+    const input = document.querySelector(`#${elementId}`) as HTMLInputElement | null;
+
+    if (!input) return;
 
     value = VALIDATION_RULES_REG_EX[props.validationRule]
       ? transformValue(value, VALIDATION_RULES_REG_EX[props.validationRule])
@@ -396,32 +135,40 @@ function onInput(inputEvent) {
   emit("input", value);
 }
 
-function onChange(event) {
+function onChange(event: Event) {
   emit("change", event);
 }
 
-function onClick(event) {
+function onClick(event: MouseEvent) {
   toggleReadonlyToPreventAutocomplete(false);
 
   emit("click", event);
 }
 
-function onFocus(event) {
+function onFocus(event: FocusEvent) {
   toggleReadonlyToPreventAutocomplete(false);
 
   emit("focus", event);
 }
 
-function onBlur(event) {
+function onBlur(event: FocusEvent) {
   toggleReadonlyToPreventAutocomplete(true);
 
   emit("blur", event);
 }
 
-function onMousedown(event) {
+function onMousedown(event: MouseEvent) {
   toggleReadonlyToPreventAutocomplete(false);
 
   emit("mousedown", event);
+}
+
+function onPaste(event: ClipboardEvent) {
+  emit("paste", event);
+}
+
+function onCopy(event: ClipboardEvent) {
+  emit("copy", event);
 }
 
 function onClickShowPassword() {
@@ -432,39 +179,41 @@ function onClickShowPassword() {
  * This trick prevents default browser autocomplete behavior.
  * @param toggleState { boolean }
  */
-function toggleReadonlyToPreventAutocomplete(toggleState) {
-  if (props.noAutocomplete && !props.readonly) {
+function toggleReadonlyToPreventAutocomplete(toggleState: boolean) {
+  if (props.noAutocomplete && !props.readonly && inputRef.value) {
     toggleState
       ? inputRef.value.setAttribute("readonly", "readonly")
       : inputRef.value.removeAttribute("readonly");
   }
 }
 
-function transformValue(value, exp) {
+function transformValue(value: string | number, exp: string | RegExp) {
   const regExp = new RegExp(exp, "ig");
   const matches = String(value).match(regExp);
 
   return matches ? matches.join("") : "";
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => {
-  mutations.forEach(setLabelPosition);
+useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
 });
 
 function setLabelPosition() {
-  const shouldAlignLabelOnTop =
-    !hasSlotContent(slots["left-icon"]) && !hasSlotContent(slots["left"]) && !props.leftIcon;
+  const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
     return;
   }
 
-  const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+  if (leftSlotWrapperRef.value && inputRef.value && labelComponentRef.value?.labelElement) {
+    const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+    const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
 
-  const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
-
-  if (labelComponentRef.value.labelElement) {
-    labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+    }
   }
 }
 
@@ -475,11 +224,120 @@ defineExpose({
    */
   inputRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  error: Boolean(props.error) && !props.disabled,
+  label: Boolean(props.label),
+  /* component state, not a props */
+  typePassword: Boolean(inputValue.value && !isShownPassword.value && isTypePassword.value),
+}));
+
+const {
+  getDataTest,
+  config,
+  inputAttrs,
+  wrapperAttrs,
+  inputLabelAttrs,
+  passwordIconAttrs,
+  leftIconAttrs,
+  leftSlotAttrs,
+  rightIconAttrs,
+  rightSlotAttrs,
+  passwordIconWrapperAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
-<style lang="postcss" scoped>
-@font-face {
-  font-family: text-security-disc;
-  src: url("./assets/text-security-disc.woff");
-}
-</style>
+<template>
+  <ULabel
+    ref="labelComponentRef"
+    :for="elementId"
+    :label="label"
+    :description="description"
+    :disabled="disabled"
+    :error="error"
+    :size="size"
+    :align="labelAlign"
+    centred
+    interactive
+    v-bind="inputLabelAttrs"
+  >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
+    <label :for="elementId" v-bind="wrapperAttrs">
+      <span
+        v-if="hasSlotContent($slots['left']) || leftIcon"
+        v-bind="leftSlotAttrs"
+        ref="leftSlotWrapperRef"
+      >
+        <!--
+          @slot Use it to add something before the text.
+          @binding {string} icon-name
+        -->
+        <slot name="left" :icon-name="leftIcon">
+          <UIcon v-if="leftIcon" internal color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
+        </slot>
+      </span>
+
+      <input
+        :id="elementId"
+        ref="inputRef"
+        v-model="inputValue"
+        :placeholder="placeholder"
+        :type="inputType"
+        :readonly="readonly"
+        :disabled="disabled"
+        :maxlength="maxLength"
+        :inputmode="inputmode"
+        v-bind="inputAttrs"
+        :data-test="getDataTest()"
+        @focus="onFocus"
+        @blur="onBlur"
+        @input="onInput"
+        @change="onChange"
+        @mousedown="onMousedown"
+        @click="onClick"
+        @paste="onPaste"
+        @copy="onCopy"
+      />
+
+      <label v-if="isTypePassword" v-bind="passwordIconWrapperAttrs" :for="elementId">
+        <UIcon
+          v-if="isTypePassword"
+          :name="passwordIcon"
+          color="neutral"
+          interactive
+          internal
+          v-bind="passwordIconAttrs"
+          :data-test="getDataTest('password-icon')"
+          @click="onClickShowPassword"
+        />
+      </label>
+
+      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
+        <!--
+          @slot Use it to add something after the text.
+          @binding {string} icon-name
+        -->
+        <slot name="right" :icon-name="rightIcon">
+          <UIcon
+            v-if="rightIcon"
+            internal
+            color="neutral"
+            :name="rightIcon"
+            v-bind="rightIconAttrs"
+          />
+        </slot>
+      </div>
+    </label>
+  </ULabel>
+</template>

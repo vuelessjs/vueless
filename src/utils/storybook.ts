@@ -14,7 +14,7 @@ interface Types {
 }
 
 export interface ArgType {
-  control?: "text" | "number" | "boolean" | "array" | "select" | false;
+  control?: "text" | "date" | "number" | "boolean" | "array" | "select" | "object" | false;
   options?: string[];
   table?: TableConfig;
   name?: string;
@@ -61,21 +61,6 @@ export function getSlotNames(componentName: string | undefined) {
   return getComponentData(componentName as ComponentNames)?.slots?.map((item) => item.name);
 }
 
-/**
- * Create story param config to show component description with a link on GitHub.
- */
-export function getDocsDescription(componentName: string | undefined) {
-  if (!componentName) return;
-
-  return {
-    docs: {
-      description: {
-        component: `The \`${componentName}\` component. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]})`,
-      },
-    },
-  };
-}
-
 export function getArgTypes(componentName: string | undefined) {
   if (!componentName) return;
 
@@ -93,7 +78,67 @@ export function getArgTypes(componentName: string | undefined) {
   component.attributes?.forEach((attribute: Attribute) => {
     const type = attribute.value.type;
 
-    if (type === "string" || type.includes("string")) {
+    if (attribute.enum) {
+      attribute.enum = attribute.enum.map((item) => {
+        if (item === "UnknownObject") return "Object";
+        if (item === "UnknownArray") return "Array";
+
+        return item;
+      });
+    }
+
+    const nonUnionTypes = [
+      "null",
+      "string",
+      "number",
+      "boolean",
+      "Date",
+      "Array",
+      "Object",
+      "UnknownArray",
+      "UnknownObject",
+    ];
+
+    if (attribute.enum?.some((value) => !nonUnionTypes.includes(value))) {
+      types[attribute.name] = {
+        options: attribute.enum,
+        control: "select",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    } else if (attribute.enum?.some((value) => nonUnionTypes.includes(value))) {
+      let control = attribute.enum[0];
+
+      if (control === "string") {
+        control = "text";
+      }
+
+      if (control === "Date") {
+        control = "date";
+      }
+
+      types[attribute.name] = {
+        control: control as ArgType["control"],
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    }
+
+    if (attribute.enum?.length === 1) {
+      types[attribute.name] = {
+        control: "object",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: { summary: attribute.enum.join(" | ") },
+        },
+      };
+    }
+
+    if (type === "string") {
       types[attribute.name] = {
         control: "text",
         table: {
@@ -107,6 +152,29 @@ export function getArgTypes(componentName: string | undefined) {
         control: "number",
         table: {
           defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
+
+    if (type === "Date") {
+      types[attribute.name] = {
+        control: "date",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+        },
+      };
+    }
+
+    if (type === "TModelValue") {
+      types[attribute.name] = {
+        control: "date",
+        table: {
+          defaultValue: { summary: attribute.default || "" },
+          type: {
+            summary: ["string", "Date", "from: string, to: string", "from: Date, to: Date"].join(
+              " | ",
+            ),
+          },
         },
       };
     }
@@ -125,26 +193,6 @@ export function getArgTypes(componentName: string | undefined) {
         control: "array",
         table: {
           defaultValue: { summary: attribute.default || [] },
-        },
-      };
-    }
-
-    if (type.includes("|")) {
-      types[attribute.name] = {
-        control: type.split("|")[0] as ArgType["control"],
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-        },
-      };
-    }
-
-    if (attribute.enum) {
-      types[attribute.name] = {
-        options: attribute.enum,
-        control: "select",
-        table: {
-          defaultValue: { summary: attribute.default || "" },
-          type: { summary: attribute.enum.join(" | ") },
         },
       };
     }
@@ -254,4 +302,25 @@ export function getSlotsFragment(defaultTemplate: string) {
     <template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template>
   </template>
 `;
+}
+
+/**
+ * Create story param config to show component description with a link on GitHub.
+ */
+export function getDocsDescription(componentName: string | undefined) {
+  if (!componentName) {
+    return {};
+  }
+
+  let viewOnGitHub = "";
+
+  if (COMPONENTS[componentName as ComponentNames]) {
+    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
+  }
+
+  return {
+    description: {
+      component: `The \`${componentName}\` component. ${viewOnGitHub}`,
+    },
+  };
 }

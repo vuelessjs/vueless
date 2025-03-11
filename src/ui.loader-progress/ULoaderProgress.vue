@@ -1,67 +1,33 @@
-<template>
-  <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="stripeAttrs" :style="barStyle" />
-  </Transition>
-</template>
+<script setup lang="ts">
+import { computed, watch, ref } from "vue";
 
-<script setup>
-import { computed, onBeforeUnmount, watch, ref, onMounted, onUnmounted } from "vue";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-import { getDefault } from "../utils/ui.ts";
-import { isMobileApp } from "../utils/platform.ts";
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.js";
-import { useLoaderProgress } from "./useLoaderProgress.js";
-import useAttrs from "./useAttrs.js";
+import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
+import { useLoaderProgress } from "./useLoaderProgress.ts";
 
-import { ULoaderProgress, MAXIMUM, SPEED, INFINITY_LOADING } from "./constants.js";
-import defaultConfig from "./config.js";
+import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Loader stripe color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, ULoaderProgress).color,
-  },
-
-  /**
-   * API resource names (endpoint URIs).
-   */
-  resources: {
-    type: [String, Array],
-    default: "",
-  },
-
-  /**
-   * Loader state (shown / hidden).
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULoaderProgress).loading,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  resources: () => "",
 });
 
 const error = ref(false);
 const show = ref(false);
 const progress = ref(0);
 const opacity = ref(1);
-const status = ref(null);
+const status = ref<number | null>(null);
 
-const {
-  requestQueue,
-  removeRequestUrl,
-  isLoading,
-  loaderProgressOff,
-  loaderProgressOn,
-  addRequestUrl,
-} = useLoaderProgress();
-const { stripeAttrs } = useAttrs(props, { error, isMobileApp });
+const { requestQueue } = useLoaderProgress();
 
-const isStarted = computed(() => {
+const isLoading = computed(() => {
   return typeof status.value === "number";
 });
 
@@ -72,64 +38,37 @@ const barStyle = computed(() => {
   };
 });
 
-const resourceNamesArray = computed(() => {
-  return Array.isArray(props.resources)
-    ? props.resources.map(getRequestWithoutQuery)
-    : [getRequestWithoutQuery(props.resources)];
-});
-
-watch(() => requestQueue.value.length, onChangeRequestsQueue);
-
-onMounted(() => {
-  window.addEventListener("loaderProgressOn", setLoaderOnHandler);
-  window.addEventListener("loaderProgressOff", setLoaderOffHandler);
-
-  if (props.resources) {
-    onChangeRequestsQueue();
+const resourceSubscriptions = computed(() => {
+  if (Array.isArray(props.resources)) {
+    return props.resources.map(getRequestWithoutQuery);
   }
+
+  return [getRequestWithoutQuery(props.resources)];
 });
 
-onBeforeUnmount(() => {
-  removeRequestUrl(resourceNamesArray.value);
+const isActiveRequests = computed(() => {
+  const isAnyRequestActive = props.resources === "any" && requestQueue.value.length;
+  const isSubscribedRequestsActive = resourceSubscriptions.value.some((resource) =>
+    requestQueue.value.includes(resource),
+  );
+
+  return isAnyRequestActive || isSubscribedRequestsActive;
 });
 
-onUnmounted(() => {
-  window.removeEventListener("loaderProgressOn", setLoaderOnHandler);
-  window.removeEventListener("loaderProgressOff", setLoaderOffHandler);
-});
+watch(() => requestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
 
 watch(
   () => props.loading,
-  () => {
-    if (props.loading) {
-      addRequestUrl(INFINITY_LOADING);
-      isLoading.value = true;
-    } else {
-      removeRequestUrl(INFINITY_LOADING);
-    }
-  },
-  { immediate: true },
+  () => (props.loading ? start() : stop()),
 );
 
-function setLoaderOnHandler(event) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function setLoaderOffHandler(event) {
-  loaderProgressOff(event.detail.resource);
-}
-
 function onChangeRequestsQueue() {
-  const isActiveRequests =
-    requestQueue.value.includes(INFINITY_LOADING) ||
-    resourceNamesArray.value.some((resource) => {
-      return requestQueue.value.includes(resource);
-    });
+  if (props.loading !== undefined) return;
 
-  if (isActiveRequests && !isStarted.value && isLoading.value) {
+  if (isActiveRequests.value && !isLoading.value) {
     start();
-  } else if (!isActiveRequests && isStarted.value && show.value) {
-    done();
+  } else if (!isActiveRequests.value && isLoading.value && show.value) {
+    stop();
   }
 }
 
@@ -138,7 +77,7 @@ function beforeEnter() {
   progress.value = 0;
 }
 
-function enter(el, done) {
+function enter(el: Element, done: () => void) {
   opacity.value = 1;
   done();
 }
@@ -148,8 +87,9 @@ function afterEnter() {
 }
 
 function work() {
+  // TODO: Use requestAnimationFrame for animations instead of setTimeout for better performance and smoothness.
   setTimeout(() => {
-    if (!isStarted.value) {
+    if (!isLoading.value) {
       return;
     }
 
@@ -172,10 +112,10 @@ function start() {
   }
 }
 
-function set(amount) {
+function set(amount: number) {
   let currentProgress;
 
-  if (isStarted.value) {
+  if (isLoading.value) {
     currentProgress = amount < progress.value ? clamp(amount, 0, 100) : clamp(amount, 0.8, 100);
   } else {
     currentProgress = 0;
@@ -201,7 +141,7 @@ function set(amount) {
   });
 }
 
-function increase(amount) {
+function increase(amount?: number) {
   const currentProgress = progress.value;
 
   if (currentProgress < 100 && typeof amount !== "number") {
@@ -220,10 +160,42 @@ function increase(amount) {
     }
   }
 
-  set(clamp(currentProgress + amount, 0, MAXIMUM));
+  set(clamp(currentProgress + (amount || 0), 0, MAXIMUM));
 }
 
-function done() {
+function stop() {
   set(100);
 }
+
+defineExpose({
+  /**
+   * Start loading animation.
+   * @property {Function}
+   */
+  start,
+
+  /**
+   * Stop loading animation.
+   * @property {Function}
+   */
+  stop,
+
+  /**
+   * Loading state.
+   * @property {Boolean}
+   */
+  isLoading,
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, stripeAttrs } = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+    <div v-if="show" v-bind="stripeAttrs" :data-test="getDataTest()" :style="barStyle" />
+  </Transition>
+</template>

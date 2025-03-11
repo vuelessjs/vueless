@@ -1,12 +1,66 @@
+<script setup lang="ts">
+import { computed, useSlots } from "vue";
+
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
+
+import UHeader from "../ui.text-header/UHeader.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+
+import type { Props, Config } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+});
+
+const slots = useSlots();
+
+const isShownHeader = computed(() => {
+  const isTitleSlot = hasSlotContent(slots["title"]);
+  const isActionsSlot = hasSlotContent(slots["actions"]);
+
+  return props.title || isTitleSlot || isActionsSlot;
+});
+
+const isShownFooter = computed(() => {
+  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  getDataTest,
+  wrapperAttrs,
+  titleAttrs,
+  cardDividerAttrs,
+  headerAttrs,
+  headerLeftAttrs,
+  headerLeftFallbackAttrs,
+  descriptionAttrs,
+  contentAttrs,
+  footerAttrs,
+  footerLeftAttrs,
+  footerRightAttrs,
+} = useUI<Config>(defaultConfig);
+</script>
+
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-if="isShownHeader" v-bind="headerAttrs">
       <div v-bind="headerLeftAttrs">
         <!-- @slot Use it to add something before left side of the header. -->
-        <slot name="header-left-before" />
+        <slot name="before-title" />
 
         <!-- @slot Use it to customise left side of the header. -->
-        <slot name="header-left">
+        <slot name="title">
           <div v-bind="headerLeftFallbackAttrs">
             <UHeader :label="title" size="xs" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
@@ -14,11 +68,11 @@
         </slot>
 
         <!-- @slot Use it to add something after left side of the header. -->
-        <slot name="header-left-after" />
+        <slot name="after-title" />
       </div>
 
       <!-- @slot Use it to customise right side of the header. -->
-      <slot name="header-right" />
+      <slot name="actions" />
     </div>
 
     <div v-bind="contentAttrs">
@@ -26,85 +80,18 @@
       <slot />
     </div>
 
-    <UDivider v-if="isShownFooter" padding="none" v-bind="dividerAttrs" />
+    <UDivider v-if="isShownFooter" padding="none" v-bind="cardDividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
-      <!-- @slot Use it to add something to the left side of the footer. -->
-      <slot name="footer-left" />
+      <div v-bind="footerLeftAttrs">
+        <!-- @slot Use it to add something to the left side of the footer. -->
+        <slot name="footer-left" />
+      </div>
 
-      <!-- @slot Use it to add something to the right side of the footer. -->
-      <slot name="footer-right" />
+      <div v-bind="footerRightAttrs">
+        <!-- @slot Use it to add something to the right side of the footer. -->
+        <slot name="footer-right" />
+      </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import { computed, useSlots } from "vue";
-
-import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const slots = useSlots();
-
-const props = defineProps({
-  /**
-   * Card title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Card description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const isShownHeader = computed(() => {
-  const isHeaderLeftSlot = hasSlotContent(slots["header-left"]);
-  const isHeaderRightSlot = hasSlotContent(slots["header-left"]);
-
-  return props.title || isHeaderLeftSlot || isHeaderRightSlot;
-});
-
-const isShownFooter = computed(() => {
-  return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
-});
-
-const {
-  hasSlotContent,
-  wrapperAttrs,
-  titleAttrs,
-  dividerAttrs,
-  headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
-  descriptionAttrs,
-  contentAttrs,
-  footerAttrs,
-} = useAttrs(props);
-</script>

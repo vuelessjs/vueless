@@ -6,16 +6,21 @@
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
 import { loadSvg } from "./utils/node/loaderSvg.js";
-import { copyIcons, removeIcons } from "./utils/node/loaderIcon.js";
+import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
-import { getNuxtFiles, getVueSourceFile } from "./utils/node/helper.js";
+import { getNuxtDirs, getVueDirs, getVuelessConfigDirs } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
+import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
+import { buildWebTypes } from "./utils/node/webTypes.js";
+import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
+
+import { DEFAULT_EXIT_CODE } from "./constants.js";
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
   UnpluginVueComponents({
     resolvers: [componentResolver, directiveResolver],
-    dts: false,
+    dts: true,
     ...options,
   });
 
@@ -25,21 +30,31 @@ export const VuelessUnpluginComponents = (options) =>
   – Loads SVG images as a Vue components.
  */
 export const Vueless = function (options = {}) {
-  const { mode, debug, env, include } = options;
+  const { mode, debug, env, include, mirrorCacheDir } = options;
 
+  const isVuelessEnv = env === "vueless";
   const isNuxt = mode === "nuxt-module";
-  const srcDir = isNuxt ? process.cwd() : getVueSourceFile();
 
-  const targetFiles = [srcDir, ...(include || []), ...(isNuxt ? getNuxtFiles() : [])];
+  const targetFiles = [
+    ...(include || []),
+    ...getVuelessConfigDirs(),
+    ...(isNuxt ? getNuxtDirs() : getVueDirs()),
+  ];
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    /* remove dynamically copied icons */
-    await removeIcons({ debug, isNuxt });
+    await showHiddenStories(isVuelessEnv);
+
+    await removeCustomPropTypes(isVuelessEnv);
+
+    /* remove cached icons */
+    await removeIconsCache(mirrorCacheDir, debug);
 
     /* clear tailwind safelist */
     clearTailwindSafelist(debug);
-    process.exit(0);
+
+    /* stop command line process */
+    process.exit(DEFAULT_EXIT_CODE);
   });
 
   return {
@@ -51,33 +66,54 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["tailwindcss/colors.js"],
+        include: [
+          ...(!isVuelessEnv ? ["vueless/preset-tailwind"] : []),
+          ...(!isVuelessEnv
+            ? ["vueless/directives/tooltip/vTooltip.ts"]
+            : ["./src/directives/tooltip/vTooltip.ts"]),
+        ],
       },
     }),
 
     configResolved: async (config) => {
-      /* collect used in project colors for tailwind safelist */
       if (!isNuxt) {
+        /* collect used in project colors for tailwind safelist */
         await createTailwindSafelist({ mode, env, debug, targetFiles });
       }
 
-      if (config.command === "build") {
-        await removeIcons({ debug, isNuxt });
+      if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
+        await showHiddenStories(isVuelessEnv);
+        await buildWebTypes();
+        await hideHiddenStories(isVuelessEnv);
+      }
 
-        /* dynamically copy used icons before build */
-        await copyIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        await copyIcons({ mode, env, debug, targetFiles, isNuxt });
+      if (config.command === "build") {
+        /* remove cached icons */
+        await removeIconsCache(mirrorCacheDir, debug);
+
+        /* cache vueless built-in and project icons */
+        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+        await cacheIcons({ mode, env, debug, targetFiles });
+
+        /* copy vueless cache folder */
+        await copyIconsCache(mirrorCacheDir, debug);
       }
 
       if (config.command === "dev" || config.command === "serve") {
-        /* remove dynamically copied icons on dev server start */
-        await removeIcons({ debug, isNuxt });
+        /* remove cached icons */
+        await removeIconsCache(mirrorCacheDir, debug);
+        /* cache vueless built-in icons */
+        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+        /* copy vueless cache folder */
+        await copyIconsCache(mirrorCacheDir, debug);
+
+        await setCustomPropTypes(isVuelessEnv);
       }
     },
 
-    /* remove dynamically copied icons after build */
     buildEnd: async () => {
-      await removeIcons({ debug, isNuxt });
+      /* remove cached icons */
+      await removeIconsCache(mirrorCacheDir, debug);
     },
 
     /* load SVG images as a Vue components */

@@ -1,8 +1,8 @@
 import { cloneDeep } from "lodash-es";
 
-import { SYSTEM_CONFIG_KEY } from "../../constants.js";
+import { SYSTEM_CONFIG_KEY, STRATEGY_TYPE } from "../../constants.js";
 
-export function createMergeConfigsFunction(cx) {
+export function createMergeConfigs(cx) {
   /**
    * Recursively merge config objects with removing tailwind classes duplicates.
    * config - final merged config.
@@ -17,14 +17,14 @@ export function createMergeConfigsFunction(cx) {
     isReplace = false,
     isVariants = false,
   }) {
-    globalConfig = cloneDeep(globalConfig || {});
-    propsConfig = cloneDeep(propsConfig || {});
+    globalConfig = cloneDeep(stringToObject(globalConfig, { addBase: true }));
+    propsConfig = cloneDeep(stringToObject(propsConfig, { addBase: true }));
 
     const isGlobalConfig = Object.keys(globalConfig).length;
     const isPropsConfig = Object.keys(propsConfig).length;
 
     // Add unique keys from defaultConfig to composedConfig
-    const composedConfig = cloneDeep(defaultConfig);
+    const composedConfig = cloneDeep(stringToObject(defaultConfig, { addBase: true }));
 
     // Add unique keys from globalConfig to composedConfig
     for (const key in globalConfig) {
@@ -45,7 +45,6 @@ export function createMergeConfigsFunction(cx) {
       defaults,
       strategy,
       safelist,
-      component,
       safelistColors,
       defaultVariants,
       compoundVariants,
@@ -57,15 +56,6 @@ export function createMergeConfigsFunction(cx) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
-          }
-        } else if (key === component) {
-          config[key] = propsConfig[key] || defaultConfig[key];
-
-          if (globalConfig[key]) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Passing '${key}' key in 'config' prop or by global config is not allowed.`,
-            );
           }
         } else if (key === strategy) {
           config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
@@ -131,10 +121,11 @@ export function createMergeConfigsFunction(cx) {
       console.error("CompoundVariants should be an array.");
     }
 
-    const globalConfigUniqueItems = cloneDeep(globalConfig.compoundVariants || []);
-    const propsConfigUniqueItems = cloneDeep(propsConfig.compoundVariants || []);
+    const defaultCompoundVariants = expandCompoundVariants(defaultConfig.compoundVariants);
+    const globalCompoundVariants = expandCompoundVariants(globalConfig.compoundVariants);
+    const propsCompoundVariants = expandCompoundVariants(propsConfig.compoundVariants);
 
-    const config = defaultConfig.compoundVariants?.map((defaultConfigItem) => {
+    const config = defaultCompoundVariants?.map((defaultConfigItem) => {
       /**
        * Compare two objects by keys for match.
        */
@@ -151,25 +142,29 @@ export function createMergeConfigsFunction(cx) {
       }
 
       /**
-       * Find the same compound variant item in custom config if exist.
+       * Find the same compound variant item in custom config if existed.
        */
       function findItem(config = []) {
-        const globalConfigUniqueItemIndex = globalConfigUniqueItems.findIndex(isSameItem);
-        const propsConfigUniqueItemIndex = propsConfigUniqueItems.findIndex(isSameItem);
+        config = cloneDeep(config);
 
-        if (~globalConfigUniqueItemIndex) {
-          globalConfigUniqueItems.splice(globalConfigUniqueItemIndex, 1);
+        const globalConfigSimilarItemIndex = globalCompoundVariants.findIndex(isSameItem);
+        const propsConfigSimilarItemIndex = propsCompoundVariants.findIndex(isSameItem);
+
+        if (~globalConfigSimilarItemIndex) {
+          config.push(globalCompoundVariants[globalConfigSimilarItemIndex]);
+          globalCompoundVariants.splice(globalConfigSimilarItemIndex, 1);
         }
 
-        if (~propsConfigUniqueItemIndex) {
-          propsConfigUniqueItems.splice(propsConfigUniqueItemIndex, 1);
+        if (~propsConfigSimilarItemIndex) {
+          config.push(propsCompoundVariants[propsConfigSimilarItemIndex]);
+          propsCompoundVariants.splice(propsConfigSimilarItemIndex, 1);
         }
 
         return config.find(isSameItem);
       }
 
-      const globalConfigItem = findItem(globalConfig.compoundVariants);
-      const propsConfigItem = findItem(propsConfig.compoundVariants);
+      const globalConfigItem = findItem(globalCompoundVariants);
+      const propsConfigItem = findItem(propsCompoundVariants);
 
       return globalConfigItem || propsConfigItem
         ? {
@@ -181,10 +176,74 @@ export function createMergeConfigsFunction(cx) {
         : defaultConfigItem;
     });
 
-    return [...(config || []), ...globalConfigUniqueItems, ...propsConfigUniqueItems];
+    return [...(config || []), ...globalCompoundVariants, ...propsCompoundVariants];
+  }
+
+  /**
+   * Convert compound variants with arrays in values into compound variants with primitives.
+   */
+  function expandCompoundVariants(compoundVariants) {
+    compoundVariants = cloneDeep(compoundVariants || []);
+
+    function expand(compoundVariant) {
+      const keysWithArray = Object.keys(compoundVariant).filter((key) =>
+        Array.isArray(compoundVariant[key]),
+      );
+
+      if (!keysWithArray.length) {
+        return [compoundVariant];
+      }
+
+      const [firstKey] = keysWithArray;
+      const expandedArray = compoundVariant[firstKey].map((value) => ({
+        ...compoundVariant,
+        [firstKey]: value,
+      }));
+
+      // Recursively expand the remaining array keys
+      return expandedArray.flatMap((expandedCompoundVariant) => expand(expandedCompoundVariant));
+    }
+
+    return compoundVariants.flatMap(expand);
   }
 
   return mergeConfigs;
+}
+
+export function createGetMergedConfig(cx) {
+  const mergeConfigs = createMergeConfigs(cx);
+
+  /**
+   * Get merged config based on config merging strategy.
+   */
+  function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStrategy }) {
+    defaultConfig = cloneDeep(defaultConfig);
+
+    let mergedConfig = {};
+    const strategy =
+      !globalConfig && !propsConfig
+        ? STRATEGY_TYPE.merge
+        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy || STRATEGY_TYPE.merge;
+
+    if (strategy === STRATEGY_TYPE.merge) {
+      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
+    }
+
+    if (strategy === STRATEGY_TYPE.replace) {
+      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
+    }
+
+    if (strategy === STRATEGY_TYPE.overwrite) {
+      const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
+      const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
+
+      mergedConfig = isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
+    }
+
+    return mergedConfig;
+  }
+
+  return getMergedConfig;
 }
 
 /**

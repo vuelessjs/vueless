@@ -25,7 +25,7 @@ export async function loadSvg(id, options) {
   svgPath = svgPath.replace("/__skip_vite/", "");
 
   // use default svg loader
-  if (importType === "url" && !svgPath.includes(".generated")) {
+  if (importType === "url") {
     return;
   }
 
@@ -36,11 +36,11 @@ export async function loadSvg(id, options) {
 
   try {
     svg = await fs.promises.readFile(svgPath, "utf-8");
-  } catch {
+  } catch (error) {
     // define an empty svg to prevent a UI crash.
     svg = `<svg xmlns="http://www.w3.org/2000/svg"></svg>`;
     // eslint-disable-next-line no-console
-    console.warn("\n", `${id} couldn't be loaded by vueless vite plugin.`);
+    console.warn(`${svgPath} couldn't be loaded by vueless vite plugin.`, "\n", error);
   }
 
   if (importType === "raw") {

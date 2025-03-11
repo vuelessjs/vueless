@@ -1,236 +1,26 @@
-<template>
-  <UInput
-    :id="elementId"
-    ref="inputRef"
-    :model-value="localValue"
-    :size="size"
-    :disabled="disabled"
-    :readonly="readonly"
-    :label-align="labelAlign"
-    :label="label"
-    :error="error"
-    :description="description"
-    :placeholder="placeholder"
-    inputmode="search"
-    :left-icon="leftIcon"
-    v-bind="searchInputAttrs"
-    :data-test="dataTest"
-    @update:model-value="onUpdateValue"
-    @keyup.enter="onKeyupEnter"
-  >
-    <template #left>
-      <!-- @slot Use it to add something before the text. -->
-      <slot name="left" />
-    </template>
+<script setup lang="ts">
+import { useId, ref, watchEffect } from "vue";
 
-    <template #left-icon>
-      <!-- @slot Use it to add icon before the text. -->
-      <slot name="left-icon" />
-    </template>
-
-    <template #right-icon>
-      <UIcon
-        v-if="localValue"
-        internal
-        interactive
-        color="gray"
-        :name="config.defaults.clearIcon"
-        :size="iconSize"
-        v-bind="clearIconAttrs"
-        :data-test="`${dataTest}-clear`"
-        @click="onClickClear"
-      />
-
-      <!-- @slot Use it to add icon after the text. -->
-      <slot
-        name="right-icon"
-        :icon-name="config.defaults.searchIcon"
-        :icon-size="iconSize"
-        :search-button-label="searchButtonLabel"
-      >
-        <UIcon
-          v-if="!searchButtonLabel"
-          internal
-          interactive
-          :size="iconSize"
-          :name="rightIcon || config.defaults.searchIcon"
-          v-bind="searchIconAttrs"
-          :data-test="`${dataTest}-search-icon`"
-          @click="onClickSearch"
-        />
-      </slot>
-    </template>
-
-    <template #right>
-      <!-- @slot Use it to add something after the text. -->
-      <slot name="right">
-        <UButton
-          v-if="searchButtonLabel"
-          :label="searchButtonLabel"
-          :size="buttonSize"
-          no-ring
-          v-bind="searchButtonAttrs"
-          :data-test="`${dataTest}-search-button`"
-          @click="onClickSearch"
-        />
-      </slot>
-    </template>
-  </UInput>
-</template>
-
-<script setup>
-import { computed, useId, ref, watchEffect } from "vue";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { createDebounce } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
-import { getDefault } from "../utils/ui.ts";
-import { createDebounce } from "../utils/helper.ts";
 
-import { UInputSearch } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Search input value.
-   */
-  modelValue: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UInputSearch).size,
-  },
-
-  /**
-   * Input placeholder.
-   */
-  placeholder: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Label placement.
-   * @values top, topInside, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UInputSearch).labelAlign,
-  },
-
-  /**
-   * Input label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Input description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Error message.
-   */
-  error: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Minimum character length for search.
-   */
-  minLength: {
-    type: [Number, String],
-    default: getDefault(defaultConfig, UInputSearch).minLength,
-  },
-
-  /**
-   * Search button label.
-   */
-  searchButtonLabel: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Time in milliseconds before value emit.
-   */
-  debounce: {
-    type: [Number, String],
-    default: getDefault(defaultConfig, UInputSearch).debounce,
-  },
-
-  /**
-   * Left icon name.
-   */
-  leftIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Right icon name.
-   */
-  rightIcon: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Make input read-only.
-   */
-  readonly: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputSearch).readonly,
-  },
-
-  /**
-   * Make input disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UInputSearch).disabled,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
+  label: "",
+  placeholder: "",
 });
 
 const emit = defineEmits([
@@ -261,36 +51,17 @@ const inputRef = ref(null);
 
 const elementId = props.id || useId();
 
-const { config, searchInputAttrs, searchIconAttrs, clearIconAttrs, searchButtonAttrs } =
-  useAttrs(props);
-
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "sm",
-    lg: "md",
-  };
-
-  return sizes[props.size];
-});
-
-const buttonSize = computed(() => {
-  const sizes = {
-    sm: "xs",
-    md: "md",
-    lg: "lg",
-  };
-
-  return sizes[props.size];
-});
-
 watchEffect(() => {
   updateValueWithDebounce = createDebounce((value) => {
     emit("update:modelValue", value);
   }, Number(props.debounce));
 });
 
-function onUpdateValue(value) {
+watchEffect(() => {
+  localValue.value = props.modelValue;
+});
+
+function onUpdateValue(value: string) {
   localValue.value = value;
 
   if (!value) {
@@ -332,4 +103,87 @@ defineExpose({
    */
   inputRef,
 });
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  getDataTest,
+  config,
+  searchInputAttrs,
+  searchInputWithButtonAttrs,
+  searchIconAttrs,
+  clearIconAttrs,
+  searchButtonAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
+
+<template>
+  <UInput
+    :id="elementId"
+    ref="inputRef"
+    :model-value="localValue"
+    :size="size"
+    :disabled="disabled"
+    :readonly="readonly"
+    :label-align="labelAlign"
+    :label="label"
+    :error="error"
+    :description="description"
+    :placeholder="placeholder"
+    inputmode="search"
+    :left-icon="leftIcon"
+    v-bind="searchButtonLabel ? searchInputWithButtonAttrs : searchInputAttrs"
+    :data-test="getDataTest()"
+    @update:model-value="onUpdateValue"
+    @keyup.enter="onKeyupEnter"
+  >
+    <template #left>
+      <!-- @slot Use it to add something before the text. -->
+      <slot name="left" />
+    </template>
+
+    <template #right>
+      <UIcon
+        v-if="localValue"
+        internal
+        interactive
+        color="neutral"
+        :name="config.defaults.clearIcon"
+        v-bind="clearIconAttrs"
+        :data-test="getDataTest('clear')"
+        @click="onClickClear"
+      />
+
+      <!--
+        @slot Use it to add something after the text.
+        @binding {string} icon-name
+      -->
+      <slot
+        name="right"
+        :icon-name="rightIcon || config.defaults.searchIcon"
+        :search-button-label="searchButtonLabel"
+      >
+        <UIcon
+          v-if="!searchButtonLabel"
+          internal
+          interactive
+          color="neutral"
+          :name="rightIcon || config.defaults.searchIcon"
+          v-bind="searchIconAttrs"
+          :data-test="getDataTest('search-icon')"
+          @click="onClickSearch"
+        />
+
+        <UButton
+          v-if="searchButtonLabel"
+          :label="searchButtonLabel"
+          v-bind="searchButtonAttrs"
+          :data-test="getDataTest('search-button')"
+          @click="onClickSearch"
+        />
+      </slot>
+    </template>
+  </UInput>
+</template>

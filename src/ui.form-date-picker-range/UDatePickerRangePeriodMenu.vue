@@ -1,189 +1,4 @@
-<template>
-  <div v-bind="periodRowAttrs">
-    <template v-for="periodButton in periods" :key="periodButton.name">
-      <UButton
-        v-if="periodButton.name !== period"
-        square
-        filled
-        no-ring
-        size="xs"
-        color="grayscale"
-        variant="thirdary"
-        :label="periodButton.title"
-        v-bind="periodButtonAttrs"
-        @click="onClickPeriodButton(periodButton.name)"
-      />
-
-      <UButton
-        v-else
-        square
-        filled
-        no-ring
-        size="xs"
-        color="grayscale"
-        variant="thirdary"
-        :label="periodButton.title"
-        v-bind="periodButtonActiveAttrs"
-        @click="onClickPeriodButton(periodButton.name)"
-      />
-    </template>
-  </div>
-
-  <div v-bind="periodRowAttrs">
-    <UButton
-      v-if="customRangeButton.range.to && customRangeButton.range.from && PERIOD.custom !== period"
-      square
-      filled
-      no-ring
-      size="xs"
-      color="grayscale"
-      variant="thirdary"
-      v-bind="periodButtonAttrs"
-      @click="onClickCustomRangeButton"
-    >
-      {{ customRangeButton.label }}
-      <span
-        v-if="customRangeButton.description"
-        v-bind="customRangeDescription"
-        v-text="customRangeButton.description"
-      />
-    </UButton>
-
-    <UButton
-      v-if="customRangeButton.range.to && customRangeButton.range.from && PERIOD.custom === period"
-      square
-      filled
-      no-ring
-      size="xs"
-      color="grayscale"
-      variant="thirdary"
-      v-bind="periodButtonActiveAttrs"
-      @click="onClickCustomRangeButton"
-    >
-      {{ customRangeButton.label }}
-      <span
-        v-if="customRangeButton.description"
-        v-bind="customRangeDescription"
-        v-text="customRangeButton.description"
-      />
-    </UButton>
-
-    <UButton
-      v-if="PERIOD.ownRange !== period"
-      square
-      filled
-      no-ring
-      size="xs"
-      color="grayscale"
-      variant="thirdary"
-      :label="locale.ownRange"
-      :left-icon="config.defaults.ownRangeIcon"
-      v-bind="periodButtonAttrs"
-      @click="onClickOwnRange"
-    />
-
-    <UButton
-      v-else
-      square
-      filled
-      no-ring
-      size="xs"
-      color="grayscale"
-      variant="thirdary"
-      :label="locale.ownRange"
-      :left-icon="config.defaults.ownRangeIcon"
-      v-bind="periodButtonActiveAttrs"
-      @click="onClickOwnRange"
-    />
-  </div>
-
-  <template v-if="!isPeriod.ownRange && !isPeriod.custom">
-    <div v-bind="rangeSwitchWrapperAttrs">
-      <UButton
-        square
-        no-ring
-        size="sm"
-        color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults.prevIcon"
-        v-bind="rangeSwitchButtonAttrs"
-        @click="emit('clickPrev')"
-      />
-
-      <div v-bind="rangeSwitchTitleAttrs">
-        {{ rangeSwitchTitle }}
-      </div>
-
-      <UButton
-        square
-        no-ring
-        size="sm"
-        color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults.nextIcon"
-        v-bind="rangeSwitchButtonAttrs"
-        @click="emit('clickNext')"
-      />
-    </div>
-
-    <div v-if="isDatePeriodOutOfRange" v-bind="periodDateListAttrs">
-      <template v-for="date in periodDateList" :key="date.title">
-        <UButton
-          v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
-          size="sm"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          filled
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateCurrentSelectedAttrs"
-          :label="String(date.title)"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else-if="getDatePeriodState(date).isSelected"
-          size="sm"
-          variant="thirdary"
-          color="brand"
-          no-ring
-          filled
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateSelectedAttrs"
-          :label="String(date.title)"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else-if="getDatePeriodState(date).isCurrentDate"
-          size="sm"
-          variant="secondary"
-          color="brand"
-          no-ring
-          filled
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateCurrentAttrs"
-          :label="String(date.title)"
-          @click="selectDate(date), toggleMenu()"
-        />
-
-        <UButton
-          v-else
-          no-ring
-          size="sm"
-          color="grayscale"
-          variant="thirdary"
-          :disabled="isDatePeriodOutOfRange(date)"
-          v-bind="periodDateAttrs"
-          :label="String(date.title)"
-          @click="selectDate(date), toggleMenu()"
-        />
-      </template>
-    </div>
-  </template>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, inject } from "vue";
 
 import {
@@ -191,83 +6,36 @@ import {
   getYearDateList,
   getQuartersDateList,
   getMonthsDateList,
-} from "./utilDateRange.js";
+} from "./utilDateRange.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
-import { PERIOD } from "./constants.js";
+import { Period } from "./constants.ts";
 
-const props = defineProps({
-  locale: {
-    type: Object,
-    required: true,
-  },
+import type { UDatePickerRangePeriodMenuProps, IsDatePeriodOutOfRange } from "./types.ts";
+import type { DatePeriodRange } from "./utilDateRange.ts";
 
-  isPeriod: {
-    type: Object,
-    required: true,
-  },
+defineOptions({ internal: true });
 
-  customRangeButton: {
-    type: Object,
-    required: true,
-  },
-
-  dateFormat: {
-    type: [String, undefined],
-    default: undefined,
-  },
-
-  minDate: {
-    type: [String, Date],
-    default: undefined,
-  },
-
-  maxDate: {
-    type: [String, Date],
-    default: undefined,
-  },
-
-  config: {
-    type: Object,
-    required: true,
-  },
-
-  attrs: {
-    type: Object,
-    required: true,
-  },
-});
+const props = defineProps<UDatePickerRangePeriodMenuProps>();
 
 const emit = defineEmits(["toggleMenu", "closeMenu", "clickPrev", "clickNext"]);
 
 const localValue = defineModel("localValue", { required: true, type: Object });
 const activeDate = defineModel("activeDate", { required: true, type: Object });
-const periodDateList = defineModel("periodDateList", { required: true, type: Object });
+const periodDateList = defineModel<DatePeriodRange[]>("periodDateList");
 const period = defineModel("period", { required: true, type: String });
 
-const isDatePeriodOutOfRange = inject("isDatePeriodOutOfRange", null);
-
-const {
-  periodButtonAttrs,
-  periodRowAttrs,
-  periodButtonActiveAttrs,
-  customRangeDescription,
-  rangeSwitchWrapperAttrs,
-  rangeSwitchButtonAttrs,
-  rangeSwitchTitleAttrs,
-  periodDateListAttrs,
-  periodDateSelectedAttrs,
-  periodDateCurrentSelectedAttrs,
-  periodDateCurrentAttrs,
-  periodDateAttrs,
-} = props.attrs;
+const isDatePeriodOutOfRange = inject<IsDatePeriodOutOfRange | null>(
+  "isDatePeriodOutOfRange",
+  null,
+);
 
 const periods = computed(() => [
-  { name: PERIOD.week, title: props.locale.week },
-  { name: PERIOD.month, title: props.locale.month },
-  { name: PERIOD.quarter, title: props.locale.quarter },
-  { name: PERIOD.year, title: props.locale.year },
+  { name: Period.Week, title: props.locale.week },
+  { name: Period.Month, title: props.locale.month },
+  { name: Period.Quarter, title: props.locale.quarter },
+  { name: Period.Year, title: props.locale.year },
 ]);
 
 const rangeSwitchTitle = computed(() => {
@@ -276,7 +44,7 @@ const rangeSwitchTitle = computed(() => {
   }
 
   if (props.isPeriod.year) {
-    return `${periodDateList.value.at(0).title} – ${periodDateList.value.at(-1).title}`;
+    return `${periodDateList.value?.at(0)?.title} – ${periodDateList.value?.at(-1)?.title}`;
   }
 
   if (props.isPeriod.week) {
@@ -286,39 +54,39 @@ const rangeSwitchTitle = computed(() => {
   return "";
 });
 
-function onClickPeriodButton(periodName) {
+function onClickPeriodButton(periodName: `${Period}`) {
   const localDate = localValue.value.from !== null ? localValue.value.from : new Date();
 
-  if (periodName === PERIOD.week) {
+  if (periodName === Period.Week) {
     periodDateList.value = getWeekDateList(localDate, props.locale.months.shorthand);
 
-    period.value = PERIOD.week;
+    period.value = Period.Week;
   }
 
-  if (periodName === PERIOD.month) {
+  if (periodName === Period.Month) {
     periodDateList.value = getMonthsDateList(localDate, props.locale.months.longhand);
 
-    period.value = PERIOD.month;
+    period.value = Period.Month;
   }
 
-  if (periodName === PERIOD.quarter) {
+  if (periodName === Period.Quarter) {
     periodDateList.value = getQuartersDateList(localDate, props.locale.quarter);
 
-    period.value = PERIOD.quarter;
+    period.value = Period.Quarter;
   }
 
-  if (periodName === PERIOD.year) {
+  if (periodName === Period.Year) {
     periodDateList.value = getYearDateList(localDate);
 
-    period.value = PERIOD.year;
+    period.value = Period.Year;
   }
 }
 
 function onClickOwnRange() {
-  period.value = PERIOD.ownRange;
+  period.value = Period.OwnRange;
 }
 
-function selectDate(date) {
+function selectDate(date: DatePeriodRange) {
   localValue.value = {
     from: date.startRange,
     to: date.endRange,
@@ -333,7 +101,7 @@ function onClickCustomRangeButton() {
   selectCustomRange();
 
   emit("closeMenu");
-  period.value = PERIOD.custom;
+  period.value = Period.Custom;
 }
 
 function selectCustomRange() {
@@ -343,7 +111,7 @@ function selectCustomRange() {
   };
 }
 
-function getDatePeriodState(date) {
+function getDatePeriodState(date: DatePeriodRange) {
   const localStart = new Date(localValue.value.from);
   const localEnd = new Date(localValue.value.to);
 
@@ -355,9 +123,178 @@ function getDatePeriodState(date) {
   localStart.setHours(0, 0, 0, 0);
   localEnd.setHours(23, 59, 59, 999);
 
-  const isSelected = localStart - date.startRange === 0 && localEnd - date.endRange === 0;
+  const isSelected =
+    localStart.getTime() - date.startRange.getTime() === 0 &&
+    localEnd.getTime() - date.endRange.getTime() === 0;
   const isCurrentDate = date.startRange <= new Date() && new Date() <= date.endRange;
 
   return { isSelected, isCurrentDate };
 }
 </script>
+
+<template>
+  <div v-bind="attrs.periodRowAttrs.value">
+    <template v-for="periodButton in periods" :key="periodButton.name">
+      <UButton
+        v-if="periodButton.name !== period"
+        square
+        size="xs"
+        color="grayscale"
+        variant="soft"
+        :label="periodButton.title"
+        v-bind="attrs.periodButtonAttrs.value"
+        @click="onClickPeriodButton(periodButton.name)"
+      />
+
+      <UButton
+        v-else
+        square
+        size="xs"
+        color="grayscale"
+        variant="soft"
+        :label="periodButton.title"
+        v-bind="attrs.periodButtonActiveAttrs.value"
+        @click="onClickPeriodButton(periodButton.name)"
+      />
+    </template>
+  </div>
+
+  <div v-bind="attrs.periodRowAttrs.value">
+    <UButton
+      v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom !== period"
+      square
+      size="xs"
+      color="grayscale"
+      variant="soft"
+      v-bind="attrs.customRangeButtonAttrs.value"
+      @click="onClickCustomRangeButton"
+    >
+      {{ customRangeButton.label }}
+      <span
+        v-if="customRangeButton.description"
+        v-bind="attrs.customRangeDescriptionAttrs.value"
+        v-text="customRangeButton.description"
+      />
+    </UButton>
+
+    <UButton
+      v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom === period"
+      square
+      size="xs"
+      color="grayscale"
+      variant="soft"
+      v-bind="attrs.customRangeButtonAttrs.value"
+      @click="onClickCustomRangeButton"
+    >
+      {{ customRangeButton.label }}
+      <span
+        v-if="customRangeButton.description"
+        v-bind="attrs.customRangeDescriptionAttrs.value"
+        v-text="customRangeButton.description"
+      />
+    </UButton>
+
+    <UButton
+      v-if="Period.OwnRange !== period"
+      square
+      size="xs"
+      color="grayscale"
+      variant="soft"
+      :label="locale.ownRange"
+      :left-icon="config.defaults?.ownRangeIcon"
+      v-bind="attrs.periodButtonAttrs.value"
+      @click="onClickOwnRange"
+    />
+
+    <UButton
+      v-else
+      square
+      size="xs"
+      color="grayscale"
+      variant="soft"
+      :label="locale.ownRange"
+      :left-icon="config.defaults?.ownRangeIcon"
+      v-bind="attrs.periodButtonActiveAttrs.value"
+      @click="onClickOwnRange"
+    />
+  </div>
+
+  <template v-if="!isPeriod.ownRange && !isPeriod.custom">
+    <div v-bind="attrs.rangeSwitchWrapperAttrs.value">
+      <UButton
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults?.prevIcon"
+        v-bind="attrs.rangeSwitchButtonAttrs.value"
+        @click="emit('clickPrev')"
+      />
+
+      <div v-bind="attrs.rangeSwitchTitleAttrs.value">
+        {{ rangeSwitchTitle }}
+      </div>
+
+      <UButton
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults?.nextIcon"
+        v-bind="attrs.rangeSwitchButtonAttrs.value"
+        @click="emit('clickNext')"
+      />
+    </div>
+
+    <div v-if="isDatePeriodOutOfRange" v-bind="attrs.periodDateListAttrs.value">
+      <template
+        v-for="date in periodDateList"
+        :key="date.title + date.startRange.toISOString() + date.endRange.toISOString()"
+      >
+        <UButton
+          v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
+          size="sm"
+          color="primary"
+          variant="soft"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateCurrentSelectedAttrs.value"
+          :label="String(date.title)"
+          @click="(selectDate(date), toggleMenu())"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date).isSelected"
+          size="sm"
+          color="primary"
+          variant="soft"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateSelectedAttrs.value"
+          :label="String(date.title)"
+          @click="(selectDate(date), toggleMenu())"
+        />
+
+        <UButton
+          v-else-if="getDatePeriodState(date).isCurrentDate"
+          size="sm"
+          color="primary"
+          variant="outlined"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateCurrentAttrs.value"
+          :label="String(date.title)"
+          @click="(selectDate(date), toggleMenu())"
+        />
+
+        <UButton
+          v-else
+          size="sm"
+          color="grayscale"
+          variant="ghost"
+          :disabled="isDatePeriodOutOfRange(date)"
+          v-bind="attrs.periodDateAttrs.value"
+          :label="String(date.title)"
+          @click="(selectDate(date), toggleMenu())"
+        />
+      </template>
+    </div>
+  </template>
+</template>

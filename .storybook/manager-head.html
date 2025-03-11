@@ -25,7 +25,7 @@ Custom dark mode related vueless loader.
 <style>
   /* -------------------- Prevent showing users default storybook theme styles -------------------- */
 
-  body.dark {
+  html.dark {
     background: #111827;
   }
 
@@ -108,6 +108,41 @@ Custom dark mode related vueless loader.
     border: 1px solid transparent;
   }
 
+  .sidebar-item,
+  .search-result-item {
+    text-transform: capitalize;
+  }
+
+  .light .sidebar-item svg[type="component"],
+  .light .search-result-item svg[type="component"],
+  .dark .search-result-item mark {
+      color: #10b981;
+  }
+
+  .dark .sidebar-item svg[type="component"],
+  .dark .search-result-item svg[type="component"],
+  .light .search-result-item mark {
+      color: #059669;
+  }
+
+  .light .sidebar-item svg[type="document"],
+  .light .sidebar-item svg[type="story"],
+  .light .search-result-item svg[type="document"],
+  .light .search-result-item svg[type="story"] {
+      color: #9ca3af;
+  }
+
+  .dark .sidebar-item svg[type="document"],
+  .dark .sidebar-item svg[type="story"],
+  .dark .search-result-item svg[type="document"],
+  .dark .search-result-item svg[type="story"] {
+      color: #4b5563;
+  }
+
+  #sidebar-bottom-wrapper {
+      display: none;
+  }
+
   /* -------------------- Storybook args -------------------- */
 
   .dark,
@@ -146,7 +181,7 @@ Custom dark mode related vueless loader.
       setTimeout(() => {
         document.getElementById("root").style.visibility = 'visible';
         document.getElementById("sb-vueless-loader").style.display = 'none';
-      }, 1000);
+      }, 1500);
     };
   })();
 </script>

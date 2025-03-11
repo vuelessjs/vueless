@@ -1,19 +1,34 @@
-import path from "path";
-import { statSync } from "fs";
-import { readdir } from "node:fs/promises";
+import esbuild from "esbuild";
+import path from "node:path";
+import { cwd } from "node:process";
+import { statSync, existsSync, promises as fsPromises } from "node:fs";
+
+import { VUELESS_CONFIGS_CACHED_DIR } from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
 
+  const ERROR_CODE = {
+    dirIsFile: "ENOTDIR",
+    noEntry: "ENOENT",
+  };
+
   try {
-    fileNames = await readdir(dirPath, { recursive });
+    fileNames = await fsPromises.readdir(dirPath, { recursive });
   } catch (error) {
-    if (error.code === "ENOTDIR") {
-      fileNames = [dirPath.split(path.sep).at(-1)];
-      dirPath = dirPath.split(path.sep).slice(0, -1).join(path.sep);
-    } else if (error.code === "ENOENT") {
+    if (error.code === ERROR_CODE.dirIsFile) {
+      const pathArray = dirPath.split(path.sep);
+      const fileName = pathArray.pop();
+
+      fileNames = [fileName];
+      dirPath = pathArray.join(path.sep);
+    }
+
+    if (error.code === ERROR_CODE.noEntry) {
       fileNames = [];
-    } else {
+    }
+
+    if (!Object.values(ERROR_CODE).includes(error.code)) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
@@ -35,44 +50,49 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
     .filter((filePath) => !statSync(filePath).isDirectory());
 }
 
-export function getNuxtFiles() {
+export function getNuxtDirs() {
   return [
-    path.join(process.cwd(), "composables"),
-    path.join(process.cwd(), "components"),
-    path.join(process.cwd(), "layouts"),
-    path.join(process.cwd(), "pages"),
-    path.join(process.cwd(), "plugins"),
-    path.join(process.cwd(), "utils"),
-    path.join(process.cwd(), "Error.vue"),
-    path.join(process.cwd(), "App.vue"),
-    path.join(process.cwd(), "Error.vue"),
-    path.join(process.cwd(), "app.vue"),
-    path.join(process.cwd(), "error.vue"),
-    path.join(process.cwd(), "playground", "app.vue"),
+    path.join(cwd(), "composables"),
+    path.join(cwd(), "components"),
+    path.join(cwd(), "layouts"),
+    path.join(cwd(), "pages"),
+    path.join(cwd(), "plugins"),
+    path.join(cwd(), "utils"),
+    path.join(cwd(), "Error.vue"),
+    path.join(cwd(), "App.vue"),
+    path.join(cwd(), "Error.vue"),
+    path.join(cwd(), "app.vue"),
+    path.join(cwd(), "error.vue"),
+    path.join(cwd(), "playground", "app.vue"),
   ];
 }
 
-export function getVueSourceFile() {
-  return path.join(process.cwd(), "src");
+export function getVueDirs() {
+  return [path.join(cwd(), "src")];
 }
 
-export function getDefaultConfigJson(fileContents) {
-  const objectStartIndex = fileContents.indexOf("{");
-  const objectString = fileContents.substring(objectStartIndex).replace("};", "}");
-
-  // indirect eval
-  return (0, eval)("(" + objectString + ")"); // Converting into JS object
+export function getVuelessConfigDirs() {
+  return [path.join(cwd(), ".vueless")];
 }
 
-export function merge(source, target) {
-  for (const [key, val] of Object.entries(source)) {
-    if (val !== null && typeof val === `object`) {
-      target[key] ??= new val.__proto__.constructor();
-      merge(val, target[key]);
-    } else {
-      target[key] = val;
-    }
+export async function getComponentDefaultConfig(name, entryPath) {
+  const configOutPath = path.join(cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
+
+  await buildTSFile(entryPath, configOutPath);
+
+  if (existsSync(configOutPath)) {
+    return (await import(configOutPath)).default;
   }
+}
 
-  return target; // we're replacing in-situ, so this is more for chaining than anything else
+export async function buildTSFile(entryPath, configOutFile) {
+  await esbuild.build({
+    entryPoints: [entryPath],
+    outfile: configOutFile,
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    target: "ESNext",
+    loader: { ".ts": "ts" },
+  });
 }

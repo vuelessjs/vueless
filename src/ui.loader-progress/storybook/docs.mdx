@@ -1,0 +1,55 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/blocks";
+import { getSource } from "../../utils/storybook.ts";
+
+import * as stories from "./stories.ts";
+import defaultConfig from "../config.ts?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Using loader
+To control the loader state in Vue components use `useLoaderProgress` composable.
+
+The loader uses queue of resources and will be shown until at least one item is present in a queue.
+
+<Source code={`
+import { useLoaderProgress } from "vueless";
+
+const {
+  loaderProgressOn,
+  loaderProgressOff,
+  requestQueue,
+} = useLoaderProgress();
+
+// show loader (add resource into queue)
+loaderProgressOn("/transactions");
+loaderProgressOff(["/transactions", "/products"]);
+
+// hide loader (remove resource from queue)
+loaderProgressOff("/transactions");
+loaderProgressOff(["/transactions", "/products"]);
+
+// get current global resource queue
+console.log(requestQueue.value);
+`} language="jsx" dark />
+
+## Using loader outside Vue components
+To control the loader state outside Vue components, use the following methods.
+
+<Source code={`
+import { loaderProgressOn, loaderProgressOff } from "vueless";
+
+// show loader
+loaderProgressOn("/transactions");
+
+// hide loader
+loaderProgressOff("/transactions");
+`} language="jsx" dark />
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />

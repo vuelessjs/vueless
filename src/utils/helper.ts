@@ -1,7 +1,12 @@
+import type { UnknownObject } from "../types.ts";
+import { Comment, Text, Fragment } from "vue";
+
+import type { Slot, VNode } from "vue";
+
 /**
  * Deeply clone given object (same as lodash.cloneDeep).
  */
-export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
+export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown | UnknownObject {
   // primitives
   if (Object(entity) !== entity || !entity) {
     return entity;
@@ -38,14 +43,38 @@ export function cloneDeep(entity: unknown, cache = new WeakMap()): unknown {
 /**
  * Creates a debounced function with delay (same as lodash.debounce).
  */
-export function createDebounce(func: () => void, ms: number) {
+export function createDebounce<T extends unknown[]>(func: (...args: T) => void, ms: number) {
   let timeout: ReturnType<typeof setTimeout>;
 
-  return function (...args: []) {
+  return function (this: unknown, ...args: T) {
     clearTimeout(timeout);
-    // @ts-expect-error - this implicitly has type any because it does not have a type annotation.
-    timeout = setTimeout(() => func.apply(this as unknown, args), ms);
+    timeout = setTimeout(() => func.apply(this, args), ms);
   };
+}
+
+/**
+ * Check if Vue slot defined, and have a content.
+ */
+export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
+  type Args = VNode | VNode[] | undefined | null;
+
+  const asArray = (arg: Args) => {
+    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
+  };
+
+  const isVNodeEmpty = (vnode: Args) => {
+    return (
+      !vnode ||
+      asArray(vnode).every(
+        (vnode) =>
+          vnode.type === Comment ||
+          (vnode.type === Text && !vnode.children?.length) ||
+          (vnode.type === Fragment && !vnode.children?.length),
+      )
+    );
+  };
+
+  return !isVNodeEmpty(slot?.(props));
 }
 
 /**
@@ -55,6 +84,22 @@ export function setTitle({ title = "", separator = " / ", suffix = "" }) {
   if (isCSR) {
     document.title = title ? title + separator + suffix : suffix;
   }
+}
+
+/**
+ * Generates simple unique identifier.
+ */
+export function getRandomId(length = 15) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const charactersLength = characters.length;
+
+  let id = "";
+
+  while (id.length < length) {
+    id += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return id;
 }
 
 /**

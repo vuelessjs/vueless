@@ -1,240 +1,130 @@
-<template>
-  <ULabel
-    :size="labelSize"
-    :label="label"
-    :description="description"
-    :align="labelAlign"
-    :disabled="disabled"
-    centred
-    v-bind="toggleLabelAttrs"
-    :data-test="dataTest"
-  >
-    <div v-bind="itemsAttrs">
-      <!-- @slot Use it to add UToggleItem directly. -->
-      <slot>
-        <UToggleItem
-          v-for="(item, index) in options"
-          :key="item.value"
-          :name="name"
-          :model-value="item.value"
-          :value="item.value"
-          :disabled="disabled"
-          :label="item.label"
-          :data-test="`${dataTest}-item-${index}`"
-          v-bind="itemAttrs"
-        />
-      </slot>
-    </div>
-  </ULabel>
-</template>
+<script setup lang="ts">
+import { computed } from "vue";
 
-<script setup>
-import { computed, provide, readonly } from "vue";
+import UButton from "../ui.button/UButton.vue";
 
-import ULabel from "../ui.form-label/ULabel.vue";
-import UToggleItem from "../ui.button-toggle-item/UToggleItem.vue";
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-import defaultConfig from "./config.js";
-import { UToggle, TYPE_RADIO, TYPE_CHECKBOX } from "./constants.js";
-import useAttrs from "./useAttrs.js";
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
+
+import type { Props, Config, UToggleOption } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Selected value.
-   */
-  modelValue: {
-    type: [String, Number, Array],
-    default: "",
-  },
-
-  /**
-   * Toggle item options.
-   */
-  options: {
-    type: Array,
-    default: () => [],
-  },
-
-  /**
-   * Toggle variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).variant,
-  },
-
-  /**
-   * Toggle size.
-   * @values 2xs, xs, sm, md, lg, xl
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).size,
-  },
-
-  /**
-   * Label placement.
-   * @values top, topWithDesc, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, UToggle).labelAlign,
-  },
-
-  /**
-   * Toggle label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Toggle description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Toggle name.
-   */
-  name: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Allow selecting a few options and return them as an array.
-   */
-  multiple: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).multiple,
-  },
-
-  /**
-   * Separate toggle items.
-   */
-  separated: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).separated,
-  },
-
-  /**
-   * Make toggle disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).disabled,
-  },
-
-  /**
-   * Make the toggle fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).block,
-  },
-
-  /**
-   * Set button corners rounded.
-   */
-  round: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).round,
-  },
-
-  /**
-   * Set the same paddings for the button.
-   */
-  square: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UToggle).square,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  options: () => [],
+  modelValue: () => [],
 });
 
 const emit = defineEmits([
   /**
-   * Triggers when toggle item is selected.
+   * Triggers when toggle option is selected.
    * @property {string} modelValue
    */
   "update:modelValue",
 ]);
-
-const { toggleLabelAttrs, itemsAttrs, itemAttrs } = useAttrs(props);
 
 const selectedValue = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
 
-const labelSize = computed(() => {
-  const sizes = {
-    "2xs": "sm",
-    xs: "sm",
-    sm: "md",
-    md: "md",
-    lg: "lg",
-    xl: "lg",
-  };
-
-  return sizes[props.size];
-});
-
-const type = computed(() => {
-  return props.multiple ? TYPE_CHECKBOX : TYPE_RADIO;
-});
-
-function updateSelectedValue(value, checked) {
-  if (type.value === TYPE_RADIO) {
-    selectedValue.value = value;
-
-    return;
+function isSelected(option: UToggleOption) {
+  if (Array.isArray(selectedValue.value)) {
+    return selectedValue.value.includes(option.value);
   }
 
-  if (checked) {
-    const items = selectedValue.value || [];
+  return selectedValue.value === option.value;
+}
 
-    items.push(value);
-    selectedValue.value = items;
+function onClickOption(rawOption: UToggleOption) {
+  const option = { ...rawOption };
+
+  delete option.onClick;
+
+  if (typeof rawOption.onClick === "function") {
+    rawOption.onClick(option);
+  }
+
+  if (props.multiple || props.options.length === 1) {
+    const newValue = Array.isArray(selectedValue.value) ? [...selectedValue.value] : [];
+    const index = newValue.indexOf(option.value);
+
+    ~index ? newValue.splice(index, 1) : newValue.push(option.value);
+
+    emit("update:modelValue", newValue);
   } else {
-    selectedValue.value = selectedValue.value.filter((item) => String(item) !== String(value));
+    emit("update:modelValue", option.value);
   }
 }
 
-provide("getToggleName", () => props.name);
-provide("getToggleType", () => type.value);
-provide("getToggleSize", () => props.size);
-provide("getToggleRound", () => props.round);
-provide("getToggleBlock", () => props.block);
-provide("getToggleSquare", () => props.square);
-provide("getToggleVariant", () => props.variant);
-provide("getToggleDisabled", () => props.disabled);
-provide("getToggleSeparated", () => props.separated);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  split: props.split,
+  /* component state, not a props */
+  selected: isSelected,
+}));
 
-provide("toggleSelectedValue", {
-  selectedValue: readonly(selectedValue),
-  updateSelectedValue,
-});
+const { getDataTest, optionsAttrs, toggleButtonInactiveAttrs, toggleButtonActiveAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <div v-bind="optionsAttrs">
+    <UButton
+      v-for="(option, index) in options"
+      :key="option.value"
+      :label="option.label"
+      tabindex="0"
+      color="neutral"
+      :size="size"
+      :round="round"
+      :block="block"
+      :square="square"
+      :icon="option.icon"
+      :left-icon="option.leftIcon"
+      :right-icon="option.rightIcon"
+      :disabled="option.disabled || disabled"
+      v-bind="isSelected(option) ? toggleButtonActiveAttrs : toggleButtonInactiveAttrs"
+      :data-test="getDataTest(`option-${index}`)"
+      @click="onClickOption(option)"
+    >
+      <template #left="{ iconName }">
+        <!--
+          @slot Use it to add something before the label.
+          @binding {object} option
+          @binding {string} icon-name
+          @binding {number} index
+        -->
+        <slot name="left" :option="option" :icon-name="iconName" :index="index" />
+      </template>
+
+      <template #default="{ label, iconName }">
+        <!--
+          @slot Use it to add something instead of the toggle option label.
+          @binding {object} option
+          @binding {string} label
+          @binding {string} icon-name
+          @binding {number} index
+        -->
+        <slot name="option" :option="option" :label="label" :icon-name="iconName" :index="index" />
+      </template>
+
+      <template #right="{ iconName }">
+        <!--
+          @slot Use it to add something after the label.
+          @binding {object} option
+          @binding {string} icon-name
+          @binding {number} index
+        -->
+        <slot name="right" :option="option" :icon-name="iconName" :index="index" />
+      </template>
+    </UButton>
+  </div>
+</template>

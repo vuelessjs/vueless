@@ -1,155 +1,25 @@
-<template>
-  <ULabel
-    :for="elementId"
-    :size="size"
-    :label="label"
-    :description="description"
-    :align="labelAlign"
-    :disabled="disabled"
-    :data-test="dataTest"
-    v-bind="switchLabelAttrs"
-    @click="onClickToggle"
-  >
-    <label :for="elementId" v-bind="wrapperAttrs">
-      <input
-        :id="elementId"
-        v-model="checkedValue"
-        type="checkbox"
-        :disabled="disabled"
-        v-bind="inputAttrs"
-        @click="onClickToggle"
-        @keydown.space="onKeydownSpace"
-      />
-
-      <span v-bind="circleAttrs">
-        <UIcon
-          v-if="toggleIcon"
-          internal
-          :name="checkedValue ? config.defaults.onIcon : config.defaults.offIcon"
-          :color="iconColor"
-          :size="iconSize"
-          v-bind="toggleIconAttrs"
-        />
-      </span>
-
-      <span v-if="toggleLabel" v-bind="toggleLabelAttrs" v-text="switchLabel" />
-    </label>
-  </ULabel>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, useId } from "vue";
 import { merge } from "lodash-es";
 
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import { getDefault } from "../utils/ui.ts";
 
-import { USwitch } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
+
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps({
-  /**
-   * Switch value.
-   */
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-
-  /**
-   * Label alignment.
-   * @values top, left, right
-   */
-  labelAlign: {
-    type: String,
-    default: getDefault(defaultConfig, USwitch).labelAlign,
-  },
-
-  /**
-   * Switch label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Switch description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Switch size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, USwitch).size,
-  },
-
-  /**
-   * Switch color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, USwitch).color,
-  },
-
-  /**
-   * Show toggle icons inside the circle.
-   */
-  toggleIcon: {
-    type: Boolean,
-    default: getDefault(defaultConfig, USwitch).toggleIcon,
-  },
-
-  /**
-   * Show toggle labels (on / off).
-   */
-  toggleLabel: {
-    type: Boolean,
-    default: getDefault(defaultConfig, USwitch).toggleLabel,
-  },
-
-  /**
-   * Set switch disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, USwitch).disabled,
-  },
-
-  /**
-   * Unique element id.
-   */
-  id: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: false,
+  label: "",
 });
 
 const emit = defineEmits([
@@ -162,8 +32,8 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const i18nGlobal = tm(USwitch);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = tm(COMPONENT_NAME);
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n));
 
 const checkedValue = computed({
   get: () => props.modelValue,
@@ -172,32 +42,16 @@ const checkedValue = computed({
 
 const elementId = props.id || useId();
 
-const {
-  config,
-  toggleIconAttrs,
-  switchLabelAttrs,
-  inputAttrs,
-  wrapperAttrs,
-  circleAttrs,
-  toggleLabelAttrs,
-} = useAttrs(props, { checked: checkedValue });
-
 const switchLabel = computed(() => {
   return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
 });
 
-const iconSize = computed(() => {
-  const sizes = {
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
-
 const iconColor = computed(() => {
   return checkedValue.value ? props.color : "grayscale";
+});
+
+const toggleIconName = computed(() => {
+  return checkedValue.value ? config.value.defaults.onIcon : config.value.defaults.offIcon;
 });
 
 function toggle() {
@@ -213,4 +67,76 @@ function onClickToggle() {
 function onKeydownSpace() {
   toggle();
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  checked: Boolean(checkedValue.value),
+}));
+
+const {
+  getDataTest,
+  config,
+  toggleIconAttrs,
+  switchLabelAttrs,
+  inputAttrs,
+  wrapperAttrs,
+  circleAttrs,
+  toggleLabelAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <ULabel
+    :for="elementId"
+    :size="size"
+    :label="label"
+    :description="description"
+    :align="labelAlign"
+    :disabled="disabled"
+    interactive
+    v-bind="switchLabelAttrs"
+    :data-test="getDataTest()"
+    @click="onClickToggle"
+  >
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
+    <label
+      tabindex="0"
+      :for="elementId"
+      v-bind="wrapperAttrs"
+      @keydown.enter="onKeydownSpace"
+      @keydown.space.prevent="onKeydownSpace"
+    >
+      <input
+        :id="elementId"
+        v-model="checkedValue"
+        tabindex="-1"
+        type="checkbox"
+        :disabled="disabled"
+        v-bind="inputAttrs"
+        @click="onClickToggle"
+      />
+
+      <span v-bind="circleAttrs">
+        <UIcon
+          v-if="toggleIcon"
+          internal
+          :name="toggleIconName"
+          :color="iconColor"
+          v-bind="toggleIconAttrs"
+        />
+      </span>
+
+      <span v-if="toggleLabel" v-bind="toggleLabelAttrs" v-text="switchLabel" />
+    </label>
+  </ULabel>
+</template>

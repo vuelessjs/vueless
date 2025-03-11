@@ -1,83 +1,101 @@
-<template>
-  <div v-bind="tabAttrs" :data-test="dataTest" @click="onClickSetValue">
-    <!-- @slot Use it to add something instead of the label. -->
-    <slot>
-      {{ label }}
-    </slot>
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, inject, toValue } from "vue";
 
-import { getDefault } from "../utils/ui.ts";
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import UButton from "../ui.button/UButton.vue";
 
-import { UTab } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { Props, Config } from "./types.ts";
+import type { Props as UTabsProps, SetUTabsSelectedItem } from "../ui.navigation-tabs/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const setUTabsSelectedItem = inject("setUTabsSelectedItem", null);
-const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
-const getUTabsSize = inject("getUTabsSize", null);
+const setUTabsSelectedItem = inject<SetUTabsSelectedItem>("setUTabsSelectedItem");
+const getUTabsSelectedItem = inject("getUTabsSelectedItem");
+const getUTabsScrollable = inject<UTabsProps["scrollable"]>("getUTabsScrollable");
+const getUTabsSquare = inject<UTabsProps["square"]>("getUTabsSquare");
+const getUTabsBlock = inject<UTabsProps["block"]>("getUTabsBlock");
+const getUTabsSize = inject<UTabsProps["size"]>("getUTabsSize", "md");
 
-const props = defineProps({
-  /**
-   * Tab label.
-   * @ignore
-   */
-  label: {
-    type: String,
-    required: true,
-  },
-
-  /**
-   * Tab value.
-   */
-  value: {
-    type: [String, Number],
-    default: "",
-  },
-
-  /**
-   * Make tab disabled.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTab).disabled,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const selected = computed(() => {
-  return toValue(getUTabsSelectedItem) === props.value && !props.disabled;
-});
-
-const size = computed(() => {
-  return toValue(getUTabsSize) || getDefault(defaultConfig, UTab).size;
-});
-
-const { tabAttrs } = useAttrs(props, { selected, size });
+const size = computed(() => toValue(getUTabsSize));
+const block = computed(() => toValue(getUTabsBlock));
+const square = computed(() => toValue(getUTabsSquare));
+const scrollable = computed(() => toValue(getUTabsScrollable));
+const isActive = computed(() => toValue(getUTabsSelectedItem) === props.value && !props.disabled);
 
 async function onClickSetValue() {
   if (!props.disabled && setUTabsSelectedItem) {
-    setUTabsSelectedItem(props.value);
+    setUTabsSelectedItem(props.value ?? "");
   }
 }
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  size: size.value,
+  block: block.value,
+  square: square.value,
+  scrollable: scrollable.value,
+  /* component state, not a props */
+  active: isActive.value,
+}));
+
+const { getDataTest, tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
+
+<template>
+  <UButton
+    variant="ghost"
+    :size="size"
+    :label="label"
+    :icon="icon"
+    :left-icon="leftIcon"
+    :right-icon="rightIcon"
+    :block="block"
+    :square="square"
+    :disabled="disabled"
+    v-bind="isActive ? tabButtonActiveAttrs : tabButtonAttrs"
+    :data-test="getDataTest()"
+    @click="onClickSetValue"
+  >
+    <template #left="{ iconName }">
+      <!--
+        @slot Use it to add something before the label.
+        @binding {boolean} active
+        @binding {string} icon-name
+      -->
+      <slot name="left" :active="isActive" :icon-name="iconName" />
+    </template>
+
+    <template #default="{ iconName, label }">
+      <!--
+        @slot Use it to add something instead of the label.
+        @binding {string} label
+        @binding {boolean} active
+        @binding {string} icon-name
+      -->
+      <slot name="label" :label="label" :active="isActive" :icon-name="iconName" />
+    </template>
+
+    <template #right="{ iconName }">
+      <!--
+        @slot Use it to add something after the label.
+        @binding {boolean} active
+        @binding {string} icon-name
+      -->
+      <slot name="right" :active="isActive" :icon-name="iconName" />
+    </template>
+  </UButton>
+</template>

@@ -1,5 +1,70 @@
+<script setup lang="ts">
+import { onMounted, ref, computed } from "vue";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+
+import UIcon from "../ui.image-icon/UIcon.vue";
+import UButton from "../ui.button/UButton.vue";
+import UText from "../ui.text-block/UText.vue";
+
+import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config.ts";
+
+import type { Props, Config } from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the alert is hidden.
+   */
+  "hidden",
+]);
+
+const isShownAlert = ref(true);
+
+onMounted(() => {
+  if (props.timeout > 0) {
+    setTimeout(() => onClickClose(), props.timeout);
+  }
+});
+
+function onClickClose() {
+  isShownAlert.value = false;
+  emit("hidden");
+}
+
+const closeButtonColor = computed(() => {
+  return props.variant === "solid" ? "grayscale" : props.color;
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const {
+  getDataTest,
+  config,
+  wrapperAttrs,
+  bodyAttrs,
+  contentAttrs,
+  textAttrs,
+  titleAttrs,
+  descriptionAttrs,
+  closeButtonAttrs,
+  closeIconAttrs,
+  contentWrapperAttrs,
+} = useUI<Config>(defaultConfig);
+</script>
+
 <template>
-  <div v-if="isShownAlert" :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-if="isShownAlert" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 
@@ -29,7 +94,7 @@
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
-          <UText v-bind="textAttrs" :size="size">
+          <UText v-bind="textAttrs">
             <!-- @slot Use it to add something inside. -->
             <slot />
           </UText>
@@ -42,31 +107,23 @@
       <UButton
         v-if="closable"
         square
-        no-ring
         size="xs"
         :color="closeButtonColor"
-        variant="thirdary"
+        variant="ghost"
         v-bind="closeButtonAttrs"
         @click="onClickClose"
       >
         <!--
           @slot Use it to add something instead of the close button.
-          @binding {string} icon-size
-          @binding {string} icon-color
+          @binding {string} icon-name
         -->
-        <slot
-          name="close"
-          :icon-name="config.defaults.closeIcon"
-          :icon-size="closeIconSize"
-          :icon-color="iconColor"
-        >
+        <slot name="close" :icon-name="config.defaults.closeIcon">
           <UIcon
             internal
-            :size="closeIconSize"
-            :color="iconColor"
+            :color="closeButtonColor"
             :name="config.defaults.closeIcon"
-            :data-test="`${dataTest}-button`"
             v-bind="closeIconAttrs"
+            :data-test="getDataTest('button')"
           />
         </slot>
       </UButton>
@@ -76,160 +133,3 @@
     <slot name="bottom" />
   </div>
 </template>
-
-<script setup>
-import { onMounted, ref, computed } from "vue";
-
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
-import UText from "../ui.text-block/UText.vue";
-import { getDefault } from "../utils/ui.ts";
-
-import { UAlert } from "./constants.js";
-import defaultConfig from "./config.js";
-import useAttrs from "./useAttrs.js";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Alert title.
-   */
-  title: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Alert description.
-   */
-  description: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Alert variant.
-   * @values primary, secondary, thirdary
-   */
-  variant: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).variant,
-  },
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UAlert).bordered,
-  },
-
-  /**
-   * Alert size.
-   * @values xs, sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).size,
-  },
-
-  /**
-   * Alert color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, UAlert).color,
-  },
-
-  /**
-   * Alert timeout.
-   */
-  timeout: {
-    type: Number,
-    default: getDefault(defaultConfig, UAlert).timeout,
-  },
-
-  /**
-   * Show close button.
-   */
-  closable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UAlert).closable,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the alert is hidden.
-   */
-  "hidden",
-]);
-
-const isShownAlert = ref(true);
-
-const {
-  config,
-  wrapperAttrs,
-  bodyAttrs,
-  contentAttrs,
-  textAttrs,
-  titleAttrs,
-  descriptionAttrs,
-  closeButtonAttrs,
-  closeIconAttrs,
-  contentWrapperAttrs,
-  hasSlotContent,
-} = useAttrs(props);
-
-onMounted(() => {
-  if (props.timeout > 0) {
-    setTimeout(() => onClickClose(), props.timeout);
-  }
-});
-
-function onClickClose() {
-  isShownAlert.value = false;
-  emit("hidden");
-}
-
-const closeIconSize = computed(() => {
-  const sizes = {
-    xs: "3xs",
-    sm: "2xs",
-    md: "xs",
-    lg: "sm",
-  };
-
-  return sizes[props.size];
-});
-
-const closeButtonColor = computed(() => {
-  if (props.color === "grayscale") return "white";
-  if (props.color === "white") return "grayscale";
-
-  return props.color;
-});
-
-const iconColor = computed(() => {
-  if (props.color === "white") return "gray";
-
-  return props.variant === "primary" ? "white" : props.color;
-});
-</script>

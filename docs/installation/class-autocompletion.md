@@ -2,15 +2,15 @@
 
 ## IntelliSense
 
-If you're using **VSCode** or **JetBrains** IDEs (WebStorm, PHPStorm, etc..) you can configure autocompletion for the classes.
+If you’re using VSCode or JetBrains IDEs (WebStorm, PHPStorm, etc.), you can set up class autocompletion.
 
-**What you'll get:**
+**Benefits:**
 
-* Autocompletion on typing.
-* Autocompletion on objects by prefixing them with `/*tw*/`
-* Autocompletion when using the `config` prop.
+* Autocompletion when typing in the `class` attribute.
+* Autocompletion in objects by prefixing them with `/*tw*/`.
+* Autocompletion inside the `config` prop.
 
-**An example SFC using IntelliSense:**
+**Example of an SFC with IntelliSense:**
 
 ```jsx
 <template>
@@ -19,7 +19,7 @@ If you're using **VSCode** or **JetBrains** IDEs (WebStorm, PHPStorm, etc..) you
 
 <script setup>
 const config = /*tw*/ {
-  background: 'bg-white dark:bg-slate-900'
+  card: 'bg-white dark:bg-slate-900'
 }
 </script>
 ```
@@ -27,8 +27,9 @@ const config = /*tw*/ {
 ## VSCode
 
 * Install [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extension.
-* Set the plugin configuration below in the file `.vscode/settings.json`.
+* Add the following extension configuration to your VSCode settings.
 
+{% code title=".vscode/settings.json" %}
 ```json
 {
   "files.associations": {
@@ -44,11 +45,12 @@ const config = /*tw*/ {
   ]
 }
 ```
+{% endcode %}
 
 ## JetBrains IDEs
 
-* Check if [Tailwind CSS IntelliSense](https://www.jetbrains.com/help/webstorm/tailwind-css.html) extension already installed in the IDE and install it if not.
-* Set the plugin configuration below in `Settings` > `Languages & Frameworks` > `Style Sheets` > `Tailwind CSS`.
+* Ensure the [Tailwind CSS IntelliSense](https://www.jetbrains.com/help/webstorm/tailwind-css.html) extension is installed in your IDE. If it’s not, install it.
+* Add the following extension configuration below in `Settings` > `Languages & Frameworks` > `Style Sheets` > `Tailwind CSS`.
 
 ```json
 {

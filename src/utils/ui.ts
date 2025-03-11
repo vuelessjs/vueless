@@ -1,17 +1,21 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { cloneDeep, isCSR, isSSR } from "./helper.ts";
-import { createMergeConfigsFunction } from "./node/mergeConfigs.js";
-import {
-  BRAND_COLOR,
-  GRAYSCALE_COLOR,
-  DEFAULT_BRAND_COLOR,
-  NESTED_COMPONENT_REG_EXP,
-  TAILWIND_MERGE_EXTENSION,
-} from "../constants.js";
+import { isCSR, isSSR } from "./helper.ts";
+import { createGetMergedConfig } from "./node/mergeConfigs.js";
+import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
+import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
 
-import type { BrandColors, Config, ComponentNames, Component, Defaults } from "../types.ts";
+import type { Config, Defaults, Strategies, UnknownObject, ComponentNames } from "../types.ts";
+
+interface MergedConfigOptions {
+  defaultConfig: unknown;
+  globalConfig: unknown;
+  propsConfig?: unknown;
+  vuelessStrategy?: Strategies;
+}
+
+type GetMergedConfig = (options: MergedConfigOptions) => unknown;
 
 /**
  * Load Vueless config from the project root.
@@ -40,14 +44,15 @@ if (isSSR) {
 if (isCSR) {
   vuelessConfig =
     Object.values(
-      import.meta.glob("/vueless.config.{js,ts}", { eager: true, import: "default" }),
+      import.meta.glob(["/vueless.config.{js,ts}", "/**/vueless.config.{js,ts}"], {
+        eager: true,
+        import: "default",
+      }),
     )[0] || {};
 }
 
 /**
  * Extend twMerge (tailwind merge) by vueless and user config:
- * All list of rules available here:
- * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
  */
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
@@ -63,11 +68,11 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_REG_EXP, ""),
+    onComplete: (classNames) => twMerge(classNames),
   },
 });
 
-export const mergeConfigs = createMergeConfigsFunction(cx);
+export const getMergedConfig = createGetMergedConfig(cx) as GetMergedConfig;
 
 /* This allows skipping some CVA config keys in vueless config. */
 export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
@@ -81,28 +86,27 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
 /**
  * Return default values for component props, icons, etc..
  */
-export function getDefault<T>(defaultConfig: Component, name: ComponentNames): T {
-  const componentDefaults = cloneDeep(defaultConfig.defaults) || {};
-  const globalDefaults = cloneDeep(vuelessConfig.component?.[name]?.defaults) || {};
+export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
+  const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
+  const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
-  const defaults = merge(componentDefaults, globalDefaults) as T & Defaults;
+  const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
 
-  if (defaults.color) {
-    defaults.color = getColor(defaults.color as BrandColors);
+  /* Remove non a props defaults. */
+  for (const key in defaults) {
+    const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon)/.test(key);
+    const isNonPropIconDefaults = ICON_NON_PROPS_DEFAULTS.includes(key) && name === U_ICON;
+
+    if (isNonPropIcon || isNonPropIconDefaults) {
+      delete defaults[key];
+    }
   }
 
-  return defaults;
-}
-
-/**
- * Return `grayscale` color if in component config it `brand` but in vueless config it `grayscale`
- * Otherwise return given color.
- */
-export function getColor(color: string) {
-  const isBrandColorGrayscale = (vuelessConfig.brand ?? DEFAULT_BRAND_COLOR) === GRAYSCALE_COLOR;
-  const isComponentColorBrand = color === BRAND_COLOR;
-
-  return isBrandColorGrayscale && isComponentColorBrand ? GRAYSCALE_COLOR : color;
+  return {
+    ...defaults,
+    dataTest: "",
+    config: () => ({}),
+  };
 }
 
 /**
@@ -110,20 +114,4 @@ export function getColor(color: string) {
  */
 export function setColor(classes: string, color: string) {
   return classes?.replace(/{color}/g, color);
-}
-
-/**
- * Generates simple unique identifier.
- */
-export function getRandomId(length = 15) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  const charactersLength = characters.length;
-
-  let id = "";
-
-  while (id.length < length) {
-    id += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return id;
 }

@@ -1,59 +1,23 @@
-<template>
-  <div v-bind="wrapperAttrs" ref="wrapperRef" tabindex="-1">
-    <!-- @slot Use it to add something before the label. -->
-    <slot name="left" />
+<script setup lang="ts">
+import { computed, useSlots } from "vue";
+import { RouterLink } from "vue-router";
 
-    <router-link
-      v-if="isPresentRoute"
-      :to="route"
-      :target="targetValue"
-      v-bind="linkAttrs"
-      :data-test="dataTest"
-      tabindex="0"
-      @blur="onBlur"
-      @focus="onFocus"
-      @click="onClick"
-      @keydown="onKeydown"
-      @mouseover="onMouseover"
-    >
-      <!-- @slot Use it replace the label. -->
-      <slot>
-        {{ label }}
-      </slot>
-    </router-link>
+import useUI from "../composables/useUI.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { getDefaults } from "../utils/ui.ts";
 
-    <a
-      v-else
-      :href="prefixedHref"
-      :target="targetValue"
-      v-bind="linkAttrs"
-      :data-test="dataTest"
-      tabindex="0"
-      @blur="onBlur"
-      @focus="onFocus"
-      @click="onClick"
-      @keydown="onKeydown"
-      @mouseover="onMouseover"
-    >
-      <!-- @slot Use it replace the label. -->
-      <slot>{{ label }}</slot>
-    </a>
+import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants.ts";
 
-    <!-- @slot Use it to add something after the label. -->
-    <slot name="right" />
-  </div>
-</template>
-
-<script setup>
-import { computed, ref } from "vue";
-import { RouterLink, useLink } from "vue-router";
-import { getDefault } from "../utils/ui.ts";
-
-import useAttrs from "./useAttrs.js";
-import defaultConfig from "./config.js";
-import { ULink } from "./constants.js";
+import type { Props, Config, ULinkSlotProps } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  label: "",
+  to: undefined,
+});
 
 const emit = defineEmits([
   /**
@@ -82,200 +46,14 @@ const emit = defineEmits([
   "keydown",
 ]);
 
-const props = defineProps({
-  /**
-   * Button label.
-   */
-  label: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Link href url.
-   */
-  href: {
-    type: String,
-    default: "",
-  },
-
-  /**
-   * Vue-router route object.
-   */
-  to: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Link size.
-   * @values sm, md, lg
-   */
-  size: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).size,
-  },
-
-  /**
-   * Link color.
-   * @values brand, grayscale, gray, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, white
-   */
-  color: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).color,
-  },
-
-  /**
-   * Link open type behaviour.
-   * @values phone, email, link
-   */
-  type: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).type,
-  },
-
-  /**
-   * Open link in the new tab.
-   */
-  targetBlank: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).targetBlank,
-  },
-
-  /**
-   * Pass value to the attribute aria-current when the link is exact active.
-   */
-  ariaCurrentValue: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).ariaCurrentValue,
-  },
-
-  /**
-   * Whether RouterLink should not wrap its content in an a tag.
-   */
-  custom: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).custom,
-  },
-
-  /**
-   * Whether RouterLink should not wrap its content in an a tag.
-   */
-  replace: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).replace,
-  },
-
-  /**
-   * Apply classes to the link when its route is active or when it matches any parent route.
-   */
-  activeClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).activeClass,
-  },
-
-  /**
-   * Apply classes to the link when its route is active.
-   */
-  exactActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).exactActiveClass,
-  },
-
-  /**
-   * Apply classes to the wrapper div when link route is active or when it matches any parent route.
-   */
-  wrapperActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).wrapperActiveClass,
-  },
-
-  /**
-   * Apply classes to the wrapper div when link route is active.
-   */
-  wrapperExactActiveClass: {
-    type: String,
-    default: getDefault(defaultConfig, ULink).wrapperExactActiveClass,
-  },
-
-  /**
-   * Show underline.
-   */
-  underlined: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).underlined,
-  },
-
-  /**
-   * Set link underline style as dashed.
-   */
-  dashed: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).dashed,
-  },
-
-  /**
-   * Disable the link.
-   */
-  disabled: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).disabled,
-  },
-
-  /**
-   * Make the Button fill the width with its container.
-   */
-  block: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).block,
-  },
-
-  /**
-   * Remove outline ring on focus.
-   */
-  noRing: {
-    type: Boolean,
-    default: getDefault(defaultConfig, ULink).noRing,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
+const slots = useSlots();
 
 const isPresentRoute = computed(() => {
-  for (const key in props.to) return true;
-
-  return false;
+  return typeof props.to === "string" || typeof props.to === "object";
 });
 
-const { route, isActive, isExactActive } = useLink({
-  activeClass: props.activeClass,
-  ariaCurrentValue: props.ariaCurrentValue,
-  exactActiveClass: props.exactActiveClass,
-  custom: props.custom,
-  replace: props.replace,
-  to: isPresentRoute.value ? props.to : "/",
-});
-
-const wrapperRef = ref(null);
-
-const { wrapperAttrs, linkAttrs } = useAttrs(props, { isActive, isExactActive });
-
-const targetValue = computed(() => {
-  return props.targetBlank ? "_blank" : "_self";
+const safeTo = computed(() => {
+  return props.to || "/";
 });
 
 const prefixedHref = computed(() => {
@@ -285,34 +63,87 @@ const prefixedHref = computed(() => {
     link: "",
   };
 
-  return props.href ? `${types[props.type]}${props.href}` : null;
+  return props.href ? `${types[props.type]}${props.href}` : undefined;
 });
 
-function onClick(event) {
+function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
-function onMouseover(event) {
+function onMouseover(event: MouseEvent) {
   emit("mouseover", event);
 }
 
-function onFocus(event) {
+function onFocus(event: FocusEvent) {
   emit("focus", event);
 }
 
-function onKeydown(event) {
+function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
-function onBlur(event) {
+function onBlur(event: FocusEvent) {
   emit("blur", event);
 }
 
-defineExpose({
-  /**
-   * A reference to the link wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  wrapperRef,
-});
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  defaultSlot: hasSlotContent(slots["default"]),
+}));
+
+const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <router-link
+    v-if="isPresentRoute"
+    v-slot="slotProps: ULinkSlotProps"
+    :to="safeTo"
+    :custom="custom"
+    :replace="replace"
+    :target="target"
+    :active-class="activeClass"
+    :exact-active-class="exactActiveClass"
+    :aria-current-value="ariaCurrentValue"
+    :view-transition="viewTransition"
+    v-bind="linkAttrs"
+    :data-test="getDataTest()"
+    tabindex="0"
+    @blur="onBlur"
+    @focus="onFocus"
+    @click="onClick"
+    @keydown="onKeydown"
+    @mouseover="onMouseover"
+  >
+    <!--
+      @slot Use it replace the label.
+      @binding {boolean} is-active
+      @binding {boolean} is-exact-active
+    -->
+    <slot :is-active="slotProps.isActive" :is-exact-active="slotProps.isExactActive">
+      {{ label }}
+    </slot>
+  </router-link>
+
+  <a
+    v-else
+    :rel="rel"
+    :href="prefixedHref"
+    :target="target"
+    v-bind="linkAttrs"
+    :data-test="getDataTest()"
+    tabindex="0"
+    @blur="onBlur"
+    @focus="onFocus"
+    @click="onClick"
+    @keydown="onKeydown"
+    @mouseover="onMouseover"
+  >
+    <!-- @slot Use it replace the label. -->
+    <slot>{{ label }}</slot>
+  </a>
+</template>

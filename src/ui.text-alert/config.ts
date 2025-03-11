@@ -1,0 +1,51 @@
+export default /*tw*/ {
+  wrapper: {
+    base: "p-4 border-box flex flex-col border rounded-medium",
+    variants: {
+      variant: {
+        solid: "text-inverted bg-{color} border-transparent",
+        outlined: "text-{color} border-{color}",
+        subtle: "text-{color} bg-{color}/5 border-{color}/15",
+        soft: "text-{color} bg-{color}/5 border-transparent",
+      },
+      size: {
+        xs: "text-xsmall",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      },
+    },
+  },
+  body: "flex items-center justify-between",
+  contentWrapper: "flex gap-2",
+  content: "",
+  title: "font-semibold leading-tight",
+  description: "mt-0.5",
+  text: "{UText}",
+  closeButton: "{UButton}",
+  closeIcon: {
+    base: "{UIcon}",
+    variants: {
+      variant: {
+        solid: "text-inverted",
+      },
+    },
+    defaults: {
+      size: {
+        xs: "3xs",
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
+  defaults: {
+    variant: "solid",
+    color: "primary",
+    size: "md",
+    timeout: 0,
+    closable: false,
+    /* icons */
+    closeIcon: "close",
+  },
+};

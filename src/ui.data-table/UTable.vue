@@ -1,109 +1,667 @@
+<script setup lang="ts">
+import {
+  ref,
+  computed,
+  watch,
+  useSlots,
+  nextTick,
+  onMounted,
+  onUpdated,
+  onBeforeUnmount,
+  useTemplateRef,
+} from "vue";
+import { merge, isEqual } from "lodash-es";
+
+import UEmpty from "../ui.text-empty/UEmpty.vue";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
+import UTableRow from "./UTableRow.vue";
+
+import useUI from "../composables/useUI.ts";
+import { getDefaults, cx } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import { useLocale } from "../composables/useLocale.ts";
+import { PX_IN_REM } from "../constants.js";
+
+import defaultConfig from "./config.ts";
+import {
+  normalizeColumns,
+  mapRowColumns,
+  syncRowCheck,
+  toggleRowVisibility,
+  switchRowCheck,
+  getFlatRows,
+  addRowId,
+} from "./utilTable.ts";
+
+import { COMPONENT_NAME } from "./constants.ts";
+
+import type { Ref, ComputedRef } from "vue";
+import type {
+  Cell,
+  Row,
+  RowId,
+  UTableProps,
+  UTableRowAttrs,
+  Config,
+  DateDivider,
+  FlatRow,
+} from "./types.ts";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<UTableProps>(), {
+  ...getDefaults<UTableProps, Config>(defaultConfig, COMPONENT_NAME),
+  columns: () => [],
+  rows: () => [],
+  dateDivider: () => [],
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers when the row is clicked.
+   * @property {object} row
+   */
+  "clickRow",
+
+  /**
+   * Triggers when the row is double-clicked.
+   * @property {object} row
+   */
+  "doubleClickRow",
+
+  /**
+   * Triggers when the cell is clicked.
+   * @property {object} cell
+   */
+  "clickCell",
+
+  /**
+   * Tirggers when row expanded.
+   * @property {object} row
+   */
+  "row-expand",
+
+  /**
+   * Tirggers when row collapsed.
+   * @property {object} row
+   */
+  "row-collapse",
+
+  /**
+   * Triggers when table rows are selected (updated).
+   * @property {array} tableRows
+   */
+  "update:rows",
+]);
+
+const slots = useSlots();
+const { tm } = useLocale();
+
+const selectAll = ref(false);
+const canSelectAll = ref(true);
+const selectedRows: Ref<RowId[]> = ref([]);
+const tableRows: Ref<Row[]> = ref([]);
+const tableWidth = ref(0);
+const tableHeight = ref(0);
+const pagePositionY = ref(0);
+
+const headerRowRef = useTemplateRef<HTMLTableRowElement>("header-row");
+const footerRowRef = useTemplateRef<HTMLTableRowElement>("footer-row");
+const tableWrapperRef = useTemplateRef<HTMLDivElement>("table-wrapper");
+const stickyFooterRowRef = useTemplateRef<HTMLTableRowElement>("sticky-footer-row");
+const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
+const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
+const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
+
+const i18nGlobal = tm(COMPONENT_NAME);
+const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+
+const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
+  const headerKeys = props.columns.map((column) =>
+    typeof column === "object" ? column.key : column,
+  );
+
+  return flatTableRows.value.map((row) => {
+    const rowEntries = Object.entries(row);
+
+    const sortedEntries: typeof rowEntries = new Array(rowEntries.length);
+
+    rowEntries.forEach((entry) => {
+      const [key] = entry;
+      const headerIndex = headerKeys.indexOf(key);
+
+      if (!~headerIndex) {
+        sortedEntries.push(entry);
+
+        return;
+      }
+
+      sortedEntries[headerIndex] = entry;
+    });
+
+    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
+
+    return sortedRow as FlatRow;
+  });
+});
+
+const isFooterSticky = computed(() => {
+  return (
+    Number(window?.innerHeight) < tableHeight.value &&
+    props.stickyFooter &&
+    !isShownFooterPosition.value
+  );
+});
+
+const normalizedColumns = computed(() => normalizeColumns(props.columns));
+
+const visibleColumns = computed(() => {
+  return normalizedColumns.value.filter((column) => column.isShown !== false);
+});
+
+const colsCount = computed(() => {
+  return normalizedColumns.value.length + 1;
+});
+
+const isShownActionsHeader = computed(
+  () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
+);
+
+const isHeaderSticky = computed(() => {
+  const positionForFixHeader =
+    Number(headerRowRef.value?.getBoundingClientRect()?.top) + Number(window?.scrollY) || 0;
+
+  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
+});
+
+const isShownFooterPosition = computed(() => {
+  const pageBottom = pagePositionY.value + Number(window?.innerHeight);
+  const positionForFixFooter =
+    Number(footerRowRef.value?.getBoundingClientRect()?.bottom) + Number(window?.scrollY);
+
+  return pageBottom >= positionForFixFooter;
+});
+
+const isCheckedMoreOneTableItems = computed(() => {
+  return tableRows.value.filter((item) => item.isChecked).length > 1;
+});
+
+const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
+
+const flatTableRows = computed(() => getFlatRows(tableRows.value));
+
+const isSelectedAllRows = computed(() => {
+  return selectedRows.value.length === flatTableRows.value.length;
+});
+
+const tableRowAttrs = computed(() => ({
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+  bodyDateDividerAttrs,
+  bodySelectedDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  bodyRowDateDividerAttrs,
+  bodyRowCheckedDateDividerAttrs,
+}));
+
+watch(selectAll, onChangeSelectAll, { deep: true });
+watch(selectedRows, onChangeSelectedRows, { deep: true });
+watch(
+  tableRows,
+  () => {
+    emit("update:rows", tableRows.value);
+  },
+  { deep: true },
+);
+watch(() => tableRows.value, updateSelectedRows, { deep: true });
+watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
+watch(isHeaderSticky, setHeaderCellWidth);
+watch(isFooterSticky, (newValue) =>
+  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
+);
+watch(
+  () => selectedRows.value,
+  () => {
+    tableRows.value = tableRows.value
+      .map(addRowId)
+      .map((row) => syncRowCheck(row, selectedRows.value));
+  },
+  { deep: true },
+);
+
+onMounted(() => {
+  tableRows.value = props.rows;
+
+  document.addEventListener("keyup", onKeyupEsc);
+  document.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onWindowResize);
+});
+
+onUpdated(() => {
+  tableHeight.value = Number(tableWrapperRef.value?.offsetHeight);
+  tableWidth.value = Number(tableWrapperRef.value?.offsetWidth);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keyup", onKeyupEsc);
+  document.removeEventListener("scroll", onScroll);
+  window.removeEventListener("resize", onWindowResize);
+});
+
+function onWindowResize() {
+  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
+
+  setHeaderCellWidth();
+  setFooterCellWidth();
+}
+
+function getDateDividerData(rowDate: string | Date | undefined) {
+  if (!rowDate) {
+    return {
+      date: "",
+      label: "",
+      config: {},
+    };
+  }
+
+  let dividerItem = {} as DateDivider;
+
+  if (Array.isArray(props.dateDivider)) {
+    const dividerItemData = props.dateDivider.find((dateItem) => dateItem.date === rowDate);
+
+    if (dividerItemData) {
+      dividerItem = dividerItemData;
+    }
+  }
+
+  return {
+    date: dividerItem?.date || "",
+    label: dividerItem?.label || String(rowDate),
+    config: dividerItem?.config,
+  };
+}
+
+function setFooterCellWidth(zero?: null) {
+  const ZERO_WIDTH = 0;
+
+  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) return;
+
+  const mainFooterItems = [...footerRowRef.value.children] as HTMLElement[];
+  const stickyFooterItems = [...stickyFooterRowRef.value.children] as HTMLElement[];
+
+  stickyFooterItems.forEach((item, index) => {
+    item.style.width =
+      zero === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
+  });
+}
+
+function setHeaderCellWidth() {
+  if (
+    !headerRowRef.value ||
+    !stickyHeaderRowRef.value ||
+    !stickyActionHeaderRowRef.value ||
+    !actionHeaderRowRef.value
+  ) {
+    return;
+  }
+
+  const mainHeaderItems = [...headerRowRef.value.children] as HTMLElement[];
+  const stickyHeaderItems = [
+    ...stickyHeaderRowRef.value.children,
+    ...stickyActionHeaderRowRef.value.children,
+    ...actionHeaderRowRef.value.children,
+  ] as HTMLElement[];
+
+  stickyHeaderItems.forEach((item, index) => {
+    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
+  });
+}
+
+function onScroll() {
+  pagePositionY.value = Number(window?.scrollY);
+}
+
+function synchronizeTableItemsWithProps() {
+  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
+    selectedRows.value = [];
+  }
+
+  if (!isEqual(tableRows.value, props.rows)) {
+    tableRows.value = props.rows;
+  }
+}
+
+function updateSelectedRows() {
+  const newSelectedRows = getFlatRows(tableRows.value)
+    .filter((row) => row.isChecked)
+    .map((row) => row.id);
+  const isNewRowsSelected = newSelectedRows.every((newRow) => selectedRows.value.includes(newRow));
+  const isSelectedSameRows = selectedRows.value.every((selectedRow) =>
+    newSelectedRows.includes(selectedRow),
+  );
+
+  if (isNewRowsSelected && isSelectedSameRows) {
+    return;
+  }
+
+  selectedRows.value = newSelectedRows;
+}
+
+function onKeyupEsc(event: KeyboardEvent) {
+  if (event.code === "Escape" && props.selectable) {
+    selectedRows.value = [];
+  }
+}
+
+function isShownDateDivider(rowIndex: number) {
+  const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
+  const prevItem = tableRows.value[prevIndex];
+  const currentItem = tableRows.value[rowIndex];
+
+  if (rowIndex === 0) {
+    return true;
+  }
+
+  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
+
+  return Boolean(!isPrevSameDate && props.dateDivider);
+}
+
+function onClickRow(row: Row) {
+  emit("clickRow", row);
+}
+
+function onDoubleClickRow(row: Row) {
+  emit("doubleClickRow", row);
+}
+
+function onClickCell(cell: Cell, row: Row, key: string | number) {
+  emit("clickCell", cell, row, key);
+}
+
+function onChangeSelectAll(selectAll: boolean) {
+  if (selectAll && canSelectAll.value) {
+    selectedRows.value = flatTableRows.value.map((row) => row.id);
+
+    tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, true));
+  } else if (!selectAll) {
+    selectedRows.value = [];
+
+    tableRows.value = tableRows.value.map((row) => switchRowCheck({ ...row }, false));
+  }
+
+  canSelectAll.value = true;
+}
+
+function onChangeSelectedRows(selectedRows: RowId[]) {
+  if (selectedRows.length) {
+    canSelectAll.value = false;
+
+    isCheckedMoreOneTableItems.value && setFooterCellWidth();
+  } else {
+    nextTick(setHeaderCellWidth);
+  }
+
+  selectAll.value = !!selectedRows.length;
+}
+
+function clearSelectedItems() {
+  selectedRows.value = [];
+}
+
+function onToggleRowVisibility(row: Row) {
+  const nestedRows = flatTableRows.value.filter((flatRow) => flatRow.parentRowId === row.id);
+
+  if (row.nestedData && row.nestedData.hasOwnProperty("isShown")) {
+    row.nestedData.isShown = !row.nestedData.isShown;
+  }
+
+  if (nestedRows.length) {
+    let updatedRows: Row[] = [];
+
+    nestedRows.forEach((nestedRow) => {
+      updatedRows = tableRows.value.map((row) => toggleRowVisibility({ ...row }, nestedRow.id));
+    });
+
+    tableRows.value = updatedRows;
+  }
+}
+
+function onToggleExpand(row: Row, expanded: boolean) {
+  if (expanded) {
+    emit("row-expand", row);
+  } else {
+    emit("row-collapse", row);
+  }
+}
+
+function isRowSelectedWithin(rowIndex: number) {
+  const prevRow = sortedRows.value[rowIndex - 1];
+  const targetRow = sortedRows.value[rowIndex];
+
+  if (prevRow) {
+    return Boolean(prevRow.isChecked && targetRow.isChecked);
+  }
+
+  return Boolean(targetRow.isChecked);
+}
+
+function onToggleRowCheckbox(rowId: RowId) {
+  const targetIndex = selectedRows.value.findIndex((selectedId) => selectedId === rowId);
+
+  ~targetIndex ? selectedRows.value.splice(targetIndex, 1) : selectedRows.value.push(rowId);
+}
+
+defineExpose({
+  /**
+   * Allows to clear selected rows.
+   * @property {Function}
+   */
+  clearSelectedItems,
+});
+
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  actionsHeader: isShownActionsHeader.value,
+  stickedHeader: isHeaderSticky.value,
+  stickedFooter: isFooterSticky.value,
+}));
+
+const {
+  getDataTest,
+  config,
+  wrapperAttrs,
+  stickyHeaderCellAttrs,
+  stickyHeaderAttrs,
+  tableWrapperAttrs,
+  headerRowAttrs,
+  bodyRowAfterAttrs,
+  bodyRowBeforeAttrs,
+  bodyRowBeforeCheckedAttrs,
+  bodyRowBeforeCellAttrs,
+  footerAttrs,
+  bodyRowDateDividerAttrs,
+  bodyRowCheckedDateDividerAttrs,
+  bodyDateDividerAttrs,
+  bodySelectedDateDividerAttrs,
+  bodyCellDateDividerAttrs,
+  headerCellBaseAttrs,
+  headerCellCheckboxAttrs,
+  headerActionsCheckboxAttrs,
+  stickyHeaderCheckboxAttrs,
+  headerCheckboxAttrs,
+  headerCounterAttrs,
+  bodyEmptyStateAttrs,
+  bodyEmptyStateCellAttrs,
+  headerActionsCounterAttrs,
+  stickyHeaderCounterAttrs,
+  stickyHeaderLoaderAttrs,
+  tableAttrs,
+  headerLoaderAttrs,
+  bodyAttrs,
+  footerRowAttrs,
+  stickyFooterRowAttrs,
+  headerAttrs,
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
+</script>
+
 <template>
-  <div :data-test="dataTest" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div
-      v-show="isHeaderSticky || isShownActionsHeader"
+      v-show="isHeaderSticky && !isShownActionsHeader"
       ref="sticky-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
     >
-      <template v-if="isShownActionsHeader">
-        <div v-bind="stickyHeaderCellAttrs">
-          <UCheckbox
-            v-if="selectable"
-            v-model="selectAll"
-            :partial="!isSelectedAllRows"
-            :data-test="`${dataTest}-select-all`"
-            v-bind="stickyHeaderActionsCheckboxAttrs"
-          />
-        </div>
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="stickyHeaderCheckboxAttrs"
+          :data-test="getDataTest('select-all')"
+        />
 
         <div
           v-if="selectedRows.length"
-          v-bind="stickyHeaderActionsCounterAttrs"
+          v-bind="stickyHeaderCounterAttrs"
           v-text="selectedRows.length"
         />
+      </div>
 
-        <!--
-          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
-          @binding {array} selected-rows
-        -->
-        <slot name="header-actions" :selected-rows="selectedRows" />
-      </template>
-
-      <template v-else>
-        <div v-bind="stickyHeaderCellAttrs">
-          <UCheckbox
-            v-if="selectable"
-            v-model="selectAll"
-            :partial="!isSelectedAllRows"
-            :data-test="`${dataTest}-select-all`"
-            v-bind="stickyHeaderCheckboxAttrs"
-          />
-
-          <div
-            v-if="selectedRows.length"
-            v-bind="stickyHeaderCounterAttrs"
-            v-text="selectedRows.length"
-          />
-        </div>
-
-        <div
-          v-for="(column, index) in columns"
-          :key="index"
-          v-bind="stickyHeaderCellAttrs"
-          :class="cx([stickyHeaderCellAttrs.class, column.thClass])"
-        >
-          <template v-if="hasSlotContent($slots[`header-${column.key}`])">
-            <!--
+      <!-- TODO: Remove any when key attrs are typed-->
+      <div
+        v-for="(column, index) in normalizedColumns"
+        :key="index"
+        v-bind="stickyHeaderCellAttrs"
+        :class="cx([(stickyHeaderCellAttrs as any).class, column.thClass])"
+      >
+        <template v-if="hasSlotContent($slots[`header-${column.key}`])">
+          <!--
               @slot Use it to customise needed header cell.
               @binding {object} column
               @binding {number} index
             -->
-            <slot :name="`header-${column.key}`" :column="column" :index="index" />
-          </template>
+          <slot :name="`header-${column.key}`" :column="column" :index="index" />
+        </template>
 
-          <template v-else>
-            {{ column.label }}
-          </template>
+        <template v-else>
+          {{ column.label }}
+        </template>
+      </div>
 
-          <!--
-            @slot Use it to add something after the needed header cell.
-            @binding {object} column
-            @binding {number} index
-          -->
-          <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
-        </div>
-      </template>
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+    </div>
 
-      <ULoaderProgress v-if="isHeaderSticky" :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+    <div
+      v-show="isShownActionsHeader && isHeaderSticky"
+      ref="sticky-action-header-row"
+      :style="tableRowWidthStyle"
+      v-bind="stickyHeaderAttrs"
+    >
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="headerActionsCheckboxAttrs"
+          :data-test="getDataTest('select-all')"
+        />
+      </div>
+
+      <div
+        v-if="selectedRows.length"
+        v-bind="headerActionsCounterAttrs"
+        v-text="selectedRows.length"
+      />
+
+      <!--
+          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+          @binding {array} selected-rows
+        -->
+      <slot name="header-actions" :selected-rows="selectedRows" />
+
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+    </div>
+
+    <div
+      v-show="isShownActionsHeader && !isHeaderSticky"
+      ref="action-header-row"
+      :style="tableRowWidthStyle"
+      v-bind="stickyHeaderAttrs"
+      class="absolute"
+    >
+      <div v-bind="stickyHeaderCellAttrs">
+        <UCheckbox
+          v-if="selectable"
+          v-model="selectAll"
+          size="md"
+          :partial="!isSelectedAllRows"
+          v-bind="headerActionsCheckboxAttrs"
+          :data-test="getDataTest('select-all')"
+        />
+      </div>
+
+      <div
+        v-if="selectedRows.length"
+        v-bind="headerActionsCounterAttrs"
+        v-text="selectedRows.length"
+      />
+
+      <!--
+          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+          @binding {array} selected-rows
+        -->
+      <slot name="header-actions" :selected-rows="selectedRows" />
+
+      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
-            <td
-              v-if="hasSlotContent($slots['before-header'])"
-              :colspan="colsCount"
-              v-bind="headerCellBaseAttrs"
-            >
-              <!--
-                @slot Use it to add something before header row.
-                @binding {number} cols-count
-              -->
-              <slot name="before-header" :cols-count="colsCount" />
-            </td>
+            <!--
+              @slot Use it to add something before header row.
+              @binding {number} cols-count
+              @binding {string} classes
+            -->
+            <slot name="before-header" :cols-count="colsCount" :classes="headerRowAttrs.class" />
           </tr>
-
-          <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs"></tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">
             <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
               <UCheckbox
                 v-model="selectAll"
+                size="md"
                 :partial="!isSelectedAllRows"
-                :data-test="`${dataTest}-select-all`"
                 v-bind="headerCheckboxAttrs"
+                :data-test="getDataTest('select-all')"
               />
 
               <div
@@ -117,7 +675,7 @@
               v-for="(column, index) in visibleColumns"
               :key="index"
               v-bind="headerCellBaseAttrs"
-              :class="cx([headerCellBaseAttrs.class, column.thClass])"
+              :class="cx([(headerCellBaseAttrs as any).class, column.thClass])"
             >
               <!--
                 @slot Use it to customise needed header cell.
@@ -134,103 +692,111 @@
               <template v-else>
                 {{ column.label }}
               </template>
-
-              <!--
-                @slot Use it to add something after the needed header cell.
-                @binding {object} column
-                @binding {number} index
-              -->
-              <slot :name="`header-${column.key}-after`" :column="column" :index="index" />
             </th>
           </tr>
 
           <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
-        <tbody v-if="tableRows.length" v-bind="bodyAttrs">
-          <template v-for="(row, rowIndex) in sortedRows" :key="row.id">
-            <tr
-              v-if="rowIndex === firstRow && hasSlotContent($slots['before-first-row'])"
-              v-bind="bodyRowBeforeAttrs"
-            >
-              <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
-                <!-- @slot Use it to add something before first row. -->
-                <slot name="before-first-row" />
-              </td>
-            </tr>
+        <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
+          <tr
+            v-if="hasSlotContent($slots['before-first-row'])"
+            v-bind="sortedRows[0]?.isChecked ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
+          >
+            <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
+              <!-- @slot Use it to add something before first row. -->
+              <slot name="before-first-row" />
+            </td>
+          </tr>
 
-            <tr v-if="isShownDateDivider(rowIndex) && row.rowDate" v-bind="bodyRowDateDividerAttrs">
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  size="xs"
-                  :label="getDateDividerLabel(row.rowDate)"
-                  v-bind="bodyDateDividerAttrs"
-                />
-              </td>
-            </tr>
-
-            <UTableRow
-              v-model:selected-rows="selectedRows"
-              :selectable="selectable"
-              :data-test="`${dataTest}-row`"
-              :row="row"
-              :columns="columns"
-              :config="config"
-              :attrs="keysAttrs"
-              :empty-cell-label="emptyCellLabel"
-              @click="onClickRow"
-              @click-cell="onClickCell"
-              @toggle-row-visibility="onToggleRowVisibility"
+          <UTableRow
+            v-for="(row, rowIndex) in sortedRows"
+            :key="row.id"
+            v-memo="[selectedRows.includes(row.id), row.isShown, isRowSelectedWithin(rowIndex)]"
+            :selectable="selectable"
+            :row="row"
+            :is-date-divider="isShownDateDivider(rowIndex)"
+            :columns="normalizedColumns"
+            :config="config"
+            :selected-within="isRowSelectedWithin(rowIndex)"
+            :date-divider-data="getDateDividerData(row.rowDate)"
+            :attrs="tableRowAttrs as unknown as UTableRowAttrs"
+            :cols-count="colsCount"
+            :nested-level="Number(row.nestedLevel || 0)"
+            :empty-cell-label="emptyCellLabel"
+            :data-test="getDataTest('row')"
+            @click="onClickRow"
+            @dblclick="onDoubleClickRow"
+            @click-cell="onClickCell"
+            @toggle-expand="onToggleExpand"
+            @toggle-row-visibility="onToggleRowVisibility(row)"
+            @toggle-checkbox="onToggleRowCheckbox"
+          >
+            <template
+              v-for="(value, key, index) in mapRowColumns(row, normalizedColumns)"
+              :key="index"
+              #[`cell-${key}`]="slotValues"
             >
-              <template
-                v-for="(value, key, index) in getFilteredRow(row, columns)"
-                :key="index"
-                #[`cell-${key}`]="slotValues"
-              >
-                <!--
-                  @slot Use it to customise needed table cell.
+              <!--
+                  @slot Use it to customize needed table cell.
                   @binding {string} value
                   @binding {object} row
                   @binding {number} index
+                  @binding {number} cellIndex
                 -->
-                <slot
-                  :name="`cell-${key}`"
-                  :value="slotValues.value"
-                  :row="slotValues.row"
-                  :index="index"
-                />
-              </template>
-              <template #nested-content>
-                <!--
+              <slot
+                :name="`cell-${key}`"
+                :value="slotValues.value"
+                :row="slotValues.row"
+                :index="rowIndex"
+                :cell-index="index"
+              />
+            </template>
+
+            <template #expand="{ row: expandedRow, expanded }">
+              <!--
+                  @slot Use it to customize row expand icon.
+                  @binding {object} row
+                  @binding {boolean} expanded
+                  @binding {number} index
+                -->
+              <slot name="expand" :index="rowIndex" :row="expandedRow" :expanded="expanded" />
+            </template>
+
+            <template #nested-content>
+              <!--
                   @slot Use it to add nested content inside a row.
                   @binding {object} row
+                  @binding {number} index
                 -->
-                <slot v-if="row" name="nested-content" :row="row" />
-              </template>
-            </UTableRow>
+              <slot v-if="row" name="nested-content" :index="rowIndex" :row="row" />
+            </template>
+          </UTableRow>
 
-            <tr
-              v-if="rowIndex === lastRow && hasSlotContent($slots['after-last-row'])"
-              v-bind="bodyRowAfterAttrs"
-            >
-              <td :colspan="colsCount" v-bind="bodyRowAfterCellAttrs">
-                <!-- @slot Use it to add something after last row. -->
-                <slot name="after-last-row" />
-              </td>
-            </tr>
-          </template>
+          <tr v-if="hasSlotContent($slots['after-last-row'])" v-bind="bodyRowAfterAttrs">
+            <!--
+                @slot Use it to add something after last row.
+                @binding {number} cols-count
+                @classes {string} classes
+              -->
+            <slot
+              name="after-last-row"
+              :cols-count="colsCount"
+              :classes="bodyCellBaseAttrs.class"
+            />
+          </tr>
         </tbody>
 
         <tbody v-else>
           <tr>
-            <td :colspan="colsCount">
+            <td :colspan="colsCount" v-bind="bodyEmptyStateCellAttrs">
               <!-- @slot Use it to add custom empty state. -->
               <slot name="empty-state">
                 <UEmpty
                   size="md"
                   :description="currentLocale.noData"
-                  :data-test="`${dataTest}-empty`"
                   v-bind="bodyEmptyStateAttrs"
+                  :data-test="getDataTest('empty')"
                 />
               </slot>
             </td>
@@ -262,469 +828,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import {
-  ref,
-  computed,
-  watch,
-  toValue,
-  useSlots,
-  nextTick,
-  onMounted,
-  onUpdated,
-  onBeforeUnmount,
-  useTemplateRef,
-} from "vue";
-import { merge } from "lodash-es";
-
-import UEmpty from "../ui.text-empty/UEmpty.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
-import UTableRow from "./UTableRow.vue";
-
-import { getDefault, cx } from "../utils/ui.ts";
-
-import defaultConfig from "./config.js";
-import {
-  normalizeColumns,
-  getFilteredRow,
-  syncRowCheck,
-  toggleRowVisibility,
-  switchRowCheck,
-  getFlatRows,
-  addRowId,
-} from "./utilTable.js";
-
-import { PX_IN_REM } from "../constants.js";
-import { UTable } from "./constants.js";
-import useAttrs from "./useAttrs.js";
-import { useLocale } from "../composables/useLocale.ts";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({
-  /**
-   * Table columns (headers).
-   */
-  columns: {
-    type: Array,
-    required: true,
-  },
-
-  /**
-   * Table rows data.
-   */
-  rows: {
-    type: Array,
-    required: true,
-  },
-
-  /**
-   * Label to display for empty cell values.
-   */
-  emptyCellLabel: {
-    type: String,
-    default: getDefault(defaultConfig, UTable).emptyCellLabel,
-  },
-
-  /**
-   * Show date divider line between dates.
-   */
-  dateDivider: {
-    type: [Boolean, Array],
-    default: getDefault(defaultConfig, UTable).dateDivider,
-  },
-
-  /**
-   * Allow rows selecting.
-   */
-  selectable: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).selectable,
-  },
-
-  /**
-   * Makes the table compact (fewer spacings).
-   */
-  compact: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).compact,
-  },
-
-  /**
-   * Set header sticky.
-   */
-  stickyHeader: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).stickyHeader,
-  },
-
-  /**
-   * Set footer sticky.
-   */
-  stickyFooter: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).stickyFooter,
-  },
-
-  /**
-   * Set table loader state.
-   */
-  loading: {
-    type: Boolean,
-    default: getDefault(defaultConfig, UTable).loading,
-  },
-
-  /**
-   * Component config object.
-   */
-  config: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  /**
-   * Data-test attribute for automated testing.
-   */
-  dataTest: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits([
-  /**
-   * Triggers when the row is clicked.
-   * @property {object} row
-   */
-  "clickRow",
-
-  /**
-   * Triggers when the cell is clicked.
-   * @property {object} cell
-   */
-  "clickCell",
-
-  /**
-   * Triggers when table rows are selected (updated).
-   * @property {array} tableRows
-   */
-  "update:rows",
-]);
-
-const slots = useSlots();
-const { tm } = useLocale();
-
-const selectAll = ref(false);
-const canSelectAll = ref(true);
-const selectedRows = ref([]);
-const tableRows = ref([]);
-const firstRow = ref(0);
-const tableWidth = ref(0);
-const tableHeight = ref(0);
-const pagePositionY = ref(0);
-
-const headerRowRef = useTemplateRef("header-row");
-const footerRowRef = useTemplateRef("footer-row");
-const tableWrapperRef = useTemplateRef("table-wrapper");
-const stickyFooterRowRef = useTemplateRef("sticky-footer-row");
-const stickyHeaderRowRef = useTemplateRef("sticky-header-row");
-
-const i18nGlobal = tm(UTable);
-const currentLocale = computed(() => merge(defaultConfig.i18n, i18nGlobal, props.config.i18n));
-
-const sortedRows = computed(() => {
-  const headerKeys = props.columns.map((column) => column.key);
-
-  return tableRows.value.map((row) => {
-    const rowEntries = Object.entries(row);
-
-    const sortedEntries = new Array(rowEntries.length);
-
-    rowEntries.forEach((entry) => {
-      const [key] = entry;
-      const headerIndex = headerKeys.indexOf(key);
-
-      if (!~headerIndex) {
-        sortedEntries.push(entry);
-
-        return;
-      }
-
-      sortedEntries[headerIndex] = entry;
-    });
-
-    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
-
-    return sortedRow;
-  });
-});
-
-const isFooterSticky = computed(
-  () =>
-    window.innerHeight < tableHeight.value &&
-    props.stickyFooter &&
-    !isShownFooterPosition.value &&
-    isCheckedMoreOneTableItems.value,
-);
-
-const normalizedColumns = computed(() => normalizeColumns(props.columns));
-
-const visibleColumns = computed(() => {
-  return normalizedColumns.value.filter((column) => !column.isHidden);
-});
-
-const colsCount = computed(() => {
-  return props.columns.length + 1;
-});
-
-const lastRow = computed(() => {
-  return props.rows.length - 1;
-});
-
-const isShownActionsHeader = computed(
-  () => hasSlotContent(slots["header-actions"]) && Boolean(selectedRows.value.length),
-);
-
-const isHeaderSticky = computed(() => {
-  const positionForFixHeader =
-    headerRowRef.value?.getBoundingClientRect().top + window.scrollY || 0;
-
-  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
-});
-
-const isShownFooterPosition = computed(() => {
-  const pageBottom = pagePositionY.value + window.innerHeight;
-  const positionForFixFooter = footerRowRef.value?.getBoundingClientRect().bottom + window.scrollY;
-
-  return pageBottom >= positionForFixFooter;
-});
-
-const isCheckedMoreOneTableItems = computed(() => {
-  return tableRows.value.filter((item) => item.isChecked).length > 1;
-});
-
-const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
-
-const hasSlotContentBeforeFirstRow = computed(() => {
-  return hasSlotContent(slots["before-first-row"])
-    ? slots["before-first-row"]()?.some((item) => !!item.type?.render)
-    : false;
-});
-
-const isSelectedAllRows = computed(() => {
-  const rows = getFlatRows(tableRows.value);
-
-  return selectedRows.value.length === rows.length;
-});
-
-const {
-  config,
-  keysAttrs,
-  wrapperAttrs,
-  stickyHeaderCellAttrs,
-  stickyHeaderAttrs,
-  tableWrapperAttrs,
-  headerRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowAfterCellAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCellAttrs,
-  footerAttrs,
-  bodyRowDateDividerAttrs,
-  headerCellBaseAttrs,
-  headerCellCheckboxAttrs,
-  stickyHeaderActionsCheckboxAttrs,
-  stickyHeaderCheckboxAttrs,
-  headerCheckboxAttrs,
-  headerCounterAttrs,
-  bodyEmptyStateAttrs,
-  bodyDateDividerAttrs,
-  bodyCellDateDividerAttrs,
-  stickyHeaderActionsCounterAttrs,
-  stickyHeaderCounterAttrs,
-  stickyHeaderLoaderAttrs,
-  tableAttrs,
-  headerLoaderAttrs,
-  bodyAttrs,
-  footerRowAttrs,
-  stickyFooterRowAttrs,
-  hasSlotContent,
-  headerAttrs,
-} = useAttrs(props, {
-  tableRows,
-  isShownActionsHeader,
-  isHeaderSticky,
-  isFooterSticky,
-});
-
-watch(selectAll, onChangeSelectAll, { deep: true });
-watch(selectedRows, onChangeSelectedRows, { deep: true });
-watch(tableRows, () => emit("update:rows", toValue(tableRows)), { deep: true });
-watch(() => tableRows.value.length, updateSelectedRows);
-watch(() => props.rows, synchronizeTableItemsWithProps, { deep: true });
-watch(isHeaderSticky, setHeaderCellWidth);
-watch(isFooterSticky, (newValue) =>
-  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
-);
-watch(
-  () => selectedRows.value,
-  () => {
-    tableRows.value = tableRows.value
-      .map(addRowId)
-      .map((row) => syncRowCheck(row, selectedRows.value));
-  },
-  { deep: true },
-);
-
-onMounted(() => {
-  tableRows.value = props.rows;
-
-  document.addEventListener("keyup", onKeyupEsc);
-  document.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onWindowResize);
-});
-
-onUpdated(() => {
-  tableHeight.value = tableWrapperRef.value?.offsetHeight;
-  tableWidth.value = tableWrapperRef.value?.offsetWidth;
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("keyup", onKeyupEsc);
-  document.removeEventListener("scroll", onScroll);
-  window.removeEventListener("resize", onWindowResize);
-});
-
-function onWindowResize() {
-  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
-
-  setHeaderCellWidth();
-  setFooterCellWidth();
-}
-
-function getDateDividerLabel(rowDate) {
-  return Array.isArray(props.dateDivider)
-    ? props.dateDivider.find((dateItem) => dateItem.date === rowDate)?.label || rowDate
-    : rowDate;
-}
-
-function setFooterCellWidth(width) {
-  const ZERO_WIDTH = 0;
-
-  if (!props.stickyFooter) return;
-
-  const mainFooterItems = [...footerRowRef.value.children];
-  const stickyFooterItems = [...stickyFooterRowRef.value.children];
-
-  stickyFooterItems.forEach((item, index) => {
-    item.style.width =
-      width === null ? `${ZERO_WIDTH}rem` : `${mainFooterItems[index].offsetWidth / PX_IN_REM}rem`;
-  });
-}
-
-function setHeaderCellWidth() {
-  if (selectedRows.value.length) return;
-
-  const mainHeaderItems = [...(headerRowRef.value?.children || [])];
-  const stickyHeaderItems = [...(stickyHeaderRowRef.value?.children || [])];
-
-  stickyHeaderItems.forEach((item, index) => {
-    item.style.width = `${mainHeaderItems[index]?.offsetWidth / PX_IN_REM}rem`;
-  });
-}
-
-function onScroll() {
-  pagePositionY.value = window.scrollY;
-}
-
-function synchronizeTableItemsWithProps() {
-  if (!props.rows.length || props.rows.length !== tableRows.value.length) {
-    selectedRows.value = [];
-  }
-
-  tableRows.value = props.rows;
-}
-
-function updateSelectedRows() {
-  selectedRows.value = tableRows.value.filter((row) => row.isChecked).map((row) => row.id);
-}
-
-function onKeyupEsc(event) {
-  const escKeyCode = 27;
-
-  if (event.keyCode === escKeyCode && props.selectable) {
-    selectedRows.value = [];
-  }
-}
-
-function isShownDateDivider(rowIndex) {
-  const prevIndex = rowIndex ? rowIndex - 1 : rowIndex;
-  const nextIndex = rowIndex ? rowIndex + 1 : rowIndex;
-  const prevItem = tableRows.value[prevIndex];
-  const nextItem = tableRows.value[nextIndex];
-  const currentItem = tableRows.value[rowIndex];
-
-  if (rowIndex === 0) {
-    return hasSlotContentBeforeFirstRow.value;
-  }
-
-  const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
-  const isNextSameDate = nextItem?.rowDate === currentItem?.rowDate;
-
-  return isPrevSameDate && !isNextSameDate && props.dateDivider;
-}
-
-function onClickRow(row) {
-  emit("clickRow", row);
-}
-
-function onClickCell(cell, row) {
-  emit("clickCell", cell, row);
-}
-
-function onChangeSelectAll(selectAll) {
-  if (selectAll && canSelectAll.value) {
-    selectedRows.value = getFlatRows(tableRows.value).map((row) => row.id);
-
-    tableRows.value.forEach((row) => switchRowCheck(row, true));
-  } else if (!selectAll) {
-    selectedRows.value = [];
-
-    tableRows.value.forEach((row) => switchRowCheck(row, false));
-  }
-
-  canSelectAll.value = true;
-}
-
-function onChangeSelectedRows(selectedRows) {
-  if (selectedRows.length) {
-    canSelectAll.value = false;
-
-    isCheckedMoreOneTableItems.value && setFooterCellWidth();
-  } else {
-    nextTick(setHeaderCellWidth);
-  }
-
-  selectAll.value = !!selectedRows.length;
-}
-
-function clearSelectedItems() {
-  selectedRows.value = [];
-}
-
-function onToggleRowVisibility(rowId) {
-  // TODO: Use map instead of forEach to get rid of implicit array mutation.
-  tableRows.value.forEach((row) => toggleRowVisibility(row, rowId));
-}
-
-defineExpose({
-  /**
-   * Allows to clear selected rows.
-   * @property {Function}
-   */
-  clearSelectedItems,
-});
-</script>
