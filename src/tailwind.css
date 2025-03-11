@@ -32,19 +32,6 @@
     --color-primary-900: var(--vl-primary-900);
     --color-primary-950: var(--vl-primary-950);
 
-    /* Neutral colors */
-    --color-neu-50: var(--vl-neutral-50);
-    --color-neu-100: var(--vl-neutral-100);
-    --color-neu-200: var(--vl-neutral-200);
-    --color-neu-300: var(--vl-neutral-300);
-    --color-neu-400: var(--vl-neutral-400);
-    --color-neu-500: var(--vl-neutral-500);
-    --color-neu-600: var(--vl-neutral-600);
-    --color-neu-700: var(--vl-neutral-700);
-    --color-neu-800: var(--vl-neutral-800);
-    --color-neu-900: var(--vl-neutral-900);
-    --color-neu-950: var(--vl-neutral-950);
-
     /* Primary colors */
     --color-primary: var(--vl-primary);
     --color-primary-lifted: var(--vl-primary-lifted);
@@ -194,17 +181,6 @@
     --vl-primary-800: "";
     --vl-primary-900: "";
     --vl-primary-950: "";
-    --vl-neutral-50: "";
-    --vl-neutral-100: "";
-    --vl-neutral-200: "";
-    --vl-neutral-300: "";
-    --vl-neutral-400: "";
-    --vl-neutral-500: "";
-    --vl-neutral-600: "";
-    --vl-neutral-700: "";
-    --vl-neutral-800: "";
-    --vl-neutral-900: "";
-    --vl-neutral-950: "";
     --vl-primary: "";
     --vl-primary-lifted: "";
     --vl-primary-accented: "";
