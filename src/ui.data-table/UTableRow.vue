@@ -16,16 +16,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import defaultConfig from "./config.ts";
 import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 
-import type {
-  RowId,
-  Cell,
-  CellObject,
-  Row,
-  RowScopedExpandProps,
-  RowScopedProps,
-  UTableRowProps,
-  Config,
-} from "./types.ts";
+import type { RowId, Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
 const LAST_NESTED_ROW_SHIFT_REM = 1.1;
@@ -70,13 +61,6 @@ const toggleIconConfig = computed(() => {
     ? props.attrs.bodyCellNestedCollapseIconAttrs.value
     : props.attrs.bodyCellNestedExpandIconAttrs.value;
 });
-
-const isSingleNestedRow = computed(() => !Array.isArray(props.row.row));
-
-const singleNestedRow = computed(() =>
-  Array.isArray(props.row.row) ? props.row.row.at(0) : props.row.row,
-);
-const nestedRows = computed(() => props.row.row as unknown as Row[]);
 
 const isNestedRowEmpty = computed(() => {
   if (!props.row.row) return true;
@@ -180,12 +164,6 @@ function getNestedCheckboxShift() {
   return { transform: `translateX(${props.nestedLevel * LAST_NESTED_ROW_SHIFT_REM}rem)` };
 }
 
-function onClickToggleRowChild(rowId: string | number) {
-  if (props.row.row || props.row.nestedData) {
-    emit("toggleRowVisibility", rowId);
-  }
-}
-
 function onClick(row: Row) {
   emit("click", row);
 }
@@ -225,19 +203,7 @@ function setElementTitle(element: HTMLElement) {
 }
 
 function onClickToggleIcon() {
-  if (props.row.nestedData) {
-    onClickToggleRowChild(props.row.id);
-
-    return;
-  }
-
-  if (isSingleNestedRow.value) {
-    onClickToggleRowChild((props.row.row as Row).id);
-
-    return;
-  }
-
-  (props.row.row as Row[]).forEach(({ id }) => onClickToggleRowChild(id));
+  emit("toggleRowVisibility");
 }
 
 function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
@@ -296,7 +262,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         v-bind="attrs.bodySelectedDateDividerAttrs.value"
         :config="
           getMergedConfig({
-            defaultConfig: attrs.bodyDateDividerAttrs.value.config,
+            defaultConfig: attrs.bodySelectedDateDividerAttrs.value.config,
             globalConfig: dateDividerData.config,
           }) as UDividerConfig
         "
@@ -305,6 +271,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
   </tr>
 
   <tr
+    v-if="row.isShown || typeof row.isShown === 'undefined'"
     v-bind="{ ...$attrs, ...getRowAttrs(row) }"
     :class="cx([getRowAttrs(row).class, getRowClasses(row)])"
     @click="onClick(props.row)"
@@ -402,90 +369,5 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         </div>
       </td>
     </tr>
-  </template>
-
-  <UTableRow
-    v-if="isSingleNestedRow && singleNestedRow && singleNestedRow.isShown && !row.nestedData"
-    v-bind="{
-      ...$attrs,
-      ...getRowAttrs(singleNestedRow),
-    }"
-    :is-date-divider="isDateDivider"
-    :selected-within="selectedWithin"
-    :date-divider-data="dateDividerData"
-    :cols-count="colsCount"
-    :class="cx([getRowAttrs(singleNestedRow).class, getRowClasses(singleNestedRow)])"
-    :attrs="attrs"
-    :columns="columns"
-    :row="row.row as Row"
-    :data-test="getDataTest()"
-    :nested-level="nestedLevel + 1"
-    :config="config"
-    :selectable="selectable"
-    :empty-cell-label="emptyCellLabel"
-    @toggle-checkbox="onInputCheckbox"
-    @toggle-expand="onToggleExpand"
-    @toggle-row-visibility="onClickToggleRowChild"
-    @click="onClick"
-    @dblclick="onDoubleClick"
-  >
-    <template
-      v-for="(value, key, index) in mapRowColumns(singleNestedRow, columns)"
-      :key="index"
-      #[`cell-${key}`]="slotValues: RowScopedProps"
-    >
-      <slot :name="`cell-${key}`" :value="slotValues.value" :row="slotValues.row" :index="index" />
-    </template>
-
-    <template #expand="slotValues: RowScopedExpandProps">
-      <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
-    </template>
-  </UTableRow>
-
-  <template v-if="!isSingleNestedRow && nestedRows.length && !row.nestedData">
-    <template v-for="nestedRow in nestedRows" :key="nestedRow.id">
-      <UTableRow
-        v-if="nestedRow.isShown"
-        v-bind="{
-          ...$attrs,
-          ...getRowAttrs(nestedRow),
-        }"
-        :class="cx([getRowAttrs(nestedRow).class, getRowClasses(nestedRow)])"
-        :attrs="attrs"
-        :is-date-divider="isDateDivider"
-        :selected-within="selectedWithin"
-        :date-divider-data="dateDividerData"
-        :cols-count="colsCount"
-        :columns="columns"
-        :row="nestedRow"
-        :data-test="getDataTest()"
-        :nested-level="nestedLevel + 1"
-        :config="config"
-        :selectable="selectable"
-        :empty-cell-label="emptyCellLabel"
-        @toggle-expand="onToggleExpand"
-        @toggle-row-visibility="onClickToggleRowChild"
-        @click="onClick"
-        @dblclick="onDoubleClick"
-        @click-cell="onClickCell"
-        @toggle-checkbox="onInputCheckbox"
-      >
-        <template
-          v-for="(value, key, index) in mapRowColumns(nestedRow, columns)"
-          :key="index"
-          #[`cell-${key}`]="slotValues: RowScopedProps"
-        >
-          <slot
-            :name="`cell-${key}`"
-            :value="slotValues.value"
-            :row="slotValues.row"
-            :index="index"
-          />
-        </template>
-        <template #expand="slotValues: RowScopedExpandProps">
-          <slot name="expand" :row="slotValues.row" :expanded="slotValues.expanded" />
-        </template>
-      </UTableRow>
-    </template>
   </template>
 </template>
