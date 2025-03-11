@@ -4,7 +4,6 @@ import { ref, computed, useId } from "vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { setTheme, getSelectedPrimaryColor, getSelectedNeutralColor } from "../utils/theme.ts";
-import { GRAYSCALE_COLOR } from "../constants.js";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UColorPicker from "../ui.form-color-picker/UColorPicker.vue";
@@ -46,16 +45,8 @@ const localPrimary = ref("");
 const localNeutral = ref("");
 
 const selectedPrimaryColor = computed({
-  get: () => props.primary || localPrimary.value || getSelectedPrimaryColor(),
+  get: () => props.primary || localPrimary.value || getSelectedPrimaryColor() || "",
   set: (primary: string) => {
-    const prevPrimary = getSelectedPrimaryColor();
-    const isPrimaryGrayscale = primary === GRAYSCALE_COLOR;
-    const isPrevPrimaryGrayscale = prevPrimary === GRAYSCALE_COLOR;
-
-    if (primary !== prevPrimary && (isPrimaryGrayscale || isPrevPrimaryGrayscale)) {
-      window.location.reload();
-    }
-
     setTheme({ primary });
     emit("update:primary", primary);
     localPrimary.value = primary;
@@ -63,7 +54,7 @@ const selectedPrimaryColor = computed({
 });
 
 const selectedNeutralColor = computed({
-  get: () => props.neutral || localNeutral.value || getSelectedNeutralColor(),
+  get: () => props.neutral || localNeutral.value || getSelectedNeutralColor() || "",
   set: (neutral: string) => {
     setTheme({ neutral });
     emit("update:neutral", neutral);
