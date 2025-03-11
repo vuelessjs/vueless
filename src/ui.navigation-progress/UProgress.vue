@@ -11,7 +11,6 @@ import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import type { UProgressProps, Config } from "./types.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 defineOptions({ inheritAttrs: false });
 

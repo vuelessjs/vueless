@@ -5,7 +5,7 @@ export default /*tw*/ {
     base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
       actionsHeader: {
-        true: "rounded-t-medium border-primary/15 bg-primary/10",
+        true: "rounded-t-medium border-muted bg-muted",
       },
     },
     compoundVariants: [

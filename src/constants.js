@@ -161,7 +161,7 @@ export const DEFAULT_DARK_THEME = {
   "--vl-bg": "--vl-neutral-900",
   "--vl-bg-lifted": "--vl-neutral-800",
   "--vl-bg-accented": "--vl-neutral-700",
-  "--vl-bg-muted": "--vl-neutral-900",
+  "--vl-bg-muted": "--vl-neutral-800",
   "--vl-bg-inverted": "--vl-neutral-100",
 };
 

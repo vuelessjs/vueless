@@ -51,8 +51,6 @@ const isChecked = computed(() => {
 
   const currentValue = props.modelValue ?? localValue.value;
 
-  console.log(currentValue, props.value);
-
   if (typeof currentValue === "object") {
     return isEqual(currentValue, props.value);
   }

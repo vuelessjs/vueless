@@ -6,7 +6,7 @@ export default /*tw*/ {
     `,
     variants: {
       bordered: {
-        true: "border border-{color}/10",
+        true: "border border-{color}/15",
       },
       size: {
         "3xs": "size-4 text-2xs",
