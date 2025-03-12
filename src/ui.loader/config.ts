@@ -1,10 +1,4 @@
 export default /*tw*/ {
-  transition: {
-    enterFromClass: "opacity-0",
-    enterActiveClass: "transition duration-500",
-    leaveActiveClass: "transition duration-500",
-    leaveToClass: "opacity-0",
-  },
   loader: {
     base: "relative flex items-center",
     variants: {
@@ -14,6 +8,12 @@ export default /*tw*/ {
         lg: "h-4 w-20",
       },
     },
+  },
+  loaderTransition: {
+    enterFromClass: "opacity-0",
+    enterActiveClass: "transition duration-500",
+    leaveActiveClass: "transition duration-500",
+    leaveToClass: "opacity-0",
   },
   ellipse: {
     base: "absolute rounded-full bg-{color} ease-[cubic-bezier(0,1,1,0)] vueless-loader-ellipse",

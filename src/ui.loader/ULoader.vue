@@ -21,7 +21,7 @@ const { getDataTest, config, loaderAttrs, ellipseAttrs } = useUI<Config>(default
 </script>
 
 <template>
-  <Transition v-bind="config.transition">
+  <Transition v-bind="config.loaderTransition">
     <div v-if="loading" v-bind="loaderAttrs" :data-test="getDataTest()">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>

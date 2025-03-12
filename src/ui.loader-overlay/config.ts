@@ -1,8 +1,4 @@
 export default /*tw*/ {
-  transition: {
-    enterFromClass: "scale-110 transform",
-    leaveActiveClass: "scale-110 transform",
-  },
   overlay: {
     base: `
       bg-default
@@ -11,6 +7,10 @@ export default /*tw*/ {
       fixed left-0 top-0 z-[9999]
       transition duration-300
     `,
+  },
+  overlayTransition: {
+    enterFromClass: "scale-110 transform",
+    leaveActiveClass: "scale-110 transform",
   },
   nestedLoader: "{ULoader}",
   defaults: {
