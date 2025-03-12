@@ -154,7 +154,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
             <UBadge
               label="We are trying to reconnect. Please wait a moment or check your network settings."
               color="error"
-              variant="ghost"
+              variant="soft"
             />
           </template>
         </UAlert>
@@ -169,13 +169,13 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
 
         <UAlert v-bind="args">
           <template #bottom>
-            <UIcon name="sync" color="blue" />
+            <UIcon name="sync" color="info" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args">
           <template #left>
-            <UIcon name="warning" color="yellow" />
+            <UIcon name="warning" color="warning" />
           </template>
         </UAlert>
 

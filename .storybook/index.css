@@ -57,6 +57,10 @@ html.light {
   @apply bg-gray-50;
 }
 
+html.vl-dark #storybook-root {
+  @apply bg-gray-900;
+}
+
 body {
   font-family: Roboto, sans-serif;
 }

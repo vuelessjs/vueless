@@ -356,7 +356,7 @@ const {
           v-else-if="getDayState(day).isAnotherMonthDayInRange"
           tabindex="-1"
           variant="ghost"
-          color="blue"
+          color="info"
           size="md"
           square
           v-bind="anotherMonthDayInRangeAttrs"

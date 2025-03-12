@@ -160,7 +160,6 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
           <UMoney
             value="20.25"
             size="sm"
-            color="inherit"
             symbol="$"
           />
           <UIcon

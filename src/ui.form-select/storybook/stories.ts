@@ -424,7 +424,7 @@ export const SlotBeforeOption = DefaultTemplate.bind({});
 SlotBeforeOption.args = {
   slotTemplate: `
     <template #before-option="{ option, index }">
-      <UBadge v-if="index === 3" label="Special offer!" color="blue" class="mr-1" />
+      <UBadge v-if="index === 3" label="Special offer!" color="info" class="mr-1" />
     </template>
   `,
 };
@@ -442,7 +442,7 @@ export const SlotAfterOption = DefaultTemplate.bind({});
 SlotAfterOption.args = {
   slotTemplate: `
     <template #after-option="{ option, index }">
-      <UBadge v-if="index === 2" label="Special offer!" color="blue" class="ml-1" />
+      <UBadge v-if="index === 2" label="Special offer!" color="info" class="ml-1" />
     </template>
   `,
 };

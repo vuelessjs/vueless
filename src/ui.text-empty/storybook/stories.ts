@@ -86,7 +86,7 @@ SlotHeader.args = {
     <template #header>
       <UIcon
         name="person"
-        color="blue"
+        color="info"
         size="2xl"
       />
     </template>
