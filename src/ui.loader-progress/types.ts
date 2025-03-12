@@ -5,7 +5,7 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Loader stripe color.
+   * Loader progress color.
    */
   color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
 
@@ -15,7 +15,7 @@ export interface Props {
   resources?: string | string[] | "any" | ["any"];
 
   /**
-   * Progress size.
+   * Loader progress size.
    */
   size?: "xs" | "sm" | "md" | "lg";
 

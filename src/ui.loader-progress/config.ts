@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  stripe: {
+  progress: {
     base: "top-0 left-0 right-0 fixed transition-all ease-linear bg-{color}",
     variants: {
       size: {
