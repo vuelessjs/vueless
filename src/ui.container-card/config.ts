@@ -5,7 +5,6 @@ export default /*tw*/ {
   headerLeftFallback: "flex flex-col w-fit",
   title: "{UHeader}",
   description: "mt-1 text-medium font-normal text-lifted",
-  content: "text-medium",
   cardDivider: "{UDivider}",
   footer: "flex justify-between w-full",
   footerLeft: "",
