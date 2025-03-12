@@ -1,4 +1,4 @@
-import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
+import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
 import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
@@ -56,16 +56,22 @@ export default function useUI<T>(
   const firstClassKey = Object.keys(defaultConfig || {})[0];
   const config = ref({}) as Ref<ComponentConfigFull<T>>;
 
-  watchEffect(() => {
-    const propsConfig = props.config as ComponentConfigFull<T>;
+  watch(
+    () => props.config,
+    (newVal, oldVal) => {
+      if (isEqual(newVal, oldVal)) return;
 
-    config.value = getMergedConfig({
-      defaultConfig,
-      globalConfig,
-      propsConfig,
-      vuelessStrategy,
-    }) as ComponentConfigFull<T>;
-  });
+      const propsConfig = props.config as ComponentConfigFull<T>;
+
+      config.value = getMergedConfig({
+        defaultConfig,
+        globalConfig,
+        propsConfig,
+        vuelessStrategy,
+      }) as ComponentConfigFull<T>;
+    },
+    { deep: true, immediate: true },
+  );
 
   /**
    * Get classes by given key (including CVA if config set).
