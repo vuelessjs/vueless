@@ -147,7 +147,7 @@ SlotLabel.args = {
   name: "SlotLabel",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" variant="ghost" />
+      <UBadge :label="label" color="success" variant="soft" />
     </template>
   `,
 };

@@ -58,7 +58,7 @@ export default /*tw*/ {
     },
   },
   toggleLabel: {
-    base: "absolute text-center text-xsmall font-medium uppercase text-white",
+    base: "absolute text-center text-xsmall font-medium uppercase text-inverted",
     compoundVariants: [
       { toggleLabel: true, checked: true, class: "w-1/2 left-1" },
       { toggleLabel: true, checked: false, class: "w-1/2 right-1" },

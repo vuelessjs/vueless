@@ -99,7 +99,7 @@ const {
         internal
         :size="size"
         :name="config.defaults.removeIcon"
-        :color="isRemoveButtonDisabled ? 'gray' : 'grayscale'"
+        :color="isRemoveButtonDisabled ? 'neutral' : 'grayscale'"
         v-bind="removeIconAttrs"
       />
     </UButton>
@@ -122,7 +122,7 @@ const {
         internal
         :size="size"
         :name="config.defaults.addIcon"
-        :color="isAddButtonDisabled ? 'gray' : 'grayscale'"
+        :color="isAddButtonDisabled ? 'neutral' : 'grayscale'"
         v-bind="addIconAttrs"
       />
     </UButton>

@@ -69,7 +69,7 @@ export default /*tw*/ {
     hover:focus-within:border-primary focus-within:border-primary
     focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0 focus:outline-none",
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0 focus:outline-none bg-default",
   timepickerInputHours: "{>timepickerInput} rounded-l-medium",
   timepickerInputMinutes: "{>timepickerInput}",
   timepickerInputSeconds: "{>timepickerInput} rounded-r-medium",

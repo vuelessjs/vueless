@@ -57,7 +57,7 @@ export default /*tw*/ {
   stepperSvg: "",
   stepperGradient: "",
   stepperCircle: "stroke-{color}/10 text-{color}/10",
-  stepperCount: "text-medium font-bold translate-y-2 transform",
+  stepperCount: "text-medium fill-(--vl-text) font-bold translate-y-2 transform",
   header: {
     base: "{UHeader}",
     defaults: {

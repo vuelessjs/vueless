@@ -16,7 +16,7 @@ export default /*tw*/ {
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
-    base: "{>headerCounterBase} absolute top-4 left-11 bg-gradient-to-r from-white from-80%",
+    base: "{>headerCounterBase} absolute top-4 left-11 bg-gradient-to-r from-(--vl-bg) from-80%",
     variants: {
       compact: {
         true: "top-3",

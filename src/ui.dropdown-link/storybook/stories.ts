@@ -170,7 +170,7 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
 
       <UDropdownLink v-bind="args">
         <template #default>
-          <UBadge label="Dropdown" color="success" variant="ghost" />
+          <UBadge label="Dropdown" color="success" variant="soft" />
         </template>
       </UDropdownLink>
     </URow>
