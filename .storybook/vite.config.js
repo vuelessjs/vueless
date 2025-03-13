@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/postcss";
+import TailwindCSS from "@tailwindcss/vite";
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
 import { Vueless } from "../src/plugin-vite";
 
 export default defineConfig({
-  plugins: [Vue(), Vueless({ mode: "storybook", env: "vueless", debug: false })],
+  plugins: [Vue(), TailwindCSS(), Vueless({ mode: "storybook", env: "vueless", debug: false })],
   optimizeDeps: {
     include: [
       "cva",
@@ -19,10 +19,5 @@ export default defineConfig({
       "@storybook/addon-themes",
       "@storybook/addon-interactions/preview",
     ],
-  },
-  css: {
-    postcss: {
-      plugins: [tailwindcss],
-    },
   },
 });
