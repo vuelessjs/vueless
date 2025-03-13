@@ -175,7 +175,7 @@ export interface Config extends ThemeConfig {
   /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts.
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge?: UnknownObject;
 }
