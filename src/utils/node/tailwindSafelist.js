@@ -18,7 +18,6 @@ import {
   NEUTRAL_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
-  STRATEGY_TYPE,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
   TAILWIND_MERGE_EXTENSION,
@@ -165,13 +164,10 @@ async function getComponentSafelist(mergedConfig, colors) {
 }
 
 async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
-  const isStrategyValid =
-    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
-
   return getMergedConfig({
     defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
     globalConfig: vuelessConfig.components?.[componentName] || {},
-    vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
+    unstyled: Boolean(vuelessConfig.unstyled),
   });
 }
 

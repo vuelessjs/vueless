@@ -27,7 +27,6 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
-export const DEFAULT_BASE_CLASSES = ``;
 
 /* Vueless supported color shades */
 export const PRIMARY_COLORS = [
@@ -177,13 +176,6 @@ export const DEFAULT_DARK_THEME = {
   "--vl-bg-inverted": "--vl-neutral-100",
 };
 
-/* Vueless merge class strategy types */
-export const STRATEGY_TYPE = {
-  merge: "merge",
-  replace: "replace",
-  overwrite: "overwrite",
-};
-
 /* CVA (Class Variance Authority) default config keys */
 export const CVA_CONFIG_KEY = {
   base: "base",
@@ -196,8 +188,7 @@ export const CVA_CONFIG_KEY = {
 export const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
   defaults: "defaults",
-  strategy: "strategy",
-  safelist: "safelist",
+  unstyled: "unstyled",
   transition: "transition",
   safelistColors: "safelistColors",
   ...CVA_CONFIG_KEY,

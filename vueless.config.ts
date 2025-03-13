@@ -2,7 +2,6 @@ export default {
   /**
    * Global settings.
    */
-  strategy: "merge",
   primary: "grayscale",
   secondary: "green",
   neutral: "gray",
@@ -10,7 +9,7 @@ export default {
   outline: 2,
   rounding: 8,
   fontSize: 14,
-  baseClasses: "",
+  unstyled: false,
 
   /**
    * Light theme CSS variable settings.
