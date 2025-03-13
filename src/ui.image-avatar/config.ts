@@ -9,7 +9,7 @@ export default /*tw*/ {
         true: "border border-{color}/15",
       },
       size: {
-        "3xs": "size-4 text-2xs",
+        "3xs": "size-4 text-tiny",
         "2xs": "size-5 text-xs",
         xs: "size-6 text-sm",
         sm: "size-8 text-base",

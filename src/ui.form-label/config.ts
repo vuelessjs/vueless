@@ -47,7 +47,7 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { interactive: true, disabled: false, class: "hover:cursor-pointer" },
-      { align: "topInside", size: "sm", class: "top-2 text-xsmall" },
+      { align: "topInside", size: "sm", class: "top-2 text-tiny" },
       { align: "topInside", size: "md", class: "top-2.5 text-small" },
       { align: "topInside", size: "lg", class: "top-2.5 text-medium" },
       { align: "topWithDesc", size: "sm", class: "-mt-px" },
@@ -63,7 +63,7 @@ export default /*tw*/ {
     base: "font-normal text-lifted text-left !leading-tight",
     variants: {
       size: {
-        sm: "text-xsmall",
+        sm: "text-tiny",
         md: "text-small",
         lg: "text-medium",
       },

@@ -3,11 +3,10 @@ export default /*tw*/ {
     base: "whitespace-nowrap flex items-center text-{color}",
     variants: {
       size: {
-        xs: "text-xsmall",
+        xs: "text-tiny",
         sm: "text-small",
         md: "text-medium",
         lg: "text-large",
-        xl: "text-lg",
       },
       align: {
         left: "justify-start",

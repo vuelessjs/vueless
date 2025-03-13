@@ -9,7 +9,7 @@ export default /*tw*/ {
         soft: "border-transparent text-{color} bg-{color}/5",
       },
       size: {
-        sm: "px-2 text-xsmall",
+        sm: "px-2 text-tiny",
         md: "px-2.5 text-small",
         lg: "px-3 text-medium",
       },

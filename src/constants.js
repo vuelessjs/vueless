@@ -293,7 +293,7 @@ export const TAILWIND_MERGE_EXTENSION = {
     },
     classGroups: {
       "outline-w": [{ outline: ["small", "medium", "large"] }],
-      "font-size": [{ text: ["xsmall", "small", "medium", "large"] }],
+      "font-size": [{ text: ["tiny", "small", "medium", "large"] }],
       "bg-color": [{ bg: ["default", "muted", "lifted", "accented", "inverted"] }],
       "text-color": [{ text: ["default", "muted", "lifted", "accented", "inverted"] }],
       "border-color": [{ border: ["default", "muted", "lifted", "accented"] }],

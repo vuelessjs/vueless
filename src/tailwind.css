@@ -101,8 +101,8 @@
     --radius-large: var(--vl-radius-lg);
 
     /* Text size */
-    --text-xsmall: var(--vl-text-xs);
-    --text-xsmall--line-height: calc(1 / var(--text-xs));
+    --text-tiny: var(--vl-text-xs);
+    --text-tiny--line-height: calc(1 / var(--text-xs));
     --text-small: var(--vl-text-sm);
     --text-small--line-height: var(--text-xs--line-height);
     --text-medium: var(--vl-text-md);

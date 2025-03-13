@@ -32,7 +32,7 @@ export default /*tw*/ {
     base: "px-2 pb-2.5 font-medium !leading-none text-muted overflow-hidden text-ellipsis",
     variants: {
       size: {
-        sm: "text-xsmall",
+        sm: "text-tiny",
         md: "text-small",
         lg: "text-medium",
       },
