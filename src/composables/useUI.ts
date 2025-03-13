@@ -4,10 +4,8 @@ import { isEqual } from "lodash-es";
 import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
 import {
-  STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -19,7 +17,6 @@ import type {
   Defaults,
   KeyAttrs,
   KeysAttrs,
-  Strategies,
   MutatedProps,
   UnknownObject,
   PrimaryColors,
@@ -49,10 +46,6 @@ export default function useUI<T>(
 
   const globalConfig = (vuelessConfig.components?.[componentName] || {}) as ComponentConfigFull<T>;
 
-  const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
-    ? (vuelessConfig.strategy as Strategies)
-    : (STRATEGY_TYPE.merge as Strategies);
-
   const firstClassKey = Object.keys(defaultConfig || {})[0];
   const config = ref({}) as Ref<ComponentConfigFull<T>>;
 
@@ -67,7 +60,7 @@ export default function useUI<T>(
         defaultConfig,
         globalConfig,
         propsConfig,
-        vuelessStrategy,
+        unstyled: Boolean(vuelessConfig.unstyled),
       }) as ComponentConfigFull<T>;
     },
     { deep: true, immediate: true },
@@ -82,7 +75,6 @@ export default function useUI<T>(
       const value = (config.value as ComponentConfigFull<T>)[key];
       const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
 
-      const isTopLevelKey = (topLevelClassKey || firstClassKey) === key;
       const isNestedComponent = Boolean(getNestedComponent(value));
 
       let classes = "";
@@ -97,10 +89,6 @@ export default function useUI<T>(
 
       if (typeof value === "string") {
         classes = value;
-      }
-
-      if (isTopLevelKey && !isNestedComponent) {
-        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
       }
 
       classes = classes
@@ -180,6 +168,7 @@ export default function useUI<T>(
           defaultConfig: extendsKeyConfig,
           globalConfig: keyConfig,
           propsConfig: attrs["config"] || {},
+          unstyled: Boolean(vuelessConfig.unstyled),
         }),
         ...getDefaults({
           ...(extendsKeyConfig.defaults || {}),
@@ -228,6 +217,7 @@ export default function useUI<T>(
           defaultConfig: config.value[firstKey],
           globalConfig: globalConfig[firstKey],
           propsConfig: propsConfig[firstKey],
+          unstyled: Boolean(vuelessConfig.unstyled),
         }) as NestedComponent;
       }
 

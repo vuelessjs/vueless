@@ -2,14 +2,14 @@ export default {
   /**
    * Global settings.
    */
-  strategy: "merge",
   primary: "grayscale",
+  secondary: "emerald",
   neutral: "gray",
   colorMode: "auto",
   outline: 2,
   rounding: 8,
   fontSize: 14,
-  baseClasses: "",
+  unstyled: false,
 
   /**
    * Light theme CSS variable settings.
@@ -34,7 +34,7 @@ export default {
   /**
    * Custom classes TailwindMerge settings.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge: {},
 };

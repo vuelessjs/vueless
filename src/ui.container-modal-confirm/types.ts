@@ -28,7 +28,15 @@ export interface Props {
   /**
    * Confirm button color.
    */
-  confirmColor?: "primary" | "grayscale" | "success" | "warning" | "error" | "info" | "neutral";
+  confirmColor?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | "grayscale"
+    | "neutral";
 
   /**
    * Set the disabled accept-button.

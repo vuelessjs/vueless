@@ -17,7 +17,15 @@ export interface Props {
   /**
    * Number color.
    */
-  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | "grayscale"
+    | "neutral";
 
   /**
    * Number sign.

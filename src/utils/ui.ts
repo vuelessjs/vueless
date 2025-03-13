@@ -6,13 +6,13 @@ import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
 
-import type { Config, Defaults, Strategies, UnknownObject, ComponentNames } from "../types.ts";
+import type { Config, Defaults, UnknownObject, ComponentNames } from "../types.ts";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
   globalConfig: unknown;
   propsConfig?: unknown;
-  vuelessStrategy?: Strategies;
+  unstyled?: boolean;
 }
 
 type GetMergedConfig = (options: MergedConfigOptions) => unknown;

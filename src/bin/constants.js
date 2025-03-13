@@ -5,14 +5,14 @@ export default {
   /**
    * Global settings.
    */
-  strategy: "merge",
   primary: "grayscale",
+  secondary: "emerald",
   neutral: "gray",
+  colorMode: "auto",
   outline: 2,
   rounding: 8,
   fontSize: 14,
-  colorMode: "auto",
-  baseClasses: "",
+  unstyled: false,
 
   /**
    * Light theme CSS variable settings.

@@ -5,6 +5,7 @@
 
 /* Custom Vueless colors */
 export const PRIMARY_COLOR = "primary";
+export const SECONDARY_COLOR = "secondary";
 export const NEUTRAL_COLOR = "neutral";
 export const GRAYSCALE_COLOR = "grayscale";
 
@@ -15,6 +16,7 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
+export const DEFAULT_SECONDARY_COLOR = "emerald";
 export const DEFAULT_NEUTRAL_COLOR = "gray";
 export const DEFAULT_FONT_SIZE = 14; /* pixels */
 export const FONT_SIZE_DECREMENT = 2; /* pixels */
@@ -25,7 +27,6 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
-export const DEFAULT_BASE_CLASSES = ``;
 
 /* Vueless supported color shades */
 export const PRIMARY_COLORS = [
@@ -56,6 +57,11 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-primary": "--color-primary-600",
   "--vl-primary-lifted": "--color-primary-700",
   "--vl-primary-accented": "--color-primary-800",
+
+  /* Secondary colors */
+  "--vl-secondary": "--vl-secondary-600",
+  "--vl-secondary-lifted": "--vl-secondary-700",
+  "--vl-secondary-accented": "--vl-secondary-800",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
@@ -114,6 +120,11 @@ export const DEFAULT_DARK_THEME = {
   "--vl-primary-lifted": "--color-primary-500",
   "--vl-primary-accented": "--color-primary-600",
 
+  /* Secondary colors */
+  "--vl-secondary": "--vl-secondary-400",
+  "--vl-secondary-lifted": "--vl-secondary-500",
+  "--vl-secondary-accented": "--vl-secondary-600",
+
   /* Info colors */
   "--vl-info": "--color-blue-400",
   "--vl-info-lifted": "--color-blue-500",
@@ -165,13 +176,6 @@ export const DEFAULT_DARK_THEME = {
   "--vl-bg-inverted": "--vl-neutral-100",
 };
 
-/* Vueless merge class strategy types */
-export const STRATEGY_TYPE = {
-  merge: "merge",
-  replace: "replace",
-  overwrite: "overwrite",
-};
-
 /* CVA (Class Variance Authority) default config keys */
 export const CVA_CONFIG_KEY = {
   base: "base",
@@ -184,8 +188,7 @@ export const CVA_CONFIG_KEY = {
 export const SYSTEM_CONFIG_KEY = {
   i18n: "i18n",
   defaults: "defaults",
-  strategy: "strategy",
-  safelist: "safelist",
+  unstyled: "unstyled",
   transition: "transition",
   safelistColors: "safelistColors",
   ...CVA_CONFIG_KEY,
@@ -290,7 +293,7 @@ export const TAILWIND_MERGE_EXTENSION = {
     },
     classGroups: {
       "outline-w": [{ outline: ["small", "medium", "large"] }],
-      "font-size": [{ text: ["xsmall", "small", "medium", "large"] }],
+      "font-size": [{ text: ["tiny", "small", "medium", "large"] }],
       "bg-color": [{ bg: ["default", "muted", "lifted", "accented", "inverted"] }],
       "text-color": [{ text: ["default", "muted", "lifted", "accented", "inverted"] }],
       "border-color": [{ border: ["default", "muted", "lifted", "accented"] }],

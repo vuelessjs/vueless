@@ -15,7 +15,7 @@ export default /*tw*/ {
     base: "text-accented h-0 opacity-0 transition-all",
     variants: {
       size: {
-        sm: "text-xsmall",
+        sm: "text-tiny",
         md: "text-small",
         lg: "text-medium",
       },

@@ -70,12 +70,17 @@ export enum ColorMode {
 
 export interface ThemeConfig {
   /**
-   * Components primary (primary) color.
+   * Components primary color.
    */
   primary?: PrimaryColors;
 
   /**
-   * Components neutral (secondary) color.
+   * Components secondary color.
+   */
+  secondary?: PrimaryColors;
+
+  /**
+   * Components neutral color.
    */
   neutral?: NeutralColors;
 
@@ -137,17 +142,9 @@ export interface ThemeConfig {
 
 export interface Config extends ThemeConfig {
   /**
-   * Component classes merge behavior.
-   * – merge (default) – smartly merge provided custom classes with default config classes.
-   * – replace – replace default config keys by provided custom keys (override only provided keys, the rest classes will be taken from the default config).
-   * – override – override default config by provided custom config (keeps only custom config, removes all default classes).
+   * Removes default component styles (keeps only custom config, removes all default classes).
    */
-  strategy?: Strategies;
-
-  /**
-   * Classes which will be applied to the root element of all vueless components.
-   */
-  baseClasses?: string;
+  unstyled?: boolean;
 
   /**
    * Light theme design system CSS variables.
@@ -178,7 +175,7 @@ export interface Config extends ThemeConfig {
   /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts.
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge?: UnknownObject;
 }
@@ -188,7 +185,6 @@ export type UnknownArray = unknown[];
 export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 
 export type ComponentNames = keyof Components & string; // keys union
-export type Strategies = "merge" | "replace" | "override";
 
 export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
 export type PrimaryColors =
@@ -362,26 +358,14 @@ export interface VuelessCssVariables {
   "--vl-outline-md": string;
   "--vl-outline-lg": string;
   /* Border radius size variables */
-  "--vl-radius-sm": string;
-  "--vl-radius-md": string;
-  "--vl-radius-lg": string;
+  "--vl-rounding-sm": string;
+  "--vl-rounding-md": string;
+  "--vl-rounding-lg": string;
   /* Font size CSS variables */
   "--vl-text-xs": string;
   "--vl-text-sm": string;
   "--vl-text-md": string;
   "--vl-text-lg": string;
-  /* Gray CSS variables */
-  "--vl-neutral-50": string;
-  "--vl-neutral-100": string;
-  "--vl-neutral-200": string;
-  "--vl-neutral-300": string;
-  "--vl-neutral-400": string;
-  "--vl-neutral-500": string;
-  "--vl-neutral-600": string;
-  "--vl-neutral-700": string;
-  "--vl-neutral-800": string;
-  "--vl-neutral-900": string;
-  "--vl-neutral-950": string;
   /* Primary CSS variables */
   "--vl-primary-50": string;
   "--vl-primary-100": string;
@@ -394,10 +378,38 @@ export interface VuelessCssVariables {
   "--vl-primary-800": string;
   "--vl-primary-900": string;
   "--vl-primary-950": string;
+  /* Secondary CSS variables */
+  "--vl-secondary-50": string;
+  "--vl-secondary-100": string;
+  "--vl-secondary-200": string;
+  "--vl-secondary-300": string;
+  "--vl-secondary-400": string;
+  "--vl-secondary-500": string;
+  "--vl-secondary-600": string;
+  "--vl-secondary-700": string;
+  "--vl-secondary-800": string;
+  "--vl-secondary-900": string;
+  "--vl-secondary-950": string;
+  /* Gray CSS variables */
+  "--vl-neutral-50": string;
+  "--vl-neutral-100": string;
+  "--vl-neutral-200": string;
+  "--vl-neutral-300": string;
+  "--vl-neutral-400": string;
+  "--vl-neutral-500": string;
+  "--vl-neutral-600": string;
+  "--vl-neutral-700": string;
+  "--vl-neutral-800": string;
+  "--vl-neutral-900": string;
+  "--vl-neutral-950": string;
   /* Primary design system CSS variables */
   "--vl-primary": string;
   "--vl-primary-toned": string;
   "--vl-primary-accented": string;
+  /* Secondary design system CSS variables */
+  "--vl-secondary": string;
+  "--vl-secondary-toned": string;
+  "--vl-secondary-accented": string;
   /* Neutral design system CSS variables */
   "--vl-neutral": string;
   "--vl-neutral-toned": string;

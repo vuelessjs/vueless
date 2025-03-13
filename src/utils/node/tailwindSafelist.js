@@ -15,10 +15,10 @@ import {
   NEUTRAL_COLOR,
   PRIMARY_COLORS,
   GRAYSCALE_COLOR,
+  SECONDARY_COLOR,
   NEUTRAL_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
-  STRATEGY_TYPE,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
   TAILWIND_MERGE_EXTENSION,
@@ -69,7 +69,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelistClasses = [];
 
   const storybookColors = {
-    colors: [...STATE_COLORS, PRIMARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
+    colors: [...STATE_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
 
@@ -165,13 +165,10 @@ async function getComponentSafelist(mergedConfig, colors) {
 }
 
 async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
-  const isStrategyValid =
-    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
-
   return getMergedConfig({
     defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
     globalConfig: vuelessConfig.components?.[componentName] || {},
-    vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
+    unstyled: Boolean(vuelessConfig.unstyled),
   });
 }
 

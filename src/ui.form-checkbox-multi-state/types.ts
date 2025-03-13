@@ -29,7 +29,15 @@ export interface Props {
   /**
    * Checkbox color.
    */
-  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | "grayscale"
+    | "neutral";
 
   /**
    * Label placement.

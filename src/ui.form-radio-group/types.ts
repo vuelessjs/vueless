@@ -48,7 +48,15 @@ export interface Props {
   /**
    * Radio group color.
    */
-  color?: "primary" | "success" | "warning" | "error" | "info" | "grayscale" | "neutral";
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | "grayscale"
+    | "neutral";
 
   /**
    * Unique radio group name (sets for each radio).
