@@ -12,6 +12,7 @@
 
 ```bash
 npm install vueless
+npx vueless init
 ```
 
 
@@ -26,27 +27,23 @@ const vueless = createVueless();
 createApp(App).use(vueless).mount('#app');
 ```
 
-3. Add TailwindCSS preset.
+3. Import tailwindcss and vueless into the main CSS file.
 
-```javascript
-import { vuelessPreset } from "vueless/preset-tailwind";
-
-export default {
-  presets: [vuelessPreset],
-  ...
-};
+```css
+@import "tailwindcss";
+@import "vueless";
 ```
 
 4. Add Vite plugins.
 
 ```javascript
-import { Vueless, VuelessUnpluginComponents } from "vueless/plugin-vite";
+import { Vueless, UnpluginComponents } from "vueless/plugin-vite";
 
 export default defineConfig({
   plugins: [
     ...
     Vueless(),
-    VuelessUnpluginComponents(),
+    UnpluginComponents(),
   ],
   ...
 })
@@ -64,7 +61,7 @@ check out our [security policy](SECURITY.md) for guidelines.
 
 ## License
 
-Ruby on Rails is released under the [MIT License](https://opensource.org/licenses/MIT).
+Vueless is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 
 

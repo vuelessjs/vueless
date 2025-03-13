@@ -20,7 +20,7 @@ import { DEFAULT_EXIT_CODE } from "./constants.js";
 export const TailwindCSS = (options) => Tailwind(options);
 
 /* Automatically importing Vueless components on demand */
-export const VuelessUnpluginComponents = (options) =>
+export const UnpluginComponents = (options) =>
   UnpluginVueComponents({
     resolvers: [componentResolver, directiveResolver],
     dts: true,
