@@ -376,9 +376,9 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   let darkVariables: Partial<VuelessCssVariables> = {};
 
   let variables: Partial<VuelessCssVariables> = {
-    "--vl-radius-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
-    "--vl-radius-md": `${Number(rounding) / PX_IN_REM}rem`,
-    "--vl-radius-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
+    "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
+    "--vl-rounding-md": `${Number(rounding) / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline-md": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,

@@ -96,9 +96,9 @@
     --color-grayscale-accented: var(--vl-grayscale-accented);
 
     /* Border radius rounding values */
-    --radius-small: var(--vl-radius-sm);
-    --radius-medium: var(--vl-radius-md);
-    --radius-large: var(--vl-radius-lg);
+    --radius-small: var(--vl-rounding-sm);
+    --radius-medium: var(--vl-rounding-md);
+    --radius-large: var(--vl-rounding-lg);
 
     /* Text size */
     --text-tiny: var(--vl-text-xs);

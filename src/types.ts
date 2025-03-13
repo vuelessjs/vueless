@@ -358,9 +358,9 @@ export interface VuelessCssVariables {
   "--vl-outline-md": string;
   "--vl-outline-lg": string;
   /* Border radius size variables */
-  "--vl-radius-sm": string;
-  "--vl-radius-md": string;
-  "--vl-radius-lg": string;
+  "--vl-rounding-sm": string;
+  "--vl-rounding-md": string;
+  "--vl-rounding-lg": string;
   /* Font size CSS variables */
   "--vl-text-xs": string;
   "--vl-text-sm": string;
