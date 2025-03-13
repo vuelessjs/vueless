@@ -16,12 +16,14 @@ declare function VuelessUnpluginComponents(options?: unknown): Plugin & {
   api: import("unplugin-vue-components/types.js").PublicPluginAPI;
 };
 
+declare function TailwindCSS(options?: unknown): Plugin;
+
 declare module "vueless/plugin-vite" {
-  export { Vueless, VuelessUnpluginComponents };
+  export { Vueless, VuelessUnpluginComponents, TailwindCSS };
 }
 
 declare module "vueless/plugin-vite.js" {
-  export { Vueless, VuelessUnpluginComponents };
+  export { Vueless, VuelessUnpluginComponents, TailwindCSS };
 }
 
 declare module "*.svg?component" {

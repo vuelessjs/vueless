@@ -1,9 +1,8 @@
 import { defineConfig } from "vite";
-import TailwindCSS from "@tailwindcss/vite";
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
-import { Vueless } from "../src/plugin-vite";
+import { Vueless, TailwindCSS } from "../src/plugin-vite";
 
 export default defineConfig({
   plugins: [Vue(), TailwindCSS(), Vueless({ mode: "storybook", env: "vueless", debug: false })],

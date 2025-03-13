@@ -2,7 +2,7 @@
  * The file has `.js` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
-
+import Tailwind from "@tailwindcss/vite";
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
 import { loadSvg } from "./utils/node/loaderSvg.js";
@@ -15,6 +15,9 @@ import { buildWebTypes } from "./utils/node/webTypes.js";
 import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
 
 import { DEFAULT_EXIT_CODE } from "./constants.js";
+
+/* TailwindCSS Vite plugin. */
+export const TailwindCSS = (options) => Tailwind(options);
 
 /* Automatically importing Vueless components on demand */
 export const VuelessUnpluginComponents = (options) =>
