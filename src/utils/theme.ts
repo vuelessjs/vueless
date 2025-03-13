@@ -212,9 +212,9 @@ export function setTheme(config: Config = {}) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  isCSR && localStorage.setItem(PRIMARY_COLOR, primary);
-  isCSR && localStorage.setItem(SECONDARY_COLOR, secondary);
-  isCSR && localStorage.setItem(NEUTRAL_COLOR, neutral);
+  if (isCSR && config.primary) localStorage.setItem(PRIMARY_COLOR, primary);
+  if (isCSR && config.secondary) localStorage.setItem(SECONDARY_COLOR, secondary);
+  if (isCSR && config.neutral) localStorage.setItem(NEUTRAL_COLOR, neutral);
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
