@@ -19,6 +19,7 @@ import {
   ROUNDING_INCREMENT,
   NEUTRAL_COLOR,
   PRIMARY_COLOR,
+  SECONDARY_COLOR,
   COLOR_SHADES,
   DEFAULT_LIGHT_THEME,
   DEFAULT_DARK_THEME,
@@ -27,12 +28,14 @@ import {
   DEFAULT_FONT_SIZE,
   FONT_SIZE_INCREMENT,
   FONT_SIZE_DECREMENT,
+  DEFAULT_SECONDARY_COLOR,
 } from "../constants.js";
 import type { Config, NeutralColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
 
 declare interface RootCSSVariableOptions {
   primary: PrimaryColors | string;
+  secondary: PrimaryColors | string;
   neutral: NeutralColors | string;
   outlineSm: number;
   outline: number;
@@ -126,6 +129,14 @@ export function getSelectedPrimaryColor() {
 }
 
 /**
+ * Get selected secondary color from the local storage.
+ * @returns string | undefined
+ */
+export function getSelectedSecondaryColor() {
+  return (isCSR && localStorage.getItem(SECONDARY_COLOR)) || undefined;
+}
+
+/**
  * Get selected neutral color from the local storage.
  * @return string | undefined
  */
@@ -163,11 +174,21 @@ export function setTheme(config: Config = {}) {
   let primary: PrimaryColors =
     config.primary ?? getSelectedPrimaryColor() ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
 
+  let secondary: PrimaryColors =
+    config.secondary ??
+    getSelectedSecondaryColor() ??
+    vuelessConfig.secondary ??
+    DEFAULT_SECONDARY_COLOR;
+
   let neutral: NeutralColors =
     config.neutral ?? getSelectedNeutralColor() ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
 
   const isPrimaryColor =
     PRIMARY_COLORS.some((color) => color === primary) || primary === GRAYSCALE_COLOR;
+
+  const isSecondaryColor =
+    PRIMARY_COLORS.some((color) => color === secondary) || secondary === GRAYSCALE_COLOR;
+
   const isNeutralColor = NEUTRAL_COLORS.some((color) => color === neutral);
 
   if (!isPrimaryColor) {
@@ -175,6 +196,13 @@ export function setTheme(config: Config = {}) {
     console.warn(`The primary color '${primary}' is missing in your palette.`);
 
     primary = DEFAULT_PRIMARY_COLOR;
+  }
+
+  if (!isSecondaryColor) {
+    // eslint-disable-next-line no-console
+    console.warn(`The secondary color '${secondary}' is missing in your palette.`);
+
+    secondary = DEFAULT_SECONDARY_COLOR;
   }
 
   if (!isNeutralColor) {
@@ -185,6 +213,7 @@ export function setTheme(config: Config = {}) {
   }
 
   isCSR && localStorage.setItem(PRIMARY_COLOR, primary);
+  isCSR && localStorage.setItem(SECONDARY_COLOR, secondary);
   isCSR && localStorage.setItem(NEUTRAL_COLOR, neutral);
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
@@ -213,8 +242,32 @@ export function setTheme(config: Config = {}) {
     });
   }
 
+  /* Redeclare secondary color if grayscale color set as default */
+  if (secondary === GRAYSCALE_COLOR) {
+    secondary = neutral;
+
+    ["", "lifted", "accented"].forEach((shade) => {
+      const secondaryShade: keyof VuelessCssVariables = shade
+        ? `--vl-secondary-${shade}`
+        : "--vl-secondary";
+
+      const grayscaleShade: keyof VuelessCssVariables = shade
+        ? `--vl-grayscale-${shade}`
+        : "--vl-grayscale";
+
+      if (!vuelessConfig.darkTheme?.[secondaryShade] && !config.darkTheme?.[secondaryShade]) {
+        darkTheme[secondaryShade] = darkTheme[grayscaleShade];
+      }
+
+      if (!vuelessConfig.lightTheme?.[secondaryShade] && !config.lightTheme?.[secondaryShade]) {
+        lightTheme[secondaryShade] = lightTheme[grayscaleShade];
+      }
+    });
+  }
+
   return setRootCSSVariables({
     primary,
+    secondary,
     neutral,
     outlineSm,
     outline,
@@ -304,6 +357,7 @@ function getRoundings(sm?: number, md?: number, lg?: number) {
 function setRootCSSVariables(options: RootCSSVariableOptions) {
   const {
     primary,
+    secondary,
     neutral,
     outlineSm,
     outline,
@@ -337,6 +391,11 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   for (const shade of COLOR_SHADES) {
     variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
       `var(--color-${primary}-${shade})`;
+  }
+
+  for (const shade of COLOR_SHADES) {
+    variables[`--vl-${SECONDARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
+      `var(--color-${secondary}-${shade})`;
   }
 
   for (const shade of COLOR_SHADES) {

@@ -5,6 +5,7 @@
 
 /* Custom Vueless colors */
 export const PRIMARY_COLOR = "primary";
+export const SECONDARY_COLOR = "secondary";
 export const NEUTRAL_COLOR = "neutral";
 export const GRAYSCALE_COLOR = "grayscale";
 
@@ -15,6 +16,7 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
+export const DEFAULT_SECONDARY_COLOR = "green";
 export const DEFAULT_NEUTRAL_COLOR = "gray";
 export const DEFAULT_FONT_SIZE = 14; /* pixels */
 export const FONT_SIZE_DECREMENT = 2; /* pixels */
@@ -56,6 +58,11 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-primary": "--color-primary-600",
   "--vl-primary-lifted": "--color-primary-700",
   "--vl-primary-accented": "--color-primary-800",
+
+  /* Secondary colors */
+  "--vl-secondary": "--vl-secondary-600",
+  "--vl-secondary-lifted": "--vl-secondary-700",
+  "--vl-secondary-accented": "--vl-secondary-800",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
@@ -113,6 +120,11 @@ export const DEFAULT_DARK_THEME = {
   "--vl-primary": "--color-primary-400",
   "--vl-primary-lifted": "--color-primary-500",
   "--vl-primary-accented": "--color-primary-600",
+
+  /* Secondary colors */
+  "--vl-secondary": "--vl-secondary-400",
+  "--vl-secondary-lifted": "--vl-secondary-500",
+  "--vl-secondary-accented": "--vl-secondary-600",
 
   /* Info colors */
   "--vl-info": "--color-blue-400",

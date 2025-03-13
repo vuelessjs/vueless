@@ -4,6 +4,7 @@ export default {
    */
   strategy: "merge",
   primary: "grayscale",
+  secondary: "green",
   neutral: "gray",
   colorMode: "auto",
   outline: 2,
