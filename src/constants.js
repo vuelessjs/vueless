@@ -16,7 +16,7 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
-export const DEFAULT_SECONDARY_COLOR = "green";
+export const DEFAULT_SECONDARY_COLOR = "emerald";
 export const DEFAULT_NEUTRAL_COLOR = "gray";
 export const DEFAULT_FONT_SIZE = 14; /* pixels */
 export const FONT_SIZE_DECREMENT = 2; /* pixels */

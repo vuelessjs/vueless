@@ -3,7 +3,7 @@ export default {
    * Global settings.
    */
   primary: "grayscale",
-  secondary: "green",
+  secondary: "emerald",
   neutral: "gray",
   colorMode: "auto",
   outline: 2,
