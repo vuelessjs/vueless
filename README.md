@@ -27,9 +27,9 @@ const vueless = createVueless();
 createApp(App).use(vueless).mount('#app');
 ```
 
-3. Import tailwindcss and vueless into the main CSS file.
+3. Import Tailwind CSS and Vueless at the top of the main CSS file.
 
-```css
+```scss
 @import "tailwindcss";
 @import "vueless";
 ```
