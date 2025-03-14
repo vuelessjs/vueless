@@ -14,6 +14,7 @@ import {
   PRIMARY_COLOR,
   NEUTRAL_COLOR,
   PRIMARY_COLORS,
+  SECONDARY_COLOR,
   GRAYSCALE_COLOR,
   NEUTRAL_COLORS,
   STATE_COLORS,
@@ -244,7 +245,8 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
 
   return {
     colors: Array.from(colors).filter(
-      (color) => color && [...STATE_COLORS, PRIMARY_COLOR, GRAYSCALE_COLOR].includes(color),
+      (color) =>
+        color && [...STATE_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, GRAYSCALE_COLOR].includes(color),
     ),
     isComponentExists,
   };

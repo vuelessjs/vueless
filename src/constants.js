@@ -6,6 +6,7 @@
 /* Custom Vueless colors */
 export const PRIMARY_COLOR = "primary";
 export const NEUTRAL_COLOR = "neutral";
+export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 
 /* Vueless dark mode */
@@ -46,7 +47,7 @@ export const PRIMARY_COLORS = [
   "pink",
   "rose",
 ];
-export const STATE_COLORS = ["info", "warning", "error", "success"];
+export const STATE_COLORS = [SECONDARY_COLOR, "info", "warning", "error", "success"];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -57,9 +58,9 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-primary-accented": "--color-primary-800",
 
   /* Secondary colors */
-  "--vl-secondary": "--vl-emerald-600",
-  "--vl-secondary-lifted": "--vl-emerald-700",
-  "--vl-secondary-accented": "--vl-emerald-800",
+  "--vl-secondary": "--color-emerald-600",
+  "--vl-secondary-lifted": "--color-emerald-700",
+  "--vl-secondary-accented": "--color-emerald-800",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
@@ -119,9 +120,9 @@ export const DEFAULT_DARK_THEME = {
   "--vl-primary-accented": "--color-primary-600",
 
   /* Secondary colors */
-  "--vl-secondary": "--vl-emerald-400",
-  "--vl-secondary-lifted": "--vl-emerald-500",
-  "--vl-secondary-accented": "--vl-emerald-600",
+  "--vl-secondary": "--color-emerald-400",
+  "--vl-secondary-lifted": "--color-emerald-500",
+  "--vl-secondary-accented": "--color-emerald-600",
 
   /* Info colors */
   "--vl-info": "--color-blue-400",
