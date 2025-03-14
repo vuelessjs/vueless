@@ -75,11 +75,6 @@ export interface ThemeConfig {
   primary?: PrimaryColors;
 
   /**
-   * Components secondary color.
-   */
-  secondary?: PrimaryColors;
-
-  /**
    * Components neutral color.
    */
   neutral?: NeutralColors;
@@ -378,18 +373,6 @@ export interface VuelessCssVariables {
   "--vl-primary-800": string;
   "--vl-primary-900": string;
   "--vl-primary-950": string;
-  /* Secondary CSS variables */
-  "--vl-secondary-50": string;
-  "--vl-secondary-100": string;
-  "--vl-secondary-200": string;
-  "--vl-secondary-300": string;
-  "--vl-secondary-400": string;
-  "--vl-secondary-500": string;
-  "--vl-secondary-600": string;
-  "--vl-secondary-700": string;
-  "--vl-secondary-800": string;
-  "--vl-secondary-900": string;
-  "--vl-secondary-950": string;
   /* Gray CSS variables */
   "--vl-neutral-50": string;
   "--vl-neutral-100": string;

@@ -15,7 +15,6 @@ import {
   NEUTRAL_COLOR,
   PRIMARY_COLORS,
   GRAYSCALE_COLOR,
-  SECONDARY_COLOR,
   NEUTRAL_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
@@ -69,7 +68,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelistClasses = [];
 
   const storybookColors = {
-    colors: [...STATE_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
+    colors: [...STATE_COLORS, PRIMARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
     isComponentExists: true,
   };
 
