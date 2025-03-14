@@ -170,7 +170,7 @@ export default /*tw*/ {
     clearable: true,
     addOption: false,
     /* icons */
-    dropdownIcon: "expand_more",
+    dropdownIcon: "keyboard_arrow_down",
     clearIcon: "close_small",
     clearMultipleIcon: "close_small",
   },
