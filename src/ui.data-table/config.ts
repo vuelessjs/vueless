@@ -75,7 +75,7 @@ export default /*tw*/ {
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: {
     base: "{UDivider}",
-    label: "py-0",
+    label: "py-0 leading-none",
   },
   bodySelectedDateDivider: {
     base: "{>bodyDateDivider}",

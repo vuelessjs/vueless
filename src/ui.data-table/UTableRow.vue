@@ -239,6 +239,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     <td v-bind="attrs.bodyCellDateDividerAttrs.value" :colspan="colsCount">
       <UDivider
         size="xs"
+        variant="light"
         :label="dateDividerData.label"
         v-bind="attrs.bodyDateDividerAttrs.value"
         :config="
