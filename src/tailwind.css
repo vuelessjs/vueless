@@ -89,13 +89,13 @@
 
     /* Text size */
     --text-tiny: var(--vl-text-xs);
-    --text-tiny--line-height: calc(1 / var(--text-xs));
+    --text-tiny--line-height: calc(1 / var(--vl-text-xs));
     --text-small: var(--vl-text-sm);
-    --text-small--line-height: var(--text-xs--line-height);
+    --text-small--line-height: calc(1 / var(--vl-text-sm));
     --text-medium: var(--vl-text-md);
-    --text-medium--line-height: var(--text-sm--line-height);
+    --text-medium--line-height: calc(1 / var(--vl-text-md));
     --text-large: var(--vl-text-lg);
-    --text-large--line-height: var(--text-base--line-height);
+    --text-large--line-height: calc(1 / var(--vl-text-lg));
 
     /* Mobile safe area spaceing. */
     --spacing-safe-top: "env(safe-area-inset-top)";

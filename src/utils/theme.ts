@@ -329,10 +329,10 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline-md": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,
-    "--vl-text-xs": `${fontSizeXs}px`,
-    "--vl-text-sm": `${fontSizeSm}px`,
-    "--vl-text-md": `${fontSize}px`,
-    "--vl-text-lg": `${fontSizeLg}px`,
+    "--vl-text-xs": `${Number(fontSizeXs) / PX_IN_REM}rem`,
+    "--vl-text-sm": `${Number(fontSizeSm) / PX_IN_REM}rem`,
+    "--vl-text-md": `${Number(fontSize) / PX_IN_REM}rem`,
+    "--vl-text-lg": `${Number(fontSizeLg) / PX_IN_REM}rem`,
   };
 
   for (const shade of COLOR_SHADES) {

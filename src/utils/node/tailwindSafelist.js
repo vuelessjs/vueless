@@ -64,7 +64,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     srcVueFiles = srcVueFiles.flat();
   }
 
-  const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
+  const files = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
 
   const safelistClasses = [];
 
@@ -78,7 +78,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   for await (const componentName of componentNames) {
     const { colors, isComponentExists } = isStorybookMode
       ? storybookColors
-      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+      : await findComponentColors(componentName, files, vuelessConfigFiles);
 
     const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
     const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
@@ -104,6 +104,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     }
   }
 
+  // TODO: Prevent this if `runtimeColors` is disabled.
   /* Safelist all color variables to allow runtime color switching feature. */
   const colorSafelistVariables = COLOR_SHADES.map((shade) => {
     const primaryColorsCSSConstants = PRIMARY_COLORS.map((color) => `--color-${color}-${shade}`);
