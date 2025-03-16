@@ -71,9 +71,6 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-secondary": "--vl-neutral-500",
   "--vl-secondary-lifted": "--vl-neutral-600",
   "--vl-secondary-accented": "--vl-neutral-700",
-  // "--vl-secondary": "--color-emerald-600",
-  // "--vl-secondary-lifted": "--color-emerald-700",
-  // "--vl-secondary-accented": "--color-emerald-800",
 
   /* Success colors */
   "--vl-success": "--color-green-600",
@@ -141,9 +138,6 @@ export const DEFAULT_DARK_THEME = {
   "--vl-secondary": "--vl-neutral-300",
   "--vl-secondary-lifted": "--vl-neutral-400",
   "--vl-secondary-accented": "--vl-neutral-500",
-  // "--vl-secondary": "--color-emerald-400",
-  // "--vl-secondary-lifted": "--color-emerald-500",
-  // "--vl-secondary-accented": "--color-emerald-600",
 
   /* Success colors */
   "--vl-success": "--color-green-400",
