@@ -11,10 +11,7 @@ import { createGetMergedConfig } from "./mergeConfigs.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  PRIMARY_COLOR,
-  NEUTRAL_COLOR,
   PRIMARY_COLORS,
-  SECONDARY_COLOR,
   GRAYSCALE_COLOR,
   NEUTRAL_COLORS,
   STATE_COLORS,
@@ -69,7 +66,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
   const safelistClasses = [];
 
   const storybookColors = {
-    colors: [...STATE_COLORS, PRIMARY_COLOR, NEUTRAL_COLOR, GRAYSCALE_COLOR],
+    colors: STATE_COLORS,
     isComponentExists: true,
   };
 
@@ -245,10 +242,7 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
   }
 
   return {
-    colors: Array.from(colors).filter(
-      (color) =>
-        color && [...STATE_COLORS, PRIMARY_COLOR, SECONDARY_COLOR, GRAYSCALE_COLOR].includes(color),
-    ),
+    colors: Array.from(colors).filter((color) => color && STATE_COLORS.includes(color)),
     isComponentExists,
   };
 }

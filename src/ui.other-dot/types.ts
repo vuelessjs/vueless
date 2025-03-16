@@ -10,12 +10,13 @@ export interface Props {
   color?:
     | "primary"
     | "secondary"
-    | "success"
-    | "warning"
     | "error"
+    | "warning"
+    | "success"
     | "info"
-    | "grayscale"
-    | "neutral";
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Dot size.

@@ -15,12 +15,14 @@ export interface Props {
    */
   color?:
     | "primary"
-    | "success"
-    | "warning"
+    | "secondary"
     | "error"
+    | "warning"
+    | "success"
     | "info"
-    | "grayscale"
+    | "notice"
     | "neutral"
+    | "grayscale"
     | "inherit";
 
   /**

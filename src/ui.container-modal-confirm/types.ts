@@ -31,12 +31,13 @@ export interface Props {
   confirmColor?:
     | "primary"
     | "secondary"
-    | "success"
-    | "warning"
     | "error"
+    | "warning"
+    | "success"
     | "info"
-    | "grayscale"
-    | "neutral";
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Set the disabled accept-button.

@@ -25,12 +25,13 @@ export interface UProgressProps {
   color?:
     | "primary"
     | "secondary"
-    | "success"
-    | "warning"
     | "error"
+    | "warning"
+    | "success"
     | "info"
-    | "grayscale"
-    | "neutral";
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Progress variant.

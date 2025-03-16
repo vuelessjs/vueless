@@ -47,7 +47,17 @@ export const PRIMARY_COLORS = [
   "pink",
   "rose",
 ];
-export const STATE_COLORS = [SECONDARY_COLOR, "info", "warning", "error", "success"];
+export const STATE_COLORS = [
+  PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  "success",
+  "info",
+  "notice",
+  "warning",
+  "error",
+  NEUTRAL_COLOR,
+  GRAYSCALE_COLOR,
+];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -58,29 +68,37 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-primary-accented": "--color-primary-800",
 
   /* Secondary colors */
-  "--vl-secondary": "--color-emerald-600",
-  "--vl-secondary-lifted": "--color-emerald-700",
-  "--vl-secondary-accented": "--color-emerald-800",
+  "--vl-secondary": "--vl-neutral-500",
+  "--vl-secondary-lifted": "--vl-neutral-600",
+  "--vl-secondary-accented": "--vl-neutral-700",
+  // "--vl-secondary": "--color-emerald-600",
+  // "--vl-secondary-lifted": "--color-emerald-700",
+  // "--vl-secondary-accented": "--color-emerald-800",
+
+  /* Success colors */
+  "--vl-success": "--color-green-600",
+  "--vl-success-lifted": "--color-green-700",
+  "--vl-success-accented": "--color-green-800",
 
   /* Info colors */
   "--vl-info": "--color-blue-600",
   "--vl-info-lifted": "--color-blue-700",
   "--vl-info-accented": "--color-blue-800",
 
-  /* Error colors */
-  "--vl-error": "--color-red-600",
-  "--vl-error-lifted": "--color-red-700",
-  "--vl-error-accented": "--color-red-800",
+  /* Notice colors */
+  "--vl-notice": "--color-violet-600",
+  "--vl-notice-lifted": "--color-violet-700",
+  "--vl-notice-accented": "--color-violet-800",
 
   /* Warning colors */
   "--vl-warning": "--color-orange-600",
   "--vl-warning-lifted": "--color-orange-700",
   "--vl-warning-accented": "--color-orange-800",
 
-  /* Success colors */
-  "--vl-success": "--color-green-600",
-  "--vl-success-lifted": "--color-green-700",
-  "--vl-success-accented": "--color-green-800",
+  /* Error colors */
+  "--vl-error": "--color-red-600",
+  "--vl-error-lifted": "--color-red-700",
+  "--vl-error-accented": "--color-red-800",
 
   /* Neutral colors */
   "--vl-neutral": "--vl-neutral-500",
@@ -120,29 +138,37 @@ export const DEFAULT_DARK_THEME = {
   "--vl-primary-accented": "--color-primary-600",
 
   /* Secondary colors */
-  "--vl-secondary": "--color-emerald-400",
-  "--vl-secondary-lifted": "--color-emerald-500",
-  "--vl-secondary-accented": "--color-emerald-600",
+  "--vl-secondary": "--vl-neutral-300",
+  "--vl-secondary-lifted": "--vl-neutral-400",
+  "--vl-secondary-accented": "--vl-neutral-500",
+  // "--vl-secondary": "--color-emerald-400",
+  // "--vl-secondary-lifted": "--color-emerald-500",
+  // "--vl-secondary-accented": "--color-emerald-600",
+
+  /* Success colors */
+  "--vl-success": "--color-green-400",
+  "--vl-success-lifted": "--color-green-500",
+  "--vl-success-accented": "--color-green-600",
 
   /* Info colors */
   "--vl-info": "--color-blue-400",
   "--vl-info-lifted": "--color-blue-500",
   "--vl-info-accented": "--color-blue-600",
 
-  /* Error colors */
-  "--vl-error": "--color-red-400",
-  "--vl-error-lifted": "--color-red-500",
-  "--vl-error-accented": "--color-red-600",
+  /* Notice colors */
+  "--vl-notice": "--color-violet-400",
+  "--vl-notice-lifted": "--color-violet-500",
+  "--vl-notice-accented": "--color-violet-600",
 
   /* Warning colors */
   "--vl-warning": "--color-orange-400",
   "--vl-warning-lifted": "--color-orange-500",
   "--vl-warning-accented": "--color-orange-600",
 
-  /* Success colors */
-  "--vl-success": "--color-green-400",
-  "--vl-success-lifted": "--color-green-500",
-  "--vl-success-accented": "--color-green-600",
+  /* Error colors */
+  "--vl-error": "--color-red-400",
+  "--vl-error-lifted": "--color-red-500",
+  "--vl-error-accented": "--color-red-600",
 
   /* Neutral colors */
   "--vl-neutral": "--vl-neutral-300",

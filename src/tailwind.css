@@ -52,30 +52,35 @@
     --color-secondary-lifted: var(--vl-secondary-lifted);
     --color-secondary-accented: var(--vl-secondary-accented);
 
-    /* Neutral colors */
-    --color-neutral: var(--vl-neutral);
-    --color-neutral-lifted: var(--vl-neutral-lifted);
-    --color-neutral-accented: var(--vl-neutral-accented);
+    /* Success colors */
+    --color-success: var(--vl-success);
+    --color-success-lifted: var(--vl-success-lifted);
+    --color-success-accented: var(--vl-success-accented);
 
     /* Info colors */
     --color-info: var(--vl-info);
     --color-info-lifted: var(--vl-info-lifted);
     --color-info-accented: var(--vl-info-accented);
 
-    /* Error colors */
-    --color-error: var(--vl-error);
-    --color-error-lifted: var(--vl-error-lifted);
-    --color-error-accented: var(--vl-error-accented);
+    /* Notice colors */
+    --color-notice: var(--vl-notice);
+    --color-notice-lifted: var(--vl-notice-lifted);
+    --color-notice-accented: var(--vl-notice-accented);
 
     /* Warning colors */
     --color-warning: var(--vl-warning);
     --color-warning-lifted: var(--vl-warning-lifted);
     --color-warning-accented: var(--vl-warning-accented);
 
-    /* Success colors */
-    --color-success: var(--vl-success);
-    --color-success-lifted: var(--vl-success-lifted);
-    --color-success-accented: var(--vl-success-accented);
+    /* Error colors */
+    --color-error: var(--vl-error);
+    --color-error-lifted: var(--vl-error-lifted);
+    --color-error-accented: var(--vl-error-accented);
+
+    /* Neutral colors */
+    --color-neutral: var(--vl-neutral);
+    --color-neutral-lifted: var(--vl-neutral-lifted);
+    --color-neutral-accented: var(--vl-neutral-accented);
 
     /* Grayscale colors */
     --color-grayscale: var(--vl-grayscale);

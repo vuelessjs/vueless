@@ -31,12 +31,13 @@ export interface UAvatarProps {
   color?:
     | "primary"
     | "secondary"
-    | "success"
-    | "warning"
     | "error"
+    | "warning"
+    | "success"
     | "info"
-    | "grayscale"
-    | "neutral";
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Avatar corner rounding.
