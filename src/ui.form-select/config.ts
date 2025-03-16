@@ -144,7 +144,7 @@ export default /*tw*/ {
         true: "cursor-not-allowed",
       },
       error: {
-        true: "placeholder:text-error-muted",
+        true: "placeholder:text-error/50",
       },
     },
   },

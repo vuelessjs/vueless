@@ -35,7 +35,7 @@ export default /*tw*/ {
         false: "resize-none",
       },
       error: {
-        true: "placeholder:text-error-muted",
+        true: "placeholder:text-error/50",
       },
     },
     compoundVariants: [

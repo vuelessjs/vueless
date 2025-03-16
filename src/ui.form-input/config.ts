@@ -36,7 +36,7 @@ export default /*tw*/ {
     base: `
       block w-full py-2 px-3 font-normal !leading-none bg-transparent
       border-none rounded-inherit transition focus:ring-0 focus:outline-none
-      placeholder:font-normal placeholder-neutral-muted
+      placeholder:font-normal placeholder:text-muted
       disabled:text-gray-700 disabled:cursor-not-allowed
     `,
     variants: {
@@ -46,7 +46,7 @@ export default /*tw*/ {
         lg: "text-large placeholder:text-large placeholder:font-normal",
       },
       error: {
-        true: "placeholder:text-error-muted",
+        true: "placeholder:text-error/50",
       },
       typePassword: {
         true: "tracking-widest [-webkit-text-security:disc]",
