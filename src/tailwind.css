@@ -93,14 +93,12 @@
     --border-color-accented: var(--vl-border-accented);
     --border-color-muted: var(--vl-border-muted);
 
-    /* Background colors
-    TODO: find how to declare like below
-    --bg-color-default: var(--vl-bg);
-    --bg-color-lifted: var(--vl-bg-lifted);
-    --bg-color-accented: var(--vl-bg-accented);
-    --bg-color-muted: var(--vl-bg-muted);
-    --bg-color-inverted: var(--vl-bg-inverted);
-    */
+    /* Background colors */
+    --background-color-default: var(--vl-bg);
+    --background-color-lifted: var(--vl-bg-lifted);
+    --background-color-accented: var(--vl-bg-accented);
+    --background-color-muted: var(--vl-bg-muted);
+    --background-color-inverted: var(--vl-bg-inverted);
 
     /* Text colors */
     --text-color-default: var(--vl-text);
@@ -129,24 +127,6 @@
     --spacing-safe-bottom: "env(safe-area-inset-bottom)";
     --spacing-safe-left: "env(safe-area-inset-left)";
     --spacing-safe-right: "env(safe-area-inset-right)";
-}
-
-/* Background color utilities */
-
-@utility bg-default {
-    background-color: var(--vl-bg);
-}
-
-@utility bg-lifted {
-    background-color: var(--vl-bg-lifted);
-}
-
-@utility bg-accented {
-    background-color: var(--vl-bg-accented);
-}
-
-@utility bg-muted {
-    background-color: var(--vl-bg-muted);
 }
 
 /* ------ Outline width utilities ------ */
