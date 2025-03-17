@@ -4,6 +4,9 @@ export default /*tw*/ {
   stickyHeader: {
     base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
+      stickedHeader: {
+        false: "absolute",
+      },
       actionsHeader: {
         true: "rounded-t-medium border-muted bg-muted",
       },

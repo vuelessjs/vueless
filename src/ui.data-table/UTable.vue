@@ -601,9 +601,9 @@ const {
       />
 
       <!--
-          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
-          @binding {array} selected-rows
-        -->
+        @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+        @binding {array} selected-rows
+      -->
       <slot name="header-actions" :selected-rows="selectedRows" />
 
       <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
@@ -614,7 +614,6 @@ const {
       ref="action-header-row"
       :style="tableRowWidthStyle"
       v-bind="stickyHeaderAttrs"
-      class="absolute"
     >
       <div v-bind="stickyHeaderCellAttrs">
         <UCheckbox
@@ -634,9 +633,9 @@ const {
       />
 
       <!--
-          @slot Use it to add action buttons within the actions header, which appear when rows are selected.
-          @binding {array} selected-rows
-        -->
+        @slot Use it to add action buttons within the actions header, which appear when rows are selected.
+        @binding {array} selected-rows
+      -->
       <slot name="header-actions" :selected-rows="selectedRows" />
 
       <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
