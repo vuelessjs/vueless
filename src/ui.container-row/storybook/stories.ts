@@ -128,22 +128,6 @@ Justify.parameters = {
   },
 };
 
-export const NoMobile = DefaultTemplate.bind({});
-NoMobile.args = {
-  noMobile: true,
-  slotTemplate: `
-    <UInput label="First Name" />
-    <UInput label="Last Name" />
-  `,
-};
-NoMobile.parameters = {
-  docs: {
-    description: {
-      story: "Disables mobile adaptivity.",
-    },
-  },
-};
-
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {
   slotTemplate: `

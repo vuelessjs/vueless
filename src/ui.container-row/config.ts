@@ -1,16 +1,16 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex w-full",
+    base: "flex",
     variants: {
       reverse: {
-        false: "flex-col md:flex-row",
-        true: "flex-col-reverse md:flex-row-reverse",
+        false: "flex-row",
+        true: "flex-row-reverse",
       },
       wrap: {
         true: "flex-wrap",
       },
-      noMobile: {
-        true: "flex-row",
+      block: {
+        true: "w-full",
       },
       gap: {
         none: "gap-0",
@@ -56,7 +56,7 @@ export default /*tw*/ {
     content: "start",
     justify: "start",
     wrap: false,
+    block: false,
     reverse: false,
-    noMobile: false,
   },
 };
