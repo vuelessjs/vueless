@@ -9,7 +9,6 @@ export default /*tw*/ {
     `,
   },
   overlayTransition: {
-    enterFromClass: "scale-110 transform",
     leaveActiveClass: "scale-110 transform",
   },
   nestedLoader: "{ULoader}",

@@ -1,11 +1,12 @@
 export default /*tw*/ {
   link: {
     base: `
-      inline-block cursor-pointer !leading-none rounded-small transition
+      inline-block cursor-pointer !leading-none transition
       text-{color} decoration-{color} underline-offset-4
       hover:text-{color}-lifted hover:decoration-{color}-lifted
       active:text-{color}-accented active:decoration-{color}-accented
-      focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
+      focus-visible:outline-medium focus-visible:rounded-small
+      focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {
       size: {
