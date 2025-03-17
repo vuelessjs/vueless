@@ -87,10 +87,27 @@
     --color-grayscale-lifted: var(--vl-grayscale-lifted);
     --color-grayscale-accented: var(--vl-grayscale-accented);
 
-    /* Border radius rounding values */
-    --radius-small: var(--vl-rounding-sm);
-    --radius-medium: var(--vl-rounding-md);
-    --radius-large: var(--vl-rounding-lg);
+    /* Border colors */
+    --border-color-default: var(--vl-border);
+    --border-color-lifted: var(--vl-border-lifted);
+    --border-color-accented: var(--vl-border-accented);
+    --border-color-muted: var(--vl-border-muted);
+
+    /* Background colors
+    TODO: find how to declare like below
+    --bg-color-default: var(--vl-bg);
+    --bg-color-lifted: var(--vl-bg-lifted);
+    --bg-color-accented: var(--vl-bg-accented);
+    --bg-color-muted: var(--vl-bg-muted);
+    --bg-color-inverted: var(--vl-bg-inverted);
+    */
+
+    /* Text colors */
+    --text-color-default: var(--vl-text);
+    --text-color-lifted: var(--vl-text-lifted);
+    --text-color-accented: var(--vl-text-accented);
+    --text-color-muted: var(--vl-text-muted);
+    --text-color-inverted: var(--vl-text-inverted);
 
     /* Text size */
     --text-tiny: var(--vl-text-xs);
@@ -102,31 +119,34 @@
     --text-large: var(--vl-text-lg);
     --text-large--line-height: calc(1 / var(--vl-text-lg));
 
+    /* Border radius rounding values */
+    --radius-small: var(--vl-rounding-sm);
+    --radius-medium: var(--vl-rounding-md);
+    --radius-large: var(--vl-rounding-lg);
+
     /* Mobile safe area spaceing. */
     --spacing-safe-top: "env(safe-area-inset-top)";
     --spacing-safe-bottom: "env(safe-area-inset-bottom)";
     --spacing-safe-left: "env(safe-area-inset-left)";
     --spacing-safe-right: "env(safe-area-inset-right)";
+}
 
-    /* Text colors */
-    --text-color-default: var(--vl-text);
-    --text-color-lifted: var(--vl-text-lifted);
-    --text-color-accented: var(--vl-text-accented);
-    --text-color-muted: var(--vl-text-muted);
-    --text-color-inverted: var(--vl-text-inverted);
+/* Background color utilities */
 
-    /* Border colors */
-    --border-color-default: var(--vl-border);
-    --border-color-lifted: var(--vl-border-lifted);
-    --border-color-accented: var(--vl-border-accented);
-    --border-color-muted: var(--vl-border-muted);
+@utility bg-default {
+    background-color: var(--vl-bg);
+}
 
-    /* Background colors */
-    --bg-color-default: var(--vl-bg);
-    --bg-color-lifted: var(--vl-bg-lifted);
-    --bg-color-accented: var(--vl-bg-accented);
-    --bg-color-muted: var(--vl-bg-muted);
-    --bg-color-inverted: var(--vl-bg-inverted);
+@utility bg-lifted {
+    background-color: var(--vl-bg-lifted);
+}
+
+@utility bg-accented {
+    background-color: var(--vl-bg-accented);
+}
+
+@utility bg-muted {
+    background-color: var(--vl-bg-muted);
 }
 
 /* ------ Outline width utilities ------ */
