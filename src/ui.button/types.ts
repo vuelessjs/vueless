@@ -64,7 +64,7 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Make the Button fill the width with its container.
+   * Make the Button expand to fill the entire width of its container.
    */
   block?: boolean;
 
