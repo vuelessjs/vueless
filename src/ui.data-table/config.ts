@@ -2,10 +2,13 @@ export default /*tw*/ {
   wrapper: "relative w-full overflow-auto",
   headerCounterBase: "mr-1.5 pr-1.5 font-medium text-medium",
   stickyHeader: {
-    base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
+    base: "top-0 flex items-center z-30 overflow-hidden border rounded-none",
     variants: {
       actionsHeader: {
-        true: "rounded-t-medium border-muted bg-muted",
+        true: "absolute rounded-t-medium border-muted bg-muted",
+      },
+      stickedHeader: {
+        true: "fixed",
       },
     },
     compoundVariants: [
