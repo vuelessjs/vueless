@@ -107,68 +107,26 @@
     --spacing-safe-bottom: "env(safe-area-inset-bottom)";
     --spacing-safe-left: "env(safe-area-inset-left)";
     --spacing-safe-right: "env(safe-area-inset-right)";
-}
 
-/* ------ Text color utilities ------ */
+    /* Text colors */
+    --text-color-default: var(--vl-text);
+    --text-color-lifted: var(--vl-text-lifted);
+    --text-color-accented: var(--vl-text-accented);
+    --text-color-muted: var(--vl-text-muted);
+    --text-color-inverted: var(--vl-text-inverted);
 
-@utility text-default {
-    color: var(--vl-text);
-}
+    /* Border colors */
+    --border-color-default: var(--vl-border);
+    --border-color-lifted: var(--vl-border-lifted);
+    --border-color-accented: var(--vl-border-accented);
+    --border-color-muted: var(--vl-border-muted);
 
-@utility text-lifted {
-    color: var(--vl-text-lifted);
-}
-
-@utility text-accented {
-    color: var(--vl-text-accented);
-}
-
-@utility text-muted {
-    color: var(--vl-text-muted);
-}
-
-@utility text-inverted {
-    color: var(--vl-text-inverted);
-}
-
-/* ------ Border color utilities ------  */
-
-@utility border-default {
-    border-color: var(--vl-border);
-}
-
-@utility border-lifted {
-    border-color: var(--vl-border-lifted);
-}
-
-@utility border-accented {
-    border-color: var(--vl-border-accented);
-}
-
-@utility border-muted {
-    border-color: var(--vl-border-muted);
-}
-
-/* ------ Background color utilities ------ */
-
-@utility bg-default {
-    background-color: var(--vl-bg);
-}
-
-@utility bg-lifted {
-    background-color: var(--vl-bg-lifted);
-}
-
-@utility bg-accented {
-    background-color: var(--vl-bg-accented);
-}
-
-@utility bg-muted {
-    background-color: var(--vl-bg-muted);
-}
-
-@utility bg-inverted {
-    background-color: var(--vl-bg-inverted);
+    /* Background colors */
+    --bg-color-default: var(--vl-bg);
+    --bg-color-lifted: var(--vl-bg-lifted);
+    --bg-color-accented: var(--vl-bg-accented);
+    --bg-color-muted: var(--vl-bg-muted);
+    --bg-color-inverted: var(--vl-bg-inverted);
 }
 
 /* ------ Outline width utilities ------ */
