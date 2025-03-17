@@ -4,7 +4,7 @@ export default /*tw*/ {
       font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
-      [&_a:not([class]):hover]:no-underline [&_a:not([class])]:font-medium
+      [&_a:not([class]):hover]:no-underline
       [&_ul]:font-normal [&_ol]:font-normal
       [&_ul]:leading-normal [&_ol]:leading-normal
       [&_ul]:list-disc [&_ol]:list-decimal
