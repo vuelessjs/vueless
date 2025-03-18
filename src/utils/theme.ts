@@ -118,6 +118,14 @@ export function setColorMode(colorMode: `${ColorMode}`) {
 }
 
 /**
+ * Retrieves CSS variable value to be easily used in the JS.
+ * @return string.
+ */
+export function cssVar(name: string) {
+  return (isCSR && getComputedStyle(document.documentElement).getPropertyValue(name)) || undefined;
+}
+
+/**
  * Get selected primary color from the local storage.
  * @returns string | undefined
  */

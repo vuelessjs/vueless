@@ -1,6 +1,6 @@
 import type { App } from "vue";
 import type { CreateVuelessOptions } from "./types.ts";
-export { setTheme } from "./utils/theme.ts";
+export { setTheme, cssVar } from "./utils/theme.ts";
 export { cx, cva, compose, getDefaults } from "./utils/ui.ts";
 export {
   isSSR,
