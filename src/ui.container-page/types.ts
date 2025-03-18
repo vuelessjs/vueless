@@ -39,7 +39,7 @@ export interface Props {
   /**
    * Show rounding block on the right side of the component.
    */
-  rounding?: "none" | "fixed" | "relative";
+  rounding?: boolean;
 
   /**
    * Sets muted background color (useful if the page contains nested cards).

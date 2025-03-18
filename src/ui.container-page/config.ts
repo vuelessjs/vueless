@@ -1,7 +1,7 @@
 export default /*tw*/ {
   htmlBody: "bg-muted group/body",
   wrapper: {
-    base: "min-h-screen UNotifyPage",
+    base: "relative min-h-screen UNotifyPage",
     variants: {
       size: {
         xs: "md:w-[25rem] md:max-[500px]:!w-full",
@@ -15,19 +15,39 @@ export default /*tw*/ {
         "5xl": "md:w-[75rem] md:max-[1300px]:!w-full",
         wide: "md:w-full",
       },
-      muted: {
-        false: "bg-default",
-        true: "bg-muted",
-      },
       rounding: {
-        relative: "md:relative md:pr-4 md:rounded-r-large",
-        fixed: "md:bg-transparent md:relative md:pr-4 md:rounded-r-large",
+        true: "md:pr-4",
       },
     },
   },
   page: {
     base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full",
-    compoundVariants: [{ rounding: ["fixed", "relative"], class: "md:pr-4" }],
+    variants: {
+      muted: {
+        true: "bg-muted",
+        false: "bg-default",
+      },
+      rounding: {
+        true: "md:pr-4",
+      },
+    },
+  },
+  rightRoundingWrapper: {
+    base: "absolute right-4",
+    variants: {
+      rounding: {
+        false: "hidden",
+      },
+    },
+  },
+  rightRounding: {
+    base: "fixed top-0 w-4 rounded-r-large h-screen",
+    variants: {
+      muted: {
+        true: "bg-muted",
+        false: "bg-default",
+      },
+    },
   },
   header: "flex items-start justify-between mb-4 md:mb-6",
   headerLeft: "flex items-center gap-4",
@@ -42,28 +62,11 @@ export default /*tw*/ {
   footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-muted",
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
-  rightRoundingWrapper: {
-    base: "absolute right-4",
-    variants: {
-      rounding: {
-        none: "hidden",
-      },
-    },
-  },
-  rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-large h-screen",
-    variants: {
-      muted: {
-        false: "bg-default",
-        true: "bg-muted",
-      },
-    },
-  },
   defaults: {
-    rounding: "none",
-    titleSize: "md",
     size: "wide",
+    titleSize: "md",
     muted: false,
+    rounding: false,
     /* icons */
     backIcon: "arrow_back",
   },
