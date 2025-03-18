@@ -285,7 +285,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isFirstDayInRange"
           tabindex="-1"
-          variant="soft"
+          variant="solid"
           color="primary"
           size="md"
           square
@@ -299,7 +299,7 @@ const {
         <UButton
           v-else-if="getDayState(day).isLastDayInRange"
           tabindex="-1"
-          variant="soft"
+          variant="solid"
           color="primary"
           size="md"
           square
