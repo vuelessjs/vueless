@@ -97,15 +97,15 @@ export const DEFAULT_LIGHT_THEME = {
   "--vl-error-lifted": "--color-red-700",
   "--vl-error-accented": "--color-red-800",
 
-  /* Neutral colors */
-  "--vl-neutral": "--vl-neutral-500",
-  "--vl-neutral-lifted": "--vl-neutral-600",
-  "--vl-neutral-accented": "--vl-neutral-700",
-
   /* Grayscale colors */
   "--vl-grayscale": "--vl-neutral-900",
   "--vl-grayscale-lifted": "--vl-neutral-800",
   "--vl-grayscale-accented": "--vl-neutral-700",
+
+  /* Neutral colors */
+  "--vl-neutral": "--vl-neutral-500",
+  "--vl-neutral-lifted": "--vl-neutral-600",
+  "--vl-neutral-accented": "--vl-neutral-700",
 
   /* Text neutral colors */
   "--vl-text": "--vl-neutral-900",
@@ -164,15 +164,15 @@ export const DEFAULT_DARK_THEME = {
   "--vl-error-lifted": "--color-red-500",
   "--vl-error-accented": "--color-red-600",
 
-  /* Neutral colors */
-  "--vl-neutral": "--vl-neutral-300",
-  "--vl-neutral-lifted": "--vl-neutral-400",
-  "--vl-neutral-accented": "--vl-neutral-500",
-
   /* Grayscale colors */
   "--vl-grayscale": "--vl-neutral-100",
   "--vl-grayscale-lifted": "--vl-neutral-200",
   "--vl-grayscale-accented": "--vl-neutral-300",
+
+  /* Neutral colors */
+  "--vl-neutral": "--vl-neutral-300",
+  "--vl-neutral-lifted": "--vl-neutral-400",
+  "--vl-neutral-accented": "--vl-neutral-500",
 
   /* Text neutral colors */
   "--vl-text": "--vl-neutral-100",

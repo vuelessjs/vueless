@@ -31,7 +31,7 @@ export default {
   components: /*tw*/ {},
 
   /**
-   * Custom classes TailwindMerge settings.
+   * TailwindMerge settings for custom Tailwind CSS classes.
    * All lists of rules available here:
    * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
