@@ -8,6 +8,8 @@ import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
+import { hasSlotContent } from "../utils/helper.ts";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -20,7 +22,7 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { getDataTest, wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(
+const { getDataTest, wrapperAttrs, dividerAttrs, dividerIconAttrs, labelAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
 );
@@ -29,6 +31,26 @@ const { getDataTest, wrapperAttrs, dividerAttrs, labelAttrs } = useUI<Config>(
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="dividerAttrs" />
-    <span v-if="label" v-bind="labelAttrs" v-text="label" />
+
+    <div v-if="label || icon || hasSlotContent($slots['default'])" v-bind="labelAttrs">
+      <UIcon
+        v-if="icon && !label"
+        :name="icon"
+        size="xl"
+        color="inherit"
+        v-bind="dividerIconAttrs"
+      />
+
+      <!--
+        @slot Use it to add some content inside the divider.
+        @binding {string} label
+        @binding {string} icon-name
+      -->
+      <slot name="default" :label="label" :icon-name="icon">
+        {{ label }}
+      </slot>
+    </div>
+
+    <div v-if="label || icon || hasSlotContent($slots['default'])" v-bind="dividerAttrs" />
   </div>
 </template>

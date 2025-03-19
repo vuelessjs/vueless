@@ -1,44 +1,22 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex relative",
+    base: "flex items-center justify-center",
     variants: {
       vertical: {
-        true: "h-full w-fit",
-        false: "w-full h-fit",
-      },
-      label: {
-        true: "items-center justify-center",
+        true: "h-full flex-col",
+        false: "w-full flex-row",
       },
     },
-    compoundVariants: [
-      { vertical: false, size: "xs", class: "py-2" },
-      { vertical: false, size: "sm", class: "py-3" },
-      { vertical: false, size: "md", class: "py-4" },
-      { vertical: false, size: "lg", class: "py-5" },
-      { vertical: false, size: "xl", class: "py-6" },
-      { vertical: false, padding: "after", class: "pt-0" },
-      { vertical: false, padding: "before", class: "pb-0" },
-      { vertical: true, size: "xs", class: "px-2" },
-      { vertical: true, size: "sm", class: "px-3" },
-      { vertical: true, size: "md", class: "px-4" },
-      { vertical: true, size: "lg", class: "px-5" },
-      { vertical: true, size: "xl", class: "px-6" },
-      { vertical: true, padding: "after", class: "pl-0" },
-      { vertical: true, padding: "before", class: "pr-0" },
-      { padding: "none", class: "p-0" },
-    ],
   },
   divider: {
-    base: "border-default",
+    base: "border-{color}",
     variants: {
-      variant: {
-        light: "contrast-125",
-        default: "contrast-100",
-        dark: "contrast-75",
+      color: {
+        neutral: "border-muted",
       },
       vertical: {
-        true: "border-l h-full",
-        false: "border-t w-full",
+        true: "h-full",
+        false: "w-full",
       },
       dashed: {
         true: "border-dashed",
@@ -46,29 +24,35 @@ export default /*tw*/ {
       dotted: {
         true: "border-dotted",
       },
-      border: {
-        false: "border-transparent",
-      },
     },
+    compoundVariants: [
+      { vertical: true, size: "xs", class: "border-l" },
+      { vertical: true, size: "sm", class: "border-l-[2px]" },
+      { vertical: true, size: "md", class: "border-l-[3px]" },
+      { vertical: true, size: "lg", class: "border-l-[4px]" },
+      { vertical: true, size: "xl", class: "border-l-[5px]" },
+      { vertical: false, size: "xs", class: "border-t" },
+      { vertical: false, size: "sm", class: "border-t-[2px]" },
+      { vertical: false, size: "md", class: "border-t-[3px]" },
+      { vertical: false, size: "lg", class: "border-t-[4px]" },
+      { vertical: false, size: "xl", class: "border-t-[5px]" },
+    ],
   },
+  dividerIcon: "{UIcon}",
   label: {
-    base: "absolute p-2 rounded-medium bg-default shrink-0 text-medium w-fit",
+    base: "px-3 w-fit rounded-medium text-medium text-{color} shrink-0",
     variants: {
-      variant: {
-        light: "text-muted",
-        default: "text-lifted",
-        dark: "text-accented",
+      color: {
+        neutral: "text-lifted",
       },
       vertical: {
-        true: "transform origin-center rotate-90",
+        true: "[writing-mode:vertical-lr]",
       },
     },
   },
   defaults: {
-    variant: "default",
-    padding: "all",
-    size: "md",
-    border: true,
+    color: "neutral",
+    size: "xs",
     dashed: false,
     dotted: false,
     vertical: false,

@@ -11,6 +11,11 @@ export interface Props {
   label?: string;
 
   /**
+   * Icon name (appears instead of the label).
+   */
+  icon?: string;
+
+  /**
    * Divider padding size.
    */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -18,12 +23,16 @@ export interface Props {
   /**
    * Divider color.
    */
-  variant?: "light" | "default" | "dark";
-
-  /**
-   * Set padding around the Divider.
-   */
-  padding?: "none" | "before" | "after" | "all";
+  color?:
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Set line dashed.
@@ -39,11 +48,6 @@ export interface Props {
    * Set divider vertically orientated.
    */
   vertical?: boolean;
-
-  /**
-   * Show divider border (or keep only spacings).
-   */
-  border?: boolean;
 
   /**
    * Component config object.

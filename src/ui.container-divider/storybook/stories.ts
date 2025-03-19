@@ -32,24 +32,26 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
-  components: { UDivider },
+  components: { UDivider, UCol },
   setup() {
     const slots = getSlotNames(UDivider.__name);
 
     return { args, slots };
   },
   template: `
-    <p>
-      Understanding your clients' needs is essential for building long-term business relationships.
-      By analyzing customer behavior and feedback, companies can tailor their services to provide more value.
-    </p>
-    <UDivider v-bind="args">
-      ${args.slotTemplate || getSlotsFragment("")}
-    </UDivider>
-    <p>
-      Businesses that prioritize customer satisfaction see higher retention rates and increased referrals.
-      Implementing a structured follow-up process can help maintain strong client engagement and trust.
-    </p>
+    <UCol>
+      <p>
+        Understanding your clients' needs is essential for building long-term business relationships.
+        By analyzing customer behavior and feedback, companies can tailor their services to provide more value.
+      </p>
+      <UDivider v-bind="args">
+        ${args.slotTemplate || getSlotsFragment("")}
+      </UDivider>
+      <p>
+        Businesses that prioritize customer satisfaction see higher retention rates and increased referrals.
+        Implementing a structured follow-up process can help maintain strong client engagement and trust.
+      </p>
+    </UCol>
   `,
 });
 
