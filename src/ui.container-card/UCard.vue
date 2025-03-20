@@ -6,7 +6,6 @@ import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 
 import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";

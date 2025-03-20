@@ -8,7 +8,6 @@ import { hasSlotContent } from "../utils/helper.ts";
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
