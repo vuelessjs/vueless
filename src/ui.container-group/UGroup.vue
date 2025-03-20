@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import UDivider from "../ui.container-divider/UDivider.vue";
+
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
@@ -25,8 +25,6 @@ const {
   wrapperAttrs,
   headerLeftFallbackAttrs,
   titleAttrs,
-  upperlineAttrs,
-  underlineAttrs,
   contentAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
@@ -34,11 +32,12 @@ const {
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="title">
-      <UDivider v-if="upperlined" size="xl" padding="after" v-bind="upperlineAttrs" />
-
       <div v-bind="headerAttrs">
-        <!-- @slot Use it to add something on the left side of the header. -->
-        <slot name="title">
+        <!--
+          @slot Use it to add something on the left side of the header.
+          @binding {string} title
+        -->
+        <slot name="title" :title="title">
           <div v-bind="headerLeftFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
@@ -53,8 +52,6 @@ const {
         <!-- @slot Use it to add something on the right side of the header. -->
         <slot name="actions" />
       </div>
-
-      <UDivider size="xl" padding="after" :border="underlined" v-bind="underlineAttrs" />
     </template>
 
     <div v-bind="contentAttrs">
