@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { computed, useSlots, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -21,6 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const slots = useSlots();
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
 const isShownHeader = computed(() => {
   const isTitleSlot = hasSlotContent(slots["title"]);
   const isActionsSlot = hasSlotContent(slots["actions"]);
@@ -30,6 +32,14 @@ const isShownHeader = computed(() => {
 
 const isShownFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
+});
+
+defineExpose({
+  /**
+   * A reference to the card element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  wrapperRef,
 });
 
 /**
@@ -51,7 +61,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-if="isShownHeader" v-bind="headerAttrs">
       <div v-bind="headerLeftAttrs">
         <!-- @slot Use it to add something before left side of the header. -->
