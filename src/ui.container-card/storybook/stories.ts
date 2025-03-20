@@ -39,25 +39,27 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <p>
-    The <strong>Card</strong> component is a versatile UI element designed to present
-    structured content in an organized manner. It can be used for displaying
-    user profiles, product details, notifications, or any other grouped information.
-  </p>
-  <p>
-    With a clean layout that includes a title and content area, this component
-    is ideal for dashboards, settings pages, and interactive modals. You can
-    customize it further by adding buttons, images, icons, or additional
-    sections as needed.
-  </p>
-  <p>
-    Whether you're building a simple info box or a detailed summary card, this
-    component helps maintain a visually consistent and responsive design.
-  </p>
+  <UCol>
+    <p>
+      The <strong>Card</strong> component is a versatile UI element designed to present
+      structured content in an organized manner. It can be used for displaying
+      user profiles, product details, notifications, or any other grouped information.
+    </p>
+    <p>
+      With a clean layout that includes a title and content area, this component
+      is ideal for dashboards, settings pages, and interactive modals. You can
+      customize it further by adding buttons, images, icons, or additional
+      sections as needed.
+    </p>
+    <p>
+      Whether you're building a simple info box or a detailed summary card, this
+      component helps maintain a visually consistent and responsive design.
+    </p>
+  </UCol>
 `;
 
 const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
-  components: { UCard, UButton, UInput, UIcon, UHeader, URow },
+  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
   setup() {
     const slots = getSlotNames(UCard.__name);
 

@@ -44,12 +44,14 @@ export default {
 
 const defaultTemplate = `
   <UCard title="Profile Information">
-    <URow>
-      <UInput label="Full Name" placeholder="John Doe" />
-      <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
-    </URow>
+    <UCol align="stretch">
+      <URow>
+        <UInput label="Full Name" placeholder="John Doe" />
+        <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
+      </URow>
 
-    <UTextarea class="mb-7 mt-4" label="Message" placeholder="Enter your message here..." rows="4" />
+      <UTextarea label="Message" placeholder="Enter your message here..." rows="4" />
+    </UCol>
   </UCard>
 `;
 
@@ -58,6 +60,7 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
     UPage,
     UCard,
     URow,
+    UCol,
     UInput,
     UTextarea,
     UButton,

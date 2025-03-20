@@ -1,6 +1,6 @@
 export default /*tw*/ {
   confirmModal: "{UModal}",
-  footerLeftFallback: "flex space-x-4",
+  footerLeftFallback: "flex gap-3",
   confirmButton: "{UButton} w-full",
   cancelButton: "{UButton} w-full",
   i18n: {

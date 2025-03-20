@@ -118,7 +118,6 @@ const {
   backLinkAttrs,
   backLinkIconAttrs,
   closeIconAttrs,
-  modalDividerAttrs,
   overlayAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
@@ -195,6 +194,7 @@ const {
                   internal
                   interactive
                   size="sm"
+                  color="grayscale"
                   :name="config.defaults.closeIcon"
                   v-bind="closeIconAttrs"
                   :data-test="getDataTest('close')"
@@ -209,27 +209,17 @@ const {
             <slot />
           </div>
 
-          <UDivider
-            v-if="divider || !isExistFooter"
-            :border="divider && isExistFooter"
-            variant="dark"
-            padding="before"
-            v-bind="modalDividerAttrs"
-          />
-
-          <template v-if="isExistFooter">
-            <div v-bind="footerAttrs">
-              <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
-                <!-- @slot Use it to add something to the left side of the footer. -->
-                <slot name="footer-left" />
-              </div>
-
-              <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
-                <!-- @slot Use it to add something to the right side of the footer. -->
-                <slot name="footer-right" />
-              </div>
+          <div v-if="isExistFooter" v-bind="footerAttrs">
+            <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
+              <!-- @slot Use it to add something to the left side of the footer. -->
+              <slot name="footer-left" />
             </div>
-          </template>
+
+            <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
+              <!-- @slot Use it to add something to the right side of the footer. -->
+              <slot name="footer-right" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

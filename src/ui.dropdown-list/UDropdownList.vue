@@ -288,7 +288,7 @@ const {
         :role="!(option && option.groupLabel) ? 'option' : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
-        <UDivider v-if="option.divider" size="xs" variant="light" v-bind="optionDividerAttrs" />
+        <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />
 
         <!-- option title -->
         <span

@@ -50,7 +50,7 @@ export default /*tw*/ {
   addOptionLabelHotkey: "text-lifted",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
-  optionDivider: "{UDivider}",
+  optionDivider: "{UDivider} py-2",
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",

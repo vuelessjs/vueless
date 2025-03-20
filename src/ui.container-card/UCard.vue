@@ -40,7 +40,6 @@ const {
   getDataTest,
   wrapperAttrs,
   titleAttrs,
-  cardDividerAttrs,
   headerAttrs,
   headerLeftAttrs,
   headerLeftFallbackAttrs,
@@ -76,8 +75,6 @@ const {
 
     <!-- @slot Use it to add something inside. -->
     <slot />
-
-    <UDivider v-if="isShownFooter" padding="none" v-bind="cardDividerAttrs" />
 
     <div v-if="isShownFooter" v-bind="footerAttrs">
       <div v-bind="footerLeftAttrs">

@@ -46,16 +46,18 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <URow>
-    <UInput label="Full Name" placeholder="John Doe" />
-    <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
-  </URow>
+  <UCol align="stretch">
+    <URow>
+      <UInput label="Full Name" placeholder="John Doe" />
+      <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
+    </URow>
 
-  <UTextarea class="mb-7" label="Message" placeholder="Enter your message here..." rows="4" />
+    <UTextarea label="Message" placeholder="Enter your message here..." rows="4" />
+  </UCol>
 `;
 
 const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
-  components: { UModal, URow, UButton, UIcon, UHeader, UInput, UTextarea },
+  components: { UModal, URow, UCol, UButton, UIcon, UHeader, UInput, UTextarea },
   setup() {
     function onClick() {
       args.modelValue = true;

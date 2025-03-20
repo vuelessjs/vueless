@@ -39,7 +39,7 @@ export interface Props {
   tag?: string;
 
   /**
-   * Icon name (appears instead of label).
+   * Icon name (appears instead of the label).
    */
   icon?: string;
 

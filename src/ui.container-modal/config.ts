@@ -8,7 +8,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-y-0 transform sm:scale-100",
     leaveToClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
   },
-  overlay: "fixed inset-0 z-40 bg-lifted opacity-75",
+  overlay: "fixed inset-0 z-40 bg-inverted dark:bg-default opacity-75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
@@ -18,7 +18,7 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   innerWrapper: "py-12 w-full h-full overflow-auto",
-  header: "flex justify-between px-4 md:px-8 pb-6 pt-8",
+  header: "flex justify-between px-4 md:px-6 py-6",
   headerLeft: "flex items-center gap-4",
   headerLeftFallback: "flex flex-col",
   backLinkWrapper: "flex items-center gap-0.5 mb-0.5",
@@ -27,11 +27,18 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-medium font-normal text-lifted",
   closeIcon: "{UIcon}",
-  body: "space-y-4 px-4 md:px-8 text-medium",
-  modalDivider: "{UDivider} pt-8",
-  footer: "flex justify-between px-4 md:px-8 py-8 max-md:flex-col max-md:gap-4",
-  footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
-  footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
+  body: "px-4 md:px-6 pb-6 text-medium",
+  footer: {
+    base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
+    variants: {
+      divider: {
+        true: "border-t border-muted",
+        false: "pt-0",
+      },
+    },
+  },
+  footerLeft: "flex flex-col md:flex-row gap-4 w-full",
+  footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   modal: {
     base: "mx-auto bg-default rounded-large border border-muted",
     variants: {

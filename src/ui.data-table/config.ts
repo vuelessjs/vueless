@@ -77,7 +77,7 @@ export default /*tw*/ {
   bodyCellNestedCollapseIcon: "{UIcon} {>bodyCellNestedIcon}",
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: {
-    base: "{UDivider}",
+    base: "{UDivider} py-2",
     label: "py-0 leading-none",
   },
   bodySelectedDateDivider: {

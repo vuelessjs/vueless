@@ -27,11 +27,11 @@ export default /*tw*/ {
   toggleIcon: "{UIcon}",
   accordionDivider: {
     base: "{UDivider} group-last:hidden",
-    defaults: {
+    variants: {
       size: {
-        sm: "md",
-        md: "lg",
-        lg: "xl",
+        sm: "py-4",
+        md: "py-5",
+        lg: "py-6",
       },
     },
   },

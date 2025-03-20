@@ -82,7 +82,6 @@ const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPicke
 
     <UDivider
       v-if="Object.keys(primaryColors).length && Object.keys(neutralColors).length"
-      size="xs"
       v-bind="colorDividerAttrs"
     />
 

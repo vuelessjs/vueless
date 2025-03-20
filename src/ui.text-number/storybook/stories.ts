@@ -57,7 +57,7 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
       >
         <template #right v-if="args.enum === 'sign'">
           <UText size="lg" class="ml-1">{{ option }}</UText>
-          <UDivider vertical variant="dark" class="h-5" />
+          <UDivider vertical class="h-5" />
         </template>
       </UNumber>
     </URow>
