@@ -191,7 +191,7 @@ async function findAndCopyIcons(files) {
       try {
         if (!iconName) continue;
 
-        if (iconName?.includes("?") && iconName?.includes(":")) {
+        if (iconName.includes("?") && iconName.includes(":")) {
           const [trueName, falseName] = getTernaryValues(iconName);
 
           copyIcon(trueName, defaults);

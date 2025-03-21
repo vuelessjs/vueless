@@ -36,21 +36,18 @@ const generatedIcons = computed(() => {
   );
 });
 
-const generatedInternalIcons = computed(() =>
-  generatedIcons.value.filter(([path]) => path.includes("vueless")),
-);
-
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
   const ICON_EXTENSION = ".svg";
 
   const userLibrary = config.value.defaults.library as IconLibraries;
 
-  const isInternalIconExists = generatedInternalIcons.value.find(([path]) =>
-    path.includes(VUELESS_LIBRARY + "/" + props.name),
+  const isInternalIconExists = generatedIcons.value.find(
+    ([path]) => path.includes(VUELESS_LIBRARY) && path.includes(props.name + ICON_EXTENSION),
   );
-  const isExternalIconExists = generatedIcons.value.find(([path]) =>
-    path.includes(userLibrary + "/" + props.name),
+
+  const isExternalIconExists = generatedIcons.value.find(
+    ([path]) => path.includes(userLibrary) && path.includes(props.name + ICON_EXTENSION),
   );
 
   const isInternalIcon = isInternalIconExists && !isExternalIconExists;
