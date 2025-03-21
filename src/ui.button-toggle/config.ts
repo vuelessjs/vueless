@@ -12,7 +12,7 @@ export default /*tw*/ {
       },
       split: {
         true: "flex-wrap",
-        false: "flex-nowrap gap-1 p-1 w-fit border rounded-medium border-default",
+        false: "flex-nowrap gap-px p-1 w-fit border rounded-medium border-default",
       },
       disabled: {
         true: "bg-lifted cursor-not-allowed",
@@ -25,6 +25,15 @@ export default /*tw*/ {
       },
     },
   },
+  divider: {
+    base: "my-1 border-r border-muted last:hidden",
+    variants: {
+      split: {
+        true: "hidden",
+      },
+    },
+  },
+  dividerHidden: "{>divider} border-transparent",
   toggleButton: {
     base: "{UButton} font-normal focus-visible:ring-offset-0",
     defaults: {
