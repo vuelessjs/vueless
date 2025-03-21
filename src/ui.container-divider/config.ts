@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "flex items-center justify-center",
     variants: {
       vertical: {
-        true: "h-full flex-col",
+        true: "h-auto flex-col",
         false: "w-full flex-row",
       },
     },
