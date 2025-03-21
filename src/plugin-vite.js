@@ -89,7 +89,7 @@ export const Vueless = function (options = {}) {
         await hideHiddenStories(isVuelessEnv);
       }
 
-      if (config.command === "build") {
+      if (config.command === "build" || config.command === "dev" || config.command === "serve") {
         /* remove cached icons */
         await removeIconsCache(mirrorCacheDir, debug);
 
@@ -102,13 +102,6 @@ export const Vueless = function (options = {}) {
       }
 
       if (config.command === "dev" || config.command === "serve") {
-        /* remove cached icons */
-        await removeIconsCache(mirrorCacheDir, debug);
-        /* cache vueless built-in icons */
-        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        /* copy vueless cache folder */
-        await copyIconsCache(mirrorCacheDir, debug);
-
         await setCustomPropTypes(isVuelessEnv);
       }
     },
