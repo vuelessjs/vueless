@@ -191,7 +191,7 @@ async function findAndCopyIcons(files) {
       try {
         if (!iconName) continue;
 
-        if (iconName?.includes("?") && iconName?.includes(":")) {
+        if (iconName.includes("?") && iconName.includes(":")) {
           const [trueName, falseName] = getTernaryValues(iconName);
 
           copyIcon(trueName, defaults);
@@ -228,7 +228,7 @@ function getTernaryValues(expression) {
  * @param {string} name
  * @param {object} defaults
  */
-function copyIcon(name, defaults) {
+async function copyIcon(name, defaults) {
   name = name.toLowerCase();
 
   const iconNameRegex = /^[a-z0-9_-]+$/;
@@ -251,13 +251,7 @@ function copyIcon(name, defaults) {
     recursive: true,
   });
 
-  fs.copyFile(require.resolve(source), destination, (error) => {
-    if (isDebug) {
-      error
-        ? console.error(`Error copying icon "${name}":`, error)
-        : console.log(`Icon "${name}" copied successfully!`);
-    }
-  });
+  await cp(require.resolve(source), destination);
 }
 
 /**

@@ -77,40 +77,27 @@ export const Vueless = function (options = {}) {
       },
     }),
 
-    configResolved: async (config) => {
-      if (!isNuxt) {
-        /* collect used in project colors for tailwind safelist */
-        await createTailwindSafelist({ mode, env, debug, targetFiles });
-      }
-
-      if ((config.command.includes("sb:") && mode === "storybook") || isVuelessEnv) {
+    configResolved: async () => {
+      if (mode === "storybook" || isVuelessEnv) {
         await showHiddenStories(isVuelessEnv);
         await buildWebTypes();
         await hideHiddenStories(isVuelessEnv);
       }
 
-      if (config.command === "build") {
-        /* remove cached icons */
-        await removeIconsCache(mirrorCacheDir, debug);
-
-        /* cache vueless built-in and project icons */
-        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        await cacheIcons({ mode, env, debug, targetFiles });
-
-        /* copy vueless cache folder */
-        await copyIconsCache(mirrorCacheDir, debug);
+      if (!isNuxt) {
+        /* collect used in project colors for tailwind safelist */
+        await createTailwindSafelist({ mode, env, debug, targetFiles });
       }
 
-      if (config.command === "dev" || config.command === "serve") {
-        /* remove cached icons */
-        await removeIconsCache(mirrorCacheDir, debug);
-        /* cache vueless built-in icons */
-        await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
-        /* copy vueless cache folder */
-        await copyIconsCache(mirrorCacheDir, debug);
+      await removeIconsCache(mirrorCacheDir, debug);
 
-        await setCustomPropTypes(isVuelessEnv);
-      }
+      /* cache vueless built-in and project icons */
+      await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+      await cacheIcons({ mode, env, debug, targetFiles });
+
+      await copyIconsCache(mirrorCacheDir, debug);
+
+      await setCustomPropTypes(isVuelessEnv);
     },
 
     buildEnd: async () => {
