@@ -5,8 +5,8 @@ export default /*tw*/ {
       variant: {
         solid: "text-inverted bg-{color} border-transparent",
         outlined: "text-{color} border-{color}",
-        subtle: "text-{color} bg-{color}/5 border-{color}/15",
-        soft: "text-{color} bg-{color}/5 border-transparent",
+        subtle: "text-{color} bg-{color}/10 border-{color}/15",
+        soft: "text-{color} bg-{color}/10 border-transparent",
       },
       size: {
         xs: "text-tiny",

@@ -2,7 +2,7 @@ export default /*tw*/ {
   avatar: {
     base: `
       flex items-center justify-center shrink-0
-      text-{color} bg-{color}/5 bg-contain bg-center bg-no-repeat
+      text-{color} bg-{color}/10 bg-contain bg-center bg-no-repeat
     `,
     variants: {
       bordered: {

@@ -8,7 +8,7 @@ export default /*tw*/ {
         false: "absolute",
       },
       actionsHeader: {
-        true: "rounded-t-medium border-muted bg-muted",
+        true: "rounded-t-medium border-muted bg-default",
       },
     },
     compoundVariants: [
