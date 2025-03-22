@@ -97,7 +97,7 @@ Custom dark mode related vueless loader.
   /* -------------------- Storybook sidebar -------------------- */
 
   .dark .sidebar-container {
-    background: #111827;
+    background: #020713;
   }
 
   .sidebar-header img {
@@ -106,6 +106,26 @@ Custom dark mode related vueless loader.
 
   .sidebar-header a:focus {
     border: 1px solid transparent;
+  }
+
+  .sidebar-item {
+      border-radius: 6px !important;
+  }
+
+  .dark .sidebar-item:hover {
+      background: #101828 !important;
+  }
+
+  .dark .sidebar-item[data-selected="true"],
+  .dark .sidebar-item[data-selected="true"]:hover {
+      background: #1f2937 !important;
+  }
+
+
+
+  .search-field,
+  .search-result-item {
+      border-radius: 8px !important;
   }
 
   .sidebar-item,

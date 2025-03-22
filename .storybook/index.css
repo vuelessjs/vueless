@@ -233,8 +233,9 @@ body {
 }
 
 .vl-dark .sb-bar,
-.vl-dark .docs-story {
-  @apply bg-gray-900;
+.vl-dark .docs-story,
+.vl-dark .docs-story > div {
+  @apply !bg-gray-900;
 }
 
 .docs-story > div > div {
@@ -260,10 +261,35 @@ body {
 }
 
 .vl-dark .docblock-code-toggle {
-  @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
+  @apply bg-gray-800 border-gray-800 text-gray-400;
+}
+
+.vl-light .docblock-code-toggle {
+  @apply !border border-gray-300;
+}
+
+.vl-dark .docblock-code-toggle {
+  @apply !border border-gray-700;
+}
+
+.docblock-code-toggle,
+.docblock-source > div > button,
+.docs-story > div > button,
+.docs-story + div > div > button {
+  margin: 0 4px 4px 0 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.docblock-code-toggle,
+.docblock-source > div,
+.docs-story > div,
+.docs-story + div > div {
+  background: transparent !important;
 }
 
 .sbdocs-preview {
+  border-radius: 8px !important;
   box-shadow: none !important;
 }
 
@@ -340,11 +366,14 @@ body {
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
   @apply bg-gray-800 border-gray-700/50 text-gray-400;
+  border-radius: 4px !important;
+
 }
 
 .dark .sb-story code,
 .light .sb-story code {
   @apply !bg-inherit !text-inherit;
+  border-radius: 4px !important;
 }
 
 .dark .docblock-argstable-body tr > td > div + div > span:not([class]) {
@@ -427,8 +456,9 @@ body {
 }
 
 .docblock-source {
-  @apply !bg-gray-800 border-gray-800 !rounded-lg;
+  @apply !bg-gray-800 border-gray-800;
   box-shadow: none !important;
+  border-radius: 8px !important;
 }
 
 .dark .docblock-source {
