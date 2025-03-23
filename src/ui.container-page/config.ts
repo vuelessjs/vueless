@@ -33,7 +33,7 @@ export default /*tw*/ {
     },
   },
   rightRoundingWrapper: {
-    base: "absolute right-4",
+    base: "hidden md:block absolute right-4",
     variants: {
       rounding: {
         false: "hidden",

@@ -4,7 +4,6 @@ import { computed, useSlots, onMounted } from "vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
-import useBreakpoint from "../composables/useBreakpoint.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -31,8 +30,6 @@ const emit = defineEmits([
    */
   "back",
 ]);
-
-const { isMobileBreakpoint } = useBreakpoint();
 
 const isExistHeader = computed(() => {
   return (
@@ -156,7 +153,7 @@ const {
       </div>
     </div>
 
-    <div v-if="!isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
+    <div v-bind="rightRoundingWrapperAttrs">
       <div v-bind="rightRoundingAttrs" />
     </div>
   </div>
