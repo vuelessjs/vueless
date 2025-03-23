@@ -75,7 +75,9 @@ export const vue3SourceDecorator = makeDecorator({
           }
         }
 
-        return () => h("div", { class: "px-6 pt-8 pb-12" }, [h(story)]);
+        const storyClasses = context.parameters?.storyClasses || "px-6 pt-8 pb-12";
+
+        return () => h("div", { class: storyClasses }, [h(story)]);
       },
     };
   },

@@ -36,6 +36,7 @@ export default {
     ...getArgTypes(UPage.__name),
   },
   parameters: {
+    storyClasses: "p-0",
     docs: {
       ...getDocsDescription(UPage.__name),
     },
