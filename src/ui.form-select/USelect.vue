@@ -441,6 +441,7 @@ const {
   toggleIconAttrs,
   clearIconAttrs,
   clearMultipleIconAttrs,
+  selectedIconAttrs,
 } = useUI(defaultConfig, mutatedProps);
 </script>
 
@@ -708,6 +709,15 @@ const {
         </template>
 
         <template #after-option="{ option, index }">
+          <UIcon
+            v-if="option[valueKey] === modelValue"
+            internal
+            interactive
+            color="neutral"
+            :name="config.defaults.selectedIcon"
+            v-bind="selectedIconAttrs"
+          />
+
           <!--
             @slot Use it to add something after option.
             @binding {object} option

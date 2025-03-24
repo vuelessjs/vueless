@@ -109,6 +109,7 @@ export default /*tw*/ {
   },
   toggleWrapper: "{>toggle} mr-3",
   toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[*]/active:rotate-180",
+  selectedIcon: "{UIcon} {>selectIcon}",
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   clearMultiple: "flex items-center",
@@ -173,5 +174,6 @@ export default /*tw*/ {
     dropdownIcon: "keyboard_arrow_down",
     clearIcon: "close_small",
     clearMultipleIcon: "close_small",
+    selectedIcon: "check",
   },
 };
