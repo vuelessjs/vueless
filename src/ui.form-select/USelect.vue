@@ -712,8 +712,6 @@ const {
           <UIcon
             v-if="option[valueKey] === modelValue"
             internal
-            interactive
-            color="neutral"
             :name="config.defaults.selectedIcon"
             v-bind="selectedIconAttrs"
           />
