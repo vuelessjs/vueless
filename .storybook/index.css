@@ -234,7 +234,7 @@ body {
 
 .vl-dark .sb-bar,
 .vl-dark .docs-story,
-.vl-dark .docs-story > div {
+.vl-dark .docs-story + div {
   @apply !bg-gray-900;
 }
 
