@@ -46,19 +46,7 @@ function getMonth(monthNumber: number) {
   return newDate;
 }
 
-function getMonthState(month: Date, index: number) {
-  const startRangeIndex = months.value.findIndex((month) => {
-    return isSameMonth(month, localSelectedDate.value);
-  });
-
-  const endRangeIndex = months.value.findIndex((month) => {
-    return props.selectedDateTo && isSameMonth(month, props.selectedDateTo);
-  });
-
-  const isMonthInRange =
-    props.range &&
-    ((index >= startRangeIndex && index <= endRangeIndex) ||
-      (index >= startRangeIndex && endRangeIndex === -1));
+function getMonthState(month: Date) {
   const isSelectedMonth =
     isSameMonth(month, localSelectedDate.value) && props.selectedDate !== null;
   const isPresentMonth = isCurrentMonth(month);
@@ -68,28 +56,12 @@ function getMonthState(month: Date, index: number) {
     props.selectedDate &&
     isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
   const isActiveMonth = props.activeMonth && isSameMonth(props.activeMonth, month) && !props.range;
-  const isCurrentMonthInRange = isMonthInRange && isPresentMonth;
-  const isLastMonthInRange =
-    props.selectedDateTo &&
-    props.range &&
-    isSameMonth(month, props.selectedDateTo) &&
-    isMoreThanOneMonthRange;
-  const isFirstMonthInRange =
-    props.range && isSameMonth(month, localSelectedDate.value) && isMoreThanOneMonthRange;
-  const isCurrentFirstMonthInRange = props.range && isFirstMonthInRange && isPresentMonth;
-  const isCurrentLastMonthInRange = props.range && isLastMonthInRange && isPresentMonth;
 
   return {
     isSelectedMonth,
     isCurrentMonth: isPresentMonth,
     isMoreThanOneMonthRange,
     isActiveMonth,
-    isCurrentMonthInRange,
-    isLastMonthInRange,
-    isFirstMonthInRange,
-    isCurrentFirstMonthInRange,
-    isCurrentLastMonthInRange,
-    isMonthInRange,
   };
 }
 
@@ -109,28 +81,15 @@ function onClickMonth(month: Date) {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  monthViewAttrs,
-  monthAttrs,
-  currentMonthAttrs,
-  currentMonthInRangeAttrs,
-  lastMonthInRangeAttrs,
-  firstMonthInRangeAttrs,
-  singleMonthInRangeAttrs,
-  monthInRangeAttrs,
-  selectedMonthAttrs,
-  activeMonthAttrs,
-  currentLastMonthInRangeAttrs,
-  currentFirstMonthInRangeAttrs,
-  singleCurrentMonthInRangeAttrs,
-} = useUI<Config>(defaultConfig);
+const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activeMonthAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div v-bind="monthViewAttrs">
-    <template v-for="(month, idx) in months" :key="month">
+    <template v-for="month in months" :key="month">
       <UButton
-        v-if="getMonthState(month, idx).isSelectedMonth && !props.range"
+        v-if="getMonthState(month).isSelectedMonth && !props.range"
         variant="solid"
         color="primary"
         size="md"
@@ -142,9 +101,7 @@ const {
       />
 
       <UButton
-        v-else-if="
-          getMonthState(month, idx).isCurrentMonth && !getMonthState(month, idx).isMonthInRange
-        "
+        v-else-if="getMonthState(month).isCurrentMonth"
         variant="ghost"
         color="primary"
         v-bind="currentMonthAttrs"
@@ -155,112 +112,7 @@ const {
       />
 
       <UButton
-        v-else-if="getMonthState(month, idx).isCurrentFirstMonthInRange"
-        variant="soft"
-        color="primary"
-        size="md"
-        v-bind="currentFirstMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getMonthState(month, idx).isCurrentLastMonthInRange"
-        variant="soft"
-        color="primary"
-        size="md"
-        v-bind="currentLastMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getMonthState(month, idx).isFirstMonthInRange"
-        variant="soft"
-        color="primary"
-        size="md"
-        v-bind="firstMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getMonthState(month, idx).isLastMonthInRange"
-        variant="soft"
-        color="primary"
-        size="md"
-        v-bind="lastMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="
-          getMonthState(month, idx).isCurrentMonthInRange &&
-          !getMonthState(month, idx).isMoreThanOneMonthRange
-        "
-        variant="solid"
-        color="primary"
-        size="md"
-        v-bind="singleCurrentMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getMonthState(month, idx).isCurrentMonthInRange"
-        variant="solid"
-        color="primary"
-        size="md"
-        v-bind="currentMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="
-          !getMonthState(month, idx).isMoreThanOneMonthRange &&
-          getMonthState(month, idx).isMonthInRange
-        "
-        variant="ghost"
-        color="primary"
-        size="md"
-        v-bind="singleMonthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="
-          getMonthState(month, idx).isMonthInRange &&
-          getMonthState(month, idx).isMoreThanOneMonthRange
-        "
-        variant="ghost"
-        color="primary"
-        size="md"
-        v-bind="monthInRangeAttrs"
-        :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'M', props.locale)"
-        @click="onClickMonth(month)"
-        @mousedown.prevent.capture
-      />
-
-      <UButton
-        v-else-if="getMonthState(month, idx).isActiveMonth"
+        v-else-if="getMonthState(month).isActiveMonth"
         variant="ghost"
         color="primary"
         size="md"
