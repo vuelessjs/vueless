@@ -63,9 +63,9 @@ export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 95
 
 export const DEFAULT_LIGHT_THEME = {
   /* Primary colors */
-  "--vl-primary": "--color-primary-600",
-  "--vl-primary-lifted": "--color-primary-700",
-  "--vl-primary-accented": "--color-primary-800",
+  "--vl-primary": "--vl-primary-600",
+  "--vl-primary-lifted": "--vl-primary-700",
+  "--vl-primary-accented": "--vl-primary-800",
 
   /* Secondary colors */
   "--vl-secondary": "--vl-neutral-500",
@@ -130,9 +130,9 @@ export const DEFAULT_LIGHT_THEME = {
 
 export const DEFAULT_DARK_THEME = {
   /* Primary colors */
-  "--vl-primary": "--color-primary-400",
-  "--vl-primary-lifted": "--color-primary-500",
-  "--vl-primary-accented": "--color-primary-600",
+  "--vl-primary": "--vl-primary-400",
+  "--vl-primary-lifted": "--vl-primary-500",
+  "--vl-primary-accented": "--vl-primary-600",
 
   /* Secondary colors */
   "--vl-secondary": "--vl-neutral-300",
