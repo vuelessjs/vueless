@@ -9,12 +9,6 @@ export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 
-/* Vueless colors cookies */
-export const PRIMARY_COLOR_COOKIE = "vl-primary";
-export const NEUTRAL_COLOR_COOKIE = "vl-neutral";
-export const SECONDARY_COLOR_COOKIE = "vl-secondary";
-export const GRAYSCALE_COLOR_COOKIE = "vl-grayscale";
-
 /* Vueless dark mode */
 export const DARK_MODE_SELECTOR = "vl-dark";
 export const LIGHT_MODE_SELECTOR = "vl-light";
