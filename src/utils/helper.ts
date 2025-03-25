@@ -113,7 +113,7 @@ export const isSSR: boolean = typeof window === "undefined";
 export const isCSR: boolean = typeof window !== "undefined";
 
 /**
- * Cookie helper functions
+ * Set cookie on the client side
  */
 export function setCookie(name: string, value: string, days = 365) {
   const expires = new Date();
@@ -127,6 +127,9 @@ export function setCookie(name: string, value: string, days = 365) {
   `;
 }
 
+/**
+ * Get cookie on the client side
+ */
 export function getCookie(name: string): string | null {
   const nameEQ = `${name}=`;
   const cookies = document.cookie.split(";");
