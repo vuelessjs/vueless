@@ -6,6 +6,7 @@ import { isCSR } from "./helper.ts";
 import {
   PX_IN_REM,
   COLOR_MODE_KEY,
+  AUTO_MODE_KEY,
   LIGHT_MODE_SELECTOR,
   DARK_MODE_SELECTOR,
   GRAYSCALE_COLOR,
@@ -77,7 +78,7 @@ function getCookie(name: string): string | null {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  const isSystemModeCookie = isCSR && Number(getCookie("vl-auto-mode"));
+  const isSystemModeCookie = isCSR && Number(getCookie(AUTO_MODE_KEY));
 
   if (isSystemModeCookie) {
     setTheme({ colorMode: ColorMode.Auto }, true);
@@ -127,7 +128,7 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: boolean) {
   setCookie(COLOR_MODE_KEY, newColorMode);
 
   if (isSystemMode !== undefined) {
-    setCookie("vl-auto-mode", isSystemMode ? "1" : "0");
+    setCookie(AUTO_MODE_KEY, isSystemMode ? "1" : "0");
   }
 
   if (shouldAttachListener) {
