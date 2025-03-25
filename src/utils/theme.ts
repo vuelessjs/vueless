@@ -69,6 +69,7 @@ const prefersDarkMode = isCSR && window.matchMedia("(prefers-color-scheme: dark)
 function toggleColorModeClass() {
   if (!prefersDarkMode) return;
 
+  setCookie(COLOR_MODE_KEY, prefersDarkMode.matches ? ColorMode.Dark : ColorMode.Light);
   document.documentElement.classList.toggle(DARK_MODE_SELECTOR, prefersDarkMode.matches);
   document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !prefersDarkMode.matches);
 }
@@ -77,8 +78,10 @@ function toggleColorModeClass() {
  * Sets color mode.
  * @param {string} colorMode (dark | light | auto)
  */
-export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: boolean) {
+export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) {
   if (isSSR) return;
+
+  const systemMode = isSystemMode ?? Boolean(Number(getCookie(AUTO_MODE_KEY)));
 
   prefersDarkMode && prefersDarkMode.removeEventListener("change", toggleColorModeClass);
 
@@ -91,25 +94,15 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: boolean) {
 
   window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDark }));
 
-  let newColorMode: string;
-  let shouldAttachListener = false;
+  const finalColorMode = isAutoMode ? (isDark ? ColorMode.Dark : ColorMode.Light) : colorMode;
 
-  if (colorMode === ColorMode.Auto) {
-    newColorMode = isDark ? ColorMode.Dark : ColorMode.Light;
-    isSystemMode = true;
-    shouldAttachListener = true;
-  } else {
-    newColorMode = colorMode;
-  }
+  const shouldAttachListener = isAutoMode || systemMode;
 
-  setCookie(COLOR_MODE_KEY, newColorMode);
+  setCookie(COLOR_MODE_KEY, finalColorMode);
+  setCookie(AUTO_MODE_KEY, systemMode ? "1" : "0");
 
-  if (isSystemMode !== undefined) {
-    setCookie(AUTO_MODE_KEY, isSystemMode ? "1" : "0");
-  }
-
-  if (shouldAttachListener) {
-    prefersDarkMode && prefersDarkMode.addEventListener("change", toggleColorModeClass);
+  if (shouldAttachListener && prefersDarkMode) {
+    prefersDarkMode.addEventListener("change", toggleColorModeClass);
   }
 }
 
