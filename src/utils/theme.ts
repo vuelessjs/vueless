@@ -70,6 +70,7 @@ function toggleColorModeClass() {
   if (!prefersDarkMode) return;
 
   setCookie(COLOR_MODE_KEY, prefersDarkMode.matches ? ColorMode.Dark : ColorMode.Light);
+
   document.documentElement.classList.toggle(DARK_MODE_SELECTOR, prefersDarkMode.matches);
   document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !prefersDarkMode.matches);
 }
