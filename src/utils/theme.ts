@@ -20,6 +20,8 @@ import {
   ROUNDING_INCREMENT,
   NEUTRAL_COLOR,
   PRIMARY_COLOR,
+  PRIMARY_COLOR_KEY,
+  NEUTRAL_COLOR_KEY,
   COLOR_SHADES,
   DEFAULT_LIGHT_THEME,
   DEFAULT_DARK_THEME,
@@ -149,7 +151,7 @@ export function cssVar(name: string) {
  * @returns string | undefined
  */
 export function getSelectedPrimaryColor() {
-  return isCSR ? getCookie(PRIMARY_COLOR) : undefined;
+  return isCSR ? getCookie(PRIMARY_COLOR_KEY) : undefined;
 }
 
 /**
@@ -157,7 +159,7 @@ export function getSelectedPrimaryColor() {
  * @return string | undefined
  */
 export function getSelectedNeutralColor() {
-  return isCSR ? getCookie(NEUTRAL_COLOR) : undefined;
+  return isCSR ? getCookie(NEUTRAL_COLOR_KEY) : undefined;
 }
 
 /**
@@ -218,8 +220,8 @@ export function setTheme(config: Config = {}, isSystemMode: boolean) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  if (isCSR && config.primary) setCookie(`vl-${PRIMARY_COLOR}`, primary);
-  if (isCSR && config.neutral) setCookie(`vl-${NEUTRAL_COLOR}`, neutral);
+  if (isCSR && config.primary) setCookie(PRIMARY_COLOR_KEY, primary);
+  if (isCSR && config.neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
