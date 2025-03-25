@@ -126,10 +126,8 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: boolean) {
 
   setCookie(COLOR_MODE_KEY, newColorMode);
 
-  if (isSystemMode === true) {
-    setCookie("vl-auto-mode", "1");
-  } else if (isSystemMode === false) {
-    setCookie("vl-auto-mode", "0");
+  if (isSystemMode !== undefined) {
+    setCookie("vl-auto-mode", isSystemMode ? "1" : "0");
   }
 
   if (shouldAttachListener) {
