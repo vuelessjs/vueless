@@ -1,5 +1,15 @@
 export default /*tw*/ {
-  wrapper: "p-4 md:p-6 border rounded-large border-muted bg-default w-full text-medium",
+  wrapper: {
+    base: "p-4 md:p-6 border rounded-large w-full text-medium",
+    variants: {
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
+      },
+    },
+  },
   header: "flex justify-between mb-4",
   headerLeft: "flex items-center gap-2 w-fit",
   headerLeftFallback: "flex flex-col w-fit",
@@ -9,6 +19,6 @@ export default /*tw*/ {
   footerLeft: "",
   footerRight: "",
   defaults: {
-    //
+    variant: "outlined",
   },
 };

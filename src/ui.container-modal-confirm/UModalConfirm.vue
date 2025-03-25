@@ -88,6 +88,7 @@ const {
     :title="title"
     :description="description"
     :inner="inner"
+    :variant="variant"
     :close-on-esc="closeOnEsc"
     :close-on-cross="closeOnCross"
     :close-on-overlay="closeOnOverlay"

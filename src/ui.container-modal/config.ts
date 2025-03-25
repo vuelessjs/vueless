@@ -40,8 +40,14 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   modal: {
-    base: "mx-auto bg-default rounded-large border border-muted",
+    base: "mx-auto rounded-large border",
     variants: {
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
+      },
       size: {
         xs: "md:w-[25rem]",
         sm: "md:w-[31.25rem]",
@@ -59,6 +65,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    variant: "solid",
     size: "sm",
     inner: false,
     divider: false,

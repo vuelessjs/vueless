@@ -9,6 +9,7 @@ export default /*tw*/ {
   },
   defaults: {
     size: "sm",
+    variant: "solid",
     confirmColor: "primary",
     inner: false,
     divider: false,
