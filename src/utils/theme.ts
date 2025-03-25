@@ -218,8 +218,8 @@ export function setTheme(config: Config = {}, isSystemMode: boolean) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  if (isCSR && config.primary) setCookie(PRIMARY_COLOR, primary);
-  if (isCSR && config.neutral) setCookie(NEUTRAL_COLOR, neutral);
+  if (isCSR && config.primary) setCookie(`vl-${PRIMARY_COLOR}`, primary);
+  if (isCSR && config.neutral) setCookie(`vl-${NEUTRAL_COLOR}`, neutral);
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
