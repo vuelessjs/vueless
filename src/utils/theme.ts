@@ -77,65 +77,62 @@ function getCookie(name: string): string | null {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  setTheme();
+  const isSystemModeCookie = isCSR && getCookie("is-system-mode");
 
-  if (isCSR && vuelessConfig.colorMode === ColorMode.Auto) {
-    const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-    prefersColorSchemeDark.addEventListener("change", (event) => {
-      setTheme({ colorMode: event.matches ? ColorMode.Dark : ColorMode.Light });
-    });
+  if (isSystemModeCookie === "true") {
+    setTheme({ colorMode: ColorMode.Auto }, "true");
   }
+}
+
+// Creates a media query that checks if the user's system is set to dark mode
+const mediaQuery = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
+
+// Toggles dark and light mode classes on the <html> element to reflect system preference
+function systemThemeListener() {
+  if (!mediaQuery) return;
+
+  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, mediaQuery.matches);
+  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !mediaQuery.matches);
 }
 
 /**
  * Sets color mode.
  * @param {string} colorMode (dark | light | auto)
  */
-export function setColorMode(colorMode: `${ColorMode}`) {
-  const cashedColorMode = isCSR ? (getCookie(COLOR_MODE_KEY) as ColorMode | null) : null;
+export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: string) {
+  if (!isCSR) return;
 
-  const isDark = colorMode === ColorMode.Dark;
-  const isLight = colorMode === ColorMode.Light;
-  const isAuto = colorMode === ColorMode.Auto;
+  mediaQuery && mediaQuery.removeEventListener("change", systemThemeListener);
 
-  let newColorMode = ColorMode.Auto;
+  const isDark =
+    colorMode === ColorMode.Dark ||
+    (colorMode === ColorMode.Auto && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  if (isAuto && isCSR) {
-    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDark);
+  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDark);
 
-    newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
+  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDark }));
+
+  let newColorMode: string;
+  let shouldAttachListener = false;
+
+  if (colorMode === ColorMode.Auto) {
+    newColorMode = isDark ? ColorMode.Dark : ColorMode.Light;
+    isSystemMode = "true";
+    shouldAttachListener = true;
+  } else {
+    newColorMode = colorMode;
   }
 
-  if (cashedColorMode !== null) {
-    newColorMode = cashedColorMode;
+  setCookie(COLOR_MODE_KEY, newColorMode);
+
+  if (isSystemMode) {
+    setCookie("is-system-mode", isSystemMode);
   }
 
-  if (isLight) {
-    newColorMode = ColorMode.Light;
+  if (shouldAttachListener) {
+    mediaQuery && mediaQuery.addEventListener("change", systemThemeListener);
   }
-
-  if (isDark) {
-    newColorMode = ColorMode.Dark;
-  }
-
-  if (isCSR) {
-    const darkModeChangeEvent = new CustomEvent("darkModeChange", {
-      detail: newColorMode === ColorMode.Dark,
-    });
-
-    if (newColorMode === ColorMode.Dark) {
-      document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
-      document.documentElement.classList.add(DARK_MODE_SELECTOR);
-    } else {
-      document.documentElement.classList.remove(DARK_MODE_SELECTOR);
-      document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
-    }
-
-    window.dispatchEvent(darkModeChangeEvent);
-  }
-
-  isCSR && setCookie(COLOR_MODE_KEY, newColorMode);
 }
 
 /**
@@ -167,8 +164,14 @@ export function getSelectedNeutralColor() {
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: Config = {}) {
-  setColorMode(config.colorMode || vuelessConfig.colorMode || ColorMode.Light);
+export function setTheme(config: Config = {}, isSystemMode: string) {
+  const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
+
+  const colorMode: ColorMode = (config.colorMode ||
+    colorModeCookie ||
+    vuelessConfig.colorMode) as ColorMode;
+
+  setColorMode(colorMode, isSystemMode);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
