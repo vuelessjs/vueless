@@ -77,10 +77,10 @@ function getCookie(name: string): string | null {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  const isSystemModeCookie = isCSR && getCookie("is-system-mode");
+  const isSystemModeCookie = isCSR && Number(getCookie("vl-auto-mode"));
 
-  if (isSystemModeCookie === "true") {
-    setTheme({ colorMode: ColorMode.Auto }, "true");
+  if (isSystemModeCookie) {
+    setTheme({ colorMode: ColorMode.Auto }, true);
   }
 }
 
@@ -99,7 +99,7 @@ function systemThemeListener() {
  * Sets color mode.
  * @param {string} colorMode (dark | light | auto)
  */
-export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: string) {
+export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: boolean) {
   if (!isCSR) return;
 
   mediaQuery && mediaQuery.removeEventListener("change", systemThemeListener);
@@ -118,7 +118,7 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: string) {
 
   if (colorMode === ColorMode.Auto) {
     newColorMode = isDark ? ColorMode.Dark : ColorMode.Light;
-    isSystemMode = "true";
+    isSystemMode = true;
     shouldAttachListener = true;
   } else {
     newColorMode = colorMode;
@@ -126,8 +126,10 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode: string) {
 
   setCookie(COLOR_MODE_KEY, newColorMode);
 
-  if (isSystemMode) {
-    setCookie("is-system-mode", isSystemMode);
+  if (isSystemMode === true) {
+    setCookie("vl-auto-mode", "1");
+  } else if (isSystemMode === false) {
+    setCookie("vl-auto-mode", "0");
   }
 
   if (shouldAttachListener) {
@@ -164,7 +166,7 @@ export function getSelectedNeutralColor() {
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: Config = {}, isSystemMode: string) {
+export function setTheme(config: Config = {}, isSystemMode: boolean) {
   const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
 
   const colorMode: ColorMode = (config.colorMode ||
