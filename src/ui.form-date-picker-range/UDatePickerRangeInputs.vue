@@ -115,6 +115,7 @@ defineExpose({
       size="md"
       v-bind="attrs.rangeInputFirstAttrs.value"
       :name="rangeInputName"
+      no-autocomplete
       @input="onInputRangeInput($event, InputRangeType.Start)"
     />
 
@@ -125,6 +126,7 @@ defineExpose({
       size="md"
       v-bind="attrs.rangeInputLastAttrs.value"
       :name="rangeInputName"
+      no-autocomplete
       @input="onInputRangeInput($event, InputRangeType.End)"
     />
   </div>

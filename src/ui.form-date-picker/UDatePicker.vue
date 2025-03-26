@@ -296,6 +296,7 @@ watchEffect(() => {
       :size="size"
       :left-icon="leftIcon"
       :right-icon="rightIcon || config.defaults.calendarIcon"
+      no-autocomplete
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @input="onTextInput"
       @focus="activate"
