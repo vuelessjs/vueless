@@ -56,10 +56,10 @@ declare interface RootCSSVariableOptions {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  const isCachedAutoMode = isCSR && Number(getCookie(AUTO_MODE_KEY));
+  const isCachedAutoMode = isCSR && Boolean(Number(getCookie(AUTO_MODE_KEY)));
 
   if (isCachedAutoMode) {
-    setTheme({ colorMode: ColorMode.Auto }, Boolean(isCachedAutoMode));
+    setTheme({ colorMode: ColorMode.Auto }, isCachedAutoMode);
   }
 }
 
@@ -84,7 +84,9 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) 
 
   const systemMode = isSystemMode ?? Boolean(Number(getCookie(AUTO_MODE_KEY)));
 
-  prefersDarkMode && prefersDarkMode.removeEventListener("change", toggleColorModeClass);
+  if (prefersDarkMode) {
+    prefersDarkMode.removeEventListener("change", toggleColorModeClass);
+  }
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isDark =

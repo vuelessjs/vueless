@@ -115,27 +115,46 @@ export const isCSR: boolean = typeof window !== "undefined";
 /**
  * Set cookie on the client side
  */
-export function setCookie(name: string, value: string, days = 365) {
-  const expires = new Date();
+export function setCookie(name: string, value: string, attributes = {} as UnknownObject) {
+  attributes = {
+    path: "/",
+    ...attributes,
+  };
 
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+  if (attributes.expires instanceof Date) {
+    attributes.expires = attributes.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (const attributeKey in attributes) {
+    updatedCookie += "; " + attributeKey;
+    const attributeValue = attributes[attributeKey];
+
+    if (attributeValue !== true) {
+      updatedCookie += "=" + attributeValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
 }
 
 /**
  * Get cookie on the client side
  */
-export function getCookie(name: string): string | null {
-  const nameEQ = `${name}=`;
-  const cookies = document.cookie.split(";");
+export function getCookie(name: string) {
+  const matches = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
+  );
 
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
-    if (cookie.indexOf(nameEQ) === 0) {
-      return cookie.substring(nameEQ.length, cookie.length);
-    }
-  }
-
-  return null;
+/**
+ * Delete cookie on the client side
+ */
+export function deleteCookie(name: string) {
+  setCookie(name, "", {
+    "max-age": -1,
+  });
 }
