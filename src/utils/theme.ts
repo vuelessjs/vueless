@@ -56,7 +56,7 @@ declare interface RootCSSVariableOptions {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  const isCachedAutoMode = isCSR && Boolean(Number(getCookie(AUTO_MODE_KEY)));
+  const isCachedAutoMode = isCSR && !!Number(getCookie(AUTO_MODE_KEY));
 
   if (isCachedAutoMode) {
     setTheme({ colorMode: ColorMode.Auto }, isCachedAutoMode);
@@ -64,15 +64,15 @@ export function themeInit() {
 }
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
-const prefersDarkMode = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
+const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
 
 function toggleColorModeClass() {
-  if (!prefersDarkMode) return;
+  if (!prefersColorSchemeDark) return;
 
-  setCookie(COLOR_MODE_KEY, prefersDarkMode.matches ? ColorMode.Dark : ColorMode.Light);
+  setCookie(COLOR_MODE_KEY, prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light);
 
-  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, prefersDarkMode.matches);
-  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !prefersDarkMode.matches);
+  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, prefersColorSchemeDark.matches);
+  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !prefersColorSchemeDark.matches);
 }
 
 /**
@@ -84,13 +84,14 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) 
 
   const systemMode = isSystemMode ?? Boolean(Number(getCookie(AUTO_MODE_KEY)));
 
-  if (prefersDarkMode) {
-    prefersDarkMode.removeEventListener("change", toggleColorModeClass);
+  if (prefersColorSchemeDark) {
+    prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
   }
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isDark =
-    colorMode === ColorMode.Dark || (isAutoMode && prefersDarkMode && prefersDarkMode.matches);
+    colorMode === ColorMode.Dark ||
+    (isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark.matches);
 
   document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDark);
   document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDark);
@@ -104,8 +105,8 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) 
   setCookie(COLOR_MODE_KEY, finalColorMode);
   setCookie(AUTO_MODE_KEY, systemMode ? "1" : "0");
 
-  if (shouldAttachListener && prefersDarkMode) {
-    prefersDarkMode.addEventListener("change", toggleColorModeClass);
+  if (shouldAttachListener && prefersColorSchemeDark) {
+    prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
   }
 }
 

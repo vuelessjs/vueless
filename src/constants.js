@@ -12,8 +12,6 @@ export const GRAYSCALE_COLOR = "grayscale";
 /* Vueless cookies keys */
 export const PRIMARY_COLOR_KEY = "vl-primary";
 export const NEUTRAL_COLOR_KEY = "vl-neutral";
-export const SECONDARY_COLOR_KEY = "vl-secondary";
-export const GRAYSCALE_COLOR_KEY = "vl-grayscale";
 export const ROUNDING_KEY = "vl-rounding";
 
 /* Vueless dark mode */
