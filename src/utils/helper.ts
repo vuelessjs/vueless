@@ -111,3 +111,50 @@ export const isSSR: boolean = typeof window === "undefined";
  * Check is code rendering on the client side.
  */
 export const isCSR: boolean = typeof window !== "undefined";
+
+/**
+ * Set cookie on the client side
+ */
+export function setCookie(name: string, value: string, attributes = {} as UnknownObject) {
+  attributes = {
+    path: "/",
+    ...attributes,
+  };
+
+  if (attributes.expires instanceof Date) {
+    attributes.expires = attributes.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (const attributeKey in attributes) {
+    updatedCookie += "; " + attributeKey;
+    const attributeValue = attributes[attributeKey];
+
+    if (attributeValue !== true) {
+      updatedCookie += "=" + attributeValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
+/**
+ * Get cookie on the client side
+ */
+export function getCookie(name: string) {
+  const matches = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
+  );
+
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+/**
+ * Delete cookie on the client side
+ */
+export function deleteCookie(name: string) {
+  setCookie(name, "", {
+    "max-age": -1,
+  });
+}
