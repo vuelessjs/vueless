@@ -58,17 +58,7 @@ declare interface RootCSSVariableOptions {
 export function themeInit() {
   if (isSSR) return;
 
-  const primaryColor = getCookie(PRIMARY_COLOR_KEY) || DEFAULT_PRIMARY_COLOR;
-  const neutralColor = getCookie(NEUTRAL_COLOR_KEY) || DEFAULT_NEUTRAL_COLOR;
-  const rounding = Number(getCookie(ROUNDING_KEY)) || DEFAULT_ROUNDING;
-  const colorMode = (getCookie(COLOR_MODE_KEY) as ColorMode) || ColorMode.Auto;
-  const autoMode =
-    getCookie(AUTO_MODE_KEY) === undefined ? true : !!Number(getCookie(AUTO_MODE_KEY));
-
-  setTheme(
-    { primary: primaryColor, neutral: neutralColor, rounding: rounding, colorMode: colorMode },
-    autoMode,
-  );
+  setTheme();
 }
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
