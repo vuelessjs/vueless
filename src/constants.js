@@ -13,12 +13,12 @@ export const GRAYSCALE_COLOR = "grayscale";
 export const PRIMARY_COLOR_KEY = "vl-primary";
 export const NEUTRAL_COLOR_KEY = "vl-neutral";
 export const ROUNDING_KEY = "vl-rounding";
+export const COLOR_MODE_KEY = "vl-color-mode";
+export const AUTO_MODE_KEY = "vl-auto-mode";
 
 /* Vueless dark mode */
 export const DARK_MODE_SELECTOR = "vl-dark";
 export const LIGHT_MODE_SELECTOR = "vl-light";
-export const COLOR_MODE_KEY = "vl-color-mode";
-export const AUTO_MODE_KEY = "vl-auto-mode";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
