@@ -74,7 +74,7 @@
     "@vue/eslint-config-typescript": "^14.1.1",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
-    "@vueless/storybook": "^0.0.59",
+    "@vueless/storybook": "^0.0.75-beta.0",
     "autoprefixer": "^10.4.19",
     "cssnano": "^6.1.2",
     "eslint": "^9.12.0",

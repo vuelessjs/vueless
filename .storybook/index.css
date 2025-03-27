@@ -424,10 +424,13 @@ body {
 
 .dark .docblock-argstable-body [type='checkbox']:checked,
 .dark .docblock-argstable-body [type='radio']:checked {
-  @apply bg-gray-900 invert grayscale !border-gray-300;
+  @apply invert grayscale !border-gray-300;
 }
 
-.light .docblock-argstable-body [type='checkbox']:checked,
+.dark .docblock-argstable-body [type='radio']:checked {
+  @apply bg-gray-900;
+}
+
 .light .docblock-argstable-body [type='radio']:checked {
   @apply !bg-gray-900;
 }
