@@ -103,7 +103,7 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) 
   const shouldAttachListener = isAutoMode || systemMode;
 
   setCookie(COLOR_MODE_KEY, finalColorMode);
-  setCookie(AUTO_MODE_KEY, systemMode ? "1" : "0");
+  setCookie(AUTO_MODE_KEY, String(Number(systemMode)));
 
   if (shouldAttachListener && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
