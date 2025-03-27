@@ -238,6 +238,7 @@ body {
   @apply !bg-gray-900;
 }
 
+/* prevents showing scrollbar in buttons stories */
 .docs-story > div > div {
   @apply mb-px;
 }
