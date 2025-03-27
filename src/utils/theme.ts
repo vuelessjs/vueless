@@ -139,7 +139,7 @@ export function getSelectedNeutralColor() {
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: Config = {}, isSystemMode: boolean) {
+export function setTheme(config: Config = {}, isSystemMode?: boolean) {
   const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
   const roundingCookie = isCSR && Number(getCookie(ROUNDING_KEY));
 
