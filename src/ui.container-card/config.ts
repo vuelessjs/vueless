@@ -15,7 +15,17 @@ export default /*tw*/ {
   headerLeftFallback: "flex flex-col w-fit",
   title: "{UHeader}",
   description: "mt-0.5 font-normal text-lifted",
-  footer: "flex justify-between w-full border-t border-muted mt-6 pt-4 md:pt-6",
+  footer: {
+    base: "flex justify-between w-full border-t border-muted mt-6 pt-4 md:pt-6",
+    variants: {
+      variant: {
+        solid: "border-muted",
+        outlined: "border-muted",
+        subtle: "border-default/50",
+        soft: "border-default/50",
+      },
+    },
+  },
   footerLeft: "",
   footerRight: "",
   defaults: {

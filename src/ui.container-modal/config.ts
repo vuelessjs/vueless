@@ -31,11 +31,15 @@ export default /*tw*/ {
   footer: {
     base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
     variants: {
-      divider: {
-        true: "border-t border-muted",
+      divided: {
+        true: "border-t",
         false: "pt-0",
       },
     },
+    compoundVariants: [
+      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
+      { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
+    ],
   },
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
@@ -68,11 +72,10 @@ export default /*tw*/ {
     variant: "solid",
     size: "sm",
     inner: false,
-    divider: false,
+    divided: true,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,
-    mobileStickBottom: false,
     /* icons */
     backIcon: "arrow_back",
     closeIcon: "close",

@@ -40,7 +40,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    variant: "solid",
+    variant: "subtle",
     color: "primary",
     size: "md",
     timeout: 0,

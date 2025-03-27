@@ -175,19 +175,19 @@ Inner.parameters = {
   },
 };
 
-export const Divider = DefaultTemplate.bind({});
-Divider.args = {
-  divider: true,
+export const WithoutDivider = DefaultTemplate.bind({});
+WithoutDivider.args = {
+  divided: false,
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
       <UButton label="Back" />
     </template>`,
 };
-Divider.parameters = {
+WithoutDivider.parameters = {
   docs: {
     description: {
-      story: "Show divider between content and footer.",
+      story: "Hide divider between content and footer.",
     },
   },
 };
