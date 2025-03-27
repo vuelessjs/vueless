@@ -21,31 +21,36 @@ export default /*tw*/ {
     },
   },
   page: {
-    base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full",
+    base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full border",
     variants: {
-      muted: {
-        true: "bg-muted",
-        false: "bg-default",
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
       },
       rounding: {
-        true: "md:pr-4",
+        true: "md:pr-4 border-r-0",
+        false: "rounded-large",
       },
     },
   },
   rightRoundingWrapper: {
-    base: "absolute right-4",
+    base: "hidden md:block absolute right-4",
     variants: {
       rounding: {
-        false: "hidden",
+        false: "md:hidden",
       },
     },
   },
   rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-large h-screen",
+    base: "fixed top-0 w-4 border border-l-0 rounded-r-large h-screen",
     variants: {
-      muted: {
-        true: "bg-muted",
-        false: "bg-default",
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
       },
     },
   },
@@ -63,9 +68,9 @@ export default /*tw*/ {
   footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   defaults: {
+    variant: "solid",
     size: "wide",
     titleSize: "md",
-    muted: false,
     rounding: false,
     /* icons */
     backIcon: "arrow_back",

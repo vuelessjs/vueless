@@ -8,7 +8,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-y-0 transform sm:scale-100",
     leaveToClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
   },
-  overlay: "fixed inset-0 z-40 bg-inverted dark:bg-default opacity-75",
+  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
@@ -31,17 +31,27 @@ export default /*tw*/ {
   footer: {
     base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
     variants: {
-      divider: {
-        true: "border-t border-muted",
+      divided: {
+        true: "border-t",
         false: "pt-0",
       },
     },
+    compoundVariants: [
+      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
+      { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
+    ],
   },
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   modal: {
-    base: "mx-auto bg-default rounded-large border border-muted",
+    base: "mx-auto rounded-large border",
     variants: {
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
+      },
       size: {
         xs: "md:w-[25rem]",
         sm: "md:w-[31.25rem]",
@@ -59,13 +69,13 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    variant: "solid",
     size: "sm",
     inner: false,
-    divider: false,
+    divided: true,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,
-    mobileStickBottom: false,
     /* icons */
     backIcon: "arrow_back",
     closeIcon: "close",

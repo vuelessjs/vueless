@@ -21,37 +21,49 @@ enum BreakpointWidth {
   "2xl" = 1536,
 }
 
-type Breakpoint = `${BreakpointName}`;
-
-const mobileDevices = ["xs", "sm"];
-const portableDevices = ["xs", "sm", "md"];
-
 export default function useBreakpoint() {
-  let timeout: number | undefined;
+  let animationId: number | undefined;
 
   const windowWidth = ref(0);
-  const currentBreakpoint: Ref<Breakpoint> = ref(BreakpointName.Xs);
+  const currentBreakpoint: Ref<BreakpointName> = ref(BreakpointName.Xs);
 
-  const isMobileBreakpoint = computed(() => {
-    return mobileDevices.includes(currentBreakpoint.value);
+  const isPhone = computed(() => {
+    return currentBreakpoint.value === BreakpointName.Xs;
   });
 
-  const isTabletBreakpoint = computed(() => {
-    return mobileDevices.includes(currentBreakpoint.value);
+  const isLargePhone = computed(() => {
+    return currentBreakpoint.value === BreakpointName.Sm;
   });
 
-  const isLaptopBreakpoint = computed(() => {
+  const isPhoneGroup = computed(() => {
+    return isPhone.value || isLargePhone.value;
+  });
+
+  const isPortraitTablet = computed(() => {
+    return currentBreakpoint.value === BreakpointName.Md;
+  });
+
+  const isLandscapeTablet = computed(() => {
     return currentBreakpoint.value === BreakpointName.Lg;
   });
 
-  const isPortableBreakpoint = computed(() => {
-    return portableDevices.includes(currentBreakpoint.value);
+  const isTabletGroup = computed(() => {
+    return isPortraitTablet.value || isLandscapeTablet.value;
   });
 
-  // TODO: Why do we need this? Maybe we should rename it.
-  const elementSize = computed(() => {
-    return isMobileBreakpoint.value ? BreakpointName.Md : BreakpointName.Lg;
+  const isDesktop = computed(() => {
+    return currentBreakpoint.value === BreakpointName.Xl;
   });
+
+  const isLargeDesktop = computed(() => {
+    return currentBreakpoint.value === BreakpointName["2xl"];
+  });
+
+  const isDesktopGroup = computed(() => {
+    return isDesktop.value || isLargeDesktop.value;
+  });
+
+  watch(windowWidth, setBreakpoint, { immediate: true });
 
   onMounted(() => {
     if (isSSR) return;
@@ -67,16 +79,14 @@ export default function useBreakpoint() {
     window.removeEventListener("resize", resizeListener);
   });
 
-  watch(windowWidth, setBreakpoint, { immediate: true });
-
   function resizeListener() {
     if (isSSR) return;
 
-    if (timeout) {
-      window.cancelAnimationFrame(timeout);
+    if (animationId) {
+      window.cancelAnimationFrame(animationId);
     }
 
-    timeout = window.requestAnimationFrame(() => {
+    animationId = window.requestAnimationFrame(() => {
       windowWidth.value = window.innerWidth;
     });
   }
@@ -84,26 +94,29 @@ export default function useBreakpoint() {
   function setBreakpoint(newWindowWidth: number) {
     if (newWindowWidth === undefined) return;
 
-    currentBreakpoint.value = "xs";
+    const breakpoints = [
+      { width: BreakpointWidth["2xl"], name: BreakpointName["2xl"] },
+      { width: BreakpointWidth.Xl, name: BreakpointName.Xl },
+      { width: BreakpointWidth.Lg, name: BreakpointName.Lg },
+      { width: BreakpointWidth.Md, name: BreakpointName.Md },
+      { width: BreakpointWidth.Sm, name: BreakpointName.Sm },
+    ];
 
-    if (newWindowWidth >= BreakpointWidth.Sm && newWindowWidth < BreakpointWidth.Sm) {
-      currentBreakpoint.value = BreakpointName.Sm;
-    } else if (newWindowWidth >= BreakpointWidth.Md && newWindowWidth < BreakpointWidth.Lg) {
-      currentBreakpoint.value = BreakpointName.Md;
-    } else if (newWindowWidth >= BreakpointWidth.Lg && newWindowWidth < BreakpointWidth.Xl) {
-      currentBreakpoint.value = BreakpointName.Lg;
-    } else if (newWindowWidth >= BreakpointWidth.Xl && newWindowWidth < BreakpointWidth["2xl"]) {
-      currentBreakpoint.value = BreakpointName.Xl;
-    } else if (newWindowWidth >= BreakpointWidth["2xl"]) {
-      currentBreakpoint.value = BreakpointName["2xl"];
-    }
+    currentBreakpoint.value =
+      breakpoints.find((breakpoint) => newWindowWidth >= breakpoint.width)?.name ||
+      BreakpointName.Xs;
   }
 
   return {
-    isLaptopBreakpoint,
-    isTabletBreakpoint,
-    isMobileBreakpoint,
-    isPortableBreakpoint,
-    elementSize,
+    isPhone,
+    isLargePhone,
+    isPhoneGroup,
+    isPortraitTablet,
+    isLandscapeTablet,
+    isTabletGroup,
+    isDesktop,
+    isLargeDesktop,
+    isDesktopGroup,
+    breakpoint: currentBreakpoint,
   };
 }

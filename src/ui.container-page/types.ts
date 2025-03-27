@@ -7,11 +7,6 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Page size (width).
-   */
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "wide";
-
-  /**
    * Page title.
    */
   title?: string;
@@ -37,14 +32,19 @@ export interface Props {
   backLabel?: string;
 
   /**
+   * Page variant.
+   */
+  variant?: "solid" | "outlined" | "subtle" | "soft";
+
+  /**
+   * Page size (width).
+   */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "wide";
+
+  /**
    * Show rounding block on the right side of the component.
    */
   rounding?: boolean;
-
-  /**
-   * Sets muted background color (useful if the page contains nested cards).
-   */
-  muted?: boolean;
 
   /**
    * Component config object.

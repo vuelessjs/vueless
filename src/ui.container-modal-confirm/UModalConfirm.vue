@@ -88,11 +88,11 @@ const {
     :title="title"
     :description="description"
     :inner="inner"
+    :variant="variant"
     :close-on-esc="closeOnEsc"
     :close-on-cross="closeOnCross"
     :close-on-overlay="closeOnOverlay"
-    :mobile-stick-bottom="mobileStickBottom"
-    :divider="divider"
+    :divided="divided"
     mobile-bottom-align
     v-bind="confirmModalAttrs"
     :data-test="getDataTest()"

@@ -15,6 +15,11 @@ export interface Props {
   description?: string;
 
   /**
+   * Card variant.
+   */
+  variant?: "solid" | "outlined" | "subtle" | "soft";
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

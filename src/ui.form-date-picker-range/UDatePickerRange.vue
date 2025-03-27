@@ -601,9 +601,10 @@ watchEffect(() => {
       :placeholder="placeholder"
       :description="description"
       :error="error"
-      readonly
       :left-icon="leftIcon"
       :right-icon="rightIcon || config.defaults.calendarIcon"
+      no-autocomplete
+      readonly
       v-bind="isShownMenu ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @focus="activate"
       @keydown.esc="deactivate"

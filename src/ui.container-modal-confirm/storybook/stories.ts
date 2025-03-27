@@ -17,7 +17,6 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
-import type { PrimaryColors } from "../../types.ts";
 
 interface UModalConfirmArgs extends Props {
   width: string;
@@ -81,7 +80,7 @@ const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
   setup() {
     function onClick(value: string) {
       argTypes?.[args.enum]?.name === "confirmColor"
-        ? (args.confirmColor = value as PrimaryColors)
+        ? (args.confirmColor = value as Props["confirmColor"])
         : (args.width = value);
 
       args.modelValue = true;
@@ -181,7 +180,7 @@ Inner.parameters = {
 
 export const Divider = DefaultTemplate.bind({});
 Divider.args = {
-  divider: true,
+  divided: true,
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
