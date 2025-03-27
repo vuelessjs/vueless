@@ -59,7 +59,7 @@ import type {
   IsDatePeriodOutOfRange,
   ShiftActions,
   SortedLocale,
-  UDatePickerRangeProps,
+  Props as UDatePickerRangeProps,
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
   Config,

@@ -12,9 +12,9 @@ import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
-import type { DateValue, UCalendarProps } from "../types.ts";
+import type { DateValue, Props } from "../types.ts";
 
-interface UCalendarArgs extends UCalendarProps<DateValue> {
+interface UCalendarArgs extends Props<DateValue> {
   slotTemplate?: string;
   enum: "view";
 }

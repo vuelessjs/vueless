@@ -4,7 +4,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UAvatarProps {
+export interface Props {
   /**
    * Avatar image source.
    */
