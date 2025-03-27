@@ -58,10 +58,12 @@ declare interface RootCSSVariableOptions {
 export function themeInit() {
   if (isSSR) return;
 
-  const isCachedAutoMode = isCSR && !!Number(getCookie(AUTO_MODE_KEY));
+  const isCachedAutoMode = getCookie(AUTO_MODE_KEY)
+    ? !!Number(getCookie(AUTO_MODE_KEY))
+    : undefined;
 
-  if (isCachedAutoMode) {
-    setTheme({}, true);
+  if (isCachedAutoMode !== undefined) {
+    setTheme({}, isCachedAutoMode);
   } else if (vuelessConfig.colorMode) {
     setTheme({}, false);
   } else {
