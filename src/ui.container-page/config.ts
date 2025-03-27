@@ -30,7 +30,8 @@ export default /*tw*/ {
         soft: "bg-muted border-transparent",
       },
       rounding: {
-        true: "md:pr-4 border-l-0",
+        true: "md:pr-4 border-r-0",
+        false: "rounded-large",
       },
     },
   },
@@ -38,15 +39,17 @@ export default /*tw*/ {
     base: "hidden md:block absolute right-4",
     variants: {
       rounding: {
-        false: "hidden",
+        false: "md:hidden",
       },
     },
   },
   rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-large h-screen",
+    base: "fixed top-0 w-4 border border-l-0 rounded-r-large h-screen",
     variants: {
       variant: {
-        subtle: "bg-muted border-r-0 border-default/50",
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
       },
     },
