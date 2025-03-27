@@ -56,11 +56,19 @@ declare interface RootCSSVariableOptions {
  * Initiate theme and changes color mode when it is changed on the user side.
  */
 export function themeInit() {
-  const isCachedAutoMode = isCSR && !!Number(getCookie(AUTO_MODE_KEY));
+  if (isSSR) return;
 
-  if (isCachedAutoMode) {
-    setTheme({ colorMode: ColorMode.Auto }, isCachedAutoMode);
-  }
+  const primaryColor = getCookie(PRIMARY_COLOR_KEY) || DEFAULT_PRIMARY_COLOR;
+  const neutralColor = getCookie(NEUTRAL_COLOR_KEY) || DEFAULT_NEUTRAL_COLOR;
+  const rounding = Number(getCookie(ROUNDING_KEY)) || DEFAULT_ROUNDING;
+  const colorMode = (getCookie(COLOR_MODE_KEY) as ColorMode) || ColorMode.Auto;
+  const autoMode =
+    getCookie(AUTO_MODE_KEY) === undefined ? true : !!Number(getCookie(AUTO_MODE_KEY));
+
+  setTheme(
+    { primary: primaryColor, neutral: neutralColor, rounding: rounding, colorMode: colorMode },
+    autoMode,
+  );
 }
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
