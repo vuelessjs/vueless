@@ -264,6 +264,7 @@ const {
   groupAttrs,
   optionContentAttrs,
   optionDividerAttrs,
+  selectedIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -328,7 +329,15 @@ const {
             @binding {object} option
             @binding {number} index
           -->
-          <slot name="after-option" :option="option" :index="index" />
+          <slot name="after-option" :option="option" :index="index">
+            <UIcon
+              v-if="option[valueKey] === modelValue"
+              internal
+              color="inherit"
+              :name="config.defaults.selectedIcon"
+              v-bind="selectedIconAttrs"
+            />
+          </slot>
         </span>
 
         <!-- group title -->

@@ -64,21 +64,6 @@ export default /*tw*/ {
       { size: "lg", multiple: true, class: "text-large" },
     ],
   },
-  selectIcon: {
-    base: "{UIcon}",
-    variants: {
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-    },
-    defaults: {
-      size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
-      },
-    },
-  },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "{>toggle} pl-2.5",
@@ -109,7 +94,6 @@ export default /*tw*/ {
   },
   toggleWrapper: "{>toggle} mr-3",
   toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[*]/active:rotate-180",
-  selectedIcon: "{UIcon} {>selectIcon}",
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   clearMultiple: "flex items-center",

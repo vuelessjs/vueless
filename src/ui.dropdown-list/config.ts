@@ -9,8 +9,8 @@ export default /*tw*/ {
   listItem: "group/item block mb-px last:mb-0",
   option: {
     base: `
-      rounded-small px-2 py-2.5 flex items-center align-middle whitespace-nowrap cursor-pointer
-      font-normal !leading-none
+      rounded-small px-2 py-2 flex items-center align-middle whitespace-nowrap cursor-pointer
+      font-normal !leading-snug
       hover:bg-{color}/5 active:bg-{color}/10
       overflow-hidden text-ellipsis text-default
     `,
@@ -50,6 +50,16 @@ export default /*tw*/ {
   addOptionLabelHotkey: "text-lifted",
   addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
+  selectedIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
   optionDivider: "{UDivider} py-2",
   i18n: {
     noDataToShow: "No data to show.",
@@ -65,5 +75,6 @@ export default /*tw*/ {
     addOption: false,
     /* icons */
     addOptionIcon: "add",
+    selectedIcon: "check",
   },
 };
