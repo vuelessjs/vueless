@@ -58,7 +58,15 @@ declare interface RootCSSVariableOptions {
 export function themeInit() {
   if (isSSR) return;
 
-  setTheme();
+  const isCachedAutoMode = isCSR && !!Number(getCookie(AUTO_MODE_KEY));
+
+  if (isCachedAutoMode) {
+    setTheme({}, true);
+  } else if (vuelessConfig.colorMode) {
+    setTheme({}, false);
+  } else {
+    setTheme({}, true);
+  }
 }
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
@@ -78,8 +86,6 @@ function toggleColorModeClass() {
  * @param {string} colorMode (dark | light | auto)
  */
 export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) {
-  if (isSSR) return;
-
   const systemMode = isSystemMode ?? Boolean(Number(getCookie(AUTO_MODE_KEY)));
 
   if (prefersColorSchemeDark) {
@@ -91,17 +97,17 @@ export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) 
     colorMode === ColorMode.Dark ||
     (isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark.matches);
 
-  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDark);
-  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDark);
+  if (isCSR) document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDark);
+  if (isCSR) document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDark);
 
-  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDark }));
+  if (isCSR) window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDark }));
 
   const finalColorMode = isAutoMode ? (isDark ? ColorMode.Dark : ColorMode.Light) : colorMode;
 
   const shouldAttachListener = isAutoMode || systemMode;
 
-  setCookie(COLOR_MODE_KEY, finalColorMode);
-  setCookie(AUTO_MODE_KEY, String(Number(systemMode)));
+  if (isCSR) setCookie(COLOR_MODE_KEY, finalColorMode);
+  if (isCSR) setCookie(AUTO_MODE_KEY, String(Number(systemMode)));
 
   if (shouldAttachListener && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
@@ -141,9 +147,10 @@ export function setTheme(config: Config = {}, isSystemMode?: boolean) {
   const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
   const roundingCookie = isCSR && Number(getCookie(ROUNDING_KEY));
 
-  const colorMode = (config.colorMode || colorModeCookie || vuelessConfig.colorMode) as ColorMode;
+  const colorMode =
+    config.colorMode || colorModeCookie || vuelessConfig.colorMode || ColorMode.Auto;
 
-  setColorMode(colorMode, isSystemMode);
+  setColorMode(colorMode as ColorMode, isSystemMode);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
@@ -189,10 +196,10 @@ export function setTheme(config: Config = {}, isSystemMode?: boolean) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  if (isCSR && config.primary) setCookie(PRIMARY_COLOR_KEY, primary);
-  if (isCSR && config.neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
+  if (isCSR && primary) setCookie(PRIMARY_COLOR_KEY, primary);
+  if (isCSR && neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
 
-  if (isCSR && config.rounding) setCookie(ROUNDING_KEY, String(rounding));
+  if (isCSR && rounding) setCookie(ROUNDING_KEY, String(rounding));
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
