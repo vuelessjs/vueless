@@ -149,10 +149,9 @@ export function setTheme(config: Config = {}, isSystemMode?: boolean) {
   const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
   const roundingCookie = isCSR && Number(getCookie(ROUNDING_KEY));
 
-  const colorMode =
-    config.colorMode || colorModeCookie || vuelessConfig.colorMode || ColorMode.Auto;
+  const colorMode = (config.colorMode || colorModeCookie || vuelessConfig.colorMode) as ColorMode;
 
-  setColorMode(colorMode as ColorMode, isSystemMode);
+  setColorMode(colorMode, isSystemMode);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
