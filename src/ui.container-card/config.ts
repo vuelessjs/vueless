@@ -11,8 +11,8 @@ export default /*tw*/ {
     },
   },
   header: "flex justify-between mb-4",
-  headerLeft: "flex items-center gap-2 w-fit",
-  headerLeftFallback: "flex flex-col w-fit",
+  beforeTitle: "flex items-center gap-2 w-fit",
+  titleFallback: "flex flex-col w-fit",
   title: "{UHeader}",
   description: "mt-0.5 font-normal text-lifted",
   footer: {

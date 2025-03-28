@@ -11,7 +11,7 @@ export default /*tw*/ {
       },
     },
   },
-  headerLeftFallback: "flex items-center",
+  titleFallback: "flex items-center",
   title: "{UHeader} pr-2",
   content: "",
   defaults: {

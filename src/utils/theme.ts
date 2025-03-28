@@ -52,17 +52,6 @@ declare interface RootCSSVariableOptions {
   darkTheme: Partial<VuelessCssVariables>;
 }
 
-/**
- * Initiate theme and changes color mode when it is changed on the user side.
- */
-export function themeInit() {
-  const isCachedAutoMode = isCSR && !!Number(getCookie(AUTO_MODE_KEY));
-
-  if (isCachedAutoMode) {
-    setTheme({ colorMode: ColorMode.Auto }, isCachedAutoMode);
-  }
-}
-
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
 const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -78,36 +67,47 @@ function toggleColorModeClass() {
 /**
  * Sets color mode.
  * @param {string} colorMode (dark | light | auto)
+ * @param {boolean} isCachedAutoMode
  */
-export function setColorMode(colorMode: `${ColorMode}`, isSystemMode?: boolean) {
+export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boolean) {
   if (isSSR) return;
 
-  const systemMode = isSystemMode ?? Boolean(Number(getCookie(AUTO_MODE_KEY)));
+  isCachedAutoMode = isCachedAutoMode ?? !!Number(getCookie(AUTO_MODE_KEY));
 
+  const isAutoMode = colorMode === ColorMode.Auto;
+  const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
+  const isDarkMode = colorMode === ColorMode.Dark || isSystemDarkMode;
+
+  /* Removing system color mode change event listener. */
   if (prefersColorSchemeDark) {
     prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
   }
 
-  const isAutoMode = colorMode === ColorMode.Auto;
-  const isDark =
-    colorMode === ColorMode.Dark ||
-    (isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark.matches);
-
-  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDark);
-  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDark);
-
-  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDark }));
-
-  const finalColorMode = isAutoMode ? (isDark ? ColorMode.Dark : ColorMode.Light) : colorMode;
-
-  const shouldAttachListener = isAutoMode || systemMode;
-
-  setCookie(COLOR_MODE_KEY, finalColorMode);
-  setCookie(AUTO_MODE_KEY, String(Number(systemMode)));
-
-  if (shouldAttachListener && prefersColorSchemeDark) {
+  /* Adding system color mode change event listener. */
+  if ((isAutoMode || isCachedAutoMode) && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
   }
+
+  /* Adding color mode classes. */
+  document.documentElement.classList.toggle(DARK_MODE_SELECTOR, isDarkMode);
+  document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !isDarkMode);
+
+  /* Dispatching custom event for the useDarkMode composable. */
+  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
+
+  /* Saving color mode value into cookies. */
+  let currentColorMode = colorMode;
+
+  if (isAutoMode) {
+    currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
+  }
+
+  if (isCachedAutoMode) {
+    currentColorMode = ColorMode.Auto;
+  }
+
+  setCookie(COLOR_MODE_KEY, currentColorMode);
+  setCookie(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
 }
 
 /**
@@ -139,13 +139,12 @@ export function getSelectedNeutralColor() {
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: Config = {}, isSystemMode?: boolean) {
+export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
   const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
   const roundingCookie = isCSR && Number(getCookie(ROUNDING_KEY));
 
-  const colorMode = (config.colorMode || colorModeCookie || vuelessConfig.colorMode) as ColorMode;
-
-  setColorMode(colorMode, isSystemMode);
+  // eslint-disable-next-line vue/max-len, prettier/prettier
+  setColorMode((config.colorMode || colorModeCookie || vuelessConfig.colorMode || ColorMode.Light) as ColorMode, isCachedAutoMode);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
