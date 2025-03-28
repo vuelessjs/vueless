@@ -34,6 +34,11 @@ const emit = defineEmits([
    * Triggers when a back link is clicked.
    */
   "back",
+
+  /**
+   * Triggers when the modal is closed.
+   */
+  "close",
 ]);
 
 const elementId = props.id || useId();
@@ -102,6 +107,8 @@ function onClickCloseModal() {
 
 function closeModal() {
   isShownModal.value = false;
+
+  emit("close");
 }
 
 /**
