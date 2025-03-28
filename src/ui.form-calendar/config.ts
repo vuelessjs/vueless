@@ -1,7 +1,14 @@
 export default /*tw*/ {
   wrapper: "p-3 w-[19rem] border border-default rounded-medium bg-default shadow-sm overflow-hidden focus:outline-hidden",
   navigation: "mb-2 pb-2 border-b border-muted flex items-center justify-between",
-  viewSwitchButton: "{UButton}",
+  viewSwitchButton: {
+    base: "{UButton}",
+    variants: {
+      range: {
+        true: "pointer-events-none",
+      },
+    },
+  },
   nextPrevButton: "{UButton}",
   dayView: "",
   weekDays: "grid grid-cols-7 justify-items-center gap-1",

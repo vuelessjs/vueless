@@ -304,6 +304,24 @@ const viewSwitchLabel = computed(() => {
   };
 });
 
+const currentViewLabel = computed(() => {
+  let label = "";
+
+  if (isCurrentView.value.day) {
+    label = `${viewSwitchLabel.value.month} ${viewSwitchLabel.value.year}`;
+  }
+
+  if (isCurrentView.value.month) {
+    label = viewSwitchLabel.value.year;
+  }
+
+  if (isCurrentView.value.year) {
+    label = viewSwitchLabel.value.yearsRange;
+  }
+
+  return label;
+});
+
 watch(userFormattedDate, () => {
   emit("userDateChange", userFormattedDate.value);
 });
@@ -731,21 +749,15 @@ const {
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
-
       <UButton
         size="sm"
         color="grayscale"
         variant="ghost"
+        :label="currentViewLabel"
         v-bind="viewSwitchButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
-      >
-        <template v-if="isCurrentView.day">
-          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
-        </template>
-        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
-        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
-      </UButton>
+      />
 
       <UButton
         square
