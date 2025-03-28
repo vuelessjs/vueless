@@ -10,12 +10,12 @@ import { COMPONENT_NAME, VARIANT } from "./constants.ts";
 import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { UProgressProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UProgressProps>(), {
-  ...getDefaults<UProgressProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   max: 100,
 });
 

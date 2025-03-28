@@ -84,7 +84,7 @@ export interface CustomRangeButton {
   description?: string;
 }
 
-export interface UDatePickerRangeProps<TModelValue> {
+export interface Props<TModelValue> {
   /**
    * Datepicker range value (JavaScript Date objects or strings formatted in given `dateFormat`).
    */
