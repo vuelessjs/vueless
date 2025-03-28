@@ -19,14 +19,8 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  getDataTest,
-  headerAttrs,
-  wrapperAttrs,
-  titleFallbackAttrs,
-  titleAttrs,
-  contentAttrs,
-} = useUI<Config>(defaultConfig);
+const { getDataTest, headerAttrs, wrapperAttrs, titleFallbackAttrs, titleAttrs, contentAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
