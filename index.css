@@ -5,4 +5,4 @@
  * * `./src/tailwind.css` – vueless tailwind preset.
  */
 @import "tailwindcss";
-@import "src/tailwind.css";
+@import "./src/tailwind.css";
