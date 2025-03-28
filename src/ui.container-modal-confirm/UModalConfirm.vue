@@ -96,6 +96,7 @@ const {
     mobile-bottom-align
     v-bind="confirmModalAttrs"
     :data-test="getDataTest()"
+    @close="emit('close')"
   >
     <template #before-title>
       <!-- @slot Use it to add something before the header title. -->
