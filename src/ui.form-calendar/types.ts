@@ -16,7 +16,7 @@ export function isRangeDate(value: Date | string | RangeDate | null): value is R
   return typeof value === "object" && value !== null && "to" in value && "from" in value;
 }
 
-export interface UCalendarProps<TModelValue extends DateValue> {
+export interface Props<TModelValue extends DateValue> {
   /**
    * Calendar value (JavaScript Date object or string formatted in given `dateFormat` or object when `range` enabled).
    */

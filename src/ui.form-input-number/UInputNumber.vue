@@ -11,12 +11,12 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { UInputNumberProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UInputNumberProps>(), {
-  ...getDefaults<UInputNumberProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 

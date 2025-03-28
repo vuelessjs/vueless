@@ -41,7 +41,7 @@ import type {
   Cell,
   Row,
   RowId,
-  UTableProps,
+  Props,
   UTableRowAttrs,
   Config,
   DateDivider,
@@ -50,8 +50,8 @@ import type {
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UTableProps>(), {
-  ...getDefaults<UTableProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   columns: () => [],
   rows: () => [],
   dateDivider: () => [],
@@ -562,7 +562,7 @@ const {
       >
         <template v-if="hasSlotContent($slots[`header-${column.key}`])">
           <!--
-              @slot Use it to customise needed header cell.
+              @slot Use it to customize needed header cell.
               @binding {object} column
               @binding {number} index
             -->
@@ -677,7 +677,7 @@ const {
               :class="cx([(headerCellBaseAttrs as any).class, column.thClass])"
             >
               <!--
-                @slot Use it to customise needed header cell.
+                @slot Use it to customize needed header cell.
                 @binding {object} column
                 @binding {number} index
               -->

@@ -10,9 +10,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UInputNumberProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UInputNumberArgs extends UInputNumberProps {
+interface UInputNumberArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
 }

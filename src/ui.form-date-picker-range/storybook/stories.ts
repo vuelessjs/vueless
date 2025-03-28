@@ -16,13 +16,13 @@ import { addDays } from "../../ui.form-calendar/utilDate.ts";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
-import type { UDatePickerRangeProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
+interface DefaultUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;
 }
 
-interface EnumUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
+interface EnumUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;
   enum: "size" | "variant" | "labelAlign";
 }

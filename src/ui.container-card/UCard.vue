@@ -50,8 +50,8 @@ const {
   wrapperAttrs,
   titleAttrs,
   headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
+  beforeTitleAttrs,
+  titleFallbackAttrs,
   descriptionAttrs,
   footerAttrs,
   footerLeftAttrs,
@@ -62,13 +62,13 @@ const {
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-if="isShownHeader" v-bind="headerAttrs">
-      <div v-bind="headerLeftAttrs">
+      <div v-bind="beforeTitleAttrs">
         <!-- @slot Use it to add something before left side of the header. -->
         <slot name="before-title" />
 
-        <!-- @slot Use it to customise left side of the header. -->
+        <!-- @slot Use it to customize left side of the header. -->
         <slot name="title">
-          <div v-bind="headerLeftFallbackAttrs">
+          <div v-bind="titleFallbackAttrs">
             <UHeader :label="title" size="xs" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </div>
@@ -78,7 +78,7 @@ const {
         <slot name="after-title" />
       </div>
 
-      <!-- @slot Use it to customise right side of the header. -->
+      <!-- @slot Use it to customize right side of the header. -->
       <slot name="actions" />
     </div>
 

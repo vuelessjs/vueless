@@ -2,7 +2,7 @@
 import { createLocale, LocaleSymbol } from "./composables/useLocale.ts";
 import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.ts";
 import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.ts";
-import { themeInit } from "./utils/theme.ts";
+import { setTheme } from "./utils/theme.ts";
 
 import type { App } from "vue"
 import type { CreateVuelessOptions } from "./types.ts"
@@ -43,7 +43,7 @@ export function createVueless(options: CreateVuelessOptions = {}) {
   };
 
   /* init theme after first render */
-  setTimeout(themeInit, 0);
+  setTimeout(setTheme, 0);
 
   return {
     install,

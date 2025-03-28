@@ -12,9 +12,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UProgressProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UProgressArgs extends UProgressProps {
+interface UProgressArgs extends Props {
   slotTemplate?: string;
   enum: "color" | "size";
   iterator?: number;
