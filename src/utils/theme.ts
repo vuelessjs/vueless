@@ -64,7 +64,7 @@ export function themeInit() {
 
   if (isCachedAutoMode !== undefined) {
     setTheme({}, isCachedAutoMode);
-  } else if (vuelessConfig.colorMode) {
+  } else if (vuelessConfig.colorMode === ColorMode.Dark || vuelessConfig.colorMode === ColorMode.Light) {
     setTheme({}, false);
   } else {
     setTheme({}, true);
