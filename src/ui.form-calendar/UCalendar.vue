@@ -304,6 +304,24 @@ const viewSwitchLabel = computed(() => {
   };
 });
 
+const currentViewLabel = computed(() => {
+  let label = "";
+
+  if (isCurrentView.value.day) {
+    label = `${viewSwitchLabel.value.month} ${viewSwitchLabel.value.year}`;
+  }
+
+  if (isCurrentView.value.month) {
+    label = viewSwitchLabel.value.year;
+  }
+
+  if (isCurrentView.value.year) {
+    label = viewSwitchLabel.value.yearsRange;
+  }
+
+  return label;
+});
+
 watch(userFormattedDate, () => {
   emit("userDateChange", userFormattedDate.value);
 });
@@ -715,6 +733,7 @@ const {
   timepickerInputMinutesAttrs,
   timepickerInputSecondsAttrs,
   timepickerSubmitButtonAttrs,
+  viewLabelAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -731,8 +750,10 @@ const {
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
+      <div v-if="range" v-bind="viewLabelAttrs" v-text="currentViewLabel" />
 
       <UButton
+        v-else
         size="sm"
         color="grayscale"
         variant="ghost"
@@ -740,11 +761,7 @@ const {
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
       >
-        <template v-if="isCurrentView.day">
-          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
-        </template>
-        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
-        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
+        <span v-bind="viewLabelAttrs" v-text="currentViewLabel" />
       </UButton>
 
       <UButton
