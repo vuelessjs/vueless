@@ -9,12 +9,12 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UAvatarProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UAvatarProps>(), {
-  ...getDefaults<UAvatarProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 

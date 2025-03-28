@@ -11,9 +11,9 @@ import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UAvatarProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UAvatarArgs extends UAvatarProps {
+interface UAvatarArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "rounded" | "color";
 }

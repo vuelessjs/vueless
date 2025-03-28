@@ -16,9 +16,9 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 
-import type { Row, UTableProps } from "../types.ts";
+import type { Row, Props } from "../types.ts";
 
-interface UTableArgs extends UTableProps {
+interface UTableArgs extends Props {
   slotTemplate?: string;
   enum: "size";
   numberOfRows: number;
