@@ -54,7 +54,7 @@ export interface ColumnObject {
 
 export type Column = ColumnObject | string;
 
-export interface UTableProps {
+export interface Props {
   /**
    * Table columns (headers).
    */

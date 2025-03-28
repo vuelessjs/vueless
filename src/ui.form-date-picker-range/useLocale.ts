@@ -8,9 +8,9 @@ import { COMPONENT_NAME } from "./constants.ts";
 
 import defaultConfig from "./config.ts";
 
-import type { Locale, UDatePickerRangeProps } from "./types.ts";
+import type { Locale, Props } from "./types.ts";
 
-export function useLocale(props: UDatePickerRangeProps<unknown>) {
+export function useLocale(props: Props<unknown>) {
   const { tm } = useGlobalLocale();
 
   const i18nGlobal = tm<Locale>(COMPONENT_NAME);
