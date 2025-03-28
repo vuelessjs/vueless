@@ -81,7 +81,7 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
-  components: { UPage, UCard, URow, UInput, UTextarea },
+  components: { UPage, UCard, URow, UCol, UInput, UTextarea },
   setup() {
     return {
       args,
