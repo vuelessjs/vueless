@@ -102,10 +102,6 @@ export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boole
     currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
   }
 
-  if (isCachedAutoMode) {
-    currentColorMode = ColorMode.Auto;
-  }
-
   setCookie(COLOR_MODE_KEY, currentColorMode);
   setCookie(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
 }
@@ -190,10 +186,10 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  if (isCSR && config.primary) setCookie(PRIMARY_COLOR_KEY, primary);
-  if (isCSR && config.neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
+  if (isCSR && primary) setCookie(PRIMARY_COLOR_KEY, primary);
+  if (isCSR && neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
 
-  if (isCSR && config.rounding) setCookie(ROUNDING_KEY, String(rounding));
+  if (isCSR && rounding) setCookie(ROUNDING_KEY, String(rounding));
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
