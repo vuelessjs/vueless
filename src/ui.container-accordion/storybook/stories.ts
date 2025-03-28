@@ -22,7 +22,10 @@ export default {
   component: UAccordion,
   args: {
     title: "Committed to Quality and Performance",
-    description: `We take pride in delivering high-quality solutions tailored to your needs. Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.`,
+    description: `
+      We take pride in delivering high-quality solutions tailored to your needs.
+      Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.
+    `,
   },
   argTypes: {
     ...getArgTypes(UAccordion.__name),
