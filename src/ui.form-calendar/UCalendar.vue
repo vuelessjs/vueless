@@ -733,7 +733,6 @@ const {
   timepickerInputMinutesAttrs,
   timepickerInputSecondsAttrs,
   timepickerSubmitButtonAttrs,
-  viewLabelAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -750,19 +749,15 @@ const {
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
-      <div v-if="range" v-bind="viewLabelAttrs" v-text="currentViewLabel" />
-
       <UButton
-        v-else
         size="sm"
         color="grayscale"
         variant="ghost"
+        :label="currentViewLabel"
         v-bind="viewSwitchButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
-      >
-        <span v-bind="viewLabelAttrs" v-text="currentViewLabel" />
-      </UButton>
+      />
 
       <UButton
         square
