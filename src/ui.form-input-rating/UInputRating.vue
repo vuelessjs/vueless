@@ -66,7 +66,7 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
   <div v-bind="containerAttrs">
     <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
       <!--
-          @slot Use it to customise counter.
+          @slot Use it to customize counter.
           @binding {number} counter
           @binding {number} total
         -->
@@ -93,7 +93,7 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
 
     <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
       <!--
-          @slot Use it to customise total.
+          @slot Use it to customize total.
           @binding {number} counter
           @binding {number} total
         -->

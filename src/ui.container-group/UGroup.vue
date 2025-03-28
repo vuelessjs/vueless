@@ -23,7 +23,7 @@ const {
   getDataTest,
   headerAttrs,
   wrapperAttrs,
-  headerLeftFallbackAttrs,
+  titleFallbackAttrs,
   titleAttrs,
   contentAttrs,
 } = useUI<Config>(defaultConfig);
@@ -38,7 +38,7 @@ const {
           @binding {string} title
         -->
         <slot name="title" :title="title">
-          <div v-bind="headerLeftFallbackAttrs">
+          <div v-bind="titleFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
 

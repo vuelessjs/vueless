@@ -562,7 +562,7 @@ const {
       >
         <template v-if="hasSlotContent($slots[`header-${column.key}`])">
           <!--
-              @slot Use it to customise needed header cell.
+              @slot Use it to customize needed header cell.
               @binding {object} column
               @binding {number} index
             -->
@@ -677,7 +677,7 @@ const {
               :class="cx([(headerCellBaseAttrs as any).class, column.thClass])"
             >
               <!--
-                @slot Use it to customise needed header cell.
+                @slot Use it to customize needed header cell.
                 @binding {object} column
                 @binding {number} index
               -->
