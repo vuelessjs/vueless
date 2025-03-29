@@ -73,7 +73,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 watch(
-  () => [props.options, props.size],
+  () => [props.options, props.size, props.visibleOptions],
   () => {
     nextTick(() => {
       const options = [
