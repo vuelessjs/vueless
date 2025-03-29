@@ -24,7 +24,14 @@ export default /*tw*/ {
       },
     },
   },
-  toggleIcon: "{UIcon}",
+  toggleIcon: {
+    base: "{UIcon} transition duration-300",
+    variants: {
+      opened: {
+        true: "group-[*]:rotate-180",
+      },
+    },
+  },
   accordionDivider: {
     base: "{UDivider} group-last:hidden",
     variants: {
@@ -38,7 +45,6 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     /* icons */
-    expandIcon: "add",
-    collapseIcon: "remove",
+    toggleIcon: "keyboard_arrow_down",
   },
 };

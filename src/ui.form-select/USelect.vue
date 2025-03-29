@@ -567,7 +567,7 @@ const {
             v-bind="selectedLabelAttrs"
           >
             <!--
-              @slot Use it to customise selected value label.
+              @slot Use it to customize selected value label.
               @binding {string} selected-label
               @binding {object} option
             -->
@@ -700,7 +700,7 @@ const {
 
         <template #option="{ option, index }">
           <!--
-            @slot Use it to customise the option.
+            @slot Use it to customize the option.
             @binding {object} option
             @binding {number} index
           -->

@@ -34,6 +34,11 @@ const emit = defineEmits([
    * Triggers when a back link is clicked.
    */
   "back",
+
+  /**
+   * Triggers when the modal is closed.
+   */
+  "close",
 ]);
 
 const elementId = props.id || useId();
@@ -102,6 +107,8 @@ function onClickCloseModal() {
 
 function closeModal() {
   isShownModal.value = false;
+
+  emit("close");
 }
 
 /**
@@ -121,8 +128,8 @@ const {
   wrapperAttrs,
   innerWrapperAttrs,
   headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
+  beforeTitleAttrs,
+  titleFallbackAttrs,
   descriptionAttrs,
   bodyAttrs,
   footerLeftAttrs,
@@ -149,12 +156,12 @@ const {
       <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
-            <div v-bind="headerLeftAttrs">
+            <div v-bind="beforeTitleAttrs">
               <!-- @slot Use it to add something before the header title. -->
               <slot name="before-title" />
               <!-- @slot Use it to add something to the left side of the header. -->
               <slot name="title">
-                <div v-bind="headerLeftFallbackAttrs">
+                <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
                       internal

@@ -79,10 +79,10 @@ const {
   backLinkAttrs,
   backLinkIconAttrs,
   headerAttrs,
-  headerLeftFallbackAttrs,
+  titleFallbackAttrs,
   descriptionAttrs,
-  headerLeftAttrs,
-  headerRightAttrs,
+  beforeTitleAttrs,
+  actionsAttrs,
   bodyAttrs,
   footerAttrs,
   footerLeftAttrs,
@@ -95,13 +95,13 @@ const {
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="pageAttrs">
       <div v-if="isExistHeader" v-bind="headerAttrs">
-        <div v-bind="headerLeftAttrs">
+        <div v-bind="beforeTitleAttrs">
           <!-- @slot Use it to add something before the header title. -->
           <slot name="before-title" />
 
           <!-- @slot Use it to add something to the left side of the header. -->
           <slot name="title">
-            <div v-bind="headerLeftFallbackAttrs">
+            <div v-bind="titleFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon
                   internal
@@ -129,7 +129,7 @@ const {
           <slot name="after-title" />
         </div>
 
-        <div v-bind="headerRightAttrs">
+        <div v-bind="actionsAttrs">
           <!-- @slot Use it to add something to the right side of the header. -->
           <slot name="actions" />
         </div>

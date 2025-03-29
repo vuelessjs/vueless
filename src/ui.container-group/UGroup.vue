@@ -19,14 +19,8 @@ withDefaults(defineProps<Props>(), {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  getDataTest,
-  headerAttrs,
-  wrapperAttrs,
-  headerLeftFallbackAttrs,
-  titleAttrs,
-  contentAttrs,
-} = useUI<Config>(defaultConfig);
+const { getDataTest, headerAttrs, wrapperAttrs, titleFallbackAttrs, titleAttrs, contentAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -38,7 +32,7 @@ const {
           @binding {string} title
         -->
         <slot name="title" :title="title">
-          <div v-bind="headerLeftFallbackAttrs">
+          <div v-bind="titleFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
 
