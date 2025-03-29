@@ -1,7 +1,7 @@
 import { merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui.ts";
-import { isSSR, isCSR, setCookie, getCookie } from "./helper.ts";
+import { isSSR, isCSR, setCookie } from "./helper.ts";
 
 import {
   PX_IN_REM,
@@ -58,7 +58,10 @@ const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme
 function toggleColorModeClass() {
   if (!prefersColorSchemeDark) return;
 
-  setCookie(COLOR_MODE_KEY, prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light);
+  const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
+
+  setCookie(COLOR_MODE_KEY, colorMode);
+  localStorage.setItem(COLOR_MODE_KEY, colorMode);
 
   document.documentElement.classList.toggle(DARK_MODE_SELECTOR, prefersColorSchemeDark.matches);
   document.documentElement.classList.toggle(LIGHT_MODE_SELECTOR, !prefersColorSchemeDark.matches);
@@ -72,7 +75,7 @@ function toggleColorModeClass() {
 export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boolean) {
   if (isSSR) return;
 
-  isCachedAutoMode = isCachedAutoMode ?? !!Number(getCookie(AUTO_MODE_KEY));
+  isCachedAutoMode = isCachedAutoMode ?? !!Number(localStorage.getItem(AUTO_MODE_KEY));
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -95,7 +98,7 @@ export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boole
   /* Dispatching custom event for the useDarkMode composable. */
   window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
 
-  /* Saving color mode value into cookies. */
+  /* Saving color mode value into cookies (server) and local storage (client). */
   let currentColorMode = colorMode;
 
   if (isAutoMode) {
@@ -104,6 +107,9 @@ export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boole
 
   setCookie(COLOR_MODE_KEY, currentColorMode);
   setCookie(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
+
+  localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
+  localStorage.setItem(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
 }
 
 /**
@@ -119,7 +125,7 @@ export function cssVar(name: string) {
  * @returns string | undefined
  */
 export function getSelectedPrimaryColor() {
-  return isCSR ? getCookie(PRIMARY_COLOR_KEY) : undefined;
+  return isCSR ? localStorage.getItem(PRIMARY_COLOR_KEY) : undefined;
 }
 
 /**
@@ -127,7 +133,7 @@ export function getSelectedPrimaryColor() {
  * @return string | undefined
  */
 export function getSelectedNeutralColor() {
-  return isCSR ? getCookie(NEUTRAL_COLOR_KEY) : undefined;
+  return isCSR ? localStorage.getItem(NEUTRAL_COLOR_KEY) : undefined;
 }
 
 /**
@@ -136,8 +142,8 @@ export function getSelectedNeutralColor() {
  * @return string - CSS variables
  */
 export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
-  const colorModeCookie = isCSR && getCookie(COLOR_MODE_KEY);
-  const roundingCookie = isCSR && Number(getCookie(ROUNDING_KEY));
+  const colorModeCookie = isCSR && localStorage.getItem(COLOR_MODE_KEY);
+  const roundingCookie = isCSR && Number(localStorage.getItem(ROUNDING_KEY));
 
   // eslint-disable-next-line vue/max-len, prettier/prettier
   setColorMode((config.colorMode || colorModeCookie || vuelessConfig.colorMode || ColorMode.Light) as ColorMode, isCachedAutoMode);
@@ -186,10 +192,20 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     neutral = DEFAULT_NEUTRAL_COLOR;
   }
 
-  if (isCSR && primary) setCookie(PRIMARY_COLOR_KEY, primary);
-  if (isCSR && neutral) setCookie(NEUTRAL_COLOR_KEY, neutral);
+  if (isCSR && primary) {
+    setCookie(PRIMARY_COLOR_KEY, primary);
+    localStorage.setItem(PRIMARY_COLOR_KEY, primary);
+  }
 
-  if (isCSR && rounding) setCookie(ROUNDING_KEY, String(rounding));
+  if (isCSR && neutral) {
+    setCookie(NEUTRAL_COLOR_KEY, neutral);
+    localStorage.setItem(NEUTRAL_COLOR_KEY, neutral);
+  }
+
+  if (isCSR && rounding) {
+    setCookie(ROUNDING_KEY, String(rounding));
+    localStorage.setItem(ROUNDING_KEY, String(rounding));
+  }
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
