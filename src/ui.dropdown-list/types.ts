@@ -64,7 +64,7 @@ export interface Props {
   /**
    * Number of options to show without a scroll.
    */
-  visibleOptions?: undefined | number;
+  visibleOptions?: number;
 
   /**
    * Disable the list.
