@@ -14,7 +14,7 @@ import UFiles from "../ui.text-files/UFiles.vue";
 
 import { useLocale } from "../composables/useLocale.ts";
 
-import { COMPONENT_NAME } from "./constants.ts";
+import { COMPONENT_NAME, mimeTypes, commonMimeTypesMap } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -24,7 +24,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => [],
-  allowedFileTypes: () => [],
+  allowedFileTypes: () =>
+    getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME).allowedFileTypes || [],
   label: "",
 });
 
@@ -65,12 +66,19 @@ const currentFiles = computed<File | File[] | null>({
 
 const currentError = computed(() => localError.value || props.error);
 
-const extensionNames = computed(() => {
-  return props.allowedFileTypes.map((type) => type.replace(".", ""));
-});
-
 const allowedFileTypeFormats = computed(() => {
-  return props.allowedFileTypes.map((type) => (type.startsWith(".") ? type : `.${type}`));
+  return props.allowedFileTypes
+    .map((type) => {
+      const isMimeType = mimeTypes.some((mimeType) => type.includes(mimeType));
+      const extension = type.startsWith(".") ? type : `.${type}`;
+
+      if (isMimeType) {
+        return type;
+      }
+
+      return commonMimeTypesMap[extension] || extension;
+    })
+    .flat();
 });
 
 const accept = computed(() => {
@@ -125,8 +133,8 @@ function removeDuplicates(files: File[]) {
 function validate(file: File) {
   const targetFileSize = getFileMbSize(file);
 
-  const isValidType = extensionNames.value.length
-    ? extensionNames.value.some((item) => file.type.includes(item))
+  const isValidType = allowedFileTypeFormats.value.length
+    ? allowedFileTypeFormats.value.includes(file.type)
     : true;
 
   const isValidSize = Number(targetFileSize) <= props.maxFileSize;
@@ -204,19 +212,19 @@ function onDragLeave(event: DragEvent) {
 function onDrop(event: DragEvent) {
   event.preventDefault();
 
-  let targetFiles: (File | null)[] = [];
+  let targetFiles: File[] = [];
 
   if (event.dataTransfer && event.dataTransfer.items) {
     targetFiles = [...event.dataTransfer.items]
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile())
-      .filter((file): file is File => !file);
+      .filter((file) => file !== null);
   } else if (event.dataTransfer && event.dataTransfer.files) {
-    targetFiles = [...event.dataTransfer.files];
+    targetFiles = [...event.dataTransfer.files].filter((file) => file !== null);
   }
 
   if (targetFiles.length) {
-    targetFiles.filter((file): file is File => !file).forEach(validate);
+    targetFiles.forEach(validate);
   }
 
   nextTick(() => {
@@ -226,14 +234,12 @@ function onDrop(event: DragEvent) {
       return;
     }
 
-    const validFiles = targetFiles.filter((file): file is File => !file);
-
     currentFiles.value = props.multiple
       ? [
           ...(Array.isArray(currentFiles.value) ? currentFiles.value : []),
-          ...removeDuplicates(validFiles),
+          ...removeDuplicates(targetFiles),
         ]
-      : validFiles[0];
+      : targetFiles[0];
   });
 }
 
