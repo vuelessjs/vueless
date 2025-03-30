@@ -20,7 +20,6 @@ export async function hideHiddenStories(isVuelessEnv) {
 }
 
 export async function showHiddenStories(isVuelessEnv) {
-  if (typeof window !== "undefined") return;
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const componentDir of Object.values(COMPONENTS)) {
