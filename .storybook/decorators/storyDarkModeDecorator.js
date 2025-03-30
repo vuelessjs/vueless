@@ -4,6 +4,12 @@ import { COLOR_MODE_KEY } from "../../src/constants.js";
 
 const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
 
+const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+prefersColorSchemeDark.addEventListener("change", (event) => {
+  setTheme({ colorMode: event.matches ? "dark" : "light" });
+});
+
 export const storyDarkModeDecorator = () => {
   /* Set theme className to html tag before initialization (fix white blink issue). */
   const sbAddonThemesConfig = localStorage.getItem("sb-addon-themes-3") || "{}";
@@ -22,9 +28,8 @@ export const storyDarkModeDecorator = () => {
   }
 
   /* Initialize theme state. */
-  const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
-  const preferScheme = prefersColorSchemeDark.matches ? "dark" : "light";
-  const cachedColorMode = localStorage.getItem(COLOR_MODE_KEY) || preferScheme;
+  const colorMode = prefersColorSchemeDark.matches ? "dark" : "light";
+  const cachedColorMode = localStorage.getItem(COLOR_MODE_KEY) || colorMode;
 
   initializeThemeState(["light", "dark"], cachedColorMode);
 
@@ -36,9 +41,7 @@ export const storyDarkModeDecorator = () => {
     return {
       components: { story },
       setup() {
-        return {
-          theme,
-        };
+        return { theme };
       },
       template: `<story />`,
     };

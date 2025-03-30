@@ -2,7 +2,7 @@ import { addons } from "@storybook/manager-api";
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
 
-const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 function setSystemTheme(theme) {
   addons.setConfig({
@@ -11,8 +11,8 @@ function setSystemTheme(theme) {
   });
 }
 
-setSystemTheme(prefersDarkScheme.matches);
+setSystemTheme(prefersColorSchemeDark.matches);
 
-prefersDarkScheme.addEventListener("change", (event) => {
+prefersColorSchemeDark.addEventListener("change", (event) => {
   setSystemTheme(event.matches);
 });
