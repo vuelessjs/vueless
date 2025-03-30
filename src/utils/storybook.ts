@@ -19,14 +19,14 @@ export interface ArgType {
   table?: TableConfig;
   name?: string;
   description?: string;
-  type?: string | null;
+  type?: { required?: boolean } | string | null;
   action?: string;
 }
 
 interface TableConfig {
   disable?: boolean;
   defaultValue?: { summary: unknown };
-  category?: "slots" | "expose" | "Storybook Events";
+  category?: "props" | "slots" | "expose" | "Storybook Events";
   type?: Record<string, string | string[]>;
 }
 
@@ -104,8 +104,8 @@ export function getArgTypes(componentName: string | undefined) {
         options: attribute.enum,
         control: "select",
         table: {
-          defaultValue: { summary: attribute.default || "" },
           type: { summary: attribute.enum.join(" | ") },
+          defaultValue: { summary: attribute.default || "" },
         },
       };
     } else if (attribute.enum?.some((value) => nonUnionTypes.includes(value))) {
@@ -122,8 +122,8 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: control as ArgType["control"],
         table: {
-          defaultValue: { summary: attribute.default || "" },
           type: { summary: attribute.enum.join(" | ") },
+          defaultValue: { summary: attribute.default || "" },
         },
       };
     }
@@ -132,8 +132,8 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "object",
         table: {
-          defaultValue: { summary: attribute.default || "" },
           type: { summary: attribute.enum.join(" | ") },
+          defaultValue: { summary: attribute.default || "" },
         },
       };
     }
@@ -142,6 +142,7 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "text",
         table: {
+          type: { summary: "string" },
           defaultValue: { summary: attribute.default || "" },
         },
       };
@@ -151,6 +152,7 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "number",
         table: {
+          type: { summary: "number" },
           defaultValue: { summary: attribute.default || "" },
         },
       };
@@ -160,6 +162,7 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "date",
         table: {
+          type: { summary: "Date" },
           defaultValue: { summary: attribute.default || "" },
         },
       };
@@ -183,6 +186,7 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "boolean",
         table: {
+          type: { summary: "boolean" },
           defaultValue: { summary: attribute.default || "" },
         },
       };
@@ -192,11 +196,13 @@ export function getArgTypes(componentName: string | undefined) {
       types[attribute.name] = {
         control: "array",
         table: {
+          type: { summary: "array" },
           defaultValue: { summary: attribute.default || [] },
         },
       };
     }
 
+    /* Hide ignored props. */
     if (attribute.description?.includes("@ignore")) {
       types[attribute.name] = {
         table: {
@@ -204,6 +210,26 @@ export function getArgTypes(componentName: string | undefined) {
         },
       };
     }
+
+    /* Hide strange undefiled argType. */
+    types["undefined"] = {
+      table: {
+        disable: true,
+      },
+    };
+
+    /* Applying category, required and description for all props. */
+    types[attribute.name] = {
+      ...types[attribute.name],
+      table: {
+        ...types[attribute.name]?.table,
+        category: "props",
+      },
+      type: {
+        required: attribute.required,
+      },
+      description: attribute.description,
+    };
   });
 
   component.slots?.forEach((slot) => {
