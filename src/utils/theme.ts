@@ -150,7 +150,9 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
-    config.rounding || roundingCookie || vuelessConfig.rounding,
+    config.rounding ??
+      (typeof roundingCookie === "number" ? roundingCookie : undefined) ??
+      vuelessConfig.rounding,
     config.roundingLg ?? vuelessConfig.roundingLg,
   );
 
@@ -202,7 +204,7 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     localStorage.setItem(NEUTRAL_COLOR_KEY, neutral);
   }
 
-  if (isCSR && rounding) {
+  if (isCSR && rounding !== undefined && rounding !== null) {
     setCookie(ROUNDING_KEY, String(rounding));
     localStorage.setItem(ROUNDING_KEY, String(rounding));
   }
