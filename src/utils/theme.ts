@@ -106,10 +106,10 @@ export function setColorMode(colorMode: `${ColorMode}`, isCachedAutoMode?: boole
   }
 
   setCookie(COLOR_MODE_KEY, currentColorMode);
-  setCookie(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
+  setCookie(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
 
   localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
-  localStorage.setItem(AUTO_MODE_KEY, String(Number(isCachedAutoMode)));
+  localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
 }
 
 /**
@@ -142,17 +142,15 @@ export function getSelectedNeutralColor() {
  * @return string - CSS variables
  */
 export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
-  const colorModeCookie = isCSR && localStorage.getItem(COLOR_MODE_KEY);
-  const roundingCookie = isCSR && Number(localStorage.getItem(ROUNDING_KEY));
+  const cachedColorMode = isCSR && localStorage.getItem(COLOR_MODE_KEY);
+  const cachedRounding = isCSR ? localStorage.getItem(ROUNDING_KEY) : undefined;
 
   // eslint-disable-next-line vue/max-len, prettier/prettier
-  setColorMode((config.colorMode || colorModeCookie || vuelessConfig.colorMode || ColorMode.Light) as ColorMode, isCachedAutoMode);
+  setColorMode((config.colorMode || cachedColorMode || vuelessConfig.colorMode || ColorMode.Light) as ColorMode, isCachedAutoMode);
 
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
-    config.rounding ??
-      (typeof roundingCookie === "number" ? roundingCookie : undefined) ??
-      vuelessConfig.rounding,
+    config.rounding ?? cachedRounding ?? vuelessConfig.rounding,
     config.roundingLg ?? vuelessConfig.roundingLg,
   );
 
@@ -204,7 +202,7 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     localStorage.setItem(NEUTRAL_COLOR_KEY, neutral);
   }
 
-  if (isCSR && rounding !== undefined && rounding !== null) {
+  if (isCSR) {
     setCookie(ROUNDING_KEY, String(rounding));
     localStorage.setItem(ROUNDING_KEY, String(rounding));
   }
@@ -295,7 +293,7 @@ function getFontSize(xs?: number, sm?: number, md?: number, lg?: number) {
  * Calculate rounding values.
  * @return object - sm, md, lg rounding values.
  */
-function getRoundings(sm?: number, md?: number, lg?: number) {
+function getRoundings(sm?: string | number, md?: string | number, lg?: string | number) {
   const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
   let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
   let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
