@@ -38,9 +38,7 @@ const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () =
 }));
 
 const localValue = computed({
-  get: () => {
-    return props.modelValue === null ? "" : props.modelValue;
-  },
+  get: () => props.modelValue ?? "",
   set: (value) => emit("update:modelValue", value),
 });
 
