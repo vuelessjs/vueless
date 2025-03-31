@@ -17,7 +17,7 @@ export interface Props {
   /**
    * Input value.
    */
-  modelValue?: number | string;
+  modelValue?: number | string | null;
 
   /**
    * Set type of the modelValue.
