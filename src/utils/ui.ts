@@ -1,7 +1,7 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { isCSR, isSSR } from "./helper.ts";
+import { isCSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
@@ -20,25 +20,25 @@ type GetMergedConfig = (options: MergedConfigOptions) => unknown;
 /**
  * Load Vueless config from the project root.
  * Both for server and client side renderings.
- * IIFE for SSR is used to prevent top level await issue.
  */
 export let vuelessConfig: Config = {};
 
-if (isSSR) {
-  /* Load Vueless config from the project root in IIFE (no top-level await). */
-  (async () => {
-    try {
-      const filePath = `${process.cwd()}/vueless.config`;
+export async function loadVuelessConfig() {
+  if (isCSR || Object.keys(vuelessConfig).length) {
+    return vuelessConfig;
+  }
 
-      vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
+  try {
+    const filePath = `${process.cwd()}/vueless.config`;
 
-      if (!vuelessConfig) {
-        vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
-      }
-    } catch {
-      vuelessConfig = {};
+    vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
+
+    if (!vuelessConfig) {
+      vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
     }
-  })();
+  } catch {
+    vuelessConfig = {};
+  }
 }
 
 if (isCSR) {
