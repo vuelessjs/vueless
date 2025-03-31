@@ -14,7 +14,7 @@ import UFiles from "../ui.text-files/UFiles.vue";
 
 import { useLocale } from "../composables/useLocale.ts";
 
-import { COMPONENT_NAME, mimeTypes, commonMimeTypesMap } from "./constants.ts";
+import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -69,14 +69,14 @@ const currentError = computed(() => localError.value || props.error);
 const allowedFileTypeFormats = computed(() => {
   return props.allowedFileTypes
     .map((type) => {
-      const isMimeType = mimeTypes.some((mimeType) => type.includes(mimeType));
+      const isMimeType = MIME_TYPES.some((mimeType) => type.includes(mimeType));
       const extension = type.startsWith(".") ? type : `.${type}`;
 
       if (isMimeType) {
         return type;
       }
 
-      return commonMimeTypesMap[extension] || extension;
+      return COMMON_MIME_TYPES[extension] || extension;
     })
     .flat();
 });
@@ -214,12 +214,12 @@ function onDrop(event: DragEvent) {
 
   let targetFiles: File[] = [];
 
-  if (event.dataTransfer && event.dataTransfer.items) {
+  if (event.dataTransfer?.items) {
     targetFiles = [...event.dataTransfer.items]
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile())
       .filter((file) => file !== null);
-  } else if (event.dataTransfer && event.dataTransfer.files) {
+  } else if (event.dataTransfer?.files) {
     targetFiles = [...event.dataTransfer.files].filter((file) => file !== null);
   }
 

@@ -4,7 +4,7 @@
  */
 export const COMPONENT_NAME = "UInputFile";
 
-export const mimeTypes = [
+export const MIME_TYPES = [
   "application/",
   "audio/",
   "example/",
@@ -18,7 +18,7 @@ export const mimeTypes = [
   "video/",
 ];
 
-export const commonMimeTypesMap: Record<string, string[]> = {
+export const COMMON_MIME_TYPES: Record<string, string[]> = {
   ".aac": ["audio/aac"],
   ".abw": ["application/x-abiword"],
   ".apng": ["image/apng"],
