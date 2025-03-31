@@ -711,12 +711,6 @@ const {
           <UTableRow
             v-for="(row, rowIndex) in sortedRows"
             :key="row.id"
-            v-memo="[
-              selectedRows.includes(row.id),
-              row.isShown,
-              row.nestedData,
-              isRowSelectedWithin(rowIndex),
-            ]"
             :selectable="selectable"
             :row="row"
             :is-date-divider="isShownDateDivider(rowIndex)"
