@@ -18,9 +18,9 @@ export default {
    */
   lightTheme: {
     /* Primary colors */
-    "--vl-primary": "--color-primary-600",
-    "--vl-primary-lifted": "--color-primary-700",
-    "--vl-primary-accented": "--color-primary-800",
+    "--vl-primary": "--vl-primary-600",
+    "--vl-primary-lifted": "--vl-primary-700",
+    "--vl-primary-accented": "--vl-primary-800",
 
     /* Secondary colors */
     "--vl-secondary": "--vl-neutral-500",
@@ -88,9 +88,9 @@ export default {
    */
   darkTheme: {
     /* Primary colors */
-    "--vl-primary": "--color-primary-400",
-    "--vl-primary-lifted": "--color-primary-500",
-    "--vl-primary-accented": "--color-primary-600",
+    "--vl-primary": "--vl-primary-400",
+    "--vl-primary-lifted": "--vl-primary-500",
+    "--vl-primary-accented": "--vl-primary-600",
 
     /* Secondary colors */
     "--vl-secondary": "--vl-neutral-300",
