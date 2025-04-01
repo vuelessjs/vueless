@@ -3,7 +3,7 @@ import { createLocale, LocaleSymbol } from "./composables/useLocale.ts";
 import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.ts";
 import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.ts";
 import { setTheme } from "./utils/theme.ts";
-import { loadVuelessConfig } from "./utils/ui.ts";
+import { setVuelessConfig } from "./utils/ui.ts";
 
 import type { App } from "vue"
 import type { CreateVuelessOptions } from "./types.ts"
@@ -43,8 +43,7 @@ export function createVueless(options: CreateVuelessOptions = {}) {
     app.provide(LoaderProgressSymbol, loaderProgress);
   };
 
-  /* read and cache vueless config */
-  loadVuelessConfig(options.config);
+  setVuelessConfig(options);
 
   /* init theme after first render */
   setTimeout(setTheme, 0);
