@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, useSlots, useTemplateRef } from "vue";
-import { cx, getMergedConfig } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { computed, onMounted, useTemplateRef } from "vue";
+import { cx } from "../utils/ui.ts";
+import { hasSlotContent, isEmptyValue } from "../utils/helper.ts";
 
 import { PX_IN_REM } from "../constants.js";
 import { mapRowColumns } from "./utilTable.ts";
@@ -11,10 +11,8 @@ import useUI from "../composables/useUI.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
 
 import defaultConfig from "./config.ts";
-import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
 
 import type { RowId, Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
 
@@ -25,18 +23,10 @@ defineOptions({ internal: true });
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits([
-  "click",
-  "dblclick",
-  "clickCell",
-  "toggleExpand",
-  "toggleCheckbox",
-  "toggleRowVisibility",
-]);
+const emit = defineEmits(["click", "dblclick", "clickCell", "toggleExpand", "toggleCheckbox"]);
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
-const slots = useSlots();
 
 useMutationObserver(cellRef, setCellTitle, {
   subtree: true,
@@ -49,9 +39,7 @@ const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
   let isShown = false;
 
-  if (props.row.nestedData) {
-    isShown = Boolean(props.row.nestedData.isShown);
-  } else if (Array.isArray(nestedRow)) {
+  if (Array.isArray(nestedRow)) {
     isShown = nestedRow.some((row) => row.isShown);
   } else {
     isShown = Boolean(nestedRow?.isShown);
@@ -62,50 +50,14 @@ const toggleIconConfig = computed(() => {
     : props.attrs.bodyCellNestedExpandIconAttrs.value;
 });
 
-const isNestedRowEmpty = computed(() => {
-  if (!props.row.row) return true;
-
-  if (Array.isArray(props.row.row)) {
-    return props.row.row.some(
-      (nestedRow) => !Object.keys(mapRowColumns(nestedRow, props.columns)).length,
-    );
-  }
-
-  return !Object.keys(mapRowColumns(props.row.row, props.columns)).length;
-});
-
-const isNestedDataEmpty = computed(() => {
-  if (!props.row.nestedData) return true;
-
-  return (
-    !props.row.nestedData.rows ||
-    (Array.isArray(props.row.nestedData.rows) && !props.row.nestedData.rows.length)
-  );
-});
-
-const isShownToggleIcon = computed(() => {
-  return (
-    (props.row.row && !isNestedRowEmpty.value) ||
-    (props.row.nestedData && !isNestedDataEmpty.value && hasSlotContent(slots["nested-content"]))
-  );
-});
-
 onMounted(() => {
   if (cellRef.value) {
     cellRef.value.forEach(setElementTitle);
   }
 });
 
-function isExpanded(row: Row) {
-  const isShownNestedRow = Array.isArray(row.row)
-    ? row.row.some((nestedRow) => nestedRow.isShown)
-    : row.row?.isShown;
-
-  return Boolean(isShownNestedRow || row.nestedData?.isShown);
-}
-
-function getToggleIconName(row: Row) {
-  return isExpanded(row)
+function getToggleIconName() {
+  return props.isExpanded
     ? props.config?.defaults?.collapseIcon
     : props.config?.defaults?.expandIcon;
 }
@@ -138,16 +90,6 @@ function getCellContentClasses(row: Row, key: string) {
   return cellContentClasses instanceof Function
     ? cellContentClasses(cell.value, row)
     : cellContentClasses;
-}
-
-function isEmptyValue(value: object | null | undefined | string | unknown) {
-  return (
-    value === null ||
-    value === undefined ||
-    value === "" ||
-    (Array.isArray(value) && value.length === 0) ||
-    (typeof value === "object" && !Object.keys(value).length)
-  );
 }
 
 function formatCellValue(value: Cell) {
@@ -202,10 +144,6 @@ function setElementTitle(element: HTMLElement) {
   }
 }
 
-function onClickToggleIcon() {
-  emit("toggleRowVisibility");
-}
-
 function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
   emit("clickCell", cell, row, key);
 }
@@ -216,12 +154,12 @@ function getRowClasses(row: Row) {
   return typeof rowClasses === "function" ? rowClasses(row) : rowClasses;
 }
 
-function getRowAttrs(row: Row) {
-  return row.isChecked ? props.attrs.bodyRowCheckedAttrs.value : props.attrs.bodyRowAttrs.value;
+function getRowAttrs() {
+  return props.isChecked ? props.attrs.bodyRowCheckedAttrs.value : props.attrs.bodyRowAttrs.value;
 }
 
-function onToggleExpand(row: Row, expanded?: boolean) {
-  emit("toggleExpand", row, expanded || isExpanded(row));
+function onToggleExpand(row: Row) {
+  emit("toggleExpand", row);
 }
 
 function onInputCheckbox(rowId: RowId) {
@@ -233,45 +171,9 @@ const { getDataTest } = useUI<Config>(defaultConfig);
 
 <template>
   <tr
-    v-if="isDateDivider && !selectedWithin && row.rowDate"
-    v-bind="attrs.bodyRowDateDividerAttrs.value"
-  >
-    <td v-bind="attrs.bodyCellDateDividerAttrs.value" :colspan="colsCount">
-      <UDivider
-        :label="dateDividerData.label"
-        v-bind="attrs.bodyDateDividerAttrs.value"
-        :config="
-          getMergedConfig({
-            defaultConfig: attrs.bodyDateDividerAttrs.value.config,
-            globalConfig: dateDividerData.config,
-          }) as UDividerConfig
-        "
-      />
-    </td>
-  </tr>
-
-  <tr
-    v-if="isDateDivider && selectedWithin && row.rowDate"
-    v-bind="attrs.bodyRowCheckedDateDividerAttrs.value"
-  >
-    <td v-bind="attrs.bodyCellDateDividerAttrs.value" :colspan="colsCount">
-      <UDivider
-        :label="dateDividerData.label"
-        v-bind="attrs.bodySelectedDateDividerAttrs.value"
-        :config="
-          getMergedConfig({
-            defaultConfig: attrs.bodySelectedDateDividerAttrs.value.config,
-            globalConfig: dateDividerData.config,
-          }) as UDividerConfig
-        "
-      />
-    </td>
-  </tr>
-
-  <tr
-    v-if="row.isShown || typeof row.isShown === 'undefined'"
-    v-bind="{ ...$attrs, ...getRowAttrs(row) }"
-    :class="cx([getRowAttrs(row).class, getRowClasses(row)])"
+    v-if="!row.parentRowId || !hasSlotContent($slots['nested-row'])"
+    v-bind="{ ...$attrs, ...getRowAttrs() }"
+    :class="cx([getRowAttrs().class, getRowClasses(row)])"
     @click="onClick(props.row)"
     @dblclick="onDoubleClick(props.row)"
   >
@@ -280,9 +182,10 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       :style="getNestedCheckboxShift()"
       v-bind="attrs.bodyCellCheckboxAttrs.value"
       @click.stop
+      @dblclick.stop
     >
       <UCheckbox
-        :model-value="row.isChecked"
+        :model-value="isChecked"
         size="md"
         v-bind="attrs.bodyCheckboxAttrs.value"
         :data-id="row.id"
@@ -299,17 +202,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       @click="onClickCell(value, row, key)"
     >
       <div
-        v-if="(row.row || nestedLevel || row.nestedData) && index === 0"
+        v-if="(row.row || nestedLevel) && index === 0"
         :style="getNestedShift()"
         v-bind="attrs.bodyCellNestedAttrs.value"
       >
-        <div
-          :data-row-toggle-icon="row.id"
-          @click.stop="() => (onClickToggleIcon(), onToggleExpand(row))"
-        >
-          <slot name="expand" :row="row" :expanded="isExpanded(row)">
+        <div :data-row-toggle-icon="row.id" @dblclick.stop @click.stop="onToggleExpand(row)">
+          <slot name="expand" :row="row" :expanded="isExpanded">
             <div
-              v-show="isShownToggleIcon"
+              v-if="row.row"
               ref="toggle-wrapper"
               v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
               :style="{ width: getIconWidth() }"
@@ -318,7 +218,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
                 size="xs"
                 internal
                 interactive
-                :name="getToggleIconName(row)"
+                :name="getToggleIconName()"
                 color="primary"
                 v-bind="toggleIconConfig"
               />
@@ -357,15 +257,9 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     </td>
   </tr>
 
-  <template
-    v-if="row.nestedData && row.nestedData.isShown && hasSlotContent($slots['nested-content'])"
-  >
-    <tr :class="row.nestedData.class">
-      <td :colspan="columns.length + (selectable ? 1 : 0)">
-        <div :style="getNestedShift()">
-          <slot name="nested-content" :row="row" />
-        </div>
-      </td>
-    </tr>
-  </template>
+  <tr v-if="row.parentRowId && hasSlotContent($slots['nested-row'])" :class="row.class">
+    <td :colspan="columns.length + (selectable ? 1 : 0)">
+      <slot name="nested-row" :row="row" :nested-level="nestedLevel" />
+    </td>
+  </tr>
 </template>

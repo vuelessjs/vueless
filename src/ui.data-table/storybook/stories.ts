@@ -22,7 +22,7 @@ interface UTableArgs extends Props {
   slotTemplate?: string;
   enum: "size";
   numberOfRows: number;
-  row: Row | typeof getRow | typeof getNestedRow | typeof getNestedContentRow;
+  row: Row | typeof getRow | typeof getNestedRow | typeof getSlotNestedRow;
 }
 
 const SHORT_STORY_PARAMETERS = {
@@ -158,7 +158,7 @@ function getNestedRow() {
   };
 }
 
-function getNestedContentRow(index: number) {
+function getSlotNestedRow(index: number) {
   if (index === 1) {
     return {
       id: getRandomId(),
@@ -166,7 +166,8 @@ function getNestedContentRow(index: number) {
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "John Doe",
       status: "Processing",
-      nestedData: {
+      row: {
+        id: getRandomId(),
         isChecked: false,
         isShown: false,
         rows: [
@@ -497,22 +498,22 @@ SlotExpand.args = {
   row: getNestedRow,
   slotTemplate: `
     <template #expand="{ row, expanded }">
-      <UBadge v-if="expanded" label="Collapse" class="cursor-pointer" />
-      <UBadge v-if="!expanded" label="Expand" class="cursor-pointer" />
+      <UBadge v-if="expanded && row.row" label="Collapse" class="cursor-pointer" />
+      <UBadge v-if="!expanded && row.row" label="Expand" class="cursor-pointer" />
     </template>
   `,
 };
 
-export const SlotNestedContent = DefaultTemplate.bind({});
-SlotNestedContent.args = {
+export const SlotNestedRow = DefaultTemplate.bind({});
+SlotNestedRow.args = {
   columns: [
     { key: "orderId", label: "Order Id" },
     { key: "customerName", label: "Customer Name" },
     { key: "status", label: "Status" },
   ],
-  row: getNestedContentRow,
+  row: getSlotNestedRow,
   slotTemplate: `
-    <template #nested-content="{ row }">
+    <template #nested-row="{ row }">
       <div class="p-4 bg-lifted">
         <UTable
           :columns="[
@@ -520,21 +521,13 @@ SlotNestedContent.args = {
             { key: 'itemName', label: 'Product' },
             { key: 'quantity', label: 'Quantity' },
           ]"
-          :rows="row.nestedData.rows"
-          compact
-        />
-      </div>
+            :rows="row.rows"
+            compact
+          />
+        <td>
+      </tr>
     </template>
   `,
-};
-SlotNestedContent.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "You can also pass nested content inside the row (to render a nested table, for example). Use the `nestedData` key inside a row object.",
-    },
-  },
 };
 
 export const SlotAfterLastRow = DefaultTemplate.bind({});
