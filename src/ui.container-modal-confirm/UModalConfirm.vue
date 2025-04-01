@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -43,6 +43,12 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
+const confirmModalRef = useTemplateRef("confirmModal");
+
+const modal = computed(() => {
+  return confirmModalRef.value?.wrapperRef || null;
+});
+
 const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -67,6 +73,14 @@ function emitConfirmAction() {
   closeModal();
 }
 
+defineExpose({
+  /**
+   * A reference to the UModal's wrapper element for direct DOM manipulation.
+   * @property {InstanceType<typeof UModal>}
+   */
+  modal,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -83,6 +97,7 @@ const {
 <template>
   <UModal
     :id="id"
+    ref="confirmModal"
     v-model="isShownModal"
     :size="size"
     :title="title"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
@@ -14,6 +16,16 @@ withDefaults(defineProps<Props>(), {
   label: "",
 });
 
+const headerRef = useTemplateRef<HTMLElement>("header");
+
+defineExpose({
+  /**
+   * A reference to the header element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  headerRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -22,7 +34,7 @@ const { getDataTest, headerAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <component :is="tag" v-bind="headerAttrs" :data-test="getDataTest()">
+  <component :is="tag" ref="header" v-bind="headerAttrs" :data-test="getDataTest()">
     <slot>{{ label }}</slot>
   </component>
 </template>

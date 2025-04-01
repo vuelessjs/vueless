@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
+import { ref, computed, nextTick, watch, useSlots, onMounted, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -25,7 +25,7 @@ import { useLocale } from "../composables/useLocale.ts";
 
 import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
 import type { Props, Config } from "./types.ts";
-import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
+import type { KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -88,12 +88,12 @@ const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
 
-const dropdownListRef = ref<ComponentExposed<typeof UDropdownList> | null>(null);
-const wrapperRef = ref<HTMLDivElement | null>(null);
-const searchInputRef = ref<HTMLInputElement | null>(null);
-const labelComponentRef = ref<ComponentExposed<typeof ULabel> | null>(null);
-const leftSlotWrapperRef = ref<HTMLSpanElement | null>(null);
-const innerWrapperRef = ref<HTMLDivElement | null>(null);
+const dropdownListRef = useTemplateRef("dropdownList");
+const wrapperRef = useTemplateRef("wrapper");
+const searchInputRef = useTemplateRef("searchInput");
+const labelComponentRef = useTemplateRef("labelComponent");
+const leftSlotWrapperRef = useTemplateRef("leftSlotWrapper");
+const innerWrapperRef = useTemplateRef("innerWrapper");
 
 const elementId = props.id || useId();
 
@@ -446,7 +446,7 @@ const {
 
 <template>
   <ULabel
-    ref="labelComponentRef"
+    ref="labelComponent"
     :for="elementId"
     :size="size"
     :label="label"
@@ -469,7 +469,7 @@ const {
     </template>
 
     <div
-      ref="wrapperRef"
+      ref="wrapper"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
@@ -559,7 +559,7 @@ const {
         <slot :option="localValue" name="before-toggle" />
       </div>
 
-      <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
+      <div ref="innerWrapper" v-bind="innerWrapperAttrs">
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <div
             v-for="item in localValue as Option[]"
@@ -614,7 +614,7 @@ const {
         <div v-bind="searchAttrs">
           <input
             :id="elementId"
-            ref="searchInputRef"
+            ref="searchInput"
             v-model="search"
             type="text"
             autocomplete="off"
@@ -672,7 +672,7 @@ const {
 
       <UDropdownList
         v-if="isOpen"
-        ref="dropdownListRef"
+        ref="dropdownList"
         v-model="dropdownValue as string | number"
         :options="filteredOptions"
         :disabled="disabled"
@@ -729,7 +729,7 @@ const {
 
       <div
         v-if="hasSlotContent($slots['left']) || leftIcon"
-        ref="leftSlotWrapperRef"
+        ref="leftSlotWrapper"
         v-bind="leftSlotAttrs"
       >
         <!--

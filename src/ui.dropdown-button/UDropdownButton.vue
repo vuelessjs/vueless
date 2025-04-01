@@ -38,6 +38,7 @@ type UDropdownListRef = InstanceType<typeof UDropdownList>;
 
 const isShownOptions = ref(false);
 const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
 
@@ -59,6 +60,14 @@ function hideOptions() {
   isShownOptions.value = false;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -79,7 +88,7 @@ const {
 </script>
 
 <template>
-  <div v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
       :id="elementId"
       :label="label"

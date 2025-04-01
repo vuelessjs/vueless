@@ -93,6 +93,7 @@ type UInputRef = InstanceType<typeof UInput>;
 
 const isShownMenu = ref(false);
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 const menuRef = useTemplateRef<HTMLDivElement>("menu");
 const buttonRef = useTemplateRef<UButtonRef>("button");
 const buttonPrevRef = useTemplateRef<UButtonRef>("button-prev");
@@ -524,6 +525,20 @@ function onInputCalendar(value: RangeDate) {
   calendarInnerValue.value = value;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+
+  /**
+   * Reference to the UCalendar component instance.
+   * @property {HTMLElement}
+   */
+  calendarRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -716,6 +731,7 @@ watchEffect(() => {
 
         <UCalendar
           v-if="isPeriod.ownRange"
+          ref="calendar"
           v-model="calendarValue"
           :min-date="minDate"
           :max-date="maxDate"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
@@ -15,6 +17,16 @@ withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -24,7 +36,7 @@ const { getDataTest, headerAttrs, wrapperAttrs, titleFallbackAttrs, titleAttrs, 
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="title">
       <div v-bind="headerAttrs">
         <!--

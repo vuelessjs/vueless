@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide } from "vue";
+import { computed, provide, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -29,6 +29,8 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
+const listRef = useTemplateRef("list");
+
 const selectedItem = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
@@ -42,6 +44,14 @@ provide("getRadioGroupName", () => props.name);
 provide("getRadioGroupColor", () => props.color);
 provide("getRadioGroupSize", () => props.size);
 provide("getRadioGroupDisabled", () => props.disabled);
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  listRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -69,7 +79,7 @@ const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Confi
       <slot name="label" :label="label" />
     </template>
 
-    <div v-bind="listAttrs">
+    <div ref="list" v-bind="listAttrs">
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <URadio

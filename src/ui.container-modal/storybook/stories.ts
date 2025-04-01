@@ -79,7 +79,7 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
-  components: { UModal, UButton, URow, UInput, UTextarea },
+  components: { UModal, UButton, URow, UInput, UTextarea, UCol },
   setup() {
     type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
 

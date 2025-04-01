@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, ref, useId } from "vue";
+import { computed, useSlots, watch, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -45,7 +45,7 @@ const elementId = props.id || useId();
 
 const slots = useSlots();
 
-const wrapperRef = ref<HTMLElement | null>(null);
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -111,6 +111,14 @@ function closeModal() {
   emit("close");
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -147,7 +155,7 @@ const {
     <div
       v-if="isShownModal"
       :id="elementId"
-      ref="wrapperRef"
+      ref="wrapper"
       tabindex="0"
       v-bind="wrapperAttrs"
       :data-test="getDataTest()"

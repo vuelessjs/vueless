@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,6 +27,8 @@ const emit = defineEmits([
   "hidden",
 ]);
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
 const isShownAlert = ref(true);
 
 onMounted(() => {
@@ -42,6 +44,14 @@ function onClickClose() {
 
 const closeButtonColor = computed(() => {
   return props.variant === "solid" ? "grayscale" : props.color;
+});
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
 });
 
 /**
@@ -64,7 +74,7 @@ const {
 </script>
 
 <template>
-  <div v-if="isShownAlert" v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div v-if="isShownAlert" ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something above the text. -->
     <slot name="top" />
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -9,7 +9,7 @@ import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { AsyncComponentLoader } from "vue";
+import type { AsyncComponentLoader, ComponentPublicInstance } from "vue";
 import type { Props, Config, IconLibraries } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
@@ -24,6 +24,8 @@ const emit = defineEmits([
    */
   "click",
 ]);
+
+const iconRef = useTemplateRef<ComponentPublicInstance | HTMLElement>("icon");
 
 const generatedIcons = computed(() => {
   return (
@@ -129,6 +131,14 @@ function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
+defineExpose({
+  /**
+   * A reference to the icon element for direct DOM manipulation.
+   * @property {ComponentPublicInstance | HTMLElement}
+   */
+  iconRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -139,6 +149,7 @@ const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
 <template>
   <component
     :is="dynamicComponent"
+    ref="icon"
     tabindex="-1"
     v-bind="iconAttrs"
     :data-test="getDataTest()"

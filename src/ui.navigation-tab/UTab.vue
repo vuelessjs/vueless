@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, toValue } from "vue";
+import { computed, inject, toValue, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const tabRef = useTemplateRef<HTMLElement>("tab");
+
 const size = computed(() => toValue(getUTabsSize));
 const block = computed(() => toValue(getUTabsBlock));
 const square = computed(() => toValue(getUTabsSquare));
@@ -35,6 +37,14 @@ async function onClickSetValue() {
     setUTabsSelectedItem(props.value ?? "");
   }
 }
+
+defineExpose({
+  /**
+   * A reference to the tab element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  tabRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -57,6 +67,7 @@ const { getDataTest, tabButtonAttrs, tabButtonActiveAttrs } = useUI<Config>(
 
 <template>
   <UButton
+    ref="tab"
     variant="ghost"
     :size="size"
     :label="label"

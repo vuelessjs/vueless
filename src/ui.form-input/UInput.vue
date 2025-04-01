@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, useSlots, useId } from "vue";
+import { ref, computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -85,9 +85,9 @@ const VALIDATION_RULES_REG_EX = {
 const slots = useSlots();
 
 const isShownPassword = ref(false);
-const inputRef = ref<HTMLInputElement | null>(null);
-const leftSlotWrapperRef = ref<HTMLElement | null>(null);
-const labelComponentRef = ref<{ labelElement: HTMLElement } | null>(null);
+const inputRef = useTemplateRef("input");
+const leftSlotWrapperRef = useTemplateRef("leftSlotWrapper");
+const labelComponentRef = useTemplateRef("labelComponent");
 
 const isTypePassword = computed(() => props.type === "password");
 
@@ -253,7 +253,7 @@ const {
 
 <template>
   <ULabel
-    ref="labelComponentRef"
+    ref="labelComponent"
     :for="elementId"
     :label="label"
     :description="description"
@@ -277,7 +277,7 @@ const {
       <span
         v-if="hasSlotContent($slots['left']) || leftIcon"
         v-bind="leftSlotAttrs"
-        ref="leftSlotWrapperRef"
+        ref="leftSlotWrapper"
       >
         <!--
           @slot Use it to add something before the text.
@@ -290,7 +290,7 @@ const {
 
       <input
         :id="elementId"
-        ref="inputRef"
+        ref="input"
         v-model="inputValue"
         :placeholder="placeholder"
         :type="inputType"
