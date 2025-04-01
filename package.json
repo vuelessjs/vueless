@@ -51,15 +51,15 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.0.17",
-    "@tailwindcss/vite": "^4.0.14",
-    "cva": "^1.0.0-beta.1",
+    "@tailwindcss/vite": "^4.0.17",
+    "cva": "^1.0.0-beta.3",
     "lodash-es": "^4.17.21",
     "svgo": "^3.3.2",
-    "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.14",
+    "tailwind-merge": "^3.1.0",
+    "tailwindcss": "^4.0.17",
     "tippy.js": "^6.3.7",
-    "unplugin-vue-components": "^0.27.4",
-    "vuedraggable": "^4.1.0"
+    "unplugin-vue-components": "^28.4.1",
+    "vuedraggable": "4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
