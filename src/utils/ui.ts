@@ -29,7 +29,11 @@ type GetMergedConfig = (options: MergedConfigOptions) => unknown;
  */
 export let vuelessConfig: Config = {};
 
-export async function loadVuelessConfig() {
+export async function loadVuelessConfig(config?: Config) {
+  if (config) {
+    vuelessConfig = config;
+  }
+
   if (isCSR || Object.keys(vuelessConfig).length) return;
 
   try {

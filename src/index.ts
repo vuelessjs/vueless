@@ -44,7 +44,7 @@ export function createVueless(options: CreateVuelessOptions = {}) {
   };
 
   /* read and cache vueless config */
-  loadVuelessConfig();
+  loadVuelessConfig(options.config);
 
   /* init theme after first render */
   setTimeout(setTheme, 0);

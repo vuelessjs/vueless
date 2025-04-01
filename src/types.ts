@@ -345,6 +345,7 @@ export interface VueAttrs {
 
 export interface CreateVuelessOptions {
   i18n?: LocaleOptions;
+  config?: Config;
 }
 
 export interface VuelessCssVariables {
