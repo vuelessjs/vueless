@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/postcss": "^4.0.17",
     "@tailwindcss/vite": "^4.0.14",
     "cva": "^1.0.0-beta.1",
     "lodash-es": "^4.17.21",
