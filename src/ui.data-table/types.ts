@@ -63,9 +63,9 @@ export interface Props {
   rows: Row[];
 
   /**
-   * Selected rows id.
+   * Selected rows.
    */
-  selectedRows?: RowId[];
+  selectedRows?: Row[];
 
   /**
    * Selected rows id.

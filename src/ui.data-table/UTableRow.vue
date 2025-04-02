@@ -14,7 +14,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config.ts";
 
-import type { RowId, Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
+import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
 
 const NESTED_ROW_SHIFT_REM = 1;
 const LAST_NESTED_ROW_SHIFT_REM = 1.1;
@@ -162,8 +162,8 @@ function onToggleExpand(row: Row) {
   emit("toggleExpand", row);
 }
 
-function onInputCheckbox(rowId: RowId) {
-  emit("toggleCheckbox", rowId);
+function onInputCheckbox(row: Row) {
+  emit("toggleCheckbox", row);
 }
 
 const { getDataTest } = useUI<Config>(defaultConfig);
@@ -190,7 +190,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         v-bind="attrs.bodyCheckboxAttrs.value"
         :data-id="row.id"
         :data-test="getDataTest('body-checkbox')"
-        @input="onInputCheckbox(row.id)"
+        @input="onInputCheckbox(row)"
       />
     </td>
 

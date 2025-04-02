@@ -86,7 +86,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when table row selected.
-   * @property {array} rowId
+   * @property {array} row
    */
   "update:selectedRows",
 
@@ -117,7 +117,7 @@ const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-const localSelectedRows = ref<RowId[]>([]);
+const localSelectedRows = ref<Row[]>([]);
 const localExpandedRows = ref<RowId[]>([]);
 
 const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
@@ -356,7 +356,7 @@ function onClickCell(cell: Cell, row: Row, key: string | number) {
 
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
-    localSelectedRows.value = flatTableRows.value.map((row) => row.id);
+    localSelectedRows.value = [...flatTableRows.value];
   } else if (!selectAll) {
     localSelectedRows.value = [];
   }
@@ -364,7 +364,7 @@ function onChangeSelectAll(selectAll: boolean) {
   canSelectAll.value = true;
 }
 
-function onChangeLocalSelectedRows(selectedRows: RowId[]) {
+function onChangeLocalSelectedRows(selectedRows: Row[]) {
   if (selectedRows.length) {
     canSelectAll.value = false;
 
@@ -383,10 +383,6 @@ function onChangeLocalSelectedRows(selectedRows: RowId[]) {
 function clearSelectedItems() {
   localSelectedRows.value = [];
 }
-
-const mappedRows = computed(() => {
-  return sortedRows.value.map((row) => mapRowColumns(row, normalizedColumns.value));
-});
 
 function onToggleExpand(row: Row) {
   const targetIndex = localExpandedRows.value.findIndex((expandedId) => expandedId === row.id);
@@ -408,8 +404,8 @@ function isRowSelectedWithin(rowIndex: number) {
   const prevRow = sortedRows.value[rowIndex - 1];
   const targetRow = sortedRows.value[rowIndex];
 
-  const isPrevRowChecked = localSelectedRows.value.includes(prevRow?.id);
-  const isTargetRowChecked = localSelectedRows.value.includes(targetRow?.id);
+  const isPrevRowChecked = prevRow && isRowSelected(prevRow);
+  const isTargetRowChecked = targetRow && isRowSelected(targetRow);
 
   if (prevRow) {
     return isPrevRowChecked && isTargetRowChecked;
@@ -418,12 +414,10 @@ function isRowSelectedWithin(rowIndex: number) {
   return isTargetRowChecked;
 }
 
-function onToggleRowCheckbox(rowId: RowId) {
-  const targetIndex = localSelectedRows.value.findIndex((selectedId) => selectedId === rowId);
+function onToggleRowCheckbox(row: Row) {
+  const targetIndex = localSelectedRows.value.findIndex((selectedRow) => selectedRow.id === row.id);
 
-  ~targetIndex
-    ? localSelectedRows.value.splice(targetIndex, 1)
-    : localSelectedRows.value.push(rowId);
+  ~targetIndex ? localSelectedRows.value.splice(targetIndex, 1) : localSelectedRows.value.push(row);
 }
 
 function getDateDividerConfig(row: Row, isSelected: boolean) {
@@ -435,6 +429,12 @@ function getDateDividerConfig(row: Row, isSelected: boolean) {
     defaultConfig: defaultConfig,
     globalConfig: getDateDividerData(row.rowDate).config,
   }) as UDividerConfig;
+}
+
+function isRowSelected(row: Row | undefined) {
+  if (!row) return false;
+
+  return !!localSelectedRows.value.find((selectedRow) => selectedRow.id === row.id);
 }
 
 defineExpose({
@@ -676,11 +676,7 @@ const {
         <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
           <tr
             v-if="hasSlotContent($slots['before-first-row'])"
-            v-bind="
-              localSelectedRows.includes(sortedRows[0]?.id)
-                ? bodyRowBeforeCheckedAttrs
-                : bodyRowBeforeAttrs
-            "
+            v-bind="isRowSelected(sortedRows[0]) ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
           >
             <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
               <!-- @slot Use it to add something before first row. -->
@@ -730,8 +726,8 @@ const {
               :nested-level="Number(row.nestedLevel || 0)"
               :empty-cell-label="emptyCellLabel"
               :data-test="getDataTest('row')"
-              :is-expanded="localExpandedRows.includes(row.id)"
-              :is-checked="localSelectedRows.includes(row.id)"
+              :is-expanded="isRowSelected(row)"
+              :is-checked="isRowSelected(row)"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"
@@ -739,8 +735,8 @@ const {
               @toggle-checkbox="onToggleRowCheckbox"
             >
               <template
-                v-for="(value, key, cellIndex) in mappedRows[rowIndex]"
-                :key="`${row.id} + ${cellIndex}`"
+                v-for="(value, key, cellIndex) in mapRowColumns(row, normalizedColumns)"
+                :key="`${rowIndex}-${cellIndex}`"
                 #[`cell-${key}`]="{ value: cellValue, row: cellRow }"
               >
                 <!--

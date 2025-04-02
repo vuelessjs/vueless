@@ -43,5 +43,25 @@ export function getFlatRows(tableRows: Row[]) {
 export function getRowChildrenIds(row: Row): RowId[] {
   if (!row || !row.row) return [];
 
-  return Array.isArray(row.row) ? row.row.map((child) => child.id) : [row.row.id];
+  const ids: RowId[] = [];
+
+  function addId(row: Row) {
+    if (row.hasOwnProperty("row") && Array.isArray(row.row)) {
+      row.row.forEach((nestedRow) => {
+        ids.push(nestedRow.id);
+
+        addId(nestedRow);
+      });
+    }
+
+    if (row.hasOwnProperty("row") && !Array.isArray(row.row)) {
+      ids.push(row.row!.id);
+
+      addId(row.row as Row);
+    }
+  }
+
+  addId(row);
+
+  return ids;
 }
