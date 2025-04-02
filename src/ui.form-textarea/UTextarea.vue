@@ -60,10 +60,10 @@ const slots = useSlots();
 
 const elementId = props.id || useId();
 
-const textareaRef = useTemplateRef("textarea");
-const labelComponentRef = useTemplateRef("labelComponent");
-const leftSlotWrapperRef = useTemplateRef("leftSlotWrapper");
-const wrapperRef = useTemplateRef("wrapper");
+const textareaRef = useTemplateRef<HTMLTextAreaElement>("textarea");
+const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
+const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
 
@@ -176,13 +176,13 @@ onMounted(() => setLabelPosition());
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLLabelElement}
    */
   wrapperRef,
 
   /**
    * A reference to the textarea element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLTextAreaElement}
    */
   textareaRef,
 });

@@ -29,7 +29,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const listRef = useTemplateRef("list");
+const listRef = useTemplateRef<HTMLDivElement>("list");
 
 const selectedItem = computed({
   get: () => props.modelValue,

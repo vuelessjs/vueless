@@ -32,7 +32,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const wrapperRef = useTemplateRef("wrapper");
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n));
@@ -73,7 +73,7 @@ function onKeydownSpace() {
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLDivElement}
+   * @property {HTMLLabelElement}
    */
   wrapperRef,
 });

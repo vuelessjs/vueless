@@ -48,7 +48,7 @@ const emit = defineEmits([
 
 const slots = useSlots();
 
-const linkRef = useTemplateRef<HTMLElement>("link");
+const linkRef = useTemplateRef<HTMLLinkElement>("link");
 
 const isPresentRoute = computed(() => {
   return typeof props.to === "string" || typeof props.to === "object";
@@ -91,7 +91,7 @@ function onBlur(event: FocusEvent) {
 defineExpose({
   /**
    * A reference to the link element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLLinkElement}
    */
   linkRef,
 });

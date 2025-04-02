@@ -47,7 +47,7 @@ let updateValueWithDebounce = createDebounce((value) => {
 }, Number(props.debounce));
 
 const localValue = ref("");
-const searchInputRef = useTemplateRef("searchInput");
+const searchInputRef = useTemplateRef<InstanceType<typeof UInput>>("searchInput");
 
 const elementId = props.id || useId();
 
@@ -103,7 +103,7 @@ function onClickClear() {
 defineExpose({
   /**
    * Reference to the underlying input element inside UInput.
-   * @property {HTMLInputElement}
+   * @property {InstanceType<typeof UInput>}
    */
   input,
 });

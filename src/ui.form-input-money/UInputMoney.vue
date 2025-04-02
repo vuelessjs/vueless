@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
-const moneyInputRef = useTemplateRef("moneyInput");
+const moneyInputRef = useTemplateRef<InstanceType<typeof UInput>>("moneyInput");
 
 const elementId = props.id || useId();
 
@@ -99,7 +99,7 @@ function onInput(value: InputEvent) {
 defineExpose({
   /**
    * Reference to the underlying input element inside UInput.
-   * @property {HTMLInputElement}
+   * @property {InstanceType<typeof UInput>}
    */
   input,
 

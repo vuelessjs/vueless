@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useId, useTemplateRef } from "vue";
+import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,11 +27,15 @@ const emit = defineEmits([
   "remove",
 ]);
 
-const fileRef = useTemplateRef<HTMLElement>("file");
+const fileRef = useTemplateRef<InstanceType<typeof ULink>>("file");
 
 const focus = ref(false);
 
 const fileId = props.id || useId();
+
+const link = computed(() => {
+  return fileRef.value?.linkRef || null;
+});
 
 function onRemove() {
   emit("remove", fileId);
@@ -47,10 +51,10 @@ function onBlur() {
 
 defineExpose({
   /**
-   * A reference to the file element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the ULink instance for direct DOM manipulation.
+   * @property {InstanceType<typeof ULink>}
    */
-  fileRef,
+  link,
 });
 
 /**

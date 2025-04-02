@@ -85,9 +85,9 @@ const VALIDATION_RULES_REG_EX = {
 const slots = useSlots();
 
 const isShownPassword = ref(false);
-const inputRef = useTemplateRef("input");
-const leftSlotWrapperRef = useTemplateRef("leftSlotWrapper");
-const labelComponentRef = useTemplateRef("labelComponent");
+const inputRef = useTemplateRef<HTMLInputElement>("input");
+const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
+const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 
 const isTypePassword = computed(() => props.type === "password");
 
@@ -220,7 +220,7 @@ function setLabelPosition() {
 defineExpose({
   /**
    * A reference to the input element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLInputElement}
    */
   inputRef,
 });

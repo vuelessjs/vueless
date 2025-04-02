@@ -88,12 +88,12 @@ const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
 
-const dropdownListRef = useTemplateRef("dropdownList");
-const wrapperRef = useTemplateRef("wrapper");
-const searchInputRef = useTemplateRef("searchInput");
-const labelComponentRef = useTemplateRef("labelComponent");
-const leftSlotWrapperRef = useTemplateRef("leftSlotWrapper");
-const innerWrapperRef = useTemplateRef("innerWrapper");
+const dropdownListRef = useTemplateRef<InstanceType<typeof UDropdownList>>("dropdownList");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const searchInputRef = useTemplateRef<HTMLInputElement>("searchInput");
+const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
+const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
+const innerWrapperRef = useTemplateRef<HTMLDivElement>("innerWrapper");
 
 const elementId = props.id || useId();
 
@@ -368,14 +368,14 @@ function setLabelPosition() {
 
 defineExpose({
   /**
-   * A reference to the dropdown list element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the UDropdownList instance for direct DOM manipulation.
+   * @property {InstanceType<typeof UDropdownList>}
    */
   dropdownListRef,
 
   /**
    * A reference to the wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 
@@ -386,20 +386,20 @@ defineExpose({
   searchInputRef,
 
   /**
-   * A reference to the label component for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the ULabel instance for direct DOM manipulation.
+   * @property {InstanceType<typeof ULabel>}
    */
   labelComponentRef,
 
   /**
    * A reference to the left slot wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   leftSlotWrapperRef,
 
   /**
    * A reference to the inner wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   innerWrapperRef,
 });

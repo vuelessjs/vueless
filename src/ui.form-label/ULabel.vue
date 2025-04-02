@@ -24,8 +24,8 @@ const emit = defineEmits([
   "click",
 ]);
 
-const wrapperRef = useTemplateRef("wrapper");
-const labelRef = useTemplateRef("label");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const labelRef = useTemplateRef<HTMLLabelElement>("label");
 
 const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
@@ -54,13 +54,13 @@ function onClick(event: MouseEvent) {
 defineExpose({
   /**
    * Reference to the label element.
-   * @property {HTMLElement}
+   * @property {HTMLLabelElement}
    */
   labelElement,
 
   /**
    * Reference to the wrapper element containing the label and content.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   wrapperElement,
 });

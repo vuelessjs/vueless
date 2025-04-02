@@ -54,8 +54,8 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const dropZoneRef = useTemplateRef("dropZone");
-const fileInputRef = useTemplateRef("fileInput");
+const dropZoneRef = useTemplateRef<HTMLDivElement>("dropZone");
+const fileInputRef = useTemplateRef<HTMLInputElement>("fileInput");
 
 const localError = ref("");
 

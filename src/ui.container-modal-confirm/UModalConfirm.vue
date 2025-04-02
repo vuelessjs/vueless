@@ -43,7 +43,7 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const confirmModalRef = useTemplateRef("confirmModal");
+const confirmModalRef = useTemplateRef<InstanceType<typeof UModal>>("confirmModal");
 
 const modal = computed(() => {
   return confirmModalRef.value?.wrapperRef || null;

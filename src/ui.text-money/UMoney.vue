@@ -17,7 +17,11 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const moneyRef = useTemplateRef<HTMLElement>("money");
+const moneyRef = useTemplateRef<InstanceType<typeof UNumber>>("money");
+
+const number = computed(() => {
+  return moneyRef.value?.wrapperRef || null;
+});
 
 const currencySymbolPosition = computed(() => {
   return {
@@ -29,9 +33,9 @@ const currencySymbolPosition = computed(() => {
 defineExpose({
   /**
    * A reference to the UNumber instance for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {InstanceType<typeof UNumber>}
    */
-  moneyRef,
+  number,
 });
 
 /**
