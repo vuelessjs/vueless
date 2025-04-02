@@ -86,6 +86,7 @@ SlotHeader.args = {
     <template #header>
       <UIcon
         name="person"
+        internal="storybook"
         color="info"
         size="2xl"
       />

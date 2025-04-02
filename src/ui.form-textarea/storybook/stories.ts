@@ -158,7 +158,7 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
 
       <UTextarea v-bind="args">
         <template #right>
-          <UIcon name="send" color="success" v-tooltip="'Send message'" />
+          <UIcon name="send" internal="storybook" color="success" v-tooltip="'Send message'" />
         </template>
       </UTextarea>
     </URow>

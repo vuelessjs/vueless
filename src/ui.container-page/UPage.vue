@@ -104,7 +104,7 @@ const {
             <div v-bind="titleFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon
-                  internal
+                  internal="vueless"
                   size="2xs"
                   color="neutral"
                   :name="config.defaults.backIcon"

@@ -164,7 +164,7 @@ const {
                 <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
-                      internal
+                      internal="vueless"
                       size="2xs"
                       color="neutral"
                       :name="config.defaults.backIcon"
@@ -197,7 +197,7 @@ const {
               -->
               <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
                 <UIcon
-                  internal
+                  internal="vueless"
                   interactive
                   size="sm"
                   color="grayscale"

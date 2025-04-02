@@ -145,7 +145,7 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <UIcon name="unfold_more" color="inherit" />
+      <UIcon name="unfold_more" internal="storybook" color="inherit" />
     </template>
   `,
   noIcon: true,
@@ -158,6 +158,7 @@ LeftSlot.args = {
     <template #left>
       <UIcon
         name="heart_plus"
+        internal="storybook"
         size="sm"
         color="success"
       />

@@ -92,7 +92,7 @@ export const Slots: StoryFn<UFileArgs> = (args) => ({
     <URow>
       <UFile v-bind="args">
         <template #left>
-          <UIcon name="info" color="warning" size="xs" />
+          <UIcon name="info" internal="storybook" color="warning" size="xs" />
         </template>
       </UFile>
 

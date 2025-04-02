@@ -163,25 +163,25 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
       <URow>
         <UAlert v-bind="args">
           <template #top>
-            <UIcon name="wifi_off" color="error" />
+            <UIcon name="wifi_off" internal="storybook" color="error" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args">
           <template #bottom>
-            <UIcon name="sync" color="info" />
+            <UIcon name="sync" internal="storybook" color="info" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args">
           <template #left>
-            <UIcon name="warning" color="warning" />
+            <UIcon name="warning" internal="storybook" color="warning" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args" label="Delete">
           <template #right>
-            <UIcon name="play_arrow" color="success" />
+            <UIcon name="play_arrow" internal="storybook" color="success" />
           </template>
         </UAlert>
       </URow>

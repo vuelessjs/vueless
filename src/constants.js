@@ -377,6 +377,7 @@ export const VUELESS_ICONS_LOCAL_DIR = `src/${ICONS_DIR}`;
 export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
+export const STORYBOOK_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/${ICONS_DIR}/${STORYBOOK_DIR}`;
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;

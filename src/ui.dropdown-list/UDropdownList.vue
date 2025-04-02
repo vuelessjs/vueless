@@ -332,7 +332,7 @@ const {
           <slot name="after-option" :option="option" :index="index">
             <UIcon
               v-if="option[valueKey] === modelValue"
-              internal
+              internal="vueless"
               color="inherit"
               :name="config.defaults.selectedIcon"
               v-bind="selectedIconAttrs"
@@ -391,7 +391,7 @@ const {
           @click="onClickAddOption"
         >
           <UIcon
-            internal
+            internal="vueless"
             color="inherit"
             size="xs"
             :name="config.defaults.addOptionIcon"

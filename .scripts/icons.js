@@ -7,3 +7,4 @@ import { getVueDirs } from "../src/utils/node/helper.js";
 
 /* Copy SVG icons from the default icon library into the assets' folder. */
 await cacheIcons({ mode: "vuelessIcons", env: "vueless", targetFiles: getVueDirs() });
+await cacheIcons({ mode: "storybook", env: "vueless", targetFiles: getVueDirs() });

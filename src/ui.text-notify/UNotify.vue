@@ -158,7 +158,7 @@ const {
         color="success"
         variant="light"
         size="md"
-        internal
+        internal="vueless"
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
@@ -169,7 +169,7 @@ const {
         color="warning"
         variant="light"
         size="md"
-        internal
+        internal="vueless"
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
@@ -181,7 +181,7 @@ const {
         color="error"
         variant="light"
         size="md"
-        internal
+        internal="vueless"
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
@@ -198,7 +198,7 @@ const {
         color="neutral"
         variant="light"
         size="xs"
-        internal
+        internal="vueless"
         interactive
         :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"

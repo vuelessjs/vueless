@@ -149,6 +149,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
         <template #left>
           <UIcon
             name="heart_plus"
+            internal="storybook"
             size="2xs"
             color="inherit"
           />
@@ -164,6 +165,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
           />
           <UIcon
             :name="label"
+            internal="storybook"
             size="2xs"
             color="inherit"
           />
@@ -174,6 +176,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
         <template #right>
           <UIcon
             name="delete"
+            internal="storybook"
             size="2xs"
             color="inherit"
           />

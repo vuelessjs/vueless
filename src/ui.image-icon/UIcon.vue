@@ -52,7 +52,7 @@ const dynamicComponent = computed(() => {
 
   const isInternalIcon = isInternalIconExists && !isExternalIconExists;
 
-  const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
+  const library = props.internal === "vueless" && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
   const customLibraryPath = config.value.defaults.path;
   const weight = config.value.defaults.weight;
   const style = config.value.defaults.style;

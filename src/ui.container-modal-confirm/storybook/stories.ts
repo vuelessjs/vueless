@@ -226,7 +226,7 @@ export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({
       <div>
         <UModalConfirm v-bind="args" v-model="modalStates.beforeTitle">
           <template #before-title>
-            <UIcon name="subscriptions" size="sm" />
+            <UIcon name="subscriptions" size="sm" internal="storybook" />
           </template>
           ${defaultTemplate}
         </UModalConfirm>
@@ -246,7 +246,7 @@ export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({
       <div>
         <UModalConfirm v-bind="args" v-model="modalStates.afterTitle">
           <template #after-title>
-            <UIcon name="verified" size="sm" />
+            <UIcon name="verified" size="sm" internal="storybook" />
           </template>
           ${defaultTemplate}
         </UModalConfirm>

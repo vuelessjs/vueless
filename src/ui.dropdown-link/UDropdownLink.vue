@@ -118,7 +118,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
     <slot name="toggle" :opened="isShownOptions">
       <UIcon
         v-if="!noIcon"
-        internal
+        internal="vueless"
         interactive
         :color="color"
         :disabled="disabled"

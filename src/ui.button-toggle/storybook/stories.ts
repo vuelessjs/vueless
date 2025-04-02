@@ -131,7 +131,7 @@ Square.args = {
   ],
   slotTemplate: `
     <template #option="{ label, index }">
-      <UIcon :name="label" color="inherit" />
+      <UIcon :name="label" color="inherit" internal="storybook" />
     </template>
   `,
 };
@@ -166,7 +166,7 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
     <URow>
       <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
         <template #left="{ index }">
-          <UIcon size="sm" color="inherit" v-if="index === 0" name="settings" />
+          <UIcon size="sm" color="inherit" v-if="index === 0" name="settings" internal="storybook" />
         </template>
       </UToggle>
 
