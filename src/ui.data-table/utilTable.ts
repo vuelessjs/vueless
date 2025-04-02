@@ -43,9 +43,5 @@ export function getFlatRows(tableRows: Row[]) {
 export function getRowChildrenIds(row: Row): RowId[] {
   if (!row || !row.row) return [];
 
-  if (Array.isArray(row.row)) {
-    return row.row.map((child) => child.id);
-  } else {
-    return [row.row.id];
-  }
+  return Array.isArray(row.row) ? row.row.map((child) => child.id) : [row.row.id];
 }

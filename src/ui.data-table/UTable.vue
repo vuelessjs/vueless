@@ -415,17 +415,15 @@ function isRowSelectedWithin(rowIndex: number) {
     return isPrevRowChecked && isTargetRowChecked;
   }
 
-  return targetRow.isChecked;
+  return isTargetRowChecked;
 }
 
 function onToggleRowCheckbox(rowId: RowId) {
   const targetIndex = localSelectedRows.value.findIndex((selectedId) => selectedId === rowId);
 
-  if (~targetIndex) {
-    localSelectedRows.value.splice(targetIndex, 1);
-  } else {
-    localSelectedRows.value.push(rowId);
-  }
+  ~targetIndex
+    ? localSelectedRows.value.splice(targetIndex, 1)
+    : localSelectedRows.value.push(rowId);
 }
 
 function getDateDividerConfig(row: Row, isSelected: boolean) {
