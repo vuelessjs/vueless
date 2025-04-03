@@ -157,7 +157,6 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  */
 async function copyCachedStorybookIcons() {
   if (fs.existsSync(CACHED_STORYBOOK_ICONS_DIR)) {
-    // Create destination directory if it doesn't exist
     fs.mkdirSync(STORYBOOK_ASSETS_DIR, { recursive: true });
 
     await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ASSETS_DIR, {
@@ -266,7 +265,6 @@ async function copyIcon(name, defaults) {
     return;
   }
 
-  // Get paths for both destinations
   const { source, destination: vuelessDestination } = getIconLibraryPaths(
     name,
     defaults,
@@ -276,20 +274,16 @@ async function copyIcon(name, defaults) {
 
   const require = createRequire(import.meta.url);
 
-  // Handle storybook mode - only copy to storybook destination
-  if (isStorybookMode) {
-    if (fs.existsSync(source) && !fs.existsSync(storybookDestination)) {
-      const destDir = path.dirname(storybookDestination);
+  if (isStorybookMode && fs.existsSync(source) && !fs.existsSync(storybookDestination)) {
+    const destDir = path.dirname(storybookDestination);
 
-      fs.mkdirSync(destDir, { recursive: true });
-      await cp(require.resolve(source), storybookDestination);
-      isDebug && console.log(`Copied icon '${name}' to storybook cache: ${storybookDestination}`);
-    }
+    fs.mkdirSync(destDir, { recursive: true });
+    await cp(require.resolve(source), storybookDestination);
+    isDebug && console.log(`Copied icon '${name}' to storybook cache: ${storybookDestination}`);
 
-    return; // Exit function to prevent copying to vueless destination
+    return;
   }
 
-  // For vueless icons mode or other modes, copy to vueless destination
   if (!isStorybookMode && fs.existsSync(source) && !fs.existsSync(vuelessDestination)) {
     const destDir = path.dirname(vuelessDestination);
 
