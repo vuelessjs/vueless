@@ -96,7 +96,7 @@ const {
       @click="onClickRemove"
     >
       <UIcon
-        internal="vueless"
+        internal
         :size="size"
         :name="config.defaults.removeIcon"
         :color="isRemoveButtonDisabled ? 'neutral' : 'grayscale'"
@@ -119,7 +119,7 @@ const {
       @click="onClickAdd"
     >
       <UIcon
-        internal="vueless"
+        internal
         :size="size"
         :name="config.defaults.addIcon"
         :color="isAddButtonDisabled ? 'neutral' : 'grayscale'"

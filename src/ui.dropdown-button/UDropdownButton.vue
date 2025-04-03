@@ -117,7 +117,7 @@ const {
         -->
         <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
           <UIcon
-            internal="vueless"
+            internal
             color="inherit"
             :name="config.defaults.dropdownIcon"
             v-bind="dropdownIconAttrs"

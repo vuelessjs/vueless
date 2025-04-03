@@ -161,7 +161,6 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         <template #left>
           <UIcon
             name="heart_plus"
-            internal="storybook"
             size="sm"
             color="success"
             class="mx-1"
@@ -184,7 +183,6 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <UIcon
         name="expand_circle_down"
-        internal="storybook"
         color="success"
         class="mx-1"
         :class="{ 'rotate-180' : opened }"

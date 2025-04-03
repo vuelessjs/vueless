@@ -387,7 +387,6 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <UIcon
         name="expand_circle_down"
-        internal="storybook"
         :class="{ 'rotate-180': opened }"
       />
     </template>
@@ -413,7 +412,6 @@ SlotSelectedValueLabelAfter.args = {
     <template #selected-label-after="{ option }">
       <UIcon
         :name="option.icon"
-        internal="storybook"
         :color="option.color"
         size="xs"
         class="ml-1"

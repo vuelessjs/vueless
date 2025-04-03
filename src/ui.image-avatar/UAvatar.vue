@@ -71,7 +71,7 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
       -->
       <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="color">
         <UIcon
-          internal="vueless"
+          internal
           :size="size"
           :color="color"
           :name="placeholderIcon || config.defaults.placeholderIcon"

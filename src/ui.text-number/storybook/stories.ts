@@ -126,7 +126,7 @@ export const Slots: StoryFn<UNumberArgs> = (args) => ({
     <URow>
       <UNumber v-bind="args">
         <template #left>
-          <UIcon name="confirmation_number" internal="storybook" color="success" />
+          <UIcon name="confirmation_number" color="success" />
         </template>
       </UNumber>
 

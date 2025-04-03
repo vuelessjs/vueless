@@ -69,7 +69,7 @@ const {
             :name="config.defaults.toggleIcon"
             :size="size"
             color="neutral"
-            internal="vueless"
+            internal
             v-bind="toggleIconAttrs"
           />
         </slot>

@@ -87,7 +87,7 @@ export const Slots: StoryFn<UCardArgs> = (args) => ({
     <UCol gap="lg">
       <UCard v-bind="args" description="Before Title Slot">
         <template #before-title>
-          <UIcon name="account_circle" size="sm" internal="storybook" />
+          <UIcon name="account_circle" size="sm" />
         </template>
         ${defaultTemplate}
       </UCard>
@@ -101,7 +101,7 @@ export const Slots: StoryFn<UCardArgs> = (args) => ({
 
       <UCard v-bind="args" description="After Title Slot">
         <template #after-title>
-          <UIcon name="verified" size="sm" internal="storybook" />
+          <UIcon name="verified" size="sm" />
         </template>
         ${defaultTemplate}
       </UCard>

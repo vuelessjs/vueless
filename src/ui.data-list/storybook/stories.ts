@@ -196,7 +196,6 @@ SlotActions.args = {
       <UButton label="Export" size="xs" />
       <UIcon
         name="delete"
-        internal="storybook"
         size="sm"
         color="error"
         interactive
@@ -205,7 +204,6 @@ SlotActions.args = {
       />
       <UIcon
         name="edit_note"
-        internal="storybook"
         size="sm"
         color="grayscale"
         interactive

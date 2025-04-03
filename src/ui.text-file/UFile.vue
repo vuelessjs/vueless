@@ -77,7 +77,7 @@ const {
 
         <UIcon
           v-else
-          internal="vueless"
+          internal
           interactive
           color="neutral"
           :name="config.defaults.fileIcon"
@@ -94,7 +94,7 @@ const {
     <slot name="right">
       <UIcon
         v-if="removable"
-        internal="vueless"
+        internal
         interactive
         color="neutral"
         :name="config.defaults.removeIcon"

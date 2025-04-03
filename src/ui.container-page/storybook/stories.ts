@@ -150,7 +150,7 @@ export const Slots: StoryFn<UPageArgs> = (args) => ({
     <UCol gap="lg">
       <UPage v-bind="args" description="Before Title Slot">
         <template #before-title>
-          <UIcon name="account_circle" internal="storybook" />
+          <UIcon name="account_circle" />
         </template>
         ${defaultTemplate}
       </UPage>
@@ -164,7 +164,7 @@ export const Slots: StoryFn<UPageArgs> = (args) => ({
 
       <UPage v-bind="args" description="After Title Slot">
         <template #after-title>
-          <UIcon name="verified" internal="storybook" />
+          <UIcon name="verified" />
         </template>
         ${defaultTemplate}
       </UPage>

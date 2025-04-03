@@ -119,7 +119,7 @@ const {
         -->
         <slot name="close" :icon-name="config.defaults.closeIcon">
           <UIcon
-            internal="vueless"
+            internal
             :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"

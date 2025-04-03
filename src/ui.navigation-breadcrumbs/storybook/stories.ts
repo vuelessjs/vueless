@@ -168,7 +168,7 @@ export const SlotDivider = DefaultTemplate.bind({});
 SlotDivider.args = {
   slotTemplate: `
     <template #divider="{ index }">
-      <UIcon v-if="index === 1" name="double_arrow" internal="storybook" size="xs" />
+      <UIcon v-if="index === 1" name="double_arrow" size="xs" />
     </template>
   `,
 };

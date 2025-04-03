@@ -79,7 +79,7 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
       <UIcon
         v-for="star in stars"
         :key="star"
-        internal="vueless"
+        internal
         color="inherit"
         :interactive="selectable"
         :name="starIcon(star)"

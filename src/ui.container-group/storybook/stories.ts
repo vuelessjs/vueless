@@ -92,7 +92,7 @@ export const Slots: StoryFn<UGroupArgs> = (args) => ({
   template: `
       <UGroup v-bind="args" title="Before Title Slot">
         <template #before-title>
-          <UIcon name="account_circle" internal="storybook" />
+          <UIcon name="account_circle" />
         </template>
         ${defaultTemplate}
       </UGroup>
@@ -106,7 +106,7 @@ export const Slots: StoryFn<UGroupArgs> = (args) => ({
 
       <UGroup v-bind="args" title="After Title Slot">
         <template #after-title>
-          <UIcon name="verified" internal="storybook" />
+          <UIcon name="verified" />
         </template>
         ${defaultTemplate}
       </UGroup>

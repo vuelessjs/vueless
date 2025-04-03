@@ -60,11 +60,9 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Mark that Icon used inside Vueless components or Storybook.
-   * - "vueless": Using inside Vueless components (loads only icons used by Vueless)
-   * - "storybook": Using inside Storybook (loads both sets of icons)
+   * Mark that Icon used inside Vueless components (used to get icons from vueless library).
    */
-  internal?: "storybook" | "vueless";
+  internal?: boolean;
 
   /**
    * Component config object.

@@ -136,7 +136,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         label="Slot Left"
       >
         <template #left>
-          <UIcon name="info" internal="storybook" color="warning" />
+          <UIcon name="info" color="warning" />
         </template>
       </UInputFile>
 

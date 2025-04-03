@@ -26,13 +26,18 @@ const emit = defineEmits([
 ]);
 
 const generatedIcons = computed(() => {
-  return (
-    Object.entries(
-      import.meta.glob(`/node_modules/.cache/vueless/assets/icons/**/*.svg`, {
+  const isStorybook = Boolean(import.meta.env.STORYBOOK);
+
+  return Object.entries(
+    import.meta.glob(
+      isStorybook
+        ? "/node_modules/.cache/vueless/assets/icons/storybook/*.svg"
+        : "/node_modules/.cache/vueless/assets/icons/general/**/*.svg",
+      {
         eager: true,
         query: "?component",
-      }),
-    ) || []
+      },
+    ),
   );
 });
 
@@ -52,7 +57,7 @@ const dynamicComponent = computed(() => {
 
   const isInternalIcon = isInternalIconExists && !isExternalIconExists;
 
-  const library = props.internal === "vueless" && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
+  const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
   const customLibraryPath = config.value.defaults.path;
   const weight = config.value.defaults.weight;
   const style = config.value.defaults.style;

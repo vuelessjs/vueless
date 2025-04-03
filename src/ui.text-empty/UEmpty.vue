@@ -40,7 +40,7 @@ const {
       <slot name="header">
         <div v-bind="emptyIconWrapperAttrs">
           <UIcon
-            internal="vueless"
+            internal
             :name="config.defaults.emptyIcon"
             color="neutral"
             v-bind="emptyIconAttrs"

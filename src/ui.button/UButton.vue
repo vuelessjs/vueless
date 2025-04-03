@@ -97,13 +97,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
         @binding {string} icon-name
       -->
       <slot name="left" :icon-name="leftIcon">
-        <UIcon
-          v-if="leftIcon"
-          internal="vueless"
-          color="inherit"
-          :name="leftIcon"
-          v-bind="leftIconAttrs"
-        />
+        <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
@@ -112,13 +106,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
         @binding {string} icon-name
       -->
       <slot name="default" :label="label" :icon-name="icon">
-        <UIcon
-          v-if="icon"
-          internal="vueless"
-          color="inherit"
-          :name="icon"
-          v-bind="centerIconAttrs"
-        />
+        <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -133,7 +121,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
           v-if="rightIcon"
           :name="rightIcon"
           color="inherit"
-          internal="vueless"
+          internal
           v-bind="rightIconAttrs"
         />
       </slot>

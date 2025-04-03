@@ -25,12 +25,13 @@ import {
   VUELESS_CONFIG_FILE_NAME,
   STORYBOOK_ICONS_LOCAL_DIR,
   ICONS_DIR,
+  STORYBOOK_ICONS_CACHED_DIR,
 } from "../../constants.js";
 
 const DEFAULT_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_DIR);
 const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), VUELESS_ICONS_LOCAL_DIR);
 const CACHED_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
-const CACHED_STORYBOOK_ICONS_DIR = path.join(CACHED_ICONS_DIR, "storybook");
+const CACHED_STORYBOOK_ICONS_DIR = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
 const STORYBOOK_ASSETS_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
 const VUELESS_ICONS_CACHE_DIR = path.join(CACHED_ICONS_DIR, "vueless");
 const U_ICON = "UIcon";

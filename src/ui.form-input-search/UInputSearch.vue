@@ -147,7 +147,7 @@ const {
     <template #right>
       <UIcon
         v-if="localValue"
-        internal="vueless"
+        internal
         interactive
         color="neutral"
         :name="config.defaults.clearIcon"
@@ -167,7 +167,7 @@ const {
       >
         <UIcon
           v-if="!searchButtonLabel"
-          internal="vueless"
+          internal
           interactive
           color="neutral"
           :name="rightIcon || config.defaults.searchIcon"

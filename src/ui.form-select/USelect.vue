@@ -487,7 +487,7 @@ const {
             @binding {string} icon-name
           -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" :name="rightIcon" internal="vueless" v-bind="rightIconAttrs" />
+          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
         </slot>
       </div>
 
@@ -517,7 +517,7 @@ const {
         -->
         <slot name="toggle" :icon-name="config.defaults.dropdownIcon" :opened="isOpen">
           <UIcon
-            internal="vueless"
+            internal
             interactive
             color="neutral"
             :name="config.defaults.dropdownIcon"
@@ -539,7 +539,7 @@ const {
         -->
         <slot name="clear" :icon-name="config.defaults.clearIcon">
           <UIcon
-            internal="vueless"
+            internal
             interactive
             color="neutral"
             :name="config.defaults.clearIcon"
@@ -600,7 +600,7 @@ const {
               -->
               <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
-                  internal="vueless"
+                  internal
                   interactive
                   color="neutral"
                   :name="config.defaults.clearMultipleIcon"
@@ -737,7 +737,7 @@ const {
             @binding {string} icon-name
           -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" :name="leftIcon" internal="vueless" v-bind="leftIconAttrs" />
+          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
         </slot>
       </div>
     </div>

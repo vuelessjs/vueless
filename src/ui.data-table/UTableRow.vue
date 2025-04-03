@@ -316,7 +316,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             >
               <UIcon
                 size="xs"
-                internal="vueless"
+                internal
                 interactive
                 :name="getToggleIconName(row)"
                 color="primary"

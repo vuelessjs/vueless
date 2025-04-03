@@ -29,7 +29,7 @@ const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
     return { args };
   },
   template: `
-    <UIcon internal="storybook" interactive name="sentiment_satisfied" v-tooltip="'Tooltip'" />
+    <UIcon interactive name="sentiment_satisfied" v-tooltip="'Tooltip'" />
   `,
 });
 
@@ -47,7 +47,6 @@ const SettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
         </p>
       </UAlert>
       <UIcon
-        internal="storybook"
         interactive
         name="sentiment_satisfied"
         v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true, zIndex: 42 }"

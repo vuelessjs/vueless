@@ -91,21 +91,6 @@ Description.args = {
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
-export const Bordered = DefaultTemplate.bind({});
-Bordered.args = {
-  title: "Your connection is secure",
-  variant: "ghost",
-  bordered: true,
-  color: "green",
-};
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Add border to the `thirdary` variant.",
-    },
-  },
-};
-
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
@@ -163,25 +148,25 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
       <URow>
         <UAlert v-bind="args">
           <template #top>
-            <UIcon name="wifi_off" internal="storybook" color="error" />
+            <UIcon name="wifi_off" color="error" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args">
           <template #bottom>
-            <UIcon name="sync" internal="storybook" color="info" />
+            <UIcon name="sync" color="info" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args">
           <template #left>
-            <UIcon name="warning" internal="storybook" color="warning" />
+            <UIcon name="warning" color="warning" />
           </template>
         </UAlert>
 
         <UAlert v-bind="args" label="Delete">
           <template #right>
-            <UIcon name="play_arrow" internal="storybook" color="success" />
+            <UIcon name="play_arrow" color="success" />
           </template>
         </UAlert>
       </URow>

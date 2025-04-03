@@ -284,13 +284,7 @@ const {
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon
-            v-if="leftIcon"
-            internal="vueless"
-            color="neutral"
-            :name="leftIcon"
-            v-bind="leftIconAttrs"
-          />
+          <UIcon v-if="leftIcon" internal color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </span>
 
@@ -322,7 +316,7 @@ const {
           :name="passwordIcon"
           color="neutral"
           interactive
-          internal="vueless"
+          internal
           v-bind="passwordIconAttrs"
           :data-test="getDataTest('password-icon')"
           @click="onClickShowPassword"
@@ -337,7 +331,7 @@ const {
         <slot name="right" :icon-name="rightIcon">
           <UIcon
             v-if="rightIcon"
-            internal="vueless"
+            internal
             color="neutral"
             :name="rightIcon"
             v-bind="rightIconAttrs"

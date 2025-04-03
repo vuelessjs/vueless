@@ -230,7 +230,7 @@ export const Slots: StoryFn<UModalArgs> = (args) => ({
       <div>
         <UModal v-bind="args" v-model="modalStates.beforeTitle">
           <template #before-title>
-            <UIcon name="account_circle" size="sm" internal="storybook" />
+            <UIcon name="account_circle" size="sm" />
           </template>
           ${defaultTemplate}
         </UModal>
@@ -250,7 +250,7 @@ export const Slots: StoryFn<UModalArgs> = (args) => ({
       <div>
         <UModal v-bind="args" v-model="modalStates.afterTitle">
           <template #after-title>
-            <UIcon name="verified" size="sm" internal="storybook" />
+            <UIcon name="verified" size="sm" />
           </template>
           ${defaultTemplate}
         </UModal>
