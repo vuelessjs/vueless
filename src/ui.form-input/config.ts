@@ -37,7 +37,7 @@ export default /*tw*/ {
       block w-full py-2 px-3 font-normal !leading-none bg-transparent
       border-none rounded-inherit transition focus:ring-0 focus:outline-none
       placeholder:font-normal placeholder:text-muted
-      disabled:text-gray-700 disabled:cursor-not-allowed
+      disabled:text-accented disabled:cursor-not-allowed
     `,
     variants: {
       size: {

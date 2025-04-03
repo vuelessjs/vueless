@@ -7,7 +7,7 @@ export default /*tw*/ {
   item: {
     base: `
       group/item
-      border-b border-gray-100
+      border-b border-muted
       group-last/item-wrapper:border-b-0 group-[*]/nested:group-last/item-wrapper:border-b
       flex flex-auto items-center justify-between
     `,

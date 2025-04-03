@@ -240,7 +240,7 @@ body {
 
 /* prevents showing scrollbar in buttons stories */
 .docs-story > div > div {
-  @apply mb-px;
+  overflow-y: hidden;
 }
 
 .sb-bar {

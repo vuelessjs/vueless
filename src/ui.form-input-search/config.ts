@@ -22,7 +22,7 @@ export default /*tw*/ {
   clearIcon: "{>inputIcon}",
   searchIcon: "{>inputIcon}",
   searchButton: {
-    base: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+    base: "{UButton} rounded-l-none ml-2",
     defaults: {
       size: {
         sm: "xs",

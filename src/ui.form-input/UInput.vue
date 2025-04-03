@@ -298,6 +298,7 @@ const {
         :disabled="disabled"
         :maxlength="maxLength"
         :inputmode="inputmode"
+        :autocomplete="noAutocomplete ? 'off' : 'on'"
         v-bind="inputAttrs"
         :data-test="getDataTest()"
         @focus="onFocus"

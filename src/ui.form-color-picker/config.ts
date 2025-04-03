@@ -7,7 +7,7 @@ export default /*tw*/ {
         {
           variant: "soft",
           color: "grayscale",
-          class: "bg-gray-800/10 dark:bg-gray-200/10",
+          class: "bg-accented/10",
         },
       ],
     },

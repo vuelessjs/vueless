@@ -14,7 +14,7 @@ import type { Props } from "../types.ts";
 
 interface UDividerArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size" | "padding";
+  enum: "color" | "size";
 }
 
 export default {
@@ -89,11 +89,8 @@ Default.args = {};
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
-
-export const Padding = EnumVariantTemplate.bind({});
-Padding.args = { enum: "padding" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const Dashed = DefaultTemplate.bind({});
 Dashed.args = { dashed: true };
@@ -107,15 +104,5 @@ Vertical.args = {
   label: "Feedback",
   config: {
     wrapper: "!h-32",
-  },
-};
-
-export const NoBorder = DefaultTemplate.bind({});
-NoBorder.args = { label: "Customer Feedback", border: false };
-NoBorder.parameters = {
-  docs: {
-    description: {
-      story: "Keep only spacings by setting `border` prop to `false`.",
-    },
   },
 };
