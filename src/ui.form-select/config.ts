@@ -52,10 +52,10 @@ export default /*tw*/ {
         lg: "text-large",
       },
       disabled: {
-        true: "text-gray-700",
+        true: "text-accented",
       },
       multiple: {
-        true: "py-2 last:mb-2.5 flex justify-between border-b border-gray-100",
+        true: "py-2 last:mb-2.5 flex justify-between border-b border-muted",
       },
     },
     compoundVariants: [

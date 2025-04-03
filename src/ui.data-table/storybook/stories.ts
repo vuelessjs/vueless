@@ -347,7 +347,7 @@ StickyFooter.args = {
   slotTemplate: `
     <template #footer>
       <td colspan="4">
-        <p class="font-semibold text-gray-700">
+        <p class="font-semibold text-accented">
           📊 Summary: 50 transactions processed | Total Revenue: <strong>$12,345.67</strong>
         </p>
       </td>
