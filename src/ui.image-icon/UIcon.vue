@@ -36,10 +36,6 @@ const generatedIcons = computed(() => {
   );
 });
 
-const isStorybook = Boolean(import.meta.env.STORYBOOK);
-
-console.log("isStorybook", isStorybook);
-
 const dynamicComponent = computed(() => {
   const FILL_SUFFIX = "-fill";
   const ICON_EXTENSION = ".svg";
