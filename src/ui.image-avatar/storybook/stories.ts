@@ -98,7 +98,7 @@ Size.parameters = {
 };
 
 export const Rounded = EnumVariantTemplate.bind({});
-Rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
+Rounded.args = { enum: "rounded", label: "John Doe", color: "warning" };
 Rounded.parameters = {
   docs: {
     description: {
@@ -129,7 +129,7 @@ Bordered.parameters = {
 
 export const SlotPlaceholder = DefaultTemplate.bind({});
 SlotPlaceholder.args = {
-  color: "green",
+  color: "success",
   size: "3xl",
   slotTemplate: `
     <template #placeholder="{ iconColor }">

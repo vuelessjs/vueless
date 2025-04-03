@@ -94,9 +94,8 @@ Variants.args = { enum: "variant" };
 export const Bordered = DefaultTemplate.bind({});
 Bordered.args = {
   title: "Your connection is secure",
-  variant: "ghost",
-  bordered: true,
-  color: "green",
+  variant: "subtle",
+  color: "success",
 };
 Bordered.parameters = {
   docs: {

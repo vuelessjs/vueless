@@ -87,7 +87,7 @@ export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", color: "yellow" };
+Sizes.args = { enum: "size", color: "warning" };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", modelValue: true };
@@ -96,7 +96,7 @@ export const ToggleLabel = DefaultTemplate.bind({});
 ToggleLabel.args = { toggleLabel: true };
 
 export const ToggleIcon = DefaultTemplate.bind({});
-ToggleIcon.args = { toggleIcon: true, color: "yellow" };
+ToggleIcon.args = { toggleIcon: true, color: "warning" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
