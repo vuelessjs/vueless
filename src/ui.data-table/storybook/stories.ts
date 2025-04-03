@@ -22,7 +22,7 @@ interface UTableArgs extends Props {
   slotTemplate?: string;
   enum: "size";
   numberOfRows: number;
-  row: Row | typeof getRow | typeof getNestedRow | typeof getNestedContentRow;
+  row: Row | typeof getRow | typeof getNestedRow | typeof getSlotNestedRow;
 }
 
 const SHORT_STORY_PARAMETERS = {
@@ -82,7 +82,6 @@ function getDateDividerRow(rowAmount: number) {
 
       return {
         id: getRandomId(),
-        isChecked: false,
         rowDate,
         orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
         customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
@@ -97,7 +96,6 @@ function getDateDividerRow(rowAmount: number) {
 function getRow() {
   return {
     id: getRandomId(),
-    isChecked: false,
     orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
     customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
       Math.floor(Math.random() * 4)
@@ -110,7 +108,6 @@ function getRow() {
 function getNestedRow() {
   return {
     id: getRandomId(),
-    isChecked: false,
     orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
     customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
       Math.floor(Math.random() * 4)
@@ -120,16 +117,12 @@ function getNestedRow() {
     row: [
       {
         id: getRandomId(),
-        isChecked: false,
-        isShown: false,
         orderId: "Suborder-1",
         customerName: "",
         status: "",
         totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
         row: {
           id: getRandomId(),
-          isChecked: false,
-          isShown: false,
           orderId: "Extra Services",
           customerName: "",
           status: "",
@@ -138,16 +131,12 @@ function getNestedRow() {
       },
       {
         id: getRandomId(),
-        isChecked: false,
-        isShown: false,
         orderId: "Suborder-2",
         customerName: "",
         status: "",
         totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
         row: {
           id: getRandomId(),
-          isChecked: false,
-          isShown: false,
           orderId: "Extra Services",
           customerName: "",
           status: "",
@@ -158,17 +147,15 @@ function getNestedRow() {
   };
 }
 
-function getNestedContentRow(index: number) {
+function getSlotNestedRow(index: number) {
   if (index === 1) {
     return {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "John Doe",
       status: "Processing",
-      nestedData: {
-        isChecked: false,
-        isShown: false,
+      row: {
+        id: getRandomId(),
         rows: [
           {
             id: getRandomId(),
@@ -194,7 +181,6 @@ function getNestedContentRow(index: number) {
   } else {
     return {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
         Math.floor(Math.random() * 4)
@@ -279,7 +265,6 @@ EmptyCellLabel.args = {
   rows: [
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "",
       status: "",
@@ -311,7 +296,6 @@ CellClasses.args = {
   rows: [
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "John Doe",
       status: { value: "Cancelled", class: "bg-error/25" },
@@ -319,7 +303,6 @@ CellClasses.args = {
     },
     {
       id: getRandomId(),
-      isChecked: false,
       class: "!bg-success/25",
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "Bob Smith",
@@ -328,7 +311,6 @@ CellClasses.args = {
     },
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "Helen Williams",
       status: { value: "Delivered", contentClasses: "line-through" },
@@ -497,44 +479,36 @@ SlotExpand.args = {
   row: getNestedRow,
   slotTemplate: `
     <template #expand="{ row, expanded }">
-      <UBadge v-if="expanded" label="Collapse" class="cursor-pointer" />
-      <UBadge v-if="!expanded" label="Expand" class="cursor-pointer" />
+      <UBadge v-if="expanded && row.row" label="Collapse" class="cursor-pointer" />
+      <UBadge v-if="!expanded && row.row" label="Expand" class="cursor-pointer" />
     </template>
   `,
 };
 
-export const SlotNestedContent = DefaultTemplate.bind({});
-SlotNestedContent.args = {
+export const SlotNestedRow = DefaultTemplate.bind({});
+SlotNestedRow.args = {
   columns: [
     { key: "orderId", label: "Order Id" },
     { key: "customerName", label: "Customer Name" },
     { key: "status", label: "Status" },
   ],
-  row: getNestedContentRow,
+  row: getSlotNestedRow,
   slotTemplate: `
-    <template #nested-content="{ row }">
+    <template #nested-row="{ row }">
       <div class="p-4 bg-lifted">
-        <UTable
-          :columns="[
-            { key: 'category', label: 'Category' },
-            { key: 'itemName', label: 'Product' },
-            { key: 'quantity', label: 'Quantity' },
-          ]"
-          :rows="row.nestedData.rows"
-          compact
-        />
-      </div>
+          <UTable
+            :columns="[
+              { key: 'category', label: 'Category' },
+              { key: 'itemName', label: 'Product' },
+              { key: 'quantity', label: 'Quantity' },
+            ]"
+            :rows="row.rows"
+            compact
+          />
+        <td>
+      </tr>
     </template>
   `,
-};
-SlotNestedContent.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "You can also pass nested content inside the row (to render a nested table, for example). Use the `nestedData` key inside a row object.",
-    },
-  },
 };
 
 export const SlotAfterLastRow = DefaultTemplate.bind({});

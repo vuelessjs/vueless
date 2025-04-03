@@ -158,3 +158,13 @@ export function deleteCookie(name: string) {
     "max-age": -1,
   });
 }
+
+export function isEmptyValue(value: object | null | undefined | string | unknown) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && !Object.keys(value).length)
+  );
+}
