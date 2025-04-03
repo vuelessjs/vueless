@@ -25,20 +25,26 @@ const emit = defineEmits([
   "click",
 ]);
 
+const iconsStorybook = import.meta.glob(
+  "/node_modules/.cache/vueless/assets/icons/storybook/**/*.svg",
+  {
+    eager: true,
+    query: "?component",
+  },
+);
+
+const iconsGeneral = import.meta.glob(
+  "/node_modules/.cache/vueless/assets/icons/general/**/*.svg",
+  {
+    eager: true,
+    query: "?component",
+  },
+);
+
 const generatedIcons = computed(() => {
   const isStorybook = Boolean(import.meta.env.STORYBOOK);
 
-  return Object.entries(
-    import.meta.glob(
-      isStorybook
-        ? "/node_modules/.cache/vueless/assets/icons/storybook/**/*.svg"
-        : "/node_modules/.cache/vueless/assets/icons/general/**/*.svg",
-      {
-        eager: true,
-        query: "?component",
-      },
-    ),
-  );
+  return Object.entries(isStorybook ? iconsStorybook : iconsGeneral);
 });
 
 const dynamicComponent = computed(() => {
