@@ -533,8 +533,8 @@ defineExpose({
   wrapperRef,
 
   /**
-   * Reference to the UCalendar component instance.
-   * @property {HTMLElement}
+   * Reference to the UCalendar component instance for direct DOM manipulation.
+   * @property {ComponentExposed<typeof UCalendar>}
    */
   calendarRef,
 });

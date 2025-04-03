@@ -24,7 +24,11 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const tabRef = useTemplateRef<HTMLElement>("tab");
+const tabRef = useTemplateRef<InstanceType<typeof UButton>>("tab");
+
+const button = computed(() => {
+  return tabRef.value?.buttonRef;
+});
 
 const size = computed(() => toValue(getUTabsSize));
 const block = computed(() => toValue(getUTabsBlock));
@@ -40,10 +44,10 @@ async function onClickSetValue() {
 
 defineExpose({
   /**
-   * A reference to the tab element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the UButton component instance for direct DOM manipulation.
+   * @property {InstanceType<typeof UButton>}
    */
-  tabRef,
+  button,
 });
 
 /**
