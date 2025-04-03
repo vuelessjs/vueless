@@ -31,7 +31,7 @@ const generatedIcons = computed(() => {
   return Object.entries(
     import.meta.glob(
       isStorybook
-        ? "/node_modules/.cache/vueless/assets/icons/storybook/*.svg"
+        ? "/node_modules/.cache/vueless/assets/icons/storybook/**/*.svg"
         : "/node_modules/.cache/vueless/assets/icons/general/**/*.svg",
       {
         eager: true,
