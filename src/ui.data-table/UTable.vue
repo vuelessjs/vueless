@@ -726,7 +726,7 @@ const {
               :nested-level="Number(row.nestedLevel || 0)"
               :empty-cell-label="emptyCellLabel"
               :data-test="getDataTest('row')"
-              :is-expanded="isRowSelected(row)"
+              :is-expanded="localExpandedRows.includes(row.id)"
               :is-checked="isRowSelected(row)"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
