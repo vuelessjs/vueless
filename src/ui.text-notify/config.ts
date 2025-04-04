@@ -8,27 +8,23 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   body: `
-    mb-3 flex w-full items-center justify-center gap-3 rounded-large bg-inverted/90
-    p-4 shadow-[0_4px_16px_rgba(17,24,39,0.5)] backdrop-blur-md md:shadow-[0_0px_12px_rgba(0,0,0,0.25)]
+    mb-3 p-4 flex gap-3 w-full items-center justify-center rounded-large bg-inverted/90
+     shadow-[0_0px_12px_rgba(0,0,0,0.25)] shadow-grayscale/25 backdrop-blur-md
   `,
-  bodySuccess: "{>body} bg-[radial-gradient(100.16%_500.78%_at_0%_50%,rgba(74,222,128,0.1)_2.17%,transparent)]",
-  bodyWarning: "{>body} bg-[radial-gradient(100.16%_500.78%_at_0%_50%,rgba(251,146,60,0.2)_2.17%,transparent)]",
-  bodyError: "{>body} bg-[radial-gradient(100.16%_500.78%_at_0%_50%,rgba(251,113,133,0.2)_2.17%,transparent)]",
+  bodySuccess: "{>body} bg-radial-[circle_at_0%_50%] from-success/25 from-2.17% to-transparent",
+  bodyWarning: "{>body} bg-radial-[circle_at_0%_50%] from-warning/25 from-2.17% to-transparent",
+  bodyError: "{>body} bg-radial-[circle_at_0%_50%] from-error/25 from-2.17% to-transparent",
   content: "w-full flex flex-col max-w-full text-medium text-inverted",
   label: "mb-0.5 font-medium",
   description: "break-words font-normal",
-  successIcon: "",
-  warningIcon: "",
-  errorIcon: "",
-  closeIcon: "",
+  statusIcon: "{UIcon} brightness-125 dark:brightness-75",
+  successIcon: "{UIcon} {>statusIcon} text-success",
+  warningIcon: "{UIcon} {>statusIcon} text-warning",
+  errorIcon: "{UIcon} {>statusIcon} text-error",
+  closeIcon: "{UIcon} !text-inverted opacity-75",
   positionClasses: {
     page: "UNotifyPage",
     aside: "UNotifyAside",
-  },
-  duration: {
-    short: 4000,
-    medium: 8000,
-    long: 12000,
   },
   i18n: {
     success: {

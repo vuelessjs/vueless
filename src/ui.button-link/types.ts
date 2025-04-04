@@ -86,6 +86,11 @@ export interface Props {
   dashed?: boolean;
 
   /**
+   * Set link underline style as dotted.
+   */
+  dotted?: boolean;
+
+  /**
    * Disable the link.
    */
   disabled?: boolean;

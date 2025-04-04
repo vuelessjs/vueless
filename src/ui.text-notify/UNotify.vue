@@ -155,8 +155,6 @@ const {
     >
       <UIcon
         v-if="notification.type === NotificationType.Success"
-        color="success"
-        variant="light"
         size="md"
         internal
         :name="config.defaults.successIcon"
@@ -166,8 +164,6 @@ const {
 
       <UIcon
         v-else-if="notification.type === NotificationType.Warning"
-        color="warning"
-        variant="light"
         size="md"
         internal
         :name="config.defaults.warningIcon"
@@ -178,8 +174,6 @@ const {
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
-        color="error"
-        variant="light"
         size="md"
         internal
         :name="config.defaults.errorIcon"
@@ -195,8 +189,6 @@ const {
       </div>
 
       <UIcon
-        color="neutral"
-        variant="light"
         size="xs"
         internal
         interactive

@@ -21,7 +21,7 @@ export enum NotificationPosition {
 }
 
 export enum NotificationDuration {
-  Short = 4000,
+  Short = 400000,
   Medium = 8000,
   Long = 12000,
 }
