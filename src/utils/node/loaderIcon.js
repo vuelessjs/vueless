@@ -32,7 +32,7 @@ const DEFAULT_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_DIR);
 const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), VUELESS_ICONS_LOCAL_DIR);
 const CACHED_APP_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
 const CACHED_STORYBOOK_ICONS_DIR = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
-const STORYBOOK_ASSETS_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
+const STORYBOOK_ASSETS_LOCAL_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
 const VUELESS_ICONS_CACHE_DIR = path.join(CACHED_APP_ICONS_DIR, VUELESS_LIBRARY);
 const U_ICON = "UIcon";
 
@@ -97,9 +97,9 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
     // Merge storybook icons with app icons.
     // It is needed when icons are passed as props in stories and UIcon tries to load them from the `app` folder.
     if (fs.existsSync(VUELESS_ICONS_CACHE_DIR)) {
-      fs.mkdirSync(STORYBOOK_ASSETS_DIR, { recursive: true });
+      fs.mkdirSync(STORYBOOK_ASSETS_LOCAL_DIR, { recursive: true });
 
-      await cp(STORYBOOK_ASSETS_DIR, VUELESS_ICONS_CACHE_DIR, {
+      await cp(STORYBOOK_ASSETS_LOCAL_DIR, VUELESS_ICONS_CACHE_DIR, {
         recursive: true,
       });
     }
@@ -174,13 +174,13 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  */
 async function copyCachedStorybookIcons() {
   if (fs.existsSync(CACHED_STORYBOOK_ICONS_DIR)) {
-    fs.mkdirSync(STORYBOOK_ASSETS_DIR, { recursive: true });
+    fs.mkdirSync(STORYBOOK_ASSETS_LOCAL_DIR, { recursive: true });
 
-    await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ASSETS_DIR, {
+    await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ASSETS_LOCAL_DIR, {
       recursive: true,
     });
 
-    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ASSETS_DIR}`);
+    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ASSETS_LOCAL_DIR}`);
   }
 }
 
