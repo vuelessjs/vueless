@@ -366,16 +366,17 @@ export const DEFAULT_SVGO_CONFIG = {
 
 /* Vueless general */
 export const ICONS_DIR = "assets/icons";
-export const GENERAL_ICONS = `${ICONS_DIR}/general`;
-export const STORYBOOK_ICONS = `${ICONS_DIR}/storybook`;
+export const STORYBOOK_DIR = "storybook";
+export const APP_ICONS = `${ICONS_DIR}/app`;
+export const STORYBOOK_ICONS = `${ICONS_DIR}/${STORYBOOK_DIR}`;
 export const VUELESS_LIBRARY = "vueless";
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
 export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;
 export const VUELESS_LOCAL_DIR = `src`;
-export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${GENERAL_ICONS}`;
-export const VUELESS_ICONS_LOCAL_DIR = `src/${GENERAL_ICONS}`;
-export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${GENERAL_ICONS}`;
+export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${APP_ICONS}`;
+export const VUELESS_ICONS_LOCAL_DIR = `src/${APP_ICONS}`;
+export const VUELESS_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${APP_ICONS}`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
 export const STORYBOOK_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/${STORYBOOK_ICONS}`;

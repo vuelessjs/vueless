@@ -95,7 +95,7 @@ export const Vueless = function (options = {}) {
       await removeIconsCache(mirrorCacheDir, debug);
 
       /* cache vueless built-in and project icons */
-      await cacheIcons({ mode: "vuelessIcons", env, debug, targetFiles });
+      await cacheIcons({ mode: "vueless", env, debug, targetFiles });
       await cacheIcons({ mode, env, debug, targetFiles });
 
       await copyIconsCache(mirrorCacheDir, debug);

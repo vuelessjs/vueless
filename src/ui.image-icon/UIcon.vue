@@ -26,21 +26,27 @@ const emit = defineEmits([
 ]);
 
 const generatedIcons = computed(() => {
+  const appIcons = import.meta.glob("/node_modules/.cache/vueless/assets/icons/app/**/*.svg", {
+    eager: true,
+    query: "?component",
+  });
+
   if (import.meta.env.STORYBOOK) {
-    return Object.entries(
-      import.meta.glob("/node_modules/.cache/vueless/assets/icons/storybook/**/*.svg", {
+    const storybookIcons = import.meta.glob(
+      "/node_modules/.cache/vueless/assets/icons/storybook/*.svg",
+      {
         eager: true,
         query: "?component",
-      }),
+      },
     );
-  } else {
-    return Object.entries(
-      import.meta.glob("/node_modules/.cache/vueless/assets/icons/general/**/*.svg", {
-        eager: true,
-        query: "?component",
-      }),
-    );
+
+    return Object.entries({
+      ...appIcons,
+      ...storybookIcons,
+    });
   }
+
+  return Object.entries(appIcons);
 });
 
 const dynamicComponent = computed(() => {
