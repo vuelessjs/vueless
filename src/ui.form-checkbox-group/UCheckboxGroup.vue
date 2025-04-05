@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, ref, watch } from "vue";
+import { provide, ref, watch, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -31,6 +31,8 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
+const listRef = useTemplateRef<HTMLDivElement>("list");
+
 const checkedItems = ref([] as UnknownObject[]);
 
 provide<(value: UnknownObject[]) => void>(
@@ -59,6 +61,14 @@ function onChangeCheckedItems() {
   emit("update:modelValue", checkedItems.value);
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  listRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -86,7 +96,7 @@ const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
       <slot name="label" :label="label" />
     </template>
 
-    <div v-bind="listAttrs">
+    <div ref="list" v-bind="listAttrs">
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <UCheckbox

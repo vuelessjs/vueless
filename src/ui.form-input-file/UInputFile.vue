@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, useId } from "vue";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  useId,
+  useTemplateRef,
+} from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -45,8 +54,8 @@ const emit = defineEmits([
 
 const { tm } = useLocale();
 
-const dropZoneRef = ref<HTMLDivElement | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
+const dropZoneRef = useTemplateRef<HTMLDivElement>("dropZone");
+const fileInputRef = useTemplateRef<HTMLInputElement>("fileInput");
 
 const localError = ref("");
 
@@ -305,7 +314,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneAttrs">
+    <div ref="dropZone" :ondrop="onDrop" v-bind="dropzoneAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
         <!-- @slot Use it to add something above the component content. -->
         <slot name="top" />
@@ -353,7 +362,7 @@ const {
 
             <input
               :id="elementId"
-              ref="fileInputRef"
+              ref="fileInput"
               type="file"
               :disabled="disabled"
               :accept="accept"

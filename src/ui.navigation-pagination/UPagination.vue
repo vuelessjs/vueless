@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { range } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -37,6 +37,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const paginationRef = useTemplateRef<HTMLDivElement>("pagination");
 
 const currentPage = computed({
   get: () => props.modelValue,
@@ -100,6 +102,14 @@ function goToLastPage() {
   currentPage.value = totalPages.value;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  paginationRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -122,7 +132,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="paginationAttrs">
+  <div ref="pagination" v-bind="paginationAttrs">
     <UButton
       v-if="showFirst"
       variant="ghost"

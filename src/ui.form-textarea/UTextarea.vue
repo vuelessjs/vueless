@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, useSlots, useId } from "vue";
+import { computed, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -60,10 +60,10 @@ const slots = useSlots();
 
 const elementId = props.id || useId();
 
-const textareaRef = ref<HTMLTextAreaElement | null>(null);
-const labelComponentRef = ref<InstanceType<typeof ULabel> | null>(null);
-const leftSlotWrapperRef = ref<HTMLElement | null>(null);
-const wrapperRef = ref<HTMLElement | null>(null);
+const textareaRef = useTemplateRef<HTMLTextAreaElement>("textarea");
+const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
+const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
 
@@ -175,8 +175,14 @@ onMounted(() => setLabelPosition());
 
 defineExpose({
   /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLLabelElement}
+   */
+  wrapperRef,
+
+  /**
    * A reference to the textarea element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLTextAreaElement}
    */
   textareaRef,
 });
@@ -202,7 +208,7 @@ const {
 
 <template>
   <ULabel
-    ref="labelComponentRef"
+    ref="labelComponent"
     :for="elementId"
     :label="label"
     :error="error"
@@ -222,10 +228,10 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapperRef" :for="elementId" v-bind="wrapperAttrs">
+    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
       <div
         v-if="hasSlotContent($slots['left'])"
-        ref="leftSlotWrapperRef"
+        ref="leftSlotWrapper"
         :for="elementId"
         v-bind="leftSlotAttrs"
       >
@@ -235,7 +241,7 @@ const {
 
       <textarea
         :id="elementId"
-        ref="textareaRef"
+        ref="textarea"
         v-model="localValue"
         :placeholder="placeholder"
         :readonly="readonly"

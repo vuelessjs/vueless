@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId } from "vue";
+import { computed, ref, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,6 +27,8 @@ const emit = defineEmits([
   "click",
 ]);
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
 const isOpened = ref(false);
 
 const elementId = props.id || useId();
@@ -36,6 +38,14 @@ function onClickItem() {
 
   emit("click", elementId, isOpened.value);
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
 
 const mutatedProps = computed(() => ({
   /* component state, not a props */
@@ -55,7 +65,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}

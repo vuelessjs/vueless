@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -41,6 +41,7 @@ const emit = defineEmits([
 
 const elementId = props.id || useId();
 
+const listRef = useTemplateRef<HTMLDivElement>("list");
 const localPrimary = ref("");
 const localNeutral = ref("");
 
@@ -62,6 +63,14 @@ const selectedNeutralColor = computed({
   },
 });
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  listRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -71,7 +80,7 @@ const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPicke
 </script>
 
 <template>
-  <div :id="elementId" v-bind="listAttrs">
+  <div :id="elementId" ref="list" v-bind="listAttrs">
     <UColorPicker
       v-model="selectedPrimaryColor"
       :size="size"

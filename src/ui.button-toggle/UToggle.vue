@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -26,6 +26,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const optionsRef = useTemplateRef<HTMLDivElement>("options");
 
 const hoveredItem = ref();
 
@@ -75,6 +77,14 @@ function isHiddenDivider(index: number) {
   );
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  optionsRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -96,7 +106,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="optionsAttrs">
+  <div ref="options" v-bind="optionsAttrs">
     <template v-for="(option, index) in options" :key="index">
       <UButton
         :label="option.label"

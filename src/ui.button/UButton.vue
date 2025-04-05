@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
+import { computed, ref, watchEffect, useId, watch, useSlots, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 const elementId = props.id || useId();
 
-const buttonRef = ref<HTMLElement | null>(null);
+const buttonRef = useTemplateRef<HTMLElement>("button");
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
@@ -75,7 +75,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
   <component
     :is="tag"
     :id="elementId"
-    ref="buttonRef"
+    ref="button"
     :disabled="disabled"
     v-bind="buttonAttrs"
     :style="buttonStyle"

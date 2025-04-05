@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -25,6 +25,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const containerRef = useTemplateRef<HTMLDivElement>("container");
 
 const hovered = ref<number | null>(null);
 
@@ -54,6 +56,14 @@ function onMouseHover(overStar: number | null = null) {
   if (props.selectable) hovered.value = overStar;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's container element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  containerRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -63,7 +73,7 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
 </script>
 
 <template>
-  <div v-bind="containerAttrs">
+  <div ref="container" v-bind="containerAttrs">
     <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
       <!--
           @slot Use it to customize counter.
