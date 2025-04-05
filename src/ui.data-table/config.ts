@@ -68,13 +68,8 @@ export default /*tw*/ {
   bodyCellDateDivider: "",
   bodyCellNested: "mr-2 flex items-center gap-2",
   bodyCellNestedIconWrapper: "bg-primary/15 rounded-xs",
-  bodyCellNestedIcon: {
-    base: "{UIcon}",
-    wrapper: "rounded-xs",
-    container: "bg-gray-200",
-  },
-  bodyCellNestedExpandIcon: "{UIcon} {>bodyCellNestedIcon}",
-  bodyCellNestedCollapseIcon: "{UIcon} {>bodyCellNestedIcon}",
+  bodyCellNestedExpandIcon: "{UIcon}",
+  bodyCellNestedCollapseIcon: "{UIcon}",
   bodyCheckbox: "{UCheckbox}",
   bodyDateDivider: {
     base: "{UDivider} py-2",

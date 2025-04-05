@@ -294,7 +294,7 @@ function getFontSize(xs?: number, sm?: number, md?: number, lg?: number) {
  * @return object - sm, md, lg rounding values.
  */
 function getRoundings(sm?: string | number, md?: string | number, lg?: string | number) {
-  const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
+  const rounding = Math.max(0, Number(md ?? DEFAULT_ROUNDING));
   let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
   let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
 
@@ -312,8 +312,8 @@ function getRoundings(sm?: string | number, md?: string | number, lg?: string | 
 
   return {
     rounding,
-    roundingSm: sm === undefined ? roundingSm : Math.max(0, sm),
-    roundingLg: lg === undefined ? roundingLg : Math.max(0, lg),
+    roundingSm: sm === undefined ? roundingSm : Math.max(0, Number(sm ?? 0)),
+    roundingLg: lg === undefined ? roundingLg : Math.max(0, Number(lg ?? 0)),
   };
 }
 

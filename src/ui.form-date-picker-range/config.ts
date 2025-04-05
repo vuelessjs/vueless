@@ -59,7 +59,7 @@ export default /*tw*/ {
   },
   periodRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
-  periodButtonActive: "{>periodButton} !bg-gray-700/15",
+  periodButtonActive: "{>periodButton} !bg-grayscale-accented/15",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-medium",
@@ -95,7 +95,7 @@ export default /*tw*/ {
       wrapper: "w-full transition",
       description: "hidden",
     },
-    wrapper: "focus-within:z-10 focus-within:outline-0 focus-within:border-gray-500 hover:focus-within:border-gray-500",
+    wrapper: "focus-within:z-10",
   },
   rangeInputFirst: {
     base: "{UInput} {>rangeInput}",

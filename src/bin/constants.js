@@ -18,9 +18,9 @@ export default {
    */
   lightTheme: {
     /* Primary colors */
-    "--vl-primary": "--color-primary-600",
-    "--vl-primary-lifted": "--color-primary-700",
-    "--vl-primary-accented": "--color-primary-800",
+    "--vl-primary": "--vl-primary-600",
+    "--vl-primary-lifted": "--vl-primary-700",
+    "--vl-primary-accented": "--vl-primary-800",
 
     /* Secondary colors */
     "--vl-secondary": "--vl-neutral-500",
@@ -63,23 +63,23 @@ export default {
     "--vl-neutral-accented": "--vl-neutral-700",
 
     /* Text neutral colors */
-    "--vl-text": "--vl-neutral-900",
+    "--vl-text-inverted": "--color-white",
+    "--vl-text-muted": "--vl-neutral-400",
     "--vl-text-lifted": "--vl-neutral-500",
     "--vl-text-accented": "--vl-neutral-600",
-    "--vl-text-muted": "--vl-neutral-400",
-    "--vl-text-inverted": "--color-white",
+    "--vl-text": "--vl-neutral-900",
 
     /* Border neutral colors */
+    "--vl-border-muted": "--vl-neutral-200",
     "--vl-border": "--vl-neutral-300",
     "--vl-border-lifted": "--vl-neutral-400",
     "--vl-border-accented": "--vl-neutral-600",
-    "--vl-border-muted": "--vl-neutral-200",
 
     /* Background neutral colors */
     "--vl-bg": "--color-white",
+    "--vl-bg-muted": "--vl-neutral-50",
     "--vl-bg-lifted": "--vl-neutral-100",
     "--vl-bg-accented": "--vl-neutral-200",
-    "--vl-bg-muted": "--vl-neutral-50",
     "--vl-bg-inverted": "--vl-neutral-900",
   },
 
@@ -88,9 +88,9 @@ export default {
    */
   darkTheme: {
     /* Primary colors */
-    "--vl-primary": "--color-primary-400",
-    "--vl-primary-lifted": "--color-primary-500",
-    "--vl-primary-accented": "--color-primary-600",
+    "--vl-primary": "--vl-primary-400",
+    "--vl-primary-lifted": "--vl-primary-500",
+    "--vl-primary-accented": "--vl-primary-600",
 
     /* Secondary colors */
     "--vl-secondary": "--vl-neutral-300",
@@ -133,23 +133,23 @@ export default {
     "--vl-neutral-accented": "--vl-neutral-500",
 
     /* Text neutral colors */
-    "--vl-text": "--vl-neutral-100",
+    "--vl-text-inverted": "--vl-neutral-900",
+    "--vl-text-muted": "--vl-neutral-600",
     "--vl-text-lifted": "--vl-neutral-400",
     "--vl-text-accented": "--vl-neutral-300",
-    "--vl-text-muted": "--vl-neutral-600",
-    "--vl-text-inverted": "--vl-neutral-900",
+    "--vl-text": "--vl-neutral-100",
 
     /* Border neutral colors */
+    "--vl-border-muted": "--vl-neutral-800",
     "--vl-border": "--vl-neutral-700",
     "--vl-border-lifted": "--vl-neutral-600",
     "--vl-border-accented": "--vl-neutral-400",
-    "--vl-border-muted": "--vl-neutral-800",
 
     /* Background neutral colors */
     "--vl-bg": "--vl-neutral-900",
+    "--vl-bg-muted": "--vl-neutral-800",
     "--vl-bg-lifted": "--vl-neutral-800",
     "--vl-bg-accented": "--vl-neutral-700",
-    "--vl-bg-muted": "--vl-neutral-800",
     "--vl-bg-inverted": "--vl-neutral-100",
   },
 

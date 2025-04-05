@@ -22,8 +22,8 @@ export default /*tw*/ {
     ],
   },
   dropzoneHover: "border-lifted border-dashed",
-  descriptionTop: "{UText} text-gray-700 mb-2",
-  descriptionBottom: "{UText} text-gray-700 mt-2",
+  descriptionTop: "{UText} text-accented mb-2",
+  descriptionBottom: "{UText} text-accented mt-2",
   content: {
     base: "p-3 gap-3 flex justify-between items-start relative w-full rounded-medium bg-primary/5",
     variants: {
@@ -34,12 +34,12 @@ export default /*tw*/ {
         true: "bg-red-50",
       },
       disabled: {
-        true: "bg-gray-200",
+        true: "bg-lifted",
       },
     },
   },
   placeholder: {
-    base: "pr-4 text-gray-700 grow w-full self-center",
+    base: "pr-4 text-accented grow w-full self-center",
     variants: {
       size: {
         sm: "text-small",

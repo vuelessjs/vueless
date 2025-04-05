@@ -54,11 +54,11 @@ export default /*tw*/ {
     },
   },
   toggleButtonActive: {
-    base: "{>toggleButton} !bg-primary/15 disabled:!bg-primary/15 disabled:text-primary",
+    base: "{>toggleButton} !bg-primary/10 disabled:!bg-primary/10 disabled:text-primary",
     variants: {
       split: {
         false: "border-0",
-        true: "border border-primary",
+        true: "border border-primary/75 outline-small outline-primary/75",
       },
     },
     defaults: {
