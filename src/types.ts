@@ -82,22 +82,22 @@ export interface ThemeConfig {
   /**
    * Default components extra small font size.
    */
-  fontSizeXs?: number;
+  textXs?: number;
 
   /**
    * Default components small font size.
    */
-  fontSizeSm?: number;
+  textSm?: number;
 
   /**
    * Default components font size.
    */
-  fontSize?: number;
+  text?: number;
 
   /**
    * Default components large font size.
    */
-  fontSizeLg?: number;
+  textLg?: number;
 
   /**
    * Default components small size rounding (border-radius).
