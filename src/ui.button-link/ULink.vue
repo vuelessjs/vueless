@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { computed, useSlots, useTemplateRef } from "vue";
 import { RouterLink } from "vue-router";
 
 import useUI from "../composables/useUI.ts";
@@ -48,6 +48,8 @@ const emit = defineEmits([
 
 const slots = useSlots();
 
+const linkRef = useTemplateRef<HTMLLinkElement>("link");
+
 const isPresentRoute = computed(() => {
   return typeof props.to === "string" || typeof props.to === "object";
 });
@@ -63,7 +65,7 @@ const prefixedHref = computed(() => {
     link: "",
   };
 
-  return props.href ? `${types[props.type]}${props.href}` : undefined;
+  return props.href && !props.disabled ? `${types[props.type]}${props.href}` : undefined;
 });
 
 function onClick(event: MouseEvent) {
@@ -86,6 +88,14 @@ function onBlur(event: FocusEvent) {
   emit("blur", event);
 }
 
+defineExpose({
+  /**
+   * A reference to the link element for direct DOM manipulation.
+   * @property {HTMLLinkElement}
+   */
+  linkRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -101,6 +111,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 <template>
   <router-link
     v-if="isPresentRoute"
+    ref="link"
     v-slot="slotProps: ULinkSlotProps"
     :to="safeTo"
     :custom="custom"
@@ -131,6 +142,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 
   <a
     v-else
+    ref="link"
     :rel="rel"
     :href="prefixedHref"
     :target="target"

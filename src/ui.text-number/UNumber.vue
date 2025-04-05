@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -15,6 +15,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
+
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const numericValue = computed(() => {
   if (typeof props.value === "string") {
@@ -45,6 +47,14 @@ const preparedNumber = computed(() => {
   );
 });
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -54,7 +64,7 @@ const { getDataTest, wrapperAttrs, numberAttrs, mathSignAttrs, integerAttrs, fra
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <!-- @slot Use it to add something before the number. -->
     <slot name="left" />
 

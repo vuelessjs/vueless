@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useId, ref, watchEffect } from "vue";
+import { useId, ref, computed, watchEffect, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -47,9 +47,13 @@ let updateValueWithDebounce = createDebounce((value) => {
 }, Number(props.debounce));
 
 const localValue = ref("");
-const inputRef = ref(null);
+const searchInputRef = useTemplateRef<InstanceType<typeof UInput>>("searchInput");
 
 const elementId = props.id || useId();
+
+const input = computed(() => {
+  return searchInputRef.value?.inputRef || null;
+});
 
 watchEffect(() => {
   updateValueWithDebounce = createDebounce((value) => {
@@ -98,10 +102,10 @@ function onClickClear() {
 
 defineExpose({
   /**
-   * A reference to the input element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * Reference to the underlying input element inside UInput.
+   * @property {InstanceType<typeof UInput>}
    */
-  inputRef,
+  input,
 });
 
 /**
@@ -122,7 +126,7 @@ const {
 <template>
   <UInput
     :id="elementId"
-    ref="inputRef"
+    ref="searchInput"
     :model-value="localValue"
     :size="size"
     :disabled="disabled"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -18,6 +18,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
+
+const notificationRef = useTemplateRef<HTMLDivElement>("notification");
 
 const { tm } = useLocale();
 
@@ -119,6 +121,14 @@ function getBodyAttrs(type: Notification["type"]) {
   }
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  notificationRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -151,6 +161,7 @@ const {
     <div
       v-for="notification in notifications"
       :key="notification.id"
+      ref="notification"
       v-bind="getBodyAttrs(notification.type)"
     >
       <UIcon

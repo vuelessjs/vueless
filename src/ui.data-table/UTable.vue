@@ -106,6 +106,7 @@ const tableWidth = ref(0);
 const tableHeight = ref(0);
 const pagePositionY = ref(0);
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const headerRowRef = useTemplateRef<HTMLTableRowElement>("header-row");
 const footerRowRef = useTemplateRef<HTMLTableRowElement>("footer-row");
 const tableWrapperRef = useTemplateRef<HTMLDivElement>("table-wrapper");
@@ -443,6 +444,12 @@ defineExpose({
    * @property {Function}
    */
   clearSelectedItems,
+
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
 });
 
 /**
@@ -505,7 +512,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div
       v-show="isHeaderSticky && !isShownActionsHeader"
       ref="sticky-header-row"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, onMounted } from "vue";
+import { computed, useSlots, onMounted, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -31,6 +31,8 @@ const emit = defineEmits([
   "back",
 ]);
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
 const isExistHeader = computed(() => {
   return (
     props.title ||
@@ -51,7 +53,7 @@ const isShownArrowButton = computed(() => {
 
 onMounted(() => {
   const classes =
-    props.muted && config.value?.htmlBody
+    (props.variant === "soft" || props.variant === "subtle") && config.value?.htmlBody
       ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
       : "";
 
@@ -63,6 +65,14 @@ onMounted(() => {
 function onClickBackLink() {
   emit("back");
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -92,7 +102,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="pageAttrs">
       <div v-if="isExistHeader" v-bind="headerAttrs">
         <div v-bind="beforeTitleAttrs">

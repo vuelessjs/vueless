@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, nextTick, useId } from "vue";
+import { computed, watch, onMounted, nextTick, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
-const moneyInputRef = ref<{ inputRef: HTMLInputElement } | null>(null);
+const moneyInputRef = useTemplateRef<InstanceType<typeof UInput>>("moneyInput");
 
 const elementId = props.id || useId();
 
@@ -99,7 +99,7 @@ function onInput(value: InputEvent) {
 defineExpose({
   /**
    * Reference to the underlying input element inside UInput.
-   * @property {HTMLInputElement}
+   * @property {InstanceType<typeof UInput>}
    */
   input,
 
@@ -126,7 +126,7 @@ const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
 <template>
   <UInput
     :id="elementId"
-    ref="moneyInputRef"
+    ref="moneyInput"
     :model-value="formattedValue"
     :size="size"
     :label="localLabel"

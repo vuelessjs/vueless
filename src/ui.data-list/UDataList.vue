@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
@@ -32,6 +32,8 @@ const emit = defineEmits([
 ]);
 
 const { tm } = useLocale();
+
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
@@ -78,6 +80,14 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
   return sortData;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -100,7 +110,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <!--
       @slot Use it to add custom empty state.
       @binding {string} empty-title
