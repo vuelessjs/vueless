@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useId } from "vue";
+import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,9 +27,15 @@ const emit = defineEmits([
   "remove",
 ]);
 
+const fileRef = useTemplateRef<InstanceType<typeof ULink>>("file");
+
 const focus = ref(false);
 
 const fileId = props.id || useId();
+
+const link = computed(() => {
+  return fileRef.value?.linkRef || null;
+});
 
 function onRemove() {
   emit("remove", fileId);
@@ -42,6 +48,14 @@ function onFocus() {
 function onBlur() {
   focus.value = false;
 }
+
+defineExpose({
+  /**
+   * A reference to the ULink instance for direct DOM manipulation.
+   * @property {InstanceType<typeof ULink>}
+   */
+  link,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -60,7 +74,7 @@ const {
 </script>
 
 <template>
-  <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
+  <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
     <slot name="left" />
 

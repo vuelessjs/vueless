@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -25,6 +25,8 @@ const emit = defineEmits([
   "click",
 ]);
 
+const avatarRef = useTemplateRef<HTMLDivElement>("avatar");
+
 const labelFirstLetters = computed(() => {
   if (!props.label) return "";
 
@@ -47,6 +49,14 @@ function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
+defineExpose({
+  /**
+   * A reference to the avatar element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  avatarRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -56,6 +66,7 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
 
 <template>
   <div
+    ref="avatar"
     :title="label"
     :style="backgroundImage"
     v-bind="avatarAttrs"

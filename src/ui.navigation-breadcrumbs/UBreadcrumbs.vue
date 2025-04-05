@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -28,13 +28,24 @@ const emit = defineEmits([
   "clickLink",
 ]);
 
+const breadcrumbsRef = useTemplateRef<HTMLDivElement>("breadcrumbs");
+
 const getIconColor = computed(() => {
-  return (link: UBreadcrumb) => (link.disabled || (!link.to && !link.href) ? "gray" : props.color);
+  return (link: UBreadcrumb) =>
+    link.disabled || (!link.to && !link.href) ? "neutral" : props.color;
 });
 
 function onClickLink(link: UBreadcrumb) {
   emit("clickLink", link);
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  breadcrumbsRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -51,7 +62,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="breadcrumbsAttrs">
+  <div ref="breadcrumbs" v-bind="breadcrumbsAttrs">
     <template v-for="(link, index) in links" :key="index">
       <!--
         @slot Use it to add something instead of a link icon.

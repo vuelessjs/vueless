@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -30,6 +30,8 @@ const emit = defineEmits([
   "remove",
 ]);
 
+const itemsRef = useTemplateRef<HTMLDivElement>("items");
+
 const formattedFileList = computed(() => {
   return props.fileList.map((file) => {
     if (file instanceof File) {
@@ -46,6 +48,14 @@ const formattedFileList = computed(() => {
 function onRemoveFile(fileId: string | number) {
   emit("remove", fileId);
 }
+
+defineExpose({
+  /**
+   * A reference to the files' wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  itemsRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -70,7 +80,7 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
       <slot name="label" :label="label" />
     </template>
 
-    <div v-bind="itemsAttrs">
+    <div ref="items" v-bind="itemsAttrs">
       <!-- @slot Use it to add UFile. -->
       <slot>
         <UFile

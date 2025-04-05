@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -18,6 +18,16 @@ const props = withDefaults(defineProps<Props>(), {
   label: "",
 });
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
@@ -29,7 +39,7 @@ const { getDataTest, wrapperAttrs, dividerAttrs, dividerIconAttrs, labelAttrs } 
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="dividerAttrs" />
 
     <div v-if="label || icon || hasSlotContent($slots['default'])" v-bind="labelAttrs">

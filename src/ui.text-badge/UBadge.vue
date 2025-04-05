@@ -43,7 +43,7 @@ const emit = defineEmits([
 
 const slots = useSlots();
 
-const wrapperRef = useTemplateRef<HTMLElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 function onFocus() {
   emit("focus");
@@ -64,7 +64,7 @@ function onClick(event: MouseEvent) {
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 });

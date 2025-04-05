@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -24,8 +24,8 @@ const emit = defineEmits([
   "click",
 ]);
 
-const labelRef = ref<HTMLLabelElement | null>(null);
-const wrapperRef = ref(null);
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const labelRef = useTemplateRef<HTMLLabelElement>("label");
 
 const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
@@ -54,13 +54,13 @@ function onClick(event: MouseEvent) {
 defineExpose({
   /**
    * Reference to the label element.
-   * @property {HTMLElement}
+   * @property {HTMLLabelElement}
    */
   labelElement,
 
   /**
    * Reference to the wrapper element containing the label and content.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   wrapperElement,
 });
@@ -82,7 +82,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
 <template>
   <div
     v-if="isHorizontalPlacement || isTopWithDescPlacement"
-    ref="wrapperRef"
+    ref="wrapper"
     v-bind="wrapperAttrs"
     :data-test="getDataTest()"
     @click="onClick"
@@ -96,7 +96,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     <div v-if="label || hasSlotContent($slots['label']) || error || description">
       <label
         v-if="label || hasSlotContent($slots['label'])"
-        ref="labelRef"
+        ref="label"
         :for="props.for"
         v-bind="labelAttrs"
         :data-test="getDataTest('label')"
@@ -129,11 +129,11 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     </div>
   </div>
 
-  <div v-else v-bind="wrapperAttrs">
+  <div v-else ref="wrapper" v-bind="wrapperAttrs">
     <label
       v-if="label || hasSlotContent($slots['label'])"
       v-bind="labelAttrs"
-      ref="labelRef"
+      ref="label"
       :for="props.for"
       :data-test="getDataTest('label')"
     >

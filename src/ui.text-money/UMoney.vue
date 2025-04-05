@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -17,11 +17,25 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const moneyRef = useTemplateRef<InstanceType<typeof UNumber>>("money");
+
+const number = computed(() => {
+  return moneyRef.value?.wrapperRef || null;
+});
+
 const currencySymbolPosition = computed(() => {
   return {
     left: props.symbolAlign === "left",
     right: props.symbolAlign === "right",
   };
+});
+
+defineExpose({
+  /**
+   * A reference to the UNumber instance for direct DOM manipulation.
+   * @property {InstanceType<typeof UNumber>}
+   */
+  number,
 });
 
 /**
@@ -33,6 +47,7 @@ const { getDataTest, moneyAttrs, symbolAttrs } = useUI<Config>(defaultConfig);
 
 <template>
   <UNumber
+    ref="money"
     :value="value"
     :size="size"
     :color="color"
