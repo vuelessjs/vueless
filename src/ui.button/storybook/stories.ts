@@ -126,14 +126,14 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
       <UButton
         label="Loader demo"
         :loading="loading"
-        />
+      />
       <UButton
         label="Toggle loading"
         variant="outlined"
         color="success"
-        leftIcon="play_arrow"
+        left-icon="play_arrow"
         @click="toggleLoading"
-        />
+      />
     </URow>
   `,
 });
