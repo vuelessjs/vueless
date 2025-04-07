@@ -140,35 +140,9 @@ export async function copyIconsCache(mirrorCacheDir, debug) {
  */
 async function copyCachedVuelessIcons(isVuelessEnv) {
   if (isVuelessEnv && fs.existsSync(VUELESS_ICONS_CACHE_PATH)) {
-    fs.mkdirSync(DEFAULT_ICONS_LOCAL_PATH, { recursive: true });
-
-    const storybookIcons = fs.existsSync(STORYBOOK_ICONS_LOCAL_PATH)
-      ? fs.readdirSync(STORYBOOK_ICONS_LOCAL_PATH).map((file) => path.basename(file))
-      : [];
-
-    // Copy all icons from cache to local dir, excluding storybook icons
-    const iconFiles = fs.readdirSync(VUELESS_ICONS_CACHE_PATH);
-
-    for (const file of iconFiles) {
-      // Skip if this is a storybook-specific icon
-      if (storybookIcons.includes(file)) {
-        isDebug && console.log(`Skipping storybook icon: ${file}`);
-        continue;
-      }
-
-      const sourcePath = path.join(VUELESS_ICONS_CACHE_PATH, file);
-      const destPath = path.join(DEFAULT_ICONS_LOCAL_PATH, file);
-
-      if (fs.statSync(sourcePath).isFile()) {
-        await fs.promises.copyFile(sourcePath, destPath);
-        isDebug && console.log(`Copied app icon: ${file}`);
-      } else {
-        await cp(sourcePath, destPath, { recursive: true });
-        isDebug && console.log(`Copied app icon directory: ${file}`);
-      }
-    }
-
-    isDebug && console.log(`Vueless icons successfully copied to: ${DEFAULT_ICONS_LOCAL_PATH}`);
+    await cp(VUELESS_ICONS_CACHE_PATH, DEFAULT_ICONS_LOCAL_PATH, {
+      recursive: true,
+    });
   }
 
   if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_PATH)) {
