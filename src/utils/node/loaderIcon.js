@@ -23,18 +23,18 @@ import {
   APP_ICONS_LOCAL_DIR,
   APP_ICONS_CACHED_DIR,
   VUELESS_CONFIG_FILE_NAME,
-  STORYBOOK_ICONS_LOCAL_PATH,
-  ICONS_PATH,
-  STORYBOOK_ICONS_CACHED_PATH,
+  STORYBOOK_ICONS_LOCAL_DIR,
+  ICONS_DIR,
+  STORYBOOK_ICONS_CACHED_DIR,
   STORYBOOK_DIR,
 } from "../../constants.js";
 
-const DEFAULT_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_DIR);
-const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), APP_ICONS_LOCAL_DIR);
-const CACHED_APP_ICONS_DIR = path.join(cwd(), APP_ICONS_CACHED_DIR);
-const CACHED_STORYBOOK_ICONS_DIR = path.join(cwd(), STORYBOOK_ICONS_CACHED_PATH);
-const STORYBOOK_ICONS_LOCAL_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_PATH);
-const VUELESS_ICONS_CACHE_DIR = path.join(CACHED_APP_ICONS_DIR, VUELESS_LIBRARY);
+const DEFAULT_ICONS_PATH = path.join(cwd(), VUELESS_ICONS_DIR);
+const DEFAULT_ICONS_LOCAL_PATH = path.join(cwd(), APP_ICONS_LOCAL_DIR);
+const CACHED_APP_ICONS_PATH = path.join(cwd(), APP_ICONS_CACHED_DIR);
+const CACHED_STORYBOOK_ICONS_PATH = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
+const STORYBOOK_ICONS_LOCAL_PATH = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
+const VUELESS_ICONS_CACHE_PATH = path.join(CACHED_APP_ICONS_PATH, VUELESS_LIBRARY);
 const U_ICON = "UIcon";
 
 let isDebug = false;
@@ -89,21 +89,7 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
     await findAndCopyIcons([...filesToProcess, ...configFiles]);
   }
 
-  if (isStorybookMode) {
-    await copyCachedStorybookIcons();
-
-    // Merge storybook icons with app icons.
-    // It is needed when icons are passed as props in stories and UIcon tries to load them from the `app` folder.
-    if (fs.existsSync(VUELESS_ICONS_CACHE_DIR)) {
-      fs.mkdirSync(STORYBOOK_ICONS_LOCAL_DIR, { recursive: true });
-
-      await cp(STORYBOOK_ICONS_LOCAL_DIR, VUELESS_ICONS_CACHE_DIR, {
-        recursive: true,
-      });
-    }
-  } else {
-    await copyCachedVuelessIcons(isVuelessEnv);
-  }
+  isStorybookMode ? await copyCachedStorybookIcons() : await copyCachedVuelessIcons(isVuelessEnv);
 }
 
 /**
@@ -113,12 +99,12 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
  * @returns {Promise<void>}
  */
 export async function removeIconsCache(mirrorCacheDir, debug) {
-  if (fs.existsSync(CACHED_APP_ICONS_DIR)) {
-    await rm(CACHED_APP_ICONS_DIR, { recursive: true, force: true });
+  if (fs.existsSync(CACHED_APP_ICONS_PATH)) {
+    await rm(CACHED_APP_ICONS_PATH, { recursive: true, force: true });
   }
 
   if (mirrorCacheDir) {
-    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_PATH);
+    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -140,7 +126,7 @@ export async function copyIconsCache(mirrorCacheDir, debug) {
   const cachePath = path.join(cwd(), APP_ICONS_CACHED_DIR);
 
   if (mirrorCacheDir && fs.existsSync(cachePath)) {
-    await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_PATH), { recursive: true });
+    await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_DIR), { recursive: true });
   }
 
   if (debug) {
@@ -153,15 +139,15 @@ export async function copyIconsCache(mirrorCacheDir, debug) {
  * @returns {Promise<void>}
  */
 async function copyCachedVuelessIcons(isVuelessEnv) {
-  if (isVuelessEnv && fs.existsSync(VUELESS_ICONS_CACHE_DIR)) {
-    fs.mkdirSync(DEFAULT_ICONS_LOCAL_DIR, { recursive: true });
+  if (isVuelessEnv && fs.existsSync(VUELESS_ICONS_CACHE_PATH)) {
+    fs.mkdirSync(DEFAULT_ICONS_LOCAL_PATH, { recursive: true });
 
-    const storybookIcons = fs.existsSync(STORYBOOK_ICONS_LOCAL_DIR)
-      ? fs.readdirSync(STORYBOOK_ICONS_LOCAL_DIR).map((file) => path.basename(file))
+    const storybookIcons = fs.existsSync(STORYBOOK_ICONS_LOCAL_PATH)
+      ? fs.readdirSync(STORYBOOK_ICONS_LOCAL_PATH).map((file) => path.basename(file))
       : [];
 
     // Copy all icons from cache to local dir, excluding storybook icons
-    const iconFiles = fs.readdirSync(VUELESS_ICONS_CACHE_DIR);
+    const iconFiles = fs.readdirSync(VUELESS_ICONS_CACHE_PATH);
 
     for (const file of iconFiles) {
       // Skip if this is a storybook-specific icon
@@ -170,8 +156,8 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
         continue;
       }
 
-      const sourcePath = path.join(VUELESS_ICONS_CACHE_DIR, file);
-      const destPath = path.join(DEFAULT_ICONS_LOCAL_DIR, file);
+      const sourcePath = path.join(VUELESS_ICONS_CACHE_PATH, file);
+      const destPath = path.join(DEFAULT_ICONS_LOCAL_PATH, file);
 
       if (fs.statSync(sourcePath).isFile()) {
         await fs.promises.copyFile(sourcePath, destPath);
@@ -182,11 +168,11 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
       }
     }
 
-    isDebug && console.log(`Vueless icons successfully copied to: ${DEFAULT_ICONS_LOCAL_DIR}`);
+    isDebug && console.log(`Vueless icons successfully copied to: ${DEFAULT_ICONS_LOCAL_PATH}`);
   }
 
-  if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
-    await cp(DEFAULT_ICONS_DIR, VUELESS_ICONS_CACHE_DIR, {
+  if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_PATH)) {
+    await cp(DEFAULT_ICONS_PATH, VUELESS_ICONS_CACHE_PATH, {
       recursive: true,
     });
   }
@@ -197,14 +183,14 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  * @returns {Promise<void>}
  */
 async function copyCachedStorybookIcons() {
-  if (fs.existsSync(CACHED_STORYBOOK_ICONS_DIR)) {
-    fs.mkdirSync(STORYBOOK_ICONS_LOCAL_DIR, { recursive: true });
+  if (fs.existsSync(CACHED_STORYBOOK_ICONS_PATH)) {
+    fs.mkdirSync(STORYBOOK_ICONS_LOCAL_PATH, { recursive: true });
 
-    await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ICONS_LOCAL_DIR, {
+    await cp(CACHED_STORYBOOK_ICONS_PATH, STORYBOOK_ICONS_LOCAL_PATH, {
       recursive: true,
     });
 
-    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ICONS_LOCAL_DIR}`);
+    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ICONS_LOCAL_PATH}`);
   }
 }
 
@@ -356,7 +342,7 @@ function getIconLibraryPaths(name, defaults, internalMode) {
   const style = defaults.style;
 
   const cacheDir =
-    internalMode === STORYBOOK_DIR ? CACHED_STORYBOOK_ICONS_DIR : CACHED_APP_ICONS_DIR;
+    internalMode === STORYBOOK_DIR ? CACHED_STORYBOOK_ICONS_PATH : CACHED_APP_ICONS_PATH;
 
   /* eslint-disable prettier/prettier */
   const libraries = {
@@ -367,27 +353,19 @@ function getIconLibraryPaths(name, defaults, internalMode) {
     },
     "@material-symbols": {
       source: `${cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-      destination: internalMode === STORYBOOK_DIR
-        ? `${cacheDir}/${name}.svg`
-        : `${cacheDir}/${library}/svg-${weight}/${style}/${name}.svg`
+      destination: `${cacheDir}/${name}.svg`
     },
     "bootstrap-icons": {
       source: `${cwd()}/node_modules/${library}/icons/${name}.svg`,
-      destination: internalMode === STORYBOOK_DIR
-        ? `${cacheDir}/${name}.svg`
-        : `${cacheDir}/${library}/${name}.svg`
+      destination: `${cacheDir}/${name}.svg`
     },
     "heroicons": {
       source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-      destination: internalMode === STORYBOOK_DIR
-        ? `${cacheDir}/${name}.svg`
-        : `${cacheDir}/${library}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
+      destination: `${cacheDir}/${name}.svg`
     },
     "custom-icons": {
       source: `${cwd()}/${customLibraryPath}/${name}.svg`,
-      destination: internalMode === STORYBOOK_DIR
-        ? `${cacheDir}/${name}.svg`
-        : `${cacheDir}/${library}/${name}.svg`
+      destination: `${cacheDir}/${name}.svg`
     },
   };
   /* eslint-enable prettier/prettier */
