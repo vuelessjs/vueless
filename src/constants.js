@@ -23,9 +23,9 @@ export const LIGHT_MODE_SELECTOR = "vl-light";
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
 export const DEFAULT_NEUTRAL_COLOR = "gray";
-export const DEFAULT_FONT_SIZE = 14; /* pixels */
-export const FONT_SIZE_DECREMENT = 2; /* pixels */
-export const FONT_SIZE_INCREMENT = 2; /* pixels */
+export const DEFAULT_TEXT = 14; /* pixels */
+export const TEXT_DECREMENT = 2; /* pixels */
+export const TEXT_INCREMENT = 2; /* pixels */
 export const DEFAULT_OUTLINE = 2; /* pixels */
 export const OUTLINE_DECREMENT = 1; /* pixels */
 export const OUTLINE_INCREMENT = 1; /* pixels */

@@ -7,11 +7,11 @@ export default {
    */
   primary: "grayscale",
   neutral: "gray",
-  colorMode: "auto",
+  text: 14,
   outline: 2,
   rounding: 8,
-  fontSize: 14,
   unstyled: false,
+  colorMode: "auto",
 
   /**
    * Light theme CSS variable settings.

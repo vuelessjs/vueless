@@ -28,9 +28,9 @@ import {
   DEFAULT_DARK_THEME,
   PRIMARY_COLORS,
   NEUTRAL_COLORS,
-  DEFAULT_FONT_SIZE,
-  FONT_SIZE_INCREMENT,
-  FONT_SIZE_DECREMENT,
+  DEFAULT_TEXT,
+  TEXT_INCREMENT,
+  TEXT_DECREMENT,
 } from "../constants.js";
 import type { Config, NeutralColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
@@ -44,10 +44,10 @@ declare interface RootCSSVariableOptions {
   roundingSm: number;
   rounding: number;
   roundingLg: number;
-  fontSizeXs: number;
-  fontSizeSm: number;
-  fontSize: number;
-  fontSizeLg: number;
+  textXs: number;
+  textSm: number;
+  text: number;
+  textLg: number;
   lightTheme: Partial<VuelessCssVariables>;
   darkTheme: Partial<VuelessCssVariables>;
 }
@@ -160,11 +160,11 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     config.outlineLg ?? vuelessConfig.outlineLg,
   );
 
-  const { fontSizeXs, fontSizeSm, fontSize, fontSizeLg } = getFontSize(
-    config.fontSizeXs ?? vuelessConfig.fontSizeXs,
-    config.fontSizeSm ?? vuelessConfig.fontSizeSm,
-    config.fontSize ?? vuelessConfig.fontSize,
-    config.fontSizeLg ?? vuelessConfig.fontSizeLg,
+  const { textXs, textSm, text, textLg } = getText(
+    config.textXs ?? vuelessConfig.textXs,
+    config.textSm ?? vuelessConfig.textSm,
+    config.text ?? vuelessConfig.text,
+    config.textLg ?? vuelessConfig.textLg,
   );
 
   let primary: PrimaryColors =
@@ -242,10 +242,10 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     roundingSm,
     rounding,
     roundingLg,
-    fontSizeXs,
-    fontSizeSm,
-    fontSize,
-    fontSizeLg,
+    textXs,
+    textSm,
+    text,
+    textLg,
     lightTheme,
     darkTheme,
   });
@@ -275,17 +275,17 @@ function getRings(sm?: number, md?: number, lg?: number) {
  * Calculate ring values.
  * @return object - sm, md, lg ring values.
  */
-function getFontSize(xs?: number, sm?: number, md?: number, lg?: number) {
-  const fontSize = Math.max(0, md ?? DEFAULT_FONT_SIZE);
-  const fontSizeXs = Math.max(0, fontSize - FONT_SIZE_DECREMENT * 2);
-  const fontSizeSm = Math.max(0, fontSize - FONT_SIZE_DECREMENT);
-  const fontSizeLg = Math.max(0, fontSize + FONT_SIZE_INCREMENT);
+function getText(xs?: number, sm?: number, md?: number, lg?: number) {
+  const text = Math.max(0, md ?? DEFAULT_TEXT);
+  const textXs = Math.max(0, text - TEXT_DECREMENT * 2);
+  const textSm = Math.max(0, text - TEXT_DECREMENT);
+  const textLg = Math.max(0, text + TEXT_INCREMENT);
 
   return {
-    fontSize,
-    fontSizeXs: xs === undefined ? fontSizeXs : Math.max(0, xs),
-    fontSizeSm: sm === undefined ? fontSizeSm : Math.max(0, sm),
-    fontSizeLg: lg === undefined ? fontSizeLg : Math.max(0, lg),
+    text,
+    textXs: xs === undefined ? textXs : Math.max(0, xs),
+    textSm: sm === undefined ? textSm : Math.max(0, sm),
+    textLg: lg === undefined ? textLg : Math.max(0, lg),
   };
 }
 
@@ -331,10 +331,10 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     roundingSm,
     rounding,
     roundingLg,
-    fontSizeXs,
-    fontSizeSm,
-    fontSize,
-    fontSizeLg,
+    textXs,
+    textSm,
+    text,
+    textLg,
     lightTheme,
     darkTheme,
   } = options;
@@ -348,10 +348,10 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline-md": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,
-    "--vl-text-xs": `${Number(fontSizeXs) / PX_IN_REM}rem`,
-    "--vl-text-sm": `${Number(fontSizeSm) / PX_IN_REM}rem`,
-    "--vl-text-md": `${Number(fontSize) / PX_IN_REM}rem`,
-    "--vl-text-lg": `${Number(fontSizeLg) / PX_IN_REM}rem`,
+    "--vl-text-xs": `${Number(textXs) / PX_IN_REM}rem`,
+    "--vl-text-sm": `${Number(textSm) / PX_IN_REM}rem`,
+    "--vl-text-md": `${Number(text) / PX_IN_REM}rem`,
+    "--vl-text-lg": `${Number(textLg) / PX_IN_REM}rem`,
   };
 
   for (const shade of COLOR_SHADES) {
