@@ -146,9 +146,11 @@ OptionSlot.args = {
   ],
   slotTemplate: `
     <template #option="{ label, index }">
-      <UBadge
-        :label="label"
-        :right-icon="args.options[index].iconName"
+      {{ label }}
+      <UIcon
+        :name="args.options[index].iconName"
+        :color="args.options[index].color"
+        size="xs"
       />
     </template>
   `,

@@ -103,6 +103,9 @@ DropdownListXPosition.args = { enum: "xPosition" };
 
 export const DropdownListYPosition = EnumVariantTemplate.bind({});
 DropdownListYPosition.args = { enum: "yPosition" };
+DropdownListYPosition.parameters = {
+  storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
+};
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

@@ -125,6 +125,9 @@ DropdownListXPosition.args = { enum: "xPosition" };
 
 export const DropdownListYPosition = EnumVariantTemplate.bind({});
 DropdownListYPosition.args = { enum: "yPosition" };
+DropdownListYPosition.parameters = {
+  storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
+};
 
 export const VariantColors = VariantColorsTemplate.bind({});
 VariantColors.args = {};
@@ -156,11 +159,7 @@ export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UIcon
-        name="heart_plus"
-        size="sm"
-        color="success"
-      />
+      <UIcon name="heart_plus" size="sm" color="inherit" />
     </template>
   `,
 };
@@ -169,10 +168,7 @@ export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
-      <ULink
-        :label="opened ? 'collapse' : 'expand'"
-        color="success"
-      />
+      <ULink :label="opened ? 'collapse' : 'expand'" color="inherit" />
     </template>
   `,
 };

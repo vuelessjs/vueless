@@ -125,6 +125,9 @@ DropdownListXPosition.args = { enum: "xPosition" };
 
 export const DropdownListYPosition = EnumVariantTemplate.bind({});
 DropdownListYPosition.args = { enum: "yPosition" };
+DropdownListYPosition.parameters = {
+  storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
+};
 
 export const VariantColors = VariantColorsTemplate.bind({});
 VariantColors.args = {};
@@ -158,7 +161,7 @@ export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           <UIcon
             name="heart_plus"
             size="xs"
-            color="success"
+            color="inheirt"
             class="mx-1"
           />
         </template>
@@ -179,7 +182,7 @@ SlotToggle.args = {
     <template #toggle="{ opened }">
       <ULink
         :label="opened ? 'collapse' : 'expand'"
-        color="success"
+        color="inherit"
         size="sm"
         class="mx-1"
       />
