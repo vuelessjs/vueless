@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isSSR } from "../utils/helper.ts";
-import { VUELESS_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
+import { APP_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -28,27 +28,14 @@ const emit = defineEmits([
 const iconRef = useTemplateRef<ComponentPublicInstance | HTMLElement>("icon");
 
 const generatedIcons = computed(() => {
-  const appIcons = import.meta.glob("/node_modules/.cache/vueless/assets/icons/app/**/*.svg", {
-    eager: true,
-    query: "?component",
-  });
-
-  if (import.meta.env.STORYBOOK) {
-    const storybookIcons = import.meta.glob(
-      "/node_modules/.cache/vueless/assets/icons/storybook/*.svg",
-      {
+  return (
+    Object.entries(
+      import.meta.glob(`/node_modules/.cache/vueless/assets/icons/app/**/*.svg`, {
         eager: true,
         query: "?component",
-      },
-    );
-
-    return Object.entries({
-      ...appIcons,
-      ...storybookIcons,
-    });
-  }
-
-  return Object.entries(appIcons);
+      }),
+    ) || []
+  );
 });
 
 const dynamicComponent = computed(() => {
@@ -101,8 +88,8 @@ const dynamicComponent = computed(() => {
       return import.meta.env.PROD
         ? await getIcon(name)
         : isSSR
-          ? import(/* @vite-ignore */ `${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`)
-          : import(/* @vite-ignore */ `/${VUELESS_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`);
+          ? import(/* @vite-ignore */ `${APP_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`)
+          : import(/* @vite-ignore */ `/${APP_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}/${name}.svg?component`);
     },
     "@material-symbols": async () => {
       return import.meta.env.PROD

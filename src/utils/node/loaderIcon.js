@@ -20,19 +20,20 @@ import {
   VUELESS_LOCAL_DIR,
   VUELESS_LIBRARY,
   VUELESS_ICONS_DIR,
-  VUELESS_ICONS_LOCAL_DIR,
-  VUELESS_ICONS_CACHED_DIR,
+  APP_ICONS_LOCAL_DIR,
+  APP_ICONS_CACHED_DIR,
   VUELESS_CONFIG_FILE_NAME,
-  STORYBOOK_ICONS_LOCAL_DIR,
-  ICONS_DIR,
-  STORYBOOK_ICONS_CACHED_DIR,
+  STORYBOOK_ICONS_LOCAL_PATH,
+  ICONS_PATH,
+  STORYBOOK_ICONS_CACHED_PATH,
+  STORYBOOK_DIR,
 } from "../../constants.js";
 
 const DEFAULT_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_DIR);
-const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), VUELESS_ICONS_LOCAL_DIR);
-const CACHED_APP_ICONS_DIR = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
-const CACHED_STORYBOOK_ICONS_DIR = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
-const STORYBOOK_ASSETS_LOCAL_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
+const DEFAULT_ICONS_LOCAL_DIR = path.join(cwd(), APP_ICONS_LOCAL_DIR);
+const CACHED_APP_ICONS_DIR = path.join(cwd(), APP_ICONS_CACHED_DIR);
+const CACHED_STORYBOOK_ICONS_DIR = path.join(cwd(), STORYBOOK_ICONS_CACHED_PATH);
+const STORYBOOK_ICONS_LOCAL_DIR = path.join(cwd(), STORYBOOK_ICONS_LOCAL_PATH);
 const VUELESS_ICONS_CACHE_DIR = path.join(CACHED_APP_ICONS_DIR, VUELESS_LIBRARY);
 const U_ICON = "UIcon";
 
@@ -40,9 +41,6 @@ let isDebug = false;
 let isVuelessEnv = false;
 let isStorybookMode = false;
 let isVuelessMode = false;
-
-const vuelessMode = "vueless";
-const storybookMode = "storybook";
 
 /**
  * Dynamically find icons across the project and cache it.
@@ -97,9 +95,9 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
     // Merge storybook icons with app icons.
     // It is needed when icons are passed as props in stories and UIcon tries to load them from the `app` folder.
     if (fs.existsSync(VUELESS_ICONS_CACHE_DIR)) {
-      fs.mkdirSync(STORYBOOK_ASSETS_LOCAL_DIR, { recursive: true });
+      fs.mkdirSync(STORYBOOK_ICONS_LOCAL_DIR, { recursive: true });
 
-      await cp(STORYBOOK_ASSETS_LOCAL_DIR, VUELESS_ICONS_CACHE_DIR, {
+      await cp(STORYBOOK_ICONS_LOCAL_DIR, VUELESS_ICONS_CACHE_DIR, {
         recursive: true,
       });
     }
@@ -120,7 +118,7 @@ export async function removeIconsCache(mirrorCacheDir, debug) {
   }
 
   if (mirrorCacheDir) {
-    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
+    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_PATH);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -139,10 +137,10 @@ export async function removeIconsCache(mirrorCacheDir, debug) {
  * @returns {Promise<void>}
  */
 export async function copyIconsCache(mirrorCacheDir, debug) {
-  const cachePath = path.join(cwd(), VUELESS_ICONS_CACHED_DIR);
+  const cachePath = path.join(cwd(), APP_ICONS_CACHED_DIR);
 
   if (mirrorCacheDir && fs.existsSync(cachePath)) {
-    await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_DIR), { recursive: true });
+    await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_PATH), { recursive: true });
   }
 
   if (debug) {
@@ -156,9 +154,35 @@ export async function copyIconsCache(mirrorCacheDir, debug) {
  */
 async function copyCachedVuelessIcons(isVuelessEnv) {
   if (isVuelessEnv && fs.existsSync(VUELESS_ICONS_CACHE_DIR)) {
-    await cp(VUELESS_ICONS_CACHE_DIR, DEFAULT_ICONS_LOCAL_DIR, {
-      recursive: true,
-    });
+    fs.mkdirSync(DEFAULT_ICONS_LOCAL_DIR, { recursive: true });
+
+    const storybookIcons = fs.existsSync(STORYBOOK_ICONS_LOCAL_DIR)
+      ? fs.readdirSync(STORYBOOK_ICONS_LOCAL_DIR).map((file) => path.basename(file))
+      : [];
+
+    // Copy all icons from cache to local dir, excluding storybook icons
+    const iconFiles = fs.readdirSync(VUELESS_ICONS_CACHE_DIR);
+
+    for (const file of iconFiles) {
+      // Skip if this is a storybook-specific icon
+      if (storybookIcons.includes(file)) {
+        isDebug && console.log(`Skipping storybook icon: ${file}`);
+        continue;
+      }
+
+      const sourcePath = path.join(VUELESS_ICONS_CACHE_DIR, file);
+      const destPath = path.join(DEFAULT_ICONS_LOCAL_DIR, file);
+
+      if (fs.statSync(sourcePath).isFile()) {
+        await fs.promises.copyFile(sourcePath, destPath);
+        isDebug && console.log(`Copied app icon: ${file}`);
+      } else {
+        await cp(sourcePath, destPath, { recursive: true });
+        isDebug && console.log(`Copied app icon directory: ${file}`);
+      }
+    }
+
+    isDebug && console.log(`Vueless icons successfully copied to: ${DEFAULT_ICONS_LOCAL_DIR}`);
   }
 
   if (!isVuelessEnv && fs.existsSync(DEFAULT_ICONS_DIR)) {
@@ -174,13 +198,13 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  */
 async function copyCachedStorybookIcons() {
   if (fs.existsSync(CACHED_STORYBOOK_ICONS_DIR)) {
-    fs.mkdirSync(STORYBOOK_ASSETS_LOCAL_DIR, { recursive: true });
+    fs.mkdirSync(STORYBOOK_ICONS_LOCAL_DIR, { recursive: true });
 
-    await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ASSETS_LOCAL_DIR, {
+    await cp(CACHED_STORYBOOK_ICONS_DIR, STORYBOOK_ICONS_LOCAL_DIR, {
       recursive: true,
     });
 
-    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ASSETS_LOCAL_DIR}`);
+    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ICONS_LOCAL_DIR}`);
   }
 }
 
@@ -305,17 +329,17 @@ async function copyIcon(name, defaults) {
   const { source, destination: vuelessDestination } = getIconLibraryPaths(
     name,
     defaults,
-    vuelessMode,
+    VUELESS_LIBRARY,
   );
-  const { destination: storybookDestination } = getIconLibraryPaths(name, defaults, storybookMode);
+  const { destination: storybookDestination } = getIconLibraryPaths(name, defaults, STORYBOOK_DIR);
 
   if (isStorybookMode) {
-    await copyIconFile(source, storybookDestination, name, storybookMode);
+    await copyIconFile(source, storybookDestination, name, STORYBOOK_DIR);
 
     return;
   }
 
-  await copyIconFile(source, vuelessDestination, name, vuelessMode);
+  await copyIconFile(source, vuelessDestination, name, VUELESS_LIBRARY);
 }
 
 /**
@@ -325,14 +349,14 @@ async function copyIcon(name, defaults) {
  * @param {string} internalMode - "storybook" or "vueless"
  * @returns {source: string, destination: string}
  */
-function getIconLibraryPaths(name, defaults, internalMode = vuelessMode) {
+function getIconLibraryPaths(name, defaults, internalMode) {
   const customLibraryPath = defaults.path;
   const library = defaults.library;
   const weight = defaults.weight;
   const style = defaults.style;
 
   const cacheDir =
-    internalMode === storybookMode ? CACHED_STORYBOOK_ICONS_DIR : CACHED_APP_ICONS_DIR;
+    internalMode === STORYBOOK_DIR ? CACHED_STORYBOOK_ICONS_DIR : CACHED_APP_ICONS_DIR;
 
   /* eslint-disable prettier/prettier */
   const libraries = {
@@ -343,25 +367,25 @@ function getIconLibraryPaths(name, defaults, internalMode = vuelessMode) {
     },
     "@material-symbols": {
       source: `${cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-      destination: internalMode === storybookMode
+      destination: internalMode === STORYBOOK_DIR
         ? `${cacheDir}/${name}.svg`
         : `${cacheDir}/${library}/svg-${weight}/${style}/${name}.svg`
     },
     "bootstrap-icons": {
       source: `${cwd()}/node_modules/${library}/icons/${name}.svg`,
-      destination: internalMode === storybookMode
+      destination: internalMode === STORYBOOK_DIR
         ? `${cacheDir}/${name}.svg`
         : `${cacheDir}/${library}/${name}.svg`
     },
     "heroicons": {
       source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-      destination: internalMode === storybookMode
+      destination: internalMode === STORYBOOK_DIR
         ? `${cacheDir}/${name}.svg`
         : `${cacheDir}/${library}/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`
     },
     "custom-icons": {
       source: `${cwd()}/${customLibraryPath}/${name}.svg`,
-      destination: internalMode === storybookMode
+      destination: internalMode === STORYBOOK_DIR
         ? `${cacheDir}/${name}.svg`
         : `${cacheDir}/${library}/${name}.svg`
     },
