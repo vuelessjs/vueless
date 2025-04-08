@@ -115,11 +115,7 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
   setup() {
     const loading = ref(false);
 
-    function toggleLoading() {
-      loading.value = !loading.value;
-    }
-
-    return { args, toggleLoading, loading };
+    return { args, loading };
   },
   template: `
     <URow>
@@ -132,7 +128,7 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
         variant="outlined"
         color="success"
         left-icon="play_arrow"
-        @click="toggleLoading"
+        @click="loading = !loading"
       />
     </URow>
   `,
