@@ -116,60 +116,38 @@ SlotClose.args = {
 };
 
 export const Slots: StoryFn<UAlertArgs> = (args) => ({
-  components: { UAlert, UIcon, URow, UCol, UBadge },
+  components: { UAlert, UIcon, URow, UBadge },
   setup() {
     return { args };
   },
   template: `
-    <UCol>
-      <URow>
-        <UAlert v-bind="args">
-          <template #title>
-            <UBadge
-              label="Connection lost"
-              size="lg"
-              color="error"
-              variant="outlined"
-            />
-          </template>
-        </UAlert>
+    <URow>
+      <UAlert v-bind="args">
+        <template #title>
+          <UBadge
+            label="Connection lost"
+            size="lg"
+            color="error"
+            variant="outlined"
+          />
+        </template>
+      </UAlert>
 
-        <UAlert v-bind="args">
-          <template #description>
-            <UBadge
-              label="We are trying to reconnect. Please wait a moment or check your network settings."
-              color="error"
-              variant="soft"
-            />
-          </template>
-        </UAlert>
-      </URow>
+      <UAlert v-bind="args">
+        <template #description>
+          <UBadge
+            label="We are trying to reconnect. Please wait a moment or check your network settings."
+            color="error"
+            variant="soft"
+          />
+        </template>
+      </UAlert>
 
-      <URow>
-        <UAlert v-bind="args">
-          <template #top>
-            <UIcon name="wifi_off" color="error" />
-          </template>
-        </UAlert>
-
-        <UAlert v-bind="args">
-          <template #bottom>
-            <UIcon name="sync" color="info" />
-          </template>
-        </UAlert>
-
-        <UAlert v-bind="args">
-          <template #left>
-            <UIcon name="warning" color="warning" />
-          </template>
-        </UAlert>
-
-        <UAlert v-bind="args" label="Delete">
-          <template #right>
-            <UIcon name="play_arrow" color="success" />
-          </template>
-        </UAlert>
-      </URow>
-    </UCol>
+      <UAlert v-bind="args">
+        <template #left>
+          <UIcon name="warning" color="warning" />
+        </template>
+      </UAlert>
+    </URow>
   `,
 });
