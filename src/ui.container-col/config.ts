@@ -9,6 +9,9 @@ export default /*tw*/ {
       wrap: {
         true: "flex-wrap",
       },
+      block: {
+        true: "w-full",
+      },
       gap: {
         none: "gap-0",
         "3xs": "gap-0.5",
