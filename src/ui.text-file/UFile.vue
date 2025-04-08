@@ -61,6 +61,10 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  imageUrl: Boolean(props.imageUrl),
+}));
+
 const {
   getDataTest,
   config,
@@ -70,7 +74,7 @@ const {
   fileLabelAttrs,
   fileImageAttrs,
   removeIconAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
