@@ -9,6 +9,8 @@ import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
+import tooltip from "../../directives/tooltip/vTooltip.ts";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
@@ -50,6 +52,7 @@ const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
 
 const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
   components: { UHeader, UCol },
+  directives: { tooltip },
   setup() {
     return {
       args,
@@ -63,7 +66,7 @@ const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :label="args.label + ' (' + option + ')'"
+        v-tooltip="option"
       />
     </UCol>
   `,
@@ -71,12 +74,6 @@ const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
-
-export const Underlined = EnumVariantTemplate.bind({});
-Underlined.args = { enum: "size", underlined: true };
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
@@ -92,8 +89,35 @@ Line.parameters = {
   },
 };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
+
+export const Underlined = EnumVariantTemplate.bind({});
+Underlined.args = { enum: "size", underlined: true };
+Underlined.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
+
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
+Color.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {

@@ -66,7 +66,7 @@ const EnumVariantTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs, { 
         align="center"
       >
         <ULabel :label="option">
-          <UPagination v-bind="args" :[args.enum]="option" />
+          <UPagination v-bind="args" v-model="args.modelValue" :[args.enum]="option" />
         </ULabel>
       </URow>
     </UCol>

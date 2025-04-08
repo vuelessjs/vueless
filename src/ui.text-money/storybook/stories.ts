@@ -8,8 +8,9 @@ import {
 import UMoney from "../../ui.text-money/UMoney.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UText from "../../ui.text-block/UText.vue";
-import UDivider from "../../ui.container-divider/UDivider.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import DebitIcon from "../../ui.text-money/assets/debit.svg?component";
 import CreditIcon from "../../ui.text-money/assets/credit.svg?component";
@@ -56,7 +57,8 @@ const DefaultTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }) => ({
-  components: { UMoney, URow, UText, UDivider },
+  components: { UMoney, URow },
+  directives: { tooltip },
   setup() {
     const slots = getSlotNames(UMoney.__name);
 
@@ -67,18 +69,14 @@ const EnumVariantTemplate: StoryFn<UMoneyArgs> = (args: UMoneyArgs, { argTypes }
     };
   },
   template: `
-    <URow :class="{ '!flex-col items-stretch': args.enum === 'align' }">
+    <URow>
       <UMoney
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-      >
-        <template #right v-if="args.enum === 'sign'">
-          <UText size="lg" class="ml-1">{{ option }}</UText>
-          <UDivider vertical variant="dark" class="h-5" />
-        </template>
-      </UMoney>
+        v-tooltip="option"
+      />
     </URow>
   `,
 });
@@ -88,18 +86,76 @@ Default.args = {};
 
 export const Sign = EnumVariantTemplate.bind({});
 Sign.args = { enum: "sign" };
+Sign.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
-export const Align = EnumVariantTemplate.bind({});
-Align.args = { enum: "align" };
+export const Align: StoryFn<UMoneyArgs> = (args: UMoneyArgs) => ({
+  components: { UMoney, URow, UCol },
+  directives: { tooltip },
+  setup() {
+    const options = ["left", "right"];
+
+    return { args, options };
+  },
+  template: `
+    <UCol>
+      <URow
+        :justify="option === 'right' ? 'end' : 'start'"
+        block
+        v-for="(option, index) in options"
+        :key="index"
+      >
+        <UMoney
+          v-bind="args"
+          :align="option"
+          v-tooltip="option"
+        />
+      </URow>
+    </UCol>
+  `,
+});
+Align.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
 export const SymbolAlign = EnumVariantTemplate.bind({});
 SymbolAlign.args = { enum: "symbolAlign" };
+SymbolAlign.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
+Color.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

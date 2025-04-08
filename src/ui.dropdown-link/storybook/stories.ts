@@ -183,12 +183,14 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
   slotTemplate: `
-    <template #toggle="{ opened }">
+    <template #toggle="{ opened, toggle }">
       <UIcon
         name="expand_circle_down"
         color="success"
         class="mx-1"
+        interactive
         :class="{ 'rotate-180' : opened }"
+        @click="toggle"
       />
     </template>
   `,

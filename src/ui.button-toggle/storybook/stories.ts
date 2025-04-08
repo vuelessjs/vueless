@@ -10,6 +10,8 @@ import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDot from "../../ui.other-dot/UDot.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -43,7 +45,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
-  components: { UToggle, UIcon, UBadge },
+  components: { UToggle, UIcon, UBadge, UDot, ULabel },
   setup() {
     const slots = getSlotNames(UToggle.__name);
 
@@ -136,25 +138,28 @@ Square.args = {
   `,
 };
 
-export const OptionSlot = DefaultTemplate.bind({});
-OptionSlot.args = {
-  name: "optionSlot",
-  options: [
-    { value: "1", label: "Download", iconName: "download", color: "green" },
-    { value: "2", label: "Edit", iconName: "edit_note", color: "orange" },
-    { value: "3", label: "Delete", iconName: "delete", color: "red" },
-  ],
-  slotTemplate: `
-    <template #option="{ label, index }">
-      {{ label }}
-      <UIcon
-        :name="args.options[index].iconName"
-        :color="args.options[index].color"
-        size="xs"
-      />
-    </template>
+export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({
+  components: { UToggle, UDot, ULabel },
+  setup() {
+    const options = [
+      { value: "1", label: "Success", color: "success" },
+      { value: "2", label: "Warning", color: "warning" },
+      { value: "3", label: "Error", color: "error" },
+    ];
+
+    return { args, options };
+  },
+  template: `
+    <ULabel label="Select transaction status:">
+      <UToggle name="optionSlot" v-bind="args" v-model="args.modelValue" :options="options">
+        <template #option="{ label, index }">
+          <UDot :color="options[index].color" />
+          {{ label }}
+        </template>
+      </UToggle>
+    </ULabel>
   `,
-};
+});
 
 export const Slots: StoryFn<UToggleArgs> = (args) => ({
   components: { UToggle, URow, UIcon },

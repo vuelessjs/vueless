@@ -21,7 +21,7 @@ import type { Props } from "../types.ts";
 
 interface UPageArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "titleSize";
+  enum: "size" | "titleSize" | "variant";
 }
 
 export default {
@@ -30,7 +30,6 @@ export default {
   component: UPage,
   args: {
     title: "User Profile",
-    muted: true,
   },
   argTypes: {
     ...getArgTypes(UPage.__name),
@@ -135,6 +134,16 @@ Size.parameters = {
   docs: {
     description: {
       story: "Page size (width).",
+    },
+  },
+};
+
+export const Variant = EnumVariantTemplate.bind({});
+Variant.args = { enum: "variant" };
+Variant.parameters = {
+  docs: {
+    description: {
+      story: "Page variant.",
     },
   },
 };

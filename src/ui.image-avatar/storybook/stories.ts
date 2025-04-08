@@ -92,7 +92,7 @@ Size.args = { enum: "size" };
 Size.parameters = {
   docs: {
     description: {
-      story: "Hold cursor above an avatar to see the value.",
+      story: "Hover over a variant to see its value.",
     },
   },
 };
@@ -102,7 +102,7 @@ Rounded.args = { enum: "rounded", label: "John Doe", color: "warning" };
 Rounded.parameters = {
   docs: {
     description: {
-      story: "Hold cursor above an avatar to see the value.",
+      story: "Hover over a variant to see its value.",
     },
   },
 };
@@ -112,7 +112,7 @@ Color.args = { enum: "color" };
 Color.parameters = {
   docs: {
     description: {
-      story: "Hold cursor above an avatar to see the value.",
+      story: "Hover over a variant to see its value.",
     },
   },
 };
@@ -122,7 +122,7 @@ Bordered.args = { enum: "color", bordered: true };
 Bordered.parameters = {
   docs: {
     description: {
-      story: "Hold cursor above an avatar to see the value.",
+      story: "Hover over a variant to see its value.",
     },
   },
 };

@@ -10,6 +10,8 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
+import tooltip from "../../directives/tooltip/vTooltip.ts";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
@@ -56,6 +58,7 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 
 const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, UCol },
+  directives: { tooltip },
   setup() {
     return {
       args,
@@ -70,6 +73,7 @@ const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) 
         v-bind="args"
         :[args.enum]="option"
         class="w-full"
+        v-tooltip="option"
       >
         ${args.slotTemplate || defaultTemplate}
       </UText>
@@ -82,9 +86,23 @@ Default.args = {};
 
 export const Align = EnumVariantTemplate.bind({});
 Align.args = { enum: "align" };
+Align.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = {
+  docs: {
+    description: {
+      story: "Hover over a variant to see its value.",
+    },
+  },
+};
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
