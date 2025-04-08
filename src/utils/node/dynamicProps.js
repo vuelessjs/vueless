@@ -11,9 +11,11 @@ const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
 
-const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<\w+>)?\s*{([^}]*)}/s;
+const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<[^>]+>)?\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
+
+const DEFAULT_SAFE_COLORS = ["primary", "grayscale", "inherit"];
 
 export async function setCustomPropTypes(isVuelessEnv) {
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
@@ -21,15 +23,44 @@ export async function setCustomPropTypes(isVuelessEnv) {
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     let componentGlobalConfig = vuelessConfig.components?.[componentName];
 
-    if (vuelessConfig.colors && vuelessConfig.colors.length) {
-      componentGlobalConfig = componentGlobalConfig
-        ? {
-            ...componentGlobalConfig,
-            props: [...(componentGlobalConfig.props || [])],
-          }
-        : {
-            props: [{ name: "color", values: vuelessConfig.colors }],
-          };
+    if (vuelessConfig.colors && vuelessConfig.colors.length && componentGlobalConfig) {
+      const customProps = componentGlobalConfig.props || [];
+      const colorPropsIndex = customProps.findIndex((prop) => prop.name === "color");
+
+      const modifiedCustomColorProp = customProps.with(colorPropsIndex, {
+        name: "color",
+        values: [
+          ...new Set([
+            ...(customProps[colorPropsIndex]?.values || []),
+            ...vuelessConfig.colors,
+            ...DEFAULT_SAFE_COLORS,
+          ]),
+        ],
+      });
+
+      const customPropsWithColor = [
+        ...customProps,
+        {
+          name: "color",
+          values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
+        },
+      ];
+
+      componentGlobalConfig = {
+        ...componentGlobalConfig,
+        props: !~colorPropsIndex ? customPropsWithColor : modifiedCustomColorProp,
+      };
+    }
+
+    if (vuelessConfig.colors && vuelessConfig.colors.length && !componentGlobalConfig) {
+      componentGlobalConfig = {
+        props: [
+          {
+            name: "color",
+            values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
+          },
+        ],
+      };
     }
 
     const isCustomProps = componentGlobalConfig && componentGlobalConfig.props;
@@ -198,6 +229,6 @@ async function modifyComponentTypes(filePath, props) {
     await fs.writeFile(targetFile, lines.join("\n"), "utf-8");
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error("Error updating file:", error.message);
+    console.error("Error updating file:", error.message, filePath);
   }
 }

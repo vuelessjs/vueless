@@ -8,7 +8,6 @@ import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
   PRIMARY_COLORS,
-  GRAYSCALE_COLOR,
   NEUTRAL_COLORS,
   STATE_COLORS,
   COLOR_SHADES,
@@ -45,22 +44,16 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     srcVueFiles = srcVueFiles.flat();
   }
 
-  const files = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
+  const files = [...srcVueFiles, ...vuelessVueFiles];
 
   const safelistClasses = [];
 
-  const storybookColors = {
-    colors: STATE_COLORS,
-    isComponentExists: true,
-  };
-
+  const isCustomColors = vuelessConfig.colors && vuelessConfig.colors.length;
+  const colors = !isCustomColors ? STATE_COLORS : vuelessConfig.colors;
   const componentNames = Object.keys(COMPONENTS);
 
   for await (const componentName of componentNames) {
-    const { colors, isComponentExists } = isStorybookMode
-      ? storybookColors
-      : await findComponentColors(componentName, files, vuelessConfigFiles);
-
+    const isCurrentComponentUsed = await isComponentUsed(componentName, files);
     const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
     const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
 
@@ -68,14 +61,14 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
       nestedComponentPattern.replaceAll(/[{}]/g, ""),
     );
 
-    if (isComponentExists && colors.length) {
+    if (isCurrentComponentUsed || isStorybookMode) {
       const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
       const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
       safelistClasses.push(...componentSafelist);
     }
 
-    if (isComponentExists && colors.length && nestedComponents.length) {
+    if ((isCurrentComponentUsed || isStorybookMode) && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
         const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
         const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
@@ -94,13 +87,13 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
     return colorsCSSConstants.join("\n");
   });
 
-  const safelist = [...new Set(safelistClasses, ...colorSafelistVariables)];
+  const safelist = [...new Set([...safelistClasses, ...colorSafelistVariables])];
 
   await writeFile(SAFELIST_DIR, safelist.join("\n"));
 
   if (debug) {
     // eslint-disable-next-line no-console
-    console.log("safelist", safelist.reverse());
+    console.dir(safelist, { maxArrayLength: null });
   }
 }
 
@@ -110,7 +103,7 @@ function getSafelistClasses(config) {
   for (const key in config) {
     if (key === SYSTEM_CONFIG_KEY.defaults) continue;
 
-    if (Object.prototype.hasOwnProperty.call(config, key)) {
+    if (Object.hasOwn(config, key)) {
       const classes = config[key];
 
       if (typeof classes === "object" && Array.isArray(classes)) {
@@ -134,9 +127,10 @@ function getSafelistClasses(config) {
 
 async function getComponentSafelist(mergedConfig, colors) {
   const classes = new Set();
+  const defaultColor = mergedConfig.defaults?.color || "";
 
   getSafelistClasses(mergedConfig).map((safelistClass) => {
-    colors.forEach((color) => {
+    [...colors, defaultColor].forEach((color) => {
       classes.add(safelistClass.replace(DYNAMIC_COLOR_PATTERN, color));
     });
   });
@@ -162,69 +156,24 @@ async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles)
     : {};
 }
 
-async function findComponentColors(componentName, files, vuelessConfigFiles) {
-  const objectColorRegExp = new RegExp(/\bcolor\s*:\s*["']([^"'\s]+)["']/, "g");
-  const singleColorRegExp = new RegExp(/\bcolor\s*=\s*["']([^"'\s]+)["']/);
-  const ternaryColorRegExp = new RegExp(/\bcolor="[^']*'([^']*)'\s*:\s*'([^']*)'/);
-
-  const mergedComponentConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
-  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.primary || "";
-  const colors = new Set();
-
-  if (defaultColor && defaultColor !== GRAYSCALE_COLOR) {
-    colors.add(defaultColor);
-  }
-
-  let isComponentExists = false;
+async function isComponentUsed(componentName, files) {
+  let isComponentUsed = false;
 
   for await (const file of files) {
     if (!existsSync(file)) continue;
 
     const fileContent = await readFile(file, "utf-8");
-    const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
-    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
-    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
-    if (!isComponentExists) {
-      isComponentExists = Boolean(matchedComponent);
+    if (!isComponentUsed) {
+      isComponentUsed = Boolean(matchedComponent);
+
+      break;
     }
-
-    if (isDefaultConfig) {
-      fileContent.match(objectColorRegExp)?.forEach((colorMatch) => {
-        const [, color] = objectColorRegExp.exec(colorMatch) || [];
-
-        colors.add(color);
-      });
-    }
-
-    if (matchedExtendComponent) {
-      const objectColors = objectColorRegExp.exec(fileContent) || [];
-
-      objectColors.forEach((color) => {
-        if (color) colors.add(color);
-      });
-    }
-
-    /* Collect color from U[Component] */
-    matchedComponent?.forEach((match) => {
-      const [, singleColor] = singleColorRegExp.exec(match) || [];
-      const [, ternaryColorOne, ternaryColorTwo] = ternaryColorRegExp.exec(match) || [];
-
-      // Match color in script variables.
-      const objectColors = objectColorRegExp.exec(fileContent) || [];
-
-      [singleColor, ternaryColorOne, ternaryColorTwo, ...objectColors].forEach((color) => {
-        if (color) colors.add(color);
-      });
-    });
   }
 
-  return {
-    colors: Array.from(colors).filter((color) => color && STATE_COLORS.includes(color)),
-    isComponentExists,
-  };
+  return isComponentUsed;
 }
 
 function isDefaultComponentConfig(filePath, componentName) {
