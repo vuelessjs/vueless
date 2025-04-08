@@ -9,7 +9,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import Beverage from "../../assets/icons/vueless/emoji_food_beverage.svg?component";
+import Beverage from "../../assets/icons/app/emoji_food_beverage.svg?component";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
