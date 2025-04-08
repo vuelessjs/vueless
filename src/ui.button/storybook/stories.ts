@@ -60,7 +60,7 @@ const EnumVariantTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes
   },
   template: `
     <UCol>
-      <URow no-mobile>
+      <URow>
         <UButton
           v-for="(option, index) in options"
           :key="index"
@@ -84,7 +84,7 @@ const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) =>
   },
   template: `
     <UCol>
-      <URow v-for="(variant, variantIndex) in variants" :key="variantIndex" no-mobile>
+      <URow v-for="(variant, variantIndex) in variants" :key="variantIndex">
         <UButton
           v-for="(color, colorIndex) in colors"
           v-bind="args"
@@ -122,7 +122,7 @@ export const Loading: StoryFn<UButtonArgs> = (args) => ({
     return { args, toggleLoading, loading };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UButton
         label="Loader demo"
         :loading="loading"
@@ -156,7 +156,7 @@ export const IconProps: StoryFn<UButtonArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UButton
         v-bind="args"
         left-icon="download"
@@ -179,7 +179,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
     return { args, isDarkMode };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UButton v-bind="args" label="Add to favorite">
         <template #left>
           <UIcon

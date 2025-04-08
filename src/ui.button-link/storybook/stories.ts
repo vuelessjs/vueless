@@ -70,7 +70,7 @@ const EnumVariantTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) 
     return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <ULink
         v-for="(option, index) in options"
         :key="index"
@@ -169,7 +169,7 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
   template: `
     <div v-for="variant in variants" :key="variant.name" class="mb-8">
       <div class="text-medium font-medium mb-2">{{ variant.name }}</div>
-      <URow no-mobile>
+      <URow>
         <ULink
           v-for="color in colors"
           :key="color"
