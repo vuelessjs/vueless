@@ -258,6 +258,14 @@ function onClickRemoveItem(id: string | number) {
   }
 }
 
+defineExpose({
+  /**
+   * An error.
+   * @property {boolean}
+   */
+  error: currentError,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -266,14 +274,6 @@ const mutatedProps = computed(() => ({
   error: Boolean(currentError.value),
   label: Boolean(props.label),
 }));
-
-defineExpose({
-  /**
-   * An error.
-   * @property {boolean}
-   */
-  error: currentError,
-});
 
 const {
   getDataTest,

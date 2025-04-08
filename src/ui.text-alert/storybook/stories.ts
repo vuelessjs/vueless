@@ -91,20 +91,6 @@ Description.args = {
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
-export const Bordered = DefaultTemplate.bind({});
-Bordered.args = {
-  title: "Your connection is secure",
-  variant: "subtle",
-  color: "success",
-};
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Add border to the `thirdary` variant.",
-    },
-  },
-};
-
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
