@@ -19,16 +19,25 @@ export async function setCustomPropTypes(isVuelessEnv) {
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
 
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
-    const componentGlobalConfig = vuelessConfig.components?.[componentName];
-    const customProps = componentGlobalConfig && componentGlobalConfig.props;
+    let componentGlobalConfig = vuelessConfig.components?.[componentName];
+
+    if (vuelessConfig.colors && vuelessConfig.colors.length) {
+      componentGlobalConfig = componentGlobalConfig
+        ? {
+            ...componentGlobalConfig,
+            props: [...(componentGlobalConfig.props || [])],
+          }
+        : {
+            props: [{ name: "color", values: vuelessConfig.colors }],
+          };
+    }
+
+    const isCustomProps = componentGlobalConfig && componentGlobalConfig.props;
     const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
-    if (customProps && !isHiddenStories) {
+    if (isCustomProps && !isHiddenStories) {
       await cacheComponentTypes(path.join(srcDir, componentDir));
-      await modifyComponentTypes(
-        path.join(srcDir, componentDir),
-        vuelessConfig.components?.[componentName]?.props,
-      );
+      await modifyComponentTypes(path.join(srcDir, componentDir), componentGlobalConfig.props);
     }
   }
 }
@@ -67,7 +76,7 @@ async function restoreComponentTypes(filePath) {
   const destFile = path.join(filePath, "types.ts");
 
   if (existsSync(sourceFile)) {
-    await fs.cp(sourceFile, destFile);
+    await fs.copyFile(sourceFile, destFile);
   }
 }
 

@@ -1,7 +1,7 @@
 import path from "node:path";
 import { cwd } from "node:process";
-import { existsSync, unlinkSync, writeFile } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { readFile, unlink, writeFile } from "node:fs/promises";
 
 import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
@@ -19,9 +19,9 @@ import {
 
 const SAFELIST_DIR = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
 
-export function clearTailwindSafelist() {
+export async function clearTailwindSafelist() {
   if (existsSync(SAFELIST_DIR)) {
-    unlinkSync(SAFELIST_DIR);
+    await unlink(SAFELIST_DIR);
   }
 }
 
@@ -87,22 +87,20 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   // TODO: Prevent this if `runtimeColors` is disabled.
   /* Safelist all color variables to allow runtime color switching feature. */
+  const colorVariables = [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
   const colorSafelistVariables = COLOR_SHADES.map((shade) => {
-    const primaryColorsCSSConstants = PRIMARY_COLORS.map((color) => `--color-${color}-${shade}`);
-    const neutralColorsCSSConstants = NEUTRAL_COLORS.map((color) => `--color-${color}-${shade}`);
+    const colorsCSSConstants = colorVariables.map((color) => `--color-${color}-${shade}`);
 
-    return [...primaryColorsCSSConstants, ...neutralColorsCSSConstants].join("\n");
+    return colorsCSSConstants.join("\n");
   });
 
-  const safelist = [...new Set(safelistClasses), ...new Set(colorSafelistVariables)];
+  const safelist = [...new Set(safelistClasses, ...colorSafelistVariables)];
 
-  writeFile(SAFELIST_DIR, safelist.join("\n"), (err) => {
-    if (err) throw err;
-  });
+  await writeFile(SAFELIST_DIR, safelist.join("\n"));
 
   if (debug) {
     // eslint-disable-next-line no-console
-    console.log("safelist", safelist);
+    console.log("safelist", safelist.reverse());
   }
 }
 
@@ -177,8 +175,6 @@ async function findComponentColors(componentName, files, vuelessConfigFiles) {
     colors.add(defaultColor);
   }
 
-  getSafelistColorsFromConfig(componentName).forEach((color) => colors.add(color));
-
   let isComponentExists = false;
 
   for await (const file of files) {
@@ -238,11 +234,4 @@ function isDefaultComponentConfig(filePath, componentName) {
     componentDirName === COMPONENTS[componentName] &&
     (filePath.endsWith("/config.js") || filePath.endsWith("/config.ts"))
   );
-}
-
-function getSafelistColorsFromConfig(componentName) {
-  const globalSafelistColors = vuelessConfig.safelistColors || [];
-  const componentSafelistColors = vuelessConfig.components?.[componentName]?.safelistColors || [];
-
-  return [...globalSafelistColors, ...componentSafelistColors];
 }

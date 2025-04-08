@@ -66,6 +66,17 @@ export const STATE_COLORS = [
 ];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+export const DEFAULT_COLORS = [
+  "primary",
+  "secondary",
+  "error",
+  "warning",
+  "success",
+  "info",
+  "notice",
+  "neutral",
+  "grayscale",
+];
 
 export const DEFAULT_LIGHT_THEME = {
   /* Primary colors */
@@ -215,7 +226,7 @@ export const SYSTEM_CONFIG_KEY = {
   defaults: "defaults",
   unstyled: "unstyled",
   transition: "transition",
-  safelistColors: "safelistColors",
+  colors: "colors",
   ...CVA_CONFIG_KEY,
 };
 

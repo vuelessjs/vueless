@@ -36,4 +36,6 @@ export default {
    * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge: {},
+
+  colors: ["black"],
 };
