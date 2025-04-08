@@ -39,7 +39,7 @@ const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
     return { args, slots };
   },
   template: `
-    <UCol>
+    <UCol :class="{ 'flex-row': args.vertical }">
       <p>
         Understanding your clients' needs is essential for building long-term business relationships.
         By analyzing customer behavior and feedback, companies can tailor their services to provide more value.
@@ -86,22 +86,27 @@ const EnumVariantTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTyp
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Label = DefaultTemplate.bind({});
+Label.args = { label: "Business analysis" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Icon = DefaultTemplate.bind({});
+Icon.args = { icon: "monitoring" };
+
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
 
 export const Dashed = DefaultTemplate.bind({});
-Dashed.args = { dashed: true };
+Dashed.args = { dashed: true, size: "sm" };
 
 export const Dotted = DefaultTemplate.bind({});
-Dotted.args = { dotted: true };
+Dotted.args = { dotted: true, size: "sm" };
 
 export const Vertical = DefaultTemplate.bind({});
 Vertical.args = {
   vertical: true,
-  label: "Feedback",
   config: {
     wrapper: "!h-32",
   },
