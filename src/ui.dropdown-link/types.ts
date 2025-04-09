@@ -5,16 +5,30 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
+export interface LinkOption extends Option {
+  id?: string | number;
+}
+
 export interface Props {
+  /**
+   * Selected link.
+   */
+  modelValue?: number | string | (number | string)[];
+
   /**
    * Link label.
    */
   label?: string;
 
   /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
+
+  /**
    * Options list.
    */
-  options?: Option[];
+  options?: LinkOption[];
 
   /**
    * Label key in the item object of options.

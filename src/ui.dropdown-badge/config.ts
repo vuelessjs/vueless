@@ -1,5 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
+  dropdownBadgeLabel: "truncate max-w-24",
   dropdownBadge: {
     base: "{UBadge}",
     variants: {
@@ -40,6 +41,7 @@ export default /*tw*/ {
     xPosition: "left",
     round: false,
     noIcon: false,
+    multiple: false,
     /* icons */
     dropdownIcon: "keyboard_arrow_down",
   },

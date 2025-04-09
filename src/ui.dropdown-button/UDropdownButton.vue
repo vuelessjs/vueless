@@ -21,6 +21,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
+  modelValue: "",
   label: "",
 });
 
@@ -30,6 +31,13 @@ const emit = defineEmits([
    * @property {string} value
    */
   "clickOption",
+
+  /**
+   * Triggers when option is selected.
+   * @property {string} value
+   * @property {number} value
+   */
+  "update:modelValue",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
@@ -41,6 +49,27 @@ const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
+
+const dropdownValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return props.options.filter(
+      (option) => option.id && (dropdownValue.value as (string | number)[]).includes(option.id),
+    );
+  }
+
+  return props.options.filter((option) => option.id === dropdownValue.value);
+});
+
+const selectableButtonLabel = computed(() => {
+  if (!selectedOptions.value.length) return props.label;
+
+  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
+});
 
 function onClickOption(option: Option) {
   emit("clickOption", option);
@@ -84,6 +113,7 @@ const {
   dropdownListAttrs,
   dropdownIconAttrs,
   wrapperAttrs,
+  dropdownButtonLabelAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -91,7 +121,7 @@ const {
   <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
       :id="elementId"
-      :label="label"
+      :label="selectableButtonLabel"
       :size="size"
       :color="color"
       :round="round"
@@ -116,7 +146,13 @@ const {
           @binding {string} label
           @binding {boolean} opened
         -->
-        <slot :label="label" :opened="isShownOptions" />
+        <slot :label="selectableButtonLabel" :opened="isShownOptions">
+          <span
+            v-bind="dropdownButtonLabelAttrs"
+            :title="selectedOptions.length >= 2 ? selectableButtonLabel : ''"
+            v-text="selectableButtonLabel"
+          />
+        </slot>
       </template>
 
       <template #right>
@@ -139,6 +175,9 @@ const {
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
+      v-model="dropdownValue"
+      :multiple="multiple"
+      value-key="id"
       :color="color"
       :options="options"
       :label-key="labelKey"

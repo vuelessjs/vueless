@@ -21,6 +21,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
+  modelValue: "",
   label: "",
 });
 
@@ -30,6 +31,13 @@ const emit = defineEmits([
    * @property {string} value
    */
   "clickOption",
+
+  /**
+   * Triggers when option is selected.
+   * @property {string} value
+   * @property {number} value
+   */
+  "update:modelValue",
 ]);
 
 type UDropdownListRef = InstanceType<typeof UDropdownList>;
@@ -39,6 +47,27 @@ const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
+
+const dropdownValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return props.options.filter(
+      (option) => option.id && (dropdownValue.value as (string | number)[]).includes(option.id),
+    );
+  }
+
+  return props.options.filter((option) => option.id === dropdownValue.value);
+});
+
+const selectableBadgeLabel = computed(() => {
+  if (!selectedOptions.value.length) return props.label;
+
+  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
+});
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
@@ -82,6 +111,7 @@ const {
   dropdownBadgeAttrs,
   dropdownListAttrs,
   dropdownIconAttrs,
+  dropdownBadgeLabelAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -89,7 +119,7 @@ const {
   <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UBadge
       :id="elementId"
-      :label="label"
+      :label="selectableBadgeLabel"
       :size="size"
       :color="color"
       :variant="variant"
@@ -115,7 +145,13 @@ const {
           @binding {string} label
           @binding {boolean} opened
         -->
-        <slot :label="label" :opened="isShownOptions" />
+        <slot :label="selectableBadgeLabel" :opened="isShownOptions">
+          <span
+            v-bind="dropdownBadgeLabelAttrs"
+            :title="selectedOptions.length >= 2 ? selectableBadgeLabel : ''"
+            v-text="selectableBadgeLabel"
+          />
+        </slot>
       </template>
 
       <template #right>
@@ -138,10 +174,13 @@ const {
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
+      v-model="dropdownValue"
+      :multiple="multiple"
       :size="size"
       :color="color"
       :options="options"
       :label-key="labelKey"
+      value-key="id"
       v-bind="dropdownListAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"

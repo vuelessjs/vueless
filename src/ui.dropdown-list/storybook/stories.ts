@@ -10,7 +10,6 @@ import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Option, Props } from "../types.ts";
-import { ref } from "vue";
 
 interface DefaultUDropdownListArgs extends Props {
   slotTemplate?: string;

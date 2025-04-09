@@ -21,6 +21,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
+  modelValue: "",
   label: "",
 });
 
@@ -30,6 +31,13 @@ const emit = defineEmits([
    * @property {string} value
    */
   "clickOption",
+
+  /**
+   * Triggers when option is selected.
+   * @property {string} value
+   * @property {number} value
+   */
+  "update:modelValue",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
@@ -41,6 +49,27 @@ const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
+
+const dropdownValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return props.options.filter(
+      (option) => option.id && (dropdownValue.value as (string | number)[]).includes(option.id),
+    );
+  }
+
+  return props.options.filter((option) => option.id === dropdownValue.value);
+});
+
+const selectableLinkLabel = computed(() => {
+  if (!selectedOptions.value.length) return props.label;
+
+  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
+});
 
 function onClickLink() {
   if (props.disabled) return;
@@ -79,8 +108,15 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, toggleIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  config,
+  getDataTest,
+  wrapperAttrs,
+  dropdownLinkAttrs,
+  dropdownListAttrs,
+  toggleIconAttrs,
+  dropdownLinkLabelAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -102,7 +138,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       :id="elementId"
       tabindex="-1"
       :size="size"
-      :label="label"
+      :label="selectableLinkLabel"
       :color="color"
       :dashed="dashed"
       :disabled="disabled"
@@ -117,7 +153,13 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
           @binding {string} label
           @binding {boolean} opened
         -->
-        <slot :label="label" :opened="isShownOptions" />
+        <slot :label="selectableLinkLabel" :opened="isShownOptions">
+          <span
+            v-bind="dropdownLinkLabelAttrs"
+            :title="selectedOptions.length >= 2 ? selectableLinkLabel : ''"
+            v-text="selectableLinkLabel"
+          />
+        </slot>
       </template>
     </ULink>
 
@@ -143,10 +185,13 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
+      v-model="dropdownValue"
+      :multiple="multiple"
       :size="size"
       :color="color"
       :options="options"
       :label-key="labelKey"
+      value-key="id"
       v-bind="dropdownListAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"

@@ -1,5 +1,6 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
+  dropdownButtonLabel: "truncate max-w-24",
   dropdownButton: {
     base: "{UButton}",
     variants: {
@@ -55,6 +56,7 @@ export default /*tw*/ {
     square: false,
     noIcon: false,
     disabled: false,
+    multiple: false,
     /* icons */
     dropdownIcon: "keyboard_arrow_down",
   },

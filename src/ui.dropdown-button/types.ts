@@ -5,16 +5,30 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
+export interface ButtonOption extends Option {
+  id?: string | number;
+}
+
 export interface Props {
+  /**
+   * Selected button.
+   */
+  modelValue?: number | string | (number | string)[];
+
   /**
    * Button label.
    */
   label?: string;
 
   /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
+
+  /**
    * Options list.
    */
-  options?: Option[];
+  options?: ButtonOption[];
 
   /**
    * Label key in the item object of options.

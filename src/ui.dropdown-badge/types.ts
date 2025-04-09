@@ -5,16 +5,30 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
+export interface BadgeOption extends Option {
+  id?: string | number;
+}
+
 export interface Props {
+  /**
+   * Selected badge.
+   */
+  modelValue?: number | string | (number | string)[];
+
   /**
    * Badge label.
    */
   label?: string;
 
   /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
+
+  /**
    * Options list.
    */
-  options?: Option[];
+  options?: BadgeOption[];
 
   /**
    * Label key in the item object of options.
