@@ -241,6 +241,7 @@ export const COMPONENTS = {
   UInputMoney: "ui.form-input-money",
   UInputSearch: "ui.form-input-search",
   UInputNumber: "ui.form-input-number",
+  UInputPassword: "ui.form-input-password",
   UInputRating: "ui.form-input-rating",
   UTextarea: "ui.form-textarea",
   USelect: "ui.form-select",

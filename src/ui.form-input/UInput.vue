@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
+import { computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -84,7 +84,6 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
-const isShownPassword = ref(false);
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -99,13 +98,7 @@ const inputValue = computed({
 const elementId = props.id || useId();
 
 const inputType = computed(() => {
-  return isShownPassword.value || props.noAutocomplete ? "text" : props.type;
-});
-
-const passwordIcon = computed(() => {
-  return isShownPassword.value
-    ? config.value.defaults.passwordVisibleIcon || ""
-    : config.value.defaults.passwordHiddenIcon || "";
+  return props.noAutocomplete ? "text" : props.type;
 });
 
 onMounted(() => {
@@ -171,10 +164,6 @@ function onCopy(event: ClipboardEvent) {
   emit("copy", event);
 }
 
-function onClickShowPassword() {
-  isShownPassword.value = !isShownPassword.value;
-}
-
 /**
  * This trick prevents default browser autocomplete behavior.
  * @param toggleState { boolean }
@@ -233,21 +222,18 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label),
   /* component state, not a props */
-  typePassword: Boolean(inputValue.value && !isShownPassword.value && isTypePassword.value),
+  typePassword: Boolean(inputValue.value && isTypePassword.value),
 }));
 
 const {
   getDataTest,
-  config,
   inputAttrs,
   wrapperAttrs,
   inputLabelAttrs,
-  passwordIconAttrs,
   leftIconAttrs,
   leftSlotAttrs,
   rightIconAttrs,
   rightSlotAttrs,
-  passwordIconWrapperAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -310,19 +296,6 @@ const {
         @paste="onPaste"
         @copy="onCopy"
       />
-
-      <label v-if="isTypePassword" v-bind="passwordIconWrapperAttrs" :for="elementId">
-        <UIcon
-          v-if="isTypePassword"
-          :name="passwordIcon"
-          color="neutral"
-          interactive
-          internal
-          v-bind="passwordIconAttrs"
-          :data-test="getDataTest('password-icon')"
-          @click="onClickShowPassword"
-        />
-      </label>
 
       <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
         <!--
