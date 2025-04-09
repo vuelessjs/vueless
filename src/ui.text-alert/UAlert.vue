@@ -82,14 +82,8 @@ const {
           @slot Use it to add something before the text.
           @binding {string} icon-name
         -->
-        <slot name="left" :icon-name="alertIcon">
-          <UIcon
-            v-if="alertIcon"
-            internal
-            color="inherit"
-            :name="alertIcon"
-            v-bind="alertIconAttrs"
-          />
+        <slot name="left" :icon-name="icon">
+          <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="alertIconAttrs" />
         </slot>
 
         <div v-bind="contentAttrs">
@@ -120,20 +114,21 @@ const {
         </div>
       </div>
 
-      <UButton
-        v-if="closable"
-        square
-        size="xs"
-        :color="closeButtonColor"
-        variant="ghost"
-        v-bind="closeButtonAttrs"
-        @click="onClickClose"
-      >
-        <!--
-          @slot Use it to add something instead of the close button.
-          @binding {string} icon-name
-        -->
-        <slot name="close" :icon-name="config.defaults.closeIcon">
+      <!--
+        @slot Use it to add something instead of the close button.
+        @binding {string} icon-name
+        @binding {function} close
+      -->
+      <slot name="close" :icon-name="config.defaults.closeIcon" :close="onClickClose">
+        <UButton
+          v-if="closable"
+          square
+          size="xs"
+          :color="closeButtonColor"
+          variant="ghost"
+          v-bind="closeButtonAttrs"
+          @click="onClickClose"
+        >
           <UIcon
             internal
             :color="closeButtonColor"
@@ -141,8 +136,8 @@ const {
             v-bind="closeIconAttrs"
             :data-test="getDataTest('button')"
           />
-        </slot>
-      </UButton>
+        </UButton>
+      </slot>
     </div>
   </div>
 </template>

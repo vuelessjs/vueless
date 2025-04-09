@@ -104,12 +104,13 @@ export const SlotClose = DefaultTemplate.bind({});
 SlotClose.args = {
   closable: true,
   slotTemplate: `
-    <template #close>
+    <template #close="{ close }">
       <UButton
+        label="Close"
         variant="solid"
         color="neutral"
         size="sm"
-        label="Close"
+        @click="close"
       />
     </template>
   `,

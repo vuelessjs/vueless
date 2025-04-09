@@ -41,7 +41,7 @@ export interface Props {
   /**
    * Alert icon name.
    */
-  alertIcon?: string;
+  icon?: string;
 
   /**
    * Delayed hide alert (milliseconds).
