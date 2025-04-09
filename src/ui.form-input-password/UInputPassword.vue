@@ -35,8 +35,8 @@ const elementId = props.id || useId();
 
 const isShownPassword = ref(false);
 
-const model = computed({
-  get: () => props.modelValue,
+const localValue = computed({
+  get: () => props.modelValue ?? "",
   set: (value: string) => emit("update:modelValue", value),
 });
 
@@ -69,7 +69,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
 <template>
   <UInput
     :id="id"
-    v-model="model"
+    v-model="localValue"
     :type="inputType"
     :label="label"
     :label-align="labelAlign"
@@ -78,23 +78,43 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     :description="description"
     :error="error"
     :left-icon="leftIcon"
-    :right-icon="rightIcon"
     :max-length="maxLength"
     :readonly="readonly"
     :disabled="disabled"
     v-bind="passwordInputAttrs"
   >
+    <template #left>
+      <!--
+        @slot Use it to add something left.
+        @binding {string} icon-name
+      -->
+      <slot name="left" :icon-name="leftIcon" />
+    </template>
+
     <template #right>
       <label v-bind="passwordIconWrapperAttrs" :for="elementId">
-        <UIcon
-          :name="passwordIcon"
-          color="neutral"
-          interactive
-          internal
-          v-bind="passwordIconAttrs"
-          :data-test="getDataTest('password-icon')"
-          @click="onClickShowPassword"
-        />
+        <!--
+          @slot Use it to add something instead of the password icon.
+          @binding {string} icon-name
+          @binding {boolean} visible
+          @binding {function} toggle
+        -->
+        <slot
+          name="right"
+          :icon-name="passwordIcon"
+          :visible="isShownPassword"
+          :toggle="onClickShowPassword"
+        >
+          <UIcon
+            :name="passwordIcon"
+            color="neutral"
+            interactive
+            internal
+            v-bind="passwordIconAttrs"
+            :data-test="getDataTest('password-icon')"
+            @click="onClickShowPassword"
+          />
+        </slot>
       </label>
     </template>
   </UInput>

@@ -138,6 +138,9 @@ Readonly.args = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
+export const MaxLength = DefaultTemplate.bind({});
+MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters" };
+
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" };
 

@@ -46,11 +46,6 @@ export interface Props {
   leftIcon?: string;
 
   /**
-   * Right icon name.
-   */
-  rightIcon?: string;
-
-  /**
    * Maximum character length.
    */
   maxLength?: string | number;
