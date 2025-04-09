@@ -119,7 +119,7 @@ Align.parameters = {
 };
 
 export const Justify = EnumVariantTemplate.bind({});
-Justify.args = { enum: "justify" };
+Justify.args = { enum: "justify", block: true };
 Justify.parameters = {
   docs: {
     description: {

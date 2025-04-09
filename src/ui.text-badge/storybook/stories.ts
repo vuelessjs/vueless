@@ -161,6 +161,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
             value="20.25"
             size="sm"
             symbol="$"
+            color="inherit"
           />
           <UIcon
             :name="label"

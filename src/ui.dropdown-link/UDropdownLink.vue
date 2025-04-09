@@ -124,8 +124,9 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
     <!--
       @slot Use it to add something instead of the toggle icon.
       @binding {boolean} opened
+      @binding {function} toggle
     -->
-    <slot name="toggle" :opened="isShownOptions">
+    <slot name="toggle" :opened="isShownOptions" :toggle="onClickLink">
       <UIcon
         v-if="!noIcon"
         internal
