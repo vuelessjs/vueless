@@ -3,6 +3,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
@@ -91,33 +92,15 @@ Line.parameters = {
 
 export const Size = EnumVariantTemplate.bind({});
 Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Size.parameters = getEnumVariantDescription();
 
 export const Underlined = EnumVariantTemplate.bind({});
 Underlined.args = { enum: "size", underlined: true };
-Underlined.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Underlined.parameters = getEnumVariantDescription();
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };
-Color.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Color.parameters = getEnumVariantDescription();
 
 export const SlotDefault = DefaultTemplate.bind({});
 SlotDefault.args = {

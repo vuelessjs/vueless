@@ -1,4 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getEnumVariantDescription,
+} from "../../utils/storybook.ts";
 
 import UNumber from "../../ui.text-number/UNumber.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -67,13 +72,7 @@ Default.args = {};
 
 export const Sign = EnumVariantTemplate.bind({});
 Sign.args = { enum: "sign" };
-Sign.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Sign.parameters = getEnumVariantDescription();
 
 export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   components: { UNumber, URow, UCol },
@@ -100,36 +99,18 @@ export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
     </UCol>
   `,
 });
-Align.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Align.parameters = getEnumVariantDescription();
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = {
   enum: "color",
   sign: "auto",
 };
-Color.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Color.parameters = getEnumVariantDescription();
 
 export const Size = EnumVariantTemplate.bind({});
 Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Size.parameters = getEnumVariantDescription();
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

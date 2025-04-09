@@ -350,3 +350,13 @@ export function getDocsDescription(componentName: string | undefined) {
     },
   };
 }
+
+export function getEnumVariantDescription(message = "Hover over a variant to see its value.") {
+  return {
+    docs: {
+      description: {
+        story: message,
+      },
+    },
+  };
+}

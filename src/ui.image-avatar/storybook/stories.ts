@@ -3,6 +3,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
@@ -89,43 +90,19 @@ Label.args = { label: "Name Surname", size: "3xl" };
 
 export const Size = EnumVariantTemplate.bind({});
 Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Size.parameters = getEnumVariantDescription();
 
 export const Rounded = EnumVariantTemplate.bind({});
 Rounded.args = { enum: "rounded", label: "John Doe", color: "warning" };
-Rounded.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Rounded.parameters = getEnumVariantDescription();
 
 export const Color = EnumVariantTemplate.bind({});
 Color.args = { enum: "color" };
-Color.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Color.parameters = getEnumVariantDescription();
 
 export const Bordered = EnumVariantTemplate.bind({});
 Bordered.args = { enum: "color", bordered: true };
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Bordered.parameters = getEnumVariantDescription();
 
 export const SlotPlaceholder = DefaultTemplate.bind({});
 SlotPlaceholder.args = {

@@ -3,6 +3,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UFile from "../../ui.text-file/UFile.vue";
@@ -86,13 +87,7 @@ Removable.args = { removable: true };
 
 export const Size = EnumVariantTemplate.bind({});
 Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Size.parameters = getEnumVariantDescription();
 
 export const Slots: StoryFn<UFileArgs> = (args) => ({
   components: { UFile, URow, UBadge, UIcon },

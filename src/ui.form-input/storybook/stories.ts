@@ -115,44 +115,27 @@ LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" }
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "" };
 
-// export const ValidationRules = EnumVariantTemplate.bind({});
-// ValidationRules.args = {
-//   enum: "validationRule",
-//   labelAlign: "topWithDesc",
-//   modelValue: "",
-// };
-// ValidationRules.parameters = {
-//   docs: {
-//     description: {
-//       story:
-//         "`validationRule` prop prevents some characters from input. You can use predefined values or your own RegExp.",
-//     },
-//   },
-// };
-
-export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs) => ({
+export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup() {
-    function getDescription(option: string) {
-      switch (option) {
-        case "string":
-          return "Only letters are allowed.";
-        case "number":
-          return "Numbers are allowed (including decimals).";
-        case "integer":
-          return "Only integers are allowed.";
-        case "stringAndNumber":
-          return "Letters and numbers are allowed.";
-        case "symbol":
-          return "Special characters are allowed.";
-        case "Custom RegExp":
-          return "Enter a valid hex color code (e.g., #FF5733).";
-        default:
-          return "";
-      }
+    function getDescription(option: string): string {
+      const options: Record<string, string> = {
+        string: "Only letters are allowed.",
+        number: "Numbers are allowed (including decimals).",
+        integer: "Only integers are allowed.",
+        stringAndNumber: "Letters and numbers are allowed.",
+        symbol: "Special characters are allowed.",
+        "Custom RegExp": "Enter a valid hex color code (e.g., #FF5733).",
+      };
+
+      return options[option] || "";
     }
 
-    const options = ["symbol", "string", "stringAndNumber", "number", "integer", "Custom RegExp"];
+    function getValidationRule(option: string): string {
+      return option === "Custom RegExp" ? "^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$" : option;
+    }
+
+    const options = [...(argTypes.validationRule?.options ?? []), "Custom RegExp"];
 
     const inputModels = ref({
       symbol: "",
@@ -162,7 +145,7 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs) => ({
       integer: "",
     });
 
-    return { args, options, inputModels, getDescription };
+    return { args, options, inputModels, getDescription, getValidationRule };
   },
   template: `
     <UCol>
@@ -171,7 +154,7 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs) => ({
         :key="index"
         v-bind="args"
         v-model="inputModels[option]"
-        :validation-rule="option === 'Custom RegExp' ? '^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$' : option"
+        :validation-rule="getValidationRule(option)"
         :label="option"
         :description="getDescription(option)"
         class="max-w-96"

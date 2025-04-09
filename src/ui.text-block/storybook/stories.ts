@@ -3,6 +3,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
@@ -86,23 +87,11 @@ Default.args = {};
 
 export const Align = EnumVariantTemplate.bind({});
 Align.args = { enum: "align" };
-Align.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Align.parameters = getEnumVariantDescription();
 
 export const Size = EnumVariantTemplate.bind({});
 Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hover over a variant to see its value.",
-    },
-  },
-};
+Size.parameters = getEnumVariantDescription();
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
