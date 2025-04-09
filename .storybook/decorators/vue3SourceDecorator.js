@@ -97,7 +97,7 @@ function preFormat(templateSource, args, argTypes) {
   const componentArgs = {};
 
   const enumKeys = Object.entries(args)
-    .filter(([_, value]) => value === "{enumValue}")
+    .filter(([, value]) => value === "{enumValue}")
     .map(([key]) => key);
 
   for (const [key, val] of Object.entries(argTypes)) {
@@ -212,7 +212,7 @@ function expandVueLoopFromTemplate(template, args, argTypes) {
 
 function generateEnumAttributes(args, option) {
   const enumKeys = Object.entries(args)
-    .filter(([_, value]) => value === "{enumValue}")
+    .filter(([, value]) => value === "{enumValue}")
     .map(([key]) => key);
 
   if (args.enum) {
