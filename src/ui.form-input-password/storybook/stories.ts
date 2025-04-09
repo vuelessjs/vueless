@@ -157,7 +157,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"

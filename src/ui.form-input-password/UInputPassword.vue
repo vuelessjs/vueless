@@ -14,9 +14,6 @@ import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-/**
- * Declaring component props.
- */
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   /* Add default values for props below */

@@ -1,5 +1,6 @@
 export default /*tw*/ {
   passwordInput: "{UInput}",
+  passwordIconWrapper: "flex items-center justify-end whitespace-nowrap gap-1 rounded-inherit rounded-l-none",
   passwordIcon: {
     base: "{UIcon}",
     variants: {
@@ -15,7 +16,6 @@ export default /*tw*/ {
       },
     },
   },
-  passwordIconWrapper: "flex items-center justify-end whitespace-nowrap gap-1 rounded-inherit rounded-l-none",
   defaults: {
     size: "md",
     labelAlign: "topInside",
