@@ -75,18 +75,23 @@ export function createMergeConfigs(cx) {
             isVariants = true;
           }
 
-          config[key] =
-            isObject && !isEmpty && !isI18n
-              ? mergeConfigs({
-                  defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
-                  propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
-                  config: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  isVariants,
-                })
-              : isI18n
-                ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
-                : cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          let mergedKey = "";
+
+          if (isObject && !isEmpty && !isI18n) {
+            mergedKey = mergeConfigs({
+              defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
+              propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
+              config: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              isVariants,
+            });
+          } else if (isI18n) {
+            mergedKey = propsConfig[key] || globalConfig[key] || defaultConfig[key];
+          } else {
+            mergedKey = cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          }
+
+          config[key] = mergedKey;
         }
       } else {
         config[key] = composedConfig[key];
