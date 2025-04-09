@@ -60,7 +60,7 @@ export const IconProps: StoryFn<UTabArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UTab
         v-bind="args"
         label="Inbox"
@@ -85,7 +85,7 @@ export const Slots: StoryFn<UTabArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UTab v-bind="args" label="What's new?">
         <template #left>
           <UBadge label="Info" size="sm" />

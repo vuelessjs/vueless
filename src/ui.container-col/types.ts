@@ -45,6 +45,11 @@ export interface Props {
   wrap?: boolean;
 
   /**
+   * Make the Col expand to fill the entire width of its container.
+   */
+  block?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
