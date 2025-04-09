@@ -207,7 +207,7 @@ export const Slots: StoryFn<UInputMoneyArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UInputMoney v-bind="args">
         <template #left>
           <UAvatar />

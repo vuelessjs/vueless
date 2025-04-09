@@ -7,6 +7,7 @@ import type {
   EventProperty,
   SlotBinding,
   ExposeProperty,
+  UnknownObject,
 } from "../types.ts";
 
 interface Types {
@@ -348,5 +349,35 @@ export function getDocsDescription(componentName: string | undefined) {
     description: {
       component: `The \`${componentName}\` component. ${viewOnGitHub}`,
     },
+  };
+}
+
+/**
+ * Generate args (props) for templates with loops.
+ */
+export function getArgs(args: UnknownObject, option: string, outerOption?: string) {
+  const outerEnumProps: UnknownObject = {};
+  const enumProps: UnknownObject = {};
+
+  Object.entries(args)
+    .filter(([, value]) => value === "{enumValue}")
+    .map(([key]) => key)
+    .forEach((key) => {
+      enumProps[key] = option;
+    });
+
+  Object.entries(args)
+    .filter(([, value]) => value === "{outerEnumValue}")
+    .map(([key]) => key)
+    .forEach((key) => {
+      outerEnumProps[key] = outerOption;
+    });
+
+  return {
+    ...args,
+    ...enumProps,
+    ...outerEnumProps,
+    [args.enum as string]: option,
+    [args.outerEnum as string]: outerOption,
   };
 }

@@ -30,9 +30,6 @@ export default {
   parameters: {
     docs: {
       ...getDocsDescription(UCol.__name),
-      story: {
-        height: "400px",
-      },
     },
   },
 } as Meta;
@@ -66,7 +63,7 @@ const EnumVariantTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) =>
     };
   },
   template: `
-    <URow gap="lg" class="h-[200px]" :class="{ '!flex-col': args.enum === 'content' }">
+    <URow gap="lg" :class="{ '!flex-col': args.enum === 'content' }">
       <UCol
         v-for="(option, index) in options"
         :key="index"
@@ -85,7 +82,7 @@ const EnumVariantTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) =>
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { config: { wrapper: "h-[300px]" } };
+Default.args = {};
 
 export const Reverse = DefaultTemplate.bind({});
 Reverse.args = { reverse: true };

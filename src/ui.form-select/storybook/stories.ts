@@ -282,7 +282,7 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
     return { args, levelOptions, roleOptions };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <USelect
         left-icon="feedback"
         label="Choose the level of our services"
@@ -320,7 +320,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
     };
   },
   template: `
-    <UCol no-mobile>
+    <UCol>
       <USelect v-bind="args" v-model="args.clearModel" label="Slot clear">
         <template #clear>
           <ULink label="Close" />
@@ -338,7 +338,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         </template>
       </USelect>
 
-      <URow no-mobile>
+      <URow>
         <USelect v-bind="args" v-model="args.beforeToggleModel" label="Slot before-toggle">
           <template #before-toggle>
             <UAvatar />
@@ -357,7 +357,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         </USelect>
       </URow>
 
-      <URow no-mobile>
+      <URow>
         <USelect v-bind="args" v-model="args.leftModel" label="Slot left">
           <template #left>
             <UAvatar />
