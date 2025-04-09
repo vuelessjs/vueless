@@ -48,7 +48,6 @@ export default /*tw*/ {
     timeout: 0,
     closable: false,
     /* icons */
-    alertIcon: "priority_high",
     closeIcon: "close",
   },
 };

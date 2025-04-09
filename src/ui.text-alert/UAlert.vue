@@ -82,13 +82,13 @@ const {
           @slot Use it to add something before the text.
           @binding {string} icon-name
         -->
-        <slot name="left" :icon-name="config.defaults.alertIcon">
+        <slot name="left" :icon-name="alertIcon">
           <UIcon
+            v-if="alertIcon"
             internal
-            :name="config.defaults.alertIcon"
-            :color="props.color"
+            color="inherit"
+            :name="alertIcon"
             v-bind="alertIconAttrs"
-            :data-test="getDataTest('icon')"
           />
         </slot>
 
