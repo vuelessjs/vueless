@@ -522,12 +522,24 @@ function onClickNextButton() {
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW);
 }
 
+function onClickNextYearButton() {
+  activeDate.value = null;
+
+  addActiveYear(1);
+}
+
 function onClickPrevButton() {
   activeDate.value = null;
 
   if (isCurrentView.value.day) addActiveMonth(-1);
   if (isCurrentView.value.month) addActiveYear(-1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW * -1);
+}
+
+function onClickPrevYearButton() {
+  activeDate.value = null;
+
+  addActiveYear(-1);
 }
 
 function enterKeyHandler() {
@@ -740,6 +752,18 @@ const {
   <div ref="wrapper" :tabindex="tabindex" v-bind="wrapperAttrs" @keydown="onKeydown">
     <div v-bind="navigationAttrs">
       <UButton
+        v-if="range"
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults.prevYearIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickPrevYearButton"
+      />
+
+      <UButton
         square
         size="sm"
         color="grayscale"
@@ -749,6 +773,7 @@ const {
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
+
       <UButton
         size="sm"
         color="grayscale"
@@ -768,6 +793,18 @@ const {
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickNextButton"
+      />
+
+      <UButton
+        v-if="range"
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults.nextYearIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickNextYearButton"
       />
     </div>
 
