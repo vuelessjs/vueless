@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -11,27 +12,23 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-
-import { useDarkMode } from "../../composables/useDarkMode.ts";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UButtonArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size";
+  enum: "variant" | "size" | "color";
+  outerEnum: "variant";
 }
 
 export default {
   id: "1010",
   title: "Buttons & Links / Button",
   component: UButton,
-  args: {
-    label: "Button",
-  },
-  argTypes: {
-    ...getArgTypes(UButton.__name),
-  },
+  argTypes: { ...getArgTypes(UButton.__name) },
   parameters: {
     docs: {
       ...getDocsDescription(UButton.__name),
@@ -41,11 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs) => ({
   components: { UButton, UIcon },
-  setup() {
-    const slots = getSlotNames(UButton.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UButton.__name) }),
   template: `
     <UButton v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -53,45 +46,30 @@ const DefaultTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
   components: { UButton, URow, UCol },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
-      <URow no-mobile>
-        <UButton
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          :[args.enum]="option"
-          :label="option"
-        />
-      </URow>
-    </UCol>
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+      />
+    </URow>
   `,
 });
 
-const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
+const MultiEnumTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) => ({
   components: { UButton, URow, UCol },
-  setup() {
-    return {
-      args,
-      variants: argTypes?.variant?.options,
-      colors: argTypes?.color?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <URow v-for="(variant, variantIndex) in variants" :key="variantIndex" no-mobile>
+      <URow v-for="outerOption in argTypes?.[args.outerEnum]?.options" :key="outerOption">
         <UButton
-          v-for="(color, colorIndex) in colors"
-          v-bind="args"
-          :variant="variant"
-          :color="color"
-          :label="color"
-          :key="colorIndex"
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option, outerOption)"
+          :key="option"
         />
       </URow>
     </UCol>
@@ -99,117 +77,78 @@ const ColorTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }) =>
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { label: "Button" };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Round = EnumTemplate.bind({});
+Round.args = { enum: "variant", label: "{enumValue}", round: true };
 
-export const Round = EnumVariantTemplate.bind({});
-Round.args = { enum: "variant", round: true };
+export const Disabled = EnumTemplate.bind({});
+Disabled.args = { enum: "variant", label: "{enumValue}", disabled: true };
 
-export const Loading: StoryFn<UButtonArgs> = (args) => ({
+export const Colors = MultiEnumTemplate.bind({});
+Colors.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
+
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
+
+export const Icons: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },
-  setup() {
-    const loading = ref(false);
-
-    function toggleLoading() {
-      loading.value = !loading.value;
-    }
-
-    return { args, toggleLoading, loading };
-  },
+  setup: () => ({ args }),
   template: `
-    <URow no-mobile>
-      <UButton
-        label="Loader demo"
-        :loading="loading"
-      />
-      <UButton
-        label="Toggle loading"
-        variant="outlined"
-        color="success"
-        left-icon="play_arrow"
-        @click="toggleLoading"
-      />
+    <URow>
+      <UButton v-bind="args" label="Download" left-icon="download" />
+      <UButton v-bind="args" icon="favorite" />
+      <UButton v-bind="args" label="Menu" right-icon="menu" />
     </URow>
   `,
 });
 
-export const Block = DefaultTemplate.bind({});
-Block.args = { block: true };
-
-export const Disabled = EnumVariantTemplate.bind({});
-Disabled.args = { enum: "variant", disabled: true };
-
-export const Colors = ColorTemplate.bind({});
-Colors.args = {};
-
 export const Square = DefaultTemplate.bind({});
-Square.args = { square: true, icon: "filter_list" };
+Square.args = { icon: "filter_list", square: true };
 
-export const IconProps: StoryFn<UButtonArgs> = (args) => ({
+export const Block = DefaultTemplate.bind({});
+Block.args = { label: "Fullwidth Button", block: true };
+
+export const Loading: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },
-  setup() {
-    return { args };
-  },
+  setup: () => ({
+    args,
+    loading: ref(false),
+  }),
   template: `
-    <URow no-mobile>
+    <URow>
+      <UButton label="Submit" :loading="loading" @click="loading = !loading" />
       <UButton
-        v-bind="args"
-        left-icon="download"
-        label="Download"
-      />
-      <UButton
-        v-bind="args"
-        right-icon="menu"
-        label="Menu"
+        variant="outlined"
+        :label="loading ? 'Stop loader' : 'Start loader'"
+        :left-icon="loading ? 'stop_circle' : 'play_arrow'"
+        @click="loading = !loading"
       />
     </URow>
   `,
 });
 
 export const Slots: StoryFn<UButtonArgs> = (args) => ({
-  components: { UButton, UIcon, URow },
-  setup() {
-    const { isDarkMode } = useDarkMode();
-
-    return { args, isDarkMode };
-  },
+  components: { UButton, UIcon, URow, UAvatar, UBadge },
+  setup: () => ({ args }),
   template: `
-    <URow no-mobile>
-      <UButton v-bind="args" label="Add to favorite">
+    <URow>
+      <UButton v-bind="args" label="Profile">
         <template #left>
-          <UIcon
-            name="heart_plus"
-            size="sm"
-            color="inherit"
-            :variant="isDarkMode ? 'dark' : 'default'"
-          />
+          <UAvatar src="https://i.pravatar.cc/150?img=57" size="2xs" rounded="full" />
         </template>
       </UButton>
 
       <UButton v-bind="args" square>
-        <template #default>
-          <UIcon
-            name="settings"
-            size="sm"
-            color="inherit"
-            :variant="isDarkMode ? 'dark' : 'default'"
-          />
-        </template>
+        <UIcon size="sm" color="inherit" name="progress_activity" class="animate-spin" />
       </UButton>
 
-      <UButton v-bind="args" label="Delete">
+      <UButton v-bind="args" label="Filters">
         <template #right>
-          <UIcon
-            name="delete"
-            size="sm"
-            color="inherit"
-            :variant="isDarkMode ? 'dark' : 'default'"
-          />
+          <UBadge label="2" size="sm" color="grayscale" variant="solid" round />
         </template>
       </UButton>
     </URow>

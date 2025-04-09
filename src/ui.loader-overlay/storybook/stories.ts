@@ -45,7 +45,7 @@ const DefaultTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) 
     return { args, slots };
   },
   template: `
-    <ULoaderOverlay v-bind="args" :config="{ overlay: 'h-full w-full' }">
+    <ULoaderOverlay v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </ULoaderOverlay>
   `,
@@ -58,12 +58,14 @@ const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
   components: { ULoaderOverlay, USelect },
   setup() {
     const selectModel = ref(null);
-    const options = computed(() =>
-      argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id })),
-    );
-    const selectedValue = computed(
-      () => options.value?.find((option) => option.id === selectModel.value)?.label,
-    );
+
+    const options = computed(() => {
+      return argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id }));
+    });
+
+    const selectedValue = computed(() => {
+      return options.value?.find((option) => option.id === selectModel.value)?.label;
+    });
 
     return {
       args,
@@ -78,13 +80,12 @@ const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
       :options="options"
       placeholder="Select loader color..."
       open-direction="bottom"
-      class="max-w-60 absolute z-50"
+      class="max-w-60 absolute z-[99999]"
     />
 
     <ULoaderOverlay
       v-bind="args"
       :[args.enum]="selectedValue"
-      :config="{ overlay: 'h-full w-full z-10' }"
     />
   `,
 });
@@ -92,30 +93,21 @@ const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
 const LoadingTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay, UButton },
   setup() {
-    const loaderOverlay = useLoaderOverlay();
+    const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
 
-    const loaderOverlayOn = loaderOverlay.loaderOverlayOn;
-    const loaderOverlayOff = loaderOverlay.loaderOverlayOff;
-    const isLoading = loaderOverlay.isLoading;
-
-    function toggleLoading() {
-      isLoading.value ? loaderOverlayOff() : loaderOverlayOn();
-    }
-
-    return { args, isLoading, toggleLoading };
+    return { args, isLoading, loaderOverlayOn, loaderOverlayOff };
   },
   template: `
     <UButton
-      label="Toggle loading"
       size="sm"
-      class="absolute z-50"
-      @click="toggleLoading"
+      label="Toggle loading"
+      class="absolute z-[99999]"
+      @click="isLoading ? loaderOverlayOff() : loaderOverlayOn()"
     />
 
     <ULoaderOverlay
       v-bind="args"
       :loading="isLoading"
-      :config="{ overlay: 'h-full w-full z-10' }"
     />
   `,
 });

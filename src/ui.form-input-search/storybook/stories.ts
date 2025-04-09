@@ -164,7 +164,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UInputSearch v-bind="args" :config="{ searchInput: { leftSlot: 'pl-0' } }">
         <template #left>
           <UAvatar size="sm" />
