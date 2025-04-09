@@ -14,7 +14,6 @@ import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
-import { ref } from "vue";
 
 interface UInputArgs extends Props {
   slotTemplate?: string;
@@ -131,32 +130,27 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argType
       return options[option] || "";
     }
 
-    function getValidationRule(option: string): string {
-      return option === "Custom RegExp" ? "^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$" : option;
-    }
+    const options = argTypes.validationRule?.options;
 
-    const options = [...(argTypes.validationRule?.options ?? []), "Custom RegExp"];
-
-    const inputModels = ref({
-      symbol: "",
-      string: "",
-      stringAndNumber: "",
-      number: "",
-      integer: "",
-    });
-
-    return { args, options, inputModels, getDescription, getValidationRule };
+    return { args, options, getDescription };
   },
   template: `
     <UCol>
       <UInput
         v-for="(option, index) in options"
         :key="index"
-        v-bind="args"
-        v-model="inputModels[option]"
-        :validation-rule="getValidationRule(option)"
+        v-model="args.modelValue[option]"
+        :validation-rule="option"
         :label="option"
         :description="getDescription(option)"
+        class="max-w-96"
+      />
+
+      <UInput
+        v-model="args.modelValue['customRegExp']"
+        validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
+        label="Custom RegExp"
+        :description="getDescription('Custom RegExp')"
         class="max-w-96"
       />
     </UCol>
