@@ -22,7 +22,7 @@ interface UInputSearchArgs extends Props {
 }
 
 export default {
-  id: "3040",
+  id: "3070",
   title: "Form Inputs & Controls / Input Search",
   component: UInputSearch,
   argTypes: {

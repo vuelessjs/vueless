@@ -49,7 +49,7 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
     <UInput
       v-bind="args"
       v-model="args.modelValue"
-      class="max-w-96"
+      class="!max-w-96"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UInput>
@@ -138,8 +138,8 @@ Readonly.args = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const TypePassword = DefaultTemplate.bind({});
-TypePassword.args = { label: "Password", modelValue: "donotforgetyourpassword", type: "password" };
+export const MaxLength = DefaultTemplate.bind({});
+MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters" };
 
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" };
