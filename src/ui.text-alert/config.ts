@@ -23,7 +23,7 @@ export default /*tw*/ {
   description: "mt-0.5",
   text: "{UText}",
   closeButton: "{UButton}",
-  closeIcon: {
+  icon: {
     base: "{UIcon}",
     variants: {
       variant: {
@@ -39,6 +39,8 @@ export default /*tw*/ {
       },
     },
   },
+  closeIcon: "{>icon}",
+  alertIcon: "{>icon}",
   defaults: {
     variant: "subtle",
     color: "primary",

@@ -69,19 +69,22 @@ const {
   descriptionAttrs,
   closeButtonAttrs,
   closeIconAttrs,
+  alertIconAttrs,
   contentWrapperAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div v-if="isShownAlert" ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
-    <!-- @slot Use it to add something above the text. -->
-    <slot name="top" />
-
     <div v-bind="bodyAttrs">
       <div v-bind="contentWrapperAttrs">
-        <!-- @slot Use it to add something before the text. -->
-        <slot name="left" />
+        <!--
+          @slot Use it to add something before the text.
+          @binding {string} icon-name
+        -->
+        <slot name="left" :icon-name="icon">
+          <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="alertIconAttrs" />
+        </slot>
 
         <div v-bind="contentAttrs">
           <!--
@@ -109,37 +112,32 @@ const {
             <slot />
           </UText>
         </div>
-
-        <!-- @slot Use it to add something after the text. -->
-        <slot name="right" />
       </div>
 
-      <UButton
-        v-if="closable"
-        square
-        size="xs"
-        :color="closeButtonColor"
-        variant="ghost"
-        v-bind="closeButtonAttrs"
-        @click="onClickClose"
-      >
-        <!--
-          @slot Use it to add something instead of the close button.
-          @binding {string} icon-name
-        -->
-        <slot name="close" :icon-name="config.defaults.closeIcon">
+      <!--
+        @slot Use it to add something instead of the close button.
+        @binding {string} icon-name
+        @binding {function} close
+      -->
+      <slot name="close" :icon-name="config.defaults.closeIcon" :close="onClickClose">
+        <UButton
+          v-if="closable"
+          square
+          size="xs"
+          :color="closeButtonColor"
+          variant="ghost"
+          v-bind="closeButtonAttrs"
+          :data-test="getDataTest('button')"
+          @click="onClickClose"
+        >
           <UIcon
             internal
             :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
-            :data-test="getDataTest('button')"
           />
-        </slot>
-      </UButton>
+        </UButton>
+      </slot>
     </div>
-
-    <!-- @slot Use it to add something under the text. -->
-    <slot name="bottom" />
   </div>
 </template>
