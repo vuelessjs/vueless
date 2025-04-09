@@ -1,11 +1,17 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getEnumVariantDescription,
+} from "../../utils/storybook.ts";
 
 import UNumber from "../../ui.text-number/UNumber.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UText from "../../ui.text-block/UText.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
-import UDivider from "../../ui.container-divider/UDivider.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -43,23 +49,20 @@ const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
 });
 
 const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => ({
-  components: { UNumber, URow, UText, UDivider },
+  components: { UNumber, URow },
+  directives: { tooltip },
   setup() {
     return { args, options: argTypes?.[args.enum]?.options };
   },
   template: `
-    <URow :class="{ '!flex-col items-stretch': args.enum === 'align' }">
+    <URow>
       <UNumber
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-      >
-        <template #right v-if="args.enum === 'sign'">
-          <UText size="lg" class="ml-1">{{ option }}</UText>
-          <UDivider vertical class="h-5" />
-        </template>
-      </UNumber>
+        v-tooltip="option"
+      />
     </URow>
   `,
 });
@@ -69,18 +72,45 @@ Default.args = {};
 
 export const Sign = EnumVariantTemplate.bind({});
 Sign.args = { enum: "sign" };
+Sign.parameters = getEnumVariantDescription();
 
-export const Align = EnumVariantTemplate.bind({});
-Align.args = { enum: "align" };
+export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
+  components: { UNumber, URow, UCol },
+  directives: { tooltip },
+  setup() {
+    const options = ["left", "right"];
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = {
+    return { args, options };
+  },
+  template: `
+    <UCol>
+      <URow
+        :justify="option === 'right' ? 'end' : 'start'"
+        block
+        v-for="(option, index) in options"
+        :key="index"
+      >
+        <UNumber
+          v-bind="args"
+          :align="option"
+          v-tooltip="option"
+        />
+      </URow>
+    </UCol>
+  `,
+});
+Align.parameters = getEnumVariantDescription();
+
+export const Color = EnumVariantTemplate.bind({});
+Color.args = {
   enum: "color",
   sign: "auto",
 };
+Color.parameters = getEnumVariantDescription();
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = getEnumVariantDescription();
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

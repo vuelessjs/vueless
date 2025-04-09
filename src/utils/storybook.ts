@@ -381,3 +381,13 @@ export function getArgs(args: UnknownObject, option: string, outerOption?: strin
     [args.outerEnum as string]: outerOption,
   };
 }
+
+export function getEnumVariantDescription(message = "Hover over a variant to see its value.") {
+  return {
+    docs: {
+      description: {
+        story: message,
+      },
+    },
+  };
+}

@@ -64,7 +64,7 @@ const EnumVariantTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes
             <UInput placeholder="Enter email address" label="Email Address" />
           </UCol>
         </UGroup>
-        <UGroup title="'Additional Group'">
+        <UGroup title="Additional Group" class="mt-4">
           <UCol>
             <UInput placeholder="Enter phone number" label="Phone Number" />
           </UCol>

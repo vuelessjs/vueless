@@ -3,12 +3,15 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UFile from "../../ui.text-file/UFile.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -56,6 +59,7 @@ const DefaultTemplate: StoryFn<UFileArgs> = (args: UFileArgs) => ({
 
 const EnumVariantTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
   components: { UFile, URow },
+  directives: { tooltip },
   setup() {
     return { args, options: argTypes?.[args.enum]?.options };
   },
@@ -66,6 +70,7 @@ const EnumVariantTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) 
         :key="index"
         v-bind="args"
         :[args.enum]="option"
+        v-tooltip="option"
       />
     </URow>
   `,
@@ -80,8 +85,9 @@ ImageURL.args = { imageUrl: "https://picsum.photos/100" };
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
+Size.parameters = getEnumVariantDescription();
 
 export const Slots: StoryFn<UFileArgs> = (args) => ({
   components: { UFile, URow, UBadge, UIcon },

@@ -59,23 +59,6 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
 const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup() {
-    function getDescription(option: string) {
-      switch (option) {
-        case "string":
-          return "Only letters are allowed.";
-        case "number":
-          return "Numbers are allowed (including decimals).";
-        case "integer":
-          return "Only integers are allowed.";
-        case "stringAndNumber":
-          return "Letters and numbers are allowed.";
-        case "symbol":
-          return "Special characters are allowed.";
-        default:
-          return "";
-      }
-    }
-
     let filteredOptions = argTypes?.[args.enum]?.options;
 
     if (args.enum === "labelAlign") {
@@ -84,11 +67,7 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
       );
     }
 
-    return {
-      args,
-      filteredOptions,
-      getDescription,
-    };
+    return { args, filteredOptions };
   },
   template: `
     <UCol>
@@ -97,19 +76,7 @@ const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }
         :key="index"
         v-bind="args"
         :[args.enum]="option"
-        :placeholder="args.enum === 'validationRule' ? '' : option"
-        :label="args.enum === 'validationRule' ? option : 'Full Name'"
-        :description="args.enum === 'validationRule' ? getDescription(option) : ''"
-        class="max-w-96"
-      />
-
-      <UInput
-        v-if="args.enum === 'validationRule'"
-        validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
-        label="Custom RegExp"
-        description="Enter a valid hex color code (e.g., #FF5733)."
-        label-align="topWithDesc"
-        placeholder="#FF5733"
+        :placeholder="option"
         class="max-w-96"
       />
     </UCol>
@@ -147,12 +114,48 @@ LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" }
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "" };
 
-export const ValidationRules = EnumVariantTemplate.bind({});
-ValidationRules.args = {
-  enum: "validationRule",
-  labelAlign: "topWithDesc",
-  modelValue: "",
-};
+export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
+  components: { UInput, UCol },
+  setup() {
+    function getDescription(option: string): string {
+      const options: Record<string, string> = {
+        string: "Only letters are allowed.",
+        number: "Numbers are allowed (including decimals).",
+        integer: "Only integers are allowed.",
+        stringAndNumber: "Letters and numbers are allowed.",
+        symbol: "Special characters are allowed.",
+        "Custom RegExp": "Enter a valid hex color code (e.g., #FF5733).",
+      };
+
+      return options[option] || "";
+    }
+
+    const options = argTypes.validationRule?.options;
+
+    return { args, options, getDescription };
+  },
+  template: `
+    <UCol>
+      <UInput
+        v-for="(option, index) in options"
+        :key="index"
+        v-model="args.modelValue[option]"
+        :validation-rule="option"
+        :label="option"
+        :description="getDescription(option)"
+        class="max-w-96"
+      />
+
+      <UInput
+        v-model="args.modelValue['customRegExp']"
+        validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
+        label="Custom RegExp"
+        :description="getDescription('Custom RegExp')"
+        class="max-w-96"
+      />
+    </UCol>
+  `,
+});
 ValidationRules.parameters = {
   docs: {
     description: {

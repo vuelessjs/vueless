@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import {
   getArgTypes,
   getSlotNames,
@@ -8,7 +9,8 @@ import {
 import ULoader from "../../ui.loader/ULoader.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
-import { ref } from "vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -51,6 +53,7 @@ const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
 
 const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
   components: { ULoader, URow },
+  directives: { tooltip },
   setup() {
     return {
       args,
@@ -64,6 +67,7 @@ const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes
         :key="index"
         v-bind="args"
         :[args.enum]="option"
+        v-tooltip="option"
       />
     </URow>
   `,
