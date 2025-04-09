@@ -127,6 +127,7 @@ const {
           :color="closeButtonColor"
           variant="ghost"
           v-bind="closeButtonAttrs"
+          :data-test="getDataTest('button')"
           @click="onClickClose"
         >
           <UIcon
@@ -134,7 +135,6 @@ const {
             :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"
-            :data-test="getDataTest('button')"
           />
         </UButton>
       </slot>
