@@ -1,4 +1,4 @@
-import { addons, useArgs, makeDecorator } from "@storybook/preview-api";
+import { addons, makeDecorator, useArgs } from "@storybook/preview-api";
 import { h, onMounted, watch } from "vue";
 
 const params = new URLSearchParams(window.location.search);
@@ -38,16 +38,20 @@ export const vue3SourceDecorator = makeDecorator({
           await setSourceCode();
         });
 
-        watch(context.args, async () => {
-          // it allows changing args dynamically
-          updateArgs({ ...context.args });
-          await setSourceCode();
-        });
+        watch(
+          context.args,
+          async () => {
+            updateArgs({ ...context.args });
+            await setSourceCode();
+          },
+          { deep: true },
+        );
 
         async function setSourceCode() {
           try {
             const src = context.originalStoryFn(context.args, context.argTypes).template;
-            const code = templateSourceCode(src, context.args, context.argTypes);
+            const code = preFormat(src, context.args, context.argTypes);
+
             const channel = addons.getChannel();
 
             const emitFormattedTemplate = async () => {
@@ -64,7 +68,7 @@ export const vue3SourceDecorator = makeDecorator({
               channel.emit("storybook/docs/snippet-rendered", {
                 id: context.id,
                 args: context.args,
-                source: formattedCode,
+                source: postFormat(formattedCode),
               });
             };
 
@@ -83,22 +87,30 @@ export const vue3SourceDecorator = makeDecorator({
   },
 });
 
-function templateSourceCode(templateSource, args, argTypes) {
-  const MODEL_VALUE_KEY = "modelValue";
+function preFormat(templateSource, args, argTypes) {
+  templateSource = expandVueLoopFromTemplate(templateSource, args, argTypes);
+
+  if (args?.outerEnum) {
+    templateSource = expandOuterVueLoopFromTemplate(templateSource, args, argTypes);
+  }
+
   const componentArgs = {};
 
+  const enumKeys = Object.entries(args)
+    .filter(([, value]) => value === "{enumValue}")
+    .map(([key]) => key);
+
   for (const [key, val] of Object.entries(argTypes)) {
-    if (key === MODEL_VALUE_KEY) continue;
+    if (key === "modelValue") continue;
 
-    const value = args[key];
+    const isUndefined = typeof val !== "undefined";
+    const isProps = val?.table?.category === "props";
+    const isValueDefault = args[key] === val.defaultValue;
 
-    if (
-      typeof val !== "undefined" &&
-      val.table &&
-      val.table.category === "props" &&
-      value !== val.defaultValue
-    ) {
-      componentArgs[key] = val;
+    if (isUndefined && isProps && !isValueDefault) {
+      if (!(args.enum && enumKeys.includes(key)) && key !== args.outerEnum) {
+        componentArgs[key] = val;
+      }
     }
   }
 
@@ -116,15 +128,98 @@ function templateSourceCode(templateSource, args, argTypes) {
     .replace(slotTemplateCodeBefore, "")
     .replace(slotTemplateCodeAfter, "")
     .replace(
-      `v-model="args.${MODEL_VALUE_KEY}"`,
-      args[MODEL_VALUE_KEY] ? `v-model="${args[MODEL_VALUE_KEY]}"` : "",
+      new RegExp(`v-model="args\\.modelValue"`, "g"),
+      args["modelValue"] ? `v-model="${args["modelValue"]}"` : "",
     )
     .replace(
-      'v-bind="args"',
+      /v-bind="args"/g,
       Object.keys(componentArgs)
         .map((key) => " " + propToSource(kebabCase(key), args[key]))
         .join(""),
     );
+}
+
+function postFormat(code) {
+  return (
+    code
+      /* Add self-closing tag if there is no content inside */
+      .replace(/<(\w+)([^>]*)><\/\1>/g, (_, tag, attrs) => {
+        const hasText = attrs.trim().includes("\n") ? false : attrs.trim().length > 0;
+        const space = hasText ? " " : "";
+
+        return `<${tag}${attrs}${space}/>`;
+      })
+      /* Format objects in props */
+      .replace(/^(\s*):([\w-]+)="\[(\{.*?\})\]"/gm, (_, indent, propName, content) => {
+        const formatted = content
+          .split(/\},\s*\{/)
+          .map((obj, i, arr) => {
+            if (i === 0) obj += "}";
+            else if (i === arr.length - 1) obj = "{" + obj;
+            else obj = "{" + obj + "}";
+
+            return `${indent}  ${obj}`;
+          })
+          .join(",\n");
+
+        return `${indent}:${propName}="[\n${formatted}\n${indent}]"`;
+      })
+      /* Added new line between nested elements with closing tags */
+      .replace(/(<\/[\w-]+>)\n(\s*)(<[\w-][^>]*?>)/g, (match, closeTag, indent, openTag) => {
+        return `${closeTag}\n\n${indent}${openTag}`;
+      })
+  );
+}
+
+function expandOuterVueLoopFromTemplate(template, args, argTypes) {
+  const loopRegex = /<(\w+)[^>]*v-for[^>]*>([\s\S]*?)<\/\1>/;
+  const loopMatch = template.match(loopRegex);
+
+  if (!loopMatch) return;
+
+  const [, containerTag, innerContent] = loopMatch;
+
+  const elementRegex = /<(\w+)([^>]*)>(.*?)<\/\1>/g;
+  const elements = [...innerContent.matchAll(elementRegex)];
+
+  if (!elements.length) return;
+
+  const newRows = argTypes[args.outerEnum]?.options
+    .map((variant) => {
+      const rows = elements
+        .map(([, tag, props, children]) => {
+          return `<${tag}${props} ${args.outerEnum}="${variant}">${children}</${tag}>`;
+        })
+        .join("\n    ");
+
+      return `  <${containerTag}>\n    ${rows}\n  </${containerTag}>`;
+    })
+    .join("\n");
+
+  return template.replace(loopRegex, newRows);
+}
+
+function expandVueLoopFromTemplate(template, args, argTypes) {
+  return template.replace(
+    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
+    (match, componentName) =>
+      argTypes?.[args.enum]?.options
+        // eslint-disable-next-line prettier/prettier
+        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args"></${componentName}>`)
+        ?.join("\n"),
+  );
+}
+
+function generateEnumAttributes(args, option) {
+  const enumKeys = Object.entries(args)
+    .filter(([, value]) => value === "{enumValue}")
+    .map(([key]) => key);
+
+  if (args.enum) {
+    enumKeys.unshift(args.enum);
+  }
+
+  return enumKeys.map((key) => `${key}="${option}"`).join(" ");
 }
 
 function propToSource(key, val) {

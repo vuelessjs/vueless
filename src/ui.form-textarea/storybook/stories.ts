@@ -149,7 +149,7 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
     return { args, switchModel };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UTextarea v-bind="args">
         <template #left>
           <UAvatar />

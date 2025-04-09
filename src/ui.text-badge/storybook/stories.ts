@@ -118,7 +118,7 @@ export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UBadge
         v-bind="args"
         left-icon="mail"
@@ -144,7 +144,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UBadge v-bind="args" label="Add to favorite">
         <template #left>
           <UIcon
