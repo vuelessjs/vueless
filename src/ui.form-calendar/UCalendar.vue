@@ -775,6 +775,7 @@ const {
       />
 
       <UButton
+        block
         size="sm"
         color="grayscale"
         variant="ghost"
