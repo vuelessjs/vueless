@@ -114,10 +114,16 @@ const inputPlaceholder = computed(() => {
 });
 
 const dropdownValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
+    }
+
+    return props.modelValue;
+  },
   set: (value) => {
     emit("update:modelValue", value);
-    emit("change", { value: value, options: props.options });
+    emit("change", { value, options: props.options });
     deactivate();
   },
 });

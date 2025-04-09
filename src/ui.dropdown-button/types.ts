@@ -1,19 +1,15 @@
 import defaultConfig from "./config.ts";
 
 import type { Option } from "../ui.dropdown-list/types.ts";
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig, UnknownObject } from "../types.ts";
 
 export type Config = typeof defaultConfig;
-
-export interface ButtonOption extends Option {
-  id?: string | number;
-}
 
 export interface Props {
   /**
    * Selected button.
    */
-  modelValue?: number | string | (number | string)[];
+  modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
 
   /**
    * Button label.
@@ -28,12 +24,22 @@ export interface Props {
   /**
    * Options list.
    */
-  options?: ButtonOption[];
+  options?: Option[];
 
   /**
    * Label key in the item object of options.
    */
   labelKey?: string;
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey?: string;
+
+  /**
+   * Determines how many selected option labels are shown in the label.
+   */
+  labelDisplayCount?: number;
 
   /**
    * Button variant.

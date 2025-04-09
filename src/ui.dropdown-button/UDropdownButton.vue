@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
+import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -14,7 +15,7 @@ import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Option, SelectedValue } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -51,24 +52,50 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const elementId = props.id || useId();
 
 const dropdownValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
+    }
+
+    return props.modelValue;
+  },
   set: (value) => emit("update:modelValue", value),
 });
 
 const selectedOptions = computed(() => {
   if (props.multiple) {
-    return props.options.filter(
-      (option) => option.id && (dropdownValue.value as (string | number)[]).includes(option.id),
-    );
+    return props.options.filter((option) => {
+      return (
+        option[props.valueKey] &&
+        (dropdownValue.value as SelectedValue[]).find((selected) =>
+          isEqual(selected, option[props.valueKey]),
+        )
+      );
+    });
   }
 
-  return props.options.filter((option) => option.id === dropdownValue.value);
+  return [
+    props.options.find(
+      (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
+    ),
+  ].filter((option) => !!option);
 });
 
-const selectableButtonLabel = computed(() => {
-  if (!selectedOptions.value.length) return props.label;
+const buttonLabel = computed(() => {
+  if (!selectedOptions.value.length) {
+    return props.label;
+  }
 
-  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
+  const selectedLabels = selectedOptions.value
+    .slice(0, props.labelDisplayCount)
+    .map((option) => option[props.labelKey]);
+  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
+
+  if (selectedLabels.length > 1 && restLabelCount > 0) {
+    selectedLabels.push(`+${restLabelCount}`);
+  }
+
+  return selectedLabels.join(", ");
 });
 
 function onClickOption(option: Option) {
@@ -113,7 +140,6 @@ const {
   dropdownListAttrs,
   dropdownIconAttrs,
   wrapperAttrs,
-  dropdownButtonLabelAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -121,7 +147,7 @@ const {
   <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
       :id="elementId"
-      :label="selectableButtonLabel"
+      :label="buttonLabel"
       :size="size"
       :color="color"
       :round="round"
@@ -146,13 +172,7 @@ const {
           @binding {string} label
           @binding {boolean} opened
         -->
-        <slot :label="selectableButtonLabel" :opened="isShownOptions">
-          <span
-            v-bind="dropdownButtonLabelAttrs"
-            :title="selectedOptions.length >= 2 ? selectableButtonLabel : ''"
-            v-text="selectableButtonLabel"
-          />
-        </slot>
+        <slot :label="buttonLabel" :opened="isShownOptions" />
       </template>
 
       <template #right>
@@ -177,10 +197,10 @@ const {
       ref="dropdown-list"
       v-model="dropdownValue"
       :multiple="multiple"
-      value-key="id"
       :color="color"
       :options="options"
       :label-key="labelKey"
+      :value-key="valueKey"
       v-bind="dropdownListAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"

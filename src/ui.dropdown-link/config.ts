@@ -10,7 +10,6 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownLinkLabel: "truncate max-w-24",
   dropdownLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
     base: "{UIcon} block transition duration-300 group-[*]:rotate-180",
@@ -39,6 +38,7 @@ export default /*tw*/ {
     color: "primary",
     size: "md",
     labelKey: "label",
+    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
     underlined: undefined,
@@ -46,6 +46,7 @@ export default /*tw*/ {
     noIcon: false,
     disabled: false,
     multiple: false,
+    labelDisplayCount: 2,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
   },
