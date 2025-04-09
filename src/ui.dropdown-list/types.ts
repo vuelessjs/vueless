@@ -16,16 +16,23 @@ export interface Option extends BaseOption {
   [key: string]: string | number | boolean | UnknownObject | Option[] | OnClickOption | undefined;
 }
 
+export type SelectedValue = string | number | UnknownObject;
+
 export interface Props {
   /**
    * Selected item.
    */
-  modelValue?: string | number | UnknownObject;
+  modelValue?: SelectedValue | SelectedValue[];
 
   /**
    * List options.
    */
   options?: Option[];
+
+  /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
 
   /**
    * Label key in the item object of options.

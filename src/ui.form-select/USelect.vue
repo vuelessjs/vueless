@@ -115,17 +115,9 @@ const inputPlaceholder = computed(() => {
 
 const dropdownValue = computed({
   get: () => props.modelValue,
-  set: (newValue) => {
-    let value;
-
-    if (props.multiple) {
-      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
-    } else {
-      value = newValue;
-    }
-
+  set: (value) => {
     emit("update:modelValue", value);
-    emit("change", { value, options: props.options });
+    emit("change", { value: value, options: props.options });
     deactivate();
   },
 });
@@ -674,6 +666,7 @@ const {
         v-if="isOpen"
         ref="dropdownList"
         v-model="dropdownValue as string | number"
+        :multiple="multiple"
         :options="filteredOptions"
         :disabled="disabled"
         :size="size"
