@@ -75,7 +75,6 @@ watch(
 
 onMounted(() => {
   if (localValue.value) {
-    // console.log(localValue.value);
     setValue(stringLocalValue.value);
   }
 });
@@ -158,7 +157,7 @@ const { getDataTest, moneyInputAttrs } = useUI<Config>(defaultConfig);
         @slot Use it to add something right.
         @binding {string} icon-name
       -->
-      <slot name="right" :icon-name="leftIcon" />
+      <slot name="right" :icon-name="rightIcon" />
     </template>
   </UInput>
 </template>

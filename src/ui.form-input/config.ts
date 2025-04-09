@@ -28,8 +28,6 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>inputIcon}",
   rightIcon: "{UIcon} {>inputIcon}",
-  passwordIcon: "{UIcon} {>inputIcon}",
-  passwordIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-inherit rounded-l-none",
   leftSlot: "pl-2.5 flex items-center",
   rightSlot: "pr-2.5 flex items-center",
   input: {
@@ -67,8 +65,5 @@ export default /*tw*/ {
     readonly: false,
     disabled: false,
     noAutocomplete: false,
-    /* icons */
-    passwordVisibleIcon: "visibility-fill",
-    passwordHiddenIcon: "visibility_off-fill",
   },
 };

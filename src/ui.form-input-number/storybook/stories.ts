@@ -18,7 +18,7 @@ interface UInputNumberArgs extends Props {
 }
 
 export default {
-  id: "3050",
+  id: "3040",
   title: "Form Inputs & Controls / Input Number",
   component: UInputNumber,
   args: {

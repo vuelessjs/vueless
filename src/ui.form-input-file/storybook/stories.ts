@@ -19,7 +19,7 @@ interface UInputFileArgs extends Props {
 }
 
 export default {
-  id: "3200",
+  id: "3020",
   title: "Form Inputs & Controls / Input File",
   component: UInputFile,
   args: {

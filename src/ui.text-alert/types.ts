@@ -39,6 +39,11 @@ export interface Props {
     | "grayscale";
 
   /**
+   * Alert icon name.
+   */
+  icon?: string;
+
+  /**
    * Delayed hide alert (milliseconds).
    */
   timeout?: number;
