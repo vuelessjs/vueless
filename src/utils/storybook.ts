@@ -360,14 +360,14 @@ export function getArgs(args: UnknownObject, option: string, outerOption?: strin
   const enumProps: UnknownObject = {};
 
   Object.entries(args)
-    .filter(([_, value]) => value === "{enumValue}")
+    .filter(([, value]) => value === "{enumValue}")
     .map(([key]) => key)
     .forEach((key) => {
       enumProps[key] = option;
     });
 
   Object.entries(args)
-    .filter(([_, value]) => value === "{outerEnumValue}")
+    .filter(([, value]) => value === "{outerEnumValue}")
     .map(([key]) => key)
     .forEach((key) => {
       outerEnumProps[key] = outerOption;
