@@ -39,7 +39,7 @@ export interface Props {
     | "grayscale";
 
   /**
-   * Left icon name.
+   * Alert icon name.
    */
   alertIcon?: string;
 
