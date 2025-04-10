@@ -1,9 +1,18 @@
 import fs from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
+import { defineConfig } from "cva";
+import { createGetMergedConfig } from "./mergeConfigs.js";
+import { merge } from "lodash-es";
+import { extendTailwindMerge } from "tailwind-merge";
 
 import { buildTSFile } from "./helper.js";
-import { VUELESS_CACHE_DIR, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
+import {
+  VUELESS_CACHE_DIR,
+  VUELESS_CONFIG_FILE_NAME,
+  TAILWIND_MERGE_EXTENSION,
+  NESTED_COMPONENT_PATTERN_REG_EXP,
+} from "../../constants.js";
 
 /**
  * Load Vueless config from the project root.
@@ -29,3 +38,13 @@ export let vuelessConfig = {};
     vuelessConfig = (await import(configOutPath)).default;
   }
 })();
+
+const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
+
+export const { cx } = defineConfig({
+  hooks: {
+    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
+  },
+});
+
+export const getMergedConfig = createGetMergedConfig(cx);
