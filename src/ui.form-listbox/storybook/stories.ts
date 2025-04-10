@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook.ts";
 
-import UDataList from "../../ui.data-list/UDataList.vue";
+import UListbox from "../UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -19,15 +19,15 @@ import tooltip from "../../directives/tooltip/vTooltip.ts";
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props, DataListItem } from "../types.ts";
 
-interface UDataListArgs extends Props {
+interface UListboxArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
 
 export default {
-  id: "7020",
+  id: "3090",
   title: "Data / Data List",
-  component: UDataList,
+  component: UListbox,
   args: {
     list: [
       {
@@ -63,20 +63,20 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDataList.__name),
+    ...getArgTypes(UListbox.__name),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UDataList.__name),
+      ...getDocsDescription(UListbox.__name),
     },
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
-  components: { UDataList, UIcon, URow, UButton, UBadge, UAvatar, ULoader, UHeader },
+const DefaultTemplate: StoryFn<UListboxArgs> = (args: UListboxArgs) => ({
+  components: { UListbox, UIcon, URow, UButton, UBadge, UAvatar, ULoader, UHeader },
   directives: { tooltip },
   setup() {
-    const slots = getSlotNames(UDataList.__name);
+    const slots = getSlotNames(UListbox.__name);
 
     const avatars = [
       "https://cdn-icons-png.flaticon.com/128/1999/1999625.png",
@@ -105,14 +105,14 @@ const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
     return { args, slots, removeItem, editItem, list };
   },
   template: `
-    <UDataList v-bind="args" :list="args.slotTemplate ? list : args.list">
+    <UListbox v-bind="args" :list="args.slotTemplate ? list : args.list">
       ${args.slotTemplate || getSlotsFragment("")}
-    </UDataList>
+    </UListbox>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs, { argTypes }) => ({
-  components: { URow, UDataList, UHeader },
+const EnumVariantTemplate: StoryFn<UListboxArgs> = (args: UListboxArgs, { argTypes }) => ({
+  components: { URow, UListbox, UHeader },
   setup() {
     return {
       args,
@@ -122,7 +122,7 @@ const EnumVariantTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs, { argT
   template: `
     <div v-for="(option, index) in options" :key="index">
       <UHeader :label="option" size="xs" />
-      <UDataList v-bind="args" :[args.enum]="option" class="mb-4" />
+      <UListbox v-bind="args" :[args.enum]="option" class="mb-4" />
     </div>
   `,
 });

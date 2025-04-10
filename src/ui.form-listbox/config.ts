@@ -45,7 +45,7 @@ export default /*tw*/ {
   customActions: "space-x-5 opacity-50 flex items-center md:opacity-0 group-hover/item:opacity-100",
   divider: "{UDivider}",
   empty: "{UEmpty}",
-  nested: "{UDataList} group/nested ml-6",
+  nested: "{UListbox} group/nested ml-6",
   i18n: {
     emptyTitle: "",
     emptyDescription: "There is no data in the list.",

@@ -7,7 +7,7 @@ import tableConfig from "../../ui.data-table/config.js";
 import calendarConfig from "../../ui.form-calendar/config.ts";
 import datepickerConfig from "../../ui.form-date-picker/config.js";
 import datepickerRangeConfig from "../../ui.form-date-picker-range/config.js";
-import dataListConfig from "../../ui.data-list/config.js";
+import dataListConfig from "../../ui.form-listbox/config.js";
 import notifyDefaultConfig from "../../ui.text-notify/config.js";
 
 export default {
@@ -20,6 +20,6 @@ export default {
   UCalendar: calendarConfig.i18n,
   UDatePicker: datepickerConfig.i18n,
   UDatePickerRange: datepickerRangeConfig.i18n,
-  UDataList: dataListConfig.i18n,
+  UListbox: dataListConfig.i18n,
   UNotify: notifyDefaultConfig.i18n,
 };

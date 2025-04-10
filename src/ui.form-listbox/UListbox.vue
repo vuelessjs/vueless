@@ -185,7 +185,7 @@ const {
             </template>
           </div>
 
-          <UDataList
+          <UListbox
             v-if="nesting && element.nesting"
             :nesting="nesting"
             hide-empty-state-for-nesting
@@ -216,7 +216,7 @@ const {
               -->
               <slot name="actions" :item="slotProps.item" />
             </template>
-          </UDataList>
+          </UListbox>
         </div>
       </template>
     </draggable>

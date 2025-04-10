@@ -246,6 +246,7 @@ export const COMPONENTS = {
   UInputRating: "ui.form-input-rating",
   UTextarea: "ui.form-textarea",
   USelect: "ui.form-select",
+  UListbox: "ui.form-listbox",
   UCheckbox: "ui.form-checkbox",
   UCheckboxGroup: "ui.form-checkbox-group",
   UCheckboxMultiState: "ui.form-checkbox-multi-state",
@@ -288,7 +289,6 @@ export const COMPONENTS = {
 
   /* Data */
   UTable: "ui.data-table",
-  UDataList: "ui.data-list",
 
   /* Navigation */
   UTab: "ui.navigation-tab",

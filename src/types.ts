@@ -55,7 +55,7 @@ import UInputRatingConfig from "./ui.form-input-rating/config.ts";
 import UInputSearchConfig from "./ui.form-input-search/config.ts";
 import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
-import UDataListConfig from "./ui.data-list/config.ts";
+import UListboxConfig from "./ui.form-listbox/config.ts";
 import USelectConfig from "./ui.form-select/config.ts";
 
 import type { Props } from "tippy.js";
@@ -265,7 +265,7 @@ export interface Components {
   UInputSearch: Partial<typeof UInputSearchConfig>;
   UInputFile: Partial<typeof UInputFileConfig>;
   UInputMoney: Partial<typeof UInputMoneyConfig>;
-  UDataList: Partial<typeof UDataListConfig>;
+  UListbox: Partial<typeof UListboxConfig>;
   USelect: Partial<typeof USelectConfig>;
   [key: string]: UnknownObject;
 }
