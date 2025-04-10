@@ -1,9 +1,16 @@
 import esbuild from "esbuild";
 import path from "node:path";
 import { cwd } from "node:process";
-import { statSync, existsSync, promises as fsPromises } from "node:fs";
+import { existsSync, statSync } from "node:fs";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 
-import { VUELESS_CONFIGS_CACHED_DIR } from "../../constants.js";
+import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
+
+import {
+  VUELESS_CONFIGS_CACHED_DIR,
+  VUELESS_MERGED_CONFIGS_CACHED_DIR,
+  COMPONENTS,
+} from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
@@ -14,7 +21,7 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
   };
 
   try {
-    fileNames = await fsPromises.readdir(dirPath, { recursive });
+    fileNames = await readdir(dirPath, { recursive });
   } catch (error) {
     if (error.code === ERROR_CODE.dirIsFile) {
       const pathArray = dirPath.split(path.sep);
@@ -82,6 +89,33 @@ export async function getComponentDefaultConfig(name, entryPath) {
 
   if (existsSync(configOutPath)) {
     return (await import(configOutPath)).default;
+  }
+}
+
+export async function cacheMergedConfigs(env) {
+  const componentNames = Object.entries(COMPONENTS);
+
+  for await (const [componentName, componentDir] of componentNames) {
+    const vuelessFilePath = env === "vueless" ? "src" : "node_modules/vueless";
+    const defaultComponentConfigPath = path.join(vuelessFilePath, componentDir, "config.ts");
+    const defaultConfig = await getComponentDefaultConfig(
+      componentName,
+      defaultComponentConfigPath,
+    );
+    const destDirPath = path.join(cwd(), VUELESS_MERGED_CONFIGS_CACHED_DIR);
+    const configDistPath = path.join(destDirPath, `${componentName}.json`);
+
+    const mergedConfig = getMergedConfig({
+      defaultConfig: defaultConfig,
+      globalConfig: vuelessConfig.components?.[componentName] || {},
+      unstyled: Boolean(vuelessConfig.unstyled),
+    });
+
+    if (!existsSync(destDirPath)) {
+      await mkdir(destDirPath, { recursive: true });
+    }
+
+    await writeFile(configDistPath, JSON.stringify(mergedConfig));
   }
 }
 

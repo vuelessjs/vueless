@@ -1,7 +1,7 @@
 /* ------ Tailwind plugins ------ */
 
 @plugin "@tailwindcss/forms" {
-    strategy: base;
+  strategy: base;
 }
 
 /* ------ Development sources ------ */
@@ -11,7 +11,7 @@
 /* ------ Production sources ------ */
 
 @source "../.cache/vueless/safelist.txt";
-@source "../vueless";
+@source "../.cache/vueless/mergedConfigs";
 
 /* ------ Color mode settings ------ */
 
@@ -21,114 +21,114 @@
 /* ------ Base styles ------ */
 
 @layer base {
-    body {
-        @apply antialiased text-(--vl-text) bg-(--vl-bg) scheme-light dark:scheme-dark;
-    }
+  body {
+    @apply antialiased text-(--vl-text) bg-(--vl-bg) scheme-light dark:scheme-dark;
+  }
 }
 
 /* ------ Tailwind theme settings ------ */
 
 @theme {
-    /* Primary colors */
-    --color-primary: var(--vl-primary);
-    --color-primary-lifted: var(--vl-primary-lifted);
-    --color-primary-accented: var(--vl-primary-accented);
+  /* Primary colors */
+  --color-primary: var(--vl-primary);
+  --color-primary-lifted: var(--vl-primary-lifted);
+  --color-primary-accented: var(--vl-primary-accented);
 
-    /* Secondary colors */
-    --color-secondary: var(--vl-secondary);
-    --color-secondary-lifted: var(--vl-secondary-lifted);
-    --color-secondary-accented: var(--vl-secondary-accented);
+  /* Secondary colors */
+  --color-secondary: var(--vl-secondary);
+  --color-secondary-lifted: var(--vl-secondary-lifted);
+  --color-secondary-accented: var(--vl-secondary-accented);
 
-    /* Success colors */
-    --color-success: var(--vl-success);
-    --color-success-lifted: var(--vl-success-lifted);
-    --color-success-accented: var(--vl-success-accented);
+  /* Success colors */
+  --color-success: var(--vl-success);
+  --color-success-lifted: var(--vl-success-lifted);
+  --color-success-accented: var(--vl-success-accented);
 
-    /* Info colors */
-    --color-info: var(--vl-info);
-    --color-info-lifted: var(--vl-info-lifted);
-    --color-info-accented: var(--vl-info-accented);
+  /* Info colors */
+  --color-info: var(--vl-info);
+  --color-info-lifted: var(--vl-info-lifted);
+  --color-info-accented: var(--vl-info-accented);
 
-    /* Notice colors */
-    --color-notice: var(--vl-notice);
-    --color-notice-lifted: var(--vl-notice-lifted);
-    --color-notice-accented: var(--vl-notice-accented);
+  /* Notice colors */
+  --color-notice: var(--vl-notice);
+  --color-notice-lifted: var(--vl-notice-lifted);
+  --color-notice-accented: var(--vl-notice-accented);
 
-    /* Warning colors */
-    --color-warning: var(--vl-warning);
-    --color-warning-lifted: var(--vl-warning-lifted);
-    --color-warning-accented: var(--vl-warning-accented);
+  /* Warning colors */
+  --color-warning: var(--vl-warning);
+  --color-warning-lifted: var(--vl-warning-lifted);
+  --color-warning-accented: var(--vl-warning-accented);
 
-    /* Error colors */
-    --color-error: var(--vl-error);
-    --color-error-lifted: var(--vl-error-lifted);
-    --color-error-accented: var(--vl-error-accented);
+  /* Error colors */
+  --color-error: var(--vl-error);
+  --color-error-lifted: var(--vl-error-lifted);
+  --color-error-accented: var(--vl-error-accented);
 
-    /* Neutral colors */
-    --color-neutral: var(--vl-neutral);
-    --color-neutral-lifted: var(--vl-neutral-lifted);
-    --color-neutral-accented: var(--vl-neutral-accented);
+  /* Neutral colors */
+  --color-neutral: var(--vl-neutral);
+  --color-neutral-lifted: var(--vl-neutral-lifted);
+  --color-neutral-accented: var(--vl-neutral-accented);
 
-    /* Grayscale colors */
-    --color-grayscale: var(--vl-grayscale);
-    --color-grayscale-lifted: var(--vl-grayscale-lifted);
-    --color-grayscale-accented: var(--vl-grayscale-accented);
+  /* Grayscale colors */
+  --color-grayscale: var(--vl-grayscale);
+  --color-grayscale-lifted: var(--vl-grayscale-lifted);
+  --color-grayscale-accented: var(--vl-grayscale-accented);
 
-    /* Border colors */
-    --border-color-default: var(--vl-border);
-    --border-color-lifted: var(--vl-border-lifted);
-    --border-color-accented: var(--vl-border-accented);
-    --border-color-muted: var(--vl-border-muted);
+  /* Border colors */
+  --border-color-default: var(--vl-border);
+  --border-color-lifted: var(--vl-border-lifted);
+  --border-color-accented: var(--vl-border-accented);
+  --border-color-muted: var(--vl-border-muted);
 
-    /* Background colors */
-    --background-color-default: var(--vl-bg);
-    --background-color-lifted: var(--vl-bg-lifted);
-    --background-color-accented: var(--vl-bg-accented);
-    --background-color-muted: var(--vl-bg-muted);
-    --background-color-inverted: var(--vl-bg-inverted);
+  /* Background colors */
+  --background-color-default: var(--vl-bg);
+  --background-color-lifted: var(--vl-bg-lifted);
+  --background-color-accented: var(--vl-bg-accented);
+  --background-color-muted: var(--vl-bg-muted);
+  --background-color-inverted: var(--vl-bg-inverted);
 
-    /* Text colors */
-    --text-color-default: var(--vl-text);
-    --text-color-lifted: var(--vl-text-lifted);
-    --text-color-accented: var(--vl-text-accented);
-    --text-color-muted: var(--vl-text-muted);
-    --text-color-inverted: var(--vl-text-inverted);
+  /* Text colors */
+  --text-color-default: var(--vl-text);
+  --text-color-lifted: var(--vl-text-lifted);
+  --text-color-accented: var(--vl-text-accented);
+  --text-color-muted: var(--vl-text-muted);
+  --text-color-inverted: var(--vl-text-inverted);
 
-    /* Text size */
-    --text-tiny: var(--vl-text-xs);
-    --text-tiny--line-height: calc(1 / var(--vl-text-xs));
-    --text-small: var(--vl-text-sm);
-    --text-small--line-height: calc(1 / var(--vl-text-sm));
-    --text-medium: var(--vl-text-md);
-    --text-medium--line-height: calc(1 / var(--vl-text-md));
-    --text-large: var(--vl-text-lg);
-    --text-large--line-height: calc(1 / var(--vl-text-lg));
+  /* Text size */
+  --text-tiny: var(--vl-text-xs);
+  --text-tiny--line-height: calc(1 / var(--vl-text-xs));
+  --text-small: var(--vl-text-sm);
+  --text-small--line-height: calc(1 / var(--vl-text-sm));
+  --text-medium: var(--vl-text-md);
+  --text-medium--line-height: calc(1 / var(--vl-text-md));
+  --text-large: var(--vl-text-lg);
+  --text-large--line-height: calc(1 / var(--vl-text-lg));
 
-    /* Border radius rounding values */
-    --radius-small: var(--vl-rounding-sm);
-    --radius-medium: var(--vl-rounding-md);
-    --radius-large: var(--vl-rounding-lg);
+  /* Border radius rounding values */
+  --radius-small: var(--vl-rounding-sm);
+  --radius-medium: var(--vl-rounding-md);
+  --radius-large: var(--vl-rounding-lg);
 
-    /* Mobile safe area spaceing. */
-    --spacing-safe-top: "env(safe-area-inset-top)";
-    --spacing-safe-bottom: "env(safe-area-inset-bottom)";
-    --spacing-safe-left: "env(safe-area-inset-left)";
-    --spacing-safe-right: "env(safe-area-inset-right)";
+  /* Mobile safe area spaceing. */
+  --spacing-safe-top: "env(safe-area-inset-top)";
+  --spacing-safe-bottom: "env(safe-area-inset-bottom)";
+  --spacing-safe-left: "env(safe-area-inset-left)";
+  --spacing-safe-right: "env(safe-area-inset-right)";
 }
 
 /* ------ Outline width utilities ------ */
 
 @utility outline-small {
-    outline-style: var(--tw-outline-style);
-    outline-width: var(--vl-outline-sm);
+  outline-style: var(--tw-outline-style);
+  outline-width: var(--vl-outline-sm);
 }
 
 @utility outline-medium {
-    outline-style: var(--tw-outline-style);
-    outline-width: var(--vl-outline-md);
+  outline-style: var(--tw-outline-style);
+  outline-width: var(--vl-outline-md);
 }
 
 @utility outline-large {
-    outline-style: var(--tw-outline-style);
-    outline-width: var(--vl-outline-lg);
+  outline-style: var(--tw-outline-style);
+  outline-width: var(--vl-outline-lg);
 }
