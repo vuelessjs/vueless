@@ -327,19 +327,19 @@ function getIconLibraryPaths(name, defaults, internalMode) {
     },
     "@material-symbols": {
       source: `${cwd()}/node_modules/${library}/svg-${weight}/${style}/${name}.svg`,
-      destination: `${cacheDir}/${name}.svg`
+      destination: `${cacheDir}/${library}/${name}.svg`
     },
     "bootstrap-icons": {
       source: `${cwd()}/node_modules/${library}/icons/${name}.svg`,
-      destination: `${cacheDir}/${name}.svg`
+      destination: `${cacheDir}/${library}/${name}.svg`
     },
     "heroicons": {
       source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
-      destination: `${cacheDir}/${name}.svg`
+      destination: `${cacheDir}/${library}/${name}.svg`
     },
     "custom-icons": {
       source: `${cwd()}/${customLibraryPath}/${name}.svg`,
-      destination: `${cacheDir}/${name}.svg`
+      destination: `${cacheDir}/${library}/${name}.svg`
     },
   };
   /* eslint-enable prettier/prettier */

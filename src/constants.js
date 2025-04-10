@@ -367,7 +367,7 @@ export const DEFAULT_SVGO_CONFIG = {
 };
 
 /* Vueless general */
-export const ICONS_DIR = "assets/icons";
+export const ICONS_DIR = "icons";
 export const VUELESS = "vueless";
 export const VUELESS_LIBRARY = VUELESS;
 export const STORYBOOK_DIR = "storybook";
