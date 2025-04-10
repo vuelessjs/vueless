@@ -129,7 +129,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
 
     <!-- This is needed to prevent changing button height -->
     <div
-      v-if="(!label && !hasSlotContent(slots['default'])) || loading"
+      v-if="(!label && !hasSlotContent(slots['default']) && !icon) || loading"
       tabindex="-1"
       class="invisible w-0"
       v-text="'invisible'"
