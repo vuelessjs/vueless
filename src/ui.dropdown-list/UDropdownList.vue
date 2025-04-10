@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
-import { merge } from "lodash-es";
+import { merge, isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -16,8 +16,7 @@ import { useLocale } from "../composables/useLocale.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import type { Option, Props, Config } from "./types.ts";
-import type { UnknownObject } from "../types.ts";
+import type { Option, Props, Config, SelectedValue } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -64,7 +63,13 @@ const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
 const selectedValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
+    }
+
+    return props.modelValue;
+  },
   set: (value) => emit("update:modelValue", value),
 });
 
@@ -132,6 +137,29 @@ watch(
   { immediate: true },
 );
 
+watch(
+  () => props.multiple,
+  (newValue, oldValue) => {
+    if (newValue && !oldValue && props.modelValue) {
+      selectedValue.value = [props.modelValue as SelectedValue];
+    }
+
+    if (newValue && !oldValue && !props.modelValue) {
+      selectedValue.value = [];
+    }
+
+    const currentSelectedValue = props.modelValue as SelectedValue[];
+
+    if (!newValue && oldValue && currentSelectedValue.length) {
+      selectedValue.value = currentSelectedValue[0];
+    }
+
+    if (!newValue && oldValue && !currentSelectedValue.length) {
+      selectedValue.value = "";
+    }
+  },
+);
+
 function onClickAddOption() {
   emit("add");
 }
@@ -147,13 +175,29 @@ function select(option: Option, keyCode?: string) {
 
   if (keyCode === "Tab" && !pointerDirty.value) return;
 
-  if (props.valueKey in option && !isMetaKey(props.valueKey)) {
-    selectedValue.value = option[props.valueKey] as string | number | UnknownObject;
+  const optionValue = option[props.valueKey] as SelectedValue;
+
+  if (props.valueKey in option && !isMetaKey(props.valueKey) && !props.multiple) {
+    selectedValue.value = optionValue;
+  }
+
+  if (props.valueKey in option && !isMetaKey(props.valueKey) && props.multiple) {
+    const currentSelectedValue = selectedValue.value as SelectedValue[];
+
+    selectedValue.value = !isSelectedOption(option)
+      ? [...currentSelectedValue, optionValue]
+      : currentSelectedValue.filter((selected) => !isEqual(selected, optionValue));
   }
 }
 
 function isSelectedOption(option: Option) {
-  return selectedValue.value === option[props.valueKey];
+  if (props.multiple) {
+    return (selectedValue.value as SelectedValue[]).find((selected) =>
+      isEqual(selected, option[props.valueKey]),
+    );
+  }
+
+  return isEqual(selectedValue.value, option[props.valueKey]);
 }
 
 function getMarginForSubCategory(level: number = 0) {

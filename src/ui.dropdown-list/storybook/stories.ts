@@ -25,11 +25,11 @@ export default {
   component: UDropdownList,
   args: {
     options: [
-      { label: "New York", id: "1" },
-      { label: "Los Angeles", id: "2" },
-      { label: "Chicago", id: "3" },
-      { label: "Houston", id: "4" },
-      { label: "San Francisco", id: "5" },
+      { label: "New York", id: ["1"] },
+      { label: "Los Angeles", id: ["2"] },
+      { label: "Chicago", id: ["3"] },
+      { label: "Houston", id: ["4"] },
+      { label: "San Francisco", id: ["5"] },
     ],
   },
   argTypes: {
@@ -92,6 +92,9 @@ const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Multiple = DefaultTemplate.bind({});
+Multiple.args = { multiple: true, modelValue: [] };
 
 export const AddOption = DefaultTemplate.bind({});
 AddOption.args = { addOption: true };

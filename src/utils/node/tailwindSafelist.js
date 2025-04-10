@@ -2,12 +2,8 @@ import path from "node:path";
 import { cwd } from "node:process";
 import { existsSync, unlinkSync, writeFile } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { merge } from "lodash-es";
-import { extendTailwindMerge } from "tailwind-merge";
-import { defineConfig } from "cva";
 
-import { vuelessConfig } from "./vuelessConfig.js";
-import { createGetMergedConfig } from "./mergeConfigs.js";
+import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
@@ -18,22 +14,10 @@ import {
   COLOR_SHADES,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
-  TAILWIND_MERGE_EXTENSION,
   VUELESS_TAILWIND_SAFELIST,
-  NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../../constants.js";
 
 const SAFELIST_DIR = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
-
-const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
-
-export const { cx } = defineConfig({
-  hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
-  },
-});
-
-const getMergedConfig = createGetMergedConfig(cx);
 
 export function clearTailwindSafelist() {
   if (existsSync(SAFELIST_DIR)) {

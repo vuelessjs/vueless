@@ -9,11 +9,16 @@ import UnpluginVueComponents from "unplugin-vue-components/vite";
 import { loadSvg } from "./utils/node/loaderSvg.js";
 import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
-import { getNuxtDirs, getVueDirs, getVuelessConfigDirs } from "./utils/node/helper.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
 import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
+import {
+  getNuxtDirs,
+  getVueDirs,
+  getVuelessConfigDirs,
+  cacheMergedConfigs,
+} from "./utils/node/helper.js";
 
 import { DEFAULT_EXIT_CODE } from "./constants.js";
 
@@ -80,7 +85,11 @@ export const Vueless = function (options = {}) {
       },
     }),
 
-    configResolved: async () => {
+    configResolved: async (config) => {
+      if (config.commad === "build") {
+        await cacheMergedConfigs(env);
+      }
+
       if (mode === "storybook" || isVuelessEnv) {
         await showHiddenStories(isVuelessEnv);
         await buildWebTypes();

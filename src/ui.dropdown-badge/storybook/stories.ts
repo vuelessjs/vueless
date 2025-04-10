@@ -4,6 +4,7 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook.ts";
+import { ref } from "vue";
 
 import UDropdownBadge from "../../ui.dropdown-badge/UDropdownBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -28,7 +29,11 @@ export default {
   component: UDropdownBadge,
   args: {
     label: "Dropdown",
-    options: [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
+    options: [
+      { label: "option 1", id: 1 },
+      { label: "option 2", id: 2 },
+      { label: "option 3", id: 3 },
+    ],
   },
   argTypes: {
     ...getArgTypes(UDropdownBadge.__name),
@@ -54,6 +59,24 @@ const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropd
     <UDropdownBadge
       v-bind="args"
     >
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UDropdownBadge>
+  `,
+});
+
+const SelectableTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (
+  args: DefaultUDropdownBadgeArgs,
+) => ({
+  components: { UDropdownBadge, UIcon, ULink },
+  setup() {
+    const slots = getSlotNames(UDropdownBadge.__name);
+
+    const value = ref();
+
+    return { args, slots, value };
+  },
+  template: `
+    <UDropdownBadge v-bind="args" v-model="value">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownBadge>
   `,
@@ -113,6 +136,12 @@ const VariantColorsTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Selectable = SelectableTemplate.bind({});
+Selectable.args = {};
+
+export const SelectableMultiple = SelectableTemplate.bind({});
+SelectableMultiple.args = { multiple: true };
 
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };

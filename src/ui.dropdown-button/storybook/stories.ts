@@ -4,6 +4,7 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook.ts";
+import { ref } from "vue";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -28,7 +29,11 @@ export default {
   component: UDropdownButton,
   args: {
     label: "Dropdown",
-    options: [{ label: "option 1" }, { label: "option 2" }, { label: "option 3" }],
+    options: [
+      { label: "option 1", id: 1 },
+      { label: "option 2", id: 2 },
+      { label: "option 3", id: 3 },
+    ],
   },
   argTypes: {
     ...getArgTypes(UDropdownButton.__name),
@@ -54,6 +59,24 @@ const DefaultTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   },
   template: `
     <UDropdownButton v-bind="args">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </UDropdownButton>
+  `,
+});
+
+const SelectableTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
+  args: DefaultUDropdownButtonArgs,
+) => ({
+  components: { UDropdownButton, UIcon, ULink },
+  setup() {
+    const slots = getSlotNames(UDropdownButton.__name);
+
+    const value = ref();
+
+    return { args, slots, value };
+  },
+  template: `
+    <UDropdownButton v-bind="args" v-model="value">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownButton>
   `,
@@ -113,6 +136,12 @@ const VariantColorsTemplate: StoryFn<EnumUDropdownButtonArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Selectable = SelectableTemplate.bind({});
+Selectable.args = {};
+
+export const SelectableMultiple = SelectableTemplate.bind({});
+SelectableMultiple.args = { multiple: true };
 
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
