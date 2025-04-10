@@ -335,7 +335,7 @@ function isShownDateDivider(rowIndex: number) {
   const currentItem = props.rows[rowIndex];
 
   if (rowIndex === 0) {
-    return true;
+    return false;
   }
 
   const isPrevSameDate = prevItem?.rowDate === currentItem?.rowDate;
