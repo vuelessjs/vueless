@@ -10,6 +10,7 @@ import {
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
   COMPONENTS,
+  VUELESS_DIR,
 } from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
@@ -96,8 +97,8 @@ export async function cacheMergedConfigs(env) {
   const componentNames = Object.entries(COMPONENTS);
 
   for await (const [componentName, componentDir] of componentNames) {
-    const vuelessFilePath = env === "vueless" ? "src" : "node_modules/vueless";
-    const defaultComponentConfigPath = path.join(vuelessFilePath, componentDir, "config.ts");
+    const src = env === "vueless" ? "src" : VUELESS_DIR;
+    const defaultComponentConfigPath = path.join(src, componentDir, "config.ts");
     const defaultConfig = await getComponentDefaultConfig(
       componentName,
       defaultComponentConfigPath,
