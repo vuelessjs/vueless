@@ -37,6 +37,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
 
       const modifiedCustomColorProp = isCustomColorProp
         ? customProps.with(colorPropsIndex, {
+            ...customProps[colorPropsIndex],
             name: "color",
             values: [
               ...new Set([
@@ -53,6 +54,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
         {
           name: "color",
           values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
+          required: false,
         },
       ];
 
@@ -68,6 +70,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
           {
             name: "color",
             values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
+            required: false,
           },
         ],
       };
