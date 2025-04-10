@@ -22,7 +22,7 @@ interface UTextareaArgs extends Props {
 }
 
 export default {
-  id: "3090",
+  id: "3095",
   title: "Form Inputs & Controls / Textarea",
   component: UTextarea,
   args: {

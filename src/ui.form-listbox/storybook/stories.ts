@@ -5,24 +5,24 @@ import {
   getDocsDescription,
 } from "../../utils/storybook.ts";
 
-import UDropdownList from "../../ui.dropdown-list/UDropdownList.vue";
+import UListbox from "../UListbox.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Option, Props } from "../types.ts";
 
-interface DefaultUDropdownListArgs extends Props {
+interface DefaultUListboxArgs extends Props {
   slotTemplate?: string;
 }
 
-interface EnumUDropdownListArgs extends DefaultUDropdownListArgs {
+interface EnumUListboxArgs extends DefaultUListboxArgs {
   enum: keyof Pick<Props, "size" | "color">;
 }
 
 export default {
-  id: "2050",
-  title: "Dropdowns / Dropdown List",
-  component: UDropdownList,
+  id: "3090",
+  title: "Form Inputs & Controls / Listbox",
+  component: UListbox,
   args: {
     options: [
       { label: "New York", id: ["1"] },
@@ -33,11 +33,11 @@ export default {
     ],
   },
   argTypes: {
-    ...getArgTypes(UDropdownList.__name),
+    ...getArgTypes(UListbox.__name),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UDropdownList.__name),
+      ...getDocsDescription(UListbox.__name),
       story: {
         height: "250px",
       },
@@ -45,32 +45,29 @@ export default {
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<DefaultUDropdownListArgs> = (args: DefaultUDropdownListArgs) => ({
-  components: { UDropdownList },
+const DefaultTemplate: StoryFn<DefaultUListboxArgs> = (args: DefaultUListboxArgs) => ({
+  components: { UListbox },
   setup() {
-    const slots = getSlotNames(UDropdownList.__name);
+    const slots = getSlotNames(UListbox.__name);
 
     const showAlert = (message: string) => alert(message);
 
     return { args, slots, showAlert };
   },
   template: `
-    <UDropdownList
+    <UListbox
       v-bind="args"
       v-model="args.modelValue"
       class="mx-4 w-[24rem]"
       @add="showAlert('You triggered the add action!')"
     >
       ${args.slotTemplate || getSlotsFragment("")}
-    </UDropdownList>
+    </UListbox>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
-  args: EnumUDropdownListArgs,
-  { argTypes },
-) => ({
-  components: { UDropdownList, URow },
+const EnumVariantTemplate: StoryFn<EnumUListboxArgs> = (args: EnumUListboxArgs, { argTypes }) => ({
+  components: { UListbox, URow },
   setup() {
     return {
       args,
@@ -79,7 +76,7 @@ const EnumVariantTemplate: StoryFn<EnumUDropdownListArgs> = (
   },
   template: `
       <URow class="w-fit">
-        <UDropdownList
+        <UListbox
           v-for="(option, index) in options"
           :key="index"
           v-bind="args"

@@ -149,12 +149,12 @@ Variants.args = { enum: "variant" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const DropdownListXPosition = EnumVariantTemplate.bind({});
-DropdownListXPosition.args = { enum: "xPosition" };
+export const ListboxXPosition = EnumVariantTemplate.bind({});
+ListboxXPosition.args = { enum: "xPosition" };
 
-export const DropdownListYPosition = EnumVariantTemplate.bind({});
-DropdownListYPosition.args = { enum: "yPosition" };
-DropdownListYPosition.parameters = {
+export const ListboxYPosition = EnumVariantTemplate.bind({});
+ListboxYPosition.args = { enum: "yPosition" };
+ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 

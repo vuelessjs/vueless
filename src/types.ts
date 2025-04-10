@@ -19,7 +19,6 @@ import UDataTableConfig from "./ui.data-table/config.ts";
 import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
 import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
 import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
-import UDropdownListConfig from "./ui.dropdown-list/config.ts";
 import UAccordionConfig from "./ui.container-accordion/config.ts";
 import UCardConfig from "./ui.container-card/config.ts";
 import UColConfig from "./ui.container-col/config.ts";
@@ -57,6 +56,7 @@ import UInputFileConfig from "./ui.form-input-file/config.ts";
 import UInputMoneyConfig from "./ui.form-input-money/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 import USelectConfig from "./ui.form-select/config.ts";
+import UListboxConfig from "./ui.form-listbox/config.ts";
 
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
@@ -229,7 +229,7 @@ export interface Components {
   UDropdownBadge: Partial<typeof UDropdownBadgeConfig>;
   UDropdownButton: Partial<typeof UDropdownButtonConfig>;
   UDropdownLink: Partial<typeof UDropdownLinkConfig>;
-  UDropdownList: Partial<typeof UDropdownListConfig>;
+  UListbox: Partial<typeof UListboxConfig>;
   UAccordion: Partial<typeof UAccordionConfig>;
   UCard: Partial<typeof UCardConfig>;
   UCol: Partial<typeof UColConfig>;

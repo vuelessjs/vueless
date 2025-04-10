@@ -18,8 +18,8 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownList: {
-    base: "{UDropdownList} w-fit",
+  listbox: {
+    base: "{UListbox} w-fit",
     variants: {
       yPosition: {
         top: "bottom-5 mb-3",

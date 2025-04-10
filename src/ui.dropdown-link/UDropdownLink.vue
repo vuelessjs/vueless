@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+import ULisbox from "../ui.form-listbox/UListbox.vue";
 
 import { vClickOutside } from "../directives";
 
@@ -15,7 +15,7 @@ import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { Option, SelectedValue } from "../ui.dropdown-list/types.ts";
+import type { Option, SelectedValue } from "../ui.form-listbox/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -43,10 +43,10 @@ const emit = defineEmits([
 
 provide("hideDropdownOptions", hideOptions);
 
-type UDropdownListRef = InstanceType<typeof UDropdownList>;
+type ULisboxRef = InstanceType<typeof ULisbox>;
 
 const isShownOptions = ref(false);
-const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
+const listboxRef = useTemplateRef<ULisboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
@@ -104,7 +104,7 @@ function onClickLink() {
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value?.wrapperRef?.focus());
+    nextTick(() => listboxRef.value?.wrapperRef?.focus());
   }
 }
 
@@ -135,7 +135,7 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs, toggleIconAttrs } =
+const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, toggleIconAttrs } =
   useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -196,7 +196,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       />
     </slot>
 
-    <UDropdownList
+    <ULisbox
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
@@ -206,7 +206,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, dropdownListAttrs,
       :options="options"
       :label-key="labelKey"
       :value-key="valueKey"
-      v-bind="dropdownListAttrs"
+      v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
     />

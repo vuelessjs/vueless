@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+import UListbox from "../ui.form-listbox/UListbox.vue";
 
 import { vClickOutside } from "../directives";
 
@@ -15,7 +15,7 @@ import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { Option, SelectedValue } from "../ui.dropdown-list/types.ts";
+import type { Option, SelectedValue } from "../ui.form-listbox/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -41,10 +41,10 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-type UDropdownListRef = InstanceType<typeof UDropdownList>;
+type UListboxRef = InstanceType<typeof UListbox>;
 
 const isShownOptions = ref(false);
-const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
+const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
@@ -100,7 +100,7 @@ function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
-    nextTick(() => dropdownListRef.value?.wrapperRef?.focus());
+    nextTick(() => listboxRef.value?.wrapperRef?.focus());
   }
 }
 
@@ -131,14 +131,8 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const {
-  getDataTest,
-  config,
-  wrapperAttrs,
-  dropdownBadgeAttrs,
-  dropdownListAttrs,
-  dropdownIconAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, dropdownIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -191,7 +185,7 @@ const {
       </template>
     </UBadge>
 
-    <UDropdownList
+    <UListbox
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
@@ -201,7 +195,7 @@ const {
       :options="options"
       :label-key="labelKey"
       :value-key="valueKey"
-      v-bind="dropdownListAttrs"
+      v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
     />
