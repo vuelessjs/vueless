@@ -38,12 +38,12 @@ export function createMergeConfigs(cx) {
       }
     }
 
-    const { i18n, defaults, unstyled, safelistColors, defaultVariants, compoundVariants } =
+    const { i18n, defaults, unstyled, colors, defaultVariants, compoundVariants } =
       SYSTEM_CONFIG_KEY;
 
     for (const key in composedConfig) {
       if (isGlobalConfig || isPropsConfig) {
-        if (key === safelistColors) {
+        if (key === colors) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
@@ -75,18 +75,23 @@ export function createMergeConfigs(cx) {
             isVariants = true;
           }
 
-          config[key] =
-            isObject && !isEmpty && !isI18n
-              ? mergeConfigs({
-                  defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
-                  propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
-                  config: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  isVariants,
-                })
-              : isI18n
-                ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
-                : cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          let mergedKey = "";
+
+          if (isObject && !isEmpty && !isI18n) {
+            mergedKey = mergeConfigs({
+              defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
+              propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
+              config: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              isVariants,
+            });
+          } else if (isI18n) {
+            mergedKey = propsConfig[key] || globalConfig[key] || defaultConfig[key];
+          } else {
+            mergedKey = cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          }
+
+          config[key] = mergedKey;
         }
       } else {
         config[key] = composedConfig[key];
@@ -208,12 +213,11 @@ export function createGetMergedConfig(cx) {
     const isUnstyled = propsConfig?.unstyled || globalConfig?.unstyled || unstyled;
 
     if (isUnstyled) {
-      const { i18n, defaults, unstyled, safelistColors } = SYSTEM_CONFIG_KEY;
+      const { i18n, defaults, unstyled } = SYSTEM_CONFIG_KEY;
 
       defaultConfig = {
         ...(defaultConfig[i18n] ? { [i18n]: defaultConfig[i18n] } : {}),
         ...(defaultConfig[defaults] ? { [defaults]: defaultConfig[defaults] } : {}),
-        ...(defaultConfig[safelistColors] ? { [i18n]: defaultConfig[safelistColors] } : {}),
         [unstyled]: defaultConfig[unstyled],
       };
     }
