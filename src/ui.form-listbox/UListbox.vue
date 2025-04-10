@@ -14,7 +14,7 @@ import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
+import type { Props, DragMoveEvent, ListboxItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -38,7 +38,7 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const i18nGlobal = tm(COMPONENT_NAME);
 const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
 
-function isCrossed(element: DataListItem) {
+function isCrossed(element: ListboxItem) {
   return Boolean(element.crossed);
 }
 
@@ -57,10 +57,10 @@ function onDragEnd() {
   emit("dragSort", sortData);
 }
 
-function prepareSortData(list: DataListItem[] = [], parentValue: string | number | null = null) {
-  const sortData: DataListItem[] = [];
+function prepareSortData(list: ListboxItem[] = [], parentValue: string | number | null = null) {
+  const sortData: ListboxItem[] = [];
 
-  list.forEach((item: DataListItem) => {
+  list.forEach((item: ListboxItem) => {
     const hasItemChildren = item?.children?.length;
 
     if (hasItemChildren) {
@@ -195,7 +195,7 @@ const {
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
-            <template #label="slotProps: { item: DataListItem; crossed: boolean }">
+            <template #label="slotProps: { item: ListboxItem; crossed: boolean }">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
@@ -209,7 +209,7 @@ const {
               </slot>
             </template>
 
-            <template #actions="slotProps: { item: DataListItem }">
+            <template #actions="slotProps: { item: ListboxItem }">
               <!--
                 @slot Use it to add custom actions.
                 @binding {object} item

@@ -11,19 +11,19 @@ export interface DragMoveEvent extends DragEvent {
   relatedContext: typeof DraggableContext | null;
 }
 
-export interface DataListItem {
+export interface ListboxItem {
   crossed?: boolean;
   actions?: boolean;
   nesting?: boolean;
-  children?: DataListItem[];
-  [key: string]: UnknownType | DataListItem[];
+  children?: ListboxItem[];
+  [key: string]: UnknownType | ListboxItem[];
 }
 
 export interface Props {
   /**
    * Data item options.
    */
-  list?: DataListItem[];
+  list?: ListboxItem[];
 
   /**
    * Group name.

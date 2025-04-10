@@ -19,7 +19,7 @@ export default /*tw*/ {
       },
     },
   },
-  dataListIcon: {
+  listboxIcon: {
     base: "{UIcon}",
     defaults: {
       size: {
@@ -30,7 +30,7 @@ export default /*tw*/ {
     },
   },
   drag: "icon-drag cursor-move",
-  dragIcon: "{UIcon} {>dataListIcon} icon-drag cursor-move opacity-100",
+  dragIcon: "{UIcon} {>listboxIcon} icon-drag cursor-move opacity-100",
   label: {
     base: "font-normal flex-auto pt-px",
     variants: {

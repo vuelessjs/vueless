@@ -17,7 +17,7 @@ import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props, DataListItem } from "../types.ts";
+import type { Props, ListboxItem } from "../types.ts";
 
 interface UListboxArgs extends Props {
   slotTemplate?: string;
@@ -92,13 +92,13 @@ const DefaultTemplate: StoryFn<UListboxArgs> = (args: UListboxArgs) => ({
       })),
     );
 
-    function removeItem(targetItem: DataListItem) {
+    function removeItem(targetItem: ListboxItem) {
       list.value = list.value?.filter((listItem) => listItem.id !== targetItem.id);
 
       return alert(`Removed item: ${JSON.stringify(targetItem, null, 2)}`);
     }
 
-    function editItem(targetItem: DataListItem) {
+    function editItem(targetItem: ListboxItem) {
       alert(`Edit item: ${JSON.stringify(targetItem, null, 2)}`);
     }
 
