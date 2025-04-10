@@ -45,11 +45,15 @@ const dynamicComponent = computed(() => {
   const userLibrary = config.value.defaults.library as IconLibraries;
 
   const isInternalIconExists = generatedIcons.value.find(
-    ([path]) => path.includes(VUELESS_LIBRARY) && path.includes(props.name + ICON_EXTENSION),
+    ([path]) =>
+      path.includes(`${APP_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}`) &&
+      path.includes(props.name + ICON_EXTENSION),
   );
 
   const isExternalIconExists = generatedIcons.value.find(
-    ([path]) => path.includes(userLibrary) && path.includes(props.name + ICON_EXTENSION),
+    ([path]) =>
+      path.includes(`${APP_ICONS_CACHED_DIR}/${userLibrary}`) &&
+      path.includes(props.name + ICON_EXTENSION),
   );
 
   const isInternalIcon = isInternalIconExists && !isExternalIconExists;
