@@ -26,7 +26,7 @@ interface UListboxArgs extends Props {
 
 export default {
   id: "3090",
-  title: "Data / Data List",
+  title: "Form Inputs & Controls / Listbox",
   component: UListbox,
   args: {
     list: [
@@ -179,8 +179,8 @@ export const SlotDrag = DefaultTemplate.bind({});
 SlotDrag.args = {
   list: [
     { label: "John Doe (Engineering)", id: 1 },
-    { label: "Michael Johnson (Finance)", id: 2 },
-    { label: "Emma Smith (Marketing)", id: 3 },
+    { label: "Alex Johnson (Finance)", id: 2 },
+    { label: "Emily Davis (Marketing)", id: 3 },
   ],
   slotTemplate: `
     <template #drag="{ item }">
