@@ -375,7 +375,7 @@ const {
           -->
           <slot name="after-option" :option="option" :index="index">
             <UIcon
-              v-if="option[valueKey] === modelValue"
+              v-if="isSelectedOption(option)"
               internal
               color="inherit"
               :name="config.defaults.selectedIcon"
