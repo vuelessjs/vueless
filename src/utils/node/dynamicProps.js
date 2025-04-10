@@ -33,17 +33,20 @@ export async function setCustomPropTypes(isVuelessEnv) {
     if (vuelessConfig.colors && vuelessConfig.colors.length && componentGlobalConfig) {
       const customProps = componentGlobalConfig.props || [];
       const colorPropsIndex = customProps.findIndex((prop) => prop.name === "color");
+      const isCustomColorProp = colorPropsIndex !== -1;
 
-      const modifiedCustomColorProp = customProps.with(colorPropsIndex, {
-        name: "color",
-        values: [
-          ...new Set([
-            ...(customProps[colorPropsIndex]?.values || []),
-            ...vuelessConfig.colors,
-            ...DEFAULT_SAFE_COLORS,
-          ]),
-        ],
-      });
+      const modifiedCustomColorProp = isCustomColorProp
+        ? customProps.with(colorPropsIndex, {
+            name: "color",
+            values: [
+              ...new Set([
+                ...(customProps[colorPropsIndex]?.values || []),
+                ...vuelessConfig.colors,
+                ...DEFAULT_SAFE_COLORS,
+              ]),
+            ],
+          })
+        : undefined;
 
       const customPropsWithColor = [
         ...customProps,
@@ -55,7 +58,7 @@ export async function setCustomPropTypes(isVuelessEnv) {
 
       componentGlobalConfig = {
         ...componentGlobalConfig,
-        props: !~colorPropsIndex ? customPropsWithColor : modifiedCustomColorProp,
+        props: isCustomColorProp ? modifiedCustomColorProp : customPropsWithColor,
       };
     }
 
