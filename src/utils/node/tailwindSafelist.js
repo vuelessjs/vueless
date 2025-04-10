@@ -166,7 +166,7 @@ async function isComponentUsed(componentName, files) {
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
 
-    if (!isComponentUsed) {
+    if (!isComponentUsed && matchedComponent) {
       isComponentUsed = Boolean(matchedComponent);
 
       break;
