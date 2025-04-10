@@ -8,6 +8,7 @@ export const PRIMARY_COLOR = "primary";
 export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
+export const INHERIT_COLOR = "inherit";
 
 /* Vueless cookies keys */
 export const PRIMARY_COLOR_KEY = "vl-primary";
@@ -66,17 +67,6 @@ export const STATE_COLORS = [
 ];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-export const DEFAULT_COLORS = [
-  "primary",
-  "secondary",
-  "error",
-  "warning",
-  "success",
-  "info",
-  "notice",
-  "neutral",
-  "grayscale",
-];
 
 export const DEFAULT_LIGHT_THEME = {
   /* Primary colors */

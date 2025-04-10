@@ -4,7 +4,14 @@ import path from "node:path";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 
-import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import {
+  COMPONENTS,
+  GRAYSCALE_COLOR,
+  INHERIT_COLOR,
+  PRIMARY_COLOR,
+  VUELESS_DIR,
+  VUELESS_LOCAL_DIR,
+} from "../../constants.js";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
@@ -15,7 +22,7 @@ const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<[^>]+>)?\s*{([^}]
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
-const DEFAULT_SAFE_COLORS = ["primary", "grayscale", "inherit"];
+const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR];
 
 export async function setCustomPropTypes(isVuelessEnv) {
   const srcDir = isVuelessEnv ? VUELESS_LOCAL_DIR : VUELESS_DIR;
