@@ -213,8 +213,13 @@ export default function useUI<T>(
       if (extendsKeys.length) {
         const [firstKey] = extendsKeys;
 
+        if (config.value[firstKey] === undefined) {
+          // eslint-disable-next-line no-console
+          console.warn(`[Vueless] Missing ${firstKey} extend key.`);
+        }
+
         extendsKeyConfig = getMergedConfig({
-          defaultConfig: config.value[firstKey],
+          defaultConfig: config.value[firstKey] || {},
           globalConfig: globalConfig[firstKey],
           propsConfig: propsConfig[firstKey],
           unstyled: Boolean(vuelessConfig.unstyled),
