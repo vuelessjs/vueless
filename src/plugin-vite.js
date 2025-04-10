@@ -86,9 +86,7 @@ export const Vueless = function (options = {}) {
     }),
 
     configResolved: async (config) => {
-      if (config.commad === "build") {
-        await cacheMergedConfigs(env);
-      }
+      await cacheMergedConfigs(env);
 
       if (mode === "storybook" || isVuelessEnv) {
         await showHiddenStories(isVuelessEnv);
