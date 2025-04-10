@@ -38,12 +38,12 @@ export function createMergeConfigs(cx) {
       }
     }
 
-    const { i18n, defaults, unstyled, safelistColors, defaultVariants, compoundVariants } =
+    const { i18n, defaults, unstyled, colors, defaultVariants, compoundVariants } =
       SYSTEM_CONFIG_KEY;
 
     for (const key in composedConfig) {
       if (isGlobalConfig || isPropsConfig) {
-        if (key === safelistColors) {
+        if (key === colors) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
@@ -208,12 +208,11 @@ export function createGetMergedConfig(cx) {
     const isUnstyled = propsConfig?.unstyled || globalConfig?.unstyled || unstyled;
 
     if (isUnstyled) {
-      const { i18n, defaults, unstyled, safelistColors } = SYSTEM_CONFIG_KEY;
+      const { i18n, defaults, unstyled } = SYSTEM_CONFIG_KEY;
 
       defaultConfig = {
         ...(defaultConfig[i18n] ? { [i18n]: defaultConfig[i18n] } : {}),
         ...(defaultConfig[defaults] ? { [defaults]: defaultConfig[defaults] } : {}),
-        ...(defaultConfig[safelistColors] ? { [i18n]: defaultConfig[safelistColors] } : {}),
         [unstyled]: defaultConfig[unstyled],
       };
     }

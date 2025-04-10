@@ -96,11 +96,6 @@ export const Vueless = function (options = {}) {
         await hideHiddenStories(isVuelessEnv);
       }
 
-      if (!isNuxt) {
-        /* collect used in project colors for tailwind safelist */
-        await createTailwindSafelist({ mode, env, debug, targetFiles });
-      }
-
       await removeIconsCache(mirrorCacheDir, debug);
 
       /* cache vueless built-in and project icons */
@@ -110,6 +105,11 @@ export const Vueless = function (options = {}) {
       await copyIconsCache(mirrorCacheDir, debug);
 
       await setCustomPropTypes(isVuelessEnv);
+
+      if (!isNuxt) {
+        /* collect used in project colors for tailwind safelist */
+        await createTailwindSafelist({ mode, env, debug, targetFiles });
+      }
     },
 
     buildEnd: async () => {
@@ -119,16 +119,5 @@ export const Vueless = function (options = {}) {
 
     /* load SVG images as a Vue components */
     load: async (id) => await loadSvg(id, options),
-
-    handleHotUpdate: async ({ file, read }) => {
-      if (!isNuxt && [".js", ".jsx", ".ts", ".tsx", ".vue"].some((ext) => file.endsWith(ext))) {
-        const fileContent = await read();
-
-        if (fileContent.includes("safelist:") || fileContent.includes("color=")) {
-          /* collect used in project colors for tailwind safelist */
-          await createTailwindSafelist({ mode, env, debug, targetFiles });
-        }
-      }
-    },
   };
 };

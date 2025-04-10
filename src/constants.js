@@ -8,6 +8,7 @@ export const PRIMARY_COLOR = "primary";
 export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
+export const INHERIT_COLOR = "inherit";
 
 /* Vueless cookies keys */
 export const PRIMARY_COLOR_KEY = "vl-primary";
@@ -215,7 +216,7 @@ export const SYSTEM_CONFIG_KEY = {
   defaults: "defaults",
   unstyled: "unstyled",
   transition: "transition",
-  safelistColors: "safelistColors",
+  colors: "colors",
   ...CVA_CONFIG_KEY,
 };
 
