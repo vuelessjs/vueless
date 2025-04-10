@@ -73,6 +73,7 @@ export default /*tw*/ {
     visibleOptions: undefined,
     disabled: false,
     addOption: false,
+    multiple: false,
     /* icons */
     addOptionIcon: "add",
     selectedIcon: "check",

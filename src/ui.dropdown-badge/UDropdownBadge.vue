@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, useId, useTemplateRef } from "vue";
+import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -14,13 +15,14 @@ import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
-import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Option, SelectedValue } from "../ui.dropdown-list/types.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
+  modelValue: "",
   label: "",
 });
 
@@ -30,6 +32,13 @@ const emit = defineEmits([
    * @property {string} value
    */
   "clickOption",
+
+  /**
+   * Triggers when option is selected.
+   * @property {string} value
+   * @property {number} value
+   */
+  "update:modelValue",
 ]);
 
 type UDropdownListRef = InstanceType<typeof UDropdownList>;
@@ -39,6 +48,53 @@ const dropdownListRef = useTemplateRef<UDropdownListRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const elementId = props.id || useId();
+
+const dropdownValue = computed({
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
+    }
+
+    return props.modelValue;
+  },
+  set: (value) => emit("update:modelValue", value),
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return props.options.filter((option) => {
+      return (
+        option[props.valueKey] &&
+        (dropdownValue.value as SelectedValue[]).find((selected) =>
+          isEqual(selected, option[props.valueKey]),
+        )
+      );
+    });
+  }
+
+  return [
+    props.options.find(
+      (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
+    ),
+  ].filter((option) => !!option);
+});
+
+const badgeLabel = computed(() => {
+  if (!selectedOptions.value.length) {
+    return props.label;
+  }
+
+  const selectedLabels = selectedOptions.value
+    .slice(0, props.labelDisplayCount)
+    .map((option) => option[props.labelKey]);
+  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
+
+  if (selectedLabels.length > 1 && restLabelCount > 0) {
+    selectedLabels.push(`+${restLabelCount}`);
+  }
+
+  return selectedLabels.join(", ");
+});
 
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
@@ -89,7 +145,7 @@ const {
   <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UBadge
       :id="elementId"
-      :label="label"
+      :label="badgeLabel"
       :size="size"
       :color="color"
       :variant="variant"
@@ -115,7 +171,7 @@ const {
           @binding {string} label
           @binding {boolean} opened
         -->
-        <slot :label="label" :opened="isShownOptions" />
+        <slot :label="badgeLabel" :opened="isShownOptions" />
       </template>
 
       <template #right>
@@ -138,10 +194,13 @@ const {
     <UDropdownList
       v-if="isShownOptions"
       ref="dropdown-list"
+      v-model="dropdownValue"
+      :multiple="multiple"
       :size="size"
       :color="color"
       :options="options"
       :label-key="labelKey"
+      :value-key="valueKey"
       v-bind="dropdownListAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"

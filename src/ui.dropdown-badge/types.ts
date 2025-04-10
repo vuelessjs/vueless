@@ -1,15 +1,25 @@
 import defaultConfig from "./config.ts";
 
 import type { Option } from "../ui.dropdown-list/types.ts";
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig, UnknownObject } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
+   * Selected badge.
+   */
+  modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
+
+  /**
    * Badge label.
    */
   label?: string;
+
+  /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
 
   /**
    * Options list.
@@ -20,6 +30,16 @@ export interface Props {
    * Label key in the item object of options.
    */
   labelKey?: string;
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey?: string;
+
+  /**
+   * Determines how many selected option labels are shown in the label.
+   */
+  labelDisplayCount?: number;
 
   /**
    * Badge variant.
