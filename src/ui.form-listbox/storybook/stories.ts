@@ -39,7 +39,7 @@ export default {
     docs: {
       ...getDocsDescription(UListbox.__name),
       story: {
-        height: "250px",
+        height: "270px",
       },
     },
   },
