@@ -4,7 +4,7 @@ import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+import UListbox from "../ui.form-listbox/UListbox.vue";
 
 import useUI from "../composables/useUI.ts";
 import { createDebounce, hasSlotContent } from "../utils/helper.ts";
@@ -23,7 +23,7 @@ import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
-import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
+import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
 import type { Props, Config } from "./types.ts";
 import type { KeyAttrsWithConfig } from "../types.ts";
 
@@ -88,7 +88,7 @@ const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 const search = ref("");
 
-const dropdownListRef = useTemplateRef<InstanceType<typeof UDropdownList>>("dropdownList");
+const listboxRef = useTemplateRef<InstanceType<typeof UListbox>>("listbox");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const searchInputRef = useTemplateRef<HTMLInputElement>("searchInput");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -281,9 +281,9 @@ function activate() {
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !dropdownListRef.value || !wrapperRef.value) return;
+  if (typeof window === "undefined" || !listboxRef.value || !wrapperRef.value) return;
 
-  const dropdownHeight = dropdownListRef.value.wrapperRef?.getBoundingClientRect().height || 0;
+  const dropdownHeight = listboxRef.value.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -366,10 +366,10 @@ function setLabelPosition() {
 
 defineExpose({
   /**
-   * A reference to the UDropdownList instance for direct DOM manipulation.
-   * @property {InstanceType<typeof UDropdownList>}
+   * A reference to the UListbox instance for direct DOM manipulation.
+   * @property {InstanceType<typeof UListbox>}
    */
-  dropdownListRef,
+  listboxRef,
 
   /**
    * A reference to the wrapper element for direct DOM manipulation.
@@ -435,7 +435,7 @@ const {
   searchInputAttrs,
   selectedLabelsAttrs,
   selectedLabelAttrs,
-  dropdownListAttrs,
+  listboxAttrs,
   toggleIconAttrs,
   clearIconAttrs,
   clearMultipleIconAttrs,
@@ -474,9 +474,9 @@ const {
       v-bind="wrapperAttrs"
       @focus="activate"
       @blur="deactivate"
-      @keydown.self.down.prevent="dropdownListRef?.pointerForward"
-      @keydown.self.up.prevent="dropdownListRef?.pointerBackward"
-      @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement()"
+      @keydown.self.down.prevent="listboxRef?.pointerForward"
+      @keydown.self.up.prevent="listboxRef?.pointerBackward"
+      @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
     >
       <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
@@ -625,9 +625,9 @@ const {
             @focus="activate"
             @blur.prevent="deactivate"
             @keyup.esc="deactivate"
-            @keydown.down.prevent="dropdownListRef?.pointerForward"
-            @keydown.up.prevent="dropdownListRef?.pointerBackward"
-            @keydown.enter.prevent.stop.self="dropdownListRef?.addPointerElement()"
+            @keydown.down.prevent="listboxRef?.pointerForward"
+            @keydown.up.prevent="listboxRef?.pointerBackward"
+            @keydown.enter.prevent.stop.self="listboxRef?.addPointerElement()"
           />
         </div>
 
@@ -668,9 +668,9 @@ const {
         />
       </div>
 
-      <UDropdownList
+      <UListbox
         v-if="isOpen"
-        ref="dropdownList"
+        ref="listbox"
         v-model="dropdownValue as string | number"
         :multiple="multiple"
         :options="filteredOptions"
@@ -681,7 +681,7 @@ const {
         :label-key="labelKey"
         :add-option="addOption"
         tabindex="-1"
-        v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
+        v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
@@ -724,7 +724,7 @@ const {
             {{ currentLocale.noDataToShow }}
           </template>
         </template>
-      </UDropdownList>
+      </UListbox>
 
       <div
         v-if="hasSlotContent($slots['left']) || leftIcon"

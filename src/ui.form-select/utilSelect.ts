@@ -1,4 +1,4 @@
-import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Option } from "../ui.form-listbox/types.ts";
 
 export function filterOptions(options: Option[], search: string, labelKey: string) {
   if (!search) return options;

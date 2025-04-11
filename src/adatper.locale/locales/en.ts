@@ -1,7 +1,7 @@
 import selectConfig from "../../ui.form-select/config.js";
 import switchConfig from "../../ui.form-switch/config.js";
 import inputFileConfig from "../../ui.form-input-file/config.js";
-import dropdownListConfig from "../../ui.dropdown-list/config.js";
+import listboxConfig from "../../ui.form-listbox/config.js";
 import modalConfirmConfig from "../../ui.container-modal-confirm/config.js";
 import tableConfig from "../../ui.data-table/config.js";
 import calendarConfig from "../../ui.form-calendar/config.ts";
@@ -14,7 +14,7 @@ export default {
   USelect: selectConfig.i18n,
   USwitch: switchConfig.i18n,
   UInputFile: inputFileConfig.i18n,
-  UDropdownList: dropdownListConfig.i18n,
+  UListbox: listboxConfig.i18n,
   UModalConfirm: modalConfirmConfig.i18n,
   UTable: tableConfig.i18n,
   UCalendar: calendarConfig.i18n,

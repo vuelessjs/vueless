@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Option } from "../ui.form-listbox/types.ts";
 import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;

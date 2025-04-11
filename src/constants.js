@@ -234,7 +234,6 @@ export const COMPONENTS = {
   UDropdownButton: "ui.dropdown-button",
   UDropdownBadge: "ui.dropdown-badge",
   UDropdownLink: "ui.dropdown-link",
-  UDropdownList: "ui.dropdown-list",
 
   /* Form Inputs & Controls */
   UInput: "ui.form-input",
@@ -246,6 +245,7 @@ export const COMPONENTS = {
   UInputRating: "ui.form-input-rating",
   UTextarea: "ui.form-textarea",
   USelect: "ui.form-select",
+  UListbox: "ui.form-listbox",
   UCheckbox: "ui.form-checkbox",
   UCheckboxGroup: "ui.form-checkbox-group",
   UCheckboxMultiState: "ui.form-checkbox-multi-state",
