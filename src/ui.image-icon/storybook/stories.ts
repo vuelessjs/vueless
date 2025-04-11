@@ -9,7 +9,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import Beverage from "../../assets/icons/app/emoji_food_beverage.svg?component";
+import Beverage from "../../icons/app/emoji_food_beverage.svg?component";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -83,7 +83,7 @@ Src.parameters = {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import Beverage from '../../assets/icons/vueless/emoji_food_beverage.svg?component'`",
+        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import Beverage from '../../icons/vueless/emoji_food_beverage.svg?component'`",
     },
   },
 };

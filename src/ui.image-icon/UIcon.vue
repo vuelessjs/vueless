@@ -30,7 +30,7 @@ const iconRef = useTemplateRef<ComponentPublicInstance | HTMLElement>("icon");
 const generatedIcons = computed(() => {
   return (
     Object.entries(
-      import.meta.glob(`/node_modules/.cache/vueless/assets/icons/app/**/*.svg`, {
+      import.meta.glob(`/node_modules/.cache/vueless/icons/app/**/*.svg`, {
         eager: true,
         query: "?component",
       }),
