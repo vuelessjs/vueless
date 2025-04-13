@@ -46,6 +46,11 @@ export interface Props {
   readonly?: boolean;
 
   /**
+   * Maximum character length.
+   */
+  maxLength?: string | number;
+
+  /**
    * Make input disabled.
    */
   disabled?: boolean;
