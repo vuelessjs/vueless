@@ -246,6 +246,7 @@ const {
         :placeholder="placeholder"
         :readonly="readonly"
         :disabled="disabled"
+        :maxlength="maxLength"
         :rows="currentRows"
         :inputmode="inputmode"
         v-bind="textareaAttrs"
