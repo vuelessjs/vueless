@@ -2,6 +2,4 @@
   This const is needed to prevent the issue in script setup:
  `defineProps` is referencing locally declared variables. (vue/valid-define-props)
  */
-export const COMPONENT_NAME = "UInputMoney";
-
-export const RAW_DECIMAL_MARK = ".";
+export const COMPONENT_NAME = "UInputCounter";

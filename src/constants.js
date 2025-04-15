@@ -238,9 +238,9 @@ export const COMPONENTS = {
   /* Form Inputs & Controls */
   UInput: "ui.form-input",
   UInputFile: "ui.form-input-file",
-  UInputMoney: "ui.form-input-money",
-  UInputSearch: "ui.form-input-search",
   UInputNumber: "ui.form-input-number",
+  UInputSearch: "ui.form-input-search",
+  UInputCounter: "ui.form-input-counter",
   UInputPassword: "ui.form-input-password",
   UInputRating: "ui.form-input-rating",
   UTextarea: "ui.form-textarea",

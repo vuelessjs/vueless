@@ -1,130 +1,163 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch, onMounted, nextTick, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UButton from "../ui.button/UButton.vue";
-import ULabel from "../ui.form-label/ULabel.vue";
+import UInput from "../ui.form-input/UInput.vue";
 
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import useFormatCurrency from "./useFormatCurrency.ts";
+import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
+import { getRawValue } from "./utilFormat.ts";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
   label: "",
+  placeholder: "",
 });
 
-const emit = defineEmits([
-  /**
-   * Triggers when the input value changes.
-   * @property {number} modelValue
-   */
-  "update:modelValue",
-]);
+const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
 
-const count = computed({
-  get: () => props.modelValue,
+const numberInputRef = useTemplateRef<InstanceType<typeof UInput>>("numberInput");
+
+const elementId = props.id || useId();
+
+const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
+  minFractionDigits: props.minFractionDigits,
+  maxFractionDigits: props.maxFractionDigits,
+  decimalSeparator: props.decimalSeparator,
+  thousandsSeparator: props.thousandsSeparator,
+  positiveOnly: props.positiveOnly,
+  prefix: props.prefix,
+}));
+
+const localValue = computed({
+  get: () => props.modelValue ?? "",
   set: (value) => emit("update:modelValue", value),
 });
 
-const isAddButtonDisabled = computed(() => count.value >= props.max);
-const isRemoveButtonDisabled = computed(() => count.value <= props.min);
+const localLabel = computed(() => {
+  const comma = props.currency && props.label ? "," : "";
+  const currency = props.label ? props.currency : "";
 
-function onClickRemove() {
-  const newCount = count.value - props.step;
+  return `${props.label}${comma} ${currency}`.trim();
+});
 
-  count.value = newCount >= props.min ? newCount : count.value;
+const input = computed(() => {
+  return numberInputRef.value?.inputRef || null;
+});
+
+const stringLocalValue = computed(() => {
+  if (Object.is(localValue.value, -0)) return "-0";
+
+  const currentRawValue = getRawValue(String(localValue.value), props);
+  const fraction = String(currentRawValue).split(RAW_DECIMAL_MARK).at(1) || "";
+
+  return props.valueType === "number" && !Number.isNaN(parseFloat(String(localValue.value)))
+    ? parseFloat(String(localValue.value)).toFixed(fraction.length)
+    : String(localValue.value);
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (stringLocalValue.value !== String(rawValue.value)) {
+      setValue(stringLocalValue.value);
+    }
+  },
+);
+
+onMounted(() => {
+  if (localValue.value) {
+    setValue(stringLocalValue.value);
+  }
+});
+
+function onKeyup(event: KeyboardEvent) {
+  const numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
+
+  localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
+
+  nextTick(() => emit("keyup", event));
 }
 
-function onClickAdd() {
-  const newCount = count.value + props.step;
-
-  count.value = newCount <= props.max ? newCount : count.value;
+function onBlur() {
+  nextTick(() => emit("blur"));
 }
+
+function onInput(value: InputEvent) {
+  nextTick(() => emit("input", value));
+}
+
+defineExpose({
+  /**
+   * Reference to the underlying input element inside UInput.
+   * @property {InstanceType<typeof UInput>}
+   */
+  input,
+
+  /**
+   * The raw, unformatted value of the input.
+   * @property {String | Number}
+   */
+  rawValue,
+
+  /**
+   * The formatted value displayed in the input.
+   * @property {String}
+   */
+  formattedValue,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  getDataTest,
-  config,
-  valueAttrs,
-  labelAttrs,
-  removeButtonAttrs,
-  removeIconAttrs,
-  addButtonAttrs,
-  addIconAttrs,
-  numberAttrs,
-} = useUI<Config>(defaultConfig);
+const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <ULabel
-    :label="label"
-    :description="description"
-    :disabled="disabled"
-    :error="error"
+  <UInput
+    :id="elementId"
+    ref="numberInput"
+    :model-value="formattedValue"
     :size="size"
-    :align="labelAlign"
-    centred
-    v-bind="labelAttrs"
-    :data-test="getDataTest()"
+    :label="localLabel"
+    :label-align="labelAlign"
+    :placeholder="placeholder"
+    :description="description"
+    :readonly="readonly"
+    :error="error"
+    :disabled="disabled"
+    inputmode="decimal"
+    :left-icon="leftIcon"
+    :right-icon="rightIcon"
+    v-bind="numberInputAttrs"
+    :data-test="getDataTest('base-currency')"
+    @keyup="onKeyup"
+    @blur="onBlur"
+    @input="onInput"
   >
-    <template #label>
+    <template #left>
       <!--
-        @slot Use this to add custom content instead of the label.
-        @binding {string} label
+        @slot Use it to add something left.
+        @binding {string} icon-name
       -->
-      <slot name="label" :label="label" />
+      <slot name="left" :icon-name="leftIcon" />
     </template>
 
-    <UButton
-      variant="soft"
-      size="2xs"
-      square
-      round
-      :disabled="isRemoveButtonDisabled || disabled"
-      v-bind="removeButtonAttrs"
-      :data-test="getDataTest('remove')"
-      @click="onClickRemove"
-    >
-      <UIcon
-        internal
-        :size="size"
-        :name="config.defaults.removeIcon"
-        :color="isRemoveButtonDisabled ? 'neutral' : 'grayscale'"
-        v-bind="removeIconAttrs"
-      />
-    </UButton>
-
-    <div v-bind="numberAttrs">
-      <div v-bind="valueAttrs" v-text="count" />
-    </div>
-
-    <UButton
-      variant="soft"
-      size="2xs"
-      square
-      round
-      :disabled="isAddButtonDisabled || disabled"
-      v-bind="addButtonAttrs"
-      :data-test="getDataTest('add')"
-      @click="onClickAdd"
-    >
-      <UIcon
-        internal
-        :size="size"
-        :name="config.defaults.addIcon"
-        :color="isAddButtonDisabled ? 'neutral' : 'grayscale'"
-        v-bind="addIconAttrs"
-      />
-    </UButton>
-  </ULabel>
+    <template #right>
+      <!--
+        @slot Use it to add something right.
+        @binding {string} icon-name
+      -->
+      <slot name="right" :icon-name="rightIcon" />
+    </template>
+  </UInput>
 </template>

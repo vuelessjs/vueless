@@ -52,13 +52,13 @@ export default function useFormatCurrency(
 
     if (options.value.decimalSeparator.length > 1) {
       warnMessages.push(
-        "[VUELESS/UInputMoney]: DecimalSeparator should not contain more than one symbol.",
+        "[VUELESS/UInputNumber]: DecimalSeparator should not contain more than one symbol.",
       );
     }
 
     if (options.value.thousandsSeparator.length > 1) {
       warnMessages.push(
-        "[VUELESS/UInputMoney]: ThousandsSeparator should not contain more than one symbol.",
+        "[VUELESS/UInputNumber]: ThousandsSeparator should not contain more than one symbol.",
       );
     }
 
