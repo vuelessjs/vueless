@@ -16,8 +16,8 @@ import defaultConfig from "./config.ts";
 
 import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
 
-const NESTED_ROW_SHIFT_REM = 1;
-const LAST_NESTED_ROW_SHIFT_REM = 1.1;
+const NESTED_ROW_SHIFT_REM = 1.5;
+const LAST_NESTED_ROW_SHIFT_REM = 1;
 
 defineOptions({ internal: true });
 
@@ -206,10 +206,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         :style="getNestedShift()"
         v-bind="attrs.bodyCellNestedAttrs.value"
       >
-        <div :data-row-toggle-icon="row.id" @dblclick.stop @click.stop="onToggleExpand(row)">
+        <div
+          v-if="row.row"
+          :data-row-toggle-icon="row.id"
+          @dblclick.stop
+          @click.stop="onToggleExpand(row)"
+        >
           <slot name="expand" :row="row" :expanded="isExpanded">
             <div
-              v-if="row.row"
               ref="toggle-wrapper"
               v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
               :style="{ width: getIconWidth() }"
