@@ -27,7 +27,7 @@ const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: () => ({}),
+  modelValue: undefined,
   value: () => ({}),
   label: "",
 });
@@ -72,7 +72,13 @@ watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color
 watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
 watchEffect(() => (radioDisabled.value = toValue(getRadioGroupDisabled) || props.disabled));
 watchEffect(() => {
-  localValue.value = toValue(getRadioGroupSelectedItem) || null;
+  const radioGroupSelectedItem = toValue(getRadioGroupSelectedItem);
+
+  if (radioGroupSelectedItem === null || isEqual(props.modelValue, radioGroupSelectedItem)) {
+    return;
+  }
+
+  localValue.value = radioGroupSelectedItem || null;
   emit("update:modelValue", props.value);
 });
 
