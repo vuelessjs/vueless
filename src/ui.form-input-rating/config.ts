@@ -1,6 +1,6 @@
 export default /*tw*/ {
-  container: {
-    base: "flex items-center text-lifted !leading-none",
+  wrapper: {
+    base: "flex items-center text-default !leading-none",
     variants: {
       size: {
         sm: "gap-1.5",
@@ -9,7 +9,8 @@ export default /*tw*/ {
       },
     },
   },
-  stars: "flex",
+  starsContainer: "flex relative",
+  starLabel: "",
   star: {
     base: "{UIcon}",
     variants: {
@@ -25,6 +26,7 @@ export default /*tw*/ {
       },
     },
   },
+  input: "absolute size-0 opacity-0",
   counter: {
     variants: {
       size: {
@@ -47,7 +49,8 @@ export default /*tw*/ {
     size: "md",
     stars: 5,
     counter: false,
-    selectable: false,
+    readonly: false,
+    disabled: false,
     /* icons */
     selectedIcon: "star-fill",
     unselectedIcon: "star",

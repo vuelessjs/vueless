@@ -90,18 +90,8 @@ StarAmount.parameters = {
   },
 };
 
-export const Selectable = DefaultTemplate.bind({});
-Selectable.args = { selectable: true };
-Selectable.parameters = {
-  docs: {
-    description: {
-      story: "If you want to allow users to select a rating, set the `selectable` prop to `true`.",
-    },
-  },
-};
-
 export const WithCounter = DefaultTemplate.bind({});
-WithCounter.args = { counter: true, selectable: true };
+WithCounter.args = { counter: true };
 WithCounter.parameters = {
   docs: {
     description: {

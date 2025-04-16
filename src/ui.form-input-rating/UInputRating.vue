@@ -26,7 +26,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const containerRef = useTemplateRef<HTMLDivElement>("container");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const hovered = ref<number | null>(null);
 
@@ -36,14 +36,16 @@ const counterValue = computed(() => {
 
 const starIcon = computed(() => {
   return (star: number): string => {
-    return star <= counterValue.value
-      ? config.value.defaults.selectedIcon
-      : config.value.defaults.unselectedIcon;
+    const isActive = star <= counterValue.value;
+
+    return isActive
+      ? (props.activeIcon ?? config.value.defaults.selectedIcon)
+      : (props.inactiveIcon ?? config.value.defaults.unselectedIcon);
   };
 });
 
 function onClickStar(newValue: number) {
-  if (props.selectable) {
+  if (!props.disabled && !props.readonly) {
     const selected = newValue !== props.modelValue ? newValue : 0;
 
     hovered.value = null;
@@ -53,27 +55,36 @@ function onClickStar(newValue: number) {
 }
 
 function onMouseHover(overStar: number | null = null) {
-  if (props.selectable) hovered.value = overStar;
+  if (!props.disabled && !props.readonly) hovered.value = overStar;
 }
 
 defineExpose({
   /**
-   * A reference to the component's container element for direct DOM manipulation.
+   * A reference to the component's wrapper element for direct DOM manipulation.
    * @property {HTMLDivElement}
    */
-  containerRef,
+  wrapperRef,
 });
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttrs, starAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  config,
+  wrapperAttrs,
+  counterAttrs,
+  totalAttrs,
+  starsContainerAttrs,
+  starLabelAttrs,
+  starAttrs,
+  inputAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="container" v-bind="containerAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
       <!--
           @slot Use it to customize counter.
@@ -85,20 +96,37 @@ const { getDataTest, config, containerAttrs, counterAttrs, totalAttrs, starsAttr
       </slot>
     </div>
 
-    <div v-bind="starsAttrs">
-      <UIcon
-        v-for="star in stars"
+    <div v-bind="starsContainerAttrs">
+      <label
+        v-for="(star, index) in stars"
         :key="star"
-        internal
-        color="inherit"
-        :interactive="selectable"
-        :name="starIcon(star)"
-        v-bind="starAttrs"
-        :data-test="getDataTest(`star-${star}`)"
-        @click="onClickStar(star)"
-        @mouseleave="onMouseHover()"
-        @mouseover="onMouseHover(star)"
-      />
+        tabindex="0"
+        :for="String(index)"
+        v-bind="starLabelAttrs"
+        @keydown.enter="onClickStar(star)"
+        @keydown.space.prevent="onClickStar(star)"
+      >
+        <input
+          :id="String(index)"
+          tabindex="-1"
+          type="radio"
+          :disabled="disabled"
+          v-bind="inputAttrs"
+        />
+
+        <UIcon
+          internal
+          color="inherit"
+          :interactive="!readonly"
+          :disabled="disabled"
+          :name="starIcon(star)"
+          v-bind="starAttrs"
+          :data-test="getDataTest(`star-${star}`)"
+          @click="onClickStar(star)"
+          @mouseleave="onMouseHover()"
+          @mouseover="onMouseHover(star)"
+        />
+      </label>
     </div>
 
     <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
