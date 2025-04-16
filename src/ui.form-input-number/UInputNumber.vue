@@ -30,6 +30,12 @@ const emit = defineEmits([
   "update:modelValue",
 
   /**
+   * Triggers when the input value changes.
+   * @property {number} modelValue
+   */
+  "input",
+
+  /**
    * Triggers when a key is released while the input is focused.
    * @property {KeyboardEvent} event
    */
@@ -39,12 +45,6 @@ const emit = defineEmits([
    * Triggers when the input loses focus.
    */
   "blur",
-
-  /**
-   * Triggers when the input value changes.
-   * @property {number} modelValue
-   */
-  "input",
 ]);
 
 const numberInputRef = useTemplateRef<InstanceType<typeof UInput>>("numberInput");

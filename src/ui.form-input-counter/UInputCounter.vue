@@ -42,13 +42,13 @@ const addIterationCount = ref(0);
 const subtractIterationCount = ref(0);
 
 function clearIntervals() {
-  if (addIntervalId.value !== null) {
+  if (addIntervalId.value) {
     clearInterval(addIntervalId.value);
     addIntervalId.value = null;
     addIterationCount.value = 0;
   }
 
-  if (subtractIntervalId.value !== null) {
+  if (subtractIntervalId.value) {
     clearInterval(subtractIntervalId.value);
     subtractIntervalId.value = null;
     subtractIterationCount.value = 0;
