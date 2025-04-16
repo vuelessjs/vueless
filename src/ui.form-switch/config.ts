@@ -31,7 +31,7 @@ export default /*tw*/ {
       { disabled: true, checked: true, class: "bg-{color}/50" },
     ],
   },
-  input: "absolute size-0 opacity-0",
+  input: "sr-only",
   circle: {
     base: "rounded-full bg-default flex items-center justify-center transition-all",
     variants: {
