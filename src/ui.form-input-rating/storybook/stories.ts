@@ -74,6 +74,9 @@ const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true };
+
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
@@ -107,6 +110,17 @@ WithTotal.parameters = {
   docs: {
     description: {
       story: "You can display the total amount of reviews by setting the `total` prop to a number.",
+    },
+  },
+};
+
+export const RatingIcons = DefaultTemplate.bind({});
+RatingIcons.args = { activeIcon: "check_circle", inactiveIcon: "add_circle" };
+RatingIcons.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use the `activeIcon` and `inactiveIcon` props to customize the icons for the respective rating states.",
     },
   },
 };
