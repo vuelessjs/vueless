@@ -55,7 +55,7 @@ export interface Props {
   interactive?: boolean;
 
   /**
-   * Disable the link.
+   * Disable the icon.
    */
   disabled?: boolean;
 
