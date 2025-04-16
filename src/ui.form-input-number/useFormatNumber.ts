@@ -10,7 +10,7 @@ const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const comma = ",";
 const minus = "-";
 
-export default function useFormatCurrency(
+export default function useFormatNumber(
   elementId: string = "",
   formatOptions: (() => FormatOptions) | FormatOptions,
 ) {
@@ -52,13 +52,13 @@ export default function useFormatCurrency(
 
     if (options.value.decimalSeparator.length > 1) {
       warnMessages.push(
-        "[VUELESS/UInputMoney]: DecimalSeparator should not contain more than one symbol.",
+        "[VUELESS/UInputNumber]: DecimalSeparator should not contain more than one symbol.",
       );
     }
 
     if (options.value.thousandsSeparator.length > 1) {
       warnMessages.push(
-        "[VUELESS/UInputMoney]: ThousandsSeparator should not contain more than one symbol.",
+        "[VUELESS/UInputNumber]: ThousandsSeparator should not contain more than one symbol.",
       );
     }
 
