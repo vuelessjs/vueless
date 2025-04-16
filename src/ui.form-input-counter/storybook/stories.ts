@@ -68,6 +68,7 @@ const EnumVariantTemplate: StoryFn<UInputCounterArgs> = (
         v-for="(option, index) in options"
         :key="index"
         v-bind="args"
+        v-model="args.modelValue"
         :label="option"
         :[args.enum]="option"
       />
