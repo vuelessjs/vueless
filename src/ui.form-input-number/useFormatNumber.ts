@@ -10,7 +10,7 @@ const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const comma = ",";
 const minus = "-";
 
-export default function useFormatCurrency(
+export default function useFormatNumber(
   elementId: string = "",
   formatOptions: (() => FormatOptions) | FormatOptions,
 ) {

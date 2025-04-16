@@ -8,7 +8,7 @@ export default /*tw*/ {
   },
   counterButton: "{UButton} rounded-none border-default",
   addButton: "{>counterButton} border-l-0 rounded-r-medium",
-  removeButton: "{>counterButton} border-r-0 rounded-l-medium",
+  subtractButton: "{>counterButton} border-r-0 rounded-l-medium",
   actionIcon: {
     base: "{UIcon}",
     defaults: {
@@ -20,16 +20,16 @@ export default /*tw*/ {
     },
   },
   addIcon: "{>actionIcon}",
-  removeIcon: "{>actionIcon}",
+  subtractIcon: "{>actionIcon}",
   defaults: {
-    editable: false,
     size: "md",
-    disabled: false,
     step: 1,
     min: 1,
     max: 999,
+    editable: false,
+    disabled: false,
     /* icons */
-    removeIcon: "remove",
+    subtractIcon: "remove",
     addIcon: "add",
   },
 };

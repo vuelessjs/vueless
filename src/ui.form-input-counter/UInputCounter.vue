@@ -12,6 +12,7 @@ import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
+import type { Ref } from "vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -33,12 +34,12 @@ const count = computed({
 });
 
 const isAddButtonDisabled = computed(() => count.value >= props.max);
-const isRemoveButtonDisabled = computed(() => count.value <= props.min);
+const isSubtractButtonDisabled = computed(() => count.value <= props.min);
 
 const addIntervalId = ref<number | null>(null);
-const removeIntervalId = ref<number | null>(null);
+const subtractIntervalId = ref<number | null>(null);
 const addIterationCount = ref(0);
-const removeIterationCount = ref(0);
+const subtractIterationCount = ref(0);
 
 function clearIntervals() {
   if (addIntervalId.value !== null) {
@@ -47,14 +48,14 @@ function clearIntervals() {
     addIterationCount.value = 0;
   }
 
-  if (removeIntervalId.value !== null) {
-    clearInterval(removeIntervalId.value);
-    removeIntervalId.value = null;
-    removeIterationCount.value = 0;
+  if (subtractIntervalId.value !== null) {
+    clearInterval(subtractIntervalId.value);
+    subtractIntervalId.value = null;
+    subtractIterationCount.value = 0;
   }
 }
 
-function onClickRemove() {
+function onClickSubtract() {
   const current = Number(count.value) || 0;
   const newCount = current - props.step;
 
@@ -68,35 +69,22 @@ function onClickAdd() {
   count.value = newCount <= props.max ? newCount : props.max;
 }
 
-function startAddTimer() {
-  onClickAdd();
-  addIterationCount.value++;
+function startTimer(
+  actionFn: () => void,
+  iterationCount: Ref<number>,
+  intervalId: Ref<number | null>,
+) {
+  actionFn();
+  iterationCount.value++;
 
-  addIntervalId.value = window.setInterval(() => {
-    onClickAdd();
-    addIterationCount.value++;
+  intervalId.value = window.setInterval(() => {
+    actionFn();
+    iterationCount.value++;
 
-    if (addIterationCount.value === 4) {
-      clearInterval(addIntervalId.value!);
-      addIntervalId.value = window.setInterval(() => {
-        onClickAdd();
-      }, 50);
-    }
-  }, 150);
-}
-
-function startRemoveTimer() {
-  onClickRemove();
-  removeIterationCount.value++;
-
-  removeIntervalId.value = window.setInterval(() => {
-    onClickRemove();
-    removeIterationCount.value++;
-
-    if (removeIterationCount.value === 4) {
-      clearInterval(removeIntervalId.value!);
-      removeIntervalId.value = window.setInterval(() => {
-        onClickRemove();
+    if (iterationCount.value === 4) {
+      clearInterval(intervalId.value!);
+      intervalId.value = window.setInterval(() => {
+        actionFn();
       }, 50);
     }
   }, 150);
@@ -104,29 +92,21 @@ function startRemoveTimer() {
 
 function onAddMouseDown() {
   if (!isAddButtonDisabled.value && !props.disabled) {
-    startAddTimer();
+    startTimer(onClickAdd, addIterationCount, addIntervalId);
   }
 }
 
-function onAddMouseUp() {
-  clearIntervals();
-}
-
-function onAddMouseLeave() {
-  clearIntervals();
-}
-
-function onRemoveMouseDown() {
-  if (!isRemoveButtonDisabled.value && !props.disabled) {
-    startRemoveTimer();
+function onSubtractMouseDown() {
+  if (!isSubtractButtonDisabled.value && !props.disabled) {
+    startTimer(onClickSubtract, subtractIterationCount, subtractIntervalId);
   }
 }
 
-function onRemoveMouseUp() {
+function onMouseUp() {
   clearIntervals();
 }
 
-function onRemoveMouseLeave() {
+function onMouseLeave() {
   clearIntervals();
 }
 
@@ -139,8 +119,8 @@ const {
   config,
   wrapperAttrs,
   counterInputAttrs,
-  removeButtonAttrs,
-  removeIconAttrs,
+  subtractButtonAttrs,
+  subtractIconAttrs,
   addButtonAttrs,
   addIconAttrs,
 } = useUI<Config>(defaultConfig);
@@ -153,20 +133,20 @@ const {
       size="xs"
       square
       color="neutral"
-      :disabled="isRemoveButtonDisabled || disabled"
-      v-bind="removeButtonAttrs"
-      :data-test="getDataTest('remove')"
+      :disabled="isSubtractButtonDisabled || disabled"
+      v-bind="subtractButtonAttrs"
+      :data-test="getDataTest('subtract')"
       @click.prevent
-      @mousedown="onRemoveMouseDown"
-      @mouseup="onRemoveMouseUp"
-      @mouseleave="onRemoveMouseLeave"
+      @mousedown="onSubtractMouseDown"
+      @mouseup="onMouseUp"
+      @mouseleave="onMouseLeave"
     >
       <UIcon
         internal
         :size="size"
-        :name="config.defaults.removeIcon"
-        :color="isRemoveButtonDisabled ? 'neutral' : 'grayscale'"
-        v-bind="removeIconAttrs"
+        :name="config.defaults.subtractIcon"
+        color="inherit"
+        v-bind="subtractIconAttrs"
       />
     </UButton>
 
@@ -178,10 +158,6 @@ const {
       v-bind="counterInputAttrs"
     />
 
-    <!-- <div v-bind="numberAttrs">
-    <div v-bind="valueAttrs" v-text="count" />
-  </div> -->
-
     <UButton
       variant="ghost"
       size="xs"
@@ -192,14 +168,14 @@ const {
       :data-test="getDataTest('add')"
       @click.prevent
       @mousedown="onAddMouseDown"
-      @mouseup="onAddMouseUp"
-      @mouseleave="onAddMouseLeave"
+      @mouseup="onMouseUp"
+      @mouseleave="onMouseLeave"
     >
       <UIcon
         internal
         :size="size"
         :name="config.defaults.addIcon"
-        :color="isAddButtonDisabled ? 'neutral' : 'grayscale'"
+        color="inherit"
         v-bind="addIconAttrs"
       />
     </UButton>

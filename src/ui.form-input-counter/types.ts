@@ -11,11 +11,6 @@ export interface Props {
   modelValue: number;
 
   /**
-   * Make the input editable.
-   */
-  editable?: boolean;
-
-  /**
    * Input step.
    */
   step?: number;
@@ -34,6 +29,11 @@ export interface Props {
    * Input size.
    */
   size?: "sm" | "md" | "lg";
+
+  /**
+   * Make the input editable.
+   */
+  editable?: boolean;
 
   /**
    * Disable the input.

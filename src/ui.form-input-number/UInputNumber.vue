@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui.ts";
 import UInput from "../ui.form-input/UInput.vue";
 
 import defaultConfig from "./config.ts";
-import useFormatCurrency from "./useFormatCurrency.ts";
+import useFormatNumber from "./useFormatNumber.ts";
 import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -22,13 +22,36 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: "",
 });
 
-const emit = defineEmits(["update:modelValue", "keyup", "blur", "input"]);
+const emit = defineEmits([
+  /**
+   * Triggers when the input value changes.
+   * @property {number} modelValue
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when a key is released while the input is focused.
+   * @property {KeyboardEvent} event
+   */
+  "keyup",
+
+  /**
+   * Triggers when the input loses focus.
+   */
+  "blur",
+
+  /**
+   * Triggers when the input value changes.
+   * @property {number} modelValue
+   */
+  "input",
+]);
 
 const numberInputRef = useTemplateRef<InstanceType<typeof UInput>>("numberInput");
 
 const elementId = props.id || useId();
 
-const { formattedValue, rawValue, setValue } = useFormatCurrency(elementId, () => ({
+const { formattedValue, rawValue, setValue } = useFormatNumber(elementId, () => ({
   minFractionDigits: props.minFractionDigits,
   maxFractionDigits: props.maxFractionDigits,
   decimalSeparator: props.decimalSeparator,
