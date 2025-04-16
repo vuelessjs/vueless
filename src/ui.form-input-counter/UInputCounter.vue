@@ -81,8 +81,8 @@ function startTimer(
     actionFn();
     iterationCount.value++;
 
-    if (iterationCount.value === 4) {
-      clearInterval(intervalId.value!);
+    if (intervalId.value && iterationCount.value === 4) {
+      clearInterval(intervalId.value);
       intervalId.value = window.setInterval(() => {
         actionFn();
       }, 50);
@@ -145,7 +145,7 @@ const {
         internal
         :size="size"
         :name="config.defaults.subtractIcon"
-        color="inherit"
+        :disabled="isSubtractButtonDisabled || disabled"
         v-bind="subtractIconAttrs"
       />
     </UButton>
@@ -175,7 +175,7 @@ const {
         internal
         :size="size"
         :name="config.defaults.addIcon"
-        color="inherit"
+        :disabled="isAddButtonDisabled || disabled"
         v-bind="addIconAttrs"
       />
     </UButton>
