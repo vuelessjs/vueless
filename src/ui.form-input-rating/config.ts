@@ -26,7 +26,7 @@ export default /*tw*/ {
       },
     },
   },
-  input: "absolute size-0 opacity-0",
+  input: "sr-only",
   counter: {
     variants: {
       size: {
