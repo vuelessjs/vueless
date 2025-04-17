@@ -29,6 +29,7 @@ const emit = defineEmits([
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const hovered = ref<number | null>(null);
+const preventHover = ref(false);
 
 const counterValue = computed(() => {
   return hovered.value || props.modelValue;
@@ -49,13 +50,20 @@ function onClickStar(newValue: number) {
     const selected = newValue !== props.modelValue ? newValue : 0;
 
     hovered.value = null;
+    preventHover.value = true;
+
+    setTimeout(() => {
+      preventHover.value = false;
+    }, 300);
 
     emit("update:modelValue", selected);
   }
 }
 
 function onMouseHover(overStar: number | null = null) {
-  if (!props.disabled && !props.readonly) hovered.value = overStar;
+  if (!props.disabled && !props.readonly && !preventHover.value) {
+    hovered.value = overStar;
+  }
 }
 
 defineExpose({
