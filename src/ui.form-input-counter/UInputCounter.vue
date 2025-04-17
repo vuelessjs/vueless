@@ -161,7 +161,6 @@ const {
       :size="size"
       :disabled="disabled"
       :readonly="!editable"
-      value-type="string"
       v-bind="counterInputAttrs"
       @blur="onBlur"
     />
