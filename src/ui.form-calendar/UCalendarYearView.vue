@@ -72,11 +72,11 @@ function isActiveDateWithinCurrentRange(): boolean {
 function calculateInitialYear() {
   const activeYear = localActiveMonth.value.getFullYear();
 
-  // First render - center around selected date
+  // First render - position selected date as the 5th element
   if (isFirstRender.value && props.selectedDate) {
     const selectedYear = props.selectedDate.getFullYear();
 
-    return selectedYear - Math.floor(YEARS_PER_VIEW / 2);
+    return selectedYear - 4;
   }
 
   // If we have existing years, check if we need to adjust the range
