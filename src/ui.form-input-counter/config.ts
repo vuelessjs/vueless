@@ -1,14 +1,8 @@
 export default /*tw*/ {
-  wrapper: "flex items-stretch",
-  counterInput: {
-    base: "{UInput} w-fit",
-    numberInput: {
-      wrapper: "rounded-none focus-within:outline-none focus-within:border-neutral hover:focus-within:border-neutral",
-    },
-  },
-  counterButton: "{UButton} rounded-none border-default",
-  addButton: "{>counterButton} border-l-0 rounded-r-medium",
-  subtractButton: "{>counterButton} border-r-0 rounded-l-medium",
+  wrapper: "flex items-stretch gap-1",
+  counterInput: "{UInput} w-fit",
+  addButton: "{UButton}",
+  subtractButton: "{UButton}",
   actionIcon: {
     base: "{UIcon}",
     defaults: {
