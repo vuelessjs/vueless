@@ -20,15 +20,16 @@ export interface DatePeriodRange {
 }
 
 export function getYearDateList(date: Date) {
-  const NUMBER_ADDING_YEAR = 12;
+  const YEARS_NUMBER = 12;
+  const HALF_YEARS = Math.floor(YEARS_NUMBER / 2);
 
   const year = date.getFullYear();
   const month = date.getMonth();
-
   const years: DatePeriodRange[] = [];
+  const startYear = year - HALF_YEARS;
 
-  for (let i = 0; i < NUMBER_ADDING_YEAR; i++) {
-    const currentYear = year + i;
+  for (let i = 0; i < YEARS_NUMBER; i++) {
+    const currentYear = startYear + i;
 
     years.push({
       title: currentYear,
