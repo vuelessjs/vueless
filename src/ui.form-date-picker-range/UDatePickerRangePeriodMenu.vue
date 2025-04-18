@@ -54,6 +54,8 @@ const rangeSwitchTitle = computed(() => {
   return "";
 });
 
+onClickPeriodButton(period.value as Period);
+
 function onClickPeriodButton(periodName: `${Period}`) {
   const localDate = localValue.value.from !== null ? localValue.value.from : new Date();
 
