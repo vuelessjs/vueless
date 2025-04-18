@@ -8,7 +8,7 @@ export interface Props {
   /**
    * Input value.
    */
-  modelValue: number;
+  modelValue: number | string;
 
   /**
    * Input step.

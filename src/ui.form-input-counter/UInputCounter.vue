@@ -33,8 +33,8 @@ const count = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const isAddButtonDisabled = computed(() => count.value >= props.max);
-const isSubtractButtonDisabled = computed(() => count.value <= props.min);
+const isAddButtonDisabled = computed(() => Number(count.value) >= props.max);
+const isSubtractButtonDisabled = computed(() => Number(count.value) <= props.min);
 
 const addIntervalId = ref<number | null>(null);
 const subtractIntervalId = ref<number | null>(null);
@@ -110,6 +110,11 @@ function onMouseLeave() {
   clearIntervals();
 }
 
+function onBlur() {
+  if (Number(count.value) > props.max) count.value = props.max;
+  if (Number(count.value) < props.min) count.value = props.min;
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -129,9 +134,10 @@ const {
 <template>
   <div v-bind="wrapperAttrs">
     <UButton
-      variant="ghost"
+      variant="soft"
       size="xs"
       square
+      round
       color="neutral"
       :disabled="isSubtractButtonDisabled || disabled"
       v-bind="subtractButtonAttrs"
@@ -156,12 +162,14 @@ const {
       :disabled="disabled"
       :readonly="!editable"
       v-bind="counterInputAttrs"
+      @blur="onBlur"
     />
 
     <UButton
-      variant="ghost"
+      variant="soft"
       size="xs"
       square
+      round
       color="neutral"
       :disabled="isAddButtonDisabled || disabled"
       v-bind="addButtonAttrs"
