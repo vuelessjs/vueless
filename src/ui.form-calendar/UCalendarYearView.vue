@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 
@@ -19,6 +19,9 @@ const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
 
+const isFirstRender = ref(true);
+const years = ref<Date[]>([]);
+
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
 });
@@ -27,13 +30,80 @@ const localActiveMonth = computed(
   () => props.activeMonth || props.activeDate || localSelectedDate.value,
 );
 
-const years = computed(() => {
-  const [initialYear] = getYearsRange(localActiveMonth.value);
+// Initialize years on component creation
+updateYears();
 
-  return Array.from({ length: YEARS_PER_VIEW }, (_, i) => i).map((year) =>
-    getYear(initialYear + year),
-  );
-});
+// Watch for changes to active month and update years when needed
+watch(
+  localActiveMonth,
+  () => {
+    if (isFirstRender.value) {
+      isFirstRender.value = false;
+    }
+
+    updateYears();
+  },
+  { deep: true },
+);
+
+// Update years array based on active date;
+function updateYears() {
+  if (isActiveDateWithinCurrentRange()) {
+    return;
+  }
+
+  const initialYear = calculateInitialYear();
+
+  years.value = getYears(initialYear);
+}
+
+function isActiveDateWithinCurrentRange(): boolean {
+  if (isFirstRender.value || !years.value.length) {
+    return false;
+  }
+
+  const activeYear = localActiveMonth.value.getFullYear();
+  const firstYear = years.value.at(0)!.getFullYear();
+  const lastYear = years.value.at(-1)!.getFullYear();
+
+  return activeYear >= firstYear && activeYear <= lastYear;
+}
+
+function calculateInitialYear() {
+  const activeYear = localActiveMonth.value.getFullYear();
+
+  // First render - position selected date as the 5th element
+  if (isFirstRender.value && props.selectedDate) {
+    const selectedYear = props.selectedDate.getFullYear();
+
+    return selectedYear - 4;
+  }
+
+  // If we have existing years, check if we need to adjust the range
+  if (years.value.length > 0) {
+    const firstYear = years.value.at(1)!.getFullYear();
+    const lastYear = years.value.at(1)!.getFullYear();
+
+    // Active year before range - position at end
+    if (activeYear < firstYear) {
+      return activeYear - (YEARS_PER_VIEW - 1);
+    }
+
+    // Active year after range - position at beginning
+    if (activeYear > lastYear) {
+      return activeYear;
+    }
+  }
+
+  // Default calculation for initial render or when range is empty
+  const [standardInitialYear] = getYearsRange(localActiveMonth.value);
+
+  return standardInitialYear;
+}
+
+function getYears(initialYear: number): Date[] {
+  return Array.from({ length: YEARS_PER_VIEW }, (_, i) => getYear(initialYear + i));
+}
 
 function getYear(year: number) {
   let newDate = new Date(localActiveMonth.value.valueOf());

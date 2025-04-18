@@ -464,21 +464,21 @@ function arrowKeyHandler(event: KeyboardEvent) {
     }
   } else if (currentView.value === View.Month) {
     if (event.code === KeyCode.ArrowDown) {
-      newActiveDate = addMonths(currentActiveDate, 4);
+      newActiveDate = addMonths(currentActiveDate, 3);
     } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addMonths(currentActiveDate, -1);
     } else if (event.code === KeyCode.ArrowUp) {
-      newActiveDate = addMonths(currentActiveDate, -4);
+      newActiveDate = addMonths(currentActiveDate, -3);
     } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addMonths(currentActiveDate, 1);
     }
   } else if (currentView.value === View.Year) {
     if (event.code === KeyCode.ArrowDown) {
-      newActiveDate = addYears(currentActiveDate, 4);
+      newActiveDate = addYears(currentActiveDate, 3);
     } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addYears(currentActiveDate, -1);
     } else if (event.code === KeyCode.ArrowUp) {
-      newActiveDate = addYears(currentActiveDate, -4);
+      newActiveDate = addYears(currentActiveDate, -3);
     } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addYears(currentActiveDate, 1);
     }
