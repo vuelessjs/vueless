@@ -27,6 +27,7 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-sm font-normal text-gray-500",
   closeIcon: "{UIcon}",
+  closeButtonAttrs: "{UButton}",
   body: "space-y-4 px-4 md:px-8 text-sm",
   modalDivider: "{UDivider} pt-8",
   footer: "flex justify-between px-4 md:px-8 py-8 max-md:flex-col max-md:gap-4",
