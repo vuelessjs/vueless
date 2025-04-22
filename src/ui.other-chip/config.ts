@@ -30,7 +30,7 @@ export default /*tw*/ {
     compoundVariants: [
       { text: true, size: "sm", class: "min-w-1.5 w-auto h-auto px-1" },
       { text: true, size: "md", class: "min-w-2 w-auto h-auto px-1.5" },
-      { text: true, size: "lg", class: "min-w-3 w-auto h-auto px-1.5" },
+      { text: true, size: "lg", class: "min-w-3 w-auto h-auto px-2" },
       { inset: false, yPosition: "top", class: "-translate-y-1/2" },
       { inset: false, xPosition: "bottom", class: "translate-y-1/2" },
       { inset: false, xPosition: "left", class: "-translate-x-1/2" },
