@@ -90,7 +90,7 @@ Icon.args = {
 };
 
 export const Text = DefaultTemplate.bind({});
-Text.args = { text: "5" };
+Text.args = { text: "2" };
 
 export const Inset = DefaultTemplate.bind({});
 Inset.args = {
