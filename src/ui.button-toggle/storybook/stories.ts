@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -46,11 +47,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   components: { UToggle, UIcon, UBadge, UDot, ULabel },
-  setup() {
-    const slots = getSlotNames(UToggle.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UToggle.__name) }),
   template: `
     <UToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -60,23 +57,14 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 
 const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
-  setup() {
-    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
-
-    return {
-      args,
-      values,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UToggle
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        v-model="values[option]"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        v-model="args.modelValue"
         :options="[
           { value: option + 1, label: option },
           { value: option + 2, label: option },
@@ -138,23 +126,27 @@ Square.args = {
   `,
 };
 
-export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({
+export const OptionSlot: StoryFn<UToggleArgs> = () => ({
   components: { UToggle, UDot, ULabel },
   setup() {
-    const options = [
-      { value: "1", label: "Success", color: "success" },
-      { value: "2", label: "Warning", color: "warning" },
-      { value: "3", label: "Error", color: "error" },
-    ];
+    const modelValue = ref("1");
 
-    return { args, options };
+    return { modelValue };
   },
   template: `
     <ULabel label="Select transaction status:">
-      <UToggle name="optionSlot" v-bind="args" v-model="args.modelValue" :options="options">
-        <template #option="{ label, index }">
-          <UDot :color="options[index].color" />
-          {{ label }}
+      <UToggle
+        name="optionSlot"
+        v-model="modelValue"
+        :options="[
+          { value: '1', label: 'Success', color: 'success' },
+          { value: '2', label: 'Warning', color: 'warning' },
+          { value: '3', label: 'Error', color: 'error' },
+        ]"
+      >
+        <template #option="{ option }">
+          <UDot :color="option.color" />
+          {{ option.label }}
         </template>
       </UToggle>
     </ULabel>

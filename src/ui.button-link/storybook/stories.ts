@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -15,7 +16,7 @@ import type { Props } from "../types.ts";
 
 interface ULinkArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "color";
+  enum: "size" | "color" | "target";
 }
 
 export default {
@@ -23,7 +24,7 @@ export default {
   title: "Buttons & Links / Link",
   component: ULink,
   args: {
-    label: "Link",
+    label: "Learn more",
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
@@ -37,18 +38,9 @@ export default {
 
 const DefaultTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, UButton, UIcon },
-  setup() {
-    const slots = getSlotNames(ULink.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULink.__name) }),
   template: `
-    <div v-if="args.block" class="border-2 border-dashed border-green-500 p-2 rounded-medium">
-      <ULink v-bind="args">
-        ${args.slotTemplate || getSlotsFragment("")}
-      </ULink>
-    </div>
-    <ULink v-else v-bind="args">
+    <ULink v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </ULink>
   `,
@@ -56,27 +48,13 @@ const DefaultTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
 
 const EnumVariantTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) => ({
   components: { ULink, URow },
-  setup() {
-    function getText(value: string) {
-      return `Link ${value}`;
-    }
-
-    let prefixedOptions = argTypes?.[args.enum]?.options;
-
-    if (argTypes?.[args.enum]?.name === "size") {
-      prefixedOptions = prefixedOptions?.map((option) => getText(option));
-    }
-
-    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <ULink
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="prefixedOptions[index]"
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
       />
     </URow>
   `,
@@ -85,11 +63,11 @@ const EnumVariantTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color", label: "{enumValue}" };
 
 export const Types: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, URow },
@@ -154,6 +132,7 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
     const variants = [
       { name: "Default", props: {} },
       { name: "Dashed", props: { dashed: true } },
+      { name: "Dotted", props: { dotted: true } },
       { name: "Underlined", props: { underlined: true } },
       { name: "No underline", props: { underlined: false } },
     ];
@@ -185,14 +164,23 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Block = DefaultTemplate.bind({});
-Block.args = { block: true };
+export const Block: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
+  components: { ULink },
+  setup: () => ({ args, slots: getSlotNames(ULink.__name) }),
+  template: `
+    <div class="border-2 border-dashed border-green-500 p-2 rounded-medium">
+      <ULink v-bind="args" block>
+        ${args.slotTemplate || getSlotsFragment("")}
+      </ULink>
+    </div>
+  `,
+});
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
+export const SlotDefault = DefaultTemplate.bind({});
+SlotDefault.args = {
   slotTemplate: `
     <template #default>
-      <UButton label="Text" />
+      <UButton label="Learn more" />
     </template>
   `,
 };
