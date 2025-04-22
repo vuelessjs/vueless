@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, useTemplateRef } from "vue";
+import { computed, useSlots, watch, useId, nextTick, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -8,6 +8,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
+import UButton from "../ui.button/UButton.vue";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
@@ -70,24 +71,72 @@ const isExistFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
-watch(() => isShownModal.value, preventOverlayFromScrolling);
+function getFocusableElements() {
+  if (!wrapperRef.value) return [];
 
-function preventOverlayFromScrolling(newValue: boolean) {
-  // focus wrapper to be able to close modal on esc
-  setTimeout(() => wrapperRef.value?.focus(), 0);
+  return Array.from(
+    wrapperRef.value.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  );
+}
 
-  if (newValue) {
-    document.body.style.overflow = "hidden";
-  } else {
-    const element = document.getElementById(`${elementId}`);
+function trapFocus(e: KeyboardEvent) {
+  if (e.key !== "Tab") return;
 
-    if (element) {
-      element.style.overflow = "hidden";
-    }
+  const focusableElements = getFocusableElements();
 
-    document.body.style.overflow = "auto";
+  if (!focusableElements.length) return;
+
+  const firstElement = focusableElements.at(0) as HTMLElement;
+  const lastElement = focusableElements.at(-1) as HTMLElement;
+
+  // Shift+Tab - if focused on first element, move to last
+  if (e.shiftKey && document.activeElement === firstElement) {
+    e.preventDefault();
+    lastElement.focus();
+
+    return;
+  }
+
+  // Tab - if focused on last element, move to first
+  if (!e.shiftKey && document.activeElement === lastElement) {
+    e.preventDefault();
+    firstElement.focus();
   }
 }
+
+watch(
+  () => isShownModal.value,
+  (newValue) => {
+    if (newValue) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", trapFocus);
+      document.addEventListener("keydown", onKeydownEsc);
+
+      // Focus first focusable element after a short delay to ensure modal is rendered
+      nextTick(() => {
+        const focusableElements = getFocusableElements();
+
+        if (focusableElements.length) {
+          (focusableElements.at(0) as HTMLElement).focus();
+        } else {
+          wrapperRef.value?.focus();
+        }
+      });
+    } else {
+      const element = document.getElementById(`${elementId}`);
+
+      if (element) {
+        element.style.overflow = "hidden";
+      }
+
+      document.body.style.overflow = "auto";
+      document.removeEventListener("keydown", trapFocus);
+      document.removeEventListener("keydown", onKeydownEsc);
+    }
+  },
+);
 
 function onClickBackLink() {
   emit("back");
@@ -97,8 +146,10 @@ function onClickOutside() {
   props.closeOnOverlay && closeModal();
 }
 
-function onKeydownEsc() {
-  props.closeOnEsc && closeModal();
+function onKeydownEsc(e: KeyboardEvent) {
+  if (e.key !== "Escape" || !props.closeOnEsc) return;
+
+  closeModal();
 }
 
 function onClickCloseModal() {
@@ -136,13 +187,14 @@ const {
   wrapperAttrs,
   innerWrapperAttrs,
   headerAttrs,
-  beforeTitleAttrs,
-  titleFallbackAttrs,
   descriptionAttrs,
   bodyAttrs,
   footerLeftAttrs,
   footerAttrs,
   footerRightAttrs,
+  closeButtonAttrs,
+  beforeTitleAttrs,
+  titleFallbackAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -197,7 +249,15 @@ const {
               <slot name="after-title" />
             </div>
 
-            <div v-if="closeOnCross" v-bind="closeIconAttrs">
+            <UButton
+              v-if="closeOnCross"
+              size="2xs"
+              square
+              color="grayscale"
+              variant="ghost"
+              v-bind="closeButtonAttrs"
+              @click="onClickCloseModal"
+            >
               <!--
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
@@ -212,10 +272,9 @@ const {
                   :name="config.defaults.closeIcon"
                   v-bind="closeIconAttrs"
                   :data-test="getDataTest('close')"
-                  @click="onClickCloseModal"
                 />
               </slot>
-            </div>
+            </UButton>
           </div>
 
           <div v-bind="bodyAttrs">
