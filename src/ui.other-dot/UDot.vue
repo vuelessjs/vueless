@@ -33,5 +33,7 @@ const { getDataTest, dotAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="dot" v-bind="dotAttrs" :data-test="getDataTest()" />
+  <div ref="dot" v-bind="dotAttrs" :data-test="getDataTest()">
+    <slot />
+  </div>
 </template>
