@@ -55,7 +55,7 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
@@ -76,9 +76,7 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  name: "Default",
-};
+Default.args = { name: "Default" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = {
@@ -91,15 +89,11 @@ Disabled.args = {
   ],
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { name: "sizeTemplate", enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { name: "sizeTemplate", enum: "size" };
 
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = {
-  name: "multiple",
-  multiple: true,
-  modelValue: [],
-};
+Multiple.args = { name: "multiple", multiple: true, modelValue: [] };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
@@ -126,7 +120,7 @@ Square.args = {
   `,
 };
 
-export const OptionSlot: StoryFn<UToggleArgs> = () => ({
+export const SlotOption: StoryFn<UToggleArgs> = () => ({
   components: { UToggle, UDot, ULabel },
   setup() {
     const modelValue = ref("1");
@@ -136,7 +130,7 @@ export const OptionSlot: StoryFn<UToggleArgs> = () => ({
   template: `
     <ULabel label="Select transaction status:">
       <UToggle
-        name="optionSlot"
+        name="slotOption"
         v-model="modelValue"
         :options="[
           { value: '1', label: 'Success', color: 'success' },
