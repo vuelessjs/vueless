@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -50,11 +51,7 @@ export default {
 
 const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
   components: { UDropdownLink, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownLink.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDropdownLink.__name) }),
   template: `
     <UDropdownLink v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -78,32 +75,18 @@ const SelectableTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDro
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDropdownLinkArgs> = (
+const EnumTemplate: StoryFn<EnumUDropdownLinkArgs> = (
   args: EnumUDropdownLinkArgs,
   { argTypes },
 ) => ({
   components: { UDropdownLink, URow },
-  setup() {
-    function getText(value: unknown) {
-      return `Dropdown ${value}`;
-    }
-
-    let prefixedOptions = argTypes[args.enum]?.options || [];
-
-    if (argTypes[args.enum]?.name === "size") {
-      prefixedOptions = prefixedOptions.map((option) => getText(option));
-    }
-
-    return { args, options: argTypes[args.enum]?.options, prefixedOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UDropdownLink
-        v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="prefixedOptions[index]"
-        :key="index"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
@@ -118,14 +101,14 @@ Selectable.args = {};
 export const SelectableMultiple = SelectableTemplate.bind({});
 SelectableMultiple.args = { multiple: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
-export const ListboxXPosition = EnumVariantTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition" };
+export const ListboxXPosition = EnumTemplate.bind({});
+ListboxXPosition.args = { enum: "xPosition", label: "{enumValue}" };
 
-export const ListboxYPosition = EnumVariantTemplate.bind({});
-ListboxYPosition.args = { enum: "yPosition" };
+export const ListboxYPosition = EnumTemplate.bind({});
+ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
 ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
@@ -133,8 +116,8 @@ ListboxYPosition.parameters = {
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Color = EnumTemplate.bind({});
+Color.args = { enum: "color", label: "{enumValue}" };
 
 export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (
   args: EnumUDropdownLinkArgs,

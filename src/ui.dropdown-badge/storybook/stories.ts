@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -21,6 +22,7 @@ interface DefaultUDropdownBadgeArgs extends Props {
 
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
   enum: keyof Pick<Props, "color" | "size" | "variant" | "xPosition" | "yPosition">;
+  outerEnum: "variant";
 }
 
 export default {
@@ -50,15 +52,9 @@ export default {
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
   components: { UDropdownBadge, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownBadge.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
-    <UDropdownBadge
-      v-bind="args"
-    >
+    <UDropdownBadge v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownBadge>
   `,
@@ -82,52 +78,36 @@ const SelectableTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
+const EnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
   args: EnumUDropdownBadgeArgs,
   { argTypes },
 ) => ({
   components: { UDropdownBadge, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UDropdownBadge
-        v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
-        :key="index"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
 });
 
-const VariantColorsTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
+const MultiEnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
   args: EnumUDropdownBadgeArgs,
   { argTypes },
 ) => ({
   components: { UDropdownBadge, URow, UCol },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant?.options,
-      colors: argTypes.color?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <URow v-for="(variant, index) in variants" :key="index">
+      <URow v-for="outerOption in argTypes?.[args.outerEnum]?.options" :key="outerOption">
         <UDropdownBadge
-          v-for="(color, index) in colors"
-          :key="index"
-          v-bind="args"
-          :color="color"
-          :variant="variant"
-          :label="color"
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option, outerOption)"
+          :key="option"
         />
       </URow>
     </UCol>
@@ -143,23 +123,23 @@ Selectable.args = {};
 export const SelectableMultiple = SelectableTemplate.bind({});
 SelectableMultiple.args = { multiple: true };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
-export const ListboxXPosition = EnumVariantTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition" };
+export const ListboxXPosition = EnumTemplate.bind({});
+ListboxXPosition.args = { enum: "xPosition", label: "{enumValue}" };
 
-export const ListboxYPosition = EnumVariantTemplate.bind({});
-ListboxYPosition.args = { enum: "yPosition" };
+export const ListboxYPosition = EnumTemplate.bind({});
+ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
 ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const VariantColors = VariantColorsTemplate.bind({});
-VariantColors.args = {};
+export const Color = MultiEnumTemplate.bind({});
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
