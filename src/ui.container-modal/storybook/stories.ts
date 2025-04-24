@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -78,7 +79,7 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea, UCol },
   setup() {
     function onClick(value: Props["size"]) {
@@ -86,27 +87,21 @@ const EnumVariantTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }
       args.modelValue = true;
     }
 
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-      onClick,
-    };
+    return { args, argTypes, getArgs, onClick };
   },
   template: `
-    <div>
-      <UModal v-bind="args" v-model="args.modelValue">
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        :label="option"
+        @click="onClick(option)"
+      />
+
+      <UModal v-bind="getArgs(args, args.size)" v-model="args.modelValue">
         ${defaultTemplate}
       </UModal>
-
-      <URow>
-        <UButton
-          v-for="(option, index) in options"
-          :key="index"
-          :label="option"
-          @click="onClick(option)"
-        />
-      </URow>
-    </div>
+    </URow>
   `,
 });
 
@@ -190,8 +185,8 @@ WithoutDivider.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size" };
 
 export const BackLink = DefaultTemplate.bind({});
 BackLink.args = {

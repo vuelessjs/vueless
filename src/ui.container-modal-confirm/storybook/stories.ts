@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -72,13 +73,14 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
-  args: UModalConfirmArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
   setup() {
+    const selectedOption = ref("");
+
     function onClick(value: string) {
+      selectedOption.value = value;
+
       argTypes?.[args.enum]?.name === "confirmColor"
         ? (args.confirmColor = value as Props["confirmColor"])
         : (args.width = value);
@@ -86,27 +88,21 @@ const EnumVariantTemplate: StoryFn<UModalConfirmArgs> = (
       args.modelValue = true;
     }
 
-    return {
-      args,
-      onClick,
-      options: argTypes?.[args.enum]?.options,
-    };
+    return { args, argTypes, getArgs, onClick, selectedOption };
   },
   template: `
-    <div>
-      <UModalConfirm v-bind="args" v-model="args.modelValue">
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        :label="option"
+        @click="onClick(option)"
+      />
+
+      <UModalConfirm v-bind="getArgs(args, selectedOption)" v-model="args.modelValue">
         ${defaultTemplate}
       </UModalConfirm>
-
-      <URow>
-        <UButton
-          v-for="(option, index) in options"
-          :key="index"
-          :label="option"
-          @click="onClick(option)"
-        />
-      </URow>
-    </div>
+    </URow>
   `,
 });
 
@@ -201,10 +197,10 @@ WithoutCancelButton.args = { cancelHidden: true };
 export const DisableConfirmButton = DefaultTemplate.bind({});
 DisableConfirmButton.args = { confirmDisabled: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
+export const Color = EnumTemplate.bind({});
 Color.args = { enum: "confirmColor" };
 
 export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({

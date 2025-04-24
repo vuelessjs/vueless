@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -42,11 +43,7 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<UColArgs> = (args: UColArgs) => ({
   components: { UCol, UInput, UButton, UPage },
-  setup() {
-    const slots = getSlotNames(UCol.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UCol.__name) }),
   template: `
     <UCol v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -54,22 +51,16 @@ const DefaultTemplate: StoryFn<UColArgs> = (args: UColArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
   components: { UCol, UButton, URow, UInput },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow gap="lg" :class="{ '!flex-col': args.enum === 'content' }">
       <UCol
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        class="w-full h-full border border-primary rounded-sm p-2"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        class="w-full h-[200px] border border-primary rounded p-2"
       >
         <UButton :label="args.enum" />
         <UButton :label="option" />
@@ -97,7 +88,7 @@ Reverse.parameters = {
   },
 };
 
-export const Gap = EnumVariantTemplate.bind({});
+export const Gap = EnumTemplate.bind({});
 Gap.args = { enum: "gap" };
 Gap.parameters = {
   docs: {
@@ -107,7 +98,7 @@ Gap.parameters = {
   },
 };
 
-export const Align = EnumVariantTemplate.bind({});
+export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
 Align.parameters = {
   docs: {
@@ -117,7 +108,7 @@ Align.parameters = {
   },
 };
 
-export const Content = EnumVariantTemplate.bind({});
+export const Content = EnumTemplate.bind({});
 Content.args = { enum: "content", wrap: true };
 Content.parameters = {
   docs: {
@@ -127,7 +118,7 @@ Content.parameters = {
   },
 };
 
-export const Justify = EnumVariantTemplate.bind({});
+export const Justify = EnumTemplate.bind({});
 Justify.args = { enum: "justify" };
 Justify.parameters = {
   docs: {
