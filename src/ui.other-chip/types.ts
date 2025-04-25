@@ -10,11 +10,6 @@ export interface Props {
   icon?: string;
 
   /**
-   * Text content to display inside the chip.
-   */
-  text?: string;
-
-  /**
    * Chip color.
    */
   color?:
@@ -31,7 +26,7 @@ export interface Props {
   /**
    * Chip size.
    */
-  size?: "sm" | "md" | "lg";
+  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
    * The position of the chip on the x-axis.
@@ -44,7 +39,7 @@ export interface Props {
   yPosition?: "top" | "bottom";
 
   /**
-   * Display the chip inside the component.
+   * Display the chip inside the component (useful with rounded components).
    */
   inset?: boolean;
 

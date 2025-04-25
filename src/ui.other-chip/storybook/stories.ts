@@ -1,10 +1,11 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UChip from "../UChip.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -37,12 +38,8 @@ const defaultTemplate = `
 `;
 
 const DefaultTemplate: StoryFn<UChipArgs> = (args: UChipArgs) => ({
-  components: { UChip, UButton, ULink, UAvatar },
-  setup() {
-    const slots = getSlotNames(UChip.__name);
-
-    return { args, slots };
-  },
+  components: { UChip, UButton, ULink, UAvatar, UBadge },
+  setup: () => ({ args, slots: getSlotNames(UChip.__name) }),
   template: `
     <UChip v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -50,21 +47,15 @@ const DefaultTemplate: StoryFn<UChipArgs> = (args: UChipArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UChipArgs> = (args: UChipArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UChipArgs> = (args: UChipArgs, { argTypes }) => ({
   components: { URow, UChip, UButton },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UChip
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       >
         <UButton
           :label="option"
@@ -83,14 +74,24 @@ Default.args = {};
 export const Icon = DefaultTemplate.bind({});
 Icon.args = {
   icon: "arrow_outward",
-  size: "sm",
+  size: "2xs",
   slotTemplate: `
-    <ULink label="Releases" />
+    <ULink label="Releases" class="mr-2" />
   `,
 };
 
 export const Text = DefaultTemplate.bind({});
-Text.args = { text: "2" };
+Text.args = {
+  slotTemplate: `
+    <template #default>
+      ${defaultTemplate}
+    </template>
+
+    <template #chip>
+      <UBadge label="3" class="py-px px-1 outline-solid outline-small outline-(--vl-bg)" />
+    </template>
+  `,
+};
 
 export const Inset = DefaultTemplate.bind({});
 Inset.args = {
@@ -98,14 +99,14 @@ Inset.args = {
   slotTemplate: `<UAvatar src="https://avatar.iran.liara.run/public/11" rounded="full" />`,
 };
 
-export const Size = EnumVariantTemplate.bind({});
+export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
+export const Color = EnumTemplate.bind({});
 Color.args = { enum: "color" };
 
-export const XPosition = EnumVariantTemplate.bind({});
+export const XPosition = EnumTemplate.bind({});
 XPosition.args = { enum: "xPosition" };
 
-export const YPosition = EnumVariantTemplate.bind({});
+export const YPosition = EnumTemplate.bind({});
 YPosition.args = { enum: "yPosition" };

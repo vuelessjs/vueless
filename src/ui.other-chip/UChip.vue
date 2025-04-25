@@ -9,7 +9,6 @@ import { COMPONENT_NAME } from "./constants.ts";
 
 import UDot from "../ui.other-dot/UDot.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UText from "../ui.text-block/UText.vue";
 
 import type { Props, Config } from "./types.ts";
 
@@ -35,10 +34,9 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   icon: Boolean(props.icon),
-  text: Boolean(props.text),
 }));
 
-const { wrapperAttrs, chipDotAttrs, chipIconAttrs, chipTextAttrs } = useUI<Config>(
+const { wrapperAttrs, chipWrapperAttrs, chipDotAttrs, chipIconAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
 );
@@ -46,11 +44,14 @@ const { wrapperAttrs, chipDotAttrs, chipIconAttrs, chipTextAttrs } = useUI<Confi
 
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs">
-    <UIcon v-if="icon" :name="icon" :color="color" v-bind="chipIconAttrs" />
-    <UDot v-if="!icon" :color="color" :size="size" v-bind="chipDotAttrs">
-      <UText v-if="text" :html="text" v-bind="chipTextAttrs" />
-    </UDot>
     <!-- @slot Use it to add something inside. -->
     <slot name="default" />
+    <div v-bind="chipWrapperAttrs">
+      <!-- @slot Use it to add something instead of the default chip. -->
+      <slot name="chip">
+        <UIcon v-if="icon" :name="icon" :color="color" :size="size" v-bind="chipIconAttrs" />
+        <UDot v-else :color="color" :size="size" v-bind="chipDotAttrs" />
+      </slot>
+    </div>
   </div>
 </template>

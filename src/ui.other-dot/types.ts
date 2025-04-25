@@ -21,7 +21,7 @@ export interface Props {
   /**
    * Dot size.
    */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
    * Component config object.
