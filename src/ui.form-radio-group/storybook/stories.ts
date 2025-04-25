@@ -142,9 +142,9 @@ Sizes.args = { enum: "size", name: "Sizes" };
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", name: "Colors" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
-  name: "SlotLabel",
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
+  name: "LabelSlot",
   slotTemplate: `
     <template #label="{ label }">
       <UBadge :label="label" color="success" variant="soft" />

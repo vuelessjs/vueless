@@ -101,8 +101,8 @@ ToggleIcon.args = { toggleIcon: true, color: "warning" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   label: "Enable Notifications",
   slotTemplate: `
     <template #label="{ label }">

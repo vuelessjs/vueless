@@ -63,64 +63,34 @@ const EnumVariantTemplate: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size", label: "{enumValue}" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color", label: "{enumValue}" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", label: "{enumValue}" };
 
 export const Types: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, URow },
-  setup() {
-    function getTypeLabel(type: string): string {
-      switch (type) {
-        case "phone":
-          return "+1 (000) 123-4567";
-        case "email":
-          return "hello@vueless.com";
-        case "link":
-          return "Vueless.com";
-        default:
-          return "Unknown";
-      }
-    }
-
-    function getTypeHref(type: string, label: string) {
-      switch (type) {
-        case "phone": {
-          const phoneNumber = label.replace(/\D/g, "");
-
-          return `+${phoneNumber}`;
-        }
-
-        case "email":
-          return `${label}`;
-        case "link":
-          return "https://vueless.com/";
-        default:
-          return "#";
-      }
-    }
-
-    const options = ["phone", "email", "link"];
-    const links = options.map((type) => ({
-      type,
-      label: getTypeLabel(type),
-      href: getTypeHref(type, getTypeLabel(type)),
-    }));
-
-    return { args, links };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
       <ULink
-        v-for="(link, index) in links"
-        :key="index"
-        v-bind="args"
-        :type="link.type"
-        :label="link.label"
-        :href="link.href"
-        target-blank
+        type="phone"
+        label="+1 (000) 123-4567"
+        href="+1(000)123-4567"
+      />
+
+      <ULink
+        type="email"
+        label="hello@vueless.com"
+        href="hello@vueless.com"
+      />
+
+      <ULink
+        type="link"
+        label="Vueless.com"
+        href="https://vueless.com/"
+        target="_blank"
       />
     </URow>
   `,
@@ -146,18 +116,13 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
     };
   },
   template: `
-    <div v-for="variant in variants" :key="variant.name" class="mb-8">
-      <div class="text-medium font-medium mb-2">{{ variant.name }}</div>
-      <URow>
-        <ULink
-          v-for="color in colors"
-          :key="color"
-          v-bind="variant.props"
-          :color="color"
-          :label="color"
-        />
-      </URow>
-    </div>
+    <URow>
+      <ULink label="Default" />
+      <ULink label="Dashed" dashed underlined />
+      <ULink label="Dotted" dotted underlined />
+      <ULink label="Underlined" underlined />
+      <ULink label="No underline" :underlined="false" />
+    </URow>
   `,
 });
 
@@ -176,8 +141,8 @@ export const Block: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   `,
 });
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <UButton label="Learn more" />

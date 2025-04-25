@@ -85,9 +85,9 @@ ImageURL.args = { imageUrl: "https://picsum.photos/100" };
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Slots: StoryFn<UFileArgs> = (args) => ({
   components: { UFile, URow, UBadge, UIcon },

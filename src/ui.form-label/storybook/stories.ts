@@ -132,8 +132,8 @@ Sizes.args = { enum: "size" };
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "align" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
@@ -142,8 +142,8 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
+export const BottomSlot = DefaultTemplate.bind({});
+BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
       <UBadge label="Your opinion is important for us!" color="success" class="max-w-fit" />

@@ -381,8 +381,8 @@ Slots.parameters = {
   },
 };
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <UIcon
@@ -393,8 +393,8 @@ SlotToggle.args = {
   `,
 };
 
-export const SlotSelectedValueLabel = DefaultTemplate.bind({});
-SlotSelectedValueLabel.args = {
+export const SelectedValueLabelSlot = DefaultTemplate.bind({});
+SelectedValueLabelSlot.args = {
   slotTemplate: `
     <template #selected-label="{ selectedLabel }">
       <UBadge :label="selectedLabel" color="success" />
@@ -402,8 +402,8 @@ SlotSelectedValueLabel.args = {
   `,
 };
 
-export const SlotSelectedValueLabelAfter = DefaultTemplate.bind({});
-SlotSelectedValueLabelAfter.args = {
+export const SelectedValueLabelAfterSlot = DefaultTemplate.bind({});
+SelectedValueLabelAfterSlot.args = {
   options: [
     { label: "Venice", id: "1", icon: "sailing", color: "green" },
     { label: "Paris", id: "2", icon: "flight", color: "orange" },
@@ -420,8 +420,8 @@ SlotSelectedValueLabelAfter.args = {
   `,
 };
 
-export const SlotBeforeOption = DefaultTemplate.bind({});
-SlotBeforeOption.args = {
+export const BeforeOptionSlot = DefaultTemplate.bind({});
+BeforeOptionSlot.args = {
   slotTemplate: `
     <template #before-option="{ option, index }">
       <UBadge v-if="index === 3" label="Special offer!" color="info" class="mr-1" />
@@ -429,8 +429,8 @@ SlotBeforeOption.args = {
   `,
 };
 
-export const SlotOption = DefaultTemplate.bind({});
-SlotOption.args = {
+export const OptionSlot = DefaultTemplate.bind({});
+OptionSlot.args = {
   slotTemplate: `
     <template #option="{ option, index }">
       <UBadge v-if="index === 1" :label="option.label" />
@@ -438,8 +438,8 @@ SlotOption.args = {
   `,
 };
 
-export const SlotAfterOption = DefaultTemplate.bind({});
-SlotAfterOption.args = {
+export const AfterOptionSlot = DefaultTemplate.bind({});
+AfterOptionSlot.args = {
   slotTemplate: `
     <template #after-option="{ option, index }">
       <UBadge v-if="index === 2" label="Special offer!" color="info" class="ml-1" />

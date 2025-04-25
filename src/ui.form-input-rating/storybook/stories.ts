@@ -125,8 +125,8 @@ RatingIcons.parameters = {
   },
 };
 
-export const SlotCounter = DefaultTemplate.bind({});
-SlotCounter.args = {
+export const CounterSlot = DefaultTemplate.bind({});
+CounterSlot.args = {
   slotTemplate: `
     <template #counter="{ counter }">
       <UBadge :label="'Current rating is: ' + String(counter)" color="success" />
@@ -134,8 +134,8 @@ SlotCounter.args = {
   `,
 };
 
-export const SlotTotal = DefaultTemplate.bind({});
-SlotTotal.args = {
+export const TotalSlot = DefaultTemplate.bind({});
+TotalSlot.args = {
   total: 250,
   slotTemplate: `
     <template #total="{total}">

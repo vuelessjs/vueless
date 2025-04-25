@@ -143,8 +143,8 @@ Colors.args = { enum: "color", name: "Colors" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", name: "Sizes" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label>
       <UBadge label="At least one option is required" color="success" />

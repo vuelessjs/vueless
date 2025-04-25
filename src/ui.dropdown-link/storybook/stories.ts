@@ -203,8 +203,8 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
   `,
 });
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened, toggle }">
       <UIcon
