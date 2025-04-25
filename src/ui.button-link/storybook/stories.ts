@@ -16,7 +16,7 @@ import type { Props } from "../types.ts";
 
 interface ULinkArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "color" | "target";
+  enum: "size" | "color";
 }
 
 export default {
