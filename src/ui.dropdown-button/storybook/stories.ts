@@ -12,6 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -30,11 +31,11 @@ export default {
   title: "Dropdowns / Dropdown Button",
   component: UDropdownButton,
   args: {
-    label: "Dropdown",
+    label: "Filter by Status",
     options: [
-      { label: "option 1", id: 1 },
-      { label: "option 2", id: 2 },
-      { label: "option 3", id: 3 },
+      { label: "Active", id: "active" },
+      { label: "Pending", id: "pending" },
+      { label: "Archived", id: "archived" },
     ],
   },
   argTypes: {
@@ -53,7 +54,7 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   args: DefaultUDropdownButtonArgs,
 ) => ({
-  components: { UDropdownButton, UIcon, ULink },
+  components: { UDropdownButton, UIcon, ULink, UAvatar },
   setup: () => ({ args, slots: getSlotNames(UDropdownButton.__name) }),
   template: `
     <UDropdownButton v-bind="args">
@@ -132,7 +133,11 @@ export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size", label: "{enumValue}" };
 
 export const ListboxXPosition = EnumTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition", label: "{enumValue}" };
+ListboxXPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  config: { dropdownButton: "w-40" },
+};
 
 export const ListboxYPosition = EnumTemplate.bind({});
 ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
@@ -141,7 +146,7 @@ ListboxYPosition.parameters = {
 };
 
 export const Color = MultiEnumTemplate.bind({});
-Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}", options: [] };
 
 export const WithoutDropdownIcon = EnumTemplate.bind({});
 WithoutDropdownIcon.args = { enum: "variant", label: "{enumValue}", noIcon: true };
@@ -159,11 +164,18 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <UIcon name="unfold_more" color="inherit" />
+      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
     </template>
   `,
   noIcon: true,
-  square: true,
+  round: true,
+  variant: "ghost",
+  config: { dropdownButton: "p-0" },
+  options: [
+    { label: "Change avatar", id: "avatar" },
+    { label: "Profile settings", id: "settings" },
+    { label: "Delete profile", id: "delete" },
+  ],
 };
 
 export const LeftSlot = DefaultTemplate.bind({});

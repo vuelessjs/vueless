@@ -12,6 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -30,11 +31,11 @@ export default {
   title: "Dropdowns / Dropdown Badge",
   component: UDropdownBadge,
   args: {
-    label: "Dropdown",
+    label: "Order Status",
     options: [
-      { label: "option 1", id: 1 },
-      { label: "option 2", id: 2 },
-      { label: "option 3", id: 3 },
+      { label: "Pending", id: "pending" },
+      { label: "Delivered", id: "delivered" },
+      { label: "Cancelled", id: "cancelled" },
     ],
   },
   argTypes: {
@@ -51,7 +52,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
-  components: { UDropdownBadge, UIcon, ULink },
+  components: { UDropdownBadge, UIcon, ULink, UAvatar },
   setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
     <UDropdownBadge v-bind="args">
@@ -130,7 +131,11 @@ export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size", label: "{enumValue}" };
 
 export const ListboxXPosition = EnumTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition", label: "{enumValue}" };
+ListboxXPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  config: { dropdownBadge: { badge: "w-40", body: "justify-center" } },
+};
 
 export const ListboxYPosition = EnumTemplate.bind({});
 ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
@@ -158,32 +163,32 @@ CustomDropdownIcon.args = {
   },
 };
 
-export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
-  components: { UDropdownBadge, UIcon, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URow>
-      <UDropdownBadge v-bind="args" label="Add to favorite">
-        <template #left>
-          <UIcon
-            name="heart_plus"
-            size="xs"
-            color="inheirt"
-            class="mx-1"
-          />
-        </template>
-      </UDropdownBadge>
-
-      <UDropdownBadge v-bind="args" no-icon>
-        <template #default>
-          <UIcon name="unfold_more" color="inherit" />
-        </template>
-      </UDropdownBadge>
-    </URow>
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
+  slotTemplate: `
+    <template #default>
+      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+    </template>
   `,
-});
+  noIcon: true,
+  round: true,
+  variant: "subtle",
+  config: { dropdownBadge: "p-0" },
+  options: [
+    { label: "Change avatar", id: "avatar" },
+    { label: "Profile settings", id: "settings" },
+    { label: "Delete profile", id: "delete" },
+  ],
+};
+
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon name="heart_plus" size="sm" color="inherit" />
+    </template>
+  `,
+};
 
 export const SlotToggle = DefaultTemplate.bind({});
 SlotToggle.args = {
