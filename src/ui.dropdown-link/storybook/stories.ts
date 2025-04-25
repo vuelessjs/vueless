@@ -141,12 +141,12 @@ WithoutDropdownIcon.args = { noIcon: true };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
+  noIcon: true,
   slotTemplate: `
     <template #default>
       <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
     </template>
   `,
-  noIcon: true,
 };
 
 export const LeftSlot = DefaultTemplate.bind({});

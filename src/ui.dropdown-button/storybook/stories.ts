@@ -162,11 +162,6 @@ CustomDropdownIcon.args = {
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  slotTemplate: `
-    <template #default>
-      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
-    </template>
-  `,
   noIcon: true,
   round: true,
   variant: "ghost",
@@ -176,6 +171,11 @@ DefaultSlot.args = {
     { label: "Profile settings", id: "settings" },
     { label: "Delete profile", id: "delete" },
   ],
+  slotTemplate: `
+    <template #default>
+      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+    </template>
+  `,
 };
 
 export const LeftSlot = DefaultTemplate.bind({});
