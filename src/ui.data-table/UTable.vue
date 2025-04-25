@@ -543,7 +543,7 @@ const {
         v-bind="stickyHeaderCellAttrs"
         :class="cx([(stickyHeaderCellAttrs as any).class, column.thClass])"
       >
-        <template v-if="hasSlotContent($slots[`header-${column.key}`])">
+        <template v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })">
           <!--
               @slot Use it to customize needed header cell.
               @binding {object} column
@@ -627,7 +627,12 @@ const {
     <div ref="table-wrapper" v-bind="tableWrapperAttrs">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
-          <tr v-if="hasSlotContent($slots['before-header'])" v-bind="headerRowAttrs">
+          <tr
+            v-if="
+              hasSlotContent($slots['before-header'], { colsCount, classes: headerRowAttrs.class })
+            "
+            v-bind="headerRowAttrs"
+          >
             <!--
               @slot Use it to add something before header row.
               @binding {number} cols-count
@@ -682,7 +687,7 @@ const {
 
         <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
           <tr
-            v-if="hasSlotContent($slots['before-first-row'])"
+            v-if="hasSlotContent($slots['before-first-row'], { colsCount })"
             v-bind="isRowSelected(sortedRows[0]) ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
           >
             <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
@@ -790,7 +795,15 @@ const {
             </UTableRow>
           </template>
 
-          <tr v-if="hasSlotContent($slots['after-last-row'])" v-bind="bodyRowAfterAttrs">
+          <tr
+            v-if="
+              hasSlotContent($slots['after-last-row'], {
+                colsCount,
+                classes: bodyCellBaseAttrs.class,
+              })
+            "
+            v-bind="bodyRowAfterAttrs"
+          >
             <!--
                 @slot Use it to add something after last row.
                 @binding {number} cols-count
@@ -820,7 +833,7 @@ const {
           </tr>
         </tbody>
 
-        <tfoot v-if="hasSlotContent($slots['footer'])" v-bind="footerAttrs">
+        <tfoot v-if="hasSlotContent($slots['footer'], { colsCount })" v-bind="footerAttrs">
           <tr ref="footer-row" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 

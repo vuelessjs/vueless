@@ -261,7 +261,7 @@ const {
 
     <label :for="elementId" v-bind="wrapperAttrs">
       <span
-        v-if="hasSlotContent($slots['left']) || leftIcon"
+        v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
         ref="leftSlotWrapper"
       >
@@ -297,7 +297,10 @@ const {
         @copy="onCopy"
       />
 
-      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
+      <div
+        v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
+        v-bind="rightSlotAttrs"
+      >
         <!--
           @slot Use it to add something after the text.
           @binding {string} icon-name

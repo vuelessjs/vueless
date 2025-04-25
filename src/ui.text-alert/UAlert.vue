@@ -91,7 +91,7 @@ const {
           @slot Use it to add something instead of the title.
           @binding {string} title
           -->
-          <slot v-if="!hasSlotContent($slots['default'])" name="title" :title="title">
+          <slot v-if="!hasSlotContent($slots['default'], { title })" name="title" :title="title">
             <div v-if="title" v-bind="titleAttrs" v-text="title" />
           </slot>
 
@@ -100,7 +100,7 @@ const {
             @binding {string} description
           -->
           <slot
-            v-if="!hasSlotContent($slots['default'])"
+            v-if="!hasSlotContent($slots['default'], { description })"
             name="description"
             :description="description"
           >
