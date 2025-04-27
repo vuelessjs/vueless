@@ -84,7 +84,7 @@ const {
   wrapperAttrs,
   counterAttrs,
   totalAttrs,
-  starsContainerAttrs,
+  starsAttrs,
   starLabelAttrs,
   starAttrs,
   inputAttrs,
@@ -104,7 +104,7 @@ const {
       </slot>
     </div>
 
-    <div v-bind="starsContainerAttrs">
+    <div v-bind="starsAttrs">
       <label
         v-for="(star, index) in stars"
         :key="star"

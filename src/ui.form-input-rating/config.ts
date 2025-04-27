@@ -9,8 +9,7 @@ export default /*tw*/ {
       },
     },
   },
-  starsContainer: "flex relative",
-  starLabel: "",
+  stars: "flex relative",
   star: {
     base: "{UIcon}",
     variants: {
@@ -26,6 +25,7 @@ export default /*tw*/ {
       },
     },
   },
+  starLabel: "",
   input: "sr-only",
   counter: {
     variants: {
