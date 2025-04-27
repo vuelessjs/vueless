@@ -201,12 +201,15 @@ function expandOuterVueLoopFromTemplate(template, args, argTypes) {
 
 function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
-    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
-    (match, componentName) =>
-      argTypes?.[args.enum]?.options
-        // eslint-disable-next-line prettier/prettier
-        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args"></${componentName}>`)
-        ?.join("\n"),
+    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1>/g,
+    (match, componentName, beforeAttrs, afterAttrs, content) => {
+      return argTypes?.[args.enum]?.options
+        ?.map(
+          (option) =>
+            `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args">${content}</${componentName}>`,
+        )
+        ?.join("\n");
+    },
   );
 }
 

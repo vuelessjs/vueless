@@ -55,7 +55,7 @@ const EnumTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
   components: { UCol, UButton, URow, UInput },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow gap="lg" :class="{ '!flex-col': args.enum === 'content' }">
+    <URow gap="lg">
       <UCol
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -64,9 +64,6 @@ const EnumTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
       >
         <UButton :label="args.enum" />
         <UButton :label="option" />
-        <div v-if="args.enum === 'content'" class="flex flex-col gap-2">
-          ${defaultTemplate}
-        </div>
       </UCol>
     </URow>
   `,
@@ -108,8 +105,26 @@ Align.parameters = {
   },
 };
 
-export const Content = EnumTemplate.bind({});
-Content.args = { enum: "content", wrap: true };
+export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
+  components: { UCol, UButton, URow, UInput },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol gap="lg">
+      <UCol
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        class="w-full h-[300px] border border-primary rounded p-4"
+      >
+        <div class="mb-2 font-bold">Content: {{ option }}</div>
+        <div class="flex flex-wrap gap-2 h-full" :class="'content-' + option">
+          <UButton v-for="n in 4" :key="n" :label="'Item ' + n" class="w-[45%]" />
+        </div>
+      </UCol>
+    </UCol>
+  `,
+});
+Content.args = { enum: "content" };
 Content.parameters = {
   docs: {
     description: {
