@@ -1,12 +1,11 @@
 export default /*tw*/ {
   wrapper: "flex items-center gap-2",
   counterText: {
-    base: "px-2",
     variants: {
       size: {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
+        sm: "text-small px-1",
+        md: "text-medium px-1.5",
+        lg: "text-large px-2",
       },
     },
   },
