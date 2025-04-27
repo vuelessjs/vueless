@@ -166,7 +166,7 @@ SlotToggle.args = {
         src="https://avatar.iran.liara.run/public"
         size="xs"
         rounded="full"
-        :class="{ 'outline-2 outline-primary': opened }"
+        :class="{ 'outline-medium outline-primary': opened }"
         class="ml-1 cursor-pointer"
         @click="toggle"
       />
