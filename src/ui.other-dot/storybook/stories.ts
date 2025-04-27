@@ -71,8 +71,8 @@ const EnumVariantTemplate: StoryFn<UDotArgs> = (args: UDotArgs, { argTypes }) =>
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Color = EnumVariantTemplate.bind({});
+Color.args = { enum: "color" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumVariantTemplate.bind({});
+Size.args = { enum: "size" };
