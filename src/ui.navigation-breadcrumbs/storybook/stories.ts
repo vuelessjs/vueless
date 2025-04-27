@@ -86,7 +86,7 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
       { name: "Default", props: {} },
       { name: "Dashed", props: { dashed: true } },
       { name: "Underlined", props: { underlined: true } },
-      { name: "No underline", props: { underlined: false } },
+      { name: "Without Underline", props: { underlined: false } },
     ];
 
     return {

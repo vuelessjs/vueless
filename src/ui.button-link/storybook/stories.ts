@@ -104,7 +104,7 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
       { name: "Dashed", props: { dashed: true } },
       { name: "Dotted", props: { dotted: true } },
       { name: "Underlined", props: { underlined: true } },
-      { name: "No underline", props: { underlined: false } },
+      { name: "Without Underline", props: { underlined: false } },
     ];
 
     const colors = argTypes?.color?.options;
@@ -121,7 +121,7 @@ export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argType
       <ULink label="Dashed" dashed underlined />
       <ULink label="Dotted" dotted underlined />
       <ULink label="Underlined" underlined />
-      <ULink label="No underline" :underlined="false" />
+      <ULink label="Without Underline" :underlined="false" />
     </URow>
   `,
 });
