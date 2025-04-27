@@ -261,8 +261,11 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     </td>
   </tr>
 
-  <tr v-if="row.parentRowId && hasSlotContent($slots['nested-row'])" :class="row.class">
-    <td :colspan="columns.length + (selectable ? 1 : 0)">
+  <tr
+    v-if="row.parentRowId && hasSlotContent($slots['nested-row'], { row, nestedLevel })"
+    :class="row.class"
+  >
+    <td :colspan="columns.length + Number(selectable)">
       <slot name="nested-row" :row="row" :nested-level="nestedLevel" />
     </td>
   </tr>

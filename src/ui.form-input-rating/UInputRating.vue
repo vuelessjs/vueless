@@ -93,7 +93,10 @@ const {
 
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs">
-    <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
+    <div
+      v-if="counter || hasSlotContent($slots['counter'], { counter: counterValue, total })"
+      v-bind="counterAttrs"
+    >
       <!--
           @slot Use it to customize counter.
           @binding {number} counter
@@ -137,7 +140,7 @@ const {
       </label>
     </div>
 
-    <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
+    <div v-if="total || hasSlotContent($slots['total'], { counter, total })" v-bind="totalAttrs">
       <!--
           @slot Use it to customize total.
           @binding {number} counter
