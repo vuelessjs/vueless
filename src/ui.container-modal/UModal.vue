@@ -106,37 +106,49 @@ function trapFocus(e: KeyboardEvent) {
   }
 }
 
-watch(
-  () => isShownModal.value,
-  (newValue) => {
-    if (newValue) {
-      document.body.style.overflow = "hidden";
-      document.addEventListener("keydown", trapFocus);
-      document.addEventListener("keydown", onKeydownEsc);
+watch(isShownModal, onChangeShownModal);
 
-      // Focus first focusable element after a short delay to ensure modal is rendered
-      nextTick(() => {
-        const focusableElements = getFocusableElements();
+function onChangeShownModal(newValue: boolean) {
+  toggleEventListeners();
+  toggleOverflow();
 
-        if (focusableElements.length) {
-          (focusableElements.at(0) as HTMLElement).focus();
-        } else {
-          wrapperRef.value?.focus();
-        }
-      });
-    } else {
-      const element = document.getElementById(`${elementId}`);
+  if (newValue) {
+    nextTick(focusModal);
+  }
+}
 
-      if (element) {
-        element.style.overflow = "hidden";
-      }
+function focusModal() {
+  const focusableElements = getFocusableElements();
+  const firstFocusableElement = focusableElements.at(0) as HTMLElement;
 
-      document.body.style.overflow = "auto";
-      document.removeEventListener("keydown", trapFocus);
-      document.removeEventListener("keydown", onKeydownEsc);
+  focusableElements.length ? firstFocusableElement.focus() : wrapperRef.value?.focus();
+}
+
+function toggleOverflow() {
+  if (isShownModal.value) {
+    document.body.style.overflow = "hidden";
+  } else {
+    const element = document.getElementById(`${elementId}`);
+
+    if (element) {
+      element.style.overflow = "hidden";
+
+      return;
     }
-  },
-);
+
+    document.body.style.overflow = "auto";
+  }
+}
+
+function toggleEventListeners() {
+  if (isShownModal.value) {
+    document.addEventListener("keydown", trapFocus);
+    document.addEventListener("keydown", onKeydownEsc);
+  } else {
+    document.removeEventListener("keydown", trapFocus);
+    document.removeEventListener("keydown", onKeydownEsc);
+  }
+}
 
 function onClickBackLink() {
   emit("back");
