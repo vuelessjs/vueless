@@ -58,7 +58,7 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
+    const values = ref(argTypes.size?.options);
 
     return {
       args,
