@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, useTemplateRef, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -13,6 +13,7 @@ import { COMPONENT_NAME } from "./constants.ts";
 
 import type { Props, Config } from "./types.ts";
 import type { Ref } from "vue";
+import type UInput from "../ui.form-input/UInput.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -28,18 +29,27 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const count = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
-
-const isAddButtonDisabled = computed(() => Number(count.value) >= props.max);
-const isSubtractButtonDisabled = computed(() => Number(count.value) <= props.min);
+const inputComponentRef = useTemplateRef<InstanceType<typeof UInput>>("inputComponent");
 
 const addIntervalId = ref<number | null>(null);
 const subtractIntervalId = ref<number | null>(null);
 const addIterationCount = ref(0);
 const subtractIterationCount = ref(0);
+
+const count = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const isAddButtonDisabled = computed(() => {
+  return Number(count.value) >= props.max;
+});
+
+const isSubtractButtonDisabled = computed(() => {
+  return Number(count.value) <= props.min;
+});
+
+watch([count, () => props.editable], () => setTimeout(setInputSize, 0), { immediate: true });
 
 function clearIntervals() {
   if (addIntervalId.value) {
@@ -115,6 +125,16 @@ function onBlur() {
   if (Number(count.value) < props.min) count.value = props.min;
 }
 
+function onInput() {
+  setInputSize();
+}
+
+function setInputSize() {
+  if (inputComponentRef.value && props.editable) {
+    inputComponentRef.value.input.size = inputComponentRef?.value?.input?.value.length || 1;
+  }
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -123,6 +143,7 @@ const {
   getDataTest,
   config,
   wrapperAttrs,
+  counterTextAttrs,
   counterInputAttrs,
   subtractButtonAttrs,
   subtractIconAttrs,
@@ -134,11 +155,10 @@ const {
 <template>
   <div v-bind="wrapperAttrs">
     <UButton
-      variant="soft"
-      size="xs"
-      square
       round
-      color="neutral"
+      square
+      :size="size"
+      variant="outlined"
       :disabled="isSubtractButtonDisabled || disabled"
       v-bind="subtractButtonAttrs"
       :data-test="getDataTest('subtract')"
@@ -149,28 +169,30 @@ const {
     >
       <UIcon
         internal
-        :size="size"
         :name="config.defaults.subtractIcon"
         :disabled="isSubtractButtonDisabled || disabled"
         v-bind="subtractIconAttrs"
       />
     </UButton>
 
+    <div v-if="!editable" v-bind="counterTextAttrs" v-text="count" />
+
     <UInputNumber
+      v-else
+      ref="inputComponent"
       v-model="count"
       :size="size"
       :disabled="disabled"
       :readonly="!editable"
       v-bind="counterInputAttrs"
       @blur="onBlur"
+      @input="onInput"
     />
 
     <UButton
-      variant="soft"
-      size="xs"
-      square
       round
-      color="neutral"
+      square
+      variant="outlined"
       :disabled="isAddButtonDisabled || disabled"
       v-bind="addButtonAttrs"
       :data-test="getDataTest('add')"
@@ -181,7 +203,6 @@ const {
     >
       <UIcon
         internal
-        :size="size"
         :name="config.defaults.addIcon"
         :disabled="isAddButtonDisabled || disabled"
         v-bind="addIconAttrs"
