@@ -49,7 +49,7 @@ const isSubtractButtonDisabled = computed(() => {
   return Number(count.value) <= props.min;
 });
 
-watch([count, () => props.editable], () => setTimeout(setInputSize, 0), { immediate: true });
+watch([count, () => props.readonly], () => setTimeout(setInputSize, 0), { immediate: true });
 
 function clearIntervals() {
   if (addIntervalId.value) {
@@ -130,7 +130,7 @@ function onInput() {
 }
 
 function setInputSize() {
-  if (inputComponentRef.value && props.editable) {
+  if (inputComponentRef.value && !props.readonly) {
     inputComponentRef.value.input.size = inputComponentRef?.value?.input?.value.length || 1;
   }
 }
@@ -169,13 +169,14 @@ const {
     >
       <UIcon
         internal
+        size="xs"
         :name="config.defaults.subtractIcon"
         :disabled="isSubtractButtonDisabled || disabled"
         v-bind="subtractIconAttrs"
       />
     </UButton>
 
-    <div v-if="!editable" v-bind="counterTextAttrs" v-text="count" />
+    <div v-if="readonly" v-bind="counterTextAttrs" v-text="count" />
 
     <UInputNumber
       v-else
@@ -183,7 +184,7 @@ const {
       v-model="count"
       :size="size"
       :disabled="disabled"
-      :readonly="!editable"
+      :readonly="readonly"
       v-bind="counterInputAttrs"
       @blur="onBlur"
       @input="onInput"
@@ -203,6 +204,7 @@ const {
     >
       <UIcon
         internal
+        size="xs"
         :name="config.defaults.addIcon"
         :disabled="isAddButtonDisabled || disabled"
         v-bind="addIconAttrs"
