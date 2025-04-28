@@ -92,11 +92,11 @@ Label.args = { label: "Business analysis" };
 export const Icon = DefaultTemplate.bind({});
 Icon.args = { icon: "monitoring" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const Dashed = DefaultTemplate.bind({});
 Dashed.args = { dashed: true, size: "sm" };

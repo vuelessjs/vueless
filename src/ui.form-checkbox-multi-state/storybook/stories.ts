@@ -103,5 +103,5 @@ LabelPlacement.args = { enum: "labelAlign" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };

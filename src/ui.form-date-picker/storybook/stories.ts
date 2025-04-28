@@ -152,8 +152,8 @@ Disabled.args = { disabled: true };
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const OpenDirection = OpenDirectionTemplate.bind({});
 OpenDirection.args = {};

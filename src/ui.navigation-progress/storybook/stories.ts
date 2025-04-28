@@ -124,8 +124,8 @@ Sizes.args = { enum: "size" };
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color" };
 
-export const SlotIndicator = DefaultTemplate.bind({});
-SlotIndicator.args = {
+export const IndicatorSlot = DefaultTemplate.bind({});
+IndicatorSlot.args = {
   indicator: true,
   slotTemplate: `
   <template #indicator="{ percent }">
@@ -134,8 +134,8 @@ SlotIndicator.args = {
 `,
 };
 
-export const SlotStep = DefaultTemplate.bind({});
-SlotStep.args = {
+export const StepSlot = DefaultTemplate.bind({});
+StepSlot.args = {
   max: ["Order Placed", "Processing", "Shipped", "Delivered"],
   slotTemplate: `
   <template #step-0="{ step, value, max }">

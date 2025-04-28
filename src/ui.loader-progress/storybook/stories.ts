@@ -119,11 +119,11 @@ const LoadingTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};

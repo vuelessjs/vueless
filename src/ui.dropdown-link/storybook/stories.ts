@@ -159,8 +159,8 @@ LeftSlot.args = {
   `,
 };
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened, toggle }">
       <UAvatar

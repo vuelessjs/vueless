@@ -109,8 +109,8 @@ Variants.args = { enum: "variant" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Color = ColorsTemplate.bind({});
-Color.args = {};
+export const Colors = ColorsTemplate.bind({});
+Colors.args = {};
 
 export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
   components: { UBadge, URow },

@@ -90,20 +90,20 @@ Line.parameters = {
   },
 };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Underlined = EnumVariantTemplate.bind({});
 Underlined.args = { enum: "size", underlined: true };
 Underlined.parameters = getEnumVariantDescription();
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
-Color.parameters = getEnumVariantDescription();
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <UBadge v-bind="args" size="lg" color="success" />
   `,

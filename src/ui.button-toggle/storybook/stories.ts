@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -46,11 +47,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   components: { UToggle, UIcon, UBadge, UDot, ULabel },
-  setup() {
-    const slots = getSlotNames(UToggle.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UToggle.__name) }),
   template: `
     <UToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -58,25 +55,25 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
+    const values = ref(argTypes.size?.options);
 
     return {
       args,
       values,
-      options: argTypes?.[args.enum]?.options,
+      argTypes,
+      getArgs,
     };
   },
   template: `
     <URow>
       <UToggle
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="values[option]"
-        :[args.enum]="option"
         :options="[
           { value: option + 1, label: option },
           { value: option + 2, label: option },
@@ -88,9 +85,7 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  name: "Default",
-};
+Default.args = { name: "Default" };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = {
@@ -103,15 +98,11 @@ Disabled.args = {
   ],
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { name: "sizeTemplate", enum: "size" };
 
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = {
-  name: "multiple",
-  multiple: true,
-  modelValue: [],
-};
+Multiple.args = { name: "multiple", multiple: true, modelValue: [] };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
@@ -141,20 +132,24 @@ Square.args = {
 export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({
   components: { UToggle, UDot, ULabel },
   setup() {
-    const options = [
-      { value: "1", label: "Success", color: "success" },
-      { value: "2", label: "Warning", color: "warning" },
-      { value: "3", label: "Error", color: "error" },
-    ];
+    const modelValue = ref("1");
 
-    return { args, options };
+    return { args, modelValue };
   },
   template: `
     <ULabel label="Select transaction status:">
-      <UToggle name="optionSlot" v-bind="args" v-model="args.modelValue" :options="options">
-        <template #option="{ label, index }">
-          <UDot :color="options[index].color" />
-          {{ label }}
+      <UToggle
+        name="optionSlot"
+        v-model="modelValue"
+        :options="[
+          { value: '1', label: 'Success', color: 'success' },
+          { value: '2', label: 'Warning', color: 'warning' },
+          { value: '3', label: 'Error', color: 'error' },
+        ]"
+      >
+        <template #option="{ option }">
+          <UDot :color="option.color" />
+          {{ option.label }}
         </template>
       </UToggle>
     </ULabel>
