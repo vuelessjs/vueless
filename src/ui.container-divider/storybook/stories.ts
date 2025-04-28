@@ -64,10 +64,7 @@ const EnumTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) =
         class="w-1/4"
       >
         <p>{{ option }}</p>
-        <UDivider
-          v-bind="getArgs(args, option)"
-          :key="option"
-        />
+        <UDivider v-bind="getArgs(args, option)" />
         <p>{{ option }}</p>
       </UCol>
     </URow>

@@ -203,12 +203,12 @@ function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
     /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1>/g,
     (match, componentName, beforeAttrs, afterAttrs, content) => {
-      return argTypes?.[args.enum]?.options
-        ?.map(
-          (option) =>
-            `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args">${content}</${componentName}>`,
-        )
-        ?.join("\n");
+      return (
+        argTypes?.[args.enum]?.options
+          // eslint-disable-next-line prettier/prettier, vue/max-len
+        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args">${content}</${componentName}>`)
+          ?.join("\n")
+      );
     },
   );
 }

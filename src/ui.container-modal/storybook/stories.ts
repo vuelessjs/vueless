@@ -81,21 +81,14 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 
 const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea, UCol },
-  setup() {
-    function onClick(value: Props["size"]) {
-      args.size = value;
-      args.modelValue = true;
-    }
-
-    return { args, argTypes, getArgs, onClick };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UButton
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         :label="option"
-        @click="onClick(option)"
+        @click="() => { args.size = option; args.modelValue = true; }"
       />
 
       <UModal v-bind="getArgs(args, args.size)" v-model="args.modelValue">

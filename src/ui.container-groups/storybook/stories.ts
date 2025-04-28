@@ -48,14 +48,14 @@ const EnumTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => 
   components: { UGroups, UGroup, UCol, UInput },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <div>
+    <UCol>
       <UGroups
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="mb-8"
+        class="w-full"
       >
-        <UGroup :title="option" :upperlined="index !== 0">
+        <UGroup :title="option" upperlined>
           <UCol>
             <UInput placeholder="Enter full name" label="Full Name" />
             <UInput placeholder="Enter email address" label="Email Address" />
@@ -67,7 +67,7 @@ const EnumTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => 
           </UCol>
         </UGroup>
       </UGroups>
-    </div>
+    </UCol>
   `,
 });
 

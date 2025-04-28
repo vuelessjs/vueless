@@ -80,10 +80,13 @@ const EnumTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { arg
 
     function onClick(value: string) {
       selectedOption.value = value;
+      const name = argTypes?.[args.enum]?.name;
 
-      argTypes?.[args.enum]?.name === "confirmColor"
-        ? (args.confirmColor = value as Props["confirmColor"])
-        : (args.width = value);
+      if (name === "confirmColor") {
+        args.confirmColor = value as Props["confirmColor"];
+      } else {
+        args.width = value;
+      }
 
       args.modelValue = true;
     }
