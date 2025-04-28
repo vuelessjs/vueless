@@ -79,8 +79,8 @@ const EnumVariantTemplate: StoryFn<UInputCounterArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Editable = DefaultTemplate.bind({});
-Editable.args = { editable: true };
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

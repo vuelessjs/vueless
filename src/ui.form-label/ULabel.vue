@@ -93,9 +93,9 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || hasSlotContent($slots['label']) || error || description">
+    <div v-if="label || hasSlotContent($slots['label'], { label }) || error || description">
       <label
-        v-if="label || hasSlotContent($slots['label'])"
+        v-if="label || hasSlotContent($slots['label'], { label })"
         ref="label"
         :for="props.for"
         v-bind="labelAttrs"

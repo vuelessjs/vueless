@@ -1,26 +1,41 @@
 export default /*tw*/ {
-  wrapper: "flex items-stretch gap-1",
-  counterInput: "{UInput} w-fit",
-  addButton: "{UButton}",
-  subtractButton: "{UButton}",
-  actionIcon: {
-    base: "{UIcon}",
-    defaults: {
+  wrapper: "flex items-center gap-2",
+  counterText: {
+    variants: {
       size: {
-        sm: "xs",
-        md: "sm",
-        lg: "md",
+        sm: "text-small px-1",
+        md: "text-medium px-1.5",
+        lg: "text-large px-2",
       },
     },
   },
-  addIcon: "{>actionIcon}",
-  subtractIcon: "{>actionIcon}",
+  counterInput: {
+    base: "{UInputNumber} w-fit",
+    numberInput: {
+      base: "{UInput}",
+      input: "text-center",
+    },
+  },
+  actionButton: {
+    base: "{UButton}",
+    defaults: {
+      size: {
+        sm: "2xs",
+        md: "xs",
+        lg: "sm",
+      },
+    },
+  },
+  addButton: "{UButton} {>actionButton}",
+  subtractButton: "{UButton} {>actionButton}",
+  addIcon: "{UIcon}",
+  subtractIcon: "{UIcon}",
   defaults: {
     size: "md",
     step: 1,
     min: 1,
     max: 999,
-    editable: false,
+    readonly: false,
     disabled: false,
     /* icons */
     subtractIcon: "remove",

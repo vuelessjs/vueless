@@ -175,7 +175,10 @@ const {
             </div>
 
             <template v-if="element.actions !== false">
-              <div v-if="hasSlotContent($slots['actions'])" v-bind="customActionsAttrs">
+              <div
+                v-if="hasSlotContent($slots['actions'], { item: element })"
+                v-bind="customActionsAttrs"
+              >
                 <!--
                   @slot Use it to add custom actions.
                   @binding {object} item
