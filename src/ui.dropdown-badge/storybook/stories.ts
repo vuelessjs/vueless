@@ -52,7 +52,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
-  components: { UDropdownBadge, UIcon, ULink, UAvatar },
+  components: { UDropdownBadge, UIcon, ULink, UAvatar, URow, UCol },
   setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
     <UDropdownBadge v-bind="args">
@@ -165,10 +165,7 @@ CustomDropdownIcon.args = {
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  noIcon: true,
   round: true,
-  variant: "subtle",
-  config: { dropdownBadge: "p-0" },
   options: [
     { label: "Change avatar", id: "avatar" },
     { label: "Profile settings", id: "settings" },
@@ -176,7 +173,13 @@ DefaultSlot.args = {
   ],
   slotTemplate: `
     <template #default>
-      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+      <URow align="center" gap="xs">
+        <UAvatar size="sm" src="https://avatar.iran.liara.run/public/boy" />
+        <UCol gap="2xs">
+          <span class="text-small font-semibold">John Doe</span>
+          <span class="text-tiny">Admin</span>
+        </UCol>
+      </URow>
     </template>
   `,
 };
