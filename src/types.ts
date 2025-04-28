@@ -8,6 +8,7 @@ import UHeaderDefaultConfig from "./ui.text-header/config.ts";
 import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
 import UNumberDefaultConfig from "./ui.text-number/config.ts";
 import UDotDefaultConfig from "./ui.other-dot/config.ts";
+import UChipDefaultConfig from "./ui.other-chip/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import ULinkDefaultConfig from "./ui.button-link/config.ts";
 import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
@@ -218,6 +219,7 @@ export interface Components {
   UNotify: Partial<typeof UNotifyDefaultConfig>;
   UNumber: Partial<typeof UNumberDefaultConfig>;
   UDot: Partial<typeof UDotDefaultConfig>;
+  UChip: Partial<typeof UChipDefaultConfig>;
   UButton: Partial<typeof UButtonDefaultConfig>;
   ULink: Partial<typeof ULinkDefaultConfig>;
   UToggle: Partial<typeof UToggleDefaultConfig>;

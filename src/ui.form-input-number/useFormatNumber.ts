@@ -67,11 +67,10 @@ export default function useFormatNumber(
   }
 
   /**
-   * Set input value manually.
+   * Set the input value manually.
    * @param {Intl.StringNumericLiteral} value
-   * @returns {void}
    */
-  function setValue(value: string) {
+  function setValue(value: string): void {
     const newFormattedValue = getFormattedValue(value, options.value);
 
     formattedValue.value = newFormattedValue;
@@ -95,7 +94,7 @@ export default function useFormatNumber(
         options.value.decimalSeparator,
       ].includes(charToRemove);
 
-      // Skip unremovable character and put cursor one step back.
+      // Skip the unremovable character and put the cursor one step back.
       if (isFormatChar && !inputElement.value.endsWith(options.value.decimalSeparator)) {
         event.preventDefault();
 

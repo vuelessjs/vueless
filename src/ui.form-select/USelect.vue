@@ -479,7 +479,10 @@ const {
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
     >
-      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
+      <div
+        v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
+        v-bind="rightSlotAttrs"
+      >
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
@@ -490,7 +493,10 @@ const {
       </div>
 
       <div
-        v-if="hasSlotContent($slots['after-toggle']) && !(multiple && localValue?.length)"
+        v-if="
+          hasSlotContent($slots['after-toggle'], { option: localValue }) &&
+          !(multiple && localValue?.length)
+        "
         v-bind="afterToggleAttrs"
         :tabindex="-1"
       >
@@ -547,7 +553,10 @@ const {
       </div>
 
       <div
-        v-if="hasSlotContent($slots['before-toggle']) && !(multiple && localValue?.length)"
+        v-if="
+          hasSlotContent($slots['before-toggle'], { option: localValue }) &&
+          !(multiple && localValue?.length)
+        "
         v-bind="beforeToggleAttrs"
       >
         <!--
