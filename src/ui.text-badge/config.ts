@@ -22,7 +22,7 @@ export default /*tw*/ {
     },
   },
   body: {
-    base: "flex items-center",
+    base: "flex items-center justify-between",
     variants: {
       size: {
         sm: "gap-0.5",

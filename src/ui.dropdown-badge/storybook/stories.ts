@@ -24,6 +24,7 @@ interface DefaultUDropdownBadgeArgs extends Props {
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
   enum: keyof Pick<Props, "color" | "size" | "variant" | "xPosition" | "yPosition">;
   outerEnum: "variant";
+  class?: string;
 }
 
 export default {
@@ -134,7 +135,7 @@ export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
   enum: "xPosition",
   label: "{enumValue}",
-  config: { dropdownBadge: { badge: "w-40", body: "justify-center" } },
+  class: "w-40",
 };
 
 export const ListboxYPosition = EnumTemplate.bind({});

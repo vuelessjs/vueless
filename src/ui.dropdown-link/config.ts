@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      inline-flex gap-0.5 relative items-center rounded
+      inline-flex gap-0.5 relative items-center justify-between rounded
       focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {

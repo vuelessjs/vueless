@@ -23,6 +23,7 @@ interface DefaultUDropdownLinkArgs extends Props {
 
 interface EnumUDropdownLinkArgs extends DefaultUDropdownLinkArgs {
   enum: keyof Pick<Props, "size" | "color" | "xPosition" | "yPosition">;
+  class?: string;
 }
 
 export default {
@@ -109,7 +110,7 @@ export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
   enum: "xPosition",
   label: "{enumValue}",
-  config: { wrapper: "w-40 py-1 justify-center border border-dashed border-primary" },
+  class: "w-40 py-1 px-2.5 border border-dashed border-primary",
 };
 
 export const ListboxYPosition = EnumTemplate.bind({});
