@@ -80,8 +80,8 @@ Description.args = { description: "There are no contacts in the list." };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size", title: "" };
 
-export const SlotHeader = DefaultTemplate.bind({});
-SlotHeader.args = {
+export const HeaderSlot = DefaultTemplate.bind({});
+HeaderSlot.args = {
   slotTemplate: `
     <template #header>
       <UIcon
@@ -93,8 +93,8 @@ SlotHeader.args = {
   `,
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <UBadge label="There are no contacts in the list." />
@@ -102,8 +102,8 @@ SlotDefault.args = {
   `,
 };
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const FooterSlot = DefaultTemplate.bind({});
+FooterSlot.args = {
   slotTemplate: `
     <template #footer>
       <UButton label="Add new one" size="sm" variant="soft" />

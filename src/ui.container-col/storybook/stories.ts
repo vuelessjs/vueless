@@ -137,8 +137,8 @@ Justify.parameters = {
   },
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
     <UButton label="Submit" />

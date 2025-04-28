@@ -120,13 +120,13 @@ export const SymbolAlign = EnumVariantTemplate.bind({});
 SymbolAlign.args = { enum: "symbolAlign" };
 SymbolAlign.parameters = getEnumVariantDescription();
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
-Color.parameters = getEnumVariantDescription();
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

@@ -146,7 +146,7 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (
       { name: "Default", props: {} },
       { name: "Underlined (on hover)", props: { underlined: undefined, dashed: false } },
       { name: "Underlined", props: { underlined: true, dashed: false } },
-      { name: "No underline", props: { underlined: false } },
+      { name: "Without Underline", props: { underlined: false } },
     ];
 
     const colors = argTypes?.color?.options;
@@ -203,8 +203,8 @@ export const Slots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
   `,
 });
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened, toggle }">
       <UIcon

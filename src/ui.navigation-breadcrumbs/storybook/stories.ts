@@ -86,7 +86,7 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
       { name: "Default", props: {} },
       { name: "Dashed", props: { dashed: true } },
       { name: "Underlined", props: { underlined: true } },
-      { name: "No underline", props: { underlined: false } },
+      { name: "Without Underline", props: { underlined: false } },
     ];
 
     return {
@@ -141,8 +141,8 @@ LinkIcon.parameters = {
   },
 };
 
-export const SlotIcon = DefaultTemplate.bind({});
-SlotIcon.args = {
+export const IconSlot = DefaultTemplate.bind({});
+IconSlot.args = {
   slotTemplate: `
     <template #icon="{ index }">
       <UBadge
@@ -155,8 +155,8 @@ SlotIcon.args = {
   `,
 };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label, index }">
       <UButton v-if="index === 0" :label="label" size="2xs" />
@@ -164,8 +164,8 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotDivider = DefaultTemplate.bind({});
-SlotDivider.args = {
+export const DividerSlot = DefaultTemplate.bind({});
+DividerSlot.args = {
   slotTemplate: `
     <template #divider="{ index }">
       <UIcon v-if="index === 1" name="double_arrow" size="xs" />

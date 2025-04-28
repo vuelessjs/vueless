@@ -101,11 +101,11 @@ LabelPlacement.args = { enum: "labelAlign" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label }">
       <UBadge :label="label" color="success" />
@@ -113,8 +113,8 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
+export const BottomSlot = DefaultTemplate.bind({});
+BottomSlot.args = {
   name: "radio5",
   value: "radio",
   slotTemplate: `

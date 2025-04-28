@@ -395,8 +395,8 @@ DateDividerCustomLabel.parameters = {
   },
 };
 
-export const SlotHeaderKey = DefaultTemplate.bind({});
-SlotHeaderKey.args = {
+export const HeaderKeySlot = DefaultTemplate.bind({});
+HeaderKeySlot.args = {
   slotTemplate: `
     <template #header-status="{ column }">
       <UBadge :label="column?.label" />
@@ -404,9 +404,9 @@ SlotHeaderKey.args = {
   `,
 };
 
-export const SlotHeaderActions = DefaultTemplate.bind({});
-SlotHeaderActions.parameters = SHORT_STORY_PARAMETERS;
-SlotHeaderActions.args = {
+export const HeaderActionsSlot = DefaultTemplate.bind({});
+HeaderActionsSlot.parameters = SHORT_STORY_PARAMETERS;
+HeaderActionsSlot.args = {
   numberOfRows: 50,
   stickyHeader: true,
   selectable: true,
@@ -431,8 +431,8 @@ SlotHeaderActions.args = {
   `,
 };
 
-export const SlotBeforeHeader = DefaultTemplate.bind({});
-SlotBeforeHeader.args = {
+export const BeforeHeaderSlot = DefaultTemplate.bind({});
+BeforeHeaderSlot.args = {
   slotTemplate: `
     <template #before-header="{ colsCount, classes }">
       <td :colspan="colsCount" :class="classes">
@@ -445,8 +445,8 @@ SlotBeforeHeader.args = {
   `,
 };
 
-export const SlotBeforeFirstRow = DefaultTemplate.bind({});
-SlotBeforeFirstRow.args = {
+export const BeforeFirstRowSlot = DefaultTemplate.bind({});
+BeforeFirstRowSlot.args = {
   slotTemplate: `
     <template #before-first-row>
       <p class="py-2">
@@ -474,8 +474,8 @@ CellSlots.args = {
   `,
 };
 
-export const SlotExpand = DefaultTemplate.bind({});
-SlotExpand.args = {
+export const ExpandSlot = DefaultTemplate.bind({});
+ExpandSlot.args = {
   row: getNestedRow,
   slotTemplate: `
     <template #expand="{ row, expanded }">
@@ -485,8 +485,8 @@ SlotExpand.args = {
   `,
 };
 
-export const SlotNestedRow = DefaultTemplate.bind({});
-SlotNestedRow.args = {
+export const NestedRowSlot = DefaultTemplate.bind({});
+NestedRowSlot.args = {
   columns: [
     { key: "orderId", label: "Order Id" },
     { key: "customerName", label: "Customer Name" },
@@ -511,8 +511,8 @@ SlotNestedRow.args = {
   `,
 };
 
-export const SlotAfterLastRow = DefaultTemplate.bind({});
-SlotAfterLastRow.args = {
+export const AfterLastRowSlot = DefaultTemplate.bind({});
+AfterLastRowSlot.args = {
   slotTemplate: `
     <template #after-last-row="{ colsCount, classes }">
       <td :colspan="colsCount" :class="classes">
@@ -524,8 +524,8 @@ SlotAfterLastRow.args = {
   `,
 };
 
-export const SlotEmptyState = DefaultTemplate.bind({});
-SlotEmptyState.args = {
+export const EmptyStateSlot = DefaultTemplate.bind({});
+EmptyStateSlot.args = {
   rows: [],
   config: {
     i18n: { noData: "Fetching data..." },
@@ -539,8 +539,8 @@ SlotEmptyState.args = {
   `,
 };
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const FooterSlot = DefaultTemplate.bind({});
+FooterSlot.args = {
   slotTemplate: `
     <template #footer>
       <td colspan="100%" class="px-2">

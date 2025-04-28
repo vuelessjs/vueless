@@ -118,11 +118,11 @@ Default.args = {};
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <img src="https://media.tenor.com/9zmtHZ0tIjkAAAAi/nyancat-rainbow-cat.gif" alt="Cat" />

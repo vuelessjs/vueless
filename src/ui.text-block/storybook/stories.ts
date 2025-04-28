@@ -89,9 +89,9 @@ export const Align = EnumVariantTemplate.bind({});
 Align.args = { enum: "align" };
 Align.parameters = getEnumVariantDescription();
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
@@ -150,8 +150,8 @@ List.args = {
   `,
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <UText>To proceed with your registration, please enter your
     <UBadge label="email address" v-bind="args" color="success" /> in the field below.

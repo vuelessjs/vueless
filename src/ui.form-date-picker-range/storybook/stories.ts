@@ -175,8 +175,8 @@ LabelPlacement.args = {
   modelValue: { from: null, to: null },
 };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = {
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = {
   variant: "input",
   enum: "size",
   modelValue: { from: null, to: null },
