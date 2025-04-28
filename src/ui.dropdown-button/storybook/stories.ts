@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -11,6 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -20,7 +22,9 @@ interface DefaultUDropdownButtonArgs extends Props {
 }
 
 interface EnumUDropdownButtonArgs extends DefaultUDropdownButtonArgs {
-  enum: keyof Pick<Props, "size" | "variant" | "xPosition" | "yPosition">;
+  enum: keyof Pick<Props, "size" | "variant" | "xPosition" | "yPosition" | "color">;
+  outerEnum: "variant";
+  class?: string;
 }
 
 export default {
@@ -28,11 +32,11 @@ export default {
   title: "Dropdowns / Dropdown Button",
   component: UDropdownButton,
   args: {
-    label: "Dropdown",
+    label: "Filter by Status",
     options: [
-      { label: "option 1", id: 1 },
-      { label: "option 2", id: 2 },
-      { label: "option 3", id: 3 },
+      { label: "Active", id: "active" },
+      { label: "Pending", id: "pending" },
+      { label: "Archived", id: "archived" },
     ],
   },
   argTypes: {
@@ -51,12 +55,8 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   args: DefaultUDropdownButtonArgs,
 ) => ({
-  components: { UDropdownButton, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownButton.__name);
-
-    return { args, slots };
-  },
+  components: { UDropdownButton, UIcon, ULink, UAvatar },
+  setup: () => ({ args, slots: getSlotNames(UDropdownButton.__name) }),
   template: `
     <UDropdownButton v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -82,52 +82,36 @@ const SelectableTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDropdownButtonArgs> = (
+const EnumTemplate: StoryFn<EnumUDropdownButtonArgs> = (
   args: EnumUDropdownButtonArgs,
   { argTypes },
 ) => ({
   components: { UDropdownButton, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UDropdownButton
-        v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
-        :key="index"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
 });
 
-const VariantColorsTemplate: StoryFn<EnumUDropdownButtonArgs> = (
+const MultiEnumTemplate: StoryFn<EnumUDropdownButtonArgs> = (
   args: EnumUDropdownButtonArgs,
   { argTypes },
 ) => ({
   components: { UDropdownButton, URow, UCol },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant?.options,
-      colors: argTypes.color?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <URow v-for="(variant, index) in variants" :key="index">
+      <URow v-for="outerOption in argTypes?.[args.outerEnum]?.options" :key="outerOption">
         <UDropdownButton
-          v-for="(color, index) in colors"
-          :key="index"
-          v-bind="args"
-          :color="color"
-          :variant="variant"
-          :label="color"
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option, outerOption)"
+          :key="option"
         />
       </URow>
     </UCol>
@@ -143,26 +127,30 @@ Selectable.args = {};
 export const SelectableMultiple = SelectableTemplate.bind({});
 SelectableMultiple.args = { multiple: true };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
-export const ListboxXPosition = EnumVariantTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition" };
+export const ListboxXPosition = EnumTemplate.bind({});
+ListboxXPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  class: "w-40",
+};
 
-export const ListboxYPosition = EnumVariantTemplate.bind({});
-ListboxYPosition.args = { enum: "yPosition" };
+export const ListboxYPosition = EnumTemplate.bind({});
+ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
 ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const VariantColors = VariantColorsTemplate.bind({});
-VariantColors.args = {};
+export const Color = MultiEnumTemplate.bind({});
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}", options: [] };
 
-export const WithoutDropdownIcon = EnumVariantTemplate.bind({});
-WithoutDropdownIcon.args = { enum: "variant", noIcon: true };
+export const WithoutDropdownIcon = EnumTemplate.bind({});
+WithoutDropdownIcon.args = { enum: "variant", label: "{enumValue}", noIcon: true };
 
 export const CustomDropdownIcon = DefaultTemplate.bind({});
 CustomDropdownIcon.args = {
@@ -175,13 +163,20 @@ CustomDropdownIcon.args = {
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
+  noIcon: true,
+  round: true,
+  variant: "ghost",
+  config: { dropdownButton: "p-0" },
+  options: [
+    { label: "Change avatar", id: "avatar" },
+    { label: "Profile settings", id: "settings" },
+    { label: "Delete profile", id: "delete" },
+  ],
   slotTemplate: `
     <template #default>
-      <UIcon name="unfold_more" color="inherit" />
+      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
     </template>
   `,
-  noIcon: true,
-  square: true,
 };
 
 export const LeftSlot = DefaultTemplate.bind({});

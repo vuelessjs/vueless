@@ -134,7 +134,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, dropdownIconAttrs, wrapperAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+  useUI<Config>(defaultConfig, mutatedProps, "dropdownButton");
 </script>
 
 <template>

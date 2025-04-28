@@ -79,8 +79,8 @@ const MultiEnumTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }
 export const Default = DefaultTemplate.bind({});
 Default.args = { label: "Button" };
 
-export const Variants = EnumTemplate.bind({});
-Variants.args = { enum: "variant", label: "{enumValue}" };
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", label: "{enumValue}" };
 
 export const Round = EnumTemplate.bind({});
 Round.args = { enum: "variant", label: "{enumValue}", round: true };
@@ -88,11 +88,11 @@ Round.args = { enum: "variant", label: "{enumValue}", round: true };
 export const Disabled = EnumTemplate.bind({});
 Disabled.args = { enum: "variant", label: "{enumValue}", disabled: true };
 
-export const Colors = MultiEnumTemplate.bind({});
-Colors.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
+export const Color = MultiEnumTemplate.bind({});
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
 
-export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
 export const Icons: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },
@@ -138,7 +138,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
     <URow>
       <UButton v-bind="args" label="Profile">
         <template #left>
-          <UAvatar src="https://i.pravatar.cc/150?img=57" size="2xs" rounded="full" />
+          <UAvatar src="https://avatar.iran.liara.run/public" size="2xs" rounded="full" />
         </template>
       </UButton>
 
