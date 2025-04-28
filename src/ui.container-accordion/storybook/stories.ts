@@ -108,11 +108,11 @@ Default.args = {};
 export const Accordions = AccordionsTemplate.bind({});
 Accordions.args = {};
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size", description: "{enumValue}" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <UButton

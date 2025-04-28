@@ -104,8 +104,8 @@ Sizes.args = { enum: "size" };
 export const LabelAlign = EnumVariantTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label }">
       <UBadge :label="label" />

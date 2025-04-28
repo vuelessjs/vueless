@@ -159,8 +159,8 @@ Sizes.args = { enum: "size" };
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color", modelValue: true };
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", modelValue: true };
 
 export const Partial = DefaultTemplate.bind({});
 Partial.args = { partial: true };
@@ -172,8 +172,8 @@ Partial.parameters = {
   },
 };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label>
       <UBadge label="This option is required" color="error" size="sm" />
@@ -181,8 +181,8 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
+export const BottomSlot = DefaultTemplate.bind({});
+BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
       <UBadge label="Subscription is optional" color="success" size="sm" />

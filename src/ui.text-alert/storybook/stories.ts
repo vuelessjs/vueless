@@ -100,8 +100,8 @@ Colors.args = { enum: "color" };
 export const Closable = DefaultTemplate.bind({});
 Closable.args = { closable: true };
 
-export const SlotClose = DefaultTemplate.bind({});
-SlotClose.args = {
+export const CloseSlot = DefaultTemplate.bind({});
+CloseSlot.args = {
   closable: true,
   slotTemplate: `
     <template #close="{ close }">

@@ -203,8 +203,8 @@ DisableConfirmButton.args = { confirmDisabled: true };
 export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size" };
 
-export const Color = EnumTemplate.bind({});
-Color.args = { enum: "confirmColor" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "confirmColor" };
 
 export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({
   components: { UModalConfirm, UIcon, UButton, UCol, UBadge, URow },

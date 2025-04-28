@@ -56,25 +56,30 @@ export function createDebounce<T extends unknown[]>(func: (...args: T) => void, 
  * Check if Vue slot defined, and have a content.
  */
 export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
-  type Args = VNode | VNode[] | undefined | null;
+  type Args = VNode | VNode[];
 
-  const asArray = (arg: Args) => {
-    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
+  const toArray = (arg: Args) => {
+    return Array.isArray(arg) ? arg : [arg];
   };
 
   const isVNodeEmpty = (vnode: Args) => {
     return (
       !vnode ||
-      asArray(vnode).every(
-        (vnode) =>
+      toArray(vnode).every((vnode) => {
+        return (
           vnode.type === Comment ||
           (vnode.type === Text && !vnode.children?.length) ||
-          (vnode.type === Fragment && !vnode.children?.length),
-      )
+          (vnode.type === Fragment && !vnode.children?.length)
+        );
+      })
     );
   };
 
-  return !isVNodeEmpty(slot?.(props));
+  if (!slot) {
+    return false;
+  }
+
+  return !isVNodeEmpty(slot(props));
 }
 
 /**

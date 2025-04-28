@@ -304,6 +304,7 @@ export const COMPONENTS = {
 
   /* Other */
   UDot: "ui.other-dot",
+  UChip: "ui.other-chip",
   UThemeColorToggle: "ui.other-theme-color-toggle",
 };
 

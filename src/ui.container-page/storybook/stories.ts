@@ -118,9 +118,9 @@ BackLink.parameters = {
 export const TitleSize = EnumTemplate.bind({});
 TitleSize.args = { enum: "titleSize", description: "{enumValue}" };
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size", description: "{enumValue}" };
-Size.parameters = {
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
+Sizes.parameters = {
   docs: {
     description: {
       story: "Page size (width).",

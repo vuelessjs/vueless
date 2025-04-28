@@ -84,7 +84,7 @@ const {
   wrapperAttrs,
   counterAttrs,
   totalAttrs,
-  starsContainerAttrs,
+  starsAttrs,
   starLabelAttrs,
   starAttrs,
   inputAttrs,
@@ -93,7 +93,10 @@ const {
 
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs">
-    <div v-if="counter || hasSlotContent($slots['counter'])" v-bind="counterAttrs">
+    <div
+      v-if="counter || hasSlotContent($slots['counter'], { counter: counterValue, total })"
+      v-bind="counterAttrs"
+    >
       <!--
           @slot Use it to customize counter.
           @binding {number} counter
@@ -104,7 +107,7 @@ const {
       </slot>
     </div>
 
-    <div v-bind="starsContainerAttrs">
+    <div v-bind="starsAttrs">
       <label
         v-for="(star, index) in stars"
         :key="star"
@@ -137,7 +140,7 @@ const {
       </label>
     </div>
 
-    <div v-if="total || hasSlotContent($slots['total'])" v-bind="totalAttrs">
+    <div v-if="total || hasSlotContent($slots['total'], { counter, total })" v-bind="totalAttrs">
       <!--
           @slot Use it to customize total.
           @binding {number} counter

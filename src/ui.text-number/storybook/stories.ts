@@ -101,16 +101,13 @@ export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
 });
 Align.parameters = getEnumVariantDescription();
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = {
-  enum: "color",
-  sign: "auto",
-};
-Color.parameters = getEnumVariantDescription();
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color", sign: "auto" };
+Colors.parameters = getEnumVariantDescription();
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

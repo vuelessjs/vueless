@@ -80,11 +80,11 @@ Label.args = { label: "Business analysis" };
 export const Icon = DefaultTemplate.bind({});
 Icon.args = { icon: "monitoring" };
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Color = EnumTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const Dashed = DefaultTemplate.bind({});
 Dashed.args = { dashed: true, size: "sm" };

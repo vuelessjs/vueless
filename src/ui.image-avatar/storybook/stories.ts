@@ -88,24 +88,24 @@ PlaceholderIcon.args = {
 export const Label = DefaultTemplate.bind({});
 Label.args = { label: "Name Surname", size: "3xl" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = getEnumVariantDescription();
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Rounded = EnumVariantTemplate.bind({});
 Rounded.args = { enum: "rounded", label: "John Doe", color: "warning" };
 Rounded.parameters = getEnumVariantDescription();
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
-Color.parameters = getEnumVariantDescription();
+export const Colors = EnumVariantTemplate.bind({});
+Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
 export const Bordered = EnumVariantTemplate.bind({});
 Bordered.args = { enum: "color", bordered: true };
 Bordered.parameters = getEnumVariantDescription();
 
-export const SlotPlaceholder = DefaultTemplate.bind({});
-SlotPlaceholder.args = {
+export const PlaceholderSlot = DefaultTemplate.bind({});
+PlaceholderSlot.args = {
   color: "success",
   size: "3xl",
   slotTemplate: `

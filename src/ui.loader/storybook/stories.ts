@@ -104,8 +104,8 @@ Colors.args = { enum: "color" };
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   size: "lg",
   slotTemplate: `
     <template #default>

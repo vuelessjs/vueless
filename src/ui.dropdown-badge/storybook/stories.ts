@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -11,6 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -21,6 +23,8 @@ interface DefaultUDropdownBadgeArgs extends Props {
 
 interface EnumUDropdownBadgeArgs extends DefaultUDropdownBadgeArgs {
   enum: keyof Pick<Props, "color" | "size" | "variant" | "xPosition" | "yPosition">;
+  outerEnum: "variant";
+  class?: string;
 }
 
 export default {
@@ -28,11 +32,11 @@ export default {
   title: "Dropdowns / Dropdown Badge",
   component: UDropdownBadge,
   args: {
-    label: "Dropdown",
+    label: "Order Status",
     options: [
-      { label: "option 1", id: 1 },
-      { label: "option 2", id: 2 },
-      { label: "option 3", id: 3 },
+      { label: "Pending", id: "pending" },
+      { label: "Delivered", id: "delivered" },
+      { label: "Cancelled", id: "cancelled" },
     ],
   },
   argTypes: {
@@ -49,16 +53,10 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
-  components: { UDropdownBadge, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownBadge.__name);
-
-    return { args, slots };
-  },
+  components: { UDropdownBadge, UIcon, ULink, UAvatar, URow, UCol },
+  setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
-    <UDropdownBadge
-      v-bind="args"
-    >
+    <UDropdownBadge v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownBadge>
   `,
@@ -82,52 +80,36 @@ const SelectableTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
+const EnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
   args: EnumUDropdownBadgeArgs,
   { argTypes },
 ) => ({
   components: { UDropdownBadge, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UDropdownBadge
-        v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
-        :key="index"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
 });
 
-const VariantColorsTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
+const MultiEnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
   args: EnumUDropdownBadgeArgs,
   { argTypes },
 ) => ({
   components: { UDropdownBadge, URow, UCol },
-  setup() {
-    return {
-      args,
-      variants: argTypes.variant?.options,
-      colors: argTypes.color?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <URow v-for="(variant, index) in variants" :key="index">
+      <URow v-for="outerOption in argTypes?.[args.outerEnum]?.options" :key="outerOption">
         <UDropdownBadge
-          v-for="(color, index) in colors"
-          :key="index"
-          v-bind="args"
-          :color="color"
-          :variant="variant"
-          :label="color"
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option, outerOption)"
+          :key="option"
         />
       </URow>
     </UCol>
@@ -143,23 +125,27 @@ Selectable.args = {};
 export const SelectableMultiple = SelectableTemplate.bind({});
 SelectableMultiple.args = { multiple: true };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Size = EnumTemplate.bind({});
+Size.args = { enum: "size", label: "{enumValue}" };
 
-export const ListboxXPosition = EnumVariantTemplate.bind({});
-ListboxXPosition.args = { enum: "xPosition" };
+export const ListboxXPosition = EnumTemplate.bind({});
+ListboxXPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  class: "w-40",
+};
 
-export const ListboxYPosition = EnumVariantTemplate.bind({});
-ListboxYPosition.args = { enum: "yPosition" };
+export const ListboxYPosition = EnumTemplate.bind({});
+ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
 ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const VariantColors = VariantColorsTemplate.bind({});
-VariantColors.args = {};
+export const Color = MultiEnumTemplate.bind({});
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
 
 export const WithoutDropdownIcon = DefaultTemplate.bind({});
 WithoutDropdownIcon.args = { noIcon: true };
@@ -178,35 +164,38 @@ CustomDropdownIcon.args = {
   },
 };
 
-export const Slots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
-  components: { UDropdownBadge, UIcon, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URow>
-      <UDropdownBadge v-bind="args" label="Add to favorite">
-        <template #left>
-          <UIcon
-            name="heart_plus"
-            size="xs"
-            color="inheirt"
-            class="mx-1"
-          />
-        </template>
-      </UDropdownBadge>
-
-      <UDropdownBadge v-bind="args" no-icon>
-        <template #default>
-          <UIcon name="unfold_more" color="inherit" />
-        </template>
-      </UDropdownBadge>
-    </URow>
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
+  round: true,
+  options: [
+    { label: "Change avatar", id: "avatar" },
+    { label: "Profile settings", id: "settings" },
+    { label: "Delete profile", id: "delete" },
+  ],
+  slotTemplate: `
+    <template #default>
+      <URow align="center" gap="xs">
+        <UAvatar size="sm" src="https://avatar.iran.liara.run/public/boy" />
+        <UCol gap="2xs">
+          <span class="text-small font-semibold">John Doe</span>
+          <span class="text-tiny">Admin</span>
+        </UCol>
+      </URow>
+    </template>
   `,
-});
+};
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const LeftSlot = DefaultTemplate.bind({});
+LeftSlot.args = {
+  slotTemplate: `
+    <template #left>
+      <UIcon name="heart_plus" size="sm" color="inherit" />
+    </template>
+  `,
+};
+
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <ULink

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, onMounted, nextTick, useId, useTemplateRef } from "vue";
+import { computed, watch, onMounted, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -107,15 +107,15 @@ function onKeyup(event: KeyboardEvent) {
 
   localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
-  nextTick(() => emit("keyup", event));
+  emit("keyup", event);
 }
 
 function onBlur() {
-  nextTick(() => emit("blur"));
+  emit("blur");
 }
 
 function onInput(value: InputEvent) {
-  nextTick(() => emit("input", value));
+  emit("input", value);
 }
 
 defineExpose({

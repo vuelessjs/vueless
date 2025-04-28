@@ -136,11 +136,11 @@ EmptyState.args = { list: [] };
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { nesting: true };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label="{ item }">
       <UBadge :label="item.label" />
@@ -148,8 +148,8 @@ SlotLabel.args = {
   `,
 };
 
-export const SlotEmpty = DefaultTemplate.bind({});
-SlotEmpty.args = {
+export const EmptySlot = DefaultTemplate.bind({});
+EmptySlot.args = {
   list: [],
   config: {
     wrapper: "flex flex-col items-center justify-center py-10 gap-4",
@@ -166,7 +166,7 @@ SlotEmpty.args = {
     </template>
   `,
 };
-SlotEmpty.parameters = {
+EmptySlot.parameters = {
   docs: {
     description: {
       story:
@@ -175,8 +175,8 @@ SlotEmpty.parameters = {
   },
 };
 
-export const SlotDrag = DefaultTemplate.bind({});
-SlotDrag.args = {
+export const DragSlot = DefaultTemplate.bind({});
+DragSlot.args = {
   list: [
     { label: "John Doe (Engineering)", id: 1 },
     { label: "Michael Johnson (Finance)", id: 2 },
@@ -189,8 +189,8 @@ SlotDrag.args = {
   `,
 };
 
-export const SlotActions = DefaultTemplate.bind({});
-SlotActions.args = {
+export const ActionsSlot = DefaultTemplate.bind({});
+ActionsSlot.args = {
   slotTemplate: `
     <template #actions="{ item }">
       <UButton label="Export" size="xs" />

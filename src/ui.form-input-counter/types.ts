@@ -31,9 +31,9 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Make the input editable.
+   * Make input read-only.
    */
-  editable?: boolean;
+  readonly?: boolean;
 
   /**
    * Disable the input.

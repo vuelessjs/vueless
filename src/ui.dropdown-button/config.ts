@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownButton: {
-    base: "{UButton}",
+    base: "{UButton} justify-between",
     variants: {
       opened: {
         true: "group",
