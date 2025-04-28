@@ -48,12 +48,11 @@ const EnumTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => 
   components: { UGroups, UGroup, UCol, UInput },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol align="stretch">
       <UGroups
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full"
       >
         <UGroup :title="option" upperlined>
           <UCol>

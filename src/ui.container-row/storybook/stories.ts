@@ -10,6 +10,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -101,7 +102,7 @@ Align.parameters = {
 };
 
 export const Content: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
-  components: { UCol, UButton, URow, UInput },
+  components: { UCol, UButton, URow, UInput, UText },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol gap="lg">
@@ -113,7 +114,10 @@ export const Content: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
       >
         <div class="mb-2 font-bold">Content: {{ option }}</div>
         <div class="flex flex-wrap gap-2 h-full" :class="'content-' + option">
-          <UButton v-for="n in 4" :key="n" :label="'Item ' + n" class="w-[45%]" />
+          <UButton label="Item 1" class="w-[45%]" />
+          <UButton label="Item 2" class="w-[45%]" />
+          <UButton label="Item 3" class="w-[45%]" />
+          <UButton label="Item 4" class="w-[45%]" />
         </div>
       </URow>
     </UCol>
