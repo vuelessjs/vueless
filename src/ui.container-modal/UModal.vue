@@ -132,8 +132,6 @@ function toggleOverflow() {
 
     if (element) {
       element.style.overflow = "hidden";
-
-      return;
     }
 
     document.body.style.overflow = "auto";
