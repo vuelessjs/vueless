@@ -27,6 +27,7 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-medium font-normal text-lifted",
   closeIcon: "{UIcon}",
+  closeButton: "{UButton}",
   body: "px-4 md:px-6 pb-6 text-medium",
   footer: {
     base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
