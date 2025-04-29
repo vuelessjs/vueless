@@ -74,10 +74,6 @@ const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => 
         v-bind="getArgs(args, option)"
         :key="option"
         v-model="values[option]"
-        :options="[
-          { value: option + 1, label: option },
-          { value: option + 2, label: option },
-        ]"
         class="w-auto"
       />
     </URow>
@@ -99,10 +95,17 @@ Disabled.args = {
 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { name: "sizeTemplate", enum: "size" };
+Sizes.args = {
+  name: "sizeTemplate",
+  enum: "size",
+  options: [
+    { value: 1, label: "{enumValue}" },
+    { value: 2, label: "{enumValue}" },
+  ],
+};
 
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = { name: "multiple", multiple: true, modelValue: [] };
+Multiple.args = { name: "multiple", multiple: true, modelValue: ["11", "12"] };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
