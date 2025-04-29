@@ -73,42 +73,6 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
   `,
 });
 
-const EnumTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
-  components: { UModalConfirm, UButton, URow },
-  setup() {
-    const selectedOption = ref("");
-
-    function onClick(value: string) {
-      selectedOption.value = value;
-      const name = argTypes?.[args.enum]?.name;
-
-      if (name === "confirmColor") {
-        args.confirmColor = value as Props["confirmColor"];
-      } else {
-        args.width = value;
-      }
-
-      args.modelValue = true;
-    }
-
-    return { args, argTypes, getArgs, onClick, selectedOption };
-  },
-  template: `
-    <URow>
-      <UButton
-        v-for="option in argTypes?.[args.enum]?.options"
-        :key="option"
-        :label="option"
-        @click="onClick(option)"
-      />
-
-      <UModalConfirm v-bind="getArgs(args, selectedOption)" v-model="args.modelValue">
-        ${defaultTemplate}
-      </UModalConfirm>
-    </URow>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
@@ -200,10 +164,79 @@ WithoutCancelButton.args = { cancelHidden: true };
 export const DisableConfirmButton = DefaultTemplate.bind({});
 DisableConfirmButton.args = { confirmDisabled: true };
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
+  components: { UModalConfirm, UButton, URow },
+  setup() {
+    const modalValues = ref<Record<string, boolean>>({});
 
-export const Colors = EnumTemplate.bind({});
+    argTypes[args.enum]?.options?.forEach((option: string) => {
+      modalValues.value[option] = false;
+    });
+
+    const toggleModal = (size: string) => {
+      modalValues.value[size] = !modalValues.value[size];
+    };
+
+    return { args, argTypes, getArgs, modalValues, toggleModal };
+  },
+  template: `
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        :label="option"
+        @click="toggleModal(option)"
+      />
+
+      <UModalConfirm
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        v-model="modalValues[option]"
+      >
+        ${defaultTemplate}
+      </UModalConfirm>
+    </URow>
+  `,
+});
+Sizes.args = { enum: "size" };
+
+export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
+  components: { UModalConfirm, UButton, URow },
+  setup() {
+    const modalValues = ref<Record<string, boolean>>({});
+
+    argTypes[args.enum]?.options?.forEach((option: string) => {
+      modalValues.value[option] = false;
+    });
+
+    const toggleModal = (color: string) => {
+      modalValues.value[color] = !modalValues.value[color];
+    };
+
+    return { args, argTypes, getArgs, modalValues, toggleModal };
+  },
+  template: `
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        :label="option"
+        :color="option"
+        @click="toggleModal(option)"
+      />
+
+      <UModalConfirm
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        v-model="modalValues[option]"
+      >
+        ${defaultTemplate}
+      </UModalConfirm>
+    </URow>
+  `,
+});
 Colors.args = { enum: "confirmColor" };
 
 export const Slots: StoryFn<UModalConfirmArgs> = (args) => ({

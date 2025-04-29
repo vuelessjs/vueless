@@ -178,8 +178,8 @@ WithoutDivider.parameters = {
   },
 };
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const BackLink = DefaultTemplate.bind({});
 BackLink.args = {

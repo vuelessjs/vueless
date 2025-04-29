@@ -118,7 +118,13 @@ export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         class="w-full h-[300px] border border-primary rounded p-4"
       >
         <UText :html="'Content: ' + option" class="font-bold" />
-        <URow wrap gap="xs" class="h-full" :content="option">
+        <URow
+          align="normal"
+          gap="xs"
+          wrap
+          class="h-full"
+          :content="option"
+        >
           <UButton label="Item 1" class="w-[45%]" />
           <UButton label="Item 2" class="w-[45%]" />
           <UButton label="Item 3" class="w-[45%]" />
