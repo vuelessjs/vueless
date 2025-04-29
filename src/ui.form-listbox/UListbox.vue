@@ -212,11 +212,11 @@ function optionHighlight(index: number, option: Option) {
   const classes = [];
 
   if (isSelectedOption(option)) {
-    classes.push(config.value?.optionActive);
+    classes.push(optionActiveAttrs.value.class);
   }
 
   if (index === pointer.value && !isSelectedOption(option)) {
-    classes.push(config.value?.optionHighlighted);
+    classes.push(optionHighlightedAttrs.value.class);
   }
 
   return classes;
@@ -309,6 +309,7 @@ const {
   optionContentAttrs,
   optionDividerAttrs,
   selectedIconAttrs,
+  optionHighlightedAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
