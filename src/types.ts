@@ -132,6 +132,11 @@ export interface ThemeConfig {
   outlineLg?: number;
 
   /**
+   * Default components opacity for disabled state (in percents).
+   */
+  disabledOpacity?: number;
+
+  /**
    * Default color mode.
    */
   colorMode?: `${ColorMode}`;

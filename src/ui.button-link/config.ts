@@ -29,7 +29,7 @@ export default /*tw*/ {
         true: "decoration-dotted hover:decoration-dotted",
       },
       disabled: {
-        true: "!text-{color}/75 !no-underline cursor-not-allowed",
+        true: "!text-{color}/(--vl-disabled-opacity) !no-underline cursor-not-allowed",
       },
       block: {
         true: "w-full",

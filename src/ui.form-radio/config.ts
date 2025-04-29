@@ -11,7 +11,7 @@ export default /*tw*/ {
       focus:ring-0 focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
       disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
-      disabled:checked:bg-{color}/75 disabled:checked:border-transparent
+      disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent
 
     `,
     variants: {

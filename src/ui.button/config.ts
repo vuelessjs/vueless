@@ -20,31 +20,31 @@ export default /*tw*/ {
           text-inverted bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
-          disabled:!text-inverted/75 disabled:!bg-{color}/75
+          disabled:!text-inverted/(--vl-disabled-opacity) disabled:!bg-{color}/(--vl-disabled-opacity)
         `,
         outlined: `
           text-{color} border-{color}
           hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/75 disabled:!bg-{color}/5 disabled:!border-{color}/75
+          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5 disabled:!border-{color}/(--vl-disabled-opacity)
         `,
         subtle: `
           text-{color} bg-{color}/5 border-{color}/15
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/75 disabled:!bg-{color}/5 disabled:!border-{color}/10
+          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5 disabled:!border-{color}/10
         `,
         soft: `
           text-{color} bg-{color}/5
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/75 disabled:!bg-{color}/5
+          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5
         `,
         ghost: `
           text-{color}
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/75 disabled:!bg-transparent
+          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-transparent
         `,
       },
       round: {
