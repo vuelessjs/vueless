@@ -24,6 +24,10 @@
   body {
     @apply antialiased text-(--vl-text) bg-(--vl-bg) scheme-light dark:scheme-dark;
   }
+
+  [type='checkbox']:checked {
+    @apply !bg-none;
+  }
 }
 
 /* ------ Tailwind theme settings ------ */
