@@ -73,8 +73,8 @@ function calculateInitialYear() {
   const activeYear = localActiveMonth.value.getFullYear();
 
   // First render - position selected date as the 5th element
-  if (isFirstRender.value && props.selectedDate) {
-    const selectedYear = props.selectedDate.getFullYear();
+  if (isFirstRender.value) {
+    const selectedYear = props.selectedDate?.getFullYear() || activeYear;
 
     return selectedYear - 4;
   }

@@ -78,7 +78,7 @@ function onClickPeriodButton(periodName: `${Period}`) {
   }
 
   if (periodName === Period.Year) {
-    periodDateList.value = getYearDateList(localDate);
+    periodDateList.value = getYearDateList(localDate || activeDate);
 
     period.value = Period.Year;
   }
