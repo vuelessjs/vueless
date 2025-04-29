@@ -20,7 +20,7 @@ export default /*tw*/ {
           text-inverted bg-{color}
           hover:bg-{color}-lifted
           active:bg-{color}-accented
-          disabled:!bg-{color}/75
+          disabled:!text-inverted/75 disabled:!bg-{color}/75
         `,
         outlined: `
           text-{color} border-{color}

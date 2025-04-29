@@ -49,7 +49,7 @@ const switchLabel = computed(() => {
 });
 
 const iconColor = computed(() => {
-  return checkedValue.value ? props.color : "grayscale";
+  return checkedValue.value ? props.color : "inherit";
 });
 
 const toggleIconName = computed(() => {

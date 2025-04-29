@@ -9,7 +9,7 @@ export default /*tw*/ {
   listItem: "group/item block mb-px last:mb-0",
   option: {
     base: `
-      rounded-small px-2 py-2 flex items-center align-middle whitespace-nowrap cursor-pointer
+      rounded-small px-2 py-2 flex gap-2 items-center align-middle whitespace-nowrap cursor-pointer
       font-normal !leading-snug
       hover:bg-{color}/5 active:bg-{color}/10
       overflow-hidden text-ellipsis text-default
