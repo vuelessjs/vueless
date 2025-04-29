@@ -164,10 +164,12 @@ function postFormat(code) {
 
         return `${indent}:${propName}="[\n${formatted}\n${indent}]"`;
       })
-      /* Added new line between nested elements with closing tags */
+      /* Added a new line between nested elements with closing tags */
       .replace(/(<\/[\w-]+>)\n(\s*)(<[\w-][^>]*?>)/g, (match, closeTag, indent, openTag) => {
         return `${closeTag}\n\n${indent}${openTag}`;
       })
+      /* Added a new line between nested elements with self-closing tags */
+      .replace(/(\/>\n)(?=\s*<\w[\s\S]*?\n\s*\/>)/g, "$1\n")
   );
 }
 
