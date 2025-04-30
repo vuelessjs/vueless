@@ -17,11 +17,13 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
+import type { UnknownObject } from "../../types.ts";
 
 interface UModalConfirmArgs extends Props {
   width: string;
   slotTemplate?: string;
   enum: "size" | "confirmColor";
+  modelValues?: UnknownObject;
 }
 
 export default {
@@ -165,46 +167,32 @@ DisableConfirmButton.args = { confirmDisabled: true };
 
 export const Sizes: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
-  setup() {
-    const modalValues = ref(
-      Object.fromEntries((argTypes[args.enum]?.options || []).map((option) => [option, false])),
-    );
-
-    return { args, argTypes, getArgs, modalValues };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UButton
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         :label="option"
-        @click="modalValues[option] = !modalValues[option]"
+        @click="args.modelValues[option] = !args.modelValues[option]"
       />
 
       <UModalConfirm
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         v-bind="getArgs(args, option)"
-        v-model="modalValues[option]"
+        v-model="args.modelValues[option]"
       >
         ${defaultTemplate}
       </UModalConfirm>
     </URow>
   `,
 });
-Sizes.args = { enum: "size" };
+Sizes.args = { enum: "size", modelValues: {} };
 
 export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
-  setup() {
-    const modalValues = ref<Record<string, boolean>>({});
-
-    argTypes[args.enum]?.options?.forEach((option: string) => {
-      modalValues.value[option] = false;
-    });
-
-    return { args, argTypes, getArgs, modalValues };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UButton
@@ -212,21 +200,21 @@ export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { ar
         :key="option"
         :label="option"
         :color="option"
-        @click="modalValues[option] = !modalValues[option]"
+        @click="args.modelValues[option] = !args.modelValues[option]"
       />
 
       <UModalConfirm
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         v-bind="getArgs(args, option)"
-        v-model="modalValues[option]"
+        v-model="args.modelValues[option]"
       >
         ${defaultTemplate}
       </UModalConfirm>
     </URow>
   `,
 });
-Colors.args = { enum: "confirmColor" };
+Colors.args = { enum: "confirmColor", modelValues: {} };
 
 export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {
