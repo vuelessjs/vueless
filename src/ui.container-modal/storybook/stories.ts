@@ -58,7 +58,7 @@ const defaultTemplate = `
 `;
 
 const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
-  components: { UModal, URow, UCol, UButton, UIcon, UHeader, UInput, UTextarea },
+  components: { UModal, URow, UCol, UButton, UIcon, UHeader, UInput, UTextarea, UBadge },
   setup() {
     function onClick() {
       args.modelValue = true;
@@ -82,11 +82,9 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea, UCol },
   setup() {
-    const modalValues = ref<Record<string, boolean>>({});
-
-    argTypes[args.enum]?.options?.forEach((option: string) => {
-      modalValues.value[option] = false;
-    });
+    const modalValues = ref(
+      Object.fromEntries((argTypes[args.enum]?.options || []).map((option) => [option, false])),
+    );
 
     return { args, argTypes, getArgs, modalValues };
   },
@@ -211,81 +209,75 @@ BackLink.parameters = {
   },
 };
 
-export const Slots: StoryFn<UModalArgs> = (args) => ({
-  components: { UModal, UIcon, UButton, UCol, UBadge, UInput, UTextarea, URow },
-  setup() {
-    const modalStates = ref({
-      beforeTitle: false,
-      title: false,
-      afterTitle: false,
-      actions: false,
-      footerLeft: false,
-      footerRight: false,
-    });
-
-    return { args, modalStates };
-  },
-  template: `
-    <UCol gap="lg">
-      <div>
-        <UModal v-bind="args" v-model="modalStates.beforeTitle">
-          <template #before-title>
-            <UIcon name="account_circle" size="sm" />
-          </template>
-          ${defaultTemplate}
-        </UModal>
-        <UButton label="Show before-title slot modal" @click="modalStates.beforeTitle = true"/>
-      </div>
-
-      <div>
-        <UModal v-bind="args" v-model="modalStates.title">
-          <template #title>
-            <UBadge label="Subscription Upgrade" size="lg" />
-          </template>
-          ${defaultTemplate}
-        </UModal>
-        <UButton label="Show title slot modal" @click="modalStates.title = true"/>
-      </div>
-
-      <div>
-        <UModal v-bind="args" v-model="modalStates.afterTitle">
-          <template #after-title>
-            <UIcon name="verified" size="sm" />
-          </template>
-          ${defaultTemplate}
-        </UModal>
-        <UButton label="Show after-title slot modal" @click="modalStates.afterTitle = true"/>
-      </div>
-
-      <div>
-        <UModal v-bind="args" v-model="modalStates.actions">
-          <template #actions="{ close }">
-            <UButton size="sm" color="grayscale" label="Close" @click="close" />
-          </template>
-          ${defaultTemplate}
-        </UModal>
-        <UButton label="Show actions slot modal" @click="modalStates.actions = true"/>
-      </div>
-
-      <div>
-        <UModal v-bind="args" v-model="modalStates.footerLeft">
-          ${defaultTemplate}
-          <template #footer-left>
-            <UButton label="Back" />
-          </template>
-        </UModal>
-        <UButton label="Show footer-left modal" @click="modalStates.footerLeft = true"/>
-      </div>
-
-      <div>
-        <UModal v-bind="args" v-model="modalStates.footerRight">
-          ${defaultTemplate}
-          <template #footer-right>
-            <UButton label="Submit" />
-          </template>
-        </UModal>
-        <UButton label="Show footer-right modal" @click="modalStates.footerRight = true"/>
-      </div>
-    </UCol>
+export const BeforeTitleSlot = DefaultTemplate.bind({});
+BeforeTitleSlot.args = {
+  slotTemplate: `
+    <template #before-title>
+      <UIcon name="account_circle" size="sm" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
   `,
-});
+};
+
+export const TitleSlot = DefaultTemplate.bind({});
+TitleSlot.args = {
+  slotTemplate: `
+    <template #title>
+      <UBadge label="Subscription Upgrade" size="lg" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
+  `,
+};
+
+export const AfterTitleSlot = DefaultTemplate.bind({});
+AfterTitleSlot.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="verified" size="sm" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
+  `,
+};
+
+export const ActionsSlot = DefaultTemplate.bind({});
+ActionsSlot.args = {
+  config: { closeButton: "p-0" },
+  slotTemplate: `
+    <template #actions="{ close }">
+      <UButton size="sm" color="grayscale" label="Close" @click="close" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
+  `,
+};
+
+export const FooterLeftSlot = DefaultTemplate.bind({});
+FooterLeftSlot.args = {
+  slotTemplate: `
+    <template #footer-left>
+      <UButton label="Back" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
+  `,
+};
+
+export const FooterRightSlot = DefaultTemplate.bind({});
+FooterRightSlot.args = {
+  slotTemplate: `
+    <template #footer-right>
+      <UButton label="Submit" />
+    </template>
+    <template #default>
+      You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
+    </template>
+  `,
+};
