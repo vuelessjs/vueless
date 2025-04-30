@@ -162,10 +162,6 @@ function onKeydownEsc(e: KeyboardEvent) {
   closeModal();
 }
 
-function onClickCloseModal() {
-  props.closeOnCross && closeModal();
-}
-
 function closeModal() {
   isShownModal.value = false;
 
@@ -259,21 +255,21 @@ const {
               <slot name="after-title" />
             </div>
 
-            <UButton
-              v-if="closeOnCross"
-              size="2xs"
-              square
-              color="grayscale"
-              variant="ghost"
-              v-bind="closeButtonAttrs"
-              @click="onClickCloseModal"
-            >
-              <!--
+            <!--
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
                 @binding {function} close
               -->
-              <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
+            <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
+              <UButton
+                v-if="closeOnCross"
+                size="2xs"
+                square
+                color="grayscale"
+                variant="ghost"
+                v-bind="closeButtonAttrs"
+                @click="closeModal"
+              >
                 <UIcon
                   internal
                   interactive
@@ -283,8 +279,8 @@ const {
                   v-bind="closeIconAttrs"
                   :data-test="getDataTest('close')"
                 />
-              </slot>
-            </UButton>
+              </UButton>
+            </slot>
           </div>
 
           <div v-bind="bodyAttrs">
