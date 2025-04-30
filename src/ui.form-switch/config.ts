@@ -17,7 +17,7 @@ export default /*tw*/ {
       },
       checked: {
         true: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
-        false: "bg-neutral/25 hover:bg-neutral/50 active:bg-neutral/75",
+        false: "bg-accented",
       },
       disabled: {
         true: "pointer-events-none",
@@ -27,8 +27,8 @@ export default /*tw*/ {
       { toggleLabel: true, size: "sm", class: "w-10" },
       { toggleLabel: true, size: "md", class: "w-12" },
       { toggleLabel: true, size: "lg", class: "w-14" },
-      { disabled: true, checked: false, class: "bg-neutral/50" },
-      { disabled: true, checked: true, class: "bg-{color}/50" },
+      { disabled: true, checked: false, class: "bg-accented/(--vl-disabled-opacity)" },
+      { disabled: true, checked: true, class: "bg-{color}/(--vl-disabled-opacity)" },
     ],
   },
   input: "sr-only",
@@ -51,9 +51,9 @@ export default /*tw*/ {
     base: "{UIcon}",
     defaults: {
       size: {
-        sm: "2xs",
-        md: "xs",
-        lg: "sm",
+        sm: "3xs",
+        md: "2xs",
+        lg: "xs",
       },
     },
   },
@@ -70,7 +70,7 @@ export default /*tw*/ {
       {
         toggleLabel: false,
         checked: false,
-        class: "bg-neutral/25 hover:bg-neutral/50 active:bg-neutral/75",
+        class: "bg-accented",
       },
     ],
   },

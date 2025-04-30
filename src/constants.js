@@ -33,6 +33,7 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
+export const DEFAULT_DISABLED_OPACITY = 50; /* presents */
 
 /* Vueless supported color shades */
 export const PRIMARY_COLORS = [

@@ -31,6 +31,7 @@ import {
   DEFAULT_TEXT,
   TEXT_INCREMENT,
   TEXT_DECREMENT,
+  DEFAULT_DISABLED_OPACITY,
 } from "../constants.js";
 import type { Config, NeutralColors, PrimaryColors, VuelessCssVariables } from "../types.ts";
 import { ColorMode } from "../types.ts";
@@ -48,6 +49,7 @@ declare interface RootCSSVariableOptions {
   textSm: number;
   text: number;
   textLg: number;
+  disabledOpacity: number;
   lightTheme: Partial<VuelessCssVariables>;
   darkTheme: Partial<VuelessCssVariables>;
 }
@@ -148,6 +150,10 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
   // eslint-disable-next-line vue/max-len, prettier/prettier
   setColorMode((config.colorMode || cachedColorMode || vuelessConfig.colorMode || ColorMode.Light) as ColorMode, isCachedAutoMode);
 
+  const disabledOpacity = getDisabledOpacity(
+    config.disabledOpacity ?? vuelessConfig.disabledOpacity,
+  );
+
   const { roundingSm, rounding, roundingLg } = getRoundings(
     config.roundingSm ?? vuelessConfig.roundingSm,
     config.rounding ?? cachedRounding ?? vuelessConfig.rounding,
@@ -246,6 +252,7 @@ export function setTheme(config: Config = {}, isCachedAutoMode?: boolean) {
     textSm,
     text,
     textLg,
+    disabledOpacity,
     lightTheme,
     darkTheme,
   });
@@ -318,6 +325,14 @@ function getRoundings(sm?: string | number, md?: string | number, lg?: string | 
 }
 
 /**
+ * Retrieve disabled opacity value.
+ * @return number - opacity value.
+ */
+function getDisabledOpacity(opacity?: number) {
+  return Math.max(0, opacity ?? DEFAULT_DISABLED_OPACITY);
+}
+
+/**
  * Generate and apply Vueless CSS variables.
  * @return string - Vueless CSS variables string.
  */
@@ -335,6 +350,7 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
     textSm,
     text,
     textLg,
+    disabledOpacity,
     lightTheme,
     darkTheme,
   } = options;
@@ -342,16 +358,17 @@ function setRootCSSVariables(options: RootCSSVariableOptions) {
   let darkVariables: Partial<VuelessCssVariables> = {};
 
   let variables: Partial<VuelessCssVariables> = {
-    "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
-    "--vl-rounding-md": `${Number(rounding) / PX_IN_REM}rem`,
-    "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
+    "--vl-rounding-sm": `${roundingSm / PX_IN_REM}rem`,
+    "--vl-rounding-md": `${rounding / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${roundingLg / PX_IN_REM}rem`,
     "--vl-outline-sm": `${outlineSm}px`,
     "--vl-outline-md": `${outline}px`,
     "--vl-outline-lg": `${outlineLg}px`,
-    "--vl-text-xs": `${Number(textXs) / PX_IN_REM}rem`,
-    "--vl-text-sm": `${Number(textSm) / PX_IN_REM}rem`,
-    "--vl-text-md": `${Number(text) / PX_IN_REM}rem`,
-    "--vl-text-lg": `${Number(textLg) / PX_IN_REM}rem`,
+    "--vl-text-xs": `${textXs / PX_IN_REM}rem`,
+    "--vl-text-sm": `${textSm / PX_IN_REM}rem`,
+    "--vl-text-md": `${text / PX_IN_REM}rem`,
+    "--vl-text-lg": `${textLg / PX_IN_REM}rem`,
+    "--vl-disabled-opacity": `${disabledOpacity}%`,
   };
 
   for (const shade of COLOR_SHADES) {

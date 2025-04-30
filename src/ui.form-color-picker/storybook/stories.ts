@@ -25,7 +25,7 @@ export default {
     modelValue: "",
     colors: /*tw*/ {
       grayscale: "bg-grayscale",
-      neutral: "bg-neutral",
+      neutral: "bg-neutral-600",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",

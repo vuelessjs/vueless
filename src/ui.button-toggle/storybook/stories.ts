@@ -74,10 +74,6 @@ const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => 
         v-bind="getArgs(args, option)"
         :key="option"
         v-model="values[option]"
-        :options="[
-          { value: option + 1, label: option },
-          { value: option + 2, label: option },
-        ]"
         class="w-auto"
       />
     </URow>
@@ -87,22 +83,18 @@ const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = { name: "Default" };
 
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = {
-  name: "Disabled",
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = {
+  name: "sizeTemplate",
+  enum: "size",
   options: [
-    { value: "11", label: "Admin" },
-    { value: "12", label: "Editor", disabled: true },
-    { value: "13", label: "Viewer" },
-    { value: "14", label: "Guest", disabled: true },
+    { value: 1, label: "{enumValue}" },
+    { value: 2, label: "{enumValue}" },
   ],
 };
 
-export const Sizes = EnumTemplate.bind({});
-Sizes.args = { name: "sizeTemplate", enum: "size" };
-
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = { name: "multiple", multiple: true, modelValue: [] };
+Multiple.args = { name: "multiple", multiple: true, modelValue: ["11", "12"] };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
@@ -127,6 +119,23 @@ Square.args = {
       <UIcon :name="label" color="inherit" />
     </template>
   `,
+};
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = {
+  name: "DisabledItems",
+  disabled: true,
+};
+
+export const DisabledItems = DefaultTemplate.bind({});
+DisabledItems.args = {
+  name: "DisabledItems",
+  options: [
+    { value: "11", label: "Admin" },
+    { value: "12", label: "Editor", disabled: true },
+    { value: "13", label: "Viewer" },
+    { value: "14", label: "Guest", disabled: true },
+  ],
 };
 
 export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({

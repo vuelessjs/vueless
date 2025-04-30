@@ -24,7 +24,7 @@ export default {
   title: "Buttons & Links / Link",
   component: ULink,
   args: {
-    label: "Learn more",
+    label: "View in GitHub",
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
@@ -64,7 +64,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const Colors = EnumVariantTemplate.bind({});
 Colors.args = { enum: "color", label: "{enumValue}" };
@@ -145,7 +145,7 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <UButton label="Learn more" />
+      <UButton label="View on GitHub" />
     </template>
   `,
 };

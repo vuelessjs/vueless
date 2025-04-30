@@ -9,6 +9,7 @@ export default {
   rounding: 8,
   unstyled: false,
   colorMode: "auto",
+  disabledOpacity: 50,
 
   /**
    * Light theme CSS variable settings.
