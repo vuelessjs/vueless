@@ -97,7 +97,7 @@ function preFormat(templateSource, args, argTypes) {
   const componentArgs = {};
 
   const enumKeys = Object.entries(args)
-    .filter(([, value]) => value === "{enumValue}")
+    .filter(([, value]) => JSON.stringify(value)?.includes("{enumValue}"))
     .map(([key]) => key);
 
   for (const [key, val] of Object.entries(argTypes)) {
@@ -122,14 +122,16 @@ function preFormat(templateSource, args, argTypes) {
     // eslint-disable-next-line vue/max-len
     `</template><template v-else-if="slot === 'default' && args['defaultSlot']">{{ args['defaultSlot'] }}</template><template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template></template>`;
 
-  return templateSource
+  const modelValue = JSON.stringify(args["modelValue"])?.replaceAll('"', "'");
+
+  templateSource = templateSource
     .replace(/>[\s]+</g, "><")
     .trim()
     .replace(slotTemplateCodeBefore, "")
     .replace(slotTemplateCodeAfter, "")
     .replace(
       new RegExp(`v-model="args\\.modelValue"`, "g"),
-      args["modelValue"] ? `v-model="${args["modelValue"]}"` : "",
+      args["modelValue"] ? `v-model="${modelValue}"` : "",
     )
     .replace(
       /v-bind="args"/g,
@@ -137,6 +139,8 @@ function preFormat(templateSource, args, argTypes) {
         .map((key) => " " + propToSource(kebabCase(key), args[key]))
         .join(""),
     );
+
+  return templateSource;
 }
 
 function postFormat(code) {
@@ -204,24 +208,47 @@ function expandOuterVueLoopFromTemplate(template, args, argTypes) {
 function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
     /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
-    (match, componentName) =>
-      argTypes?.[args.enum]?.options
-        // eslint-disable-next-line prettier/prettier
-        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} v-bind="args"></${componentName}>`)
-        ?.join("\n"),
+    (match, componentName, beforeAttrs, afterAttrs) => {
+      const restProps = afterAttrs
+        .trim()
+        .replace(/\n/g, " ") // remove newlines
+        .replace(/\n/g, " ") // remove newlines
+        .replace(/\//g, "") // remove forward slashes
+        .replace(/\s*v-bind="[^"]*"/g, `v-bind="args"`) // replace v-bind with args
+        .replace(/\s*:key="[^"]*"/g, "") // remove :key
+        .replace(/\s*v-model="[^"]*"/g, "") // remove v-model
+        .replace(/\s+/g, " ") // collapse multiple spaces
+        .trim();
+
+      return (
+        argTypes?.[args.enum]?.options
+          // eslint-disable-next-line prettier/prettier
+        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}></${componentName}>`)
+          ?.join("\n")
+      );
+    },
   );
 }
 
 function generateEnumAttributes(args, option) {
   const enumKeys = Object.entries(args)
-    .filter(([, value]) => value === "{enumValue}")
+    .filter(([, value]) => JSON.stringify(value)?.includes("{enumValue}"))
     .map(([key]) => key);
 
   if (args.enum) {
     enumKeys.unshift(args.enum);
   }
 
-  return enumKeys.map((key) => `${key}="${option}"`).join(" ");
+  return enumKeys
+    .map((key) => {
+      const isNotPrimitive =
+        Object.keys(args[key]).length || (Array.isArray(args[key]) && args[key].length);
+
+      return key in args && isNotPrimitive
+        ? `${key}="${JSON.stringify(args[key]).replaceAll('"', "'").replaceAll("{enumValue}", option)}"`
+        : `${key}="${option}"`;
+    })
+    .join(" ");
 }
 
 function propToSource(key, val) {

@@ -360,17 +360,35 @@ export function getArgs(args: UnknownObject, option: string, outerOption?: strin
   const enumProps: UnknownObject = {};
 
   Object.entries(args)
-    .filter(([, value]) => value === "{enumValue}")
+    .filter(([, value]) => JSON.stringify(value)?.includes("{enumValue}"))
     .map(([key]) => key)
     .forEach((key) => {
       enumProps[key] = option;
+
+      const isNotPrimitive =
+        Object.keys(args[key] ?? {}).length || (Array.isArray(args[key]) && args[key].length);
+
+      if (key in args && isNotPrimitive) {
+        const replacedOption = JSON.stringify(args[key])?.replaceAll("{enumValue}", option);
+
+        enumProps[key] = JSON.parse(replacedOption);
+      }
     });
 
   Object.entries(args)
-    .filter(([, value]) => value === "{outerEnumValue}")
+    .filter(([, value]) => JSON.stringify(value)?.includes("{outerEnumValue}"))
     .map(([key]) => key)
     .forEach((key) => {
-      outerEnumProps[key] = outerOption;
+      outerEnumProps[key] = option;
+
+      const isNotPrimitive =
+        Object.keys(args[key] ?? {}).length || (Array.isArray(args[key]) && args[key].length);
+
+      if (key in args && isNotPrimitive) {
+        const replacedOption = JSON.stringify(args[key])?.replaceAll("{outerEnumValue}", option);
+
+        outerEnumProps[key] = JSON.parse(replacedOption);
+      }
     });
 
   return {
