@@ -81,18 +81,32 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 
 const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea, UCol },
-  setup: () => ({ args, argTypes, getArgs }),
+  setup() {
+    const modalValues = ref<Record<string, boolean>>({});
+
+    argTypes[args.enum]?.options?.forEach((option: string) => {
+      modalValues.value[option] = false;
+    });
+
+    return { args, argTypes, getArgs, modalValues };
+  },
   template: `
     <URow>
       <UButton
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         :label="option"
-        @click="() => { args.size = option; args.modelValue = true; }"
+        @click="modalValues[option] = !modalValues[option]"
       />
 
-      <UModal v-bind="getArgs(args, args.size)" v-model="args.modelValue">
-        ${defaultTemplate}
+      <UModal
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        v-model="modalValues[option]"
+      >
+        You are about to complete the subscription upgrade.
+        Any unsaved changes or unfinished processes will be lost.
       </UModal>
     </URow>
   `,

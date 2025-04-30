@@ -48,7 +48,7 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <p>You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.</p>
+  You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
 `;
 
 const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
@@ -173,11 +173,7 @@ export const Sizes: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { arg
       modalValues.value[option] = false;
     });
 
-    const toggleModal = (size: string) => {
-      modalValues.value[size] = !modalValues.value[size];
-    };
-
-    return { args, argTypes, getArgs, modalValues, toggleModal };
+    return { args, argTypes, getArgs, modalValues };
   },
   template: `
     <URow>
@@ -185,7 +181,7 @@ export const Sizes: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { arg
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         :label="option"
-        @click="toggleModal(option)"
+        @click="modalValues[option] = !modalValues[option]"
       />
 
       <UModalConfirm
@@ -210,11 +206,7 @@ export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { ar
       modalValues.value[option] = false;
     });
 
-    const toggleModal = (color: string) => {
-      modalValues.value[color] = !modalValues.value[color];
-    };
-
-    return { args, argTypes, getArgs, modalValues, toggleModal };
+    return { args, argTypes, getArgs, modalValues };
   },
   template: `
     <URow>
@@ -223,7 +215,7 @@ export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { ar
         :key="option"
         :label="option"
         :color="option"
-        @click="toggleModal(option)"
+        @click="modalValues[option] = !modalValues[option]"
       />
 
       <UModalConfirm

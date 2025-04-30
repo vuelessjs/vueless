@@ -11,7 +11,6 @@ import URow from "../../ui.container-row/URow.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UPage from "../../ui.container-page/UPage.vue";
-import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -107,7 +106,7 @@ Align.parameters = {
 };
 
 export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
-  components: { UCol, UButton, URow, UInput, UText },
+  components: { UCol, UButton, URow, UInput },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol gap="lg">
@@ -115,21 +114,15 @@ export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full h-[300px] border border-primary rounded p-4"
+        align="normal"
+        gap="xs"
+        wrap
+        class="flex-row w-full h-[300px] border border-primary rounded p-4"
       >
-        <UText :html="'Content: ' + option" class="font-bold" />
-        <URow
-          align="normal"
-          gap="xs"
-          wrap
-          class="h-full"
-          :content="option"
-        >
-          <UButton label="Item 1" class="w-[45%]" />
-          <UButton label="Item 2" class="w-[45%]" />
-          <UButton label="Item 3" class="w-[45%]" />
-          <UButton label="Item 4" class="w-[45%]" />
-        </URow>
+        <UButton label="content" class="w-[45%]" />
+        <UButton :label="option" class="w-[45%]" />
+        <UButton label="content" class="w-[45%]" />
+        <UButton :label="option" class="w-[45%]" />
       </UCol>
     </UCol>
   `,
