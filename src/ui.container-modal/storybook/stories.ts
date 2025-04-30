@@ -19,10 +19,12 @@ import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
+import type { UnknownObject } from "../../types.ts";
 
 interface UModalArgs extends Props {
   slotTemplate?: string;
   enum: "size";
+  modelValues?: UnknownObject;
 }
 
 export default {
@@ -81,27 +83,21 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 
 const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
   components: { UModal, UButton, URow, UInput, UTextarea, UCol },
-  setup() {
-    const modalValues = ref(
-      Object.fromEntries((argTypes[args.enum]?.options || []).map((option) => [option, false])),
-    );
-
-    return { args, argTypes, getArgs, modalValues };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UButton
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         :label="option"
-        @click="modalValues[option] = !modalValues[option]"
+        @click="args.modelValues[option] = !args.modelValues[option]"
       />
 
       <UModal
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         v-bind="getArgs(args, option)"
-        v-model="modalValues[option]"
+        v-model="args.modelValues[option]"
       >
         You are about to complete the subscription upgrade.
         Any unsaved changes or unfinished processes will be lost.
@@ -191,7 +187,7 @@ WithoutDivider.parameters = {
 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size" };
+Sizes.args = { enum: "size", modelValues: {} };
 
 export const BackLink = DefaultTemplate.bind({});
 BackLink.args = {
