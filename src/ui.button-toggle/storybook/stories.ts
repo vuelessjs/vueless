@@ -83,17 +83,6 @@ const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = { name: "Default" };
 
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = {
-  name: "Disabled",
-  options: [
-    { value: "11", label: "Admin" },
-    { value: "12", label: "Editor", disabled: true },
-    { value: "13", label: "Viewer" },
-    { value: "14", label: "Guest", disabled: true },
-  ],
-};
-
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
   name: "sizeTemplate",
@@ -130,6 +119,23 @@ Square.args = {
       <UIcon :name="label" color="inherit" />
     </template>
   `,
+};
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = {
+  name: "DisabledItems",
+  disabled: true,
+};
+
+export const DisabledItems = DefaultTemplate.bind({});
+DisabledItems.args = {
+  name: "DisabledItems",
+  options: [
+    { value: "11", label: "Admin" },
+    { value: "12", label: "Editor", disabled: true },
+    { value: "13", label: "Viewer" },
+    { value: "14", label: "Guest", disabled: true },
+  ],
 };
 
 export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({
