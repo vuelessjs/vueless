@@ -209,9 +209,9 @@ function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
     // Your regexp:
     // /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1>/g,
-    // My prev regexp:
+    // My regexp:
     /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
-    (match, componentName, beforeAttrs, afterAttrs, content) => {
+    (match, componentName, beforeAttrs, afterAttrs) => {
       const restProps = afterAttrs
         .trim()
         .replace(/\n/g, " ") // remove newlines
@@ -223,12 +223,10 @@ function expandVueLoopFromTemplate(template, args, argTypes) {
         .replace(/\s+/g, " ") // collapse multiple spaces
         .trim();
 
-      console.log(content);
-
       return (
         argTypes?.[args.enum]?.options
-          // eslint-disable-next-line prettier/prettier,vue/max-len
-        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}>${content === "/" ? undefined : content}</${componentName}>`)
+          // eslint-disable-next-line prettier/prettier
+        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}></${componentName}>`)
           ?.join("\n")
       );
     },
