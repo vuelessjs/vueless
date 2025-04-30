@@ -17,8 +17,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
-  colors: () => ({}),
-  labels: () => ({}),
+  colors: () => getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME).colors || {},
+  labels: () => getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME).labels || {},
 });
 
 const emit = defineEmits([

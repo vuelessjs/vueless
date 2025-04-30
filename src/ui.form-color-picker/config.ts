@@ -24,5 +24,7 @@ export default /*tw*/ {
   },
   defaults: {
     size: "md",
+    colors: {},
+    labels: {},
   },
 };
