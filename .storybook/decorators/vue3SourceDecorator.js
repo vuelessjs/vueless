@@ -207,7 +207,10 @@ function expandOuterVueLoopFromTemplate(template, args, argTypes) {
 
 function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
-    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1>/g,
+    // Your regexp:
+    // /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1>/g,
+    // My prev regexp:
+    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
     (match, componentName, beforeAttrs, afterAttrs, content) => {
       const restProps = afterAttrs
         .trim()
@@ -220,10 +223,12 @@ function expandVueLoopFromTemplate(template, args, argTypes) {
         .replace(/\s+/g, " ") // collapse multiple spaces
         .trim();
 
+      console.log(content);
+
       return (
         argTypes?.[args.enum]?.options
-          // eslint-disable-next-line prettier/prettier, vue/max-len
-        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}>${content}</${componentName}>`)
+          // eslint-disable-next-line prettier/prettier,vue/max-len
+        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}>${content === "/" ? undefined : content}</${componentName}>`)
           ?.join("\n")
       );
     },
@@ -242,7 +247,7 @@ function generateEnumAttributes(args, option) {
   return enumKeys
     .map((key) => {
       const isNotPrimitive =
-        Object.keys(args[key]).length || (Array.isArray(args[key]) && args[key].length);
+        Object.keys(args[key] || {}).length || (Array.isArray(args[key]) && args[key].length);
 
       return key in args && isNotPrimitive
         ? `${key}="${JSON.stringify(args[key]).replaceAll('"', "'").replaceAll("{enumValue}", option)}"`
