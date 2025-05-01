@@ -57,7 +57,7 @@ const EnumTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="border border-primary rounded-sm p-2"
+        class="border border-primary border-dashed rounded-medium p-4"
         :class="{ 'h-24': args.enum === 'align' }"
       >
         <UButton :label="args.enum" />

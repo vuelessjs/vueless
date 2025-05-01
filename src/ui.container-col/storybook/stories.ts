@@ -60,7 +60,7 @@ const EnumTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full h-[200px] border border-primary rounded p-2"
+        class="w-full h-[200px] border border-primary border-dashed rounded-medium p-4"
       >
         <UButton :label="args.enum" />
         <UButton :label="option" />
@@ -117,7 +117,7 @@ export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         align="normal"
         gap="xs"
         wrap
-        class="flex-row w-full h-[300px] border border-primary rounded p-4"
+        class="flex-row w-full h-[300px] border border-primary border-dashed rounded-medium p-4"
       >
         <UButton label="content" class="w-[45%]" />
         <UButton :label="option" class="w-[45%]" />
