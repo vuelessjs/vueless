@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -19,6 +20,7 @@ import type { Props } from "../types.ts";
 
 interface UCardArgs extends Props {
   slotTemplate?: string;
+  enum: "variant";
 }
 
 export default {
@@ -60,15 +62,27 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
   components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
-  setup() {
-    const slots = getSlotNames(UCard.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UCard.__name) }),
   template: `
     <UCard v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCard>
+  `,
+});
+
+const EnumTemplate: StoryFn<UCardArgs> = (args: UCardArgs, { argTypes }) => ({
+  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol gap="lg">
+      <UCard
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+      >
+        ${defaultTemplate}
+      </UCard>
+    </UCol>
   `,
 });
 
@@ -77,6 +91,9 @@ Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Displays key details about a user, product, or feature." };
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", title: "{enumValue}" };
 
 export const Slots: StoryFn<UCardArgs> = (args) => ({
   components: { UCard, UIcon, URow, UCol, UButton, UBadge },

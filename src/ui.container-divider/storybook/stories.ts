@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -33,11 +34,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
   components: { UDivider, UCol },
-  setup() {
-    const slots = getSlotNames(UDivider.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDivider.__name) }),
   template: `
     <UCol :class="{ 'flex-row': args.vertical }">
       <p>
@@ -55,28 +52,19 @@ const DefaultTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) => ({
   components: { UDivider, URow, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow gap="xl">
       <UCol
-        v-for="(option, index) in options"
-        :key="index"
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
         gap="none"
         class="w-1/4"
       >
         <p>{{ option }}</p>
-        <UDivider
-          v-bind="args"
-          :[args.enum]="option"
-          :key="index"
-        />
+        <UDivider v-bind="getArgs(args, option)" />
         <p>{{ option }}</p>
       </UCol>
     </URow>
@@ -92,10 +80,10 @@ Label.args = { label: "Business analysis" };
 export const Icon = DefaultTemplate.bind({});
 Icon.args = { icon: "monitoring" };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const Dashed = DefaultTemplate.bind({});

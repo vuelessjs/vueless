@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -67,11 +68,7 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
     UIcon,
     UHeader,
   },
-  setup() {
-    const slots = getSlotNames(UPage.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UPage.__name) }),
   template: `
     <UPage v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -79,25 +76,18 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
   components: { UPage, UCard, URow, UCol, UInput, UTextarea },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow v-for="(option, index) in options" :key="index">
-      <UPage
-        v-bind="args"
-        :[args.enum]="option"
-        :description="option"
-        :config="{ wrapper: 'min-h-max', page: 'min-h-max' }"
-      >
-        ${defaultTemplate}
-      </UPage>
-    </URow>
+    <UPage
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      :config="{ wrapper: 'min-h-max', page: 'min-h-max' }"
+    >
+      ${defaultTemplate}
+    </UPage>
   `,
 });
 
@@ -125,11 +115,11 @@ BackLink.parameters = {
   },
 };
 
-export const TitleSize = EnumVariantTemplate.bind({});
-TitleSize.args = { enum: "titleSize" };
+export const TitleSize = EnumTemplate.bind({});
+TitleSize.args = { enum: "titleSize", description: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
 Sizes.parameters = {
   docs: {
     description: {
@@ -138,8 +128,8 @@ Sizes.parameters = {
   },
 };
 
-export const Variant = EnumVariantTemplate.bind({});
-Variant.args = { enum: "variant" };
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", description: "{enumValue}" };
 Variant.parameters = {
   docs: {
     description: {

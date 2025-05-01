@@ -207,24 +207,40 @@ function expandOuterVueLoopFromTemplate(template, args, argTypes) {
 
 function expandVueLoopFromTemplate(template, args, argTypes) {
   return template.replace(
-    /<(\w+)([^>]*?)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>/g,
-    (match, componentName, beforeAttrs, afterAttrs) => {
-      const restProps = afterAttrs
-        .trim()
-        .replace(/\n/g, " ") // remove newlines
+    // eslint-disable-next-line vue/max-len
+    /<(\w+)([^>]*)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*?)>([\s\S]*?)<\/\1\s*>|<(\w+)([^>]*)\s+v-for="option\s+in\s+argTypes\?\.\[args\.enum]\?\.options"([^>]*)\/?>/g,
+    (
+      match,
+      name1,
+      pre1,
+      post1,
+      content, // For full component
+      name2,
+      pre2,
+      post2, // For self-closing component
+    ) => {
+      const componentName = name1 || name2;
+      const beforeAttrs = pre1 || pre2 || "";
+      const afterAttrs = post1 || post2 || "";
+      const slotContent = content || "";
+
+      const restProps = (beforeAttrs + " " + afterAttrs)
         .replace(/\n/g, " ") // remove newlines
         .replace(/\//g, "") // remove forward slashes
-        .replace(/\s*v-bind="[^"]*"/g, `v-bind="args"`) // replace v-bind with args
-        .replace(/\s*:key="[^"]*"/g, "") // remove :key
-        .replace(/\s*v-model="[^"]*"/g, "") // remove v-model
+        .replace(/\sv-bind="[^"]*"/g, ' v-bind="args"') // replace v-bind with args
+        .replace(/\s:key="[^"]*"/g, "") // remove :key
+        .replace(/\sv-model="[^"]*"/g, "") // remove v-model
         .replace(/\s+/g, " ") // collapse multiple spaces
         .trim();
 
       return (
         argTypes?.[args.enum]?.options
-          // eslint-disable-next-line prettier/prettier
-        ?.map((option) => `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}></${componentName}>`)
-          ?.join("\n")
+          ?.map(
+            (option) =>
+              // eslint-disable-next-line vue/max-len
+              `<${componentName} ${generateEnumAttributes(args, option)} ${restProps}>${slotContent}</${componentName}>`,
+          )
+          ?.join("\n") || ""
       );
     },
   );
@@ -242,7 +258,7 @@ function generateEnumAttributes(args, option) {
   return enumKeys
     .map((key) => {
       const isNotPrimitive =
-        Object.keys(args[key]).length || (Array.isArray(args[key]) && args[key].length);
+        Object.keys(args[key] || {}).length || (Array.isArray(args[key]) && args[key].length);
 
       return key in args && isNotPrimitive
         ? `${key}="${JSON.stringify(args[key]).replaceAll('"', "'").replaceAll("{enumValue}", option)}"`

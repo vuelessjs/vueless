@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
   components: { UAccordion, UButton },
-  setup() {
-    const slots = getSlotNames(UAccordion.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UAccordion.__name) }),
   template: `
     <UAccordion v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -93,18 +90,14 @@ const AccordionsTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes }) => ({
   components: { UAccordion },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UAccordion
-      v-for="(option, index) in options"
-      :key="index"
-      v-bind="args"
-      :[args.enum]="option"
-      :description="option"
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
     />
   `,
 });
@@ -115,8 +108,8 @@ Default.args = {};
 export const Accordions = AccordionsTemplate.bind({});
 Accordions.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
 
 export const ToggleSlot = DefaultTemplate.bind({});
 ToggleSlot.args = {
