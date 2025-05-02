@@ -107,7 +107,7 @@ const {
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
           </slot>
 
-          <UText v-bind="textAttrs">
+          <UText :size="size" v-bind="textAttrs">
             <!-- @slot Use it to add something inside. -->
             <slot />
           </UText>
