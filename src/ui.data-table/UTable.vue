@@ -471,6 +471,7 @@ const {
   stickyHeaderAttrs,
   tableWrapperAttrs,
   headerRowAttrs,
+  beforeHeaderRowAttrs,
   bodyRowAfterAttrs,
   bodyRowBeforeAttrs,
   bodyRowBeforeCheckedAttrs,
@@ -638,7 +639,11 @@ const {
               @binding {number} cols-count
               @binding {string} classes
             -->
-            <slot name="before-header" :cols-count="colsCount" :classes="headerRowAttrs.class" />
+            <slot
+              name="before-header"
+              :cols-count="colsCount"
+              :classes="beforeHeaderRowAttrs.class"
+            />
           </tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">

@@ -33,7 +33,7 @@ export default /*tw*/ {
   table: "min-w-full border-none text-medium w-full table-auto",
   header: "border-b border-muted",
   headerRow: "",
-  headerRowBefore: "{>headerCellBase} py-1",
+  beforeHeaderRow: "{>headerCellBase} py-1",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
