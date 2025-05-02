@@ -471,10 +471,11 @@ const {
   stickyHeaderAttrs,
   tableWrapperAttrs,
   headerRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCheckedAttrs,
-  bodyRowBeforeCellAttrs,
+  beforeHeaderRowAttrs,
+  afterBodyRowAttrs,
+  beforeBodyRowAttrs,
+  beforeBodyRowCheckedAttrs,
+  beforeBodyRowCellAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
   bodyRowCheckedDateDividerAttrs,
@@ -638,7 +639,11 @@ const {
               @binding {number} cols-count
               @binding {string} classes
             -->
-            <slot name="before-header" :cols-count="colsCount" :classes="headerRowAttrs.class" />
+            <slot
+              name="before-header"
+              :cols-count="colsCount"
+              :classes="beforeHeaderRowAttrs.class"
+            />
           </tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">
@@ -688,9 +693,9 @@ const {
         <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
           <tr
             v-if="hasSlotContent($slots['before-first-row'], { colsCount })"
-            v-bind="isRowSelected(sortedRows[0]) ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
+            v-bind="isRowSelected(sortedRows[0]) ? beforeBodyRowCheckedAttrs : beforeBodyRowAttrs"
           >
-            <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
+            <td :colspan="colsCount" v-bind="beforeBodyRowCellAttrs">
               <!-- @slot Use it to add something before first row. -->
               <slot name="before-first-row" />
             </td>
@@ -802,7 +807,7 @@ const {
                 classes: bodyCellBaseAttrs.class,
               })
             "
-            v-bind="bodyRowAfterAttrs"
+            v-bind="afterBodyRowAttrs"
           >
             <!--
                 @slot Use it to add something after last row.
