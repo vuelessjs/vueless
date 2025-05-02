@@ -25,7 +25,7 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
-const progressRef = useTemplateRef<HTMLDivElement>("progress");
+const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 
 const { requestQueue } = useLoaderProgress();
 
@@ -206,7 +206,7 @@ const { getDataTest, progressAttrs } = useUI<Config>(defaultConfig);
   <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
     <div
       v-if="show"
-      ref="progress"
+      ref="progress-bar"
       v-bind="progressAttrs"
       :data-test="getDataTest()"
       :style="barStyle"
