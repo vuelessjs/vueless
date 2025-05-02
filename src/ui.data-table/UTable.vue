@@ -472,10 +472,10 @@ const {
   tableWrapperAttrs,
   headerRowAttrs,
   beforeHeaderRowAttrs,
-  bodyRowAfterAttrs,
-  bodyRowBeforeAttrs,
-  bodyRowBeforeCheckedAttrs,
-  bodyRowBeforeCellAttrs,
+  afterBodyRowAttrs,
+  beforeBodyRowAttrs,
+  beforeBodyRowCheckedAttrs,
+  beforeBodyRowCellAttrs,
   footerAttrs,
   bodyRowDateDividerAttrs,
   bodyRowCheckedDateDividerAttrs,
@@ -693,9 +693,9 @@ const {
         <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
           <tr
             v-if="hasSlotContent($slots['before-first-row'], { colsCount })"
-            v-bind="isRowSelected(sortedRows[0]) ? bodyRowBeforeCheckedAttrs : bodyRowBeforeAttrs"
+            v-bind="isRowSelected(sortedRows[0]) ? beforeBodyRowCheckedAttrs : beforeBodyRowAttrs"
           >
-            <td :colspan="colsCount" v-bind="bodyRowBeforeCellAttrs">
+            <td :colspan="colsCount" v-bind="beforeBodyRowCellAttrs">
               <!-- @slot Use it to add something before first row. -->
               <slot name="before-first-row" />
             </td>
@@ -807,7 +807,7 @@ const {
                 classes: bodyCellBaseAttrs.class,
               })
             "
-            v-bind="bodyRowAfterAttrs"
+            v-bind="afterBodyRowAttrs"
           >
             <!--
                 @slot Use it to add something after last row.
