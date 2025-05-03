@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "mb-6 flex gap-1 w-full",
+  wrapper: "flex gap-1 w-full",
   tabs: {
     base: "flex border-b border-default w-full",
     variants: {
