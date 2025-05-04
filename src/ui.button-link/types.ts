@@ -43,7 +43,8 @@ export interface Props {
     | "info"
     | "notice"
     | "neutral"
-    | "grayscale";
+    | "grayscale"
+    | "inherit";
 
   /**
    * Link open type behavior.
