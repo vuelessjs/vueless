@@ -26,7 +26,7 @@ export default /*tw*/ {
       },
     },
   },
-  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
+  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto -bottom-full",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
