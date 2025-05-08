@@ -12,7 +12,7 @@ export interface Props {
   /**
    * Money size.
    */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg";
 
   /**
    * Money color.

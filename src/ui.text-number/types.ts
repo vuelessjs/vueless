@@ -12,7 +12,7 @@ export interface Props {
   /**
    * Number size.
    */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg";
 
   /**
    * Number color.
