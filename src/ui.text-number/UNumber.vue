@@ -14,6 +14,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  currency: "",
 });
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -59,8 +60,15 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, wrapperAttrs, numberAttrs, mathSignAttrs, integerAttrs, fractionAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  wrapperAttrs,
+  numberAttrs,
+  currencyAttrs,
+  mathSignAttrs,
+  integerAttrs,
+  fractionAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -69,6 +77,8 @@ const { getDataTest, wrapperAttrs, numberAttrs, mathSignAttrs, integerAttrs, fra
     <slot name="left" />
 
     <div v-bind="numberAttrs" :data-test="getDataTest()">
+      <span v-if="currencyAlign === 'left' && currency" v-bind="currencyAttrs" v-text="currency" />
+
       <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
 
       <span v-bind="integerAttrs" v-text="preparedNumber.integer" />
@@ -78,6 +88,8 @@ const { getDataTest, wrapperAttrs, numberAttrs, mathSignAttrs, integerAttrs, fra
         v-bind="fractionAttrs"
         v-text="preparedNumber.decimalSeparator + preparedNumber.fraction"
       />
+
+      <span v-if="currencyAlign === 'right' && currency" v-bind="currencyAttrs" v-text="currency" />
     </div>
 
     <!-- @slot Use it to add something after the number. -->

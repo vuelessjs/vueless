@@ -10,7 +10,7 @@ import { getRandomId } from "../../utils/helper.ts";
 import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
-import UMoney from "../../ui.text-money/UMoney.vue";
+import UNumber from "../../ui.text-number/UNumber.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -192,7 +192,7 @@ function getSlotNestedRow(index: number) {
 }
 
 const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable, UButton, ULink, UMoney, UBadge, URow, UIcon, ULoader },
+  components: { UTable, UButton, ULink, UNumber, UBadge, URow, UIcon, ULoader },
   setup() {
     const slots = getSlotNames(UTable.__name);
 
@@ -469,7 +469,7 @@ CellSlots.args = {
     </template>
 
     <template #cell-totalPrice="{ value }">
-      <UMoney :value="value.slice(1)" symbol="€" symbolAlign="left" />
+      <UNumber :value="value.slice(1)" currency="€" currency-align="left" />
     </template>
   `,
 };

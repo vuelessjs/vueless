@@ -3,7 +3,6 @@ import UAlertDefaultConfig from "./ui.text-alert/config.ts";
 import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
 import UFileDefaultConfig from "./ui.text-file/config.ts";
 import UFilesDefaultConfig from "./ui.text-files/config.ts";
-import UMoneyDefaultConfig from "./ui.text-money/config.ts";
 import UHeaderDefaultConfig from "./ui.text-header/config.ts";
 import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
 import UNumberDefaultConfig from "./ui.text-number/config.ts";
@@ -219,7 +218,6 @@ export interface Components {
   UEmpty: Partial<typeof UEmptyDefaultConfig>;
   UFile: Partial<typeof UFileDefaultConfig>;
   UFiles: Partial<typeof UFilesDefaultConfig>;
-  UMoney: Partial<typeof UMoneyDefaultConfig>;
   UHeader: Partial<typeof UHeaderDefaultConfig>;
   UNotify: Partial<typeof UNotifyDefaultConfig>;
   UNumber: Partial<typeof UNumberDefaultConfig>;

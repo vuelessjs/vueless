@@ -264,12 +264,11 @@ export const COMPONENTS = {
   UText: "ui.text-block",
   UAlert: "ui.text-alert",
   UNotify: "ui.text-notify",
-  UMoney: "ui.text-money",
+  UNumber: "ui.text-number",
   UFile: "ui.text-file",
   UFiles: "ui.text-files",
   UEmpty: "ui.text-empty",
   UBadge: "ui.text-badge",
-  UNumber: "ui.text-number",
 
   /* Containers */
   UDivider: "ui.container-divider",

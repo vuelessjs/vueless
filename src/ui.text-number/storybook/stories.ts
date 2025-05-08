@@ -18,7 +18,7 @@ import type { Props } from "../types.ts";
 
 interface UNumberArgs extends Props {
   slotTemplate?: string;
-  enum: "color" | "size" | "sign" | "align";
+  enum: "color" | "size" | "sign" | "align" | "currencyAlign";
 }
 
 export default {
@@ -108,6 +108,10 @@ Colors.parameters = getEnumVariantDescription();
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
+
+export const CurrencyAlign = EnumVariantTemplate.bind({});
+CurrencyAlign.args = { enum: "currencyAlign", currency: "USD", currencySpace: true };
+CurrencyAlign.parameters = getEnumVariantDescription();
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

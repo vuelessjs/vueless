@@ -34,6 +34,21 @@ export interface Props {
   sign?: "auto" | "positive" | "negative" | "unsigned";
 
   /**
+   * Currency symbol.
+   */
+  currency?: string;
+
+  /**
+   * Currency align.
+   */
+  currencyAlign?: "left" | "right";
+
+  /**
+   * Add space between currency and sum.
+   */
+  currencySpace?: boolean;
+
+  /**
    * Minimal number of signs after the decimal separator (fractional part of a number).
    */
   minFractionDigits?: number;

@@ -15,6 +15,12 @@ export default /*tw*/ {
     },
   },
   number: "",
+  currency: {
+    compoundVariants: [
+      { currencySpace: true, currencyAlign: "left", class: "mr-1" },
+      { currencySpace: true, currencyAlign: "right", class: "ml-1" },
+    ],
+  },
   mathSign: "",
   integer: "",
   fraction: "",
@@ -23,6 +29,8 @@ export default /*tw*/ {
     size: "md",
     sign: "auto",
     align: "left",
+    currencyAlign: "right",
+    currencySpace: false,
     minFractionDigits: 0,
     maxFractionDigits: 2,
     decimalSeparator: ",",

@@ -9,7 +9,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import UMoney from "../../ui.text-money/UMoney.vue";
+import UNumber from "../../ui.text-number/UNumber.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -139,7 +139,7 @@ export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UBadgeArgs> = (args) => ({
-  components: { UBadge, UIcon, URow, UMoney },
+  components: { UBadge, UIcon, URow, UNumber },
   setup() {
     return { args };
   },
@@ -157,10 +157,10 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
 
       <UBadge v-bind="args" label="shopping_cart">
         <template #default="{ label }">
-          <UMoney
+          <UNumber
             value="20.25"
             size="sm"
-            symbol="$"
+            currency="$"
             color="inherit"
           />
           <UIcon
