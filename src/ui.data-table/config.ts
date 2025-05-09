@@ -8,7 +8,7 @@ export default /*tw*/ {
         false: "absolute",
       },
       actionsHeader: {
-        true: "rounded-t-medium border-muted bg-default",
+        true: "rounded-t-medium border-muted bg-default pb-px",
       },
     },
     compoundVariants: [
@@ -26,7 +26,7 @@ export default /*tw*/ {
       },
     },
   },
-  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto -bottom-full",
+  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
