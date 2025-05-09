@@ -31,9 +31,10 @@ export default /*tw*/ {
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
   table: "min-w-full border-none text-medium w-full table-auto",
-  header: "border-b border-muted",
+  header: "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium",
   headerRow: "",
-  beforeHeaderRow: "{>headerCellBase} py-1",
+  beforeHeaderRow: "",
+  beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
