@@ -472,6 +472,7 @@ const {
   tableWrapperAttrs,
   headerRowAttrs,
   beforeHeaderRowAttrs,
+  beforeHeaderCellAttrs,
   afterBodyRowAttrs,
   beforeBodyRowAttrs,
   beforeBodyRowCheckedAttrs,
@@ -632,7 +633,7 @@ const {
             v-if="
               hasSlotContent($slots['before-header'], { colsCount, classes: headerRowAttrs.class })
             "
-            v-bind="headerRowAttrs"
+            v-bind="beforeHeaderRowAttrs"
           >
             <!--
               @slot Use it to add something before header row.
@@ -642,7 +643,7 @@ const {
             <slot
               name="before-header"
               :cols-count="colsCount"
-              :classes="beforeHeaderRowAttrs.class"
+              :classes="beforeHeaderCellAttrs.class"
             />
           </tr>
 

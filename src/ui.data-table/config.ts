@@ -8,7 +8,7 @@ export default /*tw*/ {
         false: "absolute",
       },
       actionsHeader: {
-        true: "rounded-t-medium border-muted bg-default",
+        true: "rounded-t-medium border-muted bg-default pb-px",
       },
     },
     compoundVariants: [
@@ -26,14 +26,15 @@ export default /*tw*/ {
       },
     },
   },
-  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto -bottom-full",
+  stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
   table: "min-w-full border-none text-medium w-full table-auto",
-  header: "border-b border-muted",
+  header: "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium",
   headerRow: "",
-  beforeHeaderRow: "{>headerCellBase} py-1",
+  beforeHeaderRow: "",
+  beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
