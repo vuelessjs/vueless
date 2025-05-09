@@ -461,7 +461,6 @@ const mutatedProps = computed(() => ({
   actionsHeader: isShownActionsHeader.value,
   stickedHeader: isHeaderSticky.value,
   stickedFooter: isFooterSticky.value,
-  beforeHeader: hasSlotContent(slots["before-header"]),
 }));
 
 const {
@@ -473,6 +472,7 @@ const {
   tableWrapperAttrs,
   headerRowAttrs,
   beforeHeaderRowAttrs,
+  beforeHeaderCellAttrs,
   afterBodyRowAttrs,
   beforeBodyRowAttrs,
   beforeBodyRowCheckedAttrs,
@@ -643,7 +643,7 @@ const {
             <slot
               name="before-header"
               :cols-count="colsCount"
-              :classes="beforeHeaderRowAttrs.class"
+              :classes="beforeHeaderCellAttrs.class"
             />
           </tr>
 

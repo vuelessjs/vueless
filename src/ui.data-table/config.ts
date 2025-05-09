@@ -31,17 +31,15 @@ export default /*tw*/ {
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
   table: "min-w-full border-none text-medium w-full table-auto",
-  header: "border-b border-muted",
+  header: "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium",
   headerRow: "",
-  beforeHeaderRow: "{>headerCellBase} py-1 rounded-tl-medium rounded-tr-medium",
+  beforeHeaderRow: "",
+  beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
-    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
+    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap bg-gray-100",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
-      },
-      beforeHeader: {
-        false: "first:rounded-tl-medium last:rounded-tr-medium",
       },
     },
   },
