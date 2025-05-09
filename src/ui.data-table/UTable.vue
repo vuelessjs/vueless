@@ -461,6 +461,7 @@ const mutatedProps = computed(() => ({
   actionsHeader: isShownActionsHeader.value,
   stickedHeader: isHeaderSticky.value,
   stickedFooter: isFooterSticky.value,
+  beforeHeader: hasSlotContent(slots["before-header"]),
 }));
 
 const {
@@ -632,7 +633,7 @@ const {
             v-if="
               hasSlotContent($slots['before-header'], { colsCount, classes: headerRowAttrs.class })
             "
-            v-bind="headerRowAttrs"
+            v-bind="beforeHeaderRowAttrs"
           >
             <!--
               @slot Use it to add something before header row.

@@ -33,12 +33,15 @@ export default /*tw*/ {
   table: "min-w-full border-none text-medium w-full table-auto",
   header: "border-b border-muted",
   headerRow: "",
-  beforeHeaderRow: "{>headerCellBase} py-1",
+  beforeHeaderRow: "{>headerCellBase} py-1 rounded-tl-medium rounded-tr-medium",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+      },
+      beforeHeader: {
+        false: "first:rounded-tl-medium last:rounded-tr-medium",
       },
     },
   },

@@ -435,12 +435,12 @@ export const BeforeHeaderSlot = DefaultTemplate.bind({});
 BeforeHeaderSlot.args = {
   slotTemplate: `
     <template #before-header="{ colsCount, classes }">
-      <td :colspan="colsCount" :class="classes">
+      <th :colspan="colsCount" :class="classes">
         <p class="p-2">
           📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
           Please verify all entries for accuracy before proceeding.
         </p>
-      </td>
+      </th>
     </template>
   `,
 };
