@@ -28,13 +28,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers on dropdown option click.
+   * Triggers on a dropdown option click.
    * @property {string} value
    */
   "clickOption",
 
   /**
-   * Triggers when option is selected.
+   * Triggers when an option is selected.
    * @property {string} value
    * @property {number} value
    */
@@ -98,6 +98,14 @@ const buttonLabel = computed(() => {
   return selectedLabels.join(", ");
 });
 
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
+});
+
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
@@ -133,7 +141,7 @@ const mutatedProps = computed(() => ({
   opened: isShownOptions.value,
 }));
 
-const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, dropdownIconAttrs, wrapperAttrs } =
+const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs, wrapperAttrs } =
   useUI<Config>(defaultConfig, mutatedProps, "dropdownButton");
 </script>
 
@@ -174,12 +182,13 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, dropdownIconAttr
           @slot Use it to add something instead of the toggle icon.
           @binding {boolean} opened
         -->
-        <slot v-if="!noIcon" name="toggle" :opened="isShownOptions">
+        <slot name="toggle" :opened="isShownOptions">
           <UIcon
+            v-if="toggleIconName"
             internal
             color="inherit"
-            :name="config.defaults.dropdownIcon"
-            v-bind="dropdownIconAttrs"
+            :name="toggleIconName"
+            v-bind="toggleIconAttrs"
             :data-test="getDataTest('dropdown')"
           />
         </slot>

@@ -17,9 +17,9 @@ export interface Props {
   label?: string;
 
   /**
-   * Allows multiple selection.
+   * Determines how many selected option labels are shown in the label.
    */
-  multiple?: boolean;
+  labelDisplayCount?: number;
 
   /**
    * Options list.
@@ -35,11 +35,6 @@ export interface Props {
    * Value key in the item object of options.
    */
   valueKey?: string;
-
-  /**
-   * Determines how many selected option labels are shown in the label.
-   */
-  labelDisplayCount?: number;
 
   /**
    * Button variant.
@@ -66,6 +61,16 @@ export interface Props {
   size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
+   * Dropdown toggle icon.
+   */
+  toggleIcon?: boolean | string;
+
+  /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
+
+  /**
    * Set button corners rounded.
    */
   round?: boolean;
@@ -81,17 +86,12 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Hide dropdown icon.
-   */
-  noIcon?: boolean;
-
-  /**
-   * The position of dropdown list on the x-axis.
+   * The position of a dropdown list on the x-axis.
    */
   xPosition?: "left" | "right";
 
   /**
-   * The position of dropdown list on the y-axis.
+   * The position of a dropdown list on the y-axis.
    */
   yPosition?: "top" | "bottom";
 

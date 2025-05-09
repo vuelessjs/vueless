@@ -28,13 +28,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers on dropdown option click.
+   * Triggers on a dropdown option click.
    * @property {string} value
    */
   "clickOption",
 
   /**
-   * Triggers when option is selected.
+   * Triggers when an option is selected.
    * @property {string} value
    * @property {number} value
    */
@@ -96,6 +96,14 @@ const linkLabel = computed(() => {
   }
 
   return selectedLabels.join(", ");
+});
+
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
 function onClickLink() {
@@ -184,12 +192,12 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
     -->
     <slot name="toggle" :opened="isShownOptions" :toggle="onClickLink">
       <UIcon
-        v-if="!noIcon"
+        v-if="toggleIconName"
         internal
         interactive
         :color="color"
         :disabled="disabled"
-        :name="config.defaults.toggleIcon"
+        :name="toggleIconName"
         v-bind="toggleIconAttrs"
         :data-test="getDataTest('toggle')"
         @click="onClickLink"

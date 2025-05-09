@@ -5,7 +5,6 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook.ts";
-import { ref } from "vue";
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -63,15 +62,9 @@ const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdo
 
 const SelectableTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
   components: { UDropdownLink, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownLink.__name);
-
-    const value = ref();
-
-    return { args, slots, value };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDropdownLink.__name) }),
   template: `
-    <UDropdownLink v-bind="args" v-model="value">
+    <UDropdownLink v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownLink>
   `,
@@ -97,11 +90,14 @@ const EnumTemplate: StoryFn<EnumUDropdownLinkArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Selectable = SelectableTemplate.bind({});
-Selectable.args = {};
+export const OptionSelection = SelectableTemplate.bind({});
+OptionSelection.args = { modelValue: "profile" };
 
-export const SelectableMultiple = SelectableTemplate.bind({});
-SelectableMultiple.args = { multiple: true };
+export const MultipleOptionSelection = SelectableTemplate.bind({});
+MultipleOptionSelection.args = {
+  modelValue: ["profile", "settings", "logout"],
+  multiple: true,
+};
 
 export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size", label: "{enumValue}" };
@@ -137,12 +133,15 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (args: EnumUDro
   `,
 });
 
-export const WithoutDropdownIcon = DefaultTemplate.bind({});
-WithoutDropdownIcon.args = { noIcon: true };
+export const WithoutToggleIcon = Default.bind({});
+WithoutToggleIcon.args = { toggleIcon: false };
+
+export const CustomToggleIcon = DefaultTemplate.bind({});
+CustomToggleIcon.args = { toggleIcon: "expand_circle_down" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  noIcon: true,
+  toggleIcon: false,
   slotTemplate: `
     <template #default>
       <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
@@ -165,11 +164,10 @@ ToggleSlot.args = {
     <template #toggle="{ opened, toggle }">
       <UAvatar
         src="https://avatar.iran.liara.run/public"
-        size="xs"
+        size="3xs"
         rounded="full"
         :class="{ 'outline-medium outline-primary': opened }"
         class="ml-1 cursor-pointer"
-        @click="toggle"
       />
     </template>
   `,

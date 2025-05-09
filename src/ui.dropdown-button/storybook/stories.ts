@@ -5,7 +5,6 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook.ts";
-import { ref } from "vue";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -32,11 +31,11 @@ export default {
   title: "Dropdowns / Dropdown Button",
   component: UDropdownButton,
   args: {
-    label: "Filter by Status",
+    label: "Actions",
     options: [
-      { label: "Active", id: "active" },
-      { label: "Pending", id: "pending" },
-      { label: "Archived", id: "archived" },
+      { label: "Edit", id: "edit" },
+      { label: "Copy", id: "copy" },
+      { label: "Remove", id: "delete" },
     ],
   },
   argTypes: {
@@ -68,15 +67,9 @@ const SelectableTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   args: DefaultUDropdownButtonArgs,
 ) => ({
   components: { UDropdownButton, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownButton.__name);
-
-    const value = ref();
-
-    return { args, slots, value };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDropdownButton.__name) }),
   template: `
-    <UDropdownButton v-bind="args" v-model="value">
+    <UDropdownButton v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownButton>
   `,
@@ -121,17 +114,37 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownButtonArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Selectable = SelectableTemplate.bind({});
-Selectable.args = {};
+export const OptionSelection = SelectableTemplate.bind({});
+OptionSelection.args = {
+  label: "Select status",
+  modelValue: "active",
+  options: [
+    { label: "Active", id: "active" },
+    { label: "Pending", id: "pending" },
+    { label: "Archived", id: "archived" },
+  ],
+};
 
-export const SelectableMultiple = SelectableTemplate.bind({});
-SelectableMultiple.args = { multiple: true };
+export const MultipleOptionSelection = SelectableTemplate.bind({});
+MultipleOptionSelection.args = {
+  label: "Select status",
+  modelValue: ["active", "pending", "archived"],
+  multiple: true,
+  options: [
+    { label: "Active", id: "active" },
+    { label: "Pending", id: "pending" },
+    { label: "Archived", id: "archived" },
+  ],
+};
 
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant", label: "{enumValue}" };
 
 export const Size = EnumTemplate.bind({});
 Size.args = { enum: "size", label: "{enumValue}" };
+
+export const Color = MultiEnumTemplate.bind({});
+Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}", options: [] };
 
 export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
@@ -146,27 +159,17 @@ ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const Color = MultiEnumTemplate.bind({});
-Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}", options: [] };
+export const WithoutToggleIcon = Default.bind({});
+WithoutToggleIcon.args = { toggleIcon: false };
 
-export const WithoutDropdownIcon = EnumTemplate.bind({});
-WithoutDropdownIcon.args = { enum: "variant", label: "{enumValue}", noIcon: true };
-
-export const CustomDropdownIcon = DefaultTemplate.bind({});
-CustomDropdownIcon.args = {
-  config: {
-    defaults: {
-      dropdownIcon: "expand_circle_down",
-    },
-  },
-};
+export const CustomToggleIcon = DefaultTemplate.bind({});
+CustomToggleIcon.args = { toggleIcon: "expand_circle_down" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  noIcon: true,
-  round: true,
-  variant: "ghost",
-  config: { dropdownButton: "p-0" },
+  variant: "subtle",
+  toggleIcon: false,
+  square: true,
   options: [
     { label: "Change avatar", id: "avatar" },
     { label: "Profile settings", id: "settings" },
@@ -174,16 +177,18 @@ DefaultSlot.args = {
   ],
   slotTemplate: `
     <template #default>
-      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+      <UAvatar size="sm" rounded="full" src="https://avatar.iran.liara.run/public" />
     </template>
   `,
 };
 
 export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
+  toggleIcon: false,
+  variant: "subtle",
   slotTemplate: `
     <template #left>
-      <UIcon name="heart_plus" size="sm" color="inherit" />
+      <UIcon name="settings" size="sm" color="inherit" />
     </template>
   `,
 };

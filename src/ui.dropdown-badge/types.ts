@@ -17,9 +17,9 @@ export interface Props {
   label?: string;
 
   /**
-   * Allows multiple selection.
+   * Determines how many selected option labels are shown in the label.
    */
-  multiple?: boolean;
+  labelDisplayCount?: number;
 
   /**
    * Options list.
@@ -35,11 +35,6 @@ export interface Props {
    * Value key in the item object of options.
    */
   valueKey?: string;
-
-  /**
-   * Determines how many selected option labels are shown in the label.
-   */
-  labelDisplayCount?: number;
 
   /**
    * Badge variant.
@@ -66,22 +61,27 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Dropdown toggle icon.
+   */
+  toggleIcon?: boolean | string;
+
+  /**
+   * Allows multiple selection.
+   */
+  multiple?: boolean;
+
+  /**
    * Set badge corners rounded.
    */
   round?: boolean;
 
   /**
-   * Hide dropdown icon.
-   */
-  noIcon?: boolean;
-
-  /**
-   * The position of dropdown list on the x-axis.
+   * The position of a dropdown list on the x-axis.
    */
   xPosition?: "left" | "right";
 
   /**
-   * The position of dropdown list on the y-axis.
+   * The position of a dropdown list on the y-axis.
    */
   yPosition?: "top" | "bottom";
 

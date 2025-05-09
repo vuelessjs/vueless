@@ -25,8 +25,8 @@ export default /*tw*/ {
     base: "{UListbox} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-3 mb-2.5",
-        bottom: "top-3 mt-2.5",
+        top: "bottom-3.5 mb-2.5",
+        bottom: "top-3.5 mt-2.5",
       },
       xPosition: {
         left: "left-0",
@@ -43,7 +43,6 @@ export default /*tw*/ {
     xPosition: "left",
     underlined: undefined,
     dashed: true,
-    noIcon: false,
     disabled: false,
     multiple: false,
     labelDisplayCount: 2,

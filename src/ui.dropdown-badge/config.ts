@@ -8,7 +8,7 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownIcon: {
+  toggleIcon: {
     base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-0.5",
     defaults: {
       size: {
@@ -40,10 +40,9 @@ export default /*tw*/ {
     yPosition: "bottom",
     xPosition: "left",
     round: false,
-    noIcon: false,
     multiple: false,
     labelDisplayCount: 2,
     /* icons */
-    dropdownIcon: "keyboard_arrow_down",
+    toggleIcon: "keyboard_arrow_down",
   },
 };

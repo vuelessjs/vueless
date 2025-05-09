@@ -5,7 +5,6 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook.ts";
-import { ref } from "vue";
 
 import UDropdownBadge from "../../ui.dropdown-badge/UDropdownBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -66,15 +65,9 @@ const SelectableTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (
   args: DefaultUDropdownBadgeArgs,
 ) => ({
   components: { UDropdownBadge, UIcon, ULink },
-  setup() {
-    const slots = getSlotNames(UDropdownBadge.__name);
-
-    const value = ref();
-
-    return { args, slots, value };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
-    <UDropdownBadge v-bind="args" v-model="value">
+    <UDropdownBadge v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdownBadge>
   `,
@@ -119,11 +112,14 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Selectable = SelectableTemplate.bind({});
-Selectable.args = {};
+export const OptionSelection = SelectableTemplate.bind({});
+OptionSelection.args = { modelValue: "pending" };
 
-export const SelectableMultiple = SelectableTemplate.bind({});
-SelectableMultiple.args = { multiple: true };
+export const MultipleOptionSelection = SelectableTemplate.bind({});
+MultipleOptionSelection.args = {
+  modelValue: ["pending", "delivered", "cancelled"],
+  multiple: true,
+};
 
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant", label: "{enumValue}" };
@@ -145,28 +141,23 @@ ListboxYPosition.parameters = {
 };
 
 export const Color = MultiEnumTemplate.bind({});
-Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
-
-export const WithoutDropdownIcon = DefaultTemplate.bind({});
-WithoutDropdownIcon.args = { noIcon: true };
-
-export const CustomDropdownIcon = DefaultTemplate.bind({});
-CustomDropdownIcon.args = {
-  config: {
-    dropdownIcon: {
-      defaults: {
-        size: "sm",
-      },
-    },
-    defaults: {
-      dropdownIcon: "expand_circle_down",
-    },
-  },
+Color.args = {
+  outerEnum: "variant",
+  enum: "color",
+  label: "{enumValue}",
+  options: [],
 };
+
+export const WithoutToggleIcon = Default.bind({});
+WithoutToggleIcon.args = { toggleIcon: false };
+
+export const CustomToggleIcon = DefaultTemplate.bind({});
+CustomToggleIcon.args = { toggleIcon: "expand_circle_down" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   round: true,
+  toggleIcon: false,
   options: [
     { label: "Change avatar", id: "avatar" },
     { label: "Profile settings", id: "settings" },
