@@ -43,11 +43,8 @@ export function createVueless(options: CreateVuelessOptions = {}) {
     app.provide(LoaderProgressSymbol, loaderProgress);
   };
 
-  /* delete non vueless config keys */
-  delete options.i18n;
-
   /* set vueless config from a client (uses in Nuxt) */
-  setVuelessConfig(options);
+  setVuelessConfig(options.config);
 
   /* init theme after first render */
   setTimeout(setTheme, 0);
