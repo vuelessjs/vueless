@@ -83,7 +83,7 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
 
   /* Remove non a props defaults. */
   for (const key in defaults) {
-    const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon)/.test(key);
+    const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon|toggleIcon)/.test(key);
     const isNonPropIconDefaults = ICON_NON_PROPS_DEFAULTS.includes(key) && name === U_ICON;
 
     if (isNonPropIcon || isNonPropIconDefaults) {
