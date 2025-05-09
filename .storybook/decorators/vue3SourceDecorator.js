@@ -27,7 +27,7 @@ export const vue3SourceDecorator = makeDecorator({
     previousStoryId = context.id;
 
     // this returns a new component that computes the source code when mounted
-    // and emits an events that is handled by addons-docs
+    // and emits an event that is handled by addons-docs
     // watch args and re-emit on change
     return {
       components: { story },
@@ -94,7 +94,9 @@ function preFormat(templateSource, args, argTypes) {
     templateSource = expandOuterVueLoopFromTemplate(templateSource, args, argTypes);
   }
 
-  const componentArgs = {};
+  const componentArgs = {
+    ...(args.class && { class: args.class }),
+  };
 
   const enumKeys = Object.entries(args)
     .filter(([, value]) => JSON.stringify(value)?.includes("{enumValue}"))
@@ -136,7 +138,7 @@ function preFormat(templateSource, args, argTypes) {
     .replace(
       /v-bind="args"/g,
       Object.keys(componentArgs)
-        .map((key) => " " + propToSource(kebabCase(key), args[key]))
+        .map((key) => " " + propToSource(kebabCase(key), args[key], argTypes[key]))
         .join(""),
     );
 
@@ -267,12 +269,13 @@ function generateEnumAttributes(args, option) {
     .join(" ");
 }
 
-function propToSource(key, val) {
+function propToSource(key, val, argType) {
+  const defaultValue = argType.table?.defaultValue?.summary;
   const type = typeof val;
 
   switch (type) {
     case "boolean":
-      return val ? key : "";
+      return val || defaultValue === "false" ? key : `:${key}="${val}"`;
     case "string":
       return `${key}="${val}"`;
     case "object":
