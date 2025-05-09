@@ -36,7 +36,7 @@ export default /*tw*/ {
   beforeHeaderRow: "",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
-    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap bg-gray-100",
+    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
