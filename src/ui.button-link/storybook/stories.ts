@@ -24,7 +24,7 @@ export default {
   title: "Buttons & Links / Link",
   component: ULink,
   args: {
-    label: "View in GitHub",
+    label: "View on GitHub",
   },
   argTypes: {
     ...getArgTypes(ULink.__name),
@@ -79,13 +79,11 @@ export const Types: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
         label="+1 (000) 123-4567"
         href="+1(000)123-4567"
       />
-
       <ULink
         type="email"
         label="hello@vueless.com"
         href="hello@vueless.com"
       />
-
       <ULink
         type="link"
         label="Vueless.com"
@@ -96,25 +94,9 @@ export const Types: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   `,
 });
 
-export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs, { argTypes }) => ({
+export const UnderlineVariants: StoryFn<ULinkArgs> = (args: ULinkArgs) => ({
   components: { ULink, URow },
-  setup() {
-    const variants = [
-      { name: "Default", props: {} },
-      { name: "Dashed", props: { dashed: true } },
-      { name: "Dotted", props: { dotted: true } },
-      { name: "Underlined", props: { underlined: true } },
-      { name: "Without Underline", props: { underlined: false } },
-    ];
-
-    const colors = argTypes?.color?.options;
-
-    return {
-      args,
-      variants,
-      colors,
-    };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
       <ULink label="Default" />
