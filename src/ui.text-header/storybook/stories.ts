@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,34 +40,24 @@ export default {
 
 const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
   components: { UHeader, UBadge },
-  setup() {
-    const slots = getSlotNames(UHeader.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UHeader.__name) }),
   template: `
-    <UHeader v-bind="args">
+    <UHeader v-bind="args" class="w-fit">
       ${args.slotTemplate || getSlotsFragment("")}
     </UHeader>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
   components: { UHeader, UCol },
   directives: { tooltip },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UHeader
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
       />
     </UCol>
@@ -90,15 +81,14 @@ Line.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const Underlined = EnumVariantTemplate.bind({});
-Underlined.args = { enum: "size", underlined: true };
-Underlined.parameters = getEnumVariantDescription();
+export const Underlined = DefaultTemplate.bind({});
+Underlined.args = { underlined: true };
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 Colors.parameters = getEnumVariantDescription();
 

@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -36,11 +37,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   components: { UNumber, UIcon, UBadge },
-  setup() {
-    const slots = getSlotNames(UNumber.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UNumber.__name) }),
   template: `
     <UNumber v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -48,19 +45,16 @@ const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => ({
   components: { UNumber, URow },
   directives: { tooltip },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UNumber
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
       />
     </URow>
@@ -70,7 +64,7 @@ const EnumVariantTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sign = EnumVariantTemplate.bind({});
+export const Sign = EnumTemplate.bind({});
 Sign.args = { enum: "sign" };
 Sign.parameters = getEnumVariantDescription();
 
@@ -101,15 +95,15 @@ export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
 });
 Align.parameters = getEnumVariantDescription();
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color", sign: "auto" };
 Colors.parameters = getEnumVariantDescription();
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const CurrencyAlign = EnumVariantTemplate.bind({});
+export const CurrencyAlign = EnumTemplate.bind({});
 CurrencyAlign.args = { enum: "currencyAlign", currency: "USD", currencySpace: true };
 CurrencyAlign.parameters = getEnumVariantDescription();
 
@@ -157,13 +151,13 @@ export const Slots: StoryFn<UNumberArgs> = (args) => ({
     <URow>
       <UNumber v-bind="args">
         <template #left>
-          <UIcon name="confirmation_number" color="success" />
+          <UIcon name="payments" color="success" class="mr-1" />
         </template>
       </UNumber>
 
       <UNumber v-bind="args">
         <template #right>
-          <UBadge label="Quantity" color="success" />
+          <UBadge label="Quantity" color="success" class="ml-1" />
         </template>
       </UNumber>
     </URow>
