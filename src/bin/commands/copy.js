@@ -21,11 +21,15 @@ export async function copyVuelessComponent(options) {
   const [componentName, newComponentName] = options;
 
   if (!componentName) {
-    throw new Error("Component name is required.");
+    console.log(styleText("red", "Component name is required."));
+
+    return;
   }
 
   if (!(componentName in COMPONENTS)) {
-    throw new Error("There is no such component.");
+    console.log(styleText("red", "There is no such component."));
+
+    return;
   }
 
   const sourceComponentPath = getSourcePath(componentName);
@@ -39,7 +43,9 @@ export async function copyVuelessComponent(options) {
   const isComponentExists = newComponentName in COMPONENTS || existsSync(absoluteDestPath);
 
   if (isComponentExists) {
-    throw new Error(`Component with name ${newComponentName} already exists.`);
+    console.log(styleText("red", `Component with name ${newComponentName} already exists.`));
+
+    return;
   }
 
   await cp(sourceComponentPath, absoluteDestPath, { recursive: true });
