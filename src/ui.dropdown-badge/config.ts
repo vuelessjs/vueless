@@ -1,10 +1,20 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block",
+  wrapper: {
+    base: "relative inline-block",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+  },
   dropdownBadge: {
     base: "{UBadge}",
     variants: {
       opened: {
         true: "group",
+      },
+      disabled: {
+        true: "opacity-(--vl-disabled-opacity) pointer-events-none",
       },
     },
   },
@@ -22,8 +32,8 @@ export default /*tw*/ {
     base: "{UListbox} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-5 mb-3",
-        bottom: "top-5 mt-3",
+        top: "bottom-full mb-1.5",
+        bottom: "top-full mt-1.5",
       },
       xPosition: {
         left: "left-0",

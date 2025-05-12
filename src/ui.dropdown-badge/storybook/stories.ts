@@ -148,6 +148,9 @@ Color.args = {
   options: [],
 };
 
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
 export const WithoutToggleIcon = Default.bind({});
 WithoutToggleIcon.args = { toggleIcon: false };
 
@@ -166,11 +169,8 @@ DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <URow align="center" gap="xs">
-        <UAvatar size="sm" src="https://avatar.iran.liara.run/public/boy" />
-        <UCol gap="2xs">
-          <span class="text-small font-semibold">John Doe</span>
-          <span class="text-tiny">Admin</span>
-        </UCol>
+        <UAvatar size="3xs" src="https://avatar.iran.liara.run/public/boy" />
+        <span class="text-small font-semibold">John Doe</span>
       </URow>
     </template>
   `,
@@ -180,7 +180,7 @@ export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UIcon name="heart_plus" size="sm" color="inherit" />
+      <UIcon name="delivery_truck_speed" size="xs" color="inherit" />
     </template>
   `,
 };
@@ -194,6 +194,7 @@ ToggleSlot.args = {
         color="inherit"
         size="sm"
         class="mx-1"
+        underlined
       />
     </template>
   `,

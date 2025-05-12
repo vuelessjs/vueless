@@ -115,9 +115,6 @@ ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
-
 export const Color = EnumTemplate.bind({});
 Color.args = { enum: "color", label: "{enumValue}" };
 
@@ -127,11 +124,16 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (args: EnumUDro
   template: `
     <URow>
       <UDropdownLink label="Default" />
-      <UDropdownLink label="Underlined" :underlined="true" :dashed="false" />
-      <UDropdownLink label="No underline" :underlined="false" />
+      <UDropdownLink label="Dashed" dashed underlined />
+      <UDropdownLink label="Dotted" dotted underlined />
+      <UDropdownLink label="Underlined" underlined />
+      <UDropdownLink label="Without Underline" :underlined="false" />
     </URow>
   `,
 });
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
 export const WithoutToggleIcon = Default.bind({});
 WithoutToggleIcon.args = { toggleIcon: false };
@@ -153,7 +155,7 @@ export const LeftSlot = DefaultTemplate.bind({});
 LeftSlot.args = {
   slotTemplate: `
     <template #left>
-      <UIcon name="heart_plus" size="sm" color="primary" />
+      <UIcon name="person" size="xs" color="primary" class="mr-0.5" />
     </template>
   `,
 };

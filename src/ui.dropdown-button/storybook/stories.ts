@@ -159,6 +159,9 @@ ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
 export const WithoutToggleIcon = Default.bind({});
 WithoutToggleIcon.args = { toggleIcon: false };
 
@@ -197,7 +200,7 @@ export const ToggleSlot = DefaultTemplate.bind({});
 ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
-      <ULink :label="opened ? 'collapse' : 'expand'" color="inherit" />
+      <ULink :label="opened ? 'collapse' : 'expand'" color="inherit" underlined />
     </template>
   `,
 };

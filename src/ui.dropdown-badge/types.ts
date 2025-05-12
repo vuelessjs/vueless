@@ -76,6 +76,11 @@ export interface Props {
   round?: boolean;
 
   /**
+   * Disable the badge.
+   */
+  disabled?: boolean;
+
+  /**
    * The position of a dropdown list on the x-axis.
    */
   xPosition?: "left" | "right";
