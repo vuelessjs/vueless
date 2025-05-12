@@ -9,7 +9,7 @@ export default /*tw*/ {
   },
   body: `
     mb-3 p-4 flex gap-3 w-full items-center justify-center rounded-large bg-inverted/90
-     shadow-[0_0px_12px_rgba(0,0,0,0.25)] shadow-grayscale/25 backdrop-blur-md
+    shadow-[0_0px_12px_rgba(0,0,0,0.25)] shadow-grayscale/25 backdrop-blur-md
   `,
   bodySuccess: "{>body} bg-radial-[circle_at_0%_50%] from-success/25 from-2.17% to-transparent",
   bodyWarning: "{>body} bg-radial-[circle_at_0%_50%] from-warning/25 from-2.17% to-transparent",

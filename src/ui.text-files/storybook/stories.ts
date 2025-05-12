@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -42,11 +43,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs) => ({
   components: { UFiles },
-  setup() {
-    const slots = getSlotNames(UFiles.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UFiles.__name) }),
   template: `
     <UFiles v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -54,19 +51,15 @@ const DefaultTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs, { argTypes }) => ({
   components: { UFiles, URow },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UFiles
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
@@ -83,10 +76,10 @@ Description.args = {
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
+export const LabelPlacement = EnumTemplate.bind({});
 LabelPlacement.args = {
   enum: "labelAlign",
   description: "These files include important documents like reports and employee data.",

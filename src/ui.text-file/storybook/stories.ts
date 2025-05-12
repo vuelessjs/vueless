@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -57,19 +58,16 @@ const DefaultTemplate: StoryFn<UFileArgs> = (args: UFileArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
   components: { UFile, URow },
   directives: { tooltip },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UFile
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
       />
     </URow>
@@ -85,7 +83,7 @@ ImageURL.args = { imageUrl: "https://picsum.photos/100" };
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 

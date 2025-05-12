@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -45,11 +46,7 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow, UBadge },
-  setup() {
-    const slots = getSlotNames(UText.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UText.__name) }),
   template: `
     <UText v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -57,24 +54,18 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, UCol },
   directives: { tooltip },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options || [],
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UText
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        class="w-full"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
+        class="w-full"
       >
         ${args.slotTemplate || defaultTemplate}
       </UText>
@@ -85,11 +76,11 @@ const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Align = EnumVariantTemplate.bind({});
+export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
 Align.parameters = getEnumVariantDescription();
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
@@ -153,8 +144,8 @@ List.args = {
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
-    <UText>To proceed with your registration, please enter your
+    <p>To proceed with your registration, please enter your
     <UBadge label="email address" v-bind="args" color="success" /> in the field below.
-    A verification link will be sent to your inbox shortly.</UText>
+    A verification link will be sent to your inbox shortly.</p>
   `,
 };
