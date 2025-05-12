@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs) => ({
   components: { UAlert, UIcon, URow, UButton },
-  setup() {
-    const slots = getSlotNames(UAlert.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UAlert.__name) }),
   template: `
     <UAlert v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -51,29 +48,15 @@ const DefaultTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs, { argTypes }) => ({
   components: { UAlert, UCol },
-  setup() {
-    function getText(value: string) {
-      return `This is Alert's ${value} size`;
-    }
-
-    let prefixedOptions = argTypes?.[args.enum]?.options;
-
-    if (argTypes?.[args.enum]?.name === "size") {
-      prefixedOptions = prefixedOptions?.map((option) => getText(option));
-    }
-
-    return { args, options: argTypes?.[args.enum]?.options, prefixedOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol align="stretch">
       <UAlert
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :title="prefixedOptions[index]"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </UCol>
   `,
@@ -88,14 +71,14 @@ Description.args = {
     "Unable to connect to the server. Please check your internet connection and try again.",
 };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", title: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", title: "{enumValue}" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", title: "{enumValue}" };
 
 export const Closable = DefaultTemplate.bind({});
 Closable.args = { closable: true };

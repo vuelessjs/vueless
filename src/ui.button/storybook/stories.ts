@@ -88,11 +88,11 @@ Round.args = { enum: "variant", label: "{enumValue}", round: true };
 export const Disabled = EnumTemplate.bind({});
 Disabled.args = { enum: "variant", label: "{enumValue}", disabled: true };
 
-export const Color = MultiEnumTemplate.bind({});
-Color.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
+export const Colors = MultiEnumTemplate.bind({});
+Colors.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
 
-export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size", label: "{enumValue}" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const Icons: StoryFn<UButtonArgs> = (args) => ({
   components: { UButton, URow },

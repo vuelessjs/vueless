@@ -104,7 +104,7 @@ body {
 .dark .sbdocs .sbdocs-content > h3,
 .dark .sbdocs .sbdocs-content > .sb-anchor > h3,
 .dark .sbdocs .sbdocs-content > .sb-anchor > p,
-.dark .sbdocs .sbdocs-content > :not(.sb-anchor) ul > li,
+.dark .sbdocs .sbdocs-content > ul > li,
 .dark .sbdocs .sbdocs-content > p,
 .dark .sbdocs .sbdocs-content > table th,
 .dark .sbdocs .sbdocs-content > table td {

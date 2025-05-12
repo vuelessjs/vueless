@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -7,6 +8,7 @@ import {
 
 import UThemeColorToggle from "../UThemeColorToggle.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
@@ -63,43 +65,36 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UThemeColorToggleArgs> = (args: UThemeColorToggleArgs) => ({
-  components: { UThemeColorToggle, UButton, UCol },
-  setup() {
-    const slots = getSlotNames(UThemeColorToggle.__name);
-
-    return { args, slots };
-  },
+  components: { UThemeColorToggle, UButton, UCol, URow },
+  setup: () => ({ args, slots: getSlotNames(UThemeColorToggle.__name) }),
   template: `
     <UCol>
       <UThemeColorToggle v-bind="args" v-model:primary="args.primary" v-model:neutral="args.neutral">
         ${args.slotTemplate || getSlotsFragment("")}
       </UThemeColorToggle>
 
-      <UButton label="Primary button" color="primary"/>
+      <URow>
+        <UButton label="Primary button" color="primary" />
+        <UButton label="Neutral button" color="neutral" />
+      </URow>
     </UCol>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
+const EnumTemplate: StoryFn<UThemeColorToggleArgs> = (
   args: UThemeColorToggleArgs,
   { argTypes },
 ) => ({
   components: { UCol, UThemeColorToggle },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UThemeColorToggle
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model:primary="args.primary"
         v-model:neutral="args.neutral"
-        :[args.enum]="option"
       />
     </UCol>
   `,
@@ -108,5 +103,5 @@ const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
