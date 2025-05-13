@@ -87,7 +87,7 @@ export default /*tw*/ {
     },
   },
   customRangeDescription: "",
-  rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
+  rangeInputWrapper: "flex mt-4 group/range-input-wrapper",
   rangeInput: {
     base: "{UInput}",
     inputLabel: {
@@ -203,7 +203,7 @@ export default /*tw*/ {
   defaults: {
     userDateFormat: "j F Y",
     size: "md",
-    variant: "button",
+    variant: "input",
     labelAlign: "topInside",
     openDirectionX: "auto",
     openDirectionY: "auto",

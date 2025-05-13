@@ -386,7 +386,8 @@ function onInputDate(newDate: Date | null) {
 
   if (props.range && isRangeDate(localValue.value)) {
     const isFullReset =
-      localValue.value.to || !localValue.value.from || date <= localValue.value.from;
+      (localValue.value.from && date < localValue.value.from) ||
+      (localValue.value.to && localValue.value.from);
 
     const updatedValue = isFullReset
       ? { from: date, to: null }
