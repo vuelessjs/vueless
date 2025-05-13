@@ -148,9 +148,10 @@ const filteredOptions = computed(() => {
         : [props.modelValue];
   }
 
-  let options = props.multiple
-    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
-    : [...props.options];
+  let options =
+    props.multiple && props.multipleVariant === "list"
+      ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
+      : [...props.options];
 
   options = props.groupValueKey
     ? filterGroups(
@@ -177,6 +178,18 @@ const localValue = computed(() => {
         getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
       )
     : [];
+});
+
+const visibleSelectedOptions = computed(() => {
+  if (!props.multiple || !Array.isArray(localValue.value)) {
+    return [];
+  }
+
+  if (props.multipleVariant === "inline") {
+    return localValue.value.slice(0, props.labelDisplayCount);
+  }
+
+  return localValue.value;
 });
 
 const isLocalValue = computed(() => {
@@ -220,7 +233,31 @@ onMounted(setLabelPosition);
 function getOptionLabel(option: Option) {
   if (!option) return "";
 
-  return option[props.labelKey] || "";
+  const label = option[props.labelKey] || "";
+
+  if (props.multiple && props.multipleVariant === "inline" && Array.isArray(localValue.value)) {
+    const selectedIndex = localValue.value.findIndex(
+      (item) => item[props.valueKey] === option[props.valueKey],
+    );
+
+    if (localValue.value.length > 1) {
+      const isLastDisplayed =
+        selectedIndex === Math.min(props.labelDisplayCount, localValue.value.length) - 1;
+
+      if (!isLastDisplayed) {
+        return `${label}, `;
+      }
+    }
+
+    if (
+      selectedIndex === props.labelDisplayCount - 1 &&
+      localValue.value.length > props.labelDisplayCount
+    ) {
+      return `${label}, +${localValue.value.length - props.labelDisplayCount}`;
+    }
+  }
+
+  return label;
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -569,7 +606,7 @@ const {
       <div ref="innerWrapper" v-bind="innerWrapperAttrs">
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <div
-            v-for="item in localValue as Option[]"
+            v-for="item in visibleSelectedOptions"
             :key="String(item[valueKey])"
             v-bind="selectedLabelAttrs"
           >
@@ -607,6 +644,7 @@ const {
               -->
               <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
+                  v-if="multipleVariant !== 'inline'"
                   internal
                   interactive
                   color="neutral"
