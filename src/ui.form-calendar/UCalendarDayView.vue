@@ -151,6 +151,11 @@ function getDayState(day: Date) {
   const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
   const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
+  const isRangeSameDay =
+    props.selectedDateTo &&
+    props.selectedDate &&
+    isSameDay(day, props.selectedDate) &&
+    isSameDay(day, props.selectedDateTo);
   const isLastDayInRange =
     props.selectedDateTo && props.range && isSameDay(day, props.selectedDateTo);
   const isCurrentFirstDayInRange = isFirstDayInRange && isCurrentDay;
@@ -173,18 +178,14 @@ function getDayState(day: Date) {
     isAnotherMonthLastDayInRange,
     isActiveDay,
     isAnotherMonthDayInRange,
+    isRangeSameDay,
   };
 }
 
 function onClickDay(day: Date) {
   const isSameDate = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
-  const isSameDayInRange =
-    isSameDay(day, localSelectedDate.value) &&
-    props.selectedDate !== null &&
-    props.selectedDateTo &&
-    props.range;
 
-  if (isSameDate || isSameDayInRange) {
+  if (isSameDate && !props.range) {
     emit("input", null);
 
     return;
@@ -276,6 +277,20 @@ const {
           size="md"
           square
           v-bind="currentLastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isRangeSameDay"
+          tabindex="-1"
+          variant="solid"
+          color="primary"
+          size="md"
+          square
+          v-bind="selectedDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
