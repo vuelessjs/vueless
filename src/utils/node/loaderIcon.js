@@ -1,6 +1,6 @@
 /**
- This scrypt find icon names from the UIcon props and objects across the project
- and copy SVG icons from the default icons library (@material-symbols or other from config)
+ This scrypt finds icon names from the UIcon props and objects across the project
+ and copies SVG icons from the default icons library (@material-symbols or other from config)
  to the `VUELESS_ICONS_CACHED_DIR` folder.
  */
 
@@ -27,14 +27,15 @@ import {
   ICONS_DIR,
   STORYBOOK_ICONS_CACHED_DIR,
   STORYBOOK_DIR,
+  ICONS_CACHED_DIR,
 } from "../../constants.js";
 
 const DEFAULT_ICONS_PATH = path.join(cwd(), VUELESS_ICONS_DIR);
 const DEFAULT_ICONS_LOCAL_PATH = path.join(cwd(), APP_ICONS_LOCAL_DIR);
-const CACHED_APP_ICONS_PATH = path.join(cwd(), APP_ICONS_CACHED_DIR);
-const CACHED_STORYBOOK_ICONS_PATH = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
+const APP_ICONS_CACHED_PATH = path.join(cwd(), APP_ICONS_CACHED_DIR);
+const STORYBOOK_ICONS_CACHED_PATH = path.join(cwd(), STORYBOOK_ICONS_CACHED_DIR);
 const STORYBOOK_ICONS_LOCAL_PATH = path.join(cwd(), STORYBOOK_ICONS_LOCAL_DIR);
-const VUELESS_ICONS_CACHE_PATH = path.join(CACHED_APP_ICONS_PATH, VUELESS_LIBRARY);
+const VUELESS_ICONS_CACHE_PATH = path.join(APP_ICONS_CACHED_PATH, VUELESS_LIBRARY);
 const U_ICON = "UIcon";
 
 let isDebug = false;
@@ -50,8 +51,8 @@ let isVuelessMode = false;
  * @param {boolean} debug
  * @param {Array} targetFiles
  */
-export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
-  isDebug = debug || false;
+export async function cacheIcons({ mode, env, debug = false, targetFiles = [] } = {}) {
+  isDebug = debug;
   isVuelessEnv = env === "vueless";
   isStorybookMode = mode === "storybook";
   isVuelessMode = mode === "vueless";
@@ -99,8 +100,10 @@ export async function cacheIcons({ mode, env, debug, targetFiles = [] } = {}) {
  * @returns {Promise<void>}
  */
 export async function removeIconsCache(mirrorCacheDir, debug) {
-  if (fs.existsSync(CACHED_APP_ICONS_PATH)) {
-    await rm(CACHED_APP_ICONS_PATH, { recursive: true, force: true });
+  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
+
+  if (fs.existsSync(cachePath)) {
+    await rm(cachePath, { recursive: true, force: true });
   }
 
   if (mirrorCacheDir) {
@@ -123,7 +126,7 @@ export async function removeIconsCache(mirrorCacheDir, debug) {
  * @returns {Promise<void>}
  */
 export async function copyIconsCache(mirrorCacheDir, debug) {
-  const cachePath = path.join(cwd(), APP_ICONS_CACHED_DIR);
+  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
   if (mirrorCacheDir && fs.existsSync(cachePath)) {
     await cp(cachePath, path.join(cwd(), mirrorCacheDir, ICONS_DIR), { recursive: true });
@@ -157,14 +160,12 @@ async function copyCachedVuelessIcons(isVuelessEnv) {
  * @returns {Promise<void>}
  */
 async function copyCachedStorybookIcons() {
-  if (fs.existsSync(CACHED_STORYBOOK_ICONS_PATH)) {
+  if (fs.existsSync(STORYBOOK_ICONS_CACHED_PATH)) {
     fs.mkdirSync(STORYBOOK_ICONS_LOCAL_PATH, { recursive: true });
 
-    await cp(CACHED_STORYBOOK_ICONS_PATH, STORYBOOK_ICONS_LOCAL_PATH, {
+    await cp(STORYBOOK_ICONS_CACHED_PATH, STORYBOOK_ICONS_LOCAL_PATH, {
       recursive: true,
     });
-
-    isDebug && console.log(`Storybook icons successfully copied to: ${STORYBOOK_ICONS_LOCAL_PATH}`);
   }
 }
 
@@ -291,9 +292,14 @@ async function copyIcon(name, defaults) {
     defaults,
     VUELESS_LIBRARY,
   );
-  const { destination: storybookDestination } = getIconLibraryPaths(name, defaults, STORYBOOK_DIR);
 
   if (isStorybookMode) {
+    const { destination: storybookDestination } = getIconLibraryPaths(
+      name,
+      defaults,
+      STORYBOOK_DIR,
+    );
+
     await copyIconFile(source, storybookDestination, name, STORYBOOK_DIR);
 
     return;
@@ -316,7 +322,7 @@ function getIconLibraryPaths(name, defaults, internalMode) {
   const style = defaults.style;
 
   const cacheDir =
-    internalMode === STORYBOOK_DIR ? CACHED_STORYBOOK_ICONS_PATH : CACHED_APP_ICONS_PATH;
+    internalMode === STORYBOOK_DIR ? STORYBOOK_ICONS_CACHED_PATH : APP_ICONS_CACHED_PATH;
 
   /* eslint-disable prettier/prettier */
   const libraries = {
@@ -334,7 +340,8 @@ function getIconLibraryPaths(name, defaults, internalMode) {
       destination: `${cacheDir}/${library}/${name}.svg`
     },
     "heroicons": {
-      source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name}.svg`,
+      // eslint-disable-next-line vue/max-len
+      source: `${cwd()}/node_modules/${library}/24/${name.endsWith("-fill") ? "solid" : "outline"}/${name.replace("-fill", "")}.svg`,
       destination: `${cacheDir}/${library}/${name}.svg`
     },
     "custom-icons": {

@@ -368,23 +368,25 @@ export const DEFAULT_SVGO_CONFIG = {
 };
 
 /* Vueless general */
-export const ICONS_DIR = "icons";
-export const VUELESS = "vueless";
-export const VUELESS_LIBRARY = VUELESS;
+export const VUELESS_LIBRARY = "vueless";
 export const STORYBOOK_DIR = "storybook";
-export const STORYBOOK_ICONS = `${ICONS_DIR}/${STORYBOOK_DIR}`;
+export const ICONS_DIR = "icons";
+
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
+export const VUELESS_DIR = "node_modules/vueless";
 export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
-export const VUELESS_DIR = `node_modules/${VUELESS_LIBRARY}`;
-export const VUELESS_LOCAL_DIR = `src`;
-export const VUELESS_ICONS_DIR = `${VUELESS_DIR}/${ICONS_DIR}/app`;
-export const APP_ICONS_LOCAL_DIR = `src/${ICONS_DIR}/app`;
-export const APP_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}/app`;
+export const VUELESS_LOCAL_DIR = "src";
+export const VUELESS_ICONS_DIR = "node_modules/vueless/icons/app";
+
+export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons`;
+export const APP_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/icons/app`;
+export const APP_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons/app`;
+export const STORYBOOK_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/icons/storybook`;
+export const STORYBOOK_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons/storybook`;
+
+export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
-export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
-export const STORYBOOK_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/${STORYBOOK_ICONS}`;
-export const STORYBOOK_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${STORYBOOK_ICONS}`;
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;
