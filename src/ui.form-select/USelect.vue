@@ -19,7 +19,7 @@ import {
   getCurrentOption,
 } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
+import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -128,6 +128,14 @@ const dropdownValue = computed({
   },
 });
 
+const isMultipleListVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.list,
+);
+
+const isMultipleInlineVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.inline,
+);
+
 const filteredOptions = computed(() => {
   const normalizedSearch = search.value.toLowerCase().trim() || "";
 
@@ -148,7 +156,7 @@ const filteredOptions = computed(() => {
         : [props.modelValue];
   }
 
-  let options = props.multiple
+  let options = isMultipleListVariant.value
     ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
     : [...props.options];
 
@@ -177,6 +185,18 @@ const localValue = computed(() => {
         getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
       )
     : [];
+});
+
+const visibleSelectedOptions = computed(() => {
+  if (!props.multiple || !Array.isArray(localValue.value)) {
+    return [];
+  }
+
+  if (isMultipleInlineVariant.value) {
+    return localValue.value.slice(0, props.labelDisplayCount);
+  }
+
+  return localValue.value;
 });
 
 const isLocalValue = computed(() => {
@@ -220,7 +240,31 @@ onMounted(setLabelPosition);
 function getOptionLabel(option: Option) {
   if (!option) return "";
 
-  return option[props.labelKey] || "";
+  const label = option[props.labelKey] || "";
+
+  if (isMultipleInlineVariant.value && Array.isArray(localValue.value)) {
+    const selectedIndex = localValue.value.findIndex(
+      (item) => item[props.valueKey] === option[props.valueKey],
+    );
+
+    if (localValue.value.length > 1) {
+      const isLastDisplayed =
+        selectedIndex === Math.min(props.labelDisplayCount, localValue.value.length) - 1;
+
+      if (!isLastDisplayed) {
+        return `${label}, `;
+      }
+    }
+
+    if (
+      selectedIndex === props.labelDisplayCount - 1 &&
+      localValue.value.length > props.labelDisplayCount
+    ) {
+      return `${label}, +${localValue.value.length - props.labelDisplayCount}`;
+    }
+  }
+
+  return label;
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -569,7 +613,7 @@ const {
       <div ref="innerWrapper" v-bind="innerWrapperAttrs">
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <div
-            v-for="item in localValue as Option[]"
+            v-for="item in visibleSelectedOptions"
             :key="String(item[valueKey])"
             v-bind="selectedLabelAttrs"
           >
@@ -607,6 +651,7 @@ const {
               -->
               <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
+                  v-if="!isMultipleInlineVariant"
                   internal
                   interactive
                   color="neutral"

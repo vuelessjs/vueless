@@ -103,6 +103,16 @@ export interface Props {
   multiple?: boolean;
 
   /**
+   * Controls multiple selection view.
+   */
+  multipleVariant?: "list" | "inline";
+
+  /**
+   * Determines how many selected option labels are shown in the label.
+   */
+  labelDisplayCount?: number;
+
+  /**
    * Allows to search value in a list.
    */
   searchable?: boolean;
