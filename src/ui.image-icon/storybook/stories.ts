@@ -24,7 +24,8 @@ export default {
   title: "Images & Icons / Icon",
   component: UIcon,
   args: {
-    name: "close",
+    icon: "favorite", // added for icon auto-caching reason, please keep it.
+    name: "favorite",
   },
   argTypes: {
     ...getArgTypes(UIcon.__name),
