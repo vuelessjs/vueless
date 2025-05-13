@@ -12,3 +12,8 @@ export const DIRECTION = {
 export const KEYS = {
   enter: "Enter",
 };
+
+export const MULTIPLE_VARIANTS = {
+  LIST: "list",
+  INLINE: "inline",
+};

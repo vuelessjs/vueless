@@ -19,7 +19,7 @@ import {
   getCurrentOption,
 } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
+import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
 
 import { useLocale } from "../composables/useLocale.ts";
 
@@ -128,6 +128,14 @@ const dropdownValue = computed({
   },
 });
 
+const isMultipleListVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.LIST,
+);
+
+const isMultipleInlineVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.INLINE,
+);
+
 const filteredOptions = computed(() => {
   const normalizedSearch = search.value.toLowerCase().trim() || "";
 
@@ -148,10 +156,9 @@ const filteredOptions = computed(() => {
         : [props.modelValue];
   }
 
-  let options =
-    props.multiple && props.multipleVariant === "list"
-      ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
-      : [...props.options];
+  let options = isMultipleListVariant.value
+    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
+    : [...props.options];
 
   options = props.groupValueKey
     ? filterGroups(
@@ -185,7 +192,7 @@ const visibleSelectedOptions = computed(() => {
     return [];
   }
 
-  if (props.multipleVariant === "inline") {
+  if (isMultipleInlineVariant.value) {
     return localValue.value.slice(0, props.labelDisplayCount);
   }
 
@@ -235,7 +242,7 @@ function getOptionLabel(option: Option) {
 
   const label = option[props.labelKey] || "";
 
-  if (props.multiple && props.multipleVariant === "inline" && Array.isArray(localValue.value)) {
+  if (isMultipleInlineVariant.value && Array.isArray(localValue.value)) {
     const selectedIndex = localValue.value.findIndex(
       (item) => item[props.valueKey] === option[props.valueKey],
     );
@@ -644,7 +651,7 @@ const {
               -->
               <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
-                  v-if="multipleVariant !== 'inline'"
+                  v-if="!isMultipleInlineVariant"
                   internal
                   interactive
                   color="neutral"
