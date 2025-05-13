@@ -172,6 +172,8 @@ function getDayState(day: Date) {
     !props.selectedDateTo &&
     !dateIsOutOfRange(day, props.selectedDate, hoveredDay.value, props.locale, props.dateFormat);
 
+  const isInRangePreviewAnotherMonth = isInRangePreview && isAnotherMonthDay;
+
   return {
     isDayInRange,
     isSelectedDay,
@@ -188,6 +190,7 @@ function getDayState(day: Date) {
     isAnotherMonthDayInRange,
     isRangeSameDay,
     isInRangePreview,
+    isInRangePreviewAnotherMonth,
   };
 }
 
@@ -398,7 +401,10 @@ const {
         />
 
         <UButton
-          v-else-if="getDayState(day).isAnotherMonthDayInRange"
+          v-else-if="
+            getDayState(day).isAnotherMonthDayInRange ||
+            getDayState(day).isInRangePreviewAnotherMonth
+          "
           tabindex="-1"
           variant="ghost"
           color="primary"
