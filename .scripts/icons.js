@@ -1,5 +1,5 @@
 /**
- * The file has `.js` extension because it is a node script.
+ * The file has a `.js ` extension because it is a node script.
  */
 
 import { cacheIcons } from "../src/utils/node/loaderIcon.js";
