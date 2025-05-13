@@ -31,20 +31,24 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-between",
-    variants: {
-      multiple: {
-        true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
-      },
-    },
-    compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
+    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-start",
+    compoundVariants: [
+      { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
+      { multiple: true, multipleVariant: "inline", class: "gap-2 items-baseline" },
+      { labelAlign: "topInside", label: true, class: "pt-0" },
+    ],
   },
-  selectedLabels: "flex flex-col col-span-2",
+  selectedLabels: {
+    compoundVariants: [
+      { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
+      { multiple: true, multipleVariant: "inline", class: "flex gap-1" },
+    ],
+  },
   selectedLabel: {
     base: `
-        font-normal !leading-none relative truncate
-        inline-flex items-center whitespace-nowrap mb-0 w-full
-      `,
+      font-normal !leading-none relative truncate
+      inline-flex items-center whitespace-nowrap mb-0
+    `,
     variants: {
       size: {
         sm: "text-small",
@@ -54,11 +58,10 @@ export default /*tw*/ {
       disabled: {
         true: "text-accented",
       },
-      multiple: {
-        true: "py-2 last:mb-2.5 flex justify-between border-b border-muted",
-      },
     },
     compoundVariants: [
+      { multiple: true, multipleVariant: "list", class: "py-2 last:mb-2.5 flex justify-between border-b border-muted" },
+      { multiple: true, multipleVariant: "inline", class: "py-2" },
       { size: "sm", multiple: true, class: "text-small" },
       { size: "md", multiple: true, class: "text-medium" },
       { size: "lg", multiple: true, class: "text-large" },
@@ -162,8 +165,10 @@ export default /*tw*/ {
     valueKey: "id",
     labelKey: "label",
     groupLabelKey: "label",
+    multipleVariant: "list",
     optionsLimit: 0,
     visibleOptions: 8,
+    labelDisplayCount: 2,
     multiple: false,
     disabled: false,
     searchable: true,

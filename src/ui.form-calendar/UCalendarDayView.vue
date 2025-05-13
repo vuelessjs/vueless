@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import useUI from "../composables/useUI.ts";
 
@@ -24,6 +24,8 @@ defineOptions({ internal: true });
 const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
+
+const hoveredDay = ref<Date | null>(null);
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -151,6 +153,11 @@ function getDayState(day: Date) {
   const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
   const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
+  const isRangeSameDay =
+    props.selectedDateTo &&
+    props.selectedDate &&
+    isSameDay(day, props.selectedDate) &&
+    isSameDay(day, props.selectedDateTo);
   const isLastDayInRange =
     props.selectedDateTo && props.range && isSameDay(day, props.selectedDateTo);
   const isCurrentFirstDayInRange = isFirstDayInRange && isCurrentDay;
@@ -158,6 +165,14 @@ function getDayState(day: Date) {
   const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
   const isAnotherMonthLastDayInRange = isLastDayInRange && isAnotherMonthDay;
   const isActiveDay = props.activeDate && isSameDay(props.activeDate, day) && !props.range;
+  const isInRangePreview =
+    props.range &&
+    props.selectedDate &&
+    hoveredDay.value &&
+    !props.selectedDateTo &&
+    !dateIsOutOfRange(day, props.selectedDate, hoveredDay.value, props.locale, props.dateFormat);
+
+  const isInRangePreviewAnotherMonth = isInRangePreview && isAnotherMonthDay;
 
   return {
     isDayInRange,
@@ -173,24 +188,34 @@ function getDayState(day: Date) {
     isAnotherMonthLastDayInRange,
     isActiveDay,
     isAnotherMonthDayInRange,
+    isRangeSameDay,
+    isInRangePreview,
+    isInRangePreviewAnotherMonth,
   };
 }
 
 function onClickDay(day: Date) {
   const isSameDate = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
-  const isSameDayInRange =
-    isSameDay(day, localSelectedDate.value) &&
-    props.selectedDate !== null &&
-    props.selectedDateTo &&
-    props.range;
 
-  if (isSameDate || isSameDayInRange) {
+  if (isSameDate && !props.range) {
     emit("input", null);
 
     return;
   }
 
   emit("input", day);
+}
+
+function onMouseoverDay(day: Date) {
+  if (props.range && props.selectedDate && !props.selectedDateTo) {
+    hoveredDay.value = day;
+  }
+}
+
+function onMouseleaveDayView() {
+  if (props.range) {
+    hoveredDay.value = null;
+  }
 }
 
 /**
@@ -220,7 +245,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="dayViewAttrs">
+  <div v-bind="dayViewAttrs" @mouseleave="onMouseleaveDayView">
     <div v-bind="weekDaysAttrs">
       <span v-for="weekDay in weekdays" :key="weekDay" v-bind="weekDayAttrs" v-text="weekDay" />
     </div>
@@ -238,6 +263,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -266,6 +292,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -280,6 +307,22 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isRangeSameDay"
+          tabindex="-1"
+          variant="solid"
+          color="primary"
+          size="md"
+          square
+          v-bind="selectedDayAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -294,6 +337,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -308,6 +352,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -322,6 +367,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -336,6 +382,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -350,10 +397,14 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
-          v-else-if="getDayState(day).isAnotherMonthDayInRange"
+          v-else-if="
+            getDayState(day).isAnotherMonthDayInRange ||
+            getDayState(day).isInRangePreviewAnotherMonth
+          "
           tabindex="-1"
           variant="ghost"
           color="primary"
@@ -364,10 +415,11 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
-          v-else-if="getDayState(day).isDayInRange"
+          v-else-if="getDayState(day).isDayInRange || getDayState(day).isInRangePreview"
           tabindex="-1"
           variant="ghost"
           color="primary"
@@ -378,6 +430,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -392,6 +445,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -406,6 +460,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
 
         <UButton
@@ -420,6 +475,7 @@ const {
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
           @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
         />
       </template>
     </div>
