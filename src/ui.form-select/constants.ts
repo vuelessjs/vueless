@@ -14,6 +14,6 @@ export const KEYS = {
 };
 
 export const MULTIPLE_VARIANTS = {
-  LIST: "list",
-  INLINE: "inline",
+  list: "list",
+  inline: "inline",
 };

@@ -129,11 +129,11 @@ const dropdownValue = computed({
 });
 
 const isMultipleListVariant = computed(
-  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.LIST,
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.list,
 );
 
 const isMultipleInlineVariant = computed(
-  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.INLINE,
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.inline,
 );
 
 const filteredOptions = computed(() => {
