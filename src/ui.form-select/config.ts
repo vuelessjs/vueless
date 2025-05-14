@@ -34,14 +34,14 @@ export default /*tw*/ {
     base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-start",
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
-      { multiple: true, multipleVariant: "inline", class: "gap-2 items-baseline" },
+      { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
   selectedLabels: {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
-      { multiple: true, multipleVariant: "inline", class: "flex gap-1" },
+      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last" },
     ],
   },
   selectedLabel: {
@@ -126,6 +126,7 @@ export default /*tw*/ {
   search: {
     base: "flex w-full",
     compoundVariants: [
+      { multiple: true, multipleVariant: "inline", class: "w-auto" },
       { multiple: false, selected: true, opened: false, class: "w-0" },
       { multiple: false, selected: true, searchable: false, class: "w-0" },
     ],
@@ -134,7 +135,7 @@ export default /*tw*/ {
     base: `
         p-0 font-normal !leading-none relative w-full border-none bg-transparent
         focus:shadow-none focus:outline-hidden focus:ring-0 focus:outline-none
-        placeholder:text-muted placeholder:font-normal
+        placeholder:text-muted placeholder:font-normal order-first
       `,
     variants: {
       size: {
