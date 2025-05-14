@@ -552,7 +552,7 @@ const {
       </div>
 
       <div
-        v-show="!multiple || (!isLocalValue && multiple)"
+        v-show="isMultipleInlineVariant || !multiple || (!isLocalValue && multiple)"
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
@@ -576,7 +576,7 @@ const {
       </div>
 
       <div
-        v-if="isLocalValue && clearable && !disabled && !multiple"
+        v-if="isLocalValue && clearable && !disabled && (!multiple || isMultipleInlineVariant)"
         v-bind="clearAttrs"
         :data-test="getDataTest('clear')"
         @mousedown="onMouseDownClear"
@@ -713,7 +713,7 @@ const {
         </span>
 
         <div
-          v-if="isLocalValue && clearable && !disabled && multiple"
+          v-if="isLocalValue && clearable && !disabled && multiple && !isMultipleInlineVariant"
           v-bind="clearMultipleTextAttrs"
           :data-test="getDataTest('clear-all')"
           @mousedown.prevent.capture="onMouseDownClear"

@@ -169,7 +169,7 @@ function isMetaKey(key: string) {
 }
 
 function select(option: Option, keyCode?: string) {
-  if (props.disabled || option.groupLabel) {
+  if (props.disabled || option.disabled || option.groupLabel) {
     return;
   }
 
@@ -206,6 +206,14 @@ function getMarginForSubCategory(level: number = 0) {
   if (level > 1) {
     return `margin-left: ${baseMargin * (level - 1)}rem`;
   }
+}
+
+function getOptionAttrs(option: Option) {
+  if (option.disabled) {
+    return isSelectedOption(option) ? optionDisabledActiveAttrs.value : optionDisabledAttrs.value;
+  }
+
+  return isSelectedOption(option) ? optionActiveAttrs.value : optionAttrs.value;
 }
 
 function optionHighlight(index: number, option: Option) {
@@ -310,6 +318,8 @@ const {
   optionDividerAttrs,
   selectedIconAttrs,
   optionHighlightedAttrs,
+  optionDisabledAttrs,
+  optionDisabledActiveAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -343,7 +353,7 @@ const {
             !option.isHidden &&
             !option.divider
           "
-          v-bind="isSelectedOption(option) ? optionActiveAttrs : optionAttrs"
+          v-bind="getOptionAttrs(option)"
           :data-test="getDataTest('option')"
           :class="optionHighlight(index, option)"
           @click="(select(option), onClickOption(option))"

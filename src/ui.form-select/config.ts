@@ -61,7 +61,6 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "py-2 last:mb-2.5 flex justify-between border-b border-muted" },
-      { multiple: true, multipleVariant: "inline", class: "py-2" },
       { size: "sm", multiple: true, class: "text-small" },
       { size: "md", multiple: true, class: "text-medium" },
       { size: "lg", multiple: true, class: "text-large" },
@@ -150,6 +149,7 @@ export default /*tw*/ {
         true: "placeholder:text-error/50",
       },
     },
+    compoundVariants: [{ multiple: true, multipleVariant: "inline", class: "w-0" }],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
@@ -165,7 +165,7 @@ export default /*tw*/ {
     valueKey: "id",
     labelKey: "label",
     groupLabelKey: "label",
-    multipleVariant: "list",
+    multipleVariant: "inline",
     optionsLimit: 0,
     visibleOptions: 8,
     labelDisplayCount: 2,

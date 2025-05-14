@@ -175,23 +175,26 @@ Divider.parameters = {
 
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
+  multiple: true,
   options: [
-    { label: "New York", id: "1" },
-    { label: "Los Angeles", id: "2", isHidden: true },
+    { label: "New York", id: "1", disabled: true },
+    { label: "Kyiv", id: "2", disabled: true },
+    { label: "Los Angeles", id: "3", isHidden: true },
     {
       label: "Chicago",
-      id: "3",
+      id: "4",
       onClick: (option: Option) =>
         alert("onClick function for the third option: " + JSON.stringify(option)),
     },
   ],
+  modelValue: ["1"],
 };
 OptionSettings.parameters = {
   docs: {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "The second option of the array is hidden (`isHidden` object property is set to `true`). <br/> The third option has `onClick` event handler: <br/> `onClick: (option: Option) => alert('onClick function for option 3: ' + JSON.stringify(option))`",
+        "The first option of the array is disabled (`disabled` object property is set to `true`). The second option is hidden (`isHidden` object property is set to `true`). <br/> The third option has `onClick` event handler: <br/> `onClick: (option: Option) => alert('onClick function for option 3: ' + JSON.stringify(option))`",
     },
   },
 };
