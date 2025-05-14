@@ -399,3 +399,4 @@ export const EXTENDS_PATTERN_REG_EXP = /\{>[^}]*}/g;
 export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const JAVASCRIPT_EXT = ".js";
 export const TYPESCRIPT_EXT = ".ts";
+export const VUE_EXT = ".vue";

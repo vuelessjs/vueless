@@ -24,7 +24,14 @@ import {
   cacheMergedConfigs,
 } from "./utils/node/helper.js";
 
-import { DEFAULT_EXIT_CODE, ICONS_DIR, VUELESS_CACHE_DIR } from "./constants.js";
+import {
+  DEFAULT_EXIT_CODE,
+  VUELESS_CACHE_DIR,
+  ICONS_DIR,
+  VUE_EXT,
+  TYPESCRIPT_EXT,
+  JAVASCRIPT_EXT,
+} from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
 export const TailwindCSS = (options) => {
@@ -126,7 +133,7 @@ export const Vueless = function (options = {}) {
     load: async (id) => await loadSvg(id, options),
 
     handleHotUpdate: async ({ file }) => {
-      if ([".js", ".ts", ".vue"].some((extension) => file.endsWith(extension))) {
+      if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
         await prepareIcons();
       }
     },
