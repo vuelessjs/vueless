@@ -136,6 +136,7 @@ defineExpose({
       :name="rangeInputName"
       no-autocomplete
       @blur="updateDateValue(rangeStart, InputRangeType.Start)"
+      @keydown.enter="updateDateValue(rangeStart, InputRangeType.Start)"
       @input="validateInput($event, InputRangeType.Start)"
     />
 
@@ -148,6 +149,7 @@ defineExpose({
       :name="rangeInputName"
       no-autocomplete
       @blur="updateDateValue(rangeEnd, InputRangeType.End)"
+      @keydown.enter="updateDateValue(rangeEnd, InputRangeType.End)"
       @input="validateInput($event, InputRangeType.End)"
     />
   </div>
