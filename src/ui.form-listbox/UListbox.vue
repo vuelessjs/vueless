@@ -210,14 +210,10 @@ function getMarginForSubCategory(level: number = 0) {
 
 function getOptionAttrs(option: Option) {
   if (option.disabled) {
-    return optionDisabledAttrs.value;
+    return isSelectedOption(option) ? optionDisabledActiveAttrs.value : optionDisabledAttrs.value;
   }
 
-  if (isSelectedOption(option)) {
-    return optionActiveAttrs.value;
-  }
-
-  return optionAttrs.value;
+  return isSelectedOption(option) ? optionActiveAttrs.value : optionAttrs.value;
 }
 
 function optionHighlight(index: number, option: Option) {
@@ -323,6 +319,7 @@ const {
   selectedIconAttrs,
   optionHighlightedAttrs,
   optionDisabledAttrs,
+  optionDisabledActiveAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 

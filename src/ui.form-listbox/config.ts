@@ -21,13 +21,14 @@ export default /*tw*/ {
         lg: "text-large",
       },
       disabled: {
-        true: "pointer-events-none text-muted",
+        true: "pointer-events-none opacity-(--vl-disabled-opacity)",
       },
     },
   },
   optionActive: "{>option} bg-{color}/10 hover:bg-{color}/10 text-{color}",
   optionHighlighted: "bg-{color}/5",
-  optionDisabled: "{>option} pointer-events-none text-muted",
+  optionDisabled: "{>option} pointer-events-none opacity-(--vl-disabled-opacity)",
+  optionDisabledActive: "{>optionActive} {>optionDisabled}",
   optionContent: "overflow-visible w-full text-ellipsis",
   groupBase: {
     base: "px-2 pb-2.5 font-medium !leading-none text-muted overflow-hidden text-ellipsis",

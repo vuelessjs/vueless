@@ -175,16 +175,19 @@ Divider.parameters = {
 
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
+  multiple: true,
   options: [
     { label: "New York", id: "1", disabled: true },
-    { label: "Los Angeles", id: "2", isHidden: true },
+    { label: "Kyiv", id: "2", disabled: true },
+    { label: "Los Angeles", id: "3", isHidden: true },
     {
       label: "Chicago",
-      id: "3",
+      id: "4",
       onClick: (option: Option) =>
         alert("onClick function for the third option: " + JSON.stringify(option)),
     },
   ],
+  modelValue: ["1"],
 };
 OptionSettings.parameters = {
   docs: {
