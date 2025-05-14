@@ -28,6 +28,7 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
+  isSameDay,
 } from "../ui.form-calendar/utilDate.ts";
 
 import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.ts";
@@ -231,8 +232,6 @@ watch(
       from: calendarValue.value.from,
       to: calendarValue.value.to,
     };
-
-    nextTick(() => menuRef.value?.focus());
   },
   { deep: true },
 );
@@ -488,40 +487,47 @@ function onClickShiftRange(action: ShiftActions) {
     : shiftRangePrev(to, from, daysDifference);
 }
 
-function onMouseoverCalendar() {
-  const isInputActiveElement = document.activeElement instanceof HTMLInputElement;
-  const activeElement = isInputActiveElement
-    ? (document.activeElement as HTMLInputElement)
-    : undefined;
-  const isRangeInputFocus = activeElement?.name === rangeInputName.value;
+async function focusRangeInput(value: RangeDate) {
+  const parsedNewValueFrom = parseDate<SortedLocale>(value.from, props.dateFormat, locale.value);
+  const parsedNewDateTo = parseDate<SortedLocale>(value.to, props.dateFormat, locale.value);
 
-  if (
-    isRangeInputFocus ||
-    !rageInputs.value?.rangeInputStartRef ||
-    !rageInputs.value?.rangeInputEndRef
-  ) {
-    return;
-  }
+  const parsedCurrentValueFrom = parseDate<SortedLocale>(
+    calendarInnerValue.value.from || null,
+    props.dateFormat,
+    locale.value,
+  );
+  const parsedCurrentValueTo = parseDate<SortedLocale>(
+    calendarInnerValue.value.to || null,
+    props.dateFormat,
+    locale.value,
+  );
 
-  const hasValues =
-    calendarInnerValue.value.from && calendarInnerValue.value.to && !inputRangeToError.value;
-  const hasOnlyFromValue =
-    calendarInnerValue.value.from && !calendarInnerValue.value.to && !inputRangeFromError.value;
+  const isSameFromValue =
+    parsedCurrentValueFrom &&
+    parsedNewValueFrom &&
+    isSameDay(parsedCurrentValueFrom, parsedNewValueFrom);
 
-  if ((hasValues || !rangeStart.value) && rageInputs.value?.rangeInputStartRef?.inputRef) {
-    (rageInputs.value.rangeInputStartRef.inputRef as HTMLInputElement).focus();
+  const isSameToValue =
+    parsedCurrentValueTo && parsedNewDateTo && isSameDay(parsedCurrentValueTo, parsedNewDateTo);
 
-    return;
-  }
+  nextTick(() => {
+    if (!isSameFromValue || !parsedCurrentValueFrom) {
+      (rageInputs.value?.rangeInputStartRef?.inputRef as HTMLInputElement).focus();
 
-  if (hasOnlyFromValue && rageInputs.value?.rangeInputEndRef?.inputRef) {
-    (rageInputs.value.rangeInputEndRef.inputRef as HTMLInputElement).focus();
+      return;
+    }
 
-    return;
-  }
+    if (!isSameToValue || !parsedCurrentValueTo) {
+      (rageInputs.value?.rangeInputEndRef?.inputRef as HTMLInputElement).focus();
+
+      return;
+    }
+  });
 }
 
 function onInputCalendar(value: RangeDate) {
+  focusRangeInput(value);
+
   calendarInnerValue.value = value;
 }
 
@@ -738,7 +744,6 @@ watchEffect(() => {
           :date-format="dateFormat"
           v-bind="datepickerCalendarAttrs as KeyAttrsWithConfig<UCalendarConfig>"
           range
-          @mouseenter="onMouseoverCalendar"
           @input="onInputCalendar"
         />
       </div>
