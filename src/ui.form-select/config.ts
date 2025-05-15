@@ -150,7 +150,7 @@ export default /*tw*/ {
         true: "placeholder:text-error/50",
       },
     },
-    compoundVariants: [{ multiple: true, multipleVariant: "inline", class: "w-0" }],
+    compoundVariants: [{ multiple: true, multipleVariant: "inline", value: true, class: "w-0" }],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
