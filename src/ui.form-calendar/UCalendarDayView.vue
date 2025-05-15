@@ -242,6 +242,8 @@ const {
   currentFirstDayInRangeAttrs,
   anotherMonthDayInRangeAttrs,
 } = useUI<Config>(defaultConfig);
+
+defineExpose({ days });
 </script>
 
 <template>
