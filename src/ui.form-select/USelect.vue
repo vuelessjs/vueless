@@ -454,7 +454,9 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label),
   /* component state, not a props */
-  selected: props.multiple ? Boolean(localValue.value.length) : Boolean(selectedLabel.value),
+  selected: Boolean(
+    props.multiple ? localValue.value.length : Object.keys(localValue.value).length,
+  ),
   opened: isOpen.value,
   openedTop: isTop.value,
 }));
