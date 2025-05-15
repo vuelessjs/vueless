@@ -99,6 +99,7 @@ const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
 const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
+const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
 
 const activeDate: Ref<Date | null> = ref(null);
 const activeMonth: Ref<Date | null> = ref(null);
@@ -352,6 +353,47 @@ watch(
     }
   },
   { immediate: true },
+);
+
+watch(
+  localValue,
+  (newValue) => {
+    if ((isRangeDate(newValue) && (!newValue.to || !newValue.from)) || !isRangeDate(newValue)) {
+      return;
+    }
+
+    const parsedNewDateTo = parseDate(newValue.to, props.dateFormat, locale.value);
+    const parsedNewValueFrom = parseDate(newValue.from, props.dateFormat, locale.value);
+
+    if (parsedNewDateTo) {
+      const notInView = dateIsOutOfRange(
+        parsedNewDateTo,
+        dayViewRef.value?.days?.at(0),
+        dayViewRef.value?.days?.at(-1),
+        locale.value,
+        actualDateFormat.value,
+      );
+
+      if (notInView) {
+        activeMonth.value = parsedNewDateTo;
+      }
+    }
+
+    if (parsedNewValueFrom) {
+      const notInView = dateIsOutOfRange(
+        parsedNewValueFrom,
+        dayViewRef.value?.days?.at(0),
+        dayViewRef.value?.days?.at(-1),
+        locale.value,
+        actualDateFormat.value,
+      );
+
+      if (notInView) {
+        activeMonth.value = parsedNewValueFrom;
+      }
+    }
+  },
+  { deep: true },
 );
 
 function getCurrentValueType(value: DateValue): DateValue {
@@ -812,6 +854,7 @@ const {
 
     <DayView
       v-if="isCurrentView.day"
+      ref="day-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
