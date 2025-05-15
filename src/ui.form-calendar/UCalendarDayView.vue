@@ -243,7 +243,13 @@ const {
   anotherMonthDayInRangeAttrs,
 } = useUI<Config>(defaultConfig);
 
-defineExpose({ days });
+defineExpose({
+  /**
+   * A computed property that provides the list of days for the calendar view.
+   * @property {Array<Date>} days
+   */
+  days,
+});
 </script>
 
 <template>
