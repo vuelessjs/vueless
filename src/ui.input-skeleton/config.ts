@@ -1,0 +1,68 @@
+export default /*tw*/ {
+  wrapper: {
+    base: "w-full",
+    variants: {
+      labelAlign: {
+        top: "flex flex-col",
+        left: "flex items-center",
+        right: "flex flex-row-reverse items-center",
+      },
+      size: {
+        sm: "gap-2",
+        md: "gap-2.5",
+        lg: "gap-2.5",
+      },
+    },
+  },
+  input: {
+    base: "{USkeleton} p-2",
+    compoundVariants: [
+      { labelAlign: "topInside", size: "sm", type: "text", class: "h-11" },
+      { labelAlign: "topInside", size: "md", type: "text", class: "h-13" },
+      { labelAlign: "topInside", size: "lg", type: "text", class: "h-14" },
+      { labelAlign: "top", size: "sm", type: "text", class: "h-8" },
+      { labelAlign: "top", size: "md", type: "text", class: "h-8.5" },
+      { labelAlign: "top", size: "lg", type: "text", class: "h-9" },
+      { labelAlign: "left", size: "sm", type: "text", class: "h-8" },
+      { labelAlign: "left", size: "md", type: "text", class: "h-8.5" },
+      { labelAlign: "left", size: "lg", type: "text", class: "h-9" },
+      { labelAlign: "right", size: "sm", type: "text", class: "h-8" },
+      { labelAlign: "right", size: "md", type: "text", class: "h-8.5" },
+      { labelAlign: "right", size: "lg", type: "text", class: "h-9" },
+
+      { labelAlign: "topInside", size: "sm", type: "textarea", class: "h-11" },
+      { labelAlign: "topInside", size: "md", type: "textarea", class: "h-17.5" },
+      { labelAlign: "topInside", size: "lg", type: "textarea", class: "h-14" },
+      { labelAlign: "top", size: "sm", type: "textarea", class: "h-12.5" },
+      { labelAlign: "top", size: "md", type: "textarea", class: "h-14" },
+      { labelAlign: "top", size: "lg", type: "textarea", class: "h-15.5" },
+      { labelAlign: "left", size: "sm", type: "textarea", class: "h-12.5" },
+      { labelAlign: "left", size: "md", type: "textarea", class: "h-14" },
+      { labelAlign: "left", size: "lg", type: "textarea", class: "h-15.5" },
+      { labelAlign: "right", size: "sm", type: "textarea", class: "h-12.5" },
+      { labelAlign: "right", size: "md", type: "textarea", class: "h-14" },
+      { labelAlign: "right", size: "lg", type: "textarea", class: "h-15.5" },
+    ],
+  },
+  label: {
+    base: "{USkeleton} w-1/5 rounded-small",
+    compoundVariants: [
+      { labelAlign: "top", size: "sm", class: "h-3" },
+      { labelAlign: "top", size: "md", class: "h-3.5" },
+      { labelAlign: "top", size: "lg", class: "h-4" },
+      { labelAlign: "left", size: "sm", class: "h-3" },
+      { labelAlign: "left", size: "md", class: "h-3.5" },
+      { labelAlign: "left", size: "lg", class: "h-4" },
+      { labelAlign: "right", size: "sm", class: "h-3" },
+      { labelAlign: "right", size: "md", class: "h-3.5" },
+      { labelAlign: "right", size: "lg", class: "h-4" },
+    ],
+  },
+  defaults: {
+    color: "neutral",
+    variant: "default",
+    labelAlign: "topInside",
+    type: "text",
+    size: "md",
+  },
+};

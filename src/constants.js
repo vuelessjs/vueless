@@ -302,6 +302,9 @@ export const COMPONENTS = {
   ULoader: "ui.loader",
   ULoaderProgress: "ui.loader-progress",
   ULoaderOverlay: "ui.loader-overlay",
+  USkeleton: "ui.skeleton",
+  UInputSkeleton: "ui.input-skeleton",
+  UInputOptionSkeleton: "ui.input-option-skeleton",
 
   /* Other */
   UDot: "ui.other-dot",
