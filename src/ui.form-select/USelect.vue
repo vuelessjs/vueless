@@ -242,30 +242,37 @@ if (props.addOption) {
 
 onMounted(setLabelPosition);
 
-function getOptionLabel(option: Option) {
-  if (!option) return "";
+function getOptionLabel(option?: Option) {
+  const value = localValue.value;
+  const labelKey = props.labelKey;
+  const valueKey = props.valueKey;
+  const displayCount = props.labelDisplayCount;
 
-  const label = option[props.labelKey] || "";
+  if (!option) {
+    if (Array.isArray(value)) {
+      const labels = value.slice(0, displayCount).map((item) => item[labelKey]);
+      const extraCount = value.length - displayCount;
 
-  if (isMultipleInlineVariant.value && Array.isArray(localValue.value)) {
-    const selectedIndex = localValue.value.findIndex(
-      (item) => item[props.valueKey] === option[props.valueKey],
-    );
-
-    if (localValue.value.length > 1) {
-      const isLastDisplayed =
-        selectedIndex === Math.min(props.labelDisplayCount, localValue.value.length) - 1;
-
-      if (!isLastDisplayed) {
-        return `${label}, `;
-      }
+      return labels.join(", ") + (extraCount > 0 ? `, +${extraCount}` : "");
     }
 
-    if (
-      selectedIndex === props.labelDisplayCount - 1 &&
-      localValue.value.length > props.labelDisplayCount
-    ) {
-      return `${label}, +${localValue.value.length - props.labelDisplayCount}`;
+    return "";
+  }
+
+  const label = option[labelKey] || "";
+
+  if (isMultipleInlineVariant.value && Array.isArray(value) && value.length > 1) {
+    const index = value.findIndex((item) => item[valueKey] === option[valueKey]);
+    const isWithinDisplayCount = index < displayCount;
+
+    if (isWithinDisplayCount && index < displayCount - 1) {
+      return `${label}, `;
+    }
+
+    if (index === displayCount - 1 && value.length > displayCount) {
+      const extraCount = value.length - displayCount;
+
+      return `${label}, +${extraCount}`;
     }
   }
 
@@ -484,6 +491,7 @@ const {
   clearMultipleAttrs,
   searchAttrs,
   searchInputAttrs,
+  selectedLabelWrapperAttrs,
   selectedLabelsAttrs,
   selectedLabelAttrs,
   listboxAttrs,
@@ -631,71 +639,84 @@ const {
 
       <div ref="innerWrapper" v-bind="innerWrapperAttrs">
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
-          <div
-            v-for="item in visibleSelectedOptions"
-            :key="String(item[valueKey])"
-            v-bind="selectedLabelAttrs"
-          >
-            <!--
+          <template v-if="isMultipleInlineVariant">
+            <div v-bind="selectedLabelWrapperAttrs">
+              {{ getOptionLabel() }}
+            </div>
+          </template>
+          <template v-else>
+            <div
+              v-for="item in visibleSelectedOptions"
+              :key="String(item[valueKey])"
+              v-bind="selectedLabelAttrs"
+            >
+              <!--
               @slot Use it to customize selected value label.
               @binding {string} selected-label
               @binding {object} option
             -->
-            <slot
-              name="selected-label"
-              :selected-label="getOptionLabel(item)"
-              :value="item[valueKey]"
-              :option="item"
-            >
-              <template v-if="isMultipleTagsVariant">
-                <UBadge :label="String(getOptionLabel(item))" :size="size" v-bind="badgeLabelAttrs">
-                  <template #right>
-                    <UIcon
-                      internal
-                      interactive
-                      color="inherit"
-                      :name="config.defaults.clearIcon"
-                      v-bind="badgeClearIconAttrs"
-                      @click="onMouseDownClearItem($event, item)"
-                    />
-                  </template>
-                </UBadge>
-              </template>
-              <template v-else>
-                {{ getOptionLabel(item) }}
-              </template>
-            </slot>
-
-            <!--
-              @slot Use it to add something after selected value label.
-              @binding {object} option
-            -->
-            <slot :option="item" name="selected-label-after" />
-
-            <div
-              v-if="!disabled"
-              v-bind="clearMultipleAttrs"
-              :data-test="getDataTest('clear-item')"
-              @mousedown.prevent.capture
-              @click.prevent.capture
-              @mousedown="onMouseDownClearItem($event, item)"
-            >
-              <!--
-                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
-                @binding {string} icon-name
-              -->
-              <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
-                <UIcon
-                  v-if="!isMultipleInlineVariant && !isMultipleTagsVariant"
-                  internal
-                  interactive
-                  color="neutral"
-                  :name="config.defaults.clearMultipleIcon"
-                  v-bind="clearMultipleIconAttrs"
-                />
+              <slot
+                name="selected-label"
+                :selected-label="getOptionLabel(item)"
+                :value="item[valueKey]"
+                :option="item"
+              >
+                <template v-if="isMultipleTagsVariant">
+                  <UBadge
+                    :label="String(getOptionLabel(item))"
+                    :size="size"
+                    v-bind="badgeLabelAttrs"
+                  >
+                    <template #right>
+                      <UIcon
+                        internal
+                        interactive
+                        color="inherit"
+                        :name="config.defaults.clearIcon"
+                        v-bind="badgeClearIconAttrs"
+                        @click="onMouseDownClearItem($event, item)"
+                      />
+                    </template>
+                  </UBadge>
+                </template>
+                <template v-else>
+                  <div v-bind="selectedLabelWrapperAttrs">
+                    {{ getOptionLabel(item) }}
+                  </div>
+                </template>
               </slot>
+
+              <!--
+                @slot Use it to add something after selected value label.
+                @binding {object} option
+              -->
+              <slot :option="item" name="selected-label-after" />
+
+              <div
+                v-if="!disabled"
+                v-bind="clearMultipleAttrs"
+                :data-test="getDataTest('clear-item')"
+                @mousedown.prevent.capture
+                @click.prevent.capture
+                @mousedown="onMouseDownClearItem($event, item)"
+              >
+                <!--
+                  @slot Use it to add something instead of the clear icon (when multiple prop enabled).
+                  @binding {string} icon-name
+                -->
+                <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
+                  <UIcon
+                    v-if="!isMultipleInlineVariant && !isMultipleTagsVariant"
+                    internal
+                    interactive
+                    color="neutral"
+                    :name="config.defaults.clearMultipleIcon"
+                    v-bind="clearMultipleIconAttrs"
+                  />
+                </slot>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
 
         <div v-bind="searchAttrs">
@@ -737,7 +758,9 @@ const {
             :value="(localValue as Option)[valueKey]"
             :option="localValue"
           >
-            {{ selectedLabel }}
+            <div v-bind="selectedLabelWrapperAttrs">
+              {{ selectedLabel }}
+            </div>
           </slot>
 
           <!--

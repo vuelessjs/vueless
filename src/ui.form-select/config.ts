@@ -40,16 +40,18 @@ export default /*tw*/ {
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
+  selectedLabelWrapper: "truncate",
   selectedLabels: {
+    base: "{>selectedLabel} max-w-full font-normal",
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
-      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last" },
+      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last !leading-none" },
       { multiple: true, multipleVariant: "tags", class: "flex gap-1 flex-wrap" },
     ],
   },
   selectedLabel: {
     base: `
-      font-normal !leading-none relative truncate
+      font-normal !leading-none relative w-full
       inline-flex items-center whitespace-nowrap mb-0
     `,
     variants: {
