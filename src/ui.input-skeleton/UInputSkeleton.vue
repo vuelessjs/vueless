@@ -24,13 +24,10 @@ const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
 
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
-    <USkeleton
-      v-if="props.labelAlign !== LABEL_ALIGN.topInside"
-      :color="color"
-      :variant="variant"
-      v-bind="labelAttrs"
-    />
-    <USkeleton :color="color" :variant="variant" v-bind="inputAttrs">
+    <slot v-if="props.labelAlign !== LABEL_ALIGN.topInside && props.label" name="label">
+      <USkeleton :variant="variant" v-bind="labelAttrs" />
+    </slot>
+    <USkeleton :variant="variant" v-bind="inputAttrs">
       <slot />
     </USkeleton>
   </div>

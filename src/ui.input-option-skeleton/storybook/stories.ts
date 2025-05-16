@@ -1,13 +1,16 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../utils/storybook.ts";
+import { getArgTypes, getEnumVariantDescription } from "../../utils/storybook.ts";
 
 import UInputOptionSkeleton from "../UInputOptionSkeleton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import USkeleton from "../../ui.skeleton/USkeleton.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Props } from "../types.ts";
 
 interface InputOptionSkeletonArgs extends Props {
-  enum: "variant" | "size" | "color" | "labelAlign" | "type";
+  enum: "variant" | "size" | "labelAlign" | "type";
 }
 
 /**
@@ -37,6 +40,7 @@ const EnumVariantTemplate: StoryFn<InputOptionSkeletonArgs> = (
   { argTypes },
 ) => ({
   components: { UInputOptionSkeleton, UCol },
+  directives: { tooltip },
   setup() {
     const filteredOptions = argTypes?.[args.enum]?.options || [];
 
@@ -60,11 +64,32 @@ Default.args = {};
 export const Type = EnumVariantTemplate.bind({});
 Type.args = { enum: "type" };
 
+export const Label = DefaultTemplate.bind({});
+Label.args = { label: false };
+
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
+
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Variant = EnumVariantTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const LabelSlot: StoryFn<InputOptionSkeletonArgs> = (args) => ({
+  components: { UInputOptionSkeleton, USkeleton, UCol },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UInputOptionSkeleton v-bind="args">
+      <template #label>
+        <UCol gap="2xs"s>
+          <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
+          <USkeleton class="h-1.5 rounded-small" variant="dark" />
+        </UCol>
+      </template>
+    </UInputOptionSkeleton>
+  `,
+});

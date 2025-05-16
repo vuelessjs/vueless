@@ -24,7 +24,9 @@ const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
 
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
-    <USkeleton :color="color" :variant="variant" v-bind="inputAttrs" />
-    <USkeleton :color="color" :variant="variant" v-bind="labelAttrs" />
+    <USkeleton :variant="variant" v-bind="inputAttrs" />
+    <slot v-if="label" name="label">
+      <USkeleton :variant="variant" v-bind="labelAttrs" />
+    </slot>
   </div>
 </template>

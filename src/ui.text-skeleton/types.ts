@@ -6,24 +6,19 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
+   * Header lines amount.
+   */
+  header?: number;
+
+  /**
+   * Text lines amount.
+   */
+  text?: number;
+
+  /**
    * Input size.
    */
-  size?: "sm" | "md" | "lg";
-
-  /**
-   * Hide or show label.
-   */
-  label?: boolean;
-
-  /**
-   * Label placement.
-   */
-  labelAlign?: "topInside" | "top" | "left" | "right";
-
-  /**
-   * Input type.
-   */
-  type?: "text" | "textarea";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
    * Brightness variant.

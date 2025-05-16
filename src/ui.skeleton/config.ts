@@ -1,6 +1,6 @@
 export default /*tw*/ {
   body: {
-    base: "rounded-medium animate-pulse h-24 w-full opacity-25 bg-{color}",
+    base: "rounded-medium animate-pulse h-24 w-full bg-neutral/50",
     variants: {
       variant: {
         light: "brightness-75",
@@ -10,7 +10,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "neutral",
     variant: "default",
   },
 };

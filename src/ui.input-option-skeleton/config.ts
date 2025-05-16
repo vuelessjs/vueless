@@ -42,10 +42,10 @@ export default /*tw*/ {
     ],
   },
   defaults: {
-    color: "neutral",
     type: "radio",
     variant: "default",
     labelAlign: "left",
     size: "lg",
+    label: true,
   },
 };

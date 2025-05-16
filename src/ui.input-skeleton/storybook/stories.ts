@@ -1,15 +1,17 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotsFragment } from "../../utils/storybook.ts";
+import { getArgTypes, getSlotsFragment, getEnumVariantDescription } from "../../utils/storybook.ts";
 
 import UInputSkeleton from "../UInputSkeleton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
 
+import tooltip from "../../directives/tooltip/vTooltip.ts";
+
 import type { Props } from "../types.ts";
 
 interface InputSkeletonArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size" | "color" | "labelAlign" | "type";
+  enum: "variant" | "size" | "labelAlign" | "type";
 }
 
 /**
@@ -41,6 +43,7 @@ const EnumVariantTemplate: StoryFn<InputSkeletonArgs> = (
   { argTypes },
 ) => ({
   components: { UInputSkeleton, UCol },
+  directives: { tooltip },
   setup() {
     const filteredOptions = argTypes?.[args.enum]?.options || [];
 
@@ -54,6 +57,7 @@ const EnumVariantTemplate: StoryFn<InputSkeletonArgs> = (
         v-bind="args"
         :[args.enum]="option"
         class="max-w-96 w-full"
+        v-tooltip="option"
       />
     </UCol>
   `,
@@ -62,28 +66,49 @@ const EnumVariantTemplate: StoryFn<InputSkeletonArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Label = DefaultTemplate.bind({});
+Label.args = { label: false };
+
 export const LabelPlacement = EnumVariantTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
 
 export const Type = EnumVariantTemplate.bind({});
 Type.args = { enum: "type" };
 
+export const Sizes = EnumVariantTemplate.bind({});
+Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
+
 export const Variant = EnumVariantTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
-
 export const Slot: StoryFn<InputSkeletonArgs> = (args) => ({
-  components: { UInputSkeleton, USkeleton },
+  components: { UInputSkeleton, USkeleton, UCol },
   setup() {
     return { args };
   },
   template: `
     <UInputSkeleton label-align="top" v-bind="args" class="!max-w-96">
-      <div class="flex flex-row-reverse w-full">
-        <USkeleton class="w-5 h-5" class="rounded-small" variant="dark" />
-      </div>
+      <UCol align="end" >
+        <USkeleton class="size-5 rounded-small" variant="dark" />
+      </UCol>
+    </UInputSkeleton>
+  `,
+});
+
+export const LabelSlot: StoryFn<InputSkeletonArgs> = (args) => ({
+  components: { UInputSkeleton, USkeleton, UCol },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UInputSkeleton v-bind="args" label-align="top" class="!max-w-96">
+      <template #label>
+        <UCol gap="2xs"s>
+          <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
+          <USkeleton class="h-1.5 w-24 rounded-small" variant="dark" />
+        </UCol>
+      </template>
     </UInputSkeleton>
   `,
 });

@@ -7,8 +7,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import type { Props } from "../types.ts";
 
 interface SkeletonArgs extends Props {
-  enum: "variant" | "color";
-  outerEnum: "variant";
+  enum: "variant";
 }
 
 /**
@@ -16,7 +15,7 @@ interface SkeletonArgs extends Props {
  */
 export default {
   id: "9021",
-  title: "Loaders and Skeletons / Base Skeleton",
+  title: "Loaders and Skeletons / Skeleton",
   args: {},
   argTypes: {
     ...getArgTypes(USkeleton.__name),
@@ -56,5 +55,14 @@ Default.args = {};
 export const Variant = EnumVariantTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Slot: StoryFn<SkeletonArgs> = (args) => ({
+  components: { USkeleton, UCol },
+  setup() {
+    return { args };
+  },
+  template: `
+    <USkeleton v-bind="args" class="max-w-96 p-4">
+      <USkeleton class="w-15 h-10" class="rounded-small" variant="dark" />
+    </USkeleton>
+  `,
+});

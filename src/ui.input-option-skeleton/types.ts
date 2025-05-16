@@ -6,18 +6,9 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Button color.
+   * Hide or show label.
    */
-  color?:
-    | "primary"
-    | "secondary"
-    | "error"
-    | "warning"
-    | "success"
-    | "info"
-    | "notice"
-    | "neutral"
-    | "grayscale";
+  label?: boolean;
 
   /**
    * Input size.
