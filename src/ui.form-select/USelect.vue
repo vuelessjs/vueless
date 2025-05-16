@@ -5,6 +5,7 @@ import { merge } from "lodash-es";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UListbox from "../ui.form-listbox/UListbox.vue";
+import UBadge from "../ui.text-badge/UBadge.vue";
 
 import useUI from "../composables/useUI.ts";
 import { createDebounce, hasSlotContent } from "../utils/helper.ts";
@@ -134,6 +135,10 @@ const isMultipleListVariant = computed(
 
 const isMultipleInlineVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.inline,
+);
+
+const isMultipleTagsVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.tags,
 );
 
 const filteredOptions = computed(() => {
@@ -485,6 +490,8 @@ const {
   toggleIconAttrs,
   clearIconAttrs,
   clearMultipleIconAttrs,
+  badgeLabelAttrs,
+  badgeClearIconAttrs,
 } = useUI(defaultConfig, mutatedProps);
 </script>
 
@@ -554,7 +561,12 @@ const {
       </div>
 
       <div
-        v-show="isMultipleInlineVariant || !multiple || (!isLocalValue && multiple)"
+        v-show="
+          isMultipleInlineVariant ||
+          isMultipleTagsVariant ||
+          !multiple ||
+          (!isLocalValue && multiple)
+        "
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
@@ -578,7 +590,12 @@ const {
       </div>
 
       <div
-        v-if="isLocalValue && clearable && !disabled && (!multiple || isMultipleInlineVariant)"
+        v-if="
+          isLocalValue &&
+          clearable &&
+          !disabled &&
+          (!multiple || isMultipleInlineVariant || isMultipleTagsVariant)
+        "
         v-bind="clearAttrs"
         :data-test="getDataTest('clear')"
         @mousedown="onMouseDownClear"
@@ -630,7 +647,23 @@ const {
               :value="item[valueKey]"
               :option="item"
             >
-              {{ getOptionLabel(item) }}
+              <template v-if="isMultipleTagsVariant">
+                <UBadge :label="String(getOptionLabel(item))" :size="size" v-bind="badgeLabelAttrs">
+                  <template #right>
+                    <UIcon
+                      internal
+                      interactive
+                      color="inherit"
+                      :name="config.defaults.clearIcon"
+                      v-bind="badgeClearIconAttrs"
+                      @click="onMouseDownClearItem($event, item)"
+                    />
+                  </template>
+                </UBadge>
+              </template>
+              <template v-else>
+                {{ getOptionLabel(item) }}
+              </template>
             </slot>
 
             <!--
@@ -653,7 +686,7 @@ const {
               -->
               <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                 <UIcon
-                  v-if="!isMultipleInlineVariant"
+                  v-if="!isMultipleInlineVariant && !isMultipleTagsVariant"
                   internal
                   interactive
                   color="neutral"
@@ -715,7 +748,7 @@ const {
         </span>
 
         <div
-          v-if="isLocalValue && clearable && !disabled && multiple && !isMultipleInlineVariant"
+          v-if="isLocalValue && clearable && !disabled && multiple && isMultipleListVariant"
           v-bind="clearMultipleTextAttrs"
           :data-test="getDataTest('clear-all')"
           @mousedown.prevent.capture="onMouseDownClear"

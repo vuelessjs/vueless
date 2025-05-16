@@ -35,6 +35,8 @@ export default /*tw*/ {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
       { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
+      { multiple: true, selected: true, multipleVariant: "tags", class: "pb-[7px]" },
+      { multiple: true, selected: true, multipleVariant: "tags", size: "sm", class: "pb-1.5" },
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
@@ -42,6 +44,7 @@ export default /*tw*/ {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
       { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last" },
+      { multiple: true, multipleVariant: "tags", class: "flex gap-1 flex-wrap" },
     ],
   },
   selectedLabel: {
@@ -65,6 +68,17 @@ export default /*tw*/ {
       { size: "md", multiple: true, class: "text-medium" },
       { size: "lg", multiple: true, class: "text-large" },
     ],
+  },
+  badgeLabel: "{UBadge} py-0.5",
+  badgeClearIcon: {
+    base: "{>clearIcon}",
+    defaults: {
+      size: {
+        sm: "4xs",
+        md: "3xs",
+        lg: "2xs",
+      },
+    },
   },
   selectIcon: {
     base: "{UIcon}",
@@ -127,6 +141,7 @@ export default /*tw*/ {
     base: "flex w-full",
     compoundVariants: [
       { multiple: true, multipleVariant: "inline", class: "w-auto" },
+      { multiple: true, multipleVariant: "tags", selected: true, class: "w-0" },
       { multiple: false, selected: true, opened: false, class: "w-0" },
       { multiple: false, selected: true, searchable: false, class: "w-0" },
     ],
@@ -150,7 +165,10 @@ export default /*tw*/ {
         true: "placeholder:text-error/50",
       },
     },
-    compoundVariants: [{ multiple: true, multipleVariant: "inline", selected: true, class: "w-0" }],
+    compoundVariants: [
+      { multiple: true, multipleVariant: "inline", selected: true, class: "w-0" },
+      { multiple: true, multipleVariant: "tags", selected: true, class: "w-0" },
+    ],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
