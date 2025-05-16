@@ -137,8 +137,8 @@ const isMultipleInlineVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.inline,
 );
 
-const isMultipleTagsVariant = computed(
-  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.tags,
+const isMultipleBadgesVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badges,
 );
 
 const filteredOptions = computed(() => {
@@ -571,7 +571,7 @@ const {
       <div
         v-show="
           isMultipleInlineVariant ||
-          isMultipleTagsVariant ||
+          isMultipleBadgesVariant ||
           !multiple ||
           (!isLocalValue && multiple)
         "
@@ -602,7 +602,7 @@ const {
           isLocalValue &&
           clearable &&
           !disabled &&
-          (!multiple || isMultipleInlineVariant || isMultipleTagsVariant)
+          (!multiple || isMultipleInlineVariant || isMultipleBadgesVariant)
         "
         v-bind="clearAttrs"
         :data-test="getDataTest('clear')"
@@ -661,10 +661,11 @@ const {
                 :value="item[valueKey]"
                 :option="item"
               >
-                <template v-if="isMultipleTagsVariant">
+                <template v-if="isMultipleBadgesVariant">
                   <UBadge
                     :label="String(getOptionLabel(item))"
                     :size="size"
+                    variant="subtle"
                     v-bind="badgeLabelAttrs"
                   >
                     <template #right>
@@ -706,7 +707,7 @@ const {
                 -->
                 <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
                   <UIcon
-                    v-if="!isMultipleInlineVariant && !isMultipleTagsVariant"
+                    v-if="!isMultipleInlineVariant && !isMultipleBadgesVariant"
                     internal
                     interactive
                     color="neutral"

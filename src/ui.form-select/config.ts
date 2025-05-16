@@ -35,18 +35,28 @@ export default /*tw*/ {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
       { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
-      { multiple: true, selected: true, multipleVariant: "tags", class: "pb-[7px]" },
-      { multiple: true, selected: true, multipleVariant: "tags", size: "sm", class: "pb-1.5" },
+      { multiple: true, selected: true, multipleVariant: "badges", class: "pb-[7px]" },
+      { multiple: true, selected: true, multipleVariant: "badges", size: "sm", class: "pb-1.5" },
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
   selectedLabelWrapper: "truncate",
   selectedLabels: {
-    base: "{>selectedLabel} max-w-full font-normal",
+    base: "max-w-full",
+    variants: {
+      size: {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      },
+      disabled: {
+        true: "text-accented",
+      },
+    },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
       { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last !leading-none" },
-      { multiple: true, multipleVariant: "tags", class: "flex gap-1 flex-wrap" },
+      { multiple: true, multipleVariant: "badges", class: "flex gap-1 flex-wrap" },
     ],
   },
   selectedLabel: {
@@ -66,12 +76,13 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "py-2 last:mb-2.5 flex justify-between border-b border-muted" },
+      { multiple: true, multipleVariant: "badges", class: "w-fit" },
       { size: "sm", multiple: true, class: "text-small" },
       { size: "md", multiple: true, class: "text-medium" },
       { size: "lg", multiple: true, class: "text-large" },
     ],
   },
-  badgeLabel: "{UBadge} py-0.5",
+  badgeLabel: "{UBadge} py-0.5 rounded-small",
   badgeClearIcon: {
     base: "{>clearIcon}",
     defaults: {
@@ -143,7 +154,7 @@ export default /*tw*/ {
     base: "flex w-full",
     compoundVariants: [
       { multiple: true, multipleVariant: "inline", class: "w-auto" },
-      { multiple: true, multipleVariant: "tags", selected: true, class: "w-0" },
+      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
       { multiple: false, selected: true, opened: false, class: "w-0" },
       { multiple: false, selected: true, searchable: false, class: "w-0" },
     ],
@@ -169,7 +180,7 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "inline", selected: true, class: "w-0" },
-      { multiple: true, multipleVariant: "tags", selected: true, class: "w-0" },
+      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
     ],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
