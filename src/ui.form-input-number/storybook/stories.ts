@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -47,11 +48,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs) => ({
   components: { UInputNumber, UIcon, UButton },
-  setup() {
-    const slots = getSlotNames(UInputNumber.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputNumber.__name) }),
   template: `
     <UInputNumber
       v-bind="args"
@@ -63,30 +60,16 @@ const DefaultTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTypes }) => ({
   components: { UInputNumber, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return {
-      args,
-      filteredOptions,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInputNumber
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        :[args.enum]="option"
-        label="Expected amount"
-        :placeholder="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
         class="max-w-96"
       />
     </UCol>
@@ -117,11 +100,11 @@ Disabled.args = { disabled: true };
 export const Currency = DefaultTemplate.bind({});
 Currency.args = { currency: "€" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const LabelAlign = EnumVariantTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {

@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -38,11 +39,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
   components: { UInputFile, UBadge },
-  setup() {
-    const slots = getSlotNames(UInputFile.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputFile.__name) }),
   template: `
     <UInputFile v-bind="args" v-model="args.files">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,23 +47,16 @@ const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes }) => ({
   components: { UInputFile, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol gap="xl">
-      <div v-for="(option, index) in options" :key="index">
-        <UInputFile
-          v-bind="args"
-          :[args.enum]="option"
-          :label="option"
-        />
-      </div>
+      <UInputFile
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+      />
     </UCol>
   `,
 });
@@ -98,11 +88,11 @@ AllowedFileTypes.args = {
   description: "Only png and jpeg formats are allowed.",
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const LabelAlign = EnumVariantTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {

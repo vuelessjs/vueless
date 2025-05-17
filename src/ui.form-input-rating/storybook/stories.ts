@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -36,11 +37,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => ({
   components: { UInputRating, UBadge },
-  setup() {
-    const slots = getSlotNames(UInputRating.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputRating.__name) }),
   template: `
     <UInputRating v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -48,24 +45,16 @@ const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, { argTypes }) => ({
   components: { UInputRating, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInputRating
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :description="option"
-        modelValue="2"
       />
     </UCol>
   `,
@@ -80,7 +69,7 @@ Readonly.args = { readonly: true };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const StarAmount = DefaultTemplate.bind({});

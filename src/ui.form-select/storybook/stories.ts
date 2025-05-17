@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -80,28 +81,16 @@ const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => ({
   components: { USelect, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <USelect
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :description="option"
         class="max-w-96"
       />
     </UCol>
@@ -146,11 +135,11 @@ Error.args = { error: "Please select a city from the list" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelPlacement = EnumTemplate.bind({});
+LabelPlacement.args = { enum: "labelAlign", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", multiple: true, modelValue: [] };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", multiple: true, modelValue: [], label: "{enumValue}" };
 
 export const LargeItemList = DefaultTemplate.bind({});
 LargeItemList.args = {
@@ -174,8 +163,8 @@ ClearableAndSearchable.parameters = {
   },
 };
 
-export const OpenDirection = EnumVariantTemplate.bind({});
-OpenDirection.args = { enum: "openDirection" };
+export const OpenDirection = EnumTemplate.bind({});
+OpenDirection.args = { enum: "openDirection", label: "{enumValue}" };
 
 export const GroupValue = GroupValuesTemplate.bind({});
 GroupValue.args = {

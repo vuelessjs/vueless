@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputCounterArgs> = (args: UInputCounterArgs) => ({
   components: { UInputCounter, UBadge },
-  setup() {
-    const slots = getSlotNames(UInputCounter.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputCounter.__name) }),
   template: `
     <UInputCounter v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -51,26 +48,16 @@ const DefaultTemplate: StoryFn<UInputCounterArgs> = (args: UInputCounterArgs) =>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputCounterArgs> = (
-  args: UInputCounterArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<UInputCounterArgs> = (args: UInputCounterArgs, { argTypes }) => ({
   components: { UInputCounter, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol gap="xl">
       <UInputCounter
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :label="option"
-        :[args.enum]="option"
       />
     </UCol>
   `,
@@ -85,10 +72,8 @@ Readonly.args = { readonly: true };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = {
-  enum: "size",
-};
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const ValueLimit = DefaultTemplate.bind({});
 ValueLimit.args = {

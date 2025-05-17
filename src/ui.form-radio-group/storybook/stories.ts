@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -43,11 +44,7 @@ export default {
 
 const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
   components: { URadioGroup, URadio, UAlert, UCol, UBadge },
-  setup() {
-    const slots = getSlotNames(URadioGroup.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(URadioGroup.__name) }),
   template: `
     <UCol gap="2xl">
       <URadioGroup v-bind="args" v-model="args.modelValue">
@@ -67,34 +64,22 @@ const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs, { argTypes }) => ({
   components: { URadioGroup, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <URadioGroup
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        v-model="args.modelValue"
-        :[args.enum]="option"
-        :label="option"
-        :options="args.options"
-        :name="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  name: "Default",
-};
+Default.args = { name: "Default" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = {
@@ -105,16 +90,10 @@ Description.args = {
 };
 
 export const Error = DefaultTemplate.bind({});
-Error.args = {
-  name: "Error",
-  error: "Please, select at least one option to proceed.",
-};
+Error.args = { name: "Error", error: "Please, select at least one option to proceed." };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = {
-  name: "Disabled",
-  disabled: true,
-};
+Disabled.args = { name: "Disabled", disabled: true };
 
 export const Options = DefaultTemplate.bind({});
 Options.args = {
@@ -136,11 +115,11 @@ Options.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", name: "Sizes" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", name: "Sizes", label: "{enumValue}" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color", name: "Colors" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", name: "Colors", label: "{enumValue}" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
