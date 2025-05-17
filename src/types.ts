@@ -69,6 +69,25 @@ export enum ColorMode {
   Auto = "auto",
 }
 
+export interface ThemeConfigText {
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+}
+
+export interface ThemeConfigRounding {
+  sm: number;
+  md: number;
+  lg: number;
+}
+
+export interface ThemeConfigOutline {
+  sm: number;
+  md: number;
+  lg: number;
+}
+
 export interface ThemeConfig {
   /**
    * Components primary color.
@@ -81,54 +100,19 @@ export interface ThemeConfig {
   neutral?: NeutralColors;
 
   /**
-   * Default components extra small font size.
-   */
-  textXs?: number;
-
-  /**
-   * Default components small font size.
-   */
-  textSm?: number;
-
-  /**
    * Default components font size.
    */
-  text?: number;
-
-  /**
-   * Default components large font size.
-   */
-  textLg?: number;
-
-  /**
-   * Default components small size rounding (border-radius).
-   */
-  roundingSm?: number;
+  text?: number | ThemeConfigText;
 
   /**
    * Default components rounding (border-radius).
    */
-  rounding?: number;
-
-  /**
-   * Default components large size rounding (border-radius).
-   */
-  roundingLg?: number;
-
-  /**
-   * Default components small size outline width.
-   */
-  outlineSm?: number;
+  rounding?: number | ThemeConfigRounding;
 
   /**
    * Default components outline width.
    */
-  outline?: number;
-
-  /**
-   * Default components large size outline width.
-   */
-  outlineLg?: number;
+  outline?: number | ThemeConfigOutline;
 
   /**
    * Default components opacity for disabled state (in percents).
@@ -139,13 +123,6 @@ export interface ThemeConfig {
    * Default color mode.
    */
   colorMode?: `${ColorMode}`;
-}
-
-export interface Config extends ThemeConfig {
-  /**
-   * Removes default component styles (keeps only custom config, removes all default classes).
-   */
-  unstyled?: boolean;
 
   /**
    * Light theme design system CSS variables.
@@ -156,6 +133,13 @@ export interface Config extends ThemeConfig {
    * Dark theme design system CSS variables.
    */
   darkTheme?: Partial<VuelessCssVariables>;
+}
+
+export interface Config extends ThemeConfig {
+  /**
+   * Removes default component styles (keeps only custom config, removes all default classes).
+   */
+  unstyled?: boolean;
 
   /**
    * Component configs.

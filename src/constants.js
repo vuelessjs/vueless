@@ -10,16 +10,17 @@ export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 export const INHERIT_COLOR = "inherit";
 
-/* Vueless cookies keys */
-export const PRIMARY_COLOR_KEY = "vl-primary";
-export const NEUTRAL_COLOR_KEY = "vl-neutral";
-export const ROUNDING_KEY = "vl-rounding";
+/* Vueless keys */
+export const TEXT = "text";
+export const OUTLINE = "outline";
+export const ROUNDING = "rounding";
+export const DISABLED_OPACITY = "disabled-opacity";
+
+/* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
 export const AUTO_MODE_KEY = "vl-auto-mode";
-
-/* Vueless dark mode */
-export const DARK_MODE_SELECTOR = "vl-dark";
-export const LIGHT_MODE_SELECTOR = "vl-light";
+export const DARK_MODE_CLASS = "vl-dark";
+export const LIGHT_MODE_CLASS = "vl-light";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
