@@ -105,7 +105,7 @@ export interface Props {
   /**
    * Controls multiple selection view.
    */
-  multipleVariant?: "list" | "inline";
+  multipleVariant?: "inline" | "list" | "badges";
 
   /**
    * Determines how many selected option labels are shown in the label.

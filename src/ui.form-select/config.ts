@@ -35,18 +35,33 @@ export default /*tw*/ {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
       { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
+      { multiple: true, selected: true, multipleVariant: "badges", class: "pb-[7px]" },
+      { multiple: true, selected: true, multipleVariant: "badges", size: "sm", class: "pb-1.5" },
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
+  selectedLabelWrapper: "truncate",
   selectedLabels: {
+    base: "max-w-full",
+    variants: {
+      size: {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      },
+      disabled: {
+        true: "text-accented",
+      },
+    },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
-      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last" },
+      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last !leading-none" },
+      { multiple: true, multipleVariant: "badges", class: "flex gap-1 flex-wrap" },
     ],
   },
   selectedLabel: {
     base: `
-      font-normal !leading-none relative truncate
+      font-normal !leading-none relative w-full
       inline-flex items-center whitespace-nowrap mb-0
     `,
     variants: {
@@ -61,10 +76,22 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "py-2 last:mb-2.5 flex justify-between border-b border-muted" },
+      { multiple: true, multipleVariant: "badges", class: "w-fit" },
       { size: "sm", multiple: true, class: "text-small" },
       { size: "md", multiple: true, class: "text-medium" },
       { size: "lg", multiple: true, class: "text-large" },
     ],
+  },
+  badgeLabel: "{UBadge} py-0.5 rounded-small",
+  badgeClearIcon: {
+    base: "{>clearIcon}",
+    defaults: {
+      size: {
+        sm: "4xs",
+        md: "3xs",
+        lg: "2xs",
+      },
+    },
   },
   selectIcon: {
     base: "{UIcon}",
@@ -127,6 +154,7 @@ export default /*tw*/ {
     base: "flex w-full",
     compoundVariants: [
       { multiple: true, multipleVariant: "inline", class: "w-auto" },
+      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
       { multiple: false, selected: true, opened: false, class: "w-0" },
       { multiple: false, selected: true, searchable: false, class: "w-0" },
     ],
@@ -150,7 +178,10 @@ export default /*tw*/ {
         true: "placeholder:text-error/50",
       },
     },
-    compoundVariants: [{ multiple: true, multipleVariant: "inline", selected: true, class: "w-0" }],
+    compoundVariants: [
+      { multiple: true, multipleVariant: "inline", selected: true, class: "w-0" },
+      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
+    ],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {

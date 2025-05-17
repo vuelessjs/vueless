@@ -375,6 +375,7 @@ const {
             <span
               :style="getMarginForSubCategory(option.level)"
               v-bind="optionContentAttrs"
+              :title="String(option.label)"
               v-text="option[labelKey]"
             />
           </slot>
