@@ -86,8 +86,8 @@ Error.args = { modelValue: "", error: "This field is required. Please enter a va
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", description: "{enumValue}" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", description: "{enumValue}" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", description: "{enumValue}" };

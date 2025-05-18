@@ -135,8 +135,8 @@ Error.args = { error: "Please select a city from the list" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", label: "{enumValue}" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", multiple: true, modelValue: [], label: "{enumValue}" };

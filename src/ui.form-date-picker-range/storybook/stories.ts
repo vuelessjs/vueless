@@ -168,8 +168,8 @@ Disabled.args = { disabled: true };
 export const Variants = EnumVariantTemplate.bind({});
 Variants.args = { enum: "variant" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = {
+export const LabelAlign = EnumVariantTemplate.bind({});
+LabelAlign.args = {
   variant: "input",
   enum: "labelAlign",
   modelValue: { from: null, to: null },

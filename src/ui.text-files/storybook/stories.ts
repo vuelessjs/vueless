@@ -79,8 +79,8 @@ Removable.args = { removable: true };
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = {
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = {
   enum: "labelAlign",
   description: "These files include important documents like reports and employee data.",
 };

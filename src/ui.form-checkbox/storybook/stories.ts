@@ -142,8 +142,8 @@ CustomValues.parameters = {
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color", modelValue: true, description: "{enumValue}" };

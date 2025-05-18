@@ -93,8 +93,8 @@ Disabled.args = { disabled: true };
 export const MaxLength = DefaultTemplate.bind({});
 MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = {
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = {
   enum: "labelAlign",
   label: "Full Name",
   modelValue: "",

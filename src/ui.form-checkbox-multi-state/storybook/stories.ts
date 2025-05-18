@@ -87,8 +87,8 @@ Default.args = {};
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

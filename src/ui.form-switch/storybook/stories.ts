@@ -73,8 +73,8 @@ Description.args = {
   description: "Switch to a darker color scheme to reduce eye strain.",
 };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", label: "{enumValue}" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", color: "warning", label: "{enumValue}" };

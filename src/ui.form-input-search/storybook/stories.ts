@@ -90,8 +90,8 @@ Disabled.args = { disabled: true };
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", modelValue: "", label: "{enumValue}" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", modelValue: "", label: "{enumValue}" };
 
 export const SearchButton = DefaultTemplate.bind({});
 SearchButton.args = { searchButtonLabel: "Search" };

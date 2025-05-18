@@ -84,8 +84,8 @@ Disabled.args = { disabled: true, name: "radio2" };
 export const Checked = DefaultTemplate.bind({});
 Checked.args = { checked: true, name: "radio4" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", label: "{enumValue}" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", label: "{enumValue}" };

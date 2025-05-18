@@ -103,8 +103,8 @@ Centred.args = { centred: true };
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "align" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "align" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
