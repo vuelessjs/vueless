@@ -1,5 +1,5 @@
-import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,11 +39,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs) => ({
   components: { UInputPassword },
-  setup() {
-    const slots = getSlotNames(UInputPassword.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputPassword.__name) }),
   template: `
     <UInputPassword
       v-bind="args"
@@ -55,38 +51,16 @@ const DefaultTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs) 
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputPasswordArgs> = (
-  args: UInputPasswordArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { argTypes }) => ({
   components: { UInputPassword, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    const inputValue = ref("");
-
-    return {
-      args,
-      filteredOptions,
-      inputValue,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInputPassword
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        v-model="inputValue"
-        :[args.enum]="option"
-        label="Password"
-        :placeholder="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
         class="max-w-96"
       />
     </UCol>
@@ -120,11 +94,11 @@ Disabled.args = { disabled: true };
 export const MaxLength = DefaultTemplate.bind({});
 MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const LabelAlign = EnumVariantTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
   components: { UInputPassword, URow },

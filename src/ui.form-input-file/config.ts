@@ -31,7 +31,7 @@ export default /*tw*/ {
         false: "items-center",
       },
       error: {
-        true: "bg-red-50",
+        true: "bg-error/5",
       },
       disabled: {
         true: "bg-lifted",

@@ -1,5 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -48,11 +49,7 @@ export default {
 
 const DefaultTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
   components: { UDatePicker, UIcon },
-  setup() {
-    const slots = getSlotNames(COMPONENT_NAME);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
     <UDatePicker open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -64,26 +61,15 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePick
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDatePickerArgs> = (
-  args: EnumUDatePickerArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<EnumUDatePickerArgs> = (args: EnumUDatePickerArgs, { argTypes }) => ({
   components: { UDatePicker, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UDatePicker
-        v-for="(option, index) in options"
-        open-direction-y="bottom"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :placeholder="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </UCol>
   `,
@@ -149,11 +135,11 @@ Error.args = { error: "Please select a valid date." };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", placeholder: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", placeholder: "{enumValue}" };
 
 export const OpenDirection = OpenDirectionTemplate.bind({});
 OpenDirection.args = {};

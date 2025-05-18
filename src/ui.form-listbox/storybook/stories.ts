@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -66,21 +67,16 @@ const DefaultTemplate: StoryFn<DefaultUListboxArgs> = (args: DefaultUListboxArgs
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUListboxArgs> = (args: EnumUListboxArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<EnumUListboxArgs> = (args: EnumUListboxArgs, { argTypes }) => ({
   components: { UListbox, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
       <URow class="w-fit">
         <UListbox
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          :[args.enum]="option"
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option)"
+          :key="option"
+          v-model="args.modelValue"
           class="static w-36"
         />
       </URow>
@@ -105,11 +101,11 @@ AddOption.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color", modelValue: "2" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color" };
 
 export const VisibleOptions = DefaultTemplate.bind({});
 VisibleOptions.args = { visibleOptions: 3 };

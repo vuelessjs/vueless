@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -12,7 +13,6 @@ import UCol from "../../ui.container-col/UCol.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
-import { computed } from "vue";
 
 interface UCheckboxArgs extends Props {
   slotTemplate?: string;
@@ -38,11 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
   components: { UCheckbox, UBadge },
-  setup() {
-    const slots = getSlotNames(UCheckbox.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UCheckbox.__name) }),
   template: `
     <UCheckbox v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -104,26 +100,16 @@ const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs, { argTypes }) => ({
   components: { UCheckbox, UCol },
-  setup() {
-    const isColorStory = computed(() => args.enum === "color");
-
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-      isColorStory,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol gap="xl" :class="{ 'flex-row': isColorStory }">
+    <UCol gap="xl">
       <UCheckbox
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="isColorStory ? option : args.label"
-        :description="isColorStory ? '' : option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
       />
     </UCol>
   `,
@@ -153,14 +139,14 @@ CustomValues.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color", modelValue: true };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", modelValue: true, description: "{enumValue}" };
 
 export const Partial = DefaultTemplate.bind({});
 Partial.args = { partial: true };

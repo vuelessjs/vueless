@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -37,11 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
   components: { USwitch, UIcon, UBadge },
-  setup() {
-    const slots = getSlotNames(USwitch.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(USwitch.__name) }),
   template: `
     <USwitch v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -49,23 +46,16 @@ const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes }) => ({
   components: { USwitch, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow :class="{ '!flex-col max-w-fit': args.enum === 'labelAlign' }">
       <USwitch
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :label="option"
       />
     </URow>
   `,
@@ -83,14 +73,14 @@ Description.args = {
   description: "Switch to a darker color scheme to reduce eye strain.",
 };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", color: "warning" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", color: "warning", label: "{enumValue}" };
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color", modelValue: true };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", modelValue: true, label: "{enumValue}" };
 
 export const ToggleLabel = DefaultTemplate.bind({});
 ToggleLabel.args = { toggleLabel: true };

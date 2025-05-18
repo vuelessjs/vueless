@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -42,11 +43,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
   components: { UTextarea, UIcon },
-  setup() {
-    const slots = getSlotNames(UTextarea.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UTextarea.__name) }),
   template: `
     <UTextarea
       v-bind="args"
@@ -58,33 +55,18 @@ const DefaultTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes }) => ({
   components: { UTextarea, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return {
-      args,
-      filteredOptions,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <div class="w-1/3" v-for="(option, index) in filteredOptions" :key="index">
-        <UTextarea
-          v-bind="args"
-          :[args.enum]="option"
-          :description="option"
-          rows="3"
-          class="max-w-96"
-        />
-      </div>
+      <UTextarea
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        rows="3"
+        class="max-w-96"
+      />
     </UCol>
   `,
 });
@@ -104,11 +86,11 @@ Error.args = { modelValue: "", error: "This field is required. Please enter a va
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", description: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
 
 export const Resizable = DefaultTemplate.bind({});
 Resizable.args = { resizable: true };
@@ -158,7 +140,12 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
 
       <UTextarea v-bind="args">
         <template #right>
-          <UIcon name="send" color="success" v-tooltip="'Send message'" />
+          <UIcon
+            name="send"
+            color="success"
+            v-tooltip="'Send message'"
+            interactive
+          />
         </template>
       </UTextarea>
     </URow>

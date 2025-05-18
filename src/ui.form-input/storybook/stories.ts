@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -40,11 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   components: { UInput, UIcon },
-  setup() {
-    const slots = getSlotNames(UInput.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInput.__name) }),
   template: `
     <UInput
       v-bind="args"
@@ -56,27 +53,15 @@ const DefaultTemplate: StoryFn<UInputArgs> = (args: UInputArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInput
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :placeholder="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         class="max-w-96"
       />
     </UCol>
@@ -108,11 +93,16 @@ Disabled.args = { disabled: true };
 export const MaxLength = DefaultTemplate.bind({});
 MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", label: "Full Name", modelValue: "" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "Full Name",
+  modelValue: "",
+  placeholder: "{enumValue}",
+};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", modelValue: "" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
 export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
