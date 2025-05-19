@@ -106,6 +106,16 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function getFullOptionLabels(value: Option | Option[]) {
+  const labelKey = props.labelKey;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => item[labelKey]).join(", ");
+  }
+
+  return "";
+}
+
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
@@ -146,7 +156,12 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
 </script>
 
 <template>
-  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div
+    ref="wrapper"
+    v-click-outside="hideOptions"
+    :title="getFullOptionLabels(selectedOptions)"
+    v-bind="wrapperAttrs"
+  >
     <UButton
       :id="elementId"
       :label="buttonLabel"

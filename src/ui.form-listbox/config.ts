@@ -10,9 +10,8 @@ export default /*tw*/ {
   option: {
     base: `
       rounded-small px-2 py-2 flex gap-2 items-center align-middle whitespace-nowrap cursor-pointer
-      font-normal !leading-snug
-      hover:bg-{color}/5 active:bg-{color}/10
-      overflow-hidden text-ellipsis text-default
+      font-normal !leading-snug hover:bg-{color}/5 active:bg-{color}/10
+      overflow-hidden text-default
     `,
     variants: {
       size: {
@@ -29,9 +28,9 @@ export default /*tw*/ {
   optionHighlighted: "bg-{color}/5",
   optionDisabled: "{>option} pointer-events-none opacity-(--vl-disabled-opacity)",
   optionDisabledActive: "{>optionActive} {>optionDisabled}",
-  optionContent: "overflow-visible w-full text-ellipsis",
+  optionContent: "w-full truncate",
   groupBase: {
-    base: "px-2 pb-2.5 font-medium !leading-none text-muted overflow-hidden text-ellipsis",
+    base: "px-2 pb-2.5 font-medium !leading-none text-muted truncate",
     variants: {
       size: {
         sm: "text-tiny",

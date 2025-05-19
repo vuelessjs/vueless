@@ -106,6 +106,16 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function getFullOptionLabels(value: Option | Option[]) {
+  const labelKey = props.labelKey;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => item[labelKey]).join(", ");
+  }
+
+  return "";
+}
+
 function onClickLink() {
   if (props.disabled) return;
 
@@ -152,6 +162,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
     ref="wrapper"
     v-click-outside="hideOptions"
     tabindex="1"
+    :title="getFullOptionLabels(selectedOptions)"
     v-bind="wrapperAttrs"
     @keydown.enter="onClickLink"
     @keydown.space.prevent="onClickLink"
