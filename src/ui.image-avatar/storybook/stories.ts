@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -35,11 +36,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
   components: { UAvatar, ULoader },
-  setup() {
-    const slots = getSlotNames(UAvatar.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UAvatar.__name) }),
   template: `
     <UAvatar v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -47,23 +44,16 @@ const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
   components: { URow, UAvatar },
   directives: { tooltip },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UAvatar
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
       />
     </URow>
@@ -88,19 +78,19 @@ PlaceholderIcon.args = {
 export const Label = DefaultTemplate.bind({});
 Label.args = { label: "Name Surname", size: "3xl" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const Rounded = EnumVariantTemplate.bind({});
-Rounded.args = { enum: "rounded", label: "John Doe", color: "warning" };
+export const Rounded = EnumTemplate.bind({});
+Rounded.args = { enum: "rounded", label: "{enumValue}", color: "warning" };
 Rounded.parameters = getEnumVariantDescription();
 
-export const Colors = EnumVariantTemplate.bind({});
-Colors.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", label: "{enumValue}" };
 Colors.parameters = getEnumVariantDescription();
 
-export const Bordered = EnumVariantTemplate.bind({});
+export const Bordered = EnumTemplate.bind({});
 Bordered.args = { enum: "color", bordered: true };
 Bordered.parameters = getEnumVariantDescription();
 

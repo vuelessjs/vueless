@@ -39,11 +39,7 @@ export default {
 
 const DefaultTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay },
-  setup() {
-    const slots = getSlotNames(ULoaderOverlay.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULoaderOverlay.__name) }),
   template: `
     <ULoaderOverlay v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -51,10 +47,7 @@ const DefaultTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) 
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
-  args: ULoaderOverlayArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { argTypes }) => ({
   components: { ULoaderOverlay, USelect },
   setup() {
     const selectModel = ref(null);
@@ -83,10 +76,7 @@ const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
       class="max-w-60 absolute z-[99999]"
     />
 
-    <ULoaderOverlay
-      v-bind="args"
-      :[args.enum]="selectedValue"
-    />
+    <ULoaderOverlay :color="selectedValue" />
   `,
 });
 
@@ -118,7 +108,7 @@ Default.args = {};
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
