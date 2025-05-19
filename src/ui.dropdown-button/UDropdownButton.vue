@@ -106,6 +106,16 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function getFullOptionLabels(value: Option | Option[]) {
+  const labelKey = props.labelKey;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => item[labelKey]).join(", ");
+  }
+
+  return "";
+}
+
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
@@ -156,6 +166,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       :square="square"
       :variant="variant"
       :disabled="disabled"
+      :title="getFullOptionLabels(selectedOptions)"
       v-bind="dropdownButtonAttrs"
       :data-test="getDataTest()"
       @click="onClickButton"

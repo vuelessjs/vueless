@@ -242,6 +242,16 @@ if (props.addOption) {
 
 onMounted(setLabelPosition);
 
+function getFullOptionLabels(value: Option | Option[]) {
+  const labelKey = props.labelKey;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => item[labelKey]).join(", ");
+  }
+
+  return "";
+}
+
 function getOptionLabel(option?: Option) {
   const value = localValue.value;
   const labelKey = props.labelKey;
@@ -640,7 +650,7 @@ const {
       <div ref="innerWrapper" v-bind="innerWrapperAttrs">
         <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
           <template v-if="isMultipleInlineVariant">
-            <div v-bind="selectedLabelWrapperAttrs">
+            <div :title="getFullOptionLabels(localValue)" v-bind="selectedLabelWrapperAttrs">
               {{ getOptionLabel() }}
             </div>
           </template>
@@ -681,7 +691,7 @@ const {
                   </UBadge>
                 </template>
                 <template v-else>
-                  <div v-bind="selectedLabelWrapperAttrs">
+                  <div :title="String(getOptionLabel(item))" v-bind="selectedLabelWrapperAttrs">
                     {{ getOptionLabel(item) }}
                   </div>
                 </template>
@@ -759,7 +769,7 @@ const {
             :value="(localValue as Option)[valueKey]"
             :option="localValue"
           >
-            <div v-bind="selectedLabelWrapperAttrs">
+            <div :title="String(selectedLabel)" v-bind="selectedLabelWrapperAttrs">
               {{ selectedLabel }}
             </div>
           </slot>

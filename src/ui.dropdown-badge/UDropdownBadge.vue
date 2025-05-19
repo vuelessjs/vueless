@@ -104,6 +104,16 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function getFullOptionLabels(value: Option | Option[]) {
+  const labelKey = props.labelKey;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => item[labelKey]).join(", ");
+  }
+
+  return "";
+}
+
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
 
@@ -152,6 +162,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       :color="color"
       :variant="variant"
       :round="round"
+      :title="getFullOptionLabels(selectedOptions)"
       v-bind="dropdownBadgeAttrs"
       tabindex="0"
       :data-test="getDataTest()"

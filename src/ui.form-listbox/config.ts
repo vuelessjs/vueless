@@ -29,9 +29,9 @@ export default /*tw*/ {
   optionHighlighted: "bg-{color}/5",
   optionDisabled: "{>option} pointer-events-none opacity-(--vl-disabled-opacity)",
   optionDisabledActive: "{>optionActive} {>optionDisabled}",
-  optionContent: "overflow-visible w-full text-ellipsis",
+  optionContent: "w-full truncate",
   groupBase: {
-    base: "px-2 pb-2.5 font-medium !leading-none text-muted overflow-hidden text-ellipsis",
+    base: "px-2 pb-2.5 font-medium !leading-none text-muted truncate",
     variants: {
       size: {
         sm: "text-tiny",
