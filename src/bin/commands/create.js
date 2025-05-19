@@ -12,10 +12,10 @@ import { getStorybookId } from "../utils/dataUtils.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 
-import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 const BOILERPLATE_NAME = "UBoilerplate";
-const BOILERPLATE_PATH = path.join(cwd(), VUELESS_DIR, "ui.boilerplate");
+const BOILERPLATE_PATH = path.join(cwd(), VUELESS_PACKAGE_DIR, "ui.boilerplate");
 
 export async function createVuelessComponent(options) {
   const [componentName] = options;

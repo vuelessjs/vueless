@@ -14,6 +14,10 @@ import {
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
   VUELESS_TAILWIND_SAFELIST,
+  INTERNAL_ENV,
+  STORYBOOK_ENV,
+  VUELESS_LOCAL_DIR,
+  VUELESS_PACKAGE_DIR,
 } from "../../constants.js";
 
 const SAFELIST_DIR = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
@@ -24,10 +28,10 @@ export async function clearTailwindSafelist() {
   }
 }
 
-export async function createTailwindSafelist({ mode, env, debug, targetFiles = [] } = {}) {
-  const isStorybookMode = mode === "storybook";
-  const isVuelessEnv = env === "vueless";
-  const vuelessFilePath = isVuelessEnv ? "src" : "node_modules/vueless";
+export async function createTailwindSafelist({ env, debug, targetFiles = [] } = {}) {
+  const isStorybookEnv = env === STORYBOOK_ENV;
+  const isInternalEnv = env === INTERNAL_ENV;
+  const vuelessFilePath = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
 
   const vuelessVueFiles = await getDirFiles(vuelessFilePath, ".vue");
   const vuelessConfigJsFiles = await getDirFiles(vuelessFilePath, "/config.ts");
@@ -36,7 +40,7 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
 
   let srcVueFiles = [];
 
-  if (!isVuelessEnv) {
+  if (!isInternalEnv) {
     srcVueFiles = await Promise.all(
       targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue")),
     );
@@ -61,14 +65,14 @@ export async function createTailwindSafelist({ mode, env, debug, targetFiles = [
       nestedComponentPattern.replaceAll(/[{}]/g, ""),
     );
 
-    if (isCurrentComponentUsed || isStorybookMode) {
+    if (isCurrentComponentUsed || isStorybookEnv || isInternalEnv) {
       const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
       const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
       safelistClasses.push(...componentSafelist);
     }
 
-    if ((isCurrentComponentUsed || isStorybookMode) && nestedComponents.length) {
+    if ((isCurrentComponentUsed || isStorybookEnv || isInternalEnv) && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
         const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
         const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);

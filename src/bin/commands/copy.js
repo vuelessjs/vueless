@@ -11,10 +11,10 @@ import { replaceRelativeImports } from "../utils/formatUtil.js";
 import { getStorybookId, getStoryMetaKeyIndex } from "../utils/dataUtils.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 function getSourcePath(componentName) {
-  return path.join(cwd(), VUELESS_DIR, COMPONENTS[componentName]);
+  return path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);
 }
 
 export async function copyVuelessComponent(options) {
