@@ -3,6 +3,7 @@
 node_modules
 storybook-static
 dist
+icons
 
 # Log files
 npm-debug.log*
