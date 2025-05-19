@@ -40,6 +40,7 @@ const emit = defineEmits([
    * Triggers when option is added.
    */
   "add",
+
   /**
    * Triggers on click option.
    */
@@ -73,7 +74,11 @@ const selectedValue = computed({
 
     return props.modelValue;
   },
-  set: (value) => emit("update:modelValue", value),
+  set: (value) => {
+    if (search.value) search.value = "";
+
+    emit("update:modelValue", value);
+  },
 });
 
 const addOptionKeyCombination = computed(() => {
@@ -81,24 +86,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim() || "";
-
-  let selectedValues: (string | number)[] = [];
-
-  if (Array.isArray(props.modelValue)) {
-    selectedValues = props.modelValue.map((value) => {
-      if (typeof value === "object") {
-        return value[props.valueKey] as string | number;
-      }
-
-      return value;
-    });
-  } else if (props.modelValue) {
-    selectedValues =
-      typeof props.modelValue === "object"
-        ? [props.modelValue[props.valueKey]]
-        : [props.modelValue];
-  }
+  const normalizedSearch = search.value.toLowerCase().trim();
 
   let options = [...props.options];
 

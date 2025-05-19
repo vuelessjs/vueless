@@ -104,7 +104,7 @@ export default /*tw*/ {
     valueKey: "id",
     visibleOptions: undefined,
     optionsLimit: 0,
-    searchable: true,
+    searchable: false,
     disabled: false,
     addOption: false,
     multiple: false,
