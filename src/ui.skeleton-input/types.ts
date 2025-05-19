@@ -23,7 +23,7 @@ export interface Props {
   /**
    * Input type.
    */
-  type?: "text" | "textarea";
+  type?: "input" | "textarea";
 
   /**
    * Brightness variant.

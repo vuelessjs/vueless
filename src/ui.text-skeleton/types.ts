@@ -8,12 +8,12 @@ export interface Props {
   /**
    * Header lines amount.
    */
-  header?: number;
+  headerLines?: number;
 
   /**
    * Text lines amount.
    */
-  text?: number;
+  textLines?: number;
 
   /**
    * Input size.

@@ -1,9 +1,9 @@
 export default /*tw*/ {
-  wrapper: "{UCol} w-full",
-  headerWrapper: "{UCol} w-full",
-  textWrapper: "{UCol} w-full",
+  wrapper: "flex flex-col gap-4 w-full",
+  headerWrapper: "flex flex-col gap-2 w-full",
+  textWrapper: "flex flex-col gap-2 w-full",
   header: {
-    base: "{USkeleton} rounded-small last:max-w-3/5 last-mb-4",
+    base: "{USkeleton} rounded-small last:max-w-3/5 max-w-4/5 last-mb-4",
     variants: {
       size: {
         xs: "h-4.5",
@@ -32,7 +32,7 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     variant: "default",
-    header: 0,
-    text: 4,
+    headerLines: 0,
+    textLines: 4,
   },
 };

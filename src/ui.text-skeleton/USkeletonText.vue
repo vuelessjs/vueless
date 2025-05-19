@@ -9,8 +9,6 @@ import { COMPONENT_NAME } from "./constants.ts";
 import type { Props, Config } from "./types.ts";
 
 import USkeleton from "../ui.skeleton/USkeleton.vue";
-import UCol from "../ui.container-col/UCol.vue";
-// import URow from "../ui.container-row/URow.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,12 +24,12 @@ const { getDataTest, wrapperAttrs, headerAttrs, textAttrs, headerWrapperAttrs, t
 </script>
 
 <template>
-  <UCol v-bind="wrapperAttrs" :data-test="getDataTest()">
-    <UCol gap="xs" v-bind="headerWrapperAttrs">
-      <USkeleton v-for="line in header" :key="line" :variant="variant" v-bind="headerAttrs" />
-    </UCol>
-    <UCol gap="xs" v-bind="textWrapperAttrs">
-      <USkeleton v-for="line in text" :key="line" :variant="variant" v-bind="textAttrs" />
-    </UCol>
-  </UCol>
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+    <div v-bind="headerWrapperAttrs">
+      <USkeleton v-for="line in headerLines" :key="line" :variant="variant" v-bind="headerAttrs" />
+    </div>
+    <div v-bind="textWrapperAttrs">
+      <USkeleton v-for="line in textLines" :key="line" :variant="variant" v-bind="textAttrs" />
+    </div>
+  </div>
 </template>

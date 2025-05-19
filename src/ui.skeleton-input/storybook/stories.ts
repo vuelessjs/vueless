@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import { getArgTypes, getSlotsFragment, getEnumVariantDescription } from "../../utils/storybook.ts";
 
-import UInputSkeleton from "../UInputSkeleton.vue";
+import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
 
@@ -9,40 +9,37 @@ import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Props } from "../types.ts";
 
-interface InputSkeletonArgs extends Props {
+interface SkeletonInputArgs extends Props {
   slotTemplate?: string;
   enum: "variant" | "size" | "labelAlign" | "type";
 }
 
-/**
- * The `v-tooltip` directive. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/directives/tooltip)
- */
 export default {
   id: "9022",
   title: "Loaders and Skeletons / Input Skeleton",
   args: {},
   argTypes: {
-    ...getArgTypes(UInputSkeleton.__name),
+    ...getArgTypes(USkeletonInput.__name),
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<InputSkeletonArgs> = (args: InputSkeletonArgs) => ({
-  components: { UInputSkeleton },
+const DefaultTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) => ({
+  components: { USkeletonInput },
   setup: () => {
     return { args };
   },
   template: `
-    <UInputSkeleton v-bind="args" class="!max-w-96">
+    <USkeletonInput v-bind="args" class="!max-w-96">
       ${args.slotTemplate || getSlotsFragment("")}
-    </UInputSkeleton>
+    </USkeletonInput>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<InputSkeletonArgs> = (
-  args: InputSkeletonArgs,
+const EnumVariantTemplate: StoryFn<SkeletonInputArgs> = (
+  args: SkeletonInputArgs,
   { argTypes },
 ) => ({
-  components: { UInputSkeleton, UCol },
+  components: { USkeletonInput, UCol },
   directives: { tooltip },
   setup() {
     const filteredOptions = argTypes?.[args.enum]?.options || [];
@@ -51,7 +48,7 @@ const EnumVariantTemplate: StoryFn<InputSkeletonArgs> = (
   },
   template: `
     <UCol>
-      <UInputSkeleton
+      <USkeletonInput
         v-for="(option, index) in filteredOptions"
         :key="index"
         v-bind="args"
@@ -82,33 +79,33 @@ Sizes.parameters = getEnumVariantDescription();
 export const Variant = EnumVariantTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Slot: StoryFn<InputSkeletonArgs> = (args) => ({
-  components: { UInputSkeleton, USkeleton, UCol },
+export const Slot: StoryFn<SkeletonInputArgs> = (args) => ({
+  components: { USkeletonInput, USkeleton, UCol },
   setup() {
     return { args };
   },
   template: `
-    <UInputSkeleton label-align="top" v-bind="args" class="!max-w-96">
+    <USkeletonInput label-align="top" v-bind="args" class="!max-w-96">
       <UCol align="end" >
         <USkeleton class="size-5 rounded-small" variant="dark" />
       </UCol>
-    </UInputSkeleton>
+    </USkeletonInput>
   `,
 });
 
-export const LabelSlot: StoryFn<InputSkeletonArgs> = (args) => ({
-  components: { UInputSkeleton, USkeleton, UCol },
+export const LabelSlot: StoryFn<SkeletonInputArgs> = (args) => ({
+  components: { USkeletonInput, USkeleton, UCol },
   setup() {
     return { args };
   },
   template: `
-    <UInputSkeleton v-bind="args" label-align="top" class="!max-w-96">
+    <USkeletonInput v-bind="args" label-align="top" class="!max-w-96">
       <template #label>
         <UCol gap="2xs"s>
           <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
           <USkeleton class="h-1.5 w-24 rounded-small" variant="dark" />
         </UCol>
       </template>
-    </UInputSkeleton>
+    </USkeletonInput>
   `,
 });

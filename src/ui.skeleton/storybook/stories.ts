@@ -10,9 +10,6 @@ interface SkeletonArgs extends Props {
   enum: "variant";
 }
 
-/**
- * The `v-tooltip` directive. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/directives/tooltip)
- */
 export default {
   id: "9021",
   title: "Loaders and Skeletons / Skeleton",
