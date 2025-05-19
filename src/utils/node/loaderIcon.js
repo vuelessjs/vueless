@@ -40,7 +40,7 @@ let uIconDefaults = {};
  * @param {boolean} debug
  * @param {Array} targetFiles
  */
-export async function cacheProjectIcons({ env, debug = false, targetFiles = [] } = {}) {
+export async function createIconsCache({ env, debug = false, targetFiles = [] } = {}) {
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
 
@@ -112,6 +112,49 @@ export async function copyIconsCache(mirrorCacheDir) {
 
     await cp(cachePath, mirrorPath, { recursive: true });
   }
+}
+
+/**
+ * Generates an export statement for cached SVG icon files by importing them dynamically.
+ * The method scans a specified directory for SVG files, constructs their full import paths,
+ * and maps them into an array in the same way as `import.meta.glob` that can be exported.
+ *
+ * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
+ */
+export function generateIconExports() {
+  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
+  const files = walkSvgFiles(cachePath);
+
+  const entries = files
+    .map((relativePath) => {
+      const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
+      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath);
+
+      return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
+    })
+    .join(",\n");
+
+  return `export const cachedIcons = [\n${entries}\n];`;
+}
+
+/**
+ * Reloads the server when the icons cache is updated. This function sets up a file system watcher
+ * on the icons cache directory and triggers a full server reload whenever files are added or removed.
+ * @param {Object} server - The vite server instance to be reloaded.
+ */
+export function reloadServerOnIconsCacheUpdate(server) {
+  function reloadServer() {
+    server.moduleGraph.invalidateModule(
+      server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID),
+    );
+
+    server.ws.send({ type: "full-reload", path: "*" });
+  }
+
+  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
+  const watcher = watch(cachePath, { ignoreInitial: true });
+
+  watcher.on("add", reloadServer).on("unlink", reloadServer);
 }
 
 /**
@@ -296,34 +339,11 @@ async function getUIconDefaults(isInternalEnv) {
 }
 
 /**
- * Generates an export statement for cached SVG icon files by importing them dynamically.
- * The method scans a specified directory for SVG files, constructs their full import paths,
- * and maps them into an array that can be exported.
- *
- * @return {string} A string containing the export statement for the cached SVG icons as an array.
- */
-export function generateIconExports() {
-  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const files = walkSvgFiles(cachePath);
-
-  const entries = files
-    .map((relativePath) => {
-      const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
-      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath);
-
-      return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
-    })
-    .join(",\n");
-
-  return `export const cachedIcons = [\n${entries}\n];`;
-}
-
-/**
  * Recursively walks through the specified directory and its subdirectories to find all `.svg` files.
  * Returns an array of file paths relative to the provided base directory.
  *
  * @param {string} dir - The directory to start searching for `.svg` files.
- * @param {string} [baseDir=dir] - The base directory used for calculating relative file paths. Defaults to the `dir` parameter.
+ * @param {string} [baseDir=dir] - The base directory used for calculating relative file paths.
  * @return {string[]} An array of relative file paths for all `.svg` files found.
  */
 function walkSvgFiles(dir, baseDir = dir) {
@@ -345,27 +365,4 @@ function walkSvgFiles(dir, baseDir = dir) {
   }
 
   return results;
-}
-
-/**
- * Reloads the server when the icons cache is updated. This function sets up a file system watcher
- * on the icons cache directory and triggers a full server reload whenever files are added or removed.
- *
- * @param {Object} server - The server instance to be reloaded. It is expected to have `moduleGraph` and `ws` properties
- *                          for invalidating modules and sending websocket messages respectively.
- * @return {void} This function does not return any value.
- */
-export function reloadServerOnIconsCacheUpdate(server) {
-  function reloadServer() {
-    server.moduleGraph.invalidateModule(
-      server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID),
-    );
-
-    server.ws.send({ type: "full-reload", path: "*" });
-  }
-
-  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const watcher = watch(cachePath, { ignoreInitial: true });
-
-  watcher.on("add", reloadServer).on("unlink", reloadServer);
 }

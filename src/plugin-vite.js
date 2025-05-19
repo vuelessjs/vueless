@@ -8,7 +8,7 @@ import UnpluginVueComponents from "unplugin-vue-components/vite";
 
 import { loadSvg } from "./utils/node/loaderSvg.js";
 import {
-  cacheProjectIcons,
+  createIconsCache,
   removeIconsCache,
   copyIconsCache,
   generateIconExports,
@@ -89,8 +89,11 @@ export const Vueless = function (options = {}) {
   /* cache vueless built-in and project icons */
   async function prepareIcons() {
     await removeIconsCache(mirrorCacheDir);
-    await cacheProjectIcons({ env, debug, targetFiles });
-    await copyIconsCache(mirrorCacheDir);
+    await createIconsCache({ env, debug, targetFiles });
+
+    if (isNuxtModuleEnv) {
+      await copyIconsCache(mirrorCacheDir);
+    }
   }
 
   return {
