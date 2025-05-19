@@ -3,7 +3,6 @@ import { Plugin } from "vite";
 
 declare function Vueless(options?: {
   env?: string;
-  mode?: string;
   debug?: boolean;
   include?: string[];
   mirrorCacheDir?: string;

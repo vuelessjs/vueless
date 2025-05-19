@@ -2,16 +2,18 @@
  * The file has a `.js ` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
-import { cwd } from "node:process";
-import { join } from "node:path";
-import { watch } from "chokidar";
-
 import TailwindVite from "@tailwindcss/vite";
 import TailwindPostcss from "@tailwindcss/postcss";
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
 import { loadSvg } from "./utils/node/loaderSvg.js";
-import { cacheIcons, removeIconsCache, copyIconsCache } from "./utils/node/loaderIcon.js";
+import {
+  cacheProjectIcons,
+  removeIconsCache,
+  copyIconsCache,
+  generateIconExports,
+  reloadServerOnIconsCacheUpdate,
+} from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
@@ -25,12 +27,15 @@ import {
 } from "./utils/node/helper.js";
 
 import {
-  DEFAULT_EXIT_CODE,
-  VUELESS_CACHE_DIR,
-  ICONS_DIR,
   VUE_EXT,
   TYPESCRIPT_EXT,
   JAVASCRIPT_EXT,
+  INTERNAL_ENV,
+  STORYBOOK_ENV,
+  NUXT_MODULE_ENV,
+  DEFAULT_EXIT_CODE,
+  ICONS_VIRTUAL_MODULE_ID,
+  RESOLVED_ICONS_VIRTUAL_MODULE_ID,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -52,25 +57,27 @@ export const UnpluginComponents = (options) =>
   – Loads SVG images as a Vue component.
  */
 export const Vueless = function (options = {}) {
-  const { mode, debug, env, include, mirrorCacheDir } = options;
+  const { debug, env, include, mirrorCacheDir } = options;
 
-  const isVuelessEnv = env === "vueless";
-  const isNuxt = mode === "nuxt-module";
+  const isInternalEnv = env === INTERNAL_ENV;
+  const isStorybookEnv = env === STORYBOOK_ENV;
+  const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
   const targetFiles = [
     ...(include || []),
     ...getVuelessConfigDirs(),
-    ...(isNuxt ? getNuxtDirs() : getVueDirs()),
+    ...(isNuxtModuleEnv ? getNuxtDirs() : getVueDirs()),
   ];
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    await showHiddenStories(isVuelessEnv);
-
-    await removeCustomPropTypes(isVuelessEnv);
+    if (isInternalEnv || isStorybookEnv) {
+      await showHiddenStories(isInternalEnv);
+      await removeCustomPropTypes(isInternalEnv);
+    }
 
     /* remove cached icons */
-    await removeIconsCache(mirrorCacheDir, debug);
+    await removeIconsCache(mirrorCacheDir);
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
@@ -79,14 +86,11 @@ export const Vueless = function (options = {}) {
     process.exit(DEFAULT_EXIT_CODE);
   });
 
+  /* cache vueless built-in and project icons */
   async function prepareIcons() {
-    await removeIconsCache(mirrorCacheDir, debug);
-
-    /* cache vueless built-in and project icons */
-    await cacheIcons({ mode: "vueless", env, debug, targetFiles });
-    await cacheIcons({ mode, env, debug, targetFiles });
-
-    await copyIconsCache(mirrorCacheDir, debug);
+    await removeIconsCache(mirrorCacheDir);
+    await cacheProjectIcons({ env, debug, targetFiles });
+    await copyIconsCache(mirrorCacheDir);
   }
 
   return {
@@ -99,9 +103,9 @@ export const Vueless = function (options = {}) {
       },
       optimizeDeps: {
         include: [
-          ...(!isVuelessEnv
-            ? ["vueless/directives/tooltip/vTooltip.ts"]
-            : ["./src/directives/tooltip/vTooltip.ts"]),
+          ...(isInternalEnv
+            ? ["./src/directives/tooltip/vTooltip.ts"]
+            : ["vueless/directives/tooltip/vTooltip.ts"]),
         ],
       },
     }),
@@ -109,54 +113,49 @@ export const Vueless = function (options = {}) {
     configResolved: async () => {
       await cacheMergedConfigs(env);
 
-      if (mode === "storybook" || isVuelessEnv) {
-        await showHiddenStories(isVuelessEnv);
+      if (isInternalEnv || isStorybookEnv) {
         await buildWebTypes();
-        await hideHiddenStories(isVuelessEnv);
+        await showHiddenStories(isInternalEnv);
+        await hideHiddenStories(isInternalEnv);
+        await setCustomPropTypes(isInternalEnv);
       }
 
       await prepareIcons();
-      await setCustomPropTypes(isVuelessEnv);
 
-      if (!isNuxt) {
+      if (!isNuxtModuleEnv) {
         /* collect used in project colors for tailwind safelist */
-        await createTailwindSafelist({ mode, env, debug, targetFiles });
+        await createTailwindSafelist({ env, debug, targetFiles });
       }
     },
 
-    buildEnd: async () => {
-      /* remove cached icons */
-      await removeIconsCache(mirrorCacheDir, debug);
-    },
-
-    /* load SVG images as a Vue components */
-    load: async (id) => await loadSvg(id, options),
-
+    /* update icons cache in dev env */
     handleHotUpdate: async ({ file }) => {
       if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
         await prepareIcons();
       }
     },
 
-    configureServer: (server) => {
-      async function reloadGlobModule() {
-        let isReload = false;
-
-        for (const modules of server.moduleGraph.fileToModulesMap.values()) {
-          for (const module of modules) {
-            if (module.id?.includes("UIcon.vue") && !isReload) {
-              isReload = true;
-
-              await server.reloadModule(module);
-            }
-          }
-        }
+    /* handle icons virtual module resolving */
+    resolveId: (id) => {
+      if (id === ICONS_VIRTUAL_MODULE_ID) {
+        return RESOLVED_ICONS_VIRTUAL_MODULE_ID;
       }
-
-      const tempDir = join(cwd(), VUELESS_CACHE_DIR, ICONS_DIR);
-      const watcher = watch(tempDir);
-
-      watcher.on("add", reloadGlobModule);
     },
+
+    /* load SVG images as a Vue components */
+    load: async (id) => {
+      return id === RESOLVED_ICONS_VIRTUAL_MODULE_ID
+        ? generateIconExports()
+        : await loadSvg(id, options);
+    },
+
+    /**
+     * reload vite server when cached icons updated,
+     * to immediately show new icons in dev env.
+     */
+    configureServer: (server) => reloadServerOnIconsCacheUpdate(server),
+
+    /* remove cached icons */
+    buildEnd: async () => await removeIconsCache(mirrorCacheDir),
   };
 };
