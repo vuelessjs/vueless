@@ -156,12 +156,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
 </script>
 
 <template>
-  <div
-    ref="wrapper"
-    v-click-outside="hideOptions"
-    :title="getFullOptionLabels(selectedOptions)"
-    v-bind="wrapperAttrs"
-  >
+  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
     <UButton
       :id="elementId"
       :label="buttonLabel"
@@ -171,6 +166,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       :square="square"
       :variant="variant"
       :disabled="disabled"
+      :title="getFullOptionLabels(selectedOptions)"
       v-bind="dropdownButtonAttrs"
       :data-test="getDataTest()"
       @click="onClickButton"
