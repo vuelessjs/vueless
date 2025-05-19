@@ -30,6 +30,11 @@ export interface Props {
   options?: Option[];
 
   /**
+   * Allows to search value in a list.
+   */
+  searchable?: boolean;
+
+  /**
    * Allows multiple selection.
    */
   multiple?: boolean;
@@ -43,6 +48,21 @@ export interface Props {
    * Value key in the item object of options.
    */
   valueKey?: string;
+
+  /**
+   * Set a name of the property containing the group label.
+   */
+  groupLabelKey?: string;
+
+  /**
+   * Set a name of the property containing the group values.
+   */
+  groupValueKey?: string;
+
+  /**
+   * Number of options displayed in the dropdown.
+   */
+  optionsLimit?: number;
 
   /**
    * Show add option button.

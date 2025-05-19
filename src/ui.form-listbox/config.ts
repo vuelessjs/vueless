@@ -1,10 +1,40 @@
 export default /*tw*/ {
   wrapper: `
-    my-2 p-1 flex w-auto absolute z-50 shadow-sm
+    my-2 p-1 flex flex-col gap-1.5 w-auto absolute z-50 shadow-sm
     rounded-medium border border-default bg-default
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-hidden
   `,
+  searchInput: {
+    base: "p-2 w-full border-none bg-transparent outline-none rounded-small focus:ring-0",
+    variants: {
+      size: {
+        sm: "text-small placeholder:text-small",
+        md: "text-medium placeholder:text-medium",
+        lg: "text-large placeholder:text-large",
+      },
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+  },
+  search: "flex w-full rounded-small outline-primary focus-within:outline",
+  clear: "flex items-center px-2",
+  selectIcon: {
+    base: "{UIcon}",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   list: "list-none align-top w-full h-full",
   listItem: "group/item block mb-px last:mb-0",
   option: {
@@ -73,11 +103,14 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "id",
     visibleOptions: undefined,
+    optionsLimit: 0,
+    searchable: true,
     disabled: false,
     addOption: false,
     multiple: false,
     /* icons */
     addOptionIcon: "add",
     selectedIcon: "check",
+    clearIcon: "close_small",
   },
 };

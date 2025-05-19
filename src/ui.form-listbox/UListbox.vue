@@ -13,6 +13,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import usePointer from "./usePointer.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
+import { filterOptions, filterGroups } from "./utilListbox.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
@@ -52,6 +53,8 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
 
+const search = ref("");
+
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
 
@@ -75,6 +78,41 @@ const selectedValue = computed({
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
+});
+
+const filteredOptions = computed(() => {
+  const normalizedSearch = search.value.toLowerCase().trim() || "";
+
+  let selectedValues: (string | number)[] = [];
+
+  if (Array.isArray(props.modelValue)) {
+    selectedValues = props.modelValue.map((value) => {
+      if (typeof value === "object") {
+        return value[props.valueKey] as string | number;
+      }
+
+      return value;
+    });
+  } else if (props.modelValue) {
+    selectedValues =
+      typeof props.modelValue === "object"
+        ? [props.modelValue[props.valueKey]]
+        : [props.modelValue];
+  }
+
+  let options = [...props.options];
+
+  options = props.groupValueKey
+    ? filterGroups(
+        options,
+        normalizedSearch,
+        props.labelKey,
+        props.groupValueKey,
+        props.groupLabelKey,
+      )
+    : filterOptions(options, normalizedSearch, props.labelKey);
+
+  return options.slice(0, props.optionsLimit || options.length);
 });
 
 watch(
@@ -159,6 +197,10 @@ watch(
     }
   },
 );
+
+function onClickClearSearch() {
+  search.value = "";
+}
 
 function onClickAddOption() {
   emit("add");
@@ -303,6 +345,8 @@ const {
   getDataTest,
   config,
   wrapperAttrs,
+  searchInputAttrs,
+  searchAttrs,
   listAttrs,
   listItemAttrs,
   addOptionLabelWrapperAttrs,
@@ -320,6 +364,8 @@ const {
   optionHighlightedAttrs,
   optionDisabledAttrs,
   optionDisabledActiveAttrs,
+  clearAttrs,
+  clearIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -334,9 +380,44 @@ const {
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
+    <div v-if="searchable" v-bind="searchAttrs">
+      <input
+        :id="elementId"
+        ref="searchInput"
+        v-model="search"
+        type="text"
+        autocomplete="off"
+        :spellcheck="false"
+        placeholder="Search..."
+        :aria-controls="'listbox-' + elementId"
+        v-bind="searchInputAttrs"
+        :data-test="getDataTest('search')"
+      />
+      <div
+        v-if="search"
+        v-bind="clearAttrs"
+        :data-test="getDataTest('clear')"
+        @click="onClickClearSearch"
+      >
+        <!--
+          @slot Use it to add something instead of the clear icon.
+          @binding {string} icon-name
+        -->
+        <slot name="clear" :icon-name="config.defaults.clearIcon">
+          <UIcon
+            internal
+            interactive
+            color="neutral"
+            :name="config.defaults.clearIcon"
+            v-bind="clearIconAttrs"
+          />
+        </slot>
+      </div>
+    </div>
+
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
-        v-for="(option, index) of options"
+        v-for="(option, index) of filteredOptions"
         :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
@@ -410,7 +491,7 @@ const {
       </li>
 
       <li
-        v-if="!options.length"
+        v-if="!filteredOptions.length"
         :id="`${elementId}-empty`"
         ref="empty-option"
         role="option"
@@ -431,7 +512,7 @@ const {
           v-bind="addOptionLabelWrapperAttrs"
           :data-test="getDataTest('add')"
           @click="onClickAddOption"
-          @mouseenter.self="pointerSet(options.length + 1)"
+          @mouseenter.self="pointerSet(filteredOptions.length + 1)"
         >
           <span v-bind="addOptionLabelAttrs">
             {{ currentLocale.add }}
