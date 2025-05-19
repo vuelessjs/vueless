@@ -6,7 +6,7 @@ import { Vueless, TailwindCSS } from "../src/plugin-vite";
 import { INTERNAL_ENV } from "../src/constants.js";
 
 export default defineConfig({
-  plugins: [Vue(), TailwindCSS(), Vueless({ env: INTERNAL_ENV, debug: false })],
+  plugins: [Vue(), TailwindCSS(), Vueless({ env: INTERNAL_ENV })],
   optimizeDeps: {
     include: [
       "cva",
