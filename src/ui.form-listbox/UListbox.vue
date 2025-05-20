@@ -9,10 +9,12 @@ import { isMac } from "../utils/platform.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
+import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
 import usePointer from "./usePointer.ts";
 import { useLocale } from "../composables/useLocale.ts";
 
+import { filterOptions, filterGroups } from "./utilListbox.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
@@ -39,6 +41,7 @@ const emit = defineEmits([
    * Triggers when option is added.
    */
   "add",
+
   /**
    * Triggers on click option.
    */
@@ -46,11 +49,14 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const listboxInputRef = useTemplateRef<{ input: HTMLInputElement }>("listbox-input");
 const optionsRef = useTemplateRef<HTMLLIElement[]>("option");
 const emptyOptionRef = useTemplateRef<HTMLLIElement>("empty-option");
 const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
+
+const search = ref("");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -70,11 +76,33 @@ const selectedValue = computed({
 
     return props.modelValue;
   },
-  set: (value) => emit("update:modelValue", value),
+  set: (value) => {
+    if (search.value) search.value = "";
+
+    emit("update:modelValue", value);
+  },
 });
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
+});
+
+const filteredOptions = computed(() => {
+  const normalizedSearch = search.value.toLowerCase().trim();
+
+  let options = [...props.options];
+
+  options = props.groupValueKey
+    ? filterGroups(
+        options,
+        normalizedSearch,
+        props.labelKey,
+        props.groupValueKey,
+        props.groupLabelKey,
+      )
+    : filterOptions(options, normalizedSearch, props.labelKey);
+
+  return options.slice(0, props.optionsLimit || options.length);
 });
 
 watch(
@@ -124,13 +152,23 @@ watch(
       const wrapperPaddingBottom = parseFloat(wrapperStyle.paddingBottom || "0");
       const wrapperBorderTop = parseFloat(wrapperStyle.borderTopWidth || "0");
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
+      const wrapperGap = parseFloat(wrapperStyle.gap || "0");
+
+      const listboxInputStyle = getComputedStyle(listboxInputRef.value?.input as HTMLInputElement);
+      const listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
+      const listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
+      const listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
 
       wrapperMaxHeight.value = `${
         maxHeight +
+        wrapperGap +
         wrapperPaddingTop +
         wrapperPaddingBottom +
         wrapperBorderTop +
-        wrapperBorderBottom
+        wrapperBorderBottom +
+        listboxInputHeight +
+        listboxInputPaddingTop +
+        listboxInputPaddingBottom
       }px`;
     });
   },
@@ -289,6 +327,12 @@ defineExpose({
   optionsRef,
 
   /**
+   * A reference to the search input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  listboxInputRef,
+
+  /**
    * A reference to the wrapper element containing the entire list of options.
    * @property {HTMLElement}
    */
@@ -303,6 +347,8 @@ const {
   getDataTest,
   config,
   wrapperAttrs,
+  listboxInputAttrs,
+  searchAttrs,
   listAttrs,
   listItemAttrs,
   addOptionLabelWrapperAttrs,
@@ -334,9 +380,21 @@ const {
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
+    <div v-if="searchable" v-bind="searchAttrs">
+      <UInputSearch
+        :id="elementId"
+        ref="listbox-input"
+        v-model="search"
+        :placeholder="currentLocale.search"
+        :size="size"
+        v-bind="listboxInputAttrs"
+        :data-test="getDataTest('search')"
+      />
+    </div>
+
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
-        v-for="(option, index) of options"
+        v-for="(option, index) of filteredOptions"
         :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
@@ -410,7 +468,7 @@ const {
       </li>
 
       <li
-        v-if="!options.length"
+        v-if="!filteredOptions.length"
         :id="`${elementId}-empty`"
         ref="empty-option"
         role="option"
@@ -431,7 +489,7 @@ const {
           v-bind="addOptionLabelWrapperAttrs"
           :data-test="getDataTest('add')"
           @click="onClickAddOption"
-          @mouseenter.self="pointerSet(options.length + 1)"
+          @mouseenter.self="pointerSet(filteredOptions.length + 1)"
         >
           <span v-bind="addOptionLabelAttrs">
             {{ currentLocale.add }}

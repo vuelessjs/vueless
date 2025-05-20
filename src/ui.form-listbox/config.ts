@@ -1,10 +1,34 @@
 export default /*tw*/ {
   wrapper: `
-    my-2 p-1 flex w-auto absolute z-50 shadow-sm
+    my-2 p-1 flex flex-col gap-1.5 w-auto absolute z-50 shadow-sm
     rounded-medium border border-default bg-default
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-hidden
   `,
+  listboxInput: {
+    base: "{UInputSearch}",
+    searchInput: {
+      wrapper: "rounded-small",
+      input: "pl-2",
+      rightSlot: "pr-1",
+    },
+  },
+  search: "",
+  selectIcon: {
+    base: "{UIcon}",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+    defaults: {
+      size: {
+        sm: "xs",
+        md: "sm",
+        lg: "md",
+      },
+    },
+  },
   list: "list-none align-top w-full h-full",
   listItem: "group/item block mb-px last:mb-0",
   option: {
@@ -66,6 +90,7 @@ export default /*tw*/ {
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",
+    search: "Search...",
   },
   defaults: {
     color: "primary",
@@ -73,6 +98,8 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "id",
     visibleOptions: undefined,
+    optionsLimit: 0,
+    searchable: false,
     disabled: false,
     addOption: false,
     multiple: false,
