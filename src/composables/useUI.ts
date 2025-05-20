@@ -215,7 +215,7 @@ export default function useUI<T>(
 
         if (config.value[firstKey] === undefined) {
           // eslint-disable-next-line no-console
-          console.warn(`[Vueless] Missing ${firstKey} extend key.`);
+          console.warn(`[vueless] Missing ${firstKey} extend key.`);
         }
 
         extendsKeyConfig = getMergedConfig({
