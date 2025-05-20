@@ -8,9 +8,6 @@ import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 
 import {
   COMPONENTS,
-  INTERNAL_ENV,
-  VUELESS_LOCAL_DIR,
-  VUELESS_PACKAGE_DIR,
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
