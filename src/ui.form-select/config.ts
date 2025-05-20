@@ -152,7 +152,7 @@ export default /*tw*/ {
     ],
   },
   search: {
-    base: "text-muted font-normal text-medium !leading-none",
+    base: "flex items-center text-muted font-normal text-medium !leading-none",
     variants: {
       size: {
         sm: "text-small",
