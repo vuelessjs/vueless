@@ -219,6 +219,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      :searchable="searchable"
       :multiple="multiple"
       :size="size"
       :color="color"

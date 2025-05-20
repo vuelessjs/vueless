@@ -106,7 +106,7 @@ const filteredOptions = computed(() => {
 });
 
 watch(
-  () => [props.options, props.size, props.visibleOptions],
+  () => [props.options, props.size, props.visibleOptions, props.searchable],
   () => {
     nextTick(() => {
       const options = [
@@ -154,10 +154,18 @@ watch(
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
       const wrapperGap = parseFloat(wrapperStyle.gap || "0");
 
-      const listboxInputStyle = getComputedStyle(listboxInputRef.value?.input as HTMLInputElement);
-      const listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
-      const listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
-      const listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
+      const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
+      let listboxInputHeight = 0;
+      let listboxInputPaddingTop = 0;
+      let listboxInputPaddingBottom = 0;
+
+      if (inputEl) {
+        const listboxInputStyle = getComputedStyle(inputEl);
+
+        listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
+        listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
+        listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
+      }
 
       wrapperMaxHeight.value = `${
         maxHeight +

@@ -35,8 +35,9 @@ export default /*tw*/ {
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
       { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
-      { multiple: true, selected: true, multipleVariant: "badges", class: "pb-[7px]" },
       { multiple: true, selected: true, multipleVariant: "badges", size: "sm", class: "pb-1.5" },
+      { multiple: true, selected: true, multipleVariant: "badges", size: "md", class: "pb-1" },
+      { multiple: true, selected: true, multipleVariant: "badges", size: "lg", class: "pb-0.5" },
       { labelAlign: "topInside", label: true, class: "pt-0" },
     ],
   },
@@ -151,36 +152,20 @@ export default /*tw*/ {
     ],
   },
   search: {
-    base: "flex w-full",
-    compoundVariants: [
-      { multiple: true, multipleVariant: "inline", class: "w-auto" },
-      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
-      { multiple: false, selected: true, opened: false, class: "w-0" },
-      { multiple: false, selected: true, searchable: false, class: "w-0" },
-    ],
-  },
-  searchInput: {
-    base: `
-        p-0 font-normal !leading-none relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-hidden focus:ring-0 focus:outline-none
-        placeholder:text-muted placeholder:font-normal order-first
-      `,
+    base: "text-muted font-normal text-medium !leading-none",
     variants: {
       size: {
-        sm: "text-small placeholder:text-small",
-        md: "text-medium placeholder:text-medium",
-        lg: "text-large placeholder:text-large",
-      },
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-      error: {
-        true: "placeholder:text-error/50",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
     compoundVariants: [
-      { multiple: true, multipleVariant: "inline", selected: true, class: "w-0" },
-      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
+      { selected: false, placeholder: false, class: "invisible" },
+      { selected: false, placeholder: true, class: "w-auto" },
+      { selected: true, multiple: false, class: "hidden" },
+      { selected: true, multiple: true, multipleVariant: ["badges", "inline"], class: "hidden" },
+      { selected: true, multiple: true, multipleVariant: "list", class: "w-full" },
     ],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",

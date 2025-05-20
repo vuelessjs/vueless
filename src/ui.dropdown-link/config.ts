@@ -44,6 +44,7 @@ export default /*tw*/ {
     underlined: undefined,
     dashed: true,
     disabled: false,
+    searchable: false,
     multiple: false,
     labelDisplayCount: 2,
     /* icons */

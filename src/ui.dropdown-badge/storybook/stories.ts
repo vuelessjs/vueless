@@ -45,7 +45,7 @@ export default {
     docs: {
       ...getDocsDescription(UDropdownBadge.__name),
       story: {
-        height: "200px",
+        height: "250px",
       },
     },
   },
@@ -111,6 +111,9 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
 
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "pending" };

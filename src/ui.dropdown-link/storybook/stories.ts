@@ -90,6 +90,9 @@ const EnumTemplate: StoryFn<EnumUDropdownLinkArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
+
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "profile" };
 

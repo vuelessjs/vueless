@@ -52,6 +52,7 @@ export default /*tw*/ {
     valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
+    searchable: false,
     round: false,
     square: false,
     disabled: false,
