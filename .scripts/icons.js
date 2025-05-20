@@ -7,8 +7,11 @@ import {
   copyIconsCache,
   removeIconsCache,
 } from "../src/utils/node/loaderIcon.js";
-import { getVueDirs } from "../src/utils/node/helper.js";
+import { getVueDirs, cacheMergedConfigs } from "../src/utils/node/helper.js";
 import { INTERNAL_ENV, VUELESS_LOCAL_DIR } from "../src/constants.js";
+
+/* Copy and cache merged configs */
+await cacheMergedConfigs(VUELESS_LOCAL_DIR);
 
 /* Copy SVG icons from the default icon library into the `./src/icons` folder. */
 await removeIconsCache(VUELESS_LOCAL_DIR);
