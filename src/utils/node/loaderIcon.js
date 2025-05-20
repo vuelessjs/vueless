@@ -353,9 +353,9 @@ function getIconLibraryPaths(name, library) {
 function walkSvgFiles(dir, baseDir = dir) {
   let results = [];
 
-  // if (!fs.existsSync(dir)) {
-  //   return results;
-  // }
+  if (!fs.existsSync(dir)) {
+    return results;
+  }
 
   const list = fs.readdirSync(dir);
 

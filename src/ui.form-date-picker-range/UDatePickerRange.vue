@@ -60,7 +60,7 @@ import type {
   IsDatePeriodOutOfRange,
   ShiftActions,
   SortedLocale,
-  Props as UDatePickerRangeProps,
+  Props,
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
   Config,
@@ -70,9 +70,8 @@ import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-type Props = UDatePickerRangeProps<TModelValue>;
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   customRangeButton: () => ({ range: { from: null, to: null } }),
   modelValue: undefined,
   minDate: undefined,
@@ -510,7 +509,7 @@ async function focusRangeInput(value: RangeDate) {
   const isSameToValue =
     parsedCurrentValueTo && parsedNewDateTo && isSameDay(parsedCurrentValueTo, parsedNewDateTo);
 
-  nextTick(() => {
+  await nextTick(() => {
     if (!isSameFromValue || !parsedCurrentValueFrom) {
       (rageInputs.value?.rangeInputStartRef?.inputRef as HTMLInputElement).focus();
 
@@ -596,7 +595,7 @@ const {
 /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
 
 /* TODO:
-   Find way to do it more explicity.
+   Find way to do it more explicit.
    It is not really clear that i18n changes datepickerCalendarAttrs now.
 */
 watchEffect(() => {

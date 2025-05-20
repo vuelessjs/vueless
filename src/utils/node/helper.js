@@ -112,6 +112,7 @@ export async function cacheMergedConfigs(srcDir) {
 
   for await (const [componentName, componentDir] of componentNames) {
     const defaultComponentConfigPath = path.join(srcDir, componentDir, "config.ts");
+
     const defaultConfig = await getDefaultComponentConfig(
       componentName,
       defaultComponentConfigPath,

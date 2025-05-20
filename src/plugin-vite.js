@@ -118,6 +118,7 @@ export const Vueless = function (options = {}) {
     }),
 
     configResolved: async () => {
+      /* merge and cache component configs. */
       await cacheMergedConfigs(vuelessSrcDir);
 
       if (isInternalEnv || isStorybookEnv) {
