@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -25,6 +26,9 @@ export default {
   id: "8040",
   title: "Navigation / Progress",
   component: UProgress,
+  args: {
+    progress: 10,
+  },
   argTypes: {
     ...getArgTypes(UProgress.__name),
   },
@@ -59,24 +63,15 @@ const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
   components: { UCol, UButton, UProgress },
-  setup() {
-    args.progress = 10;
-
-    function updateProgress() {
-      args.progress = args.progress && args.progress < 100 ? args.progress + 10 : 0;
-    }
-
-    return { args, updateProgress, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UProgress
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         :value="args.progress"
         indicator
       >
@@ -84,7 +79,12 @@ const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argT
           {{ option }}
         </template>
       </UProgress>
-    <UButton label="Next Step" size="sm" variant="soft" @click="updateProgress" />
+      <UButton
+        label="Next Step"
+        size="sm"
+        variant="soft"
+        @click="args.progress = args.progress < 100 ? args.progress + 10 : 0"
+      />
     </UCol>
   `,
 });
@@ -118,20 +118,20 @@ Indicator.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const IndicatorSlot = DefaultTemplate.bind({});
 IndicatorSlot.args = {
   indicator: true,
   slotTemplate: `
-  <template #indicator="{ percent }">
-    <UBadge :label="'Current percent is: ' + percent" />
-  </template>
-`,
+    <template #indicator="{ percent }">
+      <UBadge :label="'Current percent is: ' + percent" />
+    </template>
+  `,
 };
 
 export const StepSlot = DefaultTemplate.bind({});

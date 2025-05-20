@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -10,7 +11,6 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -38,11 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs) => ({
   components: { UPagination },
-  setup() {
-    const slots = getSlotNames(UPagination.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UPagination.__name) }),
   template: `
     <UPagination v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,26 +46,17 @@ const DefaultTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs, { argTypes }) => ({
-  components: { UPagination, UCol, URow, ULabel },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+const EnumTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs, { argTypes }) => ({
+  components: { UPagination },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
-      <URow
-        v-for="(option, index) in options"
-        :key="index"
-        align="center"
-      >
-        <ULabel :label="option">
-          <UPagination v-bind="args" v-model="args.modelValue" :[args.enum]="option" />
-        </ULabel>
-      </URow>
-    </UCol>
+    <UPagination
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      v-model="args.modelValue"
+      class="mb-4"
+    />
   `,
 });
 
@@ -99,10 +86,10 @@ Limit.parameters = {
   },
 };
 
-export const Variant = EnumVariantTemplate.bind({});
+export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const SetCustomNavigationLabel = DefaultTemplate.bind({});

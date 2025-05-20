@@ -36,11 +36,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UTabArgs> = (args: UTabArgs) => ({
   components: { UTab, UIcon },
-  setup() {
-    const slots = getSlotNames(UTab.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UTab.__name) }),
   template: `
     <UTab v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -56,9 +52,7 @@ Disabled.args = { disabled: true };
 
 export const IconProps: StoryFn<UTabArgs> = (args) => ({
   components: { UTab, URow },
-  setup() {
-    return { args };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
       <UTab
@@ -81,9 +75,7 @@ export const IconProps: StoryFn<UTabArgs> = (args) => ({
 
 export const Slots: StoryFn<UTabArgs> = (args) => ({
   components: { UTab, URow, UBadge },
-  setup() {
-    return { args };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
       <UTab v-bind="args" label="What's new?">

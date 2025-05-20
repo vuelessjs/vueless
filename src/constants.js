@@ -302,6 +302,9 @@ export const COMPONENTS = {
   ULoader: "ui.loader",
   ULoaderProgress: "ui.loader-progress",
   ULoaderOverlay: "ui.loader-overlay",
+  USkeleton: "ui.skeleton",
+  USkeletonInput: "ui.skeleton-input",
+  USkeletonChoice: "ui.skeleton-choice",
 
   /* Other */
   UDot: "ui.other-dot",
@@ -369,25 +372,29 @@ export const DEFAULT_SVGO_CONFIG = {
 };
 
 /* Vueless general */
+export const INTERNAL_ENV = "internal";
+export const STORYBOOK_ENV = "storybook";
+export const NUXT_MODULE_ENV = "nuxt-module";
+
 export const VUELESS_LIBRARY = "vueless";
-export const STORYBOOK_DIR = "storybook";
-export const ICONS_DIR = "icons";
+export const INTERNAL_ICONS_LIBRARY = "internal";
+export const STORYBOOK_ICONS_LIBRARY = "storybook";
 
-export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
-export const VUELESS_DIR = "node_modules/vueless";
-export const VUELESS_CACHE_DIR = "node_modules/.cache/vueless";
+export const NODE_MODULES_DIR = "node_modules";
+export const VUELESS_PACKAGE_DIR = `${NODE_MODULES_DIR}/vueless`;
+export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/.cache/vueless`;
 export const VUELESS_LOCAL_DIR = "src";
-export const VUELESS_ICONS_DIR = "node_modules/vueless/icons/app";
+export const ICONS_DIR = "icons";
+export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
+export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 
-export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons`;
-export const APP_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/icons/app`;
-export const APP_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons/app`;
-export const STORYBOOK_ICONS_LOCAL_DIR = `${VUELESS_LOCAL_DIR}/icons/storybook`;
-export const STORYBOOK_ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/icons/storybook`;
+export const ICONS_VIRTUAL_MODULE_ID = "virtual:vueless/icons";
+export const RESOLVED_ICONS_VIRTUAL_MODULE_ID = `\0${ICONS_VIRTUAL_MODULE_ID}`;
 
 export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
+export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;

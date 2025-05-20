@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
+import { cachedIcons } from "virtual:vueless/icons";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { APP_ICONS_CACHED_DIR, VUELESS_LIBRARY } from "../constants.js";
+import { ICONS_CACHED_DIR, INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } from "../constants.js";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { AsyncComponentLoader, ComponentPublicInstance } from "vue";
-import type { Props, Config, IconLibraries } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,38 +27,29 @@ const emit = defineEmits([
 
 const iconRef = useTemplateRef<ComponentPublicInstance | HTMLElement>("icon");
 
-const generatedIcons = computed(() => {
-  return (
-    Object.entries(
-      // TODO: Fix path to import `app` related icons only
-      import.meta.glob(`/node_modules/.cache/vueless/icons/**/*.svg`, {
-        eager: true,
-        query: "?component",
-      }),
-    ) || []
-  );
-});
-
 const dynamicComponent = computed(() => {
-  const ICON_EXTENSION = ".svg";
+  let userLibrary = config.value.defaults.library;
 
-  const userLibrary = config.value.defaults.library as IconLibraries;
-
-  const isInternalIconExists = generatedIcons.value.find(
-    ([path]) =>
-      path.includes(`${APP_ICONS_CACHED_DIR}/${VUELESS_LIBRARY}`) &&
-      path.includes(props.name + ICON_EXTENSION),
+  const isInternalIconExists = cachedIcons.find(([path]: [string]) =>
+    path.includes(`${ICONS_CACHED_DIR}/${INTERNAL_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
-  const isExternalIconExists = generatedIcons.value.find(
-    ([path]) =>
-      path.includes(`${APP_ICONS_CACHED_DIR}/${userLibrary}`) &&
-      path.includes(props.name + ICON_EXTENSION),
+  const isStorybookIconExists = cachedIcons.find(([path]: [string]) =>
+    path.includes(`${ICONS_CACHED_DIR}/${STORYBOOK_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
-  const isInternalIcon = isInternalIconExists && !isExternalIconExists;
+  const isExternalIconExists = cachedIcons.find(([path]: [string]) =>
+    path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
+  );
 
-  const library = props.internal && isInternalIcon ? VUELESS_LIBRARY : userLibrary;
+  if (isInternalIconExists && !isExternalIconExists) {
+    userLibrary = INTERNAL_ICONS_LIBRARY;
+  }
+
+  if (isStorybookIconExists && !isExternalIconExists) {
+    userLibrary = STORYBOOK_ICONS_LIBRARY;
+  }
+
   const name = props.name;
   const src = props.src;
 
@@ -73,8 +65,8 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   const [, component] =
-    generatedIcons.value.find(([path]) =>
-      [name + ICON_EXTENSION, library].every((param) => path.includes(String(param))),
+    cachedIcons.find(([path]: [string]) =>
+      path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
     ) || [];
 
   return defineAsyncComponent(async () => (await component) as AsyncComponentLoader);

@@ -6,14 +6,14 @@ import { readFile } from "node:fs/promises";
 import { getDirFiles } from "../../utils/node/helper.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-import { VUELESS_DIR } from "../../constants.js";
+import { VUELESS_PACKAGE_DIR } from "../../constants.js";
 
 const storiesName = "stories.ts";
 
 export async function getStorybookId() {
   const srcComponentsDir = path.join(cwd(), SRC_COMPONENTS_PATH);
   const componentsDir = path.join(cwd(), COMPONENTS_PATH);
-  const vuelessPackagePath = path.join(cwd(), VUELESS_DIR);
+  const vuelessPackagePath = path.join(cwd(), VUELESS_PACKAGE_DIR);
   const isSrcComponentsDir = existsSync(srcComponentsDir);
   const isComponentsDir = existsSync(componentsDir);
 

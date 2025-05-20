@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -48,11 +49,7 @@ function getOptionsArray(count = 40) {
 
 const DefaultTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs) => ({
   components: { UTabs },
-  setup() {
-    const slots = getSlotNames(UTabs.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UTabs.__name) }),
   template: `
     <UTabs v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -60,37 +57,32 @@ const DefaultTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UTabsArgs> = (args: UTabsArgs, { argTypes }) => ({
   components: { UTabs, URow, ULabel },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-
-    <URow
-      v-for="(option, index) in options"
-      :key="index"
-      align="center"
-    >
-      <ULabel :label="option">
-        <UTabs
-          v-bind="args"
-          v-model="args.modelValue"
-          :[args.enum]="option"
-        />
-      </ULabel>
-    </URow>
+    <UTabs
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      v-model="args.modelValue"
+      class="mb-4"
+    />
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = {
+  enum: "size",
+  options: [
+    { label: "{enumValue}", value: "1" },
+    { label: "{enumValue}", value: "2" },
+    { label: "{enumValue}", value: "3" },
+  ],
+};
 
 export const Scrollable = DefaultTemplate.bind({});
 Scrollable.args = {

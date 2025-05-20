@@ -6,12 +6,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconLibraries =
-  | "vueless"
-  | "@material-symbols"
-  | "bootstrap-icons"
-  | "heroicons"
-  | "custom-icons";
+export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom-icons";
 
 export interface Props {
   /**

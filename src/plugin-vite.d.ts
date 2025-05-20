@@ -3,7 +3,6 @@ import { Plugin } from "vite";
 
 declare function Vueless(options?: {
   env?: string;
-  mode?: string;
   debug?: boolean;
   include?: string[];
   mirrorCacheDir?: string;
@@ -46,4 +45,9 @@ declare module "*.svg?skipsvgo" {
   import type { FunctionalComponent, SVGAttributes } from "vue";
   const component: FunctionalComponent<SVGAttributes>;
   export default component;
+}
+
+declare module "virtual:vueless/icons" {
+  import type { UnknownArray } from "./types.ts";
+  export const cachedIcons: UnknownArray;
 }
