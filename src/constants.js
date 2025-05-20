@@ -385,7 +385,7 @@ export const ICONS_DIR = "icons";
 export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
 export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 
-export const ICONS_VIRTUAL_MODULE_ID = "virtual:vueless-icons";
+export const ICONS_VIRTUAL_MODULE_ID = "virtual:vueless/icons";
 export const RESOLVED_ICONS_VIRTUAL_MODULE_ID = `\0${ICONS_VIRTUAL_MODULE_ID}`;
 
 export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
