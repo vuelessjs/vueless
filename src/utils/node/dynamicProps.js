@@ -4,14 +4,7 @@ import path from "node:path";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 
-import {
-  COMPONENTS,
-  GRAYSCALE_COLOR,
-  INHERIT_COLOR,
-  PRIMARY_COLOR,
-  VUELESS_PACKAGE_DIR,
-  VUELESS_LOCAL_DIR,
-} from "../../constants.js";
+import { COMPONENTS, GRAYSCALE_COLOR, INHERIT_COLOR, PRIMARY_COLOR } from "../../constants.js";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
@@ -24,9 +17,7 @@ const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
 const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR];
 
-export async function setCustomPropTypes(isInternalEnv) {
-  const srcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
+export async function setCustomPropTypes(srcDir) {
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     let componentGlobalConfig = vuelessConfig.components?.[componentName];
 
@@ -86,9 +77,7 @@ export async function setCustomPropTypes(isInternalEnv) {
   }
 }
 
-export async function removeCustomPropTypes(isInternalEnv) {
-  const srcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
+export async function removeCustomPropTypes(srcDir) {
   for await (const componentDir of Object.values(COMPONENTS)) {
     await restoreComponentTypes(path.join(srcDir, componentDir));
     await clearComponentTypesCache(path.join(srcDir, componentDir));

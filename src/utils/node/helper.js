@@ -95,16 +95,16 @@ export async function getComponentDefaultConfig(name, entryPath) {
   }
 }
 
-export async function cacheMergedConfigs(env) {
+export async function cacheMergedConfigs(srcDir) {
   const componentNames = Object.entries(COMPONENTS);
 
   for await (const [componentName, componentDir] of componentNames) {
-    const src = env === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-    const defaultComponentConfigPath = path.join(src, componentDir, "config.ts");
+    const defaultComponentConfigPath = path.join(srcDir, componentDir, "config.ts");
     const defaultConfig = await getComponentDefaultConfig(
       componentName,
       defaultComponentConfigPath,
     );
+
     const destDirPath = path.join(cwd(), VUELESS_MERGED_CONFIGS_CACHED_DIR);
     const configDistPath = path.join(destDirPath, `${componentName}.json`);
 
