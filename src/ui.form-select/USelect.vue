@@ -102,13 +102,9 @@ const isTop = computed(() => {
 });
 
 const searchPlaceholder = computed(() => {
-  const message = currentLocale.value.addMore;
-
-  if ((isMultipleListVariant.value && localValue.value?.length) || !props.placeholder) {
-    return message;
-  }
-
-  return props.placeholder;
+  return (isMultipleListVariant.value && localValue.value?.length) || !props.placeholder
+    ? currentLocale.value.addMore
+    : props.placeholder;
 });
 
 const dropdownValue = computed({
@@ -321,10 +317,12 @@ function adjustPosition() {
 function onWrapperBlur(event: FocusEvent) {
   const related = event.relatedTarget as HTMLElement | null;
 
-  if (
-    related &&
-    (wrapperRef.value?.contains(related) || listboxRef.value?.$el?.contains(related))
-  ) {
+  const isInsideWrapper = related && wrapperRef.value?.contains(related);
+  const isInsideListbox = related && listboxRef.value?.$el?.contains(related);
+
+  const shouldIgnoreBlur = isInsideWrapper || isInsideListbox;
+
+  if (shouldIgnoreBlur) {
     return;
   }
 
