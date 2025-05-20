@@ -8,17 +8,12 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 
 import useUI from "../composables/useUI.ts";
-import { createDebounce, hasSlotContent } from "../utils/helper.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
 
-import {
-  filterOptions,
-  filterGroups,
-  removeSelectedValues,
-  getCurrentOption,
-} from "./utilSelect.ts";
+import { getCurrentOption } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
 
@@ -87,11 +82,9 @@ const { tm } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
-const search = ref("");
 
 const listboxRef = useTemplateRef<InstanceType<typeof UListbox>>("listbox");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
-const searchInputRef = useTemplateRef<HTMLInputElement>("searchInput");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
 const innerWrapperRef = useTemplateRef<HTMLDivElement>("innerWrapper");
@@ -108,10 +101,14 @@ const isTop = computed(() => {
   return preferredOpenDirection.value === DIRECTION.top;
 });
 
-const inputPlaceholder = computed(() => {
+const searchPlaceholder = computed(() => {
   const message = currentLocale.value.addMore;
 
-  return props.multiple && localValue.value?.length ? message : props.placeholder;
+  if ((isMultipleListVariant.value && localValue.value?.length) || !props.placeholder) {
+    return message;
+  }
+
+  return props.placeholder;
 });
 
 const dropdownValue = computed({
@@ -140,43 +137,6 @@ const isMultipleInlineVariant = computed(
 const isMultipleBadgesVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badges,
 );
-
-const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim() || "";
-
-  let selectedValues: (string | number)[] = [];
-
-  if (Array.isArray(props.modelValue)) {
-    selectedValues = props.modelValue.map((value) => {
-      if (typeof value === "object") {
-        return value[props.valueKey] as string | number;
-      }
-
-      return value;
-    });
-  } else if (props.modelValue) {
-    selectedValues =
-      typeof props.modelValue === "object"
-        ? [props.modelValue[props.valueKey]]
-        : [props.modelValue];
-  }
-
-  let options = isMultipleListVariant.value
-    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
-    : [...props.options];
-
-  options = props.groupValueKey
-    ? filterGroups(
-        options,
-        normalizedSearch,
-        props.labelKey,
-        props.groupValueKey,
-        props.groupLabelKey,
-      )
-    : filterOptions(options, normalizedSearch, props.labelKey);
-
-  return options.slice(0, props.optionsLimit || options.length);
-});
 
 const localValue = computed(() => {
   if (!props.multiple) {
@@ -222,18 +182,10 @@ const selectedLabel = computed(() => {
   return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
 });
 
-const isEmpty = computed(() => {
-  return (
-    (filteredOptions.value.length === 0 && search) ||
-    (props.multiple && localValue.value?.length === props.options.length)
-  );
-});
-
-const onSearchChange = createDebounce(function (query) {
+function onSearchChange(query: string) {
   emit("searchChange", query);
-}, 300);
+}
 
-watch(search, onSearchChange);
 watch(localValue, setLabelPosition, { deep: true });
 
 if (props.addOption) {
@@ -241,6 +193,16 @@ if (props.addOption) {
 }
 
 onMounted(setLabelPosition);
+
+function onListboxInteraction(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  if (target.closest("input")) {
+    return;
+  }
+
+  event.preventDefault();
+}
 
 function getFullOptionLabels(value: Option | Option[]) {
   const labelKey = props.labelKey;
@@ -318,9 +280,8 @@ function toggle() {
 function deactivate() {
   if (!isOpen.value || props.disabled) return;
 
-  props.searchable && searchInputRef.value ? searchInputRef.value.blur() : wrapperRef.value?.blur();
+  if (props.searchable) wrapperRef.value?.blur();
 
-  search.value = "";
   isOpen.value = false;
 
   nextTick(() => emit("close", localValue.value, elementId));
@@ -333,15 +294,11 @@ function activate() {
 
   isOpen.value = true;
 
-  if (props.searchable) {
-    search.value = "";
+  wrapperRef.value?.focus();
 
-    nextTick(() => searchInputRef.value && searchInputRef.value.focus());
-  }
-
-  if (wrapperRef.value && !props.searchable) {
-    wrapperRef.value.focus();
-  }
+  nextTick(() => {
+    listboxRef.value?.listboxInputRef?.input.focus();
+  });
 
   emit("open", elementId);
 }
@@ -359,6 +316,19 @@ function adjustPosition() {
   } else {
     preferredOpenDirection.value = DIRECTION.top;
   }
+}
+
+function onWrapperBlur(event: FocusEvent) {
+  const related = event.relatedTarget as HTMLElement | null;
+
+  if (
+    related &&
+    (wrapperRef.value?.contains(related) || listboxRef.value?.$el?.contains(related))
+  ) {
+    return;
+  }
+
+  deactivate();
 }
 
 function onMouseDownClearItem(event: MouseEvent, option: Option) {
@@ -444,12 +414,6 @@ defineExpose({
   wrapperRef,
 
   /**
-   * A reference to the search input element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  searchInputRef,
-
-  /**
    * A reference to the ULabel instance for direct DOM manipulation.
    * @property {InstanceType<typeof ULabel>}
    */
@@ -481,6 +445,7 @@ const mutatedProps = computed(() => ({
   ),
   opened: isOpen.value,
   openedTop: isTop.value,
+  placeholder: Boolean(props.placeholder),
 }));
 
 const {
@@ -500,7 +465,6 @@ const {
   clearMultipleTextAttrs,
   clearMultipleAttrs,
   searchAttrs,
-  searchInputAttrs,
   selectedLabelWrapperAttrs,
   selectedLabelsAttrs,
   selectedLabelAttrs,
@@ -544,7 +508,7 @@ const {
       :aria-owns="'listbox-' + elementId"
       v-bind="wrapperAttrs"
       @focus="activate"
-      @blur="deactivate"
+      @blur="onWrapperBlur"
       @keydown.self.down.prevent="listboxRef?.pointerForward"
       @keydown.self.up.prevent="listboxRef?.pointerBackward"
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
@@ -730,30 +694,10 @@ const {
           </template>
         </div>
 
-        <div v-bind="searchAttrs">
-          <input
-            :id="elementId"
-            ref="searchInput"
-            v-model="search"
-            type="text"
-            autocomplete="off"
-            :spellcheck="false"
-            :placeholder="inputPlaceholder"
-            :disabled="disabled || !searchable"
-            :aria-controls="'listbox-' + elementId"
-            v-bind="searchInputAttrs"
-            :data-test="getDataTest('search')"
-            @focus="activate"
-            @blur.prevent="deactivate"
-            @keyup.esc="deactivate"
-            @keydown.down.prevent="listboxRef?.pointerForward"
-            @keydown.up.prevent="listboxRef?.pointerBackward"
-            @keydown.enter.prevent.stop.self="listboxRef?.addPointerElement()"
-          />
-        </div>
+        <div v-bind="searchAttrs" v-text="searchPlaceholder" />
 
         <span
-          v-if="!multiple && isLocalValue && ((searchable && !isOpen) || !searchable)"
+          v-if="!multiple && isLocalValue"
           v-bind="selectedLabelAttrs"
           @mousedown.prevent="toggle"
         >
@@ -795,8 +739,9 @@ const {
         v-if="isOpen"
         ref="listbox"
         v-model="dropdownValue as string | number"
+        :searchable="searchable"
         :multiple="multiple"
-        :options="filteredOptions"
+        :options="options"
         :disabled="disabled"
         :size="size"
         :visible-options="visibleOptions"
@@ -808,8 +753,9 @@ const {
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
-        @mousedown.prevent.capture
-        @click.prevent.capture
+        @update:model-value="onSearchChange"
+        @mousedown.capture="onListboxInteraction"
+        @click.capture="onListboxInteraction"
       >
         <template #before-option="{ option, index }">
           <!--
@@ -836,16 +782,6 @@ const {
             @binding {number} index
           -->
           <slot name="after-option" :option="option" :index="index" />
-        </template>
-
-        <template #empty>
-          <template v-if="isEmpty">
-            {{ currentLocale.listIsEmpty }}
-          </template>
-
-          <template v-else>
-            {{ currentLocale.noDataToShow }}
-          </template>
         </template>
       </UListbox>
 

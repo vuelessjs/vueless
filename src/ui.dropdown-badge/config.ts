@@ -50,6 +50,7 @@ export default /*tw*/ {
     yPosition: "bottom",
     xPosition: "left",
     round: false,
+    searchable: false,
     multiple: false,
     labelDisplayCount: 2,
     /* icons */
