@@ -267,10 +267,12 @@ body {
 
 .dark .sb-anchor > p > a {
   color: #4ade80; /* text-green-400 */
+  text-decoration: underline dashed #4ade80;
 }
 
 .light .sb-anchor > p > a {
   color: #16a34a; /* text-green-600 */
+  text-decoration: underline dashed #16a34a;
 }
 
 .sb-bar,
@@ -577,6 +579,20 @@ body {
   border-color: rgb(31, 41, 55);           /* border-gray-800 */
   color: rgb(156, 163, 175);               /* text-gray-400 */
   border-top-left-radius: 0;    /* rounded-tl-none */
+}
+
+.dark a.sbdocs.sbdocs-a {
+  color: #6b7280; /* text-gray-500 */
+}
+
+.light a.sbdocs.sbdocs-a {
+  color: #6b7280; /* text-gray-500 */
+}
+
+.light a.sbdocs.sbdocs-a:hover,
+.dark a.sbdocs.sbdocs-a:hover{
+  text-decoration: underline dashed #6b7280; /* text-gray-500 */
+  text-underline-offset: 3px;
 }
 
 /* -------------------- Storybook story preview -------------------- */
