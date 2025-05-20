@@ -3,8 +3,8 @@ import { cwd } from "node:process";
 import { existsSync } from "node:fs";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 
-import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
-import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
+import { vuelessConfig } from "./vuelessConfig.js";
+import { getDefaultComponentConfig, getMergedComponentConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
   PRIMARY_COLORS,
@@ -66,7 +66,7 @@ export async function createTailwindSafelist({ env, debug, targetFiles = [] } = 
     );
 
     if (isCurrentComponentUsed || isStorybookEnv || isInternalEnv) {
-      const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
+      const mergedConfig = await getMergedComponentConfig(componentName);
       const componentSafelist = await getComponentSafelist(mergedConfig, colors);
 
       safelistClasses.push(...componentSafelist);
@@ -74,7 +74,7 @@ export async function createTailwindSafelist({ env, debug, targetFiles = [] } = 
 
     if ((isCurrentComponentUsed || isStorybookEnv || isInternalEnv) && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
-        const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
+        const mergedConfig = await getMergedComponentConfig(nestedComponent);
         const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
 
         safelistClasses.push(...nestedComponentSafelist);
@@ -142,22 +142,12 @@ async function getComponentSafelist(mergedConfig, colors) {
   return classes;
 }
 
-async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
-  return getMergedConfig({
-    defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
-    globalConfig: vuelessConfig.components?.[componentName] || {},
-    unstyled: Boolean(vuelessConfig.unstyled),
-  });
-}
-
 async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles) {
-  const componentDefaultConfigPath = vuelessConfigFiles.find((file) =>
-    isDefaultComponentConfig(file, componentName),
-  );
+  const configDir = vuelessConfigFiles.find((filePath) => {
+    return filePath.includes(`${COMPONENTS[componentName]}/`);
+  });
 
-  return componentDefaultConfigPath
-    ? await getComponentDefaultConfig(componentName, path.join(cwd(), componentDefaultConfigPath))
-    : {};
+  return await getDefaultComponentConfig(componentName, configDir);
 }
 
 async function isComponentUsed(componentName, files) {
@@ -178,13 +168,4 @@ async function isComponentUsed(componentName, files) {
   }
 
   return isComponentUsed;
-}
-
-function isDefaultComponentConfig(filePath, componentName) {
-  const componentDirName = filePath.split(path.sep).at(-2);
-
-  return (
-    componentDirName === COMPONENTS[componentName] &&
-    (filePath.endsWith("/config.js") || filePath.endsWith("/config.ts"))
-  );
 }
