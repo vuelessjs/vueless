@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
-import { cachedIcons } from "virtual:vueless-icons";
+import { cachedIcons } from "virtual:vueless/icons";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -30,15 +30,15 @@ const iconRef = useTemplateRef<ComponentPublicInstance | HTMLElement>("icon");
 const dynamicComponent = computed(() => {
   let userLibrary = config.value.defaults.library;
 
-  const isInternalIconExists = cachedIcons.find(([path]) =>
+  const isInternalIconExists = cachedIcons.find(([path]: [string]) =>
     path.includes(`${ICONS_CACHED_DIR}/${INTERNAL_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
-  const isStorybookIconExists = cachedIcons.find(([path]) =>
+  const isStorybookIconExists = cachedIcons.find(([path]: [string]) =>
     path.includes(`${ICONS_CACHED_DIR}/${STORYBOOK_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
-  const isExternalIconExists = cachedIcons.find(([path]) =>
+  const isExternalIconExists = cachedIcons.find(([path]: [string]) =>
     path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
   );
 
@@ -65,7 +65,7 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   const [, component] =
-    cachedIcons.find(([path]) =>
+    cachedIcons.find(([path]: [string]) =>
       path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
     ) || [];
 

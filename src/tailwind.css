@@ -7,6 +7,7 @@
 /* ------ Development sources ------ */
 
 @source "../node_modules/.cache/vueless/safelist.txt";
+@source "../node_modules/.cache/vueless/mergedConfigs";
 
 /* ------ Production sources ------ */
 

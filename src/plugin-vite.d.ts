@@ -46,3 +46,8 @@ declare module "*.svg?skipsvgo" {
   const component: FunctionalComponent<SVGAttributes>;
   export default component;
 }
+
+declare module "virtual:vueless/icons" {
+  import type { UnknownArray } from "./types.ts";
+  export const cachedIcons: UnknownArray;
+}

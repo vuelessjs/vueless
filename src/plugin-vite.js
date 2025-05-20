@@ -36,6 +36,8 @@ import {
   DEFAULT_EXIT_CODE,
   ICONS_VIRTUAL_MODULE_ID,
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
+  VUELESS_LOCAL_DIR,
+  VUELESS_PACKAGE_DIR,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -63,6 +65,8 @@ export const Vueless = function (options = {}) {
   const isStorybookEnv = env === STORYBOOK_ENV;
   const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
+  const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
+
   const targetFiles = [
     ...(include || []),
     ...getVuelessConfigDirs(),
@@ -72,8 +76,8 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     if (isInternalEnv || isStorybookEnv) {
-      await showHiddenStories(isInternalEnv);
-      await removeCustomPropTypes(isInternalEnv);
+      await showHiddenStories(vuelessSrcDir);
+      await removeCustomPropTypes(vuelessSrcDir);
     }
 
     /* remove cached icons */
@@ -114,13 +118,13 @@ export const Vueless = function (options = {}) {
     }),
 
     configResolved: async () => {
-      await cacheMergedConfigs(env);
+      await cacheMergedConfigs(vuelessSrcDir);
 
       if (isInternalEnv || isStorybookEnv) {
         await buildWebTypes();
-        await showHiddenStories(isInternalEnv);
-        await hideHiddenStories(isInternalEnv);
-        await setCustomPropTypes(isInternalEnv);
+        await showHiddenStories(vuelessSrcDir);
+        await hideHiddenStories(vuelessSrcDir);
+        await setCustomPropTypes(vuelessSrcDir);
       }
 
       await prepareIcons();

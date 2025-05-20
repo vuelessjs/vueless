@@ -3,13 +3,11 @@ import { cwd } from "node:process";
 import { existsSync, promises as fsPromises } from "node:fs";
 
 import { vuelessConfig } from "./vuelessConfig.js";
-import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { COMPONENTS } from "../../constants.js";
 
 const STORYBOOK_DIR = "storybook";
 
-export async function hideHiddenStories(isInternalEnv) {
-  const srcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
+export async function hideHiddenStories(srcDir) {
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     const componentGlobalConfig = vuelessConfig.components?.[componentName];
     const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
@@ -20,9 +18,7 @@ export async function hideHiddenStories(isInternalEnv) {
   }
 }
 
-export async function showHiddenStories(isInternalEnv) {
-  const srcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
+export async function showHiddenStories(srcDir) {
   for await (const componentDir of Object.values(COMPONENTS)) {
     await showComponentStories(path.join(cwd(), srcDir, componentDir, STORYBOOK_DIR));
   }

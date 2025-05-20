@@ -2,15 +2,12 @@ import esbuild from "esbuild";
 import path from "node:path";
 import { cwd } from "node:process";
 import { existsSync, statSync } from "node:fs";
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 
 import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 
 import {
   COMPONENTS,
-  INTERNAL_ENV,
-  VUELESS_LOCAL_DIR,
-  VUELESS_PACKAGE_DIR,
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
@@ -85,26 +82,41 @@ export function getVuelessConfigDirs() {
   return [path.join(cwd(), ".vueless")];
 }
 
-export async function getComponentDefaultConfig(name, entryPath) {
-  const configOutPath = path.join(cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
-
-  await buildTSFile(entryPath, configOutPath);
+export async function getMergedComponentConfig(name) {
+  const configOutPath = path.join(cwd(), `${VUELESS_MERGED_CONFIGS_CACHED_DIR}/${name}.json`);
 
   if (existsSync(configOutPath)) {
-    return (await import(configOutPath)).default;
+    const raw = await readFile(configOutPath, "utf-8");
+
+    return JSON.parse(raw);
   }
 }
 
-export async function cacheMergedConfigs(env) {
+export async function getDefaultComponentConfig(name, configDir) {
+  const configOutPath = path.join(cwd(), `${VUELESS_CONFIGS_CACHED_DIR}/${name}.mjs`);
+  let config = {};
+
+  if (configDir) {
+    await buildTSFile(path.join(cwd(), configDir), configOutPath);
+  }
+
+  if (existsSync(configOutPath)) {
+    config = (await import(configOutPath)).default;
+  }
+
+  return config;
+}
+
+export async function cacheMergedConfigs(srcDir) {
   const componentNames = Object.entries(COMPONENTS);
 
   for await (const [componentName, componentDir] of componentNames) {
-    const src = env === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-    const defaultComponentConfigPath = path.join(src, componentDir, "config.ts");
-    const defaultConfig = await getComponentDefaultConfig(
+    const defaultComponentConfigPath = path.join(srcDir, componentDir, "config.ts");
+    const defaultConfig = await getDefaultComponentConfig(
       componentName,
       defaultComponentConfigPath,
     );
+
     const destDirPath = path.join(cwd(), VUELESS_MERGED_CONFIGS_CACHED_DIR);
     const configDistPath = path.join(destDirPath, `${componentName}.json`);
 
