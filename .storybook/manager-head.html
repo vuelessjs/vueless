@@ -121,8 +121,6 @@ Custom dark mode related vueless loader.
       background: #1f2937 !important;
   }
 
-
-
   .search-field,
   .search-result-item {
       border-radius: 8px !important;
@@ -137,12 +135,14 @@ Custom dark mode related vueless loader.
   .light .search-result-item svg[type="component"],
   .dark .search-result-item mark {
       color: #10b981;
+      font-weight: 600;
   }
 
   .dark .sidebar-item svg[type="component"],
   .dark .search-result-item svg[type="component"],
   .light .search-result-item mark {
       color: #059669;
+      font-weight: 600;
   }
 
   .light .sidebar-item svg[type="document"],
@@ -157,6 +157,14 @@ Custom dark mode related vueless loader.
   .dark .search-result-item svg[type="document"],
   .dark .search-result-item svg[type="story"] {
       color: #4b5563;
+  }
+
+  .light .search-result-item--label {
+      color: #6b7280; /* text-gray-600 */
+  }
+
+  .dark .search-result-item--label {
+    color: #a8abb0; /* text-gray-400 */
   }
 
   #sidebar-bottom-wrapper {
