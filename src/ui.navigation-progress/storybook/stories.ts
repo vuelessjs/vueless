@@ -26,6 +26,9 @@ export default {
   id: "8040",
   title: "Navigation / Progress",
   component: UProgress,
+  args: {
+    progress: 10,
+  },
   argTypes: {
     ...getArgTypes(UProgress.__name),
   },
@@ -62,15 +65,7 @@ const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
 
 const EnumTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
   components: { UCol, UButton, UProgress },
-  setup() {
-    args.progress = 10;
-
-    function updateProgress() {
-      args.progress = args.progress && args.progress < 100 ? args.progress + 10 : 0;
-    }
-
-    return { args, updateProgress, argTypes, getArgs };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UProgress
@@ -84,7 +79,12 @@ const EnumTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes })
           {{ option }}
         </template>
       </UProgress>
-      <UButton label="Next Step" size="sm" variant="soft" @click="updateProgress" />
+      <UButton
+        label="Next Step"
+        size="sm"
+        variant="soft"
+        @click="args.progress = args.progress < 100 ? args.progress + 10 : 0"
+      />
     </UCol>
   `,
 });
@@ -128,10 +128,10 @@ export const IndicatorSlot = DefaultTemplate.bind({});
 IndicatorSlot.args = {
   indicator: true,
   slotTemplate: `
-  <template #indicator="{ percent }">
-    <UBadge :label="'Current percent is: ' + percent" />
-  </template>
-`,
+    <template #indicator="{ percent }">
+      <UBadge :label="'Current percent is: ' + percent" />
+    </template>
+  `,
 };
 
 export const StepSlot = DefaultTemplate.bind({});

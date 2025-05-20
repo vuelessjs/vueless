@@ -7,6 +7,7 @@ import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -69,28 +70,28 @@ export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsArgs) => ({
-  components: { UBreadcrumbs },
+  components: { UBreadcrumbs, UText, UCol },
   setup: () => ({ args }),
   template: `
-    <div class="mb-8">
-      <div class="text-medium font-medium mb-2">Default</div>
+    <UCol>
+      <UText>Default</UText>
       <UBreadcrumbs :links="args.links" />
-    </div>
+    </UCol>
 
-    <div class="mb-8">
-      <div class="text-medium font-medium mb-2">Dashed</div>
+    <UCol>
+      <UText>Dashed</UText>
       <UBreadcrumbs :links="args.links" dashed />
-    </div>
+    </UCol>
 
-    <div class="mb-8">
-      <div class="text-medium font-medium mb-2">Underlined</div>
+    <UCol>
+      <UText>Underlined</UText>
       <UBreadcrumbs :links="args.links" underlined />
-    </div>
+    </UCol>
 
-    <div class="mb-8">
-      <div class="text-medium font-medium mb-2">Without Underline</div>
+    <UCol>
+      <UText>Without Underline</UText>
       <UBreadcrumbs :links="args.links" :underlined="false" />
-    </div>
+    </UCol>
   `,
 });
 
