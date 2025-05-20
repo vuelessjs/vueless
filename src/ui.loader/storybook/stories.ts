@@ -1,9 +1,11 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import ULoader from "../../ui.loader/ULoader.vue";
@@ -39,11 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   components: { ULoader },
-  setup() {
-    const slots = getSlotNames(ULoader.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULoader.__name) }),
   template: `
     <ULoader v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -51,22 +49,16 @@ const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
   components: { ULoader, URow },
   directives: { tooltip },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow wrap>
       <ULoader
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-tooltip="option"
       />
     </URow>
@@ -95,11 +87,13 @@ const LoadingTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};

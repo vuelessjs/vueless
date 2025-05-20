@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -111,19 +112,16 @@ const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs, { argTypes }) => ({
   components: { URow, UDataList, UHeader },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <div v-for="(option, index) in options" :key="index">
-      <UHeader :label="option" size="xs" />
-      <UDataList v-bind="args" :[args.enum]="option" class="mb-4" />
-    </div>
+    <UDataList
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      class="mb-4"
+    />
   `,
 });
 
@@ -136,7 +134,7 @@ EmptyState.args = { list: [] };
 export const Nesting = DefaultTemplate.bind({});
 Nesting.args = { nesting: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const LabelSlot = DefaultTemplate.bind({});
