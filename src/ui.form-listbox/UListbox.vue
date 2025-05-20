@@ -9,6 +9,7 @@ import { isMac } from "../utils/platform.ts";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
+import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
 import usePointer from "./usePointer.ts";
 import { useLocale } from "../composables/useLocale.ts";
@@ -48,6 +49,7 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const listboxInputRef = useTemplateRef<{ input: HTMLInputElement }>("listbox-input");
 const optionsRef = useTemplateRef<HTMLLIElement[]>("option");
 const emptyOptionRef = useTemplateRef<HTMLLIElement>("empty-option");
 const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
@@ -150,13 +152,23 @@ watch(
       const wrapperPaddingBottom = parseFloat(wrapperStyle.paddingBottom || "0");
       const wrapperBorderTop = parseFloat(wrapperStyle.borderTopWidth || "0");
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
+      const wrapperGap = parseFloat(wrapperStyle.gap || "0");
+
+      const listboxInputStyle = getComputedStyle(listboxInputRef.value?.input as HTMLInputElement);
+      const listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
+      const listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
+      const listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
 
       wrapperMaxHeight.value = `${
         maxHeight +
+        wrapperGap +
         wrapperPaddingTop +
         wrapperPaddingBottom +
         wrapperBorderTop +
-        wrapperBorderBottom
+        wrapperBorderBottom +
+        listboxInputHeight +
+        listboxInputPaddingTop +
+        listboxInputPaddingBottom
       }px`;
     });
   },
@@ -185,10 +197,6 @@ watch(
     }
   },
 );
-
-function onClickClearSearch() {
-  search.value = "";
-}
 
 function onClickAddOption() {
   emit("add");
@@ -319,6 +327,12 @@ defineExpose({
   optionsRef,
 
   /**
+   * A reference to the search input element for direct DOM manipulation.
+   * @property {HTMLElement}
+   */
+  listboxInputRef,
+
+  /**
    * A reference to the wrapper element containing the entire list of options.
    * @property {HTMLElement}
    */
@@ -333,7 +347,7 @@ const {
   getDataTest,
   config,
   wrapperAttrs,
-  searchInputAttrs,
+  listboxInputAttrs,
   searchAttrs,
   listAttrs,
   listItemAttrs,
@@ -352,8 +366,6 @@ const {
   optionHighlightedAttrs,
   optionDisabledAttrs,
   optionDisabledActiveAttrs,
-  clearAttrs,
-  clearIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -369,38 +381,15 @@ const {
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
     <div v-if="searchable" v-bind="searchAttrs">
-      <input
+      <UInputSearch
         :id="elementId"
-        ref="searchInput"
+        ref="listbox-input"
         v-model="search"
-        type="text"
-        autocomplete="off"
-        :spellcheck="false"
-        placeholder="Search..."
-        :aria-controls="'listbox-' + elementId"
-        v-bind="searchInputAttrs"
+        :placeholder="currentLocale.search"
+        :size="size"
+        v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
       />
-      <div
-        v-if="search"
-        v-bind="clearAttrs"
-        :data-test="getDataTest('clear')"
-        @click="onClickClearSearch"
-      >
-        <!--
-          @slot Use it to add something instead of the clear icon.
-          @binding {string} icon-name
-        -->
-        <slot name="clear" :icon-name="config.defaults.clearIcon">
-          <UIcon
-            internal
-            interactive
-            color="neutral"
-            :name="config.defaults.clearIcon"
-            v-bind="clearIconAttrs"
-          />
-        </slot>
-      </div>
     </div>
 
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">

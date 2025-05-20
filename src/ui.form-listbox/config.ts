@@ -5,21 +5,15 @@ export default /*tw*/ {
     overflow-auto [-webkit-overflow-scrolling:touch]
     focus:outline-hidden
   `,
-  searchInput: {
-    base: "p-2 w-full border-none bg-transparent outline-none rounded-small focus:ring-0",
-    variants: {
-      size: {
-        sm: "text-small placeholder:text-small",
-        md: "text-medium placeholder:text-medium",
-        lg: "text-large placeholder:text-large",
-      },
-      disabled: {
-        true: "cursor-not-allowed",
-      },
+  listboxInput: {
+    base: "{UInputSearch}",
+    searchInput: {
+      wrapper: "rounded-small",
+      input: "pl-2",
+      rightSlot: "pr-1",
     },
   },
-  search: "flex w-full rounded-small outline-primary focus-within:outline",
-  clear: "flex items-center px-2",
+  search: "",
   selectIcon: {
     base: "{UIcon}",
     variants: {
@@ -96,6 +90,7 @@ export default /*tw*/ {
   i18n: {
     noDataToShow: "No data to show.",
     add: "Add",
+    search: "Search...",
   },
   defaults: {
     color: "primary",
@@ -111,6 +106,5 @@ export default /*tw*/ {
     /* icons */
     addOptionIcon: "add",
     selectedIcon: "check",
-    clearIcon: "close_small",
   },
 };

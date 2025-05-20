@@ -30,7 +30,7 @@ export interface Props {
   options?: Option[];
 
   /**
-   * Allows to search value in a list.
+   * Shows input to search value in a list.
    */
   searchable?: boolean;
 
