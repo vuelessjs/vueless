@@ -79,8 +79,10 @@ const mutatedProps = computed(() => ({
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
 }));
 
-const { getDataTest, badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, badgeAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
@@ -94,40 +96,32 @@ const { getDataTest, badgeAttrs, bodyAttrs, leftIconAttrs, centerIconAttrs, righ
     @keydown="onKeydown"
     @click="onClick"
   >
-    <div v-bind="bodyAttrs">
-      <!--
-        @slot Use it to add icon before the text.
-        @binding {string} icon-name
-      -->
-      <slot name="left" :icon-name="leftIcon">
-        <UIcon v-if="leftIcon" internal :name="leftIcon" color="inherit" v-bind="leftIconAttrs" />
-      </slot>
+    <!--
+      @slot Use it to add icon before the text.
+      @binding {string} icon-name
+    -->
+    <slot name="left" :icon-name="leftIcon">
+      <UIcon v-if="leftIcon" internal :name="leftIcon" color="inherit" v-bind="leftIconAttrs" />
+    </slot>
 
-      <!--
-        @slot Use it to add something instead of the label.
-        @binding {string} label
-        @binding {string} icon-name
-      -->
-      <slot name="default" :label="label" :icon-name="icon">
-        <UIcon v-if="icon" internal :name="icon" color="inherit" v-bind="centerIconAttrs" />
-        <template v-else>
-          {{ label }}
-        </template>
-      </slot>
+    <!--
+      @slot Use it to add something instead of the label.
+      @binding {string} label
+      @binding {string} icon-name
+    -->
+    <slot name="default" :label="label" :icon-name="icon">
+      <UIcon v-if="icon" internal :name="icon" color="inherit" v-bind="centerIconAttrs" />
+      <template v-else>
+        {{ label }}
+      </template>
+    </slot>
 
-      <!--
-        @slot Use it to add icon after the text.
-        @binding {string} icon-name
-      -->
-      <slot name="right" :icon-name="rightIcon">
-        <UIcon
-          v-if="rightIcon"
-          :name="rightIcon"
-          color="inherit"
-          internal
-          v-bind="rightIconAttrs"
-        />
-      </slot>
-    </div>
+    <!--
+      @slot Use it to add icon after the text.
+      @binding {string} icon-name
+    -->
+    <slot name="right" :icon-name="rightIcon">
+      <UIcon v-if="rightIcon" :name="rightIcon" color="inherit" internal v-bind="rightIconAttrs" />
+    </slot>
   </div>
 </template>
