@@ -6,11 +6,6 @@ export default /*tw*/ {
   },
   inputIcon: {
     base: "{UIcon}",
-    variants: {
-      disabled: {
-        true: "text-muted pointer-events-none",
-      },
-    },
     defaults: {
       size: {
         sm: "xs",
@@ -39,7 +34,7 @@ export default /*tw*/ {
     disabled: false,
     readonly: false,
     /* icons */
-    clearIcon: "close",
+    clearIcon: "close_small",
     searchIcon: "search",
   },
 };

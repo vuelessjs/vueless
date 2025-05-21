@@ -151,9 +151,9 @@ const {
     <template #right>
       <UIcon
         v-if="localValue"
-        internal
         interactive
         color="neutral"
+        :disabled="disabled"
         :name="config.defaults.clearIcon"
         v-bind="clearIconAttrs"
         :data-test="getDataTest('clear')"
@@ -174,6 +174,7 @@ const {
           internal
           interactive
           color="neutral"
+          :disabled="disabled"
           :name="rightIcon || config.defaults.searchIcon"
           v-bind="searchIconAttrs"
           :data-test="getDataTest('search-icon')"
