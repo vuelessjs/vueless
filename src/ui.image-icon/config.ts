@@ -28,7 +28,7 @@ export default /*tw*/ {
         true: "cursor-pointer hover:text-{color}-lifted active:text-{color}-accented",
       },
       disabled: {
-        true: "text-{color}/(--vl-disabled-opacity) cursor-not-allowed",
+        true: "!text-{color}/(--vl-disabled-opacity) cursor-not-allowed",
       },
     },
   },
