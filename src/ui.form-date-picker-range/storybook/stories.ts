@@ -215,9 +215,9 @@ UserDateFormat.parameters = {
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: new Date(2022, 2, 22),
-  maxDate: new Date(2022, 2, 26),
-  modelValue: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
+  minDate: new Date(2024, 2, 22),
+  maxDate: new Date(2025, 2, 26),
+  modelValue: { from: new Date(2024, 2, 24), to: new Date(2024, 2, 25) },
 };
 MinMax.parameters = {
   docs: {
