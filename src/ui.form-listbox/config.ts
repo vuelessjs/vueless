@@ -8,7 +8,7 @@ export default /*tw*/ {
   listboxInput: {
     base: "{UInputSearch}",
     searchInput: {
-      wrapper: "rounded-small",
+      wrapper: "rounded-small focus-within:outline-0 hover:focus-within:border-lifted focus-within:border-lifted",
       input: "pl-2",
       rightSlot: "pr-1",
     },
