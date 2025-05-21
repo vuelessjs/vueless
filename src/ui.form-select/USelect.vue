@@ -8,6 +8,8 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
+import { vClickOutside } from "../directives";
+
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -173,6 +175,28 @@ const selectedLabel = computed(() => {
   return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
 });
 
+const optionDisplayData = computed(() => {
+  const result = getOptionLabel();
+
+  if (isLabelObject(result)) {
+    return {
+      labels: result.labels,
+      counter: result.counter,
+    };
+  }
+
+  return {
+    labels: result,
+    counter: "",
+  };
+});
+
+function isLabelObject(
+  value: string | { labels: string; counter: string },
+): value is { labels: string; counter: string } {
+  return typeof value === "object" && value !== null && "labels" in value;
+}
+
 function onSearchChange(query: string) {
   emit("searchChange", query);
 }
@@ -205,7 +229,7 @@ function getFullOptionLabels(value: Option | Option[]) {
   return "";
 }
 
-function getOptionLabel(option?: Option) {
+function getOptionLabel(option?: Option): string | { labels: string; counter: string } {
   const value = localValue.value;
   const labelKey = props.labelKey;
   const valueKey = props.valueKey;
@@ -213,10 +237,17 @@ function getOptionLabel(option?: Option) {
 
   if (!option) {
     if (Array.isArray(value)) {
-      const labels = value.slice(0, displayCount).map((item) => item[labelKey]);
+      const labelsArray = value.slice(0, displayCount).map((item) => item[labelKey]);
       const extraCount = value.length - displayCount;
 
-      return labels.join(", ") + (extraCount > 0 ? `, +${extraCount}` : "");
+      const labels = labelsArray.join(", ");
+      const counter = extraCount > 0 ? `+${extraCount}` : "";
+
+      if (isMultipleInlineVariant.value) {
+        return { labels, counter };
+      }
+
+      return labels + (counter ? `, ${counter}` : "");
     }
 
     return "";
@@ -239,7 +270,7 @@ function getOptionLabel(option?: Option) {
     }
   }
 
-  return label;
+  return String(label);
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -444,6 +475,8 @@ const {
   config,
   getDataTest,
   selectLabelAttrs,
+  selectedLabelWrapperAttrs,
+  counterAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
   leftSlotAttrs,
@@ -495,6 +528,7 @@ const {
 
     <div
       ref="wrapper"
+      v-click-outside="deactivate"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
@@ -639,8 +673,14 @@ const {
                 :title="getFullOptionLabels(localValue)"
                 v-bind="selectedLabelAttrs"
               >
-                {{ getOptionLabel() }}
+                {{ optionDisplayData.labels }}
               </div>
+              <span
+                v-if="isMultipleInlineVariant && optionDisplayData.counter"
+                v-bind="counterAttrs"
+              >
+                , {{ optionDisplayData.counter }}
+              </span>
             </slot>
 
             <template v-if="isMultipleBadgeVariant">
@@ -663,10 +703,17 @@ const {
                 >
                   <UBadge
                     :label="String(getOptionLabel(item))"
+                    :title="String(getOptionLabel(item))"
                     :size="size"
                     variant="subtle"
                     v-bind="badgeLabelAttrs"
+                    @click="toggle"
                   >
+                    <template #default>
+                      <div v-bind="selectedLabelWrapperAttrs">
+                        {{ getOptionLabel(item) }}
+                      </div>
+                    </template>
                     <template #right>
                       <UIcon
                         internal
@@ -702,7 +749,9 @@ const {
                   :value="item[valueKey]"
                   :option="item"
                 >
-                  {{ getOptionLabel(item) }}
+                  <div v-bind="selectedLabelWrapperAttrs">
+                    {{ getOptionLabel(item) }}
+                  </div>
 
                   <UIcon
                     v-if="!disabled"
