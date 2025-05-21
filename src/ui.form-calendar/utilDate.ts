@@ -23,7 +23,7 @@ export function minutesToSeconds(minutes: number) {
 }
 
 export function getDaysInMonth(date: Date) {
-  return new Date(new Date(date.valueOf()).setDate(0)).getDate();
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
 export function getWeeksInMonth(date: Date, settings: dateSettings = {}) {

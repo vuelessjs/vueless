@@ -278,22 +278,26 @@ watch(period, () => {
 });
 
 function isDatePeriodOutOfRange(datePeriod: DatePeriodRange) {
-  return (
-    dateIsOutOfRange(
-      datePeriod.startRange,
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      props.dateFormat,
-    ) ||
-    dateIsOutOfRange(
-      datePeriod.endRange,
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      props.dateFormat,
-    )
+  const isStartOutOfRange = dateIsOutOfRange(
+    datePeriod.startRange,
+    props.minDate,
+    props.maxDate,
+    locale.value,
+    props.dateFormat,
   );
+
+  const isEndOutOfRange = dateIsOutOfRange(
+    datePeriod.endRange,
+    props.minDate,
+    props.maxDate,
+    locale.value,
+    props.dateFormat,
+  );
+
+  const minDateWithinRange = props.minDate && datePeriod.startRange <= props.minDate;
+  const maxDateWithinRange = props.maxDate && datePeriod.endRange >= props.maxDate;
+
+  return (isStartOutOfRange && !minDateWithinRange) || (isEndOutOfRange && !maxDateWithinRange);
 }
 
 function activate() {
