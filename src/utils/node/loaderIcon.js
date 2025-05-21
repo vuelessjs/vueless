@@ -10,7 +10,6 @@ import path from "node:path";
 import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
 import { createRequire } from "module";
-import { watch } from "chokidar";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getMergedComponentConfig } from "./helper.js";
@@ -137,11 +136,10 @@ export function generateIconExports() {
  * Reloads the server when the icons cache is updated. This function sets up a file system watcher
  * on the icons cache directory and triggers a full server reload whenever files are added or removed.
  * @param {Object} server - The vite server instance to be reloaded.
+ * @param watcher
  */
-const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-const watcher = watch(cachePath);
 
-export function reloadServerOnIconsCacheUpdate(server) {
+export function reloadServerOnIconsCacheUpdate(server, watcher) {
   function reloadServer() {
     const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
 

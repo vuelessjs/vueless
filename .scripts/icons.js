@@ -17,6 +17,3 @@ await cacheMergedConfigs(VUELESS_LOCAL_DIR);
 await removeIconsCache(VUELESS_LOCAL_DIR);
 await createIconsCache({ env: INTERNAL_ENV, targetFiles: getVueDirs() });
 await copyIconsCache(VUELESS_LOCAL_DIR);
-
-/* Stop a command line process. */
-process.exit(0);

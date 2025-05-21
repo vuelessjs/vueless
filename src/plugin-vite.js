@@ -2,6 +2,9 @@
  * The file has a `.js ` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
+import path from "node:path";
+import { watch } from "chokidar";
+import { cwd } from "node:process";
 import TailwindVite from "@tailwindcss/vite";
 import TailwindPostcss from "@tailwindcss/postcss";
 import UnpluginVueComponents from "unplugin-vue-components/vite";
@@ -38,6 +41,7 @@ import {
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
+  ICONS_CACHED_DIR,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -66,6 +70,9 @@ export const Vueless = function (options = {}) {
   const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
+
+  const iconsCachePath = path.join(cwd(), ICONS_CACHED_DIR);
+  const iconsCacheWatcher = watch(iconsCachePath);
 
   const targetFiles = [
     ...(include || []),
@@ -161,9 +168,12 @@ export const Vueless = function (options = {}) {
      * reload vite server when cached icons updated,
      * to immediately show new icons in dev env.
      */
-    configureServer: (server) => reloadServerOnIconsCacheUpdate(server),
+    configureServer: (server) => reloadServerOnIconsCacheUpdate(server, iconsCacheWatcher),
 
     /* remove cached icons */
-    buildEnd: async () => await removeIconsCache(mirrorCacheDir),
+    buildEnd: async () => {
+      iconsCacheWatcher.close();
+      await removeIconsCache(mirrorCacheDir);
+    },
   };
 };
