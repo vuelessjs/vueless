@@ -7,12 +7,17 @@ import {
   getQuartersDateList,
   getMonthsDateList,
 } from "./utilDateRange.ts";
+import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
 import { Period } from "./constants.ts";
 
-import type { UDatePickerRangePeriodMenuProps, IsDatePeriodOutOfRange } from "./types.ts";
+import type {
+  UDatePickerRangePeriodMenuProps,
+  IsDatePeriodOutOfRange,
+  SortedLocale,
+} from "./types.ts";
 import type { DatePeriodRange } from "./utilDateRange.ts";
 
 defineOptions({ internal: true });
@@ -89,9 +94,17 @@ function onClickOwnRange() {
 }
 
 function selectDate(date: DatePeriodRange) {
+  const parsedMinDate =
+    props.minDate && parseDate<SortedLocale>(props.minDate, props.dateFormat, props.locale);
+  const parsedMaxDate =
+    props.maxDate && parseDate<SortedLocale>(props.maxDate, props.dateFormat, props.locale);
+
+  const isStartLessThanMinDate = parsedMinDate && date.startRange <= parsedMinDate;
+  const isEndGreaterThanMaxDate = parsedMaxDate && date.endRange >= parsedMaxDate;
+
   localValue.value = {
-    from: date.startRange,
-    to: date.endRange,
+    from: isStartLessThanMinDate ? props.minDate : date.startRange,
+    to: isEndGreaterThanMaxDate ? props.maxDate : date.endRange,
   };
 }
 
