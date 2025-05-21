@@ -39,7 +39,7 @@ import {
 
 import defaultConfig from "./config.ts";
 
-import type { Props as UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
+import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
 import type { ComputedRef, Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 import type { ComponentExposed } from "../types.ts";
@@ -52,10 +52,9 @@ type DefaultLocale = typeof defaultConfig.i18n;
 
 defineOptions({ inheritAttrs: false });
 
-type Props = UCalendarProps<TModelValue>;
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
   view: View.Day,
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -545,16 +544,14 @@ function arrowKeyHandler(event: KeyboardEvent) {
 
 function addActiveMonth(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
-  const newActiveMonth = addMonths(currentActiveMonth, amount);
 
-  activeMonth.value = newActiveMonth;
+  activeMonth.value = addMonths(currentActiveMonth, amount);
 }
 
 function addActiveYear(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
-  const newActiveMonth = addYears(currentActiveMonth, amount);
 
-  activeMonth.value = newActiveMonth;
+  activeMonth.value = addYears(currentActiveMonth, amount);
 }
 
 function onClickNextButton() {
