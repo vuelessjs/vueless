@@ -103,8 +103,8 @@ function selectDate(date: DatePeriodRange) {
   const isEndGreaterThanMaxDate = parsedMaxDate && date.endRange >= parsedMaxDate;
 
   localValue.value = {
-    from: isStartLessThanMinDate ? props.minDate : date.startRange,
-    to: isEndGreaterThanMaxDate ? props.maxDate : date.endRange,
+    from: isStartLessThanMinDate ? parsedMinDate : date.startRange,
+    to: isEndGreaterThanMaxDate ? parsedMaxDate : date.endRange,
   };
 }
 
