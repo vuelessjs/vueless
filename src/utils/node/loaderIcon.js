@@ -9,7 +9,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
-import { styleText } from "node:util";
 import { createRequire } from "module";
 import { watch } from "chokidar";
 
@@ -226,7 +225,9 @@ async function findAndCopyIcons(files, library, debug) {
     /* Vueless components props */
     const iconPropsPattern = `\\b\\w*(name|icon)\\w*\\s*=\\s*(['"])(.*?)\\2`;
     const uComponentIconNamePattern =
-      /<U\w+\b[^>]*?\b\w*(name|icon)\w*\s*[:=]\s*(['"])(.*?)\2[^>]*?>/;
+      // eslint-disable-next-line vue/max-len
+      /<UIcon\b[^>]*?\b(name)\s*[:=]\s*(['"])(.*?)\2[^>]*?>|<(?!UIcon\b)(U\w+)\b[^>]*?\b(\w*icon\w*)\s*[:=]\s*(['"])(.*?)\6[^>]*?>/;
+
     const uComponentIconNameArray = fileContents.match(new RegExp(uComponentIconNamePattern, "g"));
 
     if (!uComponentIconNameArray) return;
@@ -330,10 +331,6 @@ function getIconLibraryPaths(name, library) {
 
   if (library === "custom-icons") {
     sourcePath = path.join(cwd(), uIconDefaults.path, `${name}.svg`);
-  }
-
-  if (!fs.existsSync(sourcePath)) {
-    console.log(styleText("yellow", `[vueless] Icon "${name}" not found in "${sourcePath}".`));
   }
 
   return {
