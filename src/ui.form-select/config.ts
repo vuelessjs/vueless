@@ -48,10 +48,11 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
-      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last" },
+      { multiple: true, multipleVariant: "inline", class: "flex order-last" },
       { multiple: true, multipleVariant: "badge", class: "flex gap-1 flex-wrap" },
     ],
   },
+  selectedLabelWrapper: "truncate",
   selectedLabel: {
     base: "truncate",
     compoundVariants: [
@@ -62,7 +63,8 @@ export default /*tw*/ {
       },
     ],
   },
-  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small",
+  counter: "",
+  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
   badgeClearIcon: {
     base: "{>clearIcon} -mr-1",
     defaults: {
