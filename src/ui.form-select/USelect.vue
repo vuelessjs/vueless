@@ -374,13 +374,14 @@ function setLabelPosition() {
   }
 
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+
   const innerWrapperPaddingLeft = parseInt(
     window.getComputedStyle(innerWrapperRef.value).paddingLeft,
   );
 
   const nestedLabel = labelComponentRef.value.labelElement;
 
-  if (props.multiple && Array.isArray(localValue.value) && localValue.value.length >= 1) {
+  if (props.multiple && isLocalValue.value) {
     if (nestedLabel) {
       nestedLabel.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
     }
@@ -433,9 +434,7 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label),
   /* component state, not a props */
-  selected: Boolean(
-    props.multiple ? localValue.value.length : Object.keys(localValue.value).length,
-  ),
+  selected: Boolean(isLocalValue.value),
   opened: isOpen.value,
   openedTop: isTop.value,
   placeholder: Boolean(props.placeholder),
@@ -523,7 +522,7 @@ const {
       <div
         v-if="
           hasSlotContent($slots['after-toggle'], { option: localValue }) &&
-          !(multiple && localValue?.length)
+          (!multiple || !isLocalValue)
         "
         v-bind="afterToggleAttrs"
         :tabindex="-1"
@@ -536,12 +535,7 @@ const {
       </div>
 
       <div
-        v-show="
-          isMultipleInlineVariant ||
-          isMultipleBadgeVariant ||
-          !multiple ||
-          (!isLocalValue && multiple)
-        "
+        v-if="!isMultipleListVariant || !isLocalValue"
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
@@ -566,12 +560,7 @@ const {
       </div>
 
       <div
-        v-if="
-          isLocalValue &&
-          clearable &&
-          !disabled &&
-          (!multiple || isMultipleInlineVariant || isMultipleBadgeVariant)
-        "
+        v-if="!isMultipleListVariant && isLocalValue && clearable"
         v-bind="clearAttrs"
         :data-test="getDataTest('clear')"
         @mousedown="onMouseDownClear"
@@ -595,7 +584,7 @@ const {
       <div
         v-if="
           hasSlotContent($slots['before-toggle'], { option: localValue }) &&
-          !(multiple && localValue?.length)
+          (!multiple || !isLocalValue)
         "
         v-bind="beforeToggleAttrs"
       >
