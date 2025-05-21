@@ -16,5 +16,5 @@ export const KEYS = {
 export const MULTIPLE_VARIANTS = {
   list: "list",
   inline: "inline",
-  badges: "badges",
+  badge: "badge",
 };
