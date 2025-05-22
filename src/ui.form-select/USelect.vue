@@ -150,11 +150,7 @@ const visibleSelectedOptions = computed(() => {
     return [];
   }
 
-  if (isMultipleInlineVariant.value) {
-    return localValue.value.slice(0, props.labelDisplayCount);
-  }
-
-  return localValue.value;
+  return localValue.value.slice(0, props.labelDisplayCount);
 });
 
 const isLocalValue = computed(() => {
@@ -170,32 +166,6 @@ const isLocalValue = computed(() => {
 
   return !!String(value);
 });
-
-const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
-});
-
-const optionDisplayData = computed(() => {
-  const result = getOptionLabel();
-
-  if (isLabelObject(result)) {
-    return {
-      labels: result.labels,
-      counter: result.counter,
-    };
-  }
-
-  return {
-    labels: result,
-    counter: "",
-  };
-});
-
-function isLabelObject(
-  value: string | { labels: string; counter: string },
-): value is { labels: string; counter: string } {
-  return typeof value === "object" && value !== null && "labels" in value;
-}
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
@@ -229,48 +199,19 @@ function getFullOptionLabels(value: Option | Option[]) {
   return "";
 }
 
-function getOptionLabel(option?: Option): string | { labels: string; counter: string } {
-  const value = localValue.value;
-  const labelKey = props.labelKey;
-  const valueKey = props.valueKey;
-  const displayCount = props.labelDisplayCount;
+function getOptionLabel(option?: Option | Option[]): { labelsArray: string[]; counter: string } {
+  const sourceOptions = option ?? localValue.value;
 
-  if (!option) {
-    if (Array.isArray(value)) {
-      const labelsArray = value.slice(0, displayCount).map((item) => item[labelKey]);
-      const extraCount = value.length - displayCount;
+  const optionsArray = Array.isArray(sourceOptions) ? sourceOptions : [sourceOptions];
 
-      const labels = labelsArray.join(", ");
-      const counter = extraCount > 0 ? `+${extraCount}` : "";
+  const labelsArray = optionsArray
+    .slice(0, props.labelDisplayCount)
+    .map((item) => String(item?.[props.labelKey] ?? ""));
 
-      if (isMultipleInlineVariant.value) {
-        return { labels, counter };
-      }
+  const remainingCount = optionsArray.length - props.labelDisplayCount;
+  const counter = remainingCount > 0 ? `, +${remainingCount}` : "";
 
-      return labels + (counter ? `, ${counter}` : "");
-    }
-
-    return "";
-  }
-
-  const label = option[labelKey] || "";
-
-  if (isMultipleInlineVariant.value && Array.isArray(value) && value.length > 1) {
-    const index = value.findIndex((item) => item[valueKey] === option[valueKey]);
-    const isWithinDisplayCount = index < displayCount;
-
-    if (isWithinDisplayCount && index < displayCount - 1) {
-      return `${label}, `;
-    }
-
-    if (index === displayCount - 1 && value.length > displayCount) {
-      const extraCount = value.length - displayCount;
-
-      return `${label}, +${extraCount}`;
-    }
-  }
-
-  return String(label);
+  return { labelsArray, counter };
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -475,7 +416,7 @@ const {
   config,
   getDataTest,
   selectLabelAttrs,
-  selectedLabelWrapperAttrs,
+  selectedLabelTextAttrs,
   counterAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
@@ -645,12 +586,12 @@ const {
             -->
             <slot
               name="selected-label"
-              :selected-label="selectedLabel"
+              :selected-label="String(getOptionLabel().labelsArray)"
               :value="(localValue as Option)[valueKey]"
               :option="localValue"
             >
-              <div :title="String(selectedLabel)" v-bind="selectedLabelAttrs">
-                {{ selectedLabel }}
+              <div :title="String(getOptionLabel().labelsArray)" v-bind="selectedLabelAttrs">
+                {{ String(getOptionLabel().labelsArray) }}
               </div>
             </slot>
           </span>
@@ -673,14 +614,8 @@ const {
                 :title="getFullOptionLabels(localValue)"
                 v-bind="selectedLabelAttrs"
               >
-                {{ optionDisplayData.labels }}
+                {{ getOptionLabel().labelsArray.join(", ") }}
               </div>
-              <span
-                v-if="isMultipleInlineVariant && optionDisplayData.counter"
-                v-bind="counterAttrs"
-              >
-                , {{ optionDisplayData.counter }}
-              </span>
             </slot>
 
             <template v-if="isMultipleBadgeVariant">
@@ -709,11 +644,10 @@ const {
                     v-bind="badgeLabelAttrs"
                     @click="toggle"
                   >
-                    <template #default>
-                      <div v-bind="selectedLabelWrapperAttrs">
-                        {{ getOptionLabel(item) }}
-                      </div>
-                    </template>
+                    <div v-bind="selectedLabelTextAttrs">
+                      {{ item[props.labelKey] }}
+                    </div>
+
                     <template #right>
                       <UIcon
                         internal
@@ -749,8 +683,8 @@ const {
                   :value="item[valueKey]"
                   :option="item"
                 >
-                  <div v-bind="selectedLabelWrapperAttrs">
-                    {{ getOptionLabel(item) }}
+                  <div v-bind="selectedLabelTextAttrs">
+                    {{ item[props.labelKey] }}
                   </div>
 
                   <UIcon
@@ -783,6 +717,8 @@ const {
                 />
               </div>
             </template>
+
+            <span v-bind="counterAttrs">{{ getOptionLabel().counter }} </span>
           </div>
         </template>
       </div>
