@@ -38,10 +38,7 @@ export default {
     modelValue: null,
     options: [
       { label: "New York", id: "1" },
-      {
-        label: "Los AngelesLos AngelesLos AngelesLos AngelesLos AngelesLos AngelesLos Angeles",
-        id: "2",
-      },
+      { label: "Los Angeles", id: "2" },
       { label: "Chicago", id: "3" },
       { label: "Houston", id: "4" },
       { label: "San Francisco", id: "5" },
