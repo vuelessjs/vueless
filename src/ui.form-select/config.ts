@@ -52,14 +52,14 @@ export default /*tw*/ {
       { multiple: true, multipleVariant: "badge", class: "flex gap-1 flex-wrap" },
     ],
   },
-  selectedLabelWrapper: "truncate",
+  selectedLabelText: "truncate",
   selectedLabel: {
     base: "truncate",
     compoundVariants: [
       {
         multiple: true,
         multipleVariant: "list",
-        class: "py-2 flex justify-between items-center border-b border-muted w-full",
+        class: "py-2 grow-0 inline-flex justify-between items-center border-b border-muted w-full",
       },
     ],
   },
