@@ -13,8 +13,8 @@ interface SkeletonTextArgs extends Props {
 }
 
 export default {
-  id: "9024",
-  title: "Loaders and Skeletons / Text Skeleton",
+  id: "9050",
+  title: "Loaders and Skeletons / Skeleton Text",
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonText.__name),
