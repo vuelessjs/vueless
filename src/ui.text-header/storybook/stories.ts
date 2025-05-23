@@ -42,7 +42,7 @@ const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
   components: { UHeader, UBadge },
   setup: () => ({ args, slots: getSlotNames(UHeader.__name) }),
   template: `
-    <UHeader v-bind="args" class="w-fit">
+    <UHeader v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UHeader>
   `,
@@ -67,20 +67,6 @@ const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Line = DefaultTemplate.bind({});
-Line.args = {
-  size: "xl",
-  line: true,
-  label: "Detailed Analysis of User Engagement Metrics",
-};
-Line.parameters = {
-  docs: {
-    description: {
-      story: "Removes text line height (useful for 1-line text).",
-    },
-  },
-};
-
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
@@ -92,6 +78,6 @@ Colors.parameters = getEnumVariantDescription();
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
-    <UBadge v-bind="args" size="lg" color="success" />
+    <span class="dark:text-red-400 text-red-600">Detailed Analysis</span> of User Engagement Metrics
   `,
 };
