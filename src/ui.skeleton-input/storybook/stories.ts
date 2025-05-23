@@ -15,8 +15,8 @@ interface SkeletonInputArgs extends Props {
 }
 
 export default {
-  id: "9022",
-  title: "Loaders and Skeletons / Input Skeleton",
+  id: "9060",
+  title: "Loaders and Skeletons / Skeleton Input",
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonInput.__name),

@@ -14,8 +14,8 @@ interface SkeletonChoiceArgs extends Props {
 }
 
 export default {
-  id: "9023",
-  title: "Loaders and Skeletons / Choice Skeleton",
+  id: "9070",
+  title: "Loaders and Skeletons / Skeleton Choice",
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonChoice.__name),

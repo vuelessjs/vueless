@@ -11,7 +11,7 @@ interface SkeletonArgs extends Props {
 }
 
 export default {
-  id: "9021",
+  id: "9040",
   title: "Loaders and Skeletons / Skeleton",
   args: {},
   argTypes: {
