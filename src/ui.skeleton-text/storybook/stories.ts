@@ -48,7 +48,7 @@ const EnumVariantTemplate: StoryFn<SkeletonTextArgs> = (args: SkeletonTextArgs, 
         :[args.enum]="option"
         v-tooltip="option"
       />
-    </USkeletonText>
+    </UCol>
   `,
 });
 
