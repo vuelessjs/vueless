@@ -1,6 +1,9 @@
 export default /*tw*/ {
   badge: {
-    base: "border rounded-medium inline-block py-1 !leading-none outline-hidden",
+    base: `
+      inline-flex items-center justify-between py-1
+      border rounded-medium !leading-none outline-hidden
+    `,
     variants: {
       variant: {
         solid: "border-transparent text-inverted bg-{color}",
@@ -9,25 +12,15 @@ export default /*tw*/ {
         soft: "border-transparent text-{color} bg-{color}/10",
       },
       size: {
-        sm: "px-2 text-tiny",
-        md: "px-2.5 text-small",
-        lg: "px-3 text-medium",
+        sm: "gap-0.5 px-2 text-tiny",
+        md: "gap-1 px-2.5 text-small",
+        lg: "gap-1 px-3 text-medium",
       },
       round: {
         true: "rounded-full",
       },
       tabindex: {
         true: "cursor-pointer focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}",
-      },
-    },
-  },
-  body: {
-    base: "flex items-center justify-between",
-    variants: {
-      size: {
-        sm: "gap-0.5",
-        md: "gap-1",
-        lg: "gap-1",
       },
     },
   },

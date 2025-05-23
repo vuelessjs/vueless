@@ -122,6 +122,13 @@ const GroupValuesTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+Default.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
 
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { placeholder: "Start typing to search for a city..." };

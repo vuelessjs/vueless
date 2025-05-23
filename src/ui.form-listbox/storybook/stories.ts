@@ -40,7 +40,7 @@ export default {
     docs: {
       ...getDocsDescription(UListbox.__name),
       story: {
-        height: "270px",
+        height: "300px",
       },
     },
   },
@@ -71,20 +71,23 @@ const EnumTemplate: StoryFn<EnumUListboxArgs> = (args: EnumUListboxArgs, { argTy
   components: { UListbox, URow },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-      <URow class="w-fit">
-        <UListbox
-          v-for="option in argTypes?.[args.enum]?.options"
-          v-bind="getArgs(args, option)"
-          :key="option"
-          v-model="args.modelValue"
-          class="static w-36"
-        />
-      </URow>
+    <URow class="w-fit">
+      <UListbox
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
+        class="static w-36"
+      />
+    </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
 
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };

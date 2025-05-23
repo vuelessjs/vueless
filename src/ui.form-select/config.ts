@@ -32,17 +32,10 @@ export default /*tw*/ {
   },
   innerWrapper: {
     base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-start",
-    compoundVariants: [
-      { multiple: true, multipleVariant: "list", class: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]" },
-      { multiple: true, multipleVariant: "inline", class: "items-baseline flex-row" },
-      { multiple: true, selected: true, multipleVariant: "badges", class: "pb-[7px]" },
-      { multiple: true, selected: true, multipleVariant: "badges", size: "sm", class: "pb-1.5" },
-      { labelAlign: "topInside", label: true, class: "pt-0" },
-    ],
+    compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
   },
-  selectedLabelWrapper: "truncate",
   selectedLabels: {
-    base: "max-w-full",
+    base: "w-full !leading-none items-center whitespace-nowrap",
     variants: {
       size: {
         sm: "text-small",
@@ -50,41 +43,30 @@ export default /*tw*/ {
         lg: "text-large",
       },
       disabled: {
-        true: "text-accented",
+        true: "opacity-(--vl-disabled-opacity)",
       },
     },
     compoundVariants: [
       { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
-      { multiple: true, multipleVariant: "inline", class: "flex gap-1 order-last !leading-none" },
-      { multiple: true, multipleVariant: "badges", class: "flex gap-1 flex-wrap" },
+      { multiple: true, multipleVariant: "inline", class: "flex order-last" },
+      { multiple: true, multipleVariant: "badge", class: "flex gap-1 flex-wrap" },
     ],
   },
+  selectedLabelText: "truncate",
   selectedLabel: {
-    base: `
-      font-normal !leading-none relative w-full
-      inline-flex items-center whitespace-nowrap mb-0
-    `,
-    variants: {
-      size: {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
-      },
-      disabled: {
-        true: "text-accented",
-      },
-    },
+    base: "truncate",
     compoundVariants: [
-      { multiple: true, multipleVariant: "list", class: "py-2 last:mb-2.5 flex justify-between border-b border-muted" },
-      { multiple: true, multipleVariant: "badges", class: "w-fit" },
-      { size: "sm", multiple: true, class: "text-small" },
-      { size: "md", multiple: true, class: "text-medium" },
-      { size: "lg", multiple: true, class: "text-large" },
+      {
+        multiple: true,
+        multipleVariant: "list",
+        class: "py-2 flex justify-between items-center border-b border-muted w-full",
+      },
     ],
   },
-  badgeLabel: "{UBadge} py-0.5 rounded-small",
+  counter: "",
+  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
   badgeClearIcon: {
-    base: "{>clearIcon}",
+    base: "{>clearIcon} -mr-1",
     defaults: {
       size: {
         sm: "4xs",
@@ -93,13 +75,13 @@ export default /*tw*/ {
       },
     },
   },
+  listClearIcon: "{UIcon} {>selectIcon}",
+  listFooter: "flex items-center justify-between w-full mt-2.5 mb-1",
+  listFooterCounter: "flex gap-1.5 items-center",
+  listAddMore: "{>placeholder}",
+  listClearAll: "{ULink}",
   selectIcon: {
     base: "{UIcon}",
-    variants: {
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-    },
     defaults: {
       size: {
         sm: "xs",
@@ -108,11 +90,6 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>selectIcon}",
-  rightIcon: "{UIcon} {>selectIcon}",
-  leftSlot: "{>toggle} pl-2.5",
-  rightSlot: "{>toggle} pr-2.5",
-  beforeToggle: "{>toggle} cursor-auto",
   afterToggle: {
     base: "{>toggle} mr-2.5 items-start cursor-auto",
     variants: {
@@ -137,51 +114,23 @@ export default /*tw*/ {
     ],
   },
   toggleWrapper: "{>toggle} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[*]/active:rotate-180",
+  toggleIcon: "{UIcon} {>selectIcon} -mr-1 transition duration-300 group-[*]/active:rotate-180",
+  leftIcon: "{UIcon} {>selectIcon}",
+  rightIcon: "{UIcon} {>selectIcon}",
+  leftSlot: "{>toggle} pl-2.5",
+  rightSlot: "{>toggle} pr-2.5",
+  beforeToggle: "{>toggle} cursor-auto",
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
-  clearMultiple: "flex items-center",
-  clearMultipleIcon: "{UIcon} {>selectIcon}",
-  clearMultipleText: {
-    base: "cursor-pointer flex items-center text-medium font-normal text-muted hover:text-lifted transition",
-    compoundVariants: [
-      { size: "sm", class: "text-small" },
-      { size: "md", class: "text-medium" },
-      { size: "lg", class: "text-large" },
-    ],
-  },
-  search: {
-    base: "flex w-full",
-    compoundVariants: [
-      { multiple: true, multipleVariant: "inline", class: "w-auto" },
-      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
-      { multiple: false, selected: true, opened: false, class: "w-0" },
-      { multiple: false, selected: true, searchable: false, class: "w-0" },
-    ],
-  },
-  searchInput: {
-    base: `
-        p-0 font-normal !leading-none relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-hidden focus:ring-0 focus:outline-none
-        placeholder:text-muted placeholder:font-normal order-first
-      `,
+  placeholder: {
+    base: "flex items-center text-muted !leading-none",
     variants: {
       size: {
-        sm: "text-small placeholder:text-small",
-        md: "text-medium placeholder:text-medium",
-        lg: "text-large placeholder:text-large",
-      },
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-      error: {
-        true: "placeholder:text-error/50",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
-    compoundVariants: [
-      { multiple: true, multipleVariant: "inline", selected: true, class: "w-0" },
-      { multiple: true, multipleVariant: "badges", selected: true, class: "w-0" },
-    ],
   },
   listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
@@ -207,9 +156,10 @@ export default /*tw*/ {
     clearable: true,
     addOption: false,
     /* icons */
-    dropdownIcon: "keyboard_arrow_down",
+    toggleIcon: "keyboard_arrow_down",
     clearIcon: "close_small",
-    clearMultipleIcon: "close_small",
+    listClearIcon: "close_small",
+    badgeClearIcon: "close",
     selectedIcon: "check",
   },
 };

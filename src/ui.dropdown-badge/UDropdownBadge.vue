@@ -209,6 +209,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      :searchable="searchable"
       :multiple="multiple"
       :size="size"
       :color="color"

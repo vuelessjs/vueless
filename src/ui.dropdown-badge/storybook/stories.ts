@@ -111,6 +111,23 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownBadgeArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+Default.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
+Searchable.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
 
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "pending" };

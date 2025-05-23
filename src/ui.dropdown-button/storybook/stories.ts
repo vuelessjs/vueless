@@ -45,7 +45,7 @@ export default {
     docs: {
       ...getDocsDescription(UDropdownButton.__name),
       story: {
-        height: "250px",
+        height: "200px",
       },
     },
   },
@@ -113,6 +113,23 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownButtonArgs> = (
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+Default.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
+Searchable.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
 
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = {

@@ -66,6 +66,11 @@ export interface Props {
   toggleIcon?: boolean | string;
 
   /**
+   * Shows input to search value in a list.
+   */
+  searchable?: boolean;
+
+  /**
    * Allows multiple selection.
    */
   multiple?: boolean;
