@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef, computed, useSlots } from "vue";
+import { useTemplateRef, computed, useSlots, useAttrs, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -61,6 +61,16 @@ function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
+const attrs = useAttrs();
+
+// watch(
+//   () => attrs,
+//   () => {
+//     console.log(attrs);
+//   },
+//   { deep: true },
+// );
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
@@ -86,6 +96,8 @@ const { getDataTest, badgeAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs 
 </script>
 
 <template>
+  <!-- There is a difference when you select 4 or more items. attrs.title shows correct amount of options, but badgeAttrs shows only 3. -->
+  {{ console.log(attrs.title, "/", badgeAttrs.title) }}
   <div
     ref="wrapper"
     v-bind="badgeAttrs"
