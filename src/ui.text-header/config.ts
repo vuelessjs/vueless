@@ -13,22 +13,12 @@ export default /*tw*/ {
       line: {
         true: "!leading-none",
       },
-      underlined: {
-        true: "border-b border-{color}",
-      },
     },
-    compoundVariants: [
-      { underlined: true, size: "xs", class: "pb-1.5" },
-      { underlined: true, size: ["sm", "md"], class: "pb-2" },
-      { underlined: true, size: ["lg", "xl"], class: "pb-2.5" },
-      { underlined: true, size: "2xl", class: "pb-3" },
-    ],
   },
   defaults: {
     color: "grayscale",
     size: "md",
     tag: "div",
     line: true,
-    underlined: false,
   },
 };

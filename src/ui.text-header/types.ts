@@ -39,11 +39,6 @@ export interface Props {
   line?: boolean;
 
   /**
-   * Show the underline.
-   */
-  underlined?: boolean;
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

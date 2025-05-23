@@ -85,9 +85,6 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const Underlined = DefaultTemplate.bind({});
-Underlined.args = { underlined: true };
-
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 Colors.parameters = getEnumVariantDescription();
