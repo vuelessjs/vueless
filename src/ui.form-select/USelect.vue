@@ -145,22 +145,32 @@ const localValue = computed<Option | Option[]>(() => {
     : [];
 });
 
-const selectedLabel = computed(() =>
-  !props.multiple && localValue.value && !Array.isArray(localValue.value)
-    ? localValue.value
-    : undefined,
-);
+const selectedOption = computed(() => {
+  return !props.multiple && !Array.isArray(localValue.value) ? localValue.value : {};
+});
 
-const selectedOptions = computed<Option[]>(() =>
-  props.multiple && Array.isArray(localValue.value) ? localValue.value : [],
-);
+const selectedOptions = computed(() => {
+  const options = props.multiple && Array.isArray(localValue.value) ? localValue.value : [];
 
-const visibleSelectedOptions = computed(() => {
-  if (!props.multiple || !Array.isArray(localValue.value)) {
-    return [];
-  }
+  return {
+    full: options,
+    visible: options.slice(0, props.labelDisplayCount),
+    hidden: options.slice(props.labelDisplayCount),
+  };
+});
 
-  return localValue.value.slice(0, props.labelDisplayCount);
+const selectedOptionsLabel = computed(() => {
+  return {
+    full: selectedOptions.value.full.map((item) => item[props.labelKey]).join(", "),
+    visible: selectedOptions.value.visible.map((item) => item[props.labelKey]).join(", "),
+    hidden: selectedOptions.value.hidden.map((item) => item[props.labelKey]).join(", "),
+  };
+});
+
+const hiddenSelectedOptionsCount = computed(() => {
+  const count = selectedOptions.value.hidden.length;
+
+  return count > 0 ? `+${count}` : "";
 });
 
 const isLocalValue = computed(() => {
@@ -197,31 +207,6 @@ function onListboxInteraction(event: MouseEvent) {
   }
 
   event.preventDefault();
-}
-
-function getFullLabels(value: Option | Option[]) {
-  const labelKey = props.labelKey;
-
-  if (Array.isArray(value)) {
-    return value.map((item) => item[labelKey]).join(", ");
-  }
-
-  return "";
-}
-
-function getSelectedLabels(option?: Option | Option[]): { labels: string[]; counter: string } {
-  const sourceOptions = option ?? localValue.value;
-
-  const optionsArray = Array.isArray(sourceOptions) ? sourceOptions : [sourceOptions];
-
-  const labels = optionsArray
-    .slice(0, props.labelDisplayCount)
-    .map((item) => String(item?.[props.labelKey] ?? ""));
-
-  const remainingCount = optionsArray.length - props.labelDisplayCount;
-  const counter = remainingCount > 0 ? `+${remainingCount}` : "";
-
-  return { labels, counter };
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -588,174 +573,183 @@ const {
         </div>
 
         <template v-else>
-          <span v-if="!multiple" v-bind="selectedLabelsAttrs" @mousedown.prevent="toggle">
-            <!--
-              @slot Use it to add selected value label.
-              @binding {string} selected-label
-              @binding {modelValue} value
-              @binding {object} option
-            -->
-            <slot
-              name="selected-label"
-              :selected-label="selectedLabel?.[props.labelKey]"
-              :value="selectedLabel?.[props.valueKey]"
-              :option="localValue"
-            >
-              <div :title="String(selectedLabel?.[props.labelKey])" v-bind="selectedLabelAttrs">
-                {{ selectedLabel?.[props.labelKey] }}
-              </div>
-            </slot>
-          </span>
-
-          <div v-else v-bind="selectedLabelsAttrs">
-            <!--
-              @slot Use it to customize selected value label.
-              @binding {string} selected-label
-              @binding {modelValue} value
-              @binding {object} option
-            -->
-            <slot
-              name="selected-label"
-              :selected-label="getSelectedLabels()"
-              :value="selectedOptions.map((option) => option[valueKey])"
-              :option="selectedOptions"
-            >
-              <div
-                v-if="isMultipleInlineVariant"
-                :title="getFullLabels(selectedOptions)"
-                v-bind="selectedLabelAttrs"
+          <!--
+            @slot Use it to customize selected options.
+            @binding {array} options
+            @binding {object} options
+          -->
+          <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @mousedown.prevent="toggle">
+              <!--
+                @slot Use it to customize selected option.
+                @binding {string} label
+                @binding {modelValue} value
+                @binding {object} option
+              -->
+              <slot
+                name="selected-option"
+                :label="selectedOption[labelKey]"
+                :value="selectedOption[valueKey]"
+                :option="localValue"
               >
-                {{ getSelectedLabels().labels.join(", ") }}
-              </div>
+                <div
+                  :title="(selectedOption[labelKey] || '') as string"
+                  v-bind="selectedLabelAttrs"
+                  v-text="selectedOption[labelKey]"
+                />
+              </slot>
+            </span>
 
-              <span
-                v-if="isMultipleInlineVariant"
-                :title="getFullLabels(selectedOptions)"
-                v-bind="counterAttrs"
-              >
-                &nbsp;
-                {{ getSelectedLabels().counter }}
-              </span>
-            </slot>
+            <div v-else v-bind="selectedLabelsAttrs">
+              <template v-if="isMultipleInlineVariant">
+                <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
+                  <template v-for="(option, index) in selectedOptions.visible" :key="index">
+                    <!--
+                      @slot Use it to customize selected option.
+                      @binding {string} label
+                      @binding {modelValue} value
+                      @binding {object} option
+                    -->
+                    <slot
+                      name="selected-option"
+                      :label="option[labelKey]"
+                      :value="option[valueKey]"
+                      :option="option"
+                    >
+                      {{
+                        option[labelKey] +
+                        (index === selectedOptions.visible.length - 1 ? "" : ", ")
+                      }}
+                    </slot>
+                  </template>
+                </div>
 
-            <template v-if="isMultipleBadgeVariant">
-              <div
-                v-for="item in visibleSelectedOptions"
-                :key="String(item[valueKey])"
-                v-bind="selectedLabelAttrs"
-              >
-                <!--
-                  @slot Use it to customize selected value label.
-                  @binding {string} selected-label
-                  @binding {modelValue} value
-                  @binding {object} option
-                -->
-                <slot
-                  name="selected-label"
-                  :selected-label="getSelectedLabels(item).labels"
-                  :value="item[valueKey]"
-                  :option="item"
+                <span
+                  v-if="hiddenSelectedOptionsCount"
+                  v-bind="counterAttrs"
+                  v-text="`&nbsp;${hiddenSelectedOptionsCount}`"
                 >
-                  <UBadge
-                    :label="String(getSelectedLabels(item).labels)"
-                    :title="String(getSelectedLabels(item).labels)"
-                    :size="size"
-                    variant="subtle"
-                    v-bind="badgeLabelAttrs"
-                    @click="toggle"
+                </span>
+              </template>
+
+              <template v-if="isMultipleBadgeVariant">
+                <div
+                  v-for="(option, index) in selectedOptions.visible"
+                  :key="index"
+                  v-bind="selectedLabelAttrs"
+                >
+                  <!--
+                    @slot Use it to customize selected option.
+                    @binding {string} label
+                    @binding {modelValue} value
+                    @binding {object} option
+                  -->
+                  <slot
+                    name="selected-option"
+                    :label="option[labelKey]"
+                    :value="option[valueKey]"
+                    :option="option"
+                  >
+                    <UBadge
+                      :title="option[labelKey]"
+                      :size="size"
+                      variant="subtle"
+                      v-bind="badgeLabelAttrs"
+                      @click="toggle"
+                    >
+                      <div v-bind="selectedLabelTextAttrs">
+                        {{ option[labelKey] }}
+                      </div>
+
+                      <template #right>
+                        <UIcon
+                          internal
+                          interactive
+                          color="inherit"
+                          :disabled="disabled"
+                          :name="config.defaults.badgeClearIcon"
+                          v-bind="badgeClearIconAttrs"
+                          @click="onMouseDownClearItem($event, option)"
+                        />
+                      </template>
+                    </UBadge>
+                  </slot>
+                </div>
+
+                <UBadge
+                  v-if="hiddenSelectedOptionsCount"
+                  :label="hiddenSelectedOptionsCount"
+                  :title="selectedOptionsLabel.hidden"
+                  :size="size"
+                  variant="subtle"
+                  v-bind="badgeLabelAttrs"
+                />
+              </template>
+
+              <template v-if="isMultipleListVariant">
+                <div
+                  v-for="(option, index) in selectedOptions.visible"
+                  :key="index"
+                  :title="option[labelKey] as string"
+                  v-bind="selectedLabelAttrs"
+                >
+                  <!--
+                    @slot Use it to customize selected option.
+                    @binding {string} label
+                    @binding {modelValue} value
+                    @binding {object} option
+                  -->
+                  <slot
+                    name="selected-option"
+                    :label="option[labelKey]"
+                    :value="option[valueKey]"
+                    :option="option"
                   >
                     <div v-bind="selectedLabelTextAttrs">
-                      {{ item[props.labelKey] }}
+                      {{ option[labelKey] }}
                     </div>
 
-                    <template #right>
-                      <UIcon
-                        internal
-                        interactive
-                        color="inherit"
-                        :disabled="disabled"
-                        :name="config.defaults.badgeClearIcon"
-                        v-bind="badgeClearIconAttrs"
-                        @click="onMouseDownClearItem($event, item)"
-                      />
-                    </template>
-                  </UBadge>
-                </slot>
-              </div>
+                    <UIcon
+                      v-if="!disabled"
+                      internal
+                      interactive
+                      color="neutral"
+                      :name="config.defaults.listClearIcon"
+                      :data-test="getDataTest('clear-item')"
+                      v-bind="listClearIconAttrs"
+                      @mousedown.prevent.capture
+                      @click.prevent.capture
+                      @mousedown="onMouseDownClearItem($event, option)"
+                    />
+                  </slot>
+                </div>
 
-              <UBadge
-                v-if="isMultipleBadgeVariant && getSelectedLabels().counter"
-                :title="getFullLabels(selectedOptions)"
-                :label="getSelectedLabels().counter"
-                :size="size"
-                variant="subtle"
-                v-bind="badgeLabelAttrs"
-              />
-            </template>
-
-            <template v-if="isMultipleListVariant">
-              <div
-                v-for="item in visibleSelectedOptions"
-                :key="String(item[valueKey])"
-                :title="String(getSelectedLabels(item).labels)"
-                v-bind="selectedLabelAttrs"
-              >
-                <!--
-                  @slot Use it to customize selected value label.
-                  @binding {string} selected-label
-                  @binding {modelValue} value
-                  @binding {object} option
-                -->
-                <slot
-                  name="selected-label"
-                  :selected-label="getSelectedLabels(item).labels"
-                  :value="item[valueKey]"
-                  :option="item"
-                >
-                  <div v-bind="selectedLabelTextAttrs">
-                    {{ item[props.labelKey] }}
+                <div v-bind="listFooterAttrs">
+                  <div v-bind="listFooterCounterAttrs">
+                    <span
+                      v-if="hiddenSelectedOptionsCount"
+                      :title="selectedOptionsLabel.hidden"
+                      v-bind="counterAttrs"
+                      v-text="hiddenSelectedOptionsCount"
+                    />
+                    <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
                   </div>
 
-                  <UIcon
-                    v-if="!disabled"
-                    internal
-                    interactive
+                  <ULink
+                    v-if="clearable && !disabled"
+                    :label="currentLocale.clear"
+                    :size="size"
                     color="neutral"
-                    :name="config.defaults.listClearIcon"
-                    :data-test="getDataTest('clear-item')"
-                    v-bind="listClearIconAttrs"
-                    @mousedown.prevent.capture
+                    :underlined="false"
+                    v-bind="listClearAllAttrs"
+                    :data-test="getDataTest('clear-all')"
+                    @mousedown.prevent.capture="onMouseDownClear"
                     @click.prevent.capture
-                    @mousedown="onMouseDownClearItem($event, item)"
                   />
-                </slot>
-              </div>
-
-              <div v-bind="listFooterAttrs">
-                <div v-bind="listFooterCounterAttrs">
-                  <span
-                    v-if="isMultipleListVariant && getSelectedLabels().counter"
-                    :title="getFullLabels(selectedOptions)"
-                    v-bind="counterAttrs"
-                  >
-                    {{ getSelectedLabels().counter }}
-                  </span>
-                  <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
                 </div>
-                <ULink
-                  v-if="clearable && !disabled"
-                  :label="currentLocale.clear"
-                  :size="size"
-                  color="neutral"
-                  :underlined="false"
-                  v-bind="listClearAllAttrs"
-                  :data-test="getDataTest('clear-all')"
-                  @mousedown.prevent.capture="onMouseDownClear"
-                  @click.prevent.capture
-                />
-              </div>
-            </template>
-          </div>
+              </template>
+            </div>
+          </slot>
         </template>
       </div>
 
