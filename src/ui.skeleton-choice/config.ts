@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "",
+    base: "w-fit",
     variants: {
       labelAlign: {
         left: "flex items-center",
@@ -33,19 +33,19 @@ export default /*tw*/ {
   label: {
     base: "{USkeleton} w-25 rounded-small",
     compoundVariants: [
-      { labelAlign: "left", size: "sm", class: "h-3.5" },
-      { labelAlign: "left", size: "md", class: "h-4" },
-      { labelAlign: "left", size: "lg", class: "h-4.5" },
-      { labelAlign: "right", size: "sm", class: "h-3.5" },
-      { labelAlign: "right", size: "md", class: "h-4" },
-      { labelAlign: "right", size: "lg", class: "h-4.5" },
+      { labelAlign: "left", size: "sm", class: "h-3" },
+      { labelAlign: "left", size: "md", class: "h-3.5" },
+      { labelAlign: "left", size: "lg", class: "h-4" },
+      { labelAlign: "right", size: "sm", class: "h-3" },
+      { labelAlign: "right", size: "md", class: "h-3.5" },
+      { labelAlign: "right", size: "lg", class: "h-4" },
     ],
   },
   defaults: {
     type: "radio",
     variant: "default",
     labelAlign: "left",
-    size: "lg",
+    size: "md",
     label: true,
   },
 };

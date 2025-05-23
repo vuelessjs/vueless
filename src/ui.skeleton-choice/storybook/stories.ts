@@ -28,7 +28,7 @@ const DefaultTemplate: StoryFn<SkeletonChoiceArgs> = (args: SkeletonChoiceArgs) 
     return { args };
   },
   template: `
-    <USkeletonChoice v-bind="args" class="!max-w-96" />
+    <USkeletonChoice v-bind="args" />
   `,
 });
 
@@ -82,7 +82,7 @@ export const LabelSlot: StoryFn<SkeletonChoiceArgs> = (args) => ({
   template: `
     <USkeletonChoice v-bind="args">
       <template #label>
-        <UCol gap="2xs"s>
+        <UCol gap="2xs">
           <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
           <USkeleton class="h-1.5 rounded-small" variant="dark" />
         </UCol>
