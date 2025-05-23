@@ -131,7 +131,7 @@ const isMultipleBadgeVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badge,
 );
 
-const localValue = computed(() => {
+const localValue = computed<Option | Option[]>(() => {
   if (!props.multiple) {
     const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
 
@@ -139,11 +139,21 @@ const localValue = computed(() => {
   }
 
   return props.modelValue && Array.isArray(props.modelValue)
-    ? props.modelValue.map((value) =>
-        getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
-      )
+    ? (props.modelValue
+        .map((value) => getCurrentOption(props.options, value, props.valueKey, props.groupValueKey))
+        .filter(Boolean) as Option[])
     : [];
 });
+
+const selectedLabel = computed(() =>
+  !props.multiple && localValue.value && !Array.isArray(localValue.value)
+    ? localValue.value
+    : undefined,
+);
+
+const selectedOptions = computed<Option[]>(() =>
+  props.multiple && Array.isArray(localValue.value) ? localValue.value : [],
+);
 
 const visibleSelectedOptions = computed(() => {
   if (!props.multiple || !Array.isArray(localValue.value)) {
@@ -189,7 +199,7 @@ function onListboxInteraction(event: MouseEvent) {
   event.preventDefault();
 }
 
-function getFullOptionLabels(value: Option | Option[]) {
+function getFullLabels(value: Option | Option[]) {
   const labelKey = props.labelKey;
 
   if (Array.isArray(value)) {
@@ -199,19 +209,19 @@ function getFullOptionLabels(value: Option | Option[]) {
   return "";
 }
 
-function getOptionLabel(option?: Option | Option[]): { labelsArray: string[]; counter: string } {
+function getSelectedLabels(option?: Option | Option[]): { labels: string[]; counter: string } {
   const sourceOptions = option ?? localValue.value;
 
   const optionsArray = Array.isArray(sourceOptions) ? sourceOptions : [sourceOptions];
 
-  const labelsArray = optionsArray
+  const labels = optionsArray
     .slice(0, props.labelDisplayCount)
     .map((item) => String(item?.[props.labelKey] ?? ""));
 
   const remainingCount = optionsArray.length - props.labelDisplayCount;
-  const counter = remainingCount > 0 ? `, +${remainingCount}` : "";
+  const counter = remainingCount > 0 ? `+${remainingCount}` : "";
 
-  return { labelsArray, counter };
+  return { labels, counter };
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -430,6 +440,7 @@ const {
   clearAttrs,
   listClearAllAttrs,
   listFooterAttrs,
+  listFooterCounterAttrs,
   placeholderAttrs,
   listAddMoreAttrs,
   selectedLabelsAttrs,
@@ -586,12 +597,12 @@ const {
             -->
             <slot
               name="selected-label"
-              :selected-label="String(getOptionLabel().labelsArray)"
-              :value="(localValue as Option)[valueKey]"
+              :selected-label="selectedLabel?.[props.labelKey]"
+              :value="selectedLabel?.[props.valueKey]"
               :option="localValue"
             >
-              <div :title="String(getOptionLabel().labelsArray)" v-bind="selectedLabelAttrs">
-                {{ String(getOptionLabel().labelsArray) }}
+              <div :title="String(selectedLabel?.[props.labelKey])" v-bind="selectedLabelAttrs">
+                {{ selectedLabel?.[props.labelKey] }}
               </div>
             </slot>
           </span>
@@ -605,17 +616,26 @@ const {
             -->
             <slot
               name="selected-label"
-              :selected-label="getOptionLabel()"
-              :value="(localValue as Option)[valueKey]"
-              :option="localValue"
+              :selected-label="getSelectedLabels()"
+              :value="selectedOptions.map((option) => option[valueKey])"
+              :option="selectedOptions"
             >
               <div
                 v-if="isMultipleInlineVariant"
-                :title="getFullOptionLabels(localValue)"
+                :title="getFullLabels(selectedOptions)"
                 v-bind="selectedLabelAttrs"
               >
-                {{ getOptionLabel().labelsArray.join(", ") }}
+                {{ getSelectedLabels().labels.join(", ") }}
               </div>
+
+              <span
+                v-if="isMultipleInlineVariant"
+                :title="getFullLabels(selectedOptions)"
+                v-bind="counterAttrs"
+              >
+                &nbsp;
+                {{ getSelectedLabels().counter }}
+              </span>
             </slot>
 
             <template v-if="isMultipleBadgeVariant">
@@ -632,13 +652,13 @@ const {
                 -->
                 <slot
                   name="selected-label"
-                  :selected-label="getOptionLabel(item)"
+                  :selected-label="getSelectedLabels(item).labels"
                   :value="item[valueKey]"
                   :option="item"
                 >
                   <UBadge
-                    :label="String(getOptionLabel(item))"
-                    :title="String(getOptionLabel(item))"
+                    :label="String(getSelectedLabels(item).labels)"
+                    :title="String(getSelectedLabels(item).labels)"
                     :size="size"
                     variant="subtle"
                     v-bind="badgeLabelAttrs"
@@ -662,13 +682,22 @@ const {
                   </UBadge>
                 </slot>
               </div>
+
+              <UBadge
+                v-if="isMultipleBadgeVariant && getSelectedLabels().counter"
+                :title="getFullLabels(selectedOptions)"
+                :label="getSelectedLabels().counter"
+                :size="size"
+                variant="subtle"
+                v-bind="badgeLabelAttrs"
+              />
             </template>
 
             <template v-if="isMultipleListVariant">
               <div
                 v-for="item in visibleSelectedOptions"
                 :key="String(item[valueKey])"
-                :title="String(getOptionLabel(item))"
+                :title="String(getSelectedLabels(item).labels)"
                 v-bind="selectedLabelAttrs"
               >
                 <!--
@@ -679,7 +708,7 @@ const {
                 -->
                 <slot
                   name="selected-label"
-                  :selected-label="getOptionLabel(item)"
+                  :selected-label="getSelectedLabels(item).labels"
                   :value="item[valueKey]"
                   :option="item"
                 >
@@ -703,7 +732,16 @@ const {
               </div>
 
               <div v-bind="listFooterAttrs">
-                <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
+                <div v-bind="listFooterCounterAttrs">
+                  <span
+                    v-if="isMultipleListVariant && getSelectedLabels().counter"
+                    :title="getFullLabels(selectedOptions)"
+                    v-bind="counterAttrs"
+                  >
+                    {{ getSelectedLabels().counter }}
+                  </span>
+                  <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
+                </div>
                 <ULink
                   v-if="clearable && !disabled"
                   :label="currentLocale.clear"
@@ -717,8 +755,6 @@ const {
                 />
               </div>
             </template>
-
-            <span v-bind="counterAttrs">{{ getOptionLabel().counter }} </span>
           </div>
         </template>
       </div>

@@ -77,6 +77,7 @@ export default /*tw*/ {
   },
   listClearIcon: "{UIcon} {>selectIcon}",
   listFooter: "flex items-center justify-between w-full mt-2.5",
+  listFooterCounter: "flex gap-1 items-center",
   listAddMore: "{>placeholder}",
   listClearAll: "{ULink}",
   selectIcon: {
