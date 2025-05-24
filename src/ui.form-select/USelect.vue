@@ -56,13 +56,13 @@ const emit = defineEmits([
   "searchChange",
 
   /**
-   * Triggers when option is removed.
+   * Triggers when the option is removed.
    * @property {string} option
    */
   "remove",
 
   /**
-   * Triggers when option is selected.
+   * Triggers when an option is selected.
    * @property {string} value
    * @property {number} value
    * @property {Option} value
@@ -76,6 +76,10 @@ const emit = defineEmits([
 
   /**
    * Triggers when the user commits the change to options or selected value explicitly.
+   * @property {string} value
+   * @property {number} value
+   * @property {Option} value
+   * @property {Option[]} options
    */
   "change",
 ]);
@@ -168,9 +172,7 @@ const selectedOptionsLabel = computed(() => {
 });
 
 const hiddenSelectedOptionsCount = computed(() => {
-  const count = selectedOptions.value.hidden.length;
-
-  return count > 0 ? `+${count}` : "";
+  return selectedOptions.value.hidden.length;
 });
 
 const isLocalValue = computed(() => {
@@ -187,17 +189,19 @@ const isLocalValue = computed(() => {
   return !!String(value);
 });
 
+watch(localValue, setLabelPosition, { deep: true });
+
+onMounted(() => {
+  setLabelPosition();
+
+  if (props.addOption) {
+    document.addEventListener("keydown", onKeydownAddOption);
+  }
+});
+
 function onSearchChange(query: string) {
   emit("searchChange", query);
 }
-
-watch(localValue, setLabelPosition, { deep: true });
-
-if (props.addOption) {
-  document.addEventListener("keydown", onKeydownAddOption);
-}
-
-onMounted(setLabelPosition);
 
 function onListboxInteraction(event: MouseEvent) {
   const target = event.target as HTMLElement;
@@ -236,7 +240,9 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) return;
+  if (!isOpen.value || props.disabled) {
+    return;
+  }
 
   if (props.searchable) wrapperRef.value?.blur();
 
@@ -246,7 +252,9 @@ function deactivate() {
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) return;
+  if (isOpen.value || props.disabled) {
+    return;
+  }
 
   adjustPosition();
 
@@ -491,18 +499,12 @@ const {
       </div>
 
       <div
-        v-if="
-          hasSlotContent($slots['after-toggle'], { option: localValue }) &&
-          (!multiple || !isLocalValue)
-        "
+        v-if="hasSlotContent($slots['after-toggle']) && (!multiple || !isLocalValue)"
         v-bind="afterToggleAttrs"
         :tabindex="-1"
       >
-        <!--
-          @slot Use it to add something after toggle.
-          @binding {object} option
-        -->
-        <slot :option="localValue" name="after-toggle" />
+        <!-- @slot Use it to add something after toggle. -->
+        <slot name="after-toggle" />
       </div>
 
       <div
@@ -553,17 +555,11 @@ const {
       </div>
 
       <div
-        v-if="
-          hasSlotContent($slots['before-toggle'], { option: localValue }) &&
-          (!multiple || !isLocalValue)
-        "
+        v-if="hasSlotContent($slots['before-toggle']) && (!multiple || !isLocalValue)"
         v-bind="beforeToggleAttrs"
       >
-        <!--
-          @slot Use it to add something before toggle.
-          @binding {object} option
-        -->
-        <slot :option="localValue" name="before-toggle" />
+        <!-- @slot Use it to add something before toggle. -->
+        <slot name="before-toggle" />
       </div>
 
       <div ref="innerWrapper" v-bind="innerWrapperAttrs">
@@ -624,12 +620,17 @@ const {
                   </template>
                 </div>
 
-                <span
-                  v-if="hiddenSelectedOptionsCount"
-                  v-bind="counterAttrs"
-                  v-text="`&nbsp;${hiddenSelectedOptionsCount}`"
-                >
-                </span>
+                <!--
+                  @slot Use it to customize selected options counter.
+                  @binding {number} count
+                -->
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                  <span
+                    v-if="hiddenSelectedOptionsCount"
+                    v-bind="counterAttrs"
+                    v-text="`&nbsp;+${hiddenSelectedOptionsCount}`"
+                  />
+                </slot>
               </template>
 
               <template v-if="isMultipleBadgeVariant">
@@ -676,14 +677,20 @@ const {
                   </slot>
                 </div>
 
-                <UBadge
-                  v-if="hiddenSelectedOptionsCount"
-                  :label="hiddenSelectedOptionsCount"
-                  :title="selectedOptionsLabel.hidden"
-                  :size="size"
-                  variant="subtle"
-                  v-bind="badgeLabelAttrs"
-                />
+                <!--
+                  @slot Use it to customize selected options counter.
+                  @binding {number} count
+                -->
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                  <UBadge
+                    v-if="hiddenSelectedOptionsCount"
+                    :label="`+${hiddenSelectedOptionsCount}`"
+                    :title="selectedOptionsLabel.hidden"
+                    :size="size"
+                    variant="subtle"
+                    v-bind="badgeLabelAttrs"
+                  />
+                </slot>
               </template>
 
               <template v-if="isMultipleListVariant">
@@ -726,12 +733,18 @@ const {
 
                 <div v-bind="listFooterAttrs">
                   <div v-bind="listFooterCounterAttrs">
-                    <span
-                      v-if="hiddenSelectedOptionsCount"
-                      :title="selectedOptionsLabel.hidden"
-                      v-bind="counterAttrs"
-                      v-text="hiddenSelectedOptionsCount"
-                    />
+                    <!--
+                      @slot Use it to customize selected options counter.
+                      @binding {number} count
+                    -->
+                    <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                      <span
+                        v-if="hiddenSelectedOptionsCount"
+                        :title="selectedOptionsLabel.hidden"
+                        v-bind="counterAttrs"
+                        v-text="`+${hiddenSelectedOptionsCount}`"
+                      />
+                    </slot>
                     <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
                   </div>
 
