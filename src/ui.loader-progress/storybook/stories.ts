@@ -1,11 +1,10 @@
 import { ref } from "vue";
-import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import { useLoaderProgress } from "../useLoaderProgress.ts";
 import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.ts";
@@ -56,17 +55,15 @@ const DefaultTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
-  args: ULoaderProgressArgs,
-  { argTypes },
-) => ({
-  components: { ULoaderProgress, UButton, UCol, URow, UBadge },
+const EnumTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs, { argTypes }) => ({
+  components: { ULoaderProgress, UButton, UCol, URow },
   setup() {
     return {
       args,
+      argTypes,
+      getArgs,
       loaderProgressOff,
       loaderProgressOn,
-      options: argTypes?.[args.enum]?.options,
     };
   },
   template: `
@@ -76,23 +73,13 @@ const EnumVariantTemplate: StoryFn<ULoaderProgressArgs> = (
         <UButton label="Off" size="sm" @click="loaderProgressOff('https://api.publicapis.org/images')" />
       </URow>
 
-      <URow
-        align="center"
-        v-for="(option, index) in options"
-        :key="index"
-      >
-        <UBadge
-          :label="option"
-          :[args.enum]="args.enum !== 'size' ? option : undefined"
-        />
-        <ULoaderProgress
-          resources="https://api.publicapis.org/images"
-          class="static"
-          :[args.enum]="option"
-          v-bind="args"
-        />
-      </URow>
-
+      <ULoaderProgress
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        resources="https://api.publicapis.org/images"
+        class="static"
+      />
     </UCol>
   `,
 });
@@ -119,10 +106,10 @@ const LoadingTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const Loading = LoadingTemplate.bind({});
