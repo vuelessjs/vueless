@@ -1,5 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -55,11 +56,7 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
   args: DefaultUDatePickerRangeArgs,
 ) => ({
   components: { UDatePickerRange, UIcon, UButton },
-  setup() {
-    const slots = getSlotNames(COMPONENT_NAME);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
     <UDatePickerRange open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -71,27 +68,19 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
+const EnumTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
   args: EnumUDatePickerRangeArgs,
   { argTypes },
 ) => ({
   components: { UDatePickerRange, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UDatePickerRange
-        v-for="(option, index) in options"
-        :key="index"
-        open-direction-y="bottom"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :placeholder="option"
         class="w-full"
       />
     </UCol>
@@ -165,21 +154,23 @@ Error.args = { variant: "input", error: "Please select a valid date." };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", placeholder: "{enumValue}" };
 
-export const LabelAlign = EnumVariantTemplate.bind({});
+export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   variant: "input",
   enum: "labelAlign",
   modelValue: { from: null, to: null },
+  placeholder: "{enumValue}",
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
   variant: "input",
   enum: "size",
   modelValue: { from: null, to: null },
+  placeholder: "{enumValue}",
 };
 
 export const OpenDirection = OpenDirectionTemplate.bind({});
