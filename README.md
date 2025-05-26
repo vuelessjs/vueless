@@ -10,7 +10,7 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 
 [Documentation](https://docs.vueless.com/) | [UI Components](https://ui.vueless.com/) | [Website](http://vueless.com/)
 
-## Key features
+### Key features
 
 - 65+ UI components (including range date picker, multi-selects, and nested table)
 - Built-in Storybook support
@@ -27,7 +27,7 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 - 1000+ built-in SVG icons
 - Full TypeScript support with type safety
 
-## Advance features
+### Advance features
 
 - Copy and extend existing components
 - Create your own components
