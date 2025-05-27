@@ -20,7 +20,7 @@ import { getCurrentOption } from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
 
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
 import type { Props, Config } from "./types.ts";
@@ -85,7 +85,6 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { tm, locale } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
@@ -98,11 +97,7 @@ const innerWrapperRef = useTemplateRef<HTMLDivElement>("innerWrapper");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

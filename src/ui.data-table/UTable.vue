@@ -21,12 +21,12 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
-import { useLocale } from "../composables/useLocale.ts";
-import { PX_IN_REM } from "../constants.js";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import defaultConfig from "./config.ts";
 import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable.ts";
 
+import { PX_IN_REM } from "../constants.js";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { ComputedRef } from "vue";
@@ -98,7 +98,6 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { tm, locale } = useLocale();
 
 const selectAll = ref(false);
 const canSelectAll = ref(true);
@@ -115,11 +114,7 @@ const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
 const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
 const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

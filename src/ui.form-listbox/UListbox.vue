@@ -12,7 +12,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
 import usePointer from "./usePointer.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import { filterOptions, filterGroups } from "./utilListbox.ts";
 import defaultConfig from "./config.ts";
@@ -63,13 +63,7 @@ const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, poin
 
 const elementId = props.id || useId();
 
-const { tm, locale } = useLocale();
-
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

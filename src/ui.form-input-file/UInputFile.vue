@@ -21,7 +21,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -52,8 +52,6 @@ const emit = defineEmits([
   "error",
 ]);
 
-const { tm, locale } = useLocale();
-
 const dropZoneRef = useTemplateRef<HTMLDivElement>("dropZone");
 const fileInputRef = useTemplateRef<HTMLInputElement>("fileInput");
 
@@ -61,11 +59,7 @@ const localError = ref("");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

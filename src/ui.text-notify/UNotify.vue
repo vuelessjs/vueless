@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults, vuelessConfig } from "../utils/ui.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
@@ -21,18 +21,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const notificationRef = useTemplateRef<HTMLDivElement>("notification");
 
-const { tm, locale } = useLocale();
-
 const notifications = ref<Notification[]>([]);
 const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

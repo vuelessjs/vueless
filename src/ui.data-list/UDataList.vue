@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef, ref, watch } from "vue";
+import { computed, useTemplateRef } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
@@ -12,7 +12,7 @@ import UEmpty from "../ui.text-empty/UEmpty.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
@@ -31,15 +31,9 @@ const emit = defineEmits([
   "dragSort",
 ]);
 
-const { tm, locale } = useLocale();
-
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),

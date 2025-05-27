@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId, useTemplateRef, watch } from "vue";
+import { computed, useId, useTemplateRef } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -10,7 +10,7 @@ import ULabel from "../ui.form-label/ULabel.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -30,15 +30,9 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { tm, locale } = useLocale();
-
 const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(locale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
+const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
 
 const currentLocale = computed(() =>
   merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
