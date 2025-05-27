@@ -1,5 +1,5 @@
 import { merge } from "lodash-es";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useLocale as useGlobalLocale } from "../composables/useLocale.ts";
 
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
@@ -11,12 +11,16 @@ import defaultConfig from "./config.ts";
 import type { Locale, Props } from "./types.ts";
 
 export function useLocale(props: Props<unknown>) {
-  const { tm } = useGlobalLocale();
+  const { tm, locale: globalLocale } = useGlobalLocale();
 
-  const i18nGlobal = tm<Locale>(COMPONENT_NAME);
+  const i18nGlobal = ref(tm<Locale>(COMPONENT_NAME));
+
+  watch(globalLocale, () => {
+    i18nGlobal.value = tm<Locale>(COMPONENT_NAME);
+  });
 
   const currentLocale = computed(() =>
-    merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+    merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
   );
 
   const locale = computed(() => {
@@ -40,12 +44,14 @@ export function useLocale(props: Props<unknown>) {
     const { months, weekdays } = currentLocale.value;
 
     const monthsLonghand =
-      Boolean(props.config?.i18n?.months?.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+      Boolean(props.config?.i18n?.months?.userFormat) ||
+      Boolean(i18nGlobal.value?.months?.userFormat)
         ? months.userFormat
         : months.longhand;
 
     const weekdaysLonghand =
-      Boolean(props.config?.i18n?.weekdays?.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+      Boolean(props.config?.i18n?.weekdays?.userFormat) ||
+      Boolean(i18nGlobal.value?.weekdays?.userFormat)
         ? weekdays.userFormat
         : weekdays.longhand;
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId, useTemplateRef } from "vue";
+import { computed, ref, useId, useTemplateRef, watch } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -30,12 +30,19 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
 const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n));
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
+const currentLocale = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
+);
 
 const checkedValue = computed({
   get: () => props.modelValue,

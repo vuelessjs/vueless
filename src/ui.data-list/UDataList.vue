@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, useTemplateRef, ref, watch } from "vue";
 import draggable from "vuedraggable";
 import { merge } from "lodash-es";
 
@@ -31,12 +31,19 @@ const emit = defineEmits([
   "dragSort",
 ]);
 
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
+const currentLocale = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+);
 
 function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);

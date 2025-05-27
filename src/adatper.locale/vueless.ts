@@ -148,19 +148,19 @@ export function getNestedValue<T, K = unknown>(
     return obj === undefined ? fallback : (obj as unknown as K);
   }
 
-  const unknownObject = obj as Record<string | number, unknown>;
-
   for (let i = 0; i < last; i++) {
     if (obj == null) {
       return fallback;
     }
 
-    obj = unknownObject[path[i]] as T;
+    obj = (obj as Record<string | number, unknown>)[path[i]] as T;
   }
 
   if (obj == null) {
     return fallback;
   }
+
+  const unknownObject = obj as Record<string | number, unknown>;
 
   return (unknownObject[path[last]] === undefined ? fallback : unknownObject[path[last]]) as K;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -41,7 +41,7 @@ const emit = defineEmits([
   "close",
 ]);
 
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
 const confirmModalRef = useTemplateRef<InstanceType<typeof UModal>>("confirmModal");
 
@@ -54,9 +54,14 @@ const isShownModal = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const i18nGlobal = tm(COMPONENT_NAME);
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
 const currentLocale = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal, props?.config?.i18n),
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props?.config?.i18n),
 );
 
 function closeModal() {

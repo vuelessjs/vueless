@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends string | Date">
-import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
+import { computed, nextTick, ref, useId, useTemplateRef, watch, watchEffect } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -53,9 +53,13 @@ const emit = defineEmits([
   "input",
 ]);
 
-const { tm } = useLocale();
+const { tm, locale: globalLocale } = useLocale();
 
-const i18nGlobal = tm(COMPONENT_NAME);
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(globalLocale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
 
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
@@ -83,7 +87,7 @@ const localValue = computed({
 });
 
 const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n),
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
 );
 
 const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));

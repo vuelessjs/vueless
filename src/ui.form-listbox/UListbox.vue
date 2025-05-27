@@ -63,10 +63,17 @@ const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, poin
 
 const elementId = props.id || useId();
 
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
+const currentLocale = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+);
 
 const selectedValue = computed({
   get: () => {

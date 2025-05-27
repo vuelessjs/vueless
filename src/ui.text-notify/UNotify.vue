@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -21,15 +21,22 @@ const props = withDefaults(defineProps<Props>(), {
 
 const notificationRef = useTemplateRef<HTMLDivElement>("notification");
 
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
 const notifications = ref<Notification[]>([]);
 const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
+const currentLocale = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+);
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });

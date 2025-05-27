@@ -98,7 +98,7 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { tm } = useLocale();
+const { tm, locale } = useLocale();
 
 const selectAll = ref(false);
 const canSelectAll = ref(true);
@@ -115,8 +115,15 @@ const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
 const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
 const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const i18nGlobal = ref(tm(COMPONENT_NAME));
+
+watch(locale, () => {
+  i18nGlobal.value = tm(COMPONENT_NAME);
+});
+
+const currentLocale = computed(() =>
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+);
 
 const localSelectedRows = ref<Row[]>([]);
 const localExpandedRows = ref<RowId[]>([]);

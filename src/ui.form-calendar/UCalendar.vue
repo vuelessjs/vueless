@@ -91,7 +91,7 @@ const emit = defineEmits([
   "userDateChange",
 ]);
 
-const { tm } = useLocale();
+const { tm, locale: globalLocale } = useLocale();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
@@ -126,10 +126,14 @@ const isCurrentView = computed(() => ({
   year: currentView.value === View.Year,
 }));
 
-const i18nGlobal = tm<DefaultLocale>(COMPONENT_NAME);
+const i18nGlobal = ref<Partial<DefaultLocale>>(tm<DefaultLocale>(COMPONENT_NAME));
+
+watch(globalLocale, () => {
+  i18nGlobal.value = tm<DefaultLocale>(COMPONENT_NAME);
+});
 
 const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
 );
 
 const locale = computed(() => {
@@ -167,12 +171,13 @@ const userFormatLocale = computed(() => {
   const { months, weekdays } = currentLocale.value;
 
   const monthsLonghand =
-    Boolean(currentLocale.value.months.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
+    Boolean(currentLocale.value.months.userFormat) || Boolean(i18nGlobal.value?.months?.userFormat)
       ? months.userFormat
       : months.longhand;
 
   const weekdaysLonghand =
-    Boolean(currentLocale.value.weekdays.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
+    Boolean(currentLocale.value.weekdays.userFormat) ||
+    Boolean(i18nGlobal.value?.weekdays?.userFormat)
       ? weekdays.userFormat
       : weekdays.longhand;
 
