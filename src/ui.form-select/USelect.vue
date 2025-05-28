@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId, useTemplateRef } from "vue";
-import { merge } from "lodash-es";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -15,12 +14,11 @@ import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
-
 import { getCurrentOption } from "./utilSelect.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
-
-import { useLocale } from "../composables/useLocale.ts";
 
 import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
 import type { Props, Config } from "./types.ts";
@@ -85,7 +83,6 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { tm } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
@@ -98,8 +95,11 @@ const innerWrapperRef = useTemplateRef<HTMLDivElement>("innerWrapper");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
@@ -746,12 +746,12 @@ const {
                         v-text="`+${hiddenSelectedOptionsCount}`"
                       />
                     </slot>
-                    <div v-bind="listAddMoreAttrs" v-text="currentLocale.addMore" />
+                    <div v-bind="listAddMoreAttrs" v-text="localeMessages.addMore" />
                   </div>
 
                   <ULink
                     v-if="clearable && !disabled"
-                    :label="currentLocale.clear"
+                    :label="localeMessages.clear"
                     :size="size"
                     color="neutral"
                     :underlined="false"

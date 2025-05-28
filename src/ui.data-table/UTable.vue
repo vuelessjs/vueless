@@ -10,7 +10,7 @@ import {
   onBeforeUnmount,
   useTemplateRef,
 } from "vue";
-import { merge, isEqual } from "lodash-es";
+import { isEqual } from "lodash-es";
 
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
@@ -21,12 +21,12 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
-import { useLocale } from "../composables/useLocale.ts";
-import { PX_IN_REM } from "../constants.js";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import defaultConfig from "./config.ts";
 import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable.ts";
 
+import { PX_IN_REM } from "../constants.js";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import type { ComputedRef } from "vue";
@@ -98,7 +98,6 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
-const { tm } = useLocale();
 
 const selectAll = ref(false);
 const canSelectAll = ref(true);
@@ -115,8 +114,11 @@ const stickyHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-header-row");
 const stickyActionHeaderRowRef = useTemplateRef<HTMLDivElement>("sticky-action-header-row");
 const actionHeaderRowRef = useTemplateRef<HTMLDivElement>("action-header-row");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const localSelectedRows = ref<Row[]>([]);
 const localExpandedRows = ref<RowId[]>([]);
@@ -830,7 +832,7 @@ const {
               <slot name="empty-state">
                 <UEmpty
                   size="md"
-                  :description="currentLocale.noData"
+                  :description="localeMessages.noData"
                   v-bind="bodyEmptyStateAttrs"
                   :data-test="getDataTest('empty')"
                 />

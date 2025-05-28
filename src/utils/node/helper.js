@@ -70,7 +70,6 @@ export function getNuxtDirs() {
     path.join(cwd(), "Error.vue"),
     path.join(cwd(), "app.vue"),
     path.join(cwd(), "error.vue"),
-    path.join(cwd(), "playground", "app.vue"),
   ];
 }
 
