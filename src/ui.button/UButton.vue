@@ -67,8 +67,15 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  buttonAttrs,
+  loaderAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  centerIconAttrs,
+  invisibleAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -131,7 +138,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
     <div
       v-if="(!label && !hasSlotContent(slots['default']) && !icon) || loading"
       tabindex="-1"
-      class="invisible w-0"
+      v-bind="invisibleAttrs"
       v-text="'invisible'"
     />
   </component>

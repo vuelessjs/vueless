@@ -98,6 +98,7 @@ export default /*tw*/ {
       },
     },
   },
+  invisible: "invisible w-0",
   defaults: {
     color: "primary",
     variant: "solid",
