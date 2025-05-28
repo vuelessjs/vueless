@@ -137,6 +137,21 @@ export interface ThemeConfig {
 
 export interface Config extends ThemeConfig {
   /**
+   * Array of colors to use as primary and neutral colors.
+   * If set, a full color palette for each color will be safelisted.
+   * If not set, will disable runtime color changing.
+   *
+   */
+  runtimeColors?: (PrimaryColors | NeutralColors)[];
+
+  /**
+   * Array of colors to show in component color props.
+   * If set, only defined colors will be available in component color props.
+   * If not set, will use default Vueless state colors.
+   */
+  colors?: StateColors[];
+
+  /**
    * Removes default component styles (keeps only custom config, removes all default classes).
    */
   unstyled?: boolean;
@@ -170,6 +185,18 @@ export type UnknownArray = unknown[];
 export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 
 export type ComponentNames = keyof Components & string; // keys union
+
+export type StateColors =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "warning"
+  | "success"
+  | "info"
+  | "notice"
+  | "neutral"
+  | "grayscale"
+  | string;
 
 export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
 export type PrimaryColors =

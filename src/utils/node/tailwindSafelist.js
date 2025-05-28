@@ -19,6 +19,8 @@ import {
   VUELESS_TAILWIND_SAFELIST,
   DEFAULT_LIGHT_THEME,
   DEFAULT_DARK_THEME,
+  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_NEUTRAL_COLOR,
 } from "../../constants.js";
 
 /**
@@ -68,14 +70,30 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
     srcDir,
   });
 
-  /* Safelist all color variables to allow runtime color switching feature. */
-  let colorCSSVariables = [];
+  /* Safelist all color shades to allow runtime color switching feature. */
+  let runtimeColorCSSVariables = [];
 
-  if (isStorybookEnv || isInternalEnv) {
-    const colorVariables = [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
+  if (isStorybookEnv || isInternalEnv || vuelessConfig.runtimeColors?.length) {
+    const colors = vuelessConfig.runtimeColors?.length
+      ? vuelessConfig.runtimeColors
+      : [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
 
-    colorCSSVariables = COLOR_SHADES.map((shade) => {
-      return colorVariables.map((color) => `--color-${color}-${shade}`).join("\n");
+    runtimeColorCSSVariables = COLOR_SHADES.map((shade) => {
+      return colors.map((color) => `--color-${color}-${shade}`).join("\n");
+    });
+  }
+
+  /* Safelist primary and neutral color variables. */
+  let brandColorCSSVariables = [];
+
+  if (!isInternalEnv) {
+    const colors = [
+      vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR,
+      vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR,
+    ];
+
+    brandColorCSSVariables = COLOR_SHADES.map((shade) => {
+      return colors.map((color) => `--color-${color}-${shade}`).join("\n");
     });
   }
 
@@ -88,7 +106,14 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
     ...Object.values(darkThemeConfig).map((value) => value),
   ];
 
-  const safelist = [...new Set([...classes, ...colorCSSVariables, ...themeCSSVariables])];
+  const safelist = [
+    ...new Set([
+      ...classes,
+      ...themeCSSVariables,
+      ...brandColorCSSVariables,
+      ...runtimeColorCSSVariables,
+    ]),
+  ];
   const safelistPath = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
 
   await writeFile(safelistPath, safelist.join("\n"));
