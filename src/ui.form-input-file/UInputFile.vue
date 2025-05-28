@@ -9,19 +9,17 @@ import {
   useId,
   useTemplateRef,
 } from "vue";
-import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getFileMbSize } from "./utilFileForm.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import UText from "../ui.text-block/UText.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
-
-import { useLocale } from "../composables/useLocale.ts";
 
 import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -52,8 +50,6 @@ const emit = defineEmits([
   "error",
 ]);
 
-const { tm } = useLocale();
-
 const dropZoneRef = useTemplateRef<HTMLDivElement>("dropZone");
 const fileInputRef = useTemplateRef<HTMLInputElement>("fileInput");
 
@@ -61,8 +57,11 @@ const localError = ref("");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const currentFiles = computed<File | File[] | null>({
   get: () => props.modelValue,
@@ -149,13 +148,13 @@ function validate(file: File) {
   const isValidSize = Number(targetFileSize) <= props.maxFileSize;
 
   if (!isValidType) {
-    localError.value = currentLocale.value.formatError;
+    localError.value = localeMessages.value.formatError;
 
     return;
   }
 
   if (!isValidSize && props.maxFileSize) {
-    localError.value = currentLocale.value.sizeError;
+    localError.value = localeMessages.value.sizeError;
 
     return;
   }
@@ -324,7 +323,7 @@ const {
         <!-- @slot Use it to add something before the placeholder. -->
         <slot name="left" />
 
-        <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
+        <span v-if="!isValue" v-bind="placeholderAttrs" v-text="localeMessages.noFile" />
 
         <UFiles
           v-else
@@ -354,7 +353,7 @@ const {
               tag="label"
               variant="soft"
               :right-icon="config.defaults.chooseFileIcon"
-              :label="currentLocale.uploadFile"
+              :label="localeMessages.uploadFile"
               :disabled="disabled"
               v-bind="currentError ? chooseFileButtonErrorAttrs : chooseFileButtonAttrs"
               :data-test="getDataTest('upload')"
