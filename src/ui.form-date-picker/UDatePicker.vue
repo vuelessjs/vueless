@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends string | Date">
-import { computed, nextTick, ref, useId, useTemplateRef, watch, watchEffect } from "vue";
+import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
 import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -14,15 +14,14 @@ import { getDefaults } from "../utils/ui.ts";
 import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
-import { useLocale } from "../composables/useLocale.ts";
 import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
 import { vClickOutside } from "../directives";
 
-import type { ComputedRef } from "vue";
 import type { Props, Config, Locale } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
 import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
@@ -53,14 +52,6 @@ const emit = defineEmits([
   "input",
 ]);
 
-const { tm, locale: globalLocale } = useLocale();
-
-const i18nGlobal = ref(tm(COMPONENT_NAME));
-
-watch(globalLocale, () => {
-  i18nGlobal.value = tm(COMPONENT_NAME);
-});
-
 const isShownCalendar = ref(false);
 const userFormatDate = ref("");
 const formattedDate = ref("");
@@ -86,18 +77,20 @@ const localValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+const { localeMessages } = useComponentLocaleMessages<Locale>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 const clickOutsideOptions = computed(() => ({ ignore: [datepickerInputRef.value?.inputRef] }));
 
 const locale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
+  const { months, weekdays } = localeMessages.value;
 
   // formatted locale
   return {
-    ...currentLocale.value,
+    ...localeMessages.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(months.longhand, LocaleType.Month),

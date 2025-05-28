@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { computed, useId, useTemplateRef } from "vue";
-import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useLocaleTm } from "../composables/useLocaleTm.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -32,10 +31,10 @@ const emit = defineEmits([
 
 const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
-const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
-
-const currentLocale = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 const checkedValue = computed({
@@ -46,7 +45,7 @@ const checkedValue = computed({
 const elementId = props.id || useId();
 
 const switchLabel = computed(() => {
-  return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
+  return checkedValue.value ? localeMessages.value.active : localeMessages.value.inactive;
 });
 
 const iconColor = computed(() => {

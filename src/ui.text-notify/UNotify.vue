@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
-import { merge } from "lodash-es";
+import { onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults, vuelessConfig } from "../utils/ui.ts";
-import { useLocaleTm } from "../composables/useLocaleTm.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
@@ -26,10 +25,10 @@ const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
-const { messages: i18nGlobal } = useLocaleTm(COMPONENT_NAME);
-
-const currentLocale = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config.i18n),
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 onMounted(() => {
@@ -105,7 +104,7 @@ function setPosition() {
 }
 
 function getText(notificationText: string, type: Notification["type"]): string {
-  return notificationText || currentLocale.value[type]?.default;
+  return notificationText || localeMessages.value[type]?.default;
 }
 
 function getBodyAttrs(type: Notification["type"]) {

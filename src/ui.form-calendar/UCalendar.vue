@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
 import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
-import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -18,7 +17,7 @@ import {
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
 
-import { useLocale } from "../composables/useLocale.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import {
   COMPONENT_NAME,
@@ -40,15 +39,13 @@ import {
 import defaultConfig from "./config.ts";
 
 import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
-import type { ComputedRef, Ref } from "vue";
+import type { Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 import type { ComponentExposed } from "../types.ts";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
-
-type DefaultLocale = typeof defaultConfig.i18n;
 
 defineOptions({ inheritAttrs: false });
 
@@ -91,8 +88,6 @@ const emit = defineEmits([
   "userDateChange",
 ]);
 
-const { tm, locale: globalLocale } = useLocale();
-
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
 const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
@@ -126,22 +121,18 @@ const isCurrentView = computed(() => ({
   year: currentView.value === View.Year,
 }));
 
-const i18nGlobal = ref<Partial<DefaultLocale>>(tm<DefaultLocale>(COMPONENT_NAME));
-
-watch(globalLocale, () => {
-  i18nGlobal.value = tm<DefaultLocale>(COMPONENT_NAME);
-});
-
-const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal.value, props.config?.i18n),
+const { localeMessages } = useComponentLocaleMessages<Locale>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 const locale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
+  const { months, weekdays } = localeMessages.value;
 
   // formatted locale
   return {
-    ...currentLocale.value,
+    ...localeMessages.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(months.longhand, LocaleType.Month),
@@ -168,22 +159,19 @@ const actualUserFormat = computed(() => {
 });
 
 const userFormatLocale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
+  const { months, weekdays } = localeMessages.value;
 
-  const monthsLonghand =
-    Boolean(currentLocale.value.months.userFormat) || Boolean(i18nGlobal.value?.months?.userFormat)
-      ? months.userFormat
-      : months.longhand;
+  const monthsLonghand = Boolean(localeMessages.value.months.userFormat)
+    ? months.userFormat
+    : months.longhand;
 
-  const weekdaysLonghand =
-    Boolean(currentLocale.value.weekdays.userFormat) ||
-    Boolean(i18nGlobal.value?.weekdays?.userFormat)
-      ? weekdays.userFormat
-      : weekdays.longhand;
+  const weekdaysLonghand = Boolean(localeMessages.value.weekdays.userFormat)
+    ? weekdays.userFormat
+    : weekdays.longhand;
 
   // formatted locale
   return {
-    ...currentLocale.value,
+    ...localeMessages.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(monthsLonghand, LocaleType.Month),
@@ -901,7 +889,7 @@ const {
     />
 
     <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
-      <span v-bind="timepickerLabelAttrs" v-text="currentLocale.timeLabel" />
+      <span v-bind="timepickerLabelAttrs" v-text="localeMessages.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
         <input
@@ -946,7 +934,7 @@ const {
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >
-        {{ currentLocale.okLabel }}
+        {{ localeMessages.okLabel }}
       </UButton>
     </div>
   </div>
