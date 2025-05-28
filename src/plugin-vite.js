@@ -139,7 +139,7 @@ export const Vueless = function (options = {}) {
 
       if (!isNuxtModuleEnv) {
         /* collect used in project colors for tailwind safelist */
-        await createTailwindSafelist({ env, debug, targetFiles });
+        await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
       }
     },
 
