@@ -129,7 +129,7 @@ export const Vueless = function (options = {}) {
       await cacheMergedConfigs(vuelessSrcDir);
 
       if (isInternalEnv || isStorybookEnv) {
-        await buildWebTypes();
+        await buildWebTypes(vuelessSrcDir);
         await showHiddenStories(vuelessSrcDir);
         await hideHiddenStories(vuelessSrcDir);
         await setCustomPropTypes(vuelessSrcDir);
