@@ -1,8 +1,12 @@
 import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
+import { recursiveRt } from "../adatper.locale/vueless.ts";
+
+import { useLocale } from "./useLocale.ts";
 
 import { COMPONENTS } from "../constants";
-import { useLocale } from "./useLocale.ts";
+
+import type { VueMessageType } from "vue-i18n";
 
 export function useComponentLocaleMessages<TLocale>(
   componentName: keyof typeof COMPONENTS,
@@ -11,10 +15,10 @@ export function useComponentLocaleMessages<TLocale>(
 ) {
   const { tm, locale } = useLocale();
 
-  const globalComponentMassages = ref(tm(componentName));
+  const globalComponentMassages = ref(recursiveRt(tm(componentName) as VueMessageType));
 
   watch(locale, () => {
-    globalComponentMassages.value = tm(componentName);
+    globalComponentMassages.value = recursiveRt(tm(componentName) as VueMessageType);
   });
 
   const localeMessages = computed(
