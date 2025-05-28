@@ -14,16 +14,16 @@ import { createRequire } from "module";
 import { vuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getMergedComponentConfig } from "./helper.js";
 import {
-  INTERNAL_ICONS_LIBRARY,
-  VUELESS_CONFIG_FILE_NAME,
   ICONS_DIR,
-  ICONS_CACHED_DIR,
-  STORYBOOK_ICONS_LIBRARY,
-  ICONS_VUELESS_DIR,
-  NODE_MODULES_DIR,
-  STORYBOOK_ENV,
   INTERNAL_ENV,
+  STORYBOOK_ENV,
+  NODE_MODULES_DIR,
+  ICONS_CACHED_DIR,
+  ICONS_VUELESS_DIR,
+  INTERNAL_ICONS_LIBRARY,
+  STORYBOOK_ICONS_LIBRARY,
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
+  VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
 
 let uIconDefaults = {};
@@ -47,10 +47,12 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
   const jsFiles = targetFiles.map((jsFilePath) => getDirFiles(jsFilePath, ".js", { exclude }));
   const tsFiles = targetFiles.map((tsFilePath) => getDirFiles(tsFilePath, ".ts", { exclude }));
 
+  const vuelessMergedConfigPath = path.join(cwd(), VUELESS_MERGED_CONFIGS_CACHED_DIR);
+  const vuelessMergedConfigFiles = await getDirFiles(vuelessMergedConfigPath, ".json");
+
   const files = [
     ...(await Promise.all([...vueFiles, ...jsFiles, ...tsFiles])).flat(),
-    `${VUELESS_CONFIG_FILE_NAME}.js`,
-    `${VUELESS_CONFIG_FILE_NAME}.ts`,
+    ...vuelessMergedConfigFiles,
   ];
 
   if (isInternalEnv) {
