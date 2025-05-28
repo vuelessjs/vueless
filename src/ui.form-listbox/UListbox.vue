@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
-import { merge, isEqual } from "lodash-es";
+import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
+import { filterOptions, filterGroups } from "./utilListbox.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
@@ -12,9 +14,7 @@ import UDivider from "../ui.container-divider/UDivider.vue";
 import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
 import usePointer from "./usePointer.ts";
-import { useLocale } from "../composables/useLocale.ts";
 
-import { filterOptions, filterGroups } from "./utilListbox.ts";
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
@@ -63,10 +63,11 @@ const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, poin
 
 const elementId = props.id || useId();
 
-const { tm } = useLocale();
-
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const selectedValue = computed({
   get: () => {
@@ -393,7 +394,7 @@ const {
         :id="elementId"
         ref="listbox-input"
         v-model="search"
-        :placeholder="currentLocale.search"
+        :placeholder="localeMessages.search"
         :size="size"
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
@@ -484,7 +485,7 @@ const {
       >
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
-          <span v-bind="optionContentAttrs" v-text="currentLocale.noDataToShow" />
+          <span v-bind="optionContentAttrs" v-text="localeMessages.noDataToShow" />
         </slot>
       </li>
 
@@ -500,7 +501,7 @@ const {
           @mouseenter.self="pointerSet(filteredOptions.length + 1)"
         >
           <span v-bind="addOptionLabelAttrs">
-            {{ currentLocale.add }}
+            {{ localeMessages.add }}
             <span v-bind="addOptionLabelHotkeyAttrs" v-text="addOptionKeyCombination" />
           </span>
         </li>
