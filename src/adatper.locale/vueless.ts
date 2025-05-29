@@ -5,6 +5,7 @@ import en from "./locales/en.ts";
 
 import type { Ref } from "vue";
 import type { UnknownObject } from "../types.ts";
+import type { VueMessageType } from "vue-i18n";
 
 export interface LocaleMessages {
   [key: string]: LocaleMessages | string;
@@ -163,4 +164,32 @@ export function getNestedValue<T, K = unknown>(
   const unknownObject = obj as Record<string | number, unknown>;
 
   return (unknownObject[path[last]] === undefined ? fallback : unknownObject[path[last]]) as K;
+}
+
+export function recursiveRt(obj: VueMessageType): unknown {
+  if (typeof obj !== "object" || obj === null) {
+    return obj;
+  }
+
+  if ("loc" in obj) {
+    return obj.loc!.source;
+  }
+
+  const messages: Record<string, unknown> = {};
+
+  for (const key in obj) {
+    const val = obj[key as keyof typeof obj];
+
+    if (val && typeof val === "object") {
+      if ("loc" in val) {
+        messages[key] = val.loc.source;
+      } else {
+        messages[key] = recursiveRt(val as VueMessageType);
+      }
+    } else {
+      messages[key] = val;
+    }
+  }
+
+  return messages;
 }
