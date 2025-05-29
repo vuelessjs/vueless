@@ -12,7 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import johnDoeImg from "../assets/images/john-doe.png";
+import johnDoeImg from "../../storybook/assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -80,6 +80,16 @@ Src.parameters = {
     description: {
       story:
         "The `src` prop can be used to display an image avatar. You can use a URL or a local image.",
+    },
+    source: {
+      code: `
+import johnDoeImg from "../../storybook/assets/john-doe.png";
+
+<URow>
+  <UAvatar v-bind="args" size="3xl" src="https://i.pravatar.cc/300?img=67" />
+  <UAvatar v-bind="args" size="3xl" :src="johnDoeImg" rounded="full" />
+</URow>
+      `,
     },
   },
 };
