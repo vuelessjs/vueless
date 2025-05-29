@@ -98,6 +98,7 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "id",
     visibleOptions: undefined,
+    debounce: 0,
     optionsLimit: 0,
     searchable: false,
     disabled: false,
