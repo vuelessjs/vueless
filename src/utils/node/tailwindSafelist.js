@@ -26,8 +26,8 @@ import {
 /**
  * Removes the Tailwind CSS safelist file if it exists.
  *
- * This method checks for the presence of a pre-defined safelist file in the
- * project directory. If the file is found, it deletes the file asynchronously.
+ * This method checks for the presence of a pre-defined safelist file in the cache.
+ * If the file is found, it deletes the file asynchronously.
  *
  * @return {Promise<void>} A promise that resolves after the safelist file is removed
  *                         or does nothing if the file does not exist.
@@ -46,7 +46,7 @@ export async function clearTailwindSafelist() {
  *
  * @param {Object} options - The function options.
  * @param {string} options.env - Current environment, used to tailor safelist generation.
- * @param {string} options.srcDir - Source directory path containing `.vue` files.
+ * @param {string} options.srcDir - Source directory path containing files with styles to be included in the safelist.
  * @param {string[]} [options.targetFiles=[]] - Optional array of target file paths to include in the safelist generation.
  * @return {Promise<void>} A promise that resolves when the safelist file is successfully created and written to disk.
  */
@@ -54,57 +54,21 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
   const isStorybookEnv = env === STORYBOOK_ENV;
   const isInternalEnv = env === INTERNAL_ENV;
 
-  /* Safelist CSS classes from all components and their nested components. */
-  let srcVueFiles = [];
-  const vuelessVueFiles = await getDirFiles(srcDir, ".vue");
-
-  if (!isInternalEnv) {
-    const vueFiles = targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue"));
-
-    srcVueFiles = (await Promise.all(vueFiles)).flat();
-  }
-
+  /* Safelist dynamic color classes in components. */
   const classes = await getComponentsSafelistClasses({
-    files: [...srcVueFiles, ...vuelessVueFiles],
     env: { isStorybookEnv, isInternalEnv },
+    targetFiles,
     srcDir,
   });
 
   /* Safelist all color shades to allow runtime color switching feature. */
-  let runtimeColorCSSVariables = [];
-
-  if (isStorybookEnv || isInternalEnv || vuelessConfig.runtimeColors?.length) {
-    const colors = vuelessConfig.runtimeColors?.length
-      ? vuelessConfig.runtimeColors
-      : [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
-
-    runtimeColorCSSVariables = COLOR_SHADES.map((shade) => {
-      return colors.map((color) => `--color-${color}-${shade}`).join("\n");
-    });
-  }
+  const runtimeColorCSSVariables = getRuntimeColorCSSVariables(isStorybookEnv, isInternalEnv);
 
   /* Safelist primary and neutral color variables. */
-  let brandColorCSSVariables = [];
-
-  if (!isInternalEnv) {
-    const colors = [
-      vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR,
-      vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR,
-    ];
-
-    brandColorCSSVariables = COLOR_SHADES.map((shade) => {
-      return colors.map((color) => `--color-${color}-${shade}`).join("\n");
-    });
-  }
+  let brandColorCSSVariables = getBrandColorCSSVariables(isInternalEnv);
 
   /* Safelist all color variables to allow runtime color switching feature. */
-  const lightThemeConfig = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
-  const darkThemeConfig = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
-
-  const themeCSSVariables = [
-    ...Object.values(lightThemeConfig).map((value) => value),
-    ...Object.values(darkThemeConfig).map((value) => value),
-  ];
+  const themeCSSVariables = getThemeCSSVariables();
 
   const safelist = [
     ...new Set([
@@ -114,9 +78,68 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
       ...runtimeColorCSSVariables,
     ]),
   ];
+
   const safelistPath = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
 
+  /* Cache safelist into the file. */
   await writeFile(safelistPath, safelist.join("\n"));
+}
+
+/**
+ * Generates a list of runtime CSS color variables based on the environment
+ * and available configuration.
+ *
+ * @param {boolean} isStorybookEnv - Indicates if the method is executed in a Storybook environment.
+ * @param {boolean} isInternalEnv - Indicates if the method is executed in an Internal environment.
+ * @return {string[]} An array of strings, each representing CSS variable definitions for colors and shades.
+ */
+function getRuntimeColorCSSVariables(isStorybookEnv, isInternalEnv) {
+  if (!isStorybookEnv && !isInternalEnv && !vuelessConfig.runtimeColors?.length) return [];
+
+  const colors = vuelessConfig.runtimeColors?.length
+    ? vuelessConfig.runtimeColors
+    : [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
+
+  return COLOR_SHADES.map((shade) => {
+    return colors.map((color) => `--color-${color}-${shade}`).join("\n");
+  });
+}
+
+/**
+ * Generates an array of CSS variable strings for `primary` and `neutral` colors based on environment settings.
+ *
+ * @param {boolean} isInternalEnv - Indicates whether the current environment is internal.
+ * @return {string[]} An array of CSS variable strings representing brand colors and their shades.
+ */
+function getBrandColorCSSVariables(isInternalEnv) {
+  if (isInternalEnv) return [];
+
+  const colors = [
+    vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR,
+    vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR,
+  ];
+
+  return COLOR_SHADES.map((shade) => {
+    return colors.map((color) => `--color-${color}-${shade}`).join("\n");
+  });
+}
+
+/**
+ * Retrieves an array of CSS variable values from the light and dark theme configurations.
+ *
+ * This method combines theme settings from default and custom configurations and
+ * returns an array of variable values for each theme.
+ *
+ * @return {Array} An array containing CSS variable values from the light and dark themes.
+ */
+function getThemeCSSVariables() {
+  const lightThemeConfig = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
+  const darkThemeConfig = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+
+  return [
+    ...Object.values(lightThemeConfig).map((value) => value),
+    ...Object.values(darkThemeConfig).map((value) => value),
+  ];
 }
 
 /**
@@ -125,18 +148,28 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
  * CSS classes based on component usage, environment conditions, and configured colors.
  *
  * @param {Object} params - The parameters for the function.
- * @param {Array<string>} params.files - List of file paths to check for component usage.
+ * @param {Array<string>} params.targetFiles - List of file paths to check for component usage.
  * @param {Object} params.env - Environment variables for distinguishing between different environments.
  * @param {boolean} params.env.isStorybookEnv - Indicates whether the function is running in a Storybook environment.
- * @param {boolean} params.env.isInternalEnv - Indicates whether the function is running in an internal environment.
+ * @param {boolean} params.env.isInternalEnv - Indicates whether the function is running in an Internal environment.
  * @param {string} params.srcDir - The source directory path to search for configuration files.
  *
  * @return {Promise<Array<string>>} A promise that resolves to an array of safelisted CSS class names
  * for all matched components and nested components.
  */
-async function getComponentsSafelistClasses({ files, env, srcDir }) {
+async function getComponentsSafelistClasses({ targetFiles, env, srcDir }) {
   const { isStorybookEnv, isInternalEnv } = env;
 
+  let srcVueFiles = [];
+  const vuelessVueFiles = await getDirFiles(srcDir, ".vue");
+
+  if (!isInternalEnv) {
+    const vueFiles = targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue"));
+
+    srcVueFiles = (await Promise.all(vueFiles)).flat();
+  }
+
+  const files = [...srcVueFiles, ...vuelessVueFiles];
   const vuelessConfigFiles = [
     ...(await getDirFiles(srcDir, "/config.ts")),
     ...(await getDirFiles(srcDir, "/config.js")),
@@ -216,15 +249,15 @@ function getClassesToSafelist(config) {
  * Generates a set of safelisted CSS classes by replacing dynamic color patterns
  * in the provided safelist with specified colors and a default color.
  *
- * @param {Object} mergedConfig - The configuration object, which contains settings and defaults.
+ * @param {Object} config - The configuration object, which contains settings and defaults.
  * @param {Array<string>} colors - An array of color strings to replace dynamic color patterns.
  * @return {Set<string>} A set of safelisted CSS classes with replaced dynamic colors.
  */
-function getSafelistClasses(mergedConfig, colors) {
+function getSafelistClasses(config, colors) {
   const classes = new Set();
-  const defaultColor = mergedConfig.defaults?.color || "";
+  const defaultColor = config.defaults?.color || "";
 
-  getClassesToSafelist(mergedConfig).map((safelistClass) => {
+  getClassesToSafelist(config).map((safelistClass) => {
     [...colors, defaultColor].forEach((color) => {
       classes.add(safelistClass.replace(DYNAMIC_COLOR_PATTERN, color));
     });
@@ -234,9 +267,9 @@ function getSafelistClasses(mergedConfig, colors) {
 }
 
 /**
- * Retrieves the default configuration for a specific component.
+ * Retrieves the default config for a specific component.
  *
- * @param {string} componentName - The name of the component whose default configuration is to be retrieved.
+ * @param {string} componentName - The name of the component.
  * @param {string[]} vuelessConfigFiles - An array of file paths to search for the component's configuration file.
  * @return {Promise<Object>} A promise that resolves to the component's default configuration object.
  */
