@@ -9,14 +9,14 @@ import { VUELESS_CACHE_DIR } from "../src/constants.js";
 
 const jsLocalePath = path.join(cwd(), VUELESS_CACHE_DIR, "locales", "en.js");
 const tsLocalePath = path.join(cwd(), "src", "adapter.locale", "locales", "en.ts");
-const jsonLocalePath = path.join(cwd(), "dist", "locales");
-const distLocalePath = path.join(jsonLocalePath, "en.json");
+const jsonLocaleDirPath = path.join(cwd(), "dist", "locales");
+const jsonLocalePath = path.join(jsonLocaleDirPath, "en.json");
 
 await buildTSFile(tsLocalePath, jsLocalePath);
 
 const { default: defaultEnLocale } = await import(jsLocalePath);
 
-await mkdir(jsonLocalePath, { recursive: true });
-await writeFile(distLocalePath, JSON.stringify(defaultEnLocale), "utf-8");
+await mkdir(jsonLocaleDirPath, { recursive: true });
+await writeFile(jsonLocalePath, JSON.stringify(defaultEnLocale), "utf-8");
 
 await rm(jsLocalePath, { force: true });
