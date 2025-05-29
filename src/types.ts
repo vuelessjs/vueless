@@ -61,7 +61,7 @@ import UListboxConfig from "./ui.form-listbox/config.ts";
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
 import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
-import type { LocaleOptions } from "./adatper.locale/vueless.ts";
+import type { LocaleOptions } from "./adapter.locale/vueless.ts";
 
 export enum ColorMode {
   Dark = "dark",
