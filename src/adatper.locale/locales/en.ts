@@ -1,14 +1,14 @@
-import selectConfig from "../../ui.form-select/config.js";
-import switchConfig from "../../ui.form-switch/config.js";
-import inputFileConfig from "../../ui.form-input-file/config.js";
-import listboxConfig from "../../ui.form-listbox/config.js";
-import modalConfirmConfig from "../../ui.container-modal-confirm/config.js";
-import tableConfig from "../../ui.data-table/config.js";
+import selectConfig from "../../ui.form-select/config.ts";
+import switchConfig from "../../ui.form-switch/config.ts";
+import inputFileConfig from "../../ui.form-input-file/config.ts";
+import listboxConfig from "../../ui.form-listbox/config.ts";
+import modalConfirmConfig from "../../ui.container-modal-confirm/config.ts";
+import tableConfig from "../../ui.data-table/config.ts";
 import calendarConfig from "../../ui.form-calendar/config.ts";
-import datepickerConfig from "../../ui.form-date-picker/config.js";
-import datepickerRangeConfig from "../../ui.form-date-picker-range/config.js";
-import dataListConfig from "../../ui.data-list/config.js";
-import notifyDefaultConfig from "../../ui.text-notify/config.js";
+import datepickerConfig from "../../ui.form-date-picker/config.ts";
+import datepickerRangeConfig from "../../ui.form-date-picker-range/config.ts";
+import dataListConfig from "../../ui.data-list/config.ts";
+import notifyDefaultConfig from "../../ui.text-notify/config.ts";
 
 export default {
   USelect: selectConfig.i18n,
