@@ -94,6 +94,11 @@ export interface Props {
   visibleOptions?: number;
 
   /**
+   * Time in milliseconds before value emit.
+   */
+  debounce?: number | string;
+
+  /**
    * Disable the list.
    */
   disabled?: boolean;

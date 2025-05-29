@@ -46,6 +46,11 @@ const emit = defineEmits([
    * Triggers on click option.
    */
   "clickOption",
+
+  /**
+   * Triggers when the search input value changes.
+   */
+  "searchChange",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -209,6 +214,10 @@ watch(
 
 function onClickAddOption() {
   emit("add");
+}
+
+function onSearchChange(value: string) {
+  emit("searchChange", value);
 }
 
 function isMetaKey(key: string) {
@@ -396,8 +405,10 @@ const {
         v-model="search"
         :placeholder="localeMessages.search"
         :size="size"
+        :debounce="debounce"
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
+        @update:model-value="onSearchChange"
       />
     </div>
 
