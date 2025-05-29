@@ -12,7 +12,7 @@ import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import johnDoeImg from "../../storybook/assets/john-doe.png";
+import johnDoeImg from "./assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -83,7 +83,7 @@ Src.parameters = {
     },
     source: {
       code: `
-import johnDoeImg from "../../storybook/assets/john-doe.png";
+import johnDoeImg from "./assets/john-doe.png";
 
 <URow>
   <UAvatar v-bind="args" size="3xl" src="https://i.pravatar.cc/300?img=67" />
