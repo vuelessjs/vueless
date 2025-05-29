@@ -47,6 +47,11 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Time in milliseconds before search value emit.
+   */
+  debounce?: number | string;
+
+  /**
    * Left icon name.
    */
   leftIcon?: string;

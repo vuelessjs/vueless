@@ -39,10 +39,7 @@ const labelFirstLetters = computed(() => {
 });
 
 const backgroundImage = computed(() => {
-  const baseUrl = import.meta.env.BASE_URL;
-  const src = props.src && props.src.includes("http") ? props.src : baseUrl + props.src;
-
-  return props.src ? `background-image: url(${src});` : "";
+  return props.src ? `background-image: url(${props.src});` : "";
 });
 
 function onClick(event: MouseEvent) {

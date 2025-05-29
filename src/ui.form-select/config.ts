@@ -147,6 +147,7 @@ export default /*tw*/ {
     labelKey: "label",
     groupLabelKey: "label",
     multipleVariant: "inline",
+    debounce: 0,
     optionsLimit: 0,
     visibleOptions: 8,
     labelDisplayCount: 2,

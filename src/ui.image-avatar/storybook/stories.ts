@@ -12,6 +12,8 @@ import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
+import johnDoeImg from "./assets/john-doe.png";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
@@ -63,10 +65,33 @@ const EnumTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = { size: "3xl" };
 
-export const Src = DefaultTemplate.bind({});
-Src.args = {
-  src: "https://i.pravatar.cc/300?img=67",
-  size: "3xl",
+export const Src: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
+  components: { UAvatar, URow },
+  setup: () => ({ args, slots: getSlotNames(UAvatar.__name), johnDoeImg }),
+  template: `
+    <URow>
+      <UAvatar v-bind="args" size="3xl" src="https://i.pravatar.cc/300?img=67" />
+      <UAvatar v-bind="args" size="3xl" :src="johnDoeImg" rounded="full" />
+    </URow>
+  `,
+});
+Src.parameters = {
+  docs: {
+    description: {
+      story:
+        "The `src` prop can be used to display an image avatar. You can use a URL or a local image.",
+    },
+    source: {
+      code: `
+import johnDoeImg from "./assets/john-doe.png";
+
+<URow>
+  <UAvatar v-bind="args" size="3xl" src="https://i.pravatar.cc/300?img=67" />
+  <UAvatar v-bind="args" size="3xl" :src="johnDoeImg" rounded="full" />
+</URow>
+      `,
+    },
+  },
 };
 
 export const PlaceholderIcon = DefaultTemplate.bind({});

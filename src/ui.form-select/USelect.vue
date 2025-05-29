@@ -776,6 +776,7 @@ const {
         :options="options"
         :disabled="disabled"
         :size="size"
+        :debounce="debounce"
         :visible-options="visibleOptions"
         :value-key="valueKey"
         :label-key="labelKey"
