@@ -41,7 +41,7 @@ export default /*tw*/ {
           disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5
         `,
         ghost: `
-          text-{color}
+          text-{color} bg-transparent
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
           disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-transparent
