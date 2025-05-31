@@ -94,7 +94,7 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
  * @return {string[]} An array of strings, each representing CSS variable definitions for colors and shades.
  */
 function getRuntimeColorCSSVariables(isStorybookEnv, isInternalEnv) {
-  if (!isStorybookEnv && !isInternalEnv && !vuelessConfig.runtimeColors?.length) return [];
+  if (!isStorybookEnv && !isInternalEnv && !vuelessConfig.runtimeColors) return [];
 
   const colors = vuelessConfig.runtimeColors?.length
     ? vuelessConfig.runtimeColors
