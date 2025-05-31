@@ -33,6 +33,14 @@ const isOpened = ref(false);
 
 const elementId = props.id || useId();
 
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
+});
+
 function onClickItem() {
   isOpened.value = !isOpened.value;
 
@@ -74,9 +82,10 @@ const {
           @binding {string} icon-name
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-name="config.defaults.toggleIcon" :opened="isOpened">
+        <slot name="toggle" :icon-name="toggleIconName" :opened="isOpened">
           <UIcon
-            :name="config.defaults.toggleIcon"
+            v-if="toggleIconName"
+            :name="toggleIconName"
             :size="size"
             color="neutral"
             internal
