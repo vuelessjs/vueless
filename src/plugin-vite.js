@@ -125,8 +125,10 @@ export const Vueless = function (options = {}) {
     }),
 
     configResolved: async () => {
-      /* merge and cache component configs. */
-      await cacheMergedConfigs(vuelessSrcDir);
+      if (!isNuxtModuleEnv) {
+        /* merge and cache component configs. */
+        await cacheMergedConfigs(vuelessSrcDir);
+      }
 
       if (isInternalEnv || isStorybookEnv) {
         await buildWebTypes(vuelessSrcDir);
@@ -135,17 +137,17 @@ export const Vueless = function (options = {}) {
         await setCustomPropTypes(vuelessSrcDir);
       }
 
-      await prepareIcons();
+      /* collect used in project colors for tailwind safelist */
+      await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
 
-      if (!isNuxtModuleEnv) {
-        /* collect used in project colors for tailwind safelist */
-        await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
-      }
+      /* cache vueless built-in and project icons */
+      await prepareIcons();
     },
 
     /* update icons cache in dev env */
     handleHotUpdate: async ({ file }) => {
       if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
+        /* cache vueless built-in and project icons */
         await prepareIcons();
       }
     },
