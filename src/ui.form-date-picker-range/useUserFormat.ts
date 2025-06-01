@@ -1,6 +1,6 @@
 import { computed } from "vue";
 
-import { isSameMonth } from "../ui.form-calendar/utilDate.ts";
+import { isSameDay, isSameMonth } from "../ui.form-calendar/utilDate.ts";
 import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
 import { getTokenIndexes } from "./utilDateRange.ts";
 
@@ -42,6 +42,7 @@ export function useUserFormat(
 
       const isDateToSameMonth = isSameMonth(from, to);
       const isDateToSameYear = from.getFullYear() === to.getFullYear();
+      const isSameDate = isSameDay(from, to);
 
       if (isDateToSameMonth && isDateToSameYear) {
         fromFormat = fromFormat.replace(/[YyMmFnU]/g, "");
@@ -56,7 +57,7 @@ export function useUserFormat(
       const fromTitle = from ? formatDate(from, fromFormat, userFormatLocale.value) : "";
       const toTitle = to ? formatDate(to, userDateFormat, userFormatLocale.value) : "";
 
-      title = `${fromTitle.trim()} – ${toTitle.trim()}`;
+      title = isSameDate ? toTitle.trim() : `${fromTitle.trim()} – ${toTitle.trim()}`;
     }
 
     if (isPeriod.value.month) {
