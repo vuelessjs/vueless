@@ -46,6 +46,10 @@ function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
+const placeholderIconName = computed(() => {
+  return props.placeholderIcon || config.value.defaults.placeholderIcon;
+});
+
 defineExpose({
   /**
    * A reference to the avatar element for direct DOM manipulation.
@@ -71,18 +75,18 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
     @click="onClick"
   >
     <template v-if="!backgroundImage">
-      <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
       <!--
         @slot Use it to add something instead of the avatar image placeholder.
         @binding {string} icon-name
         @binding {string} icon-color
       -->
-      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="color">
+      <slot name="placeholder" :icon-name="placeholderIconName" :icon-color="color">
+        <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
         <UIcon
-          internal
+          v-else
           :size="size"
           :color="color"
-          :name="placeholderIcon || config.defaults.placeholderIcon"
+          :name="placeholderIconName"
           v-bind="placeholderIconAttrs"
         />
       </slot>
