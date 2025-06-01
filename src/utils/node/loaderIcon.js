@@ -208,14 +208,12 @@ async function findAndCopyIcons(files, library, debug) {
         const iconNameMatch = iconNameRegex.exec(match);
         const iconName = iconNameMatch && iconNameMatch[2];
 
-        if (!validIconNamesRegex.test(iconName)) {
-          continue;
-        }
-
-        try {
-          iconName && copyIcon(iconName, library);
-        } catch (error) {
-          debug && console.log(error);
+        if (validIconNamesRegex.test(iconName)) {
+          try {
+            iconName && copyIcon(iconName, library);
+          } catch (error) {
+            debug && console.log(error);
+          }
         }
 
         iconNameRegex.lastIndex = 0;
@@ -236,28 +234,26 @@ async function findAndCopyIcons(files, library, debug) {
       const groupMatch = match.match(new RegExp(iconPropsPattern));
       const iconName = groupMatch ? groupMatch[3] : null;
 
-      try {
-        if (!validIconNamesRegex.test(iconName) && !ternaryRegex.test(iconName)) {
-          continue;
-        }
+      if (validIconNamesRegex.test(iconName) || ternaryRegex.test(iconName)) {
+        try {
+          if (iconName.includes("?") && iconName.includes(":")) {
+            const [trueName, falseName] = getTernaryValues(iconName);
 
-        if (iconName.includes("?") && iconName.includes(":")) {
-          const [trueName, falseName] = getTernaryValues(iconName);
+            const isValidTrueName = trueName && validIconNamesRegex.test(trueName);
+            const isValidFalseName = falseName && validIconNamesRegex.test(falseName);
 
-          const isValidTrueName = trueName && validIconNamesRegex.test(trueName);
-          const isValidFalseName = falseName && validIconNamesRegex.test(falseName);
+            if (!isValidTrueName || !isValidFalseName) {
+              continue;
+            }
 
-          if (!isValidTrueName || !isValidFalseName) {
-            continue;
+            copyIcon(trueName, library);
+            copyIcon(falseName, library);
+          } else {
+            copyIcon(iconName, library);
           }
-
-          copyIcon(trueName, library);
-          copyIcon(falseName, library);
-        } else {
-          copyIcon(iconName, library);
+        } catch (error) {
+          debug && console.log(error);
         }
-      } catch (error) {
-        debug && console.log(error);
       }
     }
   });
