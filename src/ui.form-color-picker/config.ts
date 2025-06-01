@@ -6,8 +6,7 @@ export default /*tw*/ {
       compoundVariants: [
         {
           variant: "soft",
-          color: "grayscale",
-          class: "bg-accented/10",
+          class: "bg-{color}-lifted/10",
         },
       ],
     },

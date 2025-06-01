@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when color value changes.
+   * Triggers when the color value changes.
    * @property {string} value
    */
   "update:modelValue",

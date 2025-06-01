@@ -67,7 +67,7 @@ export default function useUI<T>(
   );
 
   /**
-   * Get classes by given key (including CVA if config set).
+   * Get classes by a given key (including CVA if config set).
    */
   function getClasses(key: string, mutatedProps?: MutatedProps) {
     return computed(() => {
@@ -117,7 +117,7 @@ export default function useUI<T>(
   }
 
   /**
-   * Get an element attributes for a given key.
+   * Get element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef<string>) {
     const vuelessAttrs = ref({} as KeyAttrs);
