@@ -38,7 +38,10 @@ export const vue3SourceDecorator = makeDecorator({
         onMounted(async () => {
           updateArgs({ ...context.args, ...urlArgs });
 
-          /* rerender code snippet by optimized source code */
+          /* override default code snippet by optimized ones */
+          setTimeout(setSourceCode, 500);
+
+          /* rerender code snippet by optimized ones */
           channel.on(SNIPPET_RENDERED, async (payload) => {
             if (payload.source.includes(`<script lang="ts" setup>`)) {
               await setSourceCode();
