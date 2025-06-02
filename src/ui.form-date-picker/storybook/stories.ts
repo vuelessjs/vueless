@@ -26,6 +26,11 @@ interface EnumUDatePickerArgs extends Props<unknown> {
   enum: "size" | "labelAlign";
 }
 
+const currentDate = new Date();
+
+const oneDayMs = 24 * 60 * 60 * 1000;
+const dateValue = new Date(currentDate.getTime());
+
 export default {
   id: "3170",
   title: "Form Inputs & Controls / Date Picker",
@@ -121,7 +126,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { modelValue: new Date() };
+Default.args = { modelValue: dateValue };
 
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { placeholder: "MM/DD/YYYY" };
@@ -156,7 +161,14 @@ OpenDirection.parameters = {
 export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = {
   timepicker: true,
-  modelValue: new Date(2024, 2, 14, 12, 24, 14),
+  modelValue: new Date(
+    dateValue.getFullYear(),
+    dateValue.getMonth(),
+    dateValue.getDay(),
+    12,
+    24,
+    14,
+  ),
 };
 
 export const DateFormat = DefaultTemplate.bind({});
@@ -201,9 +213,9 @@ UserDateTimeFormat.parameters = {
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: new Date(2022, 2, 22),
-  maxDate: new Date(2022, 2, 26),
-  modelValue: new Date(2022, 2, 24),
+  minDate: currentDate,
+  maxDate: new Date(currentDate.getTime() + oneDayMs * 35),
+  modelValue: dateValue,
 };
 MinMax.parameters = {
   docs: {
