@@ -92,7 +92,7 @@ import Beverage from "./src/assets/icons/beverage.svg?component";
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "To use a custom icon, import it with the suffix `?component` and pass the imported component in the `src` prop, like this: <br/> `import Beverage from './src/assets/icons/beverage.svg'`",
+        "To use a custom icon, import it with the `?component` suffix and pass the resulting component to the `src` prop.",
     },
   },
 };
@@ -111,3 +111,6 @@ Variants.parameters = getEnumVariantDescription();
 
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
