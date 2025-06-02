@@ -204,7 +204,6 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
     <slot name="toggle" :opened="isShownOptions" :toggle="onClickLink">
       <UIcon
         v-if="toggleIconName"
-        internal
         interactive
         :color="color"
         :disabled="disabled"

@@ -104,7 +104,7 @@ const {
         @binding {string} icon-name
       -->
       <slot name="left" :icon-name="leftIcon">
-        <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
+        <UIcon v-if="leftIcon" color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
@@ -113,7 +113,7 @@ const {
         @binding {string} icon-name
       -->
       <slot name="default" :label="label" :icon-name="icon">
-        <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
+        <UIcon v-if="icon" color="inherit" :name="icon" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -124,13 +124,7 @@ const {
         @binding {string} icon-name
       -->
       <slot name="right" :icon-name="rightIcon">
-        <UIcon
-          v-if="rightIcon"
-          :name="rightIcon"
-          color="inherit"
-          internal
-          v-bind="rightIconAttrs"
-        />
+        <UIcon v-if="rightIcon" :name="rightIcon" color="inherit" v-bind="rightIconAttrs" />
       </slot>
     </template>
 

@@ -88,7 +88,6 @@ const {
             :name="toggleIconName"
             :size="size"
             color="neutral"
-            internal
             v-bind="toggleIconAttrs"
           />
         </slot>

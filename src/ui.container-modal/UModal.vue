@@ -230,7 +230,6 @@ const {
                 <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
-                      internal
                       size="2xs"
                       color="neutral"
                       :name="config.defaults.backIcon"
@@ -271,7 +270,6 @@ const {
                 @click="closeModal"
               >
                 <UIcon
-                  internal
                   interactive
                   size="sm"
                   color="grayscale"

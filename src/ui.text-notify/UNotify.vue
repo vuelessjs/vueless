@@ -167,7 +167,6 @@ const {
       <UIcon
         v-if="notification.type === NotificationType.Success"
         size="md"
-        internal
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
@@ -176,7 +175,6 @@ const {
       <UIcon
         v-else-if="notification.type === NotificationType.Warning"
         size="md"
-        internal
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
@@ -186,7 +184,6 @@ const {
         v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
         size="md"
-        internal
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
@@ -201,7 +198,6 @@ const {
 
       <UIcon
         size="xs"
-        internal
         interactive
         :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"

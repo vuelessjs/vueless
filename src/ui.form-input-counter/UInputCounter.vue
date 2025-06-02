@@ -168,7 +168,6 @@ const {
       @mouseleave="onMouseLeave"
     >
       <UIcon
-        internal
         size="xs"
         :name="config.defaults.subtractIcon"
         :disabled="isSubtractButtonDisabled || disabled"
@@ -203,7 +202,6 @@ const {
       @mouseleave="onMouseLeave"
     >
       <UIcon
-        internal
         size="xs"
         :name="config.defaults.addIcon"
         :disabled="isAddButtonDisabled || disabled"

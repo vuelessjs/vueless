@@ -503,7 +503,7 @@ const {
             @binding {string} icon-name
           -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
+          <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
 
@@ -531,7 +531,6 @@ const {
         <slot name="toggle" :icon-name="toggleIconName" :opened="isOpen">
           <UIcon
             v-if="toggleIconName"
-            internal
             interactive
             color="neutral"
             :disabled="disabled"
@@ -554,7 +553,6 @@ const {
         -->
         <slot name="clear" :icon-name="config.defaults.clearIcon">
           <UIcon
-            internal
             interactive
             color="neutral"
             :disabled="disabled"
@@ -674,7 +672,6 @@ const {
 
                       <template #right>
                         <UIcon
-                          internal
                           interactive
                           color="inherit"
                           :disabled="disabled"
@@ -728,7 +725,6 @@ const {
 
                     <UIcon
                       v-if="!disabled"
-                      internal
                       interactive
                       color="neutral"
                       :name="config.defaults.listClearIcon"
@@ -837,7 +833,7 @@ const {
             @binding {string} icon-name
           -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
+          <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>
     </div>

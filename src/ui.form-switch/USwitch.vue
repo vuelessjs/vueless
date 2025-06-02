@@ -140,7 +140,6 @@ const {
       <span v-bind="circleAttrs">
         <UIcon
           v-if="toggleIcon"
-          internal
           :name="toggleIconName"
           :color="iconColor"
           v-bind="toggleIconAttrs"

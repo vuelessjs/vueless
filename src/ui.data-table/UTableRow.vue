@@ -220,7 +220,6 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             >
               <UIcon
                 size="xs"
-                internal
                 interactive
                 :name="getToggleIconName()"
                 color="primary"

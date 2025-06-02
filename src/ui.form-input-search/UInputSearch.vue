@@ -171,7 +171,6 @@ const {
       >
         <UIcon
           v-if="!searchButtonLabel"
-          internal
           interactive
           color="neutral"
           :disabled="disabled"

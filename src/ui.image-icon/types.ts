@@ -55,11 +55,6 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Mark that Icon used inside Vueless components (used to get icons from vueless library).
-   */
-  internal?: boolean;
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

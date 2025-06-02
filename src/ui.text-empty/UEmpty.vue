@@ -51,12 +51,7 @@ const {
       <!-- @slot Use it to add something to the header. -->
       <slot name="header">
         <div v-bind="emptyIconWrapperAttrs">
-          <UIcon
-            internal
-            :name="config.defaults.emptyIcon"
-            color="neutral"
-            v-bind="emptyIconAttrs"
-          />
+          <UIcon :name="config.defaults.emptyIcon" color="neutral" v-bind="emptyIconAttrs" />
         </div>
       </slot>
     </div>

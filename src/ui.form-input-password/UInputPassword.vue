@@ -106,7 +106,6 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
             :name="passwordIcon"
             color="neutral"
             interactive
-            internal
             v-bind="passwordIconAttrs"
             :data-test="getDataTest('password-icon')"
             @click="onClickShowPassword"

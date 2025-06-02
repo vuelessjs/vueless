@@ -196,7 +196,6 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
         <slot name="toggle" :opened="isShownOptions">
           <UIcon
             v-if="toggleIconName"
-            internal
             color="inherit"
             :name="toggleIconName"
             v-bind="toggleIconAttrs"

@@ -160,7 +160,6 @@ const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, ch
 
     <label v-if="isChecked" v-bind="checkedAttrs" :for="elementId">
       <UIcon
-        internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
         color="inherit"
         v-bind="checkedIconAttrs"

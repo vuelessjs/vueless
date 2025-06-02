@@ -126,7 +126,6 @@ const {
         />
 
         <UIcon
-          internal
           color="inherit"
           :interactive="!readonly"
           :disabled="disabled"

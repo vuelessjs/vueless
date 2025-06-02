@@ -83,7 +83,7 @@ const {
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="icon">
-          <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="alertIconAttrs" />
+          <UIcon v-if="icon" color="inherit" :name="icon" v-bind="alertIconAttrs" />
         </slot>
 
         <div v-bind="contentAttrs">
@@ -131,7 +131,6 @@ const {
           @click="onClickClose"
         >
           <UIcon
-            internal
             :color="closeButtonColor"
             :name="config.defaults.closeIcon"
             v-bind="closeIconAttrs"

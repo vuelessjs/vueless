@@ -150,7 +150,6 @@ const {
       <slot name="first" :icon-name="config.defaults.firstIcon">
         <UIcon
           v-if="!firstLabel"
-          internal
           color="primary"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
@@ -174,7 +173,6 @@ const {
       <slot name="prev" :icon-name="config.defaults.prevIcon">
         <UIcon
           v-if="!prevLabel"
-          internal
           color="primary"
           :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
@@ -230,7 +228,6 @@ const {
       <slot name="next">
         <UIcon
           v-if="!nextLabel"
-          internal
           color="primary"
           :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
@@ -255,7 +252,6 @@ const {
       <slot name="last">
         <UIcon
           v-if="!lastLabel"
-          internal
           color="primary"
           :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"

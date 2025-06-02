@@ -270,7 +270,7 @@ const {
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" internal color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
+          <UIcon v-if="leftIcon" color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </span>
 
@@ -306,13 +306,7 @@ const {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon
-            v-if="rightIcon"
-            internal
-            color="neutral"
-            :name="rightIcon"
-            v-bind="rightIconAttrs"
-          />
+          <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
     </label>
