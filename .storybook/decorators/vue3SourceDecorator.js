@@ -1,8 +1,10 @@
 import { addons, makeDecorator, useArgs } from "storybook/preview-api";
+import { SNIPPET_RENDERED } from "storybook/internal/docs-tools";
 import { h, onMounted, watch } from "vue";
 
 const params = new URLSearchParams(window.location.search);
 let previousStoryId = null;
+let previousArgs = {};
 
 function getArgsFromUrl(storyId) {
   const isInIframe = params.toString().includes("globals=");
@@ -23,6 +25,7 @@ export const vue3SourceDecorator = makeDecorator({
     const story = storyFn(context);
     const [, updateArgs] = useArgs();
     const urlArgs = getArgsFromUrl(context.id);
+    const channel = addons.getChannel();
 
     previousStoryId = context.id;
 
@@ -35,13 +38,22 @@ export const vue3SourceDecorator = makeDecorator({
         onMounted(async () => {
           updateArgs({ ...context.args, ...urlArgs });
 
-          await setSourceCode();
+          /* rerender code snippet by optimized source code */
+          channel.on(SNIPPET_RENDERED, async (payload) => {
+            if (payload.source.includes(`<script lang="ts" setup>`)) {
+              await setSourceCode();
+            }
+          });
         });
 
         watch(
           context.args,
-          async () => {
+          async (newArgs) => {
+            if (JSON.stringify(previousArgs) === JSON.stringify(newArgs)) return;
+
+            previousArgs = { ...newArgs };
             updateArgs({ ...context.args });
+
             await setSourceCode();
           },
           { deep: true },
@@ -51,8 +63,6 @@ export const vue3SourceDecorator = makeDecorator({
           try {
             const src = context.originalStoryFn(context.args, context.argTypes).template;
             const code = preFormat(src, context.args, context.argTypes);
-
-            const channel = addons.getChannel();
 
             const emitFormattedTemplate = async () => {
               const prettier = await import("prettier2");
@@ -65,13 +75,11 @@ export const vue3SourceDecorator = makeDecorator({
               });
 
               // emits an event when the transformation is completed and content rendered
-              setTimeout(() => {
-                channel.emit("storybook/docs/snippet-rendered", {
-                  id: context.id,
-                  args: context.args,
-                  source: postFormat(formattedCode),
-                });
-              }, 500);
+              channel.emit(SNIPPET_RENDERED, {
+                id: context.id,
+                args: context.args,
+                source: postFormat(formattedCode),
+              });
             };
 
             await emitFormattedTemplate();
