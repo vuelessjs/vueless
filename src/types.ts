@@ -142,7 +142,7 @@ export interface Config extends ThemeConfig {
    * If not set, will disable runtime color changing.
    *
    */
-  runtimeColors?: (PrimaryColors | NeutralColors)[];
+  runtimeColors?: (PrimaryColors | NeutralColors)[] | boolean;
 
   /**
    * Array of colors to show in component color props.
