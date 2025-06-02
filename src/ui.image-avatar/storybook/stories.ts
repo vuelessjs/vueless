@@ -19,7 +19,7 @@ import type { Props } from "../types.ts";
 
 interface UAvatarArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "rounded" | "color";
+  enum: "variant" | "size" | "rounded" | "color";
 }
 
 export default {
@@ -107,28 +107,24 @@ PlaceholderIcon.args = {
   placeholderIcon: "account_circle",
 };
 
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
+
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
-
-export const Rounded = EnumTemplate.bind({});
-Rounded.args = { enum: "rounded" };
-Rounded.parameters = getEnumVariantDescription();
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
-Colors.parameters = getEnumVariantDescription();
 
-export const Bordered = EnumTemplate.bind({});
-Bordered.args = { enum: "color", bordered: true };
-Bordered.parameters = getEnumVariantDescription();
+export const Rounded = EnumTemplate.bind({});
+Rounded.args = { enum: "rounded" };
 
 export const PlaceholderSlot = DefaultTemplate.bind({});
 PlaceholderSlot.args = {
   color: "primary",
   slotTemplate: `
-    <template #placeholder="{ iconColor }">
-      <ULoader loading size="sm" :color="iconColor" />
+    <template #placeholder>
+      <ULoader loading size="sm" color="inherit" />
     </template>
   `,
 };

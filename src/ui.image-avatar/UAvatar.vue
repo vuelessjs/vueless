@@ -62,7 +62,15 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  src: Boolean(props.src),
+}));
+
+const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
@@ -78,14 +86,13 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
       <!--
         @slot Use it to add something instead of the avatar image placeholder.
         @binding {string} icon-name
-        @binding {string} icon-color
       -->
-      <slot name="placeholder" :icon-name="placeholderIconName" :icon-color="color">
+      <slot name="placeholder" :icon-name="placeholderIconName">
         <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
         <UIcon
           v-else
           :size="size"
-          :color="color"
+          color="inherit"
           :name="placeholderIconName"
           v-bind="placeholderIconAttrs"
         />

@@ -6,19 +6,14 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Avatar image source.
-   */
-  src?: string;
-
-  /**
    * Avatar label (username, nickname, etc.).
    */
   label?: string;
 
   /**
-   * Avatar placeholder icon.
+   * Badge variant.
    */
-  placeholderIcon?: string;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Avatar size.
@@ -45,9 +40,14 @@ export interface Props {
   rounded?: "none" | "sm" | "md" | "lg" | "full";
 
   /**
-   * Add border to the avatar.
+   * Avatar image source.
    */
-  bordered?: boolean;
+  src?: string;
+
+  /**
+   * Avatar placeholder icon.
+   */
+  placeholderIcon?: string;
 
   /**
    * Component config object.
