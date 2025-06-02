@@ -116,11 +116,7 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: [
-          ...(isInternalEnv
-            ? ["./src/directives/tooltip/vTooltip.ts"]
-            : ["vueless/directives/tooltip/vTooltip.ts"]),
-        ],
+        include: ["vueless/directives/**/*.ts"],
       },
     }),
 
