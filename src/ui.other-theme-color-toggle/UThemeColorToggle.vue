@@ -3,8 +3,7 @@ import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { setTheme, getStored } from "../utils/theme.ts";
-import { PRIMARY_COLOR, NEUTRAL_COLOR } from "../constants.js";
+import { setTheme } from "../utils/theme.ts";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UColorPicker from "../ui.form-color-picker/UColorPicker.vue";
@@ -47,7 +46,7 @@ const localPrimary = ref("");
 const localNeutral = ref("");
 
 const selectedPrimaryColor = computed({
-  get: () => props.primary || localPrimary.value || getStored(`vl-${PRIMARY_COLOR}`) || "",
+  get: () => props.primary || localPrimary.value || "",
   set: (primary: string) => {
     setTheme({ primary });
     emit("update:primary", primary);
@@ -56,7 +55,7 @@ const selectedPrimaryColor = computed({
 });
 
 const selectedNeutralColor = computed({
-  get: () => props.neutral || localNeutral.value || getStored(`vl-${NEUTRAL_COLOR}`) || "",
+  get: () => props.neutral || localNeutral.value || "",
   set: (neutral: string) => {
     setTheme({ neutral });
     emit("update:neutral", neutral);

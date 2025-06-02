@@ -153,7 +153,7 @@ export default /*tw*/ {
     labelDisplayCount: 2,
     multiple: false,
     disabled: false,
-    searchable: true,
+    searchable: false,
     clearable: true,
     addOption: false,
     /* icons */

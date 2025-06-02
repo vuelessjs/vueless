@@ -62,6 +62,11 @@ export interface Props {
   rightIcon?: string;
 
   /**
+   * Select toggle icon.
+   */
+  toggleIcon?: boolean | string;
+
+  /**
    * Select open direction.
    * @extendOnly
    */

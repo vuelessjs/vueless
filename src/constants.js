@@ -321,7 +321,6 @@ export const COMPONENTS = {
 export const TAILWIND_MERGE_EXTENSION = {
   extend: {
     theme: {
-      colors: ["brand", "brand-"],
       spacing: ["safe-top", "safe-bottom", "safe-left", "safe-right"],
     },
     classGroups: {

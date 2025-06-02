@@ -1,5 +1,6 @@
 export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
+
 export const DEFAULT_VUELESS_CONFIG_CONTENT = `
 export default {
   /**
@@ -10,9 +11,8 @@ export default {
   text: 14,
   outline: 2,
   rounding: 8,
-  unstyled: false,
-  colorMode: "auto",
   disabledOpacity: 50,
+  colorMode: "auto",
 
   /**
    * Light theme CSS variable settings.

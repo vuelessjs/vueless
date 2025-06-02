@@ -1,12 +1,15 @@
 export default /*tw*/ {
   avatar: {
     base: `
-      flex items-center justify-center shrink-0
+      flex items-center justify-center shrink-0 border
       text-{color} bg-{color}/10 bg-contain bg-center bg-no-repeat
     `,
     variants: {
-      bordered: {
-        true: "border border-{color}/15",
+      variant: {
+        solid: "border-transparent text-inverted bg-{color}",
+        outlined: "border-{color} text-{color}",
+        subtle: "border-{color}/15 text-{color} bg-{color}/10",
+        soft: "border-transparent text-{color} bg-{color}/10",
       },
       size: {
         "3xs": "size-4 text-tiny",
@@ -26,14 +29,17 @@ export default /*tw*/ {
         lg: "rounded-large",
         full: "rounded-full",
       },
+      src: {
+        true: "bg-transparent",
+      },
     },
   },
   placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",
+    variant: "solid",
     rounded: "md",
     size: "md",
-    bordered: false,
     /* icons */
     placeholderIcon: "image",
   },

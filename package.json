@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "0.0.825-beta.179",
+  "version": "0.0.825-beta.185",
   "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "keywords": [
@@ -75,7 +75,7 @@
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
-    "@vueless/storybook": "^0.0.75-beta.10",
+    "@vueless/storybook": "^0.0.75-beta.12",
     "eslint": "^9.27.0",
     "eslint-plugin-storybook": "^0.12.0",
     "eslint-plugin-vue": "^10.1.0",

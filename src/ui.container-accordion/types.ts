@@ -20,6 +20,11 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Accordion toggle icon.
+   */
+  toggleIcon?: boolean | string;
+
+  /**
    * Unique element id.
    */
   id?: string;

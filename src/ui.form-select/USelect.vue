@@ -190,6 +190,14 @@ const isLocalValue = computed(() => {
   return !!String(value);
 });
 
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
+});
+
 const clickOutsideOptions = computed(() => ({
   ignore: [labelComponentRef.value?.wrapperElement, labelComponentRef.value?.labelElement],
 }));
@@ -525,13 +533,14 @@ const {
           @binding {string} icon-name
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-name="config.defaults.toggleIcon" :opened="isOpen">
+        <slot name="toggle" :icon-name="toggleIconName" :opened="isOpen">
           <UIcon
+            v-if="toggleIconName"
             internal
             interactive
             color="neutral"
             :disabled="disabled"
-            :name="config.defaults.toggleIcon"
+            :name="toggleIconName"
             v-bind="toggleIconAttrs"
             :tabindex="-1"
           />

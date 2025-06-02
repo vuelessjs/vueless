@@ -9,5 +9,6 @@ export default defineConfig({
   plugins: [Vue(), Vueless({ env: INTERNAL_ENV }), TailwindCSS()],
   test: {
     environment: "jsdom",
+    setupFiles: ["./test/setup.ts"],
   },
 });

@@ -19,13 +19,20 @@ interface UIconArgs extends Props {
   enum: "color" | "size" | "variant";
 }
 
+/*
+ * This needs for icon auto-caching, please keep it,
+ * an object key which contains the `icon` word is required.
+ */
+const icons = {
+  defaultIcon: "favorite",
+};
+
 export default {
   id: "6010",
   title: "Images & Icons / Icon",
   component: UIcon,
   args: {
-    icon: "favorite", // added for icon auto-caching reason, please keep it.
-    name: "favorite",
+    name: icons.defaultIcon,
   },
   argTypes: {
     ...getArgTypes(UIcon.__name),

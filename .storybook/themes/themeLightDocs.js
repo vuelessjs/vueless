@@ -1,4 +1,4 @@
-import { create } from "@storybook/theming/create";
+import { create } from "storybook/theming/create";
 import { TAILWIND_COLORS } from "./tailwindColors.js";
 
 export default create({
