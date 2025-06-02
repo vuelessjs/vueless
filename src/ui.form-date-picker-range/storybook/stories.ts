@@ -28,6 +28,12 @@ interface EnumUDatePickerRangeArgs extends Props<unknown> {
   enum: "size" | "variant" | "labelAlign";
 }
 
+const currentDate = new Date();
+
+const oneDayMs = 24 * 60 * 60 * 1000;
+const fromDate = new Date(currentDate.getTime());
+const toDate = new Date(currentDate.getTime() + oneDayMs * 24);
+
 export default {
   id: "3180",
   title: "Form Inputs & Controls / Date Picker Range",
@@ -35,8 +41,8 @@ export default {
   args: {
     label: "Select a date",
     modelValue: {
-      from: new Date(2022, 1, 14),
-      to: new Date(2022, 2, 20),
+      from: fromDate,
+      to: toDate,
     },
   },
   argTypes: {
@@ -206,9 +212,9 @@ UserDateFormat.parameters = {
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: new Date(2024, 2, 22),
-  maxDate: new Date(2025, 2, 26),
-  modelValue: { from: new Date(2024, 2, 24), to: new Date(2024, 2, 25) },
+  minDate: currentDate,
+  maxDate: new Date(currentDate.getTime() + oneDayMs * 35),
+  modelValue: { from: fromDate, to: toDate },
 };
 MinMax.parameters = {
   docs: {
