@@ -64,12 +64,14 @@ export const vue3SourceDecorator = makeDecorator({
                 htmlWhitespaceSensitivity: "ignore",
               });
 
-              // emits an event when the transformation is completed
-              channel.emit("storybook/docs/snippet-rendered", {
-                id: context.id,
-                args: context.args,
-                source: postFormat(formattedCode),
-              });
+              // emits an event when the transformation is completed and content rendered
+              setTimeout(() => {
+                channel.emit("storybook/docs/snippet-rendered", {
+                  id: context.id,
+                  args: context.args,
+                  source: postFormat(formattedCode),
+                });
+              }, 500);
             };
 
             await emitFormattedTemplate();
@@ -124,7 +126,9 @@ function preFormat(templateSource, args, argTypes) {
     // eslint-disable-next-line vue/max-len
     `</template><template v-else-if="slot === 'default' && args['defaultSlot']">{{ args['defaultSlot'] }}</template><template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template></template>`;
 
-  const modelValue = JSON.stringify(args["modelValue"])?.replaceAll('"', "'");
+  const modelValue = isPrimitive(args["modelValue"])
+    ? JSON.stringify(args["modelValue"])?.replaceAll('"', "")
+    : JSON.stringify(args["modelValue"])?.replaceAll('"', "'");
 
   templateSource = templateSource
     .replace(/>[\s]+</g, "><")
@@ -259,14 +263,15 @@ function generateEnumAttributes(args, option) {
 
   return enumKeys
     .map((key) => {
-      const isNotPrimitive =
-        Object.keys(args[key] || {}).length || (Array.isArray(args[key]) && args[key].length);
-
-      return key in args && isNotPrimitive
+      return key in args && !isPrimitive(args[key])
         ? `${key}="${JSON.stringify(args[key]).replaceAll('"', "'").replaceAll("{enumValue}", option)}"`
         : `${key}="${option}"`;
     })
     .join(" ");
+}
+
+function isPrimitive(value) {
+  return !(value && (typeof value === "object" || Array.isArray(value)));
 }
 
 function propToSource(key, val, argType) {
