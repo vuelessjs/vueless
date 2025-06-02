@@ -14,10 +14,10 @@ export default defineConfig({
       "@tailwindcss/forms",
       "prettier2",
       "prettier2/parser-html",
-      "@storybook/blocks",
-      "@storybook/theming/create",
+      "@storybook/addon-docs/blocks",
+      "storybook/theming/create",
       "@storybook/addon-themes",
-      "@storybook/addon-interactions/preview",
+      "@storybook/vue3-vite",
     ],
   },
 });

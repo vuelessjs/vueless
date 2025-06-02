@@ -1,4 +1,4 @@
-import { addons, makeDecorator, useArgs } from "@storybook/preview-api";
+import { addons, makeDecorator, useArgs } from "storybook/preview-api";
 import { h, onMounted, watch } from "vue";
 
 const params = new URLSearchParams(window.location.search);
