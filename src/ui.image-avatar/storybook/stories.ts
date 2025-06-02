@@ -4,7 +4,6 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";

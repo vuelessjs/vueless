@@ -85,7 +85,6 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     ref="wrapper"
     v-bind="wrapperAttrs"
     :data-test="getDataTest()"
-    @click="onClick"
   >
     <div v-bind="contentAttrs" :data-test="getDataTest('content')">
       <!-- @slot Use it to add label content. -->
@@ -100,6 +99,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
         :for="props.for"
         v-bind="labelAttrs"
         :data-test="getDataTest('label')"
+        @click="onClick"
       >
         <!--
           @slot Use this to add custom content instead of the label.
@@ -136,6 +136,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       ref="label"
       :for="props.for"
       :data-test="getDataTest('label')"
+      @click="onClick"
     >
       <!--
         @slot Use this to add custom content instead of the label.
