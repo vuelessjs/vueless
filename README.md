@@ -12,28 +12,28 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 
 ### Key features
 
-- 65+ UI components (including range date picker, multi-selects, and nested table)
-- Built-in Storybook support
-- Beautiful, modern default UI theme
-- Light and dark mode support
-- Unstyled mode
-- Flexible color palettes
-- Runtime theme and color switching
-- Design tokens powered by CSS variables
-- Powerful yet simple styling customization system
-- Internationalization (i18n)
-- Accessibility (a11y)
-- Server-side rendering (SSR) friendly
-- 1000+ built-in SVG icons
-- Full TypeScript support with type safety
+- 🧩 65+ UI components (including range date picker, multi-selects, and nested table)
+- 📘 Built-in Storybook support
+- 🌈 Beautiful, modern default UI theme
+- 🌗 Light and dark mode support
+- 🌀 Unstyled mode
+- 🎨️ Flexible color palettes
+- 🎛️ Runtime theme and color switching
+- 🧬 Design tokens powered by CSS variables
+- ✨ Powerful yet simple styling customization system
+- 🌍 Internationalization (i18n)
+- ♿️ Accessibility (a11y)
+- ⚙️ Server-side rendering (SSR) friendly
+- 🖼️ 1000+ built-in SVG icons
+- 🛡️ Full TypeScript support with type safety
 
-### Advance features
+### Advanced Features
 
-- Copy and extend existing components
-- Create your own components
-- Define default values for props
-- Add or hide props to components
-- NPM package includes full source code (no TypeScript transpilation)
+- 🧰 Copy and extend existing components
+- 🧱 Create your own components
+- 🔧️ Define default values for props
+- 🔩️ Add or hide props to components
+- 🧿 `npm` package ships full source without TypeScript transpilation for better DX.
 
 
 ## Quick Start (Vue)
