@@ -13,9 +13,7 @@ import equal from "fast-deep-equal";
 import { DARK_MODE_EVENT_NAME, UPDATE_DARK_MODE_EVENT_NAME } from "./constants";
 
 const { document, window } = global as { document: Document; window: Window };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const modes = ["light", "dark"] as const;
-type Mode = (typeof modes)[number];
+type Mode = "light" | "dark";
 
 interface DarkModeStore {
   /** The class target in the preview iframe */

@@ -198,6 +198,10 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+const clickOutsideOptions = computed(() => ({
+  ignore: [labelComponentRef.value?.wrapperElement, labelComponentRef.value?.labelElement],
+}));
+
 watch(localValue, setLabelPosition, { deep: true });
 
 onMounted(() => {
@@ -471,6 +475,7 @@ const {
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"
+    @click="toggle"
   >
     <template #label>
       <!--
@@ -482,7 +487,7 @@ const {
 
     <div
       ref="wrapper"
-      v-click-outside="deactivate"
+      v-click-outside="[deactivate, clickOutsideOptions]"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
