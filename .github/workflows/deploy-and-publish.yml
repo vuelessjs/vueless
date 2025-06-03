@@ -3,7 +3,6 @@ name: Deploy and Publish Workflow
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
 
 permissions: write-all
 
@@ -87,7 +86,7 @@ jobs:
 
   release-major:
     name: 'Manual Major Release'
-    if: !contains(github.event.head_commit.message, 'GITBOOK')
+    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: test
     runs-on: ubuntu-latest
     steps:
